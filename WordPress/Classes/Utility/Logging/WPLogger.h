@@ -23,4 +23,9 @@
 
 + (void)configureLoggerLevelWithExtraDebug;
 
+/**
+ * @brief A shared instance that can be called from anywhere
+ */
++ (WPLogger * _Nonnull)shared;
+
 @end

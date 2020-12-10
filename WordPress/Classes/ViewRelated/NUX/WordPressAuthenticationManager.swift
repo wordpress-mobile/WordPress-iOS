@@ -162,6 +162,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         return true
     }
 
+    /// Indicates whether a link to WP.com TOS should be available, or not.
+    ///
+    var wpcomTermsOfServiceEnabled: Bool {
+        return true
+    }
+
     /// Indicates if Support is Enabled.
     ///
     var supportEnabled: Bool {
@@ -327,6 +333,22 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         } else if let wporg = credentials.wporg {
             syncWPOrg(username: wporg.username, password: wporg.password, xmlrpc: wporg.xmlrpc, options: wporg.options, onCompletion: onCompletion)
         }
+    }
+
+    /// Indicates if the given Auth error should be handled by the host app.
+    ///
+    func shouldHandleError(_ error: Error) -> Bool {
+        // Here for protocol compliance.
+        return false
+    }
+
+    /// Handles the given error.
+    /// Called if `shouldHandleError` is true.
+    ///
+    func handleError(_ error: Error, onCompletion: @escaping (UIViewController) -> Void) {
+        // Here for protocol compliance.
+        let vc = UIViewController()
+        onCompletion(vc)
     }
 
     /// Tracks a given Analytics Event.

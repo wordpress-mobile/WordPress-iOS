@@ -843,7 +843,9 @@ import WordPressFlux
             return
         }
 
-        guard let topic = readerTopic, let properties = topicPropertyForStats(), isViewLoaded && view.window != nil else {
+        guard let topic = readerTopic,
+              let properties = topicPropertyForStats(),
+              isViewLoaded && view.window != nil else {
             return
         }
 

@@ -37,6 +37,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 @dynamic isLiked;
 @dynamic isReblogged;
 @dynamic isWPCom;
+@dynamic organizationID;
 @dynamic likeCount;
 @dynamic score;
 @dynamic siteID;
@@ -109,6 +110,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.isLiked = remotePost.isLiked;
     post.isReblogged = remotePost.isReblogged;
     post.isWPCom = remotePost.isWPCom;
+    post.organizationID = remotePost.organizationID;
     post.likeCount = remotePost.likeCount;
     post.permaLink = remotePost.permalink;
     post.postID = remotePost.postID;
@@ -231,6 +233,12 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 - (BOOL)isPrivate
 {
     return self.isBlogPrivate;
+}
+
+- (BOOL)isP2Type
+{
+    NSInteger orgID = [self.organizationID intValue];
+    return orgID == SiteOrganizationTypeP2 || orgID == SiteOrganizationTypeAutomattic;
 }
 
 - (NSString *)authorString

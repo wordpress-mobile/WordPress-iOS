@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-26 08:30:59+0000 */
+/* Translation-Revision-Date: 2020-12-06 08:33:33+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -242,9 +242,6 @@
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
-
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "2 nga 2";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
@@ -948,6 +945,9 @@
 "By signing up, you agree to our _Terms of Service_." = "Duke u regjistruar, pajtoheni me _Kushtet tona të Shërbimit_.";
 
 /* No comment provided by engineer. */
+"CHOOSE A FILE" = "ZGJIDHNI NJË KARTELË";
+
+/* No comment provided by engineer. */
 "CUSTOMIZE" = "PËRSHTATENI";
 
 /* Label for size of media while it's being calculated. */
@@ -991,6 +991,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1152,17 +1153,14 @@
 /* Title for the screen to pick a design and homepage for a site. */
 "Choose a design" = "Zgjidhni një skemë";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "Zgjidhni emër përkatësie për sajtin tuaj";
+/* Select domain name. Title */
+"Choose a domain" = "Zgjidhni përkatësi";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Zgjidhni një temë";
 
 /* Label for Publish time picker */
 "Choose a time" = "Zgjidhni një kohë";
-
-/* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Zgjidhni dizajn";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Zgjidhni përkatësi";
@@ -1512,6 +1510,9 @@
 /* No comment provided by engineer. */
 "Copy block" = "Kopjoje bllokun";
 
+/* No comment provided by engineer. */
+"Copy file URL" = "Kopjo URL kartele";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Mund të Bëhet Më i Mirë";
 
@@ -1656,9 +1657,6 @@
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Krijoni sajtin tuaj";
-
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "Krijon një sajt të ri me të dhënat e dhëna.";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, or page" = "Krijon postim ose faqe të re";
@@ -1827,6 +1825,9 @@
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Përshkrim";
+
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "Dizajn";
 
 /* Title for the desktop web preview */
 "Desktop" = "Desktop";
@@ -2067,6 +2068,9 @@
    Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Përpunoni Postimin";
+
+/* No comment provided by engineer. */
+"Edit file" = "Përpunoni kartelën";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Përpunoni postime dhe faqe të reja me përpunuesin me blloqe.";
@@ -2421,6 +2425,9 @@
 
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "Shkarkime Kartelash";
+
+/* No comment provided by engineer. */
+"File block settings" = "Rregullime blloku kartelash";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Emër kartele";
@@ -2804,8 +2811,8 @@ translators: sample content for \"Team\" page template */
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "Nëse e hiqni këtë shikues, ai ose ajo s’do të jenë në gjendje të vizitojnë këtë sajt.";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "Nëse doni një sajt, por nuk doni më ndonjë nga postimet dhe faqet që keni tani, ekipi ynë i asistencës mund të fshijë për ju postime, faqe, media dhe komente të sajtit tuaj.\n\nKjo do ti mbajë sajtin tuaj dhe URL-në e tij aktive, por do t’ju ofrojë një fillim të ri për krijimin e lëndës. Që të spastrohet lënda juaj, thjesht lidhuni me ne.";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "Nëse doni një sajt, por pa postimet dhe faqet që keni tani, ekipi ynë i asistencës mund të fshijë për ju postime, faqet, media dhe komentet tuaja.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Nëse jeni i pasigurt se ç’do të fshihet, ose ju duhet ndihmë tjetër, mos u merakosni, ekipi ynë i asistencë është këtu që t’i përgjigjet çfarëdo pyetjeje që mund të keni.";
@@ -2885,9 +2892,6 @@ translators: sample content for \"Team\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Futni media";
-
-/* No comment provided by engineer. */
-"Insert mention" = "Futni përmendje";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "U përzgjodh futës";
@@ -4153,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Zgjidhni emër përdoruesi";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "Zgjidhni skemën e parapëlqyer për faqen tuaj hyrëse. Mund ta përshtatni ose ndryshoni më vonë";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Zgjidhni skemën e parapëlqyer për faqen tuaj hyrëse. Mund ta përpunoni dhe përshtatni më vonë.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Plan";
@@ -4421,7 +4425,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
+   Title for screen to preview a selected homepage design
    Title for screen to preview a static content. */
 "Preview" = "Paraparje";
 
@@ -6142,8 +6148,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Ky është një shembull lënde, i përfshirë me gjedhen për ilustrim të veçorive të saj. Hiqeni ose zëvendësojeni me fjalët dhe median tuaj.";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "Ky është vendi ku do t’ju gjejnë njerëzit në internet";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "Ky është vendi ku do t’ju gjejnë njerëzit në internet.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Ky objekt media është fshirë.";
@@ -6172,6 +6178,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "Kjo do të fshijë krejt kartelat dhe të dhënat përshoqëruar asaj.";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "Kjo do t’i mbajë aktive sajtin dhe URL-në tuaj, por do t’ju ofrojë një fillim të ri për krijimin e lëndës tuaj. Thjesht lidhuni me ne që të pastrojmë lëndën tuaj të tanishme.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6310,7 +6319,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "Përkthejeni";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "Në hedhurina";
 

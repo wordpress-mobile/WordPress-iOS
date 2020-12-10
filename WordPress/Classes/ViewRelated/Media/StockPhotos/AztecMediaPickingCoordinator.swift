@@ -50,7 +50,7 @@ final class AztecMediaPickingCoordinator {
     }
 
     private func otherAppsAction(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) -> UIAlertAction {
-        return UIAlertAction(title: .files, style: .default, handler: { [weak self] action in
+        return UIAlertAction(title: .otherApps, style: .default, handler: { [weak self] action in
             self?.showDocumentPicker(origin: origin, blog: blog)
         })
     }

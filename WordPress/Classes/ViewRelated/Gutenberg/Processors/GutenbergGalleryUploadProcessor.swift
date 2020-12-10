@@ -137,10 +137,10 @@ class GutenbergGalleryUploadProcessor: Processor {
             updatedBlock += jsonString
         }
         updatedBlock += " -->"
-        if let linkTo = block.attributes[GalleryBlockKeys.linkTo] as? String {
-            if linkTo == "media" {
+        if let linkTo = block.attributes[GalleryBlockKeys.linkTo] as? String, linkTo != "none" {
+            if linkTo == "file" {
                 self.linkToURL = self.remoteURLString
-            } else if linkTo == "attachment" {
+            } else if linkTo == "post" {
                 self.linkToURL = self.mediaLink
             }
             updatedBlock += self.linkPostMediaUploadProcessor.process(block.content)
