@@ -15,4 +15,8 @@ import Foundation
 
         service.getScanAvailableForSite(siteID, success: success, failure: failure)
     }
+
+    func getScan(for site: JetpackSiteRef, success: @escaping(JetpackScan) -> Void, failure: @escaping(Error) -> Void) {
+        service.getScanForSite(site.siteID, success: success, failure: failure)
+    }
 }
