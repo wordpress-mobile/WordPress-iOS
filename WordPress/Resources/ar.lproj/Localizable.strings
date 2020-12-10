@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-05 05:08:06+0000 */
+/* Translation-Revision-Date: 2020-12-09 18:43:10+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -2317,7 +2317,7 @@
 
 /* Accessibility indication that the current Post List style is currently Expanded.
    Screen reader text to represent the expanded state of a UI control */
-"Expanded" = "تمت التوسعة";
+"Expanded" = "موسعة";
 
 /* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
 "Expanded, %i completed tasks, toggling collapses the list of these tasks" = "تم توسيع %i من المهام المكتملة، ويؤدي التبديل إلى طي قائمة هذه المهام";
@@ -3417,7 +3417,7 @@ translators: sample content for \"Services\" page template */
 "Microsoft Outlook" = "Microsoft Outlook";
 
 /* Title for the mobile web preview */
-"Mobile" = "الأجهزة المحمولة";
+"Mobile" = "الهاتف المحمول";
 
 /* Jetpack Monitor Settings: Monitor site's uptime */
 "Monitor your site's uptime" = "راقب وقت التشغيل في موقعك";
