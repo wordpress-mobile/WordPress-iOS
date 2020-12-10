@@ -358,6 +358,12 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
     // Define success block
     void (^successBlock)(void) = ^void() {
+        
+        // Update subscription count
+        NSInteger oldSubscriptionCount = [WPAnalytics subscriptionCount];
+        NSInteger newSubscriptionCount = follow ? oldSubscriptionCount + 1 : oldSubscriptionCount - 1;
+        [WPAnalytics setSubscriptionCount:newSubscriptionCount];
+        
         if (shouldRefreshFollowedPosts) {
             [self refreshPostsForFollowedTopic];
         }

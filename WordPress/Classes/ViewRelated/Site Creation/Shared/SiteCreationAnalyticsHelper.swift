@@ -30,6 +30,27 @@ class SiteCreationAnalyticsHelper {
         WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewLoaded, withProperties: commonProperties(siteDesign))
     }
 
+    // MARK: - Final Assembly
+    static func trackSiteCreationSuccessLoading(_ siteDesign: RemoteSiteDesign?) {
+        WPAnalytics.track(.enhancedSiteCreationSuccessLoading, withProperties: commonProperties(siteDesign))
+    }
+
+    static func trackSiteCreationSuccess(_ siteDesign: RemoteSiteDesign?) {
+        WPAnalytics.track(.createdSite, withProperties: commonProperties(siteDesign))
+    }
+
+    static func trackSiteCreationSuccessPreviewViewed(_ siteDesign: RemoteSiteDesign?) {
+        WPAnalytics.track(.enhancedSiteCreationSuccessPreviewViewed, withProperties: commonProperties(siteDesign))
+    }
+
+    static func trackSiteCreationSuccessLoaded(_ siteDesign: RemoteSiteDesign?) {
+        WPAnalytics.track(.enhancedSiteCreationSuccessPreviewLoaded, withProperties: commonProperties(siteDesign))
+    }
+
+    static func trackSiteCreationSuccessPreviewOkButtonTapped() {
+        WPAnalytics.track(.enhancedSiteCreationSuccessPreviewOkButtonTapped)
+    }
+
     // MARK: - Error
     static func trackError(_ error: Error) {
         let errorProperties: [String: AnyObject] = [
@@ -40,7 +61,8 @@ class SiteCreationAnalyticsHelper {
     }
 
     // MARK: - Common
-    private static func commonProperties(_ siteDesign: RemoteSiteDesign) -> [AnyHashable: Any] {
+    private static func commonProperties(_ siteDesign: RemoteSiteDesign?) -> [AnyHashable: Any] {
+        guard let siteDesign = siteDesign else { return [:] }
         return  [siteDesignKey: siteDesign.slug]
     }
 }
