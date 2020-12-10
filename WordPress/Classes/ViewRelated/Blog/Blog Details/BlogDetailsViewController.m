@@ -838,7 +838,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Scan", @"Noun. Links to a blog's Jetpack Scan screen.")
                                                         image:[UIImage imageNamed:@"jetpack-scan-menu-icon"]
                                                      callback:^{
-                                                         [weakSelf showActivity];
+                                                         [weakSelf showScan];
                                                      }]];
     }
 
@@ -1687,6 +1687,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showActivity
 {
     ActivityListViewController *controller = [[ActivityListViewController alloc] initWithBlog:self.blog];
+    [self showDetailViewController:controller sender:self];
+
+    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
+}
+
+- (void)showScan
+{
+    JetpackScanViewController *controller = [[JetpackScanViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
