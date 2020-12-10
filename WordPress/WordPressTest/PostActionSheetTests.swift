@@ -82,6 +82,15 @@ class PostActionSheetTests: XCTestCase {
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleStats)
     }
 
+    func testCallDelegateWhenDuplicateTapped() {
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().withRemote().build())
+
+        postActionSheet.show(for: viewModel, from: view)
+        tap("Duplicate", in: viewControllerMock.viewControllerPresented)
+
+        XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleDuplicate)
+    }
+
     func testCallDelegateWhenShareTapped() {
         let viewModel = PostCardStatusViewModel(post: PostBuilder().published().withRemote().build())
 
@@ -171,6 +180,7 @@ private class UIViewControllerMock: UIViewController {
 
 class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
     private(set) var didCallHandleStats = false
+    private(set) var didCallHandleDuplicate = false
     private(set) var didCallHandleDraft = false
     private(set) var didCallHandleTrashPost = false
     private(set) var didCallEdit = false
@@ -181,6 +191,10 @@ class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
 
     func stats(for post: AbstractPost) {
         didCallHandleStats = true
+    }
+
+    func duplicate(_ post: AbstractPost) {
+        didCallHandleDuplicate = true
     }
 
     func draft(_ post: AbstractPost) {
