@@ -56,6 +56,8 @@ import Foundation
     case readerFollowingShown
     case readerSavedListShown
     case readerLikedShown
+    case readerA8CShown
+    case readerP2Shown
     case readerBlogPreviewed
     case readerDiscoverPaginated
     case readerPostCardTapped
@@ -188,6 +190,10 @@ import Foundation
             return "reader_following_shown"
         case .readerLikedShown:
             return "reader_liked_shown"
+        case .readerA8CShown:
+            return "reader_a8c_shown"
+        case .readerP2Shown:
+            return "reader_p2_shown"
         case .readerSavedListShown:
             return "reader_saved_list_shown"
         case .readerBlogPreviewed:
