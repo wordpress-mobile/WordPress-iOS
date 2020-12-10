@@ -30,11 +30,43 @@ class PrepublishingViewController: UITableViewController {
     }()
 
     private let completion: (AbstractPost) -> ()
-
+    
+    private func rowTitle(rowID: PrepublishingIdentifier) ->  NSAttributedString {
+        switch rowID {
+        case .visibility:
+            return NSAttributedString(string:NSLocalizedString("Visibility", comment: "Label for Visibility"), attributes: nil)
+        case .schedule:
+            return NSAttributedString(string: Constants.publishDateLabel, attributes: nil)
+        case .tags:
+            let font = UIFont.systemFont(ofSize: 12.0)
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: font,
+                .foregroundColor: UIColor.textSubtle,
+            ]
+            
+            let firstString = NSMutableAttributedString(string: "Tags ", attributes: nil)
+            let secondString = NSAttributedString(string: "(Grow Your audience)", attributes: attributes)
+            firstString.append(secondString)
+            
+            return firstString
+        case .categories:
+            let font = UIFont.systemFont(ofSize: 12.0)
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: font,
+                .foregroundColor: UIColor.textSubtle,
+            ]
+            let firstString = NSMutableAttributedString(string: "Categories ", attributes: nil)
+            let secondString = NSAttributedString(string: "(Group your posts)", attributes: attributes)
+            firstString.append(secondString)
+            
+            return firstString
+        }
+    }
+    
     private let options: [PrepublishingOption] = [
         PrepublishingOption(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility")),
         PrepublishingOption(id: .schedule, title: Constants.publishDateLabel),
-        PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags")),
+        PrepublishingOption(id: .tags, title: "Tags"),
         PrepublishingOption(id: .categories, title: NSLocalizedString("Categories", comment: "Label for Categories"))
     ]
 
@@ -118,12 +150,16 @@ class PrepublishingViewController: UITableViewController {
 
         switch options[indexPath.row].id {
         case .tags:
+            cell.textLabel?.attributedText = rowTitle(rowID: .tags)
             configureTagCell(cell)
         case .visibility:
+            cell.textLabel?.attributedText = rowTitle(rowID: .visibility)
             configureVisibilityCell(cell)
         case .schedule:
+            cell.textLabel?.attributedText = rowTitle(rowID: .schedule)
             configureScheduleCell(cell)
         case .categories:
+            cell.textLabel?.attributedText = rowTitle(rowID: .categories)
             configureCategoriesCell(cell)
         }
 
