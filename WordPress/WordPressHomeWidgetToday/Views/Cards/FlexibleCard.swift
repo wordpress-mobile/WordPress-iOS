@@ -1,17 +1,37 @@
 import SwiftUI
 
-/// A card with a title and text that can be either vertically or horizontally stacked
+/// A card with a title and a numeric or string value that can be either vertically or horizontally stacked
 struct FlexibleCard: View {
     let axis: Axis
     let title: LocalizedStringKey
-    let value: String
+    let value: Value
 
+    enum Value {
+        case number(Int)
+        case description(String)
+    }
+
+    @ViewBuilder
     private var descriptionView: some View {
-        Text(value)
-            .font(Appearance.textFont)
-            .fontWeight(Appearance.textFontWeight)
-            .foregroundColor(Appearance.textColor)
-            .lineLimit(Appearance.textLineLimit)
+
+        switch value {
+
+        case .number(let number):
+
+            StatsValueView(value: number,
+                           font: Appearance.textFont,
+                           fontWeight: Appearance.textFontWeight,
+                           foregroundColor: Appearance.textColor,
+                           lineLimit: Appearance.textLineLimit)
+
+        case .description(let description):
+
+            Text(description)
+                .font(Appearance.textFont)
+                .fontWeight(Appearance.textFontWeight)
+                .foregroundColor(Appearance.textColor)
+                .lineLimit(Appearance.textLineLimit)
+        }
     }
 
     private var titleView: some View {

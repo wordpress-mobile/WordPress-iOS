@@ -148,17 +148,4 @@ extension Int {
     func abbreviatedString(forHeroNumber: Bool = false) -> String {
         return Double(self).abbreviatedString(forHeroNumber: forHeroNumber)
     }
-
-    /// Returns an abbreviated string of the passed value, or the specified placeholder String, if the value passes the isPlaceholder check
-    /// - Parameters:
-    ///   - forHeroNumber: wether the limit for stripping decimals is 10000 or 1000000
-    ///   - placeholder: the placeholder to be returned in place of the number, defaults to `dash`
-    ///   - isPlaceholder: the condition to determine if rhe placeholder has to be returned, defaults to negative values
-    /// - Returns: the short string of the passed value or the placeholder
-    func abbreviatedStringWithPlaceholder(forHeroNumber: Bool = false,
-                                          placeholder: String = "-",
-                                          isPlaceholder: ((Int) -> Bool) = { $0 < 0 }) -> String {
-
-        isPlaceholder(self) ? placeholder : Double(self).abbreviatedString(forHeroNumber: forHeroNumber)
-    }
 }

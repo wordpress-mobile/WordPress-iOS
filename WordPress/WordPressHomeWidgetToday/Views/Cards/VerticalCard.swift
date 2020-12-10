@@ -3,7 +3,7 @@ import SwiftUI
 /// A card with a title and a value stacked vertically
 struct VerticalCard: View {
     let title: LocalizedStringKey
-    let value: LocalizedStringKey
+    let value: Int
     let largeText: Bool
 
     private var titleFont: Font {
@@ -12,7 +12,7 @@ struct VerticalCard: View {
 
     private var accessibilityLabel: Text {
         // The colon makes VoiceOver pause between elements
-        Text(title) + Text(": ") + Text(value)
+        Text(title) + Text(": ") + Text(value.abbreviatedString())
     }
 
     var body: some View {
@@ -22,10 +22,13 @@ struct VerticalCard: View {
                 .fontWeight(Appearance.titleFontWeight)
                 .foregroundColor(Appearance.titleColor)
                 .accessibility(hidden: true)
-            Text(value)
-                .font(titleFont)
-                .foregroundColor(Appearance.textColor)
+            StatsValueView(value: value,
+                           font: titleFont,
+                           fontWeight: .regular,
+                           foregroundColor: Appearance.textColor,
+                           lineLimit: nil)
                 .accessibility(label: accessibilityLabel)
+
         }
         .flipsForRightToLeftLayoutDirection(true)
     }
