@@ -32,6 +32,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         title.adjustsFontForContentSizeCategory = true
         title.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold).withSize(17)
         title.isHidden = true
+        title.adjustsFontSizeToFitWidth = true
         return title
     }()
     @IBOutlet weak var largeTitleTopSpacingConstraint: NSLayoutConstraint!
