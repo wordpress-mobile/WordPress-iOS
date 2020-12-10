@@ -88,9 +88,9 @@ extension CoreDataFileLocationManager {
             return
         }
 
-        let mover = CoreDataStoreMover(modelLocation: productionModelURL)
+        let mover = CoreDataStoreMover()
 
-        switch mover.moveStore(from: legacyMainBundleStoreURL, to: productionStoreURL) {
+        switch mover.moveStore(ofType: NSSQLiteStoreType, from: legacyMainBundleStoreURL, to: productionStoreURL) {
         case .success(let url):
             DDLogInfo("\(StoreToAppGroupMigrationIdentifier): Persistent store moved successfully to \(url)")
 
