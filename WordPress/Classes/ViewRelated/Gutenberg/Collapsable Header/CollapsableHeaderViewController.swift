@@ -24,7 +24,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     private let hasDefaultAction: Bool
-
+    private var notificationObservers: [NSObjectProtocol] = []
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var headerView: UIView!
     let titleView: UILabel = {
@@ -57,6 +57,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     /// As the Header expands it allows a little bit of extra room between the bottom of the filter bar and the bottom of the header view. These next two constaints help account for that slight adustment.
     @IBOutlet weak var minHeaderBottomSpacing: NSLayoutConstraint!
     @IBOutlet weak var maxHeaderBottomSpacing: NSLayoutConstraint!
+    @IBOutlet weak var scrollableContainerBottomConstraint: NSLayoutConstraint!
 
     @IBOutlet var visualEffects: [UIVisualEffectView]! {
         didSet {
@@ -220,6 +221,8 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         if !isViewOnScreen() {
             layoutHeader()
         }
+
+        startObservingKeyboardChanges()
         super.viewWillAppear(animated)
     }
 
@@ -229,6 +232,8 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         } else {
             restoreNavigationBar()
         }
+
+        stopObservingKeyboardChanges()
         super.viewWillDisappear(animated)
     }
 
@@ -667,5 +672,39 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
             self.headerView.setNeedsLayout()
             self.headerView.layoutIfNeeded()
         }, completion: nil)
+    }
+}
+
+// MARK: - Keyboard Adjustments
+extension CollapsableHeaderViewController {
+    private func startObservingKeyboardChanges() {
+        let willShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { (notification) in
+            UIView.animate(withKeyboard: notification) { (_, endFrame) in
+                self.scrollableContainerBottomConstraint.constant = endFrame.height - self.footerHeight
+            }
+        }
+
+        let willHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { (notification) in
+            UIView.animate(withKeyboard: notification) { (_, _) in
+                self.scrollableContainerBottomConstraint.constant = 0
+            }
+        }
+
+        let willChangeFrameObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillChangeFrameNotification, object: nil, queue: .main) { (notification) in
+            UIView.animate(withKeyboard: notification) { (_, endFrame) in
+                self.scrollableContainerBottomConstraint.constant = endFrame.height - self.footerHeight
+            }
+        }
+
+        notificationObservers.append(willShowObserver)
+        notificationObservers.append(willHideObserver)
+        notificationObservers.append(willChangeFrameObserver)
+    }
+
+    private func stopObservingKeyboardChanges() {
+        notificationObservers.forEach { (observer) in
+            NotificationCenter.default.removeObserver(observer)
+        }
+        notificationObservers = []
     }
 }
