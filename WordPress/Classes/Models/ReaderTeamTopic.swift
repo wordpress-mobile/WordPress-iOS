@@ -4,20 +4,13 @@ import Foundation
     @NSManaged open var slug: String
 
     override open class var TopicType: String {
-        return "team"
+        return "organization"
     }
 
-    @objc open var icon: UIImage? {
-        guard bundledTeamIcons.contains(slug) else {
-            return nil
-        }
-
-        return UIImage(named: slug)
+    var shownTrackEvent: WPAnalyticsEvent {
+        return slug == ReaderTeamTopic.a8cSlug ? .readerA8CShown : .readerP2Shown
     }
 
-    fileprivate let bundledTeamIcons: [String] = [
-        ReaderTeamTopic.a8cTeamSlug
-    ]
-
-    static let a8cTeamSlug = "a8c"
+    static let a8cSlug = "a8c"
+    static let p2Slug = "p2"
 }

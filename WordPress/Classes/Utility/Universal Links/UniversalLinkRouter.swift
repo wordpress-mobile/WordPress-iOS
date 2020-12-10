@@ -53,6 +53,7 @@ struct UniversalLinkRouter {
         ReaderRoute.discover,
         ReaderRoute.search,
         ReaderRoute.a8c,
+        ReaderRoute.p2,
         ReaderRoute.likes,
         ReaderRoute.manageFollowing,
         ReaderRoute.list,
