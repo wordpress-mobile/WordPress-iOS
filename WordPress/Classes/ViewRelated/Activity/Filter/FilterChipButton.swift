@@ -27,7 +27,6 @@ class FilterChipButton: UIView {
 
         stackView.addArrangedSubview(mainButton)
 
-        resetButton.setImage(UIImage.gridicon(.crossCircle).imageWithTintColor(.text), for: .normal)
         resetButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.minResetButtonWidth).isActive = true
         resetButton.imageEdgeInsets = Constants.resetImageInsets
         resetButton.isHidden = true
@@ -40,7 +39,6 @@ class FilterChipButton: UIView {
         pinSubviewToAllEdges(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
-        layer.borderColor = UIColor.textQuaternary.cgColor
         layer.borderWidth = Constants.borderWidth
         layer.cornerRadius = Constants.cornerRadius
 
@@ -48,6 +46,8 @@ class FilterChipButton: UIView {
         mainButton.setTitleColor(.text, for: .normal)
         mainButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.minButtonHeight).isActive = true
         mainButton.contentEdgeInsets = Constants.buttonContentInset
+
+        applyColors()
     }
 
     required init?(coder: NSCoder) {
@@ -74,6 +74,11 @@ class FilterChipButton: UIView {
         resetTapped?()
     }
 
+    private func applyColors() {
+        layer.borderColor = UIColor.textQuaternary.cgColor
+        resetButton.setImage(UIImage.gridicon(.crossCircle).imageWithTintColor(.text), for: .normal)
+    }
+
     private enum Constants {
         static let minResetButtonWidth: CGFloat = 32
         static let resetImageInsets = UIEdgeInsets(top: 8, left: 6, bottom: 8, right: 10)
@@ -82,5 +87,13 @@ class FilterChipButton: UIView {
         static let minButtonHeight: CGFloat = 32
         static let buttonContentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
         static let buttonContentInsetWithResetEnabled = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            applyColors()
+        }
     }
 }
