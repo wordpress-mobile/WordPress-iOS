@@ -395,7 +395,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
         }
 
         var placeholderImage: UIImage = .siteIconPlaceholder
-        if site.isWPForTeams {
+        if site.isP2Type {
             placeholderImage = UIImage.gridicon(.p2, size: CGSize(width: 40, height: 40))
             cell.imageView?.layer.borderColor = UIColor.divider.cgColor
             cell.imageView?.layer.borderWidth = .hairlineBorderWidth
