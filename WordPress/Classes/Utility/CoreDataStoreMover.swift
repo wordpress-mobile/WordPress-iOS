@@ -14,8 +14,7 @@ class CoreDataStoreMover {
 
     /// Moves the Store from `sourceLocation` to `targetLocation`.
     ///
-    /// - Returns: on success this method returns a boolean holding `true` if the store was moved, or `false` if it wasn't
-    ///         necessary to move any files.  An error is returned if there was a problem.
+    /// - Returns: on success this method returns the URL where the store was moved to.  On failure, returns a `MoveError`.
     ///
     func moveStore(ofType type: String, from sourceLocation: URL, to targetLocation: URL) -> Result<URL, MoveError> {
         // It's important that this is checked first, since the absence of the source file could
