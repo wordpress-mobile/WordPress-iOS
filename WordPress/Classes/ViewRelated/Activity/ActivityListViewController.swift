@@ -16,6 +16,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
     let filterStackView = UIStackView()
     let dateFilterChip = FilterChipButton()
+    let activityTypeFilterChip = FilterChipButton()
 
     var tableView: UITableView = UITableView()
     let refreshControl = UIRefreshControl()
@@ -121,7 +122,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
     @objc func userRefresh() {
         isUserTriggeredRefresh = true
-        viewModel.refresh(after: viewModel.after, before: viewModel.before)
+        viewModel.refresh(after: viewModel.after, before: viewModel.before, group: viewModel.selectedGroups)
     }
 
     func refreshModel() {
@@ -149,18 +150,17 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
     }
 
     private func updateFilters() {
-        if viewModel.dateFilterIsActive {
-            dateFilterChip.enableResetButton()
-            dateFilterChip.title = viewModel.dateRangeDescription()
-        } else {
-            dateFilterChip.disableResetButton()
-            dateFilterChip.title = NSLocalizedString("Date Range", comment: "Label of a button that displays a calendar")
-        }
+        viewModel.dateFilterIsActive ? dateFilterChip.enableResetButton() : dateFilterChip.disableResetButton()
+        dateFilterChip.title = viewModel.dateRangeDescription()
+
+        viewModel.groupFilterIsActive ? activityTypeFilterChip.enableResetButton() : activityTypeFilterChip.disableResetButton()
+        activityTypeFilterChip.title = viewModel.activityTypeDescription()
     }
 
     private func setupFilterBar() {
         let scrollView = UIScrollView()
         filterStackView.addArrangedSubview(dateFilterChip)
+        filterStackView.addArrangedSubview(activityTypeFilterChip)
         scrollView.addSubview(filterStackView)
         containerStackView.addArrangedSubview(scrollView)
         filterStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -172,6 +172,8 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         ])
 
         setupDateFilter()
+
+        setupActivityTypeFilter()
     }
 
     private func setupDateFilter() {
@@ -180,8 +182,28 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         }
 
         dateFilterChip.resetTapped = { [weak self] in
-            self?.viewModel.refresh()
+            self?.viewModel.removeDateFilter()
             self?.dateFilterChip.disableResetButton()
+        }
+    }
+
+    private func setupActivityTypeFilter() {
+        activityTypeFilterChip.tapped = { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            let activityTypeSelectorViewController = ActivityTypeSelectorViewController(
+                viewModel: self.viewModel
+            )
+            activityTypeSelectorViewController.delegate = self
+            let navigationController = UINavigationController(rootViewController: activityTypeSelectorViewController)
+            self.present(navigationController, animated: true, completion: nil)
+        }
+
+        activityTypeFilterChip.resetTapped = { [weak self] in
+            self?.viewModel.removeGroupFilter()
+            self?.activityTypeFilterChip.disableResetButton()
         }
     }
 
@@ -366,11 +388,11 @@ private extension ActivityListViewController {
             addChild(noResultsViewController)
 
             noResultsViewController.view.translatesAutoresizingMaskIntoConstraints = false
-            tableView.pinSubviewToSafeArea(noResultsViewController.view)
         }
 
         noResultsViewController?.bindViewModel(viewModel)
         noResultsViewController?.didMove(toParent: self)
+        tableView.pinSubviewToSafeArea(noResultsViewController!.view)
         noResultsViewController?.view.isHidden = false
     }
 
@@ -383,7 +405,29 @@ extension ActivityListViewController: CalendarViewControllerDelegate {
     }
 
     func didSelect(calendar: CalendarViewController, startDate: Date?, endDate: Date?) {
-        viewModel.refresh(after: startDate, before: endDate)
+        guard startDate != viewModel.after || endDate != viewModel.before else {
+            calendar.dismiss(animated: true, completion: nil)
+            return
+        }
+
+        viewModel.refresh(after: startDate, before: endDate, group: viewModel.selectedGroups)
         calendar.dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - Activity type filter handling
+extension ActivityListViewController: ActivityTypeSelectorDelegate {
+    func didCancel(selectorViewController: ActivityTypeSelectorViewController) {
+        selectorViewController.dismiss(animated: true, completion: nil)
+    }
+
+    func didSelect(selectorViewController: ActivityTypeSelectorViewController, groups: [ActivityGroup]) {
+        guard groups != viewModel.selectedGroups else {
+            selectorViewController.dismiss(animated: true, completion: nil)
+            return
+        }
+
+        viewModel.refresh(after: viewModel.after, before: viewModel.before, group: groups)
+        selectorViewController.dismiss(animated: true, completion: nil)
     }
 }
