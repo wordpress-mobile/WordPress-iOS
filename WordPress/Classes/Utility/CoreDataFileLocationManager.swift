@@ -4,6 +4,7 @@
 @objc
 class CoreDataFileLocationManager: NSObject {
     private static let baseFileName = "WordPress"
+    private static let modelExtension = "momd"
     private static let sqliteFileName = "\(baseFileName).sqlite"
 
     @objc
@@ -40,7 +41,7 @@ extension CoreDataFileLocationManager {
     /// The URL of the production model file.
     ///
     private static var productionModelURL: URL {
-        guard let modelPath = Bundle.main.path(forResource: "WordPress", ofType: "momd") else {
+        guard let modelPath = Bundle.main.path(forResource: baseFileName, ofType: modelExtension) else {
             fatalError("Data model missing!")
         }
 
