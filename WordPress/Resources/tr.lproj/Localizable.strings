@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-26 16:54:08+0000 */
+/* Translation-Revision-Date: 2020-12-07 22:58:59+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -945,7 +945,7 @@
 "By signing up, you agree to our _Terms of Service_." = "Kaydolarak _hizmet koşullarını_ kabul etmiş olursunuz.";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "CHOOSE A FILE";
+"CHOOSE A FILE" = "DOSYA SEÇ";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "Özelleştir";
@@ -1154,7 +1154,7 @@
 "Choose a design" = "Bir tasarım seçin";
 
 /* Select domain name. Title */
-"Choose a domain" = "Choose a domain";
+"Choose a domain" = "Alan adı seç";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Bir tema seçin";
@@ -1511,7 +1511,7 @@
 "Copy block" = "Bloğu kopyala";
 
 /* No comment provided by engineer. */
-"Copy file URL" = "Copy file URL";
+"Copy file URL" = "Dosya adresini kopyala";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Daha iyi olabilir";
@@ -1659,7 +1659,7 @@
 "Create your site" = "Sitenizi oluşturun";
 
 /* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Creates new post, or page";
+"Creates new post, or page" = "Yeni bir yazı ya da sayfa oluşturur";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, page, or story" = "Bir yazı, sayfa veya öykü oluşturur";
@@ -1827,7 +1827,7 @@
 "Description" = "Açıklama";
 
 /* Shortened version of the main title to be used in back navigation */
-"Design" = "Design";
+"Design" = "Tasarım";
 
 /* Title for the desktop web preview */
 "Desktop" = "Masaüstü";
@@ -2070,7 +2070,7 @@
 "Edit Post" = "Yazıyı düzenle";
 
 /* No comment provided by engineer. */
-"Edit file" = "Edit file";
+"Edit file" = "Dosyayı düzenle";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Blok düzenleyici ile yeni gönderi ve sayfaları düzenleyin.";
@@ -2427,7 +2427,7 @@
 "File Downloads" = "Dosya indirmeleri";
 
 /* No comment provided by engineer. */
-"File block settings" = "File block settings";
+"File block settings" = "Dosya blok ayarları";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Dosya adı";
@@ -2812,7 +2812,7 @@ translators: sample content for \"Team\" page template */
 "If you remove this viewer, he or she will not be able to visit this site." = "Eğer bu izleyiciyi kaldırırsanız, artık siteyi ziyaret edemez.";
 
 /* Detailed instructions on Start Over settings page. This is the first paragraph. */
-"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.";
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "Bir site istiyor, ancak şimdiki yazı ve sayfalarınızın hiçbirini istemiyorsanız, destek ekibimiz yazılarınızı, sayfalarınızı, medyanızı ve yorumlarınızı sizin için silebilir.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Eğer neyi sileceğinizden emin değilseniz ya da yardıma ihtiyacınız varsa, merak etmeyin, destek ekibimiz sorularınızı cevaplamak için burada.";
@@ -4157,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Kullanıcı adı seçin";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can edit and customize it later." = "Pick your favorite homepage layout. You can edit and customize it later.";
+"Pick your favorite homepage layout. You can edit and customize it later." = "En sevdiğiniz ana sayfa düzenini seçin. Daha sonra özelleştirebilir ve değiştirebilirsiniz.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Paket";
@@ -6149,7 +6149,7 @@ translators: sample content for \"Services\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Bu örnek içerik, özelliklerini göstermek için şablon ile birlikte gelir. Kaldırın veya kendi kelimeleriniz ve ortam dosyalarınız ile değiştirin.";
 
 /* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "This is where people will find you on the internet.";
+"This is where people will find you on the internet." = "Bu, insanların sizi internette bulacakları yerdir.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Bu ortam öğesi silindi.";
@@ -6180,7 +6180,7 @@ translators: sample content for \"Services\" page template */
 "This will delete all associated files and data." = "Bu, ilişkili tüm dosyaları ve verileri siler.";
 
 /* Detailed instructions on Start Over settings page. This is the second paragraph. */
-"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out.";
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "Bu sitenizi ve URL'nizi aktif tutar, ancak içerik oluşturmanızda taze bir başlangıç yapmanızı sağlar. Güncel içeriğinizin silinmesi için bizimle iletişime geçmeniz yeterli.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */

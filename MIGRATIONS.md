@@ -3,6 +3,13 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 107
+
+@scoutharris 2020-12-09
+
+- `ReaderSiteTopic`: removed `isWPForTeams`, added `organizationID`.
+- `ReaderPost`: removed `isWPForTeams`, added `organizationID`.  
+
 ## WordPress 106
 
 @mindgraffiti 2020-12-07

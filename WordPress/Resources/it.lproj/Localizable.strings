@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-26 16:54:07+0000 */
+/* Translation-Revision-Date: 2020-12-10 12:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -1790,7 +1790,7 @@
 /* Delete option in the confirmation alert when deleting a post from the trash.
    Label for a button permanently deletes a page.
    Label for the delete post option. Tapping permanently deletes a post. */
-"Delete Permanently" = "Cancella definitivamente";
+"Delete Permanently" = "Elimina definitivamente";
 
 /* Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "Cancellare definitivamente?";
@@ -2070,7 +2070,7 @@
 "Edit Post" = "Modifica articolo";
 
 /* No comment provided by engineer. */
-"Edit file" = "Edit file";
+"Edit file" = "Modifica file";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Modifica i nuovi articoli e le nuove pagine dall'editor a blocchi.";
@@ -6149,7 +6149,7 @@ translators: sample content for \"Services\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Questo è un contenuto di esempio, incluso nel modello per illustrarne le caratteristiche. Rimuovi o sostituiscilo con parole e file multimediali tuoi.";
 
 /* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "This is where people will find you on the internet.";
+"This is where people will find you on the internet." = "Ecco dove gli utenti ti troveranno su Internet.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Questo elemento multimediale è stato eliminato.";
