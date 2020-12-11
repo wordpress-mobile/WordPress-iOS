@@ -144,7 +144,7 @@ extension ReaderSiteTopic {
         })
     }
 
-    /// Fetch sites from the Core Data
+    /// Fetch sites from Core Data
     ///
     private static func fetchStoredFollowedSites(completion: @escaping (Result<[ReaderSiteTopic], Error>) -> Void) {
         do {
