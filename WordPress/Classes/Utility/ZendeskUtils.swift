@@ -4,6 +4,7 @@ import WordPressAuthenticator
 
 import SupportSDK
 import ZendeskCoreSDK
+import AutomatticTracks
 
 extension NSNotification.Name {
     static let ZendeskPushNotificationReceivedNotification = NSNotification.Name(rawValue: "ZendeskPushNotificationReceivedNotification")
@@ -222,7 +223,7 @@ extension NSNotification.Name {
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.allBlogs, value: ZendeskUtils.getBlogInformation()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.deviceFreeSpace, value: ZendeskUtils.getDeviceFreeSpace()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.networkInformation, value: ZendeskUtils.getNetworkInformation()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.logs, value: ZendeskUtils.getLogFile()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.logs, value: ZendeskUtils.getEncryptedLogUUID()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.currentSite, value: ZendeskUtils.getCurrentSiteDescription()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.appLanguage, value: ZendeskUtils.appLanguage))
@@ -611,21 +612,33 @@ private extension ZendeskUtils {
         return "\(formattedCapacity) \(sizeAbbreviation)"
     }
 
-    static func getLogFile() -> String {
+    static func getEncryptedLogUUID() -> String {
 
-        guard let appDelegate = UIApplication.shared.delegate as? WordPressAppDelegate,
-            let logFileInformation = appDelegate.logger.fileLogger.logFileManager.sortedLogFileInfos.first,
-            let logData = try? Data(contentsOf: URL(fileURLWithPath: logFileInformation.filePath)),
-            var logText = String(data: logData, encoding: .utf8) else {
-                return ""
+        let fileLogger = WPLogger.shared().fileLogger
+        let dataProvider = EventLoggingDataProvider.fromDDFileLogger(fileLogger)
+
+        guard let logFilePath = dataProvider.logFilePath(forErrorLevel: .debug, at: Date()) else {
+            return "Error: No log files found on device"
         }
 
-        // Truncate the log text so it fits in the ticket field.
-        if logText.count > Constants.logFieldCharacterLimit {
-            logText = String(logText.suffix(Constants.logFieldCharacterLimit))
+        let logFile = LogFile(url: logFilePath)
+
+        do {
+            let delegate = EventLoggingDelegate()
+
+            /// Some users may be opted out – let's inform support that this is the case (otherwise the UUID just wouldn't work)
+            if WPCrashLoggingProvider.userHasOptedOut {
+                return "No log file uploaded: User opted out"
+            }
+
+            let eventLogging = EventLogging(dataSource: dataProvider, delegate: delegate)
+            try eventLogging.enqueueLogForUpload(log: logFile)
+        }
+        catch let err {
+            return "Error preparing log file: \(err.localizedDescription)"
         }
 
-        return logText
+        return logFile.uuid
     }
 
     static func getCurrentSiteDescription() -> String {
@@ -1034,7 +1047,6 @@ private extension ZendeskUtils {
         static let profileNameKey = "name"
         static let userDefaultsZendeskUnreadNotifications = "wp_zendesk_unread_notifications"
         static let nameFieldCharacterLimit = 50
-        static let logFieldCharacterLimit = 50000
         static let sourcePlatform = "mobile_-_ios"
         static let gutenbergIsDefault = "mobile_gutenberg_is_default"
     }

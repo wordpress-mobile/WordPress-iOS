@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-01 18:59:43+0000 */
+/* Translation-Revision-Date: 2020-12-10 14:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -945,7 +945,7 @@
 "By signing up, you agree to our _Terms of Service_." = "ביצוע ההרשמה מהווה את הסכמתך לתנאי השימוש שלנו.";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "CHOOSE A FILE";
+"CHOOSE A FILE" = "לבחור קובץ";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "התאמה אישית";
@@ -1154,7 +1154,7 @@
 "Choose a design" = "לבחור עיצוב";
 
 /* Select domain name. Title */
-"Choose a domain" = "Choose a domain";
+"Choose a domain" = "לבחור דומיין";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "בחירת ערכת עיצוב";
@@ -1511,7 +1511,7 @@
 "Copy block" = "להעתיק בלוק";
 
 /* No comment provided by engineer. */
-"Copy file URL" = "Copy file URL";
+"Copy file URL" = "להעתיק כתובת URL של קובץ";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "יכול להיות יותר טוב";
@@ -1827,7 +1827,7 @@
 "Description" = "תיאור";
 
 /* Shortened version of the main title to be used in back navigation */
-"Design" = "Design";
+"Design" = "עיצוב";
 
 /* Title for the desktop web preview */
 "Desktop" = "מחשב שולחני";
@@ -2070,7 +2070,7 @@
 "Edit Post" = "ערוך פוסט";
 
 /* No comment provided by engineer. */
-"Edit file" = "Edit file";
+"Edit file" = "לערוך קובץ";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "לעריכת פוסטים ועמודים חדשים עם עורך הבלוקים.";
@@ -2427,7 +2427,7 @@
 "File Downloads" = "הורדות קבצים";
 
 /* No comment provided by engineer. */
-"File block settings" = "File block settings";
+"File block settings" = "הגדרות של בלוק הקובץ";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "שם קובץ";
@@ -2812,7 +2812,7 @@ translators: sample content for \"Team\" page template */
 "If you remove this viewer, he or she will not be able to visit this site." = "לאחר הסרת צופה זה, הוא או היא לא יוכלו לבקר יותר באתר זה.";
 
 /* Detailed instructions on Start Over settings page. This is the first paragraph. */
-"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.";
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "אם ברצונך להשתמש באתר בלי הפוסטים והעמודים שהוא מכיל כעת, צוות התמיכה שלנו יכול למחוק את הפוסטים, העמודים, המדיה והתגובות עבורך.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "אם עוד לא הגעת להחלטה סופית לגבי התוכן שברצונך למחוק או אם דרושה לך עזרה כלשהי, אל דאגה - צוות התמיכה שלנו יענה לכל שאלה שלך.";
@@ -3382,7 +3382,7 @@ translators: sample content for \"Services\" page template */
 "Media uploaded (%ld files)" = "פרטי המדיה הועלו (%ld קבצים)";
 
 /* Alert displayed to the user when a single media item has uploaded successfully. */
-"Media uploaded (1 file)" = "פריט המדיה הועלה (קובץ %ld)";
+"Media uploaded (1 file)" = "פריט המדיה הועלה (קובץ אחד)";
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "בינוני";
@@ -4157,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "בחירת שם משתמש";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can edit and customize it later." = "Pick your favorite homepage layout. You can edit and customize it later.";
+"Pick your favorite homepage layout. You can edit and customize it later." = "יש לבחור את הפריסה המועדפת עליך לעמוד הבית. אפשר לערוך ולהתאימה אישית מאוחר יותר.";
 
 /* The item to select during a guided tour. */
 "Plan" = "תוכנית";
@@ -6149,7 +6149,7 @@ translators: sample content for \"Services\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "זהו תוכן לדוגמה שכלול בתבנית כדי לשקף את התכונות שלה. אפשר להסיר או להחליף אותו עם טקסט או מדיה משלך.";
 
 /* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "This is where people will find you on the internet.";
+"This is where people will find you on the internet." = "כאן הגולשים ימצאו אותך באינטרנט.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "פריט המדיה נמחק.";
@@ -6180,7 +6180,7 @@ translators: sample content for \"Services\" page template */
 "This will delete all associated files and data." = "פעולה זו תמחק את הקבצים והנתונים המקושרים.";
 
 /* Detailed instructions on Start Over settings page. This is the second paragraph. */
-"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out.";
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "כך האתר וכתובת ה-URL שלך יישארו פעילים אבל תהיה לך אפשרות להתחיל ליצור תוכן מחדש. נותר לך רק לפנות אלינו כדי למחוק את התוכן הקיים.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -7323,7 +7323,7 @@ translators: sample content for \"Services\" page template */
 "You don't have any trashed posts" = "אין לך פוסטים שהועברו לפח";
 
 /* Message informing the user that all of their sites are currently hidden (plural) */
-"You have %lu hidden WordPress sites." = "יש לך %l אתרים מוסתרים של WordPress .";
+"You have %lu hidden WordPress sites." = "יש לך %lu אתרים מוסתרים של WordPress .";
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "יש לך אתר WordPress מוסתר אחד.";
