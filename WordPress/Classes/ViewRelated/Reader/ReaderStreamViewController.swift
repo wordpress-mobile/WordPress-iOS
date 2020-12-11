@@ -146,9 +146,10 @@ import WordPressFlux
             }
             syncHelper?.delegate = self
 
-            if let newTopic = readerTopic {
+            if let newTopic = readerTopic,
+               let context = newTopic.managedObjectContext {
                 newTopic.inUse = true
-                ContextManager.sharedInstance().save(newTopic.managedObjectContext!)
+                ContextManager.sharedInstance().save(context)
             }
 
             if readerTopic != nil && readerTopic != oldValue {
