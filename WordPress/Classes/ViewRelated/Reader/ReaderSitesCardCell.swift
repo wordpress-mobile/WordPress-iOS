@@ -64,6 +64,6 @@ extension ReaderSitesCardCell: ReaderRecommendedSitesCardCellDelegate {
         properties[WPAppAnalyticsKeyFollowAction] = !topic.following
         properties[WPAppAnalyticsKeyBlogID] = topic.siteID
 
-        WPAnalytics.track(.readerSuggestedSiteToggleFollow, properties: properties)
+        WPAnalytics.trackReader(.readerSuggestedSiteToggleFollow, properties: properties)
     }
 }
