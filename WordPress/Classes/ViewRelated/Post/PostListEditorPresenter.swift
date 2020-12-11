@@ -22,8 +22,11 @@ struct PostListEditorPresenter {
     static func handleCopy(post: Post, in postListViewController: PostListViewController) {
         // Autosaves are ignored for posts with local changes.
         if !post.hasLocalChanges(), post.hasAutosaveRevision {
-            let conflictsResolutionViewController = copyConflictsResolutionViewController(didTapOption: { editLocal in
-                if editLocal {
+            let conflictsResolutionViewController = copyConflictsResolutionViewController(didTapOption: { copyLocal, cancel in
+                if cancel {
+                    return
+                }
+                if copyLocal {
                     openEditorWithCopy(with: post, in: postListViewController)
                 } else {
                     handle(post: post, in: postListViewController)
@@ -103,7 +106,7 @@ struct PostListEditorPresenter {
     }
 
     /// A dialog giving the user the choice between copying the current version of the post or resolving conflicts with edit.
-    private static func copyConflictsResolutionViewController(didTapOption: @escaping (_ editLocal: Bool) -> Void) -> UIAlertController {
+    private static func copyConflictsResolutionViewController(didTapOption: @escaping (_ copyLocal: Bool, _ cancel: Bool) -> Void) -> UIAlertController {
 
         let title = NSLocalizedString("Post sync conflict", comment: "Title displayed in popup when user tries to copy a post with unsaved changes")
 
@@ -111,13 +114,17 @@ struct PostListEditorPresenter {
 
         let editFirstButtonTitle = NSLocalizedString("Edit the post first", comment: "Button title displayed in popup indicating that the user edits the post first")
         let copyLocalButtonTitle = NSLocalizedString("Copy the version from this app", comment: "Button title displayed in popup indicating the user copied the local copy")
+        let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel button.")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: editFirstButtonTitle, style: .default) { _ in
-            didTapOption(false)
+            didTapOption(false, false)
         })
         alertController.addAction(UIAlertAction(title: copyLocalButtonTitle, style: .default) { _ in
-            didTapOption(true)
+            didTapOption(true, false)
+        })
+        alertController.addAction(UIAlertAction(title: cancelButtonTitle, style: .cancel) { _ in
+            didTapOption(false, true)
         })
 
         alertController.view.accessibilityIdentifier = "copy-version-conflict-alert"
