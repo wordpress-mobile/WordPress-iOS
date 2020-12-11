@@ -5,7 +5,7 @@ class CoreDataManager: CoreDataStack {
 
     /// The shared instance.
     ///
-    static var shared: CoreDataManager = CoreDataManager(fileLocationManager: CoreDataFileLocationManager.production())
+    static let shared: CoreDataManager = CoreDataManager(fileLocationManager: CoreDataFileLocationManager.production())
 
     // MARK: - File Location Manager
 

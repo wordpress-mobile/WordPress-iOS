@@ -83,6 +83,11 @@ extension CoreDataFileLocationManager {
     /// Ensures that the CoreData Store is in the App Group, or moves it there if it isn't.
     ///
     private static func moveStoreFromMainBundleToAppGroup() {
+        guard !CommandLine.arguments.contains("isTesting") else {
+            // We really don't want any of this code run during unit testing.
+            return
+        }
+
         guard !UserDefaults.standard.bool(forKey: StoreToAppGroupMigrationCompleteKey) else {
             DDLogInfo("\(StoreToAppGroupMigrationIdentifier): Migration already performed.")
             return
