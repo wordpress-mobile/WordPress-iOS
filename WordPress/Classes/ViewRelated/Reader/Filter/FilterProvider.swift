@@ -140,42 +140,17 @@ extension ReaderSiteTopic {
             completion(.success(siteService.allSiteTopics()))
         }, failure: { error in
             DDLogError("Could not sync sites: \(String(describing: error))")
-            completion(.failure(error ?? FollowedSitesConstants.remoteServiceError))
+            let remoteServiceError = NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
+            completion(.failure(error ?? remoteServiceError))
         })
     }
 
     /// Fetch sites from Core Data
     ///
     private static func fetchStoredFollowedSites(completion: @escaping (Result<[ReaderSiteTopic], Error>) -> Void) {
-        do {
-            let context = ContextManager.sharedInstance().mainContext
-            guard let sites = try context.fetch(sitesFetchRequest) as? [ReaderSiteTopic] else {
-                DDLogError(FollowedSitesConstants.fetchRequestError + FollowedSitesConstants.objectTypeError.localizedDescription)
-                return completion(.failure(FollowedSitesConstants.objectTypeError))
-            }
-            completion(.success(sites))
-        } catch {
-            DDLogError(FollowedSitesConstants.fetchRequestError + error.localizedDescription)
-            return completion(.failure(error))
-        }
-    }
-
-    /// Fetch request to extract followed sites from Core Data
-    ///
-    private static var sitesFetchRequest: NSFetchRequest<NSFetchRequestResult> {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderAbstractTopic.classNameWithoutNamespaces())
-        fetchRequest.predicate = NSPredicate(format: FollowedSitesConstants.predicateFormat, FollowedSitesConstants.objectType)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: FollowedSitesConstants.sortByKey, ascending: true)]
-        return fetchRequest
-    }
-
-    private struct FollowedSitesConstants {
-        static let predicateFormat = "type = %@"
-        static let objectType = "site"
-        static let sortByKey = "title"
-        static let fetchRequestError = "There was a problem fetching followed sites."
-        static let objectTypeError = NSError(domain: "ReaderFilterProviderDomain", code: -1, userInfo: nil)
-        static let remoteServiceError = NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
+        let siteService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let sites = siteService.allSiteTopics() ?? []
+        completion(.success(sites))
     }
 
 }
