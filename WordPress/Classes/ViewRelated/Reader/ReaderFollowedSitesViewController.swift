@@ -397,7 +397,6 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
         var placeholderImage: UIImage = .siteIconPlaceholder
         if site.isP2Type {
             placeholderImage = UIImage.gridicon(.p2, size: CGSize(width: 40, height: 40))
-            cell.imageView?.layer.borderColor = UIColor.divider.cgColor
         }
 
         // Reset the site icon first to address: https://github.com/wordpress-mobile/WordPress-iOS/issues/8513
