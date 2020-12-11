@@ -19,10 +19,6 @@ class SiteAddressServiceTests: XCTestCase {
         mockedResponse = try! JSONSerialization.jsonObject(with: data, options: .allowFragments)
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
     func testSuggestionsWithMatchingTermSuccess() {
         let searchTerm = "domaintesting"
 
