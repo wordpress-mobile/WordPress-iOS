@@ -1,5 +1,1 @@
-Todo sobre Jetpack: Accede a todas las características de Jetpack rápida y fácilmente, incluyendo tus estadísticas, registro de actividad y ajustes.
-
-Obtener ayuda y soporte: Hemos corregido algunos problemas que ocurrían si intentabas contactar con nuestro equipo de soporte. Cuando contactes con nosotros, ahora puedes incluir caracteres no alfabéticos y tu aplicación ya no se bloqueará al introducir tu dirección de correo electrónico.
-
-Actualizaciones del lector: También hemos corregido un problema de visualización en el lector y los comentarios ya no aparecen por defecto en cursiva.
+Nos complace anunciar algunos cambios emocionantes en la aplicación móvil para WordPress. Cuando crees un sitio, tendrás la opción para elegir de inmediato un diseño de página de inicio. También hemos hecho más fácil establecer las dimensiones de las imágenes de portada y las columnas y, ahora, los bloques de botón e iconos sociales tienen un selector de enlaces. Hemos corregido los fallos que sabemos —sí— que te estaban fastidiando, incluyendo uno en el que las @-menciones no funcionaban en los sitios WP.com con plugins activados y otro en el que los enlaces «tel:» y «mailto:» en las páginas de contactos no se lanzaban correctamente.
