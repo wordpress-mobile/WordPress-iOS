@@ -10,8 +10,8 @@ class FilterChipButton: UIView {
         }
     }
 
-    let mainButton = UIButton(type: .custom)
-    let resetButton = UIButton(type: .custom)
+    let mainButton = UIButton(type: .system)
+    let resetButton = UIButton(type: .system)
 
     /// Callback called when the button is tapped
     var tapped: (() -> Void)?
@@ -76,7 +76,8 @@ class FilterChipButton: UIView {
 
     private func applyColors() {
         layer.borderColor = UIColor.textQuaternary.cgColor
-        resetButton.setImage(UIImage.gridicon(.crossCircle).imageWithTintColor(.text), for: .normal)
+        resetButton.setImage(UIImage.gridicon(.crossCircle), for: .normal)
+        resetButton.tintColor = .text
     }
 
     private enum Constants {
