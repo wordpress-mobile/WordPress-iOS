@@ -192,13 +192,13 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         }
     }
 
-    private func handleResult(_ results: Result<[DomainSuggestion], Error>) {
+    private func handleResult(_ results: Result<SiteAddressServiceResult, Error>) {
         updateIcon(isLoading: false)
         switch results {
         case .failure(let error):
             handleError(error)
         case .success(let data):
-            handleData(data)
+            handleData(data.domainSuggestions)
         }
     }
 
