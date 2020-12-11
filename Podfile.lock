@@ -507,7 +507,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.31.0-beta.4)
   - WordPressKit (~> 4.23-beta)
   - WordPressMocks (~> 0.0.9)
-  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `feature/9662-duplicate-post`)
+  - WordPressShared (~> 1.14.0-beta.1)
   - WordPressUI (~> 1.7.4)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.43.0-alpha3/third-party-podspecs/Yoga.podspec.json`)
@@ -556,6 +556,7 @@ SPEC REPOS:
     - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
+    - WordPressShared
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -654,9 +655,6 @@ EXTERNAL SOURCES:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
     :tag: v1.43.0-alpha3
-  WordPressShared:
-    :branch: feature/9662-duplicate-post
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.43.0-alpha3/third-party-podspecs/Yoga.podspec.json
 
@@ -675,9 +673,6 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
     :tag: v1.43.0-alpha3
-  WordPressShared:
-    :commit: 70389dfc1092c35931c4df80255404d35488e64e
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -774,6 +769,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 2aea19f33c213c8818bb9f6020d18e3bdbef4268
+PODFILE CHECKSUM: bf1aef34aa8b0a1bc493952559005f170e9efc3e
 
 COCOAPODS: 1.9.3
