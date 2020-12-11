@@ -1,6 +1,3 @@
-import Dispatch
-import Foundation
-
 /// This is a class that manages the location of the CoreData files.  This is for use in production code.
 /// While testing it's discouraged to use this class.
 ///
