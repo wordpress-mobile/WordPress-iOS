@@ -171,7 +171,7 @@ import WordPressFlux
         showCreateButton(notice: notice(for: blog))
     }
 
-    func showCreateButton(notice: Notice) {
+    private func showCreateButton(notice: Notice) {
         if !didDismissTooltip {
             noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view, sourceView: button)
             shownTooltipCount += 1
@@ -199,13 +199,13 @@ import WordPressFlux
         return notice
     }
 
-    func listenForQuickStart() {
+    private func listenForQuickStart() {
         quickStartObserver = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard let self = self,
                 let userInfo = notification.userInfo,
                 let element = userInfo[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement,
                 let description = userInfo[QuickStartTourGuide.notificationDescriptionKey] as? NSAttributedString,
-                element == .newpost else {
+                element == .newpost || element == .newPage else {
                     return
             }
 

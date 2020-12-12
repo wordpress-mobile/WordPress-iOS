@@ -275,17 +275,11 @@ struct QuickStartNewPageTour: QuickStartTour {
     let icon = UIImage.gridicon(.pages)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+    let showWaypointNotices = false
 
     var waypoints: [WayPoint] = {
-        let pagesStepDesc = NSLocalizedString("Select %@ to continue.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let pagesStepTarget = NSLocalizedString("Site Pages", comment: "The item to select during a guided tour.")
-
-        let newStepDesc = NSLocalizedString("Select %@ to create a new page.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-
-        return [
-            (element: .pages, description: pagesStepDesc.highlighting(phrase: pagesStepTarget, icon: nil)),
-            (element: .newPage, description: newStepDesc.highlighting(phrase: "", icon: .gridicon(.plus)))
-        ]
+        let descriptionBase = NSLocalizedString("Select %@ to create a new page", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        return [(element: .newPage, description: descriptionBase.highlighting(phrase: "", icon: .gridicon(.create)))]
     }()
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of creating a new page for your site.", comment: "This value is used to set the accessibility hint text for creating a new page for the user's site.")
