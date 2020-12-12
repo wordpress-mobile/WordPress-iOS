@@ -17,9 +17,11 @@ struct PageAction: ActionSheetItem {
     let handler: () -> Void
 
     func makeButton() -> ActionSheetButton {
+        let highlight: Bool = QuickStartTourGuide.shared.shouldSpotlight(.newPage)
         return ActionSheetButton(title: NSLocalizedString("Site page", comment: "Create new Site Page button title"),
                                             image: .gridicon(.pages),
                                             identifier: "sitePageButton",
+                                            highlight: highlight,
                                             action: handler)
     }
 }

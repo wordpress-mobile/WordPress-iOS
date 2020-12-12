@@ -112,6 +112,8 @@ import WordPressFlux
         button.addTarget(self, action: #selector(showCreateSheet), for: .touchUpInside)
     }
 
+    private var currentTourElement: QuickStartTourElement?
+
     @objc private func showCreateSheet() {
         didDismissTooltip = true
         hideNotice()
@@ -124,9 +126,12 @@ import WordPressFlux
             actions.first?.handler()
         } else {
             let actionSheetVC = actionSheetController(with: viewController.traitCollection)
-            viewController.present(actionSheetVC, animated: true, completion: {
+            viewController.present(actionSheetVC, animated: true, completion: { [weak self] in
                 WPAnalytics.track(.createSheetShown)
-                QuickStartTourGuide.shared.visited(.newpost)
+
+                if let element = self?.currentTourElement {
+                    QuickStartTourGuide.shared.visited(element)
+                }
             })
         }
     }
@@ -209,6 +214,7 @@ import WordPressFlux
                     return
             }
 
+            self.currentTourElement = element
             self.hideNotice()
             self.didDismissTooltip = false
             self.showCreateButton(notice: self.quickStartNotice(description))
