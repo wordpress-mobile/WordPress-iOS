@@ -82,7 +82,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         followCountLabel.text = formattedFollowerCountForTopic(siteTopic)
         detailLabel.text = URL(string: siteTopic.siteURL)?.host
 
-        configureHeaderImage(siteTopic.siteBlavatar, isWPForTeams: siteTopic.isWPForTeams)
+        configureHeaderImage(siteTopic)
 
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
 
@@ -91,13 +91,11 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
     }
 
-    private func configureHeaderImage(_ siteBlavatar: String?, isWPForTeams: Bool = false) {
+    private func configureHeaderImage(_ siteTopic: ReaderSiteTopic) {
         let placeholder = UIImage.siteIconPlaceholder
 
-        guard
-            let path = siteBlavatar,
-            let url = upscaledImageURL(urlString: path) else {
-            if isWPForTeams {
+        guard let url = upscaledImageURL(urlString: siteTopic.siteBlavatar) else {
+            if siteTopic.isP2Type {
                 avatarImageView.tintColor = UIColor.listIcon
                 avatarImageView.layer.borderColor = UIColor.divider.cgColor
                 avatarImageView.layer.borderWidth = .hairlineBorderWidth

@@ -146,9 +146,10 @@ import WordPressFlux
             }
             syncHelper?.delegate = self
 
-            if let newTopic = readerTopic {
+            if let newTopic = readerTopic,
+               let context = newTopic.managedObjectContext {
                 newTopic.inUse = true
-                ContextManager.sharedInstance().save(newTopic.managedObjectContext!)
+                ContextManager.sharedInstance().save(context)
             }
 
             if readerTopic != nil && readerTopic != oldValue {
@@ -843,7 +844,9 @@ import WordPressFlux
             return
         }
 
-        guard let topic = readerTopic, let properties = topicPropertyForStats(), isViewLoaded && view.window != nil else {
+        guard let topic = readerTopic,
+              let properties = topicPropertyForStats(),
+              isViewLoaded && view.window != nil else {
             return
         }
 

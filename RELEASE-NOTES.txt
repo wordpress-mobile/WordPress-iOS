@@ -1,6 +1,5 @@
 16.4
 -----
- 
 * [internal] Removed unused Reader files. Should be no functional changes. [#15414]
 * [*] Adjusted the search box background color in dark mode on Choose a domain screen to be full width. [https://github.com/wordpress-mobile/WordPress-iOS/pull/15419]
 * [**] Added shadow to thumbnail cells on Site Creation and Page Creation design pickers to add better contrast [https://github.com/wordpress-mobile/WordPress-iOS/pull/15418]
@@ -9,6 +8,7 @@
 * [*] Add a new P2 default site icon to replace the generic default site icon. [#15430]
 * [*] Block Editor: Fix Gallery block uploads when the editor is closed. [#15457]
 * [***] Block Editor: New Block: File [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2835]
+* [*] Reader: Removes gray tint from site icons that contain transparency (located in Reader > Settings > Followed sites).
 
 16.3
 -----
