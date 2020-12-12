@@ -94,7 +94,7 @@ class FilterSheetView: UIView {
         set {
             if let filter = newValue {
                 dataSource = FilterTableViewDataSource(data: filter.items, reuseIdentifier: filter.reuseIdentifier)
-                if filter.state.isReady == false {
+                if !filter.state.isReady {
                     /// Loading state
                     emptyView.isHidden = true
                     tableView.isHidden = true
