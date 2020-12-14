@@ -174,10 +174,12 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         throttle.cancel()
         itemSelectionChanged(false)
         data = []
+        lastSearchQuery = nil
     }
 
     private func fetchAddresses(_ searchTerm: String) {
         isShowingError = false
+        data = []
         // If the segment ID isn't set (which could happen in the case of the user skipping the site design selection) we'll fall through and search for dotcom only domains.
         guard let segmentID = siteCreator.segment?.identifier ?? siteCreator.design?.segmentID else {
             fetchDotComAddresses(searchTerm)
@@ -237,6 +239,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     private func performSearchIfNeeded(query: String) {
         guard !query.isEmpty else {
+            clearContent()
             return
         }
 
