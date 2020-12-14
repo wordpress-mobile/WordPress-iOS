@@ -13,6 +13,7 @@ class PostCardStatusViewModel: NSObject {
         case more
         case publish
         case stats
+        case duplicate
         case moveToDraft
         case trash
         case cancelAutoUpload
@@ -179,6 +180,10 @@ class PostCardStatusViewModel: NSObject {
             if post.status == .publish && post.hasRemote() {
                 buttons.append(.stats)
                 buttons.append(.share)
+            }
+
+            if post.status == .publish || post.status == .draft {
+                buttons.append(.duplicate)
             }
 
             if post.status != .draft {

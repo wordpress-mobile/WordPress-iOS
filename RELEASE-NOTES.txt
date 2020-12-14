@@ -7,6 +7,7 @@
 * [**] Reader: Added 'P2s' stream. [#15442]
 * [*] Add a new P2 default site icon to replace the generic default site icon. [#15430]
 * [*] Block Editor: Fix Gallery block uploads when the editor is closed. [#15457]
+* [**] Posts List: Adds duplicate post functionality [#15460]
 * [***] Block Editor: New Block: File [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2835]
 * [*] Reader: Removes gray tint from site icons that contain transparency (located in Reader > Settings > Followed sites).
 
