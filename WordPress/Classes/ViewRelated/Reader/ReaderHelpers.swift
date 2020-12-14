@@ -139,17 +139,17 @@ import WordPressShared
             stat = .readerFreshlyPressedLoaded
 
         } else if topicIsFollowing(topic) {
-            WPAnalytics.track(.readerFollowingShown, properties: properties)
+            WPAnalytics.trackReader(.readerFollowingShown, properties: properties)
 
         } else if topicIsLiked(topic) {
-            WPAnalytics.track(.readerLikedShown, properties: properties)
+            WPAnalytics.trackReader(.readerLikedShown, properties: properties)
 
         } else if isTopicSite(topic) {
-            WPAnalytics.track(.readerBlogPreviewed, properties: properties)
+            WPAnalytics.trackReader(.readerBlogPreviewed, properties: properties)
 
         } else if isTopicDefault(topic) && topicIsDiscover(topic) {
             // Tracks Discover only if it was one of the default menu items.
-            WPAnalytics.track(.readerDiscoverShown, properties: properties)
+            WPAnalytics.trackReaderEvent(.readerDiscoverShown, properties: properties)
 
         } else if isTopicList(topic) {
             stat = .readerListLoaded
@@ -158,7 +158,7 @@ import WordPressShared
             stat = .readerTagLoaded
 
         } else if let teamTopic = topic as? ReaderTeamTopic {
-            WPAnalytics.track(teamTopic.shownTrackEvent, properties: properties)
+            WPAnalytics.trackReader(teamTopic.shownTrackEvent, properties: properties)
         }
 
         if stat != nil {

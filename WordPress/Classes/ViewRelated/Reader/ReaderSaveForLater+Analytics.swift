@@ -66,7 +66,7 @@ extension ReaderSaveForLaterAction {
     func trackViewAllSavedPostsAction(origin: ReaderSaveForLaterOrigin) {
         let properties = [ readerSaveForLaterSourceKey: origin.viewAllPostsValue ]
 
-        WPAnalytics.track(.readerSavedListShown, properties: properties)
+        WPAnalytics.trackReader(.readerSavedListShown, properties: properties)
     }
 }
 

@@ -250,12 +250,12 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
                                               WPAppAnalyticsKeyBlogID: siteID
                                               };
                 if (like) {
-                    [WPAppAnalytics track:WPAnalyticsStatReaderArticleLiked withProperties:properties];
+                    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleLiked properties:properties];
                     if (railcar) {
-                        [WPAppAnalytics trackTrainTracksInteraction:WPAnalyticsStatReaderArticleLiked withProperties:railcar];
+                        [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleLiked properties:railcar];
                     }
                 } else {
-                    [WPAppAnalytics track:WPAnalyticsStatReaderArticleUnliked withProperties:properties];
+                    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleUnliked properties:properties];
                 }
             }
             if (success) {
