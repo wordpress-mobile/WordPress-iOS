@@ -24,7 +24,7 @@ class GutenbergLayoutPickerViewController: CollapsableHeaderViewController {
             }
         }
     }
-
+    private let filterBar: CollapsableHeaderFilterBar
     private var filteredSections: [GutenbergLayoutSection]?
     private var sections: [GutenbergLayoutSection] = []
     lazy var resultsController: NSFetchedResultsController<PageTemplateCategory> = {
@@ -56,13 +56,15 @@ class GutenbergLayoutPickerViewController: CollapsableHeaderViewController {
         tableView.separatorStyle = .singleLine
         tableView.separatorInset = .zero
         tableView.showsVerticalScrollIndicator = false
+        filterBar = CollapsableHeaderFilterBar()
 
         super.init(scrollableView: tableView,
                    mainTitle: NSLocalizedString("Choose a Layout", comment: "Title for the screen to pick a template for a page"),
                    prompt: NSLocalizedString("Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page.", comment: "Prompt for the screen to pick a template for a page"),
                    primaryActionTitle: NSLocalizedString("Create Page", comment: "Title for button to make a page with the contents of the selected layout"),
                    secondaryActionTitle: NSLocalizedString("Preview", comment: "Title for button to preview a selected layout"),
-                   defaultActionTitle: NSLocalizedString("Create Blank Page", comment: "Title for button to make a blank page"))
+                   defaultActionTitle: NSLocalizedString("Create Blank Page", comment: "Title for button to make a blank page"),
+                   accessoryView: filterBar)
     }
 
     required init?(coder: NSCoder) {
@@ -93,16 +95,6 @@ class GutenbergLayoutPickerViewController: CollapsableHeaderViewController {
         let destination = LayoutPreviewViewController(layout: layout, completion: completion)
         LayoutPickerAnalyticsEvent.templatePreview(slug: layout.slug)
         navigationController?.pushViewController(destination, animated: true)
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if let previousTraitCollection = previousTraitCollection, traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass {
-            if let visibleRow = tableView.indexPathsForVisibleRows?.first {
-                tableView.scrollToRow(at: visibleRow, at: .top, animated: true)
-            }
-        }
     }
 
     private func createPage(layout: PageTemplateLayout?) {
@@ -165,6 +157,12 @@ class GutenbergLayoutPickerViewController: CollapsableHeaderViewController {
 
     override func secondaryActionSelected(_ sender: Any) {
         presentPreview()
+    }
+
+    public func loadingStateChanged(_ isLoading: Bool) {
+        filterBar.shouldShowGhostContent = isLoading
+        filterBar.allowsMultipleSelection = !isLoading
+        filterBar.reloadData()
     }
 }
 

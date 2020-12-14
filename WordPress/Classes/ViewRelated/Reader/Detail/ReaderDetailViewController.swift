@@ -163,6 +163,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         })
     }
 
+    override func accessibilityPerformEscape() -> Bool {
+        navigationController?.popViewController(animated: true)
+        return true
+    }
+
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
 
@@ -625,3 +630,7 @@ extension ReaderDetailViewController: UIViewControllerRestoration {
         return super.awakeAfter(using: aDecoder)
     }
 }
+
+// MARK: - DefinesVariableStatusBarStyle
+// Allows this VC to control the statusbar style dynamically
+extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}
