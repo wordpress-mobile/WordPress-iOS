@@ -958,7 +958,7 @@
         <element name="ReaderSiteInfoSubscriptionPost" positionX="-1845.87109375" positionY="1035.71484375" width="128" height="75"/>
         <element name="ReaderSiteTopic" positionX="-1831.04296875" positionY="737.4921875" width="128" height="268"/>
         <element name="ReaderTagTopic" positionX="-1351.87890625" positionY="574.1953125" width="128" height="103"/>
-        <element name="ReaderTeamTopic" positionX="-1506.9375" positionY="576.81640625" width="128" height="58"/>
+        <element name="ReaderTeamTopic" positionX="-1506.9375" positionY="576.81640625" width="128" height="60"/>
         <element name="ReferrerStatsRecordValue" positionX="-273.765625" positionY="1398.2265625" width="128" height="133"/>
         <element name="Revision" positionX="-1287.671875" positionY="1336.49609375" width="128" height="195"/>
         <element name="RevisionDiff" positionX="-1077.3046875" positionY="1396.46875" width="128" height="150"/>
