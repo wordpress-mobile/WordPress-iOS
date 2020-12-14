@@ -43,10 +43,6 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
         styleCheckmark()
     }
 
-    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        accessoryType = highlighted ? .checkmark : .none
-    }
-
     override func setSelected(_ selected: Bool, animated: Bool) {
         accessoryType = selected ? .checkmark : .none
     }

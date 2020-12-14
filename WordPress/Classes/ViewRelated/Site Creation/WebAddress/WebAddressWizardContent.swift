@@ -43,7 +43,10 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     private var _hasExactMatch: Bool = false
     var hasExactMatch: Bool {
         get {
-            guard (lastSearchQuery ?? "").count > 0 else { return false }
+            guard (lastSearchQuery ?? "").count > 0 else {
+                // Forces the no match cell to hide when the results are empty.
+                return true
+            }
             // Return true if there is no data to supress the no match cell
             return data.count > 0 ? _hasExactMatch : true
         }
