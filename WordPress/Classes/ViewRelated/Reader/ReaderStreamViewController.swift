@@ -830,7 +830,7 @@ import WordPressFlux
             return
         }
         syncHelper?.syncContentWithUserInteraction(true)
-        WPAnalytics.track(.readerPullToRefresh, properties: topicPropertyForStats() ?? [:])
+        WPAnalytics.trackReader(.readerPullToRefresh, properties: topicPropertyForStats() ?? [:])
     }
 
 
@@ -1581,7 +1581,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         if post.isSavedForLater || contentType == .saved {
             trackSavedPostNavigation()
         } else {
-            WPAnalytics.track(.readerPostCardTapped, properties: topicPropertyForStats() ?? [:])
+            WPAnalytics.trackReader(.readerPostCardTapped, properties: topicPropertyForStats() ?? [:])
         }
 
         navigationController?.pushFullscreenViewController(controller, animated: true)
