@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-26 18:44:26+0000 */
+/* Translation-Revision-Date: 2020-12-10 18:55:58+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -945,7 +945,7 @@
 "By signing up, you agree to our _Terms of Service_." = "Durch die Registrierung stimmst du unseren Geschäftsbedingungen zu.";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "CHOOSE A FILE";
+"CHOOSE A FILE" = "Datei auswählen";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "ANPASSEN";
@@ -1154,7 +1154,7 @@
 "Choose a design" = "Wähle ein Design";
 
 /* Select domain name. Title */
-"Choose a domain" = "Choose a domain";
+"Choose a domain" = "Domain auswählen";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Wähle ein Theme";
@@ -1511,7 +1511,7 @@
 "Copy block" = "Block kopieren";
 
 /* No comment provided by engineer. */
-"Copy file URL" = "Copy file URL";
+"Copy file URL" = "Datei-URL kopieren";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Könnte besser sein";
@@ -1827,7 +1827,7 @@
 "Description" = "Beschreibung";
 
 /* Shortened version of the main title to be used in back navigation */
-"Design" = "Design";
+"Design" = "Gestalten";
 
 /* Title for the desktop web preview */
 "Desktop" = "Desktop";
@@ -2070,7 +2070,7 @@
 "Edit Post" = "Artikel bearbeiten";
 
 /* No comment provided by engineer. */
-"Edit file" = "Edit file";
+"Edit file" = "Datei bearbeiten";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Bearbeite neue Beiträge und Seiten mit dem Block-Editor.";
@@ -2427,7 +2427,7 @@
 "File Downloads" = "Heruntergeladene Dateien";
 
 /* No comment provided by engineer. */
-"File block settings" = "File block settings";
+"File block settings" = "Blockeinstellungen der Datei";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Dateiname";
@@ -2812,7 +2812,7 @@ translators: sample content for \"Team\" page template */
 "If you remove this viewer, he or she will not be able to visit this site." = "Wenn du diesen Leser entfernst, kann der Leser diese Website nicht besuchen.";
 
 /* Detailed instructions on Start Over settings page. This is the first paragraph. */
-"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.";
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "Wenn du eine Website haben möchtest, aber ohne deine aktuellen Beiträge und Seiten, kann unser Support-Team deine Beiträge, Seiten, Medien und Kommentare für dich löschen.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Wenn du dir nicht sicher bist, was gelöscht wird, oder du Hilfe benötigst: Keine Sorge, unser Support-Team ist da, um alle deine Fragen zu beantworten.";
@@ -4157,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Wähle einen Benutzernamen aus";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can edit and customize it later." = "Pick your favorite homepage layout. You can edit and customize it later.";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Wähle ein Layout für deine Startseite aus, das dir gefällt. Du kannst es später bearbeiten und anpassen.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Planung";
@@ -6149,7 +6149,7 @@ translators: sample content for \"Services\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Dies ist Beispielinhalt, der dem Template enthalten ist, um die Funktionen zu veranschaulichen. Entferne oder ersetze ihn durch deine eigenen Worte und Medien.";
 
 /* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "This is where people will find you on the internet.";
+"This is where people will find you on the internet." = "Hier wirst du im Internet gefunden.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Dieses Medienelement wurde gelöscht.";
@@ -6180,7 +6180,7 @@ translators: sample content for \"Services\" page template */
 "This will delete all associated files and data." = "Dadurch werden alle zugehörigen Dateien und Daten gelöscht.";
 
 /* Detailed instructions on Start Over settings page. This is the second paragraph. */
-"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out.";
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "So bleiben deine Website und URL aktiv, aber du kannst mit dem Erstellen der Inhalte neu beginnen. Kontaktiere uns einfach, damit wir deine aktuellen Inhalte entfernen.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6462,7 +6462,7 @@ translators: sample content for \"Services\" page template */
 "Unable to upload 1 draft post, 1 file" = "1 Beitragsentwurf, 1 Datei konnten nicht hochgeladen werden.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 post" = "1 Beitrag konnten nicht hochgeladen werden";
+"Unable to upload 1 post" = "1 Beitrag konnte nicht hochgeladen werden";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
 "Unable to upload 1 post, %ld files" = "1 Beitrag, %Id Dateien konnten nicht hochgeladen werden";
