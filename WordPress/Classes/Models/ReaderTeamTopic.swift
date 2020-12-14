@@ -2,6 +2,7 @@ import Foundation
 
 @objc open class ReaderTeamTopic: ReaderAbstractTopic {
     @NSManaged open var slug: String
+    @NSManaged open var organizationID: NSNumber
 
     override open class var TopicType: String {
         return "organization"
@@ -11,8 +12,8 @@ import Foundation
         return slug == ReaderTeamTopic.a8cSlug ? .readerA8CShown : .readerP2Shown
     }
 
-    var organizationType: SiteOrganizationType {
-        return slug == ReaderTeamTopic.a8cSlug ? .automattic : .p2
+    var organizationType: SiteOrganizationType? {
+        return SiteOrganizationType(rawValue: organizationID.intValue)
     }
 
     static let a8cSlug = "a8c"

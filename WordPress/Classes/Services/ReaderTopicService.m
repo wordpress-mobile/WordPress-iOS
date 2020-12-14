@@ -857,6 +857,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.path = remoteTopic.path;
     topic.showInMenu = YES;
     topic.following = YES;
+    topic.organizationID = remoteTopic.organizationID;
 
     return topic;
 }
