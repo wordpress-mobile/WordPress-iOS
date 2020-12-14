@@ -56,8 +56,8 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         }
         [service followSiteWithID:siteID success:^(){
             [self fetchTopicServiceWithID:siteID success:success failure:failure];
-            
-            [WPAppAnalytics track:WPAnalyticsStatReaderSiteFollowed withBlogID:[NSNumber numberWithUnsignedInteger:siteID]];
+            NSNumber *blogID = [NSNumber numberWithUnsignedInteger:siteID];
+            [WPAnalytics trackReaderStat:WPAnalyticsStatReaderSiteFollowed properties:@{ @"blog_id": blogID }];
         } failure:failure];
 
     } failure:^(NSError *error) {
@@ -83,7 +83,8 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         if (success) {
             success();
         }
-        [WPAppAnalytics track:WPAnalyticsStatReaderSiteUnfollowed withBlogID:[NSNumber numberWithUnsignedInteger:siteID]];
+        NSNumber *blogID = [NSNumber numberWithUnsignedInteger:siteID];
+        [WPAnalytics trackReaderStat:WPAnalyticsStatReaderSiteUnfollowed properties:@{ @"blog_id": blogID }];
         
     } failure:failure];
 }
@@ -117,7 +118,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             if (success) {
                 success();
             }
-            [WPAppAnalytics track:WPAnalyticsStatReaderSiteFollowed withProperties:@{ @"url":sanitizedURL }];
+            [WPAnalytics trackReaderStat:WPAnalyticsStatReaderSiteFollowed properties:@{ @"url":sanitizedURL }];
 
         } failure:failure];
     } failure:^(NSError *error) {
@@ -143,7 +144,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         if (success) {
             success();
         }
-        [WPAppAnalytics track:WPAnalyticsStatReaderSiteUnfollowed withProperties:@{@"url":siteURL}];
+        [WPAnalytics trackReaderStat:WPAnalyticsStatReaderSiteUnfollowed properties:@{@"url":siteURL}];
     } failure:failure];
 }
 

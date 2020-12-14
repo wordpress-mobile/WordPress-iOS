@@ -117,7 +117,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         footerView.showSpinner(true)
 
         page += 1
-        WPAnalytics.track(.readerDiscoverPaginated, properties: ["page": page])
+        WPAnalytics.trackReader(.readerDiscoverPaginated, properties: ["page": page])
 
         cardsService.fetch(isFirstPage: false, success: { _, hasMore in
             success?(hasMore)
@@ -149,7 +149,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
             return
         }
 
-        WPAnalytics.track(.readerDiscoverContentPresented)
+        WPAnalytics.trackReader(.readerDiscoverContentPresented)
     }
 
     // MARK: - TableViewHandler
@@ -253,14 +253,14 @@ private extension ReaderCardsStreamViewController {
 extension ReaderCardsStreamViewController: ReaderTopicsTableCardCellDelegate {
     func didSelect(topic: ReaderAbstractTopic) {
         if topic as? ReaderTagTopic != nil {
-            WPAnalytics.track(.readerDiscoverTopicTapped)
+            WPAnalytics.trackReader(.readerDiscoverTopicTapped)
 
             let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
             navigationController?.pushViewController(topicStreamViewController, animated: true)
         } else if let siteTopic = topic as? ReaderSiteTopic {
             var properties = [String: Any]()
             properties[WPAppAnalyticsKeyBlogID] = siteTopic.siteID
-            WPAnalytics.track(.readerSuggestedSiteVisited, properties: properties)
+            WPAnalytics.trackReader(.readerSuggestedSiteVisited, properties: properties)
 
             let topicStreamViewController = ReaderStreamViewController.controllerWithSiteID(siteTopic.siteID, isFeed: false)
             navigationController?.pushViewController(topicStreamViewController, animated: true)
