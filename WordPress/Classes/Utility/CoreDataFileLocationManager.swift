@@ -87,7 +87,7 @@ extension CoreDataFileLocationManager {
         }
 
         guard !UserDefaults.standard.bool(forKey: StoreToAppGroupMigrationCompleteKey) else {
-            DDLogInfo("\(StoreToAppGroupMigrationIdentifier): Migration already performed.")
+            DDLogInfo("\(StoreToAppGroupMigrationIdentifier): Migration not required.")
             return
         }
 
