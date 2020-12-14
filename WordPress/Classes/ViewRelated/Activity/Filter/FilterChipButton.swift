@@ -82,12 +82,12 @@ class FilterChipButton: UIView {
 
     private enum Constants {
         static let minResetButtonWidth: CGFloat = 32
-        static let resetImageInsets = UIEdgeInsets(top: 8, left: 6, bottom: 8, right: 10)
+        static let resetImageInsets = UIEdgeInsets(top: 8, left: 6, bottom: 8, right: 10).flippedForRightToLeft
         static let borderWidth: CGFloat = 1
         static let cornerRadius: CGFloat = 16
         static let minButtonHeight: CGFloat = 32
-        static let buttonContentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-        static let buttonContentInsetWithResetEnabled = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0)
+        static let buttonContentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12).flippedForRightToLeft
+        static let buttonContentInsetWithResetEnabled = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0).flippedForRightToLeft
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
