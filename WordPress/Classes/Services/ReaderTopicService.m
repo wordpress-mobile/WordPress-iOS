@@ -333,7 +333,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     NSDictionary *properties = @{@"tag":slug};
 
     void (^successBlock)(void) = ^{
-        [WPAnalytics track:WPAnalyticsStatReaderTagUnfollowed withProperties:properties];
+        [WPAnalytics trackReaderStat:WPAnalyticsStatReaderTagUnfollowed properties:properties];
         if (success) {
             success();
         }
@@ -362,7 +362,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID) {
         [self fetchReaderMenuWithSuccess:^{
             NSDictionary *properties = @{@"tag":topicName};
-            [WPAnalytics track:WPAnalyticsStatReaderTagFollowed withProperties:properties];
+            [WPAnalytics trackReaderStat:WPAnalyticsStatReaderTagFollowed properties:properties];
             [self selectTopicWithID:topicID];
             if (success) {
                 success();
@@ -380,7 +380,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     void (^successBlock)(void) = ^{
         NSDictionary *properties = @{@"tag":slug};
-        [WPAnalytics track:WPAnalyticsStatReaderTagFollowed withProperties:properties];
+        [WPAnalytics trackReaderStat:WPAnalyticsStatReaderTagFollowed properties:properties];
         if (success) {
             success();
         }

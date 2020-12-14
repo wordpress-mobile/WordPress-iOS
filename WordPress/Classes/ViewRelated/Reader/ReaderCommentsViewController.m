@@ -232,7 +232,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     NSMutableDictionary *properties = [NSMutableDictionary dictionary];
     properties[WPAppAnalyticsKeyPostID] = self.post.postID;
     properties[WPAppAnalyticsKeyBlogID] = self.post.siteID;
-    [WPAppAnalytics track:WPAnalyticsStatReaderArticleCommentsOpened withProperties:properties];
+    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleCommentsOpened properties:properties];
 }
 
 -(void)trackCommentLikedOrUnliked:(Comment *) comment {
@@ -247,7 +247,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     NSMutableDictionary *properties = [NSMutableDictionary dictionary];
     properties[WPAppAnalyticsKeyPostID] = post.postID;
     properties[WPAppAnalyticsKeyBlogID] = post.siteID;
-    [WPAppAnalytics track: stat withProperties:properties];
+    [WPAnalytics trackReaderStat:stat properties:properties];
 }
 
 -(void)trackReplyTo:(BOOL)replyTarget {
@@ -262,7 +262,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         properties[WPAppAnalyticsKeyFeedID] = post.feedID;
         properties[WPAppAnalyticsKeyFeedItemID] = post.feedItemID;
     }
-    [WPAppAnalytics track:WPAnalyticsStatReaderArticleCommentedOn withProperties:properties];
+    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleCommentedOn properties:properties];
     if (railcar) {
         [WPAppAnalytics trackTrainTracksInteraction:WPAnalyticsStatTrainTracksInteract withProperties:railcar];
     }
