@@ -577,6 +577,14 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         PostListEditorPresenter.handle(post: post, in: self)
     }
 
+    private func editDuplicatePost(apost: AbstractPost) {
+        guard let post = apost as? Post else {
+            return
+        }
+
+        PostListEditorPresenter.handleCopy(post: post, in: self)
+    }
+
     func presentAlertForPostBeingUploaded() {
         let message = NSLocalizedString("This post is currently uploading. It won't take long – try again soon and you'll be able to edit it.", comment: "Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing.")
 
@@ -649,6 +657,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         ReachabilityUtils.onAvailableInternetConnectionDo {
             viewStatsForPost(post)
         }
+    }
+
+    func duplicate(_ post: AbstractPost) {
+        editDuplicatePost(apost: post)
     }
 
     func publish(_ post: AbstractPost) {

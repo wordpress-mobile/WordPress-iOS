@@ -22,7 +22,7 @@ final class ReaderReportPostAction {
 
         // Track the report action
         let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: nil, forKey: nil)
-        WPAnalytics.track(.readerPostReported, properties: properties)
+        WPAnalytics.trackReader(.readerPostReported, properties: properties)
     }
 
     /// Safely generate the report URL

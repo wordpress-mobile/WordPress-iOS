@@ -48,7 +48,7 @@ class WPContentSyncHelper: NSObject {
 
 
     @objc @discardableResult func syncContentWithUserInteraction(_ userInteraction: Bool) -> Bool {
-        if isSyncing {
+        guard !isSyncing else {
             return false
         }
 
@@ -56,15 +56,11 @@ class WPContentSyncHelper: NSObject {
 
         delegate?.syncHelper(self, syncContentWithUserInteraction: userInteraction, success: {
             [weak self] (hasMore: Bool) -> Void in
-            if let weakSelf = self {
-                weakSelf.hasMoreContent = hasMore
-                weakSelf.syncContentEnded()
-            }
+            self?.hasMoreContent = hasMore
+            self?.syncContentEnded()
         }, failure: {
             [weak self] (error: NSError) -> Void in
-            if let weakSelf = self {
-                weakSelf.syncContentEnded(error: true)
-            }
+            self?.syncContentEnded(error: true)
         })
 
         return true
@@ -72,7 +68,7 @@ class WPContentSyncHelper: NSObject {
 
 
     @objc @discardableResult func syncMoreContent() -> Bool {
-        if isSyncing {
+        guard !isSyncing else {
             return false
         }
 
@@ -81,23 +77,19 @@ class WPContentSyncHelper: NSObject {
 
         delegate?.syncHelper(self, syncMoreWithSuccess: {
             [weak self] (hasMore: Bool) in
-            if let weakSelf = self {
-                weakSelf.hasMoreContent = hasMore
-                weakSelf.syncContentEnded()
-            }
+            self?.hasMoreContent = hasMore
+            self?.syncContentEnded()
         }, failure: {
             [weak self] (error: NSError) in
             DDLogInfo("Error syncing more: \(error)")
-            if let weakSelf = self {
-                weakSelf.syncContentEnded(error: true)
-            }
+            self?.syncContentEnded(error: true)
         })
 
         return true
     }
 
     @objc func backgroundSync(success: (() -> Void)?, failure: ((_ error: NSError?) -> Void)?) {
-        if isSyncing {
+        guard !isSyncing else {
             success?()
             return
         }
@@ -105,18 +97,14 @@ class WPContentSyncHelper: NSObject {
         isSyncing = true
 
         delegate?.syncHelper(self, syncContentWithUserInteraction: false, success: {
-                [weak self] (hasMore: Bool) -> Void in
-                if let weakSelf = self {
-                    weakSelf.hasMoreContent = hasMore
-                    weakSelf.syncContentEnded()
-                }
-                success?()
-            }, failure: {
-                [weak self] (error: NSError) -> Void in
-                if let weakSelf = self {
-                    weakSelf.syncContentEnded()
-                }
-                failure?(error)
+            [weak self] (hasMore: Bool) -> Void in
+            self?.hasMoreContent = hasMore
+            self?.syncContentEnded()
+            success?()
+        }, failure: {
+            [weak self] (error: NSError) -> Void in
+            self?.syncContentEnded()
+            failure?(error)
         })
     }
 

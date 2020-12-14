@@ -67,6 +67,10 @@ class BlogDetailHeaderView: UIView, BlogDetailHeader {
         if let blog = blog,
             blog.hasIcon == true {
             siteIconView.imageView.downloadSiteIcon(for: blog)
+        } else if let blog = blog,
+            blog.isWPForTeams() {
+            siteIconView.imageView.tintColor = UIColor.listIcon
+            siteIconView.imageView.image = UIImage.gridicon(.p2)
         } else {
             siteIconView.imageView.image = UIImage.siteIconPlaceholder
         }

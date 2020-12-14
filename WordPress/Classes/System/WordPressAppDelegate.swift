@@ -352,18 +352,6 @@ extension WordPressAppDelegate {
                                                            completionHandler: completionHandler)
     }
 
-    // MARK: Background refresh
-
-    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        let tabBarController = WPTabBarController.sharedInstance()
-
-        if let readerMenu = tabBarController?.readerMenuViewController,
-            let stream = readerMenu.currentReaderStream {
-            stream.backgroundFetch(completionHandler)
-        } else {
-            completionHandler(.noData)
-        }
-    }
 }
 
 // MARK: - Utility Configuration
