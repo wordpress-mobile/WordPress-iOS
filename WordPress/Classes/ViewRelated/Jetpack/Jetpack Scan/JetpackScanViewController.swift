@@ -9,8 +9,6 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     //
     var coordinator: JetpackScanCoordinator?
 
-    let meow = JetpackStatusViewController()
-
     // MARK: - Initializers
     init(site: JetpackSiteRef) {
         self.site = site
@@ -36,15 +34,13 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         coordinator = JetpackScanCoordinator(site: site, view: self)
         coordinator?.start()
 
-        let nib = UINib(nibName: String(describing: JetpackScanThreatCell.self), bundle: nil)
-
-        tableView.register(nib, forCellReuseIdentifier: "Meow")
-        tableView.reloadData()
+        configureTableView()
     }
 
     // MARK: - JetpackScanView
     func render(_ scan: JetpackScan) {
-        print(scan)
+        print("Hello")
+        tableView.reloadData()
     }
 
     func showLoading() {
@@ -55,8 +51,21 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         print("oops")
     }
 
+    // MARK: - Private: 
+    private func configureTableView() {
+        tableView.register(UINib(nibName: String(describing: JetpackScanStatusCell.self), bundle: nil),
+                           forCellReuseIdentifier: Constants.statusCellIdentifier)
+
+        tableView.register(UINib(nibName: String(describing: JetpackScanThreatCell.self), bundle: nil),
+                           forCellReuseIdentifier: Constants.threatCellIdentifier)
+
+        tableView.tableFooterView = UIView()
+    }
+
     // MARK: - Private: Config
     private struct Constants {
+        static let statusCellIdentifier = "StatusCell"
+        static let threatCellIdentifier = "ThreatCell"
     }
 
     private struct Strings {
@@ -67,26 +76,53 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
 // MARK: - Table View
 extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        let count = coordinator?.scan?.threats?.count ?? 0
+        return count + 1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "Meow") as? JetpackScanThreatCell
+        var cell: UITableViewCell
 
-        if cell == nil {
-            cell = JetpackScanThreatCell(style: .default, reuseIdentifier: "Meow")
+        if indexPath.row == 0 {
+            let statusCell = tableView.dequeueReusableCell(withIdentifier: Constants.statusCellIdentifier) as? JetpackScanStatusCell ?? JetpackScanStatusCell(style: .default, reuseIdentifier: Constants.statusCellIdentifier)
+
+            configureStatusCell(cell: statusCell)
+
+            cell = statusCell
+        } else {
+            let threatCell = tableView.dequeueReusableCell(withIdentifier: Constants.threatCellIdentifier) as? JetpackScanThreatCell ?? JetpackScanThreatCell(style: .default, reuseIdentifier: Constants.threatCellIdentifier)
+
+            if let threat = threat(for: indexPath) {
+                configureThreatCell(cell: threatCell, threat: threat)
+            }
+
+            cell = threatCell
         }
 
-        cell?.titleLabel.text = "Hello"
-        return cell!
+        return cell
     }
 
+    private func configureStatusCell(cell: JetpackScanStatusCell) {
+        guard let scan = coordinator?.scan else {
+            return
+        }
 
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return meow.view
+        tableView.beginUpdates()
+        cell.configure(with: scan)
+        tableView.endUpdates()
     }
 
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return meow.view.frame.height
+    private func configureThreatCell(cell: JetpackScanThreatCell, threat: JetpackScanThreat) {
+        cell.configure(with: threat)
+    }
+
+    private func threat(for indexPath: IndexPath) -> JetpackScanThreat? {
+        guard let threats = coordinator?.scan?.threats else {
+            return nil
+        }
+
+        let row = indexPath.row + 1
+
+        return threats[row]
     }
 }
