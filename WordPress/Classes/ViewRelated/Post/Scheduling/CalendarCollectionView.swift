@@ -257,14 +257,14 @@ class DateCell: JTACDayCell {
         NSLayoutConstraint.activate([
             leftPlaceholder.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.6),
             leftPlaceholder.heightAnchor.constraint(equalTo: dateLabel.heightAnchor),
-            leftPlaceholder.rightAnchor.constraint(equalTo: centerXAnchor),
+            leftPlaceholder.trailingAnchor.constraint(equalTo: centerXAnchor),
             leftPlaceholder.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
 
         NSLayoutConstraint.activate([
             rightPlaceholder.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.5),
             rightPlaceholder.heightAnchor.constraint(equalTo: dateLabel.heightAnchor),
-            rightPlaceholder.leftAnchor.constraint(equalTo: centerXAnchor, constant: 0),
+            rightPlaceholder.leadingAnchor.constraint(equalTo: centerXAnchor, constant: 0),
             rightPlaceholder.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
 
