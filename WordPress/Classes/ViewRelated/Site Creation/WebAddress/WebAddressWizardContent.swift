@@ -250,7 +250,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
             return
         }
 
-        throttle.throttle { [weak self] in
+        throttle.debounce { [weak self] in
             guard let self = self else { return }
             self.fetchAddresses(query)
         }
