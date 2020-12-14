@@ -170,6 +170,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         filterStackView.addArrangedSubview(filterIcon)
         let scrollView = UIScrollView()
         scrollView.canCancelContentTouches = true
+        scrollView.showsHorizontalScrollIndicator = false
         filterStackView.addArrangedSubview(dateFilterChip)
         filterStackView.addArrangedSubview(activityTypeFilterChip)
         scrollView.addSubview(filterStackView)
