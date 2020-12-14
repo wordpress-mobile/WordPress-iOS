@@ -12,6 +12,8 @@ class JetpackScanCoordinator {
     private let site: JetpackSiteRef
     private let view: JetpackScanView
 
+    private(set) var scan: JetpackScan?
+
     init(site: JetpackSiteRef,
          view: JetpackScanView,
         service: JetpackScanService? = nil,
@@ -26,6 +28,7 @@ class JetpackScanCoordinator {
         view.showLoading()
 
         service.getScan(for: site) { [weak self] scanObj in
+            self?.scan = scanObj
             self?.view.render(scanObj)
         } failure: { [weak self] error in
             DDLogError("Error fetching scan object: \(String(describing: error.localizedDescription))")
