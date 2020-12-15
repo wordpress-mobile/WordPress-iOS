@@ -74,7 +74,7 @@ class InvitePersonViewController: UITableViewController {
 
     /// Last Section Footer Text
     ///
-    fileprivate let lastSectionFooterText = NSLocalizedString("Add a custom message (optional).", comment: "Invite Footer Text")
+    private let lastSectionFooterText = NSLocalizedString("Optional: Enter a custom message to be sent with your invitation.", comment: "Invite Footer Text")
 
 
     // MARK: - Outlets
