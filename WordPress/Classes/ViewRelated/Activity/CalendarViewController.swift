@@ -11,6 +11,7 @@ class CalendarViewController: UIViewController {
     private var startDateLabel: UILabel!
     private var separatorDateLabel: UILabel!
     private var endDateLabel: UILabel!
+    private let gradient = GradientView()
 
     private var startDate: Date?
     private var endDate: Date?
@@ -70,6 +71,8 @@ class CalendarViewController: UIViewController {
 
         setupNavButtons()
 
+        setUpGradient()
+
         calendarCollectionView.calDataSource.didSelect = { [weak self] startDate, endDate in
             self?.updateDates(startDate: startDate, endDate: endDate)
         }
@@ -87,6 +90,12 @@ class CalendarViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
 
         calendarCollectionView.reloadData()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        setUpGradientColors()
     }
 
     private func setupNavButtons() {
@@ -196,6 +205,26 @@ class CalendarViewController: UIViewController {
             label?.textColor = .textSubtle
             label?.font = WPStyleGuide.fontForTextStyle(.title3)
         }
+    }
+
+    private func setUpGradient() {
+        gradient.isUserInteractionEnabled = false
+        gradient.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(gradient)
+
+        NSLayoutConstraint.activate([
+            gradient.heightAnchor.constraint(equalToConstant: 50),
+            gradient.topAnchor.constraint(equalTo: calendarCollectionView.topAnchor),
+            gradient.leadingAnchor.constraint(equalTo: calendarCollectionView.leadingAnchor),
+            gradient.trailingAnchor.constraint(equalTo: calendarCollectionView.trailingAnchor)
+        ])
+
+        setUpGradientColors()
+    }
+
+    private func setUpGradientColors() {
+        gradient.fromColor = .basicBackground
+        gradient.toColor = UIColor.basicBackground.withAlphaComponent(0)
     }
 
     @objc private func done() {
