@@ -267,9 +267,15 @@ class GutenbergViewController: UIViewController, PostEditor {
         return GutenbergImageLoader(post: post)
     }()
 
-    private lazy var gutenberg: Gutenberg = {
-        return Gutenberg(dataSource: self, extraModules: [gutenbergImageLoader])
-    }()
+    private var _gutenberg: Gutenberg?
+    private var gutenberg: Gutenberg {
+        guard let gutenberg = _gutenberg else {
+            let gutenberg = Gutenberg(dataSource: self, extraModules: [gutenbergImageLoader])
+            _gutenberg = gutenberg
+            return gutenberg
+        }
+        return gutenberg
+    }
 
     private var requestHTMLReason: RequestHTMLReason?
     private(set) var mode: EditMode = .richText
@@ -321,7 +327,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     deinit {
         tearDownKeyboardObservers()
         removeObservers(fromPost: post)
-        gutenberg.invalidate()
+        _gutenberg?.invalidate()
         attachmentDelegate.cancelAllPendingMediaRequests()
     }
 
