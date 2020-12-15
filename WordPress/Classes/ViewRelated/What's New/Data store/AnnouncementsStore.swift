@@ -114,11 +114,23 @@ private extension CachedAnnouncementsStore {
               let maximumVersion = announcements.first?.maximumAppVersion,   // per version, but if there is, each of them must match the version
               let targetVersions = announcements.first?.appVersionTargets,   // so we might as well choose the first
               let version = versionProvider.version,
-              ((minimumVersion...maximumVersion).contains(version) || targetVersions.contains(version)) else {
+              ((minimumVersion...maximumVersion).contains(version) || targetVersions.contains(version)),
+              !cacheExpired else {
             return false
         }
         return true
     }
+
+    var cacheExpired: Bool {
+        guard let date = cache.date,
+              let elapsedTime = Calendar.current.dateComponents([.minute], from: date, to: Date()).minute else {
+            return true
+        }
+        return elapsedTime >= Self.cacheExpirationTime
+    }
+    // Time, in minutes, after which the cache expires (equivalent to 24 hours)
+    // TODO: this is not in minutes for convenience of testing. Will be converted in hours before merging
+    static let cacheExpirationTime = 1440
 
     enum Identifiers {
         // 2 is the identifier of WordPress-iOS in the backend
