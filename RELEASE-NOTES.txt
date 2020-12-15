@@ -1,6 +1,6 @@
 16.5
 -----
-[*] In the Comments view, overly-large twemoji are sized the same as Apple's emoji. [#15503]
+* [*] In the Comments view, overly-large twemoji are sized the same as Apple's emoji. [#15503]
 * [*] Reader 'P2s': added ability to filter by site. [#15484]
 
 16.4
