@@ -138,7 +138,7 @@ class CalendarViewController: UIViewController {
 
     private func startEndDateHeader() -> UIView {
         let header = UIStackView(frame: .zero)
-        header.distribution = .fillProportionally
+        header.distribution = .fill
 
         let startDate = UILabel()
         startDateLabel = startDate
@@ -151,12 +151,14 @@ class CalendarViewController: UIViewController {
             startDate.textAlignment = .left
         }
         header.addArrangedSubview(startDate)
+        startDate.widthAnchor.constraint(equalTo: header.widthAnchor, multiplier: 0.47).isActive = true
 
         let separator = UILabel()
         separatorDateLabel = separator
         separator.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         separator.textAlignment = .center
         header.addArrangedSubview(separator)
+        separator.widthAnchor.constraint(equalTo: header.widthAnchor, multiplier: 0.06).isActive = true
 
         let endDate = UILabel()
         endDateLabel = endDate
@@ -169,6 +171,7 @@ class CalendarViewController: UIViewController {
             endDate.textAlignment = .right
         }
         header.addArrangedSubview(endDate)
+        endDate.widthAnchor.constraint(equalTo: header.widthAnchor, multiplier: 0.47).isActive = true
 
         resetLabels()
 
