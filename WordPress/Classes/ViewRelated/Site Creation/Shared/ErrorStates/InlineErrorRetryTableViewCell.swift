@@ -125,7 +125,7 @@ final class InlineErrorRetryTableViewCell: UITableViewCell, ReusableCell {
             label.textColor = .neutral(.shade40)
         }
 
-        let borderColor = UIColor.neutral(.shade10)
+        let borderColor = UIColor.divider
         addTopBorder(withColor: borderColor)
         addBottomBorder(withColor: borderColor)
 
