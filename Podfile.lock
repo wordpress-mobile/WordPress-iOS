@@ -417,7 +417,7 @@ PODS:
   - WordPressShared (1.14.0-beta.1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-  - WordPressUI (1.7.4)
+  - WordPressUI (1.9.0-beta.1)
   - WPMediaPicker (1.7.2)
   - wpxmlrpc (0.9.0)
   - Yoga (1.14.0)
@@ -508,7 +508,7 @@ DEPENDENCIES:
   - WordPressKit (~> 4.24-beta)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.14.0-beta.1)
-  - WordPressUI (~> 1.7.4)
+  - WordPressUI (~> 1.9.0-beta.1)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.43.0/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.1.1)
@@ -756,7 +756,7 @@ SPEC CHECKSUMS:
   WordPressKit: 453787f5a6deeb5bb6fad4ea39801fda5698877b
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: db04af4eed52585c02ced2a81a4651968c35d642
-  WordPressUI: 4226e616dd8e7aab5a8d2172b7c378454e72182e
+  WordPressUI: 89f1c0ead3ffe88ee76199269eeae2c4b8f09b25
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
@@ -769,6 +769,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 6842f3b735d22fad379ac1b091d54a56956e4dd9
+PODFILE CHECKSUM: bb0dd1f7ed9434cbad3b6cfc0a46ad920b07c429
 
 COCOAPODS: 1.10.0

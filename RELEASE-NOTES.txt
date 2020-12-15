@@ -1,9 +1,11 @@
 16.5
 -----
 * [*] Reader 'P2s': added ability to filter by site. [#15484]
+* [**] Choose a Domain will now return more options in the search results, sort the results to have exact matches first, and let you know if no exact matches were found. [#15482]
 
 16.4
 -----
+
 * [internal] Removed unused Reader files. Should be no functional changes. [#15414]
 * [*] Adjusted the search box background color in dark mode on Choose a domain screen to be full width. [https://github.com/wordpress-mobile/WordPress-iOS/pull/15419]
 * [**] Added shadow to thumbnail cells on Site Creation and Page Creation design pickers to add better contrast [https://github.com/wordpress-mobile/WordPress-iOS/pull/15418]
