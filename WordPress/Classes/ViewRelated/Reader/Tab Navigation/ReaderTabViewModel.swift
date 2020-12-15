@@ -144,10 +144,17 @@ extension ReaderTabViewModel {
 // MARK: - Bottom Sheet
 extension ReaderTabViewModel {
     private func makeFilterSheetViewController(completion: @escaping (ReaderAbstractTopic) -> Void) -> FilterSheetViewController {
-        return FilterSheetViewController(filters:
-            [ReaderSiteTopic.filterProvider(),
-             ReaderTagTopic.filterProvider()],
-            changedFilter: completion)
+        let selectedTab = tabItems[selectedIndex]
+        let siteType = (selectedTab.content.topic as? ReaderTeamTopic)?.organizationType
+        var filters = [ReaderSiteTopic.filterProvider(for: siteType)]
+
+        if !selectedTab.shouldHideTagFilter {
+            filters.append(ReaderTagTopic.filterProvider())
+        }
+
+        return FilterSheetViewController(viewTitle: selectedTab.title,
+                                         filters: filters,
+                                         changedFilter: completion)
     }
 }
 
