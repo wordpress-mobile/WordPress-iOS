@@ -384,7 +384,7 @@ private extension InvitePersonViewController {
     }
 
     func setupNavigationBar() {
-        title = NSLocalizedString("Add a Person", comment: "Invite People Title")
+        title = NSLocalizedString("Invite People", comment: "Invite People Title")
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                            target: self,
