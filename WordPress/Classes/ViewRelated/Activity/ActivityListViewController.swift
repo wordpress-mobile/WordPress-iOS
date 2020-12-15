@@ -14,7 +14,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
     let containerStackView = UIStackView()
 
-    let filterStackView = UIStackView()
+    let filterView = FilterBarView()
     let dateFilterChip = FilterChipButton()
     let activityTypeFilterChip = FilterChipButton()
 
@@ -35,10 +35,6 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
     fileprivate var viewModel: ActivityListViewModel
     private enum Constants {
         static let estimatedRowHeight: CGFloat = 62
-        static let filterHeightAnchor: CGFloat = 24
-        static let filterStackViewSpacing: CGFloat = 8
-        static let filterBarHorizontalPadding: CGFloat = 16
-        static let filterBarVerticalPadding: CGFloat = 8
     }
 
     // MARK: - GUI
@@ -162,48 +158,13 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
     }
 
     private func setupFilterBar() {
-        let filterIcon = UIImageView(image: UIImage.gridicon(.filter))
-        filterIcon.tintColor = .listIcon
-        filterIcon.heightAnchor.constraint(equalToConstant: Constants.filterHeightAnchor).isActive = true
-        filterStackView.alignment = .center
-        filterStackView.spacing = Constants.filterStackViewSpacing
-        filterStackView.addArrangedSubview(filterIcon)
-        let scrollView = UIScrollView()
-        scrollView.canCancelContentTouches = true
-        scrollView.showsHorizontalScrollIndicator = false
-        filterStackView.addArrangedSubview(dateFilterChip)
-        filterStackView.addArrangedSubview(activityTypeFilterChip)
-        scrollView.addSubview(filterStackView)
-        containerStackView.addArrangedSubview(scrollView)
-        filterStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            filterStackView.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: Constants.filterBarHorizontalPadding),
-            filterStackView.rightAnchor.constraint(equalTo: scrollView.rightAnchor, constant: Constants.filterBarHorizontalPadding),
-            filterStackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: Constants.filterBarVerticalPadding),
-            filterStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: Constants.filterBarVerticalPadding),
-            scrollView.heightAnchor.constraint(equalTo: filterStackView.heightAnchor, constant: 2 * Constants.filterBarVerticalPadding)
-        ])
+        containerStackView.addArrangedSubview(filterView)
 
-        // Ensure that the stackview is right aligned in RTL layouts
-        if view.userInterfaceLayoutDirection() == .rightToLeft {
-            scrollView.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
-            filterStackView.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
-        }
+        filterView.add(button: dateFilterChip)
+        filterView.add(button: activityTypeFilterChip)
 
         setupDateFilter()
-
         setupActivityTypeFilter()
-
-        let separator = UIView()
-        separator.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.addSubview(separator)
-        NSLayoutConstraint.activate([
-            separator.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 16),
-            separator.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
-            separator.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            separator.heightAnchor.constraint(equalToConstant: 1)
-        ])
-        WPStyleGuide.applyBorderStyle(separator)
     }
 
     private func setupDateFilter() {
