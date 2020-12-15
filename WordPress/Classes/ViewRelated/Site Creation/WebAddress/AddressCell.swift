@@ -11,12 +11,12 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
         static let customName: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
                                                                 .foregroundColor: UIColor.text]
     }
-    var border: UIView?
+    var borders = [UIView]()
     @IBOutlet weak var title: UILabel!
 
     var model: DomainSuggestion? {
         didSet {
-            title.attributedText = processName(model?.domainName)
+            title.attributedText = AddressCell.processName(model?.domainName)
         }
     }
 
@@ -43,10 +43,6 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
         styleCheckmark()
     }
 
-    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        accessoryType = highlighted ? .checkmark : .none
-    }
-
     override func setSelected(_ selected: Bool, animated: Bool) {
         accessoryType = selected ? .checkmark : .none
     }
@@ -57,22 +53,33 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
 
     override func prepareForReuse() {
         title.attributedText = nil
-        border?.removeFromSuperview()
+        borders.forEach({ $0.removeFromSuperview() })
+        borders = []
     }
 
-    private func processName(_ domainName: String?) -> NSAttributedString? {
-        guard let name = domainName else {
-            return nil
+    public func addBorder(isFirstCell: Bool = false, isLastCell: Bool = false) {
+        if isFirstCell {
+            let border = addTopBorder(withColor: .divider)
+            borders.append(border)
         }
 
-        guard let customName = name.components(separatedBy: ".").first else {
+        if isLastCell {
+            let border = addBottomBorder(withColor: .divider)
+            borders.append(border)
+        } else {
+            let border = addBottomBorder(withColor: .divider, leadingMargin: 20)
+            borders.append(border)
+        }
+    }
+
+    public static func processName(_ domainName: String?) -> NSAttributedString? {
+        guard let name = domainName,
+              let customName = name.components(separatedBy: ".").first else {
             return nil
         }
 
         let completeDomainName = NSMutableAttributedString(string: name, attributes: TextStyleAttributes.defaults)
-
         let rangeOfCustomName = NSRange(location: 0, length: customName.count)
-
         completeDomainName.setAttributes(TextStyleAttributes.customName, range: rangeOfCustomName)
 
         return completeDomainName
@@ -88,6 +95,6 @@ extension AddressCell {
     }
 
     func preferredContentSizeDidChange() {
-        title.attributedText = processName(model?.domainName)
+        title.attributedText = AddressCell.processName(model?.domainName)
     }
 }

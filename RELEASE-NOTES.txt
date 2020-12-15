@@ -1,5 +1,11 @@
+16.5
+-----
+* [*] Reader 'P2s': added ability to filter by site. [#15484]
+* [**] Choose a Domain will now return more options in the search results, sort the results to have exact matches first, and let you know if no exact matches were found. [#15482]
+
 16.4
 -----
+
 * [internal] Removed unused Reader files. Should be no functional changes. [#15414]
 * [*] Adjusted the search box background color in dark mode on Choose a domain screen to be full width. [https://github.com/wordpress-mobile/WordPress-iOS/pull/15419]
 * [**] Added shadow to thumbnail cells on Site Creation and Page Creation design pickers to add better contrast [https://github.com/wordpress-mobile/WordPress-iOS/pull/15418]
@@ -15,6 +21,7 @@
 
 16.3
 -----
+* [***] Login: Updated to new iOS 14 pasteboard APIs for 2FA auto-fill. Pasteboard prompts should be less intrusive now! [#15454]
 * [***] Site Creation: Adds an option to pick a home page design when creating a WordPress.com site. [multiple PRs](https://github.com/search?q=repo%3Awordpress-mobile%2FWordPress-iOS+++repo%3Awordpress-mobile%2FWordPress-iOS-Shared+repo%3Awordpress-mobile%2FWordPressUI-iOS+repo%3Awordpress-mobile%2FWordPressKit-iOS+repo%3Awordpress-mobile%2FAztecEditor-iOS+is%3Apr+closed%3A%3C2020-11-17+%22Home+Page+Picker%22&type=Issues)
 
 * [**] Fixed a bug where @-mentions didn't work on WordPress.com sites with plugins enabled [#14844]
