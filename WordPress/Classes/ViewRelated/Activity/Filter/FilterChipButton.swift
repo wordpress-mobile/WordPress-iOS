@@ -77,7 +77,7 @@ class FilterChipButton: UIView {
     private func applyColors() {
         layer.borderColor = UIColor.textQuaternary.cgColor
         resetButton.setImage(UIImage.gridicon(.crossCircle), for: .normal)
-        resetButton.tintColor = .text
+        resetButton.tintColor = .textSubtle
     }
 
     private enum Constants {
