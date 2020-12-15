@@ -868,14 +868,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
 
-    BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Pages", @"Noun. Title. Links to the blog's Pages screen.")
-                                             accessibilityIdentifier:@"Site Pages Row"
-                                                    image:[UIImage gridiconOfType:GridiconTypePages]
-                                                 callback:^{
-        [weakSelf showPageListFromSource:BlogDetailsNavigationSourceRow];
-                                                 }];
-    pagesRow.quickStartIdentifier = QuickStartTourElementPages;
-    [rows addObject:pagesRow];
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blog Posts", @"Noun. Title. Links to the blog's Posts screen.")
                                   accessibilityIdentifier:@"Blog Post Row"
@@ -891,6 +883,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                  callback:^{
         [weakSelf showMediaLibraryFromSource:BlogDetailsNavigationSourceRow];
                                                  }]];
+    
+    BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Pages", @"Noun. Title. Links to the blog's Pages screen.")
+                                             accessibilityIdentifier:@"Site Pages Row"
+                                                    image:[UIImage gridiconOfType:GridiconTypePages]
+                                                 callback:^{
+        [weakSelf showPageListFromSource:BlogDetailsNavigationSourceRow];
+                                                 }];
+    pagesRow.quickStartIdentifier = QuickStartTourElementPages;
+    [rows addObject:pagesRow];
 
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
                                                           image:[[UIImage gridiconOfType:GridiconTypeComment] imageFlippedForRightToLeftLayoutDirection]
