@@ -353,7 +353,7 @@ extension WPAnalytics {
     /// - Parameter event: a `String` that represents the Reader event name
     /// - Parameter properties: a `Hash` that represents the properties
     ///
-    static func trackReader(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
+    static func trackReader(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any] = [:]) {
         var props = properties
         props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
         WPAnalytics.track(event, properties: props)
@@ -365,7 +365,7 @@ extension WPAnalytics {
     /// - Parameter event: a `String` that represents the Reader event name
     /// - Parameter properties: a `Hash` that represents the properties
     ///
-    static func trackReader(_ stat: WPAnalyticsStat, properties: [AnyHashable: Any]) {
+    static func trackReader(_ stat: WPAnalyticsStat, properties: [AnyHashable: Any] = [:]) {
         var props = properties
         props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
         WPAnalytics.track(stat, withProperties: props)

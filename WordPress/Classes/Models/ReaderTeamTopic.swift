@@ -11,6 +11,10 @@ import Foundation
         return slug == ReaderTeamTopic.a8cSlug ? .readerA8CShown : .readerP2Shown
     }
 
+    var organizationType: SiteOrganizationType {
+        return slug == ReaderTeamTopic.a8cSlug ? .automattic : .p2
+    }
+
     static let a8cSlug = "a8c"
     static let p2Slug = "p2"
 }

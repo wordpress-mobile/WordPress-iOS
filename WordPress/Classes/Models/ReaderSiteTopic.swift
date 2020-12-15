@@ -30,9 +30,12 @@ import Foundation
         }
     }
 
+    var organizationType: SiteOrganizationType? {
+        SiteOrganizationType(rawValue: organizationID.intValue)
+    }
+
     var isP2Type: Bool {
-        let orgType = SiteOrganizationType(rawValue: organizationID.intValue)
-        return orgType == .p2 || orgType == .automattic
+        return organizationType == .p2 || organizationType == .automattic
     }
 
     @objc open var blogNameToDisplay: String {
