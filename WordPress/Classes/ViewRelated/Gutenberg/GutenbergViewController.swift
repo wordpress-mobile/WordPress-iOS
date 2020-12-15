@@ -337,7 +337,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         refreshInterface()
 
         gutenberg.delegate = self
-        showInformativeDialogIfNecessary()
         fetchEditorTheme()
         presentNewPageNoticeIfNeeded()
 
