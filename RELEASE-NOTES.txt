@@ -1,3 +1,7 @@
+16.5
+-----
+[*] In the Comments view, overly-large twemoji are sized the same as Apple's emoji. [#15503]
+
 16.4
 -----
 * [internal] Removed unused Reader files. Should be no functional changes. [#15414]
