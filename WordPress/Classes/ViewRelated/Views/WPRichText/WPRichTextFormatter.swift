@@ -503,7 +503,7 @@ class AttachmentTagProcessor: HtmlTagProcessor {
         // `twemoji` without an assigned size become outsized images
         // https://github.com/wordpress-mobile/WordPress-iOS/issues/15341
         if (size.height == 0 || size.height == 0) && cssClass.contains("emoji") {
-                size = CGSize(width: 20, height: 20)
+            size = CGSize(width: 20, height: 20)
         }
 
         textAttachment.height = size.height
