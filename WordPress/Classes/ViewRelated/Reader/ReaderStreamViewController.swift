@@ -169,11 +169,6 @@ import WordPressFlux
     var isContentFiltered: Bool = false
 
     var contentType: ReaderContentType = .topic {
-        willSet {
-            if contentType == .saved && newValue != .saved {
-                postCellActions?.clearRemovedPosts()
-            }
-        }
         didSet {
             if contentType == .saved {
                 updateContent(synchronize: false)
@@ -357,6 +352,11 @@ import WordPressFlux
         super.viewWillDisappear(animated)
 
         dismissNoNetworkAlert()
+
+        // When navigating away from the Saved tab, make sure removed posts are no longer marked as "saved for later".
+        if contentType == .saved {
+            postCellActions?.clearRemovedPosts()
+        }
 
         // We want to listen for any changes (following, liked) in a post detail so we can refresh the child context.
         let mainContext = ContextManager.sharedInstance().mainContext
