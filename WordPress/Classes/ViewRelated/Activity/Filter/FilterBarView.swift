@@ -2,7 +2,7 @@ import UIKit
 
 class FilterBarView: UIScrollView {
     let filterStackView = UIStackView()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
