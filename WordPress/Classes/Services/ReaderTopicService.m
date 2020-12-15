@@ -857,6 +857,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.path = remoteTopic.path;
     topic.showInMenu = YES;
     topic.following = YES;
+    topic.organizationID = [remoteTopic.organizationID integerValue];
 
     return topic;
 }
@@ -873,7 +874,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.feedURL = siteInfo.feedURL;
     topic.following = siteInfo.isFollowing;
     topic.isJetpack = siteInfo.isJetpack;
-    topic.organizationID = siteInfo.organizationID;
+    topic.organizationID = [siteInfo.organizationID integerValue];
     topic.isPrivate = siteInfo.isPrivate;
     topic.isVisible = siteInfo.isVisible;
     topic.postCount = siteInfo.postCount;

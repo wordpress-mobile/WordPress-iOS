@@ -3,6 +3,14 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 108
+
+@scoutharris 2020-12-14
+
+- `ReaderTeamTopic`: added `organizationID`.
+- `ReaderSiteTopic`: made  `organizationID` non-optional.
+- `ReaderPost`: made  `organizationID` non-optional.  
+
 ## WordPress 107
 
 @scoutharris 2020-12-09
