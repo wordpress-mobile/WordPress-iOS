@@ -170,7 +170,7 @@ import WordPressFlux
 
     var contentType: ReaderContentType = .topic {
         willSet {
-            if contentType == .saved && newValue != .saved {
+            if contentType == .saved {
                 postCellActions?.clearRemovedPosts()
             }
         }
