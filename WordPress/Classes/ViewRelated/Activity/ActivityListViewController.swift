@@ -184,6 +184,12 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
             scrollView.heightAnchor.constraint(equalTo: filterStackView.heightAnchor, constant: 2 * Constants.filterBarVerticalPadding)
         ])
 
+        // Ensure that the stackview is right aligned in RTL layouts
+        if view.userInterfaceLayoutDirection() == .rightToLeft {
+            scrollView.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+            filterStackView.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+        }
+
         setupDateFilter()
 
         setupActivityTypeFilter()
