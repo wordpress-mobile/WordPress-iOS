@@ -117,7 +117,7 @@ extension FeatureFlag {
         case .activityLogFilters:
             return "Jetpack's Activity Log Filters"
         case .unreadPostCount:
-            return "Unread P2 Posts Count"
+            return "Unread Posts Count in Reader"
         }
     }
 
