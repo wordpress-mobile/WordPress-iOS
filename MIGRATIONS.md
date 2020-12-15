@@ -8,7 +8,8 @@ data model as well as any custom migrations.
 @scoutharris 2020-12-14
 
 - `ReaderTeamTopic`: added `organizationID`.
-
+- `ReaderSiteTopic`: made  `organizationID` non-optional.
+- `ReaderPost`: made  `organizationID` non-optional.  
 
 ## WordPress 107
 
