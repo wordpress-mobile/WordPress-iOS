@@ -254,6 +254,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         super.selectedFilterDidChange(filterBar)
     }
 
+    override func refresh(_ sender: AnyObject) {
+        updateGhostableTableViewOptions()
+        super.refresh(sender)
+    }
 
     /// Update the `GhostOptions` to correctly show compact or default cells
     private func updateGhostableTableViewOptions() {
