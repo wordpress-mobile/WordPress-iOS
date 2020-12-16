@@ -118,8 +118,7 @@ private extension CachedAnnouncementsStore {
               let maximumVersion = announcements.first?.maximumAppVersion,   // per version, but if there is, each of them must match the version
               let targetVersions = announcements.first?.appVersionTargets,   // so we might as well choose the first
               let version = versionProvider.version,
-              ((minimumVersion...maximumVersion).contains(version) || targetVersions.contains(version)),
-              !cacheExpired else {
+              ((minimumVersion...maximumVersion).contains(version) || targetVersions.contains(version)) else {
             return false
         }
         return true
