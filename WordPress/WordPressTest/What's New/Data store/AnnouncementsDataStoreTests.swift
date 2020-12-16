@@ -159,7 +159,6 @@ class AnnouncementsDataStoreTests: XCTestCase {
         let cache = MockAnnouncementsCache()
         let service = MockAnnouncementsService()
         let getAnnouncementsExpectation = expectation(description: "Get announcements called")
-        getAnnouncementsExpectation.expectedFulfillmentCount = 1
         service.getAnnouncementsExpectation = getAnnouncementsExpectation
         let versionProvider = MockVersionProvider()
         let store = CachedAnnouncementsStore(cache: cache, service: service, versionProvider: versionProvider)
