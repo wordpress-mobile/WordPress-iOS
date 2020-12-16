@@ -15,7 +15,8 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     private weak var saveForLaterAction: ReaderSaveForLaterAction?
 
     /// Saved posts that have been removed but not yet discarded
-    private var removedPosts = ReaderSaveForLaterRemovedPosts()
+    var removedPosts = ReaderSaveForLaterRemovedPosts()
+    weak var savedPostsDelegate: ReaderSavedPostCellActionsDelegate?
 
     init(context: NSManagedObjectContext, origin: UIViewController, topic: ReaderAbstractTopic? = nil, visibleConfirmation: Bool = true) {
         self.context = context
@@ -51,6 +52,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
             if let post = provider as? ReaderPost {
                 removedPosts.add(post)
             }
+            savedPostsDelegate?.willRemove(cell)
         } else {
             guard let post = provider as? ReaderPost else {
                 return
