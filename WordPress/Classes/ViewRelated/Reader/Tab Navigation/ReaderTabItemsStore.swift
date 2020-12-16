@@ -87,6 +87,8 @@ extension ReaderTabItemsStore {
         }
         state = .loading
 
+        // Return the tab bar items right away to avoid waiting for the request to finish
+        fetchTabBarItems()
 
         // Sync the reader menu
         service.fetchReaderMenu(success: { [weak self] in
