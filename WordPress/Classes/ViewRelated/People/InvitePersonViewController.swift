@@ -66,17 +66,6 @@ class InvitePersonViewController: UITableViewController {
         return roles
     }
 
-    /// Last Section Index
-    ///
-    fileprivate var lastSectionIndex: Int {
-        return tableView.numberOfSections - 1
-    }
-
-    /// Last Section Footer Text
-    ///
-    private let lastSectionFooterText = NSLocalizedString("Optional: Enter a custom message to be sent with your invitation.", comment: "Invite Footer Text")
-
-
     // MARK: - Outlets
 
     /// Username Cell
@@ -135,10 +124,7 @@ class InvitePersonViewController: UITableViewController {
     // MARK: - UITableView Methods
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        guard section == lastSectionIndex else {
-            return nil
-        }
-        return lastSectionFooterText
+        return Section.footerText(for: section)
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
@@ -228,10 +214,33 @@ class InvitePersonViewController: UITableViewController {
 
     // MARK: - Private Enums
 
-    fileprivate enum SegueIdentifier: String {
+    private enum SegueIdentifier: String {
         case Username   = "username"
         case Role       = "role"
         case Message    = "message"
+    }
+
+    // The case order matches the custom sections order in People.storyboard.
+    private enum Section: Int {
+        case username
+        case role
+        case message
+
+        static func footerText(for index: Int) -> String? {
+            let section = Section(rawValue: index)
+            return section?.footerText
+        }
+
+        var footerText: String? {
+            switch self {
+            case .role:
+                return NSLocalizedString("Learn more about roles", comment: "Footer text for Invite People role field.")
+            case .message:
+                return NSLocalizedString("Optional: Enter a custom message to be sent with your invitation.", comment: "Footer text for Invite People message field.")
+            default:
+                return nil
+            }
+        }
     }
 }
 
