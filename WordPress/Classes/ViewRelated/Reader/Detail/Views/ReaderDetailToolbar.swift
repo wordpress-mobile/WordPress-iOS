@@ -183,10 +183,9 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             return
         }
 
-        let postLikeCount = post.likeCount?.intValue ?? 0
-        likeButton.isEnabled = (ReaderHelpers.isLoggedIn() || postLikeCount > 0) && !post.isExternal
+        let likeCount = post.likeCount?.intValue ?? 0
+        likeButton.isEnabled = (ReaderHelpers.isLoggedIn() || likeCount > 0) && !post.isExternal
         // as by design spec, only display like counts
-        let likeCount = post.likeCount()?.intValue ?? 0
         let title = likeLabel(count: likeCount)
 
         let selected = post.isLiked
