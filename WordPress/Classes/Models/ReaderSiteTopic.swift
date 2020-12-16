@@ -18,6 +18,7 @@ import Foundation
     @NSManaged open var siteID: NSNumber
     @NSManaged open var siteURL: String
     @NSManaged open var subscriberCount: NSNumber
+    @NSManaged open var unseenCount: NSNumber
     @NSManaged open var cards: NSOrderedSet?
 
     override open class var TopicType: String {
