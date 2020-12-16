@@ -392,7 +392,7 @@ private extension InvitePersonViewController {
     }
 
     func setupPlaceholderLabel() {
-        placeholderLabel.text = NSLocalizedString("Custom message...", comment: "Placeholder for Invite People message field.")
+        placeholderLabel.text = NSLocalizedString("Custom message…", comment: "Placeholder for Invite People message field.")
         placeholderLabel.font = WPStyleGuide.tableviewTextFont()
         placeholderLabel.textColor = UIColor.textPlaceholder
     }
