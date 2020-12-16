@@ -66,6 +66,8 @@ class InvitePersonViewController: UITableViewController {
         return roles
     }
 
+    private let rolesDefinitionUrl = "https://wordpress.com/support/user-roles/"
+
     // MARK: - Outlets
 
     /// Username Cell
@@ -128,6 +130,7 @@ class InvitePersonViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        addTapGesture(toView: view, inSection: section)
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
@@ -303,6 +306,27 @@ extension InvitePersonViewController {
 
         // Note: This viewController might not be visible anymore
         alertController.presentFromRootViewController()
+    }
+
+    private func addTapGesture(toView footerView: UIView, inSection section: Int) {
+        guard let footer = footerView as? UITableViewHeaderFooterView,
+           Section(rawValue: section) == .role else {
+            return
+        }
+
+        footer.textLabel?.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleRoleFooterTap(_:)))
+        footer.addGestureRecognizer(tap)
+    }
+
+    @objc private func handleRoleFooterTap(_ sender: UITapGestureRecognizer) {
+        guard let url = URL(string: rolesDefinitionUrl) else {
+            return
+        }
+
+        let webViewController = WebViewControllerFactory.controller(url: url)
+        let navController = UINavigationController(rootViewController: webViewController)
+        present(navController, animated: true)
     }
 }
 
