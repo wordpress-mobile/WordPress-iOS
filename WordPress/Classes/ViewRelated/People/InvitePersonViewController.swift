@@ -74,7 +74,7 @@ class InvitePersonViewController: UITableViewController {
 
     /// Last Section Footer Text
     ///
-    fileprivate let lastSectionFooterText = NSLocalizedString("Add a custom message (optional).", comment: "Invite Footer Text")
+    private let lastSectionFooterText = NSLocalizedString("Optional: Enter a custom message to be sent with your invitation.", comment: "Invite Footer Text")
 
 
     // MARK: - Outlets
@@ -97,9 +97,17 @@ class InvitePersonViewController: UITableViewController {
         }
     }
 
+    /// Message Placeholder Label
+    ///
+    @IBOutlet private var placeholderLabel: UILabel! {
+        didSet {
+            setupPlaceholderLabel()
+        }
+    }
+
     /// Message Cell
     ///
-    @IBOutlet fileprivate var messageTextView: UITextView! {
+    @IBOutlet private var messageTextView: UITextView! {
         didSet {
             setupMessageTextView()
             refreshMessageTextView()
@@ -383,8 +391,14 @@ private extension InvitePersonViewController {
         messageTextView.backgroundColor = .listForeground
     }
 
+    func setupPlaceholderLabel() {
+        placeholderLabel.text = NSLocalizedString("Custom message…", comment: "Placeholder for Invite People message field.")
+        placeholderLabel.font = WPStyleGuide.tableviewTextFont()
+        placeholderLabel.textColor = UIColor.textPlaceholder
+    }
+
     func setupNavigationBar() {
-        title = NSLocalizedString("Add a Person", comment: "Invite People Title")
+        title = NSLocalizedString("Invite People", comment: "Invite People Title")
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                            target: self,
@@ -430,5 +444,10 @@ private extension InvitePersonViewController {
 
     func refreshMessageTextView() {
         messageTextView.text = message
+        refreshPlaceholderLabel()
+    }
+
+    func refreshPlaceholderLabel() {
+        placeholderLabel?.isHidden = !messageTextView.text.isEmpty
     }
 }

@@ -79,7 +79,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     /// Does the blog support setting the homepage type and pages?
     BlogFeatureHomepageSettings,
     /// Does the blog support stories?
-    BlogFeatureStories
+    BlogFeatureStories,
+    /// Does the blog support Jetpack Scan?
+    BlogFeatureJetpackScan
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
@@ -144,6 +146,9 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quotaSpaceAllowed;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quotaSpaceUsed;
 @property (nullable, nonatomic, retain) NSSet<PageTemplateCategory *> *pageTemplateCategories;
+
+/// Helper flag that's set to to keep track if this blog supports Jetpack scan or not
+@property (nonatomic, assign, readwrite) BOOL supportsJetpackScan;
 
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 

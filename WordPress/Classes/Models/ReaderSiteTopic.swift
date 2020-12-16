@@ -11,6 +11,7 @@ import Foundation
     @NSManaged open var isJetpack: Bool
     @NSManaged open var isPrivate: Bool
     @NSManaged open var isVisible: Bool
+    @NSManaged open var organizationID: Int
     @NSManaged open var postCount: NSNumber
     @NSManaged open var siteBlavatar: String
     @NSManaged open var siteDescription: String
@@ -27,6 +28,14 @@ import Foundation
         get {
             return siteID.intValue == 0
         }
+    }
+
+    var organizationType: SiteOrganizationType {
+        SiteOrganizationType(rawValue: organizationID) ?? .none
+    }
+
+    var isP2Type: Bool {
+        return organizationType == .p2 || organizationType == .automattic
     }
 
     @objc open var blogNameToDisplay: String {
@@ -48,6 +57,7 @@ import Foundation
         isJetpack = remoteInfo.isJetpack
         isPrivate = remoteInfo.isPrivate
         isVisible = remoteInfo.isVisible
+        organizationID = remoteInfo.organizationID.intValue
         postCount = remoteInfo.postCount ?? 0
         showInMenu = false
         siteBlavatar = remoteInfo.siteBlavatar ?? ""

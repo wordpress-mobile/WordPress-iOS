@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-26 18:44:26+0000 */
+/* Translation-Revision-Date: 2020-12-10 18:55:58+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -242,9 +242,6 @@
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
-
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "2 von 2";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
@@ -948,6 +945,9 @@
 "By signing up, you agree to our _Terms of Service_." = "Durch die Registrierung stimmst du unseren Geschäftsbedingungen zu.";
 
 /* No comment provided by engineer. */
+"CHOOSE A FILE" = "Datei auswählen";
+
+/* No comment provided by engineer. */
 "CUSTOMIZE" = "ANPASSEN";
 
 /* Label for size of media while it's being calculated. */
@@ -991,6 +991,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1152,17 +1153,14 @@
 /* Title for the screen to pick a design and homepage for a site. */
 "Choose a design" = "Wähle ein Design";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "Wähle einen Domain-Namen für deine Website aus";
+/* Select domain name. Title */
+"Choose a domain" = "Domain auswählen";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Wähle ein Theme";
 
 /* Label for Publish time picker */
 "Choose a time" = "Uhrzeit auswählen";
-
-/* Shortened version of the main title to be used in back navigation */
-"Choose design" = "Design auswählen";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Domain auswählen";
@@ -1512,6 +1510,9 @@
 /* No comment provided by engineer. */
 "Copy block" = "Block kopieren";
 
+/* No comment provided by engineer. */
+"Copy file URL" = "Datei-URL kopieren";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Könnte besser sein";
 
@@ -1656,9 +1657,6 @@
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Erstelle deine Website";
-
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "Erstellt eine neue Website mit der angegebenen Information.";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, or page" = "Erstellt einen neuen Beitrag oder eine neue Seite";
@@ -1827,6 +1825,9 @@
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Beschreibung";
+
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "Gestalten";
 
 /* Title for the desktop web preview */
 "Desktop" = "Desktop";
@@ -2067,6 +2068,9 @@
    Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Artikel bearbeiten";
+
+/* No comment provided by engineer. */
+"Edit file" = "Datei bearbeiten";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Bearbeite neue Beiträge und Seiten mit dem Block-Editor.";
@@ -2421,6 +2425,9 @@
 
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "Heruntergeladene Dateien";
+
+/* No comment provided by engineer. */
+"File block settings" = "Blockeinstellungen der Datei";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Dateiname";
@@ -2804,8 +2811,8 @@ translators: sample content for \"Team\" page template */
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "Wenn du diesen Leser entfernst, kann der Leser diese Website nicht besuchen.";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "Wenn du eine Website haben möchtest, aber ohne deine aktuellen Beiträge und Seiten, kann unser Support-Team deine Beiträge, Seiten, Medien und Kommentare für dich löschen.\n\nSo bleiben deine Website und URL aktiv, aber du kannst von Neuem mit der Erstellung von Inhalten beginnen. Kontaktiere uns einfach, damit wir deine aktuellen Inhalte entfernen.";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "Wenn du eine Website haben möchtest, aber ohne deine aktuellen Beiträge und Seiten, kann unser Support-Team deine Beiträge, Seiten, Medien und Kommentare für dich löschen.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Wenn du dir nicht sicher bist, was gelöscht wird, oder du Hilfe benötigst: Keine Sorge, unser Support-Team ist da, um alle deine Fragen zu beantworten.";
@@ -2885,9 +2892,6 @@ translators: sample content for \"Team\" page template */
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Medien einfügen";
-
-/* No comment provided by engineer. */
-"Insert mention" = "Erwähnung einfügen";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Ausgewähltes einfügen";
@@ -4153,7 +4157,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Wähle einen Benutzernamen aus";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "Wähle ein Layout für deine Startseite aus, das dir gefällt. Du kannst es später jederzeit ändern oder anpassen";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Wähle ein Layout für deine Startseite aus, das dir gefällt. Du kannst es später bearbeiten und anpassen.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Planung";
@@ -4421,7 +4425,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
+   Title for screen to preview a selected homepage design
    Title for screen to preview a static content. */
 "Preview" = "Vorschau";
 
@@ -6142,8 +6148,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Dies ist Beispielinhalt, der dem Template enthalten ist, um die Funktionen zu veranschaulichen. Entferne oder ersetze ihn durch deine eigenen Worte und Medien.";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "Hier finden dich Benutzer im Internet";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "Hier wirst du im Internet gefunden.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Dieses Medienelement wurde gelöscht.";
@@ -6172,6 +6178,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "Dadurch werden alle zugehörigen Dateien und Daten gelöscht.";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "So bleiben deine Website und URL aktiv, aber du kannst mit dem Erstellen der Inhalte neu beginnen. Kontaktiere uns einfach, damit wir deine aktuellen Inhalte entfernen.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6310,7 +6319,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "Übersetzen";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "Entfernen";
 
@@ -6452,7 +6462,7 @@ translators: sample content for \"Services\" page template */
 "Unable to upload 1 draft post, 1 file" = "1 Beitragsentwurf, 1 Datei konnten nicht hochgeladen werden.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 post" = "1 Beitrag konnten nicht hochgeladen werden";
+"Unable to upload 1 post" = "1 Beitrag konnte nicht hochgeladen werden";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
 "Unable to upload 1 post, %ld files" = "1 Beitrag, %Id Dateien konnten nicht hochgeladen werden";

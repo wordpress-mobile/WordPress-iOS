@@ -1,5 +1,1 @@
-Perihal Jetpack: Akses semua fitur Jetpack Anda dengan cepat dan mudah, termasuk statistik, log aktivitas, dan pengaturan ANda.
-
-Bantuan & Dukungan: Kami telah memperbaiki beberapa masalah yang terjadi saat Anda mencoba menghubungi tim dukungan kami. Saat menghubungi kami, sekarang Anda dapat memasukkan karakter selain abjad, dan aplikasi tidak akan macet lagi saat Anda memasukkan alamat email.
-
-Pembaruan Pemabaca: Kami juga telah memperbaiki masalah tampilan pada Pembaca, dan komentar tidak akan lagi dicetak miring dalam pengaturan asal.
+Dengan gembira kami umumkan beberapa perubahan menarik dalam aplikasi seluler WordPress.com. Ketika membuat situs, tersedia opsi untuk langsung memilih desain halaman situs. Kami juga memudahkan pengaturan dimensi gambar sampul dan kolom. Selain itu, blok Tombol dan Ikon Media Sosial sekarang memiliki pemilih tautan. Kami telah memperbaiki bug yang mengganggu Anda, termasuk bug yang membuat @-penyebutan tidak berfungsi dalam situs WP.com walau plugin telah diaktifkan, dan bug yang membuat tautan "tel:" dan "mailto:" pada halaman kontak tidak berfungsi dengan benar.

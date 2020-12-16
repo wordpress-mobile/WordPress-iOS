@@ -250,12 +250,12 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
                                               WPAppAnalyticsKeyBlogID: siteID
                                               };
                 if (like) {
-                    [WPAppAnalytics track:WPAnalyticsStatReaderArticleLiked withProperties:properties];
+                    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleLiked properties:properties];
                     if (railcar) {
-                        [WPAppAnalytics trackTrainTracksInteraction:WPAnalyticsStatReaderArticleLiked withProperties:railcar];
+                        [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleLiked properties:railcar];
                     }
                 } else {
-                    [WPAppAnalytics track:WPAnalyticsStatReaderArticleUnliked withProperties:properties];
+                    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleUnliked properties:properties];
                 }
             }
             if (success) {
@@ -358,6 +358,12 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
     // Define success block
     void (^successBlock)(void) = ^void() {
+        
+        // Update subscription count
+        NSInteger oldSubscriptionCount = [WPAnalytics subscriptionCount];
+        NSInteger newSubscriptionCount = follow ? oldSubscriptionCount + 1 : oldSubscriptionCount - 1;
+        [WPAnalytics setSubscriptionCount:newSubscriptionCount];
+        
         if (shouldRefreshFollowedPosts) {
             [self refreshPostsForFollowedTopic];
         }

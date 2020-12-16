@@ -232,7 +232,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     NSMutableDictionary *properties = [NSMutableDictionary dictionary];
     properties[WPAppAnalyticsKeyPostID] = self.post.postID;
     properties[WPAppAnalyticsKeyBlogID] = self.post.siteID;
-    [WPAppAnalytics track:WPAnalyticsStatReaderArticleCommentsOpened withProperties:properties];
+    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleCommentsOpened properties:properties];
 }
 
 -(void)trackCommentLikedOrUnliked:(Comment *) comment {
@@ -247,7 +247,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     NSMutableDictionary *properties = [NSMutableDictionary dictionary];
     properties[WPAppAnalyticsKeyPostID] = post.postID;
     properties[WPAppAnalyticsKeyBlogID] = post.siteID;
-    [WPAppAnalytics track: stat withProperties:properties];
+    [WPAnalytics trackReaderStat:stat properties:properties];
 }
 
 -(void)trackReplyTo:(BOOL)replyTarget {
@@ -262,7 +262,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         properties[WPAppAnalyticsKeyFeedID] = post.feedID;
         properties[WPAppAnalyticsKeyFeedItemID] = post.feedItemID;
     }
-    [WPAppAnalytics track:WPAnalyticsStatReaderArticleCommentedOn withProperties:properties];
+    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleCommentedOn properties:properties];
     if (railcar) {
         [WPAppAnalytics trackTrainTracksInteraction:WPAnalyticsStatTrainTracksInteract withProperties:railcar];
     }
@@ -1235,8 +1235,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         DDLogError(@"Error toggling subscription status: %@", error);
 
         NSString *title = newIsSubscribed
-            ? NSLocalizedString(@"There has been an unexpected error while subscribing to the comments", "The app failed to subscribe to the comments for the post")
-            : NSLocalizedString(@"There has been an unexpected error while unsubscribing from the comments", "The app failed to unsubscribe from the comments for the post");
+            ? NSLocalizedString(@"Could not subscribe to comments", "The app failed to subscribe to the comments for the post")
+            : NSLocalizedString(@"Could not unsubscribe from comments", "The app failed to unsubscribe from the comments for the post");
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [generator notificationOccurred:UINotificationFeedbackTypeError];

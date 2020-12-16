@@ -1,5 +1,1 @@
-Alles rund um Jetpack: Greife schnell und einfach auf all deine Jetpack-Funktionen zu, darunter auch auf die Statistiken, dein Aktivitätsprotokoll und die Einstellungen.
-
-Hilfe und Support: Wir haben ein paar Fehler behoben, die bei der Kontaktaufnahme mit unserem Support-Team auftraten. Wenn du uns kontaktierst, kannst du jetzt auch nicht-alphanumerische Zeichen nutzen. Außerdem stürzt deine App nicht mehr ab, wenn du deine E-Mail-Adresse eingibst.
-
-Updates am Reader: Wir haben einen Anzeigefehler im Reader behoben und Kommentare sind nicht mehr standardmäßig kursiv.
+Wir freuen uns sehr, dir ein paar aufregende Änderungen an der WordPress-Mobil-App vorzustellen. Wenn du eine Website erstellst, hast du die Möglichkeit, dir direkt ein Design für die Startseite auszusuchen. Außerdem ist es jetzt leichter, die Dimensionen für das Titelbid und die Spalten einzustellen, und der Button sowie die Social-Media-Icon-Blöcke verfügen jetzt über eine Linkauswahl. Wir haben Fehler behoben, von denen wir wissen, dass sie dich gestört haben. Jetzt funktioniert die @-mentions-Funktion auf WP.com-Websites einwandfrei, auch wenn Plugins aktiviert sind, und „tel:“- sowie „mailto:“-Links auf den Kontaktseiten können problemlos geladen werden.
