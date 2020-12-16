@@ -127,14 +127,13 @@ private extension CachedAnnouncementsStore {
 
     var cacheExpired: Bool {
         guard let date = cache.date,
-              let elapsedTime = Calendar.current.dateComponents([.minute], from: date, to: Date()).minute else {
+              let elapsedTime = Calendar.current.dateComponents([.hour], from: date, to: Date()).hour else {
             return true
         }
         return elapsedTime >= Self.cacheExpirationTime
     }
-    // Time, in minutes, after which the cache expires (equivalent to 24 hours)
-    // TODO: this is not in minutes for convenience of testing. Will be converted in hours before merging
-    static let cacheExpirationTime = 1
+    // Time, in hours, after which the cache expires
+    static let cacheExpirationTime = 24
 
     // Asynchronously update cache without triggering state changes
     func updateCacheIfNeeded() {
