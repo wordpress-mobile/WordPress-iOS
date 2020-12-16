@@ -84,6 +84,7 @@ class CachedAnnouncementsStore: AnnouncementsStore {
         state = .loading
         if let announcements = cache.announcements, cacheIsValid(for: announcements) {
             state = .ready(announcements)
+            updateCacheIfNeeded()
             return
         }
         // clear cache if it's invalid
@@ -101,6 +102,7 @@ class CachedAnnouncementsStore: AnnouncementsStore {
                 self?.state = .ready(announcements)
             case .failure(let error):
                 self?.state = .error(error)
+                DDLogError("Feature announcements error: unable to fetch remote announcements - \(error.localizedDescription)")
             }
         }
     }
@@ -131,6 +133,27 @@ private extension CachedAnnouncementsStore {
     // Time, in minutes, after which the cache expires (equivalent to 24 hours)
     // TODO: this is not in minutes for convenience of testing. Will be converted in hours before merging
     static let cacheExpirationTime = 1440
+
+    // Asynchronously update cache without triggering state changes
+    func updateCacheIfNeeded() {
+        guard cacheExpired else {
+            return
+        }
+
+        DispatchQueue.global().async {
+            self.service.getAnnouncements(appId: Identifiers.appId,
+                                          appVersion: Identifiers.appVersion,
+                                          locale: Locale.current.identifier) { [weak self] result in
+
+                switch result {
+                case .success(let announcements):
+                    self?.cache.announcements = announcements
+                case .failure(let error):
+                    DDLogError("Feature announcements error: unable to fetch remote announcements - \(error.localizedDescription)")
+                }
+            }
+        }
+    }
 
     enum Identifiers {
         // 2 is the identifier of WordPress-iOS in the backend
