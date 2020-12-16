@@ -97,9 +97,17 @@ class InvitePersonViewController: UITableViewController {
         }
     }
 
+    /// Message Placeholder Label
+    ///
+    @IBOutlet private var placeholderLabel: UILabel! {
+        didSet {
+            setupPlaceholderLabel()
+        }
+    }
+
     /// Message Cell
     ///
-    @IBOutlet fileprivate var messageTextView: UITextView! {
+    @IBOutlet private var messageTextView: UITextView! {
         didSet {
             setupMessageTextView()
             refreshMessageTextView()
@@ -383,6 +391,12 @@ private extension InvitePersonViewController {
         messageTextView.backgroundColor = .listForeground
     }
 
+    func setupPlaceholderLabel() {
+        placeholderLabel.text = NSLocalizedString("Custom message...", comment: "Placeholder for Invite People message field.")
+        placeholderLabel.font = WPStyleGuide.tableviewTextFont()
+        placeholderLabel.textColor = UIColor.textPlaceholder
+    }
+
     func setupNavigationBar() {
         title = NSLocalizedString("Invite People", comment: "Invite People Title")
 
@@ -430,5 +444,10 @@ private extension InvitePersonViewController {
 
     func refreshMessageTextView() {
         messageTextView.text = message
+        refreshPlaceholderLabel()
+    }
+
+    func refreshPlaceholderLabel() {
+        placeholderLabel?.isHidden = !messageTextView.text.isEmpty
     }
 }
