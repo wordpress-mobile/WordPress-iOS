@@ -624,6 +624,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 addSetParentAction(to: alertController, for: page, at: indexPath)
                 addSetHomepageAction(to: alertController, for: page, at: indexPath)
                 addSetPostsPageAction(to: alertController, for: page, at: indexPath)
+                addDuplicateAction(to: alertController, for: page)
 
                 alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
                     guard let strongSelf = self,
@@ -666,6 +667,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 })
 
                 addSetParentAction(to: alertController, for: page, at: indexPath)
+                addDuplicateAction(to: alertController, for: page)
 
                 alertController.addActionWithTitle(publishButtonTitle, style: .default, handler: { [weak self] (action) in
                     guard let strongSelf = self,
@@ -708,6 +710,19 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         controller.addActionWithTitle(buttonTitle, style: .default, handler: { [weak self] _ in
             if let page = self?.pageForObjectID(page.objectID) {
                 self?.editPage(page)
+            }
+        })
+    }
+
+    private func addDuplicateAction(to controller: UIAlertController, for page: AbstractPost) {
+        if page.status != .publish && page.status != .draft {
+            return
+        }
+
+        let buttonTitle = NSLocalizedString("Duplicate", comment: "Label for page duplicate option. Tapping creates a copy of the page.")
+        controller.addActionWithTitle(buttonTitle, style: .default, handler: { [weak self] _ in
+            if let page = self?.pageForObjectID(page.objectID) {
+                self?.editPage(page) //TODO
             }
         })
     }
