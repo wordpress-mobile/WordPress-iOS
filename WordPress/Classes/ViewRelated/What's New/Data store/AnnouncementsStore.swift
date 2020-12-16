@@ -53,6 +53,8 @@ class CachedAnnouncementsStore: AnnouncementsStore {
         }
     }
 
+    private var cacheState: State = .ready([])
+
     var announcements: [WordPressKit.Announcement] {
         switch state {
         case .loading, .error:
@@ -132,14 +134,14 @@ private extension CachedAnnouncementsStore {
     }
     // Time, in minutes, after which the cache expires (equivalent to 24 hours)
     // TODO: this is not in minutes for convenience of testing. Will be converted in hours before merging
-    static let cacheExpirationTime = 1440
+    static let cacheExpirationTime = 1
 
     // Asynchronously update cache without triggering state changes
     func updateCacheIfNeeded() {
-        guard cacheExpired else {
+        guard cacheExpired, !cacheState.isLoading else {
             return
         }
-
+        cacheState = .loading
         DispatchQueue.global().async {
             self.service.getAnnouncements(appId: Identifiers.appId,
                                           appVersion: Identifiers.appVersion,
@@ -148,8 +150,10 @@ private extension CachedAnnouncementsStore {
                 switch result {
                 case .success(let announcements):
                     self?.cache.announcements = announcements
+                    self?.cacheState = .ready([])
                 case .failure(let error):
                     DDLogError("Feature announcements error: unable to fetch remote announcements - \(error.localizedDescription)")
+                    self?.cacheState = .error(error)
                 }
             }
         }
