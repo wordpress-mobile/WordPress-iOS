@@ -28,22 +28,31 @@ class FilterBarView: UIScrollView {
             heightAnchor.constraint(equalTo: filterStackView.heightAnchor, constant: 2 * Constants.filterBarVerticalPadding)
         ])
 
-        let separator = UIView()
-        separator.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(separator)
-        NSLayoutConstraint.activate([
-            separator.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 16),
-            separator.leftAnchor.constraint(equalTo: leftAnchor),
-            separator.widthAnchor.constraint(equalTo: widthAnchor),
-            separator.heightAnchor.constraint(equalToConstant: 1)
-        ])
-        WPStyleGuide.applyBorderStyle(separator)
-
         // Ensure that the stackview is right aligned in RTL layouts
         if userInterfaceLayoutDirection() == .rightToLeft {
             transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
             filterStackView.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
         }
+    }
+
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+
+        guard let superview = superview else {
+            return
+        }
+
+        let separator = UIView()
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        superview.addSubview(separator)
+        NSLayoutConstraint.activate([
+            separator.bottomAnchor.constraint(equalTo: bottomAnchor),
+            separator.trailingAnchor.constraint(equalTo: superview.trailingAnchor),
+            separator.leadingAnchor.constraint(equalTo: superview.leadingAnchor),
+            separator.heightAnchor.constraint(equalToConstant: 1)
+        ])
+        WPStyleGuide.applyBorderStyle(separator)
+        separator.layer.zPosition = 10
     }
 
     required init?(coder aDecoder: NSCoder) {
