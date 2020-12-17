@@ -11,6 +11,7 @@ class CalendarViewController: UIViewController {
     private var startDateLabel: UILabel!
     private var separatorDateLabel: UILabel!
     private var endDateLabel: UILabel!
+    private let gradient = GradientView()
 
     private var startDate: Date?
     private var endDate: Date?
@@ -25,6 +26,7 @@ class CalendarViewController: UIViewController {
 
     private enum Constants {
         static let headerPadding: CGFloat = 16
+        static let endDateLabel = NSLocalizedString("End Date", comment: "Placeholder for the end date in calendar range selection")
     }
 
     /// Creates a full screen year calendar controller
@@ -69,6 +71,8 @@ class CalendarViewController: UIViewController {
 
         setupNavButtons()
 
+        setUpGradient()
+
         calendarCollectionView.calDataSource.didSelect = { [weak self] startDate, endDate in
             self?.updateDates(startDate: startDate, endDate: endDate)
         }
@@ -86,6 +90,12 @@ class CalendarViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
 
         calendarCollectionView.reloadData()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        setUpGradientColors()
     }
 
     private func setupNavButtons() {
@@ -110,15 +120,17 @@ class CalendarViewController: UIViewController {
 
         startDateLabel.text = formatter.string(from: startDate)
         startDateLabel.textColor = .text
-        startDateLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+        startDateLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
 
         if let endDate = endDate {
             endDateLabel.text = formatter.string(from: endDate)
             endDateLabel.textColor = .text
-            endDateLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+            endDateLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
             separatorDateLabel.textColor = .text
-            separatorDateLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+            separatorDateLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         } else {
+            endDateLabel.text = Constants.endDateLabel
+            endDateLabel.font = WPStyleGuide.fontForTextStyle(.title3)
             endDateLabel.textColor = .textSubtle
             separatorDateLabel.textColor = .textSubtle
         }
@@ -126,11 +138,11 @@ class CalendarViewController: UIViewController {
 
     private func startEndDateHeader() -> UIView {
         let header = UIStackView(frame: .zero)
-        header.distribution = .fillProportionally
+        header.distribution = .fill
 
         let startDate = UILabel()
         startDateLabel = startDate
-        startDate.font = .preferredFont(forTextStyle: .body)
+        startDate.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         if view.effectiveUserInterfaceLayoutDirection == .leftToRight {
             // swiftlint:disable:next inverse_text_alignment
             startDate.textAlignment = .right
@@ -139,16 +151,18 @@ class CalendarViewController: UIViewController {
             startDate.textAlignment = .left
         }
         header.addArrangedSubview(startDate)
+        startDate.widthAnchor.constraint(equalTo: header.widthAnchor, multiplier: 0.47).isActive = true
 
         let separator = UILabel()
         separatorDateLabel = separator
-        separator.font = .preferredFont(forTextStyle: .body)
+        separator.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         separator.textAlignment = .center
         header.addArrangedSubview(separator)
+        separator.widthAnchor.constraint(equalTo: header.widthAnchor, multiplier: 0.06).isActive = true
 
         let endDate = UILabel()
         endDateLabel = endDate
-        endDate.font = .preferredFont(forTextStyle: .body)
+        endDate.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         if view.effectiveUserInterfaceLayoutDirection == .leftToRight {
             // swiftlint:disable:next natural_text_alignment
             endDate.textAlignment = .left
@@ -157,6 +171,7 @@ class CalendarViewController: UIViewController {
             endDate.textAlignment = .right
         }
         header.addArrangedSubview(endDate)
+        endDate.widthAnchor.constraint(equalTo: header.widthAnchor, multiplier: 0.47).isActive = true
 
         resetLabels()
 
@@ -168,10 +183,18 @@ class CalendarViewController: UIViewController {
             calendarCollectionView.superview?.layoutIfNeeded()
         }
 
-        calendarCollectionView.scrollToDate(startDate ?? Date(),
-                                            animateScroll: true,
-                                            preferredScrollPosition: .centeredVertically,
-                                            extraAddedOffset: -(self.calendarCollectionView.frame.height / 2))
+        if let startDate = startDate {
+            calendarCollectionView.scrollToDate(startDate,
+                                                animateScroll: true,
+                                                preferredScrollPosition: .centeredVertically,
+                                                extraAddedOffset: -(self.calendarCollectionView.frame.height / 2))
+        } else {
+            calendarCollectionView.setContentOffset(CGPoint(
+                                                        x: 0,
+                                                        y: calendarCollectionView.contentSize.height - calendarCollectionView.frame.size.height
+            ), animated: false)
+        }
+
     }
 
     private func resetLabels() {
@@ -179,12 +202,32 @@ class CalendarViewController: UIViewController {
 
         separatorDateLabel.text = "-"
 
-        endDateLabel.text = NSLocalizedString("End Date", comment: "Placeholder for the end date in calendar range selection")
+        endDateLabel.text = Constants.endDateLabel
 
         [startDateLabel, separatorDateLabel, endDateLabel].forEach { label in
             label?.textColor = .textSubtle
-            label?.font = .preferredFont(forTextStyle: .body)
+            label?.font = WPStyleGuide.fontForTextStyle(.title3)
         }
+    }
+
+    private func setUpGradient() {
+        gradient.isUserInteractionEnabled = false
+        gradient.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(gradient)
+
+        NSLayoutConstraint.activate([
+            gradient.heightAnchor.constraint(equalToConstant: 50),
+            gradient.topAnchor.constraint(equalTo: calendarCollectionView.topAnchor),
+            gradient.leadingAnchor.constraint(equalTo: calendarCollectionView.leadingAnchor),
+            gradient.trailingAnchor.constraint(equalTo: calendarCollectionView.trailingAnchor)
+        ])
+
+        setUpGradientColors()
+    }
+
+    private func setUpGradientColors() {
+        gradient.fromColor = .basicBackground
+        gradient.toColor = UIColor.basicBackground.withAlphaComponent(0)
     }
 
     @objc private func done() {
