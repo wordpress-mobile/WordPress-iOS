@@ -67,6 +67,7 @@ class InvitePersonViewController: UITableViewController {
     }
 
     private let rolesDefinitionUrl = "https://wordpress.com/support/user-roles/"
+    private let messageCharacterLimit = 500
 
     // MARK: - Outlets
 
@@ -168,7 +169,7 @@ class InvitePersonViewController: UITableViewController {
         }
 
         let title = NSLocalizedString("Recipient", comment: "Invite Person: Email or Username Edition Title")
-        let placeholder = NSLocalizedString("Email or Username...", comment: "A placeholder for the username textfield.")
+        let placeholder = NSLocalizedString("Email or Username…", comment: "A placeholder for the username textfield.")
         let hint = NSLocalizedString("Email or Username of the person that should receive your invitation.", comment: "Username Placeholder")
 
         textViewController.title = title
@@ -209,6 +210,7 @@ class InvitePersonViewController: UITableViewController {
         textViewController.text = message
         textViewController.hint = hint
         textViewController.isPassword = false
+        textViewController.maxCharacterCount = messageCharacterLimit
         textViewController.onValueChanged = { [unowned self] value in
             self.message = value
         }
@@ -315,6 +317,7 @@ extension InvitePersonViewController {
         }
 
         footer.textLabel?.isUserInteractionEnabled = true
+        footer.accessibilityTraits = .link
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleRoleFooterTap(_:)))
         footer.addGestureRecognizer(tap)
     }
@@ -462,7 +465,7 @@ private extension InvitePersonViewController {
 
     func refreshUsernameCell() {
         guard let usernameOrEmail = usernameOrEmail?.nonEmptyString() else {
-            usernameCell.textLabel?.text = NSLocalizedString("Email or Username...", comment: "Invite Username Placeholder")
+            usernameCell.textLabel?.text = NSLocalizedString("Email or Username…", comment: "Invite Username Placeholder")
             usernameCell.textLabel?.textColor = .textPlaceholder
             return
         }
