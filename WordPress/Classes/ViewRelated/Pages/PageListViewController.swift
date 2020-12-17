@@ -491,6 +491,17 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         present(editorViewController, animated: false)
     }
 
+    fileprivate func copyPage(_ page: Page) {
+        // Copy Page
+        let postService = PostService(managedObjectContext: managedObjectContext())
+        let newPage = postService.createDraftPage(for: page.blog)
+        newPage.postTitle = page.postTitle
+        newPage.content = page.content
+        // Open Editor
+        let editorViewController = EditPageViewController(page: newPage)
+        present(editorViewController, animated: false)
+    }
+
     fileprivate func retryPage(_ apost: AbstractPost) {
         PostCoordinator.shared.save(apost)
     }
@@ -722,7 +733,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let buttonTitle = NSLocalizedString("Duplicate", comment: "Label for page duplicate option. Tapping creates a copy of the page.")
         controller.addActionWithTitle(buttonTitle, style: .default, handler: { [weak self] _ in
             if let page = self?.pageForObjectID(page.objectID) {
-                self?.editPage(page) //TODO
+                self?.copyPage(page)
             }
         })
     }
