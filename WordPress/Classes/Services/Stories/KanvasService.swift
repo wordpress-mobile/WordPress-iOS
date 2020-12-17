@@ -9,13 +9,15 @@ protocol CameraHandlerDelegate: class {
 class KanvasService {
     weak var delegate: CameraHandlerDelegate?
 
+    private static let useMetal = true
+
     static var cameraSettings: CameraSettings {
         let settings = CameraSettings()
         settings.features.ghostFrame = true
-//        settings.features.metalPreview = true
-//        settings.features.metalFilters = true
-        settings.features.openGLPreview = true
-        settings.features.openGLCapture = true
+        settings.features.metalPreview = useMetal
+        settings.features.metalFilters = useMetal
+        settings.features.openGLPreview = !useMetal
+        settings.features.openGLCapture = !useMetal
         settings.features.cameraFilters = false
         settings.features.experimentalCameraFilters = true
         settings.features.editor = true
