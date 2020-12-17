@@ -887,7 +887,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.subscriberCount = siteInfo.subscriberCount;
     topic.title = siteInfo.siteName;
     topic.type = ReaderSiteTopic.TopicType;
-    topic.unseenCount = siteInfo.unseenCount;
+    topic.unseenCount = [siteInfo.unseenCount integerValue];
     
     topic.postSubscription = [self postSubscriptionFor:siteInfo topic:topic];
     topic.emailSubscription = [self emailSubscriptionFor:siteInfo topic:topic];
