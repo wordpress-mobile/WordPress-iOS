@@ -212,7 +212,8 @@ class InvitePersonViewController: UITableViewController {
         }
 
         let title = NSLocalizedString("Message", comment: "Invite Message Editor's Title")
-        let hint = NSLocalizedString("Optional message to be included in the invitation.", comment: "Invite: Message Hint")
+        let hintFormat = NSLocalizedString("Optional message up to %1$d characters to be included in the invitation.", comment: "Invite: Message Hint. %1$d is the maximum number of characters allowed.")
+        let hint = String(format: hintFormat, messageCharacterLimit)
 
         textViewController.title = title
         textViewController.text = message
