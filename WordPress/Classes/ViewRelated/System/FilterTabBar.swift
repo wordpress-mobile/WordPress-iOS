@@ -424,7 +424,7 @@ class FilterTabBar: UIControl {
     ///
     private func scroll(to tab: UIButton, animated: Bool = true) {
         // Check the bar has enough content to scroll
-        guard scrollView.contentSize.width > scrollView.frame.width else {
+        guard scrollView.contentSize.width > scrollView.frame.width, bounds.width > 0 else {
             return
         }
 
