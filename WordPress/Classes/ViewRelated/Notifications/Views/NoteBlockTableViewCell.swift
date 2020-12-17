@@ -11,7 +11,11 @@ class NoteBlockTableViewCell: WPTableViewCell {
     ///
     /// - Note: After setting this property you should explicitly call `refreshSeparators` from within `UITableView.willDisplayCell`.
     ///
-    @objc var isBadge = false
+    @objc var isBadge = false {
+        didSet {
+            separatorsView.backgroundColor = WPStyleGuide.Notifications.blockBackgroundColorForRichText(isBadge)
+        }
+    }
 
     /// Indicates if the receiver is the last row in the group.
     ///

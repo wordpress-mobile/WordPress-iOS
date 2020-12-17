@@ -383,15 +383,14 @@ extension NotificationDetailsViewController {
     }
 
     func setupMainView() {
-        view.backgroundColor = .listBackground
+        view.backgroundColor = note.isBadge ? .ungroupedListBackground : .listBackground
     }
 
     func setupTableView() {
         tableView.separatorStyle            = .none
         tableView.keyboardDismissMode       = .interactive
-        tableView.backgroundColor           = .neutral(.shade5)
         tableView.accessibilityIdentifier   = NSLocalizedString("Notification Details Table", comment: "Notifications Details Accessibility Identifier")
-        tableView.backgroundColor           = .listBackground
+        tableView.backgroundColor           = note.isBadge ? .ungroupedListBackground : .listBackground
     }
 
     func setupTableViewCells() {

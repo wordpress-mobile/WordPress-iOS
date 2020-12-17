@@ -55,6 +55,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic themes;
 @dynamic media;
 @dynamic userSuggestions;
+@dynamic siteSuggestions;
 @dynamic menus;
 @dynamic menuLocations;
 @dynamic roles;
