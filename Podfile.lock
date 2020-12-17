@@ -504,8 +504,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
-  - WordPressAuthenticator (from `../../WordPressAuthenticator-iOS`)
-  - WordPressKit (from `../../WordPressKit-iOS`)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `038813344e1267e769620b9b3fb6bc9b7f4d57dd`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `01e08862b1b96b54e76d68da26221eb771e0e8ae`)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.14.0-beta.1)
   - WordPressUI (~> 1.9.0-beta.1)
@@ -654,9 +654,11 @@ EXTERNAL SOURCES:
     :submodules: true
     :tag: v1.43.0
   WordPressAuthenticator:
-    :path: "../../WordPressAuthenticator-iOS"
+    :commit: 038813344e1267e769620b9b3fb6bc9b7f4d57dd
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
-    :path: "../../WordPressKit-iOS"
+    :commit: 01e08862b1b96b54e76d68da26221eb771e0e8ae
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.43.0/third-party-podspecs/Yoga.podspec.json
 
@@ -675,6 +677,12 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
     :tag: v1.43.0
+  WordPressAuthenticator:
+    :commit: 038813344e1267e769620b9b3fb6bc9b7f4d57dd
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
+  WordPressKit:
+    :commit: 01e08862b1b96b54e76d68da26221eb771e0e8ae
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -771,6 +779,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 7b354fb44b130712d199fdf5eed474e39fd8da0d
+PODFILE CHECKSUM: 335651f2d0d41a3127e9d1c6b436f9ed141ab160
 
 COCOAPODS: 1.10.0
