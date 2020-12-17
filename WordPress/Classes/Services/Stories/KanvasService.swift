@@ -12,10 +12,10 @@ class KanvasService {
     static var cameraSettings: CameraSettings {
         let settings = CameraSettings()
         settings.features.ghostFrame = true
-        settings.features.metalPreview = true
-        settings.features.metalFilters = true
-        settings.features.openGLPreview = false
-        settings.features.openGLCapture = false
+//        settings.features.metalPreview = true
+//        settings.features.metalFilters = true
+        settings.features.openGLPreview = true
+        settings.features.openGLCapture = true
         settings.features.cameraFilters = false
         settings.features.experimentalCameraFilters = true
         settings.features.editor = true
@@ -23,7 +23,8 @@ class KanvasService {
         settings.features.editorFilters = false
         settings.features.editorText = true
         settings.features.editorMedia = true
-        settings.features.editorDrawing = true
+        settings.features.editorDrawing = false
+        settings.features.editorMedia = false
         settings.features.mediaPicking = true
         settings.features.editorPublishing = true
         settings.features.editorPostOptions = false
