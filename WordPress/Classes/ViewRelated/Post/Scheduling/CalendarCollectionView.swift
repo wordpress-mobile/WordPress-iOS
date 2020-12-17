@@ -100,8 +100,7 @@ class CalendarDataSource: JTACMonthViewDataSource {
             var dateComponent = DateComponents()
             dateComponent.year = -20
             let startDate = Calendar.current.date(byAdding: dateComponent, to: Date())
-            dateComponent.year = 1
-            let endDate = Calendar.current.date(byAdding: dateComponent, to: Date())
+            let endDate = Date().endOfMonth
 
             if let startDate = startDate, let endDate = endDate {
                 return ConfigurationParameters(startDate: startDate, endDate: endDate, calendar: self.calendar)
@@ -137,6 +136,11 @@ extension CalendarDataSource: JTACMonthViewDelegate {
 
     func calendar(_ calendar: JTACMonthView, didSelectDate date: Date, cell: JTACDayCell?, cellState: CellState, indexPath: IndexPath) {
         if style == .year {
+            // If the date is in the future, bail out
+            if date > Date() {
+                return
+            }
+
             if let firstDate = firstDate {
                 if let endDate = endDate {
                     // When tapping a selected firstDate or endDate reset the rest
@@ -253,14 +257,14 @@ class DateCell: JTACDayCell {
         NSLayoutConstraint.activate([
             leftPlaceholder.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.6),
             leftPlaceholder.heightAnchor.constraint(equalTo: dateLabel.heightAnchor),
-            leftPlaceholder.rightAnchor.constraint(equalTo: centerXAnchor),
+            leftPlaceholder.trailingAnchor.constraint(equalTo: centerXAnchor),
             leftPlaceholder.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
 
         NSLayoutConstraint.activate([
             rightPlaceholder.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.5),
             rightPlaceholder.heightAnchor.constraint(equalTo: dateLabel.heightAnchor),
-            rightPlaceholder.leftAnchor.constraint(equalTo: centerXAnchor, constant: 0),
+            rightPlaceholder.leadingAnchor.constraint(equalTo: centerXAnchor, constant: 0),
             rightPlaceholder.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
 
@@ -321,7 +325,9 @@ extension DateCell {
             leftPlaceholder.backgroundColor = .clear
             rightPlaceholder.backgroundColor = .clear
             dateLabel.backgroundColor = .clear
-            if state.dateBelongsTo == .thisMonth {
+            if state.date > Date() {
+                textColor = .textSubtle
+            } else if state.dateBelongsTo == .thisMonth {
               textColor = .text
             } else {
               textColor = .textSubtle
@@ -385,5 +391,19 @@ class CalendarYearHeaderView: JTACMonthReusableView {
         static let stackViewSpacing: CGFloat = 16
         static let spacingAfterWeekdays: CGFloat = 8
         static let titleColor = UIColor(light: .gray(.shade70), dark: .textSubtle)
+    }
+}
+
+extension Date {
+    var startOfMonth: Date? {
+        return Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: Calendar.current.startOfDay(for: self)))
+    }
+
+    var endOfMonth: Date? {
+        guard let startOfMonth = startOfMonth else {
+            return nil
+        }
+
+        return Calendar.current.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth)
     }
 }

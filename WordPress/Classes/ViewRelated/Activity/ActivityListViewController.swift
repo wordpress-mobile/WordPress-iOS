@@ -14,7 +14,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
     let containerStackView = UIStackView()
 
-    let filterStackView = UIStackView()
+    let filterView = FilterBarView()
     let dateFilterChip = FilterChipButton()
     let activityTypeFilterChip = FilterChipButton()
 
@@ -158,21 +158,12 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
     }
 
     private func setupFilterBar() {
-        let scrollView = UIScrollView()
-        filterStackView.addArrangedSubview(dateFilterChip)
-        filterStackView.addArrangedSubview(activityTypeFilterChip)
-        scrollView.addSubview(filterStackView)
-        containerStackView.addArrangedSubview(scrollView)
-        filterStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            filterStackView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
-            filterStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            filterStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            scrollView.heightAnchor.constraint(equalTo: filterStackView.heightAnchor)
-        ])
+        containerStackView.addArrangedSubview(filterView)
+
+        filterView.add(button: dateFilterChip)
+        filterView.add(button: activityTypeFilterChip)
 
         setupDateFilter()
-
         setupActivityTypeFilter()
     }
 
