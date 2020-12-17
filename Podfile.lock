@@ -504,8 +504,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `038813344e1267e769620b9b3fb6bc9b7f4d57dd`)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `01e08862b1b96b54e76d68da26221eb771e0e8ae`)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `118ccd4ca8040baa6fac02c2976c90c054f27432`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `e1a9734e86bc0eba95dfb9656221ded2401ace58`)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.14.0-beta.1)
   - WordPressUI (~> 1.9.0-beta.1)
@@ -654,10 +654,10 @@ EXTERNAL SOURCES:
     :submodules: true
     :tag: v1.43.0
   WordPressAuthenticator:
-    :commit: 038813344e1267e769620b9b3fb6bc9b7f4d57dd
+    :commit: 118ccd4ca8040baa6fac02c2976c90c054f27432
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
-    :commit: 01e08862b1b96b54e76d68da26221eb771e0e8ae
+    :commit: e1a9734e86bc0eba95dfb9656221ded2401ace58
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.43.0/third-party-podspecs/Yoga.podspec.json
@@ -678,10 +678,10 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.43.0
   WordPressAuthenticator:
-    :commit: 038813344e1267e769620b9b3fb6bc9b7f4d57dd
+    :commit: 118ccd4ca8040baa6fac02c2976c90c054f27432
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
-    :commit: 01e08862b1b96b54e76d68da26221eb771e0e8ae
+    :commit: e1a9734e86bc0eba95dfb9656221ded2401ace58
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
@@ -779,6 +779,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 335651f2d0d41a3127e9d1c6b436f9ed141ab160
+PODFILE CHECKSUM: 1db4e37b9d62a846c5154826b9e700e942420311
 
 COCOAPODS: 1.10.0
