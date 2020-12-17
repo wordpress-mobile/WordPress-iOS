@@ -220,6 +220,8 @@ class DateCell: JTACDayCell {
     let leftPlaceholder = UIView()
     let rightPlaceholder = UIView()
 
+    let dateFormatter = DateFormatter()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -287,6 +289,10 @@ extension DateCell {
                    hideInOutDates: Bool = false) {
 
         dateLabel.text = state.text
+
+        dateFormatter.setLocalizedDateFormatFromTemplate("MMM d, yyyy")
+        dateLabel.accessibilityLabel = dateFormatter.string(from: state.date)
+        dateLabel.accessibilityTraits = .button
 
         var textColor: UIColor
 
