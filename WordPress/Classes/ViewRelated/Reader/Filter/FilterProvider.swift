@@ -148,6 +148,10 @@ extension ReaderSiteTopic {
                     return TableDataItem(topic: topic, configure: { cell in
                         cell.textLabel?.text = topic.title
                         cell.detailTextLabel?.text = topic.siteURL
+
+                        if FeatureFlag.unseenPostCount.enabled && topic.unseenCount > 0 {
+                            buildUnseenPostCountView(topic, with: cell)
+                        }
                     })
                 }
             }
@@ -156,6 +160,21 @@ extension ReaderSiteTopic {
 
         fetchStoredFollowedSites(completion: completionBlock)
         fetchFollowedSites(completion: completionBlock)
+    }
+
+    /// Build the unseen posts count for the accessoryView.
+    ///
+    private static func buildUnseenPostCountView(_ topic: ReaderSiteTopic, with cell: UITableViewCell) {
+        let unseenCountView = UIView()
+        unseenCountView.layer.cornerRadius = 15.0
+        unseenCountView.backgroundColor = UIColor.tertiaryFill
+
+        let countLabel = UILabel()
+        countLabel.text = String(topic.unseenCount)
+        countLabel.font = WPStyleGuide.subtitleFont()
+        countLabel.textColor = UIColor.text
+
+        cell.accessoryView = unseenCountView
     }
 
     /// Fetch sites from remote service
