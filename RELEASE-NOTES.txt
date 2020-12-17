@@ -16,6 +16,7 @@
 * [***] Block Editor: New Block: File [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2835]
 * [*] Reader: Removes gray tint from site icons that contain transparency (located in Reader > Settings > Followed sites).
 * [*] Block Editor: Remove popup informing user that they will be using the block editor by default [#15492]
+* [**] Fixed an issue where the Prepublishing Nudges Publish button could be cut off smaller devices [#15525]
 
 16.3
 -----
