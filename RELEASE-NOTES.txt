@@ -3,6 +3,7 @@
 * [*] In the Comments view, overly-large twemoji are sized the same as Apple's emoji. [#15503]
 * [*] Reader 'P2s': added ability to filter by site. [#15484]
 * [**] Choose a Domain will now return more options in the search results, sort the results to have exact matches first, and let you know if no exact matches were found. [#15482]
+* [*] Invite People: add link to user roles definition web page. [#15530]
 
 16.4
 -----
