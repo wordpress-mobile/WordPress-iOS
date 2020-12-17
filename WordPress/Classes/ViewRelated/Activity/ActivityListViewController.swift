@@ -168,6 +168,8 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
     }
 
     private func setupDateFilter() {
+        dateFilterChip.resetButton.accessibilityLabel = NSLocalizedString("Reset Date Range filter", comment: "Accessibility label for the reset date range button")
+
         dateFilterChip.tapped = { [weak self] in
             self?.showCalendar()
         }
@@ -179,6 +181,8 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
     }
 
     private func setupActivityTypeFilter() {
+        activityTypeFilterChip.resetButton.accessibilityLabel = NSLocalizedString("Reset Activity Type filter", comment: "Accessibility label for the reset activity type button")
+
         activityTypeFilterChip.tapped = { [weak self] in
             guard let self = self else {
                 return
