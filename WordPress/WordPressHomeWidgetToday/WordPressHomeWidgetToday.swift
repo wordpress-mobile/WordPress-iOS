@@ -35,7 +35,7 @@ struct SiteListProvider: IntentTimelineProvider {
                                                                                 comments: 8))
 
     // refresh interval of the widget, in minutes
-    static let refreshInterval = 5
+    static let refreshInterval = 60
 
     // minimum elapsed time, in minutes, before new data are fetched from the backend.
     static let minElapsedTimeToRefresh = 10
