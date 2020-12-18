@@ -189,12 +189,13 @@ extension ReaderSiteTopic {
         unseenCount.layer.cornerRadius = 15.0
         unseenCount.backgroundColor = UIColor.tertiaryFill
         unseenCount.clipsToBounds = true
-        unseenCount.titleLabel?.tintColor = .text
+//        unseenCount.tintColor = .systemPink
+//        unseenCount.titleLabel?.textColor = .systemPink
         unseenCount.setTitle(String(topic.unseenCount), for: .normal)
         unseenCount.titleLabel?.font = WPStyleGuide.subtitleFont()
         unseenCount.sizeToFit()
 
-        cell.accessoryView = unseenCount
+        cell.contentView
     }
 
     /// Fetch sites from remote service
