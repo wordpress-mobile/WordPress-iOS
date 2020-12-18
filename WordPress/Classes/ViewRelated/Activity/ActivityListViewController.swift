@@ -171,6 +171,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         dateFilterChip.resetButton.accessibilityLabel = NSLocalizedString("Reset Date Range filter", comment: "Accessibility label for the reset date range button")
 
         dateFilterChip.tapped = { [weak self] in
+            WPAnalytics.track(.activitylogFilterbarRangeButtonTapped)
             self?.showCalendar()
         }
 
@@ -199,6 +200,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         }
 
         activityTypeFilterChip.resetTapped = { [weak self] in
+            WPAnalytics.track(.activitylogFilterbarResetType)
             self?.viewModel.removeGroupFilter()
             self?.activityTypeFilterChip.disableResetButton()
         }
