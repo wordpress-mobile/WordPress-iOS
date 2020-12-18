@@ -165,16 +165,36 @@ extension ReaderSiteTopic {
     /// Build the unseen posts count for the accessoryView.
     ///
     private static func buildUnseenPostCountView(_ topic: ReaderSiteTopic, with cell: UITableViewCell) {
-        let unseenCountView = UIView()
-        unseenCountView.layer.cornerRadius = 15.0
-        unseenCountView.backgroundColor = UIColor.tertiaryFill
+//        let unseenCountView = UIView()
+//        unseenCountView.layer.cornerRadius = 15.0
+//        unseenCountView.backgroundColor = .systemPink // UIColor.tertiaryFill
+//
+//        let countLabel = UILabel()
+//        countLabel.font = WPStyleGuide.subtitleFont()
+//        countLabel.textColor = UIColor.text
+//        countLabel.backgroundColor = .systemPink
+//        countLabel.layer.cornerRadius = 15.0
+//        countLabel.layer.borderWidth = 2.0
+//        countLabel.layer.borderColor = UIColor.systemPink.cgColor
+//        countLabel.translatesAutoresizingMaskIntoConstraints = true
+//        countLabel.text = String(topic.unseenCount)
+//        countLabel.sizeToFit()
+//
+//        unseenCountView.addSubview(countLabel)
+//
+//        let accessoryContainer = UIView()
+//        accessoryContainer.addSubview(unseenCountView)
 
-        let countLabel = UILabel()
-        countLabel.text = String(topic.unseenCount)
-        countLabel.font = WPStyleGuide.subtitleFont()
-        countLabel.textColor = UIColor.text
+        let unseenCount = UIButton(type: .custom)
+        unseenCount.layer.cornerRadius = 15.0
+        unseenCount.backgroundColor = UIColor.tertiaryFill
+        unseenCount.clipsToBounds = true
+        unseenCount.titleLabel?.tintColor = .text
+        unseenCount.setTitle(String(topic.unseenCount), for: .normal)
+        unseenCount.titleLabel?.font = WPStyleGuide.subtitleFont()
+        unseenCount.sizeToFit()
 
-        cell.accessoryView = unseenCountView
+        cell.accessoryView = unseenCount
     }
 
     /// Fetch sites from remote service
