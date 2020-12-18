@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-07 20:43:32+0000 */
+/* Translation-Revision-Date: 2020-12-17 12:49:42+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -4982,7 +4982,7 @@ translators: sample content for \"Services\" page template */
 /* Menus save button title while it is saving a Menu.
    Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
-"Saving..." = "Salvare...";
+"Saving..." = "Salvez...";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Programare";
@@ -6497,7 +6497,7 @@ translators: sample content for \"Services\" page template */
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
-"Undo" = "Revin";
+"Undo" = "Revenire";
 
 /* Label of the table view cell's delete button, when unfollowing a site. */
 "Unfollow" = "Anulează urmărirea";
