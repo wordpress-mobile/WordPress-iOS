@@ -80,6 +80,8 @@ extension ReaderTabViewModel {
             return
         }
         selectedIndex = index
+
+        setContent?(tabItems[index].content)
     }
 
     /// switch to the tab whose topic matches the given predicate

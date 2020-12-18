@@ -85,7 +85,6 @@ extension WPTabBarController {
 
     /// methods to select one of the default Reader tabs
     @objc func switchToSavedPosts() {
-        navigateToReader()
         switchToTitle("Saved")
     }
 
