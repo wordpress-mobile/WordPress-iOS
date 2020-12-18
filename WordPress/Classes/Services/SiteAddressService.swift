@@ -2,7 +2,17 @@ import WordPressKit
 
 // MARK: - SiteAddressService
 
-typealias SiteAddressServiceCompletion = (Result<[DomainSuggestion], Error>) -> Void
+struct SiteAddressServiceResult {
+    let hasExactMatch: Bool
+    let domainSuggestions: [DomainSuggestion]
+
+    init(hasExactMatch: Bool = false, domainSuggestions: [DomainSuggestion] = []) {
+        self.hasExactMatch = hasExactMatch
+        self.domainSuggestions = domainSuggestions
+    }
+}
+
+typealias SiteAddressServiceCompletion = (Result<SiteAddressServiceResult, Error>) -> Void
 
 protocol SiteAddressService {
     func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion)
@@ -13,18 +23,18 @@ protocol SiteAddressService {
 
 final class MockSiteAddressService: SiteAddressService {
     func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion) {
-        completion(.success(mockAddresses()))
+        completion(.success(SiteAddressServiceResult(hasExactMatch: true, domainSuggestions: mockAddresses)))
     }
 
     func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion) {
-        completion(.success(mockAddresses()))
+        completion(.success(SiteAddressServiceResult(hasExactMatch: true, domainSuggestions: mockAddresses)))
     }
 
-    private func mockAddresses() -> [DomainSuggestion] {
+    private let mockAddresses: [DomainSuggestion] = {
         return [ DomainSuggestion(name: "ravenclaw.wordpress.com"),
                  DomainSuggestion(name: "ravenclaw.com"),
                  DomainSuggestion(name: "team.ravenclaw.com")]
-    }
+    }()
 }
 
 private extension DomainSuggestion {
@@ -46,12 +56,15 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
      */
     private static let emptyResultsErrorCode = 7
 
+    /// Overrides the default quantity in the server request,
+    private let domainRequestQuantity = 20
+
     /// The existing service for retrieving DomainSuggestions
     private let domainsService: DomainsService
 
     // MARK: LocalCoreDataService
 
-    override init(managedObjectContext context: NSManagedObjectContext) {
+    override convenience init(managedObjectContext context: NSManagedObjectContext) {
         let accountService = AccountService(managedObjectContext: context)
 
         let api: WordPressComRestApi
@@ -60,10 +73,14 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
         } else {
             api = WordPressComRestApi.defaultApi(userAgent: WPUserAgent.wordPress())
         }
+
+        self.init(managedObjectContext: context, api: api)
+    }
+
+    // Used to help with testing
+    init(managedObjectContext context: NSManagedObjectContext, api: WordPressComRestApi) {
         let remoteService = DomainsServiceRemote(wordPressComRestApi: api)
-
         self.domainsService = DomainsService(managedObjectContext: context, remote: remoteService)
-
         super.init(managedObjectContext: context)
     }
 
@@ -73,32 +90,59 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
 
         domainsService.getDomainSuggestions(base: query,
                                             segmentID: segmentID,
+                                            quantity: domainRequestQuantity,
                                             success: { domainSuggestions in
-                                                completion(Result.success(domainSuggestions))
-        },
+                                                completion(Result.success(self.sortSuggestions(for: query, suggestions: domainSuggestions)))
+                                            },
                                             failure: { error in
                                                 if (error as NSError).code == DomainsServiceAdapter.emptyResultsErrorCode {
-                                                    completion(Result.success([]))
+                                                    completion(Result.success(SiteAddressServiceResult()))
                                                     return
                                                 }
 
                                                 completion(Result.failure(error))
-        })
+                                            })
     }
 
     func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion) {
         domainsService.getDomainSuggestions(base: query,
+                                            quantity: domainRequestQuantity,
                                             domainSuggestionType: .onlyWordPressDotCom,
                                             success: { domainSuggestions in
-                                                completion(Result.success(domainSuggestions))
-        },
+                                                completion(Result.success(self.sortSuggestions(for: query, suggestions: domainSuggestions)))
+                                            },
                                             failure: { error in
                                                 if (error as NSError).code == DomainsServiceAdapter.emptyResultsErrorCode {
-                                                    completion(Result.success([]))
+                                                    completion(Result.success(SiteAddressServiceResult()))
                                                     return
                                                 }
 
                                                 completion(Result.failure(error))
-        })
+                                            })
+    }
+
+    private func sortSuggestions(for query: String, suggestions: [DomainSuggestion]) -> SiteAddressServiceResult {
+        var hasExactMatch = false
+        let sortedSuggestions = suggestions.sorted { (lhs, rhs) -> Bool in
+            if lhs.domainNameStrippingSubdomain.caseInsensitiveCompare(query) == .orderedSame
+                && rhs.domainNameStrippingSubdomain.caseInsensitiveCompare(query) == .orderedSame {
+                // If each are an exact match sort alphabetically on the full domain and mark that we found a match
+                hasExactMatch = true
+                return lhs.domainName.caseInsensitiveCompare(rhs.domainName) == .orderedAscending
+            } else if lhs.domainNameStrippingSubdomain.caseInsensitiveCompare(query) == .orderedSame {
+                // If lhs side is a match (and rhs isn't given the previous cases) then we are sorted.
+                hasExactMatch = true
+                return true
+            } else if rhs.domainNameStrippingSubdomain.caseInsensitiveCompare(query) == .orderedSame {
+                // If rhs side is a match (and lhs isn't given the previous cases) then we are not sorted.
+                hasExactMatch = true
+                return false
+            } else {
+                // If neither rhs nor lhs ara a match then sort alphabetically
+                return lhs.domainName.caseInsensitiveCompare(rhs.domainName) == .orderedAscending
+            }
+        }
+
+        return SiteAddressServiceResult(hasExactMatch: hasExactMatch, domainSuggestions: sortedSuggestions)
     }
 }
