@@ -188,6 +188,8 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
                 return
             }
 
+            WPAnalytics.track(.activitylogFilterbarRangeButtonTapped)
+
             let activityTypeSelectorViewController = ActivityTypeSelectorViewController(
                 viewModel: self.viewModel
             )
@@ -422,7 +424,22 @@ extension ActivityListViewController: ActivityTypeSelectorDelegate {
             return
         }
 
+        trackSelectedGroups(groups)
+
         viewModel.refresh(after: viewModel.after, before: viewModel.before, group: groups)
         selectorViewController.dismiss(animated: true, completion: nil)
+    }
+
+    private func trackSelectedGroups(_ selectedGroups: [ActivityGroup]) {
+        if !viewModel.selectedGroups.isEmpty && selectedGroups.isEmpty {
+            WPAnalytics.track(.activitylogFilterbarResetType)
+        } else {
+            let totalActivitiesSelected = selectedGroups.map { $0.count }.reduce(0, +)
+            var selectTypeProperties: [AnyHashable: Any] = [:]
+            selectedGroups.forEach { selectTypeProperties["filter_group_\($0.key)"] = true }
+            selectTypeProperties["num_groups_selected"] = selectedGroups.count
+            selectTypeProperties["num_total_activities_selected"] = totalActivitiesSelected
+            WPAnalytics.track(.activitylogFilterbarSelectType, properties: selectTypeProperties)
+        }
     }
 }
