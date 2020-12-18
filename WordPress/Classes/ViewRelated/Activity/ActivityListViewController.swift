@@ -176,6 +176,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         }
 
         dateFilterChip.resetTapped = { [weak self] in
+            WPAnalytics.track(.activitylogFilterbarResetRange)
             self?.viewModel.removeDateFilter()
             self?.dateFilterChip.disableResetButton()
         }
@@ -409,8 +410,33 @@ extension ActivityListViewController: CalendarViewControllerDelegate {
             return
         }
 
+        trackSelectedRange(startDate: startDate, endDate: endDate)
+
         viewModel.refresh(after: startDate, before: endDate, group: viewModel.selectedGroups)
         calendar.dismiss(animated: true, completion: nil)
+    }
+
+    private func trackSelectedRange(startDate: Date?, endDate: Date?) {
+        guard let startDate = startDate else {
+            if viewModel.after != nil || viewModel.before != nil {
+                WPAnalytics.track(.activitylogFilterbarResetRange)
+            }
+
+            return
+        }
+
+        var duration: Int // Number of selected days
+        var distance: Int // Distance from the startDate to today (in days)
+
+        if let endDate = endDate {
+            duration = Int((endDate.timeIntervalSinceReferenceDate - startDate.timeIntervalSinceReferenceDate) / Double(24 * 60 * 60)) + 1
+        } else {
+            duration = 1
+        }
+
+        distance = Int((Date().timeIntervalSinceReferenceDate - startDate.timeIntervalSinceReferenceDate) / Double(24 * 60 * 60))
+
+        WPAnalytics.track(.activitylogFilterbarSelectRange, properties: ["duration": duration, "distance": distance])
     }
 }
 
