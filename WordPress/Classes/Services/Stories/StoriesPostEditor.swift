@@ -88,6 +88,7 @@ class StoryEditor: CameraController {
             }
         }
         semaphore.wait()
+        storyLoader = nil
     }
 }
 

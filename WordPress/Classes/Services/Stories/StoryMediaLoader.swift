@@ -11,6 +11,7 @@ class StoryMediaLoader {
         didSet {
             if results.contains(where: { $0 == nil }) == false {
                 completion?(results.compactMap { $0 })
+                results = []
             }
         }
     }
@@ -31,8 +32,21 @@ class StoryMediaLoader {
                 let archive = try unarchive(file: file)
 
                 if let archive = archive {
-                    results[idx] = archive
-                    return
+
+                    let validFile: Bool
+                    let segment = archive.0
+
+                    switch segment {
+                    case .image:
+                        validFile = true
+                    case .video(let url, _):
+                        validFile = FileManager.default.fileExists(atPath: url.path)
+                    }
+
+                    if validFile {
+                        results[idx] = archive
+                        return
+                    }
                 }
             } catch let error {
                 print("Error unarchiving \(file.url) - \(error)")
