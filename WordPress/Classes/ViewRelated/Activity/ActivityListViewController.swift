@@ -188,7 +188,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
                 return
             }
 
-            WPAnalytics.track(.activitylogFilterbarRangeButtonTapped)
+            WPAnalytics.track(.activitylogFilterbarTypeButtonTapped)
 
             let activityTypeSelectorViewController = ActivityTypeSelectorViewController(
                 viewModel: self.viewModel

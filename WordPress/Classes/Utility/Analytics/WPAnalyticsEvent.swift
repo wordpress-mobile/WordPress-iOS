@@ -95,7 +95,7 @@ import Foundation
     case jetpackWhitelistedIpsChanged
     case activitylogFilterbarSelectType
     case activitylogFilterbarResetType
-    case activitylogFilterbarRangeButtonTapped
+    case activitylogFilterbarTypeButtonTapped
 
     // Comments
     case commentViewed
@@ -267,8 +267,8 @@ import Foundation
             return "activitylog_filterbar_select_type"
         case .activitylogFilterbarResetType:
             return "activitylog_filterbar_reset_type"
-        case .activitylogFilterbarRangeButtonTapped:
-            return "activitylog_filterbar_range_button_tapped"
+        case .activitylogFilterbarTypeButtonTapped:
+            return "activitylog_filterbar_type_button_tapped"
 
         // Comments
         case .commentViewed:
