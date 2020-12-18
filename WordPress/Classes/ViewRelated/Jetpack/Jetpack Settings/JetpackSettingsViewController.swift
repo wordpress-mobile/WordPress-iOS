@@ -129,10 +129,16 @@ open class JetpackSettingsViewController: UITableViewController {
 
         var manageConnectionRows = [ImmuTableRow]()
         manageConnectionRows.append(
-            NavigationItemRow(title: NSLocalizedString("Manage Connection",
-                                comment: "Jetpack Settings: Manage Connection"),
+            NavigationItemRow(title: NSLocalizedString("Manage Connection", comment: "Jetpack Settings: Manage Connection"),
                               action: self.pressedManageConnection())
         )
+
+        if FeatureFlag.jetpackScan.enabled {
+            manageConnectionRows.append(
+                NavigationItemRow(title: NSLocalizedString("Server Credentials", comment: "Jetpack Settings: Server Credentials"),
+                                  action: self.pressedServerCredentials())
+            )
+        }
 
         return ImmuTable(sections: [
             ImmuTableSection(
@@ -306,6 +312,15 @@ open class JetpackSettingsViewController: UITableViewController {
             let jetpackConnectionVC = JetpackConnectionViewController(blog: blog)
             jetpackConnectionVC.delegate = self
             self.navigationController?.pushViewController(jetpackConnectionVC, animated: true)
+        }
+    }
+
+    fileprivate func pressedServerCredentials() -> ImmuTableAction {
+        return { [unowned self] row in
+            let context = ContextManager.sharedInstance().mainContext
+            let service = JetpackScanService(managedObjectContext: context)
+            let serverCredentialsVC = ServerCredentialsViewController(blog: blog, service: service)
+            self.navigationController?.pushViewController(serverCredentialsVC, animated: true)
         }
     }
 
