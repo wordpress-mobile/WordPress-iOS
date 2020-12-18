@@ -160,4 +160,26 @@ static CGFloat const SettingsMinHeight = 82.0f;
     [self.tableView endUpdates];
 }
 
+#pragma mark - UITextViewDelegate
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    
+    // If character length is unrestricted, allow all text.
+    if (self.maxCharacterCount <= 0) {
+        return YES;
+    }
+    
+    NSString *newText = [textView.text stringByReplacingCharactersInRange: range withString: text];
+    
+    // If the entire new text will fit, allow it.
+    if (newText.length <= self.maxCharacterCount) {
+        return YES;
+    }
+    
+    // Otherwise use only the number of characters from the new text that will fit.
+    textView.text = [newText substringToIndex: self.maxCharacterCount];
+    return NO;
+}
+
 @end
