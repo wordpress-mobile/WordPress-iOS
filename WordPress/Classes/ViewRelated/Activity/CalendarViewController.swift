@@ -89,7 +89,9 @@ class CalendarViewController: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        calendarCollectionView.reloadData()
+        coordinator.animate(alongsideTransition: { _ in
+            self.calendarCollectionView.reloadData(withAnchor: self.startDate ?? Date(), completionHandler: nil)
+        }, completion: nil)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

@@ -54,8 +54,8 @@ PODS:
     - boost-for-react-native
     - DoubleConversion
     - glog
-  - FormatterKit/Resources (1.8.2)
-  - FormatterKit/TimeIntervalFormatter (1.8.2):
+  - FormatterKit/Resources (1.9.0)
+  - FormatterKit/TimeIntervalFormatter (1.9.0):
     - FormatterKit/Resources
   - FSInteractiveMap (0.1.0)
   - Gifu (3.2.0)
@@ -64,7 +64,7 @@ PODS:
     - AppAuth (~> 1.2)
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - Gridicons (1.1.0-beta.2)
+  - Gridicons (1.1.0)
   - GTMAppAuth (1.1.0):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher (~> 1.4)
@@ -406,7 +406,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.24.0-beta.4):
+  - WordPressKit (4.24.0-beta.3):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -414,9 +414,9 @@ PODS:
     - WordPressShared (~> 1.12)
     - wpxmlrpc (~> 0.9)
   - WordPressMocks (0.0.9)
-  - WordPressShared (1.14.0-beta.1):
+  - WordPressShared (1.14.0):
     - CocoaLumberjack (~> 3.4)
-    - FormatterKit/TimeIntervalFormatter (= 1.8.2)
+    - FormatterKit/TimeIntervalFormatter (~> 1.8)
   - WordPressUI (1.9.0-beta.1)
   - WPMediaPicker (1.7.2)
   - wpxmlrpc (0.9.0)
@@ -455,7 +455,7 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.2.0)
   - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.43.0/third-party-podspecs/glog.podspec.json`)
-  - Gridicons (~> 1.1.0-beta)
+  - Gridicons (~> 1.1.0)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v1.43.0`)
   - JTAppleCalendar (~> 8.0.2)
   - MediaEditor (~> 1.2.1)
@@ -507,7 +507,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.33.0-beta)
   - WordPressKit (~> 4.24-beta)
   - WordPressMocks (~> 0.0.9)
-  - WordPressShared (~> 1.14.0-beta.1)
+  - WordPressShared (~> 1.14.0)
   - WordPressUI (~> 1.9.0-beta.1)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.43.0/third-party-podspecs/Yoga.podspec.json`)
@@ -692,12 +692,12 @@ SPEC CHECKSUMS:
   FBLazyVector: 47798d43f20e85af0d3cef09928b6e2d16dbbe4c
   FBReactNativeSpec: 8d0bf8eca089153f4196975ca190cda8c2d5dbd2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
-  FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
+  FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
-  Gridicons: e70ede7ab55f21ee8f5b21f7c8fe196a42f4958e
+  Gridicons: 17d660b97ce4231d582101b02f8280628b141c9a
   GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Gutenberg: 22950a4deedc6da729cbfdad88138404b49d5e69
@@ -753,9 +753,9 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: b7ac8b30f746992e85d9668453ac87c2cdcecf4f
   WordPress-Editor-iOS: 1886f7fe464d79ee64ccfe7985281f8cf45f75eb
   WordPressAuthenticator: c48d966e3dddeb2d976e1d249d627376608f289f
-  WordPressKit: d084acd74bafd78d70ccb95686ceb927c825324e
+  WordPressKit: f1cf791ace51ca8c4b742225fed1d1458cb20f7d
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
-  WordPressShared: db04af4eed52585c02ced2a81a4651968c35d642
+  WordPressShared: 99b37324ffef200ddf32694bc3de1e0c9fcfef21
   WordPressUI: 89f1c0ead3ffe88ee76199269eeae2c4b8f09b25
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
@@ -769,6 +769,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 400f8186fe74ae6987cbe3354647ce3b43390961
+PODFILE CHECKSUM: 1cf4a033d86936419228955cc66f1e399ee87ccd
 
 COCOAPODS: 1.10.0

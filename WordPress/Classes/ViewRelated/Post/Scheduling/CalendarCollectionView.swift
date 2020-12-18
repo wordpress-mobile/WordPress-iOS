@@ -6,7 +6,7 @@ enum CalendarCollectionViewStyle {
     case year
 }
 
-class CalendarCollectionView: JTACMonthView {
+class CalendarCollectionView: WPJTACMonthView {
 
     let calDataSource: CalendarDataSource
     let style: CalendarCollectionViewStyle
@@ -95,7 +95,7 @@ class CalendarDataSource: JTACMonthViewDataSource {
     }
 
     func configureCalendar(_ calendar: JTACMonthView) -> ConfigurationParameters {
-        /// When style is year, display the last 20 years and the next one
+        /// When style is year, display the last 20 years til this month
         if style == .year {
             var dateComponent = DateComponents()
             dateComponent.year = -20
@@ -220,6 +220,8 @@ class DateCell: JTACDayCell {
     let leftPlaceholder = UIView()
     let rightPlaceholder = UIView()
 
+    let dateFormatter = DateFormatter()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -287,6 +289,10 @@ extension DateCell {
                    hideInOutDates: Bool = false) {
 
         dateLabel.text = state.text
+
+        dateFormatter.setLocalizedDateFormatFromTemplate("MMM d, yyyy")
+        dateLabel.accessibilityLabel = dateFormatter.string(from: state.date)
+        dateLabel.accessibilityTraits = .button
 
         var textColor: UIColor
 
@@ -405,5 +411,18 @@ extension Date {
         }
 
         return Calendar.current.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth)
+    }
+}
+
+class WPJTACMonthView: JTACMonthView {
+
+    // Avoids content to scroll above the maximum size
+    override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
+        let maxY = contentSize.height - frame.size.height
+        if contentOffset.y > maxY {
+            super.setContentOffset(CGPoint(x: contentOffset.x, y: maxY), animated: animated)
+        } else {
+            super.setContentOffset(contentOffset, animated: animated)
+        }
     }
 }
