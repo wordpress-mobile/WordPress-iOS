@@ -11,7 +11,6 @@ import AutomatticTracks
             return true
         }
 
-        // 3. let's see if it's our wpcom scheme
         guard url.scheme == WPComScheme else {
             return false
         }
@@ -47,13 +46,17 @@ import AutomatticTracks
 
     private func handleMagicLogin(url: URL) -> Bool {
         DDLogInfo("App launched with authentication link")
-        let allowWordPressComAuth = !AccountHelper.isDotcomAvailable()
+
+        guard AccountHelper.noWordPressDotComAccount || url.isJetpackConnect else {
+            DDLogInfo("The user clicked on a login or signup magic link when already logged into a WPCom account.  Since this is not a Jetpack connection attempt we're cancelling the operation.")
+            return false
+        }
+
         guard let rvc = window?.rootViewController else {
             return false
         }
-        return WordPressAuthenticator.openAuthenticationURL(url,
-                                                            allowWordPressComAuth: allowWordPressComAuth,
-                                                            fromRootViewController: rvc)
+
+        return WordPressAuthenticator.openAuthenticationURL(url, fromRootViewController: rvc)
     }
 
     private func handleViewPost(url: URL) -> Bool {
