@@ -1,3 +1,5 @@
+import Foundation
+
 private struct QueryRef<Query> {
     let query: Query
     let token = DispatchToken()
