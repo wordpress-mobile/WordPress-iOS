@@ -85,7 +85,8 @@ extension WPTabBarController {
 
     /// methods to select one of the default Reader tabs
     @objc func switchToSavedPosts() {
-        switchToTitle("Saved")
+        let title = NSLocalizedString("Saved", comment: "Title of the Saved Reader Tab")
+        switchToTitle(title)
     }
 
     func switchToFollowedSites() {
