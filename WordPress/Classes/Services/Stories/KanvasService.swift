@@ -43,12 +43,12 @@ class KanvasService {
         return settings
     }
 
-    func controller(blog: Blog, context: NSManagedObjectContext, completion: @escaping (Result<Post, Error>) -> Void) -> StoryEditor {
+    func controller(blog: Blog, context: NSManagedObjectContext, updated: @escaping (Result<(Post, [Media]), Error>) -> Void, uploaded: @escaping (Result<(Post, [Media]), Error>) -> Void) -> StoryEditor {
         let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
-        return controller(post: post, publishOnCompletion: true, completion: completion)
+        return controller(post: post, publishOnCompletion: true, updated: updated, uploaded: uploaded)
     }
 
-    func controller(post: AbstractPost, publishOnCompletion: Bool = false, completion: @escaping (Result<Post, Error>) -> Void) -> StoryEditor {
+    func controller(post: AbstractPost, publishOnCompletion: Bool = false, updated: @escaping (Result<(Post, [Media]), Error>) -> Void, uploaded: @escaping (Result<(Post, [Media]), Error>) -> Void) -> StoryEditor {
         KanvasCameraColors.shared = KanvasCameraCustomUI.shared.cameraColors()
         KanvasCameraFonts.shared = KanvasCameraCustomUI.shared.cameraFonts()
         let controller = StoryEditor(post: post,
@@ -59,7 +59,8 @@ class KanvasService {
                                      quickBlogSelectorCoordinator: nil,
                                      tagCollection: nil,
                                      publishOnCompletion: publishOnCompletion,
-                                     completion: completion)
+                                     updated: updated,
+                                     uploaded: uploaded)
         controller.delegate = self
         controller.modalPresentationStyle = .fullScreen
         controller.modalTransitionStyle = .crossDissolve

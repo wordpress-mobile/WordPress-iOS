@@ -42,17 +42,19 @@ class StoryPoster {
         case contentDataEncodingError // JSON from the draft post couldn't be converted to utf8 encoded data.
     }
 
-    func upload(assets: [ExportableAsset], post: AbstractPost, completion: @escaping (Result<[Media], Error>) -> Void) {
-        var media = [Media?](repeating: nil, count: assets.count)
+    func upload(assets: [ExportableAsset], post: AbstractPost, completion: @escaping (Result<[Media], Error>) -> Void) -> [Media] {
+        var completedMedia = [Media?](repeating: nil, count: assets.count)
+        var media = [Media]()
         assets.enumerated().forEach { (idx, asset) in
-            let upload = MediaCoordinator.shared.addMedia(from: asset, to: post)
+            guard let upload = MediaCoordinator.shared.addMedia(from: asset, to: post) else { return }
+            media.append(upload)
             MediaCoordinator.shared.addObserver({ (item, state) in
                 DispatchQueue.main.async {
                     switch state {
                     case .ended:
-                        media[idx] = item
-                        if media.contains(nil) == false {
-                            completion(.success(media.compactMap({ $0 })))
+                        completedMedia[idx] = item
+                        if completedMedia.contains(nil) == false {
+                            completion(.success(completedMedia.compactMap({ $0 })))
                         }
                     case .failed(error: let error):
                         completion(.failure(error))
@@ -62,6 +64,7 @@ class StoryPoster {
                 }
             }, for: upload)
         }
+        return media
     }
 
     func updateContent(post: Post, media: [Media]) {
@@ -92,6 +95,8 @@ class StoryPoster {
 
         try zip(urls, newMedia).forEach({ (url, media) in
             let newURL = StoryPoster.filePath.appendingPathComponent("\(media.mediaID?.intValue ?? 0)")
+            print("\(url.path) - \(FileManager.default.fileExists(atPath: url.path))")
+            print("\(newURL.path) - \(FileManager.default.fileExists(atPath: newURL.path.removingSuffix("\(media.mediaID!.intValue)")))")
             try FileManager.default.moveItem(at: url, to: newURL)
         })
     }
@@ -106,25 +111,33 @@ class StoryPoster {
 
         let post = post ?? PostService(managedObjectContext: context).createDraftPost(for: blog)
 
+        completion(.success(post))
+
+    }
+
+    func upload(mediaItems: [MediaItem], post: Post, completion: @escaping (Result<(Post, [Media]
+    ), Error>) -> Void) -> [Media] {
         let assets = mediaItems.map { item in
             return item.url as ExportableAsset
         }
 
-        upload(assets: assets, post: post, completion: { [weak self] result in
+        let media = upload(assets: assets, post: post, completion: { result in
             switch result {
             case .success(let media):
                 do {
-                    try self?.move(mediaItems: mediaItems, to: media)
+                    try self.move(mediaItems: mediaItems, to: media)
                 }
                 catch let error {
                     print("Error moving story files \(error)")
                 }
-                self?.updateContent(post: post, media: media)
-                completion(.success(post))
+                self.updateContent(post: post, media: media)
+                completion(.success((post, media)))
             case .failure(let error):
                 completion(.failure(error))
             }
         })
+
+        return media
     }
 
     func updateMedia<T: Collection>(content: String, media: T) throws -> String where T.Element == Media {

@@ -71,7 +71,9 @@ extension WPTabBarController {
 
             WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "story"])
 
-            let controller = kanvasService.controller(blog: blog, context: ContextManager.shared.mainContext) { [weak self] result in
+            let controller = kanvasService.controller(blog: blog, context: ContextManager.shared.mainContext, updated: { [weak self] result in
+
+            }, uploaded: { [weak self] result in
                 switch result {
                 case .success(let post):
                     ()
@@ -84,7 +86,7 @@ extension WPTabBarController {
                     controller.addAction(dismiss)
                     self?.present(controller, animated: true, completion: nil)
                 }
-            }
+            })
 
             kanvasService.delegate = controller.storyService
             present(controller, animated: true, completion: nil)

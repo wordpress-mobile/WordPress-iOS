@@ -38,7 +38,8 @@ class StoryEditor: CameraController {
                      quickBlogSelectorCoordinator: KanvasQuickBlogSelectorCoordinating?,
                      tagCollection: UIView?,
                      publishOnCompletion: Bool,
-                     completion: @escaping (Result<Post, Error>) -> Void) {
+                     updated: @escaping (Result<(Post, [Media]), Error>) -> Void,
+                     uploaded: @escaping (Result<(Post, [Media]), Error>) -> Void) {
         self.post = post
         self.onClose = onClose
 
@@ -53,17 +54,26 @@ class StoryEditor: CameraController {
 
         self.storyService = KanvasStoryService(post: post as! Post, updated: { [weak self] result in
             switch result {
-            case .success(let post):
-                self?.post = post
+            case .success:
                 if publishOnCompletion {
                     self?.publishPost(action: .publish, dismissWhenDone: true, analyticsStat:
                                         .editorPublishedPost)
+                } else {
+                    self?.dismiss(animated: true, completion: nil)
                 }
             case .failure:
                 ()
             }
             self?.hideLoading()
-            completion(result)
+            updated(result)
+        }, uploaded: { [weak self] result in
+            switch result {
+            case .success(let output):
+                self?.post = output.0
+            case .failure:
+                break
+            }
+            uploaded(result)
         })
     }
 
