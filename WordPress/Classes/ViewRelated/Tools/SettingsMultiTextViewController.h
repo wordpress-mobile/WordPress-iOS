@@ -28,6 +28,12 @@ typedef void (^SettingsMultiTextChanged)(NSString * _Nonnull);
 /// Autocapitalization type used in the textfield, defaults to UITextAutocapitalizationTypeSentences
 @property (nonatomic, assign) UITextAutocapitalizationType autocapitalizationType;
 
+/// The maximum characters to allow.
+/// If > 0, characters will be limited to that value.
+/// If <= 0, it will be ignored.
+///
+@property (nonatomic, assign) NSInteger maxCharacterCount;
+
 /// Block to be executed on dismiss, if the value was effectively updated.
 ///
 @property (nullable, nonatomic, copy) SettingsMultiTextChanged onValueChanged;
