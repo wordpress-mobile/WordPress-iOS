@@ -162,7 +162,8 @@ static CGFloat const SettingsMinHeight = 82.0f;
 
 #pragma mark - UITextViewDelegate
 
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
     
     // If character length is unrestricted, allow all text.
     if (self.maxCharacterCount <= 0) {
@@ -172,8 +173,7 @@ static CGFloat const SettingsMinHeight = 82.0f;
     NSString *newText = [textView.text stringByReplacingCharactersInRange: range withString: text];
     
     // If the entire new text will fit, allow it.
-    if (newText.length <= self.maxCharacterCount)
-    {
+    if (newText.length <= self.maxCharacterCount) {
         return YES;
     }
     
