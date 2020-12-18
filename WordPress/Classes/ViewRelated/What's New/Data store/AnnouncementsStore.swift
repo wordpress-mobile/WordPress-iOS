@@ -53,6 +53,8 @@ class CachedAnnouncementsStore: AnnouncementsStore {
         }
     }
 
+    private var cacheState: State = .ready([])
+
     var announcements: [WordPressKit.Announcement] {
         switch state {
         case .loading, .error:
@@ -84,6 +86,7 @@ class CachedAnnouncementsStore: AnnouncementsStore {
         state = .loading
         if let announcements = cache.announcements, cacheIsValid(for: announcements) {
             state = .ready(announcements)
+            updateCacheIfNeeded()
             return
         }
         // clear cache if it's invalid
@@ -101,6 +104,7 @@ class CachedAnnouncementsStore: AnnouncementsStore {
                 self?.state = .ready(announcements)
             case .failure(let error):
                 self?.state = .error(error)
+                DDLogError("Feature announcements error: unable to fetch remote announcements - \(error.localizedDescription)")
             }
         }
     }
@@ -118,6 +122,39 @@ private extension CachedAnnouncementsStore {
             return false
         }
         return true
+    }
+
+    var cacheExpired: Bool {
+        guard let date = cache.date,
+              let elapsedTime = Calendar.current.dateComponents([.hour], from: date, to: Date()).hour else {
+            return true
+        }
+        return elapsedTime >= Self.cacheExpirationTime
+    }
+    // Time, in hours, after which the cache expires
+    static let cacheExpirationTime = 24
+
+    // Asynchronously update cache without triggering state changes
+    func updateCacheIfNeeded() {
+        guard cacheExpired, !cacheState.isLoading else {
+            return
+        }
+        cacheState = .loading
+        DispatchQueue.global().async {
+            self.service.getAnnouncements(appId: Identifiers.appId,
+                                          appVersion: Identifiers.appVersion,
+                                          locale: Locale.current.identifier) { [weak self] result in
+
+                switch result {
+                case .success(let announcements):
+                    self?.cache.announcements = announcements
+                    self?.cacheState = .ready([])
+                case .failure(let error):
+                    DDLogError("Feature announcements error: unable to fetch remote announcements - \(error.localizedDescription)")
+                    self?.cacheState = .error(error)
+                }
+            }
+        }
     }
 
     enum Identifiers {
