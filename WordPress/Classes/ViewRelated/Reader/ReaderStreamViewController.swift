@@ -170,7 +170,7 @@ import WordPressFlux
 
     var contentType: ReaderContentType = .topic {
         willSet {
-            if contentType == .saved && newValue != .saved {
+            if contentType == .saved {
                 postCellActions?.clearRemovedPosts()
             }
         }
@@ -1208,6 +1208,7 @@ import WordPressFlux
             postCellActions = ReaderPostCellActions(context: managedObjectContext(), origin: self, topic: readerTopic)
         }
         postCellActions?.isLoggedIn = isLoggedIn
+        postCellActions?.savedPostsDelegate = self
 
         // Restrict the topics header to only display on the Discover, and tag detail views
         var displayTopics = false
@@ -1846,6 +1847,15 @@ extension ReaderStreamViewController: ReaderContentViewController {
             ReaderTracker.shared.start(.filteredList)
         } else {
             ReaderTracker.shared.stop(.filteredList)
+        }
+    }
+}
+
+// MARK: - Saved Posts Delegate
+extension ReaderStreamViewController: ReaderSavedPostCellActionsDelegate {
+    func willRemove(_ cell: ReaderPostCardCell) {
+        if let cellIndex = tableView.indexPath(for: cell) {
+            tableView.reloadRows(at: [cellIndex], with: .fade)
         }
     }
 }
