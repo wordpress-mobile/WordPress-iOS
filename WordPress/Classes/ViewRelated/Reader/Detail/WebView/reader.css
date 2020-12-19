@@ -32,6 +32,17 @@ table {
   overflow-x: auto;
 }
 
+.wp-block-file .wp-block-file__button {
+    background-color: var( --main-link-color);
+    color: white;
+
+    text-align: center;
+    padding: 2px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-left: 5px;
+}
+
 div.feedflare { display: none; }
 
 .sharedaddy, .jp-relatedposts, .mc4wp-form, .wpcnt, .OUTBRAIN, .adsbygoogle { display: none; }
