@@ -24,12 +24,30 @@ class PrepublishingNavigationController: LightNavigationController {
                 return Constants.iPadPreferredContentSize
             }
 
-            guard  let visibleViewController = viewControllers.last else {
+            guard let visibleViewController = viewControllers.last else {
                 return .zero
             }
 
             return visibleViewController.preferredContentSize
         }
+    }
+
+    override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        super.pushViewController(viewController, animated: animated)
+
+        if let bottomSheet = self.parent as? BottomSheetViewController, let presentedVC = bottomSheet.presentedVC {
+            presentedVC.transition(to: .collapsed)
+        }
+    }
+
+    override func popViewController(animated: Bool) -> UIViewController? {
+        let viewController = super.popViewController(animated: animated)
+
+        if let bottomSheet = self.parent as? BottomSheetViewController, let presentedVC = bottomSheet.presentedVC {
+            presentedVC.transition(to: .collapsed)
+        }
+
+        return viewController
     }
 
     private enum Constants {
