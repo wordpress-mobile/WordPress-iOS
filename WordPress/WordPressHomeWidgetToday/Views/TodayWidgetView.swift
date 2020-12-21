@@ -52,4 +52,3 @@ extension TodayWidgetView {
         static let commentsTitle: LocalizedStringKey = "Comments"
     }
 }
-

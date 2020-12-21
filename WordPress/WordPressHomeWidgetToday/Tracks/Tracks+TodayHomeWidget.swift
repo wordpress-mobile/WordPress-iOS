@@ -38,7 +38,7 @@ extension Tracks {
 
         let previousCount = UserDefaults(suiteName: WPAppGroupName)?.object(forKey: WPHomeWidgetTodayCount) as? Int ?? 0
         let newCount = widgetInfo.count
-        
+
         guard previousCount != newCount else {
             return
         }
