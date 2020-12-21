@@ -27,7 +27,8 @@ class FilterChipButton: UIView {
 
         stackView.addArrangedSubview(mainButton)
 
-        resetButton.setTitle("X", for: .normal)
+        resetButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.minResetButtonWidth).isActive = true
+        resetButton.imageEdgeInsets = Constants.resetImageInsets
         resetButton.isHidden = true
         stackView.addArrangedSubview(resetButton)
 
@@ -37,6 +38,16 @@ class FilterChipButton: UIView {
         addSubview(stackView)
         pinSubviewToAllEdges(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        layer.borderWidth = Constants.borderWidth
+        layer.cornerRadius = Constants.cornerRadius
+
+        mainButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.callout)
+        mainButton.setTitleColor(.text, for: .normal)
+        mainButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.minButtonHeight).isActive = true
+        mainButton.contentEdgeInsets = Constants.buttonContentInset
+
+        applyColors()
     }
 
     required init?(coder: NSCoder) {
@@ -46,11 +57,14 @@ class FilterChipButton: UIView {
     /// Enables the reset button
     func enableResetButton() {
         resetButton.isHidden = false
+        mainButton.contentEdgeInsets = Constants.buttonContentInsetWithResetEnabled
     }
 
     /// Disables the reset button
     func disableResetButton() {
         resetButton.isHidden = true
+        mainButton.contentEdgeInsets = Constants.buttonContentInset
+        UIAccessibility.post(notification: .layoutChanged, argument: mainButton)
     }
 
     @objc private func mainButtonTapped() {
@@ -59,5 +73,29 @@ class FilterChipButton: UIView {
 
     @objc private func resetButtonTapped() {
         resetTapped?()
+    }
+
+    private func applyColors() {
+        layer.borderColor = UIColor.textQuaternary.cgColor
+        resetButton.setImage(UIImage.gridicon(.crossCircle), for: .normal)
+        resetButton.tintColor = .textSubtle
+    }
+
+    private enum Constants {
+        static let minResetButtonWidth: CGFloat = 32
+        static let resetImageInsets = UIEdgeInsets(top: 8, left: 6, bottom: 8, right: 10).flippedForRightToLeft
+        static let borderWidth: CGFloat = 1
+        static let cornerRadius: CGFloat = 16
+        static let minButtonHeight: CGFloat = 32
+        static let buttonContentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12).flippedForRightToLeft
+        static let buttonContentInsetWithResetEnabled = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0).flippedForRightToLeft
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            applyColors()
+        }
     }
 }

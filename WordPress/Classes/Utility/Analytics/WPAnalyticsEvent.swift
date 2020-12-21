@@ -93,6 +93,12 @@ import Foundation
     case jetpackDisconnectRequested
     case jetpackWhitelistedIpsViewed
     case jetpackWhitelistedIpsChanged
+    case activitylogFilterbarSelectType
+    case activitylogFilterbarResetType
+    case activitylogFilterbarTypeButtonTapped
+    case activitylogFilterbarRangeButtonTapped
+    case activitylogFilterbarSelectRange
+    case activitylogFilterbarResetRange
 
     // Comments
     case commentViewed
@@ -260,6 +266,18 @@ import Foundation
             return "jetpack_whitelisted_ips_viewed"
         case .jetpackWhitelistedIpsChanged:
             return "jetpack_whitelisted_ips_changed"
+        case .activitylogFilterbarSelectType:
+            return "activitylog_filterbar_select_type"
+        case .activitylogFilterbarResetType:
+            return "activitylog_filterbar_reset_type"
+        case .activitylogFilterbarTypeButtonTapped:
+            return "activitylog_filterbar_type_button_tapped"
+        case .activitylogFilterbarRangeButtonTapped:
+            return "activitylog_filterbar_range_button_tapped"
+        case .activitylogFilterbarSelectRange:
+            return "activitylog_filterbar_select_range"
+        case .activitylogFilterbarResetRange:
+            return "activitylog_filterbar_reset_range"
 
         // Comments
         case .commentViewed:
@@ -353,7 +371,7 @@ extension WPAnalytics {
     /// - Parameter event: a `String` that represents the Reader event name
     /// - Parameter properties: a `Hash` that represents the properties
     ///
-    static func trackReader(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
+    static func trackReader(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any] = [:]) {
         var props = properties
         props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
         WPAnalytics.track(event, properties: props)
@@ -365,7 +383,7 @@ extension WPAnalytics {
     /// - Parameter event: a `String` that represents the Reader event name
     /// - Parameter properties: a `Hash` that represents the properties
     ///
-    static func trackReader(_ stat: WPAnalyticsStat, properties: [AnyHashable: Any]) {
+    static func trackReader(_ stat: WPAnalyticsStat, properties: [AnyHashable: Any] = [:]) {
         var props = properties
         props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
         WPAnalytics.track(stat, withProperties: props)

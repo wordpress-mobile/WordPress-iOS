@@ -333,7 +333,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     NSDictionary *properties = @{@"tag":slug};
 
     void (^successBlock)(void) = ^{
-        [WPAnalytics track:WPAnalyticsStatReaderTagUnfollowed withProperties:properties];
+        [WPAnalytics trackReaderStat:WPAnalyticsStatReaderTagUnfollowed properties:properties];
         if (success) {
             success();
         }
@@ -362,7 +362,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID) {
         [self fetchReaderMenuWithSuccess:^{
             NSDictionary *properties = @{@"tag":topicName};
-            [WPAnalytics track:WPAnalyticsStatReaderTagFollowed withProperties:properties];
+            [WPAnalytics trackReaderStat:WPAnalyticsStatReaderTagFollowed properties:properties];
             [self selectTopicWithID:topicID];
             if (success) {
                 success();
@@ -380,7 +380,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     void (^successBlock)(void) = ^{
         NSDictionary *properties = @{@"tag":slug};
-        [WPAnalytics track:WPAnalyticsStatReaderTagFollowed withProperties:properties];
+        [WPAnalytics trackReaderStat:WPAnalyticsStatReaderTagFollowed properties:properties];
         if (success) {
             success();
         }
@@ -857,6 +857,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.path = remoteTopic.path;
     topic.showInMenu = YES;
     topic.following = YES;
+    topic.organizationID = [remoteTopic.organizationID integerValue];
 
     return topic;
 }
@@ -873,9 +874,10 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.feedURL = siteInfo.feedURL;
     topic.following = siteInfo.isFollowing;
     topic.isJetpack = siteInfo.isJetpack;
-    topic.organizationID = siteInfo.organizationID;
     topic.isPrivate = siteInfo.isPrivate;
     topic.isVisible = siteInfo.isVisible;
+    topic.organizationID = [siteInfo.organizationID integerValue];
+    topic.path = siteInfo.postsEndpoint;
     topic.postCount = siteInfo.postCount;
     topic.showInMenu = NO;
     topic.siteBlavatar = siteInfo.siteBlavatar;
@@ -885,7 +887,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.subscriberCount = siteInfo.subscriberCount;
     topic.title = siteInfo.siteName;
     topic.type = ReaderSiteTopic.TopicType;
-    topic.path = siteInfo.postsEndpoint;
+    topic.unseenCount = [siteInfo.unseenCount integerValue];
     
     topic.postSubscription = [self postSubscriptionFor:siteInfo topic:topic];
     topic.emailSubscription = [self emailSubscriptionFor:siteInfo topic:topic];

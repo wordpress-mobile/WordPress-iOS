@@ -8,6 +8,8 @@ struct MockAnnouncementsCache: AnnouncementsCache {
 
     var announcements: [Announcement]?
 
+    var date: Date?
+
     private let localAnnouncements = [Announcement(appVersionName: "0.0",
                                            minimumAppVersion: "1.0",
                                            maximumAppVersion: "3.0",
@@ -142,6 +144,31 @@ class AnnouncementsDataStoreTests: XCTestCase {
             }
         }
 
+        // When
+        store.getAnnouncements()
+        // Then
+        waitForExpectations(timeout: 4) { error in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+            }
+        }
+    }
+
+    func testCacheWasUpdated() {
+        // Given
+        let cache = MockAnnouncementsCache()
+        let service = MockAnnouncementsService()
+        let getAnnouncementsExpectation = expectation(description: "Get announcements called")
+        service.getAnnouncementsExpectation = getAnnouncementsExpectation
+        let versionProvider = MockVersionProvider()
+        let store = CachedAnnouncementsStore(cache: cache, service: service, versionProvider: versionProvider)
+        let stateChangeExpectation = expectation(description: "state change emitted")
+
+        subscription = store.onChange {
+            stateChangeExpectation.fulfill()
+            XCTAssertNotNil(store.announcements.first)
+            XCTAssertEqual(["first cached feature", "second cached feature"], store.announcements.first?.features.map { $0.title })
+        }
         // When
         store.getAnnouncements()
         // Then

@@ -19,6 +19,8 @@ extension BlogDetailsSubsection {
             return .personalize
         case .sharing, .people, .plugins:
             return .configure
+        case .jetpackSettings:
+            return .jetpack
         @unknown default:
             fatalError()
         }
