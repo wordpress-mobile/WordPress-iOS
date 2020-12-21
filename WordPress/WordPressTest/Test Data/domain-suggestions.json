@@ -1,0 +1,102 @@
+[
+    {
+        "domain_name": "articletesting.art.blog",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "articletesting.news.blog",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "bulkdomaintesting.wordpress.com",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "domainbasedtesting.wordpress.com",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "domaindatatesting.data.blog",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "domainnametesting.wordpress.com",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "domaintesting.art.blog",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "domaintesting.business.blog",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "domaintesting.car.blog",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "domaintesting.code.blog",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "domaintesting.data.blog",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "domaintesting.design.blog",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "domaintestingcompany.business.blog",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "domaintestingkit.wordpress.com",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "domaintestingkits.wordpress.com",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "domaintestingserver.wordpress.com",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "domanetesting.wordpress.com",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "privatedomaintesting.wordpress.com",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "publicdomaintesting.wordpress.com",
+        "cost": "Free",
+        "is_free": true
+    },
+    {
+        "domain_name": "virtualdomaintesting.wordpress.com",
+        "cost": "Free",
+        "is_free": true
+    }
+]

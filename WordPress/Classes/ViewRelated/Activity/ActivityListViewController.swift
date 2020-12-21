@@ -14,7 +14,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
     let containerStackView = UIStackView()
 
-    let filterStackView = UIStackView()
+    let filterView = FilterBarView()
     let dateFilterChip = FilterChipButton()
     let activityTypeFilterChip = FilterChipButton()
 
@@ -158,40 +158,39 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
     }
 
     private func setupFilterBar() {
-        let scrollView = UIScrollView()
-        filterStackView.addArrangedSubview(dateFilterChip)
-        filterStackView.addArrangedSubview(activityTypeFilterChip)
-        scrollView.addSubview(filterStackView)
-        containerStackView.addArrangedSubview(scrollView)
-        filterStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            filterStackView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
-            filterStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            filterStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            scrollView.heightAnchor.constraint(equalTo: filterStackView.heightAnchor)
-        ])
+        containerStackView.addArrangedSubview(filterView)
+
+        filterView.add(button: dateFilterChip)
+        filterView.add(button: activityTypeFilterChip)
 
         setupDateFilter()
-
         setupActivityTypeFilter()
     }
 
     private func setupDateFilter() {
+        dateFilterChip.resetButton.accessibilityLabel = NSLocalizedString("Reset Date Range filter", comment: "Accessibility label for the reset date range button")
+
         dateFilterChip.tapped = { [weak self] in
+            WPAnalytics.track(.activitylogFilterbarRangeButtonTapped)
             self?.showCalendar()
         }
 
         dateFilterChip.resetTapped = { [weak self] in
+            WPAnalytics.track(.activitylogFilterbarResetRange)
             self?.viewModel.removeDateFilter()
             self?.dateFilterChip.disableResetButton()
         }
     }
 
     private func setupActivityTypeFilter() {
+        activityTypeFilterChip.resetButton.accessibilityLabel = NSLocalizedString("Reset Activity Type filter", comment: "Accessibility label for the reset activity type button")
+
         activityTypeFilterChip.tapped = { [weak self] in
             guard let self = self else {
                 return
             }
+
+            WPAnalytics.track(.activitylogFilterbarTypeButtonTapped)
 
             let activityTypeSelectorViewController = ActivityTypeSelectorViewController(
                 viewModel: self.viewModel
@@ -202,6 +201,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         }
 
         activityTypeFilterChip.resetTapped = { [weak self] in
+            WPAnalytics.track(.activitylogFilterbarResetType)
             self?.viewModel.removeGroupFilter()
             self?.activityTypeFilterChip.disableResetButton()
         }
@@ -410,8 +410,33 @@ extension ActivityListViewController: CalendarViewControllerDelegate {
             return
         }
 
+        trackSelectedRange(startDate: startDate, endDate: endDate)
+
         viewModel.refresh(after: startDate, before: endDate, group: viewModel.selectedGroups)
         calendar.dismiss(animated: true, completion: nil)
+    }
+
+    private func trackSelectedRange(startDate: Date?, endDate: Date?) {
+        guard let startDate = startDate else {
+            if viewModel.after != nil || viewModel.before != nil {
+                WPAnalytics.track(.activitylogFilterbarResetRange)
+            }
+
+            return
+        }
+
+        var duration: Int // Number of selected days
+        var distance: Int // Distance from the startDate to today (in days)
+
+        if let endDate = endDate {
+            duration = Int((endDate.timeIntervalSinceReferenceDate - startDate.timeIntervalSinceReferenceDate) / Double(24 * 60 * 60)) + 1
+        } else {
+            duration = 1
+        }
+
+        distance = Int((Date().timeIntervalSinceReferenceDate - startDate.timeIntervalSinceReferenceDate) / Double(24 * 60 * 60))
+
+        WPAnalytics.track(.activitylogFilterbarSelectRange, properties: ["duration": duration, "distance": distance])
     }
 }
 
@@ -427,7 +452,22 @@ extension ActivityListViewController: ActivityTypeSelectorDelegate {
             return
         }
 
+        trackSelectedGroups(groups)
+
         viewModel.refresh(after: viewModel.after, before: viewModel.before, group: groups)
         selectorViewController.dismiss(animated: true, completion: nil)
+    }
+
+    private func trackSelectedGroups(_ selectedGroups: [ActivityGroup]) {
+        if !viewModel.selectedGroups.isEmpty && selectedGroups.isEmpty {
+            WPAnalytics.track(.activitylogFilterbarResetType)
+        } else {
+            let totalActivitiesSelected = selectedGroups.map { $0.count }.reduce(0, +)
+            var selectTypeProperties: [AnyHashable: Any] = [:]
+            selectedGroups.forEach { selectTypeProperties["filter_group_\($0.key)"] = true }
+            selectTypeProperties["num_groups_selected"] = selectedGroups.count
+            selectTypeProperties["num_total_activities_selected"] = totalActivitiesSelected
+            WPAnalytics.track(.activitylogFilterbarSelectType, properties: selectTypeProperties)
+        }
     }
 }

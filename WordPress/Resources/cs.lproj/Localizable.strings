@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-10-11 18:38:54+0000 */
+/* Translation-Revision-Date: 2020-12-16 11:54:16+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: cs_CZ */
@@ -6149,7 +6149,7 @@ translators: sample content for \"Services\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media.";
 
 /* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "This is where people will find you on the internet.";
+"This is where people will find you on the internet." = "Toto je místo, kde vás lidé najdou na internetu";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Tato mediální položka byla smazána.";

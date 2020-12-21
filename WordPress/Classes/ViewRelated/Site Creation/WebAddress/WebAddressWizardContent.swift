@@ -4,6 +4,7 @@ import WordPressAuthenticator
 /// Contains the UI corresponding to the list of Domain suggestions.
 ///
 final class WebAddressWizardContent: CollapsableHeaderViewController {
+    static let noMatchCellReuseIdentifier = "noMatchCellReuseIdentifier"
 
     // MARK: Properties
     private struct Metrics {
@@ -37,6 +38,20 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         didSet {
             contentSizeWillChange()
             table.reloadData()
+        }
+    }
+    private var _hasExactMatch: Bool = false
+    var hasExactMatch: Bool {
+        get {
+            guard (lastSearchQuery ?? "").count > 0 else {
+                // Forces the no match cell to hide when the results are empty.
+                return true
+            }
+            // Return true if there is no data to supress the no match cell
+            return data.count > 0 ? _hasExactMatch : true
+        }
+        set {
+            _hasExactMatch = newValue
         }
     }
 
@@ -153,7 +168,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         guard !isShowingError else { return CGSize(width: view.frame.width, height: 44) }
         guard data.count > 0 else { return .zero }
         let estimatedSectionHeaderHeight: CGFloat = 85
-        let height = estimatedSectionHeaderHeight + (CGFloat(data.count) * AddressCell.estimatedSize.height)
+        let cellCount = hasExactMatch ? data.count : data.count + 1
+        let height = estimatedSectionHeaderHeight + (CGFloat(cellCount) * AddressCell.estimatedSize.height)
         return CGSize(width: view.frame.width, height: height)
     }
 
@@ -162,10 +178,12 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         throttle.cancel()
         itemSelectionChanged(false)
         data = []
+        lastSearchQuery = nil
     }
 
     private func fetchAddresses(_ searchTerm: String) {
         isShowingError = false
+        data = []
         // If the segment ID isn't set (which could happen in the case of the user skipping the site design selection) we'll fall through and search for dotcom only domains.
         guard let segmentID = siteCreator.segment?.identifier ?? siteCreator.design?.segmentID else {
             fetchDotComAddresses(searchTerm)
@@ -192,13 +210,14 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         }
     }
 
-    private func handleResult(_ results: Result<[DomainSuggestion], Error>) {
+    private func handleResult(_ results: Result<SiteAddressServiceResult, Error>) {
         updateIcon(isLoading: false)
         switch results {
         case .failure(let error):
             handleError(error)
         case .success(let data):
-            handleData(data)
+            hasExactMatch = data.hasExactMatch
+            handleData(data.domainSuggestions)
         }
     }
 
@@ -224,6 +243,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     private func performSearchIfNeeded(query: String) {
         guard !query.isEmpty else {
+            clearContent()
             return
         }
 
@@ -234,7 +254,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
             return
         }
 
-        throttle.throttle { [weak self] in
+        throttle.debounce { [weak self] in
             guard let self = self else { return }
             self.fetchAddresses(query)
         }
@@ -293,6 +313,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         setupCells()
         setupHeaderAndNoResultsMessage()
         table.showsVerticalScrollIndicator = false
+        table.separatorStyle = .none // Remove Seperator from from section headers we'll add in seperators when creating cells.
     }
 
     private func setupTableBackground() {
@@ -370,6 +391,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
                                                                    comment: "Accessibility hint for the domains search field in Site Creation.")
         static let suggestions: String = NSLocalizedString("Suggestions",
                                                            comment: "Suggested domains")
+        static let noMatch: String = NSLocalizedString("This domain is unavailable",
+                                                           comment: "Notifies the user that the a domain matching the search term wasn't returned in the results")
     }
 }
 
@@ -411,20 +434,49 @@ private extension WebAddressWizardContent {
 extension WebAddressWizardContent: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard !isShowingError else { return 1 }
-        return data.count
+        return (!hasExactMatch && section == 0) ? 1 : data.count
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard data.count > 0 else { return nil }
-        return Strings.suggestions
+        return (!hasExactMatch && section == 0) ? nil : Strings.suggestions
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return (!hasExactMatch && indexPath.section == 0) ? 60 : UITableView.automaticDimension
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return hasExactMatch ? 1 : 2
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return (!hasExactMatch && section == 0) ? UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 3)) : nil
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if isShowingError {
             return configureErrorCell(tableView, cellForRowAt: indexPath)
+        } else if !hasExactMatch && indexPath.section == 0 {
+            return configureNoMatchCell(table, cellForRowAt: indexPath)
         } else {
             return configureAddressCell(tableView, cellForRowAt: indexPath)
         }
+    }
+
+    func configureNoMatchCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: WebAddressWizardContent.noMatchCellReuseIdentifier) ?? {
+            // Create and configure a new TableView cell if one hasn't been queued yet
+            let newCell = UITableViewCell(style: .subtitle, reuseIdentifier: WebAddressWizardContent.noMatchCellReuseIdentifier)
+            newCell.detailTextLabel?.text = Strings.noMatch
+            newCell.detailTextLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+            newCell.detailTextLabel?.textColor = .textSubtle
+            newCell.addBottomBorder(withColor: .divider)
+            return newCell
+        }()
+
+        cell.textLabel?.attributedText = AddressCell.processName("\(lastSearchQuery ?? "").wordpress.com")
+        return cell
     }
 
     func configureAddressCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -436,7 +488,7 @@ extension WebAddressWizardContent: UITableViewDataSource {
         let domainSuggestion = data[indexPath.row]
         cell.model = domainSuggestion
         cell.isSelected = domainSuggestion.domainName == selectedDomain?.domainName
-
+        cell.addBorder(isFirstCell: (indexPath.row == 0), isLastCell: (indexPath.row == data.count - 1))
         return cell
     }
 
@@ -447,13 +499,18 @@ extension WebAddressWizardContent: UITableViewDataSource {
         }
 
         cell.setMessage(errorMessage)
-
         return cell
     }
 }
 
 // MARK: UITableViewDelegate
 extension WebAddressWizardContent: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        // Prevent selection if it's the no matches cell
+        return (!hasExactMatch && indexPath.section == 0) ? nil : indexPath
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard !isShowingError else {
             retry()

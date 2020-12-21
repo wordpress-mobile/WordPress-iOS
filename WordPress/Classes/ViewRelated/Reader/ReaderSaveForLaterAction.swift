@@ -32,11 +32,15 @@ final class ReaderSaveForLaterAction {
         let readerPostService = ReaderPostService(managedObjectContext: context)
 
         readerPostService.toggleSavedForLater(for: post, success: {
-            self.presentSuccessNotice(for: post, context: context, origin: origin, completion: completion)
+            if origin == .otherStream {
+                self.presentSuccessNotice(for: post, context: context, origin: origin, completion: completion)
+            }
             completion?()
-            }, failure: { error in
+        }, failure: { error in
+            if origin == .otherStream {
                 self.presentErrorNotice(error, activating: !post.isSavedForLater)
-                completion?()
+            }
+            completion?()
         })
     }
 
