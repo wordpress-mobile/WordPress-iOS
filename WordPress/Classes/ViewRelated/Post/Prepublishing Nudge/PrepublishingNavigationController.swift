@@ -60,7 +60,11 @@ class PrepublishingNavigationController: LightNavigationController {
 
 extension PrepublishingNavigationController: DrawerPresentable {
     var allowsUserTransition: Bool {
-        return false
+        guard let visibleDrawer = visibleViewController as? DrawerPresentable else {
+            return true
+        }
+
+        return visibleDrawer.allowsUserTransition
     }
 
     var expandedHeight: DrawerHeight {
@@ -68,13 +72,15 @@ extension PrepublishingNavigationController: DrawerPresentable {
     }
 
     var collapsedHeight: DrawerHeight {
-        return .intrinsicHeight
+        guard let visibleDrawer = visibleViewController as? DrawerPresentable else {
+            return .contentHeight(300)
+        }
+
+        return visibleDrawer.collapsedHeight
     }
 
     var scrollableView: UIScrollView? {
-        let scroll = topViewController?.view as? UIScrollView
-
-        return scroll
+        return topViewController?.view as? UIScrollView
     }
 
     func handleDismiss() {
