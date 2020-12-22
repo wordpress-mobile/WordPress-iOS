@@ -127,6 +127,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             startObservingAppleIDCredentialRevoked()
         }
 
+        ExPlat.shared.refreshIfNeeded()
+
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
         return true
     }
