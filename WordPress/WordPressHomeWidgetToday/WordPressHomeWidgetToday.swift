@@ -70,13 +70,11 @@ struct SiteListProvider: IntentTimelineProvider {
               let widgetData = widgetData(for: siteIdentifier) else {
 
             /// - TODO: TODAYWIDGET - This is here because configuration is not updated when the site list changes. It might be a WidgetKit bug. More to come on a separate issue.
-
             if let siteID = defaultSiteID, let content = HomeWidgetTodayData.read()?[siteID] {
                 completion(Timeline(entries: [.siteSelected(content)], policy: .never))
             } else {
                 completion(Timeline(entries: [.loggedOut], policy: .never))
             }
-
             return
         }
 
@@ -119,14 +117,20 @@ struct SiteListProvider: IntentTimelineProvider {
 
 @main
 struct WordPressHomeWidgetToday: Widget {
+    private let tracks = Tracks(appGroupName: WPAppGroupName)
 
     var body: some WidgetConfiguration {
         IntentConfiguration(
             kind: WPHomeWidgetTodayKind,
             intent: SelectSiteIntent.self,
             provider: SiteListProvider()
-        ) { entry in
-            TodayWidgetView(timelineEntry: entry)
+        ) { (entry: HomeWidgetTodayEntry) -> TodayWidgetView in
+
+            defer {
+                tracks.trackWidgetUpdated()
+            }
+
+            return TodayWidgetView(timelineEntry: entry)
         }
         .configurationDisplayName("Today")
         .description("Stay up to date with today's activity on your WordPress site.")

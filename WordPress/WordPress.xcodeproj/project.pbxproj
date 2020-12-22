@@ -6537,11 +6537,11 @@
 		3F526C512538CF2A0069706C /* WordPressHomeWidgetToday */ = {
 			isa = PBXGroup;
 			children = (
-				3F2F0C06256C68E1003351C7 /* Remote service */,
-				3FB34ABB25672A59001A74A6 /* Model */,
-				3F526D2B2539F9D60069706C /* Views */,
 				3F526C522538CF2A0069706C /* WordPressHomeWidgetToday.swift */,
-				98390AC2254C984700868F0A /* Tracks+TodayHomeWidget.swift */,
+				3FB34ABB25672A59001A74A6 /* Model */,
+				3F2F0C06256C68E1003351C7 /* Remote service */,
+				3FA59DCC2582E53F0073772F /* Tracks */,
+				3F526D2B2539F9D60069706C /* Views */,
 				3F526CA82538E0ED0069706C /* Supporting Files */,
 				3F526C552538CF2B0069706C /* Assets.xcassets */,
 			);
@@ -6643,6 +6643,14 @@
 				3F73BE5C24EB38E200BE99FF /* WhatIsNewScenePresenter.swift */,
 			);
 			path = Presenter;
+			sourceTree = "<group>";
+		};
+		3FA59DCC2582E53F0073772F /* Tracks */ = {
+			isa = PBXGroup;
+			children = (
+				98390AC2254C984700868F0A /* Tracks+TodayHomeWidget.swift */,
+			);
+			path = Tracks;
 			sourceTree = "<group>";
 		};
 		3FB34ABB25672A59001A74A6 /* Model */ = {
