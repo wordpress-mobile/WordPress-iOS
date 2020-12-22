@@ -94,7 +94,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
 - (void)beginSession
 {
     if (self.loggedInID.length > 0) {
-        [self.tracksService switchToAuthenticatedUserWithUsername:self.loggedInID userID:nil skipAliasEventCreation:YES];
+        [self.tracksService switchToAuthenticatedUserWithUsername:self.loggedInID userID:nil token:self.token skipAliasEventCreation:YES];
     } else {
         [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
     }
@@ -171,14 +171,14 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             self.loggedInID = username;
             self.anonymousID = nil;
 
-            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" token:self.token skipAliasEventCreation:NO];
         } else if ([self.loggedInID isEqualToString:username]){
             // Username did not change from last refreshMetadata - just make sure Tracks client has it
-            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:YES];
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" token:self.token skipAliasEventCreation:YES];
         } else {
             // Username changed for some reason - switch back to anonymous first
             [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
-            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" token:self.token skipAliasEventCreation:NO];
             self.loggedInID = username;
             self.anonymousID = nil;
         }
@@ -240,6 +240,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     }
 
     [[NSUserDefaults standardUserDefaults] setObject:loggedInID forKey:TracksUserDefaultsLoggedInUserIDKey];
+}
+
+- (NSString *)token
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    return defaultAccount.authToken;
 }
 
 + (TracksEventPair *)eventPairForStat:(WPAnalyticsStat)stat
