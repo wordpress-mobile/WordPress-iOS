@@ -199,7 +199,7 @@ class PrepublishingViewController: UITableViewController {
         }
 
         navigationController?.pushViewController(categoriesViewController, animated: true)
-       }
+    }
 
     // MARK: - Visibility
 
@@ -385,5 +385,17 @@ extension PrepublishingViewController: PostCategoriesViewControllerDelegate {
 extension Set {
     var array: [Element] {
         return Array(self)
+    }
+}
+
+
+// MARK: - DrawerPresentable
+extension PrepublishingViewController: DrawerPresentable {
+    var allowsUserTransition: Bool {
+        return false
+    }
+
+    var collapsedHeight: DrawerHeight {
+        return .intrinsicHeight
     }
 }
