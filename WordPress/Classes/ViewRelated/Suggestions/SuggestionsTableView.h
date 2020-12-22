@@ -21,7 +21,7 @@ typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
 
 - (nonnull instancetype)initWithSiteID:(NSNumber *_Nullable)siteID
                          suggestionType:(SuggestionType)suggestionType
-                               delegate:(id <SuggestionsTableViewDelegate>_Nonnull)suggestionsDelegate NS_DESIGNATED_INITIALIZER;
+                               delegate:(id <SuggestionsTableViewDelegate>_Nonnull)suggestionsDelegate;
 
 /**
   Enables or disables the SuggestionsTableView component.

@@ -41,6 +41,8 @@ CGFloat const STVSeparatorHeight = 1.f;
         [self setupTableView];
         [self setupConstraints];
         [self startObservingNotifications];
+
+        [self fetchSuggestionsOfType: self.suggestionType for:_siteID];
     }
     return self;
 }
@@ -312,16 +314,6 @@ CGFloat const STVSeparatorHeight = 1.f;
     cell.subtitleLabel.text = [self subtitleFor:suggestion];
     [self loadImageFor:suggestion in:cell at:indexPath];
     return cell;
-}
-
-#pragma mark - Suggestion list management
-
-- (NSArray *)suggestions
-{
-    if (!_suggestions && _siteID != nil) {
-        [self fetchSuggestionsOfType: self.suggestionType for:_siteID];
-    }
-    return _suggestions;
 }
 
 @end
