@@ -2,7 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared
 
-class PostTagPickerViewController: UIViewController, DrawerPresentable {
+class PostTagPickerViewController: UIViewController {
     private let originalTags: [String]
     @objc var onValueChanged: ((String) -> Void)?
     @objc let blog: Blog
@@ -467,5 +467,15 @@ extension WPStyleGuide {
         WPStyleGuide.configureTableViewCell(cell)
         cell.textLabel?.textColor = .text
         cell.backgroundColor = .listForeground
+    }
+}
+
+extension PostTagPickerViewController: DrawerPresentable {
+    var collapsedHeight: DrawerHeight {
+        return .contentHeight(300)
+    }
+
+    var scrollableView: UIScrollView? {
+        return tableView
     }
 }
