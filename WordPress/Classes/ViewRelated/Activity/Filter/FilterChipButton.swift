@@ -64,6 +64,7 @@ class FilterChipButton: UIView {
     func disableResetButton() {
         resetButton.isHidden = true
         mainButton.contentEdgeInsets = Constants.buttonContentInset
+        UIAccessibility.post(notification: .layoutChanged, argument: mainButton)
     }
 
     @objc private func mainButtonTapped() {

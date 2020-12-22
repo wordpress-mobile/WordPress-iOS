@@ -59,7 +59,9 @@ class ActivityTypeSelectorViewController: UITableViewController {
     }
 
     @objc private func done() {
-        delegate?.didSelect(selectorViewController: self, groups: viewModel.groups.filter { selectedGroupsKeys.contains($0.key) })
+        let selectedGroups = viewModel.groups.filter { selectedGroupsKeys.contains($0.key) }
+
+        delegate?.didSelect(selectorViewController: self, groups: selectedGroups)
     }
 
     @objc private func cancel() {
@@ -98,6 +100,7 @@ class ActivityTypeSelectorViewController: UITableViewController {
             selectedGroupsKeys.append(selectedGroupKey)
         }
     }
+
 
     private enum Constants {
         static let groupCellIdentifier = "GroupCellIdentifier"

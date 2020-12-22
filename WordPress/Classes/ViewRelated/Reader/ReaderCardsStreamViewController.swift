@@ -105,10 +105,10 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         refreshCount += 1
 
         cardsService.fetch(isFirstPage: true, refreshCount: refreshCount, success: { [weak self] cardsCount, hasMore in
-            self?.trackApiResponse()
+            self?.trackContentPresented()
             success(cardsCount, hasMore)
         }, failure: { [weak self] error in
-            self?.trackApiResponse()
+            self?.trackContentPresented()
             failure(error)
         })
     }
@@ -144,12 +144,14 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     /// Track when the API returned the cards and the user is still on the screen
     /// This is used to create a funnel to check if users are leaving the screen
     /// before the API response
-    private func trackApiResponse() {
-        guard isVisible else {
-            return
-        }
+    private func trackContentPresented() {
+        DispatchQueue.main.async {
+            guard self.isVisible else {
+                return
+            }
 
-        WPAnalytics.trackReader(.readerDiscoverContentPresented)
+            WPAnalytics.track(.readerDiscoverContentPresented)
+        }
     }
 
     // MARK: - TableViewHandler

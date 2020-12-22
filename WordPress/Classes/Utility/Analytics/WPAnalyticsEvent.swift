@@ -93,6 +93,12 @@ import Foundation
     case jetpackDisconnectRequested
     case jetpackWhitelistedIpsViewed
     case jetpackWhitelistedIpsChanged
+    case activitylogFilterbarSelectType
+    case activitylogFilterbarResetType
+    case activitylogFilterbarTypeButtonTapped
+    case activitylogFilterbarRangeButtonTapped
+    case activitylogFilterbarSelectRange
+    case activitylogFilterbarResetRange
 
     // Comments
     case commentViewed
@@ -260,6 +266,18 @@ import Foundation
             return "jetpack_whitelisted_ips_viewed"
         case .jetpackWhitelistedIpsChanged:
             return "jetpack_whitelisted_ips_changed"
+        case .activitylogFilterbarSelectType:
+            return "activitylog_filterbar_select_type"
+        case .activitylogFilterbarResetType:
+            return "activitylog_filterbar_reset_type"
+        case .activitylogFilterbarTypeButtonTapped:
+            return "activitylog_filterbar_type_button_tapped"
+        case .activitylogFilterbarRangeButtonTapped:
+            return "activitylog_filterbar_range_button_tapped"
+        case .activitylogFilterbarSelectRange:
+            return "activitylog_filterbar_select_range"
+        case .activitylogFilterbarResetRange:
+            return "activitylog_filterbar_reset_range"
 
         // Comments
         case .commentViewed:

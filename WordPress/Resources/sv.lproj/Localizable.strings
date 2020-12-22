@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-04 09:22:30+0000 */
+/* Translation-Revision-Date: 2020-12-18 09:32:17+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -367,6 +367,12 @@
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "Aktivitetsloggar";
 
+/* Label for the Activity Type filter button */
+"Activity Type" = "Aktivitetstyp";
+
+/* Label for the Activity Type filter button when there are more than 1 activity type selected */
+"Activity Type (%1$d)" = "Aktivitetstyp (%1$d)";
+
 /* Remove asset from media picker list */
 "Add" = "Lägg till";
 
@@ -412,8 +418,7 @@
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Lägg till profilbild";
 
-/* Title of a feature to add a new topic to the topics subscribed by the user.
-   Title. Lets the user know that they can use this feature to subscribe to new topics. */
+/* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "Lägg till ett ämne";
 
 /* Hint for the reader CSS URL field */
@@ -729,9 +734,6 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Är du säker på att du vill uppdatera?";
 
-/* A short message asking the user if they wish to unfollow the specified topic. The %@ is a placeholder for the name of the topic. */
-"Are you sure you wish to remove the topic '%@'?" = "Är det säkert att du vill ta bort ämnet ”%@”?";
-
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Från 1 augusti 2018 tillåter inte längre Facebook direktdelning av inlägg till Facebook-profiler. Anslutningar till Facebook-sidor fungerar som tidigare.";
 
@@ -1007,7 +1009,6 @@
    Option to cancel the email app selection when logging in with magic links
    Text displayed by the left navigation button title
    The title of a cancel button.
-   Title of a cancel button.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
@@ -1162,8 +1163,14 @@
 /* Label for Publish time picker */
 "Choose a time" = "Välj en tid";
 
+/* Title to choose date range in a calendar */
+"Choose date range" = "Välj datumintervall";
+
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Välj domän";
+
+/* No comment provided by engineer. */
+"Choose file" = "Välj fil";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Välj från min enhet";
@@ -1171,7 +1178,7 @@
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Välj mellan en startsida som visar dina senaste inlägg (klassisk blogg) och en fast\/statisk sida.";
 
-/* No comment provided by engineer. */
+/* Menu option used for adding media from other applications. */
 "Choose from device" = "Välj från enheten";
 
 /* No comment provided by engineer. */
@@ -1513,6 +1520,9 @@
 /* No comment provided by engineer. */
 "Copy file URL" = "Kopiera filens URL";
 
+/* Button title displayed in popup indicating the user copied the local copy */
+"Copy the version from this app" = "Kopiera versionen från denna app";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Kunde vara bättre";
 
@@ -1540,6 +1550,9 @@
 /* Title of a prompt. */
 "Could not save post for later" = "Det gick inte att spara inlägget till senare";
 
+/* The app failed to subscribe to the comments for the post */
+"Could not subscribe to comments" = "Det gick inte att prenumerera på kommentarer";
+
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Går inte att växla mellan följ\/sluta följ: blogURL-attribut fattas";
 
@@ -1548,6 +1561,9 @@
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Det gick inte att sluta följa webbplatsen på angiven adress.";
+
+/* The app failed to unsubscribe from the comments for the post */
+"Could not unsubscribe from comments" = "Det gick inte att avsluta prenumerationen på kommentarer";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Vad kan vi förbättra?";
@@ -1733,6 +1749,9 @@
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
 "Date Format" = "Datumformat";
+
+/* Label of a button that displays a calendar */
+"Date Range" = "Datumintervall";
 
 /* Date and Time */
 "Date and Time" = "Datum och tid";
@@ -2028,6 +2047,9 @@
    Title of the drafts header in search list. */
 "Drafts" = "Utkast";
 
+/* Label for post duplicate option. Tapping displays statistics for a post. */
+"Duplicate" = "Duplicera";
+
 /* No comment provided by engineer. */
 "Duplicate block" = "Duplicera block";
 
@@ -2077,6 +2099,9 @@
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Redigera delningsknappar";
+
+/* Button title displayed in popup indicating that the user edits the post first */
+"Edit the post first" = "Redigera inlägget först";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "Redigera i webbredigeraren";
@@ -2159,6 +2184,9 @@
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Krypterade loggar";
 
+/* Placeholder for the end date in calendar range selection */
+"End Date" = "Slutdatum";
+
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Starta fullskärmsläge";
 
@@ -2197,12 +2225,12 @@
 /* Instruction text on the initial email address entry screen. */
 "Enter your email address to log in or create a WordPress.com account." = "Ange din e-postadress för att logga in eller registrera ett konto hos WordPress.com.";
 
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your existing site address" = "Ange din befintliga webbplatsadress";
+
 /* Title of a button on the magic link screen.
    Title of a button. */
 "Enter your password instead." = "Skriv in ditt lösenord istället.";
-
-/* Button title. Takes the user to the login by site address flow. */
-"Enter your site address" = "Ange adressen till din webbplats";
 
 /* Generic error alert title
    Generic error.
@@ -2440,6 +2468,9 @@
 
 /* Title of the filter button in the Reader */
 "Filter" = "Filtrera";
+
+/* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
+"Filter by activity type" = "Filtrera på aktivitetstyp";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Ta reda på mer";
@@ -3147,9 +3178,6 @@ translators: sample content for \"Services\" page template */
 /* The accessibility label for the list style button in the Post List. */
 "List style" = "Stil på listan";
 
-/* Section title of the lists reader section. */
-"Lists" = "Listor";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "Ladda";
 
@@ -3284,8 +3312,6 @@ translators: sample content for \"Services\" page template */
 "Main Navigation" = "Huvudmeny";
 
 /* Button leading to a screen where users can manage their installed plugins
-   Button title. Tapping lets the user manage the sites they follow.
-   Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
    Title for the Reader Manage screen.
@@ -3652,6 +3678,12 @@ translators: sample content for \"Services\" page template */
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Utan rubrik";
 
+/* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities available" = "Inga aktiviteter tillgängliga";
+
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities recorded in the selected date range." = "Inga aktiviteter registrerade inom det valda datumintervallet.";
+
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "Inga åtgärder än";
 
@@ -3720,6 +3752,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Inga gillamarkeringar än";
+
+/* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"No matching events found." = "Inga matchande händelser hittades.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso.
    Phrase to show when the user search for images but there are no result to show.
@@ -4363,6 +4398,9 @@ translators: sample content for \"Services\" page template */
 /* Title of notification displayed when a post has been successfully scheduled. */
 "Post scheduled" = "Inlägg schemalagt";
 
+/* Title displayed in popup when user tries to copy a post with unsaved changes */
+"Post sync conflict" = "Konflikt vid synkronisering av inlägg";
+
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Inläggsrubrik. %s";
 
@@ -4608,8 +4646,7 @@ translators: sample content for \"Services\" page template */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Läs det länkade inlägget";
 
-/* Noun. Title of the Reader feature in the app.
-   The accessibility value of the Reader tab.
+/* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -4697,15 +4734,12 @@ translators: sample content for \"Services\" page template */
    Button label when removing a blog
    Label for remove location button
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Label of the table view cell's delete button, when unfollowing tags.
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
    Title for button that will confirm removing the next steps/quick start menus.
-   Title of a prompt asking the user to confirm they no longer wish to subscribe to a certain tag.
    User action to remove featured media.
-   User action to remove media.
-   Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
+   User action to remove media. */
 "Remove" = "Ta bort";
 
 /* Remove Person Alert Title
@@ -4959,11 +4993,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "Sparat inlägg";
 
-/* Section title for Saved Posts in Reader
-   Title for list of posts saved for later
-   Title of the reader's Saved Posts menu item. */
-"Saved Posts" = "Sparade inlägg";
-
 /* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
 "Saved!" = "Sparat!";
 
@@ -4980,6 +5009,9 @@ translators: sample content for \"Services\" page template */
    Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Sparar...";
+
+/* Noun. Links to a blog's Jetpack Scan screen. */
+"Scan" = "Skanna";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Tidsinställ för";
@@ -5008,10 +5040,8 @@ translators: sample content for \"Services\" page template */
 "Scrollable block menu opened. Select a block." = "Den rullningsbara blockmenyn har öppnats. Välj ett block.";
 
 /* Placeholder text for the search bar
-   Search
    The menu item to select during a guided tour.
-   Title of the Reader's search feature
-   Title of the reader's Search menu item. */
+   Title of the Reader's search feature */
 "Search" = "Sök";
 
 /* Site creation. Seelect a domain, search field placeholder */
@@ -5072,10 +5102,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "Välj %@ för att fortsätta";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to continue." = "Välj %@ för att fortsätta.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page." = "Välj %@ för att skapa en ny sida.";
+"Select %@ to create a new page" = "Välj %@ för att skapa en ny sida";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Välj %@ för att skapa ett nytt inlägg";
@@ -5405,7 +5432,6 @@ translators: sample content for \"Services\" page template */
 "Site Language" = "Webbplatsens språk";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
 "Site Pages" = "Webbplatssidor";
 
@@ -5586,6 +5612,9 @@ translators: sample content for \"Services\" page template */
 /* Standard post format label */
 "Standard" = "Standard";
 
+/* Placeholder for the start date in calendar range selection */
+"Start Date" = "Startdatum";
+
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
 "Start Over" = "Börja om";
@@ -5644,9 +5673,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title of alert announcing new Create Button feature. */
 "Streamlined navigation" = "Smidigare navigering";
-
-/* Section title of the default reader items. */
-"Streams" = "Flöden";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Genomstrykning";
@@ -5762,7 +5788,6 @@ translators: sample content for \"Services\" page template */
    Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
-   Section title of the tags reader section.
    Tags menu item in share extension.
    Title for the tag selector view */
 "Tags" = "Etiketter";
@@ -5830,18 +5855,11 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Tryck här för att visa inlägg med denna etikett";
 
-/* Accessibility hint
-   Tapping lets you manage the sites you follow. */
-"Tapping lets you manage the sites you follow." = "Genom att knacka kan du hantera de webbplatser du följer.";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomi";
 
 /* translators: title for \"Team\" page template */
 "Team" = "Teamet";
-
-/* Section title of the teams reader section. */
-"Teams" = "Team";
 
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Berätta lite om dig själv.";
@@ -5950,6 +5968,9 @@ translators: sample content for \"Services\" page template */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Antalet inlägg som visas per sida.";
 
+/* Message displayed in popup when user tries to copy a post with conflicts */
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Inlägget du försöker kopiera har två versioner som står i konflikt med varandra, eller så har du nyligen gjort ändringar som inte är sparade.\nRedigera inlägget först för att lösa eventuella konflikter och kopiera därefter versionen från denna app.";
+
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Snabbstartsdemon visar dig stegen för att bygga en grundläggande webbplats. Är du säker på att du vill hoppa över detta?";
 
@@ -6023,12 +6044,6 @@ translators: sample content for \"Services\" page template */
 
 /* Reply Failure Message */
 "There has been an unexpected error while sending your reply" = "Ett oväntat fel inträffade när ditt svar skulle skickas";
-
-/* The app failed to subscribe to the comments for the post */
-"There has been an unexpected error while subscribing to the comments" = "Ett oväntat fel inträffade när prenumeration på kommentarer skulle startas";
-
-/* The app failed to unsubscribe from the comments for the post */
-"There has been an unexpected error while unsubscribing from the comments" = "Ett oväntat fel inträffade när prenumeration på kommentarer skulle avslutas";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Ett oväntat fel uppstod vid uppdateringen av dina notisinställningar";
@@ -6347,7 +6362,11 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Try a starter layout" = "Prova någon av grundlayouterna";
 
-/* Button that lets users try to reload the plugin directory after loading failure
+/* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"Try adjusting your date range or activity type filters" = "Försök att justera ditt datumintervall eller filtreringen av aktivitetstyp";
+
+/* Button label for trying to retrieve the activities type again
+   Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
 "Try again" = "Försök igen";
@@ -7571,8 +7590,7 @@ translators: sample content for \"Services\" page template */
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab. */
 "wordpress, notifications, alerts, updates" = "wordpress, notifieringar, påminnelser, uppdateringar";
 
-/* This is a comma separated list of keywords used for spotlight indexing of the 'Reader' tab.
-   This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
+/* This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
 "wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics" = "wordpress, läsare, artiklar, inlägg, blogginlägg, prenumererat, upptäck, gillande, vad jag gillat, etiketter, ämnen";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */

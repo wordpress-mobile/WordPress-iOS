@@ -1,8 +1,11 @@
 16.5
 -----
+ 
 * [*] In the Comments view, overly-large twemoji are sized the same as Apple's emoji. [#15503]
 * [*] Reader 'P2s': added ability to filter by site. [#15484]
 * [**] Choose a Domain will now return more options in the search results, sort the results to have exact matches first, and let you know if no exact matches were found. [#15482]
+* [**] Page List: Adds duplicate page functionality [#15515]
+* [*] Invite People: add link to user roles definition web page. [#15530]
 
 16.4
 -----
@@ -19,6 +22,8 @@
 * [**] Posts List: Adds duplicate post functionality [#15460]
 * [***] Block Editor: New Block: File [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2835]
 * [*] Reader: Removes gray tint from site icons that contain transparency (located in Reader > Settings > Followed sites).
+* [*] Block Editor: Remove popup informing user that they will be using the block editor by default [#15492]
+* [**] Fixed an issue where the Prepublishing Nudges Publish button could be cut off smaller devices [#15525]
 
 16.3
 -----
