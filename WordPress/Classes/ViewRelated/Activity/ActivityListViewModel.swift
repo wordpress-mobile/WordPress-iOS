@@ -170,6 +170,15 @@ class ActivityListViewModel: Observable {
                 formattableActivity: formattableActivity,
                 action: { [weak presenter] (row) in
                     presenter?.presentDetailsFor(activity: formattableActivity)
+                },
+                actionButtonHandler: { [weak presenter] (button) in
+                    guard FeatureFlag.jetpackBackupAndRestore.enabled else {
+                        presenter?.presentDetailsFor(activity: formattableActivity)
+                        return
+                    }
+
+                    // TODO: present action sheet with back and restore options
+                    presenter?.presentDetailsFor(activity: formattableActivity)
                 }
             )
         })
