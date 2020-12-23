@@ -6,6 +6,7 @@ protocol ActivityRewindPresenter: class {
 
 protocol ActivityDetailPresenter: class {
     func presentDetailsFor(activity: FormattableActivity)
+    func presentBackupOrRestoreFor(activity: FormattableActivity)
 }
 
 class ActivityListViewModel: Observable {
@@ -172,13 +173,12 @@ class ActivityListViewModel: Observable {
                     presenter?.presentDetailsFor(activity: formattableActivity)
                 },
                 actionButtonHandler: { [weak presenter] (button) in
-                    guard FeatureFlag.jetpackBackupAndRestore.enabled else {
+                    if !FeatureFlag.jetpackBackupAndRestore.enabled {
                         presenter?.presentDetailsFor(activity: formattableActivity)
                         return
                     }
 
-                    // TODO: present action sheet with back and restore options
-                    presenter?.presentDetailsFor(activity: formattableActivity)
+                    presenter?.presentBackupOrRestoreFor(activity: formattableActivity)
                 }
             )
         })

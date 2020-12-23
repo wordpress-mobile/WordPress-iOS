@@ -348,6 +348,24 @@ extension ActivityListViewController: ActivityDetailPresenter {
         self.navigationController?.pushViewController(detailVC, animated: true)
     }
 
+    func presentBackupOrRestoreFor(activity: FormattableActivity) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
+        alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
+            print("restore tapped!")
+        })
+
+        let downloadBackupTitle = NSLocalizedString("Download Backup", comment: "Title displayed for download backup action.")
+        alertController.addDefaultActionWithTitle(downloadBackupTitle, handler: { _ in
+            print("backup tapped!")
+        })
+
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Title for cancel action. Dismisses the action sheet.")
+        alertController.addCancelActionWithTitle(cancelTitle)
+
+        self.present(alertController, animated: true, completion: nil)
+    }
 }
 
 // MARK: - Restores handling
