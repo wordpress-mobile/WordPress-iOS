@@ -47,7 +47,11 @@ open class ActivityTableViewCell: WPTableViewCell {
     // MARK: - Private Properties
 
     fileprivate var activity: Activity?
-    fileprivate var rewindGridicon = UIImage.gridicon(.history)
+    fileprivate var rewindGridicon: UIImage {
+        return FeatureFlag.jetpackBackupAndRestore.enabled
+            ? UIImage.gridicon(.ellipsis)
+            : UIImage.gridicon(.history)
+    }
 
     // MARK: - IBOutlets
 
