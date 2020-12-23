@@ -46,7 +46,7 @@ def wordpress_kit
     # pod 'WordPressKit', '~> 4.24-beta'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '971a1fcd93a9df7ec15ecb6747d50302abb96522'
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '3a7f7c4c970032931f9a9b68250304ecc5a0ce51'
     # pod 'WordPressKit', :path => '../../WordPressKit-iOS'
 end
 
@@ -201,7 +201,7 @@ target 'WordPress' do
     # pod 'WordPressAuthenticator', '~> 1.33.0-beta'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
-    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => '8ed1b3545d1853550b7eb6a91f51031060d712bd'
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => '7466b9b568f9466981af23417a4cde9fecdfbcb8'
     # pod 'WordPressAuthenticator', :path => '../../WordPressAuthenticator-iOS'
 
     pod 'MediaEditor', '~> 1.2.1'
