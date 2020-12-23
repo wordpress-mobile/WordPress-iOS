@@ -11,20 +11,22 @@ extension SuggestionType {
 
 @objc public extension SuggestionsTableView {
 
-    var suggestionTrigger: String { return suggestionType.trigger }
-
-    func fetchSuggestionsOf(type: SuggestionType, for siteID: NSNumber) {
+    func userSuggestions(for siteID: NSNumber, completion: @escaping ([UserSuggestion]?) -> Void) {
         guard let blog = SuggestionService.shared.persistedBlog(for: siteID) else { return }
-        SuggestionService.shared.suggestionsOf(type: type, for: blog, completion: { suggestions in
-            self.suggestions = suggestions
-            self.showSuggestions(forWord: self.searchText)
-        })
+        SuggestionService.shared.suggestions(for: blog, completion: completion)
     }
+
+    func siteSuggestions(for siteID: NSNumber, completion: @escaping ([SiteSuggestion]?) -> Void) {
+        guard let blog = SuggestionService.shared.persistedBlog(for: siteID) else { return }
+        SiteSuggestionService.shared.suggestions(for: blog, completion: completion)
+    }
+
+    var suggestionTrigger: String { return suggestionType.trigger }
 
     func predicate(for searchQuery: String) -> NSPredicate {
         switch suggestionType {
         case .mention:
-            return NSPredicate(format: "(displayName contains[cd] %@) OR (username contains[cd] %@)", searchQuery, searchQuery)
+            return NSPredicate(format: "(displayName contains[c] %@) OR (username contains[c] %@)", searchQuery, searchQuery)
         case .xpost:
             return NSPredicate(format: "(title contains[cd] %@) OR (siteURL.absoluteString contains[cd] %@)", searchQuery, searchQuery)
         }
@@ -56,6 +58,7 @@ extension SuggestionType {
 
     private func imageURLForSuggestion(at indexPath: IndexPath) -> URL? {
         let suggestion = searchResults[indexPath.row]
+
         switch (suggestionType, suggestion) {
         case (.mention, let suggestion as UserSuggestion):
             return suggestion.imageURL
@@ -67,9 +70,7 @@ extension SuggestionType {
     }
 
     func loadImage(for suggestion: AnyObject, in cell: SuggestionsTableViewCell, at indexPath: IndexPath) {
-
         cell.iconImageView.image = UIImage(named: "gravatar")
-
         guard let imageURL = imageURLForSuggestion(at: indexPath) else { return }
         cell.imageDownloadHash = imageURL.hashValue
 
@@ -77,6 +78,21 @@ extension SuggestionType {
             guard indexPath.row < self.searchResults.count else { return }
             if let reloadedImageURL = self.imageURLForSuggestion(at: indexPath), reloadedImageURL.hashValue == cell.imageDownloadHash {
                 cell.iconImageView.image = image
+            }
+        }
+    }
+
+    func fetchSuggestions(for siteID: NSNumber) {
+        switch self.suggestionType {
+        case .mention:
+            userSuggestions(for: siteID) { userSuggestions in
+                self.suggestions = userSuggestions
+                self.showSuggestions(forWord: self.searchText)
+            }
+        case .xpost:
+            siteSuggestions(for: siteID) { siteSuggestions in
+                self.suggestions = siteSuggestions
+                self.showSuggestions(forWord: self.searchText)
             }
         }
     }
@@ -93,6 +109,7 @@ extension SuggestionType {
 
     private func retrieveIcon(for imageURL: URL?, success: @escaping (UIImage?) -> Void) {
         let imageSize = CGSize(width: SuggestionsTableViewCellIconSize, height: SuggestionsTableViewCellIconSize)
+
         if let image = cachedIcon(for: imageURL, with: imageSize) {
             success(image)
         } else {

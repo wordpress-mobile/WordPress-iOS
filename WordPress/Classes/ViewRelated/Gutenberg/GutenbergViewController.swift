@@ -345,11 +345,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         }, failure: { (error) in
             DDLogError("Error syncing JETPACK: \(String(describing: error))")
         })
-
-        let xpostSuggestions = SuggestionService.shared.retrievePersistedSuggestionsOf(type: .xpost, for: post.blog)
-        if xpostSuggestions == nil || xpostSuggestions?.isEmpty == true {
-            SuggestionService.shared.suggestionsOf(type: .xpost, for: post.blog, completion: nil)
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -889,7 +884,12 @@ extension GutenbergViewController {
             return
         }
 
-        guard SuggestionService.shared.shouldShowSuggestionsOf(type: type, for: post.blog) else { return }
+        switch type {
+        case .mention:
+            guard SuggestionService.shared.shouldShowSuggestions(for: post.blog) else { return }
+        case .xpost:
+            guard SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog) else { return }
+        }
 
         previousFirstResponder = view.findFirstResponder()
         let suggestionsController = GutenbergSuggestionsViewController(siteID: siteID, suggestionType: type)
@@ -962,8 +962,8 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
 
     func gutenbergCapabilities() -> [Capabilities: Bool] {
         return [
-            .mentions: FeatureFlag.gutenbergMentions.enabled && post.blog.supports(.mentions),
-            .xposts: FeatureFlag.gutenbergXposts.enabled && post.blog.supports(.xposts),
+            .mentions: FeatureFlag.gutenbergMentions.enabled && SuggestionService.shared.shouldShowSuggestions(for: post.blog),
+            .xposts: FeatureFlag.gutenbergXposts.enabled && SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .modalLayoutPicker: FeatureFlag.gutenbergModalLayoutPicker.enabled,

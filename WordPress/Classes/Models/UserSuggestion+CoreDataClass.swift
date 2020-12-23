@@ -2,46 +2,30 @@ import Foundation
 import CoreData
 
 @objc(UserSuggestion)
-public class UserSuggestion: NSManagedObject, Decodable, Comparable {
+public class UserSuggestion: NSManagedObject {
 
-    enum CodingKeys: String, CodingKey {
-        case displayName = "display_name"
-        case imageURL = "image_URL"
-        case username = "user_login"
-    }
+    convenience init?(dictionary: [String: Any], context: NSManagedObjectContext) {
+        let userLoginValue = dictionary["user_login"] as? String
+        let displayNameValue = dictionary["display_name"] as? String
 
-    required convenience public init(from decoder: Decoder) throws {
-        guard let managedObjectContext = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
-            throw DecoderError.missingManagedObjectContext
+        // A user suggestion is only valid when at least one of these is present.
+        guard userLoginValue != nil || displayNameValue != nil else {
+            return nil
         }
 
-        self.init(context: managedObjectContext)
+        guard let entityDescription = NSEntityDescription.entity(forEntityName: "UserSuggestion", in: context) else {
+            return nil
+        }
+        self.init(entity: entityDescription, insertInto: context)
 
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.displayName = try container.decode(String.self, forKey: .displayName)
-        self.imageURL = try container.decode(URL.self, forKey: .imageURL)
-        self.username = try container.decode(String.self, forKey: .username)
-    }
+        username = userLoginValue
+        displayName = displayNameValue
 
-    public static func < (lhs: UserSuggestion, rhs: UserSuggestion) -> Bool {
-        return (lhs.displayName ?? "").localizedCaseInsensitiveCompare(rhs.displayName ?? "") == .orderedAscending
-    }
-}
-
-public class UserSuggestionsPayload: Decodable {
-
-    let suggestions: [UserSuggestion]
-
-    enum CodingKeys: String, CodingKey {
-        case suggestions = "suggestions"
-    }
-
-    public required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let allSuggestions = try container.decode([UserSuggestion].self, forKey: .suggestions)
-        suggestions = allSuggestions.filter { suggestion in
-            // A user suggestion is only valid when at least one of these is present.
-            suggestion.displayName != nil || suggestion.username != nil
+        if let imageURLString = dictionary["image_URL"] as? String {
+            imageURL = URL(string: imageURLString)
+        } else {
+            imageURL = nil
         }
     }
+
 }
