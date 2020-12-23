@@ -12,7 +12,7 @@ class ActivityDetailViewController: UIViewController {
     }
     var site: JetpackSiteRef?
 
-    weak var rewindPresenter: ActivityRewindPresenter?
+    weak var presenter: ActivityPresenter?
 
     @IBOutlet private var imageView: CircularImageView!
 
@@ -54,7 +54,7 @@ class ActivityDetailViewController: UIViewController {
     }
 
     @IBAction func rewindButtonTapped(sender: UIButton) {
-        rewindPresenter?.presentRewindFor(activity: activity!)
+        presenter?.presentRestoreFor(activity: activity!)
     }
 
     private func setupLabelStyles() {
