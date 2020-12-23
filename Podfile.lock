@@ -503,7 +503,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `03867958303e991fd3c60032edf7d905b88f6c5e`)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `8ed1b3545d1853550b7eb6a91f51031060d712bd`)
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `971a1fcd93a9df7ec15ecb6747d50302abb96522`)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.14.0)
@@ -653,7 +653,7 @@ EXTERNAL SOURCES:
     :submodules: true
     :tag: v1.43.0
   WordPressAuthenticator:
-    :commit: 03867958303e991fd3c60032edf7d905b88f6c5e
+    :commit: 8ed1b3545d1853550b7eb6a91f51031060d712bd
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
     :commit: 971a1fcd93a9df7ec15ecb6747d50302abb96522
@@ -674,7 +674,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.43.0
   WordPressAuthenticator:
-    :commit: 03867958303e991fd3c60032edf7d905b88f6c5e
+    :commit: 8ed1b3545d1853550b7eb6a91f51031060d712bd
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
     :commit: 971a1fcd93a9df7ec15ecb6747d50302abb96522
@@ -775,6 +775,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: aaa4f6103f55ebbc025b56b077163cd585f71aae
+PODFILE CHECKSUM: 41a2fcfc8d87dc64b7385169808e253ebebe02a7
 
 COCOAPODS: 1.10.0
