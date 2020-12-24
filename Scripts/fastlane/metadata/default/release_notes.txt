@@ -1,11 +1,11 @@
-Your Reader experience can now be tailored just for you — with a new Discover feed reflecting your chosen interests.
+Here’s what’s new in our latest release:
 
-Block settings in the Block Editor now immediately reflect any changes made in the menu sliders.
+The block editor: You can now insert a File block into a post or page, which places a download button for files like documents. An update to the Gallery block also fixed an uploading issue when your editor was closed.
 
-Improved signup and login experience — both with directing the user on the steps and connecting a self-hosted site.
+Site creation: When building pages on your site, the page layout options are now easier to see and select.
 
-There is also a brand new way to login with the iCloud Keychain feature — a password manager that remembers your WP.com accounts and passwords.
+Post creation: Want to quickly duplicate a post? You can now do so from your Posts List.
 
-Don’t miss anything! You can now follow conversations on P2 sites.
+The Reader: Do you use P2, a tool for team and group collaboration? You can read and follow P2 sites in a newly added stream.
 
-We have also reduced memory usage when marking up an image, so media editing won’t cause a crash.
+Comments: Want to subscribe to comment threads on sites you follow or are interested in? Tap the “Follow conversation” button in the Comments view.

@@ -10,4 +10,17 @@ extension WordPressComRestApi {
                                    localeKey: localeKey,
                                    baseUrlString: Environment.current.wordPressComApiBase)
     }
+
+
+    /// Returns the default API the default WP.com account using the given context
+    @objc public static func defaultApi(in context: NSManagedObjectContext,
+                                        userAgent: String? = WPUserAgent.wordPress(),
+                                        localeKey: String = WordPressComRestApi.LocaleKeyDefault) -> WordPressComRestApi {
+        let accountService = AccountService(managedObjectContext: context)
+        let defaultAccount = accountService.defaultWordPressComAccount()
+        let token: String? = defaultAccount?.authToken
+
+        return WordPressComRestApi.defaultApi(oAuthToken: token,
+                                              userAgent: WPUserAgent.wordPress())
+    }
 }

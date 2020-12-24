@@ -50,6 +50,12 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return HomepageSettingsService(blog: blog, context: blog.managedObjectContext ?? ContextManager.shared.mainContext)
     }()
 
+    private lazy var createButtonCoordinator: CreateButtonCoordinator = {
+        return CreateButtonCoordinator(self, actions: [PageAction(handler: { [weak self] in
+            self?.createPost()
+        })])
+    }()
+
     // MARK: - GUI
 
     @IBOutlet weak var filterTabBarTopConstraint: NSLayoutConstraint!
@@ -113,7 +119,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if QuickStartTourGuide.find()?.isCurrentElement(.newPage) ?? false {
+        if QuickStartTourGuide.shared.isCurrentElement(.newPage) {
             updateFilterWithPostStatus(.publish)
         }
 
@@ -122,6 +128,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         title = NSLocalizedString("Site Pages", comment: "Title of the screen showing the list of pages for a blog.")
 
         configureFilterBarTopConstraint()
+
+        createButtonCoordinator.add(to: view, trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor, bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -131,6 +139,22 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         _tableViewHandler.refreshTableView()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if traitCollection.horizontalSizeClass == .compact {
+            createButtonCoordinator.showCreateButton(for: blog)
+        }
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.horizontalSizeClass == .compact {
+            createButtonCoordinator.showCreateButton(for: blog)
+        } else {
+            createButtonCoordinator.hideCreateButton()
+        }
+    }
 
     // MARK: - Configuration
 
@@ -442,18 +466,18 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Post Actions
 
     override func createPost() {
-        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view", WPAppAnalyticsKeyPostType: "page"], with: blog)
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: "posts_view", WPAppAnalyticsKeyPostType: "page"], with: blog)
 
-        PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] (title, template) in
-            self?.createPage(title, template)
+        PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] (selectedLayout) in
+            self?.createPage(selectedLayout)
         }
     }
 
-    func createPage(_ title: String? = nil, _ template: String? = nil) {
-        let editorViewController = EditPageViewController(blog: blog, postTitle: title, content: template)
+    private func createPage(_ starterLayout: PageTemplateLayout?) {
+        let editorViewController = EditPageViewController(blog: blog, postTitle: starterLayout?.title, content: starterLayout?.content, appliedTemplate: starterLayout?.slug)
         present(editorViewController, animated: false)
 
-        QuickStartTourGuide.find()?.visited(.newPage)
+        QuickStartTourGuide.shared.visited(.newPage)
     }
 
     fileprivate func editPage(_ page: Page) {
@@ -464,6 +488,19 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: page)
 
         let editorViewController = EditPageViewController(page: page)
+        present(editorViewController, animated: false)
+    }
+
+    fileprivate func copyPage(_ page: Page) {
+        // Analytics
+        WPAnalytics.track(.postListDuplicateAction, withProperties: propertiesForAnalytics())
+        // Copy Page
+        let postService = PostService(managedObjectContext: managedObjectContext())
+        let newPage = postService.createDraftPage(for: page.blog)
+        newPage.postTitle = page.postTitle
+        newPage.content = page.content
+        // Open Editor
+        let editorViewController = EditPageViewController(page: newPage)
         present(editorViewController, animated: false)
     }
 
@@ -586,6 +623,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                     strongSelf.retryPage(page)
                 })
             } else {
+                addEditAction(to: alertController, for: page)
+
                 alertController.addActionWithTitle(viewButtonTitle, style: .default, handler: { [weak self] (action) in
                     guard let strongSelf = self,
                         let page = strongSelf.pageForObjectID(objectID) else {
@@ -598,6 +637,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 addSetParentAction(to: alertController, for: page, at: indexPath)
                 addSetHomepageAction(to: alertController, for: page, at: indexPath)
                 addSetPostsPageAction(to: alertController, for: page, at: indexPath)
+                addDuplicateAction(to: alertController, for: page)
 
                 alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
                     guard let strongSelf = self,
@@ -628,6 +668,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                     strongSelf.retryPage(page)
                 })
             } else {
+                addEditAction(to: alertController, for: page)
+
                 alertController.addActionWithTitle(viewButtonTitle, style: .default, handler: { [weak self] (action) in
                     guard let strongSelf = self,
                         let page = strongSelf.pageForObjectID(objectID) else {
@@ -638,6 +680,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 })
 
                 addSetParentAction(to: alertController, for: page, at: indexPath)
+                addDuplicateAction(to: alertController, for: page)
 
                 alertController.addActionWithTitle(publishButtonTitle, style: .default, handler: { [weak self] (action) in
                     guard let strongSelf = self,
@@ -669,6 +712,32 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             presentationController.sourceView = button
             presentationController.sourceRect = button.bounds
         }
+    }
+
+    private func addEditAction(to controller: UIAlertController, for page: AbstractPost) {
+        if page.status == .trash {
+            return
+        }
+
+        let buttonTitle = NSLocalizedString("Edit", comment: "Label for a button that opens the Edit Page view controller")
+        controller.addActionWithTitle(buttonTitle, style: .default, handler: { [weak self] _ in
+            if let page = self?.pageForObjectID(page.objectID) {
+                self?.editPage(page)
+            }
+        })
+    }
+
+    private func addDuplicateAction(to controller: UIAlertController, for page: AbstractPost) {
+        if page.status != .publish && page.status != .draft {
+            return
+        }
+
+        let buttonTitle = NSLocalizedString("Duplicate", comment: "Label for page duplicate option. Tapping creates a copy of the page.")
+        controller.addActionWithTitle(buttonTitle, style: .default, handler: { [weak self] _ in
+            if let page = self?.pageForObjectID(page.objectID) {
+                self?.copyPage(page)
+            }
+        })
     }
 
     private func addSetParentAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {

@@ -1,6 +1,7 @@
 import AlamofireImage
 import AutomatticTracks
 import Foundation
+import Gridicons
 
 /// UIImageView Helper Methods that allow us to download a SiteIcon, given a website's "Icon Path"
 ///
@@ -63,7 +64,7 @@ extension UIImageView {
         with request: URLRequest,
         placeholderImage: UIImage?) {
 
-        af_setImage(withURLRequest: request, placeholderImage: placeholderImage) { [weak self] dataResponse in
+        af_setImage(withURLRequest: request, placeholderImage: placeholderImage, completion: { [weak self] dataResponse in
             switch dataResponse.result {
             case .success(let image):
                 guard let self = self else {
@@ -94,7 +95,7 @@ extension UIImageView {
                     CrashLogging.logError(error)
                 }
             }
-        }
+        })
     }
 
 
@@ -108,6 +109,13 @@ extension UIImageView {
     @objc
     func downloadSiteIcon(for blog: Blog, placeholderImage: UIImage? = .siteIconPlaceholder) {
         guard let siteIconPath = blog.icon, let siteIconURL = optimizedURL(for: siteIconPath) else {
+
+            if blog.isWPForTeams() && placeholderImage == .siteIconPlaceholder {
+                let standardSize = CGSize(width: SiteIconDefaults.imageSize, height: SiteIconDefaults.imageSize)
+                image = UIImage.gridicon(.p2, size: standardSize)
+                return
+            }
+
             image = placeholderImage
             return
         }

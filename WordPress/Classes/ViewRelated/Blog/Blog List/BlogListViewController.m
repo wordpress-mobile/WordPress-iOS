@@ -42,22 +42,22 @@ static NSInteger HideSearchMinSites = 3;
 
 - (instancetype)init
 {
+    return [self initWithMeScenePresenter:[MeScenePresenter new]];
+}
+
+- (instancetype)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter
+{
     self = [super init];
+    
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
+        _meScenePresenter = meScenePresenter;
+        
         [self configureDataSource];
         [self configureNavigationBar];
     }
-    return self;
-}
-
-- (id)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter
-{
-    self = [self init];
-    if (self) {
-        self.meScenePresenter = meScenePresenter;
-    }
+    
     return self;
 }
 
@@ -885,11 +885,7 @@ static NSInteger HideSearchMinSites = 3;
 - (void)setAddSiteBarButtonItem
 {
     if (self.dataSource.allBlogsCount == 0) {
-        if([Feature enabled:FeatureFlagMeMove]) {
-            [self addMeButtonToNavigationBarWith:[[self defaultWordPressComAccount] email]];
-        } else {
-            self.navigationItem.rightBarButtonItem = nil;
-        }
+        [self addMeButtonToNavigationBarWithEmail:[[self defaultWordPressComAccount] email] meScenePresenter:self.meScenePresenter];
     }
     else {
         self.navigationItem.rightBarButtonItem = self.addSiteButton;
@@ -899,36 +895,6 @@ static NSInteger HideSearchMinSites = 3;
 - (void)addSite
 {
     [self showAddSiteAlertFrom:self.addSiteButton];
-}
-
-- (UIAlertController *)makeAddSiteAlertController
-{
-    UIAlertController *addSiteAlertController = [UIAlertController alertControllerWithTitle:nil
-                                                                                    message:nil
-                                                                             preferredStyle:UIAlertControllerStyleActionSheet];
-
-    if ([self defaultWordPressComAccount]) {
-        UIAlertAction *addNewWordPressAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Create WordPress.com site", @"Create WordPress.com site button")
-                                                                        style:UIAlertActionStyleDefault
-                                                                      handler:^(UIAlertAction *action) {
-                                                                          [self launchSiteCreation];
-                                                                      }];
-        [addSiteAlertController addAction:addNewWordPressAction];
-    }
-
-    UIAlertAction *addSiteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Add self-hosted site", @"Add self-hosted site button")
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *action) {
-                                                              [self showLoginControllerForAddingSelfHostedSite];
-                                                          }];
-    [addSiteAlertController addAction:addSiteAction];
-
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:nil];
-    [addSiteAlertController addAction:cancel];
-
-    return addSiteAlertController;
 }
 
 - (WPAccount *)defaultWordPressComAccount
@@ -1011,18 +977,25 @@ static NSInteger HideSearchMinSites = 3;
     if (self.dataSource.allBlogsCount > 0 && self.dataSource.visibleBlogsCount == 0) {
         [self setEditing:YES animated:YES];
     } else {
-        UIAlertController *addSiteAlertController = [self makeAddSiteAlertController];
+        AddSiteAlertFactory *factory = [AddSiteAlertFactory new];
+        UIAlertController *alertController = [factory makeAddSiteAlertWithCanCreateWPComSite:[self defaultWordPressComAccount]
+                                                                             createWPComSite:^{
+            [self launchSiteCreation];
+        } addSelfHostedSite:^{
+            [self showLoginControllerForAddingSelfHostedSite];
+        }];
+        
         if ([source isKindOfClass:[UIView class]]) {
             UIView *sourceView = (UIView *)source;
-            addSiteAlertController.popoverPresentationController.sourceView = sourceView;
-            addSiteAlertController.popoverPresentationController.sourceRect = sourceView.bounds;
+            alertController.popoverPresentationController.sourceView = sourceView;
+            alertController.popoverPresentationController.sourceRect = sourceView.bounds;
         } else if ([source isKindOfClass:[UIBarButtonItem class]]) {
-            addSiteAlertController.popoverPresentationController.barButtonItem = source;
+            alertController.popoverPresentationController.barButtonItem = source;
         }
-        addSiteAlertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+        alertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
 
-        [self presentViewController:addSiteAlertController animated:YES completion:nil];
-        self.addSiteAlertController = addSiteAlertController;
+        [self presentViewController:alertController animated:YES completion:nil];
+        self.addSiteAlertController = alertController;
     }
 }
 

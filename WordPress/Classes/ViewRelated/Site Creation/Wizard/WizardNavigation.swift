@@ -2,13 +2,20 @@ import UIKit
 
 // MARK: - EnhancedSiteCreationNavigationController
 
-private final class EnhancedSiteCreationNavigationController: UINavigationController {
+private final class EnhancedSiteCreationNavigationController: GutenbergLightNavigationController {
     override var shouldAutorotate: Bool {
         return WPDeviceIdentification.isiPad() ? true : false
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return WPDeviceIdentification.isiPad() ? .all : .portrait
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if FeatureFlag.siteCreationHomePagePicker.enabled {
+            return .default
+        }
+        return super.preferredStatusBarStyle
     }
 }
 

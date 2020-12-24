@@ -7,9 +7,9 @@ class LayoutPreviewViewController: UIViewController {
     @IBOutlet weak var createPageBtn: UIButton!
     @IBOutlet weak var previewContainer: UIView!
 
-    var completion: PageCoordinator.TemplateSelectionCompletion? = nil
-    var layout: GutenbergLayout?
-    var accentColor: UIColor {
+    let completion: PageCoordinator.TemplateSelectionCompletion
+    let layout: PageTemplateLayout
+    private var accentColor: UIColor {
         if #available(iOS 13.0, *) {
             return UIColor { (traitCollection: UITraitCollection) -> UIColor in
                 if traitCollection.userInterfaceStyle == .dark {
@@ -40,11 +40,25 @@ class LayoutPreviewViewController: UIViewController {
         return .white
     }
 
+    init(layout: PageTemplateLayout, completion: @escaping PageCoordinator.TemplateSelectionCompletion) {
+        self.layout = layout
+        self.completion = completion
+        super.init(nibName: "\(LayoutPreviewViewController.self)", bundle: .main)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = NSLocalizedString("Preview", comment: "Title for screen to preview a static content.")
+        WPFontManager.loadNotoFontFamily()
         styleButtons()
         setupGutenbergView()
         view.backgroundColor = defaultBrackgroundColor
+
+        configureCloseButton()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -85,21 +99,26 @@ class LayoutPreviewViewController: UIViewController {
         createPageBtn.layer.cornerRadius = 8
     }
 
+    private func configureCloseButton() {
+        navigationItem.rightBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
+    }
+
     @IBAction func createPageTapped(_ sender: Any) {
-        guard let layout = layout, let completion = completion else {
-            dismiss(animated: true, completion: nil)
-            return
-        }
+        LayoutPickerAnalyticsEvent.templateApplied(slug: layout.slug)
 
         dismiss(animated: true) {
-            completion(layout.title, layout.content)
+            self.completion(self.layout)
         }
+    }
+
+    @objc func closeButtonTapped(_ sender: Any) {
+        dismiss(animated: true)
     }
 }
 
 extension LayoutPreviewViewController: GutenbergBridgeDataSource {
     func gutenbergInitialContent() -> String? {
-        return layout?.content
+        return layout.content
     }
 
     var loadingView: UIView? {

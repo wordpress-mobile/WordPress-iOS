@@ -1,11 +1,11 @@
-Din läsarupplevelse går nu att skräddarsy så att den passar just dig — med ett nytt Upptäck-flöde som återspeglar dina valda intressen.
+Här är nyheterna i vår senaste version:
 
-Blockinställningarna i blockredigeraren återspeglar nu omedelbart alla ändringar som görs med menyreglagen.
+Blockredigeraren: Nu kan du lägga in ett filblock som ger besökaren en knapp för nedladdning av ett dokument eller någon annan fil. Dessutom har en uppdatering av galleriblocket rättat ett fel där redigeraren oväntat kunde stängas vid uppladdning.
 
-Förbättrad registrerings- och inloggningsupplevelse — både vad gäller att guida användaren under stegen och att ansluta en webbplats som drivs på en egen server.
+Webbplatsskapande: När du bygger sidor på din webbplats är det nu enklare att hitta och välja alternativ för sidlayout.
 
-Det finns också ett helt nytt sätt att logga in med funktionen iCloud-nyckelring — en lösenordshanterare som kommer ihåg dina WordPress.com-konton och -lösenord.
+Skapa inlägg: Vill du snabbt skapa en kopia av ett inlägg? Nu kan du duplicera inlägg direkt i inläggslistan.
 
-Missa inte någonting! Du kan nu följa konversationer på P2-webbplatser.
+Läsaren: Använder du P2, ett verktyg för samarbete i team och grupper? Nu kan du läsa och följa P2-webbplatser via ett nytt flöde.
 
-Vi har också minskat minnesanvändningen vid redigering av bilder, så mediaredigering kommer inte att orsaka en krasch.
+Kommentarer: Vill du prenumerera på kommentarstrådar på webbplatser du följer eller som du är intresserad av? Tryck på knappen ”Följ konversationen” i kommentarsvyn.

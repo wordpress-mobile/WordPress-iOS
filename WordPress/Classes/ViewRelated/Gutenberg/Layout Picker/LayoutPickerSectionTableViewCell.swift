@@ -12,13 +12,14 @@ class LayoutPickerSectionTableViewCell: UITableViewCell {
     static let cellReuseIdentifier = "LayoutPickerSectionTableViewCell"
     static let nib = UINib(nibName: "LayoutPickerSectionTableViewCell", bundle: Bundle.main)
     static let expectedTumbnailSize = CGSize(width: 160.0, height: 230.0)
+    static let estimatedCellHeight: CGFloat = 310.0
 
     @IBOutlet weak var categoryTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
 
     weak var delegate: LayoutPickerSectionTableViewCellDelegate?
 
-    private var layouts = [GutenbergLayout]() {
+    private var layouts = [PageTemplateLayout]() {
         didSet {
             collectionView.reloadData()
         }
@@ -26,7 +27,7 @@ class LayoutPickerSectionTableViewCell: UITableViewCell {
     var section: GutenbergLayoutSection? = nil {
         didSet {
             layouts = section?.layouts ?? []
-            categoryTitle.text = section?.section.description ?? ""
+            categoryTitle.text = section?.section.desc ?? ""
             collectionView.contentOffset = section?.scrollOffset ?? .zero
         }
     }
@@ -42,7 +43,7 @@ class LayoutPickerSectionTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        collectionView.register(LayoutPickerCollectionViewCell.nib, forCellWithReuseIdentifier: LayoutPickerCollectionViewCell.cellReuseIdentifier)
+        collectionView.register(CollapsableHeaderCollectionViewCell.nib, forCellWithReuseIdentifier: CollapsableHeaderCollectionViewCell.cellReuseIdentifier)
         categoryTitle.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.headline, fontWeight: .semibold)
         categoryTitle.layer.masksToBounds = true
         categoryTitle.layer.cornerRadius = 4
@@ -95,17 +96,17 @@ extension LayoutPickerSectionTableViewCell: UICollectionViewDataSource {
     }
 
     func collectionView(_ LayoutPickerCategoryTableViewCell: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cellReuseIdentifier = LayoutPickerCollectionViewCell.cellReuseIdentifier
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as? LayoutPickerCollectionViewCell else {
-            fatalError("Expected the cell with identifier \"\(cellReuseIdentifier)\" to be a \(LayoutPickerCollectionViewCell.self). Please make sure the collection view is registering the correct nib before loading the data")
+        let cellReuseIdentifier = CollapsableHeaderCollectionViewCell.cellReuseIdentifier
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as? CollapsableHeaderCollectionViewCell else {
+            fatalError("Expected the cell with identifier \"\(cellReuseIdentifier)\" to be a \(CollapsableHeaderCollectionViewCell.self). Please make sure the collection view is registering the correct nib before loading the data")
         }
         guard !isGhostCell else {
-            cell.startGhostAnimation()
+            cell.startGhostAnimation(style: GhostCellStyle.muriel)
             return cell
         }
 
         let layout = layouts[indexPath.row]
-        cell.layout = layout
+        cell.previewURL = layout.preview
         cell.isAccessibilityElement = true
         cell.accessibilityLabel = layout.slug
         return cell

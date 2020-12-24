@@ -1,5 +1,7 @@
 import Foundation
 import WordPressShared
+import Gridicons
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -45,7 +47,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         applyStyles()
     }
 
-    @objc func applyStyles() {
+    private func applyStyles() {
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
         WPStyleGuide.applyReaderStreamHeaderDetailStyle(detailLabel)
         WPStyleGuide.applyReaderSiteStreamDescriptionStyle(descriptionLabel)
@@ -80,7 +82,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         followCountLabel.text = formattedFollowerCountForTopic(siteTopic)
         detailLabel.text = URL(string: siteTopic.siteURL)?.host
 
-        configureHeaderImage(siteTopic.siteBlavatar)
+        configureHeaderImage(siteTopic)
 
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
 
@@ -89,23 +91,26 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
     }
 
-    @objc func configureHeaderImage(_ siteBlavatar: String?) {
-        let placeholder = UIImage(named: defaultBlavatar)
+    private func configureHeaderImage(_ siteTopic: ReaderSiteTopic) {
+        let placeholder = UIImage.siteIconPlaceholder
 
-        var path = ""
-        if siteBlavatar != nil {
-            path = siteBlavatar!
-        }
+        guard let url = upscaledImageURL(urlString: siteTopic.siteBlavatar) else {
+            if siteTopic.isP2Type {
+                avatarImageView.tintColor = UIColor.listIcon
+                avatarImageView.layer.borderColor = UIColor.divider.cgColor
+                avatarImageView.layer.borderWidth = .hairlineBorderWidth
+                avatarImageView.image = UIImage.gridicon(.p2)
+                return
+            }
 
-        let url = URL(string: path)
-        if url != nil {
-            avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
-        } else {
             avatarImageView.image = placeholder
+            return
         }
+
+        avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
     }
 
-    @objc func formattedFollowerCountForTopic(_ topic: ReaderSiteTopic) -> String {
+    private func formattedFollowerCountForTopic(_ topic: ReaderSiteTopic) -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
 
@@ -128,5 +133,33 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     @IBAction func didTapFollowButton(_ sender: UIButton) {
         delegate?.handleFollowActionForHeader(self)
+    }
+
+    // MARK: - Private: Helpers
+
+    /// Replaces the width query item (w) with an upscaled one for the image view
+    private func upscaledImageURL(urlString: String) -> URL? {
+        guard
+            let url = URL(string: urlString),
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: true),
+            let host = components.host
+        else {
+            return nil
+        }
+
+        // WP.com uses `w` and Gravatar uses `s` for the resizing query key
+        let widthKey = host.contains("gravatar") ? "s" : "w"
+        let width = Int(avatarImageView.bounds.width * UIScreen.main.scale)
+        let item = URLQueryItem(name: widthKey, value: "\(width)")
+
+        var queryItems = components.queryItems ?? []
+
+        // Remove any existing size queries
+        queryItems.removeAll(where: { $0.name == widthKey})
+
+        queryItems.append(item)
+        components.queryItems = queryItems
+
+        return components.url
     }
 }

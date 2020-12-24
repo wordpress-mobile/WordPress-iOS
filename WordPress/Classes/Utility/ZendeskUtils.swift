@@ -4,6 +4,7 @@ import WordPressAuthenticator
 
 import SupportSDK
 import ZendeskCoreSDK
+import AutomatticTracks
 
 extension NSNotification.Name {
     static let ZendeskPushNotificationReceivedNotification = NSNotification.Name(rawValue: "ZendeskPushNotificationReceivedNotification")
@@ -137,13 +138,15 @@ extension NSNotification.Name {
     }
 
     /// Displays the Zendesk New Request view from the given controller, for users to submit new tickets.
+    /// If the user's identity (i.e. contact info) was updated, inform the caller in the `identityUpdated` completion block.
     ///
-    func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
+    func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil, identityUpdated: ((Bool) -> Void)? = nil) {
 
         presentInController = controller
 
-        ZendeskUtils.createIdentity { success in
+        ZendeskUtils.createIdentity { success, newIdentity in
             guard success else {
+                identityUpdated?(false)
                 return
             }
 
@@ -153,17 +156,21 @@ extension NSNotification.Name {
             let newRequestConfig = self.createRequest()
             let newRequestController = RequestUi.buildRequestUi(with: [newRequestConfig])
             ZendeskUtils.showZendeskView(newRequestController)
+
+            identityUpdated?(newIdentity)
         }
     }
 
     /// Displays the Zendesk Request List view from the given controller, allowing user to access their tickets.
+    /// If the user's identity (i.e. contact info) was updated, inform the caller in the `identityUpdated` completion block.
     ///
-    func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
+    func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil, identityUpdated: ((Bool) -> Void)? = nil) {
 
         presentInController = controller
 
-        ZendeskUtils.createIdentity { success in
+        ZendeskUtils.createIdentity { success, newIdentity in
             guard success else {
+                identityUpdated?(false)
                 return
             }
 
@@ -175,6 +182,8 @@ extension NSNotification.Name {
 
             let requestListController = RequestUi.buildRequestList(with: [newRequestConfig])
             ZendeskUtils.showZendeskView(requestListController)
+
+            identityUpdated?(newIdentity)
         }
     }
 
@@ -214,7 +223,7 @@ extension NSNotification.Name {
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.allBlogs, value: ZendeskUtils.getBlogInformation()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.deviceFreeSpace, value: ZendeskUtils.getDeviceFreeSpace()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.networkInformation, value: ZendeskUtils.getNetworkInformation()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.logs, value: ZendeskUtils.getLogFile()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.logs, value: ZendeskUtils.getEncryptedLogUUID()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.currentSite, value: ZendeskUtils.getCurrentSiteDescription()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.appLanguage, value: ZendeskUtils.appLanguage))
@@ -350,19 +359,24 @@ private extension ZendeskUtils {
         DDLogInfo("Zendesk Enabled: \(enabled)")
     }
 
-    static func createIdentity(completion: @escaping (Bool) -> Void) {
+    /// Creates a Zendesk Identity from user information.
+    /// Returns two values in the completion block:
+    ///     - Bool indicating there is an identity to use.
+    ///     - Bool indicating if a _new_ identity was created.
+    ///
+    static func createIdentity(completion: @escaping (Bool, Bool) -> Void) {
 
         // If we already have an identity, and the user has confirmed it, do nothing.
         let haveUserInfo = ZendeskUtils.sharedInstance.haveUserIdentity && ZendeskUtils.sharedInstance.userNameConfirmed
         guard !haveUserInfo else {
                 DDLogDebug("Using existing Zendesk identity: \(ZendeskUtils.sharedInstance.userEmail ?? ""), \(ZendeskUtils.sharedInstance.userName ?? "")")
-                completion(true)
+                completion(true, false)
                 return
         }
 
         // Prompt the user for information.
         ZendeskUtils.getUserInformationAndShowPrompt(withName: true) { success in
-            completion(success)
+            completion(success, success)
         }
     }
 
@@ -598,21 +612,33 @@ private extension ZendeskUtils {
         return "\(formattedCapacity) \(sizeAbbreviation)"
     }
 
-    static func getLogFile() -> String {
+    static func getEncryptedLogUUID() -> String {
 
-        guard let appDelegate = UIApplication.shared.delegate as? WordPressAppDelegate,
-            let logFileInformation = appDelegate.logger.fileLogger.logFileManager.sortedLogFileInfos.first,
-            let logData = try? Data(contentsOf: URL(fileURLWithPath: logFileInformation.filePath)),
-            var logText = String(data: logData, encoding: .utf8) else {
-                return ""
+        let fileLogger = WPLogger.shared().fileLogger
+        let dataProvider = EventLoggingDataProvider.fromDDFileLogger(fileLogger)
+
+        guard let logFilePath = dataProvider.logFilePath(forErrorLevel: .debug, at: Date()) else {
+            return "Error: No log files found on device"
         }
 
-        // Truncate the log text so it fits in the ticket field.
-        if logText.count > Constants.logFieldCharacterLimit {
-            logText = String(logText.suffix(Constants.logFieldCharacterLimit))
+        let logFile = LogFile(url: logFilePath)
+
+        do {
+            let delegate = EventLoggingDelegate()
+
+            /// Some users may be opted out – let's inform support that this is the case (otherwise the UUID just wouldn't work)
+            if WPCrashLoggingProvider.userHasOptedOut {
+                return "No log file uploaded: User opted out"
+            }
+
+            let eventLogging = EventLogging(dataSource: dataProvider, delegate: delegate)
+            try eventLogging.enqueueLogForUpload(log: logFile)
+        }
+        catch let err {
+            return "Error preparing log file: \(err.localizedDescription)"
         }
 
-        return logText
+        return logFile.uuid
     }
 
     static func getCurrentSiteDescription() -> String {
@@ -788,6 +814,7 @@ private extension ZendeskUtils {
             textField.text = ZendeskUtils.sharedInstance.userEmail
             textField.delegate = ZendeskUtils.sharedInstance
             textField.isEnabled = false
+            textField.keyboardType = .emailAddress
 
             textField.addTarget(self,
                                 action: #selector(emailTextFieldDidChange),
@@ -828,12 +855,15 @@ private extension ZendeskUtils {
     }
 
     static func updateNameFieldForEmail(_ email: String) {
-        guard let alertController = ZendeskUtils.sharedInstance.presentInController?.presentedViewController as? UIAlertController,
-            let nameField = alertController.textFields?.last else {
-                return
+        guard !email.isEmpty else {
+            return
         }
 
-        guard !email.isEmpty else {
+        // Find the name text field if it's being displayed.
+        guard let alertController = ZendeskUtils.sharedInstance.presentInController?.presentedViewController as? UIAlertController,
+              let textFields = alertController.textFields,
+              textFields.count > 1,
+              let nameField = textFields.last else {
             return
         }
 
@@ -843,14 +873,20 @@ private extension ZendeskUtils {
         }
     }
 
-    static func generateDisplayName(from rawEmail: String) -> String {
-
+    static func generateDisplayName(from rawEmail: String) -> String? {
         // Generate Name, using the same format as Signup.
 
         // step 1: lower case
         let email = rawEmail.lowercased()
+
         // step 2: remove the @ and everything after
-        let localPart = email.split(separator: "@")[0]
+
+        // Verify something exists before the @.
+        guard email.first != "@",
+              let localPart = email.split(separator: "@").first else {
+            return nil
+        }
+
         // step 3: remove all non-alpha characters
         let localCleaned = localPart.replacingOccurrences(of: "[^A-Za-z/.]", with: "", options: .regularExpression)
         // step 4: turn periods into spaces
@@ -1011,7 +1047,6 @@ private extension ZendeskUtils {
         static let profileNameKey = "name"
         static let userDefaultsZendeskUnreadNotifications = "wp_zendesk_unread_notifications"
         static let nameFieldCharacterLimit = 50
-        static let logFieldCharacterLimit = 50000
         static let sourcePlatform = "mobile_-_ios"
         static let gutenbergIsDefault = "mobile_gutenberg_is_default"
     }

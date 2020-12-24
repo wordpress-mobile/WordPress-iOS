@@ -1,11 +1,11 @@
-Ahora, tu experiencia con el Lector puede ser adaptada para ti, con un nuevo feed de «Descubrir» que refleja los intereses que elijas.
+Esto es lo nuevo en nuestra última versión:
 
-Ahora, los ajustes de los bloques en el editor de bloques reflejan inmediatamente cualquier cambio realizado en los controles deslizantes del menú.
+El editor de bloques: Ahora puedes insertar un bloque de archivos en una entrada o página, que coloca un botón de descarga de archivos, como documentos. Una actualización del bloque de galería también ha corregido un problema de subida cuando se cerraba el editor.
 
-Mejorada la experiencia de registro y acceso, dirigiendo al usuario en los pasos y la conexión de un sitio autoalojado.
+Creación del sitio: Al crear páginas en tu sitio, las opciones del diseño de la página ahora son más fáciles de ver y de seleccionar.
 
-También hay una nueva forma de acceder con la característica del llavero de iCloud: un gestor de contraseñas que recuerda tus cuentas y contraseñas de WP.com.
+Creación de entradas: ¿Quieres duplicar rápidamente una entrada? Ahora puedes hacerlo desde tu lista de entradas.
 
-¡No te pierdas nada! Ahora puedes seguir las conversaciones de los sitios P2.
+El lector: ¿Usas P2, una herramienta para la colaboración en equipo y en grupo? Puedes leer y seguir los sitios P2 en un flujo recién añadido.
 
-También hemos reducido el uso de la memoria al marcar una imagen para que la edición de medios no cause un error.
+Comentarios: ¿Quieres suscribirte a los hilos de comentarios de los sitios que sigues o que te interesan? Toca el botón «Seguir la conversación» en la vista de comentarios.

@@ -5,6 +5,7 @@ class CoreDataManager: CoreDataStack {
 
     /// Only for tests, do not use this method directly
     init() {
+        ValueTransformer.registerCustomTransformers()
         observe()
     }
 

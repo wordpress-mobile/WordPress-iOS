@@ -5,64 +5,31 @@ import UIKit
 extension WPTabBarController {
     /// removes all but the primary viewControllers from the stack
     @objc func popMeTabToRoot() {
-        if FeatureFlag.meMove.enabled {
-            getNavigationController()?.popToRootViewController(animated: false)
-        } else {
-            self.meNavigationController.popToRootViewController(animated: false)
-        }
-
+        getNavigationController()?.popToRootViewController(animated: false)
     }
     /// presents the Me scene. If the feature flag is disabled, replaces the previously defined `showMeTab`
     @objc func showMeScene(animated: Bool = true, completion: (() -> Void)? = nil) {
-        if FeatureFlag.meMove.enabled {
-            meScenePresenter.present(on: self, animated: animated, completion: completion)
-        } else {
-            showTab(for: Int(WPTabType.me.rawValue))
-        }
+        meScenePresenter.present(on: self, animated: animated, completion: completion)
     }
     /// access to sub levels
     @objc func navigateToAccountSettings() {
-        if FeatureFlag.meMove.enabled {
-            showMeScene(animated: false) {
-                self.popMeTabToRoot()
-                self.getMeViewController()?.navigateToAccountSettings()
-            }
-        } else {
-            showMeScene()
-            popMeTabToRoot()
-            DispatchQueue.main.async {
-                self.meViewController.navigateToAccountSettings()
-            }
+        showMeScene(animated: false) {
+            self.popMeTabToRoot()
+            self.getMeViewController()?.navigateToAccountSettings()
         }
     }
 
     @objc func navigateToAppSettings() {
-        if FeatureFlag.meMove.enabled {
-            showMeScene() {
-                self.popMeTabToRoot()
-                self.getMeViewController()?.navigateToAppSettings()
-            }
-        } else {
-            showMeScene()
-            popMeTabToRoot()
-            DispatchQueue.main.async {
-                self.meViewController.navigateToAppSettings()
-            }
+        showMeScene() {
+            self.popMeTabToRoot()
+            self.getMeViewController()?.navigateToAppSettings()
         }
     }
 
     @objc func navigateToSupport() {
-        if FeatureFlag.meMove.enabled {
-            showMeScene() {
-                self.popMeTabToRoot()
-                self.getMeViewController()?.navigateToHelpAndSupport()
-            }
-        } else {
-            showMeScene()
-            popMeTabToRoot()
-            DispatchQueue.main.async {
-                self.meViewController.navigateToHelpAndSupport()
-            }
+        showMeScene() {
+            self.popMeTabToRoot()
+            self.getMeViewController()?.navigateToHelpAndSupport()
         }
     }
 

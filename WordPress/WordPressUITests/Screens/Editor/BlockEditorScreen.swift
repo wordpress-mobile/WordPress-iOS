@@ -49,7 +49,7 @@ class BlockEditorScreen: BaseScreen {
      - Parameter withText: the text to enter in the paragraph block
      */
     func addParagraphBlock(withText text: String) -> BlockEditorScreen {
-        addBlock("Paragraph")
+        addBlock("Paragraph block")
         paragraphView.typeText(text)
 
         return self
@@ -59,9 +59,19 @@ class BlockEditorScreen: BaseScreen {
      Adds an image block with latest image from device.
      */
     func addImage() -> BlockEditorScreen {
-        addBlock("Image")
+        addBlock("Image block")
         addImageByOrder(id: 0)
 
+        return self
+    }
+
+    /**
+    Selects a block based on part of the block label (e.g. partial text in a paragraph block)
+     */
+    @discardableResult
+    func selectBlock(containingText text: String) -> BlockEditorScreen {
+        let predicate = NSPredicate(format: "label CONTAINS[c] '\(text)'")
+        XCUIApplication().buttons.containing(predicate).firstMatch.tap()
         return self
     }
 
@@ -111,7 +121,7 @@ class BlockEditorScreen: BaseScreen {
 
     private func addBlock(_ blockLabel: String) {
         addBlockButton.tap()
-        XCUIApplication().otherElements[blockLabel].tap()
+        XCUIApplication().buttons[blockLabel].tap()
     }
 
     /*
@@ -140,5 +150,15 @@ class BlockEditorScreen: BaseScreen {
 
     static func isLoaded() -> Bool {
         return XCUIApplication().navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"].exists
+    }
+    @discardableResult
+    func openBlockPicker() -> BlockEditorScreen {
+        addBlockButton.tap()
+        return BlockEditorScreen()
+    }
+    @discardableResult
+    func closeBlockPicker() -> BlockEditorScreen {
+        editorCloseButton.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0)).tap()
+        return BlockEditorScreen()
     }
 }

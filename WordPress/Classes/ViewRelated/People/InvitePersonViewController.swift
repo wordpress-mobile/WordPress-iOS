@@ -66,16 +66,8 @@ class InvitePersonViewController: UITableViewController {
         return roles
     }
 
-    /// Last Section Index
-    ///
-    fileprivate var lastSectionIndex: Int {
-        return tableView.numberOfSections - 1
-    }
-
-    /// Last Section Footer Text
-    ///
-    fileprivate let lastSectionFooterText = NSLocalizedString("Add a custom message (optional).", comment: "Invite Footer Text")
-
+    private let rolesDefinitionUrl = "https://wordpress.com/support/user-roles/"
+    private let messageCharacterLimit = 500
 
     // MARK: - Outlets
 
@@ -97,9 +89,17 @@ class InvitePersonViewController: UITableViewController {
         }
     }
 
+    /// Message Placeholder Label
+    ///
+    @IBOutlet private var placeholderLabel: UILabel! {
+        didSet {
+            setupPlaceholderLabel()
+        }
+    }
+
     /// Message Cell
     ///
-    @IBOutlet fileprivate var messageTextView: UITextView! {
+    @IBOutlet private var messageTextView: UITextView! {
         didSet {
             setupMessageTextView()
             refreshMessageTextView()
@@ -127,13 +127,19 @@ class InvitePersonViewController: UITableViewController {
     // MARK: - UITableView Methods
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        guard section == lastSectionIndex else {
-            return nil
+        let sectionType = Section(rawValue: section)
+        var footerText = sectionType?.footerText
+
+        if sectionType == .message,
+           let footerFormat = footerText {
+            footerText = String(format: footerFormat, messageCharacterLimit)
         }
-        return lastSectionFooterText
+
+        return footerText
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        addTapGesture(toView: view, inSection: section)
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
@@ -171,7 +177,7 @@ class InvitePersonViewController: UITableViewController {
         }
 
         let title = NSLocalizedString("Recipient", comment: "Invite Person: Email or Username Edition Title")
-        let placeholder = NSLocalizedString("Email or Username...", comment: "A placeholder for the username textfield.")
+        let placeholder = NSLocalizedString("Email or Username…", comment: "A placeholder for the username textfield.")
         let hint = NSLocalizedString("Email or Username of the person that should receive your invitation.", comment: "Username Placeholder")
 
         textViewController.title = title
@@ -206,12 +212,14 @@ class InvitePersonViewController: UITableViewController {
         }
 
         let title = NSLocalizedString("Message", comment: "Invite Message Editor's Title")
-        let hint = NSLocalizedString("Optional message to be included in the invitation.", comment: "Invite: Message Hint")
+        let hintFormat = NSLocalizedString("Optional message up to %1$d characters to be included in the invitation.", comment: "Invite: Message Hint. %1$d is the maximum number of characters allowed.")
+        let hint = String(format: hintFormat, messageCharacterLimit)
 
         textViewController.title = title
         textViewController.text = message
         textViewController.hint = hint
         textViewController.isPassword = false
+        textViewController.maxCharacterCount = messageCharacterLimit
         textViewController.onValueChanged = { [unowned self] value in
             self.message = value
         }
@@ -220,11 +228,31 @@ class InvitePersonViewController: UITableViewController {
 
     // MARK: - Private Enums
 
-    fileprivate enum SegueIdentifier: String {
+    private enum SegueIdentifier: String {
         case Username   = "username"
         case Role       = "role"
         case Message    = "message"
     }
+
+    // The case order matches the custom sections order in People.storyboard.
+    private enum Section: Int {
+        case username
+        case role
+        case message
+
+        var footerText: String? {
+            switch self {
+            case .role:
+                return NSLocalizedString("Learn more about roles", comment: "Footer text for Invite People role field.")
+            case .message:
+                // messageCharacterLimit cannot be accessed here, so the caller will insert it in the string.
+                return NSLocalizedString("Optional: Enter a custom message up to %1$d characters to be sent with your invitation.", comment: "Footer text for Invite People message field. %1$d is the maximum number of characters allowed.")
+            default:
+                return nil
+            }
+        }
+    }
+
 }
 
 
@@ -286,6 +314,28 @@ extension InvitePersonViewController {
 
         // Note: This viewController might not be visible anymore
         alertController.presentFromRootViewController()
+    }
+
+    private func addTapGesture(toView footerView: UIView, inSection section: Int) {
+        guard let footer = footerView as? UITableViewHeaderFooterView,
+           Section(rawValue: section) == .role else {
+            return
+        }
+
+        footer.textLabel?.isUserInteractionEnabled = true
+        footer.accessibilityTraits = .link
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleRoleFooterTap(_:)))
+        footer.addGestureRecognizer(tap)
+    }
+
+    @objc private func handleRoleFooterTap(_ sender: UITapGestureRecognizer) {
+        guard let url = URL(string: rolesDefinitionUrl) else {
+            return
+        }
+
+        let webViewController = WebViewControllerFactory.controller(url: url)
+        let navController = UINavigationController(rootViewController: webViewController)
+        present(navController, animated: true)
     }
 }
 
@@ -383,8 +433,14 @@ private extension InvitePersonViewController {
         messageTextView.backgroundColor = .listForeground
     }
 
+    func setupPlaceholderLabel() {
+        placeholderLabel.text = NSLocalizedString("Custom message…", comment: "Placeholder for Invite People message field.")
+        placeholderLabel.font = WPStyleGuide.tableviewTextFont()
+        placeholderLabel.textColor = UIColor.textPlaceholder
+    }
+
     func setupNavigationBar() {
-        title = NSLocalizedString("Add a Person", comment: "Invite People Title")
+        title = NSLocalizedString("Invite People", comment: "Invite People Title")
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                            target: self,
@@ -415,7 +471,7 @@ private extension InvitePersonViewController {
 
     func refreshUsernameCell() {
         guard let usernameOrEmail = usernameOrEmail?.nonEmptyString() else {
-            usernameCell.textLabel?.text = NSLocalizedString("Email or Username...", comment: "Invite Username Placeholder")
+            usernameCell.textLabel?.text = NSLocalizedString("Email or Username…", comment: "Invite Username Placeholder")
             usernameCell.textLabel?.textColor = .textPlaceholder
             return
         }
@@ -430,5 +486,10 @@ private extension InvitePersonViewController {
 
     func refreshMessageTextView() {
         messageTextView.text = message
+        refreshPlaceholderLabel()
+    }
+
+    func refreshPlaceholderLabel() {
+        placeholderLabel?.isHidden = !messageTextView.text.isEmpty
     }
 }

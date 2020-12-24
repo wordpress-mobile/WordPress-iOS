@@ -7,14 +7,13 @@ final class MediaLibraryMediaPickingCoordinator {
     private weak var delegate: PickersDelegate?
     private var tenor: TenorPicker?
 
-    private let stockPhotos = StockPhotosPicker()
+    private var stockPhotos: StockPhotosPicker?
     private let cameraCapture = CameraCaptureCoordinator()
     private let mediaLibrary = MediaLibraryPicker()
 
     init(delegate: PickersDelegate) {
         self.delegate = delegate
 
-        stockPhotos.delegate = delegate
         mediaLibrary.delegate = delegate
     }
 
@@ -76,7 +75,7 @@ final class MediaLibraryMediaPickingCoordinator {
     }
 
     private func otherAppsAction(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) -> UIAlertAction {
-        return UIAlertAction(title: .files, style: .default, handler: { [weak self] action in
+        return UIAlertAction(title: .otherApps, style: .default, handler: { [weak self] action in
             self?.showDocumentPicker(origin: origin, blog: blog)
         })
     }
@@ -90,7 +89,12 @@ final class MediaLibraryMediaPickingCoordinator {
     }
 
     private func showStockPhotos(origin: UIViewController, blog: Blog) {
-        stockPhotos.presentPicker(origin: origin, blog: blog)
+        let picker = StockPhotosPicker()
+        // add delegate conformance, allow release of picker in the same manner as the tenor picker
+        // in order to prevent duplicated uploads and botched de-selection on second upload
+        picker.delegate = self
+        picker.presentPicker(origin: origin, blog: blog)
+        stockPhotos = picker
     }
 
     private func showTenor(origin: UIViewController, blog: Blog) {
@@ -119,5 +123,12 @@ extension MediaLibraryMediaPickingCoordinator: TenorPickerDelegate {
     func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia]) {
         delegate?.tenorPicker(picker, didFinishPicking: assets)
         tenor = nil
+    }
+}
+
+extension MediaLibraryMediaPickingCoordinator: StockPhotosPickerDelegate {
+    func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
+        delegate?.stockPhotosPicker(picker, didFinishPicking: assets)
+        stockPhotos = nil
     }
 }

@@ -47,8 +47,12 @@ class BlogDetailsViewControllerTests: XCTestCase {
             XCTFail("Blog details viewController not initialized")
             return
         }
+
+        let email = controller.blog.account?.email
+        let scenePresenter = controller.meScenePresenter
+
         // When
-        controller.addMeButtonToNavigationBar()
+        controller.addMeButtonToNavigationBar(email: email, meScenePresenter: scenePresenter)
         // Then
         guard let meButton = controller.navigationItem.rightBarButtonItem else {
             XCTFail("Me Button not installed")
@@ -57,41 +61,5 @@ class BlogDetailsViewControllerTests: XCTestCase {
 
         XCTAssertEqual(meButton.accessibilityLabel, TestConstants.meButtonLabel)
         XCTAssertEqual(meButton.accessibilityHint, TestConstants.meButtonHint)
-    }
-
-    func testPresentMeOnButtonTap() {
-        // Given
-        guard let controller = blogDetailsViewController else {
-            XCTFail("Blog details viewController not initialized")
-            return
-        }
-        controller.addMeButtonToNavigationBar()
-        guard controller.navigationItem.rightBarButtonItem != nil else {
-            XCTFail("Me Button not installed")
-            return
-        }
-        scenePresenter?.presentExpectation = expectation(description: "Me was presented")
-        // When
-
-        guard let target = blogDetailsViewController?.target(forAction: #selector(BlogDetailsViewController.presentHandler),
-                                                             withSender: blogDetailsViewController) else {
-            XCTFail("Target not found")
-            return
-        }
-
-        let actionableTarget = target as AnyObject
-        _ = actionableTarget.perform(#selector(BlogDetailsViewController.presentHandler))
-
-        // Then
-        guard let presentedController = scenePresenter?.presentedViewController else {
-            XCTFail("Presented controller was not instantiated")
-            return
-        }
-        XCTAssertEqual(presentedController.accessibilityLabel, "testController")
-        waitForExpectations(timeout: 4) { error in
-            if let error = error {
-                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-            }
-        }
     }
 }

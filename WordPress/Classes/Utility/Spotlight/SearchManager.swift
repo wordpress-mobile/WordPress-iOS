@@ -320,7 +320,7 @@ fileprivate extension SearchManager {
     }
 
     func openSiteDetailsScreen(for blog: Blog) {
-        WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: blog)
+        WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
     }
 
     // MARK: Reader Tab Navigation
@@ -402,9 +402,9 @@ fileprivate extension SearchManager {
     func openListView(for apost: AbstractPost) {
         closePreviewIfNeeded(for: apost)
         if let post = apost as? Post {
-            WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
+            WPTabBarController.sharedInstance().mySitesCoordinator.showPosts(for: post.blog)
         } else if let page = apost as? Page {
-            WPTabBarController.sharedInstance().switchTabToPagesList(for: page)
+            WPTabBarController.sharedInstance().mySitesCoordinator.showPages(for: page.blog)
         }
     }
 

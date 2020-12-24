@@ -23,7 +23,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return WPCrashLoggingProvider()
     }()
 
-    @objc let logger = WPLogger()
     @objc var internetReachability: Reachability?
     @objc var connectionAvailable: Bool = true
 
@@ -74,7 +73,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
-        let dataSource = EventLoggingDataProvider.fromDDFileLogger(logger.fileLogger)
+        let dataSource = EventLoggingDataProvider.fromDDFileLogger(WPLogger.shared().fileLogger)
         let eventLogging = EventLogging(dataSource: dataSource, delegate: crashLoggingProvider.loggingUploadDelegate)
         CrashLogging.start(withDataProvider: crashLoggingProvider, eventLogging: eventLogging)
 
@@ -93,6 +92,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         AccountService(managedObjectContext: mainContext).restoreDisassociatedAccountIfNecessary()
 
         customizeAppearance()
+        configureAnalytics()
 
         let solver = WPAuthTokenIssueSolver()
         let isFixingAuthTokenIssue = solver.fixAuthTokenIssueAndDo { [weak self] in
@@ -106,6 +106,13 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         DDLogInfo("didFinishLaunchingWithOptions state: \(application.applicationState)")
+
+        if UITextField.shouldActivateWorkaroundForBulgarianKeyboardCrash() {
+            // WORKAROUND: this is a workaround for an issue with UITextField in iOS 14.
+            // Please refer to the documentation of the called method to learn the details and know
+            // how to tell if this call can be removed.
+            UITextField.activateWorkaroundForBulgarianKeyboardCrash()
+        }
 
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         showWelcomeScreenIfNeeded(animated: false)
@@ -235,7 +242,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureAppCenterSDK()
         configureAppRatingUtility()
-        configureAnalytics()
 
         printDebugLaunchInfoWithLaunchOptions(launchOptions)
         toggleExtraDebuggingIfNeeded()
@@ -346,18 +352,6 @@ extension WordPressAppDelegate {
                                                            completionHandler: completionHandler)
     }
 
-    // MARK: Background refresh
-
-    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        let tabBarController = WPTabBarController.sharedInstance()
-
-        if let readerMenu = tabBarController?.readerMenuViewController,
-            let stream = readerMenu.currentReaderStream {
-            stream.backgroundFetch(completionHandler)
-        } else {
-            completionHandler(.noData)
-        }
-    }
 }
 
 // MARK: - Utility Configuration
@@ -800,6 +794,7 @@ extension WordPressAppDelegate {
 
             NotificationSupportService.insertServiceExtensionToken(authToken)
             NotificationSupportService.insertServiceExtensionUsername(account.username)
+            NotificationSupportService.insertServiceExtensionUserID(account.userID.stringValue)
         }
     }
 
@@ -809,6 +804,7 @@ extension WordPressAppDelegate {
 
         NotificationSupportService.deleteServiceExtensionToken()
         NotificationSupportService.deleteServiceExtensionUsername()
+        NotificationSupportService.deleteServiceExtensionUserID()
     }
 }
 

@@ -14,11 +14,8 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
 
     private weak var saveForLaterAction: ReaderSaveForLaterAction?
 
-    // saved posts
-    /// Posts that have been removed but not yet discarded
-    // TODO: - READERNAV - Set this property as private once the old reader class ReaderSavedPostCellActions is removed
+    /// Saved posts that have been removed but not yet discarded
     var removedPosts = ReaderSaveForLaterRemovedPosts()
-
     weak var savedPostsDelegate: ReaderSavedPostCellActionsDelegate?
 
     init(context: NSManagedObjectContext, origin: UIViewController, topic: ReaderAbstractTopic? = nil, visibleConfirmation: Bool = true) {
@@ -56,7 +53,6 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
                 removedPosts.add(post)
             }
             savedPostsDelegate?.willRemove(cell)
-
         } else {
             guard let post = provider as? ReaderPost else {
                 return
@@ -110,21 +106,20 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         let siteID = post.siteID
         let toFollow = !post.isFollowing
 
-        ReaderFollowAction().execute(with: post, context: context) { [weak self] in
-            if toFollow {
-                self?.origin?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
-            }
-        }
+        ReaderFollowAction().execute(with: post, context: context,
+                                     completion: { [weak self] in
+                                        if toFollow {
+                                            self?.origin?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
+                                        }
+                                     },
+                                     failure: nil)
     }
 
     func toggleSavedForLater(for post: ReaderPost) {
         let actionOrigin: ReaderSaveForLaterOrigin
-        // TODO: - READERNAV - Update this check once the old reader is removed
-        if origin is ReaderSavedPostsViewController {
-            actionOrigin = .savedStream
-        } else if let origin = origin as? ReaderStreamViewController, origin.contentType == .saved, FeatureFlag.newReaderNavigation.enabled {
-            actionOrigin = .savedStream
 
+        if let origin = origin as? ReaderStreamViewController, origin.contentType == .saved {
+            actionOrigin = .savedStream
         } else {
             actionOrigin = .otherStream
         }

@@ -1,7 +1,5 @@
 #import "PostSettingsViewController.h"
 #import "PostSettingsViewController_Internal.h"
-
-#import "PostCategoriesViewController.h"
 #import "FeaturedImageViewController.h"
 #import "LocationService.h"
 #import "Media.h"
@@ -130,8 +128,12 @@ FeaturedImageViewControllerDelegate>
 {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"Post Settings", @"The title of the Post Settings screen.");
-
+    if ([self.apost isKindOfClass:[Page class]]) {
+        self.title = NSLocalizedString(@"Page Settings", @"The title of the Page Settings screen.");
+    } else {
+        self.title = NSLocalizedString(@"Post Settings", @"The title of the Post Settings screen.");
+    }
+    
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];

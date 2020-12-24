@@ -4,9 +4,9 @@ import AutomatticTracks
 protocol ReaderDetailHeaderViewDelegate {
     func didTapBlogName()
     func didTapMenuButton(_ sender: UIView)
-    func didTapTagButton()
     func didTapHeaderAvatar()
-    func didTapFeaturedImage(_ sender: CachedAnimatedImageView)
+    func didTapFollowButton()
+    func didSelectTopic(_ topic: String)
 }
 
 class ReaderDetailHeaderView: UIStackView, NibLoadable {
@@ -15,27 +15,20 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     @IBOutlet weak var blogURLLabel: UILabel!
     @IBOutlet weak var blogNameButton: UIButton!
     @IBOutlet weak var menuButton: UIButton!
-    @IBOutlet weak var featuredImageView: CachedAnimatedImageView!
-    @IBOutlet weak var featuredImageBottomPaddingView: ReaderSpacerView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var titleBottomPaddingView: UIView!
-    @IBOutlet weak var bylineView: UIView!
-    @IBOutlet weak var avatarImageView: CircularImageView!
-    @IBOutlet weak var bylineScrollView: UIScrollView!
-    @IBOutlet weak var bylineLabel: UILabel!
-    @IBOutlet weak var tagButton: UIButton!
-    @IBOutlet fileprivate var bylineGradientViews: [GradientView]!
+    @IBOutlet weak var byLabel: UILabel!
+    @IBOutlet weak var authorLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var followButton: UIButton!
+    @IBOutlet weak var iPadFollowButton: UIButton!
+
+    @IBOutlet weak var collectionViewPaddingView: UIView!
+    @IBOutlet weak var topicsCollectionView: TopicsCollectionView!
 
     /// The post to show details in the header
     ///
     private var post: ReaderPost?
-
-    /// Image loader for the featured image
-    ///
-    private lazy var featuredImageLoader: ImageLoader = {
-        // Allow for large GIFs to animate on the detail page
-        return ImageLoader(imageView: featuredImageView, gifStrategy: .largeGIFs)
-    }()
 
     /// The user interface direction for the view's semantic content attribute.
     ///
@@ -53,18 +46,21 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         configureSiteImage()
         configureURL()
         configureBlogName()
-        configureFeaturedImage()
         configureTitle()
-        configureByLine()
-        configureTag()
+        configureByLabel()
+        configureAuthorLabel()
+        configureDateLabel()
+        configureFollowButton()
+        configureNotifications()
+        configureTopicsCollectionView()
 
         prepareForVoiceOver()
         prepareMenuForVoiceOver()
         preparePostTitleForVoiceOver()
+    }
 
-        // Hide the featured image and its padding until we know there is one to load.
-        featuredImageView.isHidden = true
-        featuredImageBottomPaddingView.isHidden = true
+    func refreshFollowButton() {
+        configureFollowButton()
     }
 
     @IBAction func didTapBlogName(_ sender: Any) {
@@ -75,8 +71,11 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         delegate?.didTapMenuButton(sender)
     }
 
-    @IBAction func didTapTagButton(_ sender: Any) {
-        delegate?.didTapTagButton()
+    @IBAction func didTapFollowButton(_ sender: Any) {
+        followButton.isSelected = !followButton.isSelected
+        iPadFollowButton.isSelected = !followButton.isSelected
+
+        delegate?.didTapFollowButton()
     }
 
     @objc func didTapHeaderAvatar(_ gesture: UITapGestureRecognizer) {
@@ -87,37 +86,25 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         delegate?.didTapHeaderAvatar()
     }
 
-    @objc func didTapFeaturedImage(_ gesture: UITapGestureRecognizer) {
-        guard gesture.state == .ended else {
-            return
-        }
-
-        delegate?.didTapFeaturedImage(featuredImageView)
-    }
-
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(blogURLLabel)
-        WPStyleGuide.applyReaderCardSiteButtonStyle(blogNameButton)
-        WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
+
         titleLabel.backgroundColor = .basicBackground
+        blogNameButton.setTitleColor(WPStyleGuide.readerCardBlogNameLabelTextColor(), for: .normal)
+        blogNameButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .bold)
+    }
 
-        headerView.backgroundColor = .listForeground
-
-        reloadGradientColors()
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        if #available(iOS 13.0, *) {
-            if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) == true {
-                reloadGradientColors()
-            }
-        }
+        configureFollowButton()
     }
 
     private func configureSiteImage() {
@@ -158,59 +145,6 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         }
     }
 
-    private func configureFeaturedImage() {
-        guard let post = post,
-            !post.contentIncludesFeaturedImage(),
-            let featuredImageURL = post.featuredImageURLForDisplay() else {
-                return
-        }
-
-        let host = MediaHost(with: post, failure: { error in
-            // We'll log the error, so we know it's there, but we won't halt execution.
-            CrashLogging.logError(error)
-        })
-
-        let maxImageWidth = frame.width
-        let imageWidthSize = CGSize(width: maxImageWidth, height: 0) // height 0: preserves aspect ratio.
-        featuredImageLoader.loadImage(with: featuredImageURL, from: host, preferredSize: imageWidthSize, placeholder: nil, success: { [weak self] in
-            guard let strongSelf = self, let size = strongSelf.featuredImageView.image?.size else {
-                return
-            }
-            DispatchQueue.main.async {
-                strongSelf.configureFeaturedImageConstraints(with: size)
-                strongSelf.configureFeaturedImageGestures()
-            }
-        }) { error in
-            DDLogError("Error loading featured image in reader detail: \(String(describing: error))")
-        }
-    }
-
-    private func configureFeaturedImageConstraints(with size: CGSize) {
-        // Unhide the views
-        featuredImageView.isHidden = false
-        featuredImageBottomPaddingView.isHidden = false
-
-        // Now that we have the image, create an aspect ratio constraint for
-        // the featuredImageView
-        let ratio = size.height / size.width
-        let constraint = NSLayoutConstraint(item: featuredImageView as Any,
-                                            attribute: .height,
-                                            relatedBy: .equal,
-                                            toItem: featuredImageView!,
-                                            attribute: .width,
-                                            multiplier: ratio,
-                                            constant: 0)
-        constraint.priority = .defaultHigh
-        featuredImageView.addConstraint(constraint)
-        featuredImageView.setNeedsUpdateConstraints()
-    }
-
-    private func configureFeaturedImageGestures() {
-        // Listen for taps so we can display the image detail
-        let tgr = UITapGestureRecognizer(target: self, action: #selector(didTapFeaturedImage(_:)))
-        featuredImageView.addGestureRecognizer(tgr)
-    }
-
     private func configureTitle() {
         if let title = post?.titleForDisplay() {
             titleLabel.attributedText = NSAttributedString(string: title, attributes: WPStyleGuide.readerDetailTitleAttributes())
@@ -222,63 +156,57 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         }
     }
 
-    private func configureByLine() {
-        // Avatar
-        let placeholder = UIImage(named: "gravatar")
-
-        if let avatarURLString = post?.authorAvatarURL,
-            let url = URL(string: avatarURLString) {
-            avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
-        }
-
-        // Byline
-        let author = post?.authorForDisplay()
-        let dateAsString = post?.dateForDisplay()?.mediumString()
-        let byline: String
-
-        if let author = author, let date = dateAsString {
-            byline = author + " · " + date
-        } else {
-            byline = author ?? dateAsString ?? String()
-        }
-
-        bylineLabel.text = byline
-
-        flipBylineViewIfNeeded()
+    private func configureByLabel() {
+        byLabel.text = NSLocalizedString("By ", comment: "Label for the post author in the post detail.")
     }
 
-    private func flipBylineViewIfNeeded() {
-        if layoutDirection == .rightToLeft {
-            bylineScrollView.transform = CGAffineTransform(scaleX: -1, y: 1)
-            bylineScrollView.subviews.first?.transform = CGAffineTransform(scaleX: -1, y: 1)
-
-            for gradientView in bylineGradientViews {
-                let start = gradientView.startPoint
-                let end = gradientView.endPoint
-
-                gradientView.startPoint = end
-                gradientView.endPoint = start
-            }
-        }
+    private func configureAuthorLabel() {
+        authorLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .bold)
+        authorLabel.text = post?.authorDisplayName
     }
 
-    private func configureTag() {
-        var tag = ""
-        if let rawTag = post?.primaryTag {
-            if rawTag.count > 0 {
-                tag = "#\(rawTag)"
-            }
-        }
-        tagButton.isHidden = tag.count == 0
-        tagButton.setTitle(tag, for: UIControl.State())
-        tagButton.setTitle(tag, for: .highlighted)
+    private func configureDateLabel() {
+        dateLabel.text = post?.dateForDisplay()?.mediumString()
     }
 
-    private func reloadGradientColors() {
-        bylineGradientViews.forEach({ view in
-            view.fromColor = .basicBackground
-            view.toColor = UIColor.basicBackground.withAlphaComponent(0.0)
-        })
+    private func configureFollowButton() {
+        followButton.isSelected = post?.isFollowing() ?? false
+        iPadFollowButton.isSelected = post?.isFollowing() ?? false
+
+        followButton.setImage(UIImage.gridicon(.readerFollow, size: CGSize(width: 24, height: 24)).imageWithTintColor(.accent), for: .normal)
+        followButton.setImage(UIImage.gridicon(.readerFollowing, size: CGSize(width: 24, height: 24)).imageWithTintColor(.gray(.shade20)), for: .selected)
+        WPStyleGuide.applyReaderFollowButtonStyle(iPadFollowButton)
+
+        let isCompact = traitCollection.horizontalSizeClass == .compact
+        followButton.isHidden = !isCompact
+        iPadFollowButton.isHidden = isCompact
+    }
+
+    private func configureNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(preferredContentSizeChanged), name: UIContentSizeCategory.didChangeNotification, object: nil)
+    }
+
+    func configureTopicsCollectionView() {
+        guard
+            let post = post,
+            let tags = post.tagsForDisplay(),
+            !tags.isEmpty
+        else {
+            topicsCollectionView.isHidden = true
+            collectionViewPaddingView.isHidden = true
+            return
+        }
+
+        let featuredImageIsDisplayed = ReaderDetailFeaturedImageView.shouldDisplayFeaturedImage(with: post)
+        collectionViewPaddingView.isHidden = !featuredImageIsDisplayed
+
+        topicsCollectionView.topicDelegate = self
+        topicsCollectionView.topics = tags
+        topicsCollectionView.isHidden = false
+    }
+
+    @objc private func preferredContentSizeChanged() {
+        configureTitle()
     }
 
     private func prepareForVoiceOver() {
@@ -324,7 +252,17 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         isAccessibilityElement = false
 
         titleLabel.accessibilityLabel = title
-        titleLabel.accessibilityTraits = .staticText
+        titleLabel.accessibilityTraits = .header
     }
 
+}
+
+extension ReaderDetailHeaderView: ReaderTopicCollectionViewCoordinatorDelegate {
+    func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didChangeState: ReaderTopicCollectionViewState) {
+        self.layoutIfNeeded()
+    }
+
+    func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didSelectTopic topic: String) {
+        delegate?.didSelectTopic(topic)
+    }
 }

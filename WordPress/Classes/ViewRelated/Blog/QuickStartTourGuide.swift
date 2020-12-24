@@ -11,20 +11,21 @@ open class QuickStartTourGuide: NSObject {
     static let notificationElementKey = "QuickStartElementKey"
     static let notificationDescriptionKey = "QuickStartDescriptionKey"
 
-    @objc static func find() -> QuickStartTourGuide? {
-        guard let tabBarController = WPTabBarController.sharedInstance(),
-            let tourGuide = tabBarController.tourGuide else {
-            return nil
-        }
-        return tourGuide
-    }
 
-    func setup(for blog: Blog) {
+    @objc static let shared = QuickStartTourGuide()
+
+    private override init() {}
+
+    func setup(for blog: Blog, withCompletedSteps steps: [QuickStartTour] = []) {
         didShowUpgradeToV2Notice(for: blog)
 
 
         let createTour = QuickStartCreateTour()
         completed(tour: createTour, for: blog)
+
+        steps.forEach { (tour) in
+            completed(tour: tour, for: blog)
+        }
     }
 
     @objc func remove(from blog: Blog) {
@@ -178,7 +179,7 @@ open class QuickStartTourGuide: NSObject {
         }
         if element != currentElement {
             let blogDetailEvents: [QuickStartTourElement] = [.blogDetailNavigation, .checklist, .themes, .viewSite, .sharing]
-            let readerElements: [QuickStartTourElement] = [.readerTab, .selectInterests, .readerSearch]
+            let readerElements: [QuickStartTourElement] = [.readerTab, .readerSearch]
 
             if blogDetailEvents.contains(element) {
                 endCurrentTour()

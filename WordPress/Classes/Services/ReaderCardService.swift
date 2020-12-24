@@ -6,6 +6,7 @@ class ReaderCardService {
     private let coreDataStack: CoreDataStack
 
     private let followedInterestsService: ReaderFollowedInterestsService
+    private let siteInfoService: ReaderSiteInfoService
 
     private lazy var syncContext: NSManagedObjectContext = {
         return coreDataStack.newDerivedContext()
@@ -19,10 +20,12 @@ class ReaderCardService {
 
     init(service: ReaderPostServiceRemote = ReaderPostServiceRemote.withDefaultApi(),
          coreDataStack: CoreDataStack = ContextManager.shared,
-         followedInterestsService: ReaderFollowedInterestsService? = nil) {
+         followedInterestsService: ReaderFollowedInterestsService? = nil,
+         siteInfoService: ReaderSiteInfoService? = nil) {
         self.service = service
         self.coreDataStack = coreDataStack
         self.followedInterestsService = followedInterestsService ?? ReaderTopicService(managedObjectContext: coreDataStack.mainContext)
+        self.siteInfoService = siteInfoService ?? ReaderTopicService(managedObjectContext: coreDataStack.mainContext)
     }
 
     func fetch(isFirstPage: Bool, refreshCount: Int = 0, success: @escaping (Int, Bool) -> Void, failure: @escaping (Error?) -> Void) {
@@ -62,6 +65,21 @@ class ReaderCardService {
                                             .array
                                             .compactMap { $0 as? ReaderTagTopic }
                                             .forEach { $0.path = self.followedInterestsService.path(slug: $0.slug) }
+
+                                        // Assign each site an endpoint URL if needed
+                                        card?
+                                            .sites?
+                                            .array
+                                            .compactMap { $0 as? ReaderSiteTopic }
+                                            .forEach {
+                                                let path = $0.path
+                                                // Sites coming from the cards API only have a path and not a full url
+                                                // Once we save the model locally it will be a full URL, so we don't
+                                                // want to reapply this logic
+                                                if !path.hasPrefix("http") {
+                                                    $0.path = self.siteInfoService.endpointURLString(path: path)
+                                                }
+                                            }
 
                                         // To keep the API order
                                         card?.sortRank = Double((self.pageNumber * Constants.paginationMultiplier) + index)
@@ -115,7 +133,7 @@ class ReaderCardService {
 }
 
 /// Used to inject the ReaderPostServiceRemote as an dependency
-private extension ReaderPostServiceRemote {
+extension ReaderPostServiceRemote {
     class func withDefaultApi() -> ReaderPostServiceRemote {
         let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
         let defaultAccount = accountService.defaultWordPressComAccount()

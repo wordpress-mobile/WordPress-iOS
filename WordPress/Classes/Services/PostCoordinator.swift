@@ -304,6 +304,10 @@ class PostCoordinator: NSObject {
         var gutenbergProcessors = [Processor]()
         var aztecProcessors = [Processor]()
 
+        // File block can upload any kind of media.
+        let gutenbergFileProcessor = GutenbergFileUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+        gutenbergProcessors.append(gutenbergFileProcessor)
+
         if media.mediaType == .image {
             let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
             gutenbergProcessors.append(gutenbergImgPostUploadProcessor)
@@ -326,6 +330,9 @@ class PostCoordinator: NSObject {
 
             let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
             aztecProcessors.append(videoPostUploadProcessor)
+        } else if media.mediaType == .audio {
+            let gutenbergAudioProcessor = GutenbergAudioUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+            gutenbergProcessors.append(gutenbergAudioProcessor)
         } else if let remoteURL = URL(string: remoteURLStr) {
             let documentTitle = remoteURL.lastPathComponent
             let documentUploadProcessor = DocumentUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, title: documentTitle)

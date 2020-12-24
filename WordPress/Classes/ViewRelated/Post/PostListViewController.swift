@@ -159,6 +159,36 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         updateGhostableTableViewOptions()
 
         configureNavigationButtons()
+
+        createButtonCoordinator.add(to: view, trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor, bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+    }
+
+    private lazy var createButtonCoordinator: CreateButtonCoordinator = {
+        var actions: [ActionSheetItem] = [
+            PostAction(handler: { [weak self] in
+                    self?.dismiss(animated: false, completion: nil)
+                    self?.createPost()
+            })
+        ]
+        if Feature.enabled(.stories) && blog.supports(.stories) {
+            actions.append(
+                StoryAction(handler: { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+                    (self.tabBarController as? WPTabBarController)?.showStoryEditor(blog: self.blog, title: nil, content: nil, source: "post_list")
+                })
+            )
+        }
+        return CreateButtonCoordinator(self, actions: actions)
+    }()
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if traitCollection.horizontalSizeClass == .compact {
+            createButtonCoordinator.showCreateButton(for: blog)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -167,8 +197,17 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         configureCompactOrDefault()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.horizontalSizeClass == .compact {
+            createButtonCoordinator.showCreateButton(for: blog)
+        } else {
+            createButtonCoordinator.hideCreateButton()
+        }
+    }
+
     func configureNavigationButtons() {
-        navigationItem.rightBarButtonItems = [addButton, postsViewButtonItem]
+        navigationItem.rightBarButtonItems = [postsViewButtonItem]
     }
 
     @objc func togglePostsView() {
@@ -215,6 +254,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         super.selectedFilterDidChange(filterBar)
     }
 
+    override func refresh(_ sender: AnyObject) {
+        updateGhostableTableViewOptions()
+        super.refresh(sender)
+    }
 
     /// Update the `GhostOptions` to correctly show compact or default cells
     private func updateGhostableTableViewOptions() {
@@ -523,7 +566,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let editor = EditPostViewController(blog: blog)
         editor.modalPresentationStyle = .fullScreen
         present(editor, animated: false, completion: nil)
-        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view", WPAppAnalyticsKeyPostType: "post"], with: blog)
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: "posts_view", WPAppAnalyticsKeyPostType: "post"], with: blog)
     }
 
     private func editPost(apost: AbstractPost) {
@@ -536,6 +579,14 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         PostListEditorPresenter.handle(post: post, in: self)
+    }
+
+    private func editDuplicatePost(apost: AbstractPost) {
+        guard let post = apost as? Post else {
+            return
+        }
+
+        PostListEditorPresenter.handleCopy(post: post, in: self)
     }
 
     func presentAlertForPostBeingUploaded() {
@@ -610,6 +661,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         ReachabilityUtils.onAvailableInternetConnectionDo {
             viewStatsForPost(post)
         }
+    }
+
+    func duplicate(_ post: AbstractPost) {
+        editDuplicatePost(apost: post)
     }
 
     func publish(_ post: AbstractPost) {

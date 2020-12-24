@@ -54,7 +54,7 @@ class NotificationDetailsViewController: UIViewController {
 
     /// Reply Suggestions
     ///
-    @IBOutlet var suggestionsTableView: SuggestionsTableView!
+    @IBOutlet var suggestionsTableView: SuggestionsTableView?
 
     /// Embedded Media Downloader
     ///
@@ -383,15 +383,14 @@ extension NotificationDetailsViewController {
     }
 
     func setupMainView() {
-        view.backgroundColor = .listBackground
+        view.backgroundColor = note.isBadge ? .ungroupedListBackground : .listBackground
     }
 
     func setupTableView() {
         tableView.separatorStyle            = .none
         tableView.keyboardDismissMode       = .interactive
-        tableView.backgroundColor           = .neutral(.shade5)
         tableView.accessibilityIdentifier   = NSLocalizedString("Notification Details Table", comment: "Notifications Details Accessibility Identifier")
-        tableView.backgroundColor           = .listBackground
+        tableView.backgroundColor           = note.isBadge ? .ungroupedListBackground : .listBackground
     }
 
     func setupTableViewCells() {
@@ -434,10 +433,9 @@ extension NotificationDetailsViewController {
     }
 
     func setupSuggestionsView() {
-        suggestionsTableView = SuggestionsTableView()
-        suggestionsTableView.siteID = note.metaSiteID
-        suggestionsTableView.suggestionsDelegate = self
-        suggestionsTableView.translatesAutoresizingMaskIntoConstraints = false
+        guard let siteID = note.metaSiteID else { return }
+        suggestionsTableView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
+        suggestionsTableView?.translatesAutoresizingMaskIntoConstraints = false
     }
 
     func setupKeyboardManager() {
@@ -529,8 +527,8 @@ private extension NotificationDetailsViewController {
 //
 private extension NotificationDetailsViewController {
     func attachSuggestionsViewIfNeeded() {
-        guard shouldAttachSuggestionsView else {
-            suggestionsTableView.removeFromSuperview()
+        guard shouldAttachSuggestionsView, let suggestionsTableView = self.suggestionsTableView else {
+            self.suggestionsTableView?.removeFromSuperview()
             return
         }
 
@@ -541,15 +539,15 @@ private extension NotificationDetailsViewController {
             suggestionsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             suggestionsTableView.topAnchor.constraint(equalTo: view.topAnchor),
             suggestionsTableView.bottomAnchor.constraint(equalTo: replyTextView.topAnchor)
-            ])
+        ])
     }
 
     var shouldAttachSuggestionsView: Bool {
-        guard let siteID = note.metaSiteID else {
+        guard let siteID = note.metaSiteID,
+              let blog = SuggestionService.shared.persistedBlog(for: siteID) else {
             return false
         }
-
-        return shouldAttachReplyView && SuggestionService.shared.shouldShowSuggestions(for: siteID)
+        return shouldAttachReplyView && SuggestionService.shared.shouldShowSuggestions(for: blog)
     }
 }
 
@@ -786,7 +784,6 @@ private extension NotificationDetailsViewController {
         // Setup: Callbacks
         cell.onReplyClick = { [weak self] _ in
             self?.focusOnReplyTextViewWithBlock(commentBlock)
-            WPAppAnalytics.track(.notificationsCommentRepliedTo)
         }
 
         cell.onLikeClick = { [weak self] _ in
@@ -1078,6 +1075,7 @@ private extension NotificationDetailsViewController {
 
         let actionContext = ActionContext(block: block, content: content) { [weak self] (request, success) in
             if success {
+                WPAppAnalytics.track(.notificationsCommentRepliedTo)
                 let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
                 self?.displayNotice(title: message)
             } else {
@@ -1100,6 +1098,7 @@ private extension NotificationDetailsViewController {
 
         let actionContext = ActionContext(block: block, content: content) { [weak self] (request, success) in
             guard success == false else {
+                CommentAnalytics.trackCommentEdited(block: block)
                 return
             }
 
@@ -1152,6 +1151,7 @@ private extension NotificationDetailsViewController {
         navController.modalTransitionStyle = .coverVertical
         navController.navigationBar.isTranslucent = false
 
+        CommentAnalytics.trackCommentEditorOpened(block: block)
         present(navController, animated: true)
     }
 
@@ -1181,11 +1181,11 @@ private extension NotificationDetailsViewController {
 //
 extension NotificationDetailsViewController: ReplyTextViewDelegate {
     func textView(_ textView: UITextView, didTypeWord word: String) {
-        suggestionsTableView.showSuggestions(forWord: word)
+        suggestionsTableView?.showSuggestions(forWord: word)
     }
 
     func replyTextView(_ replyTextView: ReplyTextView, willEnterFullScreen controller: FullScreenCommentReplyViewController) {
-        guard let siteID = note.metaSiteID else {
+        guard let siteID = note.metaSiteID, let suggestionsTableView = self.suggestionsTableView else {
             return
         }
 

@@ -32,6 +32,18 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         prepareActionButtonsForVoiceOver()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                configureActionButtons()
+            }
+        }
+
+        configureButtonTitles()
+    }
+
     func configure(for post: ReaderPost, in viewController: UIViewController) {
         self.post = post
         self.viewController = viewController
@@ -96,7 +108,9 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         }
 
         let service = ReaderPostService(managedObjectContext: post.managedObjectContext!)
-        service.toggleLiked(for: post, success: nil, failure: { [weak self] (error: Error?) in
+        service.toggleLiked(for: post, success: { [weak self] in
+            self?.trackArticleDetailsLikedOrUnliked()
+        }, failure: { [weak self] (error: Error?) in
             self?.trackArticleDetailsLikedOrUnliked()
             if let anError = error {
                 DDLogError("Error (un)liking post: \(anError.localizedDescription)")
@@ -122,29 +136,11 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         resetActionButton(saveForLaterButton)
         resetActionButton(reblogButton)
 
-        guard let post = post else {
-            return
-        }
-
-        // Show likes if logged in, or if likes exist, but not if external
-        if (ReaderHelpers.isLoggedIn() || post.likeCount.intValue > 0) && !post.isExternal {
-            configureLikeActionButton()
-        }
-
-        // Show comments if logged in and comments are enabled, or if comments exist.
-        // But only if it is from wpcom (jetpack and external is not yet supported).
-        // Nesting this conditional cos it seems clearer that way
-        if (post.isWPCom || post.isJetpack) && !shouldHideComments {
-            let commentCount = post.commentCount?.intValue ?? 0
-            if (ReaderHelpers.isLoggedIn() && post.commentsOpen) || commentCount > 0 {
-                configureCommentActionButton()
-            }
-        }
-        // Show reblog only if logged in
-        if ReaderHelpers.isLoggedIn(), !post.isPrivate() {
-            configureReblogButton()
-        }
+        configureLikeActionButton()
+        configureCommentActionButton()
+        configureReblogButton()
         configureSaveForLaterButton()
+        configureButtonTitles()
     }
 
     private func resetActionButton(_ button: UIButton) {
@@ -155,7 +151,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         button.setImage(nil, for: .highlighted)
         button.setImage(nil, for: .disabled)
         button.isSelected = false
-        button.isHidden = true
         button.isEnabled = true
     }
 
@@ -169,18 +164,31 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         button.setImage(highlightedImage, for: [.highlighted, .selected])
         button.setImage(image, for: .disabled)
         button.isSelected = selected
-        button.isHidden = false
 
-        WPStyleGuide.applyReaderActionButtonStyle(button)
+        configureActionButtonStyle(button)
+    }
+
+    private func configureActionButtonStyle(_ button: UIButton) {
+        let disabledColor = UIColor(light: .muriel(color: .gray, .shade10),
+                                    dark: .textSubtle)
+
+        WPStyleGuide.applyReaderActionButtonStyle(button,
+                                                  titleColor: .textSubtle,
+                                                  imageColor: .textSubtle,
+                                                  disabledColor: disabledColor)
     }
 
     private func configureLikeActionButton(_ animated: Bool = false) {
-        likeButton.isEnabled = ReaderHelpers.isLoggedIn()
-        // as by design spec, only display like counts
-        let likeCount = post?.likeCount()?.intValue ?? 0
-        let title = likeCount > 0 ? "\(likeCount)" : ""
+        guard let post = post else {
+            return
+        }
 
-        let selected = post?.isLiked ?? false
+        let likeCount = post.likeCount?.intValue ?? 0
+        likeButton.isEnabled = (ReaderHelpers.isLoggedIn() || likeCount > 0) && !post.isExternal
+        // as by design spec, only display like counts
+        let title = likeLabel(count: likeCount)
+
+        let selected = post.isLiked
         let likeImage = UIImage(named: "icon-reader-like")
         let likedImage = UIImage(named: "icon-reader-liked")
 
@@ -193,16 +201,20 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
     /// Uses the configuration in WPStyleGuide for the reblog button
     private func configureReblogButton() {
-        reblogButton.isHidden = false
+        guard let post = post else {
+            return
+        }
+
+        reblogButton.isEnabled = ReaderHelpers.isLoggedIn() && !post.isPrivate()
         WPStyleGuide.applyReaderReblogActionButtonStyle(reblogButton, showTitle: false)
+
+        configureActionButtonStyle(reblogButton)
     }
 
     private func playLikeButtonAnimation() {
         let likeImageView = likeButton.imageView!
-        let frame = likeButton.convert(likeImageView.frame, from: likeImageView)
 
         let imageView = UIImageView(image: UIImage(named: "icon-reader-liked"))
-        imageView.frame = frame
         likeButton.addSubview(imageView)
 
         let animationDuration = 0.3
@@ -211,7 +223,9 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             // Prep a mask to hide the likeButton's image, since changes to visiblility and alpha are ignored
             let mask = UIView(frame: frame)
             mask.backgroundColor = backgroundColor
-            likeButton.addSubview(mask)
+            likeImageView.addSubview(mask)
+            likeImageView.pinSubviewToAllEdges(mask)
+            mask.translatesAutoresizingMaskIntoConstraints = false
             likeButton.bringSubviewToFront(imageView)
 
             // Configure starting state
@@ -260,22 +274,37 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     private func configureCommentActionButton() {
-        guard let commentCount = post?.commentCount else {
-            return
+        WPStyleGuide.applyReaderCardCommentButtonStyle(commentButton, defaultSize: true)
+        commentButton.isEnabled = shouldShowCommentActionButton
+
+        configureActionButtonStyle(commentButton)
+    }
+
+    private var shouldShowCommentActionButton: Bool {
+        // Show comments if logged in and comments are enabled, or if comments exist.
+        // But only if it is from wpcom (jetpack and external is not yet supported).
+        // Nesting this conditional cos it seems clearer that way
+        guard let post = post else {
+            return false
         }
 
-        let title = commentCount.stringValue
-        let image = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
-        let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
-        configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected: false)
+        if (post.isWPCom || post.isJetpack) && !shouldHideComments {
+            let commentCount = post.commentCount?.intValue ?? 0
+            if (ReaderHelpers.isLoggedIn() && post.commentsOpen) || commentCount > 0 {
+                return true
+            }
+        }
+
+        return false
     }
 
     private func configureSaveForLaterButton() {
         WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
         WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
 
-        saveForLaterButton.isHidden = false
         saveForLaterButton.isSelected = post?.isSavedForLater ?? false
+
+        configureActionButtonStyle(saveForLaterButton)
     }
 
     private func adjustInsetsForTextDirection() {
@@ -286,6 +315,44 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             reblogButton]
         for button in buttonsToAdjust {
             button.flipInsetsForRightToLeftLayoutDirection()
+        }
+    }
+
+    fileprivate func configureButtonTitles() {
+        guard let post = post else {
+            return
+        }
+
+        let likeCount = post.likeCount()?.intValue ?? 0
+        let commentCount = post.commentCount()?.intValue ?? 0
+
+        let likeTitle = likeLabel(count: likeCount)
+        let commentTitle: String = commentLabel(count: commentCount)
+        let showTitle: Bool = traitCollection.horizontalSizeClass != .compact
+
+        likeButton.setTitle(likeTitle, for: .normal)
+        likeButton.setTitle(likeTitle, for: .highlighted)
+
+        commentButton.setTitle(commentTitle, for: .normal)
+        commentButton.setTitle(commentTitle, for: .highlighted)
+
+        WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: showTitle)
+        WPStyleGuide.applyReaderReblogActionButtonTitle(reblogButton, showTitle: showTitle)
+    }
+
+    private func commentLabel(count: Int) -> String {
+        if traitCollection.horizontalSizeClass == .compact {
+            return count > 0 ? String(count) : ""
+        } else {
+            return WPStyleGuide.commentCountForDisplay(count)
+        }
+    }
+
+    private func likeLabel(count: Int) -> String {
+        if traitCollection.horizontalSizeClass == .compact {
+            return count > 0 ? String(count) : ""
+        } else {
+            return WPStyleGuide.likeCountForDisplay(count)
         }
     }
 

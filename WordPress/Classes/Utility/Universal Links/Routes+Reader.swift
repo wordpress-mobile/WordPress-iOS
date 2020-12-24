@@ -5,6 +5,7 @@ enum ReaderRoute {
     case discover
     case search
     case a8c
+    case p2
     case likes
     case manageFollowing
     case list
@@ -26,6 +27,8 @@ extension ReaderRoute: Route {
             return "/read/search"
         case .a8c:
             return "/read/a8c"
+        case .p2:
+            return "/read/p2"
         case .likes:
             return "/activities/likes"
         case .manageFollowing:
@@ -56,14 +59,9 @@ extension ReaderRoute: NavigationAction {
             return
         }
 
-        coordinator.source = source
-
-        if source == nil {
-            // If we're not navigating internally,
-            // we want to bounce back to Safari on failure
-            coordinator.failureBlock = {
-                self.failAndBounce(values)
-            }
+        // Bounce back to Safari on failure
+        coordinator.failureBlock = {
+            self.failAndBounce(values)
         }
 
         switch self {
@@ -74,7 +72,9 @@ extension ReaderRoute: NavigationAction {
         case .search:
             coordinator.showSearch()
         case .a8c:
-            coordinator.showA8CTeam()
+            coordinator.showA8C()
+        case .p2:
+            coordinator.showP2()
         case .likes:
             coordinator.showMyLikes()
         case .manageFollowing:

@@ -9,7 +9,16 @@
 
 @implementation WPLogger
 
-#pragma mark - Inititlization
+#pragma mark - Initialization
+
++ (WPLogger *)shared {
+    static WPLogger *shared = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        shared = [[self alloc] init];
+    });
+    return shared;
+}
 
 - (instancetype)init
 {

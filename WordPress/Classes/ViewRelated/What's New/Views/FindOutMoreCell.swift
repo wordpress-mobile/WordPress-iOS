@@ -32,7 +32,8 @@ class FindOutMoreCell: UITableViewCell {
     }
 
     func configure(with url: URL?) {
-        self.findOutMoreUrl = url
+        findOutMoreUrl = url
+        findOutMoreButton.isHidden = url == nil
     }
 }
 

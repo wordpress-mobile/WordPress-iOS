@@ -2,7 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared
 
-class PostTagPickerViewController: UIViewController, DrawerPresentable {
+class PostTagPickerViewController: UIViewController {
     private let originalTags: [String]
     @objc var onValueChanged: ((String) -> Void)?
     @objc let blog: Blog
@@ -32,6 +32,8 @@ class PostTagPickerViewController: UIViewController, DrawerPresentable {
             reloadTableData()
         }
     }
+
+    var onContentViewHeightDetermined: (() -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,6 +116,7 @@ class PostTagPickerViewController: UIViewController, DrawerPresentable {
         super.viewWillAppear(animated)
 
         textView.becomeFirstResponder()
+        updateContainerHeight()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -122,6 +125,7 @@ class PostTagPickerViewController: UIViewController, DrawerPresentable {
         loadTags()
 
         tableView.contentInset.bottom += descriptionLabel.frame.height + 20
+
         updateTableViewBottomInset()
     }
 
@@ -159,6 +163,14 @@ class PostTagPickerViewController: UIViewController, DrawerPresentable {
         }
 
         tableView.contentInset.bottom += presentedVC?.yPosition ?? 0
+    }
+
+    fileprivate func updateContainerHeight() {
+        descriptionLabel.layoutIfNeeded()
+        textViewContainer.layoutIfNeeded()
+        let contentHeight = tableView.contentSize.height + descriptionLabel.bounds.size.height + textViewContainer.bounds.height
+        preferredContentSize = CGSize(width: view.bounds.width, height: max(300.0, contentHeight))
+        onContentViewHeightDetermined?()
     }
 }
 
@@ -455,5 +467,15 @@ extension WPStyleGuide {
         WPStyleGuide.configureTableViewCell(cell)
         cell.textLabel?.textColor = .text
         cell.backgroundColor = .listForeground
+    }
+}
+
+extension PostTagPickerViewController: DrawerPresentable {
+    var collapsedHeight: DrawerHeight {
+        return .contentHeight(300)
+    }
+
+    var scrollableView: UIScrollView? {
+        return tableView
     }
 }

@@ -54,6 +54,8 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic domains;
 @dynamic themes;
 @dynamic media;
+@dynamic userSuggestions;
+@dynamic siteSuggestions;
 @dynamic menus;
 @dynamic menuLocations;
 @dynamic roles;
@@ -84,6 +86,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
+@dynamic pageTemplateCategories;
 
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
@@ -91,6 +94,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @synthesize isSyncingMedia;
 @synthesize xmlrpcApi = _xmlrpcApi;
 @synthesize wordPressOrgRestApi = _wordPressOrgRestApi;
+@synthesize supportsJetpackScan;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -299,6 +303,17 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     return [self postFormatTextFromSlug:self.settings.defaultPostFormat];
 }
 
+- (BOOL)hasMappedDomain {
+    if (![self isHostedAtWPcom]) {
+        return NO;
+    }
+
+    NSURL *unmappedURL = [NSURL URLWithString:[self getOptionValue:@"unmapped_url"]];
+    NSURL *homeURL = [NSURL URLWithString:[self homeURL]];
+
+    return ![[unmappedURL host] isEqualToString:[homeURL host]];
+}
+
 - (BOOL)hasIcon
 {
     // A blog without an icon has the blog url in icon, so we can't directly check its
@@ -476,7 +491,9 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeatureOAuth2Login:
             return [self isHostedAtWPcom];
         case BlogFeatureMentions:
-            return [self isHostedAtWPcom];
+            return [self isAccessibleThroughWPCom];
+        case BlogFeatureXposts:
+            return [self isAccessibleThroughWPCom];
         case BlogFeatureReblog:
         case BlogFeaturePlans:
             return [self isHostedAtWPcom] && [self isAdmin];
@@ -516,6 +533,11 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self isAdmin];
         case BlogFeatureHomepageSettings:
             return [self supportsRestApi] && [self isAdmin];
+        case BlogFeatureStories:
+            return [self supportsStories];
+        case BlogFeatureJetpackScan:
+            return self.supportsJetpackScan;
+
     }
 }
 
@@ -582,6 +604,12 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         && self.isAdmin;
 
     return isTransferrable || hasRequiredJetpack;
+}
+
+- (BOOL)supportsStories
+{
+    BOOL hasRequiredJetpack = [self hasRequiredJetpackVersion:@"9.1"];
+    return hasRequiredJetpack || self.isHostedAtWPcom;
 }
 
 - (BOOL)accountIsDefaultAccount

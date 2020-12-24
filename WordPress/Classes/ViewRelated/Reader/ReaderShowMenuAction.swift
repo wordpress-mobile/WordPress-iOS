@@ -13,7 +13,7 @@ final class ReaderShowMenuAction {
 
 
         // Block button
-        if shouldShowBlockSiteMenuItem(readerTopic: readerTopic) {
+        if shouldShowBlockSiteMenuItem(readerTopic: readerTopic, post: post) {
             alertController.addActionWithTitle(ReaderPostMenuButtonTitles.blockSite,
                                                style: .destructive,
                                                handler: { (action: UIAlertAction) in
@@ -24,7 +24,7 @@ final class ReaderShowMenuAction {
         }
 
         // Report button
-        if shouldShowReportPostMenuItem(readerTopic: readerTopic) {
+        if shouldShowReportPostMenuItem(readerTopic: readerTopic, post: post) {
             alertController.addActionWithTitle(ReaderPostMenuButtonTitles.reportPost,
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
@@ -54,14 +54,17 @@ final class ReaderShowMenuAction {
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                    ReaderFollowAction().execute(with: post, context: context) {
-                                                        guard let vc = vc as? ReaderStreamViewController else {
-                                                            return
-                                                        }
-                                                        vc.updateStreamHeaderIfNeeded()
-                                                    }
+                                                    ReaderFollowAction().execute(with: post,
+                                                                                 context: context,
+                                                                                 completion: {
+                                                                                    guard let vc = vc as? ReaderStreamViewController else {
+                                                                                        return
+                                                                                    }
+                                                                                    vc.updateStreamHeaderIfNeeded()
+                                                                                 },
+                                                                                 failure: nil)
                                                 }
-            })
+                                               })
         }
 
         // Visit
@@ -91,21 +94,21 @@ final class ReaderShowMenuAction {
             vc.present(alertController, animated: true)
         }
 
-        WPAnalytics.track(.postCardMoreTapped)
+        WPAnalytics.trackReader(.postCardMoreTapped)
     }
 
-    fileprivate func shouldShowBlockSiteMenuItem(readerTopic: ReaderAbstractTopic?) -> Bool {
+    fileprivate func shouldShowBlockSiteMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
         guard let topic = readerTopic else {
             return false
         }
         if isLoggedIn {
-            return ReaderHelpers.isTopicTag(topic) || (ReaderHelpers.topicIsDiscover(topic) && FeatureFlag.readerImprovementsPhase2.enabled)
-                || ReaderHelpers.topicIsFreshlyPressed(topic)
+            return ReaderHelpers.isTopicTag(topic) || ReaderHelpers.topicIsDiscover(topic)
+                || ReaderHelpers.topicIsFreshlyPressed(topic) || (ReaderHelpers.topicIsFollowing(topic) && !post.isFollowing)
         }
         return false
     }
 
-    fileprivate func shouldShowReportPostMenuItem(readerTopic: ReaderAbstractTopic?) -> Bool {
-        return shouldShowBlockSiteMenuItem(readerTopic: readerTopic)
+    fileprivate func shouldShowReportPostMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
+        return shouldShowBlockSiteMenuItem(readerTopic: readerTopic, post: post)
     }
 }

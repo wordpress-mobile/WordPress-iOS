@@ -97,7 +97,12 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     // MARK: - Public methods
 
     override open func display(_ layer: CALayer) {
-        super.display(layer)
+        // Fixes an unrecognized selector crash on iOS 13 and below when calling super.display(_:) directly
+        // This was first reported here: p5T066-1xs-p2#comment-5908
+        // Investigating the issue I came across this discussion with a workaround in the Gifu repo: https://git.io/JUPxC
+        if UIImageView.instancesRespond(to: #selector(display(_:))) {
+            super.display(layer)
+        }
 
         updateImageIfNeeded()
     }
