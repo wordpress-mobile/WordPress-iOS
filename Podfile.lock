@@ -672,7 +672,7 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
   KanvasCamera:
-    :commit: d0b996e138d658519cf5eed288e46f8049954f18
+    :commit: d56b8347d5b7a0fc3a41885cc0c0109d478465b2
     :git: "git@github.com:tumblr/kanvas-ios.git"
   RNCMaskedView:
     :commit: d4ccf2bba163679c4550ce6ba0119604cd5e6379
@@ -778,6 +778,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 45929e5fe3c988bb1d911d8a373519a61ca3baf3
+PODFILE CHECKSUM: 24525606005269f32e9c7eb564822a13558780af
 
 COCOAPODS: 1.10.0
