@@ -3,7 +3,7 @@ import KanvasCamera
 import Photos
 
 protocol CameraHandlerDelegate: class {
-    func didCreateMedia(media: [(KanvasCameraMedia?, Error?)])
+    func didCreateMedia(media: [Result<KanvasCameraMedia?, Error>])
 }
 
 class KanvasService {
@@ -69,7 +69,7 @@ class KanvasService {
 }
 
 extension KanvasService: CameraControllerDelegate {
-    func didCreateMedia(_ cameraController: CameraController, media: [(KanvasCameraMedia?, Error?)], exportAction: KanvasExportAction) {
+    func didCreateMedia(_ cameraController: CameraController, media: [Result<KanvasCameraMedia?, Error>], exportAction: KanvasExportAction) {
         delegate?.didCreateMedia(media: media)
     }
 

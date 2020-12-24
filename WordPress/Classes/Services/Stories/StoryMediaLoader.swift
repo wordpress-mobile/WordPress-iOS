@@ -59,8 +59,9 @@ class StoryMediaLoader {
                 case .image:
                     let size = media.pixelSize()
                     let task = self.mediaUtility.downloadImage(from: URL(string: file.url)!, size: size, scale: 1, post: post, success: { [weak self] image in
+                        let source = CGImageSourceCreateWithDataProvider(image.cgImage!.dataProvider!, nil)!
                         self?.queue.async {
-                            self?.results[idx] = (CameraSegment.image(image, nil, nil, KanvasCamera.MediaInfo(source: .kanvas_camera)), nil)
+                            self?.results[idx] = (CameraSegment.image(source, nil, nil, KanvasCamera.MediaInfo(source: .kanvas_camera)), nil)
                         }
                     }, onFailure: { error in
                         print("Failed image download")

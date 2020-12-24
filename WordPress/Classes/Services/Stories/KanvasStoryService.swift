@@ -33,11 +33,16 @@ class KanvasStoryService: CameraHandlerDelegate {
         cameraHandler.delegate = self
     }
 
-    func didCreateMedia(media: [(KanvasCameraMedia?, Error?)]) {
+    func didCreateMedia(media: [Result<KanvasCameraMedia?, Error>]) {
         poster = StoryPoster(context: blog.managedObjectContext ?? ContextManager.shared.mainContext)
-        let postMedia: [StoryPoster.MediaItem] = media.compactMap { (item, error) in
-            guard let item = item else { return nil }
-            return StoryPoster.MediaItem(url: item.output, size: item.size, archive: item.archive, original: item.unmodified)
+        let postMedia: [StoryPoster.MediaItem] = media.compactMap { result in
+            switch result {
+            case .success(let item):
+                guard let item = item else { return nil }
+                return StoryPoster.MediaItem(url: item.output, size: item.size, archive: item.archive, original: item.unmodified)
+            case .failure:
+                return nil
+            }
         }
 
         poster?.post(mediaItems: postMedia, title: "Post from iOS", to: blog, post: self.post) { [weak self] result in
