@@ -4,6 +4,7 @@ import Foundation
 class SuggestionService {
 
     private var blogsCurrentlyBeingRequested = [Blog]()
+    private var requests = [Blog: Date]()
 
     static let shared = SuggestionService()
 
@@ -15,7 +16,15 @@ class SuggestionService {
     */
     func suggestions(for blog: Blog, completion: @escaping ([UserSuggestion]?) -> Void) {
 
-        if let suggestions = retrievePersistedSuggestions(for: blog), suggestions.isEmpty == false {
+        let throttleDuration: TimeInterval = 60 // seconds
+        let isBelowThrottleThreshold: Bool
+        if let requestDate = requests[blog] {
+            isBelowThrottleThreshold = Date().timeIntervalSince(requestDate) < throttleDuration
+        } else {
+            isBelowThrottleThreshold = false
+        }
+
+        if isBelowThrottleThreshold, let suggestions = retrievePersistedSuggestions(for: blog), suggestions.isEmpty == false {
             completion(suggestions)
         } else if ReachabilityUtils.isInternetReachable() {
             fetchAndPersistSuggestions(for: blog, completion: completion)
@@ -63,6 +72,8 @@ class SuggestionService {
 
             // Save the changes
             try? blog.managedObjectContext?.save()
+
+            self.requests[blog] = Date()
 
             completion(suggestions)
 
