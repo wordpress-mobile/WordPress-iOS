@@ -39,6 +39,7 @@ class KanvasService {
         settings.animateEditorControls = false
         settings.fontSelectorUsesFont = true
         settings.features.muteButton = true
+        settings.mediaImportSizeLimit = nil // No size limit
 
         return settings
     }
