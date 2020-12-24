@@ -1,7 +1,8 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
-    SuggestionTypeMention
+    SuggestionTypeMention,
+    SuggestionTypeXpost
 };
 
 @protocol SuggestionsTableViewDelegate;
