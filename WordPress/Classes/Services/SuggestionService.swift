@@ -41,7 +41,7 @@ class SuggestionService {
     */
     private func fetchAndPersistSuggestions(for blog: Blog, completion: @escaping ([UserSuggestion]?) -> Void) {
 
-        guard let blogId = blog.dotComID, let hostname = blog.hostname else { return }
+        guard let blogId = blog.dotComID else { return }
 
         // if there is already a request in place for this blog, just wait
         guard !blogsCurrentlyBeingRequested.contains(blogId) else { return }
