@@ -9,6 +9,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case swiftCoreData
     case homepageSettings
     case gutenbergMentions
+    case gutenbergXposts
     case whatIsNew
     case newNavBarAppearance
     case unifiedPrologueCarousel
@@ -38,6 +39,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .homepageSettings:
             return true
         case .gutenbergMentions:
+            return true
+        case .gutenbergXposts:
             return true
         case .whatIsNew:
             return true
@@ -97,6 +100,8 @@ extension FeatureFlag {
             return "Homepage Settings"
         case .gutenbergMentions:
             return "Mentions in Gutenberg"
+        case .gutenbergXposts:
+            return "Xposts in Gutenberg"
         case .whatIsNew:
             return "What's New / Feature Announcement"
         case .newNavBarAppearance:
