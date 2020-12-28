@@ -3,8 +3,8 @@ import Foundation
 /// A service to fetch and persist a list of sites that can be xpost to from a post.
 class SiteSuggestionService {
 
-    private var blogsCurrentlyBeingRequested = [Blog]()
-    private var requests = [Blog: Date]()
+    private var blogsCurrentlyBeingRequested = [NSNumber]()
+    private var requests = [NSNumber: Date]()
 
     static let shared = SiteSuggestionService()
 
@@ -18,7 +18,7 @@ class SiteSuggestionService {
 
         let throttleDuration: TimeInterval = 60 // seconds
         let isBelowThrottleThreshold: Bool
-        if let requestDate = requests[blog] {
+        if let id = blog.dotComID, let requestDate = requests[id] {
             isBelowThrottleThreshold = Date().timeIntervalSince(requestDate) < throttleDuration
         } else {
             isBelowThrottleThreshold = false
@@ -42,16 +42,16 @@ class SiteSuggestionService {
     */
     private func fetchAndPersistSuggestions(for blog: Blog, completion: @escaping ([SiteSuggestion]?) -> Void) {
 
-        // if there is already a request in place for this blog, just wait
-        guard !blogsCurrentlyBeingRequested.contains(blog) else { return }
+        guard let blogId = blog.dotComID, let hostname = blog.hostname else { return }
 
-        guard let hostname = blog.hostname else { return }
+        // if there is already a request in place for this blog, just wait
+        guard !blogsCurrentlyBeingRequested.contains(blogId) else { return }
 
         let suggestPath = "/wpcom/v2/sites/\(hostname)/xposts"
         let params = ["decode_html": true] as [String: AnyObject]
 
         // add this blog to currently being requested list
-        blogsCurrentlyBeingRequested.append(blog)
+        blogsCurrentlyBeingRequested.append(blogId)
 
         defaultAccount()?.wordPressComRestApi.GET(suggestPath, parameters: params, success: { [weak self] responseObject, httpResponse in
             guard let `self` = self else { return }
@@ -73,19 +73,19 @@ class SiteSuggestionService {
             // Save the changes
             try? ContextManager.shared.mainContext.save()
 
-            self.requests[blog] = Date()
+            self.requests[blogId] = Date()
 
             completion(suggestions)
 
             // remove blog from the currently being requested list
-            self.blogsCurrentlyBeingRequested.removeAll { $0 == blog }
+            self.blogsCurrentlyBeingRequested.removeAll { $0 == blogId }
         }, failure: { [weak self] error, _ in
             guard let `self` = self else { return }
 
             completion([])
 
             // remove blog from the currently being requested list
-            self.blogsCurrentlyBeingRequested.removeAll { $0 == blog}
+            self.blogsCurrentlyBeingRequested.removeAll { $0 == blogId}
 
             DDLogVerbose("[Rest API] ! \(error.localizedDescription)")
         })
