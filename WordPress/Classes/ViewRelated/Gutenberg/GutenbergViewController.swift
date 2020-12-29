@@ -345,6 +345,8 @@ class GutenbergViewController: UIViewController, PostEditor {
         }, failure: { (error) in
             DDLogError("Error syncing JETPACK: \(String(describing: error))")
         })
+
+        SiteSuggestionService.shared.prefetchSuggestions(for: self.post.blog)
     }
 
     override func viewWillAppear(_ animated: Bool) {
