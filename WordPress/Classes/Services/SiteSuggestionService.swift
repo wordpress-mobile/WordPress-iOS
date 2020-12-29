@@ -35,6 +35,17 @@ class SiteSuggestionService {
     }
 
     /**
+     If no suggestions already in Core Data, fetch them from the network and store them in Core Data.
+     @param blog The blog/site to prefetch suggestions for
+     */
+    func prefetchSuggestions(for blog: Blog) {
+        let persistedSuggestions = retrievePersistedSuggestions(for: blog)
+        if persistedSuggestions == nil || persistedSuggestions?.isEmpty == true {
+            fetchAndPersistSuggestions(for: blog, completion: { _ in})
+        }
+    }
+
+    /**
     Performs a REST API request for the given blog.
     Persists response objects to Core Data.
 
