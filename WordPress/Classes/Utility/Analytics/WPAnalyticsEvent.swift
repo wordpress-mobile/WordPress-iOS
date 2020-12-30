@@ -40,6 +40,7 @@ import Foundation
     // Gutenberg Features
     case gutenbergUnsupportedBlockWebViewShown
     case gutenbergUnsupportedBlockWebViewClosed
+    case gutenbergSuggestionSessionFinished
 
     // Notifications Permissions
     case pushNotificationsPrimerSeen
@@ -172,6 +173,8 @@ import Foundation
             return "gutenberg_unsupported_block_webview_shown"
         case .gutenbergUnsupportedBlockWebViewClosed:
             return "gutenberg_unsupported_block_webview_closed"
+        case .gutenbergSuggestionSessionFinished:
+            return "suggestion_session_finished"
         // Notifications permissions
         case .pushNotificationsPrimerSeen:
             return "notifications_primer_seen"
