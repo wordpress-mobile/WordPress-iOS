@@ -325,15 +325,15 @@ extension ActivityListViewController: ActivityPresenter {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
+        let restoreVC = JetpackRestoreViewController(site: site, activity: activity, restoreAction: .restore)
         alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
-            let restoreVC = JetpackRestoreViewController(activity: activity, restoreAction: .restore)
             self.present(UINavigationController(rootViewController: restoreVC), animated: true)
         })
 
         let downloadBackupTitle = NSLocalizedString("Download Backup", comment: "Title displayed for download backup action.")
+        let downloadBackupVC = JetpackRestoreViewController(site: site, activity: activity, restoreAction: .downloadBackup)
         alertController.addDefaultActionWithTitle(downloadBackupTitle, handler: { _ in
-            let restoreVC = JetpackRestoreViewController(activity: activity, restoreAction: .downloadBackup)
-            self.present(UINavigationController(rootViewController: restoreVC), animated: true)
+            self.present(UINavigationController(rootViewController: downloadBackupVC), animated: true)
         })
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Title for cancel action. Dismisses the action sheet.")

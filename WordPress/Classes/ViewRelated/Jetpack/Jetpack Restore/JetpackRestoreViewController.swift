@@ -14,6 +14,7 @@ class JetpackRestoreViewController: UITableViewController {
 
     // MARK: - Private Properties
 
+    private let site: JetpackSiteRef
     private let activity: FormattableActivity
     private let restoreAction: JetpackRestoreAction
     private lazy var handler: ImmuTableViewHandler = {
@@ -22,7 +23,8 @@ class JetpackRestoreViewController: UITableViewController {
 
     // MARK: - Initializer
 
-    init(activity: FormattableActivity, restoreAction: JetpackRestoreAction) {
+    init(site: JetpackSiteRef, activity: FormattableActivity, restoreAction: JetpackRestoreAction) {
+        self.site = site
         self.activity = activity
         self.restoreAction = restoreAction
         super.init(style: .grouped)
@@ -70,7 +72,7 @@ class JetpackRestoreViewController: UITableViewController {
         ImmuTable.registerRows([SwitchRow.self], tableView: tableView)
 
         let headerView = JetpackRestoreHeaderView.loadFromNib()
-        headerView.configure(activity: activity, restoreAction: restoreAction)
+        headerView.configure(site: site, formattableActivity: activity, restoreAction: restoreAction)
         self.tableView.tableHeaderView = headerView
     }
 
