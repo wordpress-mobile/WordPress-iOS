@@ -2,26 +2,28 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared
 
-class JetpackRestoreViewController: UITableViewController {
+/// Represents the ways in which a user can restore a site
+enum JetpackRestoreAction {
+    /// restore: Restore a site to a particular point in time
+    case restore
+    /// downloadBackup: Download a backup and restore manually
+    case downloadBackup
+}
 
-    /// Represents the ways in which a user can restore a site
-    enum RestoreAction {
-        /// restore: Restore a site to a particular point in time
-        case restore
-        /// downloadBackup: Download a backup and restore manually
-        case downloadBackup
-    }
+class JetpackRestoreViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    private var restoreAction: RestoreAction
+    private let activity: FormattableActivity
+    private let restoreAction: JetpackRestoreAction
     private lazy var handler: ImmuTableViewHandler = {
        return ImmuTableViewHandler(takeOver: self)
     }()
 
     // MARK: - Initializer
 
-    init(restoreAction: RestoreAction) {
+    init(activity: FormattableActivity, restoreAction: JetpackRestoreAction) {
+        self.activity = activity
         self.restoreAction = restoreAction
         super.init(style: .grouped)
     }
@@ -34,17 +36,48 @@ class JetpackRestoreViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureTitle()
+        configureNavigation()
+        configureTableView()
+        reloadViewModel()
+    }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.layoutHeaderView()
+    }
+
+    // MARK: - Configure
+
+    private func configureTitle() {
         switch restoreAction {
         case .restore:
             title = NSLocalizedString("Restore", comment: "Title for the Jetpack Restore Site Screen")
         case .downloadBackup:
             title = NSLocalizedString("Download Backup", comment: "Title for the Jetpack Download Backup Site Screen")
         }
+    }
+
+    private func configureNavigation() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
+                                                           target: self,
+                                                           action: #selector(cancelTapped))
+    }
+
+    private func configureTableView() {
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         ImmuTable.registerRows([SwitchRow.self], tableView: tableView)
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
-        reloadViewModel()
+
+        let headerView = JetpackRestoreHeaderView.loadFromNib()
+        headerView.configure(activity: activity, restoreAction: restoreAction)
+        self.tableView.tableHeaderView = headerView
+    }
+
+    // MARK: - Private Helpers
+
+    @objc private func cancelTapped() {
+        self.dismiss(animated: true)
     }
 
     // MARK: - Model

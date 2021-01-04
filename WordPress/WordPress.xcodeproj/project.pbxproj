@@ -2284,6 +2284,8 @@
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
 		FA4F65A72594337300EAA9F5 /* JetpackRestoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F65A62594337300EAA9F5 /* JetpackRestoreViewController.swift */; };
+		FA4F660525946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F660425946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift */; };
+		FA4F661425946B8500EAA9F5 /* JetpackRestoreHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4F661325946B8500EAA9F5 /* JetpackRestoreHeaderView.xib */; };
 		FA5C740F1C599BA7000B528C /* TableViewHeaderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5C740E1C599BA7000B528C /* TableViewHeaderDetailView.swift */; };
 		FA77E02A1BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */; };
 		FAB4F32724EDE12A00F259BA /* FollowCommentsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */; };
@@ -5017,6 +5019,8 @@
 		FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementService.swift; sourceTree = "<group>"; };
 		FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementServiceTests.swift; sourceTree = "<group>"; };
 		FA4F65A62594337300EAA9F5 /* JetpackRestoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreViewController.swift; sourceTree = "<group>"; };
+		FA4F660425946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreHeaderView.swift; sourceTree = "<group>"; };
+		FA4F661325946B8500EAA9F5 /* JetpackRestoreHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackRestoreHeaderView.xib; sourceTree = "<group>"; };
 		FA5C740E1C599BA7000B528C /* TableViewHeaderDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewHeaderDetailView.swift; sourceTree = "<group>"; };
 		FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserHeaderView.swift; sourceTree = "<group>"; };
 		FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCommentsServiceTests.swift; sourceTree = "<group>"; };
@@ -10921,6 +10925,8 @@
 			isa = PBXGroup;
 			children = (
 				FA4F65A62594337300EAA9F5 /* JetpackRestoreViewController.swift */,
+				FA4F660425946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift */,
+				FA4F661325946B8500EAA9F5 /* JetpackRestoreHeaderView.xib */,
 			);
 			path = "Jetpack Restore";
 			sourceTree = "<group>";
@@ -11598,6 +11604,7 @@
 				3223393E24FEC2A700BDD4BF /* ReaderDetailFeaturedImageView.xib in Resources */,
 				E18165FD14E4428B006CE885 /* loader.html in Resources */,
 				17E363E622C4280A000E0C79 /* pride_icon_40pt.png in Resources */,
+				FA4F661425946B8500EAA9F5 /* JetpackRestoreHeaderView.xib in Resources */,
 				17E3634A22C417F0000E0C79 /* jetpack_green_icon_60pt@2x.png in Resources */,
 				E1DD4CCD1CAE41C800C3863E /* PagedViewController.xib in Resources */,
 				17E3634722C417F0000E0C79 /* jetpack_green_icon_76pt.png in Resources */,
@@ -13703,6 +13710,7 @@
 				FF286C761DE70A4500383A62 /* NSURL+Exporters.swift in Sources */,
 				988AC37522F10DD900BC1433 /* FileDownloadsStatsRecordValue+CoreDataProperties.swift in Sources */,
 				E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */,
+				FA4F660525946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift in Sources */,
 				436D55DF210F866900CEAA33 /* StoryboardLoadable.swift in Sources */,
 				D8212CC320AA7F57008E8AE8 /* ReaderBlockSiteAction.swift in Sources */,
 				5D44EB381986D8BA008B7175 /* ReaderSiteService.m in Sources */,
