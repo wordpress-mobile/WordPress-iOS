@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20C69" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="19H2" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="autosaveContent" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="autosaveExcerpt" optional="YES" attributeType="String" syncable="YES"/>
@@ -294,7 +294,6 @@
         <attribute name="type" optional="YES" attributeType="String"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="comments" inverseEntity="Blog" syncable="YES"/>
         <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BasePost" inverseName="comments" inverseEntity="BasePost" syncable="YES"/>
-        <relationship name="sites" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ReaderSiteTopic" inverseName="cards" inverseEntity="ReaderSiteTopic" syncable="YES"/>
         <fetchIndex name="byStatusIndex">
             <fetchIndexElement property="status" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -958,7 +957,7 @@
         <element name="ReaderSearchTopic" positionX="-1657.08984375" positionY="930.36328125" width="128" height="45"/>
         <element name="ReaderSiteInfoSubscriptionEmail" positionX="-1832.21875" positionY="567.79296875" width="128" height="105"/>
         <element name="ReaderSiteInfoSubscriptionPost" positionX="-1845.87109375" positionY="1035.71484375" width="128" height="75"/>
-        <element name="ReaderSiteTopic" positionX="-1831.04296875" positionY="737.4921875" width="128" height="269"/>
+        <element name="ReaderSiteTopic" positionX="-1831.04296875" positionY="737.4921875" width="128" height="283"/>
         <element name="ReaderTagTopic" positionX="-1351.87890625" positionY="574.1953125" width="128" height="103"/>
         <element name="ReaderTeamTopic" positionX="-1506.9375" positionY="576.81640625" width="128" height="73"/>
         <element name="ReferrerStatsRecordValue" positionX="-273.765625" positionY="1398.2265625" width="128" height="133"/>
