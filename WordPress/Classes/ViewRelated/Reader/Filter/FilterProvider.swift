@@ -188,6 +188,9 @@ extension ReaderSiteTopic {
     ///
     private static func addUnseenPostCount(_ topic: ReaderSiteTopic, with cell: UITableViewCell) {
 
+        // Always reset first.
+        cell.accessoryView = nil
+
         guard topic.unseenCount > 0 else {
             return
         }
