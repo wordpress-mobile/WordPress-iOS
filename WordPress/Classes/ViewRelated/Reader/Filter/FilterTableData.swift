@@ -43,6 +43,10 @@ class SiteTableViewCell: UITableViewCell, GhostableView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func prepareForReuse() {
+        accessoryView = nil
+    }
+
     func ghostAnimationWillStart() {
         contentView.subviews.forEach { view in
             view.isGhostableDisabled = true
