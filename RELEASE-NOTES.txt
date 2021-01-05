@@ -8,6 +8,7 @@
 * [*] Invite People: add link to user roles definition web page. [#15530]
 * [***] Block Editor: Cross-post suggestions are now available by typing the + character (or long-pressing the toolbar button labelled with an @-symbol) in a post on a P2 site [#15139]
 * [**] Reader site filter: unseen post count is displayed for each site. [#15581]
+* [**] Reader: Following now only shows non-P2 sites. [#15585]
 
 16.4
 -----
