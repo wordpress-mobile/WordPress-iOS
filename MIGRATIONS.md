@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 110
+
+@emilylaguna 2021-01-05
+
+- Removed an invalid constraint to `ReaderSiteTopic.sites` from the `Comment` entity
+
 ## WordPress 109
 
 @mindgraffiti 2020-12-15
