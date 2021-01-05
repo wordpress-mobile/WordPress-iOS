@@ -14,7 +14,6 @@ open class ActivityTableViewCell: WPTableViewCell {
         assert(contentLabel != nil)
         assert(summaryLabel != nil)
         assert(actionButton != nil)
-        actionButton.setImage(actionGridicon, for: .normal)
     }
 
     // MARK: - Public Methods
@@ -42,6 +41,11 @@ open class ActivityTableViewCell: WPTableViewCell {
         contentView.backgroundColor = Style.backgroundColor()
         actionButtonContainer.isHidden  = !activity.isRewindable
 
+        actionButton.setImage(actionGridicon, for: .normal)
+        guard FeatureFlag.jetpackBackupAndRestore.enabled else {
+            return
+        }
+        actionButton.tintColor = .listIcon
     }
 
     @IBAction func didTapActionButton(_ sender: UIButton) {
