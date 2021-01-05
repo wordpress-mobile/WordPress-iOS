@@ -43,7 +43,7 @@ extension Double {
                 static let units: [Unit] = {
                     var units: [Unit] = []
 
-                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@k", comment: "Label displaying value in thousands. Ex: 66.6k."), accessibilityLabelFormat: NSLocalizedString("%@ thousand", comment: "Accessibility label for value in thousands. Ex: 66.6 thousand.")))
+                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@K", comment: "Label displaying value in thousands. Ex: 66.6K."), accessibilityLabelFormat: NSLocalizedString("%@ thousand", comment: "Accessibility label for value in thousands. Ex: 66.6 thousand.")))
 
                     units.append(Unit(abbreviationFormat: NSLocalizedString("%@M", comment: "Label displaying value in millions. Ex: 66.6M."), accessibilityLabelFormat: NSLocalizedString("%@ million", comment: "Accessibility label for value in millions. Ex: 66.6 million.")))
 
