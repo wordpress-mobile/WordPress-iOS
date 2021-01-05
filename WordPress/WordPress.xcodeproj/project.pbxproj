@@ -380,8 +380,6 @@
 		326E281C250AC4A50029EBF0 /* ImageDimensionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E281A250AC4A50029EBF0 /* ImageDimensionParser.swift */; };
 		3278D49A2524F438008080AA /* ReaderDetailCommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3278D4992524F438008080AA /* ReaderDetailCommentsView.swift */; };
 		3278D4A92524F46F008080AA /* ReaderDetailCommentsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3278D4A82524F46F008080AA /* ReaderDetailCommentsView.xib */; };
-		327B48C3247CC7E000C3DE61 /* ReaderRelativeTimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 327B48C2247CC7E000C3DE61 /* ReaderRelativeTimeFormatter.swift */; };
-		327B48C5247CC9F300C3DE61 /* ReaderRelativeTimeFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 327B48C4247CC9F300C3DE61 /* ReaderRelativeTimeFormatterTests.swift */; };
 		329F8E5624DDAC61002A5311 /* DynamicHeightCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329F8E5524DDAC61002A5311 /* DynamicHeightCollectionView.swift */; };
 		329F8E5824DDBD11002A5311 /* ReaderTopicCollectionViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329F8E5724DDBD11002A5311 /* ReaderTopicCollectionViewCoordinator.swift */; };
 		32A218D8251109DB00D1AE6C /* ReaderReportPostAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A218D7251109DB00D1AE6C /* ReaderReportPostAction.swift */; };
@@ -2857,8 +2855,6 @@
 		327282732538BC0900C8076D /* WordPress 101.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 101.xcdatamodel"; sourceTree = "<group>"; };
 		3278D4992524F438008080AA /* ReaderDetailCommentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDetailCommentsView.swift; sourceTree = "<group>"; };
 		3278D4A82524F46F008080AA /* ReaderDetailCommentsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderDetailCommentsView.xib; sourceTree = "<group>"; };
-		327B48C2247CC7E000C3DE61 /* ReaderRelativeTimeFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderRelativeTimeFormatter.swift; sourceTree = "<group>"; };
-		327B48C4247CC9F300C3DE61 /* ReaderRelativeTimeFormatterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderRelativeTimeFormatterTests.swift; sourceTree = "<group>"; };
 		328CEC5D23A532BA00A6899E /* FullScreenCommentReplyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCommentReplyViewController.swift; sourceTree = "<group>"; };
 		329F8E5524DDAC61002A5311 /* DynamicHeightCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightCollectionView.swift; sourceTree = "<group>"; };
 		329F8E5724DDBD11002A5311 /* ReaderTopicCollectionViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTopicCollectionViewCoordinator.swift; sourceTree = "<group>"; };
@@ -7007,7 +7003,6 @@
 			isa = PBXGroup;
 			children = (
 				329F8E4C24DD74F0002A5311 /* Tags View */,
-				327B48C2247CC7E000C3DE61 /* ReaderRelativeTimeFormatter.swift */,
 				E65219FA1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift */,
 				E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */,
 				5D2B30B81B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift */,
@@ -10694,7 +10689,6 @@
 			children = (
 				8B25F8D924B7683A009DD4C9 /* ReaderCSSTests.swift */,
 				3236F79F24B61B780088E8F3 /* Select Interests */,
-				327B48C4247CC9F300C3DE61 /* ReaderRelativeTimeFormatterTests.swift */,
 				8BDA5A6C247C2F8400AB124C /* ReaderDetailViewControllerTests.swift */,
 				8BDA5A73247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift */,
 				D809E685203F0215001AA0DE /* ReaderPostCardCellTests.swift */,
@@ -13347,7 +13341,6 @@
 				1703D04C20ECD93800D292E9 /* Routes+Post.swift in Sources */,
 				E11C4B702010930B00A6619C /* Blog+Jetpack.swift in Sources */,
 				F1DB8D292288C14400906E2F /* Uploader.swift in Sources */,
-				327B48C3247CC7E000C3DE61 /* ReaderRelativeTimeFormatter.swift in Sources */,
 				821738091FE04A9E00BEC94C /* DateAndTimeFormatSettingsViewController.swift in Sources */,
 				5D6C4B081B603E03005E3C43 /* WPContentSyncHelper.swift in Sources */,
 				73C8F06021BEED9100DDDF7E /* SiteAssemblyStep.swift in Sources */,
@@ -14315,7 +14308,6 @@
 				9363113F19FA996700B0C739 /* AccountServiceTests.swift in Sources */,
 				D88A649C208D7D81008AE9BC /* StockPhotosDataSourceTests.swift in Sources */,
 				3236F7A124B61B950088E8F3 /* ReaderInterestsDataSourceTests.swift in Sources */,
-				327B48C5247CC9F300C3DE61 /* ReaderRelativeTimeFormatterTests.swift in Sources */,
 				40E7FEC52211DF790032834E /* StatsRecordTests.swift in Sources */,
 				8BDA5A74247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift in Sources */,
 				74585B991F0D58F300E7E667 /* DomainsServiceTests.swift in Sources */,
