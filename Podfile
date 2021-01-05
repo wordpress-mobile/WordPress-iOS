@@ -7,7 +7,7 @@ end
 inhibit_all_warnings!
 use_frameworks!
 
-app_ios_deployment_target = Gem::Version.new('11.0')
+app_ios_deployment_target = Gem::Version.new('13.0')
 
 platform :ios, app_ios_deployment_target.version
 workspace 'WordPress.xcworkspace'
