@@ -7,6 +7,7 @@
 * [**] Page List: Adds duplicate page functionality [#15515]
 * [*] Invite People: add link to user roles definition web page. [#15530]
 * [***] Block Editor: Cross-post suggestions are now available by typing the + character (or long-pressing the toolbar button labelled with an @-symbol) in a post on a P2 site [#15139]
+* [**] Reader site filter: unseen post count is displayed for each site. [#15581]
 
 16.4
 -----
