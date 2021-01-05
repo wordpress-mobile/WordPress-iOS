@@ -309,10 +309,7 @@ extension ActivityListViewController: NoResultsViewControllerDelegate {
 extension ActivityListViewController: ActivityPresenter {
 
     func presentDetailsFor(activity: FormattableActivity) {
-        let activityStoryboard = UIStoryboard(name: "Activity", bundle: nil)
-        guard let detailVC = activityStoryboard.instantiateViewController(withIdentifier: "ActivityDetailViewController") as? ActivityDetailViewController else {
-            return
-        }
+        let detailVC = ActivityDetailViewController.loadFromStoryboard()
 
         detailVC.site = site
         detailVC.formattableActivity = activity

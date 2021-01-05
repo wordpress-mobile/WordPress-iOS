@@ -2,7 +2,13 @@ import UIKit
 import Gridicons
 import WordPressUI
 
-class ActivityDetailViewController: UIViewController {
+class ActivityDetailViewController: UIViewController, StoryboardLoadable {
+
+    // MARK: - StoryboardLoadable Protocol
+
+    static var defaultStoryboardName = defaultControllerID
+
+    // MARK: - Properties
 
     var formattableActivity: FormattableActivity? {
         didSet {
