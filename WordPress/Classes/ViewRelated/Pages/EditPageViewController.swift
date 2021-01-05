@@ -8,20 +8,23 @@ class EditPageViewController: UIViewController {
     fileprivate var hasShownEditor = false
     fileprivate var appliedTemplate: String?
 
-    convenience init(page: Page) {
-        self.init(page: page, blog: page.blog, postTitle: nil, content: nil, appliedTemplate: nil)
+    private let completion: (() -> Void)?
+
+    convenience init(page: Page, completion: (() -> Void)? = nil) {
+        self.init(page: page, blog: page.blog, postTitle: nil, content: nil, appliedTemplate: nil, completion: completion)
     }
 
-    convenience init(blog: Blog, postTitle: String?, content: String?, appliedTemplate: String?) {
-        self.init(page: nil, blog: blog, postTitle: postTitle, content: content, appliedTemplate: appliedTemplate)
+    convenience init(blog: Blog, postTitle: String?, content: String?, appliedTemplate: String?, completion: (() -> Void)? = nil) {
+        self.init(page: nil, blog: blog, postTitle: postTitle, content: content, appliedTemplate: appliedTemplate, completion: completion)
     }
 
-    fileprivate init(page: Page?, blog: Blog, postTitle: String?, content: String?, appliedTemplate: String?) {
+    fileprivate init(page: Page?, blog: Blog, postTitle: String?, content: String?, appliedTemplate: String?, completion: (() -> Void)?) {
         self.page = page
         self.blog = blog
         self.postTitle = postTitle
         self.content = content
         self.appliedTemplate = appliedTemplate
+        self.completion = completion
 
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .overFullScreen
@@ -79,6 +82,7 @@ class EditPageViewController: UIViewController {
             self?.dismiss(animated: true) {
                 // Dismiss self
                 self?.dismiss(animated: false)
+                self?.completion?()
             }
         }
 

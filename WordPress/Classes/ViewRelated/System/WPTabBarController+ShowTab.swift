@@ -1,27 +1,23 @@
 extension WPTabBarController {
 
-    @objc func showPageEditor(forBlog: Blog? = nil) {
-        showPageEditor(blog: forBlog)
-    }
-
     @objc func showStoryEditor(forBlog: Blog? = nil) {
         showStoryEditor(blog: forBlog)
     }
 
     /// Show the page tab
     /// - Parameter blog: Blog to a add a page to. Uses the current or last blog if not provided
-    func showPageEditor(blog inBlog: Blog? = nil, title: String? = nil, content: String? = nil, source: String = "create_button") {
+    func showPageEditor(blog inBlog: Blog? = nil, title: String? = nil, content: String? = nil, source: String = "create_button", completion: (() -> Void)? = nil) {
 
         // If we are already showing a view controller, dismiss and show the editor afterward
         guard presentedViewController == nil else {
             dismiss(animated: true) { [weak self] in
-                self?.showPageEditor(blog: inBlog, title: title, content: content, source: source)
+                self?.showPageEditor(blog: inBlog, title: title, content: content, source: source, completion: completion)
             }
             return
         }
         guard let blog = inBlog ?? self.currentOrLastBlog() else { return }
         guard content == nil else {
-            showEditor(blog: blog, title: title, content: content, templateKey: nil)
+            showEditor(blog: blog, title: title, content: content, templateKey: nil, completion: completion)
             return
         }
 
@@ -29,12 +25,12 @@ extension WPTabBarController {
         WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage, properties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "page"])
 
         PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] (selectedLayout) in
-            self?.showEditor(blog: blog, title: selectedLayout?.title, content: selectedLayout?.content, templateKey: selectedLayout?.slug)
+            self?.showEditor(blog: blog, title: selectedLayout?.title, content: selectedLayout?.content, templateKey: selectedLayout?.slug, completion: completion)
         }
     }
 
-    private func showEditor(blog: Blog, title: String?, content: String?, templateKey: String?) {
-        let editorViewController = EditPageViewController(blog: blog, postTitle: title, content: content, appliedTemplate: templateKey)
+    private func showEditor(blog: Blog, title: String?, content: String?, templateKey: String?, completion: (() -> Void)?) {
+        let editorViewController = EditPageViewController(blog: blog, postTitle: title, content: content, appliedTemplate: templateKey, completion: completion)
         present(editorViewController, animated: false)
     }
 

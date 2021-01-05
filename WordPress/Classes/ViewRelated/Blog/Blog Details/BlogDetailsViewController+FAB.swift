@@ -8,12 +8,20 @@ extension BlogDetailsViewController {
         let newPage = { [weak self] in
             let controller = self?.tabBarController as? WPTabBarController
             let blog = controller?.currentOrLastBlog()
-            controller?.showPageEditor(forBlog: blog)
+            controller?.showPageEditor(blog: blog, completion: {
+                if QuickStartTourGuide.shared.isCurrentElement(.newPage) {
+                    QuickStartTourGuide.shared.visited(.newPage)
+                }
+                self?.startAlertTimer()
+            })
         }
 
         let newPost = { [weak self] in
             let controller = self?.tabBarController as? WPTabBarController
             controller?.showPostTab(completion: {
+                if QuickStartTourGuide.shared.isCurrentElement(.newpost) {
+                    QuickStartTourGuide.shared.visited(.newpost)
+                }
                 self?.startAlertTimer()
             })
         }
