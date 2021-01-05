@@ -636,10 +636,12 @@ static CGFloat const DefaultCellHeight = 44.0;
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     [self.tableView endUpdates];
-    
-    if (self.indexPathSelectedAfterUpdates) {
+
+    // Prevent crashes in iOS 14 if the row is negative
+    // See http://git.io/JIKIB
+    if (self.indexPathSelectedAfterUpdates && self.indexPathSelectedAfterUpdates.row > 0) {
         [self.tableView selectRowAtIndexPath:self.indexPathSelectedAfterUpdates animated:NO scrollPosition:UITableViewScrollPositionNone];
-    } else if (self.indexPathSelectedBeforeUpdates) {
+    } else if (self.indexPathSelectedBeforeUpdates && self.indexPathSelectedBeforeUpdates.row > 0) {
         [self.tableView selectRowAtIndexPath:self.indexPathSelectedBeforeUpdates animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
     
@@ -657,6 +659,12 @@ static CGFloat const DefaultCellHeight = 44.0;
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
+    // Prevent crashes in iOS 14 if the row is negative
+    // See http://git.io/JIKIB
+    if (indexPath.row < 0 || newIndexPath.row < 0) {
+        return;
+    }
+
     if (NSFetchedResultsChangeUpdate == type && newIndexPath && ![newIndexPath isEqual:indexPath]) {
         // Seriously, Apple?
         // http://developer.apple.com/library/ios/#releasenotes/iPhone/NSFetchedResultsChangeMoveReportedAsNSFetchedResultsChangeUpdate/_index.html

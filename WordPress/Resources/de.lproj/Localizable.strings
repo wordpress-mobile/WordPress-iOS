@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-26 18:44:26+0000 */
+/* Translation-Revision-Date: 2020-12-18 14:28:28+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -367,6 +367,12 @@
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "Aktivitätenlog";
 
+/* Label for the Activity Type filter button */
+"Activity Type" = "Aktivitätstyp";
+
+/* Label for the Activity Type filter button when there are more than 1 activity type selected */
+"Activity Type (%1$d)" = "Aktivitätstyp (%1$d)";
+
 /* Remove asset from media picker list */
 "Add" = "Hinzufügen";
 
@@ -412,8 +418,7 @@
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Profilfoto hinzufügen";
 
-/* Title of a feature to add a new topic to the topics subscribed by the user.
-   Title. Lets the user know that they can use this feature to subscribe to new topics. */
+/* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "Ein Thema hinzufügen";
 
 /* Hint for the reader CSS URL field */
@@ -729,9 +734,6 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Bist du sicher, dass du ein Update vornehmen möchtest?";
 
-/* A short message asking the user if they wish to unfollow the specified topic. The %@ is a placeholder for the name of the topic. */
-"Are you sure you wish to remove the topic '%@'?" = "Möchtest du das Thema '%@' wirklich entfernen?";
-
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Ab 1. August 2018 lässt Facebook das direkte Teilen von Beiträgen auf Facebook-Profilen nicht mehr zu. Die Verknüpfungen zu Facebook-Seiten bleiben unverändert.";
 
@@ -945,7 +947,7 @@
 "By signing up, you agree to our _Terms of Service_." = "Durch die Registrierung stimmst du unseren Geschäftsbedingungen zu.";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "CHOOSE A FILE";
+"CHOOSE A FILE" = "Datei auswählen";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "ANPASSEN";
@@ -1007,7 +1009,6 @@
    Option to cancel the email app selection when logging in with magic links
    Text displayed by the left navigation button title
    The title of a cancel button.
-   Title of a cancel button.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
@@ -1154,7 +1155,7 @@
 "Choose a design" = "Wähle ein Design";
 
 /* Select domain name. Title */
-"Choose a domain" = "Choose a domain";
+"Choose a domain" = "Domain auswählen";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Wähle ein Theme";
@@ -1162,8 +1163,14 @@
 /* Label for Publish time picker */
 "Choose a time" = "Uhrzeit auswählen";
 
+/* Title to choose date range in a calendar */
+"Choose date range" = "Zeitraum auswählen";
+
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Domain auswählen";
+
+/* No comment provided by engineer. */
+"Choose file" = "Datei auswählen";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Von meinem Gerät wählen";
@@ -1171,7 +1178,7 @@
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Wähle eine Homepage, die deine neuesten Beiträge anzeigt (klassischer Blog), oder eine feste\/statische Seite.";
 
-/* No comment provided by engineer. */
+/* Menu option used for adding media from other applications. */
 "Choose from device" = "Aus einem Gerät auswählen";
 
 /* No comment provided by engineer. */
@@ -1511,7 +1518,10 @@
 "Copy block" = "Block kopieren";
 
 /* No comment provided by engineer. */
-"Copy file URL" = "Copy file URL";
+"Copy file URL" = "Datei-URL kopieren";
+
+/* Button title displayed in popup indicating the user copied the local copy */
+"Copy the version from this app" = "Die Version von dieser App kopieren";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Könnte besser sein";
@@ -1540,6 +1550,9 @@
 /* Title of a prompt. */
 "Could not save post for later" = "Beitrag konnte nicht für später gespeichert werden";
 
+/* The app failed to subscribe to the comments for the post */
+"Could not subscribe to comments" = "Abonnement für Kommentare fehlgeschlagen";
+
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Konnte Abo nicht umstellen: blogURL-Attribut fehlt";
 
@@ -1548,6 +1561,9 @@
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Konnte Website-Abo für die Website an der angegeben Adresse nicht beenden.";
+
+/* The app failed to unsubscribe from the comments for the post */
+"Could not unsubscribe from comments" = "Abmeldung von den Kommentaren fehlgeschlagen";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Könntest du uns mitteilen, wie wir uns verbessern können?";
@@ -1734,6 +1750,9 @@
    Writing Date Format Settings Title */
 "Date Format" = "Datumsformat";
 
+/* Label of a button that displays a calendar */
+"Date Range" = "Zeitraum";
+
 /* Date and Time */
 "Date and Time" = "Datum und Uhrzeit";
 
@@ -1827,7 +1846,7 @@
 "Description" = "Beschreibung";
 
 /* Shortened version of the main title to be used in back navigation */
-"Design" = "Design";
+"Design" = "Gestalten";
 
 /* Title for the desktop web preview */
 "Desktop" = "Desktop";
@@ -2028,6 +2047,9 @@
    Title of the drafts header in search list. */
 "Drafts" = "Entwürfe";
 
+/* Label for post duplicate option. Tapping displays statistics for a post. */
+"Duplicate" = "Duplizieren";
+
 /* No comment provided by engineer. */
 "Duplicate block" = "Block duplizieren";
 
@@ -2070,13 +2092,16 @@
 "Edit Post" = "Artikel bearbeiten";
 
 /* No comment provided by engineer. */
-"Edit file" = "Edit file";
+"Edit file" = "Datei bearbeiten";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Bearbeite neue Beiträge und Seiten mit dem Block-Editor.";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Teilen-Buttons bearbeiten";
+
+/* Button title displayed in popup indicating that the user edits the post first */
+"Edit the post first" = "Den Beitrag zuerst bearbeiten";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "Mit dem Webeditor bearbeiten";
@@ -2159,6 +2184,9 @@
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Verschlüsselte Logs";
 
+/* Placeholder for the end date in calendar range selection */
+"End Date" = "Enddatum";
+
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Vollbild starten";
 
@@ -2197,12 +2225,12 @@
 /* Instruction text on the initial email address entry screen. */
 "Enter your email address to log in or create a WordPress.com account." = "Gib deine E-Mail-Adresse ein, um dich anzumelden, oder erstelle ein WordPress.com-Konto.";
 
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your existing site address" = "Gib deine bestehende Website-Adresse ein";
+
 /* Title of a button on the magic link screen.
    Title of a button. */
 "Enter your password instead." = "Gib stattdessen dein Passwort ein.";
-
-/* Button title. Takes the user to the login by site address flow. */
-"Enter your site address" = "Gib deine Website-Adresse ein";
 
 /* Generic error alert title
    Generic error.
@@ -2427,7 +2455,7 @@
 "File Downloads" = "Heruntergeladene Dateien";
 
 /* No comment provided by engineer. */
-"File block settings" = "File block settings";
+"File block settings" = "Blockeinstellungen der Datei";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Dateiname";
@@ -2440,6 +2468,9 @@
 
 /* Title of the filter button in the Reader */
 "Filter" = "Filtern";
+
+/* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
+"Filter by activity type" = "Nach Aktivitätstyp filtern";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Mehr erfahren";
@@ -2812,7 +2843,7 @@ translators: sample content for \"Team\" page template */
 "If you remove this viewer, he or she will not be able to visit this site." = "Wenn du diesen Leser entfernst, kann der Leser diese Website nicht besuchen.";
 
 /* Detailed instructions on Start Over settings page. This is the first paragraph. */
-"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.";
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "Wenn du eine Website haben möchtest, aber ohne deine aktuellen Beiträge und Seiten, kann unser Support-Team deine Beiträge, Seiten, Medien und Kommentare für dich löschen.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Wenn du dir nicht sicher bist, was gelöscht wird, oder du Hilfe benötigst: Keine Sorge, unser Support-Team ist da, um alle deine Fragen zu beantworten.";
@@ -3147,9 +3178,6 @@ translators: sample content for \"Services\" page template */
 /* The accessibility label for the list style button in the Post List. */
 "List style" = "Listen-Stil";
 
-/* Section title of the lists reader section. */
-"Lists" = "Listen";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "Laden";
 
@@ -3284,8 +3312,6 @@ translators: sample content for \"Services\" page template */
 "Main Navigation" = "Hauptnavigation";
 
 /* Button leading to a screen where users can manage their installed plugins
-   Button title. Tapping lets the user manage the sites they follow.
-   Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
    Title for the Reader Manage screen.
@@ -3652,6 +3678,12 @@ translators: sample content for \"Services\" page template */
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Kein Titel";
 
+/* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities available" = "Keine Aktivitäten verfügbar";
+
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities recorded in the selected date range." = "Keine Aktivitäten im ausgewählten Zeitraum aufgezeichnet.";
+
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "Noch keine Aktivität";
 
@@ -3720,6 +3752,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Noch keine Likes";
+
+/* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"No matching events found." = "Keine passenden Ereignisse gefunden.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso.
    Phrase to show when the user search for images but there are no result to show.
@@ -4157,7 +4192,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Wähle einen Benutzernamen aus";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can edit and customize it later." = "Pick your favorite homepage layout. You can edit and customize it later.";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Wähle ein Layout für deine Startseite aus, das dir gefällt. Du kannst es später bearbeiten und anpassen.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Planung";
@@ -4362,6 +4397,9 @@ translators: sample content for \"Services\" page template */
 
 /* Title of notification displayed when a post has been successfully scheduled. */
 "Post scheduled" = "Beitrag geplant";
+
+/* Title displayed in popup when user tries to copy a post with unsaved changes */
+"Post sync conflict" = "Synchronisierungskonflikt des Beitrags";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Beitragstitel. %s";
@@ -4608,8 +4646,7 @@ translators: sample content for \"Services\" page template */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Den ursprünglichen Beitrag lesen";
 
-/* Noun. Title of the Reader feature in the app.
-   The accessibility value of the Reader tab.
+/* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -4697,15 +4734,12 @@ translators: sample content for \"Services\" page template */
    Button label when removing a blog
    Label for remove location button
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Label of the table view cell's delete button, when unfollowing tags.
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
    Title for button that will confirm removing the next steps/quick start menus.
-   Title of a prompt asking the user to confirm they no longer wish to subscribe to a certain tag.
    User action to remove featured media.
-   User action to remove media.
-   Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
+   User action to remove media. */
 "Remove" = "Entfernen";
 
 /* Remove Person Alert Title
@@ -4959,11 +4993,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "Gespeicherter Beitrag";
 
-/* Section title for Saved Posts in Reader
-   Title for list of posts saved for later
-   Title of the reader's Saved Posts menu item. */
-"Saved Posts" = "Gespeicherte Beiträge";
-
 /* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
 "Saved!" = "Gespeichert!";
 
@@ -4980,6 +5009,9 @@ translators: sample content for \"Services\" page template */
    Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Speichern ...";
+
+/* Noun. Links to a blog's Jetpack Scan screen. */
+"Scan" = "Scan";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Planen";
@@ -5008,10 +5040,8 @@ translators: sample content for \"Services\" page template */
 "Scrollable block menu opened. Select a block." = "Scrollbares Block-Menü geöffnet. Wähle einen Block aus.";
 
 /* Placeholder text for the search bar
-   Search
    The menu item to select during a guided tour.
-   Title of the Reader's search feature
-   Title of the reader's Search menu item. */
+   Title of the Reader's search feature */
 "Search" = "Suche";
 
 /* Site creation. Seelect a domain, search field placeholder */
@@ -5072,10 +5102,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "Wähle %@ aus, um fortzufahren.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to continue." = "Wähle %@ aus, um fortzufahren.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page." = "Wähle %@ aus, um eine neue Seite zu erstellen.";
+"Select %@ to create a new page" = "Wähle %@ aus, um eine neue Seite zu erstellen";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Wähle %@ aus, um einen neuen Beitrag zu erstellen";
@@ -5405,7 +5432,6 @@ translators: sample content for \"Services\" page template */
 "Site Language" = "Website-Sprache";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
 "Site Pages" = "Website-Seiten";
 
@@ -5586,6 +5612,9 @@ translators: sample content for \"Services\" page template */
 /* Standard post format label */
 "Standard" = "Standard";
 
+/* Placeholder for the start date in calendar range selection */
+"Start Date" = "Anfangsdatum";
+
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
 "Start Over" = "Neu beginnen";
@@ -5644,9 +5673,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title of alert announcing new Create Button feature. */
 "Streamlined navigation" = "Vereinfachte Navigation";
-
-/* Section title of the default reader items. */
-"Streams" = "Streams";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Durchgestrichen";
@@ -5762,7 +5788,6 @@ translators: sample content for \"Services\" page template */
    Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
-   Section title of the tags reader section.
    Tags menu item in share extension.
    Title for the tag selector view */
 "Tags" = "Schlagwörter";
@@ -5830,18 +5855,11 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Tippe, um Beiträge für dieses Schlagwort anzuzeigen";
 
-/* Accessibility hint
-   Tapping lets you manage the sites you follow. */
-"Tapping lets you manage the sites you follow." = "Durch Tippen kannst du die Websites verwalten, denen du folgst.";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomie";
 
 /* translators: title for \"Team\" page template */
 "Team" = "Team";
-
-/* Section title of the teams reader section. */
-"Teams" = "Teams";
 
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Erzähle ein wenig über dich.";
@@ -5950,6 +5968,9 @@ translators: sample content for \"Services\" page template */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Die Anzahl der Beiträge, die pro Seite angezeigt werden.";
 
+/* Message displayed in popup when user tries to copy a post with conflicts */
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Der Beitrag, den du zu kopieren versuchst, hat zwei Versionen, die miteinander in Konflikt stehen, oder du hast kürzlich Änderungen vorgenommen, diese aber nicht gespeichert.\nBearbeite zuerst den Beitrag, um den Konflikt zu lösen, oder fahre mit dem Kopieren der Version aus dieser App fort.";
+
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Die Schnellstart-Tour leitet dich durch die Erstellung einer grundlegenden Website. Bist du sicher, dass du sie überspringen möchtest? ";
 
@@ -6023,12 +6044,6 @@ translators: sample content for \"Services\" page template */
 
 /* Reply Failure Message */
 "There has been an unexpected error while sending your reply" = "Beim Senden deiner Antwort ist ein unerwarteter Fehler aufgetreten.";
-
-/* The app failed to subscribe to the comments for the post */
-"There has been an unexpected error while subscribing to the comments" = "Beim Abonnieren der Kommentare ist ein unerwarteter Fehler aufgetreten";
-
-/* The app failed to unsubscribe from the comments for the post */
-"There has been an unexpected error while unsubscribing from the comments" = "Beim Abbestellen der Kommentare ist ein unerwarteter Fehler aufgetreten";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Ein unerwarteter Fehler ist aufgetreten beim Aktualisieren der Benachrichtigungseinstellungen";
@@ -6149,7 +6164,7 @@ translators: sample content for \"Services\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Dies ist Beispielinhalt, der dem Template enthalten ist, um die Funktionen zu veranschaulichen. Entferne oder ersetze ihn durch deine eigenen Worte und Medien.";
 
 /* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "This is where people will find you on the internet.";
+"This is where people will find you on the internet." = "Hier wirst du im Internet gefunden.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Dieses Medienelement wurde gelöscht.";
@@ -6180,7 +6195,7 @@ translators: sample content for \"Services\" page template */
 "This will delete all associated files and data." = "Dadurch werden alle zugehörigen Dateien und Daten gelöscht.";
 
 /* Detailed instructions on Start Over settings page. This is the second paragraph. */
-"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out.";
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "So bleiben deine Website und URL aktiv, aber du kannst mit dem Erstellen der Inhalte neu beginnen. Kontaktiere uns einfach, damit wir deine aktuellen Inhalte entfernen.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6347,7 +6362,11 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Try a starter layout" = "Probiere ein Layout für Neueinsteiger aus";
 
-/* Button that lets users try to reload the plugin directory after loading failure
+/* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"Try adjusting your date range or activity type filters" = "Versuche, deinen Zeitraum oder Aktivitätsfilter zu ändern";
+
+/* Button label for trying to retrieve the activities type again
+   Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
 "Try again" = "Erneut versuchen";
@@ -6462,7 +6481,7 @@ translators: sample content for \"Services\" page template */
 "Unable to upload 1 draft post, 1 file" = "1 Beitragsentwurf, 1 Datei konnten nicht hochgeladen werden.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 post" = "1 Beitrag konnten nicht hochgeladen werden";
+"Unable to upload 1 post" = "1 Beitrag konnte nicht hochgeladen werden";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
 "Unable to upload 1 post, %ld files" = "1 Beitrag, %Id Dateien konnten nicht hochgeladen werden";
@@ -7571,8 +7590,7 @@ translators: sample content for \"Services\" page template */
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab. */
 "wordpress, notifications, alerts, updates" = "wordpress, benachrichtigungen, warnungen, updates";
 
-/* This is a comma separated list of keywords used for spotlight indexing of the 'Reader' tab.
-   This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
+/* This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
 "wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics" = "wordpress, reader, artikel, beiträge, blogbeitrag, gefolgt, entdecken, likes, meine likes, tags, themen";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */

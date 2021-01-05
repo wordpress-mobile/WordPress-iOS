@@ -32,7 +32,7 @@ class FilterProvider: Observable, FilterTabBarItem {
         case .loading, .error:
             return []
         case .ready(let items):
-            return items
+            return FilterProvider.filterItems(items, siteType: siteType)
         }
     }
 
@@ -44,6 +44,7 @@ class FilterProvider: Observable, FilterTabBarItem {
     let emptyTitle: String
     let emptyActionTitle: String
     let section: ReaderManageScenePresenter.TabbedSection
+    let siteType: SiteOrganizationType?
 
     private let titleFunc: (State?) -> String
     private let provider: Provider
@@ -57,7 +58,8 @@ class FilterProvider: Observable, FilterTabBarItem {
          emptyTitle: String,
          emptyActionTitle: String,
          section: ReaderManageScenePresenter.TabbedSection,
-         provider: @escaping Provider) {
+         provider: @escaping Provider,
+         siteType: SiteOrganizationType? = nil) {
 
         titleFunc = title
         self.accessibilityIdentifier = accessibilityIdentifier
@@ -67,7 +69,9 @@ class FilterProvider: Observable, FilterTabBarItem {
         self.emptyActionTitle = emptyActionTitle
         self.section = section
         self.provider = provider
+        self.siteType = siteType
     }
+
     func refresh() {
         state = .loading
         provider() { [weak self] result in
@@ -82,21 +86,43 @@ class FilterProvider: Observable, FilterTabBarItem {
 }
 
 extension FilterProvider {
+
     func showAdd(on presenterViewController: UIViewController, sceneDelegate: ScenePresenterDelegate?) {
         let presenter = ReaderManageScenePresenter(selected: section, sceneDelegate: sceneDelegate)
         presenter.present(on: presenterViewController, animated: true, completion: nil)
     }
+
+    static func filterItems(_ items: [TableDataItem], siteType: SiteOrganizationType?) -> [TableDataItem] {
+        // If a site type is specified, filter items by it.
+        // Otherwise, just return all items.
+        guard let siteType = siteType else {
+            return items
+        }
+
+        var filteredItems = [TableDataItem]()
+
+        for item in items {
+            if let topic = item.topic as? ReaderSiteTopic,
+               topic.organizationType == siteType {
+                filteredItems.append(item)
+            }
+        }
+
+        return filteredItems
+    }
+
 }
 
 extension ReaderSiteTopic {
 
-    static func filterProvider() -> FilterProvider {
+    static func filterProvider(for siteType: SiteOrganizationType?) -> FilterProvider {
         let titleFunction: (FilterProvider.State?) -> String = { state in
             switch state {
             case .loading, .error, .none:
                 return NSLocalizedString("Sites", comment: "Sites Filter Tab Title")
             case .ready(let items):
-                return String(format: NSLocalizedString("Sites (%lu)", comment: "Sites Filter Tab Title with Count"), items.count)
+                let filteredItems = FilterProvider.filterItems(items, siteType: siteType)
+                return String(format: NSLocalizedString("Sites (%lu)", comment: "Sites Filter Tab Title with Count"), filteredItems.count)
             }
         }
 
@@ -110,13 +136,15 @@ extension ReaderSiteTopic {
                               emptyTitle: emptyTitle,
                               emptyActionTitle: emptyActionTitle,
                               section: .sites,
-                              provider: tableProvider)
+                              provider: tableProvider,
+                              siteType: siteType)
     }
 
     private static func tableProvider(completion: @escaping (Result<[TableDataItem], Error>) -> Void) {
-        fetchFollowedSites(completion: { result in
+        let completionBlock: (Result<[ReaderSiteTopic], Error>) -> Void = { result in
             let itemResult = result.map { sites in
-                sites.map { topic in
+                sites.filter {!$0.isExternal}
+                    .map { topic in
                     return TableDataItem(topic: topic, configure: { cell in
                         cell.textLabel?.text = topic.title
                         cell.detailTextLabel?.text = topic.siteURL
@@ -124,20 +152,34 @@ extension ReaderSiteTopic {
                 }
             }
             completion(itemResult)
-        })
+        }
+
+        fetchStoredFollowedSites(completion: completionBlock)
+        fetchFollowedSites(completion: completionBlock)
     }
 
+    /// Fetch sites from remote service
+    ///
     private static func fetchFollowedSites(completion: @escaping (Result<[ReaderSiteTopic], Error>) -> Void) {
         let siteService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         siteService.fetchFollowedSites(success: {
-            completion(.success(siteService.allSiteTopics().filter { !$0.isExternal }))
+            completion(.success(siteService.allSiteTopics()))
         }, failure: { error in
-            let unknownRestAPIError = NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
-            completion(.failure(error ?? unknownRestAPIError))
             DDLogError("Could not sync sites: \(String(describing: error))")
+            let remoteServiceError = NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
+            completion(.failure(error ?? remoteServiceError))
         })
     }
+
+    /// Fetch sites from Core Data
+    ///
+    private static func fetchStoredFollowedSites(completion: @escaping (Result<[ReaderSiteTopic], Error>) -> Void) {
+        let siteService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let sites = siteService.allSiteTopics() ?? []
+        completion(.success(sites))
+    }
+
 }
 
 extension ReaderTagTopic {

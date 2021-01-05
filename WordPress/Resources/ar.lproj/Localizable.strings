@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-03 10:07:31+0000 */
+/* Translation-Revision-Date: 2020-12-21 15:37:23+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -367,6 +367,12 @@
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "سجلات النشاط";
 
+/* Label for the Activity Type filter button */
+"Activity Type" = "نوع النشاط";
+
+/* Label for the Activity Type filter button when there are more than 1 activity type selected */
+"Activity Type (%1$d)" = "نوع النشاط (%1$d)";
+
 /* Remove asset from media picker list */
 "Add" = "إضافة";
 
@@ -412,8 +418,7 @@
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "إضافة صورة ملف شخصي";
 
-/* Title of a feature to add a new topic to the topics subscribed by the user.
-   Title. Lets the user know that they can use this feature to subscribe to new topics. */
+/* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "إضافة موضوع";
 
 /* Hint for the reader CSS URL field */
@@ -729,9 +734,6 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "هل ترغب بالتأكيد في التحديث؟";
 
-/* A short message asking the user if they wish to unfollow the specified topic. The %@ is a placeholder for the name of the topic. */
-"Are you sure you wish to remove the topic '%@'?" = "هل أنت متأكد من رغبتك في إزالة الموضوع \"%@\"؟";
-
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "اعتبارًا من 1 أغسطس 2018، لن يسمح فيسبوك بعد الآن بالمشاركة المباشرة للمقالات على ملفات تعريف الفيسبوك. تبقى الاتصالات بصفحات الفيسبوك كما هي.";
 
@@ -945,7 +947,7 @@
 "By signing up, you agree to our _Terms of Service_." = "يعني تسجيل الدخول موافقتك على _Terms of Service_.";
 
 /* No comment provided by engineer. */
-"CHOOSE A FILE" = "CHOOSE A FILE";
+"CHOOSE A FILE" = "اختيار ملف";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "تخصيص";
@@ -1007,7 +1009,6 @@
    Option to cancel the email app selection when logging in with magic links
    Text displayed by the left navigation button title
    The title of a cancel button.
-   Title of a cancel button.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
@@ -1154,7 +1155,7 @@
 "Choose a design" = "اختيار تصميم";
 
 /* Select domain name. Title */
-"Choose a domain" = "Choose a domain";
+"Choose a domain" = "اختيار نطاق";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "اختيار قالب";
@@ -1162,8 +1163,14 @@
 /* Label for Publish time picker */
 "Choose a time" = "اختيار وقت";
 
+/* Title to choose date range in a calendar */
+"Choose date range" = "تحديد نطاق التاريخ";
+
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "اختيار النطاق";
+
+/* No comment provided by engineer. */
+"Choose file" = "اختيار ملف";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "الاختيار من جهازي";
@@ -1171,7 +1178,7 @@
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "اختر من صفحة رئيسية تعرض أحدث مقالاتك (مدونة تقليدية) أو صفحة ثابتة\/ساكنة.";
 
-/* No comment provided by engineer. */
+/* Menu option used for adding media from other applications. */
 "Choose from device" = "الاختيار من الجهاز";
 
 /* No comment provided by engineer. */
@@ -1511,7 +1518,10 @@
 "Copy block" = "نسخ المكوِّن";
 
 /* No comment provided by engineer. */
-"Copy file URL" = "Copy file URL";
+"Copy file URL" = "نسخ رابط الملف";
+
+/* Button title displayed in popup indicating the user copied the local copy */
+"Copy the version from this app" = "نسخ الإصدار من هذا التطبيق";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "قد يكون أفضل";
@@ -1540,6 +1550,9 @@
 /* Title of a prompt. */
 "Could not save post for later" = "يتعذر حفظ المقالة لوقت لاحق";
 
+/* The app failed to subscribe to the comments for the post */
+"Could not subscribe to comments" = "Could not subscribe to comments";
+
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "تعذر تبديل المتابعة: سمة عنوان URL للمدونة مفقودة";
 
@@ -1548,6 +1561,9 @@
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "تعذر إلغاء متابعة الموقع في العنوان المحدد.";
+
+/* The app failed to unsubscribe from the comments for the post */
+"Could not unsubscribe from comments" = "Could not unsubscribe from comments";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "هل بإمكانك إبلاغنا بكيفية تحسين ذلك؟";
@@ -1734,6 +1750,9 @@
    Writing Date Format Settings Title */
 "Date Format" = "صيغة التاريخ";
 
+/* Label of a button that displays a calendar */
+"Date Range" = "نطاق التاريخ";
+
 /* Date and Time */
 "Date and Time" = "التاريخ والوقت";
 
@@ -1827,7 +1846,7 @@
 "Description" = "الوصف";
 
 /* Shortened version of the main title to be used in back navigation */
-"Design" = "Design";
+"Design" = "التصميم";
 
 /* Title for the desktop web preview */
 "Desktop" = "جهاز سطح المكتب";
@@ -2028,6 +2047,9 @@
    Title of the drafts header in search list. */
 "Drafts" = "المسودات";
 
+/* Label for post duplicate option. Tapping displays statistics for a post. */
+"Duplicate" = "تكرار";
+
 /* No comment provided by engineer. */
 "Duplicate block" = "تكرار المكوِّن";
 
@@ -2070,13 +2092,16 @@
 "Edit Post" = "تحرير المقالة";
 
 /* No comment provided by engineer. */
-"Edit file" = "Edit file";
+"Edit file" = "تحرير الملف";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "تحرير المقالات والصفحات الجديدة باستخدام مُحرّر المكوّنات.";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "تحرير أزرار المشاركة";
+
+/* Button title displayed in popup indicating that the user edits the post first */
+"Edit the post first" = "Edit the post first";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "تحرير باستخدام محرر الويب";
@@ -2159,6 +2184,9 @@
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "سجلات مشفَّرة";
 
+/* Placeholder for the end date in calendar range selection */
+"End Date" = "تاريخ الانتهاء";
+
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "الدخول إلى وضع ملء الشاشة";
 
@@ -2197,12 +2225,12 @@
 /* Instruction text on the initial email address entry screen. */
 "Enter your email address to log in or create a WordPress.com account." = "أدخل عنوان بريدك الإلكتروني لتسجيل الدخول أو إنشاء حساب WordPress.com.";
 
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your existing site address" = "أدخل رابط موقعك الحالي";
+
 /* Title of a button on the magic link screen.
    Title of a button. */
 "Enter your password instead." = "بدلاً من ذلك، أدخل كلمة المرور.";
-
-/* Button title. Takes the user to the login by site address flow. */
-"Enter your site address" = "أدخل رابط موقعك";
 
 /* Generic error alert title
    Generic error.
@@ -2317,7 +2345,7 @@
 
 /* Accessibility indication that the current Post List style is currently Expanded.
    Screen reader text to represent the expanded state of a UI control */
-"Expanded" = "تمت التوسعة";
+"Expanded" = "موسعة";
 
 /* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
 "Expanded, %i completed tasks, toggling collapses the list of these tasks" = "تم توسيع %i من المهام المكتملة، ويؤدي التبديل إلى طي قائمة هذه المهام";
@@ -2427,7 +2455,7 @@
 "File Downloads" = "تنزيلات الملفات";
 
 /* No comment provided by engineer. */
-"File block settings" = "File block settings";
+"File block settings" = "إعدادات مكوّن ملف";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "اسم الملف";
@@ -2440,6 +2468,9 @@
 
 /* Title of the filter button in the Reader */
 "Filter" = "تصفية";
+
+/* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
+"Filter by activity type" = "تصفية حسب نوع النشاط";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "اكتشاف المزيد";
@@ -2812,7 +2843,7 @@ translators: sample content for \"Team\" page template */
 "If you remove this viewer, he or she will not be able to visit this site." = "في حال إزالة هذا المشاهد، لن يتمكن من زيارة هذا الموقع.";
 
 /* Detailed instructions on Start Over settings page. This is the first paragraph. */
-"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.";
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "إذا كنت تريد موقعًا ولا تريد أي من المقالات أو الصفحات التي لديك الآن، فيمكن لفريق الدعم لدينا حذف مقالاتك، صفحاتك، وتعليقاتك من أجلك.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "إذا كنت غير متأكد ممّا سيُحذف أو كنت بحاجة إلى المساعدة، فلا تقلق، ففريق الدعم لدينا جاهز للإجابة عن أي أسئلة لديك.";
@@ -3147,9 +3178,6 @@ translators: sample content for \"Services\" page template */
 /* The accessibility label for the list style button in the Post List. */
 "List style" = "نمط القائمة";
 
-/* Section title of the lists reader section. */
-"Lists" = "القوائم";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "تحميل";
 
@@ -3284,8 +3312,6 @@ translators: sample content for \"Services\" page template */
 "Main Navigation" = "التنقل الرئيسي";
 
 /* Button leading to a screen where users can manage their installed plugins
-   Button title. Tapping lets the user manage the sites they follow.
-   Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
    Title for the Reader Manage screen.
@@ -3417,7 +3443,7 @@ translators: sample content for \"Services\" page template */
 "Microsoft Outlook" = "Microsoft Outlook";
 
 /* Title for the mobile web preview */
-"Mobile" = "الأجهزة المحمولة";
+"Mobile" = "الهاتف المحمول";
 
 /* Jetpack Monitor Settings: Monitor site's uptime */
 "Monitor your site's uptime" = "راقب وقت التشغيل في موقعك";
@@ -3652,6 +3678,12 @@ translators: sample content for \"Services\" page template */
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "بدون عنوان";
 
+/* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities available" = "لا توجد أنشطة متاحة";
+
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities recorded in the selected date range." = "لم تُسجّل أي أنشطة في مدى التاريخ المحدد.";
+
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "لا يوجد نشاط حتى الآن";
 
@@ -3720,6 +3752,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "لا توجد إعجابات بعد";
+
+/* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"No matching events found." = "لم يتم العثور على أحداث متطابقة.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso.
    Phrase to show when the user search for images but there are no result to show.
@@ -4157,7 +4192,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "اختيار اسم مستخدم";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can edit and customize it later." = "Pick your favorite homepage layout. You can edit and customize it later.";
+"Pick your favorite homepage layout. You can edit and customize it later." = "اختر تخطيط الصفحة الرئيسية المفضَّل لديك. يمكنك تعديله أو تخصيصه لاحقًا.";
 
 /* The item to select during a guided tour. */
 "Plan" = "الخطة";
@@ -4362,6 +4397,9 @@ translators: sample content for \"Services\" page template */
 
 /* Title of notification displayed when a post has been successfully scheduled. */
 "Post scheduled" = "تمت جدولة المقالة";
+
+/* Title displayed in popup when user tries to copy a post with unsaved changes */
+"Post sync conflict" = "تعارض مزامنة المقالة";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "عنوان المقالة. %s";
@@ -4608,8 +4646,7 @@ translators: sample content for \"Services\" page template */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "قراءة مقالة المصدر";
 
-/* Noun. Title of the Reader feature in the app.
-   The accessibility value of the Reader tab.
+/* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -4697,15 +4734,12 @@ translators: sample content for \"Services\" page template */
    Button label when removing a blog
    Label for remove location button
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Label of the table view cell's delete button, when unfollowing tags.
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
    Title for button that will confirm removing the next steps/quick start menus.
-   Title of a prompt asking the user to confirm they no longer wish to subscribe to a certain tag.
    User action to remove featured media.
-   User action to remove media.
-   Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
+   User action to remove media. */
 "Remove" = "إزالة";
 
 /* Remove Person Alert Title
@@ -4959,11 +4993,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "تم حفظ المقالة";
 
-/* Section title for Saved Posts in Reader
-   Title for list of posts saved for later
-   Title of the reader's Saved Posts menu item. */
-"Saved Posts" = "المقالات المحفوظة";
-
 /* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
 "Saved!" = "تم الحفظ!";
 
@@ -4980,6 +5009,9 @@ translators: sample content for \"Services\" page template */
    Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "جاري الحفظ...";
+
+/* Noun. Links to a blog's Jetpack Scan screen. */
+"Scan" = "فحص";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "جدولة";
@@ -5008,10 +5040,8 @@ translators: sample content for \"Services\" page template */
 "Scrollable block menu opened. Select a block." = "تم فتح قائمة المكوّن القابلة للتمرير. حدد مكوّنًا.";
 
 /* Placeholder text for the search bar
-   Search
    The menu item to select during a guided tour.
-   Title of the Reader's search feature
-   Title of the reader's Search menu item. */
+   Title of the Reader's search feature */
 "Search" = "بحث";
 
 /* Site creation. Seelect a domain, search field placeholder */
@@ -5072,10 +5102,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "حدّد %@ للمتابعة";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to continue." = "حدّد %@ للمتابعة.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page." = "حدّد %@ لإنشاء صفحة جديدة.";
+"Select %@ to create a new page" = "حدّد %@ لإنشاء صفحة جديدة";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "حدّد %@ لإنشاء مقالة جديدة";
@@ -5405,7 +5432,6 @@ translators: sample content for \"Services\" page template */
 "Site Language" = "لغة الموقع";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
 "Site Pages" = "صفحات الموقع";
 
@@ -5586,6 +5612,9 @@ translators: sample content for \"Services\" page template */
 /* Standard post format label */
 "Standard" = "قياسي";
 
+/* Placeholder for the start date in calendar range selection */
+"Start Date" = "تاريخ البدء";
+
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
 "Start Over" = "البدء من جديد";
@@ -5644,9 +5673,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title of alert announcing new Create Button feature. */
 "Streamlined navigation" = "التنقل الانسيابي";
-
-/* Section title of the default reader items. */
-"Streams" = "دفقات";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "يتوسطه خط";
@@ -5762,7 +5788,6 @@ translators: sample content for \"Services\" page template */
    Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
-   Section title of the tags reader section.
    Tags menu item in share extension.
    Title for the tag selector view */
 "Tags" = "وسوم";
@@ -5830,18 +5855,11 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "أنقر لعرض مقالات هذا الوسم";
 
-/* Accessibility hint
-   Tapping lets you manage the sites you follow. */
-"Tapping lets you manage the sites you follow." = "يتيح لك الضغط إدارة المواقع التي تتابعها.";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "الفئة";
 
 /* translators: title for \"Team\" page template */
 "Team" = "الفريق";
-
-/* Section title of the teams reader section. */
-"Teams" = "مجموعات";
 
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "أخبرنا قليلاً عنك.";
@@ -5950,6 +5968,9 @@ translators: sample content for \"Services\" page template */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "عدد المقالات المطلوب عرضها في كل صفحة.";
 
+/* Message displayed in popup when user tries to copy a post with conflicts */
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app.";
+
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "ستُساعدك جولة البدء السريع على إنشاء الموقع الأساسي. هل تريد بالتأكيد التخطي؟ ";
 
@@ -6023,12 +6044,6 @@ translators: sample content for \"Services\" page template */
 
 /* Reply Failure Message */
 "There has been an unexpected error while sending your reply" = "حدث خطأ غير متوقع أثناء إرسال ردّك";
-
-/* The app failed to subscribe to the comments for the post */
-"There has been an unexpected error while subscribing to the comments" = "حدث خطأ غير متوقع في أثناء الاشتراك في التعليقات";
-
-/* The app failed to unsubscribe from the comments for the post */
-"There has been an unexpected error while unsubscribing from the comments" = "حدث خطأ غير متوقع في أثناء إلغاء الاشتراك من التعليقات";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "حدث خطأ غير متوقع أثناء تحديث إعدادات التنبيهات";
@@ -6149,7 +6164,7 @@ translators: sample content for \"Services\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "هذا هو محتوى النموذج المُضمَّن مع القالب لتوضيح ميزاته. يمكنك إزالته أو استبدال كلماتك ووسائطك الخاصة به.";
 
 /* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "This is where people will find you on the internet.";
+"This is where people will find you on the internet." = "هذا هو المكان الذي سيجدك فيه الأشخاص على الإنترنت.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "تم حذف عنصر الوسائط هذا.";
@@ -6180,7 +6195,7 @@ translators: sample content for \"Services\" page template */
 "This will delete all associated files and data." = "سيؤدي هذا إلى حذف جميع الملفات والبيانات المرتبطة.";
 
 /* Detailed instructions on Start Over settings page. This is the second paragraph. */
-"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out.";
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "سيبقي ذلك على موقعك وعنوان URL في حالة نشطة، ولكنه يعطيك بداية جديدة على إنشاء المحتوى الخاص بك. اتصل بنا فقط لحذف المحتوى الحالي الخاص بك.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6347,7 +6362,11 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Try a starter layout" = "تجربة تخطيط بدء العمل";
 
-/* Button that lets users try to reload the plugin directory after loading failure
+/* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"Try adjusting your date range or activity type filters" = "Try adjusting your date range or activity type filters";
+
+/* Button label for trying to retrieve the activities type again
+   Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
 "Try again" = "حاول مرة أخرى";
@@ -7571,8 +7590,7 @@ translators: sample content for \"Services\" page template */
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab. */
 "wordpress, notifications, alerts, updates" = "ووردبريس، الإشعارات، التنبيهات، التحديثات";
 
-/* This is a comma separated list of keywords used for spotlight indexing of the 'Reader' tab.
-   This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
+/* This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
 "wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics" = "ووردبريس، القارئ، المقالات، المشاركات، مقالات المدونة، المُتابع، الاستكشاف، الإعجابات، إعجاباتي، الوسوم، الموضوعات";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */

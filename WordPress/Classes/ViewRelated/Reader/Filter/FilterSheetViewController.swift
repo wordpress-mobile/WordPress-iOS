@@ -1,10 +1,13 @@
 class FilterSheetViewController: UIViewController {
 
+    private let viewTitle: String
     private let filters: [FilterProvider]
     private let changedFilter: (ReaderAbstractTopic) -> Void
 
-    //TODO: Make changedFilter generic
-    init(filters: [FilterProvider], changedFilter: @escaping (ReaderAbstractTopic) -> Void) {
+    init(viewTitle: String,
+         filters: [FilterProvider],
+         changedFilter: @escaping (ReaderAbstractTopic) -> Void) {
+        self.viewTitle = viewTitle
         self.filters = filters
         self.changedFilter = changedFilter
         super.init(nibName: nil, bundle: nil)
@@ -15,7 +18,10 @@ class FilterSheetViewController: UIViewController {
     }
 
     override func loadView() {
-        view = FilterSheetView(filters: filters, presentationController: self, changedFilter: changedFilter)
+        view = FilterSheetView(viewTitle: viewTitle,
+                               filters: filters,
+                               presentationController: self,
+                               changedFilter: changedFilter)
     }
 }
 

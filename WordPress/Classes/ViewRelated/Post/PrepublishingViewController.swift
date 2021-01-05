@@ -69,7 +69,19 @@ class PrepublishingViewController: UITableViewController {
 
         announcePublishButton()
 
-        preferredContentSize = tableView.contentSize
+        calculatePreferredContentSize()
+    }
+
+    private func calculatePreferredContentSize() {
+        // Apply additional padding to take into account the navbar / status bar height
+        let safeAreaTop = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0
+        let navBarHeight = navigationController?.navigationBar.frame.height ?? 0
+        let offset = navBarHeight - safeAreaTop
+
+        var size = tableView.contentSize
+        size.height += offset
+
+        preferredContentSize = size
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -187,7 +199,7 @@ class PrepublishingViewController: UITableViewController {
         }
 
         navigationController?.pushViewController(categoriesViewController, animated: true)
-       }
+    }
 
     // MARK: - Visibility
 
@@ -373,5 +385,17 @@ extension PrepublishingViewController: PostCategoriesViewControllerDelegate {
 extension Set {
     var array: [Element] {
         return Array(self)
+    }
+}
+
+
+// MARK: - DrawerPresentable
+extension PrepublishingViewController: DrawerPresentable {
+    var allowsUserTransition: Bool {
+        return false
+    }
+
+    var collapsedHeight: DrawerHeight {
+        return .intrinsicHeight
     }
 }

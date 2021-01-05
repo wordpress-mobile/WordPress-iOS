@@ -51,6 +51,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     ReaderTopicServiceRemote *service = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service fetchFollowedSitesWithSuccess:^(NSArray *sites) {
+        [WPAnalytics setSubscriptionCount: sites.count];
         [self mergeFollowedSites:sites withSuccess:success];
     } failure:^(NSError *error) {
         if (failure) {
@@ -332,7 +333,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     NSDictionary *properties = @{@"tag":slug};
 
     void (^successBlock)(void) = ^{
-        [WPAnalytics track:WPAnalyticsStatReaderTagUnfollowed withProperties:properties];
+        [WPAnalytics trackReaderStat:WPAnalyticsStatReaderTagUnfollowed properties:properties];
         if (success) {
             success();
         }
@@ -361,7 +362,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID) {
         [self fetchReaderMenuWithSuccess:^{
             NSDictionary *properties = @{@"tag":topicName};
-            [WPAnalytics track:WPAnalyticsStatReaderTagFollowed withProperties:properties];
+            [WPAnalytics trackReaderStat:WPAnalyticsStatReaderTagFollowed properties:properties];
             [self selectTopicWithID:topicID];
             if (success) {
                 success();
@@ -379,7 +380,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     void (^successBlock)(void) = ^{
         NSDictionary *properties = @{@"tag":slug};
-        [WPAnalytics track:WPAnalyticsStatReaderTagFollowed withProperties:properties];
+        [WPAnalytics trackReaderStat:WPAnalyticsStatReaderTagFollowed properties:properties];
         if (success) {
             success();
         }
@@ -499,7 +500,14 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     // Define success block
     void (^successBlock)(void) = ^void() {
+        
+        // Update subscription count
+        NSInteger oldSubscriptionCount = [WPAnalytics subscriptionCount];
+        NSInteger newSubscriptionCount = newFollowValue ? oldSubscriptionCount + 1 : oldSubscriptionCount - 1;
+        [WPAnalytics setSubscriptionCount:newSubscriptionCount];
+        
         [self refreshPostsForFollowedTopic];
+        
         if (success) {
             success();
         }
@@ -770,10 +778,13 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     if ([remoteTopic.path rangeOfString:@"/tags/"].location != NSNotFound) {
         return [self tagTopicForRemoteTopic:remoteTopic];
+    }
 
-    } else if ([remoteTopic.path rangeOfString:@"/list/"].location != NSNotFound) {
+    if ([remoteTopic.path rangeOfString:@"/list/"].location != NSNotFound) {
         return [self listTopicForRemoteTopic:remoteTopic];
-    } else if ([remoteTopic.type isEqualToString:@"team"]) {
+    }
+
+    if ([remoteTopic.type isEqualToString:@"organization"]) {
         return [self teamTopicForRemoteTopic:remoteTopic];
     }
 
@@ -846,6 +857,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.path = remoteTopic.path;
     topic.showInMenu = YES;
     topic.following = YES;
+    topic.organizationID = [remoteTopic.organizationID integerValue];
 
     return topic;
 }
@@ -864,6 +876,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.isJetpack = siteInfo.isJetpack;
     topic.isPrivate = siteInfo.isPrivate;
     topic.isVisible = siteInfo.isVisible;
+    topic.organizationID = [siteInfo.organizationID integerValue];
+    topic.path = siteInfo.postsEndpoint;
     topic.postCount = siteInfo.postCount;
     topic.showInMenu = NO;
     topic.siteBlavatar = siteInfo.siteBlavatar;
@@ -873,7 +887,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.subscriberCount = siteInfo.subscriberCount;
     topic.title = siteInfo.siteName;
     topic.type = ReaderSiteTopic.TopicType;
-    topic.path = siteInfo.postsEndpoint;
+    topic.unseenCount = [siteInfo.unseenCount integerValue];
     
     topic.postSubscription = [self postSubscriptionFor:siteInfo topic:topic];
     topic.emailSubscription = [self emailSubscriptionFor:siteInfo topic:topic];

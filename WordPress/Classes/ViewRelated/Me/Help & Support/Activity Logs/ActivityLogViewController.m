@@ -21,9 +21,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        // TODO - Replace this call with an injected value, depending on design conventions already in place
-        WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-        _fileLogger = delegate.logger.fileLogger;
+        _fileLogger = [WPLogger shared].fileLogger;
 
         self.title = NSLocalizedString(@"Activity Logs", @"");
 

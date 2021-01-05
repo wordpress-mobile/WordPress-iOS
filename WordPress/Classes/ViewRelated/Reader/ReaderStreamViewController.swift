@@ -146,9 +146,10 @@ import WordPressFlux
             }
             syncHelper?.delegate = self
 
-            if let newTopic = readerTopic {
+            if let newTopic = readerTopic,
+               let context = newTopic.managedObjectContext {
                 newTopic.inUse = true
-                ContextManager.sharedInstance().save(newTopic.managedObjectContext!)
+                ContextManager.sharedInstance().save(context)
             }
 
             if readerTopic != nil && readerTopic != oldValue {
@@ -169,7 +170,7 @@ import WordPressFlux
 
     var contentType: ReaderContentType = .topic {
         willSet {
-            if contentType == .saved && newValue != .saved {
+            if contentType == .saved {
                 postCellActions?.clearRemovedPosts()
             }
         }
@@ -829,7 +830,7 @@ import WordPressFlux
             return
         }
         syncHelper?.syncContentWithUserInteraction(true)
-        WPAnalytics.track(.readerPullToRefresh, properties: topicPropertyForStats() ?? [:])
+        WPAnalytics.trackReader(.readerPullToRefresh, properties: topicPropertyForStats() ?? [:])
     }
 
 
@@ -843,7 +844,9 @@ import WordPressFlux
             return
         }
 
-        guard let topic = readerTopic, let properties = topicPropertyForStats(), isViewLoaded && view.window != nil else {
+        guard let topic = readerTopic,
+              let properties = topicPropertyForStats(),
+              isViewLoaded && view.window != nil else {
             return
         }
 
@@ -1205,6 +1208,7 @@ import WordPressFlux
             postCellActions = ReaderPostCellActions(context: managedObjectContext(), origin: self, topic: readerTopic)
         }
         postCellActions?.isLoggedIn = isLoggedIn
+        postCellActions?.savedPostsDelegate = self
 
         // Restrict the topics header to only display on the Discover, and tag detail views
         var displayTopics = false
@@ -1578,7 +1582,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         if post.isSavedForLater || contentType == .saved {
             trackSavedPostNavigation()
         } else {
-            WPAnalytics.track(.readerPostCardTapped, properties: topicPropertyForStats() ?? [:])
+            WPAnalytics.trackReader(.readerPostCardTapped, properties: topicPropertyForStats() ?? [:])
         }
 
         navigationController?.pushFullscreenViewController(controller, animated: true)
@@ -1843,6 +1847,15 @@ extension ReaderStreamViewController: ReaderContentViewController {
             ReaderTracker.shared.start(.filteredList)
         } else {
             ReaderTracker.shared.stop(.filteredList)
+        }
+    }
+}
+
+// MARK: - Saved Posts Delegate
+extension ReaderStreamViewController: ReaderSavedPostCellActionsDelegate {
+    func willRemove(_ cell: ReaderPostCardCell) {
+        if let cellIndex = tableView.indexPath(for: cell) {
+            tableView.reloadRows(at: [cellIndex], with: .fade)
         }
     }
 }

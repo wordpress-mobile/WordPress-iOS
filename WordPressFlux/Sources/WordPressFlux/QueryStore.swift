@@ -1,3 +1,5 @@
+import Foundation
+
 private struct QueryRef<Query> {
     let query: Query
     let token = DispatchToken()
@@ -115,7 +117,7 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
     /// Unregisters the query associated with the given Receipt.
     ///
     public func unsubscribe(receipt: Receipt) {
-        guard let index = activeQueryReferences.index(where: { $0.token == receipt.token }) else {
+        guard let index = activeQueryReferences.firstIndex(where: { $0.token == receipt.token }) else {
             assertionFailure("Stopping a query that's not active")
             return
         }

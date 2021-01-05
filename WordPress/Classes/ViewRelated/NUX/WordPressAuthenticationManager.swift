@@ -162,6 +162,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         return true
     }
 
+    /// Indicates whether a link to WP.com TOS should be available, or not.
+    ///
+    var wpcomTermsOfServiceEnabled: Bool {
+        return true
+    }
+
     /// Indicates if Support is Enabled.
     ///
     var supportEnabled: Bool {

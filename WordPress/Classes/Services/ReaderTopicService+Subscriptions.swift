@@ -54,12 +54,12 @@ extension ReaderTopicService {
         case .notifications(let siteId):
             if subscribe {
                 service.subscribeSiteNotifications(with: siteId, {
-                    WPAnalytics.track(.followedBlogNotificationsReaderMenuOn, properties: ["blogId": siteId])
+                    WPAnalytics.trackReader(.followedBlogNotificationsReaderMenuOn, properties: ["blogId": siteId])
                     successBlock()
                 }, failure)
             } else {
                 service.unsubscribeSiteNotifications(with: siteId, {
-                    WPAnalytics.track(.followedBlogNotificationsReaderMenuOff, properties: ["blog_id": siteId])
+                    WPAnalytics.trackReader(.followedBlogNotificationsReaderMenuOff, properties: ["blog_id": siteId])
                     successBlock()
                 }, failure)
             }

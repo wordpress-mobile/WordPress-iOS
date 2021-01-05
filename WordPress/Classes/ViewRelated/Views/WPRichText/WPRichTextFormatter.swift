@@ -491,13 +491,21 @@ class AttachmentTagProcessor: HtmlTagProcessor {
     func attachmentForHtml(_ html: String, identifier: String) -> WPTextAttachment? {
 
         let attrs = attributesFromTag(html)
-
         let source = getSource(from: attrs)
+        let cssClass = getCssClass(from: attrs)
+
         let textAttachment = WPTextAttachment(tagName: tagName, identifier: identifier, src: source)
         textAttachment.attributes = attrs
         textAttachment.html = html
 
-        let size = getSize(from: attrs)
+        var size = getSize(from: attrs)
+
+        // `twemoji` without an assigned size become outsized images
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/15341
+        if (size.height == 0 || size.height == 0) && cssClass.contains("emoji") {
+            size = CGSize(width: 20, height: 20)
+        }
+
         textAttachment.height = size.height
         textAttachment.width = size.width
 
@@ -514,6 +522,11 @@ class AttachmentTagProcessor: HtmlTagProcessor {
     private func getSource(from attributes: Attributes) -> String {
         let source = attributes["src"] ?? ""
         return source.stringByDecodingXMLCharacters()
+    }
+
+    private func getCssClass(from attributes: Attributes) -> String {
+        let cssClass = attributes["class"] ?? ""
+        return cssClass.stringByDecodingXMLCharacters()
     }
 
     private func getSize(from attributes: Attributes) -> CGSize {

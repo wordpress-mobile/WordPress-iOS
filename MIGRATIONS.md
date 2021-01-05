@@ -3,6 +3,33 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 109
+
+@mindgraffiti 2020-12-15
+
+- Added `unseenCount` attribute to  `ReaderSiteTopic` entity
+
+## WordPress 108
+
+@scoutharris 2020-12-14
+
+- `ReaderTeamTopic`: added `organizationID`.
+- `ReaderSiteTopic`: made  `organizationID` non-optional.
+- `ReaderPost`: made  `organizationID` non-optional.  
+
+## WordPress 107
+
+@scoutharris 2020-12-09
+
+- `ReaderSiteTopic`: removed `isWPForTeams`, added `organizationID`.
+- `ReaderPost`: removed `isWPForTeams`, added `organizationID`.  
+
+## WordPress 106
+
+@mindgraffiti 2020-12-07
+
+- Added `isWPForTeams` property to `ReaderSiteTopic`.
+
 ## WordPress 105
 
 @scoutharris 2020-12-04
@@ -70,7 +97,7 @@ data model as well as any custom migrations.
 
 @Gio2018 2020-06-12
 
-- Add fileds `supportPriority`, `supportName` and `nonLocalizedShortname` to the `Plan` entity for Zendesk integration.
+- Add fields `supportPriority`, `supportName` and `nonLocalizedShortname` to the `Plan` entity for Zendesk integration.
 
 ## WordPress 94
 

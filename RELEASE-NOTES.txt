@@ -1,14 +1,36 @@
-16.4
+16.5
 -----
  
+* [*] In the Comments view, overly-large twemoji are sized the same as Apple's emoji. [#15503]
+* [*] Reader 'P2s': added ability to filter by site. [#15484]
+* [**] Choose a Domain will now return more options in the search results, sort the results to have exact matches first, and let you know if no exact matches were found. [#15482]
+* [**] Page List: Adds duplicate page functionality [#15515]
+* [*] Invite People: add link to user roles definition web page. [#15530]
+* [***] Block Editor: Cross-post suggestions are now available by typing the + character (or long-pressing the toolbar button labelled with an @-symbol) in a post on a P2 site [#15139]
+
+16.4
+-----
+
 * [internal] Removed unused Reader files. Should be no functional changes. [#15414]
 * [*] Adjusted the search box background color in dark mode on Choose a domain screen to be full width. [https://github.com/wordpress-mobile/WordPress-iOS/pull/15419]
 * [**] Added shadow to thumbnail cells on Site Creation and Page Creation design pickers to add better contrast [https://github.com/wordpress-mobile/WordPress-iOS/pull/15418]
 * [*] For DotCom and Jetpack sites, you can now subscribe to comments by tapping the "Follow conversation" button in the Comments view. [#15424]
 * [**] Reader: Added 'P2s' stream. [#15442]
+* [*] Add a new P2 default site icon to replace the generic default site icon. [#15430]
+* [*] Block Editor: Fix Gallery block uploads when the editor is closed. [#15457]
+* [*] Reader: Removes gray tint from site icons that contain transparency (located in Reader > Settings > Followed sites). [#15474]
+* [*] Prologue: updates site address button to say "Enter your existing site address" to reduce confusion with site creation actions. [#15481]
+* [**] Posts List: Adds duplicate post functionality [#15460]
+* [***] Block Editor: New Block: File [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2835]
+* [*] Reader: Removes gray tint from site icons that contain transparency (located in Reader > Settings > Followed sites).
+* [*] Block Editor: Remove popup informing user that they will be using the block editor by default [#15492]
+* [**] Fixed an issue where the Prepublishing Nudges Publish button could be cut off smaller devices [#15525]
 
 16.3
 -----
+* [***] Login: Updated to new iOS 14 pasteboard APIs for 2FA auto-fill. Pasteboard prompts should be less intrusive now! [#15454]
+* [***] Site Creation: Adds an option to pick a home page design when creating a WordPress.com site. [multiple PRs](https://github.com/search?q=repo%3Awordpress-mobile%2FWordPress-iOS+++repo%3Awordpress-mobile%2FWordPress-iOS-Shared+repo%3Awordpress-mobile%2FWordPressUI-iOS+repo%3Awordpress-mobile%2FWordPressKit-iOS+repo%3Awordpress-mobile%2FAztecEditor-iOS+is%3Apr+closed%3A%3C2020-11-17+%22Home+Page+Picker%22&type=Issues)
+
 * [**] Fixed a bug where @-mentions didn't work on WordPress.com sites with plugins enabled [#14844]
 * [***] Site Creation: Adds an option to pick a home page design when creating a WordPress.com site. [multiple PRs](https://github.com/search?q=repo%3Awordpress-mobile%2FWordPress-iOS+++repo%3Awordpress-mobile%2FWordPress-iOS-Shared+repo%3Awordpress-mobile%2FWordPressUI-iOS+repo%3Awordpress-mobile%2FWordPressKit-iOS+repo%3Awordpress-mobile%2FAztecEditor-iOS+is%3Apr+closed%3A%3C2020-11-30+%22Home+Page+Picker%22&type=Issues)
 * [*] Fixed an issue where `tel:` and `mailto:` links weren't launching actions in the webview found in Reader > post > more > Visit. [#15310]

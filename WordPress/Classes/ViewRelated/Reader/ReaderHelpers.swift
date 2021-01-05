@@ -139,17 +139,17 @@ import WordPressShared
             stat = .readerFreshlyPressedLoaded
 
         } else if topicIsFollowing(topic) {
-            WPAnalytics.track(.readerFollowingShown, properties: properties)
+            WPAnalytics.trackReader(.readerFollowingShown, properties: properties)
 
         } else if topicIsLiked(topic) {
-            WPAnalytics.track(.readerLikedShown, properties: properties)
+            WPAnalytics.trackReader(.readerLikedShown, properties: properties)
 
         } else if isTopicSite(topic) {
-            WPAnalytics.track(.readerBlogPreviewed, properties: properties)
+            WPAnalytics.trackReader(.readerBlogPreviewed, properties: properties)
 
         } else if isTopicDefault(topic) && topicIsDiscover(topic) {
             // Tracks Discover only if it was one of the default menu items.
-            WPAnalytics.track(.readerDiscoverShown, properties: properties)
+            WPAnalytics.trackReaderEvent(.readerDiscoverShown, properties: properties)
 
         } else if isTopicList(topic) {
             stat = .readerListLoaded
@@ -157,7 +157,10 @@ import WordPressShared
         } else if isTopicTag(topic) {
             stat = .readerTagLoaded
 
+        } else if let teamTopic = topic as? ReaderTeamTopic {
+            WPAnalytics.trackReader(teamTopic.shownTrackEvent, properties: properties)
         }
+
         if stat != nil {
             WPAnalytics.track(stat!, withProperties: properties)
         }
@@ -262,7 +265,7 @@ import WordPressShared
             return .tag
         }
         if topic is ReaderTeamTopic {
-            return .team
+            return .organization
         }
         return .noTopic
     }
@@ -347,6 +350,15 @@ enum ReaderTopicType {
     case search
     case site
     case tag
-    case team
+    case organization
     case noTopic
+}
+
+@objc enum SiteOrganizationType: Int {
+    // site does not belong to an organization
+    case none
+    // site is an A8C P2
+    case automattic
+    // site is a non-A8C P2
+    case p2
 }

@@ -71,7 +71,7 @@ class ReaderSelectInterestsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        WPAnalytics.track(.selectInterestsShown)
+        WPAnalytics.trackReader(.selectInterestsShown)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -186,7 +186,7 @@ class ReaderSelectInterestsViewController: UIViewController {
             WPAnalytics.track(.readerTagFollowed, withProperties: ["tag": $0.slug])
         }
 
-        WPAnalytics.track(.selectInterestsPicked, properties: ["quantity": selectedInterests.count])
+        WPAnalytics.trackReader(.selectInterestsPicked, properties: ["quantity": selectedInterests.count])
     }
 
     // MARK: - Private: UI Helpers

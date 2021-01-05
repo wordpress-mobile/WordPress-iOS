@@ -26,8 +26,8 @@
     },
     {
       "target" : {
-        "containerPath" : "container:..\/WordPressFlux\/WordPressFlux.xcodeproj",
-        "identifier" : "E16A76E41FC4425000A661E3",
+        "containerPath" : "container:..\/WordPressFlux",
+        "identifier" : "WordPressFluxTests",
         "name" : "WordPressFluxTests"
       }
     }

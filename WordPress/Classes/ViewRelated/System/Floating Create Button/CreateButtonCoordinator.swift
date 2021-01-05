@@ -112,6 +112,8 @@ import WordPressFlux
         button.addTarget(self, action: #selector(showCreateSheet), for: .touchUpInside)
     }
 
+    private var currentTourElement: QuickStartTourElement?
+
     @objc private func showCreateSheet() {
         didDismissTooltip = true
         hideNotice()
@@ -124,9 +126,12 @@ import WordPressFlux
             actions.first?.handler()
         } else {
             let actionSheetVC = actionSheetController(with: viewController.traitCollection)
-            viewController.present(actionSheetVC, animated: true, completion: {
+            viewController.present(actionSheetVC, animated: true, completion: { [weak self] in
                 WPAnalytics.track(.createSheetShown)
-                QuickStartTourGuide.shared.visited(.newpost)
+
+                if let element = self?.currentTourElement {
+                    QuickStartTourGuide.shared.visited(element)
+                }
             })
         }
     }
@@ -171,7 +176,7 @@ import WordPressFlux
         showCreateButton(notice: notice(for: blog))
     }
 
-    func showCreateButton(notice: Notice) {
+    private func showCreateButton(notice: Notice) {
         if !didDismissTooltip {
             noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view, sourceView: button)
             shownTooltipCount += 1
@@ -199,16 +204,17 @@ import WordPressFlux
         return notice
     }
 
-    func listenForQuickStart() {
+    private func listenForQuickStart() {
         quickStartObserver = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard let self = self,
                 let userInfo = notification.userInfo,
                 let element = userInfo[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement,
                 let description = userInfo[QuickStartTourGuide.notificationDescriptionKey] as? NSAttributedString,
-                element == .newpost else {
+                element == .newpost || element == .newPage else {
                     return
             }
 
+            self.currentTourElement = element
             self.hideNotice()
             self.didDismissTooltip = false
             self.showCreateButton(notice: self.quickStartNotice(description))

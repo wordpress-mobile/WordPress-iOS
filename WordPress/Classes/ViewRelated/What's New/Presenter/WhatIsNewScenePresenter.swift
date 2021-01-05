@@ -10,8 +10,11 @@ class WhatIsNewScenePresenter: ScenePresenter {
 
     private let store: AnnouncementsStore
 
-    private var shouldPresentWhatIsNew: Bool {
-        AppRatingUtility.shared.didUpgradeVersion && UserDefaults.standard.announcementsVersionDisplayed != Bundle.main.shortVersionString()
+    private func shouldPresentWhatIsNew(on viewController: UIViewController) -> Bool {
+        viewController is AppSettingsViewController ||
+            (AppRatingUtility.shared.didUpgradeVersion &&
+                UserDefaults.standard.announcementsVersionDisplayed != Bundle.main.shortVersionString() &&
+                self.store.announcements.first?.isLocalized == true)
     }
 
     var versionHasAnnouncements: Bool {
@@ -30,26 +33,25 @@ class WhatIsNewScenePresenter: ScenePresenter {
 
     func present(on viewController: UIViewController, animated: Bool, completion: (() -> Void)?) {
 
-        guard viewController is AppSettingsViewController || shouldPresentWhatIsNew else {
-            return
+        defer {
+            store.getAnnouncements()
         }
 
         startPresenting = { [weak viewController, weak self] in
             guard let self = self,
                 let viewController = viewController,
                 viewController.isViewOnScreen(),
-                (viewController is AppSettingsViewController || self.store.announcements.first?.isLocalized == true) else {
+                self.shouldPresentWhatIsNew(on: viewController) else {
                     return
                 }
             let controller = self.makeWhatIsNewViewController()
 
             self.trackAccess(from: viewController)
-            viewController.present(controller, animated: true) {
+            viewController.present(controller, animated: animated) {
                 UserDefaults.standard.announcementsVersionDisplayed = Bundle.main.shortVersionString()
                 completion?()
             }
         }
-        store.getAnnouncements()
     }
 
     // analytics
