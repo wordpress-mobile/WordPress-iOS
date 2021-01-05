@@ -39,6 +39,14 @@ class ReaderRelativeTimeFormatterTests: XCTestCase {
         let formatter = ReaderRelativeTimeFormatter(calendar: calendar)
         let date = Date(timeIntervalSinceNow: -(86400 * 6))
 
+        let now = Date()
+        let dateYear = calendar.component(.year, from: date)
+        let nowYear = calendar.component(.year, from: now)
+
+        guard dateYear == nowYear else {
+            return
+        }
+
         XCTAssertEqual(formatter.string(from: date), "6d")
     }
 
@@ -48,6 +56,14 @@ class ReaderRelativeTimeFormatterTests: XCTestCase {
 
         let formatter = ReaderRelativeTimeFormatter(calendar: calendar)
         let date = Date(timeIntervalSinceNow: -(86400 * 14))
+
+        let now = Date()
+        let dateYear = calendar.component(.year, from: date)
+        let nowYear = calendar.component(.year, from: now)
+
+        guard dateYear == nowYear else {
+            return
+        }
 
         XCTAssertEqual(formatter.string(from: date), dateFormatter.string(from: date))
     }

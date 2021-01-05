@@ -492,6 +492,8 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self isHostedAtWPcom];
         case BlogFeatureMentions:
             return [self isAccessibleThroughWPCom];
+        case BlogFeatureXposts:
+            return [self isAccessibleThroughWPCom];
         case BlogFeatureReblog:
         case BlogFeaturePlans:
             return [self isHostedAtWPcom] && [self isAdmin];
