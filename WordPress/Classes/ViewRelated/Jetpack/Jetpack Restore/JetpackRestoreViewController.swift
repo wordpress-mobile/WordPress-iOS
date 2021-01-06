@@ -41,6 +41,7 @@ class JetpackRestoreViewController: UITableViewController {
         configureTitle()
         configureNavigation()
         configureTableView()
+        configureTableHeaderView()
         reloadViewModel()
     }
 
@@ -63,21 +64,32 @@ class JetpackRestoreViewController: UITableViewController {
 
     private func configureTableView() {
         WPStyleGuide.configureColors(view: view, tableView: tableView)
-
         ImmuTable.registerRows([SwitchRow.self], tableView: tableView)
+    }
 
+    private func configureTableHeaderView() {
         let headerView = JetpackRestoreHeaderView.loadFromNib()
         headerView.configure(site: site,
                              formattableActivity: activity,
                              restoreAction: restoreAction,
                              actionButtonHandler: { [weak self] _ in
-                                let warningVC = JetpackRestoreWarningViewController()
-                                self?.navigationController?.pushViewController(warningVC, animated: true)
+                                self?.actionButtonTapped()
                              })
         self.tableView.tableHeaderView = headerView
     }
 
     // MARK: - Private Helpers
+
+    private func actionButtonTapped() {
+        switch restoreAction {
+        case .restore:
+            let warningVC = JetpackRestoreWarningViewController()
+            self.navigationController?.pushViewController(warningVC, animated: true)
+        case .downloadBackup:
+            let progressVC = JetpackRestoreProgressViewController()
+            self.navigationController?.pushViewController(progressVC, animated: true)
+        }
+    }
 
     @objc private func cancelTapped() {
         self.dismiss(animated: true)
