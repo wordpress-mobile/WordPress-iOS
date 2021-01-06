@@ -121,7 +121,7 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
             return nil
         }
 
-        let row = indexPath.row + 1
+        let row = indexPath.row - 1
 
         return threats[row]
     }
