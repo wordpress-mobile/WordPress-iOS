@@ -1,12 +1,12 @@
 import Foundation
 
-/// A service to fetch and persist a list of users that can be @-mentioned in a post or comment.
-class SuggestionService {
+/// A service to fetch and persist a list of sites that can be xpost to from a post.
+class SiteSuggestionService {
 
     private var blogsCurrentlyBeingRequested = [NSNumber]()
     private var requests = [NSNumber: Date]()
 
-    static let shared = SuggestionService()
+    static let shared = SiteSuggestionService()
 
     /**
     Fetch cached suggestions if available, otherwise from the network if the device is online.
@@ -14,7 +14,7 @@ class SuggestionService {
     @param the blog/site to retrieve suggestions for
     @param completion callback containing list of suggestions, or nil if unavailable
     */
-    func suggestions(for blog: Blog, completion: @escaping ([UserSuggestion]?) -> Void) {
+    func suggestions(for blog: Blog, completion: @escaping ([SiteSuggestion]?) -> Void) {
 
         let throttleDuration: TimeInterval = 60 // seconds
         let isBelowThrottleThreshold: Bool
@@ -23,6 +23,7 @@ class SuggestionService {
         } else {
             isBelowThrottleThreshold = false
         }
+
 
         if isBelowThrottleThreshold, let suggestions = retrievePersistedSuggestions(for: blog), suggestions.isEmpty == false {
             completion(suggestions)
@@ -34,46 +35,54 @@ class SuggestionService {
     }
 
     /**
+     If no suggestions already in Core Data, fetch them from the network and store them in Core Data.
+     @param blog The blog/site to prefetch suggestions for
+     */
+    func prefetchSuggestions(for blog: Blog) {
+        let persistedSuggestions = retrievePersistedSuggestions(for: blog)
+        if persistedSuggestions == nil || persistedSuggestions?.isEmpty == true {
+            fetchAndPersistSuggestions(for: blog, completion: { _ in})
+        }
+    }
+
+    /**
     Performs a REST API request for the given blog.
     Persists response objects to Core Data.
 
     @param blog/site to retrieve suggestions for
     */
-    private func fetchAndPersistSuggestions(for blog: Blog, completion: @escaping ([UserSuggestion]?) -> Void) {
+    private func fetchAndPersistSuggestions(for blog: Blog, completion: @escaping ([SiteSuggestion]?) -> Void) {
 
-        guard let blogId = blog.dotComID else { return }
+        guard let blogId = blog.dotComID, let hostname = blog.hostname else { return }
 
         // if there is already a request in place for this blog, just wait
         guard !blogsCurrentlyBeingRequested.contains(blogId) else { return }
 
-        guard let siteID = blog.dotComID else { return }
-
-        let suggestPath = "rest/v1.1/users/suggest"
-        let params = ["site_id": siteID]
+        let suggestPath = "/wpcom/v2/sites/\(hostname)/xposts"
+        let params = ["decode_html": true] as [String: AnyObject]
 
         // add this blog to currently being requested list
         blogsCurrentlyBeingRequested.append(blogId)
 
         defaultAccount()?.wordPressComRestApi.GET(suggestPath, parameters: params, success: { [weak self] responseObject, httpResponse in
             guard let `self` = self else { return }
-            guard let payload = responseObject as? [String: Any] else { return }
-            guard let restSuggestions = payload["suggestions"] as? [[String: Any]] else { return }
 
             let context = ContextManager.shared.mainContext
+            guard let data = try? JSONSerialization.data(withJSONObject: responseObject) else { return }
+            let decoder = JSONDecoder()
+            decoder.userInfo[CodingUserInfoKey.managedObjectContext] = context
+            guard let suggestions = try? decoder.decode([SiteSuggestion].self, from: data) else { return }
 
-            // Delete any existing `UserSuggestion` objects
+            // Delete any existing `SiteSuggestion` objects
             self.retrievePersistedSuggestions(for: blog)?.forEach { suggestion in
                 context.delete(suggestion)
             }
 
-            // Create new `UserSuggestion` objects
-            let suggestions = restSuggestions.compactMap { UserSuggestion(dictionary: $0, context: context) }
-
-            // Associate `UserSuggestion` objects with blog
-            blog.userSuggestions = Set(suggestions)
+            // Associate `SiteSuggestion` objects with blog
+            blog.siteSuggestions = Set(suggestions)
 
             // Save the changes
-            try? blog.managedObjectContext?.save()
+            try? ContextManager.shared.mainContext.save()
 
             self.requests[blogId] = Date()
 
@@ -84,7 +93,7 @@ class SuggestionService {
         }, failure: { [weak self] error, _ in
             guard let `self` = self else { return }
 
-            completion(nil)
+            completion([])
 
             // remove blog from the currently being requested list
             self.blogsCurrentlyBeingRequested.removeAll { $0 == blogId}
@@ -106,7 +115,7 @@ class SuggestionService {
             return false
         }
 
-        return blog.supports(.mentions)
+        return blog.supports(.xposts)
     }
 
     private func defaultAccount() -> WPAccount? {
@@ -115,8 +124,8 @@ class SuggestionService {
         return accountService.defaultWordPressComAccount()
     }
 
-    private func retrievePersistedSuggestions(for blog: Blog) -> [UserSuggestion]? {
-        guard let suggestions = blog.userSuggestions else { return nil }
+    func retrievePersistedSuggestions(for blog: Blog) -> [SiteSuggestion]? {
+        guard let suggestions = blog.siteSuggestions else { return nil }
         return Array(suggestions)
     }
 

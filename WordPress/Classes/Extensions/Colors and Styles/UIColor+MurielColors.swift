@@ -136,6 +136,15 @@ extension UIColor {
         return .neutral(.shade5)
     }
 
+    /// Tertiary system fill
+     static var tertiaryFill: UIColor {
+         if #available(iOS 13, *) {
+             return .tertiarySystemFill
+         }
+
+         return .neutral(.shade5)
+     }
+
     /// Default text color: high contrast
     static var text: UIColor {
         if #available(iOS 13, *) {

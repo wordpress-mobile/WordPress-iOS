@@ -1,3 +1,5 @@
+import Foundation
+
 /// Those extensions are used by `QueryStore` to help with persisting data to disk.
 internal extension Encodable {
     func saveJSON(at url: URL, using encoder: JSONEncoder = JSONEncoder()) throws {
