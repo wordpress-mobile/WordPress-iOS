@@ -123,13 +123,14 @@ extension ReaderTabViewModel {
         settingsPresenter.present(on: from, animated: true, completion: nil)
     }
 
-    func presentFilter(from: UIView, completion: @escaping (String?) -> Void) {
+    func presentFilter(from: UIView, completion: @escaping (ReaderAbstractTopic?) -> Void) {
         filterTapped?(from, { [weak self] topic in
             self?.selectedFilter = topic
             if let topic = topic {
+                self?.setFilterContent(topic: topic)
                 self?.setContent?(ReaderContent(topic: topic))
             }
-            completion(topic?.title)
+            completion(topic)
         })
     }
 

@@ -193,11 +193,14 @@ extension ReaderTabView {
     /// Filter button
     @objc private func didTapFilterButton() {
         /// Present from the image view to align to the left hand side
-        viewModel.presentFilter(from: filterButton.imageView ?? filterButton) { [weak self] title in
-            if let title = title {
-                self?.resetFilterButton.isHidden = false
-                self?.setFilterButtonTitle(title)
+        viewModel.presentFilter(from: filterButton.imageView ?? filterButton) { [weak self] selectedTopic in
+
+            guard let selectedTopic = selectedTopic,
+                  let self = self else {
+                return
             }
+            self.resetFilterButton.isHidden = false
+            self.setFilterButtonTitle(selectedTopic.title)
         }
     }
 
