@@ -132,7 +132,7 @@ extension QuickStartChecklistManager: UITableViewDelegate {
             self?.tableView(tableView, completeTourAt: indexPath)
         }
         skip.backgroundColor = .error
-        
+
         return UISwipeActionsConfiguration(actions: [skip])
     }
 }
