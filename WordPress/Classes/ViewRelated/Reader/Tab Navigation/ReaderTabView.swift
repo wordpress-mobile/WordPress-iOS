@@ -13,6 +13,7 @@ class ReaderTabView: UIView {
 
     private let viewModel: ReaderTabViewModel
 
+    private var filteredTabs: [(index: Int, topic: ReaderAbstractTopic)] = []
 
     init(viewModel: ReaderTabViewModel) {
         mainStackView = UIStackView()
@@ -199,6 +200,13 @@ extension ReaderTabView {
                   let self = self else {
                 return
             }
+
+            let selectedIndex = self.tabBar.selectedIndex
+
+            // Remove any filters for selected index, then add new filter to array.
+            self.filteredTabs.removeAll(where: { $0.index == selectedIndex })
+            self.filteredTabs.append((index: selectedIndex, topic: selectedTopic))
+
             self.resetFilterButton.isHidden = false
             self.setFilterButtonTitle(selectedTopic.title)
         }
@@ -206,6 +214,7 @@ extension ReaderTabView {
 
     /// Reset filter button
     @objc private func didTapResetFilterButton() {
+        filteredTabs.removeAll(where: { $0.index == tabBar.selectedIndex })
         setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
         resetFilterButton.isHidden = true
         guard let tabItem = tabBar.currentlySelectedItem as? ReaderTabItem else {
