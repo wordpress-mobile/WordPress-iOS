@@ -24,7 +24,6 @@ import WordPressFlux
 
     /// Completion handler for selecting a filter from the available filter list
     var filterTapped: ((UIView, @escaping (ReaderAbstractTopic?) -> Void) -> Void)?
-    var selectedFilter: ReaderAbstractTopic?
 
     /// search
     var navigateToSearch: () -> Void
@@ -125,7 +124,6 @@ extension ReaderTabViewModel {
 
     func presentFilter(from: UIView, completion: @escaping (ReaderAbstractTopic?) -> Void) {
         filterTapped?(from, { [weak self] topic in
-            self?.selectedFilter = topic
             if let topic = topic {
                 self?.setFilterContent(topic: topic)
                 self?.setContent?(ReaderContent(topic: topic))
@@ -135,7 +133,6 @@ extension ReaderTabViewModel {
     }
 
     func resetFilter(selectedItem: FilterTabBarItem) {
-        selectedFilter = nil
         if let content = (selectedItem as? ReaderTabItem)?.content {
             setContent?(content)
         }
