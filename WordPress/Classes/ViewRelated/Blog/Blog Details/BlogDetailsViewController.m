@@ -834,6 +834,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      }]];
     }
 
+
+    if ([Feature enabled:FeatureFlagJetpackBackupAndRestore]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Backup", @"Noun. Links to a blog's Jetpack Backups screen.")
+                                                        image:[UIImage gridiconOfType:GridiconTypeCloudUpload]
+                                                     callback:^{
+                                                         [weakSelf showActivity];
+                                                     }]];
+    }
+
     if ([self.blog supports:BlogFeatureJetpackScan]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Scan", @"Noun. Links to a blog's Jetpack Scan screen.")
                                                         image:[UIImage gridiconOfType:GridiconTypeHistory]
