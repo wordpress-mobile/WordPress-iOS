@@ -9,12 +9,17 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
     @IBOutlet weak var body: UILabel!
     @IBOutlet weak var actionButton: UIButton!
 
+    var actionButtonHandler: ((UIButton) -> Void)?
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.body.numberOfLines = 0
+        body.numberOfLines = 0
     }
 
-    func configure(site: JetpackSiteRef, formattableActivity: FormattableActivity, restoreAction: JetpackRestoreAction) {
+    func configure(site: JetpackSiteRef,
+                   formattableActivity: FormattableActivity,
+                   restoreAction: JetpackRestoreAction,
+                   actionButtonHandler: @escaping (UIButton) -> Void) {
 
         let dateFormatter = ActivityDateFormatting.mediumDateFormatterWithTime(for: site)
         let publishedDate = dateFormatter.string(from: formattableActivity.activity.published)
@@ -33,5 +38,11 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
             body.text = String(format: descriptionFormat, publishedDate)
             actionButton.setTitle(NSLocalizedString("Create downloadable file", comment: "Button title for download backup action"), for: .normal)
         }
+
+        self.actionButtonHandler = actionButtonHandler
+    }
+
+    @IBAction func actionButtonTapped(_ sender: UIButton) {
+        actionButtonHandler?(sender)
     }
 }

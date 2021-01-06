@@ -72,7 +72,13 @@ class JetpackRestoreViewController: UITableViewController {
         ImmuTable.registerRows([SwitchRow.self], tableView: tableView)
 
         let headerView = JetpackRestoreHeaderView.loadFromNib()
-        headerView.configure(site: site, formattableActivity: activity, restoreAction: restoreAction)
+        headerView.configure(site: site,
+                             formattableActivity: activity,
+                             restoreAction: restoreAction,
+                             actionButtonHandler: { [weak self] _ in
+                                let warningVC = JetpackRestoreWarningViewController()
+                                self?.navigationController?.pushViewController(warningVC, animated: true)
+                             })
         self.tableView.tableHeaderView = headerView
     }
 
