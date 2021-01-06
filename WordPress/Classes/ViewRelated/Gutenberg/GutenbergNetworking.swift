@@ -31,7 +31,9 @@ struct GutenbergNetworkRequest {
     }
 
     private func dotComPath(with dotComID: NSNumber) -> String {
-        return path.replacingOccurrences(of: "/wp/v2/", with: "/wp/v2/sites/\(dotComID)/")
+        return path
+            .replacingOccurrences(of: "/wp/v2/", with: "/wp/v2/sites/\(dotComID)/")
+            .replacingOccurrences(of: "/wpcom/v2/", with: "/wpcom/v2/sites/\(dotComID)/")
     }
 
     // MARK: - Self-Hosed
