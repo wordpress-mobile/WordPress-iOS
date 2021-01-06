@@ -137,6 +137,11 @@ extension ReaderTabViewModel {
             setContent?(content)
         }
     }
+
+    func setFilterContent(topic: ReaderAbstractTopic) {
+        setContent?(ReaderContent(topic: topic))
+    }
+
 }
 
 // MARK: - Bottom Sheet

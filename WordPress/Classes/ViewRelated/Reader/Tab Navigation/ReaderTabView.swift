@@ -59,6 +59,7 @@ class ReaderTabView: UIView {
 }
 
 // MARK: - UI setup
+
 extension ReaderTabView {
 
     /// Call this method to set the title of the filter button
@@ -169,11 +170,23 @@ extension ReaderTabView {
 }
 
 // MARK: - Actions
+
 extension ReaderTabView {
+
     /// Tab bar
     @objc private func selectedTabDidChange(_ tabBar: FilterTabBar) {
-        didTapResetFilterButton()
-        addContentToContainerView()
+
+        // If the tab was previously filtered, refilter it.
+        // Otherwise reset the filter.
+        if let existingFilter = filteredTabs.first(where: { $0.index == tabBar.selectedIndex }) {
+            viewModel.setFilterContent(topic: existingFilter.topic)
+            resetFilterButton.isHidden = false
+            setFilterButtonTitle(existingFilter.topic.title)
+        } else {
+            didTapResetFilterButton()
+            addContentToContainerView()
+        }
+
         viewModel.showTab(at: tabBar.selectedIndex)
         toggleButtonsView()
     }
@@ -226,6 +239,7 @@ extension ReaderTabView {
 
 
 // MARK: - Ghost
+
 private extension ReaderTabView {
 
     /// Build the ghost tab bar
@@ -268,6 +282,7 @@ private extension ReaderTabView {
 }
 
 // MARK: - Appearance
+
 private extension ReaderTabView {
 
     enum Appearance {
@@ -294,6 +309,7 @@ private extension ReaderTabView {
 
 
 // MARK: - Accessibility
+
 extension ReaderTabView {
     private enum Accessibility {
         static let filterButtonIdentifier = "ReaderFilterButton"
