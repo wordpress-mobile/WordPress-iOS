@@ -72,6 +72,8 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
 
     private let activityServiceRemote: ActivityServiceRemote?
 
+    var onlyRewindableItems = false
+
     override func queriesChanged() {
         super.queriesChanged()
         processQueries()
@@ -236,9 +238,16 @@ private extension ActivityStore {
             after: afterDate,
             before: beforeDate,
             group: group,
-            success: { [actionDispatcher] (activities, hasMore) in
+            success: { [weak self, actionDispatcher] (activities, hasMore) in
+                guard let self = self else {
+                    return
+                }
+
                 let loadingMore = offset > 0
-                actionDispatcher.dispatch(ActivityAction.receiveActivities(site: site, activities: activities, hasMore: hasMore, loadingMore: loadingMore))
+                actionDispatcher.dispatch(ActivityAction.receiveActivities(
+                                            site: site,
+                                            activities: self.onlyRewindableItems ? activities.filter { $0.isRewindable } : activities,
+                                            hasMore: hasMore, loadingMore: loadingMore))
         },
             failure: { [actionDispatcher] error in
                 actionDispatcher.dispatch(ActivityAction.receiveActivitiesFailed(site: site, error: error))
