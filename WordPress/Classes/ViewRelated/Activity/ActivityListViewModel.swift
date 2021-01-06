@@ -53,12 +53,9 @@ class ActivityListViewModel: Observable {
     }
 
     init(site: JetpackSiteRef,
-         store: ActivityStore = StoreContainer.shared.activity,
-         onlyRewindableItems: Bool = false) {
+         store: ActivityStore = StoreContainer.shared.activity) {
         self.site = site
         self.store = store
-
-        store.onlyRewindableItems = onlyRewindableItems
 
         activitiesReceipt = store.query(.activities(site: site))
         rewindStatusReceipt = store.query(.restoreStatus(site: site))
