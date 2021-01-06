@@ -13,6 +13,17 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        applyStyles()
+    }
+
+    private func applyStyles() {
+        icon.tintColor = .success
+
+        title.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
+        title.textColor = .text
+
+        body.font = WPStyleGuide.fontForTextStyle(.body)
+        body.textColor = .textSubtle
         body.numberOfLines = 0
     }
 
