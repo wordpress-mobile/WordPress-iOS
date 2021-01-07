@@ -145,7 +145,14 @@ extension ReaderTabViewModel {
 extension ReaderTabViewModel {
     private func makeFilterSheetViewController(completion: @escaping (ReaderAbstractTopic) -> Void) -> FilterSheetViewController {
         let selectedTab = tabItems[selectedIndex]
-        let siteType = (selectedTab.content.topic as? ReaderTeamTopic)?.organizationType
+
+        let siteType: SiteOrganizationType = {
+            if let teamTopic = selectedTab.content.topic as? ReaderTeamTopic {
+                return teamTopic.organizationType
+            }
+            return .none
+        }()
+
         var filters = [ReaderSiteTopic.filterProvider(for: siteType)]
 
         if !selectedTab.shouldHideTagFilter {
