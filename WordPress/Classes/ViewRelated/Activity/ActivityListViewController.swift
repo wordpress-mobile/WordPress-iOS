@@ -275,8 +275,9 @@ extension ActivityListViewController: UITableViewDelegate {
 
         let rewindAction = UIContextualAction(style: .normal,
                                               title: NSLocalizedString("Rewind", comment: "Title displayed when user swipes on a rewind cell")) { [weak self] (_, _, _) in
-            self?.presentRewindFor(activity: row.activity)
+            self?.presentRestoreFor(activity: row.activity)
         }
+
         rewindAction.backgroundColor = .primary(.shade40)
 
         return UISwipeActionsConfiguration(actions: [rewindAction])
@@ -303,11 +304,42 @@ extension ActivityListViewController: NoResultsViewControllerDelegate {
     }
 }
 
-// MARK: - ActivityRewindPresenter
+// MARK: - ActivityPresenter
 
-extension ActivityListViewController: ActivityRewindPresenter {
+extension ActivityListViewController: ActivityPresenter {
 
-    func presentRewindFor(activity: Activity) {
+    func presentDetailsFor(activity: FormattableActivity) {
+        let detailVC = ActivityDetailViewController.loadFromStoryboard()
+
+        detailVC.site = site
+        detailVC.formattableActivity = activity
+        detailVC.presenter = self
+
+        self.navigationController?.pushViewController(detailVC, animated: true)
+    }
+
+    func presentBackupOrRestoreFor(activity: FormattableActivity) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
+        let restoreVC = JetpackRestoreViewController(site: site, activity: activity, restoreAction: .restore)
+        alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
+            self.present(UINavigationController(rootViewController: restoreVC), animated: true)
+        })
+
+        let downloadBackupTitle = NSLocalizedString("Download Backup", comment: "Title displayed for download backup action.")
+        let downloadBackupVC = JetpackRestoreViewController(site: site, activity: activity, restoreAction: .downloadBackup)
+        alertController.addDefaultActionWithTitle(downloadBackupTitle, handler: { _ in
+            self.present(UINavigationController(rootViewController: downloadBackupVC), animated: true)
+        })
+
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Title for cancel action. Dismisses the action sheet.")
+        alertController.addCancelActionWithTitle(cancelTitle)
+
+        self.present(alertController, animated: true, completion: nil)
+    }
+
+    func presentRestoreFor(activity: Activity) {
         guard activity.isRewindable, let rewindID = activity.rewindID else {
             return
         }
@@ -330,23 +362,6 @@ extension ActivityListViewController: ActivityRewindPresenter {
                                                       })
         self.present(alertController, animated: true)
     }
-
-}
-extension ActivityListViewController: ActivityDetailPresenter {
-
-    func presentDetailsFor(activity: FormattableActivity) {
-        let activityStoryboard = UIStoryboard(name: "Activity", bundle: nil)
-        guard let detailVC = activityStoryboard.instantiateViewController(withIdentifier: "ActivityDetailViewController") as? ActivityDetailViewController else {
-            return
-        }
-
-        detailVC.site = site
-        detailVC.formattableActivity = activity
-        detailVC.rewindPresenter = self
-
-        self.navigationController?.pushViewController(detailVC, animated: true)
-    }
-
 }
 
 // MARK: - Restores handling
