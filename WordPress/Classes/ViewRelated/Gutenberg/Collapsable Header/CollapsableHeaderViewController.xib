@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -222,12 +222,10 @@
                 <constraint firstItem="UfV-hu-KZx" firstAttribute="trailing" secondItem="U3M-sT-nKQ" secondAttribute="trailing" id="NjJ-wX-zxg"/>
                 <constraint firstAttribute="top" secondItem="0Qq-k5-kWr" secondAttribute="top" id="Rmj-qj-ujs"/>
                 <constraint firstItem="LGN-fD-c9Q" firstAttribute="trailing" secondItem="U3M-sT-nKQ" secondAttribute="trailing" id="USb-Ex-vxP"/>
-                <constraint firstAttribute="top" secondItem="U3M-sT-nKQ" secondAttribute="top" id="Wkr-ux-jJa"/>
                 <constraint firstAttribute="trailing" secondItem="0Qq-k5-kWr" secondAttribute="trailing" id="XxU-6u-RcX"/>
                 <constraint firstItem="0a4-LI-57Y" firstAttribute="trailing" secondItem="dmc-kV-0d8" secondAttribute="trailing" constant="20" id="cxE-O8-ska"/>
                 <constraint firstItem="0a4-LI-57Y" firstAttribute="trailing" secondItem="3RE-1V-jrs" secondAttribute="trailing" constant="20" id="fwl-OM-nLV"/>
                 <constraint firstItem="dmc-kV-0d8" firstAttribute="leading" secondItem="0a4-LI-57Y" secondAttribute="leading" constant="20" id="gMc-5F-M6S"/>
-                <constraint firstAttribute="leading" secondItem="U3M-sT-nKQ" secondAttribute="leading" id="i7c-8T-4PJ"/>
                 <constraint firstItem="UfV-hu-KZx" firstAttribute="leading" secondItem="U3M-sT-nKQ" secondAttribute="leading" id="msf-aW-ktk"/>
                 <constraint firstItem="0Qq-k5-kWr" firstAttribute="bottom" secondItem="LGN-fD-c9Q" secondAttribute="bottom" id="p8r-IQ-pZK"/>
                 <constraint firstItem="LGN-fD-c9Q" firstAttribute="top" secondItem="0a4-LI-57Y" secondAttribute="top" id="sGi-xD-H1K"/>

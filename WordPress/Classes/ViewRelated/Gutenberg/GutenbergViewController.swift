@@ -345,6 +345,8 @@ class GutenbergViewController: UIViewController, PostEditor {
         }, failure: { (error) in
             DDLogError("Error syncing JETPACK: \(String(describing: error))")
         })
+
+        SiteSuggestionService.shared.prefetchSuggestions(for: self.post.blog)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -890,6 +892,26 @@ extension GutenbergViewController {
             if let previousFirstResponder = self.previousFirstResponder {
                 previousFirstResponder.becomeFirstResponder()
             }
+
+            var analyticsName: String
+            switch type {
+            case .mention:
+                analyticsName = "user"
+            case .xpost:
+                analyticsName = "xpost"
+            }
+
+            var didSelectSuggestion = false
+            if case .success(_) = result {
+                didSelectSuggestion = true
+            }
+
+            let analyticsProperties: [String: Any] = [
+                "suggestion_type": analyticsName,
+                "did_select_suggestion": didSelectSuggestion
+            ]
+
+            WPAnalytics.track(.gutenbergSuggestionSessionFinished, properties: analyticsProperties)
         }
         addChild(suggestionsController)
         view.addSubview(suggestionsController.view)

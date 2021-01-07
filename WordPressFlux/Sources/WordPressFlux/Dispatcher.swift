@@ -1,3 +1,5 @@
+import Foundation
+
 /// An opaque type used by Dispatcher to keep track of registered handlers.
 ///
 public struct DispatchToken: Hashable, Equatable {

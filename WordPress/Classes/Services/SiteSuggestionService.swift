@@ -3,7 +3,8 @@ import Foundation
 /// A service to fetch and persist a list of sites that can be xpost to from a post.
 class SiteSuggestionService {
 
-    private var blogsCurrentlyBeingRequested = [Blog]()
+    private var blogsCurrentlyBeingRequested = [NSNumber]()
+    private var requests = [NSNumber: Date]()
 
     static let shared = SiteSuggestionService()
 
@@ -15,12 +16,32 @@ class SiteSuggestionService {
     */
     func suggestions(for blog: Blog, completion: @escaping ([SiteSuggestion]?) -> Void) {
 
-        if let suggestions = retrievePersistedSuggestions(for: blog), suggestions.isEmpty == false {
+        let throttleDuration: TimeInterval = 60 // seconds
+        let isBelowThrottleThreshold: Bool
+        if let id = blog.dotComID, let requestDate = requests[id] {
+            isBelowThrottleThreshold = Date().timeIntervalSince(requestDate) < throttleDuration
+        } else {
+            isBelowThrottleThreshold = false
+        }
+
+
+        if isBelowThrottleThreshold, let suggestions = retrievePersistedSuggestions(for: blog), suggestions.isEmpty == false {
             completion(suggestions)
         } else if ReachabilityUtils.isInternetReachable() {
             fetchAndPersistSuggestions(for: blog, completion: completion)
         } else {
             completion(nil)
+        }
+    }
+
+    /**
+     If no suggestions already in Core Data, fetch them from the network and store them in Core Data.
+     @param blog The blog/site to prefetch suggestions for
+     */
+    func prefetchSuggestions(for blog: Blog) {
+        let persistedSuggestions = retrievePersistedSuggestions(for: blog)
+        if persistedSuggestions == nil || persistedSuggestions?.isEmpty == true {
+            fetchAndPersistSuggestions(for: blog, completion: { _ in})
         }
     }
 
@@ -32,16 +53,16 @@ class SiteSuggestionService {
     */
     private func fetchAndPersistSuggestions(for blog: Blog, completion: @escaping ([SiteSuggestion]?) -> Void) {
 
-        // if there is already a request in place for this blog, just wait
-        guard !blogsCurrentlyBeingRequested.contains(blog) else { return }
+        guard let blogId = blog.dotComID, let hostname = blog.hostname else { return }
 
-        guard let hostname = blog.hostname else { return }
+        // if there is already a request in place for this blog, just wait
+        guard !blogsCurrentlyBeingRequested.contains(blogId) else { return }
 
         let suggestPath = "/wpcom/v2/sites/\(hostname)/xposts"
         let params = ["decode_html": true] as [String: AnyObject]
 
         // add this blog to currently being requested list
-        blogsCurrentlyBeingRequested.append(blog)
+        blogsCurrentlyBeingRequested.append(blogId)
 
         defaultAccount()?.wordPressComRestApi.GET(suggestPath, parameters: params, success: { [weak self] responseObject, httpResponse in
             guard let `self` = self else { return }
@@ -63,17 +84,19 @@ class SiteSuggestionService {
             // Save the changes
             try? ContextManager.shared.mainContext.save()
 
+            self.requests[blogId] = Date()
+
             completion(suggestions)
 
             // remove blog from the currently being requested list
-            self.blogsCurrentlyBeingRequested.removeAll { $0 == blog }
+            self.blogsCurrentlyBeingRequested.removeAll { $0 == blogId }
         }, failure: { [weak self] error, _ in
             guard let `self` = self else { return }
 
             completion([])
 
             // remove blog from the currently being requested list
-            self.blogsCurrentlyBeingRequested.removeAll { $0 == blog}
+            self.blogsCurrentlyBeingRequested.removeAll { $0 == blogId}
 
             DDLogVerbose("[Rest API] ! \(error.localizedDescription)")
         })
