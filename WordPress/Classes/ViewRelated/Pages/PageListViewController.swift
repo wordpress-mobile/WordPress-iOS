@@ -468,7 +468,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     override func createPost() {
         WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: "posts_view", WPAppAnalyticsKeyPostType: "page"], with: blog)
 
-        PageCoordinator.showLayoutPicker(from: self, forBlog: blog) { [weak self] (selectedLayout) in
+        PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] (selectedLayout) in
             self?.createPage(selectedLayout)
         }
     }
