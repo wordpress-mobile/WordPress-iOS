@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 extension UIApplication {
     @objc var mainWindow: UIWindow? {
