@@ -98,8 +98,10 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
             return
         }
 
+        let model = JetpackScanStatusViewModel(scan: scan, blog: blog)
+
         tableView.beginUpdates()
-        cell.configure(with: scan)
+        cell.configure(with: model)
         tableView.endUpdates()
     }
 
