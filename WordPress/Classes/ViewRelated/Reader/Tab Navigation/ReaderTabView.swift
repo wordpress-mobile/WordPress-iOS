@@ -47,7 +47,10 @@ class ReaderTabView: UIView {
             self?.hideGhost()
             self?.addContentToContainerView()
         }
+
         setupViewElements()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(topicUnfollowed(_:)), name: .ReaderTopicUnfollowed, object: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -178,10 +181,10 @@ extension ReaderTabView {
 
 // MARK: - Actions
 
-extension ReaderTabView {
+private extension ReaderTabView {
 
     /// Tab bar
-    @objc private func selectedTabDidChange(_ tabBar: FilterTabBar) {
+    @objc func selectedTabDidChange(_ tabBar: FilterTabBar) {
 
         // If the tab was previously filtered, refilter it.
         // Otherwise reset the filter.
@@ -198,7 +201,7 @@ extension ReaderTabView {
         toggleButtonsView()
     }
 
-    private func toggleButtonsView() {
+    func toggleButtonsView() {
         guard let tabItems = tabBar.items as? [ReaderTabItem] else {
             return
         }
@@ -212,7 +215,7 @@ extension ReaderTabView {
     }
 
     /// Filter button
-    @objc private func didTapFilterButton() {
+    @objc func didTapFilterButton() {
         /// Present from the image view to align to the left hand side
         viewModel.presentFilter(from: filterButton.imageView ?? filterButton) { [weak self] selectedTopic in
 
@@ -233,7 +236,7 @@ extension ReaderTabView {
     }
 
     /// Reset filter button
-    @objc private func didTapResetFilterButton() {
+    @objc func didTapResetFilterButton() {
         filteredTabs.removeAll(where: { $0.index == tabBar.selectedIndex })
         setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
         resetFilterButton.isHidden = true
@@ -242,6 +245,21 @@ extension ReaderTabView {
         }
         viewModel.resetFilter(selectedItem: tabItem)
     }
+
+    @objc func topicUnfollowed(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo,
+              let topic = userInfo[topicUserInfoKey] as? ReaderAbstractTopic,
+              let existingFilter = filteredTabs.first(where: { $0.topic == topic }) else {
+            return
+        }
+
+        filteredTabs.removeAll(where: { $0 == existingFilter })
+
+        if existingFilter.index == tabBar.selectedIndex {
+            didTapResetFilterButton()
+        }
+    }
+
 }
 
 
