@@ -86,8 +86,8 @@ class JetpackRestoreViewController: UITableViewController {
             let warningVC = JetpackRestoreWarningViewController()
             self.navigationController?.pushViewController(warningVC, animated: true)
         case .downloadBackup:
-            let progressVC = JetpackRestoreProgressViewController()
-            self.navigationController?.pushViewController(progressVC, animated: true)
+            let statusVC = JetpackRestoreStatusViewController()
+            self.navigationController?.pushViewController(statusVC, animated: true)
         }
     }
 

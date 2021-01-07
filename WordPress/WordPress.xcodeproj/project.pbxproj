@@ -2281,6 +2281,8 @@
 		FA00863D24EB68B100C863F2 /* FollowCommentsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA00863C24EB68B100C863F2 /* FollowCommentsService.swift */; };
 		FA1A543E25A6E2F60033967D /* RestoreWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1A543D25A6E2F60033967D /* RestoreWarningView.swift */; };
 		FA1A544025A6E3080033967D /* RestoreWarningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1A543F25A6E3080033967D /* RestoreWarningView.xib */; };
+		FA1A55EF25A6F0740033967D /* RestoreStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1A55EE25A6F0740033967D /* RestoreStatusView.swift */; };
+		FA1A55FF25A6F07F0033967D /* RestoreStatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1A55FE25A6F07F0033967D /* RestoreStatusView.xib */; };
 		FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */; };
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
@@ -2294,7 +2296,7 @@
 		FAE4201A1C5AEFE100C1D036 /* StartOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE420191C5AEFE100C1D036 /* StartOverViewController.swift */; };
 		FAE4327425874D140039EB8C /* ReaderSavedPostCellActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE4327325874D140039EB8C /* ReaderSavedPostCellActions.swift */; };
 		FAF13C5325A57ABD003EE470 /* JetpackRestoreWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF13C5225A57ABD003EE470 /* JetpackRestoreWarningViewController.swift */; };
-		FAF13E3025A59240003EE470 /* JetpackRestoreProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF13E2F25A59240003EE470 /* JetpackRestoreProgressViewController.swift */; };
+		FAF13E3025A59240003EE470 /* JetpackRestoreStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF13E2F25A59240003EE470 /* JetpackRestoreStatusViewController.swift */; };
 		FAFF153D1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFF153C1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift */; };
 		FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
@@ -5008,6 +5010,8 @@
 		FA00863C24EB68B100C863F2 /* FollowCommentsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCommentsService.swift; sourceTree = "<group>"; };
 		FA1A543D25A6E2F60033967D /* RestoreWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWarningView.swift; sourceTree = "<group>"; };
 		FA1A543F25A6E3080033967D /* RestoreWarningView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RestoreWarningView.xib; sourceTree = "<group>"; };
+		FA1A55EE25A6F0740033967D /* RestoreStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreStatusView.swift; sourceTree = "<group>"; };
+		FA1A55FE25A6F07F0033967D /* RestoreStatusView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RestoreStatusView.xib; sourceTree = "<group>"; };
 		FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Themes.swift"; sourceTree = "<group>"; };
 		FA2D12891BCED0AD006F2A15 /* WordPress 40.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 40.xcdatamodel"; sourceTree = "<group>"; };
 		FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementService.swift; sourceTree = "<group>"; };
@@ -5022,7 +5026,7 @@
 		FAE420191C5AEFE100C1D036 /* StartOverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartOverViewController.swift; sourceTree = "<group>"; };
 		FAE4327325874D140039EB8C /* ReaderSavedPostCellActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSavedPostCellActions.swift; sourceTree = "<group>"; };
 		FAF13C5225A57ABD003EE470 /* JetpackRestoreWarningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreWarningViewController.swift; sourceTree = "<group>"; };
-		FAF13E2F25A59240003EE470 /* JetpackRestoreProgressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreProgressViewController.swift; sourceTree = "<group>"; };
+		FAF13E2F25A59240003EE470 /* JetpackRestoreStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreStatusViewController.swift; sourceTree = "<group>"; };
 		FAFF153C1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SiteSettingsViewController+SiteManagement.swift"; sourceTree = "<group>"; };
 		FD0D42C11499F31700F5E115 /* WordPress 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 4.xcdatamodel"; sourceTree = "<group>"; };
 		FD21397E13128C5300099582 /* libiconv.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
@@ -10923,9 +10927,11 @@
 				FA4F660425946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift */,
 				FA4F661325946B8500EAA9F5 /* JetpackRestoreHeaderView.xib */,
 				FAF13C5225A57ABD003EE470 /* JetpackRestoreWarningViewController.swift */,
-				FAF13E2F25A59240003EE470 /* JetpackRestoreProgressViewController.swift */,
+				FAF13E2F25A59240003EE470 /* JetpackRestoreStatusViewController.swift */,
 				FA1A543D25A6E2F60033967D /* RestoreWarningView.swift */,
 				FA1A543F25A6E3080033967D /* RestoreWarningView.xib */,
+				FA1A55EE25A6F0740033967D /* RestoreStatusView.swift */,
+				FA1A55FE25A6F07F0033967D /* RestoreStatusView.xib */,
 			);
 			path = "Jetpack Restore";
 			sourceTree = "<group>";
@@ -11486,6 +11492,7 @@
 				17E363E022C4280A000E0C79 /* pride_icon_60pt.png in Resources */,
 				2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */,
 				17DC4C5822C5E6D60059CA11 /* open_source_icon_20pt@3x.png in Resources */,
+				FA1A55FF25A6F07F0033967D /* RestoreStatusView.xib in Resources */,
 				4058F41A1FF40EE1000D5559 /* PluginDetailViewHeaderCell.xib in Resources */,
 				406A0EF0224D39C50016AD6A /* Flags.xcassets in Resources */,
 				9A9E3FB0230EA7A300909BC4 /* StatsGhostTopCell.xib in Resources */,
@@ -13453,7 +13460,7 @@
 				4631359624AD068B0017E65C /* GutenbergLayoutPickerViewController.swift in Sources */,
 				D8225409219AB2030014D0E2 /* SiteInformation.swift in Sources */,
 				D83CA3A920842D190060E310 /* StockPhotosPageable.swift in Sources */,
-				FAF13E3025A59240003EE470 /* JetpackRestoreProgressViewController.swift in Sources */,
+				FAF13E3025A59240003EE470 /* JetpackRestoreStatusViewController.swift in Sources */,
 				F10465142554260600655194 /* BindableTapGestureRecognizer.swift in Sources */,
 				E62079DF1CF79FC200F5CD46 /* ReaderSearchSuggestion.swift in Sources */,
 				E64ECA4D1CE62041000188A0 /* ReaderSearchViewController.swift in Sources */,
@@ -13501,6 +13508,7 @@
 				57C2331822FE0EC900A3863B /* PostAutoUploadInteractor.swift in Sources */,
 				9829162F2224BC1C008736C0 /* SiteStatsDetailsViewModel.swift in Sources */,
 				F11C9F78243B3C9600921DDC /* MediaHost+ReaderPostContentProvider.swift in Sources */,
+				FA1A55EF25A6F0740033967D /* RestoreStatusView.swift in Sources */,
 				985793C822F23D7000643DBF /* CustomizeInsightsCell.swift in Sources */,
 				8261B4CC1EA8E13700668298 /* SVProgressHUD+Dismiss.m in Sources */,
 				329F8E5624DDAC61002A5311 /* DynamicHeightCollectionView.swift in Sources */,
