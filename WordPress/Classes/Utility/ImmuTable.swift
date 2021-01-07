@@ -360,9 +360,9 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
         return false
     }
 
-    open func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        if target.responds(to: #selector(UITableViewDelegate.tableView(_:editActionsForRowAt:))) {
-            return target.tableView?(tableView, editActionsForRowAt: indexPath)
+    public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if target.responds(to: #selector(UITableViewDelegate.tableView(_:trailingSwipeActionsConfigurationForRowAt:))) {
+            return target.tableView?(tableView, trailingSwipeActionsConfigurationForRowAt: indexPath)
         }
 
         return nil
