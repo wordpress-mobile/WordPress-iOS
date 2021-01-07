@@ -210,6 +210,8 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             return
         }
 
+        NotificationCenter.default.post(name: .ReaderTopicUnfollowed, object: nil, userInfo: [topicUserInfoKey: site])
+
         let service = ReaderTopicService(managedObjectContext: managedObjectContext())
         service.toggleFollowing(forSite: site, success: { [weak self] in
             let siteURL = URL(string: site.siteURL)
