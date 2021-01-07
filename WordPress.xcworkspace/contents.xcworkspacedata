@@ -5,7 +5,7 @@
       location = "group:WordPress/WordPress.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:WordPressFlux/WordPressFlux.xcodeproj">
+      location = "group:WordPressFlux">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
