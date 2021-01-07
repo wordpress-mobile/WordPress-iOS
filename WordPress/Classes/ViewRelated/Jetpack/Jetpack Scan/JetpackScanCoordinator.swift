@@ -9,25 +9,24 @@ protocol JetpackScanView {
 
 class JetpackScanCoordinator {
     private let service: JetpackScanService
-    private let site: JetpackSiteRef
+    private let blog: Blog
     private let view: JetpackScanView
 
     private(set) var scan: JetpackScan?
 
-    init(site: JetpackSiteRef,
-         view: JetpackScanView,
+    init(blog: Blog, view: JetpackScanView,
         service: JetpackScanService? = nil,
         context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
 
         self.service = service ?? JetpackScanService(managedObjectContext: context)
-        self.site = site
+        self.blog = blog
         self.view = view
     }
 
     public func start() {
         view.showLoading()
 
-        service.getScan(for: site) { [weak self] scanObj in
+        service.getScan(for: blog) { [weak self] scanObj in
             self?.scan = scanObj
             self?.view.render(scanObj)
         } failure: { [weak self] error in

@@ -1,7 +1,7 @@
 import UIKit
 
 class JetpackScanViewController: UIViewController, JetpackScanView {
-    private let site: JetpackSiteRef
+    private let blog: Blog
 
     // IBOutlets
     @IBOutlet weak var tableView: UITableView!
@@ -10,18 +10,9 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     var coordinator: JetpackScanCoordinator?
 
     // MARK: - Initializers
-    init(site: JetpackSiteRef) {
-        self.site = site
+    @objc init(blog: Blog) {
+        self.blog = blog
         super.init(nibName: nil, bundle: nil)
-    }
-
-    @objc convenience init?(blog: Blog) {
-        precondition(blog.dotComID != nil)
-        guard let siteRef = JetpackSiteRef(blog: blog) else {
-            return nil
-        }
-
-        self.init(site: siteRef)
     }
 
     required init?(coder: NSCoder) {
@@ -31,7 +22,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     // MARK: - View Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        coordinator = JetpackScanCoordinator(site: site, view: self)
+        coordinator = JetpackScanCoordinator(blog: blog, view: self)
         coordinator?.start()
 
         configureTableView()

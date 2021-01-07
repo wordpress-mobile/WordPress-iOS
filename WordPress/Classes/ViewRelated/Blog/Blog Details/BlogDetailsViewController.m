@@ -1467,7 +1467,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [weakSelf configureTableViewData];
         [weakSelf reloadTableViewPreservingSelection];
     } failure:^(NSError * _Nonnull error) {
-        DDLogError(@"An error occurred while checking Jetpack Scan availablity: %@", error);
+        DDLogError(@"An error occurred while checking Jetpack Scan availablity: %@", error.localizedDescription);
     }];
 }
 
@@ -1695,6 +1695,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showScan
 {
     JetpackScanViewController *controller = [[JetpackScanViewController alloc] initWithBlog:self.blog];
+
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
