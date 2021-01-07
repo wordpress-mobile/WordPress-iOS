@@ -1149,6 +1149,7 @@
 		8B24C4E3249A4C3E0005E8A5 /* OfflineReaderWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B24C4E2249A4C3E0005E8A5 /* OfflineReaderWebView.swift */; };
 		8B25F8DA24B7683A009DD4C9 /* ReaderCSSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B25F8D924B7683A009DD4C9 /* ReaderCSSTests.swift */; };
 		8B260D7E2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B260D7D2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift */; };
+		8B3626F925A665E500D7CCE3 /* UIApplication+mainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3626F825A665E500D7CCE3 /* UIApplication+mainWindow.swift */; };
 		8B3DECAB2388506400A459C2 /* SentryStartupEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3DECAA2388506400A459C2 /* SentryStartupEvent.swift */; };
 		8B51844525893F140085488D /* FilterBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B51844425893F140085488D /* FilterBarView.swift */; };
 		8B64B4B2247EC3A2009A1229 /* reader.css in Resources */ = {isa = PBXBuildFile; fileRef = 8B64B4B1247EC3A2009A1229 /* reader.css */; };
@@ -3677,6 +3678,7 @@
 		8B24C4E2249A4C3E0005E8A5 /* OfflineReaderWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineReaderWebView.swift; sourceTree = "<group>"; };
 		8B25F8D924B7683A009DD4C9 /* ReaderCSSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCSSTests.swift; sourceTree = "<group>"; };
 		8B260D7D2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostVisibilitySelectorViewController.swift; sourceTree = "<group>"; };
+		8B3626F825A665E500D7CCE3 /* UIApplication+mainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+mainWindow.swift"; sourceTree = "<group>"; };
 		8B3DECAA2388506400A459C2 /* SentryStartupEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentryStartupEvent.swift; sourceTree = "<group>"; };
 		8B51844425893F140085488D /* FilterBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterBarView.swift; sourceTree = "<group>"; };
 		8B64B4B1247EC3A2009A1229 /* reader.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = reader.css; sourceTree = "<group>"; };
@@ -9429,6 +9431,7 @@
 				F12E500223C7C5330068CB5E /* WKWebView+UserAgent.swift */,
 				57276E70239BDFD200515BE2 /* NotificationCenter+ObserveMultiple.swift */,
 				3250490624F988220036B47F /* Interpolation.swift */,
+				8B3626F825A665E500D7CCE3 /* UIApplication+mainWindow.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -13510,6 +13513,7 @@
 				D80BC7A4207487F200614A59 /* MediaLibraryPicker.swift in Sources */,
 				E663D1901C65383E0017F109 /* SharingAccountViewController.swift in Sources */,
 				93DEB88219E5BF7100F9546D /* TodayExtensionService.m in Sources */,
+				8B3626F925A665E500D7CCE3 /* UIApplication+mainWindow.swift in Sources */,
 				3FD83CBF246C751800381999 /* CoreDataIterativeMigrator.swift in Sources */,
 				17CE77EF20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift in Sources */,
 				400A2C832217A985000A8A59 /* TopViewedVideoStatsRecordValue+CoreDataClass.swift in Sources */,

@@ -228,7 +228,7 @@ public protocol ThemePresenter: class {
      *  @brief      Load theme screenshots at maximum displayed width
      */
     @objc open var screenshotWidth: Int = {
-        let windowSize = UIApplication.shared.keyWindow!.bounds.size
+        let windowSize = UIApplication.shared.mainWindow!.bounds.size
         let vWidth = Styles.imageWidthForFrameWidth(windowSize.width)
         let hWidth = Styles.imageWidthForFrameWidth(windowSize.height)
         let maxWidth = Int(max(hWidth, vWidth))

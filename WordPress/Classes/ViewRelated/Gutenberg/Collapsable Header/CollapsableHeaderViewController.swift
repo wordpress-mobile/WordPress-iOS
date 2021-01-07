@@ -71,7 +71,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     private var footerHeight: CGFloat {
         let verticalMargins: CGFloat = 16
         let buttonHeight: CGFloat = 44
-        let safeArea = (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0)
+        let safeArea = (UIApplication.shared.mainWindow?.safeAreaInsets.bottom ?? 0)
         return verticalMargins + buttonHeight + verticalMargins + safeArea
     }
     private var isShowingNoResults: Bool = false {
