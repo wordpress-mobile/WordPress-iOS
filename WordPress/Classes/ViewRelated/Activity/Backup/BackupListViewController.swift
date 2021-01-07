@@ -7,6 +7,8 @@ class BackupListViewController: ActivityListViewController {
         super.init(site: site, store: store, isFreeWPCom: isFreeWPCom)
 
         title = NSLocalizedString("Backup", comment: "Title for the Jetpack's backup list")
+
+        activityTypeFilterChip.isHidden = true
     }
 
     required init?(coder aDecoder: NSCoder) {
