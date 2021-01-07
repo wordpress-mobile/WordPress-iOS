@@ -1,11 +1,9 @@
 import WordPressFlux
 
-protocol ActivityRewindPresenter: class {
-    func presentRewindFor(activity: Activity)
-}
-
-protocol ActivityDetailPresenter: class {
+protocol ActivityPresenter: class {
     func presentDetailsFor(activity: FormattableActivity)
+    func presentBackupOrRestoreFor(activity: FormattableActivity)
+    func presentRestoreFor(activity: Activity)
 }
 
 class ActivityListViewModel: Observable {
@@ -160,7 +158,7 @@ class ActivityListViewModel: Observable {
         }
     }
 
-    func tableViewModel(presenter: ActivityDetailPresenter) -> ImmuTable {
+    func tableViewModel(presenter: ActivityPresenter) -> ImmuTable {
         guard let activities = store.getActivities(site: site) else {
             return .Empty
         }
@@ -170,6 +168,14 @@ class ActivityListViewModel: Observable {
                 formattableActivity: formattableActivity,
                 action: { [weak presenter] (row) in
                     presenter?.presentDetailsFor(activity: formattableActivity)
+                },
+                actionButtonHandler: { [weak presenter] (button) in
+                    if !FeatureFlag.jetpackBackupAndRestore.enabled {
+                        presenter?.presentDetailsFor(activity: formattableActivity)
+                        return
+                    }
+
+                    presenter?.presentBackupOrRestoreFor(activity: formattableActivity)
                 }
             )
         })
