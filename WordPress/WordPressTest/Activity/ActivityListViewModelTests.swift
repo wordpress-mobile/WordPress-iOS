@@ -16,7 +16,7 @@ class ActivityListViewModelTests: XCTestCase {
 
         XCTAssertEqual(activityStoreMock.dispatchedAction, "loadMoreActivities")
         XCTAssertEqual(activityStoreMock.quantity, 20)
-        XCTAssertEqual(activityStoreMock.offset, 0)
+        XCTAssertEqual(activityStoreMock.offset, 20)
     }
 
     // Check if `loadMore` dispatchs the correct offset
@@ -28,10 +28,11 @@ class ActivityListViewModelTests: XCTestCase {
         activityStoreMock.state.activities[jetpackSiteRef] = [Activity.mock(), Activity.mock(), Activity.mock()]
 
         activityListViewModel.loadMore()
+        activityListViewModel.loadMore()
 
         XCTAssertEqual(activityStoreMock.dispatchedAction, "loadMoreActivities")
         XCTAssertEqual(activityStoreMock.quantity, 20)
-        XCTAssertEqual(activityStoreMock.offset, 3)
+        XCTAssertEqual(activityStoreMock.offset, 40)
     }
 
     // Check if `loadMore` dispatchs the correct after/before date and groups
