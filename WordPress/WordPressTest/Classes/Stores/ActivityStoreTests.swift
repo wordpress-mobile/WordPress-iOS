@@ -94,7 +94,7 @@ class ActivityStoreTests: XCTestCase {
         activityServiceMock.activitiesToReturn = [Activity.mock(isRewindable: true), Activity.mock()]
         activityServiceMock.hasMore = true
 
-        store.onlyRewindableItems = true
+        store.onlyRestorableItems = true
         dispatch(.loadMoreActivities(site: jetpackSiteRef, quantity: 10, offset: 20, afterDate: nil, beforeDate: nil, group: []))
 
         XCTAssertEqual(store.state.activities[jetpackSiteRef]?.filter { $0.isRewindable }.count, 1)

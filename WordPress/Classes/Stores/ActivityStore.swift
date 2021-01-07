@@ -72,7 +72,8 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
 
     private let activityServiceRemote: ActivityServiceRemote?
 
-    var onlyRewindableItems = false
+    /// When set to true, this store will only return items that are restorable
+    var onlyRestorableItems = false
 
     override func queriesChanged() {
         super.queriesChanged()
@@ -246,7 +247,7 @@ private extension ActivityStore {
                 let loadingMore = offset > 0
                 actionDispatcher.dispatch(ActivityAction.receiveActivities(
                                             site: site,
-                                            activities: self.onlyRewindableItems ? activities.filter { $0.isRewindable } : activities,
+                                            activities: self.onlyRestorableItems ? activities.filter { $0.isRewindable } : activities,
                                             hasMore: hasMore, loadingMore: loadingMore))
         },
             failure: { [actionDispatcher] error in

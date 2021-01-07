@@ -2,7 +2,7 @@ import Foundation
 
 class BackupListViewController: ActivityListViewController {
     override init(site: JetpackSiteRef, store: ActivityStore, isFreeWPCom: Bool = false) {
-        store.onlyRewindableItems = true
+        store.onlyRestorableItems = true
 
         super.init(site: site, store: store, isFreeWPCom: isFreeWPCom)
 
