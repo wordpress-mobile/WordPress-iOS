@@ -10920,18 +10920,42 @@
 			path = Logging;
 			sourceTree = "<group>";
 		};
-		FA4F65B52594589C00EAA9F5 /* Jetpack Restore */ = {
+		FA1A563825A708BF0033967D /* Restore Options */ = {
 			isa = PBXGroup;
 			children = (
 				FA4F65A62594337300EAA9F5 /* JetpackRestoreViewController.swift */,
 				FA4F660425946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift */,
 				FA4F661325946B8500EAA9F5 /* JetpackRestoreHeaderView.xib */,
+			);
+			path = "Restore Options";
+			sourceTree = "<group>";
+		};
+		FA1A564725A708C90033967D /* Restore Warning */ = {
+			isa = PBXGroup;
+			children = (
 				FAF13C5225A57ABD003EE470 /* JetpackRestoreWarningViewController.swift */,
-				FAF13E2F25A59240003EE470 /* JetpackRestoreStatusViewController.swift */,
 				FA1A543D25A6E2F60033967D /* RestoreWarningView.swift */,
 				FA1A543F25A6E3080033967D /* RestoreWarningView.xib */,
+			);
+			path = "Restore Warning";
+			sourceTree = "<group>";
+		};
+		FA1A564825A708D30033967D /* Restore Status */ = {
+			isa = PBXGroup;
+			children = (
+				FAF13E2F25A59240003EE470 /* JetpackRestoreStatusViewController.swift */,
 				FA1A55EE25A6F0740033967D /* RestoreStatusView.swift */,
 				FA1A55FE25A6F07F0033967D /* RestoreStatusView.xib */,
+			);
+			path = "Restore Status";
+			sourceTree = "<group>";
+		};
+		FA4F65B52594589C00EAA9F5 /* Jetpack Restore */ = {
+			isa = PBXGroup;
+			children = (
+				FA1A563825A708BF0033967D /* Restore Options */,
+				FA1A564725A708C90033967D /* Restore Warning */,
+				FA1A564825A708D30033967D /* Restore Status */,
 			);
 			path = "Jetpack Restore";
 			sourceTree = "<group>";
