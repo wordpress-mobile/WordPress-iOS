@@ -395,7 +395,7 @@ class BlockquoteTagProcessor: HtmlTagProcessor {
                 break
             }
 
-            scanner.currentIndex = scanner.string.index(scanner.currentIndex, offsetBy: pTag.count)
+            paragraphScanner.currentIndex = scanner.string.index(paragraphScanner.currentIndex, offsetBy: pTag.count)
             tempStr = ""
             str += marker
         }
