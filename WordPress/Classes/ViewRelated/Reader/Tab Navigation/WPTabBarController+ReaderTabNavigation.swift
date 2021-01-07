@@ -10,12 +10,13 @@ extension WPTabBarController {
     }
 
     override open var childForStatusBarStyle: UIViewController? {
-        var selectedController = selectedViewController
-        if let navController = selectedController as? UINavigationController {
-            selectedController = navController.topViewController
+        guard
+            let topViewController = readerNavigationController?.topViewController,
+            ((topViewController as? DefinesVariableStatusBarStyle) != nil)
+        else {
+            return nil
         }
-
-        return selectedController
+        return topViewController
     }
 }
 
