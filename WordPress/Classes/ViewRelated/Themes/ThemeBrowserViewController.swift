@@ -377,8 +377,8 @@ public protocol ThemePresenter: class {
         let keyboardHeight = collectionView.frame.maxY - keyboardFrame.origin.y
 
         collectionView.contentInset.bottom = keyboardHeight
-        collectionView.scrollIndicatorInsets.top = searchBarHeight
-        collectionView.scrollIndicatorInsets.bottom = keyboardHeight
+        collectionView.verticalScrollIndicatorInsets.top = searchBarHeight
+        collectionView.verticalScrollIndicatorInsets.bottom = keyboardHeight
     }
 
     @objc open func keyboardWillHide(_ notification: Foundation.Notification) {
@@ -386,8 +386,8 @@ public protocol ThemePresenter: class {
 
         collectionView.contentInset.top = view.safeAreaInsets.top
         collectionView.contentInset.bottom = tabBarHeight
-        collectionView.scrollIndicatorInsets.top = searchBarHeight
-        collectionView.scrollIndicatorInsets.bottom = tabBarHeight
+        collectionView.verticalScrollIndicatorInsets.top = searchBarHeight
+        collectionView.verticalScrollIndicatorInsets.bottom = tabBarHeight
     }
 
     fileprivate func localKeyboardFrameFromNotification(_ notification: Foundation.Notification) -> CGRect {
@@ -685,7 +685,7 @@ public protocol ThemePresenter: class {
         if sections[1] == .themes || sections[1] == .customThemes {
             setInfoSectionHidden(false)
         }
-        collectionView.scrollIndicatorInsets.top = view.safeAreaInsets.top
+        collectionView.verticalScrollIndicatorInsets.top = view.safeAreaInsets.top
     }
 
     fileprivate func setInfoSectionHidden(_ hidden: Bool) {
