@@ -245,10 +245,13 @@ private extension ActivityStore {
                 }
 
                 let loadingMore = offset > 0
-                actionDispatcher.dispatch(ActivityAction.receiveActivities(
-                                            site: site,
-                                            activities: self.onlyRestorableItems ? activities.filter { $0.isRewindable } : activities,
-                                            hasMore: hasMore, loadingMore: loadingMore))
+                actionDispatcher.dispatch(
+                    ActivityAction.receiveActivities(
+                        site: site,
+                        activities: self.onlyRestorableItems ? activities.filter { $0.isRewindable } : activities,
+                        hasMore: hasMore,
+                        loadingMore: loadingMore)
+                )
         },
             failure: { [actionDispatcher] error in
                 actionDispatcher.dispatch(ActivityAction.receiveActivitiesFailed(site: site, error: error))
