@@ -2,7 +2,7 @@ import Foundation
 
 class PageCoordinator {
     typealias TemplateSelectionCompletion = (_ layout: PageTemplateLayout?) -> Void
-    
+
     static func showLayoutPickerIfNeeded(from controller: UIViewController, forBlog blog: Blog, completion: @escaping TemplateSelectionCompletion) {
         if blog.isGutenbergEnabled {
             showLayoutPicker(from: controller, forBlog: blog, completion)
