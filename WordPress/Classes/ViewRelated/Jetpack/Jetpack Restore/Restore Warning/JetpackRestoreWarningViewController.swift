@@ -12,6 +12,16 @@ class JetpackRestoreWarningViewController: UIViewController {
 
     private func configureWarningView() {
         let warningView = RestoreWarningView.loadFromNib()
+
+        warningView.confirmHandler = { [weak self] in
+            let statusVC = JetpackRestoreStatusViewController()
+            self?.navigationController?.pushViewController(statusVC, animated: true)
+        }
+
+        warningView.cancelHandler = { [weak self] in
+            self?.dismiss(animated: true)
+        }
+
         warningView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(warningView)
         view.pinSubviewToAllEdges(warningView)

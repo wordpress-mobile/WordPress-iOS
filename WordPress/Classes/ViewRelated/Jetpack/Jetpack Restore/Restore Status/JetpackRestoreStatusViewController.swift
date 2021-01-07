@@ -20,6 +20,11 @@ class JetpackRestoreStatusViewController: UIViewController {
 
     private func configureRestoreStatusView() {
         let statusView = RestoreStatusView.loadFromNib()
+
+        statusView.notifyMeHandler = { [weak self] in
+            self?.dismiss(animated: true)
+        }
+
         statusView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(statusView)
         view.pinSubviewToAllEdges(statusView)

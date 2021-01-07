@@ -66,7 +66,7 @@ class RestoreStatusView: UIView, NibLoadable {
 
     // MARK: - IBAction
 
-    @IBAction func notifyMeButtonTapped(_ sender: Any) {
+    @IBAction private func notifyMeButtonTapped(_ sender: Any) {
         notifyMeHandler?()
     }
 

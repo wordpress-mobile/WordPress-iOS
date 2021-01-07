@@ -69,12 +69,12 @@ class JetpackRestoreViewController: UITableViewController {
 
     private func configureTableHeaderView() {
         let headerView = JetpackRestoreHeaderView.loadFromNib()
-        headerView.configure(site: site,
-                             formattableActivity: activity,
-                             restoreAction: restoreAction,
-                             actionButtonHandler: { [weak self] _ in
-                                self?.actionButtonTapped()
-                             })
+        headerView.configure(site: site, formattableActivity: activity, restoreAction: restoreAction)
+
+        headerView.actionButtonHandler = { [weak self] in
+            self?.actionButtonTapped()
+        }
+
         self.tableView.tableHeaderView = headerView
     }
 
