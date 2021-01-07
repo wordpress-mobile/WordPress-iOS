@@ -318,7 +318,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         if CommandLine.arguments.contains("-no-animations") {
             UIView.setAnimationsEnabled(false)
             application.windows.first?.layer.speed = MAXFLOAT
-            application.keyWindow?.layer.speed = MAXFLOAT
+            application.mainWindow?.layer.speed = MAXFLOAT
         }
     }
 

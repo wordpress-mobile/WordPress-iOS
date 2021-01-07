@@ -34,7 +34,7 @@
             }
         }];
 
-        [UIApplication sharedApplication].keyWindow.rootViewController = controller;
+        [UIApplication sharedApplication].mainWindow.rootViewController = controller;
 
         [self showExplanationAlertForReAuthenticationDueToMissingAuthToken];
         isFixingAuthTokenIssue = YES;
@@ -113,7 +113,7 @@
                                                          }];
     [alertController addAction:cancelAction];
     [alertController addAction:deleteAction];
-    [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController
+    [[[UIApplication sharedApplication] mainWindow].rootViewController presentViewController:alertController
                                                                                    animated:YES
                                                                                  completion:nil];
 }
