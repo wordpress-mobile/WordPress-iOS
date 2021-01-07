@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,7 +13,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="Upg-EE-wRd" id="p6H-P7-J7f">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="60.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0Gm-n3-CNm" userLabel="icon" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
@@ -32,20 +30,20 @@
                             <constraint firstAttribute="width" constant="24" id="wQf-nD-j4p"/>
                         </constraints>
                     </imageView>
-                    <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="myo-BJ-PwG">
-                        <rect key="frame" x="64" y="11" width="240" height="38.5"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="myo-BJ-PwG">
+                        <rect key="frame" x="64" y="11" width="240" height="39"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="TCy-wp-wTe">
-                                <rect key="frame" x="0.0" y="0.0" width="218" height="38.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="188" height="39"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="wDk-1k-6n4">
-                                        <rect key="frame" x="0.0" y="0.0" width="218" height="19.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="188" height="19.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="wVX-To-MrZ">
-                                        <rect key="frame" x="0.0" y="21.5" width="218" height="17"/>
+                                        <rect key="frame" x="0.0" y="21.5" width="188" height="17.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -57,21 +55,24 @@
                                 <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mPY-S3-ymc">
-                                <rect key="frame" x="222" y="0.0" width="18" height="38.5"/>
+                                <rect key="frame" x="196" y="0.0" width="44" height="39"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0lh-9o-ekV">
-                                        <rect key="frame" x="0.0" y="10.5" width="18" height="18"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L3G-1b-CDh">
+                                        <rect key="frame" x="0.0" y="-2.5" width="44" height="44"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="18" id="LgG-Ii-fpv"/>
-                                            <constraint firstAttribute="width" constant="18" id="mV7-T4-hKK"/>
+                                            <constraint firstAttribute="width" secondItem="L3G-1b-CDh" secondAttribute="height" id="FB5-fM-wVF"/>
+                                            <constraint firstAttribute="width" constant="44" id="gTg-wm-xrf"/>
                                         </constraints>
-                                    </imageView>
+                                        <connections>
+                                            <action selector="didTapActionButton:" destination="Upg-EE-wRd" eventType="touchUpInside" id="qjd-lg-dH0"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" priority="999" constant="18" id="60X-ML-RFP"/>
-                                    <constraint firstItem="0lh-9o-ekV" firstAttribute="centerY" secondItem="mPY-S3-ymc" secondAttribute="centerY" id="Ago-3T-bGB"/>
-                                    <constraint firstItem="0lh-9o-ekV" firstAttribute="centerX" secondItem="mPY-S3-ymc" secondAttribute="centerX" id="K83-tQ-VsU"/>
+                                    <constraint firstAttribute="width" priority="999" constant="44" id="60X-ML-RFP"/>
+                                    <constraint firstItem="L3G-1b-CDh" firstAttribute="centerX" secondItem="mPY-S3-ymc" secondAttribute="centerX" id="m13-0y-mXS"/>
+                                    <constraint firstItem="L3G-1b-CDh" firstAttribute="centerY" secondItem="mPY-S3-ymc" secondAttribute="centerY" id="nwb-ZK-mHe"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -94,11 +95,11 @@
             </tableViewCellContentView>
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
+                <outlet property="actionButton" destination="L3G-1b-CDh" id="Opc-ZR-25M"/>
+                <outlet property="actionButtonContainer" destination="mPY-S3-ymc" id="qaR-1A-xJG"/>
                 <outlet property="contentLabel" destination="wDk-1k-6n4" id="iL5-j2-jY5"/>
                 <outlet property="iconBackgroundImageView" destination="0Gm-n3-CNm" id="fGa-Im-Uyk"/>
                 <outlet property="iconImageView" destination="RzG-YS-PIa" id="ipG-B7-oYT"/>
-                <outlet property="rewindIcon" destination="0lh-9o-ekV" id="VWL-O9-f2T"/>
-                <outlet property="rewindIconContainer" destination="mPY-S3-ymc" id="qaR-1A-xJG"/>
                 <outlet property="summaryLabel" destination="wVX-To-MrZ" id="mTZ-pq-Wt4"/>
             </connections>
             <point key="canvasLocation" x="34" y="49.5"/>
