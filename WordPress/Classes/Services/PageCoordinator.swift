@@ -11,7 +11,7 @@ class PageCoordinator {
         }
     }
 
-    static func showLayoutPicker(from controller: UIViewController, forBlog blog: Blog, _ completion: @escaping TemplateSelectionCompletion) {
+    private static func showLayoutPicker(from controller: UIViewController, forBlog blog: Blog, _ completion: @escaping TemplateSelectionCompletion) {
         let rootViewController = GutenbergLayoutPickerViewController(blog: blog, completion: completion)
         let navigationController = GutenbergLightNavigationController(rootViewController: rootViewController)
         if #available(iOS 13.0, *) {
