@@ -5,7 +5,7 @@ class SiteSuggestionService {
 
     private var blogsCurrentlyBeingRequested = [NSNumber]()
     private var requests = [NSNumber: Date]()
-    var disabledBlogs = [NSNumber]()
+    private var disabledBlogs = [NSNumber]()
 
     static let shared = SiteSuggestionService()
 
