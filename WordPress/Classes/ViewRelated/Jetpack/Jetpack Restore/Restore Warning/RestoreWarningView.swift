@@ -36,9 +36,9 @@ class RestoreWarningView: UIView, NibLoadable {
         body.font = WPStyleGuide.fontForTextStyle(.body)
         body.textColor = .text
         body.numberOfLines = 0
-        
+
         confirmButton.isPrimary = true
-        
+
         cancelButton.isPrimary = false
     }
 

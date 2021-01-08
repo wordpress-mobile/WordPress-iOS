@@ -52,7 +52,7 @@ class RestoreStatusView: UIView, NibLoadable {
         hint.font = WPStyleGuide.fontForTextStyle(.subheadline)
         hint.textColor = .textSubtle
         hint.numberOfLines = 0
-        
+
         notifyMeButton.isPrimary = true
     }
 

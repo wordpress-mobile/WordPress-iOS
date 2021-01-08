@@ -27,7 +27,7 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
         body.numberOfLines = 0
         // Need to define preferredMaxLayoutWidth for multiline labels in a custom tableHeaderView
         body.preferredMaxLayoutWidth = body.bounds.width
-        
+
         actionButton.isPrimary = true
     }
 
