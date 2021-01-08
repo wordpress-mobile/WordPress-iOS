@@ -61,12 +61,16 @@ private extension CodingUserInfoKey {
     }
 
     convenience init?(data: Data) {
-        let decoder = NSKeyedUnarchiver(forReadingWith: data)
-        decoder.requiresSecureCoding = true
+        do {
+            let decoder = try NSKeyedUnarchiver(forReadingFrom: data)
+            decoder.requiresSecureCoding = true
 
-        self.init(coder: decoder)
+            self.init(coder: decoder)
 
-        decoder.finishDecoding()
+            decoder.finishDecoding()
+        } catch {
+            return nil
+        }
     }
 
     var data: Data {

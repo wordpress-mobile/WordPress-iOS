@@ -38,8 +38,12 @@ import MobileCoreServices
     }
 
     @objc convenience init?(data: Data) {
-        let decoder = NSKeyedUnarchiver(forReadingWith: data)
-        self.init(coder: decoder)
+        do {
+            let decoder = try NSKeyedUnarchiver(forReadingFrom: data)
+            self.init(coder: decoder)
+        } catch {
+            return nil
+        }
     }
 
     func encode(with aCoder: NSCoder) {
