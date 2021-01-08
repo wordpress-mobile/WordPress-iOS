@@ -7,6 +7,9 @@
 * [**] Page List: Adds duplicate page functionality [#15515]
 * [*] Invite People: add link to user roles definition web page. [#15530]
 * [***] Block Editor: Cross-post suggestions are now available by typing the + character (or long-pressing the toolbar button labelled with an @-symbol) in a post on a P2 site [#15139]
+* [***] Block Editor: Full-width and wide alignment support for Columns (https://github.com/wordpress-mobile/gutenberg-mobile/pull/2919)
+* [**] Block Editor: Image block - Add link picker to the block settings and enhance link settings with auto-hide options (https://github.com/wordpress-mobile/gutenberg-mobile/pull/2841)
+* [*] Block Editor: Fix button link setting, rel link will not be overwritten if modified by the user (https://github.com/wordpress-mobile/gutenberg-mobile/pull/2894)
 * [**] Reader: Following now only shows non-P2 sites. [#15585]
 * [**] Reader site filter: unseen post count is displayed for each site. [#15581]
 * [**] Reader site filter: selected filters now persist while in app.[#15594]
