@@ -2,12 +2,10 @@ import UIKit
 
 class JetpackScanViewController: UIViewController, JetpackScanView {
     private let blog: Blog
+    var coordinator: JetpackScanCoordinator?
 
     // IBOutlets
     @IBOutlet weak var tableView: UITableView!
-
-    //
-    var coordinator: JetpackScanCoordinator?
 
     // MARK: - Initializers
     @objc init(blog: Blog) {
@@ -30,16 +28,15 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
 
     // MARK: - JetpackScanView
     func render(_ scan: JetpackScan) {
-        print("Hello")
         tableView.reloadData()
     }
 
     func showLoading() {
-        print("Loading shown")
+
     }
 
     func showError() {
-        print("oops")
+
     }
 
     // MARK: - Private: 
@@ -54,10 +51,6 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     private struct Constants {
         static let statusCellIdentifier = "StatusCell"
         static let threatCellIdentifier = "ThreatCell"
-    }
-
-    private struct Strings {
-
     }
 }
 
