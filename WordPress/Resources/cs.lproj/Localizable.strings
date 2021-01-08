@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-16 11:54:16+0000 */
+/* Translation-Revision-Date: 2021-01-06 13:58:38+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: cs_CZ */
@@ -289,7 +289,7 @@
 "A title for the site" = "Přidat název pro tento web";
 
 /* An error message. */
-"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "Platná emailová adresa se důležitá pro ověření a propojení. Vraťte se na předchozí obrazovku a zadejte platný email.";
+"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "Platná e-mailová adresa se důležitá pro ověření a propojení. Vraťte se na předchozí obrazovku a zadejte platný e-mail.";
 
 /* Shown when a user types a non-number into the two factor field. */
 "A verification code will only contain numbers." = "A verification code will only contain numbers.";
@@ -1457,7 +1457,7 @@
 "Connections" = "Připojení";
 
 /* Support email label. */
-"Contact Email" = "Kontaktní email";
+"Contact Email" = "Kontaktní e-mail";
 
 /* Button label for contacting support
    Button to contact support on Start Over settings page
@@ -2130,34 +2130,34 @@
    Email Notifications Channel
    Label for email followers
    Register Domain - Domain contact information field Email */
-"Email" = "Email";
+"Email" = "E-mail";
 
 /* Accessibility label for the email address text field.
    Placeholder for a textfield. The user may enter their email address.
    Placeholder for the email address textfield. */
-"Email address" = "Emailová adresa";
+"Email address" = "E-mailová adresa";
 
 /* Notification Settings Channel */
-"Email from WordPress.com" = "Email od WordPress.com";
+"Email from WordPress.com" = "E-mail od WordPress.com";
 
 /* Noun. The title of an item in a list. */
-"Email me new comments" = "Pošlete mi email, když přibude nový komentář";
+"Email me new comments" = "Pošlete mi e-mail, když přibude nový komentář";
 
 /* The title of an item in a list. */
-"Email me new posts" = "Pošlete mi email, když bude publikovaný nový příspěvek";
+"Email me new posts" = "E-maily s novými příspěvky";
 
 /* translators: sample content for \"Team\" page template */
 "Email me: <a href=\"mailto:mail@example.com\">mail@example.com<\/a>" = "Email me: <a href=\"mailto:mail@example.com\">mail@example.com<\/a>";
 
 /* Username Placeholder */
-"Email or Username of the person that should receive your invitation." = "Email nebo uživatelské jméno od osoby, která obdržela pozvání od vás.";
+"Email or Username of the person that should receive your invitation." = "E-mail nebo uživatelské jméno od osoby, která obdržela pozvání od vás.";
 
 /* A placeholder for the username textfield.
    Invite Username Placeholder */
-"Email or Username..." = "Email nebo uživatelské jméno...";
+"Email or Username..." = "E-mail nebo uživatelské jméno...";
 
 /* Overlay message displayed when export content started */
-"Email sent!" = "Email poslán!";
+"Email sent!" = "E-mail poslán!";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
    Label for size of media when the cache is empty. */
@@ -4229,7 +4229,7 @@ translators: sample content for \"Services\" page template */
 "Please enter a valid Country" = "Zadejte zemi";
 
 /* Register Domain - Domain contact information validation error message for an input field */
-"Please enter a valid Email" = "Zadejte email";
+"Please enter a valid Email" = "Zadejte e-mail";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid First Name" = "Zadejte křestní jméno";
@@ -4247,10 +4247,10 @@ translators: sample content for \"Services\" page template */
 "Please enter a valid URL" = "Zadejte prosím správnou URL adresu";
 
 /* Register Domain - Domain contact information validation error message for an input field */
-"Please enter a valid address" = "Zadejte platnou emailovou adresu";
+"Please enter a valid address" = "Zadejte platnou e-mailovou adresu";
 
 /* Error message displayed when the user attempts use an invalid email address. */
-"Please enter a valid email address." = "Zadejte prosím platnou emailovou adresu.";
+"Please enter a valid email address." = "Zadejte prosím platnou e-mailovou adresu.";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "Zadejte telefonní číslo";
@@ -4844,7 +4844,7 @@ translators: sample content for \"Services\" page template */
 "Require manual approval for everyone's comments." = "Manuálně schvalovat veškeré komentáře.";
 
 /* Settings: Comments Approval settings */
-"Require name and email" = "Vyžadovat jméno a email";
+"Require name and email" = "Vyžadovat jméno a e-mail";
 
 /* Jetpack Settings: Require two-step authentication */
 "Require two-step authentication" = "Require two-step authentication";
@@ -5014,7 +5014,7 @@ translators: sample content for \"Services\" page template */
 "Scan" = "Scan";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Rozvrh";
+"Schedule" = "Naplánovat";
 
 /* Label for the button that schedules the post */
 "Schedule Now" = "Schedule Now";
@@ -5277,7 +5277,7 @@ translators: sample content for \"Services\" page template */
 "Settings for notifications that appear in the Notifications tab." = "Nastavení upozornění, které se zobrazí v záložce oznámení.";
 
 /* Descriptive text for the Email Notifications Settings */
-"Settings for notifications that are sent to the email tied to your account." = "Nastavení upozornění, které jsou odesílány na email vázáný na váš účet.";
+"Settings for notifications that are sent to the email tied to your account." = "Nastavení upozornění, které jsou odesílány na e-mail vázáný na váš účet.";
 
 /* Descriptive text for the Push Notifications Settings */
 "Settings for push notifications that appear on your mobile device." = "Nastavení pro push notifikací, které se objeví na vašem mobilním zařízení.";
@@ -5541,10 +5541,10 @@ translators: sample content for \"Services\" page template */
 "Sorry, site addresses must have letters too!" = "Adresa webu musí obsahovat také nějaké písmeno!";
 
 /* Error message displayed when the entered email is not available. */
-"Sorry, that email address is already being used!" = "Tato emailová adresa je již používána";
+"Sorry, that email address is already being used!" = "Tato e-mailová adresa je již používána";
 
 /* No comment provided by engineer. */
-"Sorry, that email address is not allowed!" = "Zvolená emailová adresa není bohužel povolena!";
+"Sorry, that email address is not allowed!" = "Zvolená e-mailová adresa není bohužel povolena!";
 
 /* This error message occurs when a user tries to create an account with a weak password. */
 "Sorry, that password does not meet our security guidelines. Please choose a password with a minimum length of six characters, mixing uppercase letters, lowercase letters, numbers and symbols." = "Heslo nesplňuje naše zásady zabezpečení. Zvolte si heslo o minimální délce šesti znaků, obsahující velká písmena, malá písmena, číslice a symboly.";
@@ -5896,7 +5896,7 @@ translators: sample content for \"Services\" page template */
 "That doesn't look like a WordPress site." = "Vypadá to, že toto není WordPress web.";
 
 /* No comment provided by engineer. */
-"That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days." = "Tato emailová adresa již byla použita. Zkontrolujte prosím, zda nemáte v doručené poště aktivační email. Pokud aktivaci neprovedete hned, můžete zkusit znovu za pár dní.";
+"That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days." = "Tato e-mailová adresa již byla použita. Zkontrolujte prosím, zda nemáte v doručené poště aktivační e-mail. Pokud aktivaci neprovedete hned, můžete zkusit znovu za pár dní.";
 
 /* No comment provided by engineer. */
 "That site address is not allowed." = "Tato adresa webu není povolena.";
@@ -6055,7 +6055,7 @@ translators: sample content for \"Services\" page template */
 "There has been an unexpected error." = "There has been an unexpected error.";
 
 /* Displayed when there's a pending Email Change. The variable is the new email address. */
-"There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "Čeká se na aktualizaci vaší emailové schránky na adrese %@. Zkontrolujte doručenou poštu a potvrďte potvrzovací odkaz.";
+"There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "Čeká se na aktualizaci vaší e-mailové schránky na adrese %@. Zkontrolujte doručenou poštu a potvrďte potvrzovací odkaz.";
 
 /* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
 "There is an issue connecting to %@. Reconnect to continue publicizing." = "Je problém připojením k %@. Obnovení připojení k pokračování zveřejnění.";
@@ -6314,7 +6314,7 @@ translators: sample content for \"Services\" page template */
 "Total Comments" = "Total Comments";
 
 /* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Celkový počet emailových odběratelů: %1@";
+"Total Email Followers: %@" = "Celkový počet e-mailových odběratelů: %@";
 
 /* 'This Year' label for total number of likes. */
 "Total Likes" = "Total Likes";
@@ -6375,7 +6375,7 @@ translators: sample content for \"Services\" page template */
 "Try it now" = "Try it now";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */
-"Try with another email" = "Zkusit s jiným emailem";
+"Try with another email" = "Zkusit s jiným e-mailem";
 
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "Try with the site address";
@@ -7090,7 +7090,7 @@ translators: sample content for \"Services\" page template */
 "West" = "Západ";
 
 /* Title displayed in the Notification Settings for WordPress.com */
-"We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Budeme vždy odesílat důležité emaily týkající se vašeho účtu, ale můžete také získat některé zajímavé bonusy.";
+"We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Budeme vždy odesílat důležité e-maily týkající se vašeho účtu, ale můžete také získat některé zajímavé bonusy.";
 
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "We’ll walk you through the basics of building and growing your site";
@@ -7315,7 +7315,7 @@ translators: sample content for \"Services\" page template */
 "You can override these settings for individual posts." = "Tato nastavení můžete přepsat pro jednotlivé příspěvky.";
 
 /* No comment provided by engineer. */
-"You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Zvolenou emailovou adresu bohužel nemůžete pro registraci použít, protože máme s tímto poskytovatelem emailových služeb špatné zkušenosti a často se objevují problémy s nevyžádanými a nedoručenými emaily. Použijte prosím nějakou jinou emailovou adresu.";
+"You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Zvolenou e-mailovou adresu bohužel nemůžete pro registraci použít, protože máme s tímto poskytovatelem e-mailových služeb špatné zkušenosti a často se objevují problémy s nevyžádanými a nedoručenými e-maily. Použijte prosím nějakou jinou e-mailovou adresu.";
 
 /* Displayed when the user views drafts in the pages list and there are no pages */
 "You don't have any draft pages" = "You don't have any draft pages";
