@@ -129,8 +129,6 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
         tableView.tableFooterView = spinner
         tableView.tableFooterView?.isHidden = true
-
-        WPAnalytics.track(.activityLogViewed)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

@@ -100,6 +100,7 @@ import Foundation
     case activitylogFilterbarRangeButtonTapped
     case activitylogFilterbarSelectRange
     case activitylogFilterbarResetRange
+    case backupListOpened
 
     // Comments
     case commentViewed
@@ -281,6 +282,8 @@ import Foundation
             return "activitylog_filterbar_select_range"
         case .activitylogFilterbarResetRange:
             return "activitylog_filterbar_reset_range"
+        case .backupListOpened:
+            return "backup_list_opened"
 
         // Comments
         case .commentViewed:
