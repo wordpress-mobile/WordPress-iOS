@@ -86,6 +86,20 @@ class ActivityStoreTests: XCTestCase {
         XCTAssertFalse(store.state.hasMore)
     }
 
+    // Check if loadMoreActivities keep the activies and add the new retrieved ones
+    //
+    func testReturnOnlyRewindableActivities() {
+        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 9, username: "foo")
+        store.state.activities[jetpackSiteRef] = [Activity.mock()]
+        activityServiceMock.activitiesToReturn = [Activity.mock(isRewindable: true), Activity.mock()]
+        activityServiceMock.hasMore = true
+
+        store.onlyRestorableItems = true
+        dispatch(.loadMoreActivities(site: jetpackSiteRef, quantity: 10, offset: 20, afterDate: nil, beforeDate: nil, group: []))
+
+        XCTAssertEqual(store.state.activities[jetpackSiteRef]?.filter { $0.isRewindable }.count, 1)
+    }
+
     // refreshGroups call the service with the correct params
     //
     func testRefreshGroups() {

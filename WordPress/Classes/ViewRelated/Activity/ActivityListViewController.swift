@@ -32,7 +32,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         return spinner
     }()
 
-    fileprivate var viewModel: ActivityListViewModel
+    var viewModel: ActivityListViewModel
     private enum Constants {
         static let estimatedRowHeight: CGFloat = 62
     }
