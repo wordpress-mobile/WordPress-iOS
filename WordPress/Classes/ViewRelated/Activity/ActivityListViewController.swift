@@ -7,6 +7,21 @@ import WordPressFlux
 struct ActivityListConfiguration {
     /// The title of the View Controller
     let title: String
+
+    /// The title for when loading activities
+    let loadingTitle: String
+
+    /// Title for when there are no activities
+    let noActivitiesTitle: String
+
+    /// Subtitle for when there are no activities
+    let noActivitiesSubtitle: String
+
+    /// Title for when there are no activities for the selected filter
+    let noMatchingTitle: String
+
+    /// Subtitle for when there are no activities for the selected filter
+    let noMatchingSubtitle: String
 }
 
 /// ActivityListViewController is used as a base ViewController for
@@ -64,7 +79,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         self.site = site
         self.store = store
         self.isFreeWPCom = isFreeWPCom
-        self.viewModel = ActivityListViewModel(site: site, store: store)
+        self.viewModel = ActivityListViewModel(site: site, store: store, noResultsTexts: configuration)
 
         super.init(nibName: nil, bundle: nil)
 
