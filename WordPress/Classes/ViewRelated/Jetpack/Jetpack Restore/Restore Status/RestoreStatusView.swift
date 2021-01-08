@@ -13,7 +13,7 @@ class RestoreStatusView: UIView, NibLoadable {
     @IBOutlet private weak var progressValue: UILabel!
     @IBOutlet private weak var progressView: UIProgressView!
     @IBOutlet private weak var progressDescription: UILabel!
-    @IBOutlet private weak var notifyMeButton: UIButton!
+    @IBOutlet private weak var notifyMeButton: FancyButton!
     @IBOutlet private weak var hint: UILabel!
 
     var notifyMeHandler: (() -> Void)?
@@ -29,7 +29,7 @@ class RestoreStatusView: UIView, NibLoadable {
     // MARK: - Styling
 
     private func applyStyles() {
-        backgroundColor = .white
+        backgroundColor = .basicBackground
 
         icon.tintColor = .success
 
@@ -52,6 +52,8 @@ class RestoreStatusView: UIView, NibLoadable {
         hint.font = WPStyleGuide.fontForTextStyle(.subheadline)
         hint.textColor = .textSubtle
         hint.numberOfLines = 0
+        
+        notifyMeButton.isPrimary = true
     }
 
     // MARK: - Configuration

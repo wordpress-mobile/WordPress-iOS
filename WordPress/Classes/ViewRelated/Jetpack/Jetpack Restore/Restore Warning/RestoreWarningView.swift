@@ -9,8 +9,8 @@ class RestoreWarningView: UIView, NibLoadable {
     @IBOutlet private weak var icon: UIImageView!
     @IBOutlet private weak var title: UILabel!
     @IBOutlet private weak var body: UILabel!
-    @IBOutlet private weak var confirmButton: UIButton!
-    @IBOutlet private weak var cancelButton: UIButton!
+    @IBOutlet private weak var confirmButton: FancyButton!
+    @IBOutlet private weak var cancelButton: FancyButton!
 
     var confirmHandler: (() -> Void)?
     var cancelHandler: (() -> Void)?
@@ -26,7 +26,7 @@ class RestoreWarningView: UIView, NibLoadable {
     // MARK: - Styling
 
     private func applyStyles() {
-        backgroundColor = .white
+        backgroundColor = .basicBackground
 
         icon.tintColor = .error
 
@@ -36,6 +36,10 @@ class RestoreWarningView: UIView, NibLoadable {
         body.font = WPStyleGuide.fontForTextStyle(.body)
         body.textColor = .text
         body.numberOfLines = 0
+        
+        confirmButton.isPrimary = true
+        
+        cancelButton.isPrimary = false
     }
 
     // MARK: - Configuration

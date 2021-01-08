@@ -7,7 +7,7 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
     @IBOutlet weak var icon: UIImageView!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var body: UILabel!
-    @IBOutlet weak var actionButton: UIButton!
+    @IBOutlet weak var actionButton: FancyButton!
 
     var actionButtonHandler: (() -> Void)?
 
@@ -25,6 +25,10 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
         body.font = WPStyleGuide.fontForTextStyle(.body)
         body.textColor = .textSubtle
         body.numberOfLines = 0
+        // Need to define preferredMaxLayoutWidth for multiline labels in a custom tableHeaderView
+        body.preferredMaxLayoutWidth = body.bounds.width
+        
+        actionButton.isPrimary = true
     }
 
     func configure(site: JetpackSiteRef,
