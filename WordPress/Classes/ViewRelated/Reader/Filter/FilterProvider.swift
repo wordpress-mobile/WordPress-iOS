@@ -148,6 +148,7 @@ extension ReaderSiteTopic {
                     return TableDataItem(topic: topic, configure: { cell in
                         cell.textLabel?.text = topic.title
                         cell.detailTextLabel?.text = topic.siteURL
+                        addUnseenPostCount(topic, with: cell)
                     })
                 }
             }
@@ -178,6 +179,51 @@ extension ReaderSiteTopic {
         let siteService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         let sites = siteService.allSiteTopics() ?? []
         completion(.success(sites))
+    }
+
+    /// Adds a custom accessory view displaying the unseen post count.
+    ///
+    private static func addUnseenPostCount(_ topic: ReaderSiteTopic, with cell: UITableViewCell) {
+
+        // Always reset first.
+        cell.accessoryView = nil
+
+        guard topic.unseenCount > 0 else {
+            return
+        }
+
+        // Create background view
+        let unseenCountView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: UnseenCountConstants.viewSize))
+        unseenCountView.layer.cornerRadius = UnseenCountConstants.cornerRadius
+        unseenCountView.backgroundColor =  .tertiaryFill
+
+        // Create count label
+        let countLabel = UILabel()
+        countLabel.font = WPStyleGuide.subtitleFont()
+        countLabel.textColor = .text
+        countLabel.backgroundColor = .clear
+        countLabel.text = topic.unseenCount.abbreviatedString()
+
+        let accessibilityFormat = topic.unseenCount == 1 ? UnseenCountConstants.singularUnseen : UnseenCountConstants.pluralUnseen
+        countLabel.accessibilityLabel = String(format: accessibilityFormat, topic.unseenCount)
+
+        countLabel.sizeToFit()
+
+        // Resize views
+        unseenCountView.frame.size.width = max(countLabel.frame.width + UnseenCountConstants.labelPadding, UnseenCountConstants.viewSize)
+        countLabel.center = unseenCountView.center
+
+        // Display in cell's accessory view
+        unseenCountView.addSubview(countLabel)
+        cell.accessoryView = unseenCountView
+    }
+
+    private struct UnseenCountConstants {
+        static let cornerRadius: CGFloat = 15
+        static let viewSize: CGFloat = 30
+        static let labelPadding: CGFloat = 20
+        static let singularUnseen = NSLocalizedString("%1$d unseen post", comment: "Format string for single unseen post count. The %1$d is a placeholder for the count.")
+        static let pluralUnseen = NSLocalizedString("%1$d unseen posts", comment: "Format string for plural unseen posts count. The %1$d is a placeholder for the count.")
     }
 
 }
