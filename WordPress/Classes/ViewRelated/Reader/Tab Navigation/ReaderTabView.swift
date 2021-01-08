@@ -13,6 +13,7 @@ class ReaderTabView: UIView {
 
     private let viewModel: ReaderTabViewModel
 
+    private var filteredTabs: [(index: Int, topic: ReaderAbstractTopic)] = []
 
     init(viewModel: ReaderTabViewModel) {
         mainStackView = UIStackView()
@@ -58,6 +59,7 @@ class ReaderTabView: UIView {
 }
 
 // MARK: - UI setup
+
 extension ReaderTabView {
 
     /// Call this method to set the title of the filter button
@@ -168,11 +170,23 @@ extension ReaderTabView {
 }
 
 // MARK: - Actions
+
 extension ReaderTabView {
+
     /// Tab bar
     @objc private func selectedTabDidChange(_ tabBar: FilterTabBar) {
-        didTapResetFilterButton()
-        addContentToContainerView()
+
+        // If the tab was previously filtered, refilter it.
+        // Otherwise reset the filter.
+        if let existingFilter = filteredTabs.first(where: { $0.index == tabBar.selectedIndex }) {
+            viewModel.setFilterContent(topic: existingFilter.topic)
+            resetFilterButton.isHidden = false
+            setFilterButtonTitle(existingFilter.topic.title)
+        } else {
+            didTapResetFilterButton()
+            addContentToContainerView()
+        }
+
         viewModel.showTab(at: tabBar.selectedIndex)
         toggleButtonsView()
     }
@@ -193,16 +207,27 @@ extension ReaderTabView {
     /// Filter button
     @objc private func didTapFilterButton() {
         /// Present from the image view to align to the left hand side
-        viewModel.presentFilter(from: filterButton.imageView ?? filterButton) { [weak self] title in
-            if let title = title {
-                self?.resetFilterButton.isHidden = false
-                self?.setFilterButtonTitle(title)
+        viewModel.presentFilter(from: filterButton.imageView ?? filterButton) { [weak self] selectedTopic in
+
+            guard let selectedTopic = selectedTopic,
+                  let self = self else {
+                return
             }
+
+            let selectedIndex = self.tabBar.selectedIndex
+
+            // Remove any filters for selected index, then add new filter to array.
+            self.filteredTabs.removeAll(where: { $0.index == selectedIndex })
+            self.filteredTabs.append((index: selectedIndex, topic: selectedTopic))
+
+            self.resetFilterButton.isHidden = false
+            self.setFilterButtonTitle(selectedTopic.title)
         }
     }
 
     /// Reset filter button
     @objc private func didTapResetFilterButton() {
+        filteredTabs.removeAll(where: { $0.index == tabBar.selectedIndex })
         setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
         resetFilterButton.isHidden = true
         guard let tabItem = tabBar.currentlySelectedItem as? ReaderTabItem else {
@@ -214,6 +239,7 @@ extension ReaderTabView {
 
 
 // MARK: - Ghost
+
 private extension ReaderTabView {
 
     /// Build the ghost tab bar
@@ -256,6 +282,7 @@ private extension ReaderTabView {
 }
 
 // MARK: - Appearance
+
 private extension ReaderTabView {
 
     enum Appearance {
@@ -282,6 +309,7 @@ private extension ReaderTabView {
 
 
 // MARK: - Accessibility
+
 extension ReaderTabView {
     private enum Accessibility {
         static let filterButtonIdentifier = "ReaderFilterButton"

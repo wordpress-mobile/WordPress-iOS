@@ -834,6 +834,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      }]];
     }
 
+
+    if ([Feature enabled:FeatureFlagJetpackBackupAndRestore]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Backup", @"Noun. Links to a blog's Jetpack Backups screen.")
+                                                        image:[UIImage gridiconOfType:GridiconTypeCloudUpload]
+                                                     callback:^{
+                                                         [weakSelf showBackup];
+                                                     }]];
+    }
+
     if ([self.blog supports:BlogFeatureJetpackScan]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Scan", @"Noun. Links to a blog's Jetpack Scan screen.")
                                                         image:[UIImage gridiconOfType:GridiconTypeHistory]
@@ -1690,6 +1699,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
+}
+
+- (void)showBackup
+{
+    BackupListViewController *controller = [[BackupListViewController alloc] initWithBlog:self.blog];
+    [self showDetailViewController:controller sender:self];
 }
 
 - (void)showThemes
