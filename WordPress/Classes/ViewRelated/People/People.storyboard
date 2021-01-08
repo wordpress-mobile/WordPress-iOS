@@ -443,14 +443,6 @@
             <point key="canvasLocation" x="1282" y="1519"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="5Qj-Ek-EUq">
-            <size key="intrinsicContentSize" width="39.5" height="16"/>
-        </designable>
-        <designable name="MH9-O4-5bD">
-            <size key="intrinsicContentSize" width="71" height="16"/>
-        </designable>
-    </designables>
     <inferredMetricsTieBreakers>
         <segue reference="e6P-Kc-Mxa"/>
     </inferredMetricsTieBreakers>
