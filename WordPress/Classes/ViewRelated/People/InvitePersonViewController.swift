@@ -504,6 +504,5 @@ extension InvitePersonViewController: UITextViewDelegate {
         performSegue(withIdentifier: "message", sender: nil)
         return false
     }
-    
-}
 
+}
