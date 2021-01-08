@@ -14,9 +14,10 @@ class JetpackScanCoordinator {
 
     private(set) var scan: JetpackScan?
 
-    init(blog: Blog, view: JetpackScanView,
-        service: JetpackScanService? = nil,
-        context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
+    init(blog: Blog,
+         view: JetpackScanView,
+         service: JetpackScanService? = nil,
+         context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
 
         self.service = service ?? JetpackScanService(managedObjectContext: context)
         self.blog = blog
