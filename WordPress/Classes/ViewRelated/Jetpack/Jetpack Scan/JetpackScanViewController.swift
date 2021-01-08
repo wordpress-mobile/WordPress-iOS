@@ -44,11 +44,8 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
 
     // MARK: - Private: 
     private func configureTableView() {
-        tableView.register(UINib(nibName: String(describing: JetpackScanStatusCell.self), bundle: nil),
-                           forCellReuseIdentifier: Constants.statusCellIdentifier)
-
-        tableView.register(UINib(nibName: String(describing: JetpackScanThreatCell.self), bundle: nil),
-                           forCellReuseIdentifier: Constants.threatCellIdentifier)
+        tableView.register(JetpackScanStatusCell.defaultNib, forCellReuseIdentifier: Constants.statusCellIdentifier)
+        tableView.register(JetpackScanThreatCell.defaultNib, forCellReuseIdentifier: Constants.threatCellIdentifier)
 
         tableView.tableFooterView = UIView()
     }

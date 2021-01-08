@@ -1,6 +1,6 @@
 import UIKit
 
-class JetpackScanThreatCell: UITableViewCell {
+class JetpackScanThreatCell: UITableViewCell, NibReusable {
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!

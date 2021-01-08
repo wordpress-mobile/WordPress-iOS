@@ -1,6 +1,6 @@
 import UIKit
 
-class JetpackScanStatusCell: UITableViewCell {
+class JetpackScanStatusCell: UITableViewCell, NibReusable {
     @IBOutlet weak var iconContainerView: UIView!
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
