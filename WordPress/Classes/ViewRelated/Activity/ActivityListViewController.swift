@@ -4,6 +4,11 @@ import SVProgressHUD
 import WordPressShared
 import WordPressFlux
 
+struct ActivityListConfiguration {
+    /// The title of the View Controller
+    let title: String
+}
+
 /// ActivityListViewController is used as a base ViewController for
 /// Jetpack's Activity Log and Backup
 ///
@@ -46,7 +51,16 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
     // MARK: - Constructors
 
-    init(site: JetpackSiteRef, store: ActivityStore, isFreeWPCom: Bool = false) {
+    init(site: JetpackSiteRef,
+         store: ActivityStore,
+         isFreeWPCom: Bool = false) {
+        fatalError("A configuration struct needs to be provided")
+    }
+
+    init(site: JetpackSiteRef,
+         store: ActivityStore,
+         configuration: ActivityListConfiguration,
+         isFreeWPCom: Bool = false) {
         self.site = site
         self.store = store
         self.isFreeWPCom = isFreeWPCom
@@ -73,7 +87,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         tableView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(userRefresh), for: .valueChanged)
 
-        title = NSLocalizedString("Activity", comment: "Title for the activity list")
+        title = configuration.title
     }
 
     @objc private func showCalendar() {

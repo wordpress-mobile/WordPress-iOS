@@ -4,9 +4,11 @@ class BackupListViewController: ActivityListViewController {
     override init(site: JetpackSiteRef, store: ActivityStore, isFreeWPCom: Bool = false) {
         store.onlyRestorableItems = true
 
-        super.init(site: site, store: store, isFreeWPCom: isFreeWPCom)
+        let activityListConfiguration = ActivityListConfiguration(
+            title: NSLocalizedString("Backup", comment: "Title for the Jetpack's backup list")
+        )
 
-        title = NSLocalizedString("Backup", comment: "Title for the Jetpack's backup list")
+        super.init(site: site, store: store, configuration: activityListConfiguration, isFreeWPCom: isFreeWPCom)
 
         activityTypeFilterChip.isHidden = true
     }
