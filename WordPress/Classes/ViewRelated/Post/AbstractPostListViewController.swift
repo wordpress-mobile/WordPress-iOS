@@ -299,7 +299,7 @@ class AbstractPostListViewController: UIViewController,
         definesPresentationContext = true
 
         searchController = UISearchController(searchResultsController: nil)
-        searchController.dimsBackgroundDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = false
 
         searchController.delegate = self
         searchController.searchResultsUpdater = self
