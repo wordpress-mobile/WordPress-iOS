@@ -4,6 +4,9 @@ import SVProgressHUD
 import WordPressShared
 import WordPressFlux
 
+/// ActivityListViewController is used as a base ViewController for
+/// Jetpack's Activity Log and Backup
+///
 class ActivityListViewController: UIViewController, TableViewContainer, ImmuTablePresenter {
     let site: JetpackSiteRef
     let store: ActivityStore
