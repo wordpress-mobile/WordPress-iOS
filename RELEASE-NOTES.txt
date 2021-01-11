@@ -1,6 +1,7 @@
 16.5
 -----
  
+* [*] In the Pages screen, the options to delete posts are styled to reflect that they are destructive actions, and show confirmation alerts. [#15622]
 * [*] In the Comments view, overly-large twemoji are sized the same as Apple's emoji. [#15503]
 * [*] Reader 'P2s': added ability to filter by site. [#15484]
 * [**] Choose a Domain will now return more options in the search results, sort the results to have exact matches first, and let you know if no exact matches were found. [#15482]
