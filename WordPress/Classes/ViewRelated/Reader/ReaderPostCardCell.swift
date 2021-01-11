@@ -82,7 +82,7 @@ protocol ReaderTopicsChipsDelegate: class {
 
     weak var topicChipsDelegate: ReaderTopicsChipsDelegate?
     var displayTopics: Bool = false
-    var isWPForTeams: Bool = false
+    var isP2Type: Bool = false
 
     // MARK: - Accessors
 
@@ -171,7 +171,7 @@ protocol ReaderTopicsChipsDelegate: class {
 
         imageLoader.prepareForReuse()
         displayTopics = false
-        isWPForTeams = false
+        isP2Type = false
 
         topicsCollectionView.collapse()
     }
@@ -352,7 +352,7 @@ private extension ReaderPostCardCell {
     }
 
     func setAuthorAvatar() {
-        guard isWPForTeams,
+        guard isP2Type,
               let contentProvider = contentProvider,
               let url = contentProvider.avatarURLForDisplay() else {
             authorAvatarImageView.isHidden = true
@@ -368,10 +368,10 @@ private extension ReaderPostCardCell {
             return
         }
 
-        authorNameLabel.isHidden = !isWPForTeams
-        arrowImageView.isHidden = !isWPForTeams
+        authorNameLabel.isHidden = !isP2Type
+        arrowImageView.isHidden = !isP2Type
 
-        if isWPForTeams {
+        if isP2Type {
             authorNameLabel.text = contentProvider.authorForDisplay()
             configureArrowImage()
         }

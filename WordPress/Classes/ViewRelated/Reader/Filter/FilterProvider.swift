@@ -68,6 +68,7 @@ class FilterProvider: Observable, FilterTabBarItem {
         self.section = section
         self.provider = provider
     }
+
     func refresh() {
         state = .loading
         provider() { [weak self] result in
@@ -114,9 +115,9 @@ extension ReaderSiteTopic {
     }
 
     private static func tableProvider(completion: @escaping (Result<[TableDataItem], Error>) -> Void) {
-        fetchFollowedSites(completion: { result in
+        let completionBlock: (Result<[ReaderSiteTopic], Error>) -> Void = { result in
             let itemResult = result.map { sites in
-                sites.map { topic in
+                sites.filter {!$0.isExternal}.map { topic in
                     return TableDataItem(topic: topic, configure: { cell in
                         cell.textLabel?.text = topic.title
                         cell.detailTextLabel?.text = topic.siteURL
@@ -124,20 +125,34 @@ extension ReaderSiteTopic {
                 }
             }
             completion(itemResult)
-        })
+        }
+
+        fetchStoredFollowedSites(completion: completionBlock)
+        fetchFollowedSites(completion: completionBlock)
     }
 
+    /// Fetch sites from remote service
+    ///
     private static func fetchFollowedSites(completion: @escaping (Result<[ReaderSiteTopic], Error>) -> Void) {
         let siteService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         siteService.fetchFollowedSites(success: {
-            completion(.success(siteService.allSiteTopics().filter { !$0.isExternal }))
+            completion(.success(siteService.allSiteTopics()))
         }, failure: { error in
-            let unknownRestAPIError = NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
-            completion(.failure(error ?? unknownRestAPIError))
             DDLogError("Could not sync sites: \(String(describing: error))")
+            let remoteServiceError = NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
+            completion(.failure(error ?? remoteServiceError))
         })
     }
+
+    /// Fetch sites from Core Data
+    ///
+    private static func fetchStoredFollowedSites(completion: @escaping (Result<[ReaderSiteTopic], Error>) -> Void) {
+        let siteService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let sites = siteService.allSiteTopics() ?? []
+        completion(.success(sites))
+    }
+
 }
 
 extension ReaderTagTopic {

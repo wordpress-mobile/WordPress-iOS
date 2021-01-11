@@ -5,13 +5,13 @@ class GutenbergGalleryUploadProcessorTests: XCTestCase {
 
     let idVariations = [
         """
-<!-- wp:gallery {"ids":[-708,-415,-701],"columns":3,"linkTo":"media"} -->
+<!-- wp:gallery {"ids":[-708,-415,-701],"columns":3,"linkTo":"file"} -->
 """,
         """
-<!-- wp:gallery {"ids":["-708","-415","-701"],"columns":3,"linkTo":"media"} -->
+<!-- wp:gallery {"ids":["-708","-415","-701"],"columns":3,"linkTo":"file"} -->
 """,
         """
-<!-- wp:gallery {"ids":[-708,-415,"-701"],"columns":3,"linkTo":"media"} -->
+<!-- wp:gallery {"ids":[-708,-415,"-701"],"columns":3,"linkTo":"file"} -->
 """,
     ]
 
@@ -55,7 +55,7 @@ class GutenbergGalleryUploadProcessorTests: XCTestCase {
 """
 
     let postResultContent = """
-<!-- wp:gallery {"columns":3,"ids":[708,415,701],"linkTo":"media"} -->
+<!-- wp:gallery {"columns":3,"ids":[708,415,701],"linkTo":"file"} -->
 <figure class="wp-block-gallery columns-3 is-cropped">
     <ul class="blocks-gallery-grid">
         <li class="blocks-gallery-item">

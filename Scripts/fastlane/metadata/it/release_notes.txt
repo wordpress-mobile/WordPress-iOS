@@ -1,1 +1,11 @@
-Siamo lieti di annunciare alcuni interessanti cambiamenti apportati all'app mobile WordPress. Quando si crea un sito, si ha la possibilità di scegliere subito una home page di design. Abbiamo anche reso più facile impostare le dimensioni delle immagini di copertina e delle colonne e i blocchi Pulsante e Icona social ora hanno un selettore di link. Abbiamo corretto i bug che sappiamo ti infastidivano di più, tra cui uno per cui le menzioni con @ che non funzionavano sui siti WP.com con plugin abilitati e un altro per cui i link "tel:" e "mailto:" nelle pagine dei contatti non venivano lanciati correttamente.
+Ecco cosa c'è di nuovo nell'ultimo rilascio: 
+
+L'editor a blocchi: ora puoi inserire in un articolo o in una pagina un blocco file che colloca un pulsante di scaricamento per file come documenti. Un aggiornamento relativo al blocco Galleria ha risolto un problema di caricamento che si verificava con l'editor chiuso.
+
+Creazione del sito: ora, quando costruisci pagine sul tuo sito, le opzioni di layout di pagina sono più facili da visualizzare e selezionare.
+
+Creazione di un articolo: desideri duplicare velocemente un articolo? Ora puoi farlo dal tuo elenco degli articoli.
+
+Il Reader: utilizzi P2, uno strumento per collaborare in team e in gruppo? Ora puoi leggere e seguire siti P2 in un nuovo stream.
+
+Commenti: vuoi iscriverti ai thread di commenti sui siti che segui o che ti interessano? Tocca il pulsante "Segui conversazione" nella visualizzazione Commenti.

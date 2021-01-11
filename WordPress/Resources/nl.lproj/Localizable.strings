@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-04 09:12:35+0000 */
+/* Translation-Revision-Date: 2020-12-18 09:05:58+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -367,6 +367,12 @@
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "Activiteiten logs";
 
+/* Label for the Activity Type filter button */
+"Activity Type" = "Type activiteit";
+
+/* Label for the Activity Type filter button when there are more than 1 activity type selected */
+"Activity Type (%1$d)" = "Type activiteit (%1$d)";
+
 /* Remove asset from media picker list */
 "Add" = "Voeg toe";
 
@@ -412,8 +418,7 @@
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Voeg een profielfoto toe";
 
-/* Title of a feature to add a new topic to the topics subscribed by the user.
-   Title. Lets the user know that they can use this feature to subscribe to new topics. */
+/* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "Voeg een onderwerp toe";
 
 /* Hint for the reader CSS URL field */
@@ -729,9 +734,6 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Weet je zeker dat je wilt updaten?";
 
-/* A short message asking the user if they wish to unfollow the specified topic. The %@ is a placeholder for the name of the topic. */
-"Are you sure you wish to remove the topic '%@'?" = "Weet je zeker dat je het onderwerp '%@' wil verwijderen?";
-
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Vanaf 1 augustus 2018 kunnen berichten niet meer direct op Facebook-profielen worden gedeeld. Koppelingen aan Facebook-pagina's blijven ongewijzigd.";
 
@@ -1007,7 +1009,6 @@
    Option to cancel the email app selection when logging in with magic links
    Text displayed by the left navigation button title
    The title of a cancel button.
-   Title of a cancel button.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
@@ -1162,8 +1163,14 @@
 /* Label for Publish time picker */
 "Choose a time" = "Kies een tijd";
 
+/* Title to choose date range in a calendar */
+"Choose date range" = "Kies datumbereik";
+
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Kies domein";
+
+/* No comment provided by engineer. */
+"Choose file" = "Kies bestand";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Kies van mijn apparaat";
@@ -1171,7 +1178,7 @@
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Kies uit een homepage waarop je nieuwste berichten (klassiek blog) of een vaste\/statische pagina wordt weergegeven.";
 
-/* No comment provided by engineer. */
+/* Menu option used for adding media from other applications. */
 "Choose from device" = "Kies van apparaat";
 
 /* No comment provided by engineer. */
@@ -1513,6 +1520,9 @@
 /* No comment provided by engineer. */
 "Copy file URL" = "Kopieer bestands URL";
 
+/* Button title displayed in popup indicating the user copied the local copy */
+"Copy the version from this app" = "Kopieer de versie van deze app";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Kan beter";
 
@@ -1540,6 +1550,9 @@
 /* Title of a prompt. */
 "Could not save post for later" = "Kon bericht niet bewaren voor later";
 
+/* The app failed to subscribe to the comments for the post */
+"Could not subscribe to comments" = "Kon niet abonneren op reacties";
+
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Kon Volgen niet wisselen: ontbrekend blogURL-kenmerk";
 
@@ -1548,6 +1561,9 @@
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Kon de site niet ontvolgen op het opgegeven adres.";
+
+/* The app failed to unsubscribe from the comments for the post */
+"Could not unsubscribe from comments" = "Kon abonneren niet opzeggen voor reacties";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Kun je ons vertellen wat we kunnen verbeteren?";
@@ -1733,6 +1749,9 @@
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
 "Date Format" = "Datumnotatie";
+
+/* Label of a button that displays a calendar */
+"Date Range" = "Datumbereik";
 
 /* Date and Time */
 "Date and Time" = "Datum en tijd";
@@ -2028,6 +2047,9 @@
    Title of the drafts header in search list. */
 "Drafts" = "Concepten";
 
+/* Label for post duplicate option. Tapping displays statistics for a post. */
+"Duplicate" = "Dupliceer";
+
 /* No comment provided by engineer. */
 "Duplicate block" = "Dupliceer blok";
 
@@ -2077,6 +2099,9 @@
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Wijzig deel knoppen";
+
+/* Button title displayed in popup indicating that the user edits the post first */
+"Edit the post first" = "Bewerk eerst het bericht";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "Bewerk met gebruik van de webeditor";
@@ -2159,6 +2184,9 @@
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Versleutelde logs";
 
+/* Placeholder for the end date in calendar range selection */
+"End Date" = "Einddatum";
+
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Volledig scherm openen";
 
@@ -2197,12 +2225,12 @@
 /* Instruction text on the initial email address entry screen. */
 "Enter your email address to log in or create a WordPress.com account." = "Voer je e-mailadres in om in te loggen of maak een WordPress.com account.";
 
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your existing site address" = "Vul je bestaande site-adres in";
+
 /* Title of a button on the magic link screen.
    Title of a button. */
 "Enter your password instead." = "Voer je wachtwoord in.";
-
-/* Button title. Takes the user to the login by site address flow. */
-"Enter your site address" = "Geef je site adres in";
 
 /* Generic error alert title
    Generic error.
@@ -2440,6 +2468,9 @@
 
 /* Title of the filter button in the Reader */
 "Filter" = "Filteren";
+
+/* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
+"Filter by activity type" = "Filter op type activiteit";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Meer te weten komen";
@@ -3147,9 +3178,6 @@ translators: sample content for \"Services\" page template */
 /* The accessibility label for the list style button in the Post List. */
 "List style" = "Lijststijl";
 
-/* Section title of the lists reader section. */
-"Lists" = "Lijsten";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "Laden";
 
@@ -3284,8 +3312,6 @@ translators: sample content for \"Services\" page template */
 "Main Navigation" = "Hoofdnavigatie";
 
 /* Button leading to a screen where users can manage their installed plugins
-   Button title. Tapping lets the user manage the sites they follow.
-   Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
    Title for the Reader Manage screen.
@@ -3652,6 +3678,12 @@ translators: sample content for \"Services\" page template */
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Geen titel";
 
+/* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities available" = "Geen activiteiten beschikbaar";
+
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities recorded in the selected date range." = "Geen activiteiten geregistreerd in het geselecteerde datumbereik.";
+
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "Nog geen activiteit";
 
@@ -3720,6 +3752,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Nog geen likes";
+
+/* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"No matching events found." = "Geen overeenkomende evenementen gevonden.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso.
    Phrase to show when the user search for images but there are no result to show.
@@ -4363,6 +4398,9 @@ translators: sample content for \"Services\" page template */
 /* Title of notification displayed when a post has been successfully scheduled. */
 "Post scheduled" = "Bericht gepland";
 
+/* Title displayed in popup when user tries to copy a post with unsaved changes */
+"Post sync conflict" = "Bericht synchronisatie conflict";
+
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Bericht titel. %s";
 
@@ -4608,8 +4646,7 @@ translators: sample content for \"Services\" page template */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Lees het bronbericht";
 
-/* Noun. Title of the Reader feature in the app.
-   The accessibility value of the Reader tab.
+/* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -4697,15 +4734,12 @@ translators: sample content for \"Services\" page template */
    Button label when removing a blog
    Label for remove location button
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Label of the table view cell's delete button, when unfollowing tags.
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
    Title for button that will confirm removing the next steps/quick start menus.
-   Title of a prompt asking the user to confirm they no longer wish to subscribe to a certain tag.
    User action to remove featured media.
-   User action to remove media.
-   Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
+   User action to remove media. */
 "Remove" = "Verwijderen";
 
 /* Remove Person Alert Title
@@ -4959,11 +4993,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "Opgeslagen bericht";
 
-/* Section title for Saved Posts in Reader
-   Title for list of posts saved for later
-   Title of the reader's Saved Posts menu item. */
-"Saved Posts" = "Bewaarde berichten";
-
 /* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
 "Saved!" = "Opgeslagen!";
 
@@ -4980,6 +5009,9 @@ translators: sample content for \"Services\" page template */
    Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Opslaan...";
+
+/* Noun. Links to a blog's Jetpack Scan screen. */
+"Scan" = "Scan";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Planning";
@@ -5008,10 +5040,8 @@ translators: sample content for \"Services\" page template */
 "Scrollable block menu opened. Select a block." = "Scrolbaar blokmenu geopend. Selecteer een blok.";
 
 /* Placeholder text for the search bar
-   Search
    The menu item to select during a guided tour.
-   Title of the Reader's search feature
-   Title of the reader's Search menu item. */
+   Title of the Reader's search feature */
 "Search" = "Zoeken";
 
 /* Site creation. Seelect a domain, search field placeholder */
@@ -5072,10 +5102,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "Selecteer %@ om verder te gaan";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to continue." = "Selecteer %@ om verder te gaan.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page." = "Selecteer %@ om een nieuwe pagina aan te maken.";
+"Select %@ to create a new page" = "Selecteer %@ om een nieuwe pagina te maken";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Selecteer %@ om een nieuw bericht op te stellen";
@@ -5405,7 +5432,6 @@ translators: sample content for \"Services\" page template */
 "Site Language" = "Site taal";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
 "Site Pages" = "Site pagina's";
 
@@ -5586,6 +5612,9 @@ translators: sample content for \"Services\" page template */
 /* Standard post format label */
 "Standard" = "Standaard";
 
+/* Placeholder for the start date in calendar range selection */
+"Start Date" = "Begindatum";
+
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
 "Start Over" = "Begin opnieuw";
@@ -5644,9 +5673,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title of alert announcing new Create Button feature. */
 "Streamlined navigation" = "Gestroomlijnde navigatie";
-
-/* Section title of the default reader items. */
-"Streams" = "Streams";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Doorstrepen";
@@ -5762,7 +5788,6 @@ translators: sample content for \"Services\" page template */
    Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
-   Section title of the tags reader section.
    Tags menu item in share extension.
    Title for the tag selector view */
 "Tags" = "Tags";
@@ -5830,18 +5855,11 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Tik om berichten voor deze tag te zien";
 
-/* Accessibility hint
-   Tapping lets you manage the sites you follow. */
-"Tapping lets you manage the sites you follow." = "Door te tappen kan je de sites die volgt beheren.";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomie";
 
 /* translators: title for \"Team\" page template */
 "Team" = "Team";
-
-/* Section title of the teams reader section. */
-"Teams" = "Teams";
 
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Vertel ons iets over jezelf.";
@@ -5950,6 +5968,9 @@ translators: sample content for \"Services\" page template */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Het aantal te tonen berichten per pagina.";
 
+/* Message displayed in popup when user tries to copy a post with conflicts */
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Het bericht dat je probeert te kopiëren heeft twee versies die verschillend zijn of je hebt recentelijk wijzigingen aangebracht maar niet opgeslagen.\nBewerk het bericht eerst om een eventueel conflict op te lossen of ga verder met het kopiëren van de versie van deze app.";
+
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "In de snelle rondleiding wordt getoond hoe je een basissite bouwt. Weet je zeker dat je wilt overslaan? ";
 
@@ -6023,12 +6044,6 @@ translators: sample content for \"Services\" page template */
 
 /* Reply Failure Message */
 "There has been an unexpected error while sending your reply" = "Er is een onverwachte fout opgetreden tijdens het versturen van je reactie";
-
-/* The app failed to subscribe to the comments for the post */
-"There has been an unexpected error while subscribing to the comments" = "Er was een onverwachte fout gedurende het abonneren op de reacties";
-
-/* The app failed to unsubscribe from the comments for the post */
-"There has been an unexpected error while unsubscribing from the comments" = "Er was een onverwachte fout tijdens het uitschrijven van de reacties";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Er is een onverwachte fout opgetreden bij het bijwerken van je meldingsinstellingen";
@@ -6347,7 +6362,11 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Try a starter layout" = "Probeer een lay-out voor starters";
 
-/* Button that lets users try to reload the plugin directory after loading failure
+/* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"Try adjusting your date range or activity type filters" = "Wijzig je filters op datumbereik of type activiteit";
+
+/* Button label for trying to retrieve the activities type again
+   Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
 "Try again" = "Probeer opnieuw";
@@ -7571,8 +7590,7 @@ translators: sample content for \"Services\" page template */
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab. */
 "wordpress, notifications, alerts, updates" = "wordpress, meldingen, alerts, updates";
 
-/* This is a comma separated list of keywords used for spotlight indexing of the 'Reader' tab.
-   This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
+/* This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
 "wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics" = "wordpress, reader, artikelen, berichten, blogbericht, volgend, ontdek, vind-ik-leuks, mijn vind-ik-leuks, tags, onderwerpen";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */

@@ -90,7 +90,7 @@ open class ReaderPostMenu {
             viewController.present(alertController, animated: true)
         }
 
-        WPAnalytics.track(.readerArticleDetailMoreTapped)
+        WPAnalytics.trackReader(.readerArticleDetailMoreTapped)
     }
 
     fileprivate class func existingObject<T>(for objectID: NSManagedObjectID?, context: NSManagedObjectContext?) -> T? {

@@ -3,6 +3,55 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 107
+
+@scoutharris 2020-12-09
+
+- `ReaderSiteTopic`: removed `isWPForTeams`, added `organizationID`.
+- `ReaderPost`: removed `isWPForTeams`, added `organizationID`.  
+
+## WordPress 106
+
+@mindgraffiti 2020-12-07
+
+- Added `isWPForTeams` property to `ReaderSiteTopic`.
+
+## WordPress 105
+
+@scoutharris 2020-12-04
+
+- Added `isWPForTeams` property to  `ReaderPost`.
+
+## WordPress 104
+
+@frosty 2020-12-03
+
+- Set the following `Transformable` properties to use the `NSSecureUnarchiveFromData`:
+  - AbstractPost.revisions
+  - Blog.capabilities
+  - Blog.options
+  - Blog.postFormats
+  - MenuItem.classes
+  - Notification.body
+  - Notification.header
+  - Notification.meta
+  - Notification.subject
+  - Post.disabledPublicizeConnections
+  - Theme.tags
+- Set custom transformers on the following properties:
+  - BlogSettings.commentsBlacklistKeys -> SetValueTransformer
+  - BlogSettings.commentsModerationKeys -> SetValueTransformer
+  - BlogSettings.jetpackLoginWhiteListedIPAddresses -> SetValueTransformer
+  - Media.error -> NSErrorValueTransformer
+  - Post.geolocation -> LocationValueTransformer
+
+## WordPress 103
+
+@guarani 2020-11-25
+
+- Add a new `SiteSuggestion` entity to support Gutenberg's xpost implementation
+- Add a one-to-many relationship between `Blog` and `SiteSuggestion`
+
 ## WordPress 101
 
 @emilylaguna 2020-10-09
@@ -34,7 +83,7 @@ data model as well as any custom migrations.
 
 @Gio2018 2020-06-12
 
-- Add fileds `supportPriority`, `supportName` and `nonLocalizedShortname` to the `Plan` entity for Zendesk integration.
+- Add fields `supportPriority`, `supportName` and `nonLocalizedShortname` to the `Plan` entity for Zendesk integration.
 
 ## WordPress 94
 

@@ -116,7 +116,7 @@ extension ReaderTabItemsStore {
     }
 
     private enum ReaderTopicsConstants {
-        static let predicateFormat = "type == 'default' OR type == 'team' OR (type == 'list' AND following == %@ AND showInMenu == YES)"
+        static let predicateFormat = "type == 'default' OR type == 'organization' OR (type == 'list' AND following == %@ AND showInMenu == YES)"
         static let entityName = "ReaderAbstractTopic"
         static let sortByKey = "type"
         static let fetchRequestError = "There was a problem fetching topics for the menu. "
