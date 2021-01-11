@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-10 12:54:10+0000 */
+/* Translation-Revision-Date: 2020-12-31 08:54:56+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -1164,13 +1164,13 @@
 "Choose a time" = "Scegli un'ora";
 
 /* Title to choose date range in a calendar */
-"Choose date range" = "Choose date range";
+"Choose date range" = "Scegli intervallo di date";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Scegli il dominio";
 
 /* No comment provided by engineer. */
-"Choose file" = "Choose file";
+"Choose file" = "Scegli il file";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Scegli da Il mio dispositivo";
@@ -1521,7 +1521,7 @@
 "Copy file URL" = "Copy file URL";
 
 /* Button title displayed in popup indicating the user copied the local copy */
-"Copy the version from this app" = "Copy the version from this app";
+"Copy the version from this app" = "Copia la versione da questa app";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Potrebbe essere meglio";
@@ -2101,7 +2101,7 @@
 "Edit sharing buttons" = "Modifica i pulsanti di condivisione";
 
 /* Button title displayed in popup indicating that the user edits the post first */
-"Edit the post first" = "Edit the post first";
+"Edit the post first" = "Per prima cosa, modifica l'articolo";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "Modifica utilizzando l'editor web";
@@ -2226,7 +2226,7 @@
 "Enter your email address to log in or create a WordPress.com account." = "Inserisci il tuo indirizzo e-mail per accedere o creare un account WordPress.com.";
 
 /* Button title. Takes the user to the login by site address flow. */
-"Enter your existing site address" = "Enter your existing site address";
+"Enter your existing site address" = "Inserisci l'indirizzo del sito esistente";
 
 /* Title of a button on the magic link screen.
    Title of a button. */
@@ -3682,7 +3682,7 @@ translators: sample content for \"Services\" page template */
 "No activities available" = "No activities available";
 
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities recorded in the selected date range." = "No activities recorded in the selected date range.";
+"No activities recorded in the selected date range." = "Nessuna attività registrata nell'intervallo di date selezionato.";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "Ancora nessuna attività";
@@ -3754,7 +3754,7 @@ translators: sample content for \"Services\" page template */
 "No likes yet" = "Ancora nessun Mi piace";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"No matching events found." = "No matching events found.";
+"No matching events found." = "Non è stato trovato alcun evento corrispondente alla ricerca.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso.
    Phrase to show when the user search for images but there are no result to show.
@@ -4399,7 +4399,7 @@ translators: sample content for \"Services\" page template */
 "Post scheduled" = "Post programmato.";
 
 /* Title displayed in popup when user tries to copy a post with unsaved changes */
-"Post sync conflict" = "Post sync conflict";
+"Post sync conflict" = "Conflitto di sincronizzazione dell'articolo";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Titolo dell'articolo. %s";
@@ -5011,7 +5011,7 @@ translators: sample content for \"Services\" page template */
 "Saving..." = "Salvataggio in corso...";
 
 /* Noun. Links to a blog's Jetpack Scan screen. */
-"Scan" = "Scan";
+"Scan" = "Scansione";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Programmato";
@@ -5102,7 +5102,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "Seleziona %@ per continuare";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page" = "Select %@ to create a new page";
+"Select %@ to create a new page" = "Seleziona %@ per creare una nuova pagina";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Seleziona %@ per creare un nuovo articolo";
@@ -5969,7 +5969,7 @@ translators: sample content for \"Services\" page template */
 "The number of posts to show per page." = "Il numero di articoli da mostrare per pagina.";
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
-"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app.";
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "L'articolo che stai cercando di copiare ha due versioni che sono in conflitto o hai apportato modifiche di recente senza salvarle.\nPer prima cosa, modifica l'articolo per risolvere eventuali conflitti o copia la versione da questa app.";
 
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Il nostro tour iniziale ti guiderà attraverso la costruzione del sito. Desideri saltarlo? ";

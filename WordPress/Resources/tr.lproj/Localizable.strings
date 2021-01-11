@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-07 22:58:59+0000 */
+/* Translation-Revision-Date: 2020-12-24 10:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -368,10 +368,10 @@
 "Activity Logs" = "Etkinlik kütükleri";
 
 /* Label for the Activity Type filter button */
-"Activity Type" = "Activity Type";
+"Activity Type" = "Etkinlik Türü";
 
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
-"Activity Type (%1$d)" = "Activity Type (%1$d)";
+"Activity Type (%1$d)" = "Etkinlik Türü (%1$d)";
 
 /* Remove asset from media picker list */
 "Add" = "Ekle";
@@ -1164,13 +1164,13 @@
 "Choose a time" = "Saat seçin";
 
 /* Title to choose date range in a calendar */
-"Choose date range" = "Choose date range";
+"Choose date range" = "Tarih aralığı seç";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Alan adını seç";
 
 /* No comment provided by engineer. */
-"Choose file" = "Choose file";
+"Choose file" = "Dosya seçin";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Cihazımdan seç";
@@ -1521,7 +1521,7 @@
 "Copy file URL" = "Dosya adresini kopyala";
 
 /* Button title displayed in popup indicating the user copied the local copy */
-"Copy the version from this app" = "Copy the version from this app";
+"Copy the version from this app" = "Sürümü bu uygulamadan kopyala";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Daha iyi olabilir";
@@ -1551,7 +1551,7 @@
 "Could not save post for later" = "Yazı sonrası için kaydedilmedi";
 
 /* The app failed to subscribe to the comments for the post */
-"Could not subscribe to comments" = "Could not subscribe to comments";
+"Could not subscribe to comments" = "Yorumlara abone olunamadı";
 
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Takip Et değiştirilemedi: Blog URL özniteliği eksik";
@@ -1563,7 +1563,7 @@
 "Could not unfollow the site at the address specified." = "Belirtilen adresteki site takipten çıkarılamadı.";
 
 /* The app failed to unsubscribe from the comments for the post */
-"Could not unsubscribe from comments" = "Could not unsubscribe from comments";
+"Could not unsubscribe from comments" = "Yorum aboneliğinden çıkılamadı";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Bize nasıl daha iyi olabileceğimizi belirtir misiniz?";
@@ -1751,7 +1751,7 @@
 "Date Format" = "Tarih biçimi";
 
 /* Label of a button that displays a calendar */
-"Date Range" = "Date Range";
+"Date Range" = "Tarih aralığı";
 
 /* Date and Time */
 "Date and Time" = "Tarih ve Saat";
@@ -2048,7 +2048,7 @@
 "Drafts" = "Taslaklar";
 
 /* Label for post duplicate option. Tapping displays statistics for a post. */
-"Duplicate" = "Duplicate";
+"Duplicate" = "Çoğalt";
 
 /* No comment provided by engineer. */
 "Duplicate block" = "Bloğu çoğalt";
@@ -2101,7 +2101,7 @@
 "Edit sharing buttons" = "Paylaşım tuşlarını düzenle";
 
 /* Button title displayed in popup indicating that the user edits the post first */
-"Edit the post first" = "Edit the post first";
+"Edit the post first" = "Önce gönderiyi düzenle";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "Web düzenleyicisini kullanarak düzenle";
@@ -2185,7 +2185,7 @@
 "Encrypted Logs" = "Şifreli günlükler";
 
 /* Placeholder for the end date in calendar range selection */
-"End Date" = "End Date";
+"End Date" = "Bitiş tarihi";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Tam ekran yap";
@@ -2226,7 +2226,7 @@
 "Enter your email address to log in or create a WordPress.com account." = "Giriş yapmak veya bir WordPress.com hesabı oluşturmak için e-posta adresinizi girin.";
 
 /* Button title. Takes the user to the login by site address flow. */
-"Enter your existing site address" = "Enter your existing site address";
+"Enter your existing site address" = "Mevcut site adresinizi girin";
 
 /* Title of a button on the magic link screen.
    Title of a button. */
@@ -2470,7 +2470,7 @@
 "Filter" = "Filtre";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
-"Filter by activity type" = "Filter by activity type";
+"Filter by activity type" = "Etkinlik türüne göre filtrele";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Daha fazlasını bul";
@@ -3679,10 +3679,10 @@ translators: sample content for \"Services\" page template */
 "No Title" = "Başlık yok";
 
 /* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities available" = "No activities available";
+"No activities available" = "Etkinlik yok";
 
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities recorded in the selected date range." = "No activities recorded in the selected date range.";
+"No activities recorded in the selected date range." = "Seçilen tarih aralığında kaydedilen etkinlik yok.";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "Henüz etkinlik yok";
@@ -3754,7 +3754,7 @@ translators: sample content for \"Services\" page template */
 "No likes yet" = "Henüz beğenme yok";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"No matching events found." = "No matching events found.";
+"No matching events found." = "Eşleşen etkinlik bulunamadı.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso.
    Phrase to show when the user search for images but there are no result to show.
@@ -4399,7 +4399,7 @@ translators: sample content for \"Services\" page template */
 "Post scheduled" = "Yazı zamanlandı";
 
 /* Title displayed in popup when user tries to copy a post with unsaved changes */
-"Post sync conflict" = "Post sync conflict";
+"Post sync conflict" = "Senkronizasyon çakışması sonrası";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Gönderi başlığı. %s";
@@ -5011,7 +5011,7 @@ translators: sample content for \"Services\" page template */
 "Saving..." = "Kaydediliyor...";
 
 /* Noun. Links to a blog's Jetpack Scan screen. */
-"Scan" = "Scan";
+"Scan" = "Tarama";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Zamanlama";
@@ -5102,7 +5102,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "%@ seçerek devam edin";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page" = "Select %@ to create a new page";
+"Select %@ to create a new page" = "Yeni bir sayfa oluşturmak için %@ seç";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Yeni yazı oluşturmak için %@ seçin";
@@ -5613,7 +5613,7 @@ translators: sample content for \"Services\" page template */
 "Standard" = "Standart";
 
 /* Placeholder for the start date in calendar range selection */
-"Start Date" = "Start Date";
+"Start Date" = "Başlangıç tarihi";
 
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
@@ -5969,7 +5969,7 @@ translators: sample content for \"Services\" page template */
 "The number of posts to show per page." = "Sayfa başına gösterilecek yazı sayısı.";
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
-"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app.";
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Kopyalamaya çalıştığınız gönderinin çakışan iki sürümü var veya yakın zamanda değişiklik yaptığınız ancak bunları kaydetmediniz.\nHerhangi bir çakışmayı çözmek için önce gönderiyi düzenleyin veya sürümü bu uygulamadan kopyalayarak devam edin.";
 
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Hızlı başlangıç turu temel bir site kurma adımlarıyla ilgili sizi yönlendirir. Atlamak istediğinizden emin misiniz? ";
@@ -6363,7 +6363,7 @@ translators: sample content for \"Services\" page template */
 "Try a starter layout" = "Başlangıç düzenini deneyin";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"Try adjusting your date range or activity type filters" = "Try adjusting your date range or activity type filters";
+"Try adjusting your date range or activity type filters" = "Tarih aralığı ya da etkinlik türü filtrelerinizi düzenlemeyi deneyin";
 
 /* Button label for trying to retrieve the activities type again
    Button that lets users try to reload the plugin directory after loading failure

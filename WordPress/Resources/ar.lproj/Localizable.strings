@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-21 15:37:23+0000 */
+/* Translation-Revision-Date: 2020-12-26 22:01:54+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -1551,7 +1551,7 @@
 "Could not save post for later" = "يتعذر حفظ المقالة لوقت لاحق";
 
 /* The app failed to subscribe to the comments for the post */
-"Could not subscribe to comments" = "Could not subscribe to comments";
+"Could not subscribe to comments" = "يتعذر الاشتراك في التعليقات";
 
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "تعذر تبديل المتابعة: سمة عنوان URL للمدونة مفقودة";
@@ -1563,7 +1563,7 @@
 "Could not unfollow the site at the address specified." = "تعذر إلغاء متابعة الموقع في العنوان المحدد.";
 
 /* The app failed to unsubscribe from the comments for the post */
-"Could not unsubscribe from comments" = "Could not unsubscribe from comments";
+"Could not unsubscribe from comments" = "يتعذر إلغاء الاشتراك في التعليقات";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "هل بإمكانك إبلاغنا بكيفية تحسين ذلك؟";
@@ -2101,7 +2101,7 @@
 "Edit sharing buttons" = "تحرير أزرار المشاركة";
 
 /* Button title displayed in popup indicating that the user edits the post first */
-"Edit the post first" = "Edit the post first";
+"Edit the post first" = "تحرير المقالة أولاً";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "تحرير باستخدام محرر الويب";
@@ -5063,7 +5063,7 @@ translators: sample content for \"Services\" page template */
 "Search WordPress\nfor a site or post" = "بحث ووردبريس\nلموقع أو مقالة";
 
 /* No comment provided by engineer. */
-"Search or type URL" = "البحث أو كتابة عنوان URL";
+"Search or type URL" = "ابحث أو اكتب رابطًا";
 
 /* Text displayed when the search controller will be presented */
 "Search pages" = "بحث في الصفحات";
@@ -5969,7 +5969,7 @@ translators: sample content for \"Services\" page template */
 "The number of posts to show per page." = "عدد المقالات المطلوب عرضها في كل صفحة.";
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
-"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app.";
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "تحتوي المقالة التي تحاول نسخها على إصدارين متعارضين أو أنك قمت بإجراء تغييرات مؤخرًا لكنك لم تحفظها.\nقم بتحرير المقالة أولاً لحل أي تعارض أو استمر في نسخ الإصدار من هذا التطبيق.";
 
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "ستُساعدك جولة البدء السريع على إنشاء الموقع الأساسي. هل تريد بالتأكيد التخطي؟ ";
@@ -6363,7 +6363,7 @@ translators: sample content for \"Services\" page template */
 "Try a starter layout" = "تجربة تخطيط بدء العمل";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"Try adjusting your date range or activity type filters" = "Try adjusting your date range or activity type filters";
+"Try adjusting your date range or activity type filters" = "حاول ضبط مدى التاريخ أو مرشحات نوع النشاط";
 
 /* Button label for trying to retrieve the activities type again
    Button that lets users try to reload the plugin directory after loading failure
@@ -7081,7 +7081,7 @@ translators: sample content for \"Services\" page template */
 "Welcome to our new blog" = "مرحبًا بك في مدونتنا الجديدة";
 
 /* A message title */
-"Welcome to the Reader" = "مرحبًا بكم مع القارئ";
+"Welcome to the Reader" = "أهلاً بك في القارئ";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "مرحبًا بك في أداة إنشاء مواقع الويب الأكثر رواجًا في العالم.";
