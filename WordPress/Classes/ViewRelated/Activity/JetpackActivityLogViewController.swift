@@ -8,7 +8,10 @@ class JetpackActivityLogViewController: ActivityListViewController {
             noActivitiesTitle: NSLocalizedString("No activity yet", comment: "Title for the view when there aren't any Activities to display in the Activity Log"),
             noActivitiesSubtitle: NSLocalizedString("When you make changes to your site you'll be able to see your activity history here.", comment: "Text display when the view when there aren't any Activities to display in the Activity Log"),
             noMatchingTitle: NSLocalizedString("No matching events found.", comment: "Title for the view when there aren't any Activities to display in the Activity Log for a given filter."),
-            noMatchingSubtitle: NSLocalizedString("Try adjusting your date range or activity type filters", comment: "Text display when the view when there aren't any Activities to display in the Activity Log for a given filter.")
+            noMatchingSubtitle: NSLocalizedString("Try adjusting your date range or activity type filters", comment: "Text display when the view when there aren't any Activities to display in the Activity Log for a given filter."),
+            filterbarRangeButtonTapped: .activitylogFilterbarRangeButtonTapped,
+            filterbarSelectRange: .activitylogFilterbarSelectRange,
+            filterbarResetRange: .activitylogFilterbarResetRange
         )
 
         super.init(site: site, store: store, configuration: activityListConfiguration, isFreeWPCom: isFreeWPCom)

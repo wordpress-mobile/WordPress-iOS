@@ -22,6 +22,15 @@ struct ActivityListConfiguration {
 
     /// Subtitle for when there are no activities for the selected filter
     let noMatchingSubtitle: String
+
+    /// Event to be fired when the date range button is tapped
+    let filterbarRangeButtonTapped: WPAnalyticsEvent
+
+    /// Event to be fired when a date range is selected
+    let filterbarSelectRange: WPAnalyticsEvent
+
+    /// Event to be fired when the range date reset button is tapped
+    let filterbarResetRange: WPAnalyticsEvent
 }
 
 /// ActivityListViewController is used as a base ViewController for
@@ -30,6 +39,7 @@ struct ActivityListConfiguration {
 class ActivityListViewController: UIViewController, TableViewContainer, ImmuTablePresenter {
     let site: JetpackSiteRef
     let store: ActivityStore
+    let configuration: ActivityListConfiguration
     let isFreeWPCom: Bool
 
     var changeReceipt: Receipt?
@@ -79,6 +89,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         self.site = site
         self.store = store
         self.isFreeWPCom = isFreeWPCom
+        self.configuration = configuration
         self.viewModel = ActivityListViewModel(site: site, store: store, noResultsTexts: configuration)
 
         super.init(nibName: nil, bundle: nil)
@@ -200,15 +211,15 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
     private func setupDateFilter() {
         dateFilterChip.resetButton.accessibilityLabel = NSLocalizedString("Reset Date Range filter", comment: "Accessibility label for the reset date range button")
 
-        dateFilterChip.tapped = { [weak self] in
-            WPAnalytics.track(.activitylogFilterbarRangeButtonTapped)
-            self?.showCalendar()
+        dateFilterChip.tapped = { [unowned self] in
+            WPAnalytics.track(self.configuration.filterbarRangeButtonTapped)
+            self.showCalendar()
         }
 
-        dateFilterChip.resetTapped = { [weak self] in
-            WPAnalytics.track(.activitylogFilterbarResetRange)
-            self?.viewModel.removeDateFilter()
-            self?.dateFilterChip.disableResetButton()
+        dateFilterChip.resetTapped = { [unowned self] in
+            WPAnalytics.track(self.configuration.filterbarResetRange)
+            self.viewModel.removeDateFilter()
+            self.dateFilterChip.disableResetButton()
         }
     }
 
@@ -463,7 +474,7 @@ extension ActivityListViewController: CalendarViewControllerDelegate {
     private func trackSelectedRange(startDate: Date?, endDate: Date?) {
         guard let startDate = startDate else {
             if viewModel.after != nil || viewModel.before != nil {
-                WPAnalytics.track(.activitylogFilterbarResetRange)
+                WPAnalytics.track(configuration.filterbarResetRange)
             }
 
             return
@@ -480,7 +491,7 @@ extension ActivityListViewController: CalendarViewControllerDelegate {
 
         distance = Int((Date().timeIntervalSinceReferenceDate - startDate.timeIntervalSinceReferenceDate) / Double(24 * 60 * 60))
 
-        WPAnalytics.track(.activitylogFilterbarSelectRange, properties: ["duration": duration, "distance": distance])
+        WPAnalytics.track(configuration.filterbarSelectRange, properties: ["duration": duration, "distance": distance])
     }
 }
 
