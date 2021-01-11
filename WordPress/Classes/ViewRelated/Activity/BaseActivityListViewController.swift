@@ -36,7 +36,7 @@ struct ActivityListConfiguration {
 /// ActivityListViewController is used as a base ViewController for
 /// Jetpack's Activity Log and Backup
 ///
-class ActivityListViewController: UIViewController, TableViewContainer, ImmuTablePresenter {
+class BaseActivityListViewController: UIViewController, TableViewContainer, ImmuTablePresenter {
     let site: JetpackSiteRef
     let store: ActivityStore
     let configuration: ActivityListConfiguration
@@ -250,7 +250,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
 }
 
-extension ActivityListViewController: UITableViewDataSource {
+extension BaseActivityListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         handler.tableView(tableView, numberOfRowsInSection: section)
     }
@@ -262,7 +262,7 @@ extension ActivityListViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 
-extension ActivityListViewController: UITableViewDelegate {
+extension BaseActivityListViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let isLastSection = handler.viewModel.sections.count == section + 1
@@ -338,7 +338,7 @@ extension ActivityListViewController: UITableViewDelegate {
 
 // MARK: - NoResultsViewControllerDelegate
 
-extension ActivityListViewController: NoResultsViewControllerDelegate {
+extension BaseActivityListViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         let supportVC = SupportTableViewController()
         supportVC.showFromTabBar()
@@ -347,7 +347,7 @@ extension ActivityListViewController: NoResultsViewControllerDelegate {
 
 // MARK: - ActivityPresenter
 
-extension ActivityListViewController: ActivityPresenter {
+extension BaseActivityListViewController: ActivityPresenter {
 
     func presentDetailsFor(activity: FormattableActivity) {
         let detailVC = ActivityDetailViewController.loadFromStoryboard()
@@ -407,7 +407,7 @@ extension ActivityListViewController: ActivityPresenter {
 
 // MARK: - Restores handling
 
-extension ActivityListViewController {
+extension BaseActivityListViewController {
 
     fileprivate func restoreSiteToRewindID(_ rewindID: String) {
         navigationController?.popToViewController(self, animated: true)
@@ -417,7 +417,7 @@ extension ActivityListViewController {
 
 // MARK: - NoResults Handling
 
-private extension ActivityListViewController {
+private extension BaseActivityListViewController {
 
     func updateNoResults() {
         if let noResultsViewModel = viewModel.noResultsViewModel() {
@@ -454,7 +454,7 @@ private extension ActivityListViewController {
 }
 
 // MARK: - Calendar Handling
-extension ActivityListViewController: CalendarViewControllerDelegate {
+extension BaseActivityListViewController: CalendarViewControllerDelegate {
     func didCancel(calendar: CalendarViewController) {
         calendar.dismiss(animated: true, completion: nil)
     }
@@ -496,7 +496,7 @@ extension ActivityListViewController: CalendarViewControllerDelegate {
 }
 
 // MARK: - Activity type filter handling
-extension ActivityListViewController: ActivityTypeSelectorDelegate {
+extension BaseActivityListViewController: ActivityTypeSelectorDelegate {
     func didCancel(selectorViewController: ActivityTypeSelectorViewController) {
         selectorViewController.dismiss(animated: true, completion: nil)
     }

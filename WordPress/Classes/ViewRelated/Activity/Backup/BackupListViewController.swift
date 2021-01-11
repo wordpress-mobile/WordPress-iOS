@@ -1,6 +1,6 @@
 import Foundation
 
-class BackupListViewController: ActivityListViewController {
+class BackupListViewController: BaseActivityListViewController {
     override init(site: JetpackSiteRef, store: ActivityStore, isFreeWPCom: Bool = false) {
         store.onlyRestorableItems = true
 

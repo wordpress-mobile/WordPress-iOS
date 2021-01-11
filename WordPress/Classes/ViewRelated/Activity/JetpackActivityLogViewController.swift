@@ -1,6 +1,6 @@
 import UIKit
 
-class JetpackActivityLogViewController: ActivityListViewController {
+class JetpackActivityLogViewController: BaseActivityListViewController {
     override init(site: JetpackSiteRef, store: ActivityStore, isFreeWPCom: Bool = false) {
         let activityListConfiguration = ActivityListConfiguration(
             title: NSLocalizedString("Activity", comment: "Title for the activity list"),
