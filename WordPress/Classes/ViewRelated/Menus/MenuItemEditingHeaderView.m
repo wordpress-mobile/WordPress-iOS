@@ -137,7 +137,7 @@
 
     } else  {
 
-        self.stackViewTopConstraint.constant = [self defaultStackDesignMargin] + [[UIApplication sharedApplication] statusBarFrame].size.height;
+        self.stackViewTopConstraint.constant = [self defaultStackDesignMargin] + [[UIApplication sharedApplication] currentStatusBarFrame].size.height;
     }
 }
 
