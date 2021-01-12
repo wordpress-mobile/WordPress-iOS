@@ -74,14 +74,11 @@ private extension CodingUserInfoKey {
     }
 
     var data: Data {
-        let data = NSMutableData()
-
-        let encoder = NSKeyedArchiver(forWritingWith: data)
-        encoder.requiresSecureCoding = true
+        let encoder = NSKeyedArchiver(requiringSecureCoding: true)
         encode(with: encoder)
         encoder.finishEncoding()
 
-        return data as Data
+        return encoder.encodedData
     }
 
     // MARK: NSSecureCoding
