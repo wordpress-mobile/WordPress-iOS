@@ -308,7 +308,7 @@ DEPENDENCIES
   cocoapods (~> 1.10)!
   commonmarker!
   dotenv!
-  fastlane (~> 2.171)!
+  fastlane (~> 2.162)!
   fastlane-plugin-appcenter (~> 1.8)
   fastlane-plugin-sentry
   fastlane-plugin-test_center
