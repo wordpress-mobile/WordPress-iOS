@@ -416,7 +416,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (selectedIndex != tabBarController.selectedIndex) {
         switch (selectedIndex) {
             case WPTabMySites:
-                self.mySitesCoordinator.blogListViewController.canBypassBlogList = true;
+                if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+                    self.mySitesCoordinator.blogListViewController.canBypassBlogList = true;
+                }
                 break;
             case WPTabReader: {
                 [self alertQuickStartThatReaderWasTapped];
