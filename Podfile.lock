@@ -444,7 +444,7 @@ DEPENDENCIES:
   - AMScrollingNavbar (= 5.6.0)
   - AppCenter (= 2.5.1)
   - AppCenter/Distribute (= 2.5.1)
-  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, branch `issue/ab_testing`)
+  - Automattic-Tracks-iOS (~> 0.7.0)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (~> 3.0)
   - CropViewController (= 2.5.3)
@@ -523,6 +523,7 @@ SPEC REPOS:
     - AMScrollingNavbar
     - AppAuth
     - AppCenter
+    - Automattic-Tracks-iOS
     - boost-for-react-native
     - Charts
     - CocoaLumberjack
@@ -569,9 +570,6 @@ SPEC REPOS:
     - ZIPFoundation
 
 EXTERNAL SOURCES:
-  Automattic-Tracks-iOS:
-    :branch: issue/ab_testing
-    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   FBLazyVector:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.44.0/third-party-podspecs/FBLazyVector.podspec.json
   FBReactNativeSpec:
@@ -661,9 +659,6 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.44.0/third-party-podspecs/Yoga.podspec.json
 
 CHECKOUT OPTIONS:
-  Automattic-Tracks-iOS:
-    :commit: 847a5e20c10d91af80364825ca7f32242f72930b
-    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
@@ -774,6 +769,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: 4f3b206f825be82d564e6b74f040fd5466f994cd
+PODFILE CHECKSUM: bbedbdba3aaa9b4ccf6421a6e08cc0d56f8e7cb5
 
 COCOAPODS: 1.10.0
