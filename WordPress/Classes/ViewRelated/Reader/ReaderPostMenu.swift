@@ -90,7 +90,7 @@ open class ReaderPostMenu {
             viewController.present(alertController, animated: true)
         }
 
-        WPAnalytics.track(.readerArticleDetailMoreTapped)
+        WPAnalytics.trackReader(.readerArticleDetailMoreTapped)
     }
 
     fileprivate class func existingObject<T>(for objectID: NSManagedObjectID?, context: NSManagedObjectContext?) -> T? {
@@ -194,6 +194,7 @@ open class ReaderPostMenu {
 
         let configuration = WebViewControllerConfiguration(url: siteURL)
         configuration.addsWPComReferrer = true
+        configuration.authenticateWithDefaultAccount()
         let controller = WebViewControllerFactory.controller(configuration: configuration)
         let navController = UINavigationController(rootViewController: controller)
         viewController.present(navController, animated: true)

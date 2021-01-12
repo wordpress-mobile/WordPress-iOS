@@ -665,6 +665,24 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatEnhancedSiteCreationSegmentsSelected:
             eventName = @"enhanced_site_creation_segments_selected";
             break;
+        case WPAnalyticsStatEnhancedSiteCreationSiteDesignViewed:
+            eventName = @"enhanced_site_creation_site_design_viewed";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSiteDesignSelected:
+            eventName = @"enhanced_site_creation_site_design_selected";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSiteDesignSkipped:
+            eventName = @"enhanced_site_creation_site_design_skipped";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSiteDesignPreviewViewed:
+            eventName = @"enhanced_site_creation_site_design_preview_viewed";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSiteDesignPreviewLoading:
+            eventName = @"enhanced_site_creation_site_design_preview_loading";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSiteDesignPreviewLoaded:
+            eventName = @"enhanced_site_creation_site_design_preview_loaded";
+            break;
         case WPAnalyticsStatEnhancedSiteCreationVerticalsViewed:
             eventName = @"enhanced_site_creation_verticals_viewed";
             break;
@@ -1160,6 +1178,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatPostListEditAction:
             eventName = @"post_list_button_pressed";
             eventProperties = @{ TracksEventPropertyButtonKey : @"edit" };
+            break;
+        case WPAnalyticsStatPostListDuplicateAction:
+            eventName = @"post_list_button_pressed";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"copy" }; // Property aligned with Android
             break;
         case WPAnalyticsStatPostListExcessiveLoadMoreDetected:
             eventName = @"post_list_excessive_load_more_detected";

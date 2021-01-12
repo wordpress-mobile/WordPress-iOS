@@ -32,11 +32,15 @@ final class ReaderSaveForLaterAction {
         let readerPostService = ReaderPostService(managedObjectContext: context)
 
         readerPostService.toggleSavedForLater(for: post, success: {
-            self.presentSuccessNotice(for: post, context: context, origin: origin, completion: completion)
+            if origin == .otherStream {
+                self.presentSuccessNotice(for: post, context: context, origin: origin, completion: completion)
+            }
             completion?()
-            }, failure: { error in
+        }, failure: { error in
+            if origin == .otherStream {
                 self.presentErrorNotice(error, activating: !post.isSavedForLater)
-                completion?()
+            }
+            completion?()
         })
     }
 
@@ -61,11 +65,7 @@ final class ReaderSaveForLaterAction {
                             actionTitle: Strings.viewAll,
                             actionHandler: { _ in
                                 self.trackViewAllSavedPostsAction(origin: origin)
-                                guard !FeatureFlag.newReaderNavigation.enabled else {
                                     WPTabBarController.sharedInstance().switchToSavedPosts()
-                                    return
-                                }
-                                self.showAll()
         })
 
         present(notice)
@@ -103,7 +103,4 @@ final class ReaderSaveForLaterAction {
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
-    private func showAll() {
-        NotificationCenter.default.post(name: .showAllSavedForLaterPosts, object: self, userInfo: nil)
-    }
 }

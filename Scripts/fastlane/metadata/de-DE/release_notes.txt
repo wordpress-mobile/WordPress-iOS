@@ -1,0 +1,11 @@
+Neu in unserer aktuellen Version:
+
+Der Block-Editor: Du kannst jetzt einen Dateiblock einfügen, der einen Download-Button für Dateien wie Dokumente bereitstellt. Durch ein Update am Galerieblock wurde außerdem ein Upload-Fehler behoben, der auftrat, wenn dein Editor geschlossen war.
+
+Website-Erstellung: Beim Erstellen von Seiten auf deiner Website kannst du die Seitenlayout-Optionen jetzt leichter anzeigen und auswählen.
+
+Beitragserstellung: Möchtest du einen Beitrag schnell duplizieren? Du kannst das jetzt über deine Beitragsliste tun.
+
+Der Reader: Verwendest du P2, ein Tool für die Zusammenarbeit in Teams und Gruppen? Du kannst P2-Websites jetzt in einem neu hinzugefügten Stream lesen und diesen folgen.
+
+Kommentare: Möchtest du Kommentar-Threads auf Websites abonnieren, denen du folgst oder für die du dich interessierst? Tippe in der Kommentaransicht auf den Button „Unterhaltung folgen“. 

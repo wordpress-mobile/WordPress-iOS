@@ -40,6 +40,7 @@ import Foundation
     // Gutenberg Features
     case gutenbergUnsupportedBlockWebViewShown
     case gutenbergUnsupportedBlockWebViewClosed
+    case gutenbergSuggestionSessionFinished
 
     // Notifications Permissions
     case pushNotificationsPrimerSeen
@@ -56,6 +57,8 @@ import Foundation
     case readerFollowingShown
     case readerSavedListShown
     case readerLikedShown
+    case readerA8CShown
+    case readerP2Shown
     case readerBlogPreviewed
     case readerDiscoverPaginated
     case readerPostCardTapped
@@ -83,6 +86,36 @@ import Foundation
     case storyIntroShown
     case storyIntroDismissed
     case storyIntroCreateStoryButtonTapped
+
+    // Jetpack
+    case jetpackSettingsViewed
+    case jetpackManageConnectionViewed
+    case jetpackDisconnectTapped
+    case jetpackDisconnectRequested
+    case jetpackWhitelistedIpsViewed
+    case jetpackWhitelistedIpsChanged
+    case activitylogFilterbarSelectType
+    case activitylogFilterbarResetType
+    case activitylogFilterbarTypeButtonTapped
+    case activitylogFilterbarRangeButtonTapped
+    case activitylogFilterbarSelectRange
+    case activitylogFilterbarResetRange
+    case backupListOpened
+    case backupFilterbarRangeButtonTapped
+    case backupFilterbarSelectRange
+    case backupFilterbarResetRange
+
+    // Comments
+    case commentViewed
+    case commentApproved
+    case commentUnApproved
+    case commentLiked
+    case commentUnliked
+    case commentTrashed
+    case commentSpammed
+    case commentEditorOpened
+    case commentEdited
+    case commentRepliedTo
 
     /// A String that represents the event
     var value: String {
@@ -144,6 +177,8 @@ import Foundation
             return "gutenberg_unsupported_block_webview_shown"
         case .gutenbergUnsupportedBlockWebViewClosed:
             return "gutenberg_unsupported_block_webview_closed"
+        case .gutenbergSuggestionSessionFinished:
+            return "suggestion_session_finished"
         // Notifications permissions
         case .pushNotificationsPrimerSeen:
             return "notifications_primer_seen"
@@ -168,6 +203,10 @@ import Foundation
             return "reader_following_shown"
         case .readerLikedShown:
             return "reader_liked_shown"
+        case .readerA8CShown:
+            return "reader_a8c_shown"
+        case .readerP2Shown:
+            return "reader_p2_shown"
         case .readerSavedListShown:
             return "reader_saved_list_shown"
         case .readerBlogPreviewed:
@@ -220,6 +259,63 @@ import Foundation
             return "story_intro_dismissed"
         case .storyIntroCreateStoryButtonTapped:
             return "story_intro_create_story_button_tapped"
+
+        // Jetpack
+        case .jetpackSettingsViewed:
+            return "jetpack_settings_viewed"
+        case .jetpackManageConnectionViewed:
+            return "jetpack_manage_connection_viewed"
+        case .jetpackDisconnectTapped:
+            return "jetpack_disconnect_tapped"
+        case .jetpackDisconnectRequested:
+            return "jetpack_disconnect_requested"
+        case .jetpackWhitelistedIpsViewed:
+            return "jetpack_whitelisted_ips_viewed"
+        case .jetpackWhitelistedIpsChanged:
+            return "jetpack_whitelisted_ips_changed"
+        case .activitylogFilterbarSelectType:
+            return "activitylog_filterbar_select_type"
+        case .activitylogFilterbarResetType:
+            return "activitylog_filterbar_reset_type"
+        case .activitylogFilterbarTypeButtonTapped:
+            return "activitylog_filterbar_type_button_tapped"
+        case .activitylogFilterbarRangeButtonTapped:
+            return "activitylog_filterbar_range_button_tapped"
+        case .activitylogFilterbarSelectRange:
+            return "activitylog_filterbar_select_range"
+        case .activitylogFilterbarResetRange:
+            return "activitylog_filterbar_reset_range"
+        case .backupListOpened:
+            return "backup_list_opened"
+        case .backupFilterbarRangeButtonTapped:
+            return "backup_filterbar_range_button_tapped"
+        case .backupFilterbarSelectRange:
+            return "backup_filterbar_select_range"
+        case .backupFilterbarResetRange:
+            return "backup_filterbar_reset_range"
+
+        // Comments
+        case .commentViewed:
+            return "comment_viewed"
+        case .commentApproved:
+            return "comment_approved"
+        case .commentUnApproved:
+            return "comment_unapproved"
+        case .commentLiked:
+            return "comment_liked"
+        case .commentUnliked:
+            return "comment_unliked"
+        case .commentTrashed:
+            return "comment_trashed"
+        case .commentSpammed:
+            return "comment_spammed"
+        case .commentEditorOpened:
+            return "comment_editor_opened"
+        case .commentEdited:
+            return "comment_edited"
+        case .commentRepliedTo:
+            return "comment_replied_to"
+
         }
     }
 
@@ -246,6 +342,10 @@ import Foundation
 
 extension WPAnalytics {
 
+    @objc static var subscriptionCount: Int = 0
+
+    private static let WPAppAnalyticsKeySubscriptionCount: String = "subscription_count"
+
     /// Track a event
     ///
     /// This will call each registered tracker and fire the given event.
@@ -268,7 +368,6 @@ extension WPAnalytics {
         WPAnalytics.trackString(event.value, withProperties: mergedProperties)
     }
 
-
     /// This will call each registered tracker and fire the given event.
     /// - Parameters:
     ///   - event: a `String` that represents the event name
@@ -277,7 +376,32 @@ extension WPAnalytics {
     static func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], blog: Blog) {
         var props = properties
         props[WPAppAnalyticsKeyBlogID] = blog.dotComID
+        props[WPAppAnalyticsKeySiteType] = blog.isWPForTeams() ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
         WPAnalytics.track(event, properties: props)
+    }
+
+    /// Track a Reader event
+    ///
+    /// This will call each registered tracker and fire the given event
+    /// - Parameter event: a `String` that represents the Reader event name
+    /// - Parameter properties: a `Hash` that represents the properties
+    ///
+    static func trackReader(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any] = [:]) {
+        var props = properties
+        props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
+        WPAnalytics.track(event, properties: props)
+    }
+
+    /// Track a Reader stat
+    ///
+    /// This will call each registered tracker and fire the given event
+    /// - Parameter event: a `String` that represents the Reader event name
+    /// - Parameter properties: a `Hash` that represents the properties
+    ///
+    static func trackReader(_ stat: WPAnalyticsStat, properties: [AnyHashable: Any] = [:]) {
+        var props = properties
+        props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
+        WPAnalytics.track(stat, withProperties: props)
     }
 
     /// Track a event in Obj-C
@@ -301,6 +425,30 @@ extension WPAnalytics {
 
 
         WPAnalytics.trackString(event.value, withProperties: mergedProperties)
+    }
+
+    /// Track a Reader event in Obj-C
+    ///
+    /// This will call each registered tracker and fire the given event
+    /// - Parameter event: a `String` that represents the Reader event name
+    /// - Parameter properties: a `Hash` that represents the properties
+    ///
+    @objc static func trackReaderEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
+        var props = properties
+        props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
+        WPAnalytics.track(event, properties: props)
+    }
+
+    /// Track a Reader stat in Obj-C
+    ///
+    /// This will call each registered tracker and fire the given stat
+    /// - Parameter stat: a `String` that represents the Reader stat name
+    /// - Parameter properties: a `Hash` that represents the properties
+    ///
+    @objc static func trackReaderStat(_ stat: WPAnalyticsStat, properties: [AnyHashable: Any]) {
+        var props = properties
+        props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
+        WPAnalytics.track(stat, withProperties: props)
     }
 
 }

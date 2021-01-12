@@ -437,17 +437,20 @@ private extension PersonViewController {
         cell.textLabel?.text       = NSLocalizedString("First Name", comment: "User's First Name")
         cell.detailTextLabel?.text = person.firstName
         cell.isHidden              = isFullnamePrivate
+        cell.isUserInteractionEnabled = false
     }
 
     func configureLastNameCell(_ cell: UITableViewCell) {
         cell.textLabel?.text       = NSLocalizedString("Last Name", comment: "User's Last Name")
         cell.detailTextLabel?.text = person.lastName
         cell.isHidden              = isFullnamePrivate
+        cell.isUserInteractionEnabled = false
     }
 
     func configureDisplayNameCell(_ cell: UITableViewCell) {
         cell.textLabel?.text       = NSLocalizedString("Display Name", comment: "User's Display Name")
         cell.detailTextLabel?.text = person.displayName
+        cell.isUserInteractionEnabled = false
     }
 
     func configureRoleCell(_ cell: UITableViewCell) {

@@ -17,20 +17,16 @@ extension FancyAlertViewController {
         static let alertKey = "alert"
     }
 
-    /// Create the fancy alert controller for the Quick Start request
+    /// Create the fancy alert controller for the Quick Start request and marks the QuickStartTourSteps as completed
     ///
     /// - Returns: FancyAlertViewController of the request
-    @objc static func makeQuickStartAlertController(blog: Blog) -> FancyAlertViewController {
+    static func makeQuickStartAlertController(blog: Blog, withCompletedSteps steps: [QuickStartTour] = []) -> FancyAlertViewController {
         WPAnalytics.track(.quickStartRequestAlertViewed)
 
         let allowButton = ButtonConfig(Strings.allowButtonText) { controller, _ in
             controller.dismiss(animated: true)
 
-            guard let tourGuide = QuickStartTourGuide.find() else {
-                return
-            }
-
-            tourGuide.setup(for: blog)
+            QuickStartTourGuide.shared.setup(for: blog, withCompletedSteps: steps)
 
             WPAnalytics.track(.quickStartRequestAlertButtonTapped, withProperties: ["type": "positive"])
         }

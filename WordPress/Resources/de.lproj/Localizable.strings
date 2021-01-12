@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-10-22 19:06:02+0000 */
+/* Translation-Revision-Date: 2020-12-18 14:28:28+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -197,7 +197,7 @@
 "%s block. This block has invalid content" = "Block %s. Dieser Block hat ungültigen Inhalt";
 
 /* translators: Missing block alert title. %s: The localized block name */
-"'%s' is not fully-supported" = "'%s' is not fully-supported";
+"'%s' is not fully-supported" = "„%s“ wird nicht vollständig unterstützt";
 
 /* translators: sample content for \"Contact\" page template */
 "(555)555-1234" = "+49 (0)123 456789";
@@ -242,9 +242,6 @@
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
-
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "2 von 2";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
@@ -364,8 +361,17 @@
    Title for the activity list */
 "Activity" = "Aktivität";
 
+/* Noun. Links to a blog's Activity screen. */
+"Activity Log" = "Aktivitätsprotokoll";
+
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "Aktivitätenlog";
+
+/* Label for the Activity Type filter button */
+"Activity Type" = "Aktivitätstyp";
+
+/* Label for the Activity Type filter button when there are more than 1 activity type selected */
+"Activity Type (%1$d)" = "Aktivitätstyp (%1$d)";
 
 /* Remove asset from media picker list */
 "Add" = "Hinzufügen";
@@ -383,7 +389,7 @@
 "Add Block Before" = "Block davor hinzufügen";
 
 /* Accessibility label for add comment button */
-"Add Comment" = "Add Comment";
+"Add Comment" = "Kommentar hinzufügen";
 
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Inhalte in Beitrag einfügen";
@@ -412,8 +418,7 @@
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Profilfoto hinzufügen";
 
-/* Title of a feature to add a new topic to the topics subscribed by the user.
-   Title. Lets the user know that they can use this feature to subscribe to new topics. */
+/* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "Ein Thema hinzufügen";
 
 /* Hint for the reader CSS URL field */
@@ -627,9 +632,6 @@
 "An unknown error occurred. Please try again." = "Ein unbekannter Fehler ist aufgetreten. Bitte versuche es erneut.";
 
 /* No comment provided by engineer. */
-"Angle" = "Winkel";
-
-/* No comment provided by engineer. */
 "Annotations Sidebar" = "Seitenleiste für Anmerkungen";
 
 /* Insights 'This Year' details view header */
@@ -658,7 +660,8 @@
 
 /* Approve action. Verb
    Approve comment (verb)
-   Approves a Comment */
+   Approves a Comment
+   Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Genehmige";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
@@ -730,9 +733,6 @@
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Bist du sicher, dass du ein Update vornehmen möchtest?";
-
-/* A short message asking the user if they wish to unfollow the specified topic. The %@ is a placeholder for the name of the topic. */
-"Are you sure you wish to remove the topic '%@'?" = "Möchtest du das Thema '%@' wirklich entfernen?";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Ab 1. August 2018 lässt Facebook das direkte Teilen von Beiträgen auf Facebook-Profilen nicht mehr zu. Die Verknüpfungen zu Facebook-Seiten bleiben unverändert.";
@@ -852,7 +852,7 @@
 "Blacklist" = "Sperrliste";
 
 /* Notice that a page without content has been created */
-"Blank page created" = "Blank page created";
+"Blank page created" = "Leere Seite erstellt";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -928,7 +928,7 @@
 "Button Style" = "Buttonstil";
 
 /* Label for the post author in the post detail. */
-"By " = "By ";
+"By " = "Von";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "Von %@.";
@@ -945,6 +945,9 @@
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "Durch die Registrierung stimmst du unseren Geschäftsbedingungen zu.";
+
+/* No comment provided by engineer. */
+"CHOOSE A FILE" = "Datei auswählen";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "ANPASSEN";
@@ -990,6 +993,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1005,7 +1009,6 @@
    Option to cancel the email app selection when logging in with magic links
    Text displayed by the left navigation button title
    The title of a cancel button.
-   Title of a cancel button.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
@@ -1044,7 +1047,8 @@
 /* shown in promotional screens during first launch */
 "Catch up with your favorite sites and join the conversation anywhere, any time." = "Du kannst überall und jederzeit deine bevorzugten Websites verfolgen und an der Unterhaltung teilnehmen.";
 
-/* Label for the categories field. Should be the same as WP core. */
+/* Label for Categories
+   Label for the categories field. Should be the same as WP core. */
 "Categories" = "Kategorien";
 
 /* Category menu item in share extension.
@@ -1114,9 +1118,10 @@
 "Check your email!" = "Überprüfe dein E-Mail-Postfach!";
 
 /* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
-"Check your network connection and try again or create a blank page." = "Check your network connection and try again or create a blank page.";
+"Check your network connection and try again or create a blank page." = "Überprüfe deine Netzwerkverbindung und versuche es noch einmal. Oder erstelle eine leere Seite.";
 
-/* Default subtitle for no-results when there is no connection */
+/* Default subtitle for no-results when there is no connection
+   Default subtitle for no-results when there is no connection. */
 "Check your network connection and try again." = "Prüfe deine Netzwerkverbindung und versuche es erneut.";
 
 /* Subtitle for No results full page screen displayed from pages list when there is no connection */
@@ -1132,7 +1137,7 @@
 "Checking purchases…" = "Überprüfe Käufe …";
 
 /* Title for the button to progress with the selected site homepage design */
-"Choose" = "Choose";
+"Choose" = "Auswählen";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Seiten auswählen";
@@ -1147,10 +1152,10 @@
 "Choose a date" = "Datum auswählen";
 
 /* Title for the screen to pick a design and homepage for a site. */
-"Choose a design" = "Choose a design";
+"Choose a design" = "Wähle ein Design";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "Wähle einen Domain-Namen für deine Website aus";
+/* Select domain name. Title */
+"Choose a domain" = "Domain auswählen";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Wähle ein Theme";
@@ -1158,8 +1163,14 @@
 /* Label for Publish time picker */
 "Choose a time" = "Uhrzeit auswählen";
 
+/* Title to choose date range in a calendar */
+"Choose date range" = "Zeitraum auswählen";
+
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Domain auswählen";
+
+/* No comment provided by engineer. */
+"Choose file" = "Datei auswählen";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Von meinem Gerät wählen";
@@ -1167,7 +1178,7 @@
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Wähle eine Homepage, die deine neuesten Beiträge anzeigt (klassischer Blog), oder eine feste\/statische Seite.";
 
-/* No comment provided by engineer. */
+/* Menu option used for adding media from other applications. */
 "Choose from device" = "Aus einem Gerät auswählen";
 
 /* No comment provided by engineer. */
@@ -1177,7 +1188,10 @@
 "Choose image or video" = "Bild oder Video auswählen";
 
 /* No comment provided by engineer. */
-"Choose images" = "Choose images";
+"Choose images" = "Bilder auswählen";
+
+/* Shortened version of the main title to be used in back navigation */
+"Choose layout" = "Layout auswählen";
 
 /* No comment provided by engineer. */
 "Choose video" = "Video auswählen";
@@ -1261,7 +1275,7 @@
 "Collect information" = "Informationen erfassen";
 
 /* First story intro item description */
-"Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love.";
+"Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Kombiniere Fotos, Videos und Text, um ansprechende und antippbare Story-Beiträge zu erstellen, die deine Besucher begeistern.";
 
 /* Menu item label for linking a comic page. */
 "Comics" = "Comics";
@@ -1503,6 +1517,12 @@
 /* No comment provided by engineer. */
 "Copy block" = "Block kopieren";
 
+/* No comment provided by engineer. */
+"Copy file URL" = "Datei-URL kopieren";
+
+/* Button title displayed in popup indicating the user copied the local copy */
+"Copy the version from this app" = "Die Version von dieser App kopieren";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Könnte besser sein";
 
@@ -1530,6 +1550,9 @@
 /* Title of a prompt. */
 "Could not save post for later" = "Beitrag konnte nicht für später gespeichert werden";
 
+/* The app failed to subscribe to the comments for the post */
+"Could not subscribe to comments" = "Abonnement für Kommentare fehlgeschlagen";
+
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Konnte Abo nicht umstellen: blogURL-Attribut fehlt";
 
@@ -1538,6 +1561,9 @@
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Konnte Website-Abo für die Website an der angegeben Adresse nicht beenden.";
+
+/* The app failed to unsubscribe from the comments for the post */
+"Could not unsubscribe from comments" = "Abmeldung von den Kommentaren fehlgeschlagen";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Könntest du uns mitteilen, wie wir uns verbessern können?";
@@ -1616,7 +1642,7 @@
 "Create Site" = "Website erstellen";
 
 /* Stories intro continue button title */
-"Create Story Post" = "Create Story Post";
+"Create Story Post" = "Story-Beitrag erstellen";
 
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "WordPress.com-Website erstellen";
@@ -1640,7 +1666,7 @@
 "Create a post or page" = "Erstelle einen Beitrag oder eine Seite";
 
 /* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Create a post, page, or story";
+"Create a post, page, or story" = "Erstelle einen Beitrag, eine Seite oder eine Story";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Erstelle dein eigenes, individuelles Dashboard und wähle aus, welche Berichte angezeigt werden sollen. Konzentriere dich dabei auf die Daten, die für dich am wichtigsten sind.";
@@ -1648,14 +1674,11 @@
 /* Title of a Quick Start Tour */
 "Create your site" = "Erstelle deine Website";
 
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "Erstellt eine neue Website mit der angegebenen Information.";
+/* Accessibility hint for create floating action button */
+"Creates new post, or page" = "Erstellt einen neuen Beitrag oder eine neue Seite";
 
 /* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Creates new post, or page";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Creates new post, page, or story";
+"Creates new post, page, or story" = "Erstellt einen neuen Beitrag, eine neue Seite oder eine neue Story";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Durch Erstellen eines neuen Menüs werden Änderungen, die du am aktuellen Menü vorgenommen hast, verworfen. Bist du sicher, dass du weitermachen möchtest? ";
@@ -1726,6 +1749,9 @@
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
 "Date Format" = "Datumsformat";
+
+/* Label of a button that displays a calendar */
+"Date Range" = "Zeitraum";
 
 /* Date and Time */
 "Date and Time" = "Datum und Uhrzeit";
@@ -1811,10 +1837,16 @@
 /* Text displayed in HUD while a media item is being deleted. */
 "Deleting..." = "Lösche ...";
 
+/* Verb. Denies a 2fa authentication challenge. */
+"Deny" = "Ablehnen";
+
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Beschreibung";
+
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "Gestalten";
 
 /* Title for the desktop web preview */
 "Desktop" = "Desktop";
@@ -2015,6 +2047,9 @@
    Title of the drafts header in search list. */
 "Drafts" = "Entwürfe";
 
+/* Label for post duplicate option. Tapping displays statistics for a post. */
+"Duplicate" = "Duplizieren";
+
 /* No comment provided by engineer. */
 "Duplicate block" = "Block duplizieren";
 
@@ -2024,6 +2059,7 @@
 /* Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
+   Label for a button that opens the Edit Page view controller
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
@@ -2055,14 +2091,20 @@
    Opens the editor to edit an existing post. */
 "Edit Post" = "Artikel bearbeiten";
 
+/* No comment provided by engineer. */
+"Edit file" = "Datei bearbeiten";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Bearbeite neue Beiträge und Seiten mit dem Block-Editor.";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Teilen-Buttons bearbeiten";
 
+/* Button title displayed in popup indicating that the user edits the post first */
+"Edit the post first" = "Den Beitrag zuerst bearbeiten";
+
 /* No comment provided by engineer. */
-"Edit using web editor" = "Edit using web editor";
+"Edit using web editor" = "Mit dem Webeditor bearbeiten";
 
 /* No comment provided by engineer. */
 "Edit video" = "Video bearbeiten";
@@ -2142,6 +2184,9 @@
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Verschlüsselte Logs";
 
+/* Placeholder for the end date in calendar range selection */
+"End Date" = "Enddatum";
+
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Vollbild starten";
 
@@ -2180,12 +2225,12 @@
 /* Instruction text on the initial email address entry screen. */
 "Enter your email address to log in or create a WordPress.com account." = "Gib deine E-Mail-Adresse ein, um dich anzumelden, oder erstelle ein WordPress.com-Konto.";
 
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your existing site address" = "Gib deine bestehende Website-Adresse ein";
+
 /* Title of a button on the magic link screen.
    Title of a button. */
 "Enter your password instead." = "Gib stattdessen dein Passwort ein.";
-
-/* Button title. Takes the user to the login by site address flow. */
-"Enter your site address" = "Gib deine Website-Adresse ein";
 
 /* Generic error alert title
    Generic error.
@@ -2281,7 +2326,7 @@
 "Everyone" = "Jeder";
 
 /* Example story title description */
-"Example story title" = "Example story title";
+"Example story title" = "Beispieltitel für Story";
 
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Auszug";
@@ -2347,13 +2392,19 @@
 "Failed" = "Fehlgeschlagen";
 
 /* Error message to show to use when media insertion on a post fails */
-"Failed to insert media.\n Please tap for options." = "Medien einfügen gescheitert.\nBitte tippe für Optionen.";
+"Failed to insert media.\n Please tap for options." = "Das Einfügen von Medien ist fehlgeschlagen.\nBitte tippe hier für Optionen.";
 
 /* No comment provided by engineer. */
 "Failed to insert media.\nPlease tap for options." = "Das Einfügen von Medien ist fehlgeschlagen.\nBitte tippe hier für Optionen.";
 
+/* No comment provided by engineer. */
+"Failed to save files.\nPlease tap for options." = "Das Speichern der Dateien ist fehlgeschlagen.\nBitte tippe hier für Optionen.";
+
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Fehler beim Serialisieren der Anforderung an die REST-API.";
+
+/* No comment provided by engineer. */
+"Failed to upload files.\nPlease tap for options." = "Das Hochladen der Dateien ist fehlgeschlagen.\nBitte tippe hier für Optionen.";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
@@ -2403,6 +2454,9 @@
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "Heruntergeladene Dateien";
 
+/* No comment provided by engineer. */
+"File block settings" = "Blockeinstellungen der Datei";
+
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Dateiname";
 
@@ -2414,6 +2468,9 @@
 
 /* Title of the filter button in the Reader */
 "Filter" = "Filtern";
+
+/* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
+"Filter by activity type" = "Nach Aktivitätstyp filtern";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Mehr erfahren";
@@ -2449,7 +2506,7 @@
 "Follow other sites" = "Anderen Websites folgen";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"Follow your favorite sites and discover new reads." = "Follow your favorite sites and discover new reads.";
+"Follow your favorite sites and discover new reads." = "Folge deinen Lieblingswebsites und entdecke neuen Lesestoff.";
 
 /* Displayed in the Notification Settings View
    Followed Sites Title
@@ -2616,9 +2673,6 @@ translators: sample content for \"Team\" page template */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Großartig!\n Wir freuen uns über Rückmeldungen glücklicher Anwender \n😁";
 
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "Großartig! Magst du uns eine nette Review schreiben?\n\nEs hilft uns wirklich.";
-
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
 "Grow Your Audience" = "Erweitere dein Publikum";
@@ -2710,7 +2764,7 @@ translators: sample content for \"Team\" page template */
 "Help & Support" = "Hilfe & Support";
 
 /* No comment provided by engineer. */
-"Help button" = "Help button";
+"Help button" = "Hilfe-Button";
 
 /* No comment provided by engineer. */
 "Help icon" = "Hilfe-Icon";
@@ -2762,7 +2816,7 @@ translators: sample content for \"Team\" page template */
 "Hooray!\nAlmost done" = "Hurra!\nFast geschafft.";
 
 /* How to create story description */
-"How to create a story post" = "How to create a story post";
+"How to create a story post" = "So erstellst du einen Story-Beitrag";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "Mir gefällt das";
@@ -2788,8 +2842,8 @@ translators: sample content for \"Team\" page template */
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "Wenn du diesen Leser entfernst, kann der Leser diese Website nicht besuchen.";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "Wenn du eine Website haben möchtest, aber ohne deine aktuellen Beiträge und Seiten, kann unser Support-Team deine Beiträge, Seiten, Medien und Kommentare für dich löschen.\n\nSo bleiben deine Website und URL aktiv, aber du kannst von Neuem mit der Erstellung von Inhalten beginnen. Kontaktiere uns einfach, damit wir deine aktuellen Inhalte entfernen.";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "Wenn du eine Website haben möchtest, aber ohne deine aktuellen Beiträge und Seiten, kann unser Support-Team deine Beiträge, Seiten, Medien und Kommentare für dich löschen.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Wenn du dir nicht sicher bist, was gelöscht wird, oder du Hilfe benötigst: Keine Sorge, unser Support-Team ist da, um alle deine Fragen zu beantworten.";
@@ -2870,9 +2924,6 @@ translators: sample content for \"Team\" page template */
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Medien einfügen";
 
-/* No comment provided by engineer. */
-"Insert mention" = "Erwähnung einfügen";
-
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Ausgewähltes einfügen";
 
@@ -2913,7 +2964,7 @@ translators: sample content for \"Team\" page template */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Die Installation des ersten Plugins auf deiner Website kann bis zu einer Minute dauern. Während dieser Zeit kannst du keine Änderungen an deiner Website vornehmen.";
 
 /* Stories intro header title */
-"Introducing Story Posts" = "Introducing Story Posts";
+"Introducing Story Posts" = "Neu: Story-Beiträge";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Ungültige Website-Adresse";
@@ -2961,7 +3012,8 @@ translators: sample content for \"Team\" page template */
 /* translators: sample content for \"About\" page template */
 "J.K. Rowling" = "J.K. Rowling";
 
-/* Title for the Jetpack Installation
+/* Section title for the publish table section in the blog details screen
+   Title for the Jetpack Installation
    Title for the Jetpack section in site settings screen */
 "Jetpack" = "Jetpack";
 
@@ -2970,6 +3022,9 @@ translators: sample content for \"Team\" page template */
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack FAQ";
+
+/* Noun. Title. Links to the blog's Settings screen. */
+"Jetpack Settings" = "Jetpack-Einstellungen";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack konnte zu diesem Zeitpunkt noch nicht installiert werden.";
@@ -3123,9 +3178,6 @@ translators: sample content for \"Services\" page template */
 /* The accessibility label for the list style button in the Post List. */
 "List style" = "Listen-Stil";
 
-/* Section title of the lists reader section. */
-"Lists" = "Listen";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "Laden";
 
@@ -3231,6 +3283,9 @@ translators: sample content for \"Services\" page template */
 /* Instruction text on the login's email address screen. */
 "Log in to your WordPress.com account with your email address." = "Melde dich mit deiner E-Mail-Adresse bei deinem WordPress.com-Konto an.";
 
+/* Instructions on the WordPress.com username / password log in form. */
+"Log in with your WordPress.com username and password." = "Melde dich mit deinem WordPress.com-Benutzernamen und -Passwort an.";
+
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Von WordPress abmelden?";
 
@@ -3257,8 +3312,6 @@ translators: sample content for \"Services\" page template */
 "Main Navigation" = "Hauptnavigation";
 
 /* Button leading to a screen where users can manage their installed plugins
-   Button title. Tapping lets the user manage the sites they follow.
-   Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
    Title for the Reader Manage screen.
@@ -3266,7 +3319,8 @@ translators: sample content for \"Services\" page template */
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Verwalten";
 
-/* Label for managing the Blog Jetpack Connection section
+/* Jetpack Settings: Manage Connection
+   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Verbindung verwalten";
 
@@ -3560,6 +3614,9 @@ translators: sample content for \"Services\" page template */
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Neuer Menupunkt";
 
+/* Placeholder text for password field */
+"New password" = "Neues Passwort";
+
 /* Noun. The title of an item in a list. */
 "New posts" = "Neue Beiträge";
 
@@ -3620,6 +3677,12 @@ translators: sample content for \"Services\" page template */
 
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Kein Titel";
+
+/* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities available" = "Keine Aktivitäten verfügbar";
+
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities recorded in the selected date range." = "Keine Aktivitäten im ausgewählten Zeitraum aufgezeichnet.";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "Noch keine Aktivität";
@@ -3689,6 +3752,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Noch keine Likes";
+
+/* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"No matching events found." = "Keine passenden Ereignisse gefunden.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso.
    Phrase to show when the user search for images but there are no result to show.
@@ -3824,7 +3890,7 @@ translators: sample content for \"Services\" page template */
 "Notifications Unread" = "Benachrichtigungen ungelesen";
 
 /* First story intro item title */
-"Now stories are for everyone" = "Now stories are for everyone";
+"Now stories are for everyone" = "Storys sind jetzt für alle verfügbar";
 
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Jetpack ist installiert. Jetzt müssen wir nur noch die Einrichtung abschließen. Dies dauert nur eine Minute.";
@@ -4014,11 +4080,15 @@ translators: sample content for \"Services\" page template */
 /* Prompts the user that a restored page was moved to the scheduled list. */
 "Page Restored to Scheduled" = "Seite unter „Geplant“ wiederhergestellt";
 
+/* Name of the button to open the page settings
+   The title of the Page Settings screen. */
+"Page Settings" = "Seiten-Einstellungen";
+
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Seitenumbruch-Block. %s";
 
 /* Notice that a page with content has been created */
-"Page created" = "Page created";
+"Page created" = "Seite erstellt";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page draft uploaded" = "Seitenentwurf hochgeladen";
@@ -4122,7 +4192,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Wähle einen Benutzernamen aus";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "Pick your favorite homepage layout. You can customize or change it later";
+"Pick your favorite homepage layout. You can edit and customize it later." = "Wähle ein Layout für deine Startseite aus, das dir gefällt. Du kannst es später bearbeiten und anpassen.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Planung";
@@ -4328,6 +4398,9 @@ translators: sample content for \"Services\" page template */
 /* Title of notification displayed when a post has been successfully scheduled. */
 "Post scheduled" = "Beitrag geplant";
 
+/* Title displayed in popup when user tries to copy a post with unsaved changes */
+"Post sync conflict" = "Synchronisierungskonflikt des Beitrags";
+
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Beitragstitel. %s";
 
@@ -4390,8 +4463,10 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
-   Title for the button to preview the selected site homepage design */
+   Title for screen to preview a selected homepage design
+   Title for screen to preview a static content. */
 "Preview" = "Vorschau";
 
 /* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -4571,8 +4646,7 @@ translators: sample content for \"Services\" page template */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Den ursprünglichen Beitrag lesen";
 
-/* Noun. Title of the Reader feature in the app.
-   The accessibility value of the Reader tab.
+/* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -4660,15 +4734,12 @@ translators: sample content for \"Services\" page template */
    Button label when removing a blog
    Label for remove location button
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Label of the table view cell's delete button, when unfollowing tags.
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
    Title for button that will confirm removing the next steps/quick start menus.
-   Title of a prompt asking the user to confirm they no longer wish to subscribe to a certain tag.
    User action to remove featured media.
-   User action to remove media.
-   Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
+   User action to remove media. */
 "Remove" = "Entfernen";
 
 /* Remove Person Alert Title
@@ -4922,11 +4993,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "Gespeicherter Beitrag";
 
-/* Section title for Saved Posts in Reader
-   Title for list of posts saved for later
-   Title of the reader's Saved Posts menu item. */
-"Saved Posts" = "Gespeicherte Beiträge";
-
 /* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
 "Saved!" = "Gespeichert!";
 
@@ -4943,6 +5009,9 @@ translators: sample content for \"Services\" page template */
    Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Speichern ...";
+
+/* Noun. Links to a blog's Jetpack Scan screen. */
+"Scan" = "Scan";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Planen";
@@ -4965,16 +5034,14 @@ translators: sample content for \"Services\" page template */
 "Scheduling..." = "Plane ...";
 
 /* No comment provided by engineer. */
-"Scrollable block menu closed." = "Scrollable block menu closed.";
+"Scrollable block menu closed." = "Scrollbares Block-Menü geschlossen.";
 
 /* No comment provided by engineer. */
-"Scrollable block menu opened. Select a block." = "Scrollable block menu opened. Select a block.";
+"Scrollable block menu opened. Select a block." = "Scrollbares Block-Menü geöffnet. Wähle einen Block aus.";
 
 /* Placeholder text for the search bar
-   Search
    The menu item to select during a guided tour.
-   Title of the Reader's search feature
-   Title of the reader's Search menu item. */
+   Title of the Reader's search feature */
 "Search" = "Suche";
 
 /* Site creation. Seelect a domain, search field placeholder */
@@ -5019,15 +5086,14 @@ translators: sample content for \"Services\" page template */
 /* Accessibility value presented in the signup epilogue for a password value. */
 "Secure text" = "Text sichern";
 
-/* Label for selecting the Blog Jetpack Security Settings section
-   Title for the Jetpack Security Settings Screen */
+/* Label for selecting the Blog Jetpack Security Settings section */
 "Security" = "Sicherheit";
 
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "Alle anzeigen";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"See comments and notifications in real time." = "See comments and notifications in real time.";
+"See comments and notifications in real time." = "Kommentare und Benachrichtigungen in Echtzeit anzeigen.";
 
 /* Select action on the app extension category picker screen. Saves the selected categories for the post. */
 "Select" = "Auswählen";
@@ -5036,10 +5102,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "Wähle %@ aus, um fortzufahren.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to continue." = "Wähle %@ aus, um fortzufahren.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page." = "Wähle %@ aus, um eine neue Seite zu erstellen.";
+"Select %@ to create a new page" = "Wähle %@ aus, um eine neue Seite zu erstellen";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Wähle %@ aus, um einen neuen Beitrag zu erstellen";
@@ -5205,9 +5268,9 @@ translators: sample content for \"Services\" page template */
 "Setting up theme" = "Das Theme wird eingerichtet";
 
 /* Link to plugin's Settings
-   Noun. Title. Links to the blog's Settings screen.
    Section title
-   Title for screen that allows configuration of your blog/site settings. */
+   Title for screen that allows configuration of your blog/site settings.
+   Title for the Jetpack Security Settings Screen */
 "Settings" = "Einstellungen";
 
 /* Descriptive text for the Notifications Tab Settings */
@@ -5369,12 +5432,14 @@ translators: sample content for \"Services\" page template */
 "Site Language" = "Website-Sprache";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
 "Site Pages" = "Website-Seiten";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Website-Weiterleitung";
+
+/* Noun. Title. Links to the blog's Settings screen. */
+"Site Settings" = "Website-Einstellungen";
 
 /* Default title for a site
    Label for site title blog setting
@@ -5421,13 +5486,14 @@ translators: sample content for \"Services\" page template */
 "Sites (%lu)" = "Websites (%lu)";
 
 /* A suggestion of topics the user might */
-"Sites to follow" = "Sites to follow";
+"Sites to follow" = "Websites, denen du folgen möchtest";
 
 /* Image size option title. */
 "Size" = "Größe";
 
 /* Button label when skipping all quick start items
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour. */
+   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
+   Continue without making a selection */
 "Skip" = "Überspringen";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -5546,6 +5612,9 @@ translators: sample content for \"Services\" page template */
 /* Standard post format label */
 "Standard" = "Standard";
 
+/* Placeholder for the start date in calendar range selection */
+"Start Date" = "Anfangsdatum";
+
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
 "Start Over" = "Neu beginnen";
@@ -5594,19 +5663,16 @@ translators: sample content for \"Services\" page template */
 "Stop upload" = "Hochladen beenden";
 
 /* Create new Story button title */
-"Story post" = "Story post";
+"Story post" = "Story-Beitrag";
 
 /* Second story intro item description */
-"Story posts don't disappear" = "Story posts don't disappear";
+"Story posts don't disappear" = "Story-Beiträge verschwinden nicht";
 
 /* translators: sample content for \"Services\" page template */
 "Strategy" = "Strategie";
 
 /* Title of alert announcing new Create Button feature. */
 "Streamlined navigation" = "Vereinfachte Navigation";
-
-/* Section title of the default reader items. */
-"Streams" = "Streams";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Durchgestrichen";
@@ -5722,7 +5788,6 @@ translators: sample content for \"Services\" page template */
    Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
-   Section title of the tags reader section.
    Tags menu item in share extension.
    Title for the tag selector view */
 "Tags" = "Schlagwörter";
@@ -5790,18 +5855,11 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Tippe, um Beiträge für dieses Schlagwort anzuzeigen";
 
-/* Accessibility hint
-   Tapping lets you manage the sites you follow. */
-"Tapping lets you manage the sites you follow." = "Durch Tippen kannst du die Websites verwalten, denen du folgst.";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomie";
 
 /* translators: title for \"Team\" page template */
 "Team" = "Team";
-
-/* Section title of the teams reader section. */
-"Teams" = "Teams";
 
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Erzähle ein wenig über dich.";
@@ -5910,6 +5968,9 @@ translators: sample content for \"Services\" page template */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Die Anzahl der Beiträge, die pro Seite angezeigt werden.";
 
+/* Message displayed in popup when user tries to copy a post with conflicts */
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Der Beitrag, den du zu kopieren versuchst, hat zwei Versionen, die miteinander in Konflikt stehen, oder du hast kürzlich Änderungen vorgenommen, diese aber nicht gespeichert.\nBearbeite zuerst den Beitrag, um den Konflikt zu lösen, oder fahre mit dem Kopieren der Version aus dieser App fort.";
+
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Die Schnellstart-Tour leitet dich durch die Erstellung einer grundlegenden Website. Bist du sicher, dass du sie überspringen möchtest? ";
 
@@ -5983,12 +6044,6 @@ translators: sample content for \"Services\" page template */
 
 /* Reply Failure Message */
 "There has been an unexpected error while sending your reply" = "Beim Senden deiner Antwort ist ein unerwarteter Fehler aufgetreten.";
-
-/* The app failed to subscribe to the comments for the post */
-"There has been an unexpected error while subscribing to the comments" = "Beim Abonnieren der Kommentare ist ein unerwarteter Fehler aufgetreten";
-
-/* The app failed to unsubscribe from the comments for the post */
-"There has been an unexpected error while unsubscribing from the comments" = "Beim Abbestellen der Kommentare ist ein unerwarteter Fehler aufgetreten";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Ein unerwarteter Fehler ist aufgetreten beim Aktualisieren der Benachrichtigungseinstellungen";
@@ -6079,7 +6134,7 @@ translators: sample content for \"Services\" page template */
 "There's a restore currently in progress, please wait before starting next one" = "Es wird gerade eine Wiederherstellung vorgenommen. Bitte warte, bevor du mit der nächsten beginnst";
 
 /* Second story intro item description */
-"They're published as a new blog post on your site so your audience never misses out on a thing." = "They're published as a new blog post on your site so your audience never misses out on a thing.";
+"They're published as a new blog post on your site so your audience never misses out on a thing." = "Sie werden auf deiner Website als ein neuer Blogbeitrag veröffentlicht, damit deine Leserschaft nie etwas verpasst.";
 
 /* Insights 'This Year' header */
 "This Year" = "Dieses Jahr";
@@ -6108,8 +6163,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Dies ist Beispielinhalt, der dem Template enthalten ist, um die Funktionen zu veranschaulichen. Entferne oder ersetze ihn durch deine eigenen Worte und Medien.";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "Hier finden dich Benutzer im Internet";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "Hier wirst du im Internet gefunden.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Dieses Medienelement wurde gelöscht.";
@@ -6138,6 +6193,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "Dadurch werden alle zugehörigen Dateien und Daten gelöscht.";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "So bleiben deine Website und URL aktiv, aber du kannst mit dem Erstellen der Inhalte neu beginnen. Kontaktiere uns einfach, damit wir deine aktuellen Inhalte entfernen.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6276,7 +6334,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "Übersetzen";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "Entfernen";
 
@@ -6303,7 +6362,11 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Try a starter layout" = "Probiere ein Layout für Neueinsteiger aus";
 
-/* Button that lets users try to reload the plugin directory after loading failure
+/* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"Try adjusting your date range or activity type filters" = "Versuche, deinen Zeitraum oder Aktivitätsfilter zu ändern";
+
+/* Button label for trying to retrieve the activities type again
+   Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
 "Try again" = "Erneut versuchen";
@@ -6418,10 +6481,10 @@ translators: sample content for \"Services\" page template */
 "Unable to upload 1 draft post, 1 file" = "1 Beitragsentwurf, 1 Datei konnten nicht hochgeladen werden.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 post" = "1 Beitrag konnten nicht hochgeladen werden";
+"Unable to upload 1 post" = "1 Beitrag konnte nicht hochgeladen werden";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
-"Unable to upload 1 post, %ld files" = "1 Beitrag, &Id Datei konnten nicht hochgeladen werden";
+"Unable to upload 1 post, %ld files" = "1 Beitrag, %Id Dateien konnten nicht hochgeladen werden";
 
 /* Alert displayed to the user when a single post and 1 file has failed to upload. */
 "Unable to upload 1 post, 1 file" = "1 Beitrag, 1 Datei konnten nicht hochgeladen werden";
@@ -6805,7 +6868,7 @@ translators: sample content for \"Services\" page template */
 "Watch readers from around the world read and interact with your site — in real time." = "Schau zu, wie Leser aus der ganzen Welt deine Website lesen und damit interagieren – in Echtzeit.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"Watch your audience grow with in-depth analytics." = "Watch your audience grow with in-depth analytics.";
+"Watch your audience grow with in-depth analytics." = "Sieh mithilfe von umfassenden Analysen dabei zu, wie deine Zielgruppe wächst.";
 
 /* translators: sample content for \"Team\" page template */
 "We are a small team of talented professionals with a wide range of skills and experience. We love what we do, and we do it with passion. We look forward to working with you." = "Wir sind ein kleines Team von talentierten Fachleuten mit einem breiten Spektrum an Fähigkeiten und Erfahrungen. Wir lieben, was wir tun, und wir tun es mit Leidenschaft. Wir freuen uns auf die Zusammenarbeit mit dir.";
@@ -6814,7 +6877,7 @@ translators: sample content for \"Services\" page template */
 "We are having trouble loading data" = "Wir haben Probleme beim Laden der Daten";
 
 /* No comment provided by engineer. */
-"We are working hard to add more blocks with each release." = "We are working hard to add more blocks with each release.";
+"We are working hard to add more blocks with each release." = "Wir arbeiten hart daran, mit jeder Veröffentlichung weitere Blöcke hinzuzufügen.";
 
 /* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
 "We couldn't complete this action, and didn't publish this page." = "Wir konnten diese Aktion nicht abschließen und haben diese Seite nicht veröffentlicht.";
@@ -7021,7 +7084,7 @@ translators: sample content for \"Services\" page template */
 "Welcome to the Reader" = "Willkommen zum Reader";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"Welcome to the world’s most popular website builder." = "Welcome to the world’s most popular website builder.";
+"Welcome to the world’s most popular website builder." = "Willkommen beim beliebtesten Website-Baukasten der Welt.";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "West";
@@ -7100,7 +7163,7 @@ translators: sample content for \"Services\" page template */
 "Will not be publicly displayed." = "Wird nicht öffentlich angezeigt.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"With this powerful editor you can post on the go." = "With this powerful editor you can post on the go.";
+"With this powerful editor you can post on the go." = "Mit diesem leistungsstarken Editor kannst du auch von unterwegs aus Beiträge veröffentlichen.";
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "WordPress-App-Einstellungen";
@@ -7335,7 +7398,7 @@ translators: sample content for \"Services\" page template */
 "You're all up to date!" = "Du bist komplett auf dem neuesten Stand!";
 
 /* Story Intro welcome title */
-"You've got early access to story posts and we'd love for you to give it a try." = "You've got early access to story posts and we'd love for you to give it a try.";
+"You've got early access to story posts and we'd love for you to give it a try." = "Du hast frühzeitig Zugriff auf Story-Beiträge und wir würden uns freuen, wenn du sie ausprobierst.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Du hast nicht gespeicherte Änderungen an diesem Beitrag vorgenommen";
@@ -7527,8 +7590,7 @@ translators: sample content for \"Services\" page template */
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab. */
 "wordpress, notifications, alerts, updates" = "wordpress, benachrichtigungen, warnungen, updates";
 
-/* This is a comma separated list of keywords used for spotlight indexing of the 'Reader' tab.
-   This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
+/* This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
 "wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics" = "wordpress, reader, artikel, beiträge, blogbeitrag, gefolgt, entdecken, likes, meine likes, tags, themen";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */

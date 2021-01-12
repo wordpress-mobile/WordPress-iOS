@@ -105,10 +105,10 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         refreshCount += 1
 
         cardsService.fetch(isFirstPage: true, refreshCount: refreshCount, success: { [weak self] cardsCount, hasMore in
-            self?.trackApiResponse()
+            self?.trackContentPresented()
             success(cardsCount, hasMore)
         }, failure: { [weak self] error in
-            self?.trackApiResponse()
+            self?.trackContentPresented()
             failure(error)
         })
     }
@@ -117,7 +117,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         footerView.showSpinner(true)
 
         page += 1
-        WPAnalytics.track(.readerDiscoverPaginated, properties: ["page": page])
+        WPAnalytics.trackReader(.readerDiscoverPaginated, properties: ["page": page])
 
         cardsService.fetch(isFirstPage: false, success: { _, hasMore in
             success?(hasMore)
@@ -144,12 +144,14 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     /// Track when the API returned the cards and the user is still on the screen
     /// This is used to create a funnel to check if users are leaving the screen
     /// before the API response
-    private func trackApiResponse() {
-        guard isVisible else {
-            return
-        }
+    private func trackContentPresented() {
+        DispatchQueue.main.async {
+            guard self.isVisible else {
+                return
+            }
 
-        WPAnalytics.track(.readerDiscoverContentPresented)
+            WPAnalytics.track(.readerDiscoverContentPresented)
+        }
     }
 
     // MARK: - TableViewHandler
@@ -253,14 +255,14 @@ private extension ReaderCardsStreamViewController {
 extension ReaderCardsStreamViewController: ReaderTopicsTableCardCellDelegate {
     func didSelect(topic: ReaderAbstractTopic) {
         if topic as? ReaderTagTopic != nil {
-            WPAnalytics.track(.readerDiscoverTopicTapped)
+            WPAnalytics.trackReader(.readerDiscoverTopicTapped)
 
             let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
             navigationController?.pushViewController(topicStreamViewController, animated: true)
         } else if let siteTopic = topic as? ReaderSiteTopic {
             var properties = [String: Any]()
             properties[WPAppAnalyticsKeyBlogID] = siteTopic.siteID
-            WPAnalytics.track(.readerSuggestedSiteVisited, properties: properties)
+            WPAnalytics.trackReader(.readerSuggestedSiteVisited, properties: properties)
 
             let topicStreamViewController = ReaderStreamViewController.controllerWithSiteID(siteTopic.siteID, isFeed: false)
             navigationController?.pushViewController(topicStreamViewController, animated: true)

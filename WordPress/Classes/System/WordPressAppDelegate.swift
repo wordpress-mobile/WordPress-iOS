@@ -23,7 +23,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return WPCrashLoggingProvider()
     }()
 
-    @objc let logger = WPLogger()
     @objc var internetReachability: Reachability?
     @objc var connectionAvailable: Bool = true
 
@@ -74,7 +73,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
-        let dataSource = EventLoggingDataProvider.fromDDFileLogger(logger.fileLogger)
+        let dataSource = EventLoggingDataProvider.fromDDFileLogger(WPLogger.shared().fileLogger)
         let eventLogging = EventLogging(dataSource: dataSource, delegate: crashLoggingProvider.loggingUploadDelegate)
         CrashLogging.start(withDataProvider: crashLoggingProvider, eventLogging: eventLogging)
 
@@ -353,18 +352,6 @@ extension WordPressAppDelegate {
                                                            completionHandler: completionHandler)
     }
 
-    // MARK: Background refresh
-
-    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        let tabBarController = WPTabBarController.sharedInstance()
-
-        if let readerMenu = tabBarController?.readerMenuViewController,
-            let stream = readerMenu.currentReaderStream {
-            stream.backgroundFetch(completionHandler)
-        } else {
-            completionHandler(.noData)
-        }
-    }
 }
 
 // MARK: - Utility Configuration

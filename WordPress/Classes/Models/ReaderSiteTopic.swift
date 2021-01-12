@@ -11,12 +11,14 @@ import Foundation
     @NSManaged open var isJetpack: Bool
     @NSManaged open var isPrivate: Bool
     @NSManaged open var isVisible: Bool
+    @NSManaged open var organizationID: Int
     @NSManaged open var postCount: NSNumber
     @NSManaged open var siteBlavatar: String
     @NSManaged open var siteDescription: String
     @NSManaged open var siteID: NSNumber
     @NSManaged open var siteURL: String
     @NSManaged open var subscriberCount: NSNumber
+    @NSManaged open var unseenCount: Int
     @NSManaged open var cards: NSOrderedSet?
 
     override open class var TopicType: String {
@@ -27,6 +29,14 @@ import Foundation
         get {
             return siteID.intValue == 0
         }
+    }
+
+    var organizationType: SiteOrganizationType {
+        SiteOrganizationType(rawValue: organizationID) ?? .none
+    }
+
+    var isP2Type: Bool {
+        return organizationType == .p2 || organizationType == .automattic
     }
 
     @objc open var blogNameToDisplay: String {
@@ -48,6 +58,8 @@ import Foundation
         isJetpack = remoteInfo.isJetpack
         isPrivate = remoteInfo.isPrivate
         isVisible = remoteInfo.isVisible
+        organizationID = remoteInfo.organizationID.intValue
+        path = remoteInfo.postsEndpoint ?? remoteInfo.endpointPath ?? ""
         postCount = remoteInfo.postCount ?? 0
         showInMenu = false
         siteBlavatar = remoteInfo.siteBlavatar ?? ""
@@ -57,7 +69,6 @@ import Foundation
         subscriberCount = remoteInfo.subscriberCount ?? 0
         title = remoteInfo.siteName ?? ""
         type = Self.TopicType
-        path = remoteInfo.postsEndpoint ?? remoteInfo.endpointPath ?? ""
 
         postSubscription = ReaderSiteInfoSubscriptionPost.createOrUpdate(from: remoteInfo, topic: self, context: context)
         emailSubscription = ReaderSiteInfoSubscriptionEmail.createOrUpdate(from: remoteInfo, topic: self, context: context)

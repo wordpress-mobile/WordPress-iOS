@@ -1,5 +1,7 @@
 import Foundation
 import WordPressShared
+import Gridicons
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -45,7 +47,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         applyStyles()
     }
 
-    @objc func applyStyles() {
+    private func applyStyles() {
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
         WPStyleGuide.applyReaderStreamHeaderDetailStyle(detailLabel)
         WPStyleGuide.applyReaderSiteStreamDescriptionStyle(descriptionLabel)
@@ -80,7 +82,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         followCountLabel.text = formattedFollowerCountForTopic(siteTopic)
         detailLabel.text = URL(string: siteTopic.siteURL)?.host
 
-        configureHeaderImage(siteTopic.siteBlavatar)
+        configureHeaderImage(siteTopic)
 
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
 
@@ -89,12 +91,18 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
     }
 
-    @objc func configureHeaderImage(_ siteBlavatar: String?) {
+    private func configureHeaderImage(_ siteTopic: ReaderSiteTopic) {
         let placeholder = UIImage.siteIconPlaceholder
 
-        guard
-            let path = siteBlavatar,
-            let url = upscaledImageURL(urlString: path) else {
+        guard let url = upscaledImageURL(urlString: siteTopic.siteBlavatar) else {
+            if siteTopic.isP2Type {
+                avatarImageView.tintColor = UIColor.listIcon
+                avatarImageView.layer.borderColor = UIColor.divider.cgColor
+                avatarImageView.layer.borderWidth = .hairlineBorderWidth
+                avatarImageView.image = UIImage.gridicon(.p2)
+                return
+            }
+
             avatarImageView.image = placeholder
             return
         }
@@ -102,9 +110,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
     }
 
-
-
-    @objc func formattedFollowerCountForTopic(_ topic: ReaderSiteTopic) -> String {
+    private func formattedFollowerCountForTopic(_ topic: ReaderSiteTopic) -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
 

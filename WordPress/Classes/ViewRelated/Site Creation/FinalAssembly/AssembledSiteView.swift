@@ -27,6 +27,8 @@ final class AssembledSiteView: UIView {
     /// This value displays in the address bar.
     private let siteName: String
 
+    private let siteCreator: SiteCreator
+
     /// This value is what the web view loads.
     private let siteURLString: String
 
@@ -74,9 +76,10 @@ final class AssembledSiteView: UIView {
     /// The designated initializer.
     ///
     /// - Parameter domainName: the domain associated with the site pending assembly.
-    init(domainName: String, siteURLString: String) {
+    init(domainName: String, siteURLString: String, siteCreator: SiteCreator) {
         self.siteName = domainName
         self.siteURLString = siteURLString
+        self.siteCreator = siteCreator
 
         textField = {
             let textField = UITextField(frame: .zero)
@@ -140,7 +143,7 @@ final class AssembledSiteView: UIView {
         self.initialSiteRequest = siteRequest
 
         generator.prepare()
-
+        webView.customUserAgent = WPUserAgent.wordPress()
         webView.load(siteRequest)
     }
 
@@ -194,7 +197,7 @@ extension AssembledSiteView: UIGestureRecognizerDelegate {
 extension AssembledSiteView: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        WPAnalytics.track(.enhancedSiteCreationSuccessPreviewViewed)
+        SiteCreationAnalyticsHelper.trackSiteCreationSuccessPreviewViewed(siteCreator.design)
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {
@@ -208,9 +211,8 @@ extension AssembledSiteView: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webViewHasLoadedContent = true
         activityIndicator.stopAnimating()
-        webView.prepareWPComPreview()
         generator.notificationOccurred(.success)
-        WPAnalytics.track(.enhancedSiteCreationSuccessPreviewLoaded)
+        SiteCreationAnalyticsHelper.trackSiteCreationSuccessLoaded(siteCreator.design)
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {

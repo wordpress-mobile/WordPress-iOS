@@ -24,7 +24,7 @@ class GutenbergLayoutPickerViewController: CollapsableHeaderViewController {
             }
         }
     }
-
+    private let filterBar: CollapsableHeaderFilterBar
     private var filteredSections: [GutenbergLayoutSection]?
     private var sections: [GutenbergLayoutSection] = []
     lazy var resultsController: NSFetchedResultsController<PageTemplateCategory> = {
@@ -56,13 +56,15 @@ class GutenbergLayoutPickerViewController: CollapsableHeaderViewController {
         tableView.separatorStyle = .singleLine
         tableView.separatorInset = .zero
         tableView.showsVerticalScrollIndicator = false
+        filterBar = CollapsableHeaderFilterBar()
 
         super.init(scrollableView: tableView,
                    mainTitle: NSLocalizedString("Choose a Layout", comment: "Title for the screen to pick a template for a page"),
                    prompt: NSLocalizedString("Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page.", comment: "Prompt for the screen to pick a template for a page"),
                    primaryActionTitle: NSLocalizedString("Create Page", comment: "Title for button to make a page with the contents of the selected layout"),
                    secondaryActionTitle: NSLocalizedString("Preview", comment: "Title for button to preview a selected layout"),
-                   defaultActionTitle: NSLocalizedString("Create Blank Page", comment: "Title for button to make a blank page"))
+                   defaultActionTitle: NSLocalizedString("Create Blank Page", comment: "Title for button to make a blank page"),
+                   accessoryView: filterBar)
     }
 
     required init?(coder: NSCoder) {
@@ -76,31 +78,11 @@ class GutenbergLayoutPickerViewController: CollapsableHeaderViewController {
         tableView.dataSource = self
         fetchLayouts()
         configureCloseButton()
+        navigationItem.backButtonTitle = NSLocalizedString("Choose layout", comment: "Shortened version of the main title to be used in back navigation")
     }
 
     private func configureCloseButton() {
-        let closeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        closeButton.layer.cornerRadius = 15
-        closeButton.accessibilityLabel = NSLocalizedString("Close", comment: "Dismisses the current screen")
-        closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
-        closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
-
-        if #available(iOS 13.0, *) {
-            closeButton.tintColor = .secondaryLabel
-            closeButton.backgroundColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
-                if traitCollection.userInterfaceStyle == .dark {
-                    return UIColor.systemFill
-                } else {
-                    return UIColor.quaternarySystemFill
-                }
-            }
-        } else {
-            closeButton.tintColor = .textSubtle
-            closeButton.backgroundColor = .quaternaryBackground
-        }
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: closeButton)
-
+        navigationItem.rightBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
     }
 
     @objc func closeButtonTapped(_ sender: Any) {
@@ -113,16 +95,6 @@ class GutenbergLayoutPickerViewController: CollapsableHeaderViewController {
         let destination = LayoutPreviewViewController(layout: layout, completion: completion)
         LayoutPickerAnalyticsEvent.templatePreview(slug: layout.slug)
         navigationController?.pushViewController(destination, animated: true)
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if let previousTraitCollection = previousTraitCollection, traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass {
-            if let visibleRow = tableView.indexPathsForVisibleRows?.first {
-                tableView.scrollToRow(at: visibleRow, at: .top, animated: true)
-            }
-        }
     }
 
     private func createPage(layout: PageTemplateLayout?) {
@@ -185,6 +157,12 @@ class GutenbergLayoutPickerViewController: CollapsableHeaderViewController {
 
     override func secondaryActionSelected(_ sender: Any) {
         presentPreview()
+    }
+
+    public func loadingStateChanged(_ isLoading: Bool) {
+        filterBar.shouldShowGhostContent = isLoading
+        filterBar.allowsMultipleSelection = !isLoading
+        filterBar.reloadData()
     }
 }
 

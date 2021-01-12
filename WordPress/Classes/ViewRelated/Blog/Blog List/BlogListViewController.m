@@ -241,7 +241,6 @@ static NSInteger HideSearchMinSites = 3;
     
     // Ensure No Results VC is not shown. Will be shown later if necessary.
     [self.noResultsViewController removeFromView];
-    [self.tableView.refreshControl setHidden: NO];
     
     // If the user has sites, but they're all hidden...
     if (count > 0 && visibleSitesCount == 0 && !self.isEditing) {
@@ -289,8 +288,6 @@ static NSInteger HideSearchMinSites = 3;
                                                    image:@"mysites-nosites"
                                            subtitleImage:nil
                                            accessoryView:nil];
-
-        [self.tableView.refreshControl setHidden: YES];
         [self addNoResultsToView];
     }
 }
@@ -335,7 +332,6 @@ static NSInteger HideSearchMinSites = 3;
                                            accessoryView:nil];
     }
 
-    [self.tableView.refreshControl setHidden: YES];
     [self addNoResultsToView];
     
 }
@@ -526,16 +522,6 @@ static NSInteger HideSearchMinSites = 3;
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(syncBlogs) forControlEvents:UIControlEventValueChanged];
     self.tableView.refreshControl = refreshControl;
-    
-    // Workaround: The refresh control was showing on top of the table view, apparently because
-    // iOS is failing to put it behind the table view contents (iOS bug).
-    //
-    // Ref: https://stackoverflow.com/a/59713642
-    //
-    // If you want to test if this workaround can be removed, simply comment it, run the app
-    // and check that when the blog list if first displayed, the refresh control is NOT visible
-    // at the front of the table view.
-    refreshControl.layer.zPosition = -1;
 
     self.tableView.tableFooterView = [UIView new];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];

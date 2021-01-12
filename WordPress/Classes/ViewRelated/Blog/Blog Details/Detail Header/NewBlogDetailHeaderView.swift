@@ -60,6 +60,10 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         if let blog = blog,
             blog.hasIcon == true {
             siteIconView.imageView.downloadSiteIcon(for: blog)
+        } else if let blog = blog,
+            blog.isWPForTeams() {
+            siteIconView.imageView.tintColor = UIColor.listIcon
+            siteIconView.imageView.image = UIImage.gridicon(.p2)
         } else {
             siteIconView.imageView.image = UIImage.siteIconPlaceholder
         }
@@ -74,11 +78,11 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
     }
 
     @objc func toggleSpotlightOnSiteTitle() {
-        titleButton.shouldShowSpotlight = QuickStartTourGuide.find()?.isCurrentElement(.siteTitle) == true
+        titleButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.siteTitle)
     }
 
     @objc func toggleSpotlightOnSiteIcon() {
-        siteIconView.spotlightIsShown = QuickStartTourGuide.find()?.isCurrentElement(.siteIcon) == true
+        siteIconView.spotlightIsShown = QuickStartTourGuide.shared.isCurrentElement(.siteIcon)
     }
 
     private enum Constants {
@@ -88,6 +92,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         static let interSectionSpacing: CGFloat = 32
         static let buttonsBottomPadding: CGFloat = 40
         static let buttonsSidePadding: CGFloat = 40
+        static let siteIconSize = CGSize(width: 64, height: 64)
     }
 
     convenience init(items: [ActionRow.Item]) {
@@ -97,7 +102,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         backgroundColor = .basicBackground
 
         siteIconView.tapped = { [weak self] in
-            QuickStartTourGuide.find()?.visited(.siteIcon)
+            QuickStartTourGuide.shared.visited(.siteIcon)
             self?.siteIconView.spotlightIsShown = false
 
             self?.delegate?.siteIconTapped()
@@ -166,7 +171,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
     }
 
     @objc private func titleButtonTapped() {
-        QuickStartTourGuide.find()?.visited(.siteTitle)
+        QuickStartTourGuide.shared.visited(.siteTitle)
         titleButton.shouldShowSpotlight = false
 
         delegate?.siteTitleTapped()
