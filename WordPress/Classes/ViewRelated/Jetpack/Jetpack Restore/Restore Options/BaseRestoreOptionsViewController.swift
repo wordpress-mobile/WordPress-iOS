@@ -16,9 +16,9 @@ class BaseRestoreOptionsViewController: UITableViewController {
     // MARK: - Private Properties
 
     private(set) var site: JetpackSiteRef
-    private(set) var formattableActivity: FormattableActivity
+    private(set) var activity: Activity
+    private(set) var restoreTypes = JetpackRestoreTypes()
     private let configuration: JetpackRestoreOptionsConfiguration
-    private var restoreTypes = JetpackRestoreTypes()
 
     private lazy var handler: ImmuTableViewHandler = {
        return ImmuTableViewHandler(takeOver: self)
@@ -30,15 +30,15 @@ class BaseRestoreOptionsViewController: UITableViewController {
 
     // MARK: - Initialization
 
-    init(site: JetpackSiteRef, activity: FormattableActivity) {
+    init(site: JetpackSiteRef, activity: Activity) {
         fatalError("A configuration struct needs to be provided")
     }
 
     init(site: JetpackSiteRef,
-         activity: FormattableActivity,
+         activity: Activity,
          configuration: JetpackRestoreOptionsConfiguration) {
         self.site = site
-        self.formattableActivity = activity
+        self.activity = activity
         self.configuration = configuration
         super.init(style: .grouped)
     }
@@ -88,7 +88,7 @@ class BaseRestoreOptionsViewController: UITableViewController {
 
     private func configureTableHeaderView() {
         let headerView = JetpackRestoreHeaderView.loadFromNib()
-        let publishedDate = dateFormatter.string(from: formattableActivity.activity.published)
+        let publishedDate = dateFormatter.string(from: activity.published)
 
         headerView.configure(
             iconImage: configuration.iconImage,

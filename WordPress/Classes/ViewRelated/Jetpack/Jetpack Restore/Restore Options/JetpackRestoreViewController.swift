@@ -8,7 +8,7 @@ class JetpackRestoreViewController: BaseRestoreOptionsViewController {
 
     // MARK: - Initialization
 
-    override init(site: JetpackSiteRef, activity: FormattableActivity) {
+    override init(site: JetpackSiteRef, activity: Activity) {
         let restoreOptionsConfiguration = JetpackRestoreOptionsConfiguration(
             title: NSLocalizedString("Restore", comment: "Title for the Jetpack Restore Site Screen"),
             iconImage: UIImage.gridicon(.history),
@@ -33,12 +33,10 @@ class JetpackRestoreViewController: BaseRestoreOptionsViewController {
     // MARK: - Override
 
     override func actionButtonTapped() {
-        //        let warningVC = JetpackRestoreWarningViewController()
-        //        self.navigationController?.pushViewController(warningVC, animated: true)
-        let statusVC = JetpackRestoreStatusViewController(site: site,
-                                                          activity: formattableActivity.activity,
-                                                          restoreTypes: JetpackRestoreTypes())
-        self.navigationController?.pushViewController(statusVC, animated: true)
+        let warningVC = JetpackRestoreWarningViewController(site: site,
+                                                            activity: activity,
+                                                            restoreTypes: restoreTypes)
+        self.navigationController?.pushViewController(warningVC, animated: true)
     }
 
 }

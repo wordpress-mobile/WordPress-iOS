@@ -8,7 +8,7 @@ class JetpackDownloadBackupViewController: BaseRestoreOptionsViewController {
 
     // MARK: - Initialization
 
-    override init(site: JetpackSiteRef, activity: FormattableActivity) {
+    override init(site: JetpackSiteRef, activity: Activity) {
         let restoreOptionsConfiguration = JetpackRestoreOptionsConfiguration(
             title: NSLocalizedString("Download Backup", comment: "Title for the Jetpack Download Backup Site Screen"),
             iconImage: UIImage.gridicon(.history),
@@ -34,7 +34,7 @@ class JetpackDownloadBackupViewController: BaseRestoreOptionsViewController {
 
     override func actionButtonTapped() {
         let statusVC = JetpackBackupStatusViewController(site: site,
-                                                         activity: formattableActivity.activity,
+                                                         activity: activity,
                                                          restoreTypes: JetpackRestoreTypes())
         self.navigationController?.pushViewController(statusVC, animated: true)
     }

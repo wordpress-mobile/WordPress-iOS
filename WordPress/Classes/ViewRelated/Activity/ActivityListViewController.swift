@@ -318,7 +318,7 @@ extension ActivityListViewController: ActivityPresenter {
         self.navigationController?.pushViewController(detailVC, animated: true)
     }
 
-    func presentBackupOrRestoreFor(activity: FormattableActivity) {
+    func presentBackupOrRestoreFor(activity: Activity) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
@@ -366,8 +366,8 @@ extension ActivityListViewController: ActivityPresenter {
             return
         }
 
-        let warningVC = JetpackRestoreWarningViewController()
-        let navigationVC = UINavigationController(rootViewController: warningVC)
+        let restoreVC = JetpackRestoreViewController(site: site, activity: activity)
+        let navigationVC = UINavigationController(rootViewController: restoreVC)
         self.present(navigationVC, animated: true)
     }
 }
