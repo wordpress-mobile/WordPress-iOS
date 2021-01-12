@@ -54,7 +54,7 @@ class MySitesCoordinator: NSObject {
         navigationController.tabBarItem.accessibilityLabel = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
         navigationController.tabBarItem.accessibilityIdentifier = "mySitesTabButton"
         navigationController.tabBarItem.title = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
-
+        navigationController.navigationItem.largeTitleDisplayMode = .always
         return navigationController
     }()
 
