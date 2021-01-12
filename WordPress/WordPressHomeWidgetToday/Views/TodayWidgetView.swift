@@ -45,10 +45,10 @@ extension TodayWidgetView {
 
     private enum Constants {
         // Titles
-        static let widgetTitle: LocalizedStringKey = "Today"
-        static let viewsTitle: LocalizedStringKey = "Views"
-        static let visitorsTitle: LocalizedStringKey = "Visitors"
-        static let likesTitle: LocalizedStringKey = "Likes"
-        static let commentsTitle: LocalizedStringKey = "Comments"
+        static let widgetTitle: LocalizedStringKey = "TODAY_WIDGET_TODAY_LABEL"
+        static let viewsTitle: LocalizedStringKey = "TODAY_WIDGET_VIEWS_LABEL"
+        static let visitorsTitle: LocalizedStringKey = "TODAY_WIDGET_VISITORS_LABEL"
+        static let likesTitle: LocalizedStringKey = "TODAY_WIDGET_LIKES_LABEL"
+        static let commentsTitle: LocalizedStringKey = "TODAY_WIDGET_COMMENTS_LABEL"
     }
 }

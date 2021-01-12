@@ -2977,6 +2977,7 @@
 		3F73BE5E24EB3B4400BE99FF /* WhatIsNewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewView.swift; sourceTree = "<group>"; };
 		3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZendeskUtilsTests+Plans.swift"; sourceTree = "<group>"; };
 		3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnouncementsStore.swift; sourceTree = "<group>"; };
+		3F7646F625AE1C5200FBA98C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3F82310E24564A870086E9B8 /* ReaderTabViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewTests.swift; sourceTree = "<group>"; };
 		3F8CB10523A07B17007627BF /* ReaderReblogAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogAction.swift; sourceTree = "<group>"; };
 		3F8CBE0A24EEB0EA00F71234 /* AnnouncementsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsDataSource.swift; sourceTree = "<group>"; };
@@ -3014,7 +3015,7 @@
 		3F9E728225A8EA3700AAAB1A /* th */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3F9E728325A8EA3900AAAB1A /* tr */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3F9E728425A8EA3F00AAAB1A /* cy */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = cy; path = cy.lproj/Localizable.strings; sourceTree = "<group>"; };
-		3F9E72A525A8EB8700AAAB1A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		3F9E72A525A8EB8700AAAB1A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3FA53E9B256571D800F4D9A2 /* HomeWidgetCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetCache.swift; sourceTree = "<group>"; };
 		3FA59B99258289E30073772F /* StatsValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsValueView.swift; sourceTree = "<group>"; };
 		3FAA18CB25797B85002B1911 /* UnconfiguredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconfiguredView.swift; sourceTree = "<group>"; };
@@ -15077,6 +15078,7 @@
 				3F9E728325A8EA3900AAAB1A /* tr */,
 				3F9E728425A8EA3F00AAAB1A /* cy */,
 				3F9E72A525A8EB8700AAAB1A /* en */,
+				3F7646F625AE1C5200FBA98C /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

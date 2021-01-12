@@ -1,14 +1,14 @@
-/* Stats Comments Label */
-"Comments" = "Comments";
+/* Title of comments label in today widget */
+"TODAY_WIDGET_COMMENTS_LABEL" = "Comments";
 
-/* Stats Likes Label */
-"Likes" = "Likes";
+/* Title of likes label in today widget */
+"TODAY_WIDGET_LIKES_LABEL" = "Likes";
 
-/* Stats Views Label */
-"Views" = "Views";
+/* Title of views label in today widget */
+"TODAY_WIDGET_VIEWS_LABEL" = "Views";
 
-/* Stats Visitors Label */
-"Visitors" = "Visitors";
+/* Title of visitors label in today widget */
+"TODAY_WIDGET_VISITORS_LABEL" = "Visitors";
 
-/* Today Widget Title Label */
-"Today" = "Today";
+/* Title of today widget */
+"TODAY_WIDGET_TODAY_LABEL" = "Today";
