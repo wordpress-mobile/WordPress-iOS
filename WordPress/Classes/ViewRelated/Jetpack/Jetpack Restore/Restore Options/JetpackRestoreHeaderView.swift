@@ -7,14 +7,33 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
     @IBOutlet weak var icon: UIImageView!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var body: UILabel!
-    @IBOutlet weak var actionButton: UIButton!
+    @IBOutlet weak var actionButton: FancyButton!
+
+    var actionButtonHandler: (() -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.body.numberOfLines = 0
+        applyStyles()
     }
 
-    func configure(site: JetpackSiteRef, formattableActivity: FormattableActivity, restoreAction: JetpackRestoreAction) {
+    private func applyStyles() {
+        icon.tintColor = .success
+
+        title.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
+        title.textColor = .text
+
+        body.font = WPStyleGuide.fontForTextStyle(.body)
+        body.textColor = .textSubtle
+        body.numberOfLines = 0
+        // Need to define preferredMaxLayoutWidth for multiline labels in a custom tableHeaderView
+        body.preferredMaxLayoutWidth = body.bounds.width
+
+        actionButton.isPrimary = true
+    }
+
+    func configure(site: JetpackSiteRef,
+                   formattableActivity: FormattableActivity,
+                   restoreAction: JetpackRestoreAction) {
 
         let dateFormatter = ActivityDateFormatting.mediumDateFormatterWithTime(for: site)
         let publishedDate = dateFormatter.string(from: formattableActivity.activity.published)
@@ -33,5 +52,9 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
             body.text = String(format: descriptionFormat, publishedDate)
             actionButton.setTitle(NSLocalizedString("Create downloadable file", comment: "Button title for download backup action"), for: .normal)
         }
+    }
+
+    @IBAction func actionButtonTapped(_ sender: UIButton) {
+        actionButtonHandler?()
     }
 }
