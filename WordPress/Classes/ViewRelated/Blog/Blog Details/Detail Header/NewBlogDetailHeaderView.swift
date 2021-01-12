@@ -94,8 +94,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
         self.init(frame: .zero)
 
-        // Temporary so we can differentiate between this and the old blog details in the PR review.
-        backgroundColor = .white
+        backgroundColor = .basicBackground
 
         siteIconView.tapped = { [weak self] in
             QuickStartTourGuide.find()?.visited(.siteIcon)
