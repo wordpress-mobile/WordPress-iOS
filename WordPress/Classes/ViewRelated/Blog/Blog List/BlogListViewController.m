@@ -56,6 +56,9 @@ static NSInteger HideSearchMinSites = 3;
         
         [self configureDataSource];
         [self configureNavigationBar];
+        
+        // This should be removed once the flag is removed.
+        self.canBypassBlogList = ![Feature enabled:FeatureFlagNewNavBarAppearance];
     }
     
     return self;
@@ -160,6 +163,16 @@ static NSInteger HideSearchMinSites = 3;
     [self syncBlogs];
     [self setAddSiteBarButtonItem];
     [self updateCurrentBlogSelection];
+    
+    // The logic below should be removed once the `FeatureFlagNewNavBarAppearance` is removed.
+    // There's no need to bypass the blog list once the root VC in "My Site" is the blog details.
+    if (![Feature enabled:FeatureFlagNewNavBarAppearance] && self.canBypassBlogList) {
+        self.canBypassBlogList = false;
+        
+        if ([self shouldBypassBlogListViewController]) {
+            [self bypassBlogListViewController];
+        }
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -459,22 +472,17 @@ static NSInteger HideSearchMinSites = 3;
     [self showAddSiteAlertFrom:sourceView];
 }
 
-- (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
+- (BOOL)shouldBypassBlogListViewController
 {
     return self.dataSource.displayedBlogsCount == 1;
 }
 
 - (void)bypassBlogListViewController
 {
-    if ([self shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
-        // We do a delay of 0.0 so that way this doesn't kick off until the next run loop.
-        [self performSelector:@selector(selectFirstSite) withObject:nil afterDelay:0.0];
-    }
-}
-
-- (void)selectFirstSite
-{
-    [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    Blog *blog = [self.dataSource blogAtIndexPath:indexPath];
+    
+    [self setSelectedBlog:blog animated:false];
 }
 
 - (void)updateCurrentBlogSelection

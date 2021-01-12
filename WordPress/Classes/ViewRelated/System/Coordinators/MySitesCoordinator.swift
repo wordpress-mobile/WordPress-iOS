@@ -75,25 +75,6 @@ class MySitesCoordinator: NSObject {
         super.init()
     }
 
-    // MARK: - Main VC
-
-    /// Shows the main VC for this tab.  This method's name is generic on purpose since it abstracts the caller from knowing
-    /// what VC should be shown as the main one for the tab.
-    ///
-    /// - Parameters:
-    ///     - canBypassBlogList: whether this method can bypass the blog list and go directly into the blog details.
-    ///
-    @objc
-    func showMainViewController() {
-        showRootViewController()
-
-        if !Feature.enabled(.newNavBarAppearance)
-            && blogListViewController.shouldBypassBlogListViewControllerWhenSelectedFromTabBar() {
-
-            blogListViewController.bypassBlogListViewController()
-        }
-    }
-
     // MARK: - Root View Controller
 
     private func rootContentViewController() -> UIViewController {
@@ -104,7 +85,7 @@ class MySitesCoordinator: NSObject {
         }
     }
 
-    private func showRootViewController() {
+    func showRootViewController() {
         becomeActiveTab()
 
         navigationController.popToRootViewController(animated: false)
