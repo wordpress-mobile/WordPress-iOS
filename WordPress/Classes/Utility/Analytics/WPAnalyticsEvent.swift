@@ -40,6 +40,7 @@ import Foundation
     // Gutenberg Features
     case gutenbergUnsupportedBlockWebViewShown
     case gutenbergUnsupportedBlockWebViewClosed
+    case gutenbergSuggestionSessionFinished
 
     // Notifications Permissions
     case pushNotificationsPrimerSeen
@@ -99,6 +100,10 @@ import Foundation
     case activitylogFilterbarRangeButtonTapped
     case activitylogFilterbarSelectRange
     case activitylogFilterbarResetRange
+    case backupListOpened
+    case backupFilterbarRangeButtonTapped
+    case backupFilterbarSelectRange
+    case backupFilterbarResetRange
 
     // Comments
     case commentViewed
@@ -172,6 +177,8 @@ import Foundation
             return "gutenberg_unsupported_block_webview_shown"
         case .gutenbergUnsupportedBlockWebViewClosed:
             return "gutenberg_unsupported_block_webview_closed"
+        case .gutenbergSuggestionSessionFinished:
+            return "suggestion_session_finished"
         // Notifications permissions
         case .pushNotificationsPrimerSeen:
             return "notifications_primer_seen"
@@ -278,6 +285,14 @@ import Foundation
             return "activitylog_filterbar_select_range"
         case .activitylogFilterbarResetRange:
             return "activitylog_filterbar_reset_range"
+        case .backupListOpened:
+            return "backup_list_opened"
+        case .backupFilterbarRangeButtonTapped:
+            return "backup_filterbar_range_button_tapped"
+        case .backupFilterbarSelectRange:
+            return "backup_filterbar_select_range"
+        case .backupFilterbarResetRange:
+            return "backup_filterbar_reset_range"
 
         // Comments
         case .commentViewed:

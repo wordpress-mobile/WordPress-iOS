@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-17 12:49:42+0000 */
+/* Translation-Revision-Date: 2021-01-06 10:39:51+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -365,7 +365,13 @@
 "Activity Log" = "Jurnal de activități";
 
 /* Option in Support view to see activity logs. */
-"Activity Logs" = "Jurnale de activitate";
+"Activity Logs" = "Jurnale de activități";
+
+/* Label for the Activity Type filter button */
+"Activity Type" = "Tip de activitate";
+
+/* Label for the Activity Type filter button when there are more than 1 activity type selected */
+"Activity Type (%1$d)" = "Tip de activitate (%1$d)";
 
 /* Remove asset from media picker list */
 "Add" = "Adaugă";
@@ -412,8 +418,7 @@
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Adaugă o fotografie de profil";
 
-/* Title of a feature to add a new topic to the topics subscribed by the user.
-   Title. Lets the user know that they can use this feature to subscribe to new topics. */
+/* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "Adaugă un subiect";
 
 /* Hint for the reader CSS URL field */
@@ -729,9 +734,6 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Sigur vrei să actualizezi?";
 
-/* A short message asking the user if they wish to unfollow the specified topic. The %@ is a placeholder for the name of the topic. */
-"Are you sure you wish to remove the topic '%@'?" = "Sigur vrei să înlături subiectul „%@”?";
-
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Începând cu 1 august 2018, Facebook nu mai permite partajarea directă a articolelor în profilurile Facebook. Conexiunile la paginile Facebook rămân neschimbate.";
 
@@ -1007,7 +1009,6 @@
    Option to cancel the email app selection when logging in with magic links
    Text displayed by the left navigation button title
    The title of a cancel button.
-   Title of a cancel button.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
@@ -1162,8 +1163,14 @@
 /* Label for Publish time picker */
 "Choose a time" = "Alege o oră";
 
+/* Title to choose date range in a calendar */
+"Choose date range" = "Alege intervalul de date";
+
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Alege domeniul";
+
+/* No comment provided by engineer. */
+"Choose file" = "Alege fișierul";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Alege de pe dispozitivul meu";
@@ -1171,7 +1178,7 @@
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Alege o primă pagină care să afișeze ultimele articole (blog clasic) sau o pagină fixă\/statică.";
 
-/* No comment provided by engineer. */
+/* Menu option used for adding media from other applications. */
 "Choose from device" = "Alege de pe dispozitiv";
 
 /* No comment provided by engineer. */
@@ -1513,6 +1520,9 @@
 /* No comment provided by engineer. */
 "Copy file URL" = "Copiază URL-ul fișierului";
 
+/* Button title displayed in popup indicating the user copied the local copy */
+"Copy the version from this app" = "Copiază versiunea din această aplicație";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Poate fi mai bine";
 
@@ -1540,6 +1550,9 @@
 /* Title of a prompt. */
 "Could not save post for later" = "Nu am putut salva articolul pentru mai târziu";
 
+/* The app failed to subscribe to the comments for the post */
+"Could not subscribe to comments" = "Nu am putut face abonamentul la comentarii";
+
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Nu pot comuta urmărirea: lipsește atributul blogURLv";
 
@@ -1548,6 +1561,9 @@
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Nu pot să renunț la urmărirea sitului de la adresa specificată.";
+
+/* The app failed to unsubscribe from the comments for the post */
+"Could not unsubscribe from comments" = "Nu am putut anula abonamentul la comentarii";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Poți să ne spui cum putem fi mai buni?";
@@ -1733,6 +1749,9 @@
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
 "Date Format" = "Format dată";
+
+/* Label of a button that displays a calendar */
+"Date Range" = "Interval de date";
 
 /* Date and Time */
 "Date and Time" = "Dată și oră";
@@ -2028,6 +2047,9 @@
    Title of the drafts header in search list. */
 "Drafts" = "Ciorne";
 
+/* Label for post duplicate option. Tapping displays statistics for a post. */
+"Duplicate" = "Fă duplicat";
+
 /* No comment provided by engineer. */
 "Duplicate block" = "Fă un duplicat al blocului";
 
@@ -2080,6 +2102,9 @@
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Editare butoane de partajare";
+
+/* Button title displayed in popup indicating that the user edits the post first */
+"Edit the post first" = "Mai întâi, editează articolul";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "Editează folosind editorul web";
@@ -2162,6 +2187,9 @@
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Jurnale criptate";
 
+/* Placeholder for the end date in calendar range selection */
+"End Date" = "Dată de încheiere";
+
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Intră pe ecran complet";
 
@@ -2200,12 +2228,12 @@
 /* Instruction text on the initial email address entry screen. */
 "Enter your email address to log in or create a WordPress.com account." = "Introdu adresa ta de email pentru a te autentifica sau creează un cont WordPress.com.";
 
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your existing site address" = "Introdu adresa sitului tău de acum";
+
 /* Title of a button on the magic link screen.
    Title of a button. */
 "Enter your password instead." = "În schimb, introdu parola.";
-
-/* Button title. Takes the user to the login by site address flow. */
-"Enter your site address" = "Introdu adresa sitului tău";
 
 /* Generic error alert title
    Generic error.
@@ -2443,6 +2471,9 @@
 
 /* Title of the filter button in the Reader */
 "Filter" = "Filtrează";
+
+/* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
+"Filter by activity type" = "Filtrează după tipul de activitate";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Află mai mult";
@@ -3150,9 +3181,6 @@ translators: sample content for \"Services\" page template */
 /* The accessibility label for the list style button in the Post List. */
 "List style" = "Stil listă";
 
-/* Section title of the lists reader section. */
-"Lists" = "Liste";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "Încărcare";
 
@@ -3287,8 +3315,6 @@ translators: sample content for \"Services\" page template */
 "Main Navigation" = "Navigare principală";
 
 /* Button leading to a screen where users can manage their installed plugins
-   Button title. Tapping lets the user manage the sites they follow.
-   Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
    Title for the Reader Manage screen.
@@ -3655,6 +3681,12 @@ translators: sample content for \"Services\" page template */
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Fără titlu";
 
+/* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities available" = "Nu sunt disponibile activități";
+
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities recorded in the selected date range." = "Nicio activitate înregistrată în intervalul de timp selectat.";
+
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "Nicio activitate până acum";
 
@@ -3723,6 +3755,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Încă nicio apreciere";
+
+/* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"No matching events found." = "Nu s-a găsit niciun eveniment care să se potrivească.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso.
    Phrase to show when the user search for images but there are no result to show.
@@ -4366,6 +4401,9 @@ translators: sample content for \"Services\" page template */
 /* Title of notification displayed when a post has been successfully scheduled. */
 "Post scheduled" = "Articol programat";
 
+/* Title displayed in popup when user tries to copy a post with unsaved changes */
+"Post sync conflict" = "Conflict la sincronizarea articolului";
+
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Titlu articol. %s";
 
@@ -4611,8 +4649,7 @@ translators: sample content for \"Services\" page template */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Citește articolul sursă";
 
-/* Noun. Title of the Reader feature in the app.
-   The accessibility value of the Reader tab.
+/* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -4700,15 +4737,12 @@ translators: sample content for \"Services\" page template */
    Button label when removing a blog
    Label for remove location button
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Label of the table view cell's delete button, when unfollowing tags.
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
    Title for button that will confirm removing the next steps/quick start menus.
-   Title of a prompt asking the user to confirm they no longer wish to subscribe to a certain tag.
    User action to remove featured media.
-   User action to remove media.
-   Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
+   User action to remove media. */
 "Remove" = "Îndepărtează";
 
 /* Remove Person Alert Title
@@ -4962,11 +4996,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "Articol salvat";
 
-/* Section title for Saved Posts in Reader
-   Title for list of posts saved for later
-   Title of the reader's Saved Posts menu item. */
-"Saved Posts" = "Articole salvate";
-
 /* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
 "Saved!" = "Salvat!";
 
@@ -4983,6 +5012,9 @@ translators: sample content for \"Services\" page template */
    Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Salvez...";
+
+/* Noun. Links to a blog's Jetpack Scan screen. */
+"Scan" = "Scanează";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Programare";
@@ -5011,10 +5043,8 @@ translators: sample content for \"Services\" page template */
 "Scrollable block menu opened. Select a block." = "Meniul de blocuri care poate fi derulat este deschis. Selectează un bloc.";
 
 /* Placeholder text for the search bar
-   Search
    The menu item to select during a guided tour.
-   Title of the Reader's search feature
-   Title of the reader's Search menu item. */
+   Title of the Reader's search feature */
 "Search" = "Caută";
 
 /* Site creation. Seelect a domain, search field placeholder */
@@ -5075,10 +5105,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "Selectează %@ pentru a continua";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to continue." = "Selectează %@ pentru a continua.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page." = "Selectează %@ pentru a crea o pagină nouă.";
+"Select %@ to create a new page" = "Selectează %@ pentru a crea o pagină nouă";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Selectează %@ pentru a crea un articol nou";
@@ -5408,7 +5435,6 @@ translators: sample content for \"Services\" page template */
 "Site Language" = "Limbă sit";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
 "Site Pages" = "Pagini sit";
 
@@ -5589,6 +5615,9 @@ translators: sample content for \"Services\" page template */
 /* Standard post format label */
 "Standard" = "Standard";
 
+/* Placeholder for the start date in calendar range selection */
+"Start Date" = "Dată de începere";
+
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
 "Start Over" = "Începe din nou";
@@ -5647,9 +5676,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title of alert announcing new Create Button feature. */
 "Streamlined navigation" = "Navigare simplificată";
-
-/* Section title of the default reader items. */
-"Streams" = "Fluxuri";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Taie aici";
@@ -5765,7 +5791,6 @@ translators: sample content for \"Services\" page template */
    Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
-   Section title of the tags reader section.
    Tags menu item in share extension.
    Title for the tag selector view */
 "Tags" = "Etichete";
@@ -5833,18 +5858,11 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Atinge pentru a vedea articolele cu această etichetă";
 
-/* Accessibility hint
-   Tapping lets you manage the sites you follow. */
-"Tapping lets you manage the sites you follow." = "Atingerea îți permite să administrezi siturile pe care le urmărești.";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomie";
 
 /* translators: title for \"Team\" page template */
 "Team" = "Echipă";
-
-/* Section title of the teams reader section. */
-"Teams" = "Echipe";
 
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Spune-ne ceva despre tine.";
@@ -5953,6 +5971,9 @@ translators: sample content for \"Services\" page template */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Numărul de articole de arătat per pagină.";
 
+/* Message displayed in popup when user tries to copy a post with conflicts */
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Articolul pe care încerci să-l copiezi are două versiuni care sunt în conflict sau ai făcut recent modificări pe care nu le-ai salvat.\nMai întâi, editează articolul pentru a elimina orice conflict sau continuă cu copierea versiunii din această aplicație.";
+
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Inițierea rapidă te va conduce la construirea unui sit de bază. Sigur vrei să sari peste ea?";
 
@@ -6026,12 +6047,6 @@ translators: sample content for \"Services\" page template */
 
 /* Reply Failure Message */
 "There has been an unexpected error while sending your reply" = "A apărut o eroare neașteptată în timpul trimiterii răspunsului tău";
-
-/* The app failed to subscribe to the comments for the post */
-"There has been an unexpected error while subscribing to the comments" = "A apărut o eroare neașteptată în timpul abonării la comentarii.";
-
-/* The app failed to unsubscribe from the comments for the post */
-"There has been an unexpected error while unsubscribing from the comments" = "A apărut o eroare neașteptată în timpul dezabonării de la comentarii.";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "A apărut o eroare neașteptată în timpul actualizării setărilor pentru notificări";
@@ -6350,7 +6365,11 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Try a starter layout" = "Încearcă un aranjament de început";
 
-/* Button that lets users try to reload the plugin directory after loading failure
+/* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"Try adjusting your date range or activity type filters" = "Încearcă ajustarea filtrelor pentru intervalul de timp sau tipul de activitate";
+
+/* Button label for trying to retrieve the activities type again
+   Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
 "Try again" = "Încearcă din nou";
@@ -7574,8 +7593,7 @@ translators: sample content for \"Services\" page template */
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab. */
 "wordpress, notifications, alerts, updates" = "wordpress, notificări, alerte, actualizări";
 
-/* This is a comma separated list of keywords used for spotlight indexing of the 'Reader' tab.
-   This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
+/* This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
 "wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics" = "wordpress, cititor, articole, articole de blog, urmărite, descoperă, aprecieri, aprecierile mele, etichete, subiecte";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */

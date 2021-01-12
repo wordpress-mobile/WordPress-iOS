@@ -433,6 +433,10 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         setTitle(post.postTitle ?? "")
         setHTML(content)
+
+        SiteSuggestionService.shared.prefetchSuggestions(for: self.post.blog) { [weak self] in
+            self?.gutenberg.updateCapabilities()
+        }
     }
 
     private func refreshInterface() {
@@ -852,6 +856,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         })
     }
 
+    func gutenbergDidRequestXpost(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
+        DispatchQueue.main.async(execute: { [weak self] in
+            self?.showSuggestions(type: .xpost, callback: callback)
+        })
+    }
+
     func gutenbergDidRequestStarterPageTemplatesTooltipShown() -> Bool {
         return gutenbergSettings.starterPageTemplatesTooltipShown
     }
@@ -878,6 +888,13 @@ extension GutenbergViewController {
             return
         }
 
+        switch type {
+        case .mention:
+            guard SuggestionService.shared.shouldShowSuggestions(for: post.blog) else { return }
+        case .xpost:
+            guard SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog) else { return }
+        }
+
         previousFirstResponder = view.findFirstResponder()
         let suggestionsController = GutenbergSuggestionsViewController(siteID: siteID, suggestionType: type)
         suggestionsController.onCompletion = { (result) in
@@ -887,6 +904,26 @@ extension GutenbergViewController {
             if let previousFirstResponder = self.previousFirstResponder {
                 previousFirstResponder.becomeFirstResponder()
             }
+
+            var analyticsName: String
+            switch type {
+            case .mention:
+                analyticsName = "user"
+            case .xpost:
+                analyticsName = "xpost"
+            }
+
+            var didSelectSuggestion = false
+            if case .success(_) = result {
+                didSelectSuggestion = true
+            }
+
+            let analyticsProperties: [String: Any] = [
+                "suggestion_type": analyticsName,
+                "did_select_suggestion": didSelectSuggestion
+            ]
+
+            WPAnalytics.track(.gutenbergSuggestionSessionFinished, properties: analyticsProperties)
         }
         addChild(suggestionsController)
         view.addSubview(suggestionsController.view)
@@ -950,6 +987,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     func gutenbergCapabilities() -> [Capabilities: Bool] {
         return [
             .mentions: FeatureFlag.gutenbergMentions.enabled && SuggestionService.shared.shouldShowSuggestions(for: post.blog),
+            .xposts: FeatureFlag.gutenbergXposts.enabled && SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .modalLayoutPicker: FeatureFlag.gutenbergModalLayoutPicker.enabled,

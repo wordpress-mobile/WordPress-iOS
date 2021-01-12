@@ -2,7 +2,13 @@ import UIKit
 import Gridicons
 import WordPressUI
 
-class ActivityDetailViewController: UIViewController {
+class ActivityDetailViewController: UIViewController, StoryboardLoadable {
+
+    // MARK: - StoryboardLoadable Protocol
+
+    static var defaultStoryboardName = defaultControllerID
+
+    // MARK: - Properties
 
     var formattableActivity: FormattableActivity? {
         didSet {
@@ -12,7 +18,7 @@ class ActivityDetailViewController: UIViewController {
     }
     var site: JetpackSiteRef?
 
-    weak var rewindPresenter: ActivityRewindPresenter?
+    weak var presenter: ActivityPresenter?
 
     @IBOutlet private var imageView: CircularImageView!
 
@@ -54,7 +60,7 @@ class ActivityDetailViewController: UIViewController {
     }
 
     @IBAction func rewindButtonTapped(sender: UIButton) {
-        rewindPresenter?.presentRewindFor(activity: activity!)
+        presenter?.presentRestoreFor(activity: activity!)
     }
 
     private func setupLabelStyles() {

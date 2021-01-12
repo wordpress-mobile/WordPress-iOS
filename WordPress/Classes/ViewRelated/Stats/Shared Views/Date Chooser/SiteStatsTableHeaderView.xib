@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -29,7 +29,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site timezone (UTC + 10)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u8X-zf-iZc">
-                            <rect key="frame" x="0.0" y="22" width="182" height="19.5"/>
+                            <rect key="frame" x="0.0" y="22" width="181.5" height="19.5"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                             <color key="textColor" name="Gray40"/>
                             <nil key="highlightedColor"/>
@@ -83,7 +83,7 @@
                         <action selector="didTapBackButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="c6p-VQ-SS4"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U1z-fb-p7G" userLabel="Forward Button">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U1z-fb-p7G" userLabel="Forward Button">
                     <rect key="frame" x="321" y="0.0" width="44" height="60"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <connections>
@@ -98,6 +98,7 @@
                     </constraints>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <constraints>
                 <constraint firstItem="U1z-fb-p7G" firstAttribute="centerY" secondItem="2dA-xk-MWI" secondAttribute="centerY" id="2aP-4M-TNR"/>
                 <constraint firstItem="82h-So-kdz" firstAttribute="top" secondItem="3xC-QJ-pF2" secondAttribute="bottom" constant="9" id="3EX-id-84a"/>
@@ -124,7 +125,6 @@
                 <constraint firstItem="b3M-QS-Aux" firstAttribute="width" secondItem="Ssg-6U-5Ac" secondAttribute="width" constant="24" id="ztG-eR-DWy"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="backArrow" destination="Ssg-6U-5Ac" id="vC4-Hc-zMu"/>
                 <outlet property="backButton" destination="b3M-QS-Aux" id="d3f-cX-bL9"/>
@@ -141,7 +141,7 @@
     <resources>
         <image name="disclosure-chevron" width="8" height="13"/>
         <namedColor name="Gray40">
-            <color red="0.49803921568627452" green="0.50196078431372548" blue="0.54117647058823526" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.47058823529411764" green="0.48627450980392156" blue="0.50980392156862742" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

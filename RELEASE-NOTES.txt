@@ -1,11 +1,22 @@
+16.6
+-----
+ 
 16.5
 -----
  
+* [*] In the Pages screen, the options to delete posts are styled to reflect that they are destructive actions, and show confirmation alerts. [#15622]
 * [*] In the Comments view, overly-large twemoji are sized the same as Apple's emoji. [#15503]
 * [*] Reader 'P2s': added ability to filter by site. [#15484]
 * [**] Choose a Domain will now return more options in the search results, sort the results to have exact matches first, and let you know if no exact matches were found. [#15482]
 * [**] Page List: Adds duplicate page functionality [#15515]
 * [*] Invite People: add link to user roles definition web page. [#15530]
+* [***] Block Editor: Cross-post suggestions are now available by typing the + character (or long-pressing the toolbar button labelled with an @-symbol) in a post on a P2 site [#15139]
+* [***] Block Editor: Full-width and wide alignment support for Columns (https://github.com/wordpress-mobile/gutenberg-mobile/pull/2919)
+* [**] Block Editor: Image block - Add link picker to the block settings and enhance link settings with auto-hide options (https://github.com/wordpress-mobile/gutenberg-mobile/pull/2841)
+* [*] Block Editor: Fix button link setting, rel link will not be overwritten if modified by the user (https://github.com/wordpress-mobile/gutenberg-mobile/pull/2894)
+* [**] Block Editor: Added move to top/bottom when long pressing on respective block movers (https://github.com/wordpress-mobile/gutenberg-mobile/pull/2872)
+* [**] Reader: Following now only shows non-P2 sites. [#15585]
+* [**] Reader site filter: selected filters now persist while in app.[#15594]
 
 16.4
 -----
