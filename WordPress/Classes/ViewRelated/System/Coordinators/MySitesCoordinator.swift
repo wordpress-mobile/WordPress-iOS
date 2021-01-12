@@ -84,11 +84,10 @@ class MySitesCoordinator: NSObject {
     ///     - canBypassBlogList: whether this method can bypass the blog list and go directly into the blog details.
     ///
     @objc
-    func showMainViewController(canBypassBlogList: Bool = false) {
+    func showMainViewController() {
         showRootViewController()
 
         if !Feature.enabled(.newNavBarAppearance)
-            && canBypassBlogList
             && blogListViewController.shouldBypassBlogListViewControllerWhenSelectedFromTabBar() {
 
             blogListViewController.bypassBlogListViewController()
