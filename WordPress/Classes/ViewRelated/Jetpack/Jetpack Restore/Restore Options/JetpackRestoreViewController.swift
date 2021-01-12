@@ -6,7 +6,7 @@ import WordPressShared
 
 class JetpackRestoreViewController: BaseRestoreOptionsViewController {
 
-    // MARK: - Initializers
+    // MARK: - Initialization
 
     override init(site: JetpackSiteRef, activity: FormattableActivity) {
         let restoreOptionsConfiguration = JetpackRestoreOptionsConfiguration(
@@ -33,8 +33,12 @@ class JetpackRestoreViewController: BaseRestoreOptionsViewController {
     // MARK: - Override
 
     override func actionButtonTapped() {
-        let warningVC = JetpackRestoreWarningViewController()
-        self.navigationController?.pushViewController(warningVC, animated: true)
+        //        let warningVC = JetpackRestoreWarningViewController()
+        //        self.navigationController?.pushViewController(warningVC, animated: true)
+        let statusVC = JetpackRestoreStatusViewController(site: site,
+                                                          activity: formattableActivity.activity,
+                                                          restoreTypes: JetpackRestoreTypes())
+        self.navigationController?.pushViewController(statusVC, animated: true)
     }
 
 }

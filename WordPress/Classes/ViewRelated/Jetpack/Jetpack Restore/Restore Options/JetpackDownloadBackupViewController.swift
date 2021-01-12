@@ -6,6 +6,8 @@ import WordPressShared
 
 class JetpackDownloadBackupViewController: BaseRestoreOptionsViewController {
 
+    // MARK: - Initialization
+
     override init(site: JetpackSiteRef, activity: FormattableActivity) {
         let restoreOptionsConfiguration = JetpackRestoreOptionsConfiguration(
             title: NSLocalizedString("Download Backup", comment: "Title for the Jetpack Download Backup Site Screen"),
@@ -22,12 +24,18 @@ class JetpackDownloadBackupViewController: BaseRestoreOptionsViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - View Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
+    // MARK: - Override
+
     override func actionButtonTapped() {
-        let statusVC = JetpackRestoreStatusViewController()
+        let statusVC = JetpackBackupStatusViewController(site: site,
+                                                         activity: formattableActivity.activity,
+                                                         restoreTypes: JetpackRestoreTypes())
         self.navigationController?.pushViewController(statusVC, animated: true)
     }
 

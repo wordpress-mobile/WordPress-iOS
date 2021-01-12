@@ -14,8 +14,8 @@ class JetpackRestoreWarningViewController: UIViewController {
         let warningView = RestoreWarningView.loadFromNib()
 
         warningView.confirmHandler = { [weak self] in
-            let statusVC = JetpackRestoreStatusViewController()
-            self?.navigationController?.pushViewController(statusVC, animated: true)
+//            let statusVC = JetpackRestoreStatusViewController()
+//            self?.navigationController?.pushViewController(statusVC, animated: true)
         }
 
         warningView.cancelHandler = { [weak self] in

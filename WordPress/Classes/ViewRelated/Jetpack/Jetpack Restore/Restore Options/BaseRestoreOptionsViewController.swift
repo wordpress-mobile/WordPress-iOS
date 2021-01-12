@@ -15,8 +15,8 @@ class BaseRestoreOptionsViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    private let site: JetpackSiteRef
-    private let formattableActivity: FormattableActivity
+    private(set) var site: JetpackSiteRef
+    private(set) var formattableActivity: FormattableActivity
     private let configuration: JetpackRestoreOptionsConfiguration
     private var restoreTypes = JetpackRestoreTypes()
 
@@ -28,7 +28,7 @@ class BaseRestoreOptionsViewController: UITableViewController {
         return ActivityDateFormatting.mediumDateFormatterWithTime(for: site)
     }()
 
-    // MARK: - Initializer
+    // MARK: - Initialization
 
     init(site: JetpackSiteRef, activity: FormattableActivity) {
         fatalError("A configuration struct needs to be provided")
