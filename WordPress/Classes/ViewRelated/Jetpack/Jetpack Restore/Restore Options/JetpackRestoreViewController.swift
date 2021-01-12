@@ -41,6 +41,7 @@ class JetpackRestoreViewController: UITableViewController {
         configureTitle()
         configureNavigation()
         configureTableView()
+        configureTableHeaderView()
         reloadViewModel()
     }
 
@@ -52,12 +53,7 @@ class JetpackRestoreViewController: UITableViewController {
     // MARK: - Configure
 
     private func configureTitle() {
-        switch restoreAction {
-        case .restore:
-            title = NSLocalizedString("Restore", comment: "Title for the Jetpack Restore Site Screen")
-        case .downloadBackup:
-            title = NSLocalizedString("Download Backup", comment: "Title for the Jetpack Download Backup Site Screen")
-        }
+        title = Strings.title(restoreAction)
     }
 
     private func configureNavigation() {
@@ -68,15 +64,32 @@ class JetpackRestoreViewController: UITableViewController {
 
     private func configureTableView() {
         WPStyleGuide.configureColors(view: view, tableView: tableView)
-
         ImmuTable.registerRows([SwitchRow.self], tableView: tableView)
+    }
 
+    private func configureTableHeaderView() {
         let headerView = JetpackRestoreHeaderView.loadFromNib()
         headerView.configure(site: site, formattableActivity: activity, restoreAction: restoreAction)
+
+        headerView.actionButtonHandler = { [weak self] in
+            self?.actionButtonTapped()
+        }
+
         self.tableView.tableHeaderView = headerView
     }
 
     // MARK: - Private Helpers
+
+    private func actionButtonTapped() {
+        switch restoreAction {
+        case .restore:
+            let warningVC = JetpackRestoreWarningViewController()
+            self.navigationController?.pushViewController(warningVC, animated: true)
+        case .downloadBackup:
+            let statusVC = JetpackRestoreStatusViewController()
+            self.navigationController?.pushViewController(statusVC, animated: true)
+        }
+    }
 
     @objc private func cancelTapped() {
         self.dismiss(animated: true)
@@ -100,48 +113,41 @@ class JetpackRestoreViewController: UITableViewController {
 
     private func generalSection() -> ImmuTableSection {
         let themesRow = SwitchRow(
-            title: NSLocalizedString("WordPress Themes", comment: "Downloadable/Restorable items: WordPress Themes"),
+            title: Strings.themesRowTitle,
             value: true,
             onChange: { _ in }
         )
         let pluginsRow = SwitchRow(
-            title: NSLocalizedString("WordPress Plugins", comment: "Downloadable/Restorable items: WordPress Plugins"),
+            title: Strings.pluginsRowTitle,
             value: true,
             onChange: { _ in }
         )
         let mediaUploadsRow = SwitchRow(
-            title: NSLocalizedString("Media Uploads", comment: "Downloadable/Restorable items: Media Uploads"),
+            title: Strings.mediaUploadsRowTitle,
             value: true,
             onChange: { _ in }
         )
         let rootRow = SwitchRow(
-            title: NSLocalizedString("WordPress root", comment: "Downloadable/Restorable items: WordPress root"),
+            title: Strings.rootRowTitle,
             value: true,
             onChange: { _ in }
         )
 
-        let headerText: String
-        switch restoreAction {
-        case .restore:
-            headerText = NSLocalizedString("Choose the items to restore", comment: "Restorable items: general section title")
-        case .downloadBackup:
-            headerText = NSLocalizedString("Choose the items to download", comment: "Downloadable items: general section title")
-        }
         return ImmuTableSection(
-            headerText: headerText,
+            headerText: Strings.generalSectionHeaderText(restoreAction),
             rows: [
                 themesRow,
                 pluginsRow,
                 mediaUploadsRow,
                 rootRow
             ],
-            footerText: NSLocalizedString("Includes wp-config php and any non WordPress files", comment: "Downloadable/Restorable items: general section footer text")
+            footerText: Strings.generalSectionFooterText
         )
     }
 
     private func contentSection() -> ImmuTableSection {
         let contentRow = SwitchRow(
-            title: NSLocalizedString("WP-content directory", comment: "Downloadable/Restorable items: WP-content directory"),
+            title: Strings.contentRowTitle,
             value: true,
             onChange: { _ in }
         )
@@ -149,13 +155,13 @@ class JetpackRestoreViewController: UITableViewController {
         return ImmuTableSection(
             headerText: "",
             rows: [contentRow],
-            footerText: NSLocalizedString("Excludes themes, plugins, and uploads", comment: "Downloadable/Restorable items: content section footer text")
+            footerText: Strings.contentSectionFooterText
         )
     }
 
     private func databaseSection() -> ImmuTableSection {
         let databaseRow = SwitchRow(
-            title: NSLocalizedString("Site database", comment: "Downloadable/Restorable items: Site Database"),
+            title: Strings.databaseRowTitle,
             value: true,
             onChange: { _ in }
         )
@@ -165,5 +171,37 @@ class JetpackRestoreViewController: UITableViewController {
             rows: [databaseRow],
             footerText: nil
         )
+    }
+}
+
+extension JetpackRestoreViewController {
+
+    private enum Strings {
+        static func title(_ restoreAction: JetpackRestoreAction) -> String {
+            switch restoreAction {
+            case .restore:
+                return NSLocalizedString("Restore", comment: "Title for the Jetpack Restore Site Screen")
+            case .downloadBackup:
+                return NSLocalizedString("Download Backup", comment: "Title for the Jetpack Download Backup Site Screen")
+            }
+        }
+
+        static func generalSectionHeaderText(_ restoreAction: JetpackRestoreAction) -> String {
+            switch restoreAction {
+            case .restore:
+                return NSLocalizedString("Choose the items to restore", comment: "Restorable items: general section title")
+            case .downloadBackup:
+                return NSLocalizedString("Choose the items to download", comment: "Downloadable items: general section title")
+            }
+        }
+
+        static let themesRowTitle = NSLocalizedString("WordPress Themes", comment: "Downloadable/Restorable items: WordPress Themes")
+        static let pluginsRowTitle = NSLocalizedString("WordPress Plugins", comment: "Downloadable/Restorable items: WordPress Plugins")
+        static let mediaUploadsRowTitle = NSLocalizedString("Media Uploads", comment: "Downloadable/Restorable items: Media Uploads")
+        static let rootRowTitle = NSLocalizedString("WordPress root", comment: "Downloadable/Restorable items: WordPress root")
+        static let generalSectionFooterText = NSLocalizedString("Includes wp-config php and any non WordPress files", comment: "Downloadable/Restorable items: general section footer text")
+        static let contentRowTitle = NSLocalizedString("WP-content directory", comment: "Downloadable/Restorable items: WP-content directory")
+        static let contentSectionFooterText = NSLocalizedString("Excludes themes, plugins, and uploads", comment: "Downloadable/Restorable items: content section footer text")
+        static let databaseRowTitle = NSLocalizedString("Site database", comment: "Downloadable/Restorable items: Site Database")
     }
 }
