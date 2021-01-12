@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-10 17:55:01+0000 */
+/* Translation-Revision-Date: 2021-01-02 02:38:55+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -368,10 +368,10 @@
 "Activity Logs" = "Catatan Aktivitas";
 
 /* Label for the Activity Type filter button */
-"Activity Type" = "Activity Type";
+"Activity Type" = "Jenis Aktivitas";
 
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
-"Activity Type (%1$d)" = "Activity Type (%1$d)";
+"Activity Type (%1$d)" = "Jenis Aktivitas (%1$d)";
 
 /* Remove asset from media picker list */
 "Add" = "Tambah";
@@ -1164,13 +1164,13 @@
 "Choose a time" = "Pilih waktu";
 
 /* Title to choose date range in a calendar */
-"Choose date range" = "Choose date range";
+"Choose date range" = "Pilih rentang tanggal";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Pilih domain";
 
 /* No comment provided by engineer. */
-"Choose file" = "Choose file";
+"Choose file" = "Pilih berkas";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Pilih dari Perangkat Saya";
@@ -1521,13 +1521,13 @@
 "Copy file URL" = "Salin URL file";
 
 /* Button title displayed in popup indicating the user copied the local copy */
-"Copy the version from this app" = "Copy the version from this app";
+"Copy the version from this app" = "Salin versi dari aplikasi ini";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Bisa Lebih Baik";
 
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
-"Could Not Follow Topic" = "Could Not Follow Topic";
+"Could Not Follow Topic" = "Tidak Dapat Mengikuti Topik";
 
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Remove Topic" = "Tidak Dapat Menghapus Topik";
@@ -1551,7 +1551,7 @@
 "Could not save post for later" = "Tidak dapat menyimpan pos ini untuk nanti";
 
 /* The app failed to subscribe to the comments for the post */
-"Could not subscribe to comments" = "Could not subscribe to comments";
+"Could not subscribe to comments" = "Tidak dapat berlangganan komentar";
 
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Tidak dapat mengalihkan Mengikuti: atribut blogURL tidak ditemukan";
@@ -1563,7 +1563,7 @@
 "Could not unfollow the site at the address specified." = "Tidak dapat membatalkan mengikuti situs pada alamat yang ditetapkan.";
 
 /* The app failed to unsubscribe from the comments for the post */
-"Could not unsubscribe from comments" = "Could not unsubscribe from comments";
+"Could not unsubscribe from comments" = "Tidak dapat menghentikan langganan komentar";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Menurut Anda, penyempurnaan apa yang dapat kami lakukan?";
@@ -1675,7 +1675,7 @@
 "Create your site" = "Buat situs Anda";
 
 /* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Creates new post, or page";
+"Creates new post, or page" = "Buat pos atau halaman baru";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, page, or story" = "Buat pos, halaman, atau cerita baru";
@@ -1751,7 +1751,7 @@
 "Date Format" = "Format Tanggal";
 
 /* Label of a button that displays a calendar */
-"Date Range" = "Date Range";
+"Date Range" = "Rentang Tanggal";
 
 /* Date and Time */
 "Date and Time" = "Tanggal dan Waktu";
@@ -2048,7 +2048,7 @@
 "Drafts" = "Konsep";
 
 /* Label for post duplicate option. Tapping displays statistics for a post. */
-"Duplicate" = "Duplicate";
+"Duplicate" = "Duplikat";
 
 /* No comment provided by engineer. */
 "Duplicate block" = "Duplikasi blok";
@@ -2101,7 +2101,7 @@
 "Edit sharing buttons" = "Sunting tombol berbagi";
 
 /* Button title displayed in popup indicating that the user edits the post first */
-"Edit the post first" = "Edit the post first";
+"Edit the post first" = "Sunting pos terlebih dahulu";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "Edit menggunakan editor web";
@@ -2185,7 +2185,7 @@
 "Encrypted Logs" = "Log Terenkripsi";
 
 /* Placeholder for the end date in calendar range selection */
-"End Date" = "End Date";
+"End Date" = "Tanggal Selesai";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Masuk ke Layar Penuh";
@@ -2226,7 +2226,7 @@
 "Enter your email address to log in or create a WordPress.com account." = "Masukkan alamat email Anda untuk login atau membuat akun WordPress.com.";
 
 /* Button title. Takes the user to the login by site address flow. */
-"Enter your existing site address" = "Enter your existing site address";
+"Enter your existing site address" = "Masukkan alamat situs Anda yang sudah ada";
 
 /* Title of a button on the magic link screen.
    Title of a button. */
@@ -2470,7 +2470,7 @@
 "Filter" = "Penyaring";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
-"Filter by activity type" = "Filter by activity type";
+"Filter by activity type" = "Saring berdasarkan tipe aktivitas";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Cari tahu selengkapnya";
@@ -3679,10 +3679,10 @@ translators: sample content for \"Services\" page template */
 "No Title" = "Tanpa Judul";
 
 /* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities available" = "No activities available";
+"No activities available" = "Tidak ada aktivitas";
 
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities recorded in the selected date range." = "No activities recorded in the selected date range.";
+"No activities recorded in the selected date range." = "Tidak ada aktivitas yang tercatat dalam rentang tanggal yang dipilih.";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "Belum ada aktivitas";
@@ -3754,7 +3754,7 @@ translators: sample content for \"Services\" page template */
 "No likes yet" = "Belum ada suka";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"No matching events found." = "No matching events found.";
+"No matching events found." = "Tidak ditemukan acara yang cocok.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso.
    Phrase to show when the user search for images but there are no result to show.
@@ -4168,7 +4168,7 @@ translators: sample content for \"Services\" page template */
 
 /* Noun. Title of the people management feature.
    Noun. Title. Links to the people management feature. */
-"People" = "Orang";
+"People" = "Pengguna";
 
 /* Label for date periods. */
 "Period" = "Periode";
@@ -4399,7 +4399,7 @@ translators: sample content for \"Services\" page template */
 "Post scheduled" = "Pos dijadwalkan";
 
 /* Title displayed in popup when user tries to copy a post with unsaved changes */
-"Post sync conflict" = "Post sync conflict";
+"Post sync conflict" = "Konflik sinkronisasi pos";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Judul pos. %s";
@@ -5011,7 +5011,7 @@ translators: sample content for \"Services\" page template */
 "Saving..." = "Menyimpan...";
 
 /* Noun. Links to a blog's Jetpack Scan screen. */
-"Scan" = "Scan";
+"Scan" = "Pindai";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Jadwal";
@@ -5102,7 +5102,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "Pilih %@ untuk melanjutkan";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page" = "Select %@ to create a new page";
+"Select %@ to create a new page" = "Pilih %@ untuk membuat halaman baru";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Pilih %@ untuk membuat pos baru";
@@ -5613,7 +5613,7 @@ translators: sample content for \"Services\" page template */
 "Standard" = "Standar";
 
 /* Placeholder for the start date in calendar range selection */
-"Start Date" = "Start Date";
+"Start Date" = "Tanggal Mulai";
 
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
@@ -5969,7 +5969,7 @@ translators: sample content for \"Services\" page template */
 "The number of posts to show per page." = "Jumlah pos yang akan ditampilkan per halaman.";
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
-"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app.";
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Pos yang ingin Anda salin mempunyai dua versi yang saling konflik atau baru-baru ini ada perubahan yang tidak disimpan.\nSunting pos terlebih dahulu untuk menyelesaikan konflik atau lanjutkan dengan menyalin versi dari aplikasi ini.";
 
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Tur mulai cepat akan memandu Anda dalam membuat situs dasar. Anda yakin ingin melewatinya? ";
@@ -6363,7 +6363,7 @@ translators: sample content for \"Services\" page template */
 "Try a starter layout" = "Coba tampilan pengantar";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"Try adjusting your date range or activity type filters" = "Try adjusting your date range or activity type filters";
+"Try adjusting your date range or activity type filters" = "Coba sesuaikan rentang tanggal atau penyaring jenis aktivitas";
 
 /* Button label for trying to retrieve the activities type again
    Button that lets users try to reload the plugin directory after loading failure
@@ -7300,7 +7300,7 @@ translators: sample content for \"Services\" page template */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Saat ini Anda sedang mengunggah media. Tindakan ini dapat membatalkan proses unggahan yang sedang berlangsung.\n\nApakah Anda yakin?";
 
 /* Information shown below the optional password field after new account creation. */
-"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "You can always log in with a link like the one you just used, but you can also set up a password if you prefer.";
+"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Anda dapat login dengan tautan seperti yang baru Anda gunakan, tetapi Anda juga dapat menyiapkan kata sandi.";
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Anda dapat menampilkan statistik situs tunggal di tampilan iOS Today\/Pusat Pemberitahuan.";

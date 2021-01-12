@@ -431,6 +431,7 @@ private extension InvitePersonViewController {
         messageTextView.font = WPStyleGuide.tableviewTextFont()
         messageTextView.textColor = .text
         messageTextView.backgroundColor = .listForeground
+        messageTextView.delegate = self
     }
 
     func setupPlaceholderLabel() {
@@ -492,4 +493,16 @@ private extension InvitePersonViewController {
     func refreshPlaceholderLabel() {
         placeholderLabel?.isHidden = !messageTextView.text.isEmpty
     }
+}
+
+// MARK: - UITextViewDelegate
+
+extension InvitePersonViewController: UITextViewDelegate {
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        // This calls the segue in People.storyboard
+        // that shows the SettingsMultiTextViewController.
+        performSegue(withIdentifier: "message", sender: nil)
+        return false
+    }
+
 }

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-18 08:14:15+0000 */
+/* Translation-Revision-Date: 2020-12-22 12:17:58+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
@@ -928,7 +928,7 @@
 "Button Style" = "Estilo del botón";
 
 /* Label for the post author in the post detail. */
-"By " = "Por";
+"By " = "Por ";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "Por %@.";

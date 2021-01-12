@@ -1,0 +1,11 @@
+Fitur baru dalam rilis kali ini:
+
+Editor blok: Kini Anda dapat memasukkan Blok File, yang menyediakan tombol unduh untuk berbagai file seperti dokumen. Dengan pembaruan pada blok Galeri, masalah pengunggahan saat editor ditutup teratasi.
+
+Pembuatan situs: Saat membangun laman untuk situs Anda, opsi tata letak halaman kini lebih mudah dilihat dan dipilih.
+
+Pembuatan pos: Ingin dapat menduplikat pos dengan lebih cepat? Kini Anda dapat melakukannya dari Daftar Pos.
+
+Pembaca: Apakah Anda menggunakan P2, alat untuk kolaborasi tim atau kelompok? Anda dapat membaca dan mengikuti situs-situs P2 di fitur stream yang baru saja ditambahkan.
+
+Komentar: Ingin mengikuti utas komentar di situs yang Anda ikuti atau minati? Ketuk tombol “Ikuti percakapan” di tampilan Komentar.

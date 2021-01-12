@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-10 14:54:10+0000 */
+/* Translation-Revision-Date: 2020-12-24 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -368,10 +368,10 @@
 "Activity Logs" = "アクティビティログ";
 
 /* Label for the Activity Type filter button */
-"Activity Type" = "Activity Type";
+"Activity Type" = "アクティビティタイプ";
 
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
-"Activity Type (%1$d)" = "Activity Type (%1$d)";
+"Activity Type (%1$d)" = "アクティビティタイプ (%1$d)";
 
 /* Remove asset from media picker list */
 "Add" = "追加";
@@ -1164,13 +1164,13 @@
 "Choose a time" = "時間を選択";
 
 /* Title to choose date range in a calendar */
-"Choose date range" = "Choose date range";
+"Choose date range" = "日付を選択";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "ドメインを選択";
 
 /* No comment provided by engineer. */
-"Choose file" = "Choose file";
+"Choose file" = "ファイルを選択";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "自分の端末から選択";
@@ -1521,7 +1521,7 @@
 "Copy file URL" = "ファイルの URL をコピー";
 
 /* Button title displayed in popup indicating the user copied the local copy */
-"Copy the version from this app" = "Copy the version from this app";
+"Copy the version from this app" = "このアプリからバージョンをコピー";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "不満がある";
@@ -1551,7 +1551,7 @@
 "Could not save post for later" = "投稿をブックマークできませんでした";
 
 /* The app failed to subscribe to the comments for the post */
-"Could not subscribe to comments" = "Could not subscribe to comments";
+"Could not subscribe to comments" = "コメントをフォローできませんでした";
 
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "フォローを切り替えられませんでした: blogURL 属性がありません";
@@ -1563,7 +1563,7 @@
 "Could not unfollow the site at the address specified." = "指定されたアドレスのサイトをフォロー解除できませんでした。";
 
 /* The app failed to unsubscribe from the comments for the post */
-"Could not unsubscribe from comments" = "Could not unsubscribe from comments";
+"Could not unsubscribe from comments" = "コメントをフォロー解除できませんでした";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "改善方法についてご意見いただけますか ?";
@@ -1751,7 +1751,7 @@
 "Date Format" = "日付のフォーマット";
 
 /* Label of a button that displays a calendar */
-"Date Range" = "Date Range";
+"Date Range" = "日付の範囲";
 
 /* Date and Time */
 "Date and Time" = "日付と時刻";
@@ -2048,7 +2048,7 @@
 "Drafts" = "下書き";
 
 /* Label for post duplicate option. Tapping displays statistics for a post. */
-"Duplicate" = "Duplicate";
+"Duplicate" = "複製";
 
 /* No comment provided by engineer. */
 "Duplicate block" = "ブロックを複製";
@@ -2101,7 +2101,7 @@
 "Edit sharing buttons" = "共有ボタンを編集";
 
 /* Button title displayed in popup indicating that the user edits the post first */
-"Edit the post first" = "Edit the post first";
+"Edit the post first" = "最初に投稿を編集する";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "Web エディターを使って編集";
@@ -2185,7 +2185,7 @@
 "Encrypted Logs" = "暗号化されたログ";
 
 /* Placeholder for the end date in calendar range selection */
-"End Date" = "End Date";
+"End Date" = "終了日";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "フルスクリーン表示";
@@ -2226,7 +2226,7 @@
 "Enter your email address to log in or create a WordPress.com account." = "メールアドレスを入力してログインするか、WordPress.com アカウントを作成します。";
 
 /* Button title. Takes the user to the login by site address flow. */
-"Enter your existing site address" = "Enter your existing site address";
+"Enter your existing site address" = "既存のサイトアドレスを入力";
 
 /* Title of a button on the magic link screen.
    Title of a button. */
@@ -2470,7 +2470,7 @@
 "Filter" = "フィルター";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
-"Filter by activity type" = "Filter by activity type";
+"Filter by activity type" = "アクティビティタイプで絞り込み";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "さらに詳しく";
@@ -3679,10 +3679,10 @@ translators: sample content for \"Services\" page template */
 "No Title" = "無題";
 
 /* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities available" = "No activities available";
+"No activities available" = "アクティビティはありません";
 
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities recorded in the selected date range." = "No activities recorded in the selected date range.";
+"No activities recorded in the selected date range." = "選択した日付の間に記録されたアクティビティはありません。";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "アクティビティはまだありません";
@@ -3754,7 +3754,7 @@ translators: sample content for \"Services\" page template */
 "No likes yet" = "新しい「いいね」はまだついていません";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"No matching events found." = "No matching events found.";
+"No matching events found." = "一致するイベントは見つかりませんでした。";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso.
    Phrase to show when the user search for images but there are no result to show.
@@ -4399,7 +4399,7 @@ translators: sample content for \"Services\" page template */
 "Post scheduled" = "投稿を予約しました";
 
 /* Title displayed in popup when user tries to copy a post with unsaved changes */
-"Post sync conflict" = "Post sync conflict";
+"Post sync conflict" = "同期後の競合";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "投稿タイトル。%s";
@@ -5011,7 +5011,7 @@ translators: sample content for \"Services\" page template */
 "Saving..." = "保存中...";
 
 /* Noun. Links to a blog's Jetpack Scan screen. */
-"Scan" = "Scan";
+"Scan" = "スキャン";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "投稿予約";
@@ -5102,7 +5102,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "%@ を選択して続ける";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page" = "Select %@ to create a new page";
+"Select %@ to create a new page" = "%@ を選択して新しいページを作成";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "%@ を選択して新しい投稿を作成する";
@@ -5613,7 +5613,7 @@ translators: sample content for \"Services\" page template */
 "Standard" = "標準";
 
 /* Placeholder for the start date in calendar range selection */
-"Start Date" = "Start Date";
+"Start Date" = "開始日";
 
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
@@ -5969,7 +5969,7 @@ translators: sample content for \"Services\" page template */
 "The number of posts to show per page." = "1ページに表示する投稿の数。";
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
-"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app.";
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "コピーしようとしている投稿に競合する2つのバージョンが存在するか、最近行った変更が保存されていません。\n競合を解消するには投稿を編集するか、このアプリからバージョンをコピーしてください。";
 
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "クイックスタートツアーでは、ベーシックサイトの作成方法を説明します。スキップしてもよいですか ?";
@@ -6363,7 +6363,7 @@ translators: sample content for \"Services\" page template */
 "Try a starter layout" = "初心者用レイアウトを試す";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"Try adjusting your date range or activity type filters" = "Try adjusting your date range or activity type filters";
+"Try adjusting your date range or activity type filters" = "データ範囲またはアクティビティタイプフィルターを調整してみてください";
 
 /* Button label for trying to retrieve the activities type again
    Button that lets users try to reload the plugin directory after loading failure

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-10 13:54:09+0000 */
+/* Translation-Revision-Date: 2020-12-24 08:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -371,7 +371,7 @@
 "Activity Type" = "Activity Type";
 
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
-"Activity Type (%1$d)" = "Activity Type (%1$d)";
+"Activity Type (%1$d)" = "活动类型 (%1$d)";
 
 /* Remove asset from media picker list */
 "Add" = "添加";
@@ -1521,7 +1521,7 @@
 "Copy file URL" = "复制文件 URL";
 
 /* Button title displayed in popup indicating the user copied the local copy */
-"Copy the version from this app" = "Copy the version from this app";
+"Copy the version from this app" = "从此应用程序复制版本";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "还可以更好";
@@ -1563,7 +1563,7 @@
 "Could not unfollow the site at the address specified." = "无法取消关注指定地址的站点。";
 
 /* The app failed to unsubscribe from the comments for the post */
-"Could not unsubscribe from comments" = "Could not unsubscribe from comments";
+"Could not unsubscribe from comments" = "无法取消订阅评论";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "您可以告诉我们如何改进吗？";
@@ -2101,7 +2101,7 @@
 "Edit sharing buttons" = "编辑共享按钮";
 
 /* Button title displayed in popup indicating that the user edits the post first */
-"Edit the post first" = "Edit the post first";
+"Edit the post first" = "先编辑文章";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "使用 Web 编辑器进行编辑";
@@ -2470,7 +2470,7 @@
 "Filter" = "筛选";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
-"Filter by activity type" = "Filter by activity type";
+"Filter by activity type" = "按活动类型筛选";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "了解更多";
@@ -3679,7 +3679,7 @@ translators: sample content for \"Services\" page template */
 "No Title" = "无标题";
 
 /* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities available" = "No activities available";
+"No activities available" = "无可用的活动";
 
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "No activities recorded in the selected date range." = "No activities recorded in the selected date range.";
@@ -5102,7 +5102,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "选择“%@”以继续";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page" = "Select %@ to create a new page";
+"Select %@ to create a new page" = "选择 %@ 创建新页面";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "选择“%@”，撰写一篇新文章";
@@ -5969,7 +5969,7 @@ translators: sample content for \"Services\" page template */
 "The number of posts to show per page." = "每页显示的文章数。";
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
-"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app.";
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "您尝试复制的文章存在两个相互冲突的版本，或者您最近进行了更改但并未将其保存。\n请先编辑文章来解决任何冲突问题，或继续从此应用程序中复制版本。";
 
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "快速启动指南将指引您创建一个基础的站点。是否确定要跳过？";

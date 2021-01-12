@@ -385,23 +385,31 @@ extension BaseActivityListViewController: ActivityPresenter {
             return
         }
 
-        let title = NSLocalizedString("Rewind Site",
-                                      comment: "Title displayed in the Rewind Site alert, should match Calypso")
-        let rewindDate = viewModel.mediumDateFormatterWithTime.string(from: activity.published)
-        let messageFormat = NSLocalizedString("Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then.",
-                                              comment: "Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso.")
-        let message = String(format: messageFormat, rewindDate)
+        guard FeatureFlag.jetpackBackupAndRestore.enabled else {
+            let title = NSLocalizedString("Rewind Site",
+                                          comment: "Title displayed in the Rewind Site alert, should match Calypso")
+            let rewindDate = viewModel.mediumDateFormatterWithTime.string(from: activity.published)
+            let messageFormat = NSLocalizedString("Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then.",
+                                                  comment: "Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso.")
+            let message = String(format: messageFormat, rewindDate)
 
-        let alertController = UIAlertController(title: title,
-                                                message: message,
-                                                preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. A button title."))
-        alertController.addDestructiveActionWithTitle(NSLocalizedString("Confirm Rewind",
-                                                                        comment: "Confirm Rewind button title"),
-                                                      handler: { action in
-                                                        self.restoreSiteToRewindID(rewindID)
-                                                      })
-        self.present(alertController, animated: true)
+            let alertController = UIAlertController(title: title,
+                                                    message: message,
+                                                    preferredStyle: .alert)
+            alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. A button title."))
+            alertController.addDestructiveActionWithTitle(NSLocalizedString("Confirm Rewind",
+                                                                            comment: "Confirm Rewind button title"),
+                                                          handler: { action in
+                                                            self.restoreSiteToRewindID(rewindID)
+                                                          })
+            self.present(alertController, animated: true)
+
+            return
+        }
+
+        let warningVC = JetpackRestoreWarningViewController()
+        let navigationVC = UINavigationController(rootViewController: warningVC)
+        self.present(navigationVC, animated: true)
     }
 }
 
