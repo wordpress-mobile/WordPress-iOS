@@ -4,9 +4,42 @@ import SVProgressHUD
 import WordPressShared
 import WordPressFlux
 
-class ActivityListViewController: UIViewController, TableViewContainer, ImmuTablePresenter {
+struct ActivityListConfiguration {
+    /// The title of the View Controller
+    let title: String
+
+    /// The title for when loading activities
+    let loadingTitle: String
+
+    /// Title for when there are no activities
+    let noActivitiesTitle: String
+
+    /// Subtitle for when there are no activities
+    let noActivitiesSubtitle: String
+
+    /// Title for when there are no activities for the selected filter
+    let noMatchingTitle: String
+
+    /// Subtitle for when there are no activities for the selected filter
+    let noMatchingSubtitle: String
+
+    /// Event to be fired when the date range button is tapped
+    let filterbarRangeButtonTapped: WPAnalyticsEvent
+
+    /// Event to be fired when a date range is selected
+    let filterbarSelectRange: WPAnalyticsEvent
+
+    /// Event to be fired when the range date reset button is tapped
+    let filterbarResetRange: WPAnalyticsEvent
+}
+
+/// ActivityListViewController is used as a base ViewController for
+/// Jetpack's Activity Log and Backup
+///
+class BaseActivityListViewController: UIViewController, TableViewContainer, ImmuTablePresenter {
     let site: JetpackSiteRef
     let store: ActivityStore
+    let configuration: ActivityListConfiguration
     let isFreeWPCom: Bool
 
     var changeReceipt: Receipt?
@@ -43,11 +76,21 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
     // MARK: - Constructors
 
-    init(site: JetpackSiteRef, store: ActivityStore, isFreeWPCom: Bool = false) {
+    init(site: JetpackSiteRef,
+         store: ActivityStore,
+         isFreeWPCom: Bool = false) {
+        fatalError("A configuration struct needs to be provided")
+    }
+
+    init(site: JetpackSiteRef,
+         store: ActivityStore,
+         configuration: ActivityListConfiguration,
+         isFreeWPCom: Bool = false) {
         self.site = site
         self.store = store
         self.isFreeWPCom = isFreeWPCom
-        self.viewModel = ActivityListViewModel(site: site, store: store)
+        self.configuration = configuration
+        self.viewModel = ActivityListViewModel(site: site, store: store, noResultsTexts: configuration)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -70,7 +113,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         tableView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(userRefresh), for: .valueChanged)
 
-        title = NSLocalizedString("Activity", comment: "Title for the activity list")
+        title = configuration.title
     }
 
     @objc private func showCalendar() {
@@ -112,8 +155,6 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
         tableView.tableFooterView = spinner
         tableView.tableFooterView?.isHidden = true
-
-        WPAnalytics.track(.activityLogViewed)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -170,15 +211,15 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
     private func setupDateFilter() {
         dateFilterChip.resetButton.accessibilityLabel = NSLocalizedString("Reset Date Range filter", comment: "Accessibility label for the reset date range button")
 
-        dateFilterChip.tapped = { [weak self] in
-            WPAnalytics.track(.activitylogFilterbarRangeButtonTapped)
-            self?.showCalendar()
+        dateFilterChip.tapped = { [unowned self] in
+            WPAnalytics.track(self.configuration.filterbarRangeButtonTapped)
+            self.showCalendar()
         }
 
-        dateFilterChip.resetTapped = { [weak self] in
-            WPAnalytics.track(.activitylogFilterbarResetRange)
-            self?.viewModel.removeDateFilter()
-            self?.dateFilterChip.disableResetButton()
+        dateFilterChip.resetTapped = { [unowned self] in
+            WPAnalytics.track(self.configuration.filterbarResetRange)
+            self.viewModel.removeDateFilter()
+            self.dateFilterChip.disableResetButton()
         }
     }
 
@@ -209,7 +250,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
 }
 
-extension ActivityListViewController: UITableViewDataSource {
+extension BaseActivityListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         handler.tableView(tableView, numberOfRowsInSection: section)
     }
@@ -221,7 +262,7 @@ extension ActivityListViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 
-extension ActivityListViewController: UITableViewDelegate {
+extension BaseActivityListViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let isLastSection = handler.viewModel.sections.count == section + 1
@@ -297,7 +338,7 @@ extension ActivityListViewController: UITableViewDelegate {
 
 // MARK: - NoResultsViewControllerDelegate
 
-extension ActivityListViewController: NoResultsViewControllerDelegate {
+extension BaseActivityListViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         let supportVC = SupportTableViewController()
         supportVC.showFromTabBar()
@@ -306,7 +347,7 @@ extension ActivityListViewController: NoResultsViewControllerDelegate {
 
 // MARK: - ActivityPresenter
 
-extension ActivityListViewController: ActivityPresenter {
+extension BaseActivityListViewController: ActivityPresenter {
 
     func presentDetailsFor(activity: FormattableActivity) {
         let detailVC = ActivityDetailViewController.loadFromStoryboard()
@@ -374,7 +415,7 @@ extension ActivityListViewController: ActivityPresenter {
 
 // MARK: - Restores handling
 
-extension ActivityListViewController {
+extension BaseActivityListViewController {
 
     fileprivate func restoreSiteToRewindID(_ rewindID: String) {
         navigationController?.popToViewController(self, animated: true)
@@ -384,7 +425,7 @@ extension ActivityListViewController {
 
 // MARK: - NoResults Handling
 
-private extension ActivityListViewController {
+private extension BaseActivityListViewController {
 
     func updateNoResults() {
         if let noResultsViewModel = viewModel.noResultsViewModel() {
@@ -421,7 +462,7 @@ private extension ActivityListViewController {
 }
 
 // MARK: - Calendar Handling
-extension ActivityListViewController: CalendarViewControllerDelegate {
+extension BaseActivityListViewController: CalendarViewControllerDelegate {
     func didCancel(calendar: CalendarViewController) {
         calendar.dismiss(animated: true, completion: nil)
     }
@@ -441,7 +482,7 @@ extension ActivityListViewController: CalendarViewControllerDelegate {
     private func trackSelectedRange(startDate: Date?, endDate: Date?) {
         guard let startDate = startDate else {
             if viewModel.after != nil || viewModel.before != nil {
-                WPAnalytics.track(.activitylogFilterbarResetRange)
+                WPAnalytics.track(configuration.filterbarResetRange)
             }
 
             return
@@ -458,12 +499,12 @@ extension ActivityListViewController: CalendarViewControllerDelegate {
 
         distance = Int((Date().timeIntervalSinceReferenceDate - startDate.timeIntervalSinceReferenceDate) / Double(24 * 60 * 60))
 
-        WPAnalytics.track(.activitylogFilterbarSelectRange, properties: ["duration": duration, "distance": distance])
+        WPAnalytics.track(configuration.filterbarSelectRange, properties: ["duration": duration, "distance": distance])
     }
 }
 
 // MARK: - Activity type filter handling
-extension ActivityListViewController: ActivityTypeSelectorDelegate {
+extension BaseActivityListViewController: ActivityTypeSelectorDelegate {
     func didCancel(selectorViewController: ActivityTypeSelectorViewController) {
         selectorViewController.dismiss(animated: true, completion: nil)
     }
