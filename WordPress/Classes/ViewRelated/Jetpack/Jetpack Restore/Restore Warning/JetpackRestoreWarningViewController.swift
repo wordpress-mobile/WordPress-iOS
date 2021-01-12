@@ -37,17 +37,15 @@ class JetpackRestoreWarningViewController: UIViewController {
         configureWarningView()
     }
 
+    // MARK: - Configure
+
     private func configureWarningView() {
         let warningView = RestoreWarningView.loadFromNib()
+        let publishedDate = dateFormatter.string(from: activity.published)
+        warningView.configure(with: publishedDate)
 
         warningView.confirmHandler = { [weak self] in
-            guard let self = self else {
-                return
-            }
-            let statusVC = JetpackRestoreStatusViewController(site: self.site,
-                                                              activity: self.activity,
-                                                              restoreTypes: self.restoreTypes)
-            self.navigationController?.pushViewController(statusVC, animated: true)
+            self?.showRestoreStatus()
         }
 
         warningView.cancelHandler = { [weak self] in
@@ -57,6 +55,15 @@ class JetpackRestoreWarningViewController: UIViewController {
         warningView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(warningView)
         view.pinSubviewToAllEdges(warningView)
+    }
+
+    // MARK: - Private Helpers
+
+    private func showRestoreStatus() {
+        let statusVC = JetpackRestoreStatusViewController(site: site,
+                                                          activity: activity,
+                                                          restoreTypes: restoreTypes)
+        self.navigationController?.pushViewController(statusVC, animated: true)
     }
 
 }
