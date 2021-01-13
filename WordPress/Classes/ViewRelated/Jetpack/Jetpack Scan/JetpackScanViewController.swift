@@ -2,9 +2,12 @@ import UIKit
 
 class JetpackScanViewController: UIViewController, JetpackScanView {
     private let blog: Blog
-    var coordinator: JetpackScanCoordinator?
 
-    // IBOutlets
+    lazy var coordinator: JetpackScanCoordinator = {
+        return JetpackScanCoordinator(blog: blog, view: self)
+    }()
+
+    // Table View
     @IBOutlet weak var tableView: UITableView!
 
     // MARK: - Initializers
@@ -20,8 +23,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     // MARK: - View Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        coordinator = JetpackScanCoordinator(blog: blog, view: self)
-        coordinator?.start()
+        coordinator.refreshData(showLoading: true)
 
         configureTableView()
     }
@@ -51,14 +53,17 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     private struct Constants {
         static let statusCellIdentifier = "StatusCell"
         static let threatCellIdentifier = "ThreatCell"
+
+        /// The number of header rows, used to get the threat rows
+        static let tableHeaderCountOffset = 1
     }
 }
 
 // MARK: - Table View
 extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let count = coordinator?.scan?.threats?.count ?? 0
-        return count + 1
+        let count = coordinator.threats?.count ?? 0
+        return count + Constants.tableHeaderCountOffset
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -84,7 +89,7 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
     }
 
     private func configureStatusCell(cell: JetpackScanStatusCell) {
-        guard let scan = coordinator?.scan else {
+        guard let scan = coordinator.scan else {
             return
         }
 
@@ -100,11 +105,11 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
     }
 
     private func threat(for indexPath: IndexPath) -> JetpackScanThreat? {
-        guard let threats = coordinator?.scan?.threats else {
+        guard let threats = coordinator.threats else {
             return nil
         }
 
-        let row = indexPath.row - 1
+        let row = indexPath.row - Constants.tableHeaderCountOffset
 
         return threats[row]
     }
