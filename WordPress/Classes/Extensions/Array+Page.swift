@@ -92,7 +92,7 @@ extension Array where Element == Page {
     ///
     /// - Returns: An Array of Elements
     func setHomePageFirst() -> [Element] {
-        if let homepageIndex = self.firstIndex(where: { $0.isSiteHomepage && $0.hasVisibleParent }) {
+        if let homepageIndex = self.firstIndex(where: { $0.isSiteHomepage }) {
             var pages: [Page] = Array(self)
             let homepage = pages.remove(at: homepageIndex)
             pages.insert(homepage, at: 0)
