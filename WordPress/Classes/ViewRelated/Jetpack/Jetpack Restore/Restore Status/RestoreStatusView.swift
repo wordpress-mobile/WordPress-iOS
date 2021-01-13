@@ -64,6 +64,12 @@ class RestoreStatusView: UIView, NibLoadable {
         descriptionLabel.text = description
         primaryButton.setTitle(primaryButtonTitle, for: .normal)
         hintLabel.text = hint
+        progressView.progress = 0.0
+    }
+
+    func update(progress: Int) {
+        progressValueLabel.text = "\(progress)%"
+        progressView.progress = Float(progress) / 100
     }
 
     // MARK: - IBAction

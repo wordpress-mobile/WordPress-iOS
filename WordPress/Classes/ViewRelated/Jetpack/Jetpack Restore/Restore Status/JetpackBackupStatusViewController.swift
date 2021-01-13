@@ -5,6 +5,8 @@ import WordPressUI
 
 class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
 
+    private var coordinator: JetpackBackupStatusCoordinator?
+
     // MARK: - Initialization
 
     override init(site: JetpackSiteRef, activity: Activity, restoreTypes: JetpackRestoreTypes) {
@@ -27,6 +29,27 @@ class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        coordinator = JetpackBackupStatusCoordinator(site: self.site, view: self)
+        coordinator?.start()
     }
 
+}
+
+extension JetpackBackupStatusViewController: JetpackBackupStatusView {
+
+    func render(_ backup: JetpackBackup) {
+        guard let progress = backup.progress else {
+            return
+        }
+
+        statusView.update(progress: progress)
+    }
+
+    func showError() {
+        // TODO
+    }
+
+    func showComplete() {
+        // TODO
+    }
 }

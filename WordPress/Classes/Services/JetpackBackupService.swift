@@ -9,20 +9,12 @@ import Foundation
         return JetpackBackupServiceRemote(wordPressComRestApi: api)
     }()
 
-    func prepareBackup(for blog: Blog, success: @escaping (JetpackBackup) -> Void, failure: @escaping (Error) -> Void) {
-        guard let siteID = blog.dotComID?.intValue else {
-            return
-        }
-
-        service.prepareBackup(siteID, success: success, failure: failure)
+    func prepareBackup(for site: JetpackSiteRef, success: @escaping (JetpackBackup) -> Void, failure: @escaping (Error) -> Void) {
+        service.prepareBackup(site.siteID, success: success, failure: failure)
     }
 
-    func getBackupStatus(for blog: Blog, success: @escaping (JetpackBackup) -> Void, failure: @escaping (Error) -> Void) {
-        guard let siteID = blog.dotComID?.intValue else {
-            return
-        }
-
-        service.getBackupStatus(siteID, success: success, failure: failure)
+    func getBackupStatus(for site: JetpackSiteRef, downloadID: Int, success: @escaping (JetpackBackup) -> Void, failure: @escaping (Error) -> Void) {
+        service.getBackupStatus(site.siteID, downloadID: downloadID, success: success, failure: failure)
     }
 
 }
