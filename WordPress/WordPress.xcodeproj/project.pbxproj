@@ -2306,6 +2306,7 @@
 		FAB8F76E25AD73C000D5D54A /* JetpackDownloadBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8F76D25AD73C000D5D54A /* JetpackDownloadBackupViewController.swift */; };
 		FAB8F78C25AD785400D5D54A /* BaseRestoreStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8F78B25AD785400D5D54A /* BaseRestoreStatusViewController.swift */; };
 		FAB8F7AA25AD792500D5D54A /* JetpackBackupStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8F7A925AD792500D5D54A /* JetpackBackupStatusViewController.swift */; };
+		FAB8FD6E25AEB23600D5D54A /* JetpackBackupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8FD6D25AEB23600D5D54A /* JetpackBackupService.swift */; };
 		FACB36F11C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACB36F01C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift */; };
 		FAE4201A1C5AEFE100C1D036 /* StartOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE420191C5AEFE100C1D036 /* StartOverViewController.swift */; };
 		FAE4327425874D140039EB8C /* ReaderSavedPostCellActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE4327325874D140039EB8C /* ReaderSavedPostCellActions.swift */; };
@@ -5050,6 +5051,7 @@
 		FAB8F76D25AD73C000D5D54A /* JetpackDownloadBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackDownloadBackupViewController.swift; sourceTree = "<group>"; };
 		FAB8F78B25AD785400D5D54A /* BaseRestoreStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRestoreStatusViewController.swift; sourceTree = "<group>"; };
 		FAB8F7A925AD792500D5D54A /* JetpackBackupStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupStatusViewController.swift; sourceTree = "<group>"; };
+		FAB8FD6D25AEB23600D5D54A /* JetpackBackupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupService.swift; sourceTree = "<group>"; };
 		FACB36F01C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeWebNavigationDelegate.swift; sourceTree = "<group>"; };
 		FAE420191C5AEFE100C1D036 /* StartOverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartOverViewController.swift; sourceTree = "<group>"; };
 		FAE4327325874D140039EB8C /* ReaderSavedPostCellActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSavedPostCellActions.swift; sourceTree = "<group>"; };
@@ -8395,7 +8397,6 @@
 				F1ADCAF6241FEF0C00F150D2 /* AtomicAuthenticationService.swift */,
 				822D60B81F4CCC7A0016C46D /* BlogJetpackSettingsService.swift */,
 				93C1148318EDF6E100DAC95C /* BlogService.h */,
-				8C6A22E325783D2000A79950 /* JetpackScanService.swift */,
 				93C1148418EDF6E100DAC95C /* BlogService.m */,
 				9A341E5221997A1E0036662E /* BlogService+BlogAuthors.swift */,
 				E18549D8230EED73003C620E /* BlogService+Deduplicate.swift */,
@@ -8408,7 +8409,9 @@
 				FA00863C24EB68B100C863F2 /* FollowCommentsService.swift */,
 				B5772AC31C9C7A070031F97E /* GravatarService.swift */,
 				17D9362624769579008B2205 /* HomepageSettingsService.swift */,
+				FAB8FD6D25AEB23600D5D54A /* JetpackBackupService.swift */,
 				9A2D0B35225E2511009E585F /* JetpackService.swift */,
+				8C6A22E325783D2000A79950 /* JetpackScanService.swift */,
 				1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */,
 				930284B618EAF7B600CB0BF4 /* LocalCoreDataService.h */,
 				FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */,
@@ -13933,6 +13936,7 @@
 				3F09CCAE24292EFD00D00A8C /* ReaderTabItem.swift in Sources */,
 				5D839AAB187F0D8000811F4A /* PostGeolocationCell.m in Sources */,
 				4054F4422213635000D261AB /* TopCommentsAuthorStatsRecordValue+CoreDataClass.swift in Sources */,
+				FAB8FD6E25AEB23600D5D54A /* JetpackBackupService.swift in Sources */,
 				8236EB502024ED8C007C7CF9 /* NotificationsViewController+JetpackPrompt.swift in Sources */,
 				5D732F971AE84E3C00CD89E7 /* PostListFooterView.m in Sources */,
 				1767494E1D3633A000B8D1D1 /* ThemeBrowserSearchHeaderView.swift in Sources */,
