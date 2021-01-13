@@ -8,7 +8,16 @@ struct JetpackScanStatusViewModel {
     private(set) var secondaryButtonTitle: String?
     private(set) var progress: Float? = nil
 
-    init(scan: JetpackScan, blog: Blog) {
+    private let coordinator: JetpackScanCoordinator
+
+    init?(coordinator: JetpackScanCoordinator) {
+        self.coordinator = coordinator
+
+        guard let scan = coordinator.scan else {
+            return nil
+        }
+
+        let blog = coordinator.blog
         let state = Self.viewState(for: scan)
 
         switch state {

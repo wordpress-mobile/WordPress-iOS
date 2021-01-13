@@ -98,11 +98,10 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
     }
 
     private func configureStatusCell(cell: JetpackScanStatusCell) {
-        guard let scan = coordinator.scan else {
+        guard let model = JetpackScanStatusViewModel(coordinator: coordinator) else {
+            // TODO: handle error
             return
         }
-
-        let model = JetpackScanStatusViewModel(scan: scan, blog: blog)
 
         tableView.beginUpdates()
         cell.configure(with: model)
