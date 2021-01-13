@@ -135,7 +135,7 @@ class JetpackRestoreViewController: UITableViewController {
                 mediaUploadsRow,
                 rootRow
             ],
-            footerText: NSLocalizedString("Includes wp-config php and any non WordPress files", comment: "Downloadable/Restorable items: general section footer text")
+            footerText: NSLocalizedString("Includes wp-config.php and any non WordPress files", comment: "Downloadable/Restorable items: general section footer text")
         )
     }
 
