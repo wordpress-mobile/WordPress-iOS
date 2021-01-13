@@ -643,7 +643,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (BOOL)supportsContactInfo
 {
-    return [self hasRequiredJetpackVersion:@"9.1"] || self.isHostedAtWPcom;
+    return [self hasRequiredJetpackVersion:@"8.5"] || self.isHostedAtWPcom;
 }
 
 - (BOOL)accountIsDefaultAccount
