@@ -5,6 +5,7 @@ class SiteSuggestionService {
 
     private var blogsCurrentlyBeingRequested = [NSNumber]()
     private var requests = [NSNumber: Date]()
+    private var disabledBlogs = [NSNumber]()
 
     static let shared = SiteSuggestionService()
 
@@ -38,10 +39,12 @@ class SiteSuggestionService {
      If no suggestions already in Core Data, fetch them from the network and store them in Core Data.
      @param blog The blog/site to prefetch suggestions for
      */
-    func prefetchSuggestions(for blog: Blog) {
+    func prefetchSuggestions(for blog: Blog, completion: @escaping () -> Void) {
         let persistedSuggestions = retrievePersistedSuggestions(for: blog)
         if persistedSuggestions == nil || persistedSuggestions?.isEmpty == true {
-            fetchAndPersistSuggestions(for: blog, completion: { _ in})
+            fetchAndPersistSuggestions(for: blog, completion: { _ in
+                completion()
+            })
         }
     }
 
@@ -86,13 +89,17 @@ class SiteSuggestionService {
 
             self.requests[blogId] = Date()
 
+            self.disabledBlogs.removeAll { $0 == blogId }
             completion(suggestions)
 
             // remove blog from the currently being requested list
             self.blogsCurrentlyBeingRequested.removeAll { $0 == blogId }
-        }, failure: { [weak self] error, _ in
+        }, failure: { [weak self] error, response in
             guard let `self` = self else { return }
 
+            if response?.statusCode == 400 {    // blog/site does not have Xposts available
+                self.disabledBlogs.append(blogId)
+            }
             completion([])
 
             // remove blog from the currently being requested list
@@ -109,6 +116,11 @@ class SiteSuggestionService {
     @return BOOL Whether the caller should show suggestions
     */
     func shouldShowSuggestions(for blog: Blog) -> Bool {
+
+        // Any blog/site that has previously returned an error indicating Xposts are not available is marked as disabled.
+        guard let blogId = blog.dotComID, disabledBlogs.contains(blogId) == false else {
+            return false
+        }
 
         // The device must be online or there must be already persisted suggestions
         guard ReachabilityUtils.isInternetReachable() || retrievePersistedSuggestions(for: blog)?.isEmpty == false else {

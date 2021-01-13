@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-11-20 21:53:52+0000 */
+/* Translation-Revision-Date: 2020-12-24 19:22:03+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: en_CA */
@@ -197,7 +197,7 @@
 "%s block. This block has invalid content" = "%s block. This block has invalid content";
 
 /* translators: Missing block alert title. %s: The localized block name */
-"'%s' is not fully-supported" = "'%s' is not fully-supported";
+"'%s' is not fully-supported" = "'%s' is not fully supported";
 
 /* translators: sample content for \"Contact\" page template */
 "(555)555-1234" = "(555) 555-1234";
@@ -1675,7 +1675,7 @@
 "Create your site" = "Create your site";
 
 /* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Creates new post, or page";
+"Creates new post, or page" = "Creates new post or page";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, page, or story" = "Creates new post, page, or story";
@@ -2506,7 +2506,7 @@
 "Follow other sites" = "Follow other sites";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"Follow your favorite sites and discover new reads." = "Follow your favorite sites and discover new reads.";
+"Follow your favorite sites and discover new reads." = "Follow your favourite sites and discover new reads.";
 
 /* Displayed in the Notification Settings View
    Followed Sites Title
@@ -5102,7 +5102,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "Select %@ to continue";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page" = "Select %@ to create a new page";
+"Select %@ to create a new page" = "Select %@ to create a new page.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Select %@ to create a new post";
@@ -6164,7 +6164,7 @@ translators: sample content for \"Services\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media.";
 
 /* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "This is where people will find you on the internet.";
+"This is where people will find you on the internet." = "This is where people will find you on the internet";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "This media item has been deleted.";

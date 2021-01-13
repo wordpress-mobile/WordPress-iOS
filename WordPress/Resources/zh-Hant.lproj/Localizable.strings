@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-21 11:37:01+0000 */
+/* Translation-Revision-Date: 2020-12-23 12:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -368,10 +368,10 @@
 "Activity Logs" = "活動記錄";
 
 /* Label for the Activity Type filter button */
-"Activity Type" = "Activity Type";
+"Activity Type" = "活動類型";
 
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
-"Activity Type (%1$d)" = "Activity Type (%1$d)";
+"Activity Type (%1$d)" = "活動類型 (%1$d)";
 
 /* Remove asset from media picker list */
 "Add" = "新增";
@@ -1164,13 +1164,13 @@
 "Choose a time" = "選擇時間";
 
 /* Title to choose date range in a calendar */
-"Choose date range" = "Choose date range";
+"Choose date range" = "選擇日期範圍";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "選擇網域";
 
 /* No comment provided by engineer. */
-"Choose file" = "Choose file";
+"Choose file" = "選擇檔案";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "從「我的裝置」中選擇";
@@ -1521,7 +1521,7 @@
 "Copy file URL" = "複製檔案 URL";
 
 /* Button title displayed in popup indicating the user copied the local copy */
-"Copy the version from this app" = "Copy the version from this app";
+"Copy the version from this app" = "複製此應用程式的版本";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "可以再好一點";
@@ -1551,7 +1551,7 @@
 "Could not save post for later" = "無法儲存文章以供稍後使用";
 
 /* The app failed to subscribe to the comments for the post */
-"Could not subscribe to comments" = "Could not subscribe to comments";
+"Could not subscribe to comments" = "無法訂閱留言";
 
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "無法切換關注：遺失 blogURL 屬性";
@@ -1563,7 +1563,7 @@
 "Could not unfollow the site at the address specified." = "無法取消關注指定位址的網站。";
 
 /* The app failed to unsubscribe from the comments for the post */
-"Could not unsubscribe from comments" = "Could not unsubscribe from comments";
+"Could not unsubscribe from comments" = "無法取消訂閱留言";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "你可以告訴我們哪裡該改進嗎？";
@@ -1751,7 +1751,7 @@
 "Date Format" = "日期格式";
 
 /* Label of a button that displays a calendar */
-"Date Range" = "Date Range";
+"Date Range" = "日期範圍";
 
 /* Date and Time */
 "Date and Time" = "日期和時間";
@@ -2048,7 +2048,7 @@
 "Drafts" = "草稿";
 
 /* Label for post duplicate option. Tapping displays statistics for a post. */
-"Duplicate" = "Duplicate";
+"Duplicate" = "複製";
 
 /* No comment provided by engineer. */
 "Duplicate block" = "重複區塊";
@@ -2101,7 +2101,7 @@
 "Edit sharing buttons" = "編輯分享按鈕";
 
 /* Button title displayed in popup indicating that the user edits the post first */
-"Edit the post first" = "Edit the post first";
+"Edit the post first" = "首先編輯文章";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "使用網頁編輯器編輯";
@@ -2185,7 +2185,7 @@
 "Encrypted Logs" = "加密記錄";
 
 /* Placeholder for the end date in calendar range selection */
-"End Date" = "End Date";
+"End Date" = "結束日期";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "進入全螢幕";
@@ -2226,7 +2226,7 @@
 "Enter your email address to log in or create a WordPress.com account." = "請輸入你的電子郵件地址以登入或建立 WordPress.com 帳號。";
 
 /* Button title. Takes the user to the login by site address flow. */
-"Enter your existing site address" = "Enter your existing site address";
+"Enter your existing site address" = "輸入你現有的網址";
 
 /* Title of a button on the magic link screen.
    Title of a button. */
@@ -2470,7 +2470,7 @@
 "Filter" = "Filter";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
-"Filter by activity type" = "Filter by activity type";
+"Filter by activity type" = "依活動類型篩選";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "瞭解更多";
@@ -3679,10 +3679,10 @@ translators: sample content for \"Services\" page template */
 "No Title" = "沒有標題";
 
 /* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities available" = "No activities available";
+"No activities available" = "無活動";
 
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities recorded in the selected date range." = "No activities recorded in the selected date range.";
+"No activities recorded in the selected date range." = "選取的日期範圍內沒有任何活動記錄。";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "尚未有活動";
@@ -3754,7 +3754,7 @@ translators: sample content for \"Services\" page template */
 "No likes yet" = "還沒有人按讚";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"No matching events found." = "No matching events found.";
+"No matching events found." = "找不到符合條件的活動。";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso.
    Phrase to show when the user search for images but there are no result to show.
@@ -4399,7 +4399,7 @@ translators: sample content for \"Services\" page template */
 "Post scheduled" = "文章已排程";
 
 /* Title displayed in popup when user tries to copy a post with unsaved changes */
-"Post sync conflict" = "Post sync conflict";
+"Post sync conflict" = "文章同步不一致";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "文章標題。%s";
@@ -5011,7 +5011,7 @@ translators: sample content for \"Services\" page template */
 "Saving..." = "儲存中...";
 
 /* Noun. Links to a blog's Jetpack Scan screen. */
-"Scan" = "Scan";
+"Scan" = "掃瞄";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "排程";
@@ -5102,7 +5102,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "選取 %@ 以繼續";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page" = "Select %@ to create a new page";
+"Select %@ to create a new page" = "選取 %@ 以建立新頁面";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "選取 %@ 以建立新文章";
@@ -5613,7 +5613,7 @@ translators: sample content for \"Services\" page template */
 "Standard" = "標準";
 
 /* Placeholder for the start date in calendar range selection */
-"Start Date" = "Start Date";
+"Start Date" = "開始日期";
 
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
@@ -5969,7 +5969,7 @@ translators: sample content for \"Services\" page template */
 "The number of posts to show per page." = "每頁顯示的文章篇數。";
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
-"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app.";
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "你嘗試複製的文章有兩個互相不一致的版本，或者你最近進行變更但沒有儲存。\n首先編輯文章，解決任何不一致，或繼續複製此應用程式的版本。";
 
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "快速入門導覽將引導你建立基本網站。確定要略過？";
@@ -6363,7 +6363,7 @@ translators: sample content for \"Services\" page template */
 "Try a starter layout" = "試用入門版面配置";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"Try adjusting your date range or activity type filters" = "Try adjusting your date range or activity type filters";
+"Try adjusting your date range or activity type filters" = "請嘗試調整你的日期範圍或活動類型篩選條件";
 
 /* Button label for trying to retrieve the activities type again
    Button that lets users try to reload the plugin directory after loading failure

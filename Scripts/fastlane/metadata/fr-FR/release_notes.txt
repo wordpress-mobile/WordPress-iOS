@@ -1,0 +1,11 @@
+Voici la nouveauté de notre dernière version :
+
+Éditeur de blocs : vous pouvez désormais insérer un bloc Fichier afin d’ajouter un bouton de téléchargement de fichiers, comme des documents. Une mise à jour du bloc Galerie a également permis de résoudre un problème de chargement à la fermeture de votre éditeur.
+
+Création de site : lors de la création de pages sur votre site, les options de mise en page des pages sont désormais plus faciles à voir et à sélectionner.
+
+Création d’articles : vous souhaitez dupliquer plus rapidement un article ? C’est désormais possible à partir de votre liste d’articles.
+
+Lecteur : utilisez-vous P2, un outil dédié à la collaboration des équipes et des groupes ? Vous pouvez lire et suivre les sites P2 dans un flux qui vient d’être ajouté.
+
+Commentaires : vous souhaitez vous abonner aux commentaires imbriqués sur les sites que vous suivez ou qui vous intéressent ? Appuyez sur le bouton « S’abonner à la conversation » dans la vue Commentaires.

@@ -28,10 +28,6 @@ extension PostEditor where Self: UIViewController {
             }
             self.recreatePostRevision(in: blog)
             self.mediaLibraryDataSource = MediaLibraryPickerDataSource(post: self.post)
-
-            if self.editorSession.currentEditor == .gutenberg {
-                SiteSuggestionService.shared.prefetchSuggestions(for: self.post.blog)
-            }
         }
 
         let dismissHandler: BlogSelectorDismissHandler = {
