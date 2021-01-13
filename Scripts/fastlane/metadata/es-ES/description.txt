@@ -9,3 +9,4 @@ WordPress para iOS es compatible con sitios de WordPress.com y sitios de WordPre
 ¿Necesitas ayuda con la aplicación? Entra en el foro de ayuda https://ios.forums.wordpress.org/ o déjanos un tuit en @WordPressiOS.
 
 Mira el aviso de privacidad para usuarios de California en https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.
+
