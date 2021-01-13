@@ -7,12 +7,14 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var primaryButton: FancyButton!
     @IBOutlet weak var secondaryButton: FancyButton!
+    @IBOutlet weak var progressView: UIProgressView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        self.primaryButton.isHidden = true
-        self.secondaryButton.isHidden = true
+        primaryButton.isHidden = true
+        secondaryButton.isHidden = true
+        configureProgressView()
     }
 
     public func configure(with model: JetpackScanStatusViewModel) {
@@ -33,5 +35,29 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
         } else {
             secondaryButton.isHidden = true
         }
+
+        if let progress = model.progress {
+            progressView.isHidden = false
+            progressView.progress = progress
+        } else {
+            progressView.isHidden = true
+        }
+    }
+
+    // MARK: - IBAction's
+    @IBAction func primaryButtonTapped(_ sender: Any) {
+    }
+
+    @IBAction func secondaryButtonTapped(_ sender: Any) {
+    }
+
+    // MARK: - Private: View Configuration
+    private func configureProgressView() {
+        progressView.isHidden = true
+
+        progressView.layer.cornerRadius = 4
+        progressView.clipsToBounds = true
+        // TODO: Replace hex with styleguide color
+        progressView.tintColor = .init(fromHex: 0x069e08)
     }
 }

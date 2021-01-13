@@ -4,8 +4,9 @@ struct JetpackScanStatusViewModel {
     let imageName: String
     let title: String
     let description: String
-    let primaryButtonTitle: String?
-    let secondaryButtonTitle: String?
+    private(set) var primaryButtonTitle: String?
+    private(set) var secondaryButtonTitle: String?
+    private(set) var progress: Float? = nil
 
     init(scan: JetpackScan, blog: Blog) {
         let state = Self.viewState(for: scan)
@@ -28,7 +29,6 @@ struct JetpackScanStatusViewModel {
             title = Strings.noThreatsTitle
             description = descriptionTitle
             secondaryButtonTitle = Strings.scanNowTitle
-            primaryButtonTitle = nil
 
         case .hasThreats, .hasFixableThreats:
             let threatCount = scan.threats?.count ?? 0
@@ -47,7 +47,6 @@ struct JetpackScanStatusViewModel {
 
             if state == .hasThreats {
                 secondaryButtonTitle = Strings.scanNowTitle
-                primaryButtonTitle = nil
             } else {
                 primaryButtonTitle = Strings.fixAllTitle
                 secondaryButtonTitle = Strings.scanAgainTitle
@@ -57,15 +56,13 @@ struct JetpackScanStatusViewModel {
             imageName = "jetpack-scan-state-progress"
             title = Strings.preparingTitle
             description = Strings.scanningDescription
-            primaryButtonTitle = nil
-            secondaryButtonTitle = nil
+            progress = 0
 
         case .scanning:
             imageName = "jetpack-scan-state-progress"
             title = Strings.scanningTitle
             description = Strings.scanningDescription
-            primaryButtonTitle = nil
-            secondaryButtonTitle = nil
+            progress = Float(scan.current?.progress ?? 0) / 100.0
 
         case .error:
             imageName = "jetpack-scan-state-error"
