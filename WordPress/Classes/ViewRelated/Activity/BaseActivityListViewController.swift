@@ -359,17 +359,17 @@ extension BaseActivityListViewController: ActivityPresenter {
         self.navigationController?.pushViewController(detailVC, animated: true)
     }
 
-    func presentBackupOrRestoreFor(activity: FormattableActivity) {
+    func presentBackupOrRestoreFor(activity: Activity) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
-        let restoreVC = JetpackRestoreViewController(site: site, activity: activity, restoreAction: .restore)
+        let restoreVC = JetpackRestoreViewController(site: site, activity: activity)
         alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: restoreVC), animated: true)
         })
 
         let downloadBackupTitle = NSLocalizedString("Download Backup", comment: "Title displayed for download backup action.")
-        let downloadBackupVC = JetpackRestoreViewController(site: site, activity: activity, restoreAction: .downloadBackup)
+        let downloadBackupVC = JetpackDownloadBackupViewController(site: site, activity: activity)
         alertController.addDefaultActionWithTitle(downloadBackupTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: downloadBackupVC), animated: true)
         })
@@ -407,8 +407,8 @@ extension BaseActivityListViewController: ActivityPresenter {
             return
         }
 
-        let warningVC = JetpackRestoreWarningViewController()
-        let navigationVC = UINavigationController(rootViewController: warningVC)
+        let restoreVC = JetpackRestoreViewController(site: site, activity: activity)
+        let navigationVC = UINavigationController(rootViewController: restoreVC)
         self.present(navigationVC, animated: true)
     }
 }
