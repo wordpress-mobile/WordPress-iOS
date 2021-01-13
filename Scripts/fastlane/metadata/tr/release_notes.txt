@@ -1,0 +1,11 @@
+En son sürümümüzdeki yenilikler şunlardır:
+
+Blok düzenleyici: Artık bir gönderiye veya sayfaya, belgeler gibi dosyalar için indirme düğmesi yerleştiren bir Dosya bloğu ekleyebilirsiniz. Galeri bloğunda yapılan bir güncelleme, düzenleyiciniz kapatıldığında meydana gelen bir yükleme sorununu da çözmüştür.
+
+Site oluşturma: Sitenizde sayfalar oluştururken, sayfa düzeni seçeneklerini görmek ve seçmek artık daha kolay.
+
+Gönderi oluşturma: Bir gönderiyi hızlıca kopyalamak mı istiyorsunuz? Artık bunu Gönderiler Listenizden yapabilirsiniz.
+
+Okuyucu: Ekip ve grup işbirliğine yönelik bir araç olan P2'yi kullanıyor musunuz? Yeni eklenen bir akışta P2 sitelerini okuyabilir ve takip edebilirsiniz.
+
+Yorumlar: Takip ettiğiniz veya ilgilendiğiniz sitelerdeki yorum dizilerine abone olmak ister misiniz?  Yorumlar görünümünde "Sohbeti takip et" düğmesine dokunun.
