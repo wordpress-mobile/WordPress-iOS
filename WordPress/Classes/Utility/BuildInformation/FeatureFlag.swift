@@ -11,6 +11,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case newNavBarAppearance
     case unifiedPrologueCarousel
     case stories
+    case contactInfo
     case siteCreationHomePagePicker
     case jetpackScan
     case activityLogFilters
@@ -45,6 +46,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .stories:
             return true
+        case .contactInfo:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .siteCreationHomePagePicker:
             return true
         case .jetpackScan:
@@ -105,6 +108,8 @@ extension FeatureFlag {
             return "Unified Prologue Carousel"
         case .stories:
             return "Stories"
+        case .contactInfo:
+            return "Contact Info"
         case .siteCreationHomePagePicker:
             return "Site Creation: Home Page Picker"
         case .jetpackScan:
