@@ -2302,6 +2302,7 @@
 		FA5C740F1C599BA7000B528C /* TableViewHeaderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5C740E1C599BA7000B528C /* TableViewHeaderDetailView.swift */; };
 		FA77E02A1BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */; };
 		FAB4F32724EDE12A00F259BA /* FollowCommentsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */; };
+		FAB8004925AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */; };
 		FAB8F75025AD72CE00D5D54A /* BaseRestoreOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8F74F25AD72CE00D5D54A /* BaseRestoreOptionsViewController.swift */; };
 		FAB8F76E25AD73C000D5D54A /* JetpackDownloadBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8F76D25AD73C000D5D54A /* JetpackDownloadBackupViewController.swift */; };
 		FAB8F78C25AD785400D5D54A /* BaseRestoreStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8F78B25AD785400D5D54A /* BaseRestoreStatusViewController.swift */; };
@@ -5048,6 +5049,7 @@
 		FA5C740E1C599BA7000B528C /* TableViewHeaderDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewHeaderDetailView.swift; sourceTree = "<group>"; };
 		FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserHeaderView.swift; sourceTree = "<group>"; };
 		FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCommentsServiceTests.swift; sourceTree = "<group>"; };
+		FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupCompleteViewController.swift; sourceTree = "<group>"; };
 		FAB8F74F25AD72CE00D5D54A /* BaseRestoreOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRestoreOptionsViewController.swift; sourceTree = "<group>"; };
 		FAB8F76D25AD73C000D5D54A /* JetpackDownloadBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackDownloadBackupViewController.swift; sourceTree = "<group>"; };
 		FAB8F78B25AD785400D5D54A /* BaseRestoreStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRestoreStatusViewController.swift; sourceTree = "<group>"; };
@@ -11028,6 +11030,7 @@
 				FA1A563825A708BF0033967D /* Restore Options */,
 				FA1A564725A708C90033967D /* Restore Warning */,
 				FA1A564825A708D30033967D /* Restore Status */,
+				FAB8007625AEDDCE00D5D54A /* Restore Complete */,
 			);
 			path = "Jetpack Restore";
 			sourceTree = "<group>";
@@ -11044,6 +11047,14 @@
 				FA5C740E1C599BA7000B528C /* TableViewHeaderDetailView.swift */,
 			);
 			path = "Site Management";
+			sourceTree = "<group>";
+		};
+		FAB8007625AEDDCE00D5D54A /* Restore Complete */ = {
+			isa = PBXGroup;
+			children = (
+				FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */,
+			);
+			path = "Restore Complete";
 			sourceTree = "<group>";
 		};
 		FF2716901CAAC87B0006E2D4 /* WordPressUITests */ = {
@@ -13592,6 +13603,7 @@
 				086103961EE09C91004D7C01 /* MediaVideoExporter.swift in Sources */,
 				E126C81F1F95FC1B00A5F464 /* PluginViewController.swift in Sources */,
 				E61084C11B9B47BA008050C5 /* ReaderSiteTopic.swift in Sources */,
+				FAB8004925AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift in Sources */,
 				9A8ECE0C2254A3260043C8DA /* JetpackLoginViewController.swift in Sources */,
 				5DAE40AD19EC70930011A0AE /* ReaderPostHeaderView.m in Sources */,
 				4054F4622214F50300D261AB /* StreakStatsRecordValue+CoreDataProperties.swift in Sources */,

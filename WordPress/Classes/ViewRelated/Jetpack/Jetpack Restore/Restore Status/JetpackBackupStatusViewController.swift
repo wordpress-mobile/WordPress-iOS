@@ -50,6 +50,7 @@ extension JetpackBackupStatusViewController: JetpackBackupStatusView {
     }
 
     func showComplete() {
-        // TODO
+        let completeVC = JetpackBackupCompleteViewController()
+        self.navigationController?.pushViewController(completeVC, animated: true)
     }
 }
