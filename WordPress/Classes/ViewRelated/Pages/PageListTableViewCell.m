@@ -109,12 +109,14 @@ static CGFloat const FeaturedImageSize = 120.0;
     [WPStyleGuide configureTableViewCell:self];
     [WPStyleGuide configureLabel:self.timestampLabel textStyle:UIFontTextStyleSubheadline];
     [WPStyleGuide configureLabel:self.badgesLabel textStyle:UIFontTextStyleSubheadline];
+    [WPStyleGuide configureLabel:self.typeLabel textStyle:UIFontTextStyleSubheadline];
 
     self.titleLabel.font = [WPStyleGuide notoBoldFontForTextStyle:UIFontTextStyleHeadline];
     self.titleLabel.adjustsFontForContentSizeCategory = YES;
     
     self.titleLabel.textColor = [UIColor murielText];
     self.badgesLabel.textColor = [UIColor murielTextSubtle];
+    self.typeLabel.textColor = [UIColor murielTextSubtle];
     self.menuButton.tintColor = [UIColor murielTextSubtle];
     [self.menuButton setImage:[UIImage gridiconOfType:GridiconTypeEllipsis] forState:UIControlStateNormal];
     
