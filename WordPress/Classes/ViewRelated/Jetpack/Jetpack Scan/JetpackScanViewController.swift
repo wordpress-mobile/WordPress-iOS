@@ -9,6 +9,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
 
     // Table View
     @IBOutlet weak var tableView: UITableView!
+    let refreshControl = UIRefreshControl()
 
     // MARK: - Initializers
     @objc init(blog: Blog) {
@@ -30,6 +31,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
 
     // MARK: - JetpackScanView
     func render(_ scan: JetpackScan) {
+        refreshControl.endRefreshing()
         tableView.reloadData()
     }
 
@@ -47,6 +49,13 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         tableView.register(JetpackScanThreatCell.defaultNib, forCellReuseIdentifier: Constants.threatCellIdentifier)
 
         tableView.tableFooterView = UIView()
+
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(userRefresh), for: .valueChanged)
+    }
+
+    @objc func userRefresh() {
+        coordinator.refreshData()
     }
 
     // MARK: - Private: Config
