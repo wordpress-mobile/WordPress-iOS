@@ -22,26 +22,39 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
         titleLabel.text = model.title
         descriptionLabel.text = model.description
 
-        if let primaryTitle = model.primaryButtonTitle {
-            primaryButton.setTitle(primaryTitle, for: .normal)
-            primaryButton.isHidden = false
-        } else {
+        configurePrimaryButton(model)
+        configureSecondaryButton(model)
+        configureProgressView(model)
+    }
+
+    private func configurePrimaryButton(_ model: JetpackScanStatusViewModel) {
+        guard let primaryTitle = model.primaryButtonTitle else {
             primaryButton.isHidden = true
+            return
         }
 
-        if let secondaryTitle = model.secondaryButtonTitle {
-            secondaryButton.setTitle(secondaryTitle, for: .normal)
-            secondaryButton.isHidden = false
-        } else {
+        primaryButton.setTitle(primaryTitle, for: .normal)
+        primaryButton.isHidden = false
+    }
+
+    private func configureSecondaryButton(_ model: JetpackScanStatusViewModel) {
+        guard let secondaryTitle = model.secondaryButtonTitle else {
             secondaryButton.isHidden = true
+            return
         }
 
-        if let progress = model.progress {
-            progressView.isHidden = false
-            progressView.progress = progress
-        } else {
+        secondaryButton.setTitle(secondaryTitle, for: .normal)
+        secondaryButton.isHidden = false
+    }
+
+    private func configureProgressView(_ model: JetpackScanStatusViewModel) {
+        guard let progress = model.progress else {
             progressView.isHidden = true
+            return
         }
+
+        progressView.isHidden = false
+        progressView.setProgress(progress, animated: true)
     }
 
     // MARK: - IBAction's
