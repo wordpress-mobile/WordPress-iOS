@@ -43,4 +43,21 @@ class JetpackScanCoordinator {
             self?.view.showError()
         }
     }
+    public func startScan() {
+        service.startScan(for: blog) { (success) in
+
+        } failure: { [weak self] (error) in
+            DDLogError("Error starting scan: \(String(describing: error.localizedDescription))")
+
+            self?.view.showError()
+        }
+    }
+
+    public func fixThreats() {
+
+    }
+
+    public func ignoreThreat(threat: JetpackScanThreat) {
+
+    }
 }
