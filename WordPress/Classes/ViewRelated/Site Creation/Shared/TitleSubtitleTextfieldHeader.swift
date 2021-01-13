@@ -74,9 +74,6 @@ final class SearchTextField: UITextField {
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: Constants.searchHeight),
             ])
-
-        addTopBorder(withColor: .divider)
-        addBottomBorder(withColor: .divider)
     }
 
     private lazy var searchIconImageView: UIImageView = {

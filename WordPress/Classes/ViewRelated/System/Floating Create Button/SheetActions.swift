@@ -4,7 +4,7 @@ struct PostAction: ActionSheetItem {
     let handler: () -> Void
 
     func makeButton() -> ActionSheetButton {
-        let highlight: Bool = QuickStartTourGuide.find()?.shouldSpotlight(.newpost) ?? false
+        let highlight: Bool = QuickStartTourGuide.shared.shouldSpotlight(.newpost)
         return ActionSheetButton(title: NSLocalizedString("Blog post", comment: "Create new Blog Post button title"),
                                  image: .gridicon(.posts),
                                  identifier: "blogPostButton",
@@ -17,9 +17,11 @@ struct PageAction: ActionSheetItem {
     let handler: () -> Void
 
     func makeButton() -> ActionSheetButton {
+        let highlight: Bool = QuickStartTourGuide.shared.shouldSpotlight(.newPage)
         return ActionSheetButton(title: NSLocalizedString("Site page", comment: "Create new Site Page button title"),
                                             image: .gridicon(.pages),
                                             identifier: "sitePageButton",
+                                            highlight: highlight,
                                             action: handler)
     }
 }

@@ -67,6 +67,10 @@ class BlogDetailHeaderView: UIView, BlogDetailHeader {
         if let blog = blog,
             blog.hasIcon == true {
             siteIconView.imageView.downloadSiteIcon(for: blog)
+        } else if let blog = blog,
+            blog.isWPForTeams() {
+            siteIconView.imageView.tintColor = UIColor.listIcon
+            siteIconView.imageView.image = UIImage.gridicon(.p2)
         } else {
             siteIconView.imageView.image = UIImage.siteIconPlaceholder
         }
@@ -81,11 +85,11 @@ class BlogDetailHeaderView: UIView, BlogDetailHeader {
     }
 
     @objc func toggleSpotlightOnSiteTitle() {
-        titleButton.shouldShowSpotlight = QuickStartTourGuide.find()?.isCurrentElement(.siteTitle) == true
+        titleButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.siteTitle)
     }
 
     @objc func toggleSpotlightOnSiteIcon() {
-        siteIconView.spotlightIsShown = QuickStartTourGuide.find()?.isCurrentElement(.siteIcon) == true
+        siteIconView.spotlightIsShown = QuickStartTourGuide.shared.isCurrentElement(.siteIcon)
     }
 
     private enum Constants {
@@ -102,7 +106,7 @@ class BlogDetailHeaderView: UIView, BlogDetailHeader {
         self.init(frame: .zero)
 
         siteIconView.tapped = { [weak self] in
-            QuickStartTourGuide.find()?.visited(.siteIcon)
+            QuickStartTourGuide.shared.visited(.siteIcon)
             self?.siteIconView.spotlightIsShown = false
 
             self?.delegate?.siteIconTapped()
@@ -171,7 +175,7 @@ class BlogDetailHeaderView: UIView, BlogDetailHeader {
     }
 
     @objc private func titleButtonTapped() {
-        QuickStartTourGuide.find()?.visited(.siteTitle)
+        QuickStartTourGuide.shared.visited(.siteTitle)
         titleButton.shouldShowSpotlight = false
 
         delegate?.siteTitleTapped()

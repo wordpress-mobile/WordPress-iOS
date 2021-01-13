@@ -10,7 +10,7 @@ final class SiteCreationWizardLauncher {
     }()
 
     private lazy var designStep: WizardStep = {
-        return SiteDesignStep()
+        return SiteDesignStep(creator: self.creator)
     }()
 
     private lazy var addressStep: WizardStep = {
@@ -41,7 +41,18 @@ final class SiteCreationWizardLauncher {
             return nil
         }
 
-        wizardContent.modalPresentationStyle = .fullScreen
+        if FeatureFlag.siteCreationHomePagePicker.enabled {
+            if #available(iOS 13.0, *) {
+                wizardContent.modalPresentationStyle = .pageSheet
+                wizardContent.isModalInPresentation = true
+            } else {
+                // Specifically using fullScreen instead of pageSheet to get the desired behavior on Max devices running iOS 12 and below.
+                wizardContent.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .pad ? .pageSheet : .fullScreen
+            }
+        } else {
+            wizardContent.modalPresentationStyle = .fullScreen
+        }
+
         return wizardContent
     }()
 }

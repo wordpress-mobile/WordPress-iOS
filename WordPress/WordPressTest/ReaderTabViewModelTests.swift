@@ -117,9 +117,6 @@ class ReaderTabViewModelTests: XCTestCase {
         // Given
         let context = MockContext.getContext()!
 
-        let filterTopic = ReaderAbstractTopic(context: context)
-        viewModel.selectedFilter = filterTopic
-
         let selectedTopic = ReaderAbstractTopic(context: context)
         selectedTopic.title = "selected topic"
         let item = ReaderTabItem(ReaderContent(topic: selectedTopic))

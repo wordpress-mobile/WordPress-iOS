@@ -137,7 +137,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
     [WPStyleGuide configureTableViewCell:cell];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    if (indexPath == [NSIndexPath indexPathForRow:0 inSection:0] && [[QuickStartTourGuide find] isCurrentElement:QuickStartTourElementConnections]) {
+    if (indexPath == [NSIndexPath indexPathForRow:0 inSection:0] && [[QuickStartTourGuide shared] isCurrentElement:QuickStartTourElementConnections]) {
         cell.accessoryView = [QuickStartSpotlightView new];
     } else {
         cell.accessoryView = nil;
@@ -205,7 +205,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         controller = [[SharingConnectionsViewController alloc] initWithBlog:self.blog publicizeService:publicizer];
         [WPAppAnalytics track:WPAnalyticsStatSharingOpenedPublicize withBlog:self.blog];
 
-        [[QuickStartTourGuide find] visited:QuickStartTourElementConnections];
+        [[QuickStartTourGuide shared] visited:QuickStartTourElementConnections];
     } else {
         controller = [[SharingButtonsViewController alloc] initWithBlog:self.blog];
         [WPAppAnalytics track:WPAnalyticsStatSharingOpenedSharingButtonSettings withBlog:self.blog];

@@ -55,7 +55,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 - (Blog *)lastUsedOrFirstBlog
 {
     Blog *blog = [self lastUsedOrPrimaryBlog];
-
+    
     if (!blog) {
         blog = [self firstBlog];
     }

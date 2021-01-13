@@ -2,13 +2,10 @@ import WordPressFlux
 
 class FilterSheetView: UIView {
 
-    enum Constants {
-        enum Header {
-            static let spacing: CGFloat = 16
-            static let insets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 18)
-            static let title = NSLocalizedString("Following", comment: "Title for Reader Filter Sheet")
-            static let font = WPStyleGuide.fontForTextStyle(.headline)
-        }
+    private struct HeaderConstants {
+        static let spacing: CGFloat = 16
+        static let insets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 18)
+        static let font = WPStyleGuide.fontForTextStyle(.headline)
     }
 
     // MARK: View Setup
@@ -49,11 +46,11 @@ class FilterSheetView: UIView {
     private lazy var headerLabelView: UIView = {
         let labelView = UIView()
         let label = UILabel()
-        label.font = Constants.Header.font
-        label.text = Constants.Header.title
+        label.font = HeaderConstants.font
+        label.text = viewTitle
         label.translatesAutoresizingMaskIntoConstraints = false
         labelView.addSubview(label)
-        labelView.pinSubviewToAllEdges(label, insets: Constants.Header.insets)
+        labelView.pinSubviewToAllEdges(label, insets: HeaderConstants.insets)
         return labelView
     }()
 
@@ -66,7 +63,7 @@ class FilterSheetView: UIView {
             emptyView
         ])
 
-        stack.setCustomSpacing(Constants.Header.spacing, after: headerLabelView)
+        stack.setCustomSpacing(HeaderConstants.spacing, after: headerLabelView)
         stack.axis = .vertical
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
@@ -94,7 +91,7 @@ class FilterSheetView: UIView {
         set {
             if let filter = newValue {
                 dataSource = FilterTableViewDataSource(data: filter.items, reuseIdentifier: filter.reuseIdentifier)
-                if filter.state.isReady == false {
+                if !filter.state.isReady {
                     /// Loading state
                     emptyView.isHidden = true
                     tableView.isHidden = true
@@ -118,14 +115,20 @@ class FilterSheetView: UIView {
         }
     }
 
+    private let viewTitle: String
     private let filters: [FilterProvider]
 
     // MARK: Methods
 
-    init(filters: [FilterProvider], presentationController: UIViewController, changedFilter: @escaping (ReaderAbstractTopic) -> Void) {
+    init(viewTitle: String,
+         filters: [FilterProvider],
+         presentationController: UIViewController,
+         changedFilter: @escaping (ReaderAbstractTopic) -> Void) {
+        self.viewTitle = viewTitle
+        self.filters = filters
         self.presentationController = presentationController
         self.changedFilter = changedFilter
-        self.filters = filters
+
         super.init(frame: .zero)
 
         filterTabBar.items = filters

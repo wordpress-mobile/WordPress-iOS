@@ -252,7 +252,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         isAccessibilityElement = false
 
         titleLabel.accessibilityLabel = title
-        titleLabel.accessibilityTraits = .staticText
+        titleLabel.accessibilityTraits = .header
     }
 
 }

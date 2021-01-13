@@ -2,6 +2,7 @@ struct ReaderTabItem: FilterTabBarItem {
 
     let shouldHideButtonsView: Bool
     let shouldHideSettingsButton: Bool
+    let shouldHideTagFilter: Bool
 
     let content: ReaderContent
 
@@ -12,9 +13,10 @@ struct ReaderTabItem: FilterTabBarItem {
     /// initialize with topic
     init(_ content: ReaderContent) {
         self.content = content
-
-        self.shouldHideButtonsView = content.topicType != .following && content.type != .selfHostedFollowing
-        self.shouldHideSettingsButton = content.type == .selfHostedFollowing
+        let filterableTopicTypes = [ReaderTopicType.following, .organization]
+        shouldHideButtonsView = !filterableTopicTypes.contains(content.topicType) && content.type != .selfHostedFollowing
+        shouldHideSettingsButton = content.type == .selfHostedFollowing
+        shouldHideTagFilter = content.topicType == .organization
     }
 }
 

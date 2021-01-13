@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-10-16 17:54:52+0000 */
+/* Translation-Revision-Date: 2020-12-24 10:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -197,7 +197,7 @@
 "%s block. This block has invalid content" = "%s bloku. Bu blok geçersiz içerik barındırıyor";
 
 /* translators: Missing block alert title. %s: The localized block name */
-"'%s' is not fully-supported" = "'%s' is not fully-supported";
+"'%s' is not fully-supported" = "\"%s\" tamamen desteklenmiyor";
 
 /* translators: sample content for \"Contact\" page template */
 "(555)555-1234" = "555 555 1234";
@@ -242,9 +242,6 @@
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
-
-/* Site creation. Step 2. Screen title */
-"2 of 2" = "2\/2";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
@@ -364,8 +361,17 @@
    Title for the activity list */
 "Activity" = "Etkinlik";
 
+/* Noun. Links to a blog's Activity screen. */
+"Activity Log" = "Etkinlik günlüğü";
+
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "Etkinlik kütükleri";
+
+/* Label for the Activity Type filter button */
+"Activity Type" = "Etkinlik Türü";
+
+/* Label for the Activity Type filter button when there are more than 1 activity type selected */
+"Activity Type (%1$d)" = "Etkinlik Türü (%1$d)";
 
 /* Remove asset from media picker list */
 "Add" = "Ekle";
@@ -383,7 +389,7 @@
 "Add Block Before" = "Blok öncesine ekle";
 
 /* Accessibility label for add comment button */
-"Add Comment" = "Add Comment";
+"Add Comment" = "Yorum ekle";
 
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Yazıya içerik ekle";
@@ -412,8 +418,7 @@
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Profil fotoğrafı ekle";
 
-/* Title of a feature to add a new topic to the topics subscribed by the user.
-   Title. Lets the user know that they can use this feature to subscribe to new topics. */
+/* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "Bir Konu ekle";
 
 /* Hint for the reader CSS URL field */
@@ -627,9 +632,6 @@
 "An unknown error occurred. Please try again." = "Bilinmeyen bir hata oluştu. Lütfen tekrar deneyin.";
 
 /* No comment provided by engineer. */
-"Angle" = "Açı";
-
-/* No comment provided by engineer. */
 "Annotations Sidebar" = "Ek Açıklamalar Kenar Çubuğu";
 
 /* Insights 'This Year' details view header */
@@ -658,7 +660,8 @@
 
 /* Approve action. Verb
    Approve comment (verb)
-   Approves a Comment */
+   Approves a Comment
+   Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Onayla";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
@@ -730,9 +733,6 @@
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Güncellemek istediğinizden emin misiniz?";
-
-/* A short message asking the user if they wish to unfollow the specified topic. The %@ is a placeholder for the name of the topic. */
-"Are you sure you wish to remove the topic '%@'?" = "'%@' konusunu kaldırmak istediğinizden emin misiniz?";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "1 ağustos 2018 itibarıyla Facebook, yazıların doğrudan Facebook profillerinde paylaşımına izin vermez. Facebook sayfalarına bağlantı değişmeden kalır.";
@@ -852,7 +852,7 @@
 "Blacklist" = "Kara liste";
 
 /* Notice that a page without content has been created */
-"Blank page created" = "Blank page created";
+"Blank page created" = "Boş sayfa oluşturuldu";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -928,7 +928,7 @@
 "Button Style" = "Tuş stili";
 
 /* Label for the post author in the post detail. */
-"By " = "By ";
+"By " = "Gönderen:";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "%@ tarafından.";
@@ -945,6 +945,9 @@
 
 /* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
 "By signing up, you agree to our _Terms of Service_." = "Kaydolarak _hizmet koşullarını_ kabul etmiş olursunuz.";
+
+/* No comment provided by engineer. */
+"CHOOSE A FILE" = "DOSYA SEÇ";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "Özelleştir";
@@ -990,6 +993,7 @@
    Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
+   Cancel site creation
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1005,7 +1009,6 @@
    Option to cancel the email app selection when logging in with magic links
    Text displayed by the left navigation button title
    The title of a cancel button.
-   Title of a cancel button.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
@@ -1044,7 +1047,8 @@
 /* shown in promotional screens during first launch */
 "Catch up with your favorite sites and join the conversation anywhere, any time." = "Her an, her yerde sevdiğiniz siteleri kontrol edip sohbetin bir parçası olun.";
 
-/* Label for the categories field. Should be the same as WP core. */
+/* Label for Categories
+   Label for the categories field. Should be the same as WP core. */
 "Categories" = "Kategoriler";
 
 /* Category menu item in share extension.
@@ -1114,9 +1118,10 @@
 "Check your email!" = "E-postanızı kontrol edin!";
 
 /* Default subtitle for no-results when there is no connection with a prompt to create a new page instead. */
-"Check your network connection and try again or create a blank page." = "Check your network connection and try again or create a blank page.";
+"Check your network connection and try again or create a blank page." = "Ağ bağlantınızı kontrol edip tekrar deneyin veya bir boş sayfa oluşturun.";
 
-/* Default subtitle for no-results when there is no connection */
+/* Default subtitle for no-results when there is no connection
+   Default subtitle for no-results when there is no connection. */
 "Check your network connection and try again." = "Ağ bağlantınızı kontrol edip tekrar deneyin.";
 
 /* Subtitle for No results full page screen displayed from pages list when there is no connection */
@@ -1132,7 +1137,7 @@
 "Checking purchases…" = "Satın alımlar kontrol ediliyor…";
 
 /* Title for the button to progress with the selected site homepage design */
-"Choose" = "Choose";
+"Choose" = "Seç";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Sayfa Seç";
@@ -1147,10 +1152,10 @@
 "Choose a date" = "Tarih seçin";
 
 /* Title for the screen to pick a design and homepage for a site. */
-"Choose a design" = "Choose a design";
+"Choose a design" = "Bir tasarım seçin";
 
-/* Create site, step 4. Select domain name. Title */
-"Choose a domain name for your site" = "Siteniz için bir alan adı seçin";
+/* Select domain name. Title */
+"Choose a domain" = "Alan adı seç";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Bir tema seçin";
@@ -1158,8 +1163,14 @@
 /* Label for Publish time picker */
 "Choose a time" = "Saat seçin";
 
+/* Title to choose date range in a calendar */
+"Choose date range" = "Tarih aralığı seç";
+
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Alan adını seç";
+
+/* No comment provided by engineer. */
+"Choose file" = "Dosya seçin";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Cihazımdan seç";
@@ -1167,7 +1178,7 @@
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "En son gönderilerinizi görüntüleyen bir ana sayfa (klasik blog) veya sabit\/statik bir sayfa seçin.";
 
-/* No comment provided by engineer. */
+/* Menu option used for adding media from other applications. */
 "Choose from device" = "Cihazdan seç";
 
 /* No comment provided by engineer. */
@@ -1177,7 +1188,10 @@
 "Choose image or video" = "Görsel veya video seç";
 
 /* No comment provided by engineer. */
-"Choose images" = "Choose images";
+"Choose images" = "Görsel seç";
+
+/* Shortened version of the main title to be used in back navigation */
+"Choose layout" = "Düzen seç";
 
 /* No comment provided by engineer. */
 "Choose video" = "Video seç";
@@ -1261,7 +1275,7 @@
 "Collect information" = "Bilgi topla";
 
 /* First story intro item description */
-"Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love.";
+"Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Ziyaretçilerinizin seveceği ilgi çekici ve dokunulabilir öykü yayınları oluşturmak için fotoğrafları, videoları ve metinleri birleştirin.";
 
 /* Menu item label for linking a comic page. */
 "Comics" = "Çizgi romanlar";
@@ -1503,6 +1517,12 @@
 /* No comment provided by engineer. */
 "Copy block" = "Bloğu kopyala";
 
+/* No comment provided by engineer. */
+"Copy file URL" = "Dosya adresini kopyala";
+
+/* Button title displayed in popup indicating the user copied the local copy */
+"Copy the version from this app" = "Sürümü bu uygulamadan kopyala";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Daha iyi olabilir";
 
@@ -1530,6 +1550,9 @@
 /* Title of a prompt. */
 "Could not save post for later" = "Yazı sonrası için kaydedilmedi";
 
+/* The app failed to subscribe to the comments for the post */
+"Could not subscribe to comments" = "Yorumlara abone olunamadı";
+
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Takip Et değiştirilemedi: Blog URL özniteliği eksik";
 
@@ -1538,6 +1561,9 @@
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Belirtilen adresteki site takipten çıkarılamadı.";
+
+/* The app failed to unsubscribe from the comments for the post */
+"Could not unsubscribe from comments" = "Yorum aboneliğinden çıkılamadı";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Bize nasıl daha iyi olabileceğimizi belirtir misiniz?";
@@ -1616,7 +1642,7 @@
 "Create Site" = "Site oluştur";
 
 /* Stories intro continue button title */
-"Create Story Post" = "Create Story Post";
+"Create Story Post" = "Öykü Yayını Oluştur";
 
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "WordPress.com sitesi oluştur";
@@ -1640,7 +1666,7 @@
 "Create a post or page" = "Yazı veya sayfa oluştur";
 
 /* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Create a post, page, or story";
+"Create a post, page, or story" = "Bir yazı, sayfa veya öykü oluştur";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Kendi özelleştirilmiş panonuzu oluşturun ve görmek istediğiniz raporları seçin. Sizi en çok ilgilendiren verilere odaklanın.";
@@ -1648,14 +1674,11 @@
 /* Title of a Quick Start Tour */
 "Create your site" = "Sitenizi oluşturun";
 
-/* Accessibility hint for the Create Site button in Site Creation. */
-"Creates a new site with the given information." = "Verilen bilgilerle yeni bir site oluşturur.";
+/* Accessibility hint for create floating action button */
+"Creates new post, or page" = "Yeni bir yazı ya da sayfa oluşturur";
 
 /* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Creates new post, or page";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Creates new post, page, or story";
+"Creates new post, page, or story" = "Bir yazı, sayfa veya öykü oluşturur";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Yeni bir menü oluşturmak var olan menüde yaptığınız değişiklikleri yok edecek. Devam etmek istediğinizden emin misiniz?";
@@ -1726,6 +1749,9 @@
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
 "Date Format" = "Tarih biçimi";
+
+/* Label of a button that displays a calendar */
+"Date Range" = "Tarih aralığı";
 
 /* Date and Time */
 "Date and Time" = "Tarih ve Saat";
@@ -1811,10 +1837,16 @@
 /* Text displayed in HUD while a media item is being deleted. */
 "Deleting..." = "Siliniyor...";
 
+/* Verb. Denies a 2fa authentication challenge. */
+"Deny" = "Reddet";
+
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Açıklama";
+
+/* Shortened version of the main title to be used in back navigation */
+"Design" = "Tasarım";
 
 /* Title for the desktop web preview */
 "Desktop" = "Masaüstü";
@@ -2015,6 +2047,9 @@
    Title of the drafts header in search list. */
 "Drafts" = "Taslaklar";
 
+/* Label for post duplicate option. Tapping displays statistics for a post. */
+"Duplicate" = "Çoğalt";
+
 /* No comment provided by engineer. */
 "Duplicate block" = "Bloğu çoğalt";
 
@@ -2024,6 +2059,7 @@
 /* Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
+   Label for a button that opens the Edit Page view controller
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
    Verb, edit a comment */
@@ -2055,14 +2091,20 @@
    Opens the editor to edit an existing post. */
 "Edit Post" = "Yazıyı düzenle";
 
+/* No comment provided by engineer. */
+"Edit file" = "Dosyayı düzenle";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Blok düzenleyici ile yeni gönderi ve sayfaları düzenleyin.";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Paylaşım tuşlarını düzenle";
 
+/* Button title displayed in popup indicating that the user edits the post first */
+"Edit the post first" = "Önce gönderiyi düzenle";
+
 /* No comment provided by engineer. */
-"Edit using web editor" = "Edit using web editor";
+"Edit using web editor" = "Web düzenleyicisini kullanarak düzenle";
 
 /* No comment provided by engineer. */
 "Edit video" = "Videoyu düzenle";
@@ -2142,6 +2184,9 @@
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Şifreli günlükler";
 
+/* Placeholder for the end date in calendar range selection */
+"End Date" = "Bitiş tarihi";
+
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Tam ekran yap";
 
@@ -2180,12 +2225,12 @@
 /* Instruction text on the initial email address entry screen. */
 "Enter your email address to log in or create a WordPress.com account." = "Giriş yapmak veya bir WordPress.com hesabı oluşturmak için e-posta adresinizi girin.";
 
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your existing site address" = "Mevcut site adresinizi girin";
+
 /* Title of a button on the magic link screen.
    Title of a button. */
 "Enter your password instead." = "Bunun yerine parolanızı girin.";
-
-/* Button title. Takes the user to the login by site address flow. */
-"Enter your site address" = "Site adresinizi girin";
 
 /* Generic error alert title
    Generic error.
@@ -2281,7 +2326,7 @@
 "Everyone" = "Herkes";
 
 /* Example story title description */
-"Example story title" = "Example story title";
+"Example story title" = "Öykü başlığı örneği";
 
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Özet";
@@ -2352,8 +2397,14 @@
 /* No comment provided by engineer. */
 "Failed to insert media.\nPlease tap for options." = "Ortam ekleme başarısız.\nSeçenekler için dokunun.";
 
+/* No comment provided by engineer. */
+"Failed to save files.\nPlease tap for options." = "Dosyalar kaydedilemedi.\nSeçenekler için lütfen dokunun.";
+
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "REST API isteği serileştirmesi başarısız oldu.";
+
+/* No comment provided by engineer. */
+"Failed to upload files.\nPlease tap for options." = "Dosyalar yüklenemedi.\nSeçenekler için lütfen dokunun.";
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
@@ -2403,6 +2454,9 @@
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "Dosya indirmeleri";
 
+/* No comment provided by engineer. */
+"File block settings" = "Dosya blok ayarları";
+
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Dosya adı";
 
@@ -2414,6 +2468,9 @@
 
 /* Title of the filter button in the Reader */
 "Filter" = "Filtre";
+
+/* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
+"Filter by activity type" = "Etkinlik türüne göre filtrele";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Daha fazlasını bul";
@@ -2449,7 +2506,7 @@
 "Follow other sites" = "Diğer siteleri takip edin";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"Follow your favorite sites and discover new reads." = "Follow your favorite sites and discover new reads.";
+"Follow your favorite sites and discover new reads." = "Favori sitelerinizi takip edin ve yeni yazılar keşfedin.";
 
 /* Displayed in the Notification Settings View
    Followed Sites Title
@@ -2616,9 +2673,6 @@ translators: sample content for \"Team\" page template */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Harika!\nMutlu kullanıcılardan haberdar olmayı seviyoruz\n😁";
 
-/* This is the text we display to the user when we ask them for a review and they've indicated they like the app */
-"Great! Could you leave us a nice review?\n\nIt really helps." = "Harika! Bize güzel bir görüş bırakabilir misiniz?\n\nBu gerçekten çok iyi olur.";
-
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
 "Grow Your Audience" = "Kitlenizi genişletin";
@@ -2710,7 +2764,7 @@ translators: sample content for \"Team\" page template */
 "Help & Support" = "Yardım ve destek";
 
 /* No comment provided by engineer. */
-"Help button" = "Help button";
+"Help button" = "Yardım düğmesi";
 
 /* No comment provided by engineer. */
 "Help icon" = "Yardım simgesi";
@@ -2762,7 +2816,7 @@ translators: sample content for \"Team\" page template */
 "Hooray!\nAlmost done" = "Harika!\nNeredeyse tamam";
 
 /* How to create story description */
-"How to create a story post" = "How to create a story post";
+"How to create a story post" = "Öykü yayını nasıl oluşturulur?";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "Beğendim";
@@ -2788,8 +2842,8 @@ translators: sample content for \"Team\" page template */
 /* First line of remove viewer warning in confirmation dialog. */
 "If you remove this viewer, he or she will not be able to visit this site." = "Eğer bu izleyiciyi kaldırırsanız, artık siteyi ziyaret edemez.";
 
-/* Detail for instructions on Start Over settings page */
-"If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just cont" = "Bir site istiyor, ancak mevcut yazı ve sayfalarınızın hiçbirini istemiyorsanız, destek ekibimiz yazılarınızı, sayfalarınızı, ortam dosyalarınızı ve yorumlarınızı sizin için silebilir.\n\nBu, sitenizin ve adresinizin etkin durumda kalmasını sağlamakla birlikte içerik oluşturma konusunda yepyeni bir başlangıç yapmanıza da imkan tanır. Mevcut içeriğinizin temizlenmesi için bizimle iletişime geçmeniz yeterlidir.";
+/* Detailed instructions on Start Over settings page. This is the first paragraph. */
+"If you want a site but do not want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you." = "Bir site istiyor, ancak şimdiki yazı ve sayfalarınızın hiçbirini istemiyorsanız, destek ekibimiz yazılarınızı, sayfalarınızı, medyanızı ve yorumlarınızı sizin için silebilir.";
 
 /* Paragraph 2 of 2 of main text body for the delete screen. */
 "If you're unsure about what will be deleted or need any help, not to worry, our support team is here to answer any questions you may have." = "Eğer neyi sileceğinizden emin değilseniz ya da yardıma ihtiyacınız varsa, merak etmeyin, destek ekibimiz sorularınızı cevaplamak için burada.";
@@ -2870,9 +2924,6 @@ translators: sample content for \"Team\" page template */
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Ortam dosyası ekle";
 
-/* No comment provided by engineer. */
-"Insert mention" = "Bahsetme ekle";
-
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Seçilenleri ekle";
 
@@ -2913,7 +2964,7 @@ translators: sample content for \"Team\" page template */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Sitenize ilk eklentinin yüklenmesi 1 dakika kadar sürebilir. Bu sırada sitenizde değişiklik yapamayacaksınız.";
 
 /* Stories intro header title */
-"Introducing Story Posts" = "Introducing Story Posts";
+"Introducing Story Posts" = "Öykü Yayınlarına Giriş";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Geçersiz site adresi";
@@ -2961,7 +3012,8 @@ translators: sample content for \"Team\" page template */
 /* translators: sample content for \"About\" page template */
 "J.K. Rowling" = "J.K. Rowling";
 
-/* Title for the Jetpack Installation
+/* Section title for the publish table section in the blog details screen
+   Title for the Jetpack Installation
    Title for the Jetpack section in site settings screen */
 "Jetpack" = "Jetpack";
 
@@ -2970,6 +3022,9 @@ translators: sample content for \"Team\" page template */
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack SSS";
+
+/* Noun. Title. Links to the blog's Settings screen. */
+"Jetpack Settings" = "Jetpack ayarları";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack şu anda yüklenemiyor.";
@@ -3123,9 +3178,6 @@ translators: sample content for \"Services\" page template */
 /* The accessibility label for the list style button in the Post List. */
 "List style" = "Liste stili";
 
-/* Section title of the lists reader section. */
-"Lists" = "Listeler";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "Yükle";
 
@@ -3231,6 +3283,9 @@ translators: sample content for \"Services\" page template */
 /* Instruction text on the login's email address screen. */
 "Log in to your WordPress.com account with your email address." = "E-posta adresinizle WordPress.com hesabınızda oturum açın.";
 
+/* Instructions on the WordPress.com username / password log in form. */
+"Log in with your WordPress.com username and password." = "WordPress.com kullanıcı adı ve şifreniz ile oturum açın.";
+
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "WordPress'den çıkış yapmak ister misiniz?";
 
@@ -3257,8 +3312,6 @@ translators: sample content for \"Services\" page template */
 "Main Navigation" = "Ana gezinti";
 
 /* Button leading to a screen where users can manage their installed plugins
-   Button title. Tapping lets the user manage the sites they follow.
-   Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
    Title for the Reader Manage screen.
@@ -3266,7 +3319,8 @@ translators: sample content for \"Services\" page template */
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Yönet";
 
-/* Label for managing the Blog Jetpack Connection section
+/* Jetpack Settings: Manage Connection
+   Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Bağlantıyı yönet";
 
@@ -3560,6 +3614,9 @@ translators: sample content for \"Services\" page template */
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Yeni öge";
 
+/* Placeholder text for password field */
+"New password" = "Yeni parola";
+
 /* Noun. The title of an item in a list. */
 "New posts" = "Yeni yazılar";
 
@@ -3620,6 +3677,12 @@ translators: sample content for \"Services\" page template */
 
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Başlık yok";
+
+/* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities available" = "Etkinlik yok";
+
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities recorded in the selected date range." = "Seçilen tarih aralığında kaydedilen etkinlik yok.";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "Henüz etkinlik yok";
@@ -3689,6 +3752,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Henüz beğenme yok";
+
+/* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"No matching events found." = "Eşleşen etkinlik bulunamadı.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso.
    Phrase to show when the user search for images but there are no result to show.
@@ -3824,7 +3890,7 @@ translators: sample content for \"Services\" page template */
 "Notifications Unread" = "Okunmamış bildirimler";
 
 /* First story intro item title */
-"Now stories are for everyone" = "Now stories are for everyone";
+"Now stories are for everyone" = "Artık herkes öykülere erişebilir";
 
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Jetpack yüklendiğine göre artık sadece ayarlarınızı tamamlamanız yeterli. Bu işlem sadece bir dakika sürer.";
@@ -4014,11 +4080,15 @@ translators: sample content for \"Services\" page template */
 /* Prompts the user that a restored page was moved to the scheduled list. */
 "Page Restored to Scheduled" = "Sayfa takvime eklendi";
 
+/* Name of the button to open the page settings
+   The title of the Page Settings screen. */
+"Page Settings" = "Sayfa Ayarları";
+
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Sayfa sonu bloku. %s";
 
 /* Notice that a page with content has been created */
-"Page created" = "Page created";
+"Page created" = "Sayfa oluşturuldu";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "Page draft uploaded" = "Sayfa taslağı karşıya yüklendi";
@@ -4122,7 +4192,7 @@ translators: sample content for \"Services\" page template */
 "Pick username" = "Kullanıcı adı seçin";
 
 /* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can customize or change it later" = "Pick your favorite homepage layout. You can customize or change it later";
+"Pick your favorite homepage layout. You can edit and customize it later." = "En sevdiğiniz ana sayfa düzenini seçin. Daha sonra özelleştirebilir ve değiştirebilirsiniz.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Paket";
@@ -4328,6 +4398,9 @@ translators: sample content for \"Services\" page template */
 /* Title of notification displayed when a post has been successfully scheduled. */
 "Post scheduled" = "Yazı zamanlandı";
 
+/* Title displayed in popup when user tries to copy a post with unsaved changes */
+"Post sync conflict" = "Senkronizasyon çakışması sonrası";
+
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Gönderi başlığı. %s";
 
@@ -4390,8 +4463,10 @@ translators: sample content for \"Services\" page template */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
+   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
-   Title for the button to preview the selected site homepage design */
+   Title for screen to preview a selected homepage design
+   Title for screen to preview a static content. */
 "Preview" = "Önizleme";
 
 /* Action for Media Picker to preview the selected media items. The argument in the string represents the number of elements (as numeric digits) selected */
@@ -4571,8 +4646,7 @@ translators: sample content for \"Services\" page template */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Kaynak yazıyı oku";
 
-/* Noun. Title of the Reader feature in the app.
-   The accessibility value of the Reader tab.
+/* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -4660,15 +4734,12 @@ translators: sample content for \"Services\" page template */
    Button label when removing a blog
    Label for remove location button
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Label of the table view cell's delete button, when unfollowing tags.
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
    Title for button that will confirm removing the next steps/quick start menus.
-   Title of a prompt asking the user to confirm they no longer wish to subscribe to a certain tag.
    User action to remove featured media.
-   User action to remove media.
-   Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
+   User action to remove media. */
 "Remove" = "Kaldır";
 
 /* Remove Person Alert Title
@@ -4922,11 +4993,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "Kaydedilen yazı";
 
-/* Section title for Saved Posts in Reader
-   Title for list of posts saved for later
-   Title of the reader's Saved Posts menu item. */
-"Saved Posts" = "Kaydedilen yazılar";
-
 /* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
 "Saved!" = "Kaydedildi!";
 
@@ -4943,6 +5009,9 @@ translators: sample content for \"Services\" page template */
    Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Kaydediliyor...";
+
+/* Noun. Links to a blog's Jetpack Scan screen. */
+"Scan" = "Tarama";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Zamanlama";
@@ -4965,16 +5034,14 @@ translators: sample content for \"Services\" page template */
 "Scheduling..." = "Zamanlanıyor...";
 
 /* No comment provided by engineer. */
-"Scrollable block menu closed." = "Scrollable block menu closed.";
+"Scrollable block menu closed." = "Kaydırılabilir blok menüsü kapandı.";
 
 /* No comment provided by engineer. */
-"Scrollable block menu opened. Select a block." = "Scrollable block menu opened. Select a block.";
+"Scrollable block menu opened. Select a block." = "Kaydırılabilir blok menüsü açıldı. Bir blok seçin.";
 
 /* Placeholder text for the search bar
-   Search
    The menu item to select during a guided tour.
-   Title of the Reader's search feature
-   Title of the reader's Search menu item. */
+   Title of the Reader's search feature */
 "Search" = "Arama";
 
 /* Site creation. Seelect a domain, search field placeholder */
@@ -5019,15 +5086,14 @@ translators: sample content for \"Services\" page template */
 /* Accessibility value presented in the signup epilogue for a password value. */
 "Secure text" = "Güvenli metin";
 
-/* Label for selecting the Blog Jetpack Security Settings section
-   Title for the Jetpack Security Settings Screen */
+/* Label for selecting the Blog Jetpack Security Settings section */
 "Security" = "Güvenlik";
 
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "Tümünü gör";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"See comments and notifications in real time." = "See comments and notifications in real time.";
+"See comments and notifications in real time." = "Yorumları ve bildirimleri gerçek zamanlı olarak görün.";
 
 /* Select action on the app extension category picker screen. Saves the selected categories for the post. */
 "Select" = "Seç";
@@ -5036,10 +5102,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "%@ seçerek devam edin";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to continue." = "%@ seçerek devam edin.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page." = "Yeni bir sayfa oluşturmak için %@ seçin.";
+"Select %@ to create a new page" = "Yeni bir sayfa oluşturmak için %@ seç";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Yeni yazı oluşturmak için %@ seçin";
@@ -5205,9 +5268,9 @@ translators: sample content for \"Services\" page template */
 "Setting up theme" = "Tema ayarlama";
 
 /* Link to plugin's Settings
-   Noun. Title. Links to the blog's Settings screen.
    Section title
-   Title for screen that allows configuration of your blog/site settings. */
+   Title for screen that allows configuration of your blog/site settings.
+   Title for the Jetpack Security Settings Screen */
 "Settings" = "Ayarlar";
 
 /* Descriptive text for the Notifications Tab Settings */
@@ -5369,12 +5432,14 @@ translators: sample content for \"Services\" page template */
 "Site Language" = "Site dili";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
 "Site Pages" = "Site sayfaları";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Site yönlendirme";
+
+/* Noun. Title. Links to the blog's Settings screen. */
+"Site Settings" = "Site Ayarları";
 
 /* Default title for a site
    Label for site title blog setting
@@ -5421,13 +5486,14 @@ translators: sample content for \"Services\" page template */
 "Sites (%lu)" = "Siteler (%lu)";
 
 /* A suggestion of topics the user might */
-"Sites to follow" = "Sites to follow";
+"Sites to follow" = "Takip edilecek siteler";
 
 /* Image size option title. */
 "Size" = "Boyut";
 
 /* Button label when skipping all quick start items
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour. */
+   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
+   Continue without making a selection */
 "Skip" = "Atla";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -5546,6 +5612,9 @@ translators: sample content for \"Services\" page template */
 /* Standard post format label */
 "Standard" = "Standart";
 
+/* Placeholder for the start date in calendar range selection */
+"Start Date" = "Başlangıç tarihi";
+
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
 "Start Over" = "Yeniden başla";
@@ -5594,19 +5663,16 @@ translators: sample content for \"Services\" page template */
 "Stop upload" = "Yüklemeyi durdur";
 
 /* Create new Story button title */
-"Story post" = "Story post";
+"Story post" = "Öykü yayını";
 
 /* Second story intro item description */
-"Story posts don't disappear" = "Story posts don't disappear";
+"Story posts don't disappear" = "Öykü yayınları kaybolmaz";
 
 /* translators: sample content for \"Services\" page template */
 "Strategy" = "Strateji";
 
 /* Title of alert announcing new Create Button feature. */
 "Streamlined navigation" = "Kolaylaştırılmış dolaşım";
-
-/* Section title of the default reader items. */
-"Streams" = "Akışlar";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Üzerini çiz";
@@ -5722,7 +5788,6 @@ translators: sample content for \"Services\" page template */
    Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
-   Section title of the tags reader section.
    Tags menu item in share extension.
    Title for the tag selector view */
 "Tags" = "Etiketler";
@@ -5790,18 +5855,11 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Bu etiketle ilgili yazıları görüntülemek için dokunun";
 
-/* Accessibility hint
-   Tapping lets you manage the sites you follow. */
-"Tapping lets you manage the sites you follow." = "Dokunarak takip ettiğiniz siteleri yönetebilirsiniz.";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Kategorilendirme";
 
 /* translators: title for \"Team\" page template */
 "Team" = "Ekip";
-
-/* Section title of the teams reader section. */
-"Teams" = "Ekipler";
 
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Bize biraz kendinizden bahsedin.";
@@ -5910,6 +5968,9 @@ translators: sample content for \"Services\" page template */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Sayfa başına gösterilecek yazı sayısı.";
 
+/* Message displayed in popup when user tries to copy a post with conflicts */
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Kopyalamaya çalıştığınız gönderinin çakışan iki sürümü var veya yakın zamanda değişiklik yaptığınız ancak bunları kaydetmediniz.\nHerhangi bir çakışmayı çözmek için önce gönderiyi düzenleyin veya sürümü bu uygulamadan kopyalayarak devam edin.";
+
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Hızlı başlangıç turu temel bir site kurma adımlarıyla ilgili sizi yönlendirir. Atlamak istediğinizden emin misiniz? ";
 
@@ -5983,12 +6044,6 @@ translators: sample content for \"Services\" page template */
 
 /* Reply Failure Message */
 "There has been an unexpected error while sending your reply" = "Yanıtınız gönderilirken beklenmeyen bir hata oluştu";
-
-/* The app failed to subscribe to the comments for the post */
-"There has been an unexpected error while subscribing to the comments" = "Yorumlara abone olurken beklenmedik bir hata oluştu";
-
-/* The app failed to unsubscribe from the comments for the post */
-"There has been an unexpected error while unsubscribing from the comments" = "Yorum aboneliğinden çıkılırken beklenmeyen bir hata oluştu";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Bildirim ayarlarınız güncellenirken beklenmeyen bir hata oluştu";
@@ -6079,7 +6134,7 @@ translators: sample content for \"Services\" page template */
 "There's a restore currently in progress, please wait before starting next one" = "Şu anda devam eden bir geri yükleme var, bir sonraki başlamadan önce lütfen bekleyin";
 
 /* Second story intro item description */
-"They're published as a new blog post on your site so your audience never misses out on a thing." = "They're published as a new blog post on your site so your audience never misses out on a thing.";
+"They're published as a new blog post on your site so your audience never misses out on a thing." = "Sitenizde yeni bir blog yazısı olarak yayınlanırlar, böylece kitleniz hiçbir şeyi kaçırmaz.";
 
 /* Insights 'This Year' header */
 "This Year" = "Bu yıl";
@@ -6108,8 +6163,8 @@ translators: sample content for \"Services\" page template */
 /* translators: sample content for \"About\" page template */
 "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Bu örnek içerik, özelliklerini göstermek için şablon ile birlikte gelir. Kaldırın veya kendi kelimeleriniz ve ortam dosyalarınız ile değiştirin.";
 
-/* Create site, step 4. Select domain name. Subtitle */
-"This is where people will find you on the internet" = "Bu, insanların sizi internette bulacakları yerdir";
+/* Select domain name. Subtitle */
+"This is where people will find you on the internet." = "Bu, insanların sizi internette bulacakları yerdir.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Bu ortam öğesi silindi.";
@@ -6138,6 +6193,9 @@ translators: sample content for \"Services\" page template */
 
 /* Warning when confirming to remove a plugin that's inactive */
 "This will delete all associated files and data." = "Bu, ilişkili tüm dosyaları ve verileri siler.";
+
+/* Detailed instructions on Start Over settings page. This is the second paragraph. */
+"This will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out." = "Bu sitenizi ve URL'nizi aktif tutar, ancak içerik oluşturmanızda taze bir başlangıç yapmanızı sağlar. Güncel içeriğinizin silinmesi için bizimle iletişime geçmeniz yeterli.";
 
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
@@ -6276,7 +6334,8 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Translate" = "Çevir";
 
-/* Trashes a comment
+/* Accessibility label for trash buttons in nav bars
+   Trashes a comment
    Trashes the comment */
 "Trash" = "Çöp kutusu";
 
@@ -6303,7 +6362,11 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Try a starter layout" = "Başlangıç düzenini deneyin";
 
-/* Button that lets users try to reload the plugin directory after loading failure
+/* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"Try adjusting your date range or activity type filters" = "Tarih aralığı ya da etkinlik türü filtrelerinizi düzenlemeyi deneyin";
+
+/* Button label for trying to retrieve the activities type again
+   Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
 "Try again" = "Tekrar deneyin";
@@ -6805,7 +6868,7 @@ translators: sample content for \"Services\" page template */
 "Watch readers from around the world read and interact with your site — in real time." = "Tüm dünyadan sitenizi okuyup onunla etkileşime geçen okuyucuları gerçek zamanlı olarak izleyin.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"Watch your audience grow with in-depth analytics." = "Watch your audience grow with in-depth analytics.";
+"Watch your audience grow with in-depth analytics." = "Kapsamlı analizlerle kitlenizin nasıl büyüdüğünü izleyin.";
 
 /* translators: sample content for \"Team\" page template */
 "We are a small team of talented professionals with a wide range of skills and experience. We love what we do, and we do it with passion. We look forward to working with you." = "Biz beceri ve deneyim açısından geniş bir yelpazede, yetenekli profesyonellerden oluşan küçük bir ekibiz. Yaptığımız şeyi seviyoruz ve bunu tutkuyla yapıyoruz. Sizinle çalışmayı dört gözle bekliyoruz.";
@@ -6814,7 +6877,7 @@ translators: sample content for \"Services\" page template */
 "We are having trouble loading data" = "Verileri yükleme konusunda sorun yaşıyoruz";
 
 /* No comment provided by engineer. */
-"We are working hard to add more blocks with each release." = "We are working hard to add more blocks with each release.";
+"We are working hard to add more blocks with each release." = "Her sürümde daha fazla blok eklemek için elimizden geleni yapıyoruz.";
 
 /* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
 "We couldn't complete this action, and didn't publish this page." = "Bu eylemi tamamlayamadık ve bu sayfayı yayımlamadık.";
@@ -7021,7 +7084,7 @@ translators: sample content for \"Services\" page template */
 "Welcome to the Reader" = "Okuyucuya hoşgeldiniz";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"Welcome to the world’s most popular website builder." = "Welcome to the world’s most popular website builder.";
+"Welcome to the world’s most popular website builder." = "Dünyanın en popüler web sitesi oluşturucusuna hoş geldiniz.";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "Batı";
@@ -7100,7 +7163,7 @@ translators: sample content for \"Services\" page template */
 "Will not be publicly displayed." = "Herkese açık olarak görüntülenmeyecek.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
-"With this powerful editor you can post on the go." = "With this powerful editor you can post on the go.";
+"With this powerful editor you can post on the go." = "Bu güçlü düzenleyici ile hareket halindeyken yazı gönderebilirsiniz.";
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "WordPress uygulama ayarları";
@@ -7335,7 +7398,7 @@ translators: sample content for \"Services\" page template */
 "You're all up to date!" = "Tamamen güncelsiniz!";
 
 /* Story Intro welcome title */
-"You've got early access to story posts and we'd love for you to give it a try." = "You've got early access to story posts and we'd love for you to give it a try.";
+"You've got early access to story posts and we'd love for you to give it a try." = "Hikaye yayınlarına erken erişiminiz var ve denemenizi çok isteriz.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Bu iletide kaydedilmeyen değişiklikler yaptınız";
@@ -7527,8 +7590,7 @@ translators: sample content for \"Services\" page template */
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab. */
 "wordpress, notifications, alerts, updates" = "wordpress, bildirimler, uyarılar, güncellemeler";
 
-/* This is a comma separated list of keywords used for spotlight indexing of the 'Reader' tab.
-   This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
+/* This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
 "wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics" = "wordpress, okuyucu, makaleler, yazılar, blog yazısı, takiptekiler, keşfet, beğeniler, beğenilerim, etiketler, konular";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */

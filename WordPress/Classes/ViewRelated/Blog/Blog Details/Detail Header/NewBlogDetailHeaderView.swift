@@ -67,6 +67,10 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         if let blog = blog,
             blog.hasIcon == true {
             titleView.siteIconView.imageView.downloadSiteIcon(for: blog)
+        } else if let blog = blog,
+            blog.isWPForTeams() {
+            titleView.siteIconView.imageView.tintColor = UIColor.listIcon
+            titleView.siteIconView.imageView.image = UIImage.gridicon(.p2)
         } else {
             titleView.siteIconView.imageView.image = UIImage.siteIconPlaceholder
         }
@@ -82,11 +86,11 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
     }
 
     @objc func toggleSpotlightOnSiteTitle() {
-        titleButton.shouldShowSpotlight = QuickStartTourGuide.find()?.isCurrentElement(.siteTitle) == true
+        titleButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.siteTitle)
     }
 
     @objc func toggleSpotlightOnSiteIcon() {
-        titleView.siteIconView.spotlightIsShown = QuickStartTourGuide.find()?.isCurrentElement(.siteIcon) == true
+        titleView.siteIconView.spotlightIsShown = QuickStartTourGuide.shared.isCurrentElement(.siteIcon)
     }
 
     private enum LayoutSpacing {
@@ -101,6 +105,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         static let interSectionSpacing: CGFloat = 32
         static let buttonsBottomPadding: CGFloat = 40
         static let buttonsSidePadding: CGFloat = 40
+        static let siteIconSize = CGSize(width: 64, height: 64)
     }
 
     // MARK: - Initializers
@@ -116,8 +121,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
         super.init(frame: .zero)
 
-        // Temporary so we can differentiate between this and the old blog details in the PR review.
-        backgroundColor = .white
+        backgroundColor = .basicBackground
 
         setupChildViews(items: items)
     }
@@ -130,7 +134,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
     private func setupChildViews(items: [ActionRow.Item]) {
         titleView.siteIconView.tapped = { [weak self] in
-            QuickStartTourGuide.find()?.visited(.siteIcon)
+            QuickStartTourGuide.shared.visited(.siteIcon)
             self?.titleView.siteIconView.spotlightIsShown = false
 
             self?.delegate?.siteIconTapped()
@@ -194,7 +198,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
     // MARK: - User Action Handlers
 
     @objc private func titleButtonTapped() {
-        QuickStartTourGuide.find()?.visited(.siteTitle)
+        QuickStartTourGuide.shared.visited(.siteTitle)
         titleButton.shouldShowSpotlight = false
 
         delegate?.siteTitleTapped()
@@ -217,8 +221,6 @@ fileprivate extension NewBlogDetailHeaderView {
             static let betweenSiteSwitcherAndRightPadding: CGFloat = 4
             static let betweenSubtitleAndExternalIcon: CGFloat = 4
         }
-        
-        private let externalIconHeight: NSLayoutConstraint
 
         // MARK: - Child Views
 
@@ -230,12 +232,12 @@ fileprivate extension NewBlogDetailHeaderView {
 
         let subtitleLabel: UILabel = {
             let label = UILabel()
-            
+
             label.font = WPStyleGuide.fontForTextStyle(.footnote)
             label.textColor = UIColor.textSubtle
             label.adjustsFontForContentSizeCategory = true
             label.translatesAutoresizingMaskIntoConstraints = false
-            
+
             return label
         }()
 
@@ -249,25 +251,25 @@ fileprivate extension NewBlogDetailHeaderView {
             //button.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
             return button
         }()
-        
+
         let siteSwitcherButton: UIButton = {
             let button = UIButton(frame: .zero)
             let image = UIImage.gridicon(.chevronDown)
-            
+
             button.setImage(image, for: .normal)
             button.contentMode = .center
             button.translatesAutoresizingMaskIntoConstraints = false
-            
+
             return button
         }()
-        
-        let externalLinkImage: UIImageView = {
+
+        private(set) lazy var externalLinkImage: UIImageView = {
             let image = UIImage.gridicon(.external, size: CGSize(width: subtitleLabel.font.pointSize, height: subtitleLabel.font.pointSize))
             let imageView = UIImageView(image: image)
-            
+
             imageView.contentMode = .scaleAspectFit
             imageView.translatesAutoresizingMaskIntoConstraints = false
-            
+
             return imageView
         }()
 
@@ -296,9 +298,9 @@ fileprivate extension NewBlogDetailHeaderView {
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
-        
+
         // MARK: - Configuration
-        
+
         func set(url: String) {
             subtitleLabel.text = url
             /*
@@ -338,7 +340,7 @@ fileprivate extension NewBlogDetailHeaderView {
 
             NSLayoutConstraint.activate(siteIconConstraints + titleStackViewConstraints + siteSwitcherButtonConstraints + externalIconConstraints)
         }
-        
+
         private func constraintsForExternalImage() -> [NSLayoutConstraint] {
             [
                 externalLinkImage.heightAnchor.constraint(equalTo: subtitleLabel.heightAnchor),

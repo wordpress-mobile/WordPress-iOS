@@ -6,6 +6,7 @@
 
 @interface BlogListViewController : UIViewController
 
+@property (nonatomic) BOOL canBypassBlogList;
 @property (nonatomic, strong) Blog *selectedBlog;
 @property (nonatomic, strong) id<ScenePresenter> meScenePresenter;
 
@@ -14,7 +15,5 @@
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated;
 
 - (void)presentInterfaceForAddingNewSiteFrom:(UIView *)sourceView;
-- (void)bypassBlogListViewController;
-- (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar;
 
 @end

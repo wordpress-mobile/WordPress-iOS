@@ -7,7 +7,7 @@ extension BlogDetailsViewController {
 
         let newPage = { [weak self] in
             let controller = self?.tabBarController as? WPTabBarController
-            let blog = controller?.currentOrLastBlog()
+            let blog = controller?.mainBlog()
             controller?.showPageEditor(forBlog: blog)
         }
 
@@ -20,7 +20,7 @@ extension BlogDetailsViewController {
 
         let newStory = { [weak self] in
             let controller = self?.tabBarController as? WPTabBarController
-            let blog = controller?.currentOrLastBlog()
+            let blog = controller?.mainBlog()
             controller?.showStoryEditor(forBlog: blog)
         }
 

@@ -28,6 +28,10 @@ table {
   width: 100%
 }
 
+.wp-block-table {
+  overflow-x: auto;
+}
+
 div.feedflare { display: none; }
 
 .sharedaddy, .jp-relatedposts, .mc4wp-form, .wpcnt, .OUTBRAIN, .adsbygoogle { display: none; }

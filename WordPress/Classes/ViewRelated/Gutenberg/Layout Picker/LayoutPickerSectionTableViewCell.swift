@@ -12,7 +12,7 @@ class LayoutPickerSectionTableViewCell: UITableViewCell {
     static let cellReuseIdentifier = "LayoutPickerSectionTableViewCell"
     static let nib = UINib(nibName: "LayoutPickerSectionTableViewCell", bundle: Bundle.main)
     static let expectedTumbnailSize = CGSize(width: 160.0, height: 230.0)
-    static let estimatedCellHeight: CGFloat = 320.0
+    static let estimatedCellHeight: CGFloat = 310.0
 
     @IBOutlet weak var categoryTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!

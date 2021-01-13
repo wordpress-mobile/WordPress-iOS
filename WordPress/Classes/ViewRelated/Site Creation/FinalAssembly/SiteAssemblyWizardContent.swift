@@ -21,7 +21,7 @@ final class SiteAssemblyWizardContent: UIViewController {
     private var createdBlog: Blog?
 
     /// The content view serves as the root view of this view controller.
-    private let contentView = SiteAssemblyContentView()
+    private let contentView: SiteAssemblyContentView
 
     /// We reuse a `NUXButtonViewController` from `WordPressAuthenticator`. Ideally this might be in `WordPressUI`.
     private let buttonViewController = NUXButtonViewController.instance()
@@ -42,6 +42,7 @@ final class SiteAssemblyWizardContent: UIViewController {
     init(creator: SiteCreator, service: SiteAssemblyService) {
         self.siteCreator = creator
         self.service = service
+        self.contentView = SiteAssemblyContentView(siteCreator: siteCreator)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -62,7 +63,7 @@ final class SiteAssemblyWizardContent: UIViewController {
 
         hidesBottomBarWhenPushed = true
         installButtonViewController()
-        WPAnalytics.track(.enhancedSiteCreationSuccessLoading)
+        SiteCreationAnalyticsHelper.trackSiteCreationSuccessLoading(siteCreator.design)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -120,7 +121,7 @@ final class SiteAssemblyWizardContent: UIViewController {
 
                     // This stat is part of a funnel that provides critical information.  Before
                     // making ANY modification to this stat please refer to: p4qSXL-35X-p2
-                    WPAnalytics.track(.createdSite)
+                    SiteCreationAnalyticsHelper.trackSiteCreationSuccess(self.siteCreator.design)
                 }
 
                 self.contentView.status = status
@@ -218,11 +219,24 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             guard let blog = createdBlog else {
                 return
             }
-            WPAnalytics.track(.enhancedSiteCreationSuccessPreviewOkButtonTapped)
+            SiteCreationAnalyticsHelper.trackSiteCreationSuccessPreviewOkButtonTapped()
             WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
 
             self?.showQuickStartAlert(for: blog)
         }
+    }
+
+    /// Returns a list of completed tour items that were taken care of as part of the site creation flow.
+    private var completedTourSteps: [QuickStartTour] {
+        var completedTourSteps: [QuickStartTour] = []
+
+        guard FeatureFlag.siteCreationHomePagePicker.enabled else { return completedTourSteps }
+        /// Only mark the theme tour as completed if the user didn't select the skip
+        if siteCreator.design != nil {
+            completedTourSteps.append(QuickStartThemeTour())
+        }
+
+        return completedTourSteps
     }
 
     private func showQuickStartAlert(for blog: Blog) {
@@ -234,7 +248,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             return
         }
 
-        let fancyAlert = FancyAlertViewController.makeQuickStartAlertController(blog: blog)
+        let fancyAlert = FancyAlertViewController.makeQuickStartAlertController(blog: blog, withCompletedSteps: completedTourSteps)
         fancyAlert.modalPresentationStyle = .custom
         fancyAlert.transitioningDelegate = tabBar
         tabBar.present(fancyAlert, animated: true)

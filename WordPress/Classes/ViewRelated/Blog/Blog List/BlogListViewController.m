@@ -37,7 +37,7 @@ static NSInteger HideSearchMinSites = 3;
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
-    return [[WPTabBarController sharedInstance] blogListViewController];
+    return [WPTabBarController sharedInstance].mySitesCoordinator.blogListViewController;
 }
 
 - (instancetype)init
@@ -56,6 +56,9 @@ static NSInteger HideSearchMinSites = 3;
         
         [self configureDataSource];
         [self configureNavigationBar];
+        
+        // This should be removed once the flag is removed.
+        self.canBypassBlogList = ![Feature enabled:FeatureFlagNewNavBarAppearance];
     }
     
     return self;
@@ -160,6 +163,16 @@ static NSInteger HideSearchMinSites = 3;
     [self syncBlogs];
     [self setAddSiteBarButtonItem];
     [self updateCurrentBlogSelection];
+    
+    // The logic below should be removed once the `FeatureFlagNewNavBarAppearance` is removed.
+    // There's no need to bypass the blog list once the root VC in "My Site" is the blog details.
+    if (![Feature enabled:FeatureFlagNewNavBarAppearance] && self.canBypassBlogList) {
+        self.canBypassBlogList = false;
+        
+        if ([self shouldBypassBlogListViewController]) {
+            [self bypassBlogListViewController];
+        }
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -241,7 +254,6 @@ static NSInteger HideSearchMinSites = 3;
     
     // Ensure No Results VC is not shown. Will be shown later if necessary.
     [self.noResultsViewController removeFromView];
-    [self.tableView.refreshControl setHidden: NO];
     
     // If the user has sites, but they're all hidden...
     if (count > 0 && visibleSitesCount == 0 && !self.isEditing) {
@@ -271,7 +283,10 @@ static NSInteger HideSearchMinSites = 3;
     // added a new site so we should auto-select it
     if (self.noResultsViewController.beingPresented && siteCount == 1) {
         [self.noResultsViewController removeFromView];
-        [self bypassBlogListViewController];
+        
+        if (self.canBypassBlogList) {
+            [self bypassBlogListViewController];
+        }
     }
 
     [self instantiateNoResultsViewControllerIfNeeded];
@@ -289,8 +304,6 @@ static NSInteger HideSearchMinSites = 3;
                                                    image:@"mysites-nosites"
                                            subtitleImage:nil
                                            accessoryView:nil];
-
-        [self.tableView.refreshControl setHidden: YES];
         [self addNoResultsToView];
     }
 }
@@ -335,7 +348,6 @@ static NSInteger HideSearchMinSites = 3;
                                            accessoryView:nil];
     }
 
-    [self.tableView.refreshControl setHidden: YES];
     [self addNoResultsToView];
     
 }
@@ -463,22 +475,17 @@ static NSInteger HideSearchMinSites = 3;
     [self showAddSiteAlertFrom:sourceView];
 }
 
-- (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
+- (BOOL)shouldBypassBlogListViewController
 {
     return self.dataSource.displayedBlogsCount == 1;
 }
 
 - (void)bypassBlogListViewController
 {
-    if ([self shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
-        // We do a delay of 0.0 so that way this doesn't kick off until the next run loop.
-        [self performSelector:@selector(selectFirstSite) withObject:nil afterDelay:0.0];
-    }
-}
-
-- (void)selectFirstSite
-{
-    [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    Blog *blog = [self.dataSource blogAtIndexPath:indexPath];
+    
+    [self setSelectedBlog:blog animated:false];
 }
 
 - (void)updateCurrentBlogSelection
@@ -526,16 +533,6 @@ static NSInteger HideSearchMinSites = 3;
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(syncBlogs) forControlEvents:UIControlEventValueChanged];
     self.tableView.refreshControl = refreshControl;
-    
-    // Workaround: The refresh control was showing on top of the table view, apparently because
-    // iOS is failing to put it behind the table view contents (iOS bug).
-    //
-    // Ref: https://stackoverflow.com/a/59713642
-    //
-    // If you want to test if this workaround can be removed, simply comment it, run the app
-    // and check that when the blog list if first displayed, the refresh control is NOT visible
-    // at the front of the table view.
-    refreshControl.layer.zPosition = -1;
 
     self.tableView.tableFooterView = [UIView new];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];

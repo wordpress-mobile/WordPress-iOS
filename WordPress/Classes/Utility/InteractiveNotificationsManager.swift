@@ -86,6 +86,10 @@ final class InteractiveNotificationsManager: NSObject {
             return handleLocalNotificationAction(with: identifier, category: category, userInfo: userInfo, responseText: responseText)
         }
 
+        if NoteActionDefinition.approveLogin == NoteActionDefinition(rawValue: identifier) {
+            return approveAuthChallenge(userInfo)
+        }
+
         guard AccountHelper.isDotcomAvailable(),
             let noteID = userInfo.object(forKey: "note_id") as? NSNumber,
             let siteID = userInfo.object(forKey: "blog_id") as? NSNumber,
@@ -271,6 +275,15 @@ private extension InteractiveNotificationsManager {
         let categories: [UNNotificationCategory] = NoteCategoryDefinition.allDefinitions.map({ $0.notificationCategory() })
         return Set(categories)
     }
+
+    /// Handles approving an 2fa authentication challenge.
+    ///
+    /// - Parameter userInfo: The notification's Payload
+    /// - Returns: True if successfule. Otherwise false.
+    ///
+    func approveAuthChallenge(_ userInfo: NSDictionary) -> Bool {
+        return PushNotificationsManager.shared.handleAuthenticationApprovedAction(userInfo)
+    }
 }
 
 
@@ -293,6 +306,7 @@ private extension InteractiveNotificationsManager {
         case postUploadFailure      = "post-upload-failure"
         case shareUploadSuccess     = "share-upload-success"
         case shareUploadFailure     = "share-upload-failure"
+        case login                  = "push_auth"
 
         var actions: [NoteActionDefinition] {
             switch self {
@@ -316,6 +330,8 @@ private extension InteractiveNotificationsManager {
                 return [.shareEditPost]
             case .shareUploadFailure:
                 return []
+            case .login:
+                return [.approveLogin, .denyLogin]
             }
         }
 
@@ -335,7 +351,7 @@ private extension InteractiveNotificationsManager {
                 options: [])
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, login]
         static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure]
     }
 
@@ -352,6 +368,8 @@ private extension InteractiveNotificationsManager {
         case postRetry        = "POST_RETRY"
         case postView         = "POST_VIEW"
         case shareEditPost    = "SHARE_EDIT_POST"
+        case approveLogin     = "APPROVE_LOGIN_ATTEMPT"
+        case denyLogin        = "DENY_LOGIN_ATTEMPT"
 
         var description: String {
             switch self {
@@ -371,6 +389,10 @@ private extension InteractiveNotificationsManager {
                 return NSLocalizedString("View", comment: "Opens the post epilogue screen to allow sharing / viewing of a post.")
             case .shareEditPost:
                 return NSLocalizedString("Edit Post", comment: "Opens the editor to edit an existing post.")
+            case .approveLogin:
+                return NSLocalizedString("Approve", comment: "Verb. Approves a 2fa authentication challenge, and logs in a user.")
+            case .denyLogin:
+                return NSLocalizedString("Deny", comment: "Verb. Denies a 2fa authentication challenge.")
             }
         }
 
@@ -438,7 +460,7 @@ private extension InteractiveNotificationsManager {
             }
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, mediaWritePost, mediaRetry, postRetry, postView, shareEditPost]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, mediaWritePost, mediaRetry, postRetry, postView, shareEditPost, approveLogin, denyLogin]
     }
 }
 

@@ -19,7 +19,7 @@ extension WPTabBarController {
             }
             return
         }
-        guard let blog = inBlog ?? self.currentOrLastBlog() else { return }
+        guard let blog = inBlog ?? self.mainBlog() else { return }
         guard content == nil else {
             showEditor(blog: blog, title: title, content: content, templateKey: nil)
             return
@@ -65,7 +65,7 @@ extension WPTabBarController {
             })
         } else {
             //TODO: Show the stories feature
-            guard let blog = inBlog ?? self.currentOrLastBlog() else { return }
+            guard let blog = inBlog ?? self.mainBlog() else { return }
             let blogID = blog.dotComID?.intValue ?? 0 as Any
 
             WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "story"])
