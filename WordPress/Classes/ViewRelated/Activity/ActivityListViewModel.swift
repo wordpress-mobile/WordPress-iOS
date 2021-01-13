@@ -15,6 +15,7 @@ class ActivityListViewModel: Observable {
 
     private let activitiesReceipt: Receipt
     private let rewindStatusReceipt: Receipt
+    private let noResultsTexts: ActivityListConfiguration
     private var storeReceipt: Receipt?
 
     private let count = 20
@@ -53,9 +54,11 @@ class ActivityListViewModel: Observable {
     }
 
     init(site: JetpackSiteRef,
-         store: ActivityStore = StoreContainer.shared.activity) {
+         store: ActivityStore = StoreContainer.shared.activity,
+         noResultsTexts: ActivityListConfiguration) {
         self.site = site
         self.store = store
+        self.noResultsTexts = noResultsTexts
 
         activitiesReceipt = store.query(.activities(site: site))
         rewindStatusReceipt = store.query(.restoreStatus(site: site))
@@ -116,14 +119,14 @@ class ActivityListViewModel: Observable {
         }
 
         if store.isFetchingActivities(site: site) {
-            return NoResultsViewController.Model(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+            return NoResultsViewController.Model(title: noResultsTexts.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         }
 
         if let activites = store.getActivities(site: site), activites.isEmpty {
             if isAnyFilterActive {
-                return NoResultsViewController.Model(title: NoResultsText.noMatchingTitle, subtitle: NoResultsText.noMatchingSubtitle)
+                return NoResultsViewController.Model(title: noResultsTexts.noMatchingTitle, subtitle: noResultsTexts.noMatchingSubtitle)
             } else {
-                return NoResultsViewController.Model(title: NoResultsText.noActivitiesTitle, subtitle: NoResultsText.noActivitiesSubtitle)
+                return NoResultsViewController.Model(title: noResultsTexts.noActivitiesTitle, subtitle: NoResultsText.noActivitiesSubtitle)
             }
         }
 
@@ -144,7 +147,7 @@ class ActivityListViewModel: Observable {
         }
 
         if store.isFetchingGroups(site: site) {
-            return NoResultsViewController.Model(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+            return NoResultsViewController.Model(title: noResultsTexts.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         }
 
         if let groups = store.getGroups(site: site), groups.isEmpty {
@@ -285,11 +288,7 @@ class ActivityListViewModel: Observable {
     }
 
     private struct NoResultsText {
-        static let loadingTitle = NSLocalizedString("Loading Activities...", comment: "Text displayed while loading the activity feed for a site")
-        static let noActivitiesTitle = NSLocalizedString("No activity yet", comment: "Title for the view when there aren't any Activities to display in the Activity Log")
         static let noActivitiesSubtitle = NSLocalizedString("When you make changes to your site you'll be able to see your activity history here.", comment: "Text display when the view when there aren't any Activities to display in the Activity Log")
-        static let noMatchingTitle = NSLocalizedString("No matching events found.", comment: "Title for the view when there aren't any Activities to display in the Activity Log for a given filter.")
-        static let noMatchingSubtitle = NSLocalizedString("Try adjusting your date range or activity type filters", comment: "Text display when the view when there aren't any Activities to display in the Activity Log for a given filter.")
         static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading Activity Log")
         static let errorSubtitle = NSLocalizedString("There was an error loading activities", comment: "Text displayed when there is a failure loading the activity feed")
         static let errorButtonText = NSLocalizedString("Contact support", comment: "Button label for contacting support")
