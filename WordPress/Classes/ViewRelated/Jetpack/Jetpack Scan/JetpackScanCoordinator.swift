@@ -35,14 +35,21 @@ class JetpackScanCoordinator {
         }
 
         service.getScan(for: blog) { [weak self] scanObj in
-            self?.scan = scanObj
-            self?.view.render(scanObj)
+            self?.refreshDidSucceed(with: scanObj)
         } failure: { [weak self] error in
             DDLogError("Error fetching scan object: \(String(describing: error.localizedDescription))")
 
             self?.view.showError()
         }
     }
+
+    private func refreshDidSucceed(with scanObj: JetpackScan) {
+        scan = scanObj
+        view.render(scanObj)
+
+        togglePolling()
+    }
+
     public func startScan() {
         service.startScan(for: blog) { (success) in
 
@@ -59,5 +66,40 @@ class JetpackScanCoordinator {
 
     public func ignoreThreat(threat: JetpackScanThreat) {
 
+    }
+
+    // MARK: - Private: Refresh Timer
+    private var refreshTimer: Timer?
+
+    /// Starts or stops the refresh timer based on the status of the scan
+    private func togglePolling() {
+        switch scan?.state {
+        case .provisioning, .scanning:
+            startPolling()
+        default:
+            stopPolling()
+        }
+    }
+
+    private func stopPolling() {
+        refreshTimer?.invalidate()
+        refreshTimer = nil
+    }
+
+    private func startPolling() {
+        guard refreshTimer == nil else {
+            return
+        }
+
+        refreshTimer = Timer.scheduledTimer(withTimeInterval: Constants.refreshTimerInterval, repeats: true, block: { [weak self] (_) in
+            self?.refreshData()
+        })
+
+        // Immediately trigger the refresh
+        refreshData()
+    }
+
+    private struct Constants {
+        static let refreshTimerInterval: TimeInterval = 5
     }
 }
