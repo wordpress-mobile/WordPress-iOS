@@ -86,21 +86,16 @@ struct JetpackScanStatusViewModel {
     private static func viewState(for scan: JetpackScan) -> StatusViewState {
         let viewState: StatusViewState
 
-//        // If the most recent or current scan has failed, display an error state
-//        TODO: Disabled for now until I implement the error state
-//        if scan.current?.didFail ?? false || scan.mostRecent?.didFail ?? false {
-//            return .error
-//        }
-
         switch scan.state {
         case .idle:
             if let threats = scan.threats, threats.count > 0 {
                 let fixableThreats = threats.filter { $0.fixable != nil }.count > 0
                 viewState = fixableThreats ? .hasFixableThreats : .hasThreats
             } else {
-                if scan.mostRecent?.didFail == true {
-
+                if scan.mostRecent?.didFail ?? false {
+                    return .error
                 }
+
                 viewState = .noThreats
             }
 
