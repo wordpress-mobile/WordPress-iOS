@@ -49,10 +49,16 @@ extension Blog {
         return isUserCapableOf(.UploadFiles)
     }
 
-    /// Returns true if the current user is allowed to see Backups
+    /// Returns true if the current user is allowed to see Jetpack's Backups
     ///
     @objc public func isBackupsAllowed() -> Bool {
         return isUserCapableOf("backup") || isUserCapableOf("backup-daily") || isUserCapableOf("backup-realtime")
+    }
+
+    /// Returns true if the current user is allowed to see Jetpack's Scan
+    ///
+    @objc public func isScanAllowed() -> Bool {
+        return isUserCapableOf("scan")
     }
 
     private func isUserCapableOf(_ capability: String) -> Bool {
