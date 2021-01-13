@@ -23,4 +23,12 @@ import Foundation
 
         service.getScanForSite(siteID, success: success, failure: failure)
     }
+
+    func startScan(for blog: Blog, success: @escaping(Bool) -> Void, failure: @escaping(Error) -> Void) {
+        guard let siteID = blog.dotComID?.intValue else {
+            return
+        }
+
+        service.startScanForSite(siteID, success: success, failure: failure)
+    }
 }
