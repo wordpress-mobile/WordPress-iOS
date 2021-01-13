@@ -10,6 +10,13 @@ import WordPressKit
         self.capabilitiesServiceRemote = capabilitiesServiceRemote ?? JetpackCapabilitiesServiceRemote(wordPressComRestApi: api)
     }
 
+    override init() {
+        let api = WordPressComRestApi.defaultApi(in: ContextManager.shared.mainContext, localeKey: WordPressComRestApi.LocaleKeyV2)
+
+        self.capabilitiesServiceRemote = JetpackCapabilitiesServiceRemote(wordPressComRestApi: api)
+        super.init()
+    }
+
     /// Returns an array of [RemoteBlog] with the Jetpack capabilities added in `capabilities`
     /// - Parameters:
     ///   - blogs: An array of RemoteBlog

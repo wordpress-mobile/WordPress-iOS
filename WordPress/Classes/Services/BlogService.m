@@ -134,7 +134,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     [remote getBlogsWithSuccess:^(NSArray *blogs) {
-        [[JetpackCapabilitiesService alloc] syncWithBlogs:blogs success:^(NSArray<RemoteBlog *> *blogs) {
+        [[[JetpackCapabilitiesService alloc] init] syncWithBlogs:blogs success:^(NSArray<RemoteBlog *> *blogs) {
             [self.managedObjectContext performBlock:^{
 
                 // Let's check if the account object is not nil. Otherwise we'll get an exception below.
@@ -943,7 +943,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                        completionHandler:(void (^)(void))completion
 {
     return ^void(RemoteBlog *remoteBlog) {
-        [[JetpackCapabilitiesService alloc] syncWithBlogs:[NSArray arrayWithObject:remoteBlog] success:^(NSArray<RemoteBlog *> *blogs) {
+        [[[JetpackCapabilitiesService alloc] init] syncWithBlogs:[NSArray arrayWithObject:remoteBlog] success:^(NSArray<RemoteBlog *> *blogs) {
             [self.managedObjectContext performBlock:^{
                 NSError *error = nil;
                 Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
