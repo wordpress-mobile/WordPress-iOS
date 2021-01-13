@@ -1,1 +1,11 @@
-Wir freuen uns sehr, dir ein paar aufregende Änderungen an der WordPress-Mobil-App vorzustellen. Wenn du eine Website erstellst, hast du die Möglichkeit, dir direkt ein Design für die Startseite auszusuchen. Außerdem ist es jetzt leichter, die Dimensionen für das Titelbid und die Spalten einzustellen, und der Button sowie die Social-Media-Icon-Blöcke verfügen jetzt über eine Linkauswahl. Wir haben Fehler behoben, von denen wir wissen, dass sie dich gestört haben. Jetzt funktioniert die @-mentions-Funktion auf WP.com-Websites einwandfrei, auch wenn Plugins aktiviert sind, und „tel:“- sowie „mailto:“-Links auf den Kontaktseiten können problemlos geladen werden.
+Neu in unserer aktuellen Version:
+
+Der Block-Editor: Du kannst jetzt einen Dateiblock einfügen, der einen Download-Button für Dateien wie Dokumente bereitstellt. Durch ein Update am Galerieblock wurde außerdem ein Upload-Fehler behoben, der auftrat, wenn dein Editor geschlossen war.
+
+Website-Erstellung: Beim Erstellen von Seiten auf deiner Website kannst du die Seitenlayout-Optionen jetzt leichter anzeigen und auswählen.
+
+Beitragserstellung: Möchtest du einen Beitrag schnell duplizieren? Du kannst das jetzt über deine Beitragsliste tun.
+
+Der Reader: Verwendest du P2, ein Tool für die Zusammenarbeit in Teams und Gruppen? Du kannst P2-Websites jetzt in einem neu hinzugefügten Stream lesen und diesen folgen.
+
+Kommentare: Möchtest du Kommentar-Threads auf Websites abonnieren, denen du folgst oder für die du dich interessierst? Tippe in der Kommentaransicht auf den Button „Unterhaltung folgen“. 

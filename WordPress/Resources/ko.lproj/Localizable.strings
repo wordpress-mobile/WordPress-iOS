@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-04 04:38:34+0000 */
+/* Translation-Revision-Date: 2020-12-18 07:48:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -367,6 +367,12 @@
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "활동 기록";
 
+/* Label for the Activity Type filter button */
+"Activity Type" = "활동 유형";
+
+/* Label for the Activity Type filter button when there are more than 1 activity type selected */
+"Activity Type (%1$d)" = "활동 유형 (%1$d)";
+
 /* Remove asset from media picker list */
 "Add" = "추가";
 
@@ -412,8 +418,7 @@
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "프로필 사진 추가";
 
-/* Title of a feature to add a new topic to the topics subscribed by the user.
-   Title. Lets the user know that they can use this feature to subscribe to new topics. */
+/* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "토픽 추가하기";
 
 /* Hint for the reader CSS URL field */
@@ -729,9 +734,6 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "업데이트하시겠습니까?";
 
-/* A short message asking the user if they wish to unfollow the specified topic. The %@ is a placeholder for the name of the topic. */
-"Are you sure you wish to remove the topic '%@'?" = "토픽 ‘%@’을 지우기 희망하시는 게 확실한가요?";
-
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "2018년 8월 1일 현재, 페이스북은 더 이상 페이스북 프로필에 직접 글 공유를 허용하지 않습니다. 페이스북 페이지에 대한 연결은 그대로 유지됩니다.";
 
@@ -1007,7 +1009,6 @@
    Option to cancel the email app selection when logging in with magic links
    Text displayed by the left navigation button title
    The title of a cancel button.
-   Title of a cancel button.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
@@ -1162,8 +1163,14 @@
 /* Label for Publish time picker */
 "Choose a time" = "시간을 선택하세요.";
 
+/* Title to choose date range in a calendar */
+"Choose date range" = "날짜 범위 선택하기";
+
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "도메인 선택";
+
+/* No comment provided by engineer. */
+"Choose file" = "파일 선택하기";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "내 기기에서 선택";
@@ -1171,7 +1178,7 @@
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "최신 글(클래식 블로그) 또는 수정되었거나 정적인 페이지를 표시하는 홈페이지를 선택합니다.";
 
-/* No comment provided by engineer. */
+/* Menu option used for adding media from other applications. */
 "Choose from device" = "기기에서 선택";
 
 /* No comment provided by engineer. */
@@ -1513,6 +1520,9 @@
 /* No comment provided by engineer. */
 "Copy file URL" = "파일 URL 복사하기";
 
+/* Button title displayed in popup indicating the user copied the local copy */
+"Copy the version from this app" = "이 앱으로부터 버전 복사하기";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "별로";
 
@@ -1540,6 +1550,9 @@
 /* Title of a prompt. */
 "Could not save post for later" = "나중에 사용할 수 있게 글을 저장할 수 없습니다.";
 
+/* The app failed to subscribe to the comments for the post */
+"Could not subscribe to comments" = "댓글을 구독할 수 없습니다";
+
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "팔로우를 전환할 수 없음: blogURL 속성 누락";
 
@@ -1548,6 +1561,9 @@
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "지정된 주소의 사이트에 대한 팔로우를 취소할 수 없습니다.";
+
+/* The app failed to unsubscribe from the comments for the post */
+"Could not unsubscribe from comments" = "댓글을 구독 해제할 수 없습니다";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "개선 방안을 말해 주시겠어요?";
@@ -1733,6 +1749,9 @@
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
 "Date Format" = "날짜 형식";
+
+/* Label of a button that displays a calendar */
+"Date Range" = "날짜 범위";
 
 /* Date and Time */
 "Date and Time" = "날짜 및 시간";
@@ -2028,6 +2047,9 @@
    Title of the drafts header in search list. */
 "Drafts" = "임시글";
 
+/* Label for post duplicate option. Tapping displays statistics for a post. */
+"Duplicate" = "복제";
+
 /* No comment provided by engineer. */
 "Duplicate block" = "블록 복제하기";
 
@@ -2077,6 +2099,9 @@
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "공유 버튼 편집";
+
+/* Button title displayed in popup indicating that the user edits the post first */
+"Edit the post first" = "먼저 글 편집하기";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "웹 편집기를 이용하여 편집하기";
@@ -2159,6 +2184,9 @@
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "암호화된 기록";
 
+/* Placeholder for the end date in calendar range selection */
+"End Date" = "종료일";
+
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "전체 화면으로 보기";
 
@@ -2197,12 +2225,12 @@
 /* Instruction text on the initial email address entry screen. */
 "Enter your email address to log in or create a WordPress.com account." = "로그인하거나 워드프레스닷컴 계정을 만드려면 이메일 주소를 입력하세요.";
 
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your existing site address" = "존재하는 사이트 주소를 입력하세요";
+
 /* Title of a button on the magic link screen.
    Title of a button. */
 "Enter your password instead." = "비밀번호를 입력하세요.";
-
-/* Button title. Takes the user to the login by site address flow. */
-"Enter your site address" = "사이트 주소 입력하기";
 
 /* Generic error alert title
    Generic error.
@@ -2440,6 +2468,9 @@
 
 /* Title of the filter button in the Reader */
 "Filter" = "필터";
+
+/* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
+"Filter by activity type" = "활동 유형으로 필터";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "더 찾아보기";
@@ -3147,9 +3178,6 @@ translators: sample content for \"Services\" page template */
 /* The accessibility label for the list style button in the Post List. */
 "List style" = "목록 스타일";
 
-/* Section title of the lists reader section. */
-"Lists" = "목록";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "로드";
 
@@ -3284,8 +3312,6 @@ translators: sample content for \"Services\" page template */
 "Main Navigation" = "메인 내비게이션";
 
 /* Button leading to a screen where users can manage their installed plugins
-   Button title. Tapping lets the user manage the sites they follow.
-   Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
    Title for the Reader Manage screen.
@@ -3652,6 +3678,12 @@ translators: sample content for \"Services\" page template */
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "제목 없음";
 
+/* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities available" = "사용할 수 있는 활동이 없습니다";
+
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities recorded in the selected date range." = "선택한 날짜 범위에 기록한 활동이 없습니다.";
+
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "아직 활동이 없음";
 
@@ -3720,6 +3752,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "아직 좋아요가 없음";
+
+/* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"No matching events found." = "일치하는 이벤트를 찾을 수 없습니다.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso.
    Phrase to show when the user search for images but there are no result to show.
@@ -4363,6 +4398,9 @@ translators: sample content for \"Services\" page template */
 /* Title of notification displayed when a post has been successfully scheduled. */
 "Post scheduled" = "글이 예약됨";
 
+/* Title displayed in popup when user tries to copy a post with unsaved changes */
+"Post sync conflict" = "글 동기화 충돌";
+
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "글 제목. %s";
 
@@ -4608,8 +4646,7 @@ translators: sample content for \"Services\" page template */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "원글 읽기";
 
-/* Noun. Title of the Reader feature in the app.
-   The accessibility value of the Reader tab.
+/* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -4697,15 +4734,12 @@ translators: sample content for \"Services\" page template */
    Button label when removing a blog
    Label for remove location button
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Label of the table view cell's delete button, when unfollowing tags.
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
    Title for button that will confirm removing the next steps/quick start menus.
-   Title of a prompt asking the user to confirm they no longer wish to subscribe to a certain tag.
    User action to remove featured media.
-   User action to remove media.
-   Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
+   User action to remove media. */
 "Remove" = "제거";
 
 /* Remove Person Alert Title
@@ -4959,11 +4993,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "글이 저장됨";
 
-/* Section title for Saved Posts in Reader
-   Title for list of posts saved for later
-   Title of the reader's Saved Posts menu item. */
-"Saved Posts" = "글이 저장됨";
-
 /* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
 "Saved!" = "저장되었습니다!";
 
@@ -4980,6 +5009,9 @@ translators: sample content for \"Services\" page template */
    Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "저장중...";
+
+/* Noun. Links to a blog's Jetpack Scan screen. */
+"Scan" = "검색하기";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "예약";
@@ -5008,10 +5040,8 @@ translators: sample content for \"Services\" page template */
 "Scrollable block menu opened. Select a block." = "스크롤 할 수 있는 블록 메뉴가 열렸습니다. 블록을 선택하세요.";
 
 /* Placeholder text for the search bar
-   Search
    The menu item to select during a guided tour.
-   Title of the Reader's search feature
-   Title of the reader's Search menu item. */
+   Title of the Reader's search feature */
 "Search" = "검색";
 
 /* Site creation. Seelect a domain, search field placeholder */
@@ -5072,10 +5102,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "계속할 %@ 선택";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to continue." = "계속할 %@을(를) 선택하세요.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page." = "새 페이지를 만들려면 %@을(를) 선택합니다.";
+"Select %@ to create a new page" = "%@을(를) 선택하여 새 페이지를 만들기";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "%@을(를) 선택하여 새 글 작성";
@@ -5405,7 +5432,6 @@ translators: sample content for \"Services\" page template */
 "Site Language" = "사이트 언어";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
 "Site Pages" = "사이트 페이지";
 
@@ -5586,6 +5612,9 @@ translators: sample content for \"Services\" page template */
 /* Standard post format label */
 "Standard" = "기본";
 
+/* Placeholder for the start date in calendar range selection */
+"Start Date" = "시작일";
+
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
 "Start Over" = "다시 시작";
@@ -5644,9 +5673,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title of alert announcing new Create Button feature. */
 "Streamlined navigation" = "간소화된 탐색";
-
-/* Section title of the default reader items. */
-"Streams" = "스트림";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "취소선";
@@ -5762,7 +5788,6 @@ translators: sample content for \"Services\" page template */
    Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
-   Section title of the tags reader section.
    Tags menu item in share extension.
    Title for the tag selector view */
 "Tags" = "태그";
@@ -5830,18 +5855,11 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "이 태그의 글을 보려면 누르기";
 
-/* Accessibility hint
-   Tapping lets you manage the sites you follow. */
-"Tapping lets you manage the sites you follow." = "누르면 회원님이 팔로우하는 사이트를 관리할 수 있습니다.";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "분류";
 
 /* translators: title for \"Team\" page template */
 "Team" = "팀";
-
-/* Section title of the teams reader section. */
-"Teams" = "팀";
 
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "귀하에 대한 정보를 주세요.";
@@ -5950,6 +5968,9 @@ translators: sample content for \"Services\" page template */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "페이지당 표시할 글 수입니다.";
 
+/* Message displayed in popup when user tries to copy a post with conflicts */
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "복사하려는 글이 충돌하거나 최근에 변경사항을 만들었지만 저장하지 않은 두 버전을 가지고 있습니다.\n충돌을 해결하거나 이 앱으로부터 버전 복사를 진행하려면 먼저 글을 편집하세요.";
+
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "퀵 스타트 투어에서는 기본 사이트 구축에 대해 안내합니다. 건너뛰시겠습니까? ";
 
@@ -6023,12 +6044,6 @@ translators: sample content for \"Services\" page template */
 
 /* Reply Failure Message */
 "There has been an unexpected error while sending your reply" = "응답을 보내는 과정에서 예기치 않은 오류가 발생했습니다.";
-
-/* The app failed to subscribe to the comments for the post */
-"There has been an unexpected error while subscribing to the comments" = "댓글을 구독하는 중에 예기치 않은 오류가 있습니다";
-
-/* The app failed to unsubscribe from the comments for the post */
-"There has been an unexpected error while unsubscribing from the comments" = "댓글을 구독 해제하는 중에 예기치 않은 오류가 있습니다";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "알림 설정을 업데이트하는 중에 예기치 않은 오류가 발생했습니다.";
@@ -6347,7 +6362,11 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Try a starter layout" = "초보자용 레이아웃 사용해 보기";
 
-/* Button that lets users try to reload the plugin directory after loading failure
+/* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"Try adjusting your date range or activity type filters" = "날짜 범위나 활동 유형 필터를 조정 해보세요";
+
+/* Button label for trying to retrieve the activities type again
+   Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
 "Try again" = "다시 시도";
@@ -7571,8 +7590,7 @@ translators: sample content for \"Services\" page template */
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab. */
 "wordpress, notifications, alerts, updates" = "워드프레스, 알림, 경고, 업데이트";
 
-/* This is a comma separated list of keywords used for spotlight indexing of the 'Reader' tab.
-   This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
+/* This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
 "wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics" = "워드프레스, 리더, 문서, 게시글, 블로그 글, 팔로우, 검색, 좋아요, 내 좋아요, 태그, 주제";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */

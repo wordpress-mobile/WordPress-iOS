@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-10 13:54:09+0000 */
+/* Translation-Revision-Date: 2020-12-24 08:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -367,6 +367,12 @@
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "活动日志";
 
+/* Label for the Activity Type filter button */
+"Activity Type" = "Activity Type";
+
+/* Label for the Activity Type filter button when there are more than 1 activity type selected */
+"Activity Type (%1$d)" = "活动类型 (%1$d)";
+
 /* Remove asset from media picker list */
 "Add" = "添加";
 
@@ -412,8 +418,7 @@
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "添加个人资料照片";
 
-/* Title of a feature to add a new topic to the topics subscribed by the user.
-   Title. Lets the user know that they can use this feature to subscribe to new topics. */
+/* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "添加主题";
 
 /* Hint for the reader CSS URL field */
@@ -729,9 +734,6 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "是否确定要更新？";
 
-/* A short message asking the user if they wish to unfollow the specified topic. The %@ is a placeholder for the name of the topic. */
-"Are you sure you wish to remove the topic '%@'?" = "您确定要删除主题“%@”?";
-
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "自 2018 年 8 月 1 日起，Facebook 不再允许直接将文章共享到 Facebook 个人资料。与 Facebook 页面的关联保持不变。";
 
@@ -1007,7 +1009,6 @@
    Option to cancel the email app selection when logging in with magic links
    Text displayed by the left navigation button title
    The title of a cancel button.
-   Title of a cancel button.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
@@ -1162,8 +1163,14 @@
 /* Label for Publish time picker */
 "Choose a time" = "选择时间";
 
+/* Title to choose date range in a calendar */
+"Choose date range" = "Choose date range";
+
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "选择域";
+
+/* No comment provided by engineer. */
+"Choose file" = "Choose file";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "从我的设备中选择";
@@ -1171,7 +1178,7 @@
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "选择显示您的近期文章（经典博客）的主页或固定\/静态页面。";
 
-/* No comment provided by engineer. */
+/* Menu option used for adding media from other applications. */
 "Choose from device" = "从设备中选择";
 
 /* No comment provided by engineer. */
@@ -1513,6 +1520,9 @@
 /* No comment provided by engineer. */
 "Copy file URL" = "复制文件 URL";
 
+/* Button title displayed in popup indicating the user copied the local copy */
+"Copy the version from this app" = "从此应用程序复制版本";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "还可以更好";
 
@@ -1540,6 +1550,9 @@
 /* Title of a prompt. */
 "Could not save post for later" = "无法保存文章以供稍后查看";
 
+/* The app failed to subscribe to the comments for the post */
+"Could not subscribe to comments" = "Could not subscribe to comments";
+
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "无法切换关注状态：缺少 blogURL 属性";
 
@@ -1548,6 +1561,9 @@
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "无法取消关注指定地址的站点。";
+
+/* The app failed to unsubscribe from the comments for the post */
+"Could not unsubscribe from comments" = "无法取消订阅评论";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "您可以告诉我们如何改进吗？";
@@ -1733,6 +1749,9 @@
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
 "Date Format" = "日期格式";
+
+/* Label of a button that displays a calendar */
+"Date Range" = "Date Range";
 
 /* Date and Time */
 "Date and Time" = "日期和时间";
@@ -2028,6 +2047,9 @@
    Title of the drafts header in search list. */
 "Drafts" = "草稿";
 
+/* Label for post duplicate option. Tapping displays statistics for a post. */
+"Duplicate" = "Duplicate";
+
 /* No comment provided by engineer. */
 "Duplicate block" = "复制区块";
 
@@ -2077,6 +2099,9 @@
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "编辑共享按钮";
+
+/* Button title displayed in popup indicating that the user edits the post first */
+"Edit the post first" = "先编辑文章";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "使用 Web 编辑器进行编辑";
@@ -2159,6 +2184,9 @@
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "已加密日志";
 
+/* Placeholder for the end date in calendar range selection */
+"End Date" = "End Date";
+
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "进入全屏";
 
@@ -2197,12 +2225,12 @@
 /* Instruction text on the initial email address entry screen. */
 "Enter your email address to log in or create a WordPress.com account." = "输入您的电子邮件地址以登录或创建 WordPress.com 帐户。";
 
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your existing site address" = "Enter your existing site address";
+
 /* Title of a button on the magic link screen.
    Title of a button. */
 "Enter your password instead." = "改为输入密码。";
-
-/* Button title. Takes the user to the login by site address flow. */
-"Enter your site address" = "输入您的站点地址";
 
 /* Generic error alert title
    Generic error.
@@ -2440,6 +2468,9 @@
 
 /* Title of the filter button in the Reader */
 "Filter" = "筛选";
+
+/* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
+"Filter by activity type" = "按活动类型筛选";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "了解更多";
@@ -3147,9 +3178,6 @@ translators: sample content for \"Services\" page template */
 /* The accessibility label for the list style button in the Post List. */
 "List style" = "列表样式";
 
-/* Section title of the lists reader section. */
-"Lists" = "列表";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "加载";
 
@@ -3284,8 +3312,6 @@ translators: sample content for \"Services\" page template */
 "Main Navigation" = "主要导航";
 
 /* Button leading to a screen where users can manage their installed plugins
-   Button title. Tapping lets the user manage the sites they follow.
-   Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
    Title for the Reader Manage screen.
@@ -3652,6 +3678,12 @@ translators: sample content for \"Services\" page template */
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "无标题";
 
+/* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities available" = "无可用的活动";
+
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities recorded in the selected date range." = "No activities recorded in the selected date range.";
+
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "尚无活动";
 
@@ -3720,6 +3752,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "尚无人点赞";
+
+/* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"No matching events found." = "No matching events found.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso.
    Phrase to show when the user search for images but there are no result to show.
@@ -4363,6 +4398,9 @@ translators: sample content for \"Services\" page template */
 /* Title of notification displayed when a post has been successfully scheduled. */
 "Post scheduled" = "文章已预发布";
 
+/* Title displayed in popup when user tries to copy a post with unsaved changes */
+"Post sync conflict" = "Post sync conflict";
+
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "文章标题。%s";
 
@@ -4608,8 +4646,7 @@ translators: sample content for \"Services\" page template */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "阅读源文章";
 
-/* Noun. Title of the Reader feature in the app.
-   The accessibility value of the Reader tab.
+/* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -4697,15 +4734,12 @@ translators: sample content for \"Services\" page template */
    Button label when removing a blog
    Label for remove location button
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Label of the table view cell's delete button, when unfollowing tags.
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
    Title for button that will confirm removing the next steps/quick start menus.
-   Title of a prompt asking the user to confirm they no longer wish to subscribe to a certain tag.
    User action to remove featured media.
-   User action to remove media.
-   Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
+   User action to remove media. */
 "Remove" = "移除";
 
 /* Remove Person Alert Title
@@ -4959,11 +4993,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "已保存文章";
 
-/* Section title for Saved Posts in Reader
-   Title for list of posts saved for later
-   Title of the reader's Saved Posts menu item. */
-"Saved Posts" = "已保存的文章";
-
 /* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
 "Saved!" = "已保存！";
 
@@ -4980,6 +5009,9 @@ translators: sample content for \"Services\" page template */
    Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "正在保存...";
+
+/* Noun. Links to a blog's Jetpack Scan screen. */
+"Scan" = "Scan";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "定时";
@@ -5008,10 +5040,8 @@ translators: sample content for \"Services\" page template */
 "Scrollable block menu opened. Select a block." = "滚动区块菜单打开。 选择区块。";
 
 /* Placeholder text for the search bar
-   Search
    The menu item to select during a guided tour.
-   Title of the Reader's search feature
-   Title of the reader's Search menu item. */
+   Title of the Reader's search feature */
 "Search" = "搜索";
 
 /* Site creation. Seelect a domain, search field placeholder */
@@ -5072,10 +5102,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "选择“%@”以继续";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to continue." = "选择“%@”以继续。";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page." = "选择“%@”，创建一个新页面。";
+"Select %@ to create a new page" = "选择 %@ 创建新页面";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "选择“%@”，撰写一篇新文章";
@@ -5405,7 +5432,6 @@ translators: sample content for \"Services\" page template */
 "Site Language" = "站点语言";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
 "Site Pages" = "站点页面";
 
@@ -5586,6 +5612,9 @@ translators: sample content for \"Services\" page template */
 /* Standard post format label */
 "Standard" = "标准";
 
+/* Placeholder for the start date in calendar range selection */
+"Start Date" = "Start Date";
+
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
 "Start Over" = "从头开始";
@@ -5644,9 +5673,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title of alert announcing new Create Button feature. */
 "Streamlined navigation" = "简化的导航";
-
-/* Section title of the default reader items. */
-"Streams" = "流";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "删除";
@@ -5762,7 +5788,6 @@ translators: sample content for \"Services\" page template */
    Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
-   Section title of the tags reader section.
    Tags menu item in share extension.
    Title for the tag selector view */
 "Tags" = "标签";
@@ -5830,18 +5855,11 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "轻点以查看此标签的文章";
 
-/* Accessibility hint
-   Tapping lets you manage the sites you follow. */
-"Tapping lets you manage the sites you follow." = "轻点可以管理您关注的站点。";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "分类";
 
 /* translators: title for \"Team\" page template */
 "Team" = "团队";
-
-/* Section title of the teams reader section. */
-"Teams" = "团队";
 
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "请向我们提供有关您的一些信息。";
@@ -5950,6 +5968,9 @@ translators: sample content for \"Services\" page template */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "每页显示的文章数。";
 
+/* Message displayed in popup when user tries to copy a post with conflicts */
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "您尝试复制的文章存在两个相互冲突的版本，或者您最近进行了更改但并未将其保存。\n请先编辑文章来解决任何冲突问题，或继续从此应用程序中复制版本。";
+
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "快速启动指南将指引您创建一个基础的站点。是否确定要跳过？";
 
@@ -6023,12 +6044,6 @@ translators: sample content for \"Services\" page template */
 
 /* Reply Failure Message */
 "There has been an unexpected error while sending your reply" = "发送您的回复时出现意外错误";
-
-/* The app failed to subscribe to the comments for the post */
-"There has been an unexpected error while subscribing to the comments" = "订阅评论时发生意外错误";
-
-/* The app failed to unsubscribe from the comments for the post */
-"There has been an unexpected error while unsubscribing from the comments" = "取消订阅评论时发生意外错误";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "更新“通知设置”时发生意外错误";
@@ -6347,7 +6362,11 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Try a starter layout" = "试用初学者布局";
 
-/* Button that lets users try to reload the plugin directory after loading failure
+/* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"Try adjusting your date range or activity type filters" = "Try adjusting your date range or activity type filters";
+
+/* Button label for trying to retrieve the activities type again
+   Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
 "Try again" = "请重试";
@@ -7571,8 +7590,7 @@ translators: sample content for \"Services\" page template */
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab. */
 "wordpress, notifications, alerts, updates" = "wordpress, notifications, alerts, updates wordpress, 通知, 提醒, 更新";
 
-/* This is a comma separated list of keywords used for spotlight indexing of the 'Reader' tab.
-   This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
+/* This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
 "wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics" = "wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics wordpress, 阅读器, 文章, 博文, 已关注, 发现, 点赞, 我的点赞, 标签, 主题";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */

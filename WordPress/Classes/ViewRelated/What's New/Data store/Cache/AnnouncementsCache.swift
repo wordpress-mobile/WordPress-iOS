@@ -3,6 +3,7 @@ import WordPressKit
 /// Generic feature announcement cache
 protocol AnnouncementsCache {
     var announcements: [Announcement]? { get set }
+    var date: Date? { get }
 }
 
 
@@ -17,6 +18,10 @@ struct UserDefaultsAnnouncementsCache: AnnouncementsCache {
             UserDefaults.standard.announcements = newValue
         }
     }
+
+    var date: Date? {
+        UserDefaults.standard.announcementsDate
+    }
 }
 
 
@@ -24,10 +29,11 @@ struct UserDefaultsAnnouncementsCache: AnnouncementsCache {
 private extension UserDefaults {
 
     static let currentAnnouncementsKey = "currentAnnouncements"
+    static let currentAnnouncementsDateKey = "currentAnnouncementsDate"
 
     var announcements: [Announcement]? {
         get {
-            guard let encodedAnnouncements = value(forKey: UserDefaults.currentAnnouncementsKey) as? Data,
+            guard let encodedAnnouncements = value(forKey: Self.currentAnnouncementsKey) as? Data,
                   let announcements = try? PropertyListDecoder().decode([Announcement].self, from: encodedAnnouncements) else {
                 return nil
             }
@@ -36,10 +42,16 @@ private extension UserDefaults {
 
         set {
             guard let announcements = newValue, let encodedAnnouncements = try? PropertyListEncoder().encode(announcements) else {
-                removeObject(forKey: UserDefaults.currentAnnouncementsKey)
+                removeObject(forKey: Self.currentAnnouncementsKey)
+                removeObject(forKey: Self.currentAnnouncementsDateKey)
                 return
             }
-            set(encodedAnnouncements, forKey: UserDefaults.currentAnnouncementsKey)
+            set(encodedAnnouncements, forKey: Self.currentAnnouncementsKey)
+            set(Date(), forKey: Self.currentAnnouncementsDateKey)
         }
+    }
+
+    var announcementsDate: Date? {
+        value(forKey: Self.currentAnnouncementsDateKey) as? Date
     }
 }

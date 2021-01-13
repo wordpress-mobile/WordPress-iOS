@@ -94,7 +94,7 @@ class PostActionSheet {
         static let cancel = NSLocalizedString("Cancel", comment: "Dismiss the post action sheet")
         static let cancelAutoUpload = NSLocalizedString("Cancel Upload", comment: "Label for the Post List option that cancels automatic uploading of a post.")
         static let stats = NSLocalizedString("Stats", comment: "Label for post stats option. Tapping displays statistics for a post.")
-        static let duplicate = NSLocalizedString("Duplicate", comment: "Label for post duplicate option. Tapping displays statistics for a post.")
+        static let duplicate = NSLocalizedString("Duplicate", comment: "Label for post duplicate option. Tapping creates a copy of the post.")
         static let publish = NSLocalizedString("Publish Now", comment: "Label for an option that moves a publishes a post immediately")
         static let draft = NSLocalizedString("Move to Draft", comment: "Label for an option that moves a post to the draft folder")
         static let delete = NSLocalizedString("Delete Permanently", comment: "Label for the delete post option. Tapping permanently deletes a post.")

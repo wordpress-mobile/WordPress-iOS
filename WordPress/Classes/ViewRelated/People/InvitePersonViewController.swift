@@ -67,6 +67,7 @@ class InvitePersonViewController: UITableViewController {
     }
 
     private let rolesDefinitionUrl = "https://wordpress.com/support/user-roles/"
+    private let messageCharacterLimit = 500
 
     // MARK: - Outlets
 
@@ -126,7 +127,15 @@ class InvitePersonViewController: UITableViewController {
     // MARK: - UITableView Methods
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return Section.footerText(for: section)
+        let sectionType = Section(rawValue: section)
+        var footerText = sectionType?.footerText
+
+        if sectionType == .message,
+           let footerFormat = footerText {
+            footerText = String(format: footerFormat, messageCharacterLimit)
+        }
+
+        return footerText
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
@@ -168,7 +177,7 @@ class InvitePersonViewController: UITableViewController {
         }
 
         let title = NSLocalizedString("Recipient", comment: "Invite Person: Email or Username Edition Title")
-        let placeholder = NSLocalizedString("Email or Username...", comment: "A placeholder for the username textfield.")
+        let placeholder = NSLocalizedString("Email or Username…", comment: "A placeholder for the username textfield.")
         let hint = NSLocalizedString("Email or Username of the person that should receive your invitation.", comment: "Username Placeholder")
 
         textViewController.title = title
@@ -203,12 +212,14 @@ class InvitePersonViewController: UITableViewController {
         }
 
         let title = NSLocalizedString("Message", comment: "Invite Message Editor's Title")
-        let hint = NSLocalizedString("Optional message to be included in the invitation.", comment: "Invite: Message Hint")
+        let hintFormat = NSLocalizedString("Optional message up to %1$d characters to be included in the invitation.", comment: "Invite: Message Hint. %1$d is the maximum number of characters allowed.")
+        let hint = String(format: hintFormat, messageCharacterLimit)
 
         textViewController.title = title
         textViewController.text = message
         textViewController.hint = hint
         textViewController.isPassword = false
+        textViewController.maxCharacterCount = messageCharacterLimit
         textViewController.onValueChanged = { [unowned self] value in
             self.message = value
         }
@@ -229,22 +240,19 @@ class InvitePersonViewController: UITableViewController {
         case role
         case message
 
-        static func footerText(for index: Int) -> String? {
-            let section = Section(rawValue: index)
-            return section?.footerText
-        }
-
         var footerText: String? {
             switch self {
             case .role:
                 return NSLocalizedString("Learn more about roles", comment: "Footer text for Invite People role field.")
             case .message:
-                return NSLocalizedString("Optional: Enter a custom message to be sent with your invitation.", comment: "Footer text for Invite People message field.")
+                // messageCharacterLimit cannot be accessed here, so the caller will insert it in the string.
+                return NSLocalizedString("Optional: Enter a custom message up to %1$d characters to be sent with your invitation.", comment: "Footer text for Invite People message field. %1$d is the maximum number of characters allowed.")
             default:
                 return nil
             }
         }
     }
+
 }
 
 
@@ -315,6 +323,7 @@ extension InvitePersonViewController {
         }
 
         footer.textLabel?.isUserInteractionEnabled = true
+        footer.accessibilityTraits = .link
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleRoleFooterTap(_:)))
         footer.addGestureRecognizer(tap)
     }
@@ -422,6 +431,7 @@ private extension InvitePersonViewController {
         messageTextView.font = WPStyleGuide.tableviewTextFont()
         messageTextView.textColor = .text
         messageTextView.backgroundColor = .listForeground
+        messageTextView.delegate = self
     }
 
     func setupPlaceholderLabel() {
@@ -462,7 +472,7 @@ private extension InvitePersonViewController {
 
     func refreshUsernameCell() {
         guard let usernameOrEmail = usernameOrEmail?.nonEmptyString() else {
-            usernameCell.textLabel?.text = NSLocalizedString("Email or Username...", comment: "Invite Username Placeholder")
+            usernameCell.textLabel?.text = NSLocalizedString("Email or Username…", comment: "Invite Username Placeholder")
             usernameCell.textLabel?.textColor = .textPlaceholder
             return
         }
@@ -483,4 +493,16 @@ private extension InvitePersonViewController {
     func refreshPlaceholderLabel() {
         placeholderLabel?.isHidden = !messageTextView.text.isEmpty
     }
+}
+
+// MARK: - UITextViewDelegate
+
+extension InvitePersonViewController: UITextViewDelegate {
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        // This calls the segue in People.storyboard
+        // that shows the SettingsMultiTextViewController.
+        performSegue(withIdentifier: "message", sender: nil)
+        return false
+    }
+
 }

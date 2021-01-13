@@ -24,11 +24,31 @@ class PrepublishingNavigationController: LightNavigationController {
                 return Constants.iPadPreferredContentSize
             }
 
-            guard  let visibleViewController = viewControllers.last else {
+            guard let visibleViewController = viewControllers.last else {
                 return .zero
             }
 
             return visibleViewController.preferredContentSize
+        }
+    }
+
+    override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        super.pushViewController(viewController, animated: animated)
+
+        transition()
+    }
+
+    override func popViewController(animated: Bool) -> UIViewController? {
+        let viewController = super.popViewController(animated: animated)
+
+        transition()
+
+        return viewController
+    }
+
+    private func transition() {
+        if let bottomSheet = self.parent as? BottomSheetViewController, let presentedVC = bottomSheet.presentedVC {
+            presentedVC.transition(to: .collapsed)
         }
     }
 
@@ -42,7 +62,11 @@ class PrepublishingNavigationController: LightNavigationController {
 
 extension PrepublishingNavigationController: DrawerPresentable {
     var allowsUserTransition: Bool {
-        return false
+        guard let visibleDrawer = visibleViewController as? DrawerPresentable else {
+            return true
+        }
+
+        return visibleDrawer.allowsUserTransition
     }
 
     var expandedHeight: DrawerHeight {
@@ -50,13 +74,15 @@ extension PrepublishingNavigationController: DrawerPresentable {
     }
 
     var collapsedHeight: DrawerHeight {
-        return .intrinsicHeight
+        guard let visibleDrawer = visibleViewController as? DrawerPresentable else {
+            return .contentHeight(300)
+        }
+
+        return visibleDrawer.collapsedHeight
     }
 
     var scrollableView: UIScrollView? {
-        let scroll = topViewController?.view as? UIScrollView
-
-        return scroll
+        return topViewController?.view as? UIScrollView
     }
 
     func handleDismiss() {

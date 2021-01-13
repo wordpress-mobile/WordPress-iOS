@@ -26,9 +26,10 @@ class ReaderTabViewController: UIViewController {
             guard let self = self else {
                 return
             }
-            self.viewModel.presentFilter(from: self, sourceView: fromView, completion: { [weak self] title in
+
+            self.viewModel.presentFilter(from: self, sourceView: fromView, completion: { [weak self] topic in
                 self?.dismiss(animated: true, completion: nil)
-                completion(title)
+                completion(topic)
             })
         }
 

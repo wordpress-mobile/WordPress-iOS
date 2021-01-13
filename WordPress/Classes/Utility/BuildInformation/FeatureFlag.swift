@@ -9,7 +9,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case swiftCoreData
     case homepageSettings
     case gutenbergMentions
-    case gutenbergModalLayoutPicker
+    case gutenbergXposts
     case whatIsNew
     case newNavBarAppearance
     case unifiedPrologueCarousel
@@ -17,6 +17,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case siteCreationHomePagePicker
     case jetpackScan
     case activityLogFilters
+    case jetpackBackupAndRestore
     case unseenPostCount
 
     /// Returns a boolean indicating if the feature is enabled
@@ -40,7 +41,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .gutenbergMentions:
             return true
-        case .gutenbergModalLayoutPicker:
+        case .gutenbergXposts:
             return true
         case .whatIsNew:
             return true
@@ -56,8 +57,10 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return BuildConfiguration.current == .localDeveloper
         case .activityLogFilters:
             return BuildConfiguration.current == .localDeveloper
-        case .unseenPostCount:
+        case .jetpackBackupAndRestore:
             return BuildConfiguration.current == .localDeveloper
+        case .unseenPostCount:
+            return false
         }
     }
 
@@ -100,8 +103,8 @@ extension FeatureFlag {
             return "Homepage Settings"
         case .gutenbergMentions:
             return "Mentions in Gutenberg"
-        case .gutenbergModalLayoutPicker:
-            return "Gutenberg Modal Layout Picker"
+        case .gutenbergXposts:
+            return "Xposts in Gutenberg"
         case .whatIsNew:
             return "What's New / Feature Announcement"
         case .newNavBarAppearance:
@@ -116,6 +119,8 @@ extension FeatureFlag {
             return "Jetpack Scan"
         case .activityLogFilters:
             return "Jetpack's Activity Log Filters"
+        case .jetpackBackupAndRestore:
+            return "Jetpack Backup and Restore"
         case .unseenPostCount:
             return "Unseen Posts Count in Reader"
         }

@@ -1,1 +1,11 @@
-Nos complace anunciar algunos cambios emocionantes en la aplicación móvil para WordPress. Cuando crees un sitio, tendrás la opción para elegir de inmediato un diseño de página de inicio. También hemos hecho más fácil establecer las dimensiones de las imágenes de portada y las columnas y, ahora, los bloques de botón e iconos sociales tienen un selector de enlaces. Hemos corregido los fallos que sabemos —sí— que te estaban fastidiando, incluyendo uno en el que las @-menciones no funcionaban en los sitios WP.com con plugins activados y otro en el que los enlaces «tel:» y «mailto:» en las páginas de contactos no se lanzaban correctamente.
+Esto es lo nuevo en nuestra última versión:
+
+El editor de bloques: Ahora puedes insertar un bloque de archivos en una entrada o página, que coloca un botón de descarga de archivos, como documentos. Una actualización del bloque de galería también ha corregido un problema de subida cuando se cerraba el editor.
+
+Creación del sitio: Al crear páginas en tu sitio, las opciones del diseño de la página ahora son más fáciles de ver y de seleccionar.
+
+Creación de entradas: ¿Quieres duplicar rápidamente una entrada? Ahora puedes hacerlo desde tu lista de entradas.
+
+El lector: ¿Usas P2, una herramienta para la colaboración en equipo y en grupo? Puedes leer y seguir los sitios P2 en un flujo recién añadido.
+
+Comentarios: ¿Quieres suscribirte a los hilos de comentarios de los sitios que sigues o que te interesan? Toca el botón «Seguir la conversación» en la vista de comentarios.

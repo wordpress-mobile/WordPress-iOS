@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-04 08:03:55+0000 */
+/* Translation-Revision-Date: 2020-12-19 08:59:09+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ru */
@@ -367,6 +367,12 @@
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "Журналы активности";
 
+/* Label for the Activity Type filter button */
+"Activity Type" = "Тип активности";
+
+/* Label for the Activity Type filter button when there are more than 1 activity type selected */
+"Activity Type (%1$d)" = "Тип активности (%1$d)";
+
 /* Remove asset from media picker list */
 "Add" = "Добавить";
 
@@ -412,8 +418,7 @@
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Добавить фотографию профиля";
 
-/* Title of a feature to add a new topic to the topics subscribed by the user.
-   Title. Lets the user know that they can use this feature to subscribe to new topics. */
+/* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "Добавить тему";
 
 /* Hint for the reader CSS URL field */
@@ -729,9 +734,6 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Вы точно хотите обновить?";
 
-/* A short message asking the user if they wish to unfollow the specified topic. The %@ is a placeholder for the name of the topic. */
-"Are you sure you wish to remove the topic '%@'?" = "Вы уверены, что хотите удалить тему '%@'";
-
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "C 01.08.2018 Facebook более не разрешает напрямую делиться записями в профили Facebook. Связи со страницами FB останутся неизмененными.";
 
@@ -1007,7 +1009,6 @@
    Option to cancel the email app selection when logging in with magic links
    Text displayed by the left navigation button title
    The title of a cancel button.
-   Title of a cancel button.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
@@ -1162,8 +1163,14 @@
 /* Label for Publish time picker */
 "Choose a time" = "Выберите время";
 
+/* Title to choose date range in a calendar */
+"Choose date range" = "Выбор интервала дат";
+
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Выберите домен";
+
+/* No comment provided by engineer. */
+"Choose file" = "Выбрать файл";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Выбрать с моего устройства";
@@ -1171,7 +1178,7 @@
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Выберите в качестве главной страницы страницу последних записей (классический блог) или фиксированную (статическую) страницу.";
 
-/* No comment provided by engineer. */
+/* Menu option used for adding media from other applications. */
 "Choose from device" = "Выбрать с устройства";
 
 /* No comment provided by engineer. */
@@ -1513,6 +1520,9 @@
 /* No comment provided by engineer. */
 "Copy file URL" = "Скопировать URL файла";
 
+/* Button title displayed in popup indicating the user copied the local copy */
+"Copy the version from this app" = "Взять версию из этого приложения";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Нужно доработать";
 
@@ -1540,6 +1550,9 @@
 /* Title of a prompt. */
 "Could not save post for later" = "Невозможно сохранить запись на потом";
 
+/* The app failed to subscribe to the comments for the post */
+"Could not subscribe to comments" = "Ошибка при подписке на комментарии";
+
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Не удалось переключить подписку: отсутствует атрибут blogURL";
 
@@ -1548,6 +1561,9 @@
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Не удалось отменить подписку на веб-сайт по указанному адресу.";
+
+/* The app failed to unsubscribe from the comments for the post */
+"Could not unsubscribe from comments" = "Ошибка при отказе от подписки на комментарии";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Посоветуйте, как нам стать лучше.";
@@ -1733,6 +1749,9 @@
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
 "Date Format" = "Формат даты";
+
+/* Label of a button that displays a calendar */
+"Date Range" = "Период";
 
 /* Date and Time */
 "Date and Time" = "Дата и время";
@@ -2028,6 +2047,9 @@
    Title of the drafts header in search list. */
 "Drafts" = "Черновики";
 
+/* Label for post duplicate option. Tapping displays statistics for a post. */
+"Duplicate" = "Дублировать";
+
 /* No comment provided by engineer. */
 "Duplicate block" = "Дублировать блок";
 
@@ -2077,6 +2099,9 @@
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Изменить кнопки «Поделиться»";
+
+/* Button title displayed in popup indicating that the user edits the post first */
+"Edit the post first" = "Сначала отредактируйте запись";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "Редактировать используя веб-редактор";
@@ -2159,6 +2184,9 @@
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Зашифрованные журналы";
 
+/* Placeholder for the end date in calendar range selection */
+"End Date" = "Дата окончания";
+
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Показать во весь экран";
 
@@ -2197,12 +2225,12 @@
 /* Instruction text on the initial email address entry screen. */
 "Enter your email address to log in or create a WordPress.com account." = "Введите ваш адрес электронной почты чтобы войти или создать учётную запись WordPress.com.";
 
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your existing site address" = "Введите адрес вашего сайта";
+
 /* Title of a button on the magic link screen.
    Title of a button. */
 "Enter your password instead." = "Введите пароль.";
-
-/* Button title. Takes the user to the login by site address flow. */
-"Enter your site address" = "Введите адрес вашего сайта";
 
 /* Generic error alert title
    Generic error.
@@ -2440,6 +2468,9 @@
 
 /* Title of the filter button in the Reader */
 "Filter" = "Фильтры";
+
+/* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
+"Filter by activity type" = "Отфильтровать по типу активности";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Узнать больше";
@@ -3147,9 +3178,6 @@ translators: sample content for \"Services\" page template */
 /* The accessibility label for the list style button in the Post List. */
 "List style" = "Стиль списка";
 
-/* Section title of the lists reader section. */
-"Lists" = "Списки";
-
 /* Title of the screen that load selected the revisions. */
 "Load" = "Загрузка";
 
@@ -3284,8 +3312,6 @@ translators: sample content for \"Services\" page template */
 "Main Navigation" = "Меню навигации";
 
 /* Button leading to a screen where users can manage their installed plugins
-   Button title. Tapping lets the user manage the sites they follow.
-   Manage
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
    Title for the Reader Manage screen.
@@ -3652,6 +3678,12 @@ translators: sample content for \"Services\" page template */
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Нет названия";
 
+/* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities available" = "Пока нет активности";
+
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"No activities recorded in the selected date range." = "Нет зарегистрированных действий в выбранном диапазоне дат.";
+
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "Еще нет активности";
 
@@ -3720,6 +3752,9 @@ translators: sample content for \"Services\" page template */
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Оценок пока нет";
+
+/* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"No matching events found." = "Соответствующие события не найдены.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso.
    Phrase to show when the user search for images but there are no result to show.
@@ -4363,6 +4398,9 @@ translators: sample content for \"Services\" page template */
 /* Title of notification displayed when a post has been successfully scheduled. */
 "Post scheduled" = "Запись запланирована к публикации";
 
+/* Title displayed in popup when user tries to copy a post with unsaved changes */
+"Post sync conflict" = "Конфликт синхронизации записей";
+
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Название записи. %s";
 
@@ -4608,8 +4646,7 @@ translators: sample content for \"Services\" page template */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Прочитать исходную запись";
 
-/* Noun. Title of the Reader feature in the app.
-   The accessibility value of the Reader tab.
+/* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -4697,15 +4734,12 @@ translators: sample content for \"Services\" page template */
    Button label when removing a blog
    Label for remove location button
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Label of the table view cell's delete button, when unfollowing tags.
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
    Title for button that will confirm removing the next steps/quick start menus.
-   Title of a prompt asking the user to confirm they no longer wish to subscribe to a certain tag.
    User action to remove featured media.
-   User action to remove media.
-   Verb. Button title. Unfollows / unsubscribes the user from a topic in the reader. */
+   User action to remove media. */
 "Remove" = "Удалить";
 
 /* Remove Person Alert Title
@@ -4959,11 +4993,6 @@ translators: sample content for \"Services\" page template */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "Saved Post" = "Сохраненная запись";
 
-/* Section title for Saved Posts in Reader
-   Title for list of posts saved for later
-   Title of the reader's Saved Posts menu item. */
-"Saved Posts" = "Сохраненные записи";
-
 /* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
 "Saved!" = "Сохранено!";
 
@@ -4980,6 +5009,9 @@ translators: sample content for \"Services\" page template */
    Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Сохранение...";
+
+/* Noun. Links to a blog's Jetpack Scan screen. */
+"Scan" = "Сканирование";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Запланировать";
@@ -5008,10 +5040,8 @@ translators: sample content for \"Services\" page template */
 "Scrollable block menu opened. Select a block." = "Прокручиваемое меню блоков открыто. Выберите блок.";
 
 /* Placeholder text for the search bar
-   Search
    The menu item to select during a guided tour.
-   Title of the Reader's search feature
-   Title of the reader's Search menu item. */
+   Title of the Reader's search feature */
 "Search" = "Поиск";
 
 /* Site creation. Seelect a domain, search field placeholder */
@@ -5072,10 +5102,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "Выберите %@ для продолжения";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to continue." = "Выберите %@ для продолжения.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page." = "Выберите %@ для создания новой страницы.";
+"Select %@ to create a new page" = "Выберите %@ для создания новой страницы";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Выберите %@ для создания новой записи";
@@ -5405,7 +5432,6 @@ translators: sample content for \"Services\" page template */
 "Site Language" = "Язык сайта";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
 "Site Pages" = "Страницы сайта";
 
@@ -5586,6 +5612,9 @@ translators: sample content for \"Services\" page template */
 /* Standard post format label */
 "Standard" = "Стандартный";
 
+/* Placeholder for the start date in calendar range selection */
+"Start Date" = "Дата начала";
+
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
 "Start Over" = "Начать сначала";
@@ -5644,9 +5673,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title of alert announcing new Create Button feature. */
 "Streamlined navigation" = "Упрощённая навигация";
-
-/* Section title of the default reader items. */
-"Streams" = "Потоки";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Зачеркнутый";
@@ -5762,7 +5788,6 @@ translators: sample content for \"Services\" page template */
    Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
-   Section title of the tags reader section.
    Tags menu item in share extension.
    Title for the tag selector view */
 "Tags" = "Метки";
@@ -5830,18 +5855,11 @@ translators: sample content for \"Services\" page template */
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Нажмите, чтобы посмотреть записи с этой меткой";
 
-/* Accessibility hint
-   Tapping lets you manage the sites you follow. */
-"Tapping lets you manage the sites you follow." = "Нажмите для того, чтобы управлять сайтами, на которые вы подписаны.";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Таксономия";
 
 /* translators: title for \"Team\" page template */
 "Team" = "Команда";
-
-/* Section title of the teams reader section. */
-"Teams" = "Команды";
 
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Расскажите нам о себе.";
@@ -5950,6 +5968,9 @@ translators: sample content for \"Services\" page template */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Число показываемых записей на страницу.";
 
+/* Message displayed in popup when user tries to copy a post with conflicts */
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Запись, которую вы пытаетесь скопировать имеет две конфликтующие версии или вы недавно внесли, но не сохранили изменения.\nОтредактируйте запись и решите конфликты или скопируйте версию из этого приложения.";
+
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Быстрый старт поможет вам быстро создать базовый сайт. Вы точно хотите пропустить его?";
 
@@ -6023,12 +6044,6 @@ translators: sample content for \"Services\" page template */
 
 /* Reply Failure Message */
 "There has been an unexpected error while sending your reply" = "При отправке вашего ответа произошла непредвиденная ошибка";
-
-/* The app failed to subscribe to the comments for the post */
-"There has been an unexpected error while subscribing to the comments" = "Возникла непредвиденная ошибка при подписке на комментарии";
-
-/* The app failed to unsubscribe from the comments for the post */
-"There has been an unexpected error while unsubscribing from the comments" = "Возникла непредвиденная ошибка при отписке от комментариев";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "При обновлении настроек уведомлений произошла неожиданная ошибка.";
@@ -6347,7 +6362,11 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Try a starter layout" = "Попробуйте стартовый макет";
 
-/* Button that lets users try to reload the plugin directory after loading failure
+/* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
+"Try adjusting your date range or activity type filters" = "Попробуйте настроить диапазон дат или фильтры по типу активности";
+
+/* Button label for trying to retrieve the activities type again
+   Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
 "Try again" = "Попробуйте снова";
@@ -7571,8 +7590,7 @@ translators: sample content for \"Services\" page template */
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab. */
 "wordpress, notifications, alerts, updates" = "wordpress, уведомления, тревога, обновления";
 
-/* This is a comma separated list of keywords used for spotlight indexing of the 'Reader' tab.
-   This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
+/* This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab. */
 "wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics" = "wordpress, читалка, статьи, записи, запись блога, подписка, открыть, нравится, мне нравится, метки, темы";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
