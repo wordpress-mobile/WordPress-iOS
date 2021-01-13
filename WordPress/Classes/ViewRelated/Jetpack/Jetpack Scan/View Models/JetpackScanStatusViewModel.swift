@@ -4,11 +4,15 @@ struct JetpackScanStatusViewModel {
     let imageName: String
     let title: String
     let description: String
+
     private(set) var primaryButtonTitle: String?
     private(set) var secondaryButtonTitle: String?
     private(set) var progress: Float? = nil
 
     private let coordinator: JetpackScanCoordinator
+
+    private var primaryButtonAction: ButtonAction?
+    private var secondaryButtonAction: ButtonAction?
 
     init?(coordinator: JetpackScanCoordinator) {
         self.coordinator = coordinator
@@ -37,7 +41,9 @@ struct JetpackScanStatusViewModel {
             imageName = "jetpack-scan-state-okay"
             title = Strings.noThreatsTitle
             description = descriptionTitle
+
             secondaryButtonTitle = Strings.scanNowTitle
+            secondaryButtonAction = .triggerScan
 
         case .hasThreats, .hasFixableThreats:
             let threatCount = scan.threats?.count ?? 0
@@ -56,9 +62,13 @@ struct JetpackScanStatusViewModel {
 
             if state == .hasThreats {
                 secondaryButtonTitle = Strings.scanNowTitle
+                secondaryButtonAction = .triggerScan
             } else {
                 primaryButtonTitle = Strings.fixAllTitle
+                primaryButtonAction = .fixAll
+
                 secondaryButtonTitle = Strings.scanAgainTitle
+                secondaryButtonAction = .triggerScan
             }
 
         case .preparingToScan:
@@ -77,10 +87,52 @@ struct JetpackScanStatusViewModel {
             imageName = "jetpack-scan-state-error"
             title = Strings.errorTitle
             description = Strings.errorDescription
+
             primaryButtonTitle = Strings.contactSupportTitle
+            primaryButtonAction = .contactSupport
+
             secondaryButtonTitle = Strings.retryScanTitle
+            secondaryButtonAction = .triggerScan
         }
     }
+
+    // MARK: - Button Actions
+    private enum ButtonAction {
+        case triggerScan
+        case fixAll
+        case contactSupport
+    }
+
+    func primaryButtonTapped(_ sender: Any) {
+        guard let action = primaryButtonAction else {
+            return
+        }
+
+        buttonTapped(action: action)
+    }
+
+    func secondaryButtonTapped(_ sender: Any) {
+        guard let action = secondaryButtonAction else {
+            return
+        }
+
+        buttonTapped(action: action)
+    }
+
+    private func buttonTapped(action: ButtonAction) {
+        switch action {
+        case .fixAll:
+            coordinator.fixAllThreats()
+
+        case .triggerScan:
+            coordinator.startScan()
+
+        case .contactSupport:
+            coordinator.openSupport()
+        }
+    }
+
+    // MARK: - View State
 
     /// The potential states the view can be in based on the scan state
     private enum StatusViewState {
@@ -141,6 +193,7 @@ struct JetpackScanStatusViewModel {
         return dateString
     }
 
+    // MARK: - Localized Strings
     private struct Strings {
         static let noThreatsTitle = NSLocalizedString("Don’t worry about a thing", comment: "Title for label when there are no threats on the users site")
         static let noThreatsDescriptionFormat = NSLocalizedString("The last Jetpack scan ran %1$@ and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today.", comment: "Description for label when there are no threats on a users site and how long ago the scan ran")

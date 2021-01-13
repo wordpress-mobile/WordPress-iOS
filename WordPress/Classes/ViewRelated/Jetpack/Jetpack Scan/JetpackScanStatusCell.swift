@@ -9,6 +9,8 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
     @IBOutlet weak var secondaryButton: FancyButton!
     @IBOutlet weak var progressView: UIProgressView!
 
+    private var model: JetpackScanStatusViewModel?
+
     override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -18,6 +20,8 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
     }
 
     public func configure(with model: JetpackScanStatusViewModel) {
+        self.model = model
+
         iconImageView.image = UIImage(named: model.imageName)
         titleLabel.text = model.title
         descriptionLabel.text = model.description
@@ -59,9 +63,19 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
 
     // MARK: - IBAction's
     @IBAction func primaryButtonTapped(_ sender: Any) {
+        guard let viewModel = model else {
+            return
+        }
+
+        viewModel.primaryButtonTapped(sender)
     }
 
     @IBAction func secondaryButtonTapped(_ sender: Any) {
+        guard let viewModel = model else {
+            return
+        }
+
+        viewModel.secondaryButtonTapped(sender)
     }
 
     // MARK: - Private: View Configuration
