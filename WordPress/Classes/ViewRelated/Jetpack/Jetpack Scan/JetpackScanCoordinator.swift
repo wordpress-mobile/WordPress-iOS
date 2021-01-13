@@ -9,10 +9,10 @@ protocol JetpackScanView {
 
 class JetpackScanCoordinator {
     private let service: JetpackScanService
-    private let blog: Blog
     private let view: JetpackScanView
 
     private(set) var scan: JetpackScan?
+    let blog: Blog
 
     /// Returns the threats if we're in the idle state
     var threats: [JetpackScanThreat]? {
