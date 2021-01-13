@@ -29,8 +29,10 @@ class JetpackScanCoordinator {
         self.view = view
     }
 
-    public func start() {
-        view.showLoading()
+    public func refreshData(showLoading: Bool = false) {
+        if showLoading {
+            view.showLoading()
+        }
 
         service.getScan(for: blog) { [weak self] scanObj in
             self?.scan = scanObj
