@@ -2303,6 +2303,9 @@
 		FA77E02A1BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */; };
 		FAB4F32724EDE12A00F259BA /* FollowCommentsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */; };
 		FAB8004925AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */; };
+		FAB800B225AEE3C600D5D54A /* RestoreCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */; };
+		FAB800C225AEE3D200D5D54A /* RestoreCompleteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAB800C125AEE3D200D5D54A /* RestoreCompleteView.xib */; };
+		FAB8AA2225AF031200F9F8A0 /* BaseRestoreCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8AA2125AF031200F9F8A0 /* BaseRestoreCompleteViewController.swift */; };
 		FAB8F75025AD72CE00D5D54A /* BaseRestoreOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8F74F25AD72CE00D5D54A /* BaseRestoreOptionsViewController.swift */; };
 		FAB8F76E25AD73C000D5D54A /* JetpackDownloadBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8F76D25AD73C000D5D54A /* JetpackDownloadBackupViewController.swift */; };
 		FAB8F78C25AD785400D5D54A /* BaseRestoreStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8F78B25AD785400D5D54A /* BaseRestoreStatusViewController.swift */; };
@@ -5050,6 +5053,9 @@
 		FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserHeaderView.swift; sourceTree = "<group>"; };
 		FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCommentsServiceTests.swift; sourceTree = "<group>"; };
 		FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupCompleteViewController.swift; sourceTree = "<group>"; };
+		FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreCompleteView.swift; sourceTree = "<group>"; };
+		FAB800C125AEE3D200D5D54A /* RestoreCompleteView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RestoreCompleteView.xib; sourceTree = "<group>"; };
+		FAB8AA2125AF031200F9F8A0 /* BaseRestoreCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRestoreCompleteViewController.swift; sourceTree = "<group>"; };
 		FAB8F74F25AD72CE00D5D54A /* BaseRestoreOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRestoreOptionsViewController.swift; sourceTree = "<group>"; };
 		FAB8F76D25AD73C000D5D54A /* JetpackDownloadBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackDownloadBackupViewController.swift; sourceTree = "<group>"; };
 		FAB8F78B25AD785400D5D54A /* BaseRestoreStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRestoreStatusViewController.swift; sourceTree = "<group>"; };
@@ -11052,7 +11058,10 @@
 		FAB8007625AEDDCE00D5D54A /* Restore Complete */ = {
 			isa = PBXGroup;
 			children = (
+				FAB8AA2125AF031200F9F8A0 /* BaseRestoreCompleteViewController.swift */,
 				FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */,
+				FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */,
+				FAB800C125AEE3D200D5D54A /* RestoreCompleteView.xib */,
 			);
 			path = "Restore Complete";
 			sourceTree = "<group>";
@@ -11785,6 +11794,7 @@
 				173BCE751CEB369900AE8817 /* Domains.storyboard in Resources */,
 				9A9E3FB4230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib in Resources */,
 				435B762A2297484200511813 /* ColorPalette.xcassets in Resources */,
+				FAB800C225AEE3D200D5D54A /* RestoreCompleteView.xib in Resources */,
 				17E3639922C41DBA000E0C79 /* hot_pink_icon_76pt.png in Resources */,
 				402FFB1C218C27C100FF4A0B /* RegisterDomain.storyboard in Resources */,
 				5D732F991AE84E5400CD89E7 /* PostListFooterView.xib in Resources */,
@@ -13440,6 +13450,7 @@
 				7492F78E1F9BD94500B5A04A /* ShareMediaFileManager.swift in Sources */,
 				32C765BA23F715E4000A7F11 /* PostSignUpInterstitialCoordinator.swift in Sources */,
 				17A4A36C20EE55320071C2CA /* ReaderCoordinator.swift in Sources */,
+				FAB800B225AEE3C600D5D54A /* RestoreCompleteView.swift in Sources */,
 				B532D4EE199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift in Sources */,
 				93FA59DD18D88C1C001446BC /* PostCategoryService.m in Sources */,
 				436D564F211E122D00CEAA33 /* RegisterDomainDetailsServiceProxy.swift in Sources */,
@@ -13458,6 +13469,7 @@
 				D88A6496208D7B0B008AE9BC /* NullStockPhotosService.swift in Sources */,
 				9A162F2321C26D7500FDC035 /* RevisionPreviewViewController.swift in Sources */,
 				3F30E50923FB362700225013 /* WPTabBarController+MeNavigation.swift in Sources */,
+				FAB8AA2225AF031200F9F8A0 /* BaseRestoreCompleteViewController.swift in Sources */,
 				E616E4B31C480896002C024E /* SharingService.swift in Sources */,
 				43D74AC820F8D17A004AD934 /* DomainSuggestionsButtonViewPresenter.swift in Sources */,
 				F5E032E82408D537003AF350 /* BottomSheetPresentationController.swift in Sources */,

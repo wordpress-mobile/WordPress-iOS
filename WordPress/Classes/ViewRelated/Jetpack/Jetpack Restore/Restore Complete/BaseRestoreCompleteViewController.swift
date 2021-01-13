@@ -2,31 +2,23 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared
 
-struct JetpackRestoreStatusConfiguration {
+struct JetpackRestoreCompleteConfiguration {
     let title: String
     let iconImage: UIImage
     let messageTitle: String
     let messageDescription: String
     let hint: String
     let primaryButtonTitle: String
+    let secondaryButtonTitle: String?
 }
 
-class BaseRestoreStatusViewController: UIViewController {
-
-    // MARK: - Public Properties
-
-    lazy var statusView: RestoreStatusView = {
-        let statusView = RestoreStatusView.loadFromNib()
-        statusView.translatesAutoresizingMaskIntoConstraints = false
-        return statusView
-    }()
+class BaseRestoreCompleteViewController: UIViewController {
 
     // MARK: - Private Properties
 
-    private(set) var site: JetpackSiteRef
-    private(set) var activity: Activity
-    private let restoreTypes: JetpackRestoreTypes
-    private let configuration: JetpackRestoreStatusConfiguration
+    private let site: JetpackSiteRef
+    private let activity: Activity
+    private let configuration: JetpackRestoreCompleteConfiguration
 
     private lazy var dateFormatter: DateFormatter = {
         return ActivityDateFormatting.mediumDateFormatterWithTime(for: site)
@@ -34,19 +26,15 @@ class BaseRestoreStatusViewController: UIViewController {
 
     // MARK: - Initialization
 
-    init(site: JetpackSiteRef,
-         activity: Activity,
-         restoreTypes: JetpackRestoreTypes) {
+    init(site: JetpackSiteRef, activity: Activity) {
         fatalError("A configuration struct needs to be provided")
     }
 
     init(site: JetpackSiteRef,
          activity: Activity,
-         restoreTypes: JetpackRestoreTypes,
-         configuration: JetpackRestoreStatusConfiguration) {
+         configuration: JetpackRestoreCompleteConfiguration) {
         self.site = site
         self.activity = activity
-        self.restoreTypes = restoreTypes
         self.configuration = configuration
         super.init(nibName: nil, bundle: nil)
     }
@@ -61,7 +49,7 @@ class BaseRestoreStatusViewController: UIViewController {
         super.viewDidLoad()
         configureTitle()
         configureNavigation()
-        configureRestoreStatusView()
+        configureRestoreCompleteView()
     }
 
     // MARK: - Configure
@@ -69,7 +57,6 @@ class BaseRestoreStatusViewController: UIViewController {
     private func configureTitle() {
         title = configuration.title
     }
-
     private func configureNavigation() {
         navigationItem.hidesBackButton = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
@@ -77,26 +64,34 @@ class BaseRestoreStatusViewController: UIViewController {
                                                            action: #selector(doneTapped))
     }
 
-    private func configureRestoreStatusView() {
+    private func configureRestoreCompleteView() {
+        let completeView = RestoreCompleteView.loadFromNib()
         let publishedDate = dateFormatter.string(from: activity.published)
 
-        statusView.configure(
+        completeView.configure(
             iconImage: configuration.iconImage,
             title: configuration.messageTitle,
             description: String(format: configuration.messageDescription, publishedDate),
+            hint: configuration.hint,
             primaryButtonTitle: configuration.primaryButtonTitle,
-            hint: configuration.hint
+            secondaryButtonTitle: configuration.secondaryButtonTitle
         )
 
-        statusView.primaryButtonHandler = { [weak self] in
-            self?.dismiss(animated: true)
+        completeView.primaryButtonHandler = {
+            // TODO
         }
 
-        view.addSubview(statusView)
-        view.pinSubviewToAllEdges(statusView)
+        completeView.secondaryButtonHandler = {
+            // TODO
+        }
+
+        completeView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(completeView)
+        view.pinSubviewToAllEdges(completeView)
     }
 
     @objc private func doneTapped() {
         self.dismiss(animated: true)
     }
+
 }

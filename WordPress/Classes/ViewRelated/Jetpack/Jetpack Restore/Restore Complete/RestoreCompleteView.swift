@@ -2,21 +2,18 @@ import Foundation
 import Gridicons
 import WordPressUI
 
-class RestoreStatusView: UIView, NibLoadable {
-
-    // MARK: - Properties
+class RestoreCompleteView: UIView, NibLoadable {
 
     @IBOutlet private weak var icon: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var descriptionLabel: UILabel!
-    @IBOutlet private weak var progressTitleLabel: UILabel!
-    @IBOutlet private weak var progressValueLabel: UILabel!
-    @IBOutlet private weak var progressView: UIProgressView!
-    @IBOutlet private weak var progressDescriptionLabel: UILabel!
+    @IBOutlet private weak var buttonStackView: UIStackView!
     @IBOutlet private weak var primaryButton: FancyButton!
+    @IBOutlet private weak var secondaryButton: FancyButton!
     @IBOutlet private weak var hintLabel: UILabel!
 
     var primaryButtonHandler: (() -> Void)?
+    var secondaryButtonHandler: (() -> Void)?
 
     // MARK: - Initialization
 
@@ -37,46 +34,50 @@ class RestoreStatusView: UIView, NibLoadable {
         titleLabel.numberOfLines = 0
 
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        descriptionLabel.textColor = .textSubtle
+        descriptionLabel.textColor = .text
         descriptionLabel.numberOfLines = 0
 
-        progressTitleLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        progressTitleLabel.textColor = .text
+        primaryButton.isPrimary = true
 
-        progressValueLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        progressValueLabel.textColor = .text
-
-        progressDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
-        progressDescriptionLabel.textColor = .textSubtle
+        secondaryButton.isPrimary = false
 
         hintLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
         hintLabel.textColor = .textSubtle
         hintLabel.numberOfLines = 0
-
-        primaryButton.isPrimary = true
+        hintLabel.textAlignment = .center
     }
 
     // MARK: - Configuration
 
-    func configure(iconImage: UIImage, title: String, description: String, primaryButtonTitle: String, hint: String) {
+    func configure(iconImage: UIImage,
+                   title: String,
+                   description: String,
+                   hint: String,
+                   primaryButtonTitle: String,
+                   secondaryButtonTitle: String?) {
+
         icon.image = iconImage
         titleLabel.text = title
         descriptionLabel.text = description
-        primaryButton.setTitle(primaryButtonTitle, for: .normal)
         hintLabel.text = hint
 
-        update(progress: 0)
-    }
+        primaryButton.setTitle(primaryButtonTitle, for: .normal)
 
-    func update(progress: Int) {
-        progressValueLabel.text = "\(progress)%"
-        progressView.progress = Float(progress) / 100
+        if let secondaryButtonTitle = secondaryButtonTitle {
+            secondaryButton.setTitle(secondaryButtonTitle, for: .normal)
+            secondaryButton.isHidden = false
+        } else {
+            secondaryButton.isHidden = true
+        }
     }
 
     // MARK: - IBAction
 
-    @IBAction private func primaryButtonTapped(_ sender: Any) {
+    @IBAction func primaryButtonTapped(_ sender: Any) {
         primaryButtonHandler?()
     }
 
+    @IBAction func secondaryButtonTapped(_ sender: Any) {
+        secondaryButtonHandler?()
+    }
 }
