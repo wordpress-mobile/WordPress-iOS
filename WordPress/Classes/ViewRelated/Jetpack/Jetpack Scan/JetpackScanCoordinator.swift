@@ -51,8 +51,22 @@ class JetpackScanCoordinator {
     }
 
     public func startScan() {
-        service.startScan(for: blog) { (success) in
+        // Optimistically trigger the scanning state
+        scan?.state = .scanning
 
+        if let scan = scan {
+            view.render(scan)
+        }
+
+        startPolling(triggerImmediately: false)
+
+
+        service.startScan(for: blog) { [weak self] (success) in
+            if success == false {
+                DDLogError("Error starting scan: Scan response returned false")
+
+                self?.view.showError()
+            }
         } failure: { [weak self] (error) in
             DDLogError("Error starting scan: \(String(describing: error.localizedDescription))")
 
@@ -60,11 +74,15 @@ class JetpackScanCoordinator {
         }
     }
 
-    public func fixThreats() {
+    public func fixAllThreats() {
 
     }
 
     public func ignoreThreat(threat: JetpackScanThreat) {
+
+    }
+
+    public func openSupport() {
 
     }
 
@@ -86,7 +104,7 @@ class JetpackScanCoordinator {
         refreshTimer = nil
     }
 
-    private func startPolling() {
+    private func startPolling(triggerImmediately: Bool = true) {
         guard refreshTimer == nil else {
             return
         }
@@ -95,6 +113,10 @@ class JetpackScanCoordinator {
             self?.refreshData()
         })
 
+
+        guard triggerImmediately else {
+            return
+        }
         // Immediately trigger the refresh
         refreshData()
     }
