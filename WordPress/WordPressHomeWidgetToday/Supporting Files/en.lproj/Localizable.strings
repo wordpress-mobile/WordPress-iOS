@@ -1,14 +1,14 @@
 /* Title of comments label in today widget */
-"TODAY_WIDGET_COMMENTS_LABEL" = "Comments";
+"widget.today.comments.label" = "Comments";
 
 /* Title of likes label in today widget */
-"TODAY_WIDGET_LIKES_LABEL" = "Likes";
+"widget.today.likes.label" = "Likes";
 
 /* Title of views label in today widget */
-"TODAY_WIDGET_VIEWS_LABEL" = "Views";
+"widget.today.views.label" = "Views";
 
 /* Title of visitors label in today widget */
-"TODAY_WIDGET_VISITORS_LABEL" = "Visitors";
+"widget.today.visitors.label" = "Visitors";
 
 /* Title of today widget */
-"TODAY_WIDGET_TODAY_LABEL" = "Today";
+"widget.today.title.label" = "Today";
