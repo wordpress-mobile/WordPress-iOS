@@ -11,4 +11,7 @@
 "widget.today.visitors.label" = "Visitors";
 
 /* Title of today widget */
-"widget.today.title.label" = "Today";
+"widget.today.title" = "Today";
+
+/* Title of the unconfigured view in today widget */
+"widget.today.unconfigured.view.title" = "Log in to WordPress to see today's stats.";

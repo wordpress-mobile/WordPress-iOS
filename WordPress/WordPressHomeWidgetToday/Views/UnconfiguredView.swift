@@ -8,7 +8,7 @@ struct UnconfiguredView: View {
             .multilineTextAlignment(.center)
             .padding()
     }
-    // TODO - TODAYWIDGET: may need review
+
     static let unconfiguredMessage: LocalizedStringKey = "Log in to WordPress to see today's stats."
 }
 
