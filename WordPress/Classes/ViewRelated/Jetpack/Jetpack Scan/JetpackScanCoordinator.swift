@@ -14,6 +14,11 @@ class JetpackScanCoordinator {
 
     private(set) var scan: JetpackScan?
 
+    /// Returns the threats if we're in the idle state
+    var threats: [JetpackScanThreat]? {
+        return scan?.state == .idle ? scan?.threats : nil
+    }
+
     init(blog: Blog,
          view: JetpackScanView,
          service: JetpackScanService? = nil,
