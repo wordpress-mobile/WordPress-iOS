@@ -43,6 +43,10 @@ class JetpackScanCoordinator {
         }
     }
 
+    public func viewWillDisappear() {
+        stopPolling()
+    }
+
     private func refreshDidSucceed(with scanObj: JetpackScan) {
         scan = scanObj
         view.render(scanObj)

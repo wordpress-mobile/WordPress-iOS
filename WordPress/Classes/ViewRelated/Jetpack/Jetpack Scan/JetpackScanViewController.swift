@@ -29,6 +29,12 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         configureTableView()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        coordinator.viewWillDisappear()
+    }
+
     // MARK: - JetpackScanView
     func render(_ scan: JetpackScan) {
         refreshControl.endRefreshing()
