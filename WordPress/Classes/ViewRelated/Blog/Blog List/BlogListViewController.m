@@ -805,7 +805,15 @@ static NSInteger HideSearchMinSites = 3;
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated
 {
     if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
-        [self dismissViewControllerAnimated:true completion:nil];
+        if (self.blogSelected != nil) {
+            self.blogSelected(self, selectedBlog);
+        } else {
+            // The site picker without a site-selection callback makes no sense.  We'll dismiss the VC to keep
+            // the app running, but the user won't be able to switch sites.
+            DDLogError(@"There's no site-selection callback assigned to the site picker.");
+            [self dismissViewControllerAnimated:animated completion:nil];
+        }
+        
         return;
     }
     
