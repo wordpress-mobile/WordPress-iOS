@@ -4,8 +4,9 @@ import WordPressKit
 
     let capabilitiesServiceRemote: JetpackCapabilitiesServiceRemote
 
-    init(capabilitiesServiceRemote: JetpackCapabilitiesServiceRemote? = nil) {
-        let api = WordPressComRestApi.defaultApi(in: ContextManager.shared.mainContext, localeKey: WordPressComRestApi.LocaleKeyV2)
+    init(context: NSManagedObjectContext = ContextManager.shared.mainContext,
+         capabilitiesServiceRemote: JetpackCapabilitiesServiceRemote? = nil) {
+        let api = WordPressComRestApi.defaultApi(in: context, localeKey: WordPressComRestApi.LocaleKeyV2)
 
         self.capabilitiesServiceRemote = capabilitiesServiceRemote ?? JetpackCapabilitiesServiceRemote(wordPressComRestApi: api)
     }
