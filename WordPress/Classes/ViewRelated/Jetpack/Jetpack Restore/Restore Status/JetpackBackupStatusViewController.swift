@@ -5,7 +5,11 @@ import WordPressUI
 
 class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
 
-    private var coordinator: JetpackBackupStatusCoordinator?
+    // MARK: - Properties
+
+    private lazy var coordinator: JetpackBackupStatusCoordinator = {
+        return JetpackBackupStatusCoordinator(site: self.site, view: self)
+    }()
 
     // MARK: - Initialization
 
@@ -29,8 +33,7 @@ class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        coordinator = JetpackBackupStatusCoordinator(site: self.site, view: self)
-        coordinator?.start()
+        coordinator.start()
     }
 
 }
