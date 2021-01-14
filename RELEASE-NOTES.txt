@@ -1,6 +1,6 @@
 16.6
 -----
-Reader post details: added ability to mark a post as seen/unseen. [#15638]
+Reader post card and post details: added ability to mark a post as seen/unseen. [#15638, #15645]
 
 16.5
 -----
