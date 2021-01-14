@@ -78,11 +78,11 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="body" destination="EHP-Zk-FQR" id="oQv-mS-Iax"/>
                 <outlet property="cancelButton" destination="9ga-Hc-Cyk" id="wPA-30-GH5"/>
                 <outlet property="confirmButton" destination="kdA-Zi-bHr" id="AHu-Q6-GjN"/>
+                <outlet property="descriptionLabel" destination="EHP-Zk-FQR" id="1la-9s-vkS"/>
                 <outlet property="icon" destination="HDs-Xm-1E7" id="VuX-co-wO6"/>
-                <outlet property="title" destination="Xzv-RX-M1d" id="nbd-fj-fIr"/>
+                <outlet property="titleLabel" destination="Xzv-RX-M1d" id="gTa-o0-hV7"/>
             </connections>
             <point key="canvasLocation" x="-1520" y="-7"/>
         </view>
