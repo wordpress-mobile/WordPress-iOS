@@ -10,7 +10,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case homepageSettings
     case gutenbergMentions
     case gutenbergXposts
-    case gutenbergModalLayoutPicker
     case whatIsNew
     case newNavBarAppearance
     case unifiedPrologueCarousel
@@ -43,8 +42,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .gutenbergMentions:
             return true
         case .gutenbergXposts:
-            return true
-        case .gutenbergModalLayoutPicker:
             return true
         case .whatIsNew:
             return true
@@ -108,8 +105,6 @@ extension FeatureFlag {
             return "Mentions in Gutenberg"
         case .gutenbergXposts:
             return "Xposts in Gutenberg"
-        case .gutenbergModalLayoutPicker:
-            return "Gutenberg Modal Layout Picker"
         case .whatIsNew:
             return "What's New / Feature Announcement"
         case .newNavBarAppearance:

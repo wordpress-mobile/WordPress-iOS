@@ -586,15 +586,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let filter = filterSettings.currentPostListFilter().filterType
 
         if filter == .trashed {
-            alertController.addActionWithTitle(publishButtonTitle, style: .default, handler: { [weak self] (action) in
-                guard let strongSelf = self,
-                    let page = strongSelf.pageForObjectID(objectID) else {
-                    return
-                }
-
-                strongSelf.publishPost(page)
-            })
-
             alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
                 guard let strongSelf = self,
                     let page = strongSelf.pageForObjectID(objectID) else {
@@ -604,13 +595,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 strongSelf.draftPage(page, at: indexPath)
             })
 
-            alertController.addActionWithTitle(deleteButtonTitle, style: .default, handler: { [weak self] (action) in
+            alertController.addActionWithTitle(deleteButtonTitle, style: .destructive, handler: { [weak self] (action) in
                 guard let strongSelf = self,
                     let page = strongSelf.pageForObjectID(objectID) else {
                         return
                 }
 
-                strongSelf.deletePost(page)
+                strongSelf.handleTrashPage(page)
             })
         } else if filter == .published {
             if page.isFailed {
@@ -649,13 +640,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 })
             }
 
-            alertController.addActionWithTitle(trashButtonTitle, style: .default, handler: { [weak self] (action) in
+            alertController.addActionWithTitle(trashButtonTitle, style: .destructive, handler: { [weak self] (action) in
                 guard let strongSelf = self,
                     let page = strongSelf.pageForObjectID(objectID) else {
                         return
                 }
 
-                strongSelf.deletePost(page)
+                strongSelf.handleTrashPage(page)
             })
         } else {
             if page.isFailed {
@@ -692,13 +683,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 })
             }
 
-            alertController.addActionWithTitle(trashButtonTitle, style: .default, handler: { [weak self] (action) in
+            alertController.addActionWithTitle(trashButtonTitle, style: .destructive, handler: { [weak self] (action) in
                 guard let strongSelf = self,
                     let page = strongSelf.pageForObjectID(objectID) else {
                         return
                 }
 
-                strongSelf.deletePost(page)
+                strongSelf.handleTrashPage(page)
             })
         }
 
@@ -766,6 +757,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let pages = _tableViewHandler.removePage(from: newIndex)
         let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: selectedPage) {
             self._tableViewHandler.isSearching = false
+            self._tableViewHandler.refreshTableView(at: index)
         }
         present(parentPageNavigationController, animated: true)
     }
@@ -872,6 +864,37 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     private func handleHomepageSettingsFailure() {
         let notice = Notice(title: HomepageSettingsText.updateErrorTitle, message: HomepageSettingsText.updateErrorMessage, feedbackType: .error)
         ActionDispatcher.global.dispatch(NoticeAction.post(notice))
+    }
+
+    private func handleTrashPage(_ post: AbstractPost) {
+        guard ReachabilityUtils.isInternetReachable() else {
+            let offlineMessage = NSLocalizedString("Unable to trash pages while offline. Please try again later.", comment: "Message that appears when a user tries to trash a page while their device is offline.")
+            ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
+            return
+        }
+
+        let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
+        let deleteText: String
+        let messageText: String
+        let titleText: String
+
+        if post.status == .trash {
+            deleteText = NSLocalizedString("Delete Permanently", comment: "Delete option in the confirmation alert when deleting a page from the trash.")
+            titleText = NSLocalizedString("Delete Permanently?", comment: "Title of the confirmation alert when deleting a page from the trash.")
+            messageText = NSLocalizedString("Are you sure you want to permanently delete this page?", comment: "Message of the confirmation alert when deleting a page from the trash.")
+        } else {
+            deleteText = NSLocalizedString("Move to Trash", comment: "Trash option in the trash page confirmation alert.")
+            titleText = NSLocalizedString("Trash this page?", comment: "Title of the trash page confirmation alert.")
+            messageText = NSLocalizedString("Are you sure you want to trash this page?", comment: "Message of the trash page confirmation alert.")
+        }
+
+        let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
+
+        alertController.addCancelActionWithTitle(cancelText)
+        alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
+            self?.deletePost(post)
+        }
+        alertController.presentFromRootViewController()
     }
 
     // MARK: - UISearchControllerDelegate

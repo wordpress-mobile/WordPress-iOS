@@ -13,6 +13,8 @@ static CGFloat const FeaturedImageSize = 120.0;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *timestampLabel;
 @property (nonatomic, strong) IBOutlet UILabel *badgesLabel;
+@property (nonatomic, strong) IBOutlet UILabel *typeLabel;
+@property (nonatomic, strong) IBOutlet UIImageView *typeIcon;
 @property (strong, nonatomic) IBOutlet CachedAnimatedImageView *featuredImageView;
 @property (nonatomic, strong) IBOutlet UIButton *menuButton;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *labelsContainerTrailing;
@@ -107,14 +109,18 @@ static CGFloat const FeaturedImageSize = 120.0;
     [WPStyleGuide configureTableViewCell:self];
     [WPStyleGuide configureLabel:self.timestampLabel textStyle:UIFontTextStyleSubheadline];
     [WPStyleGuide configureLabel:self.badgesLabel textStyle:UIFontTextStyleSubheadline];
+    [WPStyleGuide configureLabel:self.typeLabel textStyle:UIFontTextStyleSubheadline];
 
     self.titleLabel.font = [WPStyleGuide notoBoldFontForTextStyle:UIFontTextStyleHeadline];
     self.titleLabel.adjustsFontForContentSizeCategory = YES;
     
     self.titleLabel.textColor = [UIColor murielText];
     self.badgesLabel.textColor = [UIColor murielTextSubtle];
+    self.typeLabel.textColor = [UIColor murielTextSubtle];
     self.menuButton.tintColor = [UIColor murielTextSubtle];
     [self.menuButton setImage:[UIImage gridiconOfType:GridiconTypeEllipsis] forState:UIControlStateNormal];
+    
+    self.typeIcon.tintColor = [UIColor murielTextSubtle];
 
     self.backgroundColor = [UIColor murielNeutral5];
     self.contentView.backgroundColor = [UIColor murielNeutral5];
@@ -146,6 +152,9 @@ static CGFloat const FeaturedImageSize = 120.0;
     Page *page = (Page *)self.post;
 
     NSMutableArray<NSString *> *badges = [NSMutableArray new];
+    
+    [self.typeLabel setText:@""];
+    [self.typeIcon setImage:nil];
 
     if (self.post.dateCreated != nil) {
         NSString *timestamp = [self.post isScheduled] ? [self.dateFormatter stringFromDate:self.post.dateCreated] : [self.post.dateCreated mediumString];
@@ -153,11 +162,15 @@ static CGFloat const FeaturedImageSize = 120.0;
     }
 
     if (page.isSiteHomepage) {
-        [badges addObject:NSLocalizedString(@"Homepage", @"Title of the Homepage Badge")];
+        [badges addObject:@""];
+        [self.typeLabel setText:NSLocalizedString(@"Homepage", @"Title of the Homepage Badge")];
+        [self.typeIcon setImage:[UIImage gridiconOfType:GridiconTypeHouse]];
     }
 
     if (page.isSitePostsPage) {
-        [badges addObject:NSLocalizedString(@"Posts page", @"Title of the Posts Page Badge")];
+        [badges addObject:@""];
+        [self.typeLabel setText:NSLocalizedString(@"Posts page", @"Title of the Posts Page Badge")];
+        [self.typeIcon setImage:[UIImage gridiconOfType:GridiconTypePosts]];
     }
 
     if (page.hasPrivateState) {
