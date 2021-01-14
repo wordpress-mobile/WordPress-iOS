@@ -60,12 +60,15 @@ class JetpackScanCoordinator {
         // Optimistically trigger the scanning state
         scan?.state = .scanning
 
+        // Refresh the view's scan state
         if let scan = scan {
             view.render(scan)
         }
 
+        // Since we've locally entered the scanning state, start polling
+        // but don't trigger a refresh immediately after calling because the
+        // server doesn't update its state immediately after starting a scan
         startPolling(triggerImmediately: false)
-
 
         service.startScan(for: blog) { [weak self] (success) in
             if success == false {
@@ -119,11 +122,10 @@ class JetpackScanCoordinator {
             self?.refreshData()
         })
 
-
+        // Immediately trigger the refresh if needed
         guard triggerImmediately else {
             return
         }
-        // Immediately trigger the refresh
         refreshData()
     }
 
