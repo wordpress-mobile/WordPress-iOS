@@ -7,9 +7,9 @@ struct JetpackRestoreCompleteConfiguration {
     let iconImage: UIImage
     let messageTitle: String
     let messageDescription: String
-    let hint: String
     let primaryButtonTitle: String
-    let secondaryButtonTitle: String?
+    let secondaryButtonTitle: String
+    let hint: String?
 }
 
 class BaseRestoreCompleteViewController: UIViewController {
@@ -73,9 +73,9 @@ class BaseRestoreCompleteViewController: UIViewController {
             iconImage: configuration.iconImage,
             title: configuration.messageTitle,
             description: String(format: configuration.messageDescription, publishedDate),
-            hint: configuration.hint,
             primaryButtonTitle: configuration.primaryButtonTitle,
-            secondaryButtonTitle: configuration.secondaryButtonTitle
+            secondaryButtonTitle: configuration.secondaryButtonTitle,
+            hint: configuration.hint
         )
 
         completeView.primaryButtonHandler = {

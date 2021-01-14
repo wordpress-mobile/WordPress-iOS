@@ -54,6 +54,7 @@ extension JetpackRestoreStatusViewController: JetpackRestoreStatusView {
     }
 
     func showComplete() {
-        // TODO
+        let completeVC = JetpackRestoreCompleteViewController(site: site, activity: activity)
+        self.navigationController?.pushViewController(completeVC, animated: true)
     }
 }
