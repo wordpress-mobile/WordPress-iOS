@@ -69,6 +69,11 @@ static NSInteger HideSearchMinSites = 3;
 {
     self.dataSource = [BlogListDataSource new];
     __weak __typeof(self) weakSelf = self;
+    
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        self.dataSource.showsDisclosureIndicator = NO;
+    }
+    
     self.dataSource.visibilityChanged = ^(Blog *blog, BOOL visible) {
         [weakSelf setVisible:visible forBlog:blog];
     };
@@ -799,6 +804,11 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated
 {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        [self dismissViewControllerAnimated:true completion:nil];
+        return;
+    }
+    
     if (selectedBlog != _selectedBlog || !_blogDetailsViewController) {
         _selectedBlog = selectedBlog;
         self.blogDetailsViewController = [self makeBlogDetailsViewController];

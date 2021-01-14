@@ -197,7 +197,13 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
     // MARK: - User Action Handlers
 
-    @objc private func titleButtonTapped() {
+    @objc
+    private func siteSwitcherTapped() {
+        delegate?.siteSwitcherTapped()
+    }
+
+    @objc
+    private func titleButtonTapped() {
         QuickStartTourGuide.shared.visited(.siteTitle)
         titleButton.shouldShowSpotlight = false
 
@@ -248,7 +254,7 @@ fileprivate extension NewBlogDetailHeaderView {
             button.titleLabel?.lineBreakMode = .byTruncatingTail
             button.setTitleColor(.text, for: .normal)
             button.translatesAutoresizingMaskIntoConstraints = false
-            //button.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
+            button.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
             return button
         }()
 
@@ -259,6 +265,8 @@ fileprivate extension NewBlogDetailHeaderView {
             button.setImage(image, for: .normal)
             button.contentMode = .center
             button.translatesAutoresizingMaskIntoConstraints = false
+
+            button.addTarget(self, action: #selector(siteSwitcherTapped), for: .touchUpInside)
 
             return button
         }()

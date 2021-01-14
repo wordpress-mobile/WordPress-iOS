@@ -49,7 +49,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .whatIsNew:
             return true
         case .newNavBarAppearance:
-            return false
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .unifiedPrologueCarousel:
             return false
         case .stories:

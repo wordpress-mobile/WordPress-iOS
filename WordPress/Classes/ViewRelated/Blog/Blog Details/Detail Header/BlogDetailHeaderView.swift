@@ -3,6 +3,7 @@
     func siteIconReceivedDroppedImage(_ image: UIImage?)
     func siteIconShouldAllowDroppedImages() -> Bool
     func siteTitleTapped()
+    func siteSwitcherTapped()
 }
 
 class BlogDetailHeaderView: UIView, BlogDetailHeader {

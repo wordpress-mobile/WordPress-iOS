@@ -1100,6 +1100,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self showSiteTitleSettings];
 }
 
+- (void)siteSwitcherTapped
+{
+    BlogListViewController* blogListViewController = [[BlogListViewController alloc] initWithMeScenePresenter:self.meScenePresenter];
+    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
+    
+    navigationController.modalPresentationStyle = UIModalPresentationPageSheet;
+    
+    [self presentViewController:navigationController animated:true completion:nil];
+}
+
 #pragma mark Site Icon Update Management
 
 - (void)showUpdateSiteIconAlert
