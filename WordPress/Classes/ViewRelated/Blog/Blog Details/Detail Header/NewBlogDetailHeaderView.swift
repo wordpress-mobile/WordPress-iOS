@@ -121,7 +121,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
         super.init(frame: .zero)
 
-        backgroundColor = .basicBackground
+        backgroundColor = .appBarBackground
 
         setupChildViews(items: items)
     }
