@@ -101,7 +101,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
         view.addSubview(containerStackView)
         containerStackView.axis = .vertical
 
-        if FeatureFlag.activityLogFilters.enabled {
+        if FeatureFlag.activityLogFilters.enabled && site.shouldShowActivityLogFilter() {
             setupFilterBar()
         }
 

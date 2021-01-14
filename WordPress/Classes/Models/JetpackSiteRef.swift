@@ -14,6 +14,10 @@ struct JetpackSiteRef: Hashable, Codable {
     /// The WordPress.com username.
     let username: String
 
+    private var hasBackup = false
+
+    private var hasPaidPlan = false
+
     init?(blog: Blog) {
         guard let username = blog.account?.username,
             let siteID = blog.dotComID as? Int else {
@@ -21,6 +25,8 @@ struct JetpackSiteRef: Hashable, Codable {
         }
         self.siteID = siteID
         self.username = username
+        self.hasBackup = blog.isBackupsAllowed()
+        self.hasPaidPlan = blog.hasPaidPlan
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -30,5 +36,9 @@ struct JetpackSiteRef: Hashable, Codable {
     static func ==(lhs: JetpackSiteRef, rhs: JetpackSiteRef) -> Bool {
         return lhs.siteID == rhs.siteID
             && lhs.username == rhs.username
+    }
+
+    func shouldShowActivityLogFilter() -> Bool {
+        hasBackup || hasPaidPlan
     }
 }
