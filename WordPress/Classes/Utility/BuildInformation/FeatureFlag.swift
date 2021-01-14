@@ -10,7 +10,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case homepageSettings
     case gutenbergMentions
     case gutenbergXposts
-    case gutenbergModalLayoutPicker
     case whatIsNew
     case newNavBarAppearance
     case unifiedPrologueCarousel
@@ -19,6 +18,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackScan
     case activityLogFilters
     case jetpackBackupAndRestore
+    case unseenPostCount
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -43,8 +43,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .gutenbergXposts:
             return true
-        case .gutenbergModalLayoutPicker:
-            return true
         case .whatIsNew:
             return true
         case .newNavBarAppearance:
@@ -61,6 +59,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return BuildConfiguration.current == .localDeveloper
         case .jetpackBackupAndRestore:
             return BuildConfiguration.current == .localDeveloper
+        case .unseenPostCount:
+            return false
         }
     }
 
@@ -105,8 +105,6 @@ extension FeatureFlag {
             return "Mentions in Gutenberg"
         case .gutenbergXposts:
             return "Xposts in Gutenberg"
-        case .gutenbergModalLayoutPicker:
-            return "Gutenberg Modal Layout Picker"
         case .whatIsNew:
             return "What's New / Feature Announcement"
         case .newNavBarAppearance:
@@ -123,6 +121,8 @@ extension FeatureFlag {
             return "Jetpack's Activity Log Filters"
         case .jetpackBackupAndRestore:
             return "Jetpack Backup and Restore"
+        case .unseenPostCount:
+            return "Unseen Posts Count in Reader"
         }
     }
 

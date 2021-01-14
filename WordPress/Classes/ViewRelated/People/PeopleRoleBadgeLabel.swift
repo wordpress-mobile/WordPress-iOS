@@ -1,10 +1,7 @@
 import UIKit
 import WordPressShared.WPStyleGuide
 
-@IBDesignable
 class PeopleRoleBadgeLabel: BadgeLabel {
-    // MARK: Initialization
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -15,7 +12,7 @@ class PeopleRoleBadgeLabel: BadgeLabel {
         setupView()
     }
 
-    fileprivate func setupView() {
+    private func setupView() {
         adjustsFontForContentSizeCategory = true
         adjustsFontSizeToFitWidth = true
         horizontalPadding = WPStyleGuide.People.RoleBadge.padding

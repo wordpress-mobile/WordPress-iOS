@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-10 14:54:10+0000 */
+/* Translation-Revision-Date: 2021-01-05 14:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -368,10 +368,10 @@
 "Activity Logs" = "פעילות";
 
 /* Label for the Activity Type filter button */
-"Activity Type" = "Activity Type";
+"Activity Type" = "סוג הפעילות";
 
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
-"Activity Type (%1$d)" = "Activity Type (%1$d)";
+"Activity Type (%1$d)" = "סוג הפעילות (⁦%1$d⁩)";
 
 /* Remove asset from media picker list */
 "Add" = "הוספה";
@@ -544,7 +544,7 @@
 "All tasks complete" = "כל המשימות הושלמו";
 
 /* Insights 'All-Time' header */
-"All-Time" = "All-Time";
+"All-Time" = "כל הזמנים";
 
 /* Settings: Comments Enabled */
 "Allow Comments" = "פתוח לתגובות";
@@ -871,7 +871,7 @@
 "Block duplicated" = "הבלוק שוכפל";
 
 /* Popup title about why this post is being opened in block editor */
-"Block editor enabled" = "Block editor enabled";
+"Block editor enabled" = "עורך הבלוקים הופעל";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "חסימת ניסיונות התחברות זדוניים";
@@ -1164,13 +1164,13 @@
 "Choose a time" = "לבחור שעה";
 
 /* Title to choose date range in a calendar */
-"Choose date range" = "Choose date range";
+"Choose date range" = "לבחור טווח תאריכים";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "בחירת דומיין";
 
 /* No comment provided by engineer. */
-"Choose file" = "Choose file";
+"Choose file" = "לבחור קובץ";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "בחירה מהמכשיר שלי";
@@ -1521,7 +1521,7 @@
 "Copy file URL" = "להעתיק כתובת URL של קובץ";
 
 /* Button title displayed in popup indicating the user copied the local copy */
-"Copy the version from this app" = "Copy the version from this app";
+"Copy the version from this app" = "להעתיק את הגרסה מהאפליקציה הזאת";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "יכול להיות יותר טוב";
@@ -1551,7 +1551,7 @@
 "Could not save post for later" = "לא ניתן לשמור את הפוסט למועד מאוחר יותר";
 
 /* The app failed to subscribe to the comments for the post */
-"Could not subscribe to comments" = "Could not subscribe to comments";
+"Could not subscribe to comments" = "לא ניתן היה להירשם לתגובות";
 
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "אי אפשר להפעיל\/לכבות את המעקב: חסר המאפיין blogURL";
@@ -1563,7 +1563,7 @@
 "Could not unfollow the site at the address specified." = "אי אפשר לבטל את המעקב אחר האתר בכתובת שצוינה.";
 
 /* The app failed to unsubscribe from the comments for the post */
-"Could not unsubscribe from comments" = "Could not unsubscribe from comments";
+"Could not unsubscribe from comments" = "לא ניתן היה לבטל את ההרשמה מהתגובות";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "באפשרותך לומר לנו כיצד נוכל להשתפר?";
@@ -1751,7 +1751,7 @@
 "Date Format" = "תבנית תאריך";
 
 /* Label of a button that displays a calendar */
-"Date Range" = "Date Range";
+"Date Range" = "טווח תאריכים";
 
 /* Date and Time */
 "Date and Time" = "תאריך ושעה";
@@ -2048,7 +2048,7 @@
 "Drafts" = "טיוטות";
 
 /* Label for post duplicate option. Tapping displays statistics for a post. */
-"Duplicate" = "Duplicate";
+"Duplicate" = "לשכפל";
 
 /* No comment provided by engineer. */
 "Duplicate block" = "לשכפל בלוק";
@@ -2101,7 +2101,7 @@
 "Edit sharing buttons" = "עריכת כפתורי שיתוף";
 
 /* Button title displayed in popup indicating that the user edits the post first */
-"Edit the post first" = "Edit the post first";
+"Edit the post first" = "לערוך את הפוסט קודם כל";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "לערוך באמצעות עורך אינטרנט";
@@ -2185,7 +2185,7 @@
 "Encrypted Logs" = "להצפין את היומנים";
 
 /* Placeholder for the end date in calendar range selection */
-"End Date" = "End Date";
+"End Date" = "תאריך סיום";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "להיכנס לתצוגה של מסך מלא";
@@ -2226,7 +2226,7 @@
 "Enter your email address to log in or create a WordPress.com account." = "יש להזין את כתובת האימייל שלך כדי להתחבר או ליצור חשבון ב-WordPress.com.";
 
 /* Button title. Takes the user to the login by site address flow. */
-"Enter your existing site address" = "Enter your existing site address";
+"Enter your existing site address" = "יש להזין את הכתובת של האתר החדש שלך";
 
 /* Title of a button on the magic link screen.
    Title of a button. */
@@ -2470,10 +2470,10 @@
 "Filter" = "לסנן";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
-"Filter by activity type" = "Filter by activity type";
+"Filter by activity type" = "לסנן לפי סוג הפעילות";
 
 /* Title for the find out more button in the What's New page. */
-"Find out more" = "Find out more";
+"Find out more" = "למידע נוסף";
 
 /* Description of a Quick Start Tour */
 "Find sites that speak to you, and follow them to get updates when they publish." = "באפשרותך לחפש אתרים שמעניינים אותך ולעקוב אחריהם כדי לקבל עדכונים כשהם יפרסמו תוכן חדש.";
@@ -3679,10 +3679,10 @@ translators: sample content for \"Services\" page template */
 "No Title" = "ללא כותרת";
 
 /* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities available" = "No activities available";
+"No activities available" = "אין פעילויות זמינות";
 
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities recorded in the selected date range." = "No activities recorded in the selected date range.";
+"No activities recorded in the selected date range." = "לא נרשמה פעילות בטווח התאריכים שנבחר.";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "עדיין אין פעילות";
@@ -3754,7 +3754,7 @@ translators: sample content for \"Services\" page template */
 "No likes yet" = "עדיין אין קישורים";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"No matching events found." = "No matching events found.";
+"No matching events found." = "לא נמצאו אירועים תואמים.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso.
    Phrase to show when the user search for images but there are no result to show.
@@ -3829,7 +3829,7 @@ translators: sample content for \"Services\" page template */
 "North" = "צפון";
 
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"Not Connected" = "Not Connected";
+"Not Connected" = "לא מחובר";
 
 /* Nicer dialog answer for \"No\". */
 "Not Now" = "לא עכשיו";
@@ -4399,7 +4399,7 @@ translators: sample content for \"Services\" page template */
 "Post scheduled" = "הפוסט תוזמן";
 
 /* Title displayed in popup when user tries to copy a post with unsaved changes */
-"Post sync conflict" = "Post sync conflict";
+"Post sync conflict" = "התנגשות בסנכרון הפוסט";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "כותרת הפוסט. %s";
@@ -5011,7 +5011,7 @@ translators: sample content for \"Services\" page template */
 "Saving..." = "שומר...";
 
 /* Noun. Links to a blog's Jetpack Scan screen. */
-"Scan" = "Scan";
+"Scan" = "לסרוק";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "פרסום מתוזמן";
@@ -5102,7 +5102,7 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "יש לבחור %@ כדי להמשיך";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page" = "Select %@ to create a new page";
+"Select %@ to create a new page" = "יש לבחור %@ כדי ליצור עמוד חדש";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "יש לבחור %@ כדי ליצור פוסט חדש";
@@ -5455,7 +5455,7 @@ translators: sample content for \"Services\" page template */
 "Site achievements" = "הישגי האתר";
 
 /* Accessibility label of the site address field shown when adding a self-hosted site. */
-"Site address" = "Site address";
+"Site address" = "כתובת אתר";
 
 /* No comment provided by engineer. */
 "Site address must be at least 4 characters." = "כתובת אתר צריכה להכיל לפחות 4 תווים.";
@@ -5613,7 +5613,7 @@ translators: sample content for \"Services\" page template */
 "Standard" = "רגיל";
 
 /* Placeholder for the start date in calendar range selection */
-"Start Date" = "Start Date";
+"Start Date" = "תאריך התחלה";
 
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
@@ -5969,7 +5969,7 @@ translators: sample content for \"Services\" page template */
 "The number of posts to show per page." = "מספר הפוסטים שניתן להציג בכל עמוד.";
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
-"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app.";
+"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "לפוסט שברצונך להעתיק קיימות שתי גרסאות שונות זו מזו, או שערכת את הפוסט אבל לא שמרת את השינויים.\n עליך קודם לערוך את הפוסט כדי לפתור התנגשויות בין הגרסאות ואז להמשיך בפעולת ההעתקה של הגרסה מהאפליקציה.";
 
 /* Description shown in alert to confirm skipping all quick start items */
 "The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "הסיור להתחלה מהירה ידריך אותך כיצד לבנות אתר בסיסי. בחרת להמשיך - האם ההחלטה סופית? ";
@@ -6043,7 +6043,7 @@ translators: sample content for \"Services\" page template */
 "There has been an unexpected error while sending your Invitation" = "אירעה שגיאה לא צפויה בעת שליחת ההזמנה שלך";
 
 /* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "There has been an unexpected error while sending your reply";
+"There has been an unexpected error while sending your reply" = "אירעה שגיאה לא צפויה בעת שליחת התגובה שלך";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "אירעה שגיאה לא צפויה בעת עדכון ההגדרות של הודעות שלך";
@@ -6363,7 +6363,7 @@ translators: sample content for \"Services\" page template */
 "Try a starter layout" = "לנסות את הפריסה למתחילים";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"Try adjusting your date range or activity type filters" = "Try adjusting your date range or activity type filters";
+"Try adjusting your date range or activity type filters" = "יש להתאים את המסננים של טווח התאריכים או של סוג הפעילות";
 
 /* Button label for trying to retrieve the activities type again
    Button that lets users try to reload the plugin directory after loading failure
@@ -7054,7 +7054,7 @@ translators: sample content for \"Services\" page template */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "אין אפשרות להתחבר לאתר Jetpack בכתובת URL זו. יש ליצור אתנו קשר לעזרה.";
 
 /* Instruction text after a signup Magic Link was requested. */
-"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com.";
+"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "שלחנו לך קישור הרשמה ליצירת חשבון WordPress.com חדש. בדוק את האימייל שלך במכשיר הנוכחי, ותקיש על הלינק שקיבלת מ WordPress.com.";
 
 /* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
 "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "נתקלנו בבעיות בשינוי הדומיין הראשי באתר שלך – אל דאגה, הדומיין שלך נרכש בהצלחה.";
@@ -7115,7 +7115,7 @@ translators: sample content for \"Services\" page template */
 
 /* Opens the What's New / Feature Announcement modal
    Title of the What's new page. */
-"What's New in WordPress" = "What's New in WordPress";
+"What's New in WordPress" = "מה חדש בוורדפרס";
 
 /* Title of alert helping users understand their site address */
 "What's my site address?" = "מה כתובת האתר שלי?";
@@ -7373,7 +7373,7 @@ translators: sample content for \"Services\" page template */
 "You may whitelist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "באפשרותך להכניס כתובת IP או סדרת כתובות לרשימת ההיתרים ובכך למנוע לחלוטין את חסימתם על ידי Jetpack. יש תמיכה בגרסאות IPv4 ו-IPv6. כדי לציין טווח, יש להזין את הערך הנמוך והערך הגבוה כשהם מופרדים באמצעות מקף. לדוגמה: ‎12.12.12.1-12.12.12.100.‎‎";
 
 /* A suggestion of topics the user might like */
-"You might like" = "You might like";
+"You might like" = "אולי יעניין אותך";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "יש להיכנס לחשבון וורדפרס.קום כדי לבצע פעולה זו.";
@@ -7537,7 +7537,7 @@ translators: sample content for \"Services\" page template */
 "in \"Upgrade\"" = "תחת 'שדרוג'";
 
 /* Relative time format */
-"just now" = "just now";
+"just now" = "ממש עכשיו";
 
 /* Later today */
 "later today" = "מאוחר יותר היום";

@@ -59,7 +59,9 @@ extension ReaderTagsTableViewModel {
             let topic = tableViewHandler.resultsController.object(at: adjustIndexPath) as? ReaderTagTopic else {
                 return
         }
+
         unfollow(topic)
+        NotificationCenter.default.post(name: .ReaderTopicUnfollowed, object: nil, userInfo: [topicUserInfoKey: topic])
     }
 
     /// Presents a new view controller for subscribing to a new tag.

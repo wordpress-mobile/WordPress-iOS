@@ -27,8 +27,8 @@ public class SiteSuggestion: NSManagedObject, Decodable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.title = try container.decode(String.self, forKey: .title)
-        self.siteURL = try container.decode(URL.self, forKey: .siteURL)
+        self.siteURL = try? container.decode(URL.self, forKey: .siteURL)
         self.subdomain = try container.decode(String.self, forKey: .subdomain)
-        self.blavatarURL = try container.decode(URL.self, forKey: .blavatarURL)
+        self.blavatarURL = try? container.decode(URL.self, forKey: .blavatarURL)
     }
 }
