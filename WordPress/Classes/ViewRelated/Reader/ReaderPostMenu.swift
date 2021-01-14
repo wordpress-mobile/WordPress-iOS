@@ -61,15 +61,17 @@ open class ReaderPostMenu {
                     self.toggleFollowingForPost(post, viewController)
                 }
         })
-
+        
         // Seen
-        alertController.addActionWithTitle(post.isSeen ? ReaderPostMenuButtonTitles.markUnseen : ReaderPostMenuButtonTitles.markSeen,
-                                           style: .default,
-                                           handler: { (action: UIAlertAction) in
-                                            if let post: ReaderPost = self.existingObject(for: post.objectID, context: post.managedObjectContext) {
-                                                self.toggleSeenForPost(post)
-                                            }
-                                           })
+        if FeatureFlag.unseenPostCount.enabled {
+            alertController.addActionWithTitle(post.isSeen ? ReaderPostMenuButtonTitles.markUnseen : ReaderPostMenuButtonTitles.markSeen,
+                                               style: .default,
+                                               handler: { (action: UIAlertAction) in
+                                                if let post: ReaderPost = self.existingObject(for: post.objectID, context: post.managedObjectContext) {
+                                                    self.toggleSeenForPost(post)
+                                                }
+                                               })
+        }
 
         // Visit site
         alertController.addActionWithTitle(ReaderPostMenuButtonTitles.visit,
