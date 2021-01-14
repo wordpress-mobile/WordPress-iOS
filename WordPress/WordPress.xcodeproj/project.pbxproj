@@ -2306,6 +2306,7 @@
 		FAB800B225AEE3C600D5D54A /* RestoreCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */; };
 		FAB800C225AEE3D200D5D54A /* RestoreCompleteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAB800C125AEE3D200D5D54A /* RestoreCompleteView.xib */; };
 		FAB8AA2225AF031200F9F8A0 /* BaseRestoreCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8AA2125AF031200F9F8A0 /* BaseRestoreCompleteViewController.swift */; };
+		FAB8AB5F25AFFD0600F9F8A0 /* JetpackRestoreStatusCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8AB5E25AFFD0600F9F8A0 /* JetpackRestoreStatusCoordinator.swift */; };
 		FAB8F75025AD72CE00D5D54A /* BaseRestoreOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8F74F25AD72CE00D5D54A /* BaseRestoreOptionsViewController.swift */; };
 		FAB8F76E25AD73C000D5D54A /* JetpackDownloadBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8F76D25AD73C000D5D54A /* JetpackDownloadBackupViewController.swift */; };
 		FAB8F78C25AD785400D5D54A /* BaseRestoreStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8F78B25AD785400D5D54A /* BaseRestoreStatusViewController.swift */; };
@@ -5056,6 +5057,7 @@
 		FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreCompleteView.swift; sourceTree = "<group>"; };
 		FAB800C125AEE3D200D5D54A /* RestoreCompleteView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RestoreCompleteView.xib; sourceTree = "<group>"; };
 		FAB8AA2125AF031200F9F8A0 /* BaseRestoreCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRestoreCompleteViewController.swift; sourceTree = "<group>"; };
+		FAB8AB5E25AFFD0600F9F8A0 /* JetpackRestoreStatusCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreStatusCoordinator.swift; sourceTree = "<group>"; };
 		FAB8F74F25AD72CE00D5D54A /* BaseRestoreOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRestoreOptionsViewController.swift; sourceTree = "<group>"; };
 		FAB8F76D25AD73C000D5D54A /* JetpackDownloadBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackDownloadBackupViewController.swift; sourceTree = "<group>"; };
 		FAB8F78B25AD785400D5D54A /* BaseRestoreStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRestoreStatusViewController.swift; sourceTree = "<group>"; };
@@ -11020,7 +11022,7 @@
 		FA1A564825A708D30033967D /* Restore Status */ = {
 			isa = PBXGroup;
 			children = (
-				FAB8FD4F25AEB0F500D5D54A /* JetpackBackupStatusCoordinator.swift */,
+				FAB8AB5D25AFFCE900F9F8A0 /* Coordinators */,
 				FAB8F78B25AD785400D5D54A /* BaseRestoreStatusViewController.swift */,
 				FAF13E2F25A59240003EE470 /* JetpackRestoreStatusViewController.swift */,
 				FAB8F7A925AD792500D5D54A /* JetpackBackupStatusViewController.swift */,
@@ -11064,6 +11066,15 @@
 				FAB800C125AEE3D200D5D54A /* RestoreCompleteView.xib */,
 			);
 			path = "Restore Complete";
+			sourceTree = "<group>";
+		};
+		FAB8AB5D25AFFCE900F9F8A0 /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				FAB8AB5E25AFFD0600F9F8A0 /* JetpackRestoreStatusCoordinator.swift */,
+				FAB8FD4F25AEB0F500D5D54A /* JetpackBackupStatusCoordinator.swift */,
+			);
+			path = Coordinators;
 			sourceTree = "<group>";
 		};
 		FF2716901CAAC87B0006E2D4 /* WordPressUITests */ = {
@@ -13026,6 +13037,7 @@
 				3234BB172530DFCA0068DA40 /* ReaderTableCardCell.swift in Sources */,
 				7462BFD42028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift in Sources */,
 				D80BC7A02074722000614A59 /* CameraCaptureCoordinator.swift in Sources */,
+				FAB8AB5F25AFFD0600F9F8A0 /* JetpackRestoreStatusCoordinator.swift in Sources */,
 				F913BB0E24B3C58B00C19032 /* EventLoggingDelegate.swift in Sources */,
 				4089C51022371B120031CE78 /* TodayStatsRecordValue+CoreDataClass.swift in Sources */,
 				988F073523D0CE8800AC67A6 /* WidgetUrlCell.swift in Sources */,
