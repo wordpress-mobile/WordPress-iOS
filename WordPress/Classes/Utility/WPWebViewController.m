@@ -71,7 +71,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         _optionsButton = configuration.optionsButton;
         _secureInteraction = configuration.secureInteraction;
         _addsWPComReferrer = configuration.addsWPComReferrer;
-        _addsHideMasterbarParameters = configuration.addsHideMasterbarParameters;
         _customTitle = configuration.customTitle;
         _authenticator = configuration.authenticator;
     }
@@ -248,11 +247,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     NSMutableURLRequest *mutableRequest = [request isKindOfClass:[NSMutableURLRequest class]] ? (NSMutableURLRequest *)request : [request mutableCopy];
     if (self.addsWPComReferrer) {
         [mutableRequest setValue:WPComReferrerURL forHTTPHeaderField:@"Referer"];
-    }
-
-    if (self.addsHideMasterbarParameters &&
-        ([mutableRequest.URL.host containsString:WPComDomain] || [mutableRequest.URL.host containsString:AutomatticDomain])) {
-        mutableRequest.URL = [mutableRequest.URL appendingHideMasterbarParameters];
     }
 
     [mutableRequest setValue:[WPUserAgent wordPressUserAgent] forHTTPHeaderField:@"User-Agent"];
