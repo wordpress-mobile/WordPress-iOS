@@ -7,8 +7,6 @@
 #import "WordPress-Swift.h"
 @import AutomatticTracks;
 
-static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.wordpress.com";
-
 @interface  TracksEventPair : NSObject
 @property (nonatomic, copy) NSString *eventName;
 @property (nonatomic, strong) NSDictionary *properties;
@@ -96,7 +94,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
 - (void)beginSession
 {
     if (self.loggedInID.length > 0) {
-        [self.tracksService switchToAuthenticatedUserWithUsername:self.loggedInID userID:nil wpComToken:[self tokenForUsername:self.loggedInID] skipAliasEventCreation:YES];
+        [self.tracksService switchToAuthenticatedUserWithUsername:self.loggedInID userID:nil wpComToken:[WPAccount tokenForUsername:self.loggedInID] skipAliasEventCreation:YES];
     } else {
         [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
     }
@@ -173,14 +171,14 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             self.loggedInID = username;
             self.anonymousID = nil;
 
-            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" wpComToken:[self tokenForUsername:username] skipAliasEventCreation:NO];
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" wpComToken:[WPAccount tokenForUsername:username] skipAliasEventCreation:NO];
         } else if ([self.loggedInID isEqualToString:username]){
             // Username did not change from last refreshMetadata - just make sure Tracks client has it
-            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" wpComToken:[self tokenForUsername:username] skipAliasEventCreation:YES];
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" wpComToken:[WPAccount tokenForUsername:username] skipAliasEventCreation:YES];
         } else {
             // Username changed for some reason - switch back to anonymous first
             [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
-            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" wpComToken:[self tokenForUsername:username] skipAliasEventCreation:NO];
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" wpComToken:[WPAccount tokenForUsername:username] skipAliasEventCreation:NO];
             self.loggedInID = username;
             self.anonymousID = nil;
         }
@@ -242,18 +240,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     }
 
     [[NSUserDefaults standardUserDefaults] setObject:loggedInID forKey:TracksUserDefaultsLoggedInUserIDKey];
-}
-
-- (NSString *)tokenForUsername:(NSString *)username
-{
-    NSError *error = nil;
-    NSString *authToken = [SFHFKeychainUtils getPasswordForUsername:username
-                                                     andServiceName:WordPressComOAuthKeychainServiceName error:&error];
-    if (error) {
-        DDLogError(@"Error while retrieving WordPressComOAuthKeychainServiceName token: %@", error);
-    }
-
-    return authToken;
 }
 
 + (TracksEventPair *)eventPairForStat:(WPAnalyticsStat)stat
