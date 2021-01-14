@@ -5,6 +5,13 @@ import WordPressUI
 
 class JetpackRestoreStatusViewController: BaseRestoreStatusViewController {
 
+    // MARK: - Properties
+
+    private lazy var coordinator: JetpackRestoreStatusCoordinator = {
+        return JetpackRestoreStatusCoordinator(site: self.site, rewindID: self.activity.rewindID, view: self)
+    }()
+
+
     // MARK: - Initialization
 
     override init(site: JetpackSiteRef, activity: Activity, restoreTypes: JetpackRestoreTypes) {
@@ -27,6 +34,26 @@ class JetpackRestoreStatusViewController: BaseRestoreStatusViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        coordinator.start()
     }
 
+}
+
+extension JetpackRestoreStatusViewController: JetpackRestoreStatusView {
+
+    func render(_ rewindStatus: RewindStatus) {
+        guard let progress = rewindStatus.restore?.progress else {
+            return
+        }
+
+        statusView.update(progress: progress)
+    }
+
+    func showError() {
+        // TODO
+    }
+
+    func showComplete() {
+        // TODO
+    }
 }
