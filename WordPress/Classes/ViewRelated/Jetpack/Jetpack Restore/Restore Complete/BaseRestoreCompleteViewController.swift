@@ -57,6 +57,7 @@ class BaseRestoreCompleteViewController: UIViewController {
     private func configureTitle() {
         title = configuration.title
     }
+
     private func configureNavigation() {
         navigationItem.hidesBackButton = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
