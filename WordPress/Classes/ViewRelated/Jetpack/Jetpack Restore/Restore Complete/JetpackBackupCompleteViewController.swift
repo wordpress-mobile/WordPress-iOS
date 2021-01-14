@@ -30,4 +30,14 @@ class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
         super.viewDidLoad()
     }
 
+    // MARK: - Override
+
+    override func primaryButtonTapped() {
+        // TODO: download file
+    }
+
+    override func secondaryButtonTapped() {
+        // TODO: share link
+    }
+
 }

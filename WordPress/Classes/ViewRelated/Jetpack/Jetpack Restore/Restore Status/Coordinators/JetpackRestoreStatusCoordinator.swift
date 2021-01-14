@@ -35,7 +35,7 @@ class JetpackRestoreStatusCoordinator {
     }
 
     private func pollRestoreStatus() {
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
+        Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { [weak self] timer in
             guard let self = self else { return }
 
             self.service.getRewindStatus(for: self.site, success: { rewindStatus in

@@ -24,6 +24,12 @@ class BaseRestoreCompleteViewController: UIViewController {
         return ActivityDateFormatting.mediumDateFormatterWithTime(for: site)
     }()
 
+    private lazy var completeView: RestoreCompleteView = {
+        let completeView = RestoreCompleteView.loadFromNib()
+        completeView.translatesAutoresizingMaskIntoConstraints = false
+        return completeView
+    }()
+
     // MARK: - Initialization
 
     init(site: JetpackSiteRef, activity: Activity) {
@@ -52,6 +58,16 @@ class BaseRestoreCompleteViewController: UIViewController {
         configureRestoreCompleteView()
     }
 
+    // MARK: - Public
+
+    func primaryButtonTapped() {
+        fatalError("Must override in subclass")
+    }
+
+    func secondaryButtonTapped() {
+        fatalError("Must override in subclass")
+    }
+
     // MARK: - Configure
 
     private func configureTitle() {
@@ -66,7 +82,6 @@ class BaseRestoreCompleteViewController: UIViewController {
     }
 
     private func configureRestoreCompleteView() {
-        let completeView = RestoreCompleteView.loadFromNib()
         let publishedDate = dateFormatter.string(from: activity.published)
 
         completeView.configure(
@@ -78,15 +93,14 @@ class BaseRestoreCompleteViewController: UIViewController {
             hint: configuration.hint
         )
 
-        completeView.primaryButtonHandler = {
-            // TODO
+        completeView.primaryButtonHandler = { [weak self] in
+            self?.primaryButtonTapped()
         }
 
-        completeView.secondaryButtonHandler = {
-            // TODO
+        completeView.secondaryButtonHandler = { [weak self] in
+            self?.secondaryButtonTapped()
         }
 
-        completeView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(completeView)
         view.pinSubviewToAllEdges(completeView)
     }

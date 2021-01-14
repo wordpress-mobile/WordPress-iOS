@@ -30,4 +30,14 @@ class JetpackRestoreCompleteViewController: BaseRestoreCompleteViewController {
         super.viewDidLoad()
     }
 
+    // MARK: - Override
+
+    override func primaryButtonTapped() {
+        self.dismiss(animated: true)
+    }
+
+    override func secondaryButtonTapped() {
+        // TODO: visit site
+    }
+
 }
