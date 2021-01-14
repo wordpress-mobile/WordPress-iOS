@@ -943,7 +943,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                        completionHandler:(void (^)(void))completion
 {
     return ^void(RemoteBlog *remoteBlog) {
-        [[[JetpackCapabilitiesService alloc] init] syncWithBlogs:[NSArray arrayWithObject:remoteBlog] success:^(NSArray<RemoteBlog *> *blogs) {
+        [[[JetpackCapabilitiesService alloc] init] syncWithBlogs:@[remoteBlog] success:^(NSArray<RemoteBlog *> *blogs) {
             [self.managedObjectContext performBlock:^{
                 NSError *error = nil;
                 Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
