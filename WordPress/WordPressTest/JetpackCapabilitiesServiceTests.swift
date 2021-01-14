@@ -3,8 +3,6 @@ import XCTest
 
 @testable import WordPress
 
-/// GravatarService Unit Tests
-///
 class JetpackCapabilitiesServiceTests: XCTestCase {
 
     /// Gives the correct siteIDs to the remote service
