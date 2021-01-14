@@ -527,7 +527,7 @@ extension BaseActivityListViewController: ActivityTypeSelectorDelegate {
         } else {
             let totalActivitiesSelected = selectedGroups.map { $0.count }.reduce(0, +)
             var selectTypeProperties: [AnyHashable: Any] = [:]
-            selectedGroups.forEach { selectTypeProperties["filter_group_\($0.key)"] = true }
+            selectedGroups.forEach { selectTypeProperties["group_\($0.key)"] = true }
             selectTypeProperties["num_groups_selected"] = selectedGroups.count
             selectTypeProperties["num_total_activities_selected"] = totalActivitiesSelected
             WPAnalytics.track(.activitylogFilterbarSelectType, properties: selectTypeProperties)
