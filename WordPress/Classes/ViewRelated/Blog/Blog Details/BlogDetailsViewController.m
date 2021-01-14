@@ -405,6 +405,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [self reloadTableViewPreservingSelection];
     [self preloadBlogData];
+    
+    [self showInitialDetails];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -460,6 +462,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     // Required to update disclosure indicators depending on split view status
     [self reloadTableViewPreservingSelection];
+}
+
+- (void)showInitialDetails
+{
+    if ([self splitViewControllerIsHorizontallyCompact]) {
+        return;
+    }
+    
+    [self showDetailViewForSubsection:BlogDetailsSubsectionStats];
 }
 
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section
@@ -1119,6 +1130,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     self.headerView.blog = blog;
     self.blog = blog;
+    
+    [self showInitialDetails];
     [self.tableView reloadData];
 }
 

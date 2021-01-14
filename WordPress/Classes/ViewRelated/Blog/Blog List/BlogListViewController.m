@@ -813,7 +813,7 @@ static NSInteger HideSearchMinSites = 3;
             DDLogError(@"There's no site-selection callback assigned to the site picker.");
             [self dismissViewControllerAnimated:animated completion:nil];
         }
-        
+
         return;
     }
     
