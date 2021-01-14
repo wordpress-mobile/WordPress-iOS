@@ -676,7 +676,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.45.0-alpha1
   WordPressKit:
-    :commit: 7041171471549a82e579bfa35006b1c45f924fc7
+    :commit: ff29654ca8e5863840bae9243e35038396951f88
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
@@ -774,6 +774,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: 14d0f1aeb01c639d4de1e2a5fdb191e168141e00
+PODFILE CHECKSUM: 7f154181361db7cffc97b16e06308f5ec8b18cac
 
 COCOAPODS: 1.10.1
