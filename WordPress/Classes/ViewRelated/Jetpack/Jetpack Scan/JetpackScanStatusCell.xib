@@ -40,8 +40,14 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3IH-nw-vyL">
+                                <rect key="frame" x="10" y="98.5" width="425" height="8"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="8" id="ffh-oY-vRs"/>
+                                </constraints>
+                            </progressView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0Y-0s-mES">
-                                <rect key="frame" x="10" y="98.5" width="425" height="52.5"/>
+                                <rect key="frame" x="10" y="116.5" width="425" height="34.5"/>
                                 <string key="text">We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -59,6 +65,9 @@
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="primaryButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="bK2-6E-P6z"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="749" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gTh-o0-42f" customClass="FancyButton" customModule="WordPressUI">
                                 <rect key="frame" x="10" y="205" width="425" height="34"/>
@@ -72,6 +81,9 @@
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="NO"/>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="secondaryButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="f7N-nO-b4k"/>
+                                </connections>
                             </button>
                         </subviews>
                         <edgeInsets key="layoutMargins" top="10" left="10" bottom="10" right="10"/>
@@ -89,6 +101,7 @@
                 <outlet property="iconContainerView" destination="i3y-0r-qdg" id="a8h-6D-MT1"/>
                 <outlet property="iconImageView" destination="6Dq-eg-0YB" id="Yi8-cN-DY3"/>
                 <outlet property="primaryButton" destination="UhM-1P-HcV" id="SZs-Xy-hpD"/>
+                <outlet property="progressView" destination="3IH-nw-vyL" id="BOZ-G9-iFl"/>
                 <outlet property="secondaryButton" destination="gTh-o0-42f" id="nUe-7r-qNn"/>
                 <outlet property="titleLabel" destination="KGG-nP-4Q3" id="ci3-ID-vFr"/>
             </connections>
