@@ -37,7 +37,7 @@ class JetpackScanCoordinator {
         service.getScan(for: blog) { [weak self] scanObj in
             self?.refreshDidSucceed(with: scanObj)
         } failure: { [weak self] error in
-            DDLogError("Error fetching scan object: \(String(describing: error.localizedDescription))")
+            DDLogError("Error fetching scan object: \(String(describing: error?.localizedDescription))")
 
             self?.view.showError()
         }
@@ -72,7 +72,7 @@ class JetpackScanCoordinator {
                 self?.view.showError()
             }
         } failure: { [weak self] (error) in
-            DDLogError("Error starting scan: \(String(describing: error.localizedDescription))")
+            DDLogError("Error starting scan: \(String(describing: error?.localizedDescription))")
 
             self?.view.showError()
         }

@@ -8,24 +8,27 @@ import Foundation
         return JetpackScanServiceRemote(wordPressComRestApi: api)
     }()
 
-    @objc func getScanAvailable(for blog: Blog, success: @escaping(Bool) -> Void, failure: @escaping(Error) -> Void) {
+    @objc func getScanAvailable(for blog: Blog, success: @escaping(Bool) -> Void, failure: @escaping(Error?) -> Void) {
         guard let siteID = blog.dotComID?.intValue else {
+            failure(nil)
             return
         }
 
         service.getScanAvailableForSite(siteID, success: success, failure: failure)
     }
 
-    func getScan(for blog: Blog, success: @escaping(JetpackScan) -> Void, failure: @escaping(Error) -> Void) {
+    func getScan(for blog: Blog, success: @escaping(JetpackScan) -> Void, failure: @escaping(Error?) -> Void) {
         guard let siteID = blog.dotComID?.intValue else {
+            failure(nil)
             return
         }
 
         service.getScanForSite(siteID, success: success, failure: failure)
     }
 
-    func startScan(for blog: Blog, success: @escaping(Bool) -> Void, failure: @escaping(Error) -> Void) {
+    func startScan(for blog: Blog, success: @escaping(Bool) -> Void, failure: @escaping(Error?) -> Void) {
         guard let siteID = blog.dotComID?.intValue else {
+            failure(nil)
             return
         }
 
