@@ -61,7 +61,7 @@ open class ReaderPostMenu {
                     self.toggleFollowingForPost(post, viewController)
                 }
         })
-        
+
         // Seen
         if FeatureFlag.unseenPostCount.enabled {
             alertController.addActionWithTitle(post.isSeen ? ReaderPostMenuButtonTitles.markUnseen : ReaderPostMenuButtonTitles.markSeen,
