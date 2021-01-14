@@ -24,9 +24,9 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     // MARK: - View Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        coordinator.refreshData(showLoading: true)
 
         configureTableView()
+        coordinator.viewDidLoad()
     }
 
     override func viewWillDisappear(_ animated: Bool) {

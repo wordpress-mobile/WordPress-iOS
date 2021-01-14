@@ -29,11 +29,13 @@ class JetpackScanCoordinator {
         self.view = view
     }
 
-    public func refreshData(showLoading: Bool = false) {
-        if showLoading {
-            view.showLoading()
-        }
+    public func viewDidLoad() {
+        view.showLoading()
 
+        refreshData()
+    }
+
+    public func refreshData() {
         service.getScan(for: blog) { [weak self] scanObj in
             self?.refreshDidSucceed(with: scanObj)
         } failure: { [weak self] error in
