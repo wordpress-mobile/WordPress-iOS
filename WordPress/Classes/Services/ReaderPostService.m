@@ -473,6 +473,8 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         // Define failure block. Make sure rollback happens in the managedObjectContext's queue.
         void (^failureBlock)(NSError *error) = ^void(NSError *error) {
             [self.managedObjectContext performBlockAndWait:^{
+                
+                DDLogError(@"Error while toggling post Seen status: %@", error);
                 readerPost.isSeen = oldValue;
                 
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
