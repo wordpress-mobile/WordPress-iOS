@@ -17,21 +17,6 @@ class JetpackCapabilitiesServiceTests: XCTestCase {
         XCTAssertEqual(remoteMock.forCalledWithSiteIds, [100])
     }
 
-    /// In case of a failure in remote, calls the success with the current given blogs
-    func testFailureCallsSuccess() {
-        let expect = expectation(description: "Calls success block")
-
-        let remoteMock = JetpackCapabilitiesServiceRemoteMock()
-        let service = JetpackCapabilitiesService(capabilitiesServiceRemote: remoteMock)
-        remoteMock.fails = true
-
-        service.sync(blogs: [RemoteBlog.mock()], success: { _ in
-            expect.fulfill()
-        })
-
-        waitForExpectations(timeout: 1, handler: nil)
-    }
-
     /// Changes the RemoteBlog to contain the returned Jetpack Capabilities
     func testChangeRemoteBlogCapabilities() {
         let expect = expectation(description: "Adds jetpack capabilities into the RemoteBlog")
@@ -51,19 +36,14 @@ class JetpackCapabilitiesServiceTests: XCTestCase {
 
 class JetpackCapabilitiesServiceRemoteMock: JetpackCapabilitiesServiceRemote {
     var forCalledWithSiteIds: [Int] = []
-    var fails = false
 
-    override func `for`(siteIds: [Int], success: @escaping ([String: AnyObject]) -> Void, failure: @escaping () -> Void) {
+    override func `for`(siteIds: [Int], success: @escaping ([String: AnyObject]) -> Void) {
         forCalledWithSiteIds = siteIds
 
-        if fails {
-            failure()
-        } else {
-            var capabilities: [String: AnyObject] = [:]
-            siteIds.forEach { capabilities["\($0)"] = ["backup", "scan"] as AnyObject }
+        var capabilities: [String: AnyObject] = [:]
+        siteIds.forEach { capabilities["\($0)"] = ["backup", "scan"] as AnyObject }
 
-            success(capabilities)
-        }
+        success(capabilities)
     }
 }
 

@@ -30,9 +30,6 @@ import WordPressKit
                         }
                     }
                     success(blogs)
-                 }, failure: {
-                    // In case of a failure, just return the blogs
-                    success(blogs)
                  })
     }
 
