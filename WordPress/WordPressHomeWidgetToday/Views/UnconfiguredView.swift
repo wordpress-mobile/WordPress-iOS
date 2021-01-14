@@ -9,7 +9,7 @@ struct UnconfiguredView: View {
             .padding()
     }
 
-    static let unconfiguredMessage = LocalizedStringKey("widget.today.unconfigured.view.title", defaultValue: "Log in to WordPress to see today's stats.", comment: "Title of the unconfigured view in today widget")
+    static let unconfiguredMessage = LocalizableStrings.unconfiguredViewTitle
 }
 
 struct PlaceholderView_Previews: PreviewProvider {

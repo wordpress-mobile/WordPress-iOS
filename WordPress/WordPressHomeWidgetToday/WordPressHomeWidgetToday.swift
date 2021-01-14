@@ -6,10 +6,8 @@ struct SiteListProvider: IntentTimelineProvider {
     let service = HomeWidgetTodayRemoteService()
 
     private var defaultSiteID: Int? {
-        // TODO - TODAYWIDGET: taking the default site id from user defaults for now.
-        // This would change if the old widget gets reconfigured to a different site than the default.
-        // This will be updated with the configuration intent.
-        UserDefaults(suiteName: WPAppGroupName)?.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? Int
+
+        UserDefaults(suiteName: WPAppGroupName)?.object(forKey: WPStatsHomeWidgetsUserDefaultsSiteIdKey) as? Int
     }
 
     private func widgetData(for siteID: String) -> HomeWidgetTodayData? {
@@ -21,8 +19,6 @@ struct SiteListProvider: IntentTimelineProvider {
         return HomeWidgetTodayData.read()?[siteID]
     }
 
-    // TODO - TODAYWIDGET: This can serve as static content to display in the preview if no data are yet available
-    // we should define what to put in here
     static let placeholderContent = HomeWidgetTodayData(siteID: 0,
                                                         siteName: "My WordPress Site",
                                                         iconURL: nil,
@@ -63,8 +59,6 @@ struct SiteListProvider: IntentTimelineProvider {
 
     func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<HomeWidgetTodayEntry>) -> Void) {
 
-        /// - TODO: review this guard... it's crazy we'd have to ever show static content.  Maybe we need to show an error message?
-        ///
         guard let site = configuration.site,
               let siteIdentifier = site.identifier,
               let widgetData = widgetData(for: siteIdentifier) else {
@@ -132,8 +126,8 @@ struct WordPressHomeWidgetToday: Widget {
 
             return TodayWidgetView(timelineEntry: entry)
         }
-        .configurationDisplayName("Today")
-        .description("Stay up to date with today's activity on your WordPress site.")
+        .configurationDisplayName(LocalizableStrings.widgetTitle)
+        .description(LocalizableStrings.previewDescription)
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
