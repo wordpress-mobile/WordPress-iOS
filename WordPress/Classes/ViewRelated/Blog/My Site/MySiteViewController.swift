@@ -54,7 +54,26 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if Feature.enabled(.newNavBarAppearance) {
+            workaroundLargeTitleCollapseBug()
+        }
+    }
+
     // MARK: - Navigation Item
+
+    /// In iPad and iOS 14, the large-title bar is collapsed when the VC is first loaded.  Call this method from
+    /// `viewDidAppear(_:)` to quickly refresh the navigation bar so that it's expanded.
+    ///
+    private func workaroundLargeTitleCollapseBug() {
+        guard !splitViewControllerIsHorizontallyCompact else {
+            return
+        }
+
+        navigationController?.navigationBar.sizeToFit()
+    }
 
     private func setupNavigationItem() {
         navigationItem.largeTitleDisplayMode = .always
