@@ -63,7 +63,7 @@ open class ReaderPostMenu {
         })
 
         // Seen
-        if FeatureFlag.unseenPostCount.enabled {
+        if FeatureFlag.unseenPosts.enabled {
             alertController.addActionWithTitle(post.isSeen ? ReaderPostMenuButtonTitles.markUnseen : ReaderPostMenuButtonTitles.markSeen,
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
