@@ -74,6 +74,7 @@ NSString *const WPShareExtensionRecentSitesKey                      = @"WPShareE
 NSString *const WPStatsTodayWidgetKeychainTokenKey                  = @"OAuth2Token";
 NSString *const WPStatsTodayWidgetKeychainServiceName               = @"TodayWidget";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteIdKey             = @"WordPressTodayWidgetSiteId";
+NSString *const WPStatsHomeWidgetsUserDefaultsSiteIdKey             = @"WordPressHomeWidgetsSiteId";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey           = @"WordPressTodayWidgetSiteName";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteUrlKey            = @"WordPressTodayWidgetSiteUrl";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPressTodayWidgetTimeZone";
