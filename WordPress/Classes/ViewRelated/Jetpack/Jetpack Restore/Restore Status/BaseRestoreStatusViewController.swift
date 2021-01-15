@@ -13,10 +13,18 @@ struct JetpackRestoreStatusConfiguration {
 
 class BaseRestoreStatusViewController: UIViewController {
 
+    // MARK: - Public Properties
+
+    lazy var statusView: RestoreStatusView = {
+        let statusView = RestoreStatusView.loadFromNib()
+        statusView.translatesAutoresizingMaskIntoConstraints = false
+        return statusView
+    }()
+
     // MARK: - Private Properties
 
-    private let site: JetpackSiteRef
-    private let activity: Activity
+    private(set) var site: JetpackSiteRef
+    private(set) var activity: Activity
     private let restoreTypes: JetpackRestoreTypes
     private let configuration: JetpackRestoreStatusConfiguration
 
@@ -70,7 +78,6 @@ class BaseRestoreStatusViewController: UIViewController {
     }
 
     private func configureRestoreStatusView() {
-        let statusView = RestoreStatusView.loadFromNib()
         let publishedDate = dateFormatter.string(from: activity.published)
 
         statusView.configure(
@@ -85,7 +92,6 @@ class BaseRestoreStatusViewController: UIViewController {
             self?.dismiss(animated: true)
         }
 
-        statusView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(statusView)
         view.pinSubviewToAllEdges(statusView)
     }
