@@ -18,7 +18,7 @@ class ActivityListViewModel: Observable {
     private let noResultsTexts: ActivityListConfiguration
     private var storeReceipt: Receipt?
 
-    var numberOfItemsPerPage = 20
+    private var numberOfItemsPerPage = 20
     private var page = 0
     private(set) var after: Date?
     private(set) var before: Date?
@@ -55,10 +55,13 @@ class ActivityListViewModel: Observable {
 
     init(site: JetpackSiteRef,
          store: ActivityStore = StoreContainer.shared.activity,
-         noResultsTexts: ActivityListConfiguration) {
+         configuration: ActivityListConfiguration) {
         self.site = site
         self.store = store
-        self.noResultsTexts = noResultsTexts
+        self.noResultsTexts = configuration
+
+        numberOfItemsPerPage = configuration.numberOfItemsPerPage
+        store.numberOfItemsPerPage = numberOfItemsPerPage
 
         activitiesReceipt = store.query(.activities(site: site))
         rewindStatusReceipt = store.query(.restoreStatus(site: site))

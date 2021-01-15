@@ -1,12 +1,8 @@
 import Foundation
 
 class BackupListViewController: BaseActivityListViewController {
-    // Since the pagination is being done client side we use a bigger page size
-    private let numberOfItemsPerPage = 100
-
     override init(site: JetpackSiteRef, store: ActivityStore, isFreeWPCom: Bool = false) {
         store.onlyRestorableItems = true
-        store.numberOfItemsPerPage = numberOfItemsPerPage
 
         let activityListConfiguration = ActivityListConfiguration(
             title: NSLocalizedString("Backup", comment: "Title for the Jetpack's backup list"),
@@ -17,13 +13,13 @@ class BackupListViewController: BaseActivityListViewController {
             noMatchingSubtitle: NSLocalizedString("Try adjusting your date range filter", comment: "Text displayed in the view when there aren't any backups to display for a given filter."),
             filterbarRangeButtonTapped: .backupFilterbarRangeButtonTapped,
             filterbarSelectRange: .backupFilterbarSelectRange,
-            filterbarResetRange: .backupFilterbarResetRange
+            filterbarResetRange: .backupFilterbarResetRange,
+            numberOfItemsPerPage: 100
         )
 
         super.init(site: site, store: store, configuration: activityListConfiguration, isFreeWPCom: isFreeWPCom)
 
         activityTypeFilterChip.isHidden = true
-        viewModel.numberOfItemsPerPage = numberOfItemsPerPage
     }
 
     required init?(coder aDecoder: NSCoder) {

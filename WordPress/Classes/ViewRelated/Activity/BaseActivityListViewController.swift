@@ -31,6 +31,9 @@ struct ActivityListConfiguration {
 
     /// Event to be fired when the range date reset button is tapped
     let filterbarResetRange: WPAnalyticsEvent
+
+    /// The number of items to be requested for each page
+    let numberOfItemsPerPage: Int
 }
 
 /// ActivityListViewController is used as a base ViewController for
@@ -53,6 +56,8 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
 
     var tableView: UITableView = UITableView()
     let refreshControl = UIRefreshControl()
+
+    let numberOfItemsPerPage = 100
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self, with: self)
@@ -90,7 +95,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
         self.store = store
         self.isFreeWPCom = isFreeWPCom
         self.configuration = configuration
-        self.viewModel = ActivityListViewModel(site: site, store: store, noResultsTexts: configuration)
+        self.viewModel = ActivityListViewModel(site: site, store: store, configuration: configuration)
 
         super.init(nibName: nil, bundle: nil)
 
