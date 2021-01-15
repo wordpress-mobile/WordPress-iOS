@@ -425,10 +425,6 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         return;
     }
 
-    if (self.comment.blog.jetpack) {
-        url = [url appendingHideMasterbarParameters];
-    }
-    
     UIViewController *webViewController = [WebViewControllerFactory controllerAuthenticatedWithDefaultAccountWithUrl:url];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
