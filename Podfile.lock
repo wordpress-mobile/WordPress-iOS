@@ -73,7 +73,7 @@ PODS:
   - GTMSessionFetcher/Core (1.5.0)
   - GTMSessionFetcher/Full (1.5.0):
     - GTMSessionFetcher/Core (= 1.5.0)
-  - Gutenberg (1.44.0):
+  - Gutenberg (1.44.1):
     - React (= 0.61.5)
     - React-CoreModules (= 0.61.5)
     - React-RCTImage (= 0.61.5)
@@ -381,7 +381,7 @@ PODS:
     - React
   - RNSVG (9.13.6-gb):
     - React
-  - RNTAztecView (1.44.0):
+  - RNTAztecView (1.44.1):
     - React-Core
     - WordPress-Aztec-iOS (~> 1.19.3)
   - Sentry (4.5.0):
@@ -700,7 +700,7 @@ SPEC CHECKSUMS:
   Gridicons: 17d660b97ce4231d582101b02f8280628b141c9a
   GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
-  Gutenberg: ffda65062bbf5f323f4bb2478c74eeb19c09c4ab
+  Gutenberg: d62fa5b772d33a1a596923445c84030962b886a2
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
@@ -744,7 +744,7 @@ SPEC CHECKSUMS:
   RNReanimated: 13f7a6a22667c4f00aac217bc66f94e8560b3d59
   RNScreens: 6833ac5c29cf2f03eed12103140530bbd75b6aea
   RNSVG: 68a534a5db06dcbdaebfd5079349191598caef7b
-  RNTAztecView: bc5f07436537a0df8f9fc33b05dc48601b2fa167
+  RNTAztecView: 12078f9a27ef77c9c5434b46336bffc81b4301d9
   Sentry: ab6c209f23700d1460691dbc90e19ed0a05d496b
   Sodium: 63c0ca312a932e6da481689537d4b35568841bdc
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
