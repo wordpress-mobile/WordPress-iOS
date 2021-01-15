@@ -75,6 +75,8 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
     /// When set to true, this store will only return items that are restorable
     var onlyRestorableItems = false
 
+    var numberOfItemsPerPage = 20
+
     override func queriesChanged() {
         super.queriesChanged()
         processQueries()
@@ -104,7 +106,7 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
 
         // Fetching Activities.
         sitesToFetch
-            .forEach { fetchActivities(site: $0) }
+            .forEach { fetchActivities(site: $0, count: numberOfItemsPerPage) }
 
 
         // Fetching Status
@@ -225,7 +227,7 @@ extension ActivityStore {
 
 private extension ActivityStore {
     func fetchActivities(site: JetpackSiteRef,
-                         count: Int = 20,
+                         count: Int,
                          offset: Int = 0,
                          afterDate: Date? = nil,
                          beforeDate: Date? = nil,

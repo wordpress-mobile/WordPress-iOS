@@ -18,7 +18,7 @@ class ActivityListViewModel: Observable {
     private let noResultsTexts: ActivityListConfiguration
     private var storeReceipt: Receipt?
 
-    private let count = 20
+    var numberOfItemsPerPage = 20
     private var page = 0
     private(set) var after: Date?
     private(set) var before: Date?
@@ -89,14 +89,14 @@ class ActivityListViewModel: Observable {
         self.before = before
         self.selectedGroups = group
 
-        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: count, afterDate: after, beforeDate: before, group: group.map { $0.key }))
+        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: numberOfItemsPerPage, afterDate: after, beforeDate: before, group: group.map { $0.key }))
     }
 
     public func loadMore() {
         if !store.isFetchingActivities(site: site) {
             page += 1
-            let offset = page * count
-            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset, afterDate: after, beforeDate: before, group: selectedGroups.map { $0.key }))
+            let offset = page * numberOfItemsPerPage
+            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: numberOfItemsPerPage, offset: offset, afterDate: after, beforeDate: before, group: selectedGroups.map { $0.key }))
         }
     }
 
