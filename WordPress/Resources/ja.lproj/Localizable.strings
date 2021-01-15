@@ -16,6 +16,12 @@
 "\"More\" Button" = "「その他」ボタン";
 
 /* No comment provided by engineer. */
+"%1$@ is the selected point for your restore." = "%1$@ is the selected point for your restore.";
+
+/* Description for the download backup action. $1$@ is a placeholder for the selected date. */
+"%1$@ is the selected point to create a downloadable backup." = "%1$@ is the selected point to create a downloadable backup.";
+
+/* 'AUTHOR on POST TITLE' in a comment list */
 "%1$@ on %2$@" = "%1$@ (%2$@)";
 
 /* 'AUTHOR on POST TITLE: COMMENT' in a comment list */
@@ -23,6 +29,12 @@
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d\/%2$d が完了";
+
+/* Format string for single unseen post count. The %1$d is a placeholder for the count. */
+"%1$d unseen post" = "%1$d unseen post";
+
+/* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
+"%1$d unseen posts" = "%1$d unseen posts";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: Current value. */
 "%1$s. Current value is %2$s" = "%1$s.現在の値 : %2$s";
@@ -153,15 +165,6 @@
 
 /* Age between dates over one year. */
 "%d years" = "%d年";
-
-/* Relative time format with day unit abbreviation (d): Xd, 1d, 3d, 6d */
-"%dd" = "%d日";
-
-/* Relative time format with hour unit abbreviation (h): Xh, 1h, 10h, 23h */
-"%dh" = "%d時間";
-
-/* Relative time format with minute unit abbreviation (m): Xm, 1m, 10m, 59m */
-"%dm" = "%d分";
 
 /* Max image size in pixels (e.g. 300x300px) */
 "%dx%dpx" = "%1$dx%2$dピクセル";
@@ -412,9 +415,6 @@
 /* The title on the add category screen */
 "Add a Category" = "カテゴリーを追加";
 
-/* Invite People Title */
-"Add a Person" = "人を追加";
-
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "プロファイル写真を追加";
 
@@ -423,9 +423,6 @@
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Reader に読み込むカスタム CSS URL はここに追加できます。Calypso をローカル環境で実行している場合、次のようになります: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
-
-/* Invite Footer Text */
-"Add a custom message (optional)." = "カスタムメッセージを追加します (オプション)。";
 
 /* No comment provided by engineer. */
 "Add a description" = "説明を追加";
@@ -813,6 +810,10 @@
    Spoken accessibility label */
 "Back" = "戻る";
 
+/* Noun. Links to a blog's Jetpack Backups screen.
+   Title for the Jetpack's backup list */
+"Backup" = "Backup";
+
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "選択した期間のコメントを表す棒グラフ。";
 
@@ -1009,6 +1010,7 @@
    Option to cancel the email app selection when logging in with magic links
    Text displayed by the left navigation button title
    The title of a cancel button.
+   Title for cancel action. Dismisses the action sheet.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
@@ -1192,6 +1194,12 @@
 
 /* Shortened version of the main title to be used in back navigation */
 "Choose layout" = "レイアウトを選択";
+
+/* Downloadable items: general section title */
+"Choose the items to download" = "Choose the items to download";
+
+/* Restorable items: general section title */
+"Choose the items to restore" = "Choose the items to restore";
 
 /* No comment provided by engineer. */
 "Choose video" = "動画を選択";
@@ -1460,6 +1468,7 @@
 "Contact Email" = "連絡先メールアドレス";
 
 /* Button label for contacting support
+   Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
@@ -1668,6 +1677,12 @@
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "投稿、ページ、ストーリーを作成";
 
+/* Label that describes the download backup action */
+"Create downloadable backup" = "Create downloadable backup";
+
+/* Button title for download backup action */
+"Create downloadable file" = "Create downloadable file";
+
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "カスタマイズされたダッシュボードを作成して、表示するレポートを選択します。最も重視するデータに集中できます。";
 
@@ -1706,6 +1721,9 @@
 
 /* Title of the cell displaying status of a rewind in progress */
 "Currently restoring your site" = "現在サイトを復元中です";
+
+/* Placeholder for Invite People message field. */
+"Custom message…" = "Custom message…";
 
 /* Customize button that appears in Theme Browser Header
    The menu item to select during a guided tour.
@@ -1974,6 +1992,9 @@
 /* translators: sample content for \"About\" page template */
 "Don’t cry because it’s over, smile because it happened." = "終わったと嘆くより、機会に恵まれたと喜ぼう。";
 
+/* Title for label when there are no threats on the users site */
+"Don’t worry about a thing" = "Don’t worry about a thing";
+
 /* Screen reader hint for button that will move the menu item */
 "Double tap and hold to move this menu item up or down" = "このメニュー項目を移動するにはダブルタップして長押ししてください";
 
@@ -2034,6 +2055,10 @@
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "ダブルタップして前回の変更を元に戻す";
 
+/* Title displayed for download backup action.
+   Title for the Jetpack Download Backup Site Screen */
+"Download Backup" = "Download Backup";
+
 /* Label for number of file downloads. */
 "Downloads" = "ダウンロード";
 
@@ -2047,7 +2072,8 @@
    Title of the drafts header in search list. */
 "Drafts" = "下書き";
 
-/* Label for post duplicate option. Tapping displays statistics for a post. */
+/* Label for page duplicate option. Tapping creates a copy of the page.
+   Label for post duplicate option. Tapping creates a copy of the post. */
 "Duplicate" = "複製";
 
 /* No comment provided by engineer. */
@@ -2154,7 +2180,7 @@
 
 /* A placeholder for the username textfield.
    Invite Username Placeholder */
-"Email or Username..." = "メールアドレスまたはユーザー名...";
+"Email or Username…" = "Email or Username…";
 
 /* Overlay message displayed when export content started */
 "Email sent!" = "メールを送信しました。";
@@ -2340,6 +2366,9 @@
 /* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
 "Excerpts are optional hand-crafted summaries of your content." = "抜粋は、手動で書かれたコンテンツの要約です (オプション)。";
 
+/* Downloadable/Restorable items: content section footer text */
+"Excludes themes, plugins, and uploads" = "Excludes themes, plugins, and uploads";
+
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "フルスクリーン表示を終了";
 
@@ -2492,6 +2521,9 @@
    User's First Name */
 "First Name" = "名前";
 
+/* Button title that attempts to fix all fixable threats */
+"Fix All" = "Fix All";
+
 /* Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "フォロー";
@@ -2532,7 +2564,6 @@
 "Followers" = "フォロワー";
 
 /* Accessibility label for following buttons.
-   Title for Reader Filter Sheet
    Title of the Following Reader tab
    User is following the blog.
    Verb. Button title. The user is following a blog. */
@@ -2863,6 +2894,9 @@ translators: sample content for \"Team\" page template */
 /* Hint for image link on image settings. */
 "Image Link" = "画像リンク";
 
+/* No comment provided by engineer. */
+"Image Link URL" = "Image Link URL";
+
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "画像サイズ";
 
@@ -2895,6 +2929,9 @@ translators: sample content for \"Team\" page template */
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "サイトに含まれています";
+
+/* Downloadable/Restorable items: general section footer text */
+"Includes wp-config php and any non WordPress files" = "Includes wp-config php and any non WordPress files";
 
 /* An error message shown when a user signed in with incorrect credentials. */
 "Incorrect username or password. Please try entering your login details again." = "ユーザー名またはパスワードが間違っています。もう一度ログイン詳細を入力し直してください。";
@@ -2990,6 +3027,9 @@ translators: sample content for \"Team\" page template */
 /* Send Person Invite */
 "Invite" = "招待";
 
+/* Invite People Title */
+"Invite People" = "Invite People";
+
 /* translators: sample content for \"About\" page template */
 "It is our choices, Harry, that show what we truly are, far more than our abilities." = "ハリー、人が本当に何者であるかを示すのは、何ができるかではなく、どのような選択をするかなのだ。";
 
@@ -3022,6 +3062,15 @@ translators: sample content for \"Team\" page template */
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack よくある質問";
+
+/* Description for a label when the scan has failed */
+"Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team.";
+
+/* Description for a label when there are threats on the site, displays the number of threats, and the site's title */
+"Jetpack Scan found %1$d potential threats on %2$@. Please review each threat and take action." = "Jetpack Scan found %1$d potential threats on %2$@. Please review each threat and take action.";
+
+/* Description for a label when there is a single threat on the site, displays the site's title */
+"Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action." = "Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action.";
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack 設定";
@@ -3090,6 +3139,9 @@ translators: sample content for \"Team\" page template */
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "日時形式の詳細を参照してください。";
+
+/* Footer text for Invite People role field. */
+"Learn more about roles" = "Learn more about roles";
 
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "さらに詳しく ...";
@@ -3394,6 +3446,9 @@ translators: sample content for \"Services\" page template */
 
 /* Message to indicate progress of uploading media to server */
 "Media Uploading" = "メディアをアップロード中";
+
+/* Downloadable/Restorable items: Media Uploads */
+"Media Uploads" = "Media Uploads";
 
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "メディアにはアップロードする関連したファイルはありません。";
@@ -4018,8 +4073,11 @@ translators: sample content for \"Services\" page template */
 /* Placeholder to indicate that filling out the field is optional. */
 "Optional" = "オプション";
 
-/* Invite: Message Hint */
-"Optional message to be included in the invitation." = "招待にはオプションのメッセージが含まれます。";
+/* Invite: Message Hint. %1$d is the maximum number of characters allowed. */
+"Optional message up to %1$d characters to be included in the invitation." = "Optional message up to %1$d characters to be included in the invitation.";
+
+/* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
+"Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "Optional: Enter a custom message up to %1$d characters to be sent with your invitation.";
 
 /* Divider on initial auth view separating auth options. */
 "Or" = "OR";
@@ -4458,6 +4516,9 @@ translators: sample content for \"Services\" page template */
 /* Title of alert when attempting to delete site with purchases */
 "Premium Upgrades" = "プレミアムアップグレード";
 
+/* Title for label when the preparing to scan the users site */
+"Preparing to scan" = "Preparing to scan";
+
 /* Label to show while converting and/or resizing media to send to server */
 "Preparing..." = "準備中…";
 
@@ -4861,8 +4922,14 @@ translators: sample content for \"Services\" page template */
 /* Title of the reset button */
 "Reset" = "リセット";
 
+/* Accessibility label for the reset activity type button */
+"Reset Activity Type filter" = "Reset Activity Type filter";
+
 /* No comment provided by engineer. */
 "Reset Block" = "ブロックをリセット";
+
+/* Accessibility label for the reset date range button */
+"Reset Date Range filter" = "Reset Date Range filter";
 
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "フィルターをリセット";
@@ -4875,6 +4942,16 @@ translators: sample content for \"Services\" page template */
 
 /* The largest resolution allowed for uploading */
 "Resolution" = "解決方法";
+
+/* Title displayed for restore action.
+   Title for the Jetpack Restore Site Screen */
+"Restore" = "復元";
+
+/* Label that describes the restore site action */
+"Restore site" = "Restore site";
+
+/* Button title for restore site action */
+"Restore to this point" = "Restore to this point";
 
 /* A prompt to attempt the failed network request again
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
@@ -4895,6 +4972,9 @@ translators: sample content for \"Services\" page template */
    User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "再度試す";
+
+/* Button title that triggers a scan */
+"Retry Scan" = "Retry Scan";
 
 /* User action to retry media upload. */
 "Retry Upload" = "再アップロード";
@@ -5012,6 +5092,15 @@ translators: sample content for \"Services\" page template */
 
 /* Noun. Links to a blog's Jetpack Scan screen. */
 "Scan" = "スキャン";
+
+/* Button title that triggers a scan */
+"Scan Again" = "Scan Again";
+
+/* Button title that triggers a scan */
+"Scan Now" = "Scan Now";
+
+/* Title for label when the actively scanning the users site */
+"Scanning files" = "Scanning files";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "投稿予約";
@@ -5460,6 +5549,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Site address must be at least 4 characters." = "サイトアドレスは4文字以上にしてください。";
 
+/* Downloadable/Restorable items: Site Database */
+"Site database" = "Site database";
+
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "サイトを削除しました";
 
@@ -5510,6 +5602,9 @@ translators: sample content for \"Services\" page template */
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "アップロードに失敗したメディアがあります。この操作を行うと投稿から失敗したメディアを削除します。保存してもよいですか ?";
+
+/* Title for a label that appears when the scan failed */
+"Something went wrong" = "Something went wrong";
 
 /* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
 "Something went wrong, please try again." = "エラーが発生しました。もう一度お試しください。";
@@ -5959,6 +6054,12 @@ translators: sample content for \"Services\" page template */
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "ブログを書くときに使う主な言語。";
 
+/* Description that informs for label when there are no threats on a users site */
+"The last Jetpack scan completed and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "The last Jetpack scan completed and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today.";
+
+/* Description for label when there are no threats on a users site and how long ago the scan ran */
+"The last Jetpack scan ran %1$@ and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "The last Jetpack scan ran %1$@ and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today.";
+
 /* WordPress.com Push Authentication Expired message */
 "The login request has expired. Log in to WordPress.com to try again." = "ログインリクエストが期限切れになっています。WordPress.com に再度ログインしてもう一度お試しください。";
 
@@ -6147,6 +6248,9 @@ translators: sample content for \"Services\" page template */
 
 /* Explaining to the user why the app needs access to the device media library. */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "このアプリが投稿に写真・動画を追加するため端末のメディアライブラリにアクセスするには、許可が必要です。プライバシー設定を変更してください。";
+
+/* Notifies the user that the a domain matching the search term wasn't returned in the results */
+"This domain is unavailable" = "This domain is unavailable";
 
 /* An error message informing the user the email address they entered did not match a WordPress.com account. */
 "This email address is not registered on WordPress.com." = "このメールアドレスは WordPress.com に登録されていません。";
@@ -6843,6 +6947,9 @@ translators: sample content for \"Services\" page template */
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "WP Admin";
 
+/* Downloadable/Restorable items: WP-content directory */
+"WP-content directory" = "WP-content directory";
+
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Google が完了するのを待機しています…";
 
@@ -6988,6 +7095,9 @@ translators: sample content for \"Services\" page template */
 
 /* Error message displayed when an error occurred sending the magic link email. */
 "We were unable to send you an email at this time. Please try again later." = "メールを送信できませんでした。後ほど、もう一度お試しください。";
+
+/* Description for label when the actively scanning the users site */
+"We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.";
 
 /* Title for notice displayed on canceling auto-upload published page
    Title for notice displayed on canceling auto-upload published post */
@@ -7192,6 +7302,9 @@ translators: sample content for \"Services\" page template */
 /* Siri Suggestion to open Notifications */
 "WordPress Notifications" = "WordPress 通知";
 
+/* Downloadable/Restorable items: WordPress Plugins */
+"WordPress Plugins" = "WordPress Plugins";
+
 /* Siri Suggestion to open Me tab */
 "WordPress Profile" = "WordPress プロフィール";
 
@@ -7201,11 +7314,17 @@ translators: sample content for \"Services\" page template */
 /* Siri Suggestion to open My Sites */
 "WordPress Site Details" = "WordPress サイト詳細";
 
+/* Downloadable/Restorable items: WordPress Themes */
+"WordPress Themes" = "WordPress Themes";
+
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "WordPress for iOS のサポート";
 
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress が端末の現在位置にアクセスして投稿に追加するためには許可が必要です。プライバシー設定を更新してください。";
+
+/* Downloadable/Restorable items: WordPress root */
+"WordPress root" = "WordPress root";
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "WordPress のバージョンが古すぎます。";
@@ -7440,7 +7559,7 @@ translators: sample content for \"Services\" page template */
 "Your restore is taking longer than usual, please check again in a few minutes." = "復元に通常よりも時間がかかっています。数分後にもう一度ご確認ください。";
 
 /* Body text of alert helping users understand their site address */
-"Your site address appears in the bar at the the top of the screen when you visit your site in Safari." = "Safari でサイトにアクセスすると、画面の上部にあるバーにサイトアドレスが表示されます。";
+"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Your site address appears in the bar at the top of the screen when you visit your site in Safari.";
 
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "サイトが巻き戻されました !";
@@ -7462,6 +7581,9 @@ translators: sample content for \"Services\" page template */
 
 /* Hint for users when hidden privacy setting is set */
 "Your site is visible to everyone, but asks search engines not to index your site." = "誰でもサイトを閲覧可能にし、検索エンジンにはインデックスしないよう要求します。";
+
+/* Title for label when there are threats on the users site */
+"Your site may be at risk" = "Your site may be at risk";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Your site will be ready shortly" = "まもなくサイトの準備が完了します";
@@ -7535,9 +7657,6 @@ translators: sample content for \"Services\" page template */
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "「アップグレード」カテゴリー";
-
-/* Relative time format */
-"just now" = "ついさっき";
 
 /* Later today */
 "later today" = "今日あとで";
