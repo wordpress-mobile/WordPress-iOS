@@ -46,7 +46,7 @@ extension JetpackRestoreStatusViewController: JetpackRestoreStatusView {
             return
         }
 
-        statusView.update(progress: progress)
+        statusView.update(progress: progress, progressTitle: rewindStatus.restore?.message, progressDescription: nil)
     }
 
     func showError() {
