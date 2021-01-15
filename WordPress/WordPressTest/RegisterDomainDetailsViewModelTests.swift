@@ -6,7 +6,9 @@ extension JetpackSiteRef {
         let payload: NSString = """
         {
             "siteID": \(siteID),
-            "username": "\(username)"
+            "username": "\(username)",
+            "hasBackup": true,
+            "hasPaidPlan": true,
         }
         """ as NSString
 
