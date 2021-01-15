@@ -27,7 +27,7 @@ class MySitesCoordinator: NSObject {
         splitViewController.restorationIdentifier = MySitesCoordinator.splitViewControllerRestorationID
         splitViewController.presentsWithGesture = false
         splitViewController.setInitialPrimaryViewController(navigationController)
-        splitViewController.wpPrimaryColumnWidth = .narrow
+        splitViewController.wpPrimaryColumnWidth = .default
         splitViewController.dimsDetailViewControllerAutomatically = true
         splitViewController.tabBarItem = navigationController.tabBarItem
 

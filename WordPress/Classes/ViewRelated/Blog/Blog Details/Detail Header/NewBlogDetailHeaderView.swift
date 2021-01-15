@@ -105,7 +105,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         static let interSectionSpacing: CGFloat = 32
         static let buttonsBottomPadding: CGFloat = 40
         static let buttonsSidePadding: CGFloat = 40
-        static let siteIconSize = CGSize(width: 64, height: 64)
+        static let siteIconSize = CGSize(width: 48, height: 48)
     }
 
     // MARK: - Initializers
