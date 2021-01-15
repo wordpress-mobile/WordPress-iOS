@@ -28,7 +28,7 @@ extension Blog {
     /// Returns true if a given capability is enabled. False otherwise
     ///
     public func isUserCapableOf(_ capability: Capability) -> Bool {
-        return capabilities?[capability.rawValue] as? Bool ?? false
+        return isUserCapableOf(capability.rawValue)
     }
 
     /// Returns true if the current user is allowed to list a Blog's Users
@@ -47,5 +47,21 @@ extension Blog {
     ///
     @objc public func isUploadingFilesAllowed() -> Bool {
         return isUserCapableOf(.UploadFiles)
+    }
+
+    /// Returns true if the current user is allowed to see Jetpack's Backups
+    ///
+    @objc public func isBackupsAllowed() -> Bool {
+        return isUserCapableOf("backup") || isUserCapableOf("backup-daily") || isUserCapableOf("backup-realtime")
+    }
+
+    /// Returns true if the current user is allowed to see Jetpack's Scan
+    ///
+    @objc public func isScanAllowed() -> Bool {
+        return isUserCapableOf("scan")
+    }
+
+    private func isUserCapableOf(_ capability: String) -> Bool {
+        return capabilities?[capability] as? Bool ?? false
     }
 }
