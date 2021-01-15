@@ -8,9 +8,13 @@ protocol JetpackBackupStatusView {
 
 class JetpackBackupStatusCoordinator {
 
+    // MARK: - Properties
+
     private let service: JetpackBackupService
     private let site: JetpackSiteRef
     private let view: JetpackBackupStatusView
+
+    // MARK: - Init
 
     init(site: JetpackSiteRef,
          view: JetpackBackupStatusView,
@@ -20,6 +24,8 @@ class JetpackBackupStatusCoordinator {
         self.site = site
         self.view = view
     }
+
+    // MARK: - Public
 
     func start() {
         service.prepareBackup(for: site, success: { [weak self] backup in
@@ -32,8 +38,10 @@ class JetpackBackupStatusCoordinator {
         })
     }
 
+    // MARK: - Private
+
     private func pollBackupStatus(for downloadID: Int) {
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
+        Timer.scheduledTimer(withTimeInterval: Constants.pollingInterval, repeats: true) { [weak self] timer in
             guard let self = self else { return }
             self.service.getBackupStatus(for: self.site, downloadID: downloadID, success: { backup in
 
@@ -54,5 +62,11 @@ class JetpackBackupStatusCoordinator {
             })
         }
     }
+}
 
+extension JetpackBackupStatusCoordinator {
+
+    private enum Constants {
+        static let pollingInterval: TimeInterval = 1
+    }
 }
