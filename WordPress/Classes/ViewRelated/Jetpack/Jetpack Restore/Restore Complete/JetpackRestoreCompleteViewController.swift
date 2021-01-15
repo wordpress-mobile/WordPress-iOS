@@ -12,7 +12,7 @@ class JetpackRestoreCompleteViewController: BaseRestoreCompleteViewController {
             title: NSLocalizedString("Restore", comment: "Title for Jetpack Restore Complete screen"),
             iconImage: .gridicon(.history),
             messageTitle: NSLocalizedString("Your site has been restored", comment: "Title for the Jetpack Restore Complete message."),
-            messageDescription: NSLocalizedString("All of your selected itmes are now restored back to %1$@.", comment: "Description for the Jetpack Backup Restore message. %1$@ is a placeholder for the selected date."),
+            messageDescription: NSLocalizedString("All of your selected items are now restored back to %1$@.", comment: "Description for the Jetpack Backup Restore message. %1$@ is a placeholder for the selected date."),
             primaryButtonTitle: NSLocalizedString("Done", comment: "Title for the button that will dismiss this view."),
             secondaryButtonTitle: NSLocalizedString("Visit site", comment: "Title for the button that will open a link to this site."),
             hint: nil
