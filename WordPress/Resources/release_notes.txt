@@ -1,11 +1,15 @@
-Here’s what’s new in our latest release:
+What’s new in the latest release?
 
-The block editor: You can now insert a File block into a post or page, which places a download button for files like documents. An update to the Gallery block also fixed an uploading issue when your editor was closed.
+The block editor:
 
-Site creation: When building pages on your site, the page layout options are now easier to see and select.
+– When working with blocks, you may notice a few changes. You can now move blocks up and down your post or page by long-pressing on the “up” and “down” buttons. We’ve also added support for full-width and wide alignment in the Columns block and have made it easier to pick and set a URL for an image in the Image block.
 
-Post creation: Want to quickly duplicate a post? You can now do so from your Posts List.
+– Do you use P2 to collaborate with your team? When publishing a new post, type the + character to tag another P2 and “cross-post” to the site, alerting its users of your new post.
 
-The Reader: Do you use P2, a tool for team and group collaboration? You can read and follow P2 sites in a newly added stream.
+Various fixes and updates:
 
-Comments: Want to subscribe to comment threads on sites you follow or are interested in? Tap the “Follow conversation” button in the Comments view.
+– The Choose a Domain feature now returns more options in search results. Try it out!
+
+– In your Site Pages list, you can quickly duplicate a page, which can save you time when creating content.
+
+– Other updates, including changes in the Reader, improve your overall app experience.
