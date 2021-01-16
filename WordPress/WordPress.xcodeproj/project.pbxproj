@@ -15681,7 +15681,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressHomeWidgetToday;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressStatsWidgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Home Widget Today Development";
 				SKIP_INSTALL = YES;
@@ -15735,7 +15735,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressHomeWidgetToday;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpressWordPressStatsWidgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressHomeWidgetToday";
 				SKIP_INSTALL = YES;
@@ -15788,7 +15788,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.internal.WordPressHomeWidgetToday;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.internal.WordPressStatsWidgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal.WordPressHomeWidgetToday";
 				SKIP_INSTALL = YES;
@@ -15841,7 +15841,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.alpha.WordPressHomeWidgetToday;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.alpha.WordPressStatsWidgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressHomeWidgetToday";
 				SKIP_INSTALL = YES;
