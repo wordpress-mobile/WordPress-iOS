@@ -5965,7 +5965,7 @@
 				93E5283D19A7741A003A1A9C /* WordPressTodayWidget */,
 				98D31B902396ED7F009CFF43 /* WordPressAllTimeWidget */,
 				98A3C2F1239997DA0048D38D /* WordPressThisWeekWidget */,
-				3F526C512538CF2A0069706C /* WordPressHomeWidgetToday */,
+				3F526C512538CF2A0069706C /* WordPressStatsWidgets */,
 				F1F163BF25658B4D003DC13B /* WordPressIntents */,
 				E16AB92F14D978240047A2E5 /* WordPressTest */,
 				FF2716901CAAC87B0006E2D4 /* WordPressUITests */,
@@ -6633,7 +6633,7 @@
 			name = "Tabbed Reader";
 			sourceTree = "<group>";
 		};
-		3F526C512538CF2A0069706C /* WordPressHomeWidgetToday */ = {
+		3F526C512538CF2A0069706C /* WordPressStatsWidgets */ = {
 			isa = PBXGroup;
 			children = (
 				3F526C522538CF2A0069706C /* WordPressHomeWidgetToday.swift */,
@@ -6644,7 +6644,7 @@
 				3F526CA82538E0ED0069706C /* Supporting Files */,
 				3F526C552538CF2B0069706C /* Assets.xcassets */,
 			);
-			path = WordPressHomeWidgetToday;
+			path = WordPressStatsWidgets;
 			sourceTree = "<group>";
 		};
 		3F526CA82538E0ED0069706C /* Supporting Files */ = {
@@ -8676,7 +8676,6 @@
 				F1ADCAF6241FEF0C00F150D2 /* AtomicAuthenticationService.swift */,
 				822D60B81F4CCC7A0016C46D /* BlogJetpackSettingsService.swift */,
 				93C1148318EDF6E100DAC95C /* BlogService.h */,
-				8C6A22E325783D2000A79950 /* JetpackScanService.swift */,
 				8B749E7125AF522900023F03 /* JetpackCapabilitiesService.swift */,
 				93C1148418EDF6E100DAC95C /* BlogService.m */,
 				9A341E5221997A1E0036662E /* BlogService+BlogAuthors.swift */,
@@ -15658,7 +15657,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "WordPressHomeWidgetToday/Supporting Files/WordPressHomeWidgetToday.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "WordPressStatsWidgets/Supporting Files/WordPressHomeWidgetToday.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -15673,7 +15672,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = "WordPressHomeWidgetToday/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "WordPressStatsWidgets/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -15687,7 +15686,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Home Widget Today Development";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressHomeWidgetToday/Supporting Files/WordPressHomeWidgetToday-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressStatsWidgets/Supporting Files/WordPressHomeWidgetToday-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -15712,7 +15711,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "WordPressHomeWidgetToday/Supporting Files/WordPressHomeWidgetToday.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "WordPressStatsWidgets/Supporting Files/WordPressHomeWidgetToday.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Distribution: Automattic, Inc. (PZYM8XX95Q)";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -15727,7 +15726,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = "WordPressHomeWidgetToday/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "WordPressStatsWidgets/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -15740,7 +15739,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressHomeWidgetToday";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressHomeWidgetToday/Supporting Files/WordPressHomeWidgetToday-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressStatsWidgets/Supporting Files/WordPressHomeWidgetToday-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wordpress;
@@ -15764,7 +15763,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "WordPressHomeWidgetToday/Supporting Files/WordPressHomeWidgetTodayRelease-Internal.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "WordPressStatsWidgets/Supporting Files/WordPressHomeWidgetTodayRelease-Internal.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -15780,7 +15779,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = "WordPressHomeWidgetToday/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "WordPressStatsWidgets/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -15793,7 +15792,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal.WordPressHomeWidgetToday";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressHomeWidgetToday/Supporting Files/WordPressHomeWidgetToday-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressStatsWidgets/Supporting Files/WordPressHomeWidgetToday-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpinternal;
@@ -15817,7 +15816,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "WordPressHomeWidgetToday/Supporting Files/WordPressHomeWidgetTodayRelease-Alpha.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "WordPressStatsWidgets/Supporting Files/WordPressHomeWidgetTodayRelease-Alpha.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -15833,7 +15832,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = "WordPressHomeWidgetToday/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "WordPressStatsWidgets/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -15846,7 +15845,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressHomeWidgetToday";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressHomeWidgetToday/Supporting Files/WordPressHomeWidgetToday-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressStatsWidgets/Supporting Files/WordPressHomeWidgetToday-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpalpha;
