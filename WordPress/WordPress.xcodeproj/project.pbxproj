@@ -422,7 +422,7 @@
 		3F526C532538CF2A0069706C /* WordPressHomeWidgetToday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F526C522538CF2A0069706C /* WordPressHomeWidgetToday.swift */; };
 		3F526C562538CF2B0069706C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F526C552538CF2B0069706C /* Assets.xcassets */; };
 		3F526C592538CF2B0069706C /* Sites.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3F526C542538CF2A0069706C /* Sites.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
-		3F526C5C2538CF2B0069706C /* WordPressHomeWidgetToday.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3F526C4C2538CF2A0069706C /* WordPressHomeWidgetToday.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3F526C5C2538CF2B0069706C /* WordPressStatsWidgets.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3F526C4C2538CF2A0069706C /* WordPressStatsWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3F526D572539FAC60069706C /* TodayWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F526D562539FAC60069706C /* TodayWidgetView.swift */; };
 		3F5689F0254209790048A9E4 /* TodayWidgetSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5689EF254209790048A9E4 /* TodayWidgetSmallView.swift */; };
 		3F568A0025420DE80048A9E4 /* TodayWidgetMediumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5689FF25420DE80048A9E4 /* TodayWidgetMediumView.swift */; };
@@ -2543,7 +2543,7 @@
 				98D31B992396ED7F009CFF43 /* WordPressAllTimeWidget.appex in Embed App Extensions */,
 				932225B11C7CE50300443B02 /* WordPressShareExtension.appex in Embed App Extensions */,
 				93E5284619A7741A003A1A9C /* WordPressTodayWidget.appex in Embed App Extensions */,
-				3F526C5C2538CF2B0069706C /* WordPressHomeWidgetToday.appex in Embed App Extensions */,
+				3F526C5C2538CF2B0069706C /* WordPressStatsWidgets.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2984,7 +2984,7 @@
 		3F50945A2454ECA000C4470B /* ReaderTabItemsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabItemsStoreTests.swift; sourceTree = "<group>"; };
 		3F50945C2455280300C4470B /* MockContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockContext.swift; sourceTree = "<group>"; };
 		3F50945E245537A700C4470B /* ReaderTabViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewModelTests.swift; sourceTree = "<group>"; };
-		3F526C4C2538CF2A0069706C /* WordPressHomeWidgetToday.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordPressHomeWidgetToday.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F526C4C2538CF2A0069706C /* WordPressStatsWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordPressStatsWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F526C4D2538CF2A0069706C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		3F526C4F2538CF2A0069706C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		3F526C522538CF2A0069706C /* WordPressHomeWidgetToday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressHomeWidgetToday.swift; sourceTree = "<group>"; };
@@ -5912,7 +5912,7 @@
 				733F36032126197800988727 /* WordPressNotificationContentExtension.appex */,
 				98A3C2EF239997DA0048D38D /* WordPressThisWeekWidget.appex */,
 				98D31B8E2396ED7E009CFF43 /* WordPressAllTimeWidget.appex */,
-				3F526C4C2538CF2A0069706C /* WordPressHomeWidgetToday.appex */,
+				3F526C4C2538CF2A0069706C /* WordPressStatsWidgets.appex */,
 				F1F163BE25658B4D003DC13B /* WordPressIntents.appex */,
 			);
 			name = Products;
@@ -11482,9 +11482,9 @@
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3F526C4B2538CF2A0069706C /* WordPressHomeWidgetToday */ = {
+		3F526C4B2538CF2A0069706C /* WordPressStatsWidgets */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3F526C612538CF2C0069706C /* Build configuration list for PBXNativeTarget "WordPressHomeWidgetToday" */;
+			buildConfigurationList = 3F526C612538CF2C0069706C /* Build configuration list for PBXNativeTarget "WordPressStatsWidgets" */;
 			buildPhases = (
 				0AA1A8899C01FEF3599F6FCF /* [CP] Check Pods Manifest.lock */,
 				3F526C482538CF2A0069706C /* Sources */,
@@ -11496,9 +11496,9 @@
 			);
 			dependencies = (
 			);
-			name = WordPressHomeWidgetToday;
+			name = WordPressStatsWidgets;
 			productName = WordPressHomeWidgetTodayExtension;
-			productReference = 3F526C4C2538CF2A0069706C /* WordPressHomeWidgetToday.appex */;
+			productReference = 3F526C4C2538CF2A0069706C /* WordPressStatsWidgets.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		733F36022126197800988727 /* WordPressNotificationContentExtension */ = {
@@ -11906,7 +11906,7 @@
 				93E5283919A7741A003A1A9C /* WordPressTodayWidget */,
 				98D31B8D2396ED7E009CFF43 /* WordPressAllTimeWidget */,
 				98A3C2EE239997DA0048D38D /* WordPressThisWeekWidget */,
-				3F526C4B2538CF2A0069706C /* WordPressHomeWidgetToday */,
+				3F526C4B2538CF2A0069706C /* WordPressStatsWidgets */,
 				733F36022126197800988727 /* WordPressNotificationContentExtension */,
 				7358E6B7210BD318002323EB /* WordPressNotificationServiceExtension */,
 				F1F163BD25658B4D003DC13B /* WordPressIntents */,
@@ -15154,7 +15154,7 @@
 /* Begin PBXTargetDependency section */
 		3F526C5B2538CF2B0069706C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3F526C4B2538CF2A0069706C /* WordPressHomeWidgetToday */;
+			target = 3F526C4B2538CF2A0069706C /* WordPressStatsWidgets */;
 			targetProxy = 3F526C5A2538CF2B0069706C /* PBXContainerItemProxy */;
 		};
 		733F360F2126197800988727 /* PBXTargetDependency */ = {
@@ -18590,7 +18590,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3F526C612538CF2C0069706C /* Build configuration list for PBXNativeTarget "WordPressHomeWidgetToday" */ = {
+		3F526C612538CF2C0069706C /* Build configuration list for PBXNativeTarget "WordPressStatsWidgets" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3F526C5D2538CF2C0069706C /* Debug */,
