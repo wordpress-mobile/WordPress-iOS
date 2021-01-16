@@ -12,6 +12,8 @@ struct ReaderPostMenuButtonTitles {
     static let follow = NSLocalizedString("Follow Site", comment: "Verb. An option to follow a site.")
     static let subscribe = NSLocalizedString("Turn on site notifications", comment: "Verb. An option to switch on site notifications.")
     static let unsubscribe = NSLocalizedString("Turn off site notifications", comment: "Verb. An option to switch off site notifications.")
+    static let markSeen = NSLocalizedString("Mark as seen", comment: "An option to mark a post as seen.")
+    static let markUnseen = NSLocalizedString("Mark as unseen", comment: "An option to mark a post as unseen.")
 }
 
 
@@ -39,7 +41,7 @@ open class ReaderPostMenu {
 
         // Notification
         if let topic = topic,
-            post.isFollowing {
+           post.isFollowing {
             let isSubscribedForPostNotifications = topic.isSubscribedForPostNotifications
             let buttonTitle = isSubscribedForPostNotifications ? ReaderPostMenuButtonTitles.unsubscribe : ReaderPostMenuButtonTitles.subscribe
             alertController.addActionWithTitle(buttonTitle,
@@ -48,18 +50,28 @@ open class ReaderPostMenu {
                                                 if let topic: ReaderSiteTopic = self.existingObject(for: topic.objectID, context: topic.managedObjectContext) {
                                                     self.toggleSubscribingNotifications(for: topic)
                                                 }
-            })
+                                               })
         }
 
         // Following
-        let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow
-        alertController.addActionWithTitle(buttonTitle,
+        alertController.addActionWithTitle(post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow,
             style: .default,
             handler: { (action: UIAlertAction) in
                 if let post: ReaderPost = self.existingObject(for: post.objectID, context: post.managedObjectContext) {
                     self.toggleFollowingForPost(post, viewController)
                 }
         })
+
+        // Seen
+        if FeatureFlag.unseenPosts.enabled {
+            alertController.addActionWithTitle(post.isSeen ? ReaderPostMenuButtonTitles.markUnseen : ReaderPostMenuButtonTitles.markSeen,
+                                               style: .default,
+                                               handler: { (action: UIAlertAction) in
+                                                if let post: ReaderPost = self.existingObject(for: post.objectID, context: post.managedObjectContext) {
+                                                    self.toggleSeenForPost(post)
+                                                }
+                                               })
+        }
 
         // Visit site
         alertController.addActionWithTitle(ReaderPostMenuButtonTitles.visit,
@@ -184,6 +196,16 @@ open class ReaderPostMenu {
         })
     }
 
+    fileprivate class func toggleSeenForPost(_ post: ReaderPost) {
+        guard let context = post.managedObjectContext else {
+            return
+        }
+
+        // TODO: add Tracks
+
+        let postService = ReaderPostService(managedObjectContext: context)
+        postService.toggleSeen(for: post, success: nil, failure: nil)
+    }
 
     fileprivate class func visitSiteForPost(_ post: ReaderPost, presentingViewController viewController: UIViewController) {
         guard

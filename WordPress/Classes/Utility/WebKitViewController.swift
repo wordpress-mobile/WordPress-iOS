@@ -79,7 +79,6 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     @objc let navigationDelegate: WebNavigationDelegate?
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
-    @objc var addsHideMasterbarParameters = true
     @objc var customTitle: String?
     private let opensNewInSafari: Bool
     let linkBehavior: LinkBehavior
@@ -103,7 +102,6 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         customOptionsButton = configuration.optionsButton
         secureInteraction = configuration.secureInteraction
         addsWPComReferrer = configuration.addsWPComReferrer
-        addsHideMasterbarParameters = configuration.addsHideMasterbarParameters
         customTitle = configuration.customTitle
         authenticator = configuration.authenticator
         navigationDelegate = configuration.navigationDelegate
@@ -121,7 +119,6 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         customOptionsButton = parent.customOptionsButton
         secureInteraction = parent.secureInteraction
         addsWPComReferrer = parent.addsWPComReferrer
-        addsHideMasterbarParameters = parent.addsHideMasterbarParameters
         customTitle = parent.customTitle
         authenticator = parent.authenticator
         navigationDelegate = parent.navigationDelegate
@@ -213,12 +210,6 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         var request = request
         if addsWPComReferrer {
             request.setValue(WPComReferrerURL, forHTTPHeaderField: "Referer")
-        }
-
-        if addsHideMasterbarParameters,
-            let host = request.url?.host,
-            (host.contains(WPComDomain) || host.contains(AutomatticDomain)) {
-            request.url = request.url?.appendingHideMasterbarParameters()
         }
 
         webView.load(request)

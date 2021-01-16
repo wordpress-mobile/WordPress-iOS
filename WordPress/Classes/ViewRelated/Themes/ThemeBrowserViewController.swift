@@ -855,7 +855,6 @@ public protocol ThemePresenter: class {
         configuration.authenticate(blog: theme.blog)
         configuration.secureInteraction = true
         configuration.customTitle = theme.name
-        configuration.addsHideMasterbarParameters = false
         configuration.navigationDelegate = customizerNavigationDelegate
         configuration.onClose = onClose
         let webViewController = WebViewControllerFactory.controller(configuration: configuration)

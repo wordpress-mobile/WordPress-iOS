@@ -468,8 +468,6 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     private func presentNewPageNoticeIfNeeded() {
-        guard FeatureFlag.gutenbergModalLayoutPicker.enabled else { return }
-
         // Validate if the post is a newly created page or not.
         guard post is Page,
             post.isDraft(),
@@ -862,14 +860,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         })
     }
 
-    func gutenbergDidRequestStarterPageTemplatesTooltipShown() -> Bool {
-        return gutenbergSettings.starterPageTemplatesTooltipShown
-    }
-
-    func gutenbergDidRequestSetStarterPageTemplatesTooltipShown(_ tooltipShown: Bool) {
-        gutenbergSettings.starterPageTemplatesTooltipShown = tooltipShown
-    }
-
     func gutenbergDidSendButtonPressedAction(_ buttonType: Gutenberg.ActionButtonType) {
         switch buttonType {
             case .missingBlockAlertActionButton:
@@ -990,7 +980,6 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .xposts: FeatureFlag.gutenbergXposts.enabled && SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
-            .modalLayoutPicker: FeatureFlag.gutenbergModalLayoutPicker.enabled,
         ]
     }
 
