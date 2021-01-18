@@ -14,7 +14,7 @@ ALL_BUNDLE_IDENTIFIERS = [
       "org.wordpress.WordPressShare",
       "org.wordpress.WordPressDraftAction",
       "org.wordpress.WordPressTodayWidget",
-      "org.wordpress.WordPressHomeWidgetToday",
+      "org.wordpress.WordPressStatsWidgets",
       "org.wordpress.WordPressNotificationServiceExtension",
       "org.wordpress.WordPressNotificationContentExtension",
       "org.wordpress.WordPressAllTimeWidget",
