@@ -54,8 +54,8 @@ extension JetpackBackupStatusViewController: JetpackBackupStatusView {
         // TODO
     }
 
-    func showComplete() {
-        let completeVC = JetpackBackupCompleteViewController(site: site, activity: activity)
+    func showComplete(_ backup: JetpackBackup) {
+        let completeVC = JetpackBackupCompleteViewController(site: site, activity: activity, backup: backup)
         self.navigationController?.pushViewController(completeVC, animated: true)
     }
 }

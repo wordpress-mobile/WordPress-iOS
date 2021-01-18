@@ -3,7 +3,7 @@ import Foundation
 protocol JetpackBackupStatusView {
     func render(_ backup: JetpackBackup)
     func showError()
-    func showComplete()
+    func showComplete(_ backup: JetpackBackup)
 }
 
 class JetpackBackupStatusCoordinator {
@@ -48,7 +48,7 @@ class JetpackBackupStatusCoordinator {
                 // If a backup url exists, then we've finished creating a downloadable backup.
                 if backup.url != nil {
                     timer.invalidate()
-                    self.view.showComplete()
+                    self.view.showComplete(backup)
                     return
                 }
 
