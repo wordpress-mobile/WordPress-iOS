@@ -363,15 +363,15 @@ extension BaseActivityListViewController: ActivityPresenter {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
-        let restoreVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
+        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
         alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
-            self.present(UINavigationController(rootViewController: restoreVC), animated: true)
+            self.present(UINavigationController(rootViewController: restoreOptionsVC), animated: true)
         })
 
-        let downloadBackupTitle = NSLocalizedString("Download Backup", comment: "Title displayed for download backup action.")
-        let downloadBackupVC = JetpackDownloadBackupViewController(site: site, activity: activity)
-        alertController.addDefaultActionWithTitle(downloadBackupTitle, handler: { _ in
-            self.present(UINavigationController(rootViewController: downloadBackupVC), animated: true)
+        let backupTitle = NSLocalizedString("Download Backup", comment: "Title displayed for download backup action.")
+        let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
+        alertController.addDefaultActionWithTitle(backupTitle, handler: { _ in
+            self.present(UINavigationController(rootViewController: backupOptionsVC), animated: true)
         })
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Title for cancel action. Dismisses the action sheet.")
@@ -407,8 +407,8 @@ extension BaseActivityListViewController: ActivityPresenter {
             return
         }
 
-        let restoreVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
-        let navigationVC = UINavigationController(rootViewController: restoreVC)
+        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
+        let navigationVC = UINavigationController(rootViewController: restoreOptionsVC)
         self.present(navigationVC, animated: true)
     }
 }

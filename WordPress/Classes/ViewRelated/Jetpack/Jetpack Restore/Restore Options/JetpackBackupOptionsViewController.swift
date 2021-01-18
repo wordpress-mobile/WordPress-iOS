@@ -4,7 +4,13 @@ import Gridicons
 import WordPressUI
 import WordPressShared
 
-class JetpackDownloadBackupViewController: BaseRestoreOptionsViewController {
+class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
+
+    // MARK: - Properties
+
+    private lazy var coordinator: JetpackBackupOptionsCoordinator = {
+        return JetpackBackupOptionsCoordinator(site: self.site, view: self)
+    }()
 
     // MARK: - Initialization
 
@@ -33,10 +39,21 @@ class JetpackDownloadBackupViewController: BaseRestoreOptionsViewController {
     // MARK: - Override
 
     override func actionButtonTapped() {
+        coordinator.prepareBackup()
+    }
+}
+
+
+extension JetpackBackupOptionsViewController: JetpackBackupOptionsView {
+
+    func showBackupStatus(for downloadID: Int) {
         let statusVC = JetpackBackupStatusViewController(site: site,
                                                          activity: activity,
                                                          restoreTypes: JetpackRestoreTypes())
         self.navigationController?.pushViewController(statusVC, animated: true)
     }
 
+    func showError() {
+        // TODO: Show notification
+    }
 }
