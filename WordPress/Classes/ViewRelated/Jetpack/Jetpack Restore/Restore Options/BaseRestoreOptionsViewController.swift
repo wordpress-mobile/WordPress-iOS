@@ -28,6 +28,10 @@ class BaseRestoreOptionsViewController: UITableViewController {
         return ActivityDateFormatting.mediumDateFormatterWithTime(for: site)
     }()
 
+    private lazy var headerView: JetpackRestoreHeaderView = {
+        return JetpackRestoreHeaderView.loadFromNib()
+    }()
+
     // MARK: - Initialization
 
     init(site: JetpackSiteRef, activity: Activity) {
@@ -87,7 +91,6 @@ class BaseRestoreOptionsViewController: UITableViewController {
     }
 
     private func configureTableHeaderView() {
-        let headerView = JetpackRestoreHeaderView.loadFromNib()
         let publishedDate = dateFormatter.string(from: activity.published)
 
         headerView.configure(
@@ -191,26 +194,44 @@ class BaseRestoreOptionsViewController: UITableViewController {
 
     private func toggleThemes(value: Bool) {
         restoreTypes.themes = value
+        updateHeaderView()
     }
 
     private func togglePlugins(value: Bool) {
         restoreTypes.plugins = value
+        updateHeaderView()
     }
 
     private func toggleUploads(value: Bool) {
         restoreTypes.uploads = value
+        updateHeaderView()
     }
 
     private func toggleRoots(value: Bool) {
         restoreTypes.roots = value
+        updateHeaderView()
     }
 
     private func toggleContents(value: Bool) {
         restoreTypes.contents = value
+        updateHeaderView()
     }
 
     private func toggleSqls(value: Bool) {
         restoreTypes.sqls = value
+        updateHeaderView()
+    }
+
+    private func updateHeaderView() {
+        let isItemSelectionEmpty =
+            restoreTypes.themes == false &&
+            restoreTypes.plugins == false &&
+            restoreTypes.uploads == false &&
+            restoreTypes.roots == false &&
+            restoreTypes.contents == false &&
+            restoreTypes.sqls == false
+
+        headerView.toggleActionButton(isEnabled: !isItemSelectionEmpty)
     }
 }
 

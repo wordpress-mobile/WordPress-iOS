@@ -7,9 +7,9 @@ struct JetpackRestoreCompleteConfiguration {
     let iconImage: UIImage
     let messageTitle: String
     let messageDescription: String
-    let hint: String
     let primaryButtonTitle: String
-    let secondaryButtonTitle: String?
+    let secondaryButtonTitle: String
+    let hint: String?
 }
 
 class BaseRestoreCompleteViewController: UIViewController {
@@ -22,6 +22,12 @@ class BaseRestoreCompleteViewController: UIViewController {
 
     private lazy var dateFormatter: DateFormatter = {
         return ActivityDateFormatting.mediumDateFormatterWithTime(for: site)
+    }()
+
+    private lazy var completeView: RestoreCompleteView = {
+        let completeView = RestoreCompleteView.loadFromNib()
+        completeView.translatesAutoresizingMaskIntoConstraints = false
+        return completeView
     }()
 
     // MARK: - Initialization
@@ -52,6 +58,16 @@ class BaseRestoreCompleteViewController: UIViewController {
         configureRestoreCompleteView()
     }
 
+    // MARK: - Public
+
+    func primaryButtonTapped() {
+        fatalError("Must override in subclass")
+    }
+
+    func secondaryButtonTapped() {
+        fatalError("Must override in subclass")
+    }
+
     // MARK: - Configure
 
     private func configureTitle() {
@@ -66,27 +82,25 @@ class BaseRestoreCompleteViewController: UIViewController {
     }
 
     private func configureRestoreCompleteView() {
-        let completeView = RestoreCompleteView.loadFromNib()
         let publishedDate = dateFormatter.string(from: activity.published)
 
         completeView.configure(
             iconImage: configuration.iconImage,
             title: configuration.messageTitle,
             description: String(format: configuration.messageDescription, publishedDate),
-            hint: configuration.hint,
             primaryButtonTitle: configuration.primaryButtonTitle,
-            secondaryButtonTitle: configuration.secondaryButtonTitle
+            secondaryButtonTitle: configuration.secondaryButtonTitle,
+            hint: configuration.hint
         )
 
-        completeView.primaryButtonHandler = {
-            // TODO
+        completeView.primaryButtonHandler = { [weak self] in
+            self?.primaryButtonTapped()
         }
 
-        completeView.secondaryButtonHandler = {
-            // TODO
+        completeView.secondaryButtonHandler = { [weak self] in
+            self?.secondaryButtonTapped()
         }
 
-        completeView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(completeView)
         view.pinSubviewToAllEdges(completeView)
     }
