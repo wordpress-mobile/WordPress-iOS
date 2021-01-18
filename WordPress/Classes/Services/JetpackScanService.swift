@@ -34,6 +34,35 @@ import Foundation
 
         service.startScanForSite(siteID, success: success, failure: failure)
     }
+
+    // MARK: - Threats
+    func fixThreats(_ threats: [JetpackScanThreat], blog: Blog, success: @escaping(JetpackThreatFixResponse) -> Void, failure: @escaping(Error) -> Void) {
+        guard let siteID = blog.dotComID?.intValue else {
+            failure(JetpackScanServiceError.invalidSiteID)
+            return
+        }
+
+        service.fixThreats(threats, siteID: siteID, success: success, failure: failure)
+    }
+
+    func fixThreat(_ threat: JetpackScanThreat, blog: Blog, success: @escaping(JetpackThreatFixStatus) -> Void, failure: @escaping(Error) -> Void) {
+        guard let siteID = blog.dotComID?.intValue else {
+            failure(JetpackScanServiceError.invalidSiteID)
+            return
+        }
+
+        service.fixThreat(threat, siteID: siteID, success: success, failure: failure)
+    }
+
+    public func getFixStatusForThreats(_ threats: [JetpackScanThreat], blog: Blog, success: @escaping(JetpackThreatFixResponse) -> Void, failure: @escaping(Error) -> Void) {
+        guard let siteID = blog.dotComID?.intValue else {
+            failure(JetpackScanServiceError.invalidSiteID)
+            return
+        }
+
+        service.getFixStatusForThreats(threats, siteID: siteID, success: success, failure: failure)
+    }
+
     // MARK: - Helpers
     enum JetpackScanServiceError: Error {
         case invalidSiteID
