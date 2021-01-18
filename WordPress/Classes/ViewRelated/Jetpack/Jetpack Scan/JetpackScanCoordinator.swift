@@ -134,4 +134,13 @@ class JetpackScanCoordinator {
     private struct Constants {
         static let refreshTimerInterval: TimeInterval = 5
     }
+extension JetpackScan {
+    var hasFixableThreats: Bool {
+        let count = fixableThreats?.count ?? 0
+        return count > 0
+    }
+
+    var fixableThreats: [JetpackScanThreat]? {
+        return threats?.filter { $0.fixable != nil }
+    }
 }
