@@ -164,11 +164,7 @@ import "./ScreenshotFastfile"
   lane :new_beta_release do | options |
     ios_betabuild_prechecks(options)
     ios_update_metadata(options)
-    violations = ios_lint_localizations(input_dir: 'WordPress/Resources', abort_on_violations: false)
-    unless (violations.nil? || violations.empty?)
-      abort = UI.confirm("Violations found, we suggest fixing them in GlotPress first and retrying the beta afterwards. Abort?")
-      UI.abort_with_message!("Aborting the beta due to localization violations. Reach out to i18n folks to help you fix them.") if abort
-    end
+    ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta()
     ios_tag_build()
   end
@@ -209,7 +205,7 @@ import "./ScreenshotFastfile"
     ios_finalize_prechecks(options)
     unless ios_current_branch_is_hotfix
       ios_update_metadata(options)
-      ios_lint_localizations(input_dir: 'WordPress/Resources')
+      ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
       ios_bump_version_beta()
     end
     ios_final_tag(options)

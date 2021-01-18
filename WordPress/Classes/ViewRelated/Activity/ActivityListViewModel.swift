@@ -2,7 +2,7 @@ import WordPressFlux
 
 protocol ActivityPresenter: class {
     func presentDetailsFor(activity: FormattableActivity)
-    func presentBackupOrRestoreFor(activity: FormattableActivity)
+    func presentBackupOrRestoreFor(activity: Activity)
     func presentRestoreFor(activity: Activity)
 }
 
@@ -181,7 +181,7 @@ class ActivityListViewModel: Observable {
                         return
                     }
 
-                    presenter?.presentBackupOrRestoreFor(activity: formattableActivity)
+                    presenter?.presentBackupOrRestoreFor(activity: formattableActivity.activity)
                 }
             )
         })
