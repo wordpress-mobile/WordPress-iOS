@@ -758,8 +758,15 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: selectedPage) {
             self._tableViewHandler.isSearching = false
             self._tableViewHandler.refreshTableView(at: index)
+            self.handleSetParentSuccess()
         }
         present(parentPageNavigationController, animated: true)
+    }
+
+    private func handleSetParentSuccess() {
+        let setParentSuccefullyNotice =  NSLocalizedString("Page Parent updated.", comment: "Message informing the user that their pages parent has been set successfully")
+        let notice = Notice(title: setParentSuccefullyNotice, feedbackType: .success)
+        ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
 
     fileprivate func pageForObjectID(_ objectID: NSManagedObjectID) -> Page? {
