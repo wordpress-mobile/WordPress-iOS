@@ -10,7 +10,7 @@ import Foundation
 
     @objc func getScanAvailable(for blog: Blog, success: @escaping(Bool) -> Void, failure: @escaping(Error?) -> Void) {
         guard let siteID = blog.dotComID?.intValue else {
-            failure(nil)
+            failure(JetpackScanServiceError.invalidSiteID)
             return
         }
 
@@ -19,7 +19,7 @@ import Foundation
 
     func getScan(for blog: Blog, success: @escaping(JetpackScan) -> Void, failure: @escaping(Error?) -> Void) {
         guard let siteID = blog.dotComID?.intValue else {
-            failure(nil)
+            failure(JetpackScanServiceError.invalidSiteID)
             return
         }
 
@@ -28,10 +28,14 @@ import Foundation
 
     func startScan(for blog: Blog, success: @escaping(Bool) -> Void, failure: @escaping(Error?) -> Void) {
         guard let siteID = blog.dotComID?.intValue else {
-            failure(nil)
+            failure(JetpackScanServiceError.invalidSiteID)
             return
         }
 
         service.startScanForSite(siteID, success: success, failure: failure)
+    }
+    // MARK: - Helpers
+    enum JetpackScanServiceError: Error {
+        case invalidSiteID
     }
 }
