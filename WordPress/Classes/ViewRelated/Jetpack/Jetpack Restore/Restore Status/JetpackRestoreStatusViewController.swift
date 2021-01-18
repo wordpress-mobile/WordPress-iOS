@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import CocoaLumberjack
 import WordPressShared
 import WordPressUI
@@ -36,9 +36,13 @@ class JetpackRestoreStatusViewController: BaseRestoreStatusViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        coordinator.start()
+        coordinator.viewDidLoad()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        coordinator.viewWillDisappear()
+    }
 }
 
 extension JetpackRestoreStatusViewController: JetpackRestoreStatusView {

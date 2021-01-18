@@ -14,6 +14,8 @@ class JetpackBackupStatusCoordinator {
     private let site: JetpackSiteRef
     private let view: JetpackBackupStatusView
 
+    private var timer: Timer?
+
     // MARK: - Init
 
     init(site: JetpackSiteRef,
@@ -27,10 +29,10 @@ class JetpackBackupStatusCoordinator {
 
     // MARK: - Public
 
-    func start() {
+    func viewDidLoad() {
         service.prepareBackup(for: site, success: { [weak self] backup in
             self?.view.render(backup)
-            self?.pollBackupStatus(for: backup.downloadID)
+            self?.startPolling(for: backup.downloadID)
         }, failure: { [weak self] error in
             DDLogError("Error preparing downloadable backup object: \(error.localizedDescription)")
 
@@ -38,30 +40,49 @@ class JetpackBackupStatusCoordinator {
         })
     }
 
+    func viewWillDisappear() {
+        stopPolling()
+    }
+
     // MARK: - Private
 
-    private func pollBackupStatus(for downloadID: Int) {
-        Timer.scheduledTimer(withTimeInterval: Constants.pollingInterval, repeats: true) { [weak self] timer in
-            guard let self = self else { return }
-            self.service.getBackupStatus(for: self.site, downloadID: downloadID, success: { backup in
+    private func startPolling(for downloadID: Int) {
+        guard timer == nil else {
+            return
+        }
 
-                // If a backup url exists, then we've finished creating a downloadable backup.
-                if backup.url != nil {
-                    timer.invalidate()
-                    self.view.showComplete(backup)
-                    return
-                }
-
-                self.view.render(backup)
-
-            }, failure: { [weak self] error in
-                DDLogError("Error fetching backup object: \(error.localizedDescription)")
-
-                timer.invalidate()
-                self?.view.showError()
-            })
+        timer = Timer.scheduledTimer(withTimeInterval: Constants.pollingInterval, repeats: true) { [weak self] timer in
+            self?.refreshBackupStatus(downloadID: downloadID)
         }
     }
+
+    private func stopPolling() {
+        timer?.invalidate()
+        timer = nil
+    }
+
+    private func refreshBackupStatus(downloadID: Int) {
+        service.getBackupStatus(for: self.site, downloadID: downloadID, success: { [weak self] backup in
+            guard let self = self else {
+                return
+            }
+
+            // If a backup url exists, then we've finished creating a downloadable backup.
+            if backup.url != nil {
+                self.view.showComplete(backup)
+                return
+            }
+
+            self.view.render(backup)
+
+        }, failure: { [weak self] error in
+            DDLogError("Error fetching backup object: \(error.localizedDescription)")
+
+            self?.stopPolling()
+            self?.view.showError()
+        })
+    }
+
 }
 
 extension JetpackBackupStatusCoordinator {
