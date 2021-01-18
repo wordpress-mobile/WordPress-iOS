@@ -5,6 +5,8 @@ protocol JetpackScanView {
 
     func showLoading()
     func showError()
+
+    func presentAlert(_ alert: UIAlertController)
 }
 
 class JetpackScanCoordinator {
