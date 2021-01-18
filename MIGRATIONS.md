@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 111
+
+@scoutharris 2021-01-14
+
+- Added `isSeen` attribute to  `ReaderPost` entity.
+
 ## WordPress 110
 
 @emilylaguna 2021-01-05
