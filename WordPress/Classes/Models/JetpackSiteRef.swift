@@ -36,6 +36,8 @@ struct JetpackSiteRef: Hashable, Codable {
     static func ==(lhs: JetpackSiteRef, rhs: JetpackSiteRef) -> Bool {
         return lhs.siteID == rhs.siteID
             && lhs.username == rhs.username
+            && lhs.hasBackup == rhs.hasBackup
+            && lhs.hasPaidPlan == rhs.hasPaidPlan
     }
 
     func shouldShowActivityLogFilter() -> Bool {
