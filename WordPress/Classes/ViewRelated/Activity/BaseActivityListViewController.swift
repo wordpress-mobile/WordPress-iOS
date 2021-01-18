@@ -363,7 +363,7 @@ extension BaseActivityListViewController: ActivityPresenter {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
-        let restoreVC = JetpackRestoreViewController(site: site, activity: activity)
+        let restoreVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
         alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: restoreVC), animated: true)
         })
@@ -407,7 +407,7 @@ extension BaseActivityListViewController: ActivityPresenter {
             return
         }
 
-        let restoreVC = JetpackRestoreViewController(site: site, activity: activity)
+        let restoreVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
         let navigationVC = UINavigationController(rootViewController: restoreVC)
         self.present(navigationVC, animated: true)
     }
