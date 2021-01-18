@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-24 10:54:08+0000 */
+/* Translation-Revision-Date: 2021-01-17 23:01:44+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -31,10 +31,10 @@
 "%1$d of %2$d completed" = "%1$d\/%2$d tamamlandı";
 
 /* Format string for single unseen post count. The %1$d is a placeholder for the count. */
-"%1$d unseen post" = "%1$d unseen post";
+"%1$d unseen post" = "%1$d görülmemiş yazı";
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
-"%1$d unseen posts" = "%1$d unseen posts";
+"%1$d unseen posts" = "%1$d görülmemiş yazı";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: Current value. */
 "%1$s. Current value is %2$s" = "%1$s. Mevcut değer %2$s";
@@ -812,7 +812,7 @@
 
 /* Noun. Links to a blog's Jetpack Backups screen.
    Title for the Jetpack's backup list */
-"Backup" = "Backup";
+"Backup" = "Yedek";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "Seçilen döneme ait yorumları gösteren çubuk grafik.";
@@ -1196,10 +1196,10 @@
 "Choose layout" = "Düzen seç";
 
 /* Downloadable items: general section title */
-"Choose the items to download" = "Choose the items to download";
+"Choose the items to download" = "İndirilecek öğeleri seçin";
 
 /* Restorable items: general section title */
-"Choose the items to restore" = "Choose the items to restore";
+"Choose the items to restore" = "Geri döndürülecek öğeleri seçin";
 
 /* No comment provided by engineer. */
 "Choose video" = "Video seç";
@@ -1678,10 +1678,10 @@
 "Create a post, page, or story" = "Bir yazı, sayfa veya öykü oluştur";
 
 /* Label that describes the download backup action */
-"Create downloadable backup" = "Create downloadable backup";
+"Create downloadable backup" = "İndirilebilir yedekleme oluştur";
 
 /* Button title for download backup action */
-"Create downloadable file" = "Create downloadable file";
+"Create downloadable file" = "İndirilebilir dosya oluştur";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Kendi özelleştirilmiş panonuzu oluşturun ve görmek istediğiniz raporları seçin. Sizi en çok ilgilendiren verilere odaklanın.";
@@ -1723,7 +1723,7 @@
 "Currently restoring your site" = "Şu anda sitenizi geri yükleniyor";
 
 /* Placeholder for Invite People message field. */
-"Custom message…" = "Custom message…";
+"Custom message…" = "Özel mesaj…";
 
 /* Customize button that appears in Theme Browser Header
    The menu item to select during a guided tour.
@@ -1993,7 +1993,7 @@
 "Don’t cry because it’s over, smile because it happened." = "Ağlama, çünkü bitti, gülümse çünkü oldu.";
 
 /* Title for label when there are no threats on the users site */
-"Don’t worry about a thing" = "Don’t worry about a thing";
+"Don’t worry about a thing" = "Hiç bir şey hakkında endişe etmeyin";
 
 /* Screen reader hint for button that will move the menu item */
 "Double tap and hold to move this menu item up or down" = "Bu menü öğesini yukarı veya aşağı taşımak için iki kez dokunup basılı tutun";
@@ -2057,7 +2057,7 @@
 
 /* Title displayed for download backup action.
    Title for the Jetpack Download Backup Site Screen */
-"Download Backup" = "Download Backup";
+"Download Backup" = "Yedeklemeyi İndir";
 
 /* Label for number of file downloads. */
 "Downloads" = "İndirmeler";
@@ -2180,7 +2180,7 @@
 
 /* A placeholder for the username textfield.
    Invite Username Placeholder */
-"Email or Username…" = "Email or Username…";
+"Email or Username…" = "E-posta ya da kullanıcı adı…";
 
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-posta gönderildi!";
@@ -2367,7 +2367,7 @@
 "Excerpts are optional hand-crafted summaries of your content." = "Özetler, içeriğinizin elle hazırlanmış özetidir.";
 
 /* Downloadable/Restorable items: content section footer text */
-"Excludes themes, plugins, and uploads" = "Excludes themes, plugins, and uploads";
+"Excludes themes, plugins, and uploads" = "Temalar, eklentiler ve yüklemeler hariç";
 
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "Tam ekran modundan çık";
@@ -2522,7 +2522,7 @@
 "First Name" = "Ad";
 
 /* Button title that attempts to fix all fixable threats */
-"Fix All" = "Fix All";
+"Fix All" = "Tümünü düzelt";
 
 /* Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
@@ -2895,7 +2895,7 @@ translators: sample content for \"Team\" page template */
 "Image Link" = "Görsel bağlantısı";
 
 /* No comment provided by engineer. */
-"Image Link URL" = "Image Link URL";
+"Image Link URL" = "Görsel bağlantı adresi";
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Görsel boyutu";
@@ -3028,7 +3028,7 @@ translators: sample content for \"Team\" page template */
 "Invite" = "Davet et";
 
 /* Invite People Title */
-"Invite People" = "Invite People";
+"Invite People" = "İnsanları davet et";
 
 /* translators: sample content for \"About\" page template */
 "It is our choices, Harry, that show what we truly are, far more than our abilities." = "Bizim seçimlerimiz, Harry, gerçekte ne olduğumuzu gösteriyor, yeteneklerimizden çok daha fazlası.";
@@ -3141,7 +3141,7 @@ translators: sample content for \"Team\" page template */
 "Learn more about date and time formatting." = "Tarih ve zaman biçimi hakkında daha fazlasını öğrenin.";
 
 /* Footer text for Invite People role field. */
-"Learn more about roles" = "Learn more about roles";
+"Learn more about roles" = "Roller hakkında daha fazla bilgi edinin";
 
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "Daha fazlasını öğrenin...";
@@ -3448,7 +3448,7 @@ translators: sample content for \"Services\" page template */
 "Media Uploading" = "Ortam dosyası yükleniyor";
 
 /* Downloadable/Restorable items: Media Uploads */
-"Media Uploads" = "Media Uploads";
+"Media Uploads" = "Medya Yüklemeleri";
 
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "Medyada karşıya yüklenecek ilişkili dosya bulunmuyor.";
@@ -4517,7 +4517,7 @@ translators: sample content for \"Services\" page template */
 "Premium Upgrades" = "Premium yükseltmeler";
 
 /* Title for label when the preparing to scan the users site */
-"Preparing to scan" = "Preparing to scan";
+"Preparing to scan" = "Tarama için hazırlanıyor";
 
 /* Label to show while converting and/or resizing media to send to server */
 "Preparing..." = "Hazırlanıyor...";
@@ -4923,13 +4923,13 @@ translators: sample content for \"Services\" page template */
 "Reset" = "Sıfırla";
 
 /* Accessibility label for the reset activity type button */
-"Reset Activity Type filter" = "Reset Activity Type filter";
+"Reset Activity Type filter" = "Etkinlik türü filtresini sıfırla";
 
 /* No comment provided by engineer. */
 "Reset Block" = "Bloku Sıfırla";
 
 /* Accessibility label for the reset date range button */
-"Reset Date Range filter" = "Reset Date Range filter";
+"Reset Date Range filter" = "Tarih aralığı filtresini sıfırla";
 
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "Filtreleri sıfırla";
@@ -4948,10 +4948,10 @@ translators: sample content for \"Services\" page template */
 "Restore" = "Geri yükle";
 
 /* Label that describes the restore site action */
-"Restore site" = "Restore site";
+"Restore site" = "Siteyi eski haline getir";
 
 /* Button title for restore site action */
-"Restore to this point" = "Restore to this point";
+"Restore to this point" = "Bu noktaya kadar geri yükle";
 
 /* A prompt to attempt the failed network request again
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
@@ -4974,7 +4974,7 @@ translators: sample content for \"Services\" page template */
 "Retry" = "Tekrar";
 
 /* Button title that triggers a scan */
-"Retry Scan" = "Retry Scan";
+"Retry Scan" = "Taramayı yeniden dene";
 
 /* User action to retry media upload. */
 "Retry Upload" = "Yüklemeyi yeniden dene";
@@ -5094,13 +5094,13 @@ translators: sample content for \"Services\" page template */
 "Scan" = "Tarama";
 
 /* Button title that triggers a scan */
-"Scan Again" = "Scan Again";
+"Scan Again" = "Yeniden tara";
 
 /* Button title that triggers a scan */
-"Scan Now" = "Scan Now";
+"Scan Now" = "Şimdi tara";
 
 /* Title for label when the actively scanning the users site */
-"Scanning files" = "Scanning files";
+"Scanning files" = "Dosyalar taranıyor";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Zamanlama";
@@ -5550,7 +5550,7 @@ translators: sample content for \"Services\" page template */
 "Site address must be at least 4 characters." = "Site adresiniz en az dört karakter olmalı.";
 
 /* Downloadable/Restorable items: Site Database */
-"Site database" = "Site database";
+"Site database" = "Site veritabanı";
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Site silindi";
@@ -5604,7 +5604,7 @@ translators: sample content for \"Services\" page template */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Bazı görsel yüklemeleri başarısız oldu. Bu eylem, başarısız olan görsellerin  tümünü gönderiden kaldıracak.\nYine de kaydedilsin mi?";
 
 /* Title for a label that appears when the scan failed */
-"Something went wrong" = "Something went wrong";
+"Something went wrong" = "Bir şeyler yanlış gitti";
 
 /* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
 "Something went wrong, please try again." = "Bir şeyler ters gitti. Lütfen tekrar deneyin.";
@@ -6250,7 +6250,7 @@ translators: sample content for \"Services\" page template */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Bu uygulama yazılarınıza fotoğraf ve\/veya video eklemek için cihazınızın görsel kitaplığa erişim izni istiyor. Buna izin vermek istiyorsanız lütfen gizlilik ayarlarını değiştirin.";
 
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
-"This domain is unavailable" = "This domain is unavailable";
+"This domain is unavailable" = "Bu alan adı kullanılamaz";
 
 /* An error message informing the user the email address they entered did not match a WordPress.com account. */
 "This email address is not registered on WordPress.com." = "Bu e-posta adresi WordPress.com üzerinde kayıtlı değil.";
@@ -6948,7 +6948,7 @@ translators: sample content for \"Services\" page template */
 "WP Admin" = "WP Yönetim";
 
 /* Downloadable/Restorable items: WP-content directory */
-"WP-content directory" = "WP-content directory";
+"WP-content directory" = "WP-content dizini";
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Tamamlanması için Google bekleniyor…";
@@ -7303,7 +7303,7 @@ translators: sample content for \"Services\" page template */
 "WordPress Notifications" = "WordPress bildirimleri";
 
 /* Downloadable/Restorable items: WordPress Plugins */
-"WordPress Plugins" = "WordPress Plugins";
+"WordPress Plugins" = "WordPress Eklentileri";
 
 /* Siri Suggestion to open Me tab */
 "WordPress Profile" = "WordPress profili";
@@ -7315,7 +7315,7 @@ translators: sample content for \"Services\" page template */
 "WordPress Site Details" = "WordPress site detayları";
 
 /* Downloadable/Restorable items: WordPress Themes */
-"WordPress Themes" = "WordPress Themes";
+"WordPress Themes" = "WordPress Temaları";
 
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "iOS için WordPress desteği";
@@ -7324,7 +7324,7 @@ translators: sample content for \"Services\" page template */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress mevcut yazıya konum bilgileri ekleyebilmek için cihazınızın şu anki konumuna erişme iznine ihtiyaç duyuyor. Lütfen gizlilik ayarlarınızı güncelleyin.";
 
 /* Downloadable/Restorable items: WordPress root */
-"WordPress root" = "WordPress root";
+"WordPress root" = "WordPress kök dizini";
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "WordPress sürümünüz çok eski";
@@ -7559,7 +7559,7 @@ translators: sample content for \"Services\" page template */
 "Your restore is taking longer than usual, please check again in a few minutes." = "Geri yüklemeniz normalden uzun sürüyor, lütfen birkaç dakika sonra tekrar kontrol edin.";
 
 /* Body text of alert helping users understand their site address */
-"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Your site address appears in the bar at the top of the screen when you visit your site in Safari.";
+"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Sitenizin adresi Safari ile sitenizi ziyaret ettiğinizde tepede görüntülenir.";
 
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Siteniz oluşturuldu!";
@@ -7583,7 +7583,7 @@ translators: sample content for \"Services\" page template */
 "Your site is visible to everyone, but asks search engines not to index your site." = "Siteniz herkese görünebilir durumda fakat arama motorlarından kendisini taramamasını istiyor.";
 
 /* Title for label when there are threats on the users site */
-"Your site may be at risk" = "Your site may be at risk";
+"Your site may be at risk" = "Siteniz risk altında olabilir";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Your site will be ready shortly" = "Siteniz kısa süre içinde hazır olacak";
