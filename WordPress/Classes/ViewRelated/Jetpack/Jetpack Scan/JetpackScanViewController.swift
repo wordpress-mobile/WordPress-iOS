@@ -49,6 +49,10 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
 
     }
 
+    func presentAlert(_ alert: UIAlertController) {
+        present(alert, animated: true, completion: nil)
+    }
+
     // MARK: - Private: 
     private func configureTableView() {
         tableView.register(JetpackScanStatusCell.defaultNib, forCellReuseIdentifier: Constants.statusCellIdentifier)
