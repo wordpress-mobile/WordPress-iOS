@@ -7,13 +7,17 @@ class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
 
     // MARK: - Properties
 
+    private let downloadID: Int
+
     private lazy var coordinator: JetpackBackupStatusCoordinator = {
-        return JetpackBackupStatusCoordinator(site: self.site, view: self)
+        return JetpackBackupStatusCoordinator(site: self.site, downloadID: self.downloadID, view: self)
     }()
 
     // MARK: - Initialization
 
-    override init(site: JetpackSiteRef, activity: Activity, restoreTypes: JetpackRestoreTypes) {
+    init(site: JetpackSiteRef, activity: Activity, downloadID: Int) {
+        self.downloadID = downloadID
+
         let restoreStatusConfiguration = JetpackRestoreStatusConfiguration(
             title: NSLocalizedString("Backup", comment: "Title for Jetpack Backup Status screen"),
             iconImage: .gridicon(.history),
@@ -24,7 +28,8 @@ class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
             placeholderProgressTitle: nil,
             progressDescription: nil
         )
-        super.init(site: site, activity: activity, restoreTypes: restoreTypes, configuration: restoreStatusConfiguration)
+
+        super.init(site: site, activity: activity, configuration: restoreStatusConfiguration)
     }
 
     required init?(coder: NSCoder) {

@@ -4,6 +4,12 @@ import WordPressShared
 
 class JetpackRestoreWarningViewController: UIViewController {
 
+    // MARK: - Properties
+
+    private lazy var coordinator: JetpackRestoreWarningCoordinator = {
+        return JetpackRestoreWarningCoordinator(site: self.site, restoreTypes: self.restoreTypes, rewindID: self.activity.rewindID, view: self)
+    }()
+
     // MARK: - Private Properties
 
     private let site: JetpackSiteRef
@@ -45,7 +51,7 @@ class JetpackRestoreWarningViewController: UIViewController {
         warningView.configure(with: publishedDate)
 
         warningView.confirmHandler = { [weak self] in
-            self?.showRestoreStatus()
+            self?.coordinator.restoreSite()
         }
 
         warningView.cancelHandler = { [weak self] in
@@ -57,13 +63,16 @@ class JetpackRestoreWarningViewController: UIViewController {
         view.pinSubviewToAllEdges(warningView)
     }
 
-    // MARK: - Private Helpers
+}
 
-    private func showRestoreStatus() {
-        let statusVC = JetpackRestoreStatusViewController(site: site,
-                                                          activity: activity,
-                                                          restoreTypes: restoreTypes)
-        self.navigationController?.pushViewController(statusVC, animated: true)
+extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {
+
+    func showError() {
+        // TODO: Show notification
     }
 
+    func showRestoreStatus() {
+        let statusVC = JetpackRestoreStatusViewController(site: site, activity: activity)
+        self.navigationController?.pushViewController(statusVC, animated: true)
+    }
 }

@@ -9,7 +9,7 @@ class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
     // MARK: - Properties
 
     private lazy var coordinator: JetpackBackupOptionsCoordinator = {
-        return JetpackBackupOptionsCoordinator(site: self.site, view: self)
+        return JetpackBackupOptionsCoordinator(site: self.site, restoreTypes: self.restoreTypes, view: self)
     }()
 
     // MARK: - Initialization
@@ -46,14 +46,13 @@ class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
 
 extension JetpackBackupOptionsViewController: JetpackBackupOptionsView {
 
-    func showBackupStatus(for downloadID: Int) {
-        let statusVC = JetpackBackupStatusViewController(site: site,
-                                                         activity: activity,
-                                                         restoreTypes: JetpackRestoreTypes())
-        self.navigationController?.pushViewController(statusVC, animated: true)
-    }
-
     func showError() {
         // TODO: Show notification
     }
+
+    func showBackupStatus(for downloadID: Int) {
+        let statusVC = JetpackBackupStatusViewController(site: site, activity: activity, downloadID: downloadID)
+        self.navigationController?.pushViewController(statusVC, animated: true)
+    }
+
 }

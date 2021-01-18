@@ -12,7 +12,6 @@ class JetpackRestoreStatusCoordinator {
 
     private let service: JetpackRestoreService
     private let site: JetpackSiteRef
-    private let rewindID: String?
     private let view: JetpackRestoreStatusView
 
     private var timer: Timer?
@@ -20,26 +19,18 @@ class JetpackRestoreStatusCoordinator {
     // MARK: - Init
 
     init(site: JetpackSiteRef,
-         rewindID: String?,
          view: JetpackRestoreStatusView,
          service: JetpackRestoreService? = nil,
          context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.service = service ?? JetpackRestoreService(managedObjectContext: context)
         self.site = site
-        self.rewindID = rewindID
         self.view = view
     }
 
     // MARK: - Public
 
     func viewDidLoad() {
-        service.restoreSite(site, rewindID: rewindID, success: { [weak self] _ in
-            self?.startPolling()
-        }, failure: { [weak self] error in
-            DDLogError("Error restoring site: \(error.localizedDescription)")
-
-            self?.view.showError()
-        })
+        startPolling()
     }
 
     func viewWillDisappear() {
@@ -64,7 +55,7 @@ class JetpackRestoreStatusCoordinator {
     }
 
     private func refreshRestoreStatus() {
-        self.service.getRewindStatus(for: self.site, success: { [weak self] rewindStatus in
+        service.getRewindStatus(for: self.site, success: { [weak self] rewindStatus in
             guard let self = self else {
                 return
             }

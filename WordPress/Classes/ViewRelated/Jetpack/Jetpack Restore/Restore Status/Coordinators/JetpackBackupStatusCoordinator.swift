@@ -12,6 +12,7 @@ class JetpackBackupStatusCoordinator {
 
     private let service: JetpackBackupService
     private let site: JetpackSiteRef
+    private let downloadID: Int
     private let view: JetpackBackupStatusView
 
     private var timer: Timer?
@@ -19,25 +20,20 @@ class JetpackBackupStatusCoordinator {
     // MARK: - Init
 
     init(site: JetpackSiteRef,
+         downloadID: Int,
          view: JetpackBackupStatusView,
          service: JetpackBackupService? = nil,
          context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.service = service ?? JetpackBackupService(managedObjectContext: context)
         self.site = site
+        self.downloadID = downloadID
         self.view = view
     }
 
     // MARK: - Public
 
     func viewDidLoad() {
-        service.prepareBackup(for: site, success: { [weak self] backup in
-            self?.view.render(backup)
-            self?.startPolling(for: backup.downloadID)
-        }, failure: { [weak self] error in
-            DDLogError("Error preparing downloadable backup object: \(error.localizedDescription)")
-
-            self?.view.showError()
-        })
+        startPolling(for: downloadID)
     }
 
     func viewWillDisappear() {
