@@ -1,6 +1,7 @@
 import Foundation
 import CocoaLumberjack
 import Gridicons
+import WordPressFlux
 import WordPressUI
 import WordPressShared
 
@@ -43,11 +44,13 @@ class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
     }
 }
 
-
 extension JetpackBackupOptionsViewController: JetpackBackupOptionsView {
 
     func showError() {
-        // TODO: Show notification
+        let errorTitle = NSLocalizedString("Backup failed.", comment: "Title for error displayed when preparing a backup fails.")
+        let errorMessage = NSLocalizedString("We couldn't create your backup. Please try again later.", comment: "Message for error displayed when preparing a backup fails.")
+        let notice = Notice(title: errorTitle, message: errorMessage)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     func showBackupStatus(for downloadID: Int) {

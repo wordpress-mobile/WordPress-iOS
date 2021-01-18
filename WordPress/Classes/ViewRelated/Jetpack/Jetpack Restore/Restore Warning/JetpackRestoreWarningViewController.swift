@@ -1,5 +1,6 @@
 import Foundation
 import CocoaLumberjack
+import WordPressFlux
 import WordPressShared
 
 class JetpackRestoreWarningViewController: UIViewController {
@@ -68,7 +69,10 @@ class JetpackRestoreWarningViewController: UIViewController {
 extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {
 
     func showError() {
-        // TODO: Show notification
+        let errorTitle = NSLocalizedString("Restore failed.", comment: "Title for error displayed when restoring a site fails.")
+        let errorMessage = NSLocalizedString("We couldn't restore your site. Please try again later.", comment: "Message for error displayed when restoring a site fails.")
+        let notice = Notice(title: errorTitle, message: errorMessage)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     func showRestoreStatus() {
