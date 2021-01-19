@@ -64,8 +64,8 @@ extension JetpackRestoreStatusViewController: JetpackRestoreStatusView {
     }
 
     func showRestoreFailed() {
-        // Go to complete VC and show error message
-        // let errorTitle = NSLocalizedString("Unable to restore your site, please try again later or contact support.", comment: "Text displayed when a site restore fails.")
+        let failedVC = JetpackRestoreFailedViewController(site: site, activity: activity)
+        self.navigationController?.pushViewController(failedVC, animated: true)
     }
 
     func showRestoreComplete() {

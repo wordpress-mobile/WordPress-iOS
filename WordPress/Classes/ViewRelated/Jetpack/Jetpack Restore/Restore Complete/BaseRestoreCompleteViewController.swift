@@ -7,8 +7,8 @@ struct JetpackRestoreCompleteConfiguration {
     let iconImage: UIImage
     let messageTitle: String
     let messageDescription: String
-    let primaryButtonTitle: String
-    let secondaryButtonTitle: String
+    let primaryButtonTitle: String?
+    let secondaryButtonTitle: String?
     let hint: String?
 }
 
