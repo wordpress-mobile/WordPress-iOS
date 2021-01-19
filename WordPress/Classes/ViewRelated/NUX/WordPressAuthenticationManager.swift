@@ -54,6 +54,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 primaryTitleColor: .white,
                                                 secondaryTitleColor: .text,
                                                 disabledTitleColor: .neutral(.shade20),
+                                                disabledButtonActivityIndicatorColor: .text,
                                                 textButtonColor: .primary,
                                                 textButtonHighlightColor: .primaryDark,
                                                 instructionColor: .text,

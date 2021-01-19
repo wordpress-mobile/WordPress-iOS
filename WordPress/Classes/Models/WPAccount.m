@@ -77,14 +77,7 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
 
 - (NSString *)authToken
 {
-    NSError *error = nil;
-    NSString *authToken = [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:&error];
-    
-    if (error) {
-        DDLogError(@"Error while retrieving WordPressComOAuthKeychainServiceName token: %@", error);
-    }
-
-    return authToken;
+    return [WPAccount tokenForUsername:self.username];
 }
 
 - (void)setAuthToken:(NSString *)authToken
@@ -129,6 +122,20 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
     AccountService *service = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [service defaultWordPressComAccount];
     return [defaultAccount isEqual:self];
+}
+
+#pragma mark - Static methods
+
++ (NSString *)tokenForUsername:(NSString *)username
+{
+    NSError *error = nil;
+    NSString *authToken = [SFHFKeychainUtils getPasswordForUsername:username
+                                                     andServiceName:WordPressComOAuthKeychainServiceName error:&error];
+    if (error) {
+        DDLogError(@"Error while retrieving WordPressComOAuthKeychainServiceName token: %@", error);
+    }
+
+    return authToken;
 }
 
 #pragma mark - API Helpers
