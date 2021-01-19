@@ -52,32 +52,31 @@ class RestoreCompleteView: UIView, NibLoadable {
     func configure(iconImage: UIImage,
                    title: String,
                    description: String,
-                   hint: String,
                    primaryButtonTitle: String,
-                   secondaryButtonTitle: String?) {
+                   secondaryButtonTitle: String,
+                   hint: String?) {
 
         icon.image = iconImage
         titleLabel.text = title
         descriptionLabel.text = description
-        hintLabel.text = hint
-
         primaryButton.setTitle(primaryButtonTitle, for: .normal)
+        secondaryButton.setTitle(secondaryButtonTitle, for: .normal)
 
-        if let secondaryButtonTitle = secondaryButtonTitle {
-            secondaryButton.setTitle(secondaryButtonTitle, for: .normal)
-            secondaryButton.isHidden = false
+        if let hint = hint {
+            hintLabel.text = hint
+            hintLabel.isHidden = false
         } else {
-            secondaryButton.isHidden = true
+            hintLabel.isHidden = true
         }
     }
 
     // MARK: - IBAction
 
-    @IBAction func primaryButtonTapped(_ sender: Any) {
+    @IBAction private func primaryButtonTapped(_ sender: Any) {
         primaryButtonHandler?()
     }
 
-    @IBAction func secondaryButtonTapped(_ sender: Any) {
+    @IBAction private func secondaryButtonTapped(_ sender: Any) {
         secondaryButtonHandler?()
     }
 }

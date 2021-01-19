@@ -31,6 +31,6 @@ struct WordPressHomeWidgetToday: Widget {
         }
         .configurationDisplayName(LocalizableStrings.widgetTitle)
         .description(LocalizableStrings.previewDescription)
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .supportedFamilies(FeatureFlag.todayWidget.enabled ? [.systemSmall, .systemMedium] : [])
     }
 }

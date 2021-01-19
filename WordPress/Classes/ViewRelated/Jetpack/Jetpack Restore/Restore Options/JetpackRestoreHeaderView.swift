@@ -41,9 +41,15 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
         actionButton.setTitle(buttonTitle, for: .normal)
     }
 
+    // MARK: - Public
+
+    func toggleActionButton(isEnabled: Bool) {
+        actionButton.isEnabled = isEnabled
+    }
+
     // MARK: - IBActions
 
-    @IBAction func actionButtonTapped(_ sender: UIButton) {
+    @IBAction private func actionButtonTapped(_ sender: UIButton) {
         actionButtonHandler?()
     }
 }

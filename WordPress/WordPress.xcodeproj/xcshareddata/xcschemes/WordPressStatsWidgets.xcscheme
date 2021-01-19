@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3F526C4B2538CF2A0069706C"
-               BuildableName = "WordPressHomeWidgetToday.appex"
-               BlueprintName = "WordPressHomeWidgetToday"
+               BuildableName = "WordPressStatsWidgets.appex"
+               BlueprintName = "WordPressStatsWidgets"
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -63,8 +63,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3F526C4B2538CF2A0069706C"
-            BuildableName = "WordPressHomeWidgetToday.appex"
-            BlueprintName = "WordPressHomeWidgetToday"
+            BuildableName = "WordPressStatsWidgets.appex"
+            BlueprintName = "WordPressStatsWidgets"
             ReferencedContainer = "container:WordPress.xcodeproj">
          </BuildableReference>
       </RemoteRunnable>
