@@ -176,9 +176,9 @@ class JetpackScanCoordinator {
 
     private struct Strings {
         static let fixAllAlertTitleFormat = NSLocalizedString("Please confirm you want to fix all %1$d active threats", comment: "Confirmation title presented before fixing all the threats, displays the number of threats to be fixed")
-        static let fixAllSingleAlertTitle = NSLocalizedString("Please confirm you want to fix all %1$d active threat", comment: "Confirmation title presented before fixing a single threat")
+        static let fixAllSingleAlertTitle = NSLocalizedString("Please confirm you want to fix this threat", comment: "Confirmation title presented before fixing a single threat")
         static let fixAllAlertTitleMessage = NSLocalizedString("Jetpack will be fixing all the detected active threats.", comment: "Confirmation message presented before fixing all the threats, displays the number of threats to be fixed")
-        static let fixAllSingleAlertMessage = NSLocalizedString("Jetpack will be fixing all the detected active threat.", comment: "Confirmation message presented before fixing a single threat")
+        static let fixAllSingleAlertMessage = NSLocalizedString("Jetpack will be fixing the detected active threat.", comment: "Confirmation message presented before fixing a single threat")
 
         static let fixAllAlertCancelButtonTitle = NSLocalizedString("Cancel", comment: "Button title, cancel fixing all threats")
         static let fixAllAlertConfirmButtonTitle = NSLocalizedString("Fix all threats", comment: "Button title, confirm fixing all threats")
