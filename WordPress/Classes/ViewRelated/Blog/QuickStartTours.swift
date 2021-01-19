@@ -135,7 +135,7 @@ struct QuickStartCustomizeTour: QuickStartTour {
     let suggestionYesText = Strings.yesShowMe
 
     var waypoints: [WayPoint] = {
-        let step1DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step1DescriptionBase = NSLocalizedString("Select %@ to continue.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         let step1DescriptionTarget = NSLocalizedString("Themes", comment: "The menu item to select during a guided tour.")
         let step1: WayPoint = (element: .themes, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.themes)))
 
@@ -160,7 +160,7 @@ struct QuickStartShareTour: QuickStartTour {
     let suggestionYesText = Strings.yesShowMe
 
     var waypoints: [WayPoint] = {
-        let step1DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step1DescriptionBase = NSLocalizedString("Select %@ to continue.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         let step1DescriptionTarget = NSLocalizedString("Sharing", comment: "The menu item to select during a guided tour.")
         let step1: WayPoint = (element: .sharing, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.share)))
 
@@ -204,7 +204,7 @@ struct QuickStartFollowTour: QuickStartTour {
     let suggestionYesText = Strings.yesShowMe
 
     var waypoints: [WayPoint] = {
-        let step1DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let step1DescriptionBase = NSLocalizedString("Select %@ to continue.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         let step1DescriptionTarget = NSLocalizedString("Reader", comment: "The menu item to select during a guided tour.")
         let step1: WayPoint = (element: .readerTab, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.reader)))
 
