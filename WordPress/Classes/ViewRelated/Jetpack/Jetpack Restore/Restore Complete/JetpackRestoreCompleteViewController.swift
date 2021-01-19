@@ -43,16 +43,7 @@ class JetpackRestoreCompleteViewController: BaseRestoreCompleteViewController {
     // MARK: - Private
 
     private func visitSite() {
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-
-        guard let blog = blogService.blog(byBlogId: self.site.siteID as NSNumber),
-              let homeURL = blog.homeURL as String?,
-              let siteURL = URL(string: homeURL) else {
-            return
-        }
-
-        let webVC = WebViewControllerFactory.controller(url: siteURL, blog: blog)
+        let webVC = WebViewControllerFactory.controller(url: site.homeURL)
         let navigationVC = LightNavigationController(rootViewController: webVC)
 
         self.present(navigationVC, animated: true)

@@ -13,14 +13,19 @@ struct JetpackSiteRef: Hashable, Codable {
     let siteID: Int
     /// The WordPress.com username.
     let username: String
+    /// The homeURL for a site.
+    let homeURL: URL
 
     init?(blog: Blog) {
         guard let username = blog.account?.username,
-            let siteID = blog.dotComID as? Int else {
+            let siteID = blog.dotComID as? Int,
+            let homeURLString = blog.homeURL as String?,
+            let homeURL = URL(string: homeURLString) else {
                 return nil
         }
         self.siteID = siteID
         self.username = username
+        self.homeURL = homeURL
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -30,5 +35,6 @@ struct JetpackSiteRef: Hashable, Codable {
     static func ==(lhs: JetpackSiteRef, rhs: JetpackSiteRef) -> Bool {
         return lhs.siteID == rhs.siteID
             && lhs.username == rhs.username
+            && lhs.homeURL == rhs.homeURL
     }
 }
