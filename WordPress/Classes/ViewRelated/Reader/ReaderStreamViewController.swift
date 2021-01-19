@@ -125,8 +125,6 @@ import WordPressFlux
         }
     }
 
-    private var hideHeader = false
-
     private var isShowingResultStatusView: Bool {
         return resultsStatusView.view?.superview != nil
     }
@@ -520,17 +518,12 @@ import WordPressFlux
             return
         }
 
-        guard !hideHeader else {
-            tableView.tableHeaderView = nil
-            hideHeader = false
-            return
-        }
-
         if let tableHeaderView = tableView.tableHeaderView {
             header.isHidden = tableHeaderView.isHidden
         }
 
         tableView.tableHeaderView = header
+
         // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
         let centerConstraint = header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
         let topConstraint = header.topAnchor.constraint(equalTo: tableView.topAnchor)
@@ -1832,12 +1825,13 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
 extension ReaderStreamViewController: ReaderContentViewController {
     func setContent(_ content: ReaderContent) {
         isContentFiltered = content.topicType == .tag || content.topicType == .site
-        hideHeader = content.topicType == .site
         readerTopic = content.topicType == .discover ? nil : content.topic
         contentType = content.type
+
         guard !shouldDisplayNoTopicController else {
             return
         }
+
         siteID = content.topicType == .discover ? ReaderHelpers.discoverSiteID : nil
         trackFilterTime()
     }
