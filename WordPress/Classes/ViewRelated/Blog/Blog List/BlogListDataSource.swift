@@ -342,12 +342,7 @@ extension BlogListDataSource: UITableViewDataSource {
             case .loggedIn:
                 cell.accessoryType = .none
             default:
-                guard showsDisclosureIndicator else {
-                    cell.accessoryType = .none
-                    break
-                }
-
-                cell.accessoryType = .disclosureIndicator
+                cell.accessoryType = showsDisclosureIndicator ? .none : .disclosureIndicator
             }
         }
 
