@@ -357,7 +357,7 @@ end
 ## iOS 14 Today Widget
 ## ============
 ##
-target 'WordPressHomeWidgetToday' do
+target 'WordPressStatsWidgets' do
     project 'WordPress/WordPress.xcodeproj'
 
     shared_with_all_pods
