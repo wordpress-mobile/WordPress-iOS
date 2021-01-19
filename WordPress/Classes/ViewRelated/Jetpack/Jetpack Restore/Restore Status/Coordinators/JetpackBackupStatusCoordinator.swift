@@ -47,7 +47,7 @@ class JetpackBackupStatusCoordinator {
             return
         }
 
-        timer = Timer.scheduledTimer(withTimeInterval: Constants.pollingInterval, repeats: true) { [weak self] timer in
+        timer = Timer.scheduledTimer(withTimeInterval: Constants.pollingInterval, repeats: true) { [weak self] _ in
             self?.refreshBackupStatus(downloadID: downloadID)
         }
     }
