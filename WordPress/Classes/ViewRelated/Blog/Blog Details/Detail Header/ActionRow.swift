@@ -90,8 +90,6 @@ class ActionRow: UIStackView {
         self.init(arrangedSubviews: buttons)
 
         distribution = .equalSpacing
-        //spacing = Constants.minimumSpacing
-        //backgroundColor = .blue
         translatesAutoresizingMaskIntoConstraints = false
     }
 }
