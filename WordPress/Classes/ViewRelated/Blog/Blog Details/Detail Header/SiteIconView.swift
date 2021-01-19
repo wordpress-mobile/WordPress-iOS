@@ -4,7 +4,6 @@ class SiteIconView: UIView {
         static let imageSize: CGFloat = 64
         static let borderRadius: CGFloat = 4
         static let imageRadius: CGFloat = 2
-        static let imagePadding: CGFloat = 4
         static let spotlightOffset: CGFloat = -8
     }
 
@@ -73,19 +72,11 @@ class SiteIconView: UIView {
         }
     }
 
-    init(frame: CGRect, padImage: Bool = true) {
+    init(frame: CGRect, insets: UIEdgeInsets = .zero) {
         super.init(frame: frame)
 
-        let paddingInsets = UIEdgeInsets(top: Constants.imagePadding, left: Constants.imagePadding, bottom: Constants.imagePadding, right: Constants.imagePadding)
-
         button.addSubview(imageView)
-
-        if padImage {
-            button.pinSubviewToAllEdges(imageView, insets: paddingInsets)
-        } else {
-            button.pinSubviewToAllEdges(imageView)
-        }
-
+        button.pinSubviewToAllEdges(imageView, insets: insets)
 
         button.addTarget(self, action: #selector(touchedButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false

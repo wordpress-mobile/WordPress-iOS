@@ -231,7 +231,7 @@ fileprivate extension NewBlogDetailHeaderView {
         // MARK: - Child Views
 
         let siteIconView: SiteIconView = {
-            let siteIconView = SiteIconView(frame: .zero, padImage: false)
+            let siteIconView = SiteIconView(frame: .zero)
             siteIconView.translatesAutoresizingMaskIntoConstraints = false
             return siteIconView
         }()
