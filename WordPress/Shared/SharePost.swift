@@ -68,11 +68,10 @@ import MobileCoreServices
     }
 
     @objc var data: Data {
-        let data = NSMutableData()
-        let encoder = NSKeyedArchiver(forWritingWith: data)
+        let encoder = NSKeyedArchiver(requiringSecureCoding: false)
         encode(with: encoder)
         encoder.finishEncoding()
-        return data as Data
+        return encoder.encodedData
     }
 }
 
