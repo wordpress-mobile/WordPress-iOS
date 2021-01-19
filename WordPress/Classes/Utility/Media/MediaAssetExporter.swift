@@ -111,7 +111,7 @@ class MediaAssetExporter: MediaExporter {
         }
 
         // Request the image.
-        imageManager.requestImageData(for: asset,
+        imageManager.requestImageDataAndOrientation(for: asset,
                              options: options,
                              resultHandler: { (data, uti, orientation, info) in
                                 progress.completedUnitCount = MediaExportProgressUnits.halfDone
