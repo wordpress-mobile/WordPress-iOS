@@ -14,15 +14,16 @@ class ActivityListViewModelTests: XCTestCase {
         noMatchingSubtitle: "Try adjusting your date range or activity type filters",
         filterbarRangeButtonTapped: .activitylogFilterbarRangeButtonTapped,
         filterbarSelectRange: .activitylogFilterbarSelectRange,
-        filterbarResetRange: .activitylogFilterbarResetRange
+        filterbarResetRange: .activitylogFilterbarResetRange,
+        numberOfItemsPerPage: 20
     )
 
     // Check if `loadMore` dispatchs the correct action and params
     //
     func testLoadMore() {
-        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "", homeURL: "")
+        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "")
         let activityStoreMock = ActivityStoreMock()
-        let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock, noResultsTexts: activityListConfiguration)
+        let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock, configuration: activityListConfiguration)
 
         activityListViewModel.loadMore()
 
@@ -34,9 +35,9 @@ class ActivityListViewModelTests: XCTestCase {
     // Check if `loadMore` dispatchs the correct offset
     //
     func testLoadMoreOffset() {
-        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "", homeURL: "")
+        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "")
         let activityStoreMock = ActivityStoreMock()
-        let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock, noResultsTexts: activityListConfiguration)
+        let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock, configuration: activityListConfiguration)
         activityStoreMock.state.activities[jetpackSiteRef] = [Activity.mock(), Activity.mock(), Activity.mock()]
 
         activityListViewModel.loadMore()
@@ -50,9 +51,9 @@ class ActivityListViewModelTests: XCTestCase {
     // Check if `loadMore` dispatchs the correct after/before date and groups
     //
     func testLoadMoreAfterBeforeDate() {
-        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "", homeURL: "")
+        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "")
         let activityStoreMock = ActivityStoreMock()
-        let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock, noResultsTexts: activityListConfiguration)
+        let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock, configuration: activityListConfiguration)
         activityStoreMock.state.activities[jetpackSiteRef] = [Activity.mock(), Activity.mock(), Activity.mock()]
         let afterDate = Date()
         let beforeDate = Date(timeIntervalSinceNow: 86400)
@@ -70,9 +71,9 @@ class ActivityListViewModelTests: XCTestCase {
     // Should not load more if already loading
     //
     func testLoadMoreDoesntTriggeredWhenAlreadyFetching() {
-        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "", homeURL: "")
+        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "")
         let activityStoreMock = ActivityStoreMock()
-        let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock, noResultsTexts: activityListConfiguration)
+        let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock, configuration: activityListConfiguration)
         activityStoreMock.isFetching = true
 
         activityListViewModel.loadMore()
@@ -83,9 +84,9 @@ class ActivityListViewModelTests: XCTestCase {
     // When filtering, remove all current activities
     //
     func testRefreshRemoveAllActivities() {
-        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "", homeURL: "")
+        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 0, username: "")
         let activityStoreMock = ActivityStoreMock()
-        let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock, noResultsTexts: activityListConfiguration)
+        let activityListViewModel = ActivityListViewModel(site: jetpackSiteRef, store: activityStoreMock, configuration: activityListConfiguration)
         activityStoreMock.isFetching = true
 
         activityListViewModel.refresh(after: Date(), before: Date())

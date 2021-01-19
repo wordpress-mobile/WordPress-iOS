@@ -2,12 +2,14 @@
 import XCTest
 
 extension JetpackSiteRef {
-    static func mock(siteID: Int = 9001, username: String = "test", homeURL: String = "url") -> JetpackSiteRef {
+    static func mock(siteID: Int = 9001, username: String = "test") -> JetpackSiteRef {
         let payload: NSString = """
         {
             "siteID": \(siteID),
             "username": "\(username)",
-            "homeURL": "\(homeURL)"
+            "homeURL": "url",
+            "hasBackup": true,
+            "hasPaidPlan": true,
         }
         """ as NSString
 
@@ -32,7 +34,7 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
         super.setUp()
 
         let domainSuggestion = try! DomainSuggestion(json: ["domain_name": "" as AnyObject])
-        let site = JetpackSiteRef.mock(siteID: 9001, username: "test", homeURL: "url")
+        let site = JetpackSiteRef.mock(siteID: 9001, username: "test")
 
         viewModel = RegisterDomainDetailsViewModel(site: site, domain: domainSuggestion) { _ in return }
         viewModel.onChange = { [weak self] (change: Change) in
