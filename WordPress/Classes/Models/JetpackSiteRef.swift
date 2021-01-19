@@ -13,14 +13,13 @@ struct JetpackSiteRef: Hashable, Codable {
     let siteID: Int
     /// The WordPress.com username.
     let username: String
-    /// The homeURL for a site.
-    let homeURL: URL
+    /// The homeURL string  for a site.
+    let homeURL: String
 
     init?(blog: Blog) {
         guard let username = blog.account?.username,
             let siteID = blog.dotComID as? Int,
-            let homeURLString = blog.homeURL as String?,
-            let homeURL = URL(string: homeURLString) else {
+            let homeURL = blog.homeURL as String? else {
                 return nil
         }
         self.siteID = siteID
