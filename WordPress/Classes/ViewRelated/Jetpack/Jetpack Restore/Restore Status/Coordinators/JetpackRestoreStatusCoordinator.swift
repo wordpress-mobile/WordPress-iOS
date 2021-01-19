@@ -2,8 +2,8 @@ import Foundation
 
 protocol JetpackRestoreStatusView {
     func render(_ rewindStatus: RewindStatus)
-    func showError()
-    func showComplete()
+    func showRestoreFailed()
+    func showRestoreComplete()
 }
 
 class JetpackRestoreStatusCoordinator {
@@ -56,22 +56,25 @@ class JetpackRestoreStatusCoordinator {
 
     private func refreshRestoreStatus() {
         service.getRewindStatus(for: self.site, success: { [weak self] rewindStatus in
-            guard let self = self else {
+            guard let self = self, let restoreStatus = rewindStatus.restore else {
                 return
             }
 
-            if rewindStatus.restore?.status == .finished {
-                self.view.showComplete()
-                return
+            switch restoreStatus.status {
+            case .running, .queued:
+                self.view.render(rewindStatus)
+            case .finished:
+                self.view.showRestoreComplete()
+            case .fail:
+                self.view.showRestoreFailed()
             }
-
-            self.view.render(rewindStatus)
 
         }, failure: { error in
             DDLogError("Error fetching rewind status object: \(error.localizedDescription)")
 
-            self.stopPolling()
-            self.view.showError()
+            // See: ActivityStore.swift, delayedRetryFetchRewindStatus(site:)
+            // if we still have an active query asking about status of this site (e.g. it's still visible on screen)
+            // let's keep retrying as long as it's registered — we want users to see the updates.
         })
     }
 

@@ -1,8 +1,9 @@
 import Foundation
 
 protocol JetpackRestoreWarningView {
-    func showError()
-    func showRestoreStatus()
+    func showRestoreAlreadyRunning()
+    func showRestoreRequestFailed()
+    func showRestoreStarted()
 }
 
 class JetpackRestoreWarningCoordinator {
@@ -34,11 +35,11 @@ class JetpackRestoreWarningCoordinator {
 
     func restoreSite() {
         service.restoreSite(site, rewindID: rewindID, restoreTypes: restoreTypes, success: { [weak self] _ in
-            self?.view.showRestoreStatus()
+            self?.view.showRestoreStarted()
         }, failure: { [weak self] error in
             DDLogError("Error restoring site: \(error.localizedDescription)")
 
-            self?.view.showError()
+            self?.view.showRestoreRequestFailed()
         })
     }
 }

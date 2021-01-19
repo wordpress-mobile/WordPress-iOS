@@ -68,14 +68,19 @@ class JetpackRestoreWarningViewController: UIViewController {
 
 extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {
 
-    func showError() {
+    func showRestoreAlreadyRunning() {
+        // Go back to activity log and show Notice...?
+        // let errorTitle = NSLocalizedString("There's a restore currently in progress, please wait before starting next one", comment: "Text displayed when user tries to start a restore when there is already one running")
+    }
+
+    func showRestoreRequestFailed() {
         let errorTitle = NSLocalizedString("Restore failed.", comment: "Title for error displayed when restoring a site fails.")
         let errorMessage = NSLocalizedString("We couldn't restore your site. Please try again later.", comment: "Message for error displayed when restoring a site fails.")
         let notice = Notice(title: errorTitle, message: errorMessage)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
-    func showRestoreStatus() {
+    func showRestoreStarted() {
         let statusVC = JetpackRestoreStatusViewController(site: site, activity: activity)
         self.navigationController?.pushViewController(statusVC, animated: true)
     }
