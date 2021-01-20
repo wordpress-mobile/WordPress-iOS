@@ -6665,8 +6665,9 @@
 			children = (
 				3F8EEC4D25B4817000EC9DAE /* StatsWidgets.swift */,
 				3F8EEC6F25B4849A00EC9DAE /* SiteListProvider.swift */,
-				3F526C522538CF2A0069706C /* WordPressHomeWidgetToday.swift */,
+				3FFDDCB925B8A65F008D5BDD /* Widgets */,
 				3FB34ABB25672A59001A74A6 /* Model */,
+				3FFDDC0325B89F0C008D5BDD /* Cache */,
 				3F2F0C06256C68E1003351C7 /* Remote service */,
 				3FA59DCC2582E53F0073772F /* Tracks */,
 				3F526D2B2539F9D60069706C /* Views */,
@@ -6739,15 +6740,6 @@
 			path = Cache;
 			sourceTree = "<group>";
 		};
-		3F6DA03F25646F59002AB88F /* iOS 14 Widgets */ = {
-			isa = PBXGroup;
-			children = (
-				3F6DA04025646F96002AB88F /* HomeWidgetData.swift */,
-				3FA53E9B256571D800F4D9A2 /* HomeWidgetCache.swift */,
-			);
-			path = "iOS 14 Widgets";
-			sourceTree = "<group>";
-		};
 		3F751D442491A8B20008A2B1 /* Zendesk */ = {
 			isa = PBXGroup;
 			children = (
@@ -6786,6 +6778,7 @@
 		3FB34ABB25672A59001A74A6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3F6DA04025646F96002AB88F /* HomeWidgetData.swift */,
 				3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */,
 				3F63B93B258179D100F581BE /* StatsWidgetEntry.swift */,
 			);
@@ -6798,6 +6791,22 @@
 				3FD83CBE246C751800381999 /* CoreDataIterativeMigrator.swift */,
 			);
 			path = Migrator;
+			sourceTree = "<group>";
+		};
+		3FFDDC0325B89F0C008D5BDD /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				3FA53E9B256571D800F4D9A2 /* HomeWidgetCache.swift */,
+			);
+			path = Cache;
+			sourceTree = "<group>";
+		};
+		3FFDDCB925B8A65F008D5BDD /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				3F526C522538CF2A0069706C /* WordPressHomeWidgetToday.swift */,
+			);
+			path = Widgets;
 			sourceTree = "<group>";
 		};
 		400A2C8D2217AAA1000A8A59 /* Time-based data */ = {
@@ -9098,7 +9107,6 @@
 		98E58A2D2360D1FD00E5534B /* Today Widgets */ = {
 			isa = PBXGroup;
 			children = (
-				3F6DA03F25646F59002AB88F /* iOS 14 Widgets */,
 				989064F9237CC1A300218CD2 /* Data */,
 				9890650C237CC1E700218CD2 /* Shared Views */,
 				985ED0E323C6950600B8D06A /* WidgetStyles.swift */,
