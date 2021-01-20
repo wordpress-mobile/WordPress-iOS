@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import CocoaLumberjack
 import Gridicons
 import WordPressFlux
@@ -45,6 +45,10 @@ class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
 }
 
 extension JetpackBackupOptionsViewController: JetpackBackupOptionsView {
+
+    func showNoInternetConnection() {
+        ReachabilityUtils.showAlertNoInternetConnection()
+    }
 
     func showBackupRequestFailed() {
         let errorTitle = NSLocalizedString("Backup failed.", comment: "Title for error displayed when preparing a backup fails.")

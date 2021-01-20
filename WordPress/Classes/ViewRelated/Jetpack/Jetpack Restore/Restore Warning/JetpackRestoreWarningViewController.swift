@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import CocoaLumberjack
 import WordPressFlux
 import WordPressShared
@@ -67,6 +67,10 @@ class JetpackRestoreWarningViewController: UIViewController {
 }
 
 extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {
+
+    func showNoInternetConnection() {
+        ReachabilityUtils.showAlertNoInternetConnection()
+    }
 
     func showRestoreAlreadyRunning() {
         // Go back to activity log and show Notice...?

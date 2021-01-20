@@ -1,6 +1,7 @@
 import Foundation
 
 protocol JetpackBackupOptionsView {
+    func showNoInternetConnection()
     func showBackupRequestFailed()
     func showBackupStarted(for downloadID: Int)
 }
@@ -30,6 +31,11 @@ class JetpackBackupOptionsCoordinator {
     // MARK: - Public
 
     func prepareBackup() {
+        guard ReachabilityUtils.isInternetReachable() else {
+            self.view.showNoInternetConnection()
+            return
+        }
+
         service.prepareBackup(for: site, restoreTypes: restoreTypes, success: { [weak self] backup in
             self?.view.showBackupStarted(for: backup.downloadID)
         }, failure: { [weak self] error in
