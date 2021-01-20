@@ -266,20 +266,20 @@ struct QuickStartSiteIconTour: QuickStartTour {
     let accessibilityHintText = NSLocalizedString("Guides you through the process of uploading an icon for your site.", comment: "This value is used to set the accessibility hint text for uploading a site icon.")
 }
 
-struct QuickStartNewPageTour: QuickStartTour {
-    let key = "quick-start-new-page-tour"
-    let analyticsKey = "new_page"
-    let title = NSLocalizedString("Create a new page", comment: "Title of a Quick Start Tour")
-    let titleMarkedCompleted = NSLocalizedString("Completed: Create a new page", comment: "The Quick Start Tour title after the user finished the step.")
-    let description = NSLocalizedString("Add a page for key content — an “About” page is a great start.", comment: "Description of a Quick Start Tour")
+struct QuickStartReviewPagesTour: QuickStartTour {
+    let key = "quick-start-review-pages-tour"
+    let analyticsKey = "review_pages"
+    let title = NSLocalizedString("Review site pages", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Review site pages", comment: "The Quick Start Tour title after the user finished the step.")
+    let description = NSLocalizedString("Change, add, or remove your site's pages.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.pages)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
     let showWaypointNotices = false
 
     var waypoints: [WayPoint] = {
-        let descriptionBase = NSLocalizedString("Select %@ to create a new page", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        return [(element: .newPage, description: descriptionBase.highlighting(phrase: "", icon: .gridicon(.create)))]
+        let descriptionBase = NSLocalizedString("Select %@ to see your page list.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        return [(element: .pages, description: descriptionBase.highlighting(phrase: "", icon: .gridicon(.pages)))]
     }()
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of creating a new page for your site.", comment: "This value is used to set the accessibility hint text for creating a new page for the user's site.")

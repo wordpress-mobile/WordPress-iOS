@@ -73,6 +73,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         controller.blog = blog
         controller.restorationClass = self
 
+        if QuickStartTourGuide.shared.isCurrentElement(.pages) {
+            controller.filterSettings.setFilterWithPostStatus(BasePost.Status.publish)
+        }
+
         return controller
     }
 
