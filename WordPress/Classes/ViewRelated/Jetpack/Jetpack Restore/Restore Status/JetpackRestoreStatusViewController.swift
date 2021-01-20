@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import CocoaLumberjack
 import WordPressShared
 import WordPressUI
@@ -8,13 +8,13 @@ class JetpackRestoreStatusViewController: BaseRestoreStatusViewController {
     // MARK: - Properties
 
     private lazy var coordinator: JetpackRestoreStatusCoordinator = {
-        return JetpackRestoreStatusCoordinator(site: self.site, rewindID: self.activity.rewindID, view: self)
+        return JetpackRestoreStatusCoordinator(site: self.site, view: self)
     }()
 
 
     // MARK: - Initialization
 
-    override init(site: JetpackSiteRef, activity: Activity, restoreTypes: JetpackRestoreTypes) {
+    override init(site: JetpackSiteRef, activity: Activity) {
         let restoreStatusConfiguration = JetpackRestoreStatusConfiguration(
             title: NSLocalizedString("Restore", comment: "Title for Jetpack Restore Status screen"),
             iconImage: .gridicon(.history),
@@ -25,7 +25,7 @@ class JetpackRestoreStatusViewController: BaseRestoreStatusViewController {
             placeholderProgressTitle: NSLocalizedString("Initializing the restore process", comment: "Placeholder for the restore progress title."),
             progressDescription: NSLocalizedString("Currently restoring: %1$@", comment: "Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored.")
         )
-        super.init(site: site, activity: activity, restoreTypes: restoreTypes, configuration: restoreStatusConfiguration)
+        super.init(site: site, activity: activity, configuration: restoreStatusConfiguration)
     }
 
     required init?(coder: NSCoder) {
@@ -36,9 +36,13 @@ class JetpackRestoreStatusViewController: BaseRestoreStatusViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        coordinator.start()
+        coordinator.viewDidLoad()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        coordinator.viewWillDisappear()
+    }
 }
 
 extension JetpackRestoreStatusViewController: JetpackRestoreStatusView {

@@ -1,0 +1,23 @@
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "Comments";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "Likes";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "Views";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "Visitors";
+
+/* Title of today widget */
+"widget.today.title" = "Today";
+
+/* Title of the unconfigured view in today widget */
+"widget.today.unconfigured.view.title" = "Log in to WordPress to see today's stats.";
+
+/* Error message to show if a widget view is unavailable */
+"widget.today.view.unavailable.title" = "View is unavailable";
+
+/* Description of today widget in the preview */
+"widget.today.preview.description" = "Stay up to date with today's activity on your WordPress site.";
