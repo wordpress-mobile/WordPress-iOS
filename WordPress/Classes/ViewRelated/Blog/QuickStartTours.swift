@@ -124,31 +124,6 @@ struct QuickStartThemeTour: QuickStartTour {
     let accessibilityHintText = NSLocalizedString("Guides you through the process of choosing a theme for your site.", comment: "This value is used to set the accessibility hint text for choosing a theme for the user's site.")
 }
 
-struct QuickStartCustomizeTour: QuickStartTour {
-    let key = "quick-start-customize-tour"
-    let analyticsKey = "customize_site"
-    let title = NSLocalizedString("Customize your site", comment: "Title of a Quick Start Tour")
-    let titleMarkedCompleted = NSLocalizedString("Completed: Customize your site", comment: "The Quick Start Tour title after the user finished the step.")
-    let description = NSLocalizedString("Change colors, fonts, and images for a perfectly personalized site.", comment: "Description of a Quick Start Tour")
-    let icon = UIImage.gridicon(.customize)
-    let suggestionNoText = Strings.notNow
-    let suggestionYesText = Strings.yesShowMe
-
-    var waypoints: [WayPoint] = {
-        let step1DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let step1DescriptionTarget = NSLocalizedString("Themes", comment: "The menu item to select during a guided tour.")
-        let step1: WayPoint = (element: .themes, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.themes)))
-
-        let step2DescriptionBase = NSLocalizedString("Select %@ to start personalising your site", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let step2DescriptionTarget = NSLocalizedString("Customize", comment: "The menu item to select during a guided tour.")
-        let step2: WayPoint = (element: .customize, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.themes)))
-
-        return [step1, step2]
-    }()
-
-    let accessibilityHintText = NSLocalizedString("Guides you through the process of customizing your site.", comment: "This value is used to set the accessibility hint text for customizing a user's site.")
-}
-
 struct QuickStartShareTour: QuickStartTour {
     let key = "quick-start-share-tour"
     let analyticsKey = "share_site"
