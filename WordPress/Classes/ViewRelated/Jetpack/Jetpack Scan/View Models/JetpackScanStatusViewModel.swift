@@ -122,7 +122,7 @@ struct JetpackScanStatusViewModel {
     private func buttonTapped(action: ButtonAction) {
         switch action {
         case .fixAll:
-            coordinator.fixAllThreats()
+            coordinator.presentFixAllAlert()
 
         case .triggerScan:
             coordinator.startScan()
@@ -150,8 +150,7 @@ struct JetpackScanStatusViewModel {
         switch scan.state {
         case .idle:
             if let threats = scan.threats, threats.count > 0 {
-                let fixableThreats = threats.filter { $0.fixable != nil }.count > 0
-                viewState = fixableThreats ? .hasFixableThreats : .hasThreats
+                viewState = scan.hasFixableThreats ? .hasFixableThreats : .hasThreats
             } else {
                 if scan.mostRecent?.didFail ?? false {
                     return .error
