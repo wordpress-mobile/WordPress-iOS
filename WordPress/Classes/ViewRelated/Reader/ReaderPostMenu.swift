@@ -206,7 +206,9 @@ open class ReaderPostMenu {
 
         let postService = ReaderPostService(managedObjectContext: context)
         postService.toggleSeen(for: post, success: {
-            NotificationCenter.default.post(name: .ReaderPostSeenToggled, object: nil, userInfo: [postUserInfoKey: post])
+            NotificationCenter.default.post(name: .ReaderPostSeenToggled,
+                                            object: nil,
+                                            userInfo: [ReaderNotificationKeys.post: post])
         }, failure: nil)
     }
 

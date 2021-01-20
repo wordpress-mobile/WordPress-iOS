@@ -1,13 +1,22 @@
 import Foundation
 import WordPressShared
 
+
 // MARK: - Reader Notifications
 
-// NSNotification sent when a post's seen state has been toggled.
 extension NSNotification.Name {
+    // Sent when a site or a tag is unfollowed via Reader Manage screen.
+    static let ReaderTopicUnfollowed = NSNotification.Name(rawValue: "ReaderTopicUnfollowed")
+    // Sent when a post's seen state has been toggled.
     static let ReaderPostSeenToggled = NSNotification.Name(rawValue: "ReaderPostSeenToggled")
 }
-let postUserInfoKey = "post"
+
+struct ReaderNotificationKeys {
+    static let post = "post"
+    static let topic = "topic"
+}
+
+
 /// A collection of helper methods used by the Reader.
 ///
 @objc open class ReaderHelpers: NSObject {

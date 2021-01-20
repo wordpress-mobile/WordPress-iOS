@@ -1177,7 +1177,7 @@ import WordPressFlux
         // mark as seen/unseen option.
 
         guard let userInfo = notification.userInfo,
-              let post = userInfo[postUserInfoKey] as? ReaderPost,
+              let post = userInfo[ReaderNotificationKeys.post] as? ReaderPost,
               let indexPath = content.indexPath(forObject: post),
               let cellPost: ReaderPost = content.object(at: indexPath) else {
             return
