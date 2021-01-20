@@ -21,11 +21,11 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (2.5.1):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (0.5.1):
+  - Automattic-Tracks-iOS (0.7.0):
     - CocoaLumberjack (~> 3)
     - Reachability (~> 3)
     - Sentry (~> 4)
-    - Sodium (~> 0.8.0)
+    - Sodium-Fork (= 0.8.2)
     - UIDeviceIdentifier (~> 1)
   - boost-for-react-native (1.63.0)
   - Charts (3.2.2):
@@ -387,7 +387,7 @@ PODS:
   - Sentry (4.5.0):
     - Sentry/Core (= 4.5.0)
   - Sentry/Core (4.5.0)
-  - Sodium (0.8.0)
+  - Sodium-Fork (0.8.2)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (1.6.0)
@@ -444,7 +444,7 @@ DEPENDENCIES:
   - AMScrollingNavbar (= 5.6.0)
   - AppCenter (= 2.5.1)
   - AppCenter/Distribute (= 2.5.1)
-  - Automattic-Tracks-iOS (~> 0.5.1)
+  - Automattic-Tracks-iOS (~> 0.7.0)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (~> 3.0)
   - CropViewController (= 2.5.3)
@@ -546,7 +546,7 @@ SPEC REPOS:
     - OHHTTPStubs
     - Reachability
     - Sentry
-    - Sodium
+    - Sodium-Fork
     - Starscream
     - SVProgressHUD
     - UIDeviceIdentifier
@@ -681,7 +681,7 @@ SPEC CHECKSUMS:
   AMScrollingNavbar: cf0ec5a5ee659d76ba2509f630bf14fba7e16dc3
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
-  Automattic-Tracks-iOS: ac2cf9d8332fef72cf3e6de7b14012e7a0672676
+  Automattic-Tracks-iOS: 208742591b1cd9abbc8914b37d6ebdb569f22e78
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CocoaLumberjack: e8955b9d337ac307103b0a34fd141c32f27e53c5
@@ -745,7 +745,7 @@ SPEC CHECKSUMS:
   RNSVG: 68a534a5db06dcbdaebfd5079349191598caef7b
   RNTAztecView: bc5f07436537a0df8f9fc33b05dc48601b2fa167
   Sentry: ab6c209f23700d1460691dbc90e19ed0a05d496b
-  Sodium: 63c0ca312a932e6da481689537d4b35568841bdc
+  Sodium-Fork: 45fe3a7c675898ca0635af4eadcb34985477e868
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: f4bf3b343581a1beacdbf5fb1a8825bd5f05a4a4
