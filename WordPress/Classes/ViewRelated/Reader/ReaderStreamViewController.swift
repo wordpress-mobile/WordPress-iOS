@@ -307,6 +307,8 @@ import WordPressFlux
 
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
 
+        NotificationCenter.default.addObserver(self, selector: #selector(postSeenToggled(_:)), name: .ReaderPostSeenToggled, object: nil)
+
         refreshImageRequestAuthToken()
 
         setupTableView()
@@ -1168,6 +1170,23 @@ import WordPressFlux
         refreshImageRequestAuthToken()
     }
 
+    @objc private func postSeenToggled(_ notification: Foundation.Notification) {
+
+        // When a post's seen status is toggled outside the stream (ex: post details),
+        // refresh the post in the stream so the card options menu has the correct
+        // mark as seen/unseen option.
+
+        guard let userInfo = notification.userInfo,
+              let post = userInfo[postUserInfoKey] as? ReaderPost,
+              let indexPath = content.indexPath(forObject: post),
+              let cellPost: ReaderPost = content.object(at: indexPath) else {
+            return
+        }
+
+        cellPost.isSeen = post.isSeen
+        tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+    }
+
     // MARK: - Helpers for TableViewHandler
 
 
@@ -1861,6 +1880,8 @@ extension ReaderStreamViewController: ReaderSavedPostCellActionsDelegate {
 }
 
 // MARK: - Undo
+
+// here
 extension ReaderStreamViewController: ReaderPostUndoCellDelegate {
     func readerCellWillUndo(_ cell: ReaderSavedPostUndoCell) {
         if let cellIndex = tableView.indexPath(for: cell),
