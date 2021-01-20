@@ -151,6 +151,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        QuickStartTourGuide.shared.endCurrentTour()
+    }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if traitCollection.horizontalSizeClass == .compact {
@@ -404,6 +409,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.deselectRow(at: indexPath, animated: true)
 
         let page = pageAtIndexPath(indexPath)
+        if page.isSiteHomepage {
+            QuickStartTourGuide.shared.visited(.editHomepage)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
 
         guard page.status != .trash else {
             return
@@ -423,6 +432,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
 
         configureCell(cell, at: indexPath)
+
+        if page.isSiteHomepage && QuickStartTourGuide.shared.isCurrentElement(.editHomepage) {
+            cell.accessoryView = QuickStartSpotlightView()
+        }
 
         return cell
     }
