@@ -2,8 +2,8 @@ import Foundation
 
 protocol JetpackBackupStatusView {
     func render(_ backup: JetpackBackup)
-    func showError()
-    func showComplete(_ backup: JetpackBackup)
+    func showBackupFailed()
+    func showBackupComplete(_ backup: JetpackBackup)
 }
 
 class JetpackBackupStatusCoordinator {
@@ -65,7 +65,7 @@ class JetpackBackupStatusCoordinator {
 
             // If a backup url exists, then we've finished creating a downloadable backup.
             if backup.url != nil {
-                self.view.showComplete(backup)
+                self.view.showBackupComplete(backup)
                 return
             }
 
@@ -74,8 +74,7 @@ class JetpackBackupStatusCoordinator {
         }, failure: { [weak self] error in
             DDLogError("Error fetching backup object: \(error.localizedDescription)")
 
-            self?.stopPolling()
-            self?.view.showError()
+            self?.view.showBackupFailed()
         })
     }
 

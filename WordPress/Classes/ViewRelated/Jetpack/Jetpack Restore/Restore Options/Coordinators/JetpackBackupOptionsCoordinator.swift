@@ -1,8 +1,8 @@
 import Foundation
 
 protocol JetpackBackupOptionsView {
-    func showError()
-    func showBackupStatus(for downloadID: Int)
+    func showBackupRequestFailed()
+    func showBackupStarted(for downloadID: Int)
 }
 
 class JetpackBackupOptionsCoordinator {
@@ -31,11 +31,11 @@ class JetpackBackupOptionsCoordinator {
 
     func prepareBackup() {
         service.prepareBackup(for: site, restoreTypes: restoreTypes, success: { [weak self] backup in
-            self?.view.showBackupStatus(for: backup.downloadID)
+            self?.view.showBackupStarted(for: backup.downloadID)
         }, failure: { [weak self] error in
             DDLogError("Error preparing downloadable backup object: \(error.localizedDescription)")
 
-            self?.view.showError()
+            self?.view.showBackupRequestFailed()
         })
     }
 }
