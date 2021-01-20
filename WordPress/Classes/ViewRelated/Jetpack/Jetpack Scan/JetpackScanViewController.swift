@@ -35,6 +35,14 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         coordinator.viewWillDisappear()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        })
+    }
+
     // MARK: - JetpackScanView
     func render(_ scan: JetpackScan) {
         refreshControl.endRefreshing()
@@ -83,7 +91,6 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell
-
         if indexPath.row == 0 {
             let statusCell = tableView.dequeueReusableCell(withIdentifier: Constants.statusCellIdentifier) as? JetpackScanStatusCell ?? JetpackScanStatusCell(style: .default, reuseIdentifier: Constants.statusCellIdentifier)
 
@@ -109,13 +116,12 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
             return
         }
 
-        tableView.beginUpdates()
         cell.configure(with: model)
-        tableView.endUpdates()
     }
 
     private func configureThreatCell(cell: JetpackScanThreatCell, threat: JetpackScanThreat) {
-        cell.configure(with: threat)
+        let model = JetpackScanThreatViewModel(threat: threat)
+        cell.configure(with: model)
     }
 
     private func threat(for indexPath: IndexPath) -> JetpackScanThreat? {
