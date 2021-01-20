@@ -1881,7 +1881,6 @@ extension ReaderStreamViewController: ReaderSavedPostCellActionsDelegate {
 
 // MARK: - Undo
 
-// here
 extension ReaderStreamViewController: ReaderPostUndoCellDelegate {
     func readerCellWillUndo(_ cell: ReaderSavedPostUndoCell) {
         if let cellIndex = tableView.indexPath(for: cell),
