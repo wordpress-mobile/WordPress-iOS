@@ -1,8 +1,15 @@
 import Foundation
 import CocoaLumberjack
+import WordPressFlux
 import WordPressShared
 
 class JetpackRestoreWarningViewController: UIViewController {
+
+    // MARK: - Properties
+
+    private lazy var coordinator: JetpackRestoreWarningCoordinator = {
+        return JetpackRestoreWarningCoordinator(site: self.site, restoreTypes: self.restoreTypes, rewindID: self.activity.rewindID, view: self)
+    }()
 
     // MARK: - Private Properties
 
@@ -45,7 +52,7 @@ class JetpackRestoreWarningViewController: UIViewController {
         warningView.configure(with: publishedDate)
 
         warningView.confirmHandler = { [weak self] in
-            self?.showRestoreStatus()
+            self?.coordinator.restoreSite()
         }
 
         warningView.cancelHandler = { [weak self] in
@@ -57,13 +64,19 @@ class JetpackRestoreWarningViewController: UIViewController {
         view.pinSubviewToAllEdges(warningView)
     }
 
-    // MARK: - Private Helpers
+}
 
-    private func showRestoreStatus() {
-        let statusVC = JetpackRestoreStatusViewController(site: site,
-                                                          activity: activity,
-                                                          restoreTypes: restoreTypes)
-        self.navigationController?.pushViewController(statusVC, animated: true)
+extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {
+
+    func showError() {
+        let errorTitle = NSLocalizedString("Restore failed.", comment: "Title for error displayed when restoring a site fails.")
+        let errorMessage = NSLocalizedString("We couldn't restore your site. Please try again later.", comment: "Message for error displayed when restoring a site fails.")
+        let notice = Notice(title: errorTitle, message: errorMessage)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
+    func showRestoreStatus() {
+        let statusVC = JetpackRestoreStatusViewController(site: site, activity: activity)
+        self.navigationController?.pushViewController(statusVC, animated: true)
+    }
 }

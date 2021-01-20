@@ -28,7 +28,6 @@ class BaseRestoreStatusViewController: UIViewController {
     private(set) var site: JetpackSiteRef
     private(set) var activity: Activity
     private(set) var configuration: JetpackRestoreStatusConfiguration
-    private let restoreTypes: JetpackRestoreTypes
 
     private lazy var dateFormatter: DateFormatter = {
         return ActivityDateFormatting.mediumDateFormatterWithTime(for: site)
@@ -36,19 +35,15 @@ class BaseRestoreStatusViewController: UIViewController {
 
     // MARK: - Initialization
 
-    init(site: JetpackSiteRef,
-         activity: Activity,
-         restoreTypes: JetpackRestoreTypes) {
+    init(site: JetpackSiteRef, activity: Activity) {
         fatalError("A configuration struct needs to be provided")
     }
 
     init(site: JetpackSiteRef,
          activity: Activity,
-         restoreTypes: JetpackRestoreTypes,
          configuration: JetpackRestoreStatusConfiguration) {
         self.site = site
         self.activity = activity
-        self.restoreTypes = restoreTypes
         self.configuration = configuration
         super.init(nibName: nil, bundle: nil)
     }
