@@ -1002,7 +1002,6 @@ private extension InsightStoreState {
             DDLogError("HomeWidgetToday: Failed to find a matching site")
             return
         }
-        // TODO - TODAYWIDGET: it might be better to move the blog updates in SiteStatsInformation
         let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
         guard let blog = blogService.blog(byBlogId: siteID) else {
@@ -1025,7 +1024,6 @@ private extension InsightStoreState {
         WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
     }
 
-    // TODO - TODAYWIDGET: this method will likely be exposed in the future to handle the creation of the file at login
     private func initializeHomeWidgetTodayData() -> [Int: HomeWidgetTodayData] {
 
         let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)

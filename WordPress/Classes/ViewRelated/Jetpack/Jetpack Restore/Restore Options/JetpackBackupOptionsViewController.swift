@@ -1,10 +1,17 @@
 import Foundation
 import CocoaLumberjack
 import Gridicons
+import WordPressFlux
 import WordPressUI
 import WordPressShared
 
-class JetpackDownloadBackupViewController: BaseRestoreOptionsViewController {
+class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
+
+    // MARK: - Properties
+
+    private lazy var coordinator: JetpackBackupOptionsCoordinator = {
+        return JetpackBackupOptionsCoordinator(site: self.site, restoreTypes: self.restoreTypes, view: self)
+    }()
 
     // MARK: - Initialization
 
@@ -33,9 +40,21 @@ class JetpackDownloadBackupViewController: BaseRestoreOptionsViewController {
     // MARK: - Override
 
     override func actionButtonTapped() {
-        let statusVC = JetpackBackupStatusViewController(site: site,
-                                                         activity: activity,
-                                                         restoreTypes: JetpackRestoreTypes())
+        coordinator.prepareBackup()
+    }
+}
+
+extension JetpackBackupOptionsViewController: JetpackBackupOptionsView {
+
+    func showError() {
+        let errorTitle = NSLocalizedString("Backup failed.", comment: "Title for error displayed when preparing a backup fails.")
+        let errorMessage = NSLocalizedString("We couldn't create your backup. Please try again later.", comment: "Message for error displayed when preparing a backup fails.")
+        let notice = Notice(title: errorTitle, message: errorMessage)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    func showBackupStatus(for downloadID: Int) {
+        let statusVC = JetpackBackupStatusViewController(site: site, activity: activity, downloadID: downloadID)
         self.navigationController?.pushViewController(statusVC, animated: true)
     }
 
