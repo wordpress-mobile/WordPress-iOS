@@ -8,7 +8,7 @@ class PageLayoutService {
         static let supportedBlocks = "supported_blocks"
         static let previewWidth = "preview_width"
         static let scale = "scale"
-        static let isMobile = "is_mobile"
+        static let type = "type"
         static let isBeta = "is_beta"
     }
 
@@ -56,7 +56,7 @@ class PageLayoutService {
             Parameters.supportedBlocks: supportedBlocks as AnyObject,
             Parameters.previewWidth: previewWidth(thumbnailSize) as AnyObject,
             Parameters.scale: scale as AnyObject,
-            Parameters.isMobile: isMobile as AnyObject,
+            Parameters.type: type as AnyObject,
             Parameters.isBeta: isBeta as AnyObject
         ]
     }
@@ -72,7 +72,7 @@ class PageLayoutService {
 
     private static let scale = UIScreen.main.nativeScale
 
-    private static let isMobile = true
+    private static let type = "mobile"
 
     private static let isBeta: String = {
         let isDevMode = BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
