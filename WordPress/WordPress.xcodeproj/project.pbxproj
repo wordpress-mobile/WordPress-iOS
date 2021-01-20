@@ -11035,11 +11035,10 @@
 			isa = PBXGroup;
 			children = (
 				FAD947A225B56A2C00F011B5 /* Coordinators */,
+				FAD954D525B7AD6800F011B5 /* Views */,
 				FAB8F74F25AD72CE00D5D54A /* BaseRestoreOptionsViewController.swift */,
 				FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */,
 				FAB8F76D25AD73C000D5D54A /* JetpackBackupOptionsViewController.swift */,
-				FA4F660425946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift */,
-				FA4F661325946B8500EAA9F5 /* JetpackRestoreHeaderView.xib */,
 			);
 			path = "Restore Options";
 			sourceTree = "<group>";
@@ -11048,9 +11047,8 @@
 			isa = PBXGroup;
 			children = (
 				FAD947A125B56A1E00F011B5 /* Coordinators */,
+				FAD954D625B7AD7600F011B5 /* Views */,
 				FAF13C5225A57ABD003EE470 /* JetpackRestoreWarningViewController.swift */,
-				FA1A543D25A6E2F60033967D /* RestoreWarningView.swift */,
-				FA1A543F25A6E3080033967D /* RestoreWarningView.xib */,
 			);
 			path = "Restore Warning";
 			sourceTree = "<group>";
@@ -11059,11 +11057,10 @@
 			isa = PBXGroup;
 			children = (
 				FAB8AB5D25AFFCE900F9F8A0 /* Coordinators */,
+				FAD954E525B7AD8300F011B5 /* Views */,
 				FAB8F78B25AD785400D5D54A /* BaseRestoreStatusViewController.swift */,
 				FAF13E2F25A59240003EE470 /* JetpackRestoreStatusViewController.swift */,
 				FAB8F7A925AD792500D5D54A /* JetpackBackupStatusViewController.swift */,
-				FA1A55EE25A6F0740033967D /* RestoreStatusView.swift */,
-				FA1A55FE25A6F07F0033967D /* RestoreStatusView.xib */,
 			);
 			path = "Restore Status";
 			sourceTree = "<group>";
@@ -11096,13 +11093,12 @@
 		FAB8007625AEDDCE00D5D54A /* Restore Complete */ = {
 			isa = PBXGroup;
 			children = (
+				FAD954F425B7AD9200F011B5 /* Views */,
 				FAB8AA2125AF031200F9F8A0 /* BaseRestoreCompleteViewController.swift */,
 				FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */,
 				FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */,
 				FAD951A325B6CB3600F011B5 /* JetpackRestoreFailedViewController.swift */,
 				FAD954B725B7A99900F011B5 /* JetpackBackupFailedViewController.swift */,
-				FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */,
-				FAB800C125AEE3D200D5D54A /* RestoreCompleteView.xib */,
 			);
 			path = "Restore Complete";
 			sourceTree = "<group>";
@@ -11130,6 +11126,42 @@
 				FAD9457D25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift */,
 			);
 			path = Coordinators;
+			sourceTree = "<group>";
+		};
+		FAD954D525B7AD6800F011B5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FA4F660425946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift */,
+				FA4F661325946B8500EAA9F5 /* JetpackRestoreHeaderView.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FAD954D625B7AD7600F011B5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FA1A543D25A6E2F60033967D /* RestoreWarningView.swift */,
+				FA1A543F25A6E3080033967D /* RestoreWarningView.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FAD954E525B7AD8300F011B5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FA1A55EE25A6F0740033967D /* RestoreStatusView.swift */,
+				FA1A55FE25A6F07F0033967D /* RestoreStatusView.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FAD954F425B7AD9200F011B5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */,
+				FAB800C125AEE3D200D5D54A /* RestoreCompleteView.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		FF2716901CAAC87B0006E2D4 /* WordPressUITests */ = {
