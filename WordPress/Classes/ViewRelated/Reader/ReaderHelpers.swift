@@ -1,6 +1,13 @@
 import Foundation
 import WordPressShared
 
+// MARK: - Reader Notifications
+
+// NSNotification sent when a post's seen state has been toggled.
+extension NSNotification.Name {
+    static let ReaderPostSeenToggled = NSNotification.Name(rawValue: "ReaderPostSeenToggled")
+}
+let postUserInfoKey = "post"
 /// A collection of helper methods used by the Reader.
 ///
 @objc open class ReaderHelpers: NSObject {
@@ -218,9 +225,12 @@ import WordPressShared
 
         let userAgent = WPUserAgent.wordPress()
         let path  = NSString(format: "%@?%@", pixel, params.componentsJoined(by: "&")) as String
-        let url = URL(string: path)
 
-        let request = NSMutableURLRequest(url: url!)
+        guard let url = URL(string: path) else {
+            return
+        }
+
+        let request = NSMutableURLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         request.addValue(pixelStatReferrer, forHTTPHeaderField: "Referer")
 

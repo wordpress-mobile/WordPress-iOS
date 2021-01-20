@@ -91,7 +91,7 @@ class ReaderDetailCoordinator {
         postInUse(false)
     }
 
-    /// Start the cordinator
+    /// Start the coordinator
     ///
     func start() {
         view?.showLoading()
@@ -241,6 +241,21 @@ class ReaderDetailCoordinator {
 
         bumpStats()
         bumpPageViewsForPost()
+        markPostAsSeen()
+    }
+
+    private func markPostAsSeen() {
+        guard let post = post,
+              let context = post.managedObjectContext else {
+            return
+        }
+
+        // Ensure post is unseen before toggling it so it end's up as seen.
+        post.isSeen = false
+        let postService = ReaderPostService(managedObjectContext: context)
+        postService.toggleSeen(for: post, success: {
+            NotificationCenter.default.post(name: .ReaderPostSeenToggled, object: nil, userInfo: [postUserInfoKey: post])
+        }, failure: nil)
     }
 
     /// If the loaded URL contains a hash/anchor then jump to that spot in the post content
@@ -271,7 +286,7 @@ class ReaderDetailCoordinator {
         WPAppAnalytics.track(.readerSitePreviewed, withProperties: properties)
     }
 
-    /// Show a menu with options forthe current post's site
+    /// Show a menu with options for the current post's site
     ///
     private func showMenu(_ anchorView: UIView) {
         guard let post = post,
@@ -459,7 +474,7 @@ class ReaderDetailCoordinator {
         }
     }
 
-    /// Bum post page view
+    /// Bump post page view
     ///
     private func bumpPageViewsForPost() {
         guard let readerPost = post else {
