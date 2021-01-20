@@ -6,6 +6,11 @@ struct JetpackScanThreatViewModel {
     let title: String
     let description: String?
 
+    // More details
+    let problemDescription: String
+    let fixDescription: String?
+    let fileContext: JetpackThreatContext?
+
     init(threat: JetpackScanThreat) {
         let status = threat.status
 
@@ -13,6 +18,34 @@ struct JetpackScanThreatViewModel {
         iconImageColor = Self.iconColor(for: status)
         title = Self.title(for: threat)
         description = Self.description(for: threat)
+
+        // More details
+        problemDescription = threat.description
+        fixDescription = Self.fixDescription(for: threat)
+        fileContext = threat.context
+
+    }
+
+    private static func fixDescription(for threat: JetpackScanThreat) -> String? {
+        guard let fixType = threat.fixable?.type else {
+            return Strings.fixDescription.notFixable
+        }
+
+        let description: String
+
+        switch fixType {
+            case .replace:
+                description = Strings.fixDescription.replace
+            case .delete:
+                description = Strings.fixDescription.delete
+            case .update:
+                description = Strings.fixDescription.update
+            case .edit:
+                description = Strings.fixDescription.edit
+            default:
+                description = Strings.fixDescription.unknown
+        }
+        return description
     }
 
     private static func description(for threat: JetpackScanThreat) -> String? {
@@ -145,6 +178,21 @@ struct JetpackScanThreatViewModel {
             static let theme = NSLocalizedString("Vulnerability found in theme", comment: "TODO")
             static let database: String? = nil
             static let unknown = NSLocalizedString("Miscellaneous vulnerability", comment: "TODO")
+        }
+
+        struct fixDescription {
+            static let replace = NSLocalizedString("Jetpack Scan will replace the affected file or directory.", comment: "TODO")
+            static let delete = NSLocalizedString("Jetpack Scan will delete the affected file or directory.", comment: "TODO")
+            static let update = NSLocalizedString("Jetpack Scan will update to a newer version.", comment: "TODO")
+            static let edit = NSLocalizedString("Jetpack Scan will edit the affected file or directory.", comment: "TODO")
+            struct rollback {
+                static let withTarget = NSLocalizedString("Jetpack Scan will rollback the affected file to the version from %1$@.", comment: "TODO")
+                static let withoutTarget = NSLocalizedString("Jetpack Scan will rollback the affected file to an older (clean) version.", comment: "TODO")
+            }
+
+            static let unknown = NSLocalizedString("Jetpack Scan will resolve the threat.", comment: "TODO")
+
+            static let notFixable = NSLocalizedString("Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site.", comment: "TODO")
         }
     }
 }
