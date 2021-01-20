@@ -27,8 +27,6 @@ class RestoreCompleteView: UIView, NibLoadable {
     private func applyStyles() {
         backgroundColor = .basicBackground
 
-        icon.tintColor = .success
-
         titleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         titleLabel.textColor = .text
         titleLabel.numberOfLines = 0
@@ -49,13 +47,15 @@ class RestoreCompleteView: UIView, NibLoadable {
 
     // MARK: - Configuration
 
-    func configure(iconImage: UIImage,
+    func configure(isSuccess: Bool,
+                   iconImage: UIImage,
                    title: String,
                    description: String,
                    primaryButtonTitle: String?,
                    secondaryButtonTitle: String?,
                    hint: String?) {
 
+        icon.tintColor = isSuccess ? .success : .error
         icon.image = iconImage
         titleLabel.text = title
         descriptionLabel.text = description

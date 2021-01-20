@@ -9,6 +9,7 @@ class JetpackRestoreCompleteViewController: BaseRestoreCompleteViewController {
 
     override init(site: JetpackSiteRef, activity: Activity) {
         let restoreCompleteConfiguration = JetpackRestoreCompleteConfiguration(
+            isSuccess: true,
             title: NSLocalizedString("Restore", comment: "Title for Jetpack Restore Complete screen"),
             iconImage: .gridicon(.history),
             messageTitle: NSLocalizedString("Your site has been restored", comment: "Title for the Jetpack Restore Complete message."),
