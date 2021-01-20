@@ -58,9 +58,8 @@ class SitesDataProvider {
     // MARK: - Default Site
 
     private var defaultSiteID: Int? {
-        // TODO - TODAYWIDGET: taking the default site id from user defaults for now.
-        // This would change if the old widget gets reconfigured to a different site than the default.
-        return UserDefaults(suiteName: WPAppGroupName)?.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? Int
+
+        return UserDefaults(suiteName: WPAppGroupName)?.object(forKey: WPStatsHomeWidgetsUserDefaultsSiteIdKey) as? Int
     }
 
     var defaultSite: Site? {
