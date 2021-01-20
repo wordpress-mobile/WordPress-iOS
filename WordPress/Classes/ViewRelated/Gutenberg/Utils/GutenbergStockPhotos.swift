@@ -64,7 +64,7 @@ extension GutenbergStockPhotos: StockPhotosPickerDelegate {
                 return nil
             }
             let mediaUploadID = media.gutenbergUploadID
-            return MediaInfo(id: mediaUploadID, url: asset.URL.absoluteString, type: media.mediaTypeString)
+            return MediaInfo(id: mediaUploadID, url: asset.URL.absoluteString, type: media.mediaTypeString, caption: asset.caption)
         })
 
         callback(mediaInfo)

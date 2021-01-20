@@ -54,7 +54,7 @@ extension GutenbergFilesAppMediaSource: UIDocumentPickerDelegate {
                 return nil
             }
             let mediaUploadID = media.gutenbergUploadID
-            return MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString, title: url.lastPathComponent)
+            return MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString, caption: media.caption, title: url.lastPathComponent)
         })
 
         callback(mediaInfo)
