@@ -3,14 +3,18 @@ import Foundation
 protocol JetpackBackupStatusView {
     func render(_ backup: JetpackBackup)
     func showError()
-    func showComplete()
+    func showComplete(_ backup: JetpackBackup)
 }
 
 class JetpackBackupStatusCoordinator {
 
+    // MARK: - Properties
+
     private let service: JetpackBackupService
     private let site: JetpackSiteRef
     private let view: JetpackBackupStatusView
+
+    // MARK: - Init
 
     init(site: JetpackSiteRef,
          view: JetpackBackupStatusView,
@@ -20,6 +24,8 @@ class JetpackBackupStatusCoordinator {
         self.site = site
         self.view = view
     }
+
+    // MARK: - Public
 
     func start() {
         service.prepareBackup(for: site, success: { [weak self] backup in
@@ -32,15 +38,17 @@ class JetpackBackupStatusCoordinator {
         })
     }
 
+    // MARK: - Private
+
     private func pollBackupStatus(for downloadID: Int) {
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
+        Timer.scheduledTimer(withTimeInterval: Constants.pollingInterval, repeats: true) { [weak self] timer in
             guard let self = self else { return }
             self.service.getBackupStatus(for: self.site, downloadID: downloadID, success: { backup in
 
                 // If a backup url exists, then we've finished creating a downloadable backup.
                 if backup.url != nil {
                     timer.invalidate()
-                    self.view.showComplete()
+                    self.view.showComplete(backup)
                     return
                 }
 
@@ -54,5 +62,11 @@ class JetpackBackupStatusCoordinator {
             })
         }
     }
+}
 
+extension JetpackBackupStatusCoordinator {
+
+    private enum Constants {
+        static let pollingInterval: TimeInterval = 1
+    }
 }

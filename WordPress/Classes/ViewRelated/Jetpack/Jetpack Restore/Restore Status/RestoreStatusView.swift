@@ -45,6 +45,13 @@ class RestoreStatusView: UIView, NibLoadable {
 
         progressValueLabel.font = WPStyleGuide.fontForTextStyle(.body)
         progressValueLabel.textColor = .text
+        if effectiveUserInterfaceLayoutDirection == .leftToRight {
+            // swiftlint:disable:next inverse_text_alignment
+            progressValueLabel.textAlignment = .right
+        } else {
+            // swiftlint:disable:next natural_text_alignment
+            progressValueLabel.textAlignment = .left
+        }
 
         progressDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
         progressDescriptionLabel.textColor = .textSubtle
@@ -64,13 +71,26 @@ class RestoreStatusView: UIView, NibLoadable {
         descriptionLabel.text = description
         primaryButton.setTitle(primaryButtonTitle, for: .normal)
         hintLabel.text = hint
-
-        update(progress: 0)
     }
 
-    func update(progress: Int) {
+    func update(progress: Int, progressTitle: String? = nil, progressDescription: String? = nil) {
+
         progressValueLabel.text = "\(progress)%"
         progressView.progress = Float(progress) / 100
+
+        if let progressTitle = progressTitle {
+            progressTitleLabel.text = progressTitle
+            progressTitleLabel.isHidden = false
+        } else {
+            progressTitleLabel.isHidden = true
+        }
+
+        if let progressDescription = progressDescription {
+            progressDescriptionLabel.text = progressDescription
+            progressDescriptionLabel.isHidden = false
+        } else {
+            progressDescriptionLabel.isHidden = true
+        }
     }
 
     // MARK: - IBAction

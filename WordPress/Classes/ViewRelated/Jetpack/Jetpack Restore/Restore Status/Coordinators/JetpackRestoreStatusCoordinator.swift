@@ -8,10 +8,14 @@ protocol JetpackRestoreStatusView {
 
 class JetpackRestoreStatusCoordinator {
 
+    // MARK: - Properties
+
     private let service: JetpackRestoreService
-    private let rewindID: String?
     private let site: JetpackSiteRef
+    private let rewindID: String?
     private let view: JetpackRestoreStatusView
+
+    // MARK: - Init
 
     init(site: JetpackSiteRef,
          rewindID: String?,
@@ -24,6 +28,8 @@ class JetpackRestoreStatusCoordinator {
         self.view = view
     }
 
+    // MARK: - Public
+
     func start() {
         service.restoreSite(site, rewindID: rewindID, success: { [weak self] _ in
             self?.pollRestoreStatus()
@@ -34,8 +40,10 @@ class JetpackRestoreStatusCoordinator {
         })
     }
 
+    // MARK: - Private
+
     private func pollRestoreStatus() {
-        Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { [weak self] timer in
+        Timer.scheduledTimer(withTimeInterval: Constants.pollingInterval, repeats: true) { [weak self] timer in
             guard let self = self else { return }
 
             self.service.getRewindStatus(for: self.site, success: { rewindStatus in
@@ -56,5 +64,11 @@ class JetpackRestoreStatusCoordinator {
             })
         }
     }
+}
 
+extension JetpackRestoreStatusCoordinator {
+
+    private enum Constants {
+        static let pollingInterval: TimeInterval = 5
+    }
 }

@@ -1,13 +1,17 @@
-import Foundation
+import UIKit
 import CocoaLumberjack
 import WordPressShared
 import WordPressUI
 
 class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
 
+    private let backup: JetpackBackup
+
     // MARK: - Initialization
 
-    override init(site: JetpackSiteRef, activity: Activity) {
+    init(site: JetpackSiteRef, activity: Activity, backup: JetpackBackup) {
+        self.backup = backup
+
         let restoreCompleteConfiguration = JetpackRestoreCompleteConfiguration(
             title: NSLocalizedString("Backup", comment: "Title for Jetpack Backup Complete screen"),
             iconImage: .gridicon(.history),
@@ -17,6 +21,7 @@ class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
             secondaryButtonTitle: NSLocalizedString("Share link", comment: "Title for the button that will share the link for the downlodable backup file"),
             hint: NSLocalizedString("We've also emailed you a link to your file.", comment: "A hint to users indicating a link to the downloadable backup file has also been sent to their email.")
         )
+
         super.init(site: site, activity: activity, configuration: restoreCompleteConfiguration)
     }
 
@@ -33,11 +38,30 @@ class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
     // MARK: - Override
 
     override func primaryButtonTapped() {
-        // TODO: download file
+        downloadFile()
     }
 
     override func secondaryButtonTapped() {
-        // TODO: share link
+        shareLink()
+    }
+
+    // MARK: - Private
+
+    private func downloadFile() {
+        // TODO
+    }
+
+    private func shareLink() {
+        guard let url = backup.url,
+              let downloadURL = URL(string: url),
+              let activities = WPActivityDefaults.defaultActivities() as? [UIActivity] else {
+            return
+        }
+
+        let activityVC = UIActivityViewController(activityItems: [downloadURL], applicationActivities: activities)
+        activityVC.popoverPresentationController?.sourceView = self.view
+
+        self.present(activityVC, animated: true)
     }
 
 }
