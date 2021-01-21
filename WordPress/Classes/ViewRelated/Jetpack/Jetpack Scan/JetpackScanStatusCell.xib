@@ -17,7 +17,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="445" height="249"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="VTB-TG-U9C">
+                    <stackView opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="VTB-TG-U9C">
                         <rect key="frame" x="0.0" y="0.0" width="445" height="249"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i3y-0r-qdg" userLabel="Header View">
@@ -34,7 +34,7 @@
                                     <constraint firstAttribute="height" constant="48" id="NvK-uw-EMq"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGG-nP-4Q3">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGG-nP-4Q3">
                                 <rect key="frame" x="10" y="68" width="425" height="20.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
@@ -46,7 +46,7 @@
                                     <constraint firstAttribute="height" constant="8" id="ffh-oY-vRs"/>
                                 </constraints>
                             </progressView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0Y-0s-mES">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="749" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0Y-0s-mES">
                                 <rect key="frame" x="10" y="116.5" width="425" height="34.5"/>
                                 <string key="text">We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -105,7 +105,7 @@
                 <outlet property="secondaryButton" destination="gTh-o0-42f" id="nUe-7r-qNn"/>
                 <outlet property="titleLabel" destination="KGG-nP-4Q3" id="ci3-ID-vFr"/>
             </connections>
-            <point key="canvasLocation" x="307" y="62"/>
+            <point key="canvasLocation" x="-292" y="104"/>
         </tableViewCell>
     </objects>
     <resources>
