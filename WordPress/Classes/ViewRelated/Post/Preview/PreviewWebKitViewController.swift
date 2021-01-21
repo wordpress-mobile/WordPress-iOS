@@ -13,12 +13,6 @@ class PreviewWebKitViewController: WebKitViewController {
     private var selectedDevice: PreviewDeviceSelectionViewController.PreviewDevice = .default {
         didSet {
             if selectedDevice != oldValue {
-                switch selectedDevice {
-                case .mobile:
-                    setWidth(Constants.mobilePreviewWidth)
-                default:
-                    setWidth(nil)
-                }
                 webView.reload()
             }
             showLabel(device: selectedDevice)
@@ -237,8 +231,6 @@ class PreviewWebKitViewController: WebKitViewController {
         static let publishButtonColor = UIColor.muriel(color: MurielColor.accent)
 
         static let blankURL = URL(string: "about:blank")
-
-        static let mobilePreviewWidth: CGFloat = 460
     }
 }
 
@@ -246,16 +238,15 @@ class PreviewWebKitViewController: WebKitViewController {
 
 extension PreviewWebKitViewController {
 
+    // TODO use this
     override func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
-        guard let navigationController = navigationController, popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
+        guard popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
             super.prepareForPopoverPresentation(popoverPresentationController)
             return
         }
 
         popoverPresentationController.permittedArrowDirections = .down
-
-        popoverPresentationController.sourceRect = sourceRect(for: navigationController.toolbar, offsetBy: Constants.devicePickerPopoverOffset)
-        popoverPresentationController.sourceView = navigationController.toolbar.superview
+        popoverPresentationController.barButtonItem = previewButton
     }
 
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
@@ -266,37 +257,22 @@ extension PreviewWebKitViewController {
         super.traitCollectionDidChange(previousTraitCollection)
 
         // Reset our source rect and view for a transition to a new size
-        guard let navigationController = navigationController,
-            let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController,
+        guard let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController,
             popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
                 return
         }
 
-        popoverPresentationController.sourceRect = sourceRect(for: navigationController.toolbar, offsetBy: Constants.devicePickerPopoverOffset)
-        popoverPresentationController.sourceView = navigationController.toolbar.superview
-    }
-
-    /// Returns a rect that represents the far right corner of `view` offset by `offsetBy`.
-    /// - Parameter view: The view to use for finding the upper right corner.
-    /// - Parameter offsetBy: An x, y pair to offset the view's coordinates by
-    func sourceRect(for view: UIView, offsetBy offset: (x: CGFloat, y: CGFloat)) -> CGRect {
-        return CGRect(origin: view.frame.topRightVertex, size: .zero).offsetBy(dx: offset.x, dy: offset.y)
-    }
-}
-
-private extension CGRect {
-    var topRightVertex: CGPoint {
-        return CGPoint(x: maxX, y: minY)
+        popoverPresentationController.barButtonItem = previewButton
     }
 }
 
 // MARK: WKNavigationDelegate
 
+// TODO use this
 extension PreviewWebKitViewController {
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        if selectedDevice == .desktop {
-            // Change the viewport scale to match a desktop environment
-            webView.evaluateJavaScript("let parent = document.querySelector('meta[name=viewport]'); parent.setAttribute('content','initial-scale=0');", completionHandler: nil)
-        }
+        setWidth(selectedDevice.width)
+        let script = String(format: "let parent = document.querySelector('meta[name=viewport]'); parent.setAttribute('content', 'width=%1$d, initial-scale=0');", NSInteger(selectedDevice.width))
+        webView.evaluateJavaScript(script, completionHandler: nil)
     }
 }
