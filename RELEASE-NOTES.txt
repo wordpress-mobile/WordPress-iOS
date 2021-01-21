@@ -16,6 +16,7 @@
 * [**] Block Editor: Added move to top/bottom when long pressing on respective block movers (https://github.com/wordpress-mobile/gutenberg-mobile/pull/2872)
 * [**] Reader: Following now only shows non-P2 sites. [#15585]
 * [**] Reader site filter: selected filters now persist while in app.[#15594]
+* [**] Block Editor: Fix crash in text-based blocks with custom font size [https://github.com/WordPress/gutenberg/pull/28121]
 
 16.4
 -----
