@@ -441,6 +441,18 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
                   success:(void (^)(void))success
                   failure:(void (^)(NSError *error))failure;
 {
+    if (post.feedItemID == nil) {
+        NSString *description = NSLocalizedString(@"Could not toggle Seen: missing feedItemID attribute.", @"An error description explaining that Seen could not be toggled due to a missing feedItemID attribute.");
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
+        NSError *error = [NSError errorWithDomain:ReaderPostServiceErrorDomain code:0 userInfo:userInfo];
+        
+        if (failure) {
+            failure(error);
+        }
+        
+        return;
+    }
+    
     [self.managedObjectContext performBlock:^{
         
         // Get a the post in our own context
