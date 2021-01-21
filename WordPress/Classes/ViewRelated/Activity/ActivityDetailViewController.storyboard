@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14865.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14819.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -103,17 +103,13 @@
                                                             <constraint firstAttribute="height" constant="0.5" id="BVA-WF-pjw"/>
                                                         </constraints>
                                                     </view>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qzN-1h-59z">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qzN-1h-59z">
                                                         <rect key="frame" x="0.0" y="0.5" width="343" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="NG0-1F-qwe"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                        <color key="tintColor" red="0.0" green="0.66666666669999997" blue="0.86274509799999999" alpha="1" colorSpace="calibratedRGB"/>
                                                         <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                        <state key="normal" title="Button">
-                                                            <color key="titleColor" red="0.0" green="0.66666666666666663" blue="0.86274509803921573" alpha="1" colorSpace="calibratedRGB"/>
-                                                        </state>
+                                                        <state key="normal" title="Button"/>
                                                         <connections>
                                                             <action selector="rewindButtonTappedWithSender:" destination="yav-nF-cx7" eventType="touchUpInside" id="u5C-lN-yLL"/>
                                                         </connections>
@@ -133,12 +129,12 @@
                                 </constraints>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="fnA-qw-vPe"/>
                         <constraints>
                             <constraint firstItem="fnA-qw-vPe" firstAttribute="trailing" secondItem="2EY-TD-6V1" secondAttribute="trailing" id="36M-yw-daV"/>
                             <constraint firstItem="2EY-TD-6V1" firstAttribute="top" secondItem="fnA-qw-vPe" secondAttribute="top" id="KcE-uG-uhl"/>
                             <constraint firstItem="2EY-TD-6V1" firstAttribute="leading" secondItem="fnA-qw-vPe" secondAttribute="leading" id="uy5-pe-WY6"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="fnA-qw-vPe"/>
                     </view>
                     <connections>
                         <outlet property="bottomConstaint" destination="Fha-kb-hYl" id="vUN-uA-iaq"/>
