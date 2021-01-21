@@ -2324,6 +2324,7 @@
 		FAD9458E25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD9458D25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift */; };
 		FAD951A425B6CB3600F011B5 /* JetpackRestoreFailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD951A325B6CB3600F011B5 /* JetpackRestoreFailedViewController.swift */; };
 		FAD954B825B7A99900F011B5 /* JetpackBackupFailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD954B725B7A99900F011B5 /* JetpackBackupFailedViewController.swift */; };
+		FAD95D2725B91BCF00F011B5 /* JetpackRestoreStatusFailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD95D2625B91BCF00F011B5 /* JetpackRestoreStatusFailedViewController.swift */; };
 		FAE4201A1C5AEFE100C1D036 /* StartOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE420191C5AEFE100C1D036 /* StartOverViewController.swift */; };
 		FAE4327425874D140039EB8C /* ReaderSavedPostCellActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE4327325874D140039EB8C /* ReaderSavedPostCellActions.swift */; };
 		FAF13C5325A57ABD003EE470 /* JetpackRestoreWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF13C5225A57ABD003EE470 /* JetpackRestoreWarningViewController.swift */; };
@@ -5086,6 +5087,7 @@
 		FAD9458D25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreWarningCoordinator.swift; sourceTree = "<group>"; };
 		FAD951A325B6CB3600F011B5 /* JetpackRestoreFailedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreFailedViewController.swift; sourceTree = "<group>"; };
 		FAD954B725B7A99900F011B5 /* JetpackBackupFailedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupFailedViewController.swift; sourceTree = "<group>"; };
+		FAD95D2625B91BCF00F011B5 /* JetpackRestoreStatusFailedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreStatusFailedViewController.swift; sourceTree = "<group>"; };
 		FAE420191C5AEFE100C1D036 /* StartOverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartOverViewController.swift; sourceTree = "<group>"; };
 		FAE4327325874D140039EB8C /* ReaderSavedPostCellActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSavedPostCellActions.swift; sourceTree = "<group>"; };
 		FAF13C5225A57ABD003EE470 /* JetpackRestoreWarningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreWarningViewController.swift; sourceTree = "<group>"; };
@@ -11099,6 +11101,7 @@
 				FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */,
 				FAD951A325B6CB3600F011B5 /* JetpackRestoreFailedViewController.swift */,
 				FAD954B725B7A99900F011B5 /* JetpackBackupFailedViewController.swift */,
+				FAD95D2625B91BCF00F011B5 /* JetpackRestoreStatusFailedViewController.swift */,
 			);
 			path = "Restore Complete";
 			sourceTree = "<group>";
@@ -12966,6 +12969,7 @@
 				3236F79E24AE75790088E8F3 /* ReaderTopicService+Interests.swift in Sources */,
 				9A2D0B36225E2511009E585F /* JetpackService.swift in Sources */,
 				40F50B7E22130E6C00CBBB73 /* FollowersStatsRecordValue+CoreDataProperties.swift in Sources */,
+				FAD95D2725B91BCF00F011B5 /* JetpackRestoreStatusFailedViewController.swift in Sources */,
 				E66969DC1B9E55C300EC9C00 /* ReaderTopicToReaderListTopic37to38.swift in Sources */,
 				9A2D0B23225CB92B009E585F /* BlogService+JetpackConvenience.swift in Sources */,
 				C856748F243EF177001A995E /* GutenbergTenorMediaPicker.swift in Sources */,
