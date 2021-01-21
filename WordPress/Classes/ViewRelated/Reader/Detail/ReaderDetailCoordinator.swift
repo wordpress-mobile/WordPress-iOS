@@ -249,12 +249,11 @@ class ReaderDetailCoordinator {
 
     private func markPostAsSeen() {
         guard let post = post,
-              let context = post.managedObjectContext else {
+              let context = post.managedObjectContext,
+              !post.isSeen else {
             return
         }
 
-        // Ensure post is unseen before toggling it so it end's up as seen.
-        post.isSeen = false
         let postService = ReaderPostService(managedObjectContext: context)
         postService.toggleSeen(for: post, success: {
             NotificationCenter.default.post(name: .ReaderPostSeenToggled,
