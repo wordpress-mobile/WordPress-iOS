@@ -1,7 +1,7 @@
 import UIKit
 import WordPressUI
 
-class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
+class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPopoverPresentationControllerDelegate {
     let completion: SiteDesignStep.SiteDesignSelection
     let siteDesign: RemoteSiteDesign
     @IBOutlet weak var primaryActionButton: UIButton!
@@ -9,6 +9,13 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var progressBar: UIProgressView!
     private var estimatedProgressObserver: NSKeyValueObservation?
+    private var selectedPreviewDevice: PreviewDeviceSelectionViewController.PreviewDevice {
+        didSet {
+            if selectedPreviewDevice != oldValue {
+                webView.reload()
+            }
+        }
+    }
 
     lazy var ghostView: GutenGhostView = {
         let ghost = GutenGhostView()
@@ -31,9 +38,10 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    init(siteDesign: RemoteSiteDesign, completion: @escaping SiteDesignStep.SiteDesignSelection) {
+    init(siteDesign: RemoteSiteDesign, selectedPreviewDevice: PreviewDeviceSelectionViewController.PreviewDevice?, completion: @escaping SiteDesignStep.SiteDesignSelection) {
         self.completion = completion
         self.siteDesign = siteDesign
+        self.selectedPreviewDevice = selectedPreviewDevice ?? PreviewDeviceSelectionViewController.PreviewDevice.default
         super.init(nibName: "\(SiteDesignPreviewViewController.self)", bundle: .main)
         self.title = NSLocalizedString("Preview", comment: "Title for screen to preview a selected homepage design")
     }
@@ -51,6 +59,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
         webView.backgroundColor = .basicBackground
         SiteCreationAnalyticsHelper.trackSiteDesignPreviewViewed(siteDesign)
         observeProgressEstimations()
+        configurePreviewDeviceButton()
         navigationItem.rightBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
     }
 
@@ -73,6 +82,23 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost {
         let request = URLRequest(url: demoURL)
         webView.customUserAgent = WPUserAgent.wordPress()
         webView.load(request)
+    }
+    
+    private func configurePreviewDeviceButton() {
+        let button = UIBarButtonItem(image: UIImage(named: "icon-devices"), style: .plain, target: self, action: #selector(previewDeviceButtonTapped))
+        navigationItem.leftBarButtonItem = button
+    }
+
+    @objc private func previewDeviceButtonTapped() {
+        let popoverContentController = PreviewDeviceSelectionViewController()
+        popoverContentController.selectedOption = selectedPreviewDevice
+        popoverContentController.dismissHandler = { [weak self] device in
+            self?.selectedPreviewDevice = device
+        }
+
+        popoverContentController.modalPresentationStyle = .popover
+        popoverContentController.popoverPresentationController?.delegate = self
+        self.present(popoverContentController, animated: true, completion: nil)
     }
 
     private func styleButtons() {
@@ -120,8 +146,44 @@ extension SiteDesignPreviewViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoaded(siteDesign)
+        let script = String(format: "let parent = document.querySelector('meta[name=viewport]'); parent.setAttribute('content', 'width=%1$d, initial-scale=0');", NSInteger(selectedPreviewDevice.width))
+        webView.evaluateJavaScript(script, completionHandler: { [weak self]_,_ in
+            guard let self = self else { return }
+            NSLog("script: %@", script)
+            SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoaded(self.siteDesign)
+        })
+
         progressBar.animatableSetIsHidden(true)
         removeProgressObserver()
+    }
+}
+
+// MARK: UIPopoverPresentationDelegate
+extension SiteDesignPreviewViewController {
+
+    func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+        guard popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
+            NSLog("returning early")
+
+            return
+        }
+
+        popoverPresentationController.permittedArrowDirections = .up
+        popoverPresentationController.barButtonItem = navigationItem.leftBarButtonItem
+    }
+
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        guard let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController,
+            popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
+                return
+        }
+
+        popoverPresentationController.barButtonItem = navigationItem.leftBarButtonItem
     }
 }
