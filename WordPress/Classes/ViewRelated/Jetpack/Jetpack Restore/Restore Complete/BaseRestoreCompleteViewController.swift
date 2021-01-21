@@ -16,7 +16,7 @@ class BaseRestoreCompleteViewController: UIViewController {
 
     // MARK: - Private Properties
 
-    private let site: JetpackSiteRef
+    private(set) var site: JetpackSiteRef
     private let activity: Activity
     private let configuration: JetpackRestoreCompleteConfiguration
 

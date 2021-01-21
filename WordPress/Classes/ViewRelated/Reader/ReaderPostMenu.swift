@@ -204,7 +204,8 @@ open class ReaderPostMenu {
             return
         }
 
-        // TODO: add Tracks
+        let event: WPAnalyticsEvent = post.isSeen ? .readerPostMarkUnseen : .readerPostMarkSeen
+        WPAnalytics.track(event, properties: ["source": "post_details"])
 
         let postService = ReaderPostService(managedObjectContext: context)
         postService.toggleSeen(for: post, success: nil, failure: nil)
