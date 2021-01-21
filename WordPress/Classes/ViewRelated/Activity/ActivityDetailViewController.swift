@@ -62,10 +62,16 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
     }
 
     @IBAction func rewindButtonTapped(sender: UIButton) {
-        presenter?.presentRestoreFor(activity: activity!)
+        guard let activity = activity else {
+            return
+        }
+        presenter?.presentRestoreFor(activity: activity)
     }
 
     @IBAction func backupButtonTapped(sender: UIButton) {
+        guard let activity = activity else {
+            return
+        }
         presenter?.presentBackupFor(activity: activity)
     }
 
