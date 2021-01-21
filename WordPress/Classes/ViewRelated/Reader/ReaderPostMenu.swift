@@ -208,7 +208,11 @@ open class ReaderPostMenu {
         WPAnalytics.track(event, properties: ["source": "post_details"])
 
         let postService = ReaderPostService(managedObjectContext: context)
-        postService.toggleSeen(for: post, success: nil, failure: nil)
+        postService.toggleSeen(for: post, success: {
+            NotificationCenter.default.post(name: .ReaderPostSeenToggled,
+                                            object: nil,
+                                            userInfo: [ReaderNotificationKeys.post: post])
+        }, failure: nil)
     }
 
     fileprivate class func visitSiteForPost(_ post: ReaderPost, presentingViewController viewController: UIViewController) {
