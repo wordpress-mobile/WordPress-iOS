@@ -17,10 +17,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2EY-TD-6V1" userLabel="container view">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="331"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="361"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="mSI-6P-kcW">
-                                        <rect key="frame" x="16" y="16" width="343" height="299"/>
+                                        <rect key="frame" x="16" y="16" width="343" height="329"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="DDN-1Y-KHk" userLabel="header">
                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="38.5"/>
@@ -93,27 +93,55 @@
                                                     </label>
                                                 </subviews>
                                             </stackView>
-                                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ouv-sN-axZ" userLabel="rewind">
-                                                <rect key="frame" x="0.0" y="299" width="343" height="44.5"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="i00-9l-xYk">
+                                                <rect key="frame" x="0.0" y="329" width="343" height="0.0"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yPg-ua-Eim">
-                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="0.5"/>
-                                                        <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="0.5" id="BVA-WF-pjw"/>
-                                                        </constraints>
-                                                    </view>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qzN-1h-59z">
-                                                        <rect key="frame" x="0.0" y="0.5" width="343" height="44"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="NG0-1F-qwe"/>
-                                                        </constraints>
-                                                        <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                        <state key="normal" title="Button"/>
-                                                        <connections>
-                                                            <action selector="rewindButtonTappedWithSender:" destination="yav-nF-cx7" eventType="touchUpInside" id="u5C-lN-yLL"/>
-                                                        </connections>
-                                                    </button>
+                                                    <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ouv-sN-axZ" userLabel="rewind">
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="44.5"/>
+                                                        <subviews>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yPg-ua-Eim">
+                                                                <rect key="frame" x="0.0" y="0.0" width="343" height="0.5"/>
+                                                                <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="0.5" id="BVA-WF-pjw"/>
+                                                                </constraints>
+                                                            </view>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qzN-1h-59z">
+                                                                <rect key="frame" x="0.0" y="0.5" width="343" height="44"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="44" id="NG0-1F-qwe"/>
+                                                                </constraints>
+                                                                <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                                <state key="normal" title="Button"/>
+                                                                <connections>
+                                                                    <action selector="rewindButtonTappedWithSender:" destination="yav-nF-cx7" eventType="touchUpInside" id="u5C-lN-yLL"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="yyE-VA-gGp" userLabel="backup">
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="44.5"/>
+                                                        <subviews>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gZy-mE-jTT">
+                                                                <rect key="frame" x="0.0" y="0.0" width="343" height="0.5"/>
+                                                                <color key="backgroundColor" red="0.91372549020000005" green="0.93725490199999995" blue="0.95294117649999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="0.5" id="qQX-DU-Xuz"/>
+                                                                </constraints>
+                                                            </view>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bA3-ay-OFJ">
+                                                                <rect key="frame" x="0.0" y="0.5" width="343" height="44"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="44" id="5CY-sV-081"/>
+                                                                </constraints>
+                                                                <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                                <state key="normal" title="Button"/>
+                                                                <connections>
+                                                                    <action selector="rewindButtonTappedWithSender:" destination="yav-nF-cx7" eventType="touchUpInside" id="dQ9-5N-Wrh"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                    </stackView>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
@@ -137,7 +165,9 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="bottomConstaint" destination="Fha-kb-hYl" id="vUN-uA-iaq"/>
+                        <outlet property="backupButton" destination="bA3-ay-OFJ" id="b1y-2F-PX6"/>
+                        <outlet property="backupStackView" destination="yyE-VA-gGp" id="fnD-jB-12a"/>
+                        <outlet property="bottomConstaint" destination="Fha-kb-hYl" id="CD2-qR-3da"/>
                         <outlet property="containerView" destination="2EY-TD-6V1" id="pkP-dO-mdo"/>
                         <outlet property="contentStackView" destination="jlr-kR-xzq" id="bkc-3M-MDt"/>
                         <outlet property="dateLabel" destination="YIh-B5-5mX" id="k3s-5c-AXy"/>
