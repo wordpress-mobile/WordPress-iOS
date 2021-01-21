@@ -7,8 +7,8 @@ class RestoreWarningView: UIView, NibLoadable {
     // MARK: - Properties
 
     @IBOutlet private weak var icon: UIImageView!
-    @IBOutlet private weak var title: UILabel!
-    @IBOutlet private weak var body: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet private weak var confirmButton: FancyButton!
     @IBOutlet private weak var cancelButton: FancyButton!
 
@@ -20,7 +20,6 @@ class RestoreWarningView: UIView, NibLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()
         applyStyles()
-        configure()
     }
 
     // MARK: - Styling
@@ -30,12 +29,12 @@ class RestoreWarningView: UIView, NibLoadable {
 
         icon.tintColor = .error
 
-        title.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
-        title.textColor = .text
+        titleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
+        titleLabel.textColor = .text
 
-        body.font = WPStyleGuide.fontForTextStyle(.body)
-        body.textColor = .text
-        body.numberOfLines = 0
+        descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
+        descriptionLabel.textColor = .text
+        descriptionLabel.numberOfLines = 0
 
         confirmButton.isPrimary = true
 
@@ -44,10 +43,10 @@ class RestoreWarningView: UIView, NibLoadable {
 
     // MARK: - Configuration
 
-    func configure() {
+    func configure(with publishedDate: String) {
         icon.image = .gridicon(.notice)
-        title.text = Strings.title
-        body.text = String(format: Strings.bodyFormat, "placeholder date")
+        titleLabel.text = Strings.title
+        descriptionLabel.text = String(format: Strings.descriptionFormat, publishedDate)
         confirmButton.setTitle(Strings.confirmButtonTitle, for: .normal)
         cancelButton.setTitle(Strings.cancelButtonTitle, for: .normal)
     }
@@ -64,7 +63,7 @@ class RestoreWarningView: UIView, NibLoadable {
 
     private enum Strings {
         static let title = NSLocalizedString("Warning", comment: "Noun. Title for Jetpack Restore warning.")
-        static let bodyFormat = NSLocalizedString("Are you sure you want to rewind your site back to %1$@? This will remove all content and options created or changed since then.", comment: "Description for the confirm restore action. %1$@ is a placeholder for the selected date.")
+        static let descriptionFormat = NSLocalizedString("Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then.", comment: "Description for the confirm restore action. %1$@ is a placeholder for the selected date.")
         static let confirmButtonTitle = NSLocalizedString("Confirm", comment: "Verb. Title for Jetpack Restore confirm button.")
         static let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Verb. Title for Jetpack Restore cancel button.")
     }

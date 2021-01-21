@@ -31,6 +31,9 @@ struct ActivityListConfiguration {
 
     /// Event to be fired when the range date reset button is tapped
     let filterbarResetRange: WPAnalyticsEvent
+
+    /// The number of items to be requested for each page
+    let numberOfItemsPerPage: Int
 }
 
 /// ActivityListViewController is used as a base ViewController for
@@ -53,6 +56,8 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
 
     var tableView: UITableView = UITableView()
     let refreshControl = UIRefreshControl()
+
+    let numberOfItemsPerPage = 100
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self, with: self)
@@ -90,7 +95,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
         self.store = store
         self.isFreeWPCom = isFreeWPCom
         self.configuration = configuration
-        self.viewModel = ActivityListViewModel(site: site, store: store, noResultsTexts: configuration)
+        self.viewModel = ActivityListViewModel(site: site, store: store, configuration: configuration)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -101,7 +106,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
         view.addSubview(containerStackView)
         containerStackView.axis = .vertical
 
-        if FeatureFlag.activityLogFilters.enabled {
+        if FeatureFlag.activityLogFilters.enabled && site.shouldShowActivityLogFilter() {
             setupFilterBar()
         }
 
@@ -359,19 +364,19 @@ extension BaseActivityListViewController: ActivityPresenter {
         self.navigationController?.pushViewController(detailVC, animated: true)
     }
 
-    func presentBackupOrRestoreFor(activity: FormattableActivity) {
+    func presentBackupOrRestoreFor(activity: Activity) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
-        let restoreVC = JetpackRestoreViewController(site: site, activity: activity, restoreAction: .restore)
+        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
         alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
-            self.present(UINavigationController(rootViewController: restoreVC), animated: true)
+            self.present(UINavigationController(rootViewController: restoreOptionsVC), animated: true)
         })
 
-        let downloadBackupTitle = NSLocalizedString("Download Backup", comment: "Title displayed for download backup action.")
-        let downloadBackupVC = JetpackRestoreViewController(site: site, activity: activity, restoreAction: .downloadBackup)
-        alertController.addDefaultActionWithTitle(downloadBackupTitle, handler: { _ in
-            self.present(UINavigationController(rootViewController: downloadBackupVC), animated: true)
+        let backupTitle = NSLocalizedString("Download backup", comment: "Title displayed for download backup action.")
+        let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
+        alertController.addDefaultActionWithTitle(backupTitle, handler: { _ in
+            self.present(UINavigationController(rootViewController: backupOptionsVC), animated: true)
         })
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Title for cancel action. Dismisses the action sheet.")
@@ -407,8 +412,8 @@ extension BaseActivityListViewController: ActivityPresenter {
             return
         }
 
-        let warningVC = JetpackRestoreWarningViewController()
-        let navigationVC = UINavigationController(rootViewController: warningVC)
+        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
+        let navigationVC = UINavigationController(rootViewController: restoreOptionsVC)
         self.present(navigationVC, animated: true)
     }
 }
@@ -527,7 +532,7 @@ extension BaseActivityListViewController: ActivityTypeSelectorDelegate {
         } else {
             let totalActivitiesSelected = selectedGroups.map { $0.count }.reduce(0, +)
             var selectTypeProperties: [AnyHashable: Any] = [:]
-            selectedGroups.forEach { selectTypeProperties["filter_group_\($0.key)"] = true }
+            selectedGroups.forEach { selectTypeProperties["group_\($0.key)"] = true }
             selectTypeProperties["num_groups_selected"] = selectedGroups.count
             selectTypeProperties["num_total_activities_selected"] = totalActivitiesSelected
             WPAnalytics.track(.activitylogFilterbarSelectType, properties: selectTypeProperties)

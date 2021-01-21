@@ -41,7 +41,7 @@
                     </constraints>
                     <state key="normal" title="Button"/>
                     <connections>
-                        <action selector="actionButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="LFK-ND-usc"/>
+                        <action selector="actionButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="u3x-lF-FgS"/>
                     </connections>
                 </button>
             </subviews>
@@ -63,10 +63,10 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="actionButton" destination="ZHA-ex-Sko" id="EFb-Qa-0RV"/>
-                <outlet property="body" destination="6ag-Xy-HZc" id="REK-aP-1lI"/>
-                <outlet property="icon" destination="n7M-ds-fce" id="byz-Qe-ZWZ"/>
-                <outlet property="title" destination="Mst-Hr-reS" id="bC4-oL-z8T"/>
+                <outlet property="actionButton" destination="ZHA-ex-Sko" id="ftK-cT-i0k"/>
+                <outlet property="descriptionLabel" destination="6ag-Xy-HZc" id="ZBU-Lb-HZp"/>
+                <outlet property="icon" destination="n7M-ds-fce" id="XL3-jc-2wb"/>
+                <outlet property="titleLabel" destination="Mst-Hr-reS" id="yvm-WQ-P3n"/>
             </connections>
             <point key="canvasLocation" x="-17" y="69"/>
         </view>

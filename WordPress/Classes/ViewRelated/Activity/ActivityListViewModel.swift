@@ -2,7 +2,7 @@ import WordPressFlux
 
 protocol ActivityPresenter: class {
     func presentDetailsFor(activity: FormattableActivity)
-    func presentBackupOrRestoreFor(activity: FormattableActivity)
+    func presentBackupOrRestoreFor(activity: Activity)
     func presentRestoreFor(activity: Activity)
 }
 
@@ -18,7 +18,7 @@ class ActivityListViewModel: Observable {
     private let noResultsTexts: ActivityListConfiguration
     private var storeReceipt: Receipt?
 
-    private let count = 20
+    private var numberOfItemsPerPage = 20
     private var page = 0
     private(set) var after: Date?
     private(set) var before: Date?
@@ -55,10 +55,13 @@ class ActivityListViewModel: Observable {
 
     init(site: JetpackSiteRef,
          store: ActivityStore = StoreContainer.shared.activity,
-         noResultsTexts: ActivityListConfiguration) {
+         configuration: ActivityListConfiguration) {
         self.site = site
         self.store = store
-        self.noResultsTexts = noResultsTexts
+        self.noResultsTexts = configuration
+
+        numberOfItemsPerPage = configuration.numberOfItemsPerPage
+        store.numberOfItemsPerPage = numberOfItemsPerPage
 
         activitiesReceipt = store.query(.activities(site: site))
         rewindStatusReceipt = store.query(.restoreStatus(site: site))
@@ -89,14 +92,14 @@ class ActivityListViewModel: Observable {
         self.before = before
         self.selectedGroups = group
 
-        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: count, afterDate: after, beforeDate: before, group: group.map { $0.key }))
+        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: numberOfItemsPerPage, afterDate: after, beforeDate: before, group: group.map { $0.key }))
     }
 
     public func loadMore() {
         if !store.isFetchingActivities(site: site) {
             page += 1
-            let offset = page * count
-            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset, afterDate: after, beforeDate: before, group: selectedGroups.map { $0.key }))
+            let offset = page * numberOfItemsPerPage
+            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: numberOfItemsPerPage, offset: offset, afterDate: after, beforeDate: before, group: selectedGroups.map { $0.key }))
         }
     }
 
@@ -181,7 +184,7 @@ class ActivityListViewModel: Observable {
                         return
                     }
 
-                    presenter?.presentBackupOrRestoreFor(activity: formattableActivity)
+                    presenter?.presentBackupOrRestoreFor(activity: formattableActivity.activity)
                 }
             )
         })
