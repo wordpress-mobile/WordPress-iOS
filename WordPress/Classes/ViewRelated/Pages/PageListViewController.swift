@@ -757,6 +757,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let pages = _tableViewHandler.removePage(from: newIndex)
         let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: selectedPage) {
             self._tableViewHandler.isSearching = false
+            self._tableViewHandler.refreshTableView(at: index)
         }
         present(parentPageNavigationController, animated: true)
     }

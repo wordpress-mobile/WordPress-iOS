@@ -1,6 +1,7 @@
 import Foundation
 import WordPressKit
 import WordPressFlux
+import WidgetKit
 
 enum InsightAction: Action {
 
@@ -76,7 +77,13 @@ struct InsightStoreState {
 
     var todaysStats: StatsTodayInsight? {
         didSet {
-            storeTodayWidgetData()
+            let todayWidgetStats = TodayWidgetStats(views: todaysStats?.viewsCount,
+                                                    visitors: todaysStats?.visitorsCount,
+                                                    likes: todaysStats?.likesCount,
+                                                    comments: todaysStats?.commentsCount)
+
+            storeTodayWidgetData(data: todayWidgetStats)
+            storeHomeWidgetTodayData(stats: todayWidgetStats)
         }
     }
     var todaysStatsStatus: StoreFetchingStatus = .idle
@@ -109,6 +116,7 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
 
     init() {
         super.init(initialState: InsightStoreState())
+        observeAccountChangesForWidgets()
     }
 
     override func onDispatch(_ action: Action) {
@@ -946,15 +954,11 @@ extension StatsInsightsStore {
 
 private extension InsightStoreState {
 
-    func storeTodayWidgetData() {
+    func storeTodayWidgetData(data: TodayWidgetStats) {
         guard widgetUsingCurrentSite() else {
             return
         }
 
-        let data = TodayWidgetStats(views: todaysStats?.viewsCount,
-                                    visitors: todaysStats?.visitorsCount,
-                                    likes: todaysStats?.likesCount,
-                                    comments: todaysStats?.commentsCount)
         data.saveData()
     }
 
@@ -980,4 +984,83 @@ private extension InsightStoreState {
         return true
     }
 
+}
+
+// MARK: - iOS 14 Widgets Data
+private extension InsightStoreState {
+
+    private func storeHomeWidgetTodayData(stats: TodayWidgetStats) {
+
+        guard #available(iOS 14.0, *),
+              let siteID = SiteStatsInformation.sharedInstance.siteID else {
+            return
+        }
+
+        var homeWidgetTodayCache = HomeWidgetTodayData.read() ?? initializeHomeWidgetTodayData()
+
+        guard let oldData = homeWidgetTodayCache[siteID.intValue] else {
+            DDLogError("HomeWidgetToday: Failed to find a matching site")
+            return
+        }
+        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+
+        guard let blog = blogService.blog(byBlogId: siteID) else {
+            DDLogError("HomeWidgetToday: the site does not exist anymore")
+            // if for any reason that site does not exist anymore, remove it from the cache.
+            homeWidgetTodayCache.removeValue(forKey: siteID.intValue)
+            HomeWidgetTodayData.write(items: homeWidgetTodayCache)
+            return
+        }
+        // refresh stats and update any blog info, if they had changed
+        homeWidgetTodayCache[siteID.intValue] = HomeWidgetTodayData(siteID: siteID.intValue,
+                                                                    siteName: blog.title ?? oldData.siteName,
+                                                                    iconURL: blog.icon ?? oldData.iconURL,
+                                                                    url: blog.url ?? oldData.url,
+                                                                    timeZone: blogService.timeZone(for: blog),
+                                                                    date: Date(),
+                                                                    stats: stats)
+
+        HomeWidgetTodayData.write(items: homeWidgetTodayCache)
+        WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
+    }
+
+    private func initializeHomeWidgetTodayData() -> [Int: HomeWidgetTodayData] {
+
+        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+
+        return blogService.visibleBlogsForWPComAccounts().reduce(into: [Int: HomeWidgetTodayData]()) { result, element in
+            if let blogID = element.dotComID,
+               let url = element.url,
+               let blog = blogService.blog(byBlogId: blogID) {
+                // set the title to the site title, if it's not nil and not empty; otherwise use the site url
+                let title = (element.title ?? url).isEmpty ? url : element.title ?? url
+                let timeZone = blogService.timeZone(for: blog)
+
+                result[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
+                                                              siteName: title,
+                                                              iconURL: blog.icon,
+                                                              url: url,
+                                                              timeZone: timeZone,
+                                                              date: Date(),
+                                                              stats: TodayWidgetStats())
+            }
+        }
+    }
+}
+
+// refresh iOS 14 widgets at login/logout
+private extension StatsInsightsStore {
+    func observeAccountChangesForWidgets() {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+
+
+        NotificationCenter.default.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged,
+                                               object: nil,
+                                               queue: nil) { notification in
+            HomeWidgetTodayData.delete()
+            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
+        }
+    }
 }

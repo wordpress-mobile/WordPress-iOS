@@ -9,6 +9,18 @@ end
 
 USER_ENV_FILE_PATH = File.join(Dir.home, '.wpios-env.default')
 PROJECT_ENV_FILE_PATH = File.expand_path(File.join(Dir.pwd, '../../.configure-files/project.env'))
+ALL_BUNDLE_IDENTIFIERS = [
+      "org.wordpress",
+      "org.wordpress.WordPressShare",
+      "org.wordpress.WordPressDraftAction",
+      "org.wordpress.WordPressTodayWidget",
+      "org.wordpress.WordPressStatsWidgets",
+      "org.wordpress.WordPressNotificationServiceExtension",
+      "org.wordpress.WordPressNotificationContentExtension",
+      "org.wordpress.WordPressAllTimeWidget",
+      "org.wordpress.WordPressThisWeekWidget",
+      "org.wordpress.WordPressIntents",
+    ]
 
 # Use this instead of getting values from ENV directly
 # It will throw an error if the requested value is missing
@@ -164,11 +176,7 @@ import "./ScreenshotFastfile"
   lane :new_beta_release do | options |
     ios_betabuild_prechecks(options)
     ios_update_metadata(options)
-    violations = ios_lint_localizations(input_dir: 'WordPress/Resources', abort_on_violations: false)
-    unless (violations.nil? || violations.empty?)
-      abort = UI.confirm("Violations found, we suggest fixing them in GlotPress first and retrying the beta afterwards. Abort?")
-      UI.abort_with_message!("Aborting the beta due to localization violations. Reach out to i18n folks to help you fix them.") if abort
-    end
+    ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta()
     ios_tag_build()
   end
@@ -209,7 +217,7 @@ import "./ScreenshotFastfile"
     ios_finalize_prechecks(options)
     unless ios_current_branch_is_hotfix
       ios_update_metadata(options)
-      ios_lint_localizations(input_dir: 'WordPress/Resources')
+      ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
       ios_bump_version_beta()
     end
     ios_final_tag(options)
@@ -507,21 +515,10 @@ import "./ScreenshotFastfile"
   desc "Registers a Device in the developer console"
   lane :register_new_device do | options |
 
-    bundle_identifiers = [
-      "org.wordpress",
-      "org.wordpress.WordPressShare",
-      "org.wordpress.WordPressDraftAction",
-      "org.wordpress.WordPressTodayWidget",
-      "org.wordpress.WordPressNotificationServiceExtension",
-      "org.wordpress.WordPressNotificationContentExtension",
-      "org.wordpress.WordPressAllTimeWidget",
-      "org.wordpress.WordPressThisWeekWidget"
-    ]
-
     device_name = UI.input("Device Name: ") unless options[:device_name] != nil
     device_id = UI.input("Device ID: ") unless options[:device_id] != nil
     UI.message "Registering #{device_name} with ID #{device_id} and registering it with any provisioning profiles associated with these bundle identifiers:"
-    bundle_identifiers.each { |identifier|
+    ALL_BUNDLE_IDENTIFIERS.each { |identifier|
       puts "\t#{identifier}"
     }
 
@@ -535,13 +532,13 @@ import "./ScreenshotFastfile"
     # Add all development certificates to the provisioning profiles (just in case – this is an easy step to miss)
     add_development_certificates_to_provisioning_profiles(
       team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
-      app_identifier: bundle_identifiers
+      app_identifier: ALL_BUNDLE_IDENTIFIERS
     )
 
     # Add all devices to the provisioning profiles
     add_all_devices_to_provisioning_profiles(
       team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
-      app_identifier: bundle_identifiers
+      app_identifier: ALL_BUNDLE_IDENTIFIERS
     )
   end
 
@@ -574,14 +571,8 @@ import "./ScreenshotFastfile"
       type: "enterprise",
       team_id: get_required_env("INT_EXPORT_TEAM_ID"),
       readonly: true,
-      app_identifier: ["org.wordpress.alpha",
-                       "org.wordpress.alpha.WordPressShare",
-                       "org.wordpress.alpha.WordPressDraftAction",
-                       "org.wordpress.alpha.WordPressTodayWidget",
-                       "org.wordpress.alpha.WordPressNotificationServiceExtension",
-                       "org.wordpress.alpha.WordPressNotificationContentExtension",
-                       "org.wordpress.alpha.WordPressAllTimeWidget",
-                       "org.wordpress.alpha.WordPressThisWeekWidget"])
+      app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub('org.wordpress', 'org.wordpress.alpha') }
+    )
   end
 
   private_lane :internal_code_signing do |options|
@@ -589,14 +580,8 @@ import "./ScreenshotFastfile"
       type: "enterprise",
       team_id: get_required_env("INT_EXPORT_TEAM_ID"),
       readonly: true,
-      app_identifier: ["org.wordpress.internal",
-                       "org.wordpress.internal.WordPressShare",
-                       "org.wordpress.internal.WordPressDraftAction",
-                       "org.wordpress.internal.WordPressTodayWidget",
-                       "org.wordpress.internal.WordPressNotificationServiceExtension",
-                       "org.wordpress.internal.WordPressNotificationContentExtension",
-                       "org.wordpress.internal.WordPressAllTimeWidget",
-                       "org.wordpress.internal.WordPressThisWeekWidget"])
+      app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub('org.wordpress', 'org.wordpress.internal') }
+    )
   end
 
   private_lane :appstore_code_signing do |options|
@@ -604,14 +589,8 @@ import "./ScreenshotFastfile"
       type: "appstore",
       team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
       readonly: true,
-      app_identifier: ["org.wordpress",
-                       "org.wordpress.WordPressShare",
-                       "org.wordpress.WordPressDraftAction",
-                       "org.wordpress.WordPressTodayWidget",
-                       "org.wordpress.WordPressNotificationServiceExtension",
-                       "org.wordpress.WordPressNotificationContentExtension",
-                       "org.wordpress.WordPressAllTimeWidget",
-                       "org.wordpress.WordPressThisWeekWidget"])
+      app_identifier: ALL_BUNDLE_IDENTIFIERS
+    )
   end
 
 ########################################################################

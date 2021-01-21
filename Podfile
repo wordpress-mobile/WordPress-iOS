@@ -43,11 +43,11 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.24'
+    pod 'WordPressKit', '~> 4.25.0-beta.5'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
-    # pod 'WordPressKit', :path => '../../WordPressKit-iOS'
+    # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
 def shared_with_all_pods
@@ -154,7 +154,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.44.0'
+    gutenberg :tag => 'v1.45.0-alpha1'
 
     ## Third party libraries
     ## =====================
@@ -182,9 +182,9 @@ target 'WordPress' do
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.5.1'
+    pod 'Automattic-Tracks-iOS', '~> 0.7.0'
     # While in PR
-    #pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'add/more-logging'
+    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
     # Local Development
     #pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
 
@@ -198,7 +198,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.1.0'
 
-    pod 'WordPressAuthenticator', '~> 1.33.0'
+    pod 'WordPressAuthenticator', '~> 1.34.0-beta'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
@@ -346,6 +346,30 @@ end
 ## ============
 ##
 target 'WordPressThisWeekWidget' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    wordpress_ui
+end
+
+## iOS 14 Today Widget
+## ============
+##
+target 'WordPressStatsWidgets' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    wordpress_ui
+end
+
+## Intents
+## ============
+##
+target 'WordPressIntents' do
     project 'WordPress/WordPress.xcodeproj'
 
     shared_with_all_pods
