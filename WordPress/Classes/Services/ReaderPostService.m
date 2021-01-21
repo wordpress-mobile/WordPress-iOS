@@ -442,6 +442,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
                   failure:(void (^)(NSError *error))failure;
 {
     if (post.feedItemID == nil) {
+        DDLogError(@"Could not toggle Seen: missing feedItemID attribute.");
         NSString *description = NSLocalizedString(@"Could not toggle Seen: missing feedItemID attribute.", @"An error description explaining that Seen could not be toggled due to a missing feedItemID attribute.");
         NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
         NSError *error = [NSError errorWithDomain:ReaderPostServiceErrorDomain code:0 userInfo:userInfo];
