@@ -1,14 +1,19 @@
 import Foundation
 import WordPressAuthenticator
 
-/// This class takes care of managing the App window and the VC shown as its `rootViewController`.
+/// This class takes care of managing the App window and its `rootViewController`.
 /// This is mostly intended to handle the UI transitions between authenticated and unauthenticated user sessions.
 ///
+@objc
 class WindowManager: NSObject {
 
     /// The App's window.
     ///
     private let window: UIWindow
+
+    /// A boolean to track whether we're showing the sign in flow.
+    ///
+    private var isSignInVisible = false
 
     init(window: UIWindow) {
         self.window = window
@@ -27,10 +32,21 @@ class WindowManager: NSObject {
         }
     }
 
+    /// Shows the SignIn UI flow if the conditions to do so are met.
+    ///
+    @objc
+    func showSignInIfNecessary() {
+        guard isSignInVisible == false && AccountHelper.isLoggedIn == false else {
+            return
+        }
+
+        showUIForUnauthenticatedUsers()
+    }
+
     /// Shows the UI for authenticated users.
     ///
     func showUIForAuthenticatedUsers() {
-        assert(AccountHelper.isLoggedIn)
+        isSignInVisible = false
 
         show(WPTabBarController.sharedInstance())
     }
@@ -38,7 +54,7 @@ class WindowManager: NSObject {
     /// Shows the initial UI for unauthenticated users.
     ///
     func showUIForUnauthenticatedUsers() {
-        assert(!AccountHelper.isLoggedIn)
+        isSignInVisible = true
 
         guard let loginViewController = WordPressAuthenticator.loginUI() else {
             fatalError("No login UI to show to the user.  There's no way to gracefully handle this error.")

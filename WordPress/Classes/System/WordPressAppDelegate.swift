@@ -18,6 +18,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    @objc
     lazy var windowManager = {
         WindowManager(window: window!)
     }()
@@ -583,15 +584,6 @@ extension WordPressAppDelegate {
         }
     }
 
-    @objc(showWelcomeScreenIfNeededAnimated:)
-    func showWelcomeScreenIfNeeded(animated: Bool) {
-        guard isWelcomeScreenVisible == false && AccountHelper.isLoggedIn == false else {
-            return
-        }
-
-        windowManager.showUIForUnauthenticatedUsers()
-    }
-
     @objc func trackLogoutIfNeeded() {
         if AccountHelper.isLoggedIn == false {
             WPAnalytics.track(.logout)
@@ -715,7 +707,7 @@ extension WordPressAppDelegate {
             removeTodayWidgetConfiguration()
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()
-            windowManager.showUIForUnauthenticatedUsers()
+            windowManager.showSignInIfNecessary()
 
             if #available(iOS 13, *) {
                 stopObservingAppleIDCredentialRevoked()
