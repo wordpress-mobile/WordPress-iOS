@@ -1,6 +1,6 @@
 16.6
 -----
-Reader post card and post details: added ability to mark a post as seen/unseen. [#15638, #15645]
+* [*] Quick Start: Removed the Browse theme step and added guidance for reviewing pages and editing your Homepage. [#15680]
 
 16.5
 -----

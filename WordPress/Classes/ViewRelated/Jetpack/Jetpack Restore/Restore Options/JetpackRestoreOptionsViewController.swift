@@ -4,7 +4,7 @@ import Gridicons
 import WordPressUI
 import WordPressShared
 
-class JetpackRestoreViewController: BaseRestoreOptionsViewController {
+class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
 
     // MARK: - Initialization
 

@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import CocoaLumberjack
 import WordPressShared
 import WordPressUI
@@ -37,7 +37,20 @@ class JetpackRestoreCompleteViewController: BaseRestoreCompleteViewController {
     }
 
     override func secondaryButtonTapped() {
-        // TODO: visit site
+        visitSite()
+    }
+
+    // MARK: - Private
+
+    private func visitSite() {
+        guard let homeURL = URL(string: site.homeURL) else {
+            return
+        }
+
+        let webVC = WebViewControllerFactory.controller(url: homeURL)
+        let navigationVC = LightNavigationController(rootViewController: webVC)
+
+        self.present(navigationVC, animated: true)
     }
 
 }

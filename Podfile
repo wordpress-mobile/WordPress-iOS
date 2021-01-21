@@ -43,7 +43,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.25-beta'
+    pod 'WordPressKit', '~> 4.25.0-beta.5'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -346,6 +346,30 @@ end
 ## ============
 ##
 target 'WordPressThisWeekWidget' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    wordpress_ui
+end
+
+## iOS 14 Today Widget
+## ============
+##
+target 'WordPressStatsWidgets' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    wordpress_ui
+end
+
+## Intents
+## ============
+##
+target 'WordPressIntents' do
     project 'WordPress/WordPress.xcodeproj'
 
     shared_with_all_pods
