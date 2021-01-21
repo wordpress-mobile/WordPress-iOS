@@ -1184,7 +1184,7 @@ import WordPressFlux
         }
 
         cellPost.isSeen = post.isSeen
-        tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+        tableView.reloadRows(at: [indexPath], with: .fade)
     }
 
     // MARK: - Helpers for TableViewHandler
