@@ -2,7 +2,7 @@ import Foundation
 
 protocol JetpackBackupStatusView {
     func render(_ backup: JetpackBackup)
-    func showBackupFailed()
+    func showBackupStatusUpdateFailed()
     func showBackupComplete(_ backup: JetpackBackup)
 }
 
@@ -16,6 +16,7 @@ class JetpackBackupStatusCoordinator {
     private let view: JetpackBackupStatusView
 
     private var timer: Timer?
+    private var retryCount: Int = 0
 
     // MARK: - Init
 
@@ -74,7 +75,17 @@ class JetpackBackupStatusCoordinator {
         }, failure: { [weak self] error in
             DDLogError("Error fetching backup object: \(error.localizedDescription)")
 
-            self?.view.showBackupFailed()
+            guard let self = self else {
+                return
+            }
+
+            if self.retryCount == Constants.maxRetryCount {
+                self.stopPolling()
+                self.view.showBackupStatusUpdateFailed()
+                return
+            }
+
+            self.retryCount += 1
         })
     }
 
@@ -84,5 +95,6 @@ extension JetpackBackupStatusCoordinator {
 
     private enum Constants {
         static let pollingInterval: TimeInterval = 1
+        static let maxRetryCount: Int = 3
     }
 }
