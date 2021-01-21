@@ -23,7 +23,7 @@
                             <constraint firstAttribute="height" constant="38" id="hFv-UU-ZHg"/>
                         </constraints>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6FZ-37-5Ra" userLabel="Icon Image View">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6FZ-37-5Ra" userLabel="Icon Image View">
                         <rect key="frame" x="23" y="26" width="24" height="24"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="24" id="bUU-9d-QIs"/>
