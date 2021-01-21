@@ -47,18 +47,21 @@ class RestoreCompleteView: UIView, NibLoadable {
 
     // MARK: - Configuration
 
-    func configure(isSuccess: Bool,
-                   iconImage: UIImage,
+    func configure(iconImage: UIImage,
+                   iconImageColor: UIColor,
                    title: String,
                    description: String,
                    primaryButtonTitle: String?,
                    secondaryButtonTitle: String?,
                    hint: String?) {
 
-        icon.tintColor = isSuccess ? .success : .error
         icon.image = iconImage
+        icon.tintColor = iconImageColor
+
         titleLabel.text = title
+
         descriptionLabel.text = description
+
         secondaryButton.setTitle(secondaryButtonTitle, for: .normal)
 
         if let primaryButtonTitle = primaryButtonTitle {

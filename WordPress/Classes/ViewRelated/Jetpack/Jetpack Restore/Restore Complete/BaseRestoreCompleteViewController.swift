@@ -3,9 +3,9 @@ import CocoaLumberjack
 import WordPressShared
 
 struct JetpackRestoreCompleteConfiguration {
-    let isSuccess: Bool
     let title: String
     let iconImage: UIImage
+    let iconImageColor: UIColor
     let messageTitle: String
     let messageDescription: String
     let primaryButtonTitle: String?
@@ -86,8 +86,8 @@ class BaseRestoreCompleteViewController: UIViewController {
         let publishedDate = dateFormatter.string(from: activity.published)
 
         completeView.configure(
-            isSuccess: configuration.isSuccess,
             iconImage: configuration.iconImage,
+            iconImageColor: configuration.iconImageColor,
             title: configuration.messageTitle,
             description: String(format: configuration.messageDescription, publishedDate),
             primaryButtonTitle: configuration.primaryButtonTitle,
