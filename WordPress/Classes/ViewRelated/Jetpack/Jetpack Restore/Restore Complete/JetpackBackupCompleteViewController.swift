@@ -49,7 +49,12 @@ class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
     // MARK: - Private
 
     private func downloadFile() {
-        // TODO
+        guard let url = backup.url,
+              let downloadURL = URL(string: url) else {
+            return
+        }
+
+        UIApplication.shared.open(downloadURL)
     }
 
     private func shareLink() {
