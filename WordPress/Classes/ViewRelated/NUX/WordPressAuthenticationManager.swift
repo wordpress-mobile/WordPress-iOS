@@ -8,6 +8,11 @@ import Gridicons
 @objc
 class WordPressAuthenticationManager: NSObject {
     static var isPresentingSignIn = false
+    private let windowManager: WindowManager
+
+    init(windowManager: WindowManager) {
+        self.windowManager = windowManager
+    }
 
     /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
     /// We'll setup a mechanism to relay the Support event back to the Authenticator.
@@ -249,7 +254,11 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         }
 
         epilogueViewController.credentials = credentials
-        epilogueViewController.onDismiss = onDismiss
+        epilogueViewController.onDismiss = { [weak self] in
+            onDismiss()
+
+            self?.windowManager.showUIForAuthenticatedUsers()
+        }
 
         navigationController.pushViewController(epilogueViewController, animated: true)
     }
@@ -264,11 +273,14 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         epilogueViewController.credentials = credentials
         epilogueViewController.socialService = service
-        epilogueViewController.onContinue = {
+        epilogueViewController.onContinue = { [weak self] in
             if PostSignUpInterstitialViewController.shouldDisplay() {
-                self.presentPostSignUpInterstitial(in: navigationController)
+                self?.presentPostSignUpInterstitial(in: navigationController) { [weak self] in
+                    self?.windowManager.showUIForAuthenticatedUsers()
+                }
             } else {
                 navigationController.dismiss(animated: true)
+                self?.windowManager.showUIForAuthenticatedUsers()
             }
 
             UserDefaults.standard.set(false, forKey: UserDefaults.standard.welcomeNotificationSeenKey)

@@ -335,8 +335,10 @@ class MeViewController: UITableViewController {
     private func displayLogOutAlert() {
         let alert  = UIAlertController(title: logOutAlertTitle, message: nil, preferredStyle: .alert)
         alert.addActionWithTitle(LogoutAlert.cancelAction, style: .cancel)
-        alert.addActionWithTitle(LogoutAlert.logoutAction, style: .destructive) { _ in
-            AccountHelper.logOutDefaultWordPressComAccount()
+        alert.addActionWithTitle(LogoutAlert.logoutAction, style: .destructive) { [weak self] _ in
+            self?.dismiss(animated: true) {
+                AccountHelper.logOutDefaultWordPressComAccount()
+            }
         }
 
         present(alert, animated: true)

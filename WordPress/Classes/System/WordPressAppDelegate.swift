@@ -18,6 +18,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    lazy var windowManager = {
+        WindowManager(window: window!)
+    }()
+
     var analytics: WPAppAnalytics?
     private lazy var crashLoggingProvider: WPCrashLoggingProvider = {
         return WPCrashLoggingProvider()
@@ -117,7 +121,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         InteractiveNotificationsManager.shared.registerForUserNotifications()
-        showWelcomeScreenIfNeeded(animated: false)
         setupPingHub()
         setupBackgroundRefresh(application)
         setupComponentsAppearance()
@@ -279,8 +282,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
 
-        window?.rootViewController = WPTabBarController.sharedInstance()
-
+        windowManager.showUI()
         setupNoticePresenter()
     }
 
@@ -434,12 +436,13 @@ extension WordPressAppDelegate {
     }
 
     @objc func configureWordPressAuthenticator() {
-        authManager = WordPressAuthenticationManager()
+        let authManager = WordPressAuthenticationManager(windowManager: windowManager)
 
-        authManager?.initializeWordPressAuthenticator()
-        authManager?.startRelayingSupportNotifications()
+        authManager.initializeWordPressAuthenticator()
+        authManager.startRelayingSupportNotifications()
 
         WordPressAuthenticator.shared.delegate = authManager
+        self.authManager = authManager
     }
 
     func handleWebActivity(_ activity: NSUserActivity) {
@@ -580,29 +583,13 @@ extension WordPressAppDelegate {
         }
     }
 
-
     @objc(showWelcomeScreenIfNeededAnimated:)
     func showWelcomeScreenIfNeeded(animated: Bool) {
         guard isWelcomeScreenVisible == false && AccountHelper.isLoggedIn == false else {
             return
         }
 
-        // Check if the presentedVC is UIAlertController because in iPad we show a Sign-out button in UIActionSheet
-        // and it's not dismissed before the check and `dismissViewControllerAnimated` does not work for it
-        if let presenter = window?.rootViewController?.presentedViewController,
-            !(presenter is UIAlertController) {
-            presenter.dismiss(animated: animated, completion: { [weak self] in
-                self?.showWelcomeScreen(animated, thenEditor: false)
-            })
-        } else {
-            showWelcomeScreen(animated, thenEditor: false)
-        }
-    }
-
-    func showWelcomeScreen(_ animated: Bool, thenEditor: Bool) {
-        if let rootViewController = window?.rootViewController {
-            WordPressAuthenticator.showLogin(from: rootViewController, animated: animated)
-        }
+        windowManager.showUIForUnauthenticatedUsers()
     }
 
     @objc func trackLogoutIfNeeded() {
@@ -728,7 +715,7 @@ extension WordPressAppDelegate {
             removeTodayWidgetConfiguration()
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()
-            showWelcomeScreenIfNeeded(animated: false)
+            windowManager.showUIForUnauthenticatedUsers()
 
             if #available(iOS 13, *) {
                 stopObservingAppleIDCredentialRevoked()
