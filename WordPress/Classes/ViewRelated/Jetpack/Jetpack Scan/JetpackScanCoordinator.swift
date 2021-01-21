@@ -1,19 +1,11 @@
 import Foundation
 
-protocol JetpackScanView {
-    func render(_ scan: JetpackScan)
-
-    func showLoading()
-    func showError()
-
-    func presentAlert(_ alert: UIAlertController)
-}
-
 class JetpackScanCoordinator {
     private let service: JetpackScanService
     private let view: JetpackScanView
 
     private(set) var scan: JetpackScan?
+
     let blog: Blog
 
     /// Returns the threats if we're in the idle state
@@ -53,7 +45,7 @@ class JetpackScanCoordinator {
 
     private func refreshDidSucceed(with scanObj: JetpackScan) {
         scan = scanObj
-        view.render(scanObj)
+        view.render()
 
         togglePolling()
     }
@@ -63,9 +55,7 @@ class JetpackScanCoordinator {
         scan?.state = .scanning
 
         // Refresh the view's scan state
-        if let scan = scan {
-            view.render(scan)
-        }
+        view.render()
 
         // Since we've locally entered the scanning state, start polling
         // but don't trigger a refresh immediately after calling because the
@@ -173,7 +163,6 @@ class JetpackScanCoordinator {
         static let refreshTimerInterval: TimeInterval = 5
     }
 
-
     private struct Strings {
         static let fixAllAlertTitleFormat = NSLocalizedString("Please confirm you want to fix all %1$d active threats", comment: "Confirmation title presented before fixing all the threats, displays the number of threats to be fixed")
         static let fixAllSingleAlertTitle = NSLocalizedString("Please confirm you want to fix this threat", comment: "Confirmation title presented before fixing a single threat")
@@ -183,6 +172,15 @@ class JetpackScanCoordinator {
         static let fixAllAlertCancelButtonTitle = NSLocalizedString("Cancel", comment: "Button title, cancel fixing all threats")
         static let fixAllAlertConfirmButtonTitle = NSLocalizedString("Fix all threats", comment: "Button title, confirm fixing all threats")
     }
+}
+
+protocol JetpackScanView {
+    func render()
+
+    func showLoading()
+    func showError()
+
+    func presentAlert(_ alert: UIAlertController)
 }
 
 extension JetpackScan {

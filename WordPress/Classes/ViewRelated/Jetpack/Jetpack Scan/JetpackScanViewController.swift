@@ -25,8 +25,15 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.title = NSLocalizedString("Scan", comment: "Title of the view")
+
         configureTableView()
         coordinator.viewDidLoad()
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "History",
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(showHistory))
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -44,7 +51,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     }
 
     // MARK: - JetpackScanView
-    func render(_ scan: JetpackScan) {
+    func render() {
         refreshControl.endRefreshing()
         tableView.reloadData()
     }
@@ -59,6 +66,12 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
 
     func presentAlert(_ alert: UIAlertController) {
         present(alert, animated: true, completion: nil)
+    }
+
+    // MARK: - Actions
+    @objc func showHistory() {
+        let viewController = JetpackScanHistoryViewController(blog: blog)
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     // MARK: - Private: 
