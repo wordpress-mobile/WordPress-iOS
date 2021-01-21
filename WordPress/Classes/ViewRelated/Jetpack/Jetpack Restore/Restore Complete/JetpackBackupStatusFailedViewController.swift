@@ -3,17 +3,17 @@ import CocoaLumberjack
 import WordPressShared
 import WordPressUI
 
-class JetpackBackupFailedViewController: BaseRestoreCompleteViewController {
+class JetpackBackupStatusFailedViewController: BaseRestoreCompleteViewController {
 
     // MARK: - Initialization
 
     override init(site: JetpackSiteRef, activity: Activity) {
         let restoreCompleteConfiguration = JetpackRestoreCompleteConfiguration(
-            title: NSLocalizedString("Backup failed", comment: "Title for Jetpack Backup Failed screen"),
+            title: NSLocalizedString("Backup status failed", comment: "Title for Jetpack Backup Status Failed screen"),
             iconImage: .gridicon(.notice),
             iconImageColor: .error,
-            messageTitle: NSLocalizedString("Unable to create a backup for your site", comment: "Title for the Jetpack Backup Failed message."),
-            messageDescription: NSLocalizedString("Please try again later or contact support.", comment: "Description for the Jetpack Backup Failed message."),
+            messageTitle: NSLocalizedString("Hmm, we can't update the status of your backup.", comment: "Title for the Jetpack Backup Status Failed message."),
+            messageDescription: "No need to worry. We'll notify you when your backup is ready.",  // FIXME: Placholder text
             primaryButtonTitle: NSLocalizedString("Done", comment: "Title for the button that will dismiss this view."),
             secondaryButtonTitle: nil,
             hint: nil
