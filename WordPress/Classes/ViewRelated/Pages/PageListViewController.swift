@@ -763,7 +763,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func handleSetParentSuccess() {
-        let setParentSuccefullyNotice =  NSLocalizedString("Page Parent updated.", comment: "Message informing the user that their pages parent has been set successfully")
+        let setParentSuccefullyNotice =  NSLocalizedString("Parent page successfully updated.", comment: "Message informing the user that their pages parent has been set successfully")
         let notice = Notice(title: setParentSuccefullyNotice, feedbackType: .success)
         ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
