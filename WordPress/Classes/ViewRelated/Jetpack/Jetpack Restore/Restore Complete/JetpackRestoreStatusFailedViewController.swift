@@ -9,7 +9,7 @@ class JetpackRestoreStatusFailedViewController: BaseRestoreCompleteViewControlle
 
     override init(site: JetpackSiteRef, activity: Activity) {
         let restoreCompleteConfiguration = JetpackRestoreCompleteConfiguration(
-            title: NSLocalizedString("Restore status failed", comment: "Title for Jetpack Restore Failed screen"),
+            title: NSLocalizedString("Status Update Failed", comment: "Title for Jetpack Restore Status Failed screen"),
             iconImage: .gridicon(.notice),
             iconImageColor: .error,
             messageTitle: NSLocalizedString("Hmm, we can't update the status of your restore.", comment: "Title for the Jetpack Restore Status Failed message."),

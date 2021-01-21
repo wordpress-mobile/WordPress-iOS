@@ -9,7 +9,7 @@ class JetpackBackupStatusFailedViewController: BaseRestoreCompleteViewController
 
     override init(site: JetpackSiteRef, activity: Activity) {
         let restoreCompleteConfiguration = JetpackRestoreCompleteConfiguration(
-            title: NSLocalizedString("Backup status failed", comment: "Title for Jetpack Backup Status Failed screen"),
+            title: NSLocalizedString("Status Update Failed", comment: "Title for Jetpack Backup Status Failed screen"),
             iconImage: .gridicon(.notice),
             iconImageColor: .error,
             messageTitle: NSLocalizedString("Hmm, we can't update the status of your backup.", comment: "Title for the Jetpack Backup Status Failed message."),
