@@ -65,6 +65,10 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         presenter?.presentRestoreFor(activity: activity!)
     }
 
+    @IBAction func backupButtonTapped(sender: UIButton) {
+        presenter?.presentBackupFor(activity: activity)
+    }
+
     private func setupLabelStyles() {
         nameLabel.textColor = .text
         nameLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .footnote).pointSize,

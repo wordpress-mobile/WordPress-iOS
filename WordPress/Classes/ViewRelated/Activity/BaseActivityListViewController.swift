@@ -416,6 +416,12 @@ extension BaseActivityListViewController: ActivityPresenter {
         let navigationVC = UINavigationController(rootViewController: restoreOptionsVC)
         self.present(navigationVC, animated: true)
     }
+
+    func presentBackupFor(activity: Activity) {
+        let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
+        let navigationVC = UINavigationController(rootViewController: backupOptionsVC)
+        self.present(navigationVC, animated: true)
+    }
 }
 
 // MARK: - Restores handling

@@ -4,6 +4,7 @@ protocol ActivityPresenter: class {
     func presentDetailsFor(activity: FormattableActivity)
     func presentBackupOrRestoreFor(activity: Activity)
     func presentRestoreFor(activity: Activity)
+    func presentBackupFor(activity: Activity)
 }
 
 class ActivityListViewModel: Observable {
