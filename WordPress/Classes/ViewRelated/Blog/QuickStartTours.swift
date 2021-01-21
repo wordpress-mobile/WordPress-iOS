@@ -262,7 +262,7 @@ struct QuickStartReviewPagesTour: QuickStartTour {
 
 struct QuickStartEditHomepageTour: QuickStartTour {
     let key = "quick-start-edit-homepage-tour"
-    let analyticsKey = "edit-homepage"
+    let analyticsKey = "edit_homepage"
     let title = NSLocalizedString("Edit your homepage", comment: "Title of a Quick Start Tour")
     let titleMarkedCompleted = NSLocalizedString("Completed: Edit your homepage", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Change, add, or remove content from your site's homepage.", comment: "Description of a Quick Start Tour")
