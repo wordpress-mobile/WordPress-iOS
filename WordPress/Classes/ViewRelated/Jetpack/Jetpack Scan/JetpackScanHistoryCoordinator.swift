@@ -165,6 +165,4 @@ protocol JetpackScanHistoryView {
     func showNoIgnoredThreats()
     func showNoConnectionError()
     func showGenericError()
-
-    func presentAlert(_ alert: UIAlertController)
 }

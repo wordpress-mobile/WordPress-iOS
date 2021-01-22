@@ -1,6 +1,6 @@
 import UIKit
 
-class JetpackScanHistoryViewController: UIViewController, JetpackScanHistoryView {
+class JetpackScanHistoryViewController: UIViewController {
     private let blog: Blog
 
     lazy var coordinator: JetpackScanHistoryCoordinator = {
@@ -13,6 +13,9 @@ class JetpackScanHistoryViewController: UIViewController, JetpackScanHistoryView
     // Table View
     @IBOutlet weak var tableView: UITableView!
     let refreshControl = UIRefreshControl()
+
+    // Loading / Errors
+    private var noResultsViewController: NoResultsViewController?
 
     // MARK: - Initializers
     @objc init(blog: Blog) {
@@ -43,24 +46,6 @@ class JetpackScanHistoryViewController: UIViewController, JetpackScanHistoryView
         })
     }
 
-    // MARK: - JetpackScanView
-    func render() {
-        refreshControl.endRefreshing()
-        tableView.reloadData()
-    }
-
-    func showLoading() {
-
-    }
-
-    func showError() {
-
-    }
-
-    func presentAlert(_ alert: UIAlertController) {
-        present(alert, animated: true, completion: nil)
-    }
-
     // MARK: - Actions
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         let selectedIndex = filterTabBar.selectedIndex
@@ -71,7 +56,7 @@ class JetpackScanHistoryViewController: UIViewController, JetpackScanHistoryView
         coordinator.changeFilter(filter)
     }
 
-    // MARK: - Private:
+    // MARK: - Private: Config
     private func configureFilterTabBar() {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
         filterTabBar.superview?.backgroundColor = .filterBarBackground
@@ -100,6 +85,55 @@ class JetpackScanHistoryViewController: UIViewController, JetpackScanHistoryView
     }
 }
 
+extension JetpackScanHistoryViewController: JetpackScanHistoryView {
+    func render() {
+        updateNoResults(nil)
+
+        refreshControl.endRefreshing()
+        tableView.reloadData()
+    }
+
+    func showLoading() {
+        let model = NoResultsViewController.Model(title: NoResultsText.loading.title,
+                                                  accessoryView: NoResultsViewController.loadingAccessoryView())
+        updateNoResults(model)
+    }
+
+    func showGenericError() {
+        let model =  NoResultsViewController.Model(title: NoResultsText.error.title,
+                                                   subtitle: NoResultsText.error.subtitle,
+                                                   buttonText: NoResultsText.error.buttonText)
+
+        updateNoResults(model)
+    }
+
+    func showNoConnectionError() {
+        let model =  NoResultsViewController.Model(title: NoResultsText.noConnection.title,
+                                                   subtitle: NoResultsText.noConnection.subtitle,
+                                                   buttonText: NoResultsText.tryAgainButtonText)
+
+        updateNoResults(model)
+    }
+
+    func showNoHistory() {
+        let model = NoResultsViewController.Model(title: NoResultsText.noHistory.title)
+        updateNoResults(model)
+    }
+
+    func showNoIgnoredThreats() {
+        let model =  NoResultsViewController.Model(title: NoResultsText.noIgnoredThreats.title,
+                                                   subtitle: NoResultsText.noIgnoredThreats.subtitle)
+
+        updateNoResults(model)
+    }
+
+    func showNoFixedThreats() {
+        let model =  NoResultsViewController.Model(title: NoResultsText.noFixedThreats.title,
+                                                   subtitle: NoResultsText.noFixedThreats.subtitle)
+
+        updateNoResults(model)
+    }
+}
 // MARK: - Table View
 extension JetpackScanHistoryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -132,5 +166,77 @@ extension JetpackScanHistoryViewController: UITableViewDataSource, UITableViewDe
         }
 
         return threats[indexPath.row]
+    }
+}
+
+// MARK: - Loading / Errors
+extension JetpackScanHistoryViewController: NoResultsViewControllerDelegate {
+    func updateNoResults(_ viewModel: NoResultsViewController.Model?) {
+        if let noResultsViewModel = viewModel {
+            showNoResults(noResultsViewModel)
+        } else {
+            noResultsViewController?.view.isHidden = true
+        }
+    }
+
+    private func showNoResults(_ viewModel: NoResultsViewController.Model) {
+        if noResultsViewController == nil {
+            noResultsViewController = NoResultsViewController.controller()
+            noResultsViewController?.delegate = self
+
+            guard let noResultsViewController = noResultsViewController else {
+                return
+            }
+
+            if noResultsViewController.view.superview != tableView {
+                tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+            }
+
+            addChild(noResultsViewController)
+
+            noResultsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        }
+
+        noResultsViewController?.bindViewModel(viewModel)
+        noResultsViewController?.didMove(toParent: self)
+        tableView.pinSubviewToSafeArea(noResultsViewController!.view)
+        noResultsViewController?.view.isHidden = false
+    }
+
+    func actionButtonPressed() {
+        coordinator.noResultsButtonPressed()
+    }
+
+    private struct NoResultsText {
+        struct loading {
+            static let title = NSLocalizedString("Loading Scan History...", comment: "Text displayed while loading the scan history for a site")
+        }
+
+        struct noHistory {
+            static let title = NSLocalizedString("No history yet", comment: "Title for the view when there aren't any history items to display")
+        }
+
+        struct error {
+            static let title = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading Activity Log")
+            static let subtitle = NSLocalizedString("There was an error loading the scan history", comment: "Text displayed when there is a failure loading the history feed")
+            static let buttonText = NSLocalizedString("Contact support", comment: "Button label for contacting support")
+        }
+
+        struct noConnection {
+            static let title = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
+            static let subtitle = NSLocalizedString("An active internet connection is required to view the history", comment: "Error message shown when trying to view the Scan History feature and there is no internet connection.")
+        }
+
+        struct noFixedThreats {
+            static let title = NSLocalizedString("No fixed threats", comment: "Title for the view when there aren't any fixed threats to display")
+            static let subtitle = NSLocalizedString("So far, there are no fixed threats on your site.", comment: "Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker")
+        }
+
+        struct noIgnoredThreats {
+            static let title = NSLocalizedString("No ignored threats", comment: "Title for the view when there aren't any ignored threats to display")
+            static let subtitle = NSLocalizedString("So far, there are no ignored threats on your site.", comment: "Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker")
+        }
+
+        static let tryAgainButtonText = NSLocalizedString("Try again", comment: "Button label for trying to retrieve the history again")
     }
 }
