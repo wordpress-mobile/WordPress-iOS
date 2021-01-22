@@ -35,7 +35,7 @@ class PreviewDeviceSelectionViewController: UIViewController {
         static var available: [PreviewDevice] {
             return [.mobile, .tablet, .desktop]
         }
-        
+
         var viewportScript: String {
             return String(format: "let parent = document.querySelector('meta[name=viewport]'); parent.setAttribute('content', 'width=%1$d, initial-scale=0');", NSInteger(width))
         }
