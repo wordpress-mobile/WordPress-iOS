@@ -149,11 +149,11 @@ class JetpackScanHistoryCoordinator {
         var accessibilityIdentifier: String {
             switch self {
                 case .all:
-                    return NSLocalizedString("All", comment: "Displays all of the historical threats")
+                    return "filter_toolbar_all"
                 case .fixed:
-                    return NSLocalizedString("Fixed", comment: "Displays the fixed threats")
+                    return "filter_toolbar_fixed"
                 case .ignored:
-                    return NSLocalizedString("Ignored", comment: "Displays the ignored threats")
+                    return "filter_toolbar_ignored"
             }
         }
     }
