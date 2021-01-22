@@ -1,3 +1,5 @@
+import WidgetKit
+
 extension BlogListViewController {
 
     @objc func refreshStatsWidgetsSiteList() {
@@ -39,5 +41,8 @@ extension BlogListViewController {
         }
 
         HomeWidgetTodayData.write(items: newData)
+        if #available(iOS 14.0, *) {
+            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
+        }
     }
 }
