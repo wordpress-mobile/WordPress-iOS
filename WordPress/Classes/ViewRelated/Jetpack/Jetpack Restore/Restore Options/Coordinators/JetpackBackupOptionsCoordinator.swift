@@ -12,18 +12,21 @@ class JetpackBackupOptionsCoordinator {
 
     private let service: JetpackBackupService
     private let site: JetpackSiteRef
+    private let store: ActivityStore
     private let restoreTypes: JetpackRestoreTypes
     private let view: JetpackBackupOptionsView
 
     // MARK: - Init
 
     init(site: JetpackSiteRef,
+         store: ActivityStore,
          restoreTypes: JetpackRestoreTypes,
          view: JetpackBackupOptionsView,
          service: JetpackBackupService? = nil,
          context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.service = service ?? JetpackBackupService(managedObjectContext: context)
         self.site = site
+        self.store = store
         self.restoreTypes = restoreTypes
         self.view = view
     }

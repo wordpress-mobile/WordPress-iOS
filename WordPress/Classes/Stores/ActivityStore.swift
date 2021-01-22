@@ -62,7 +62,7 @@ private enum Constants {
     static let maxRetries = 12
 }
 
-private enum ActivityStoreError: Error {
+enum ActivityStoreError: Error {
     case rewindAlreadyRunning
 }
 
@@ -223,6 +223,12 @@ extension ActivityStore {
     func getRewindStatus(site: JetpackSiteRef) -> RewindStatus? {
         return state.rewindStatus[site] ?? nil
     }
+
+    func isRestoreAlreadyRunning(site: JetpackSiteRef) -> Bool {
+        let currentStatus = getRewindStatus(site: site)
+        let restoreStatus = currentStatus?.restore?.status
+        return currentStatus != nil && (restoreStatus == .running || restoreStatus == .queued)
+    }
 }
 
 private extension ActivityStore {
@@ -303,8 +309,7 @@ private extension ActivityStore {
     }
 
     func rewind(site: JetpackSiteRef, rewindID: String) {
-        let currentStatus = getRewindStatus(site: site)
-        guard currentStatus == nil || (currentStatus?.restore?.status != .running && currentStatus?.restore?.status != .queued) else {
+        if isRestoreAlreadyRunning(site: site) {
             actionDispatcher.dispatch(ActivityAction.rewindRequestFailed(site: site, error: ActivityStoreError.rewindAlreadyRunning))
             return
         }

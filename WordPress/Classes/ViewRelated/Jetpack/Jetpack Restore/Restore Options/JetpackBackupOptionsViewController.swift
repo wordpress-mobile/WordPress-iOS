@@ -10,7 +10,10 @@ class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
     // MARK: - Properties
 
     private lazy var coordinator: JetpackBackupOptionsCoordinator = {
-        return JetpackBackupOptionsCoordinator(site: self.site, restoreTypes: self.restoreTypes, view: self)
+        return JetpackBackupOptionsCoordinator(site: self.site,
+                                               store: self.store,
+                                               restoreTypes: self.restoreTypes,
+                                               view: self)
     }()
 
     // MARK: - Initialization

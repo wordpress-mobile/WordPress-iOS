@@ -8,7 +8,11 @@ class JetpackRestoreWarningViewController: UIViewController {
     // MARK: - Properties
 
     private lazy var coordinator: JetpackRestoreWarningCoordinator = {
-        return JetpackRestoreWarningCoordinator(site: self.site, restoreTypes: self.restoreTypes, rewindID: self.activity.rewindID, view: self)
+        return JetpackRestoreWarningCoordinator(site: self.site,
+                                                store: self.store,
+                                                restoreTypes: self.restoreTypes,
+                                                rewindID: self.activity.rewindID,
+                                                view: self)
     }()
 
     // MARK: - Private Properties
@@ -76,8 +80,14 @@ extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {
     }
 
     func showRestoreAlreadyRunning() {
-        // Go back to activity log and show Notice...?
-        // let errorTitle = NSLocalizedString("There's a restore currently in progress, please wait before starting next one", comment: "Text displayed when user tries to start a restore when there is already one running")
+        self.dismiss(animated: true, completion: { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            let action = ActivityAction.rewindRequestFailed(site: self.site, error: ActivityStoreError.rewindAlreadyRunning)
+            self.store.actionDispatcher.dispatch(action)
+        })
     }
 
     func showRestoreRequestFailed() {
