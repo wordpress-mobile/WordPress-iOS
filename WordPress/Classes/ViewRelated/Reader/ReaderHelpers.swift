@@ -1,6 +1,22 @@
 import Foundation
 import WordPressShared
 
+
+// MARK: - Reader Notifications
+
+extension NSNotification.Name {
+    // Sent when a site or a tag is unfollowed via Reader Manage screen.
+    static let ReaderTopicUnfollowed = NSNotification.Name(rawValue: "ReaderTopicUnfollowed")
+    // Sent when a post's seen state has been toggled.
+    static let ReaderPostSeenToggled = NSNotification.Name(rawValue: "ReaderPostSeenToggled")
+}
+
+struct ReaderNotificationKeys {
+    static let post = "post"
+    static let topic = "topic"
+}
+
+
 /// A collection of helper methods used by the Reader.
 ///
 @objc open class ReaderHelpers: NSObject {
@@ -218,9 +234,12 @@ import WordPressShared
 
         let userAgent = WPUserAgent.wordPress()
         let path  = NSString(format: "%@?%@", pixel, params.componentsJoined(by: "&")) as String
-        let url = URL(string: path)
 
-        let request = NSMutableURLRequest(url: url!)
+        guard let url = URL(string: path) else {
+            return
+        }
+
+        let request = NSMutableURLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         request.addValue(pixelStatReferrer, forHTTPHeaderField: "Referer")
 

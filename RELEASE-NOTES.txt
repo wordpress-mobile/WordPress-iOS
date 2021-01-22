@@ -1,5 +1,6 @@
 16.6
 -----
+* [*] Quick Start: Removed the Browse theme step and added guidance for reviewing pages and editing your Homepage. [#15680]
 
 16.5
 -----
