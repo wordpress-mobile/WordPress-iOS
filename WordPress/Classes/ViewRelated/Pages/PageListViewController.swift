@@ -755,10 +755,12 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let selectedPage = pageAtIndexPath(index)
         let newIndex = _tableViewHandler.index(for: selectedPage)
         let pages = _tableViewHandler.removePage(from: newIndex)
-        let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: selectedPage, onClose: {
-            self._tableViewHandler.isSearching = false
-            self._tableViewHandler.refreshTableView(at: index)
-        }, onSuccess: { self.handleSetParentSuccess() } )
+        let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: selectedPage, onClose: { [weak self] in
+            self?._tableViewHandler.isSearching = false
+            self?._tableViewHandler.refreshTableView(at: index)
+        }, onSuccess: { [weak self] in
+            self?.handleSetParentSuccess()
+        } )
         present(parentPageNavigationController, animated: true)
     }
 
