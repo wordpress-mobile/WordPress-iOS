@@ -126,7 +126,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         let skip = UIBarButtonItem(title: NSLocalizedString("Skip", comment: "Continue without making a selection"), style: .done, target: self, action: #selector(skipButtonTapped))
         navigationItem.rightBarButtonItem = skip
     }
-    
+
     private func configurePreviewDeviceButton() {
         let button = UIBarButtonItem(image: UIImage(named: "icon-devices"), style: .plain, target: self, action: #selector(previewDeviceButtonTapped))
         previewDeviceButtonItem = button
@@ -141,7 +141,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         SiteCreationAnalyticsHelper.trackSiteDesignSkipped()
         completion(nil)
     }
-    
+
     @objc private func previewDeviceButtonTapped() {
         let popoverContentController = PreviewDeviceSelectionViewController()
         popoverContentController.selectedOption = selectedPreviewDevice

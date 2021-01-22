@@ -5,7 +5,7 @@ class PreviewDeviceSelectionViewController: UIViewController {
         case desktop
         case tablet
         case mobile
-        
+
         static var `default`: PreviewDevice {
             return UIDevice.current.userInterfaceIdiom == .pad ? .tablet : .mobile
         }
@@ -20,7 +20,7 @@ class PreviewDeviceSelectionViewController: UIViewController {
                 return NSLocalizedString("Mobile", comment: "Title for the mobile web preview")
             }
         }
-        
+
         var width: CGFloat {
             switch self {
             case .desktop:
@@ -34,7 +34,6 @@ class PreviewDeviceSelectionViewController: UIViewController {
 
         static var available: [PreviewDevice] {
             return [.mobile, .tablet, .desktop]
-            
         }
     }
 

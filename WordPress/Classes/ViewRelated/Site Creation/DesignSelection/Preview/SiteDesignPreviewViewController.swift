@@ -83,7 +83,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
         webView.customUserAgent = WPUserAgent.wordPress()
         webView.load(request)
     }
-    
+
     private func configurePreviewDeviceButton() {
         let button = UIBarButtonItem(image: UIImage(named: "icon-devices"), style: .plain, target: self, action: #selector(previewDeviceButtonTapped))
         navigationItem.leftBarButtonItem = button
