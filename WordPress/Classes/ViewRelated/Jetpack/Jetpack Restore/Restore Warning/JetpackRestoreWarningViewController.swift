@@ -81,12 +81,7 @@ extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {
 
     func showRestoreAlreadyRunning() {
         self.dismiss(animated: true, completion: { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            let action = ActivityAction.rewindRequestFailed(site: self.site, error: ActivityStoreError.rewindAlreadyRunning)
-            self.store.actionDispatcher.dispatch(action)
+            self?.coordinator.restoreAlreadyRunning()
         })
     }
 

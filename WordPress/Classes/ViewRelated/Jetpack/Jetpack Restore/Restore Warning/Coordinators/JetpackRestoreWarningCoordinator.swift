@@ -56,4 +56,9 @@ class JetpackRestoreWarningCoordinator {
             self?.view.showRestoreRequestFailed()
         })
     }
+
+    func restoreAlreadyRunning() {
+        let action = ActivityAction.rewindRequestFailed(site: self.site, error: ActivityStoreError.rewindAlreadyRunning)
+        store.actionDispatcher.dispatch(action)
+    }
 }
