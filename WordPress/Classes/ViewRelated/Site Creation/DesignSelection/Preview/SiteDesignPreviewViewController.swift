@@ -39,7 +39,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
         }
     }
 
-    init(siteDesign: RemoteSiteDesign, selectedPreviewDevice: PreviewDeviceSelectionViewController.PreviewDevice?, onDismissWithDeviceSelected: ((PreviewDeviceSelectionViewController.PreviewDevice) -> ())?,  completion: @escaping SiteDesignStep.SiteDesignSelection) {
+    init(siteDesign: RemoteSiteDesign, selectedPreviewDevice: PreviewDeviceSelectionViewController.PreviewDevice?, onDismissWithDeviceSelected: ((PreviewDeviceSelectionViewController.PreviewDevice) -> ())?, completion: @escaping SiteDesignStep.SiteDesignSelection) {
         self.completion = completion
         self.siteDesign = siteDesign
         self.selectedPreviewDevice = selectedPreviewDevice ?? PreviewDeviceSelectionViewController.PreviewDevice.default
