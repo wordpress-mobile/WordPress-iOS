@@ -172,7 +172,9 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         guard let selectedIndexPath = selectedIndexPath else { return }
 
         let design = siteDesigns[selectedIndexPath.row]
-        let previewVC = SiteDesignPreviewViewController(siteDesign: design, selectedPreviewDevice: selectedPreviewDevice, completion: completion)
+        let previewVC = SiteDesignPreviewViewController(siteDesign: design, selectedPreviewDevice: selectedPreviewDevice, onDismissWithDeviceSelected: { [weak self] device in
+            self?.selectedPreviewDevice = device
+        }, completion: completion)
         let navController = GutenbergLightNavigationController(rootViewController: previewVC)
         if #available(iOS 13.0, *) {
             navController.modalPresentationStyle = .pageSheet

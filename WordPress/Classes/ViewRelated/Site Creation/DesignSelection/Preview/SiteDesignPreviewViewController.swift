@@ -16,6 +16,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
             }
         }
     }
+    var onDismissWithDeviceSelected: ((PreviewDeviceSelectionViewController.PreviewDevice) -> ())?
 
     lazy var ghostView: GutenGhostView = {
         let ghost = GutenGhostView()
@@ -38,10 +39,11 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
         }
     }
 
-    init(siteDesign: RemoteSiteDesign, selectedPreviewDevice: PreviewDeviceSelectionViewController.PreviewDevice?, completion: @escaping SiteDesignStep.SiteDesignSelection) {
+    init(siteDesign: RemoteSiteDesign, selectedPreviewDevice: PreviewDeviceSelectionViewController.PreviewDevice?, onDismissWithDeviceSelected: ((PreviewDeviceSelectionViewController.PreviewDevice) -> ())?,  completion: @escaping SiteDesignStep.SiteDesignSelection) {
         self.completion = completion
         self.siteDesign = siteDesign
         self.selectedPreviewDevice = selectedPreviewDevice ?? PreviewDeviceSelectionViewController.PreviewDevice.default
+        self.onDismissWithDeviceSelected = onDismissWithDeviceSelected
         super.init(nibName: "\(SiteDesignPreviewViewController.self)", bundle: .main)
         self.title = NSLocalizedString("Preview", comment: "Title for screen to preview a selected homepage design")
     }
@@ -127,6 +129,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
     }
 
     @objc func closeButtonTapped() {
+        onDismissWithDeviceSelected?(selectedPreviewDevice)
         dismiss(animated: true)
     }
 }
