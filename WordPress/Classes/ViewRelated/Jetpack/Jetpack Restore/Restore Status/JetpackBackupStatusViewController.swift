@@ -50,6 +50,14 @@ class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
         super.viewWillDisappear(animated)
         coordinator.viewWillDisappear()
     }
+
+    // MARK: - Override
+
+    override func primaryButtonTapped() {
+        self.dismiss(animated: true, completion: { [weak self] in
+            self?.coordinator.resumeStatusUpdateOnActivityLog()
+        })
+    }
 }
 
 extension JetpackBackupStatusViewController: JetpackBackupStatusView {

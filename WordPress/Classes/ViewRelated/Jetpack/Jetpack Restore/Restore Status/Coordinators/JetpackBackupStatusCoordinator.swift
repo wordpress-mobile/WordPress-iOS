@@ -44,6 +44,11 @@ class JetpackBackupStatusCoordinator {
         stopPolling()
     }
 
+    func resumeStatusUpdateOnActivityLog() {
+        // TODO: Trigger status update for backup
+        return
+    }
+
     // MARK: - Private
 
     private func startPolling(for downloadID: Int) {
