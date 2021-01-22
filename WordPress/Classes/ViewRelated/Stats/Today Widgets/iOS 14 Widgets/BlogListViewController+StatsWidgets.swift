@@ -10,14 +10,14 @@ extension BlogListViewController {
         let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
         let updatedSiteList = blogService.visibleBlogsForWPComAccounts()
 
-        let newData = updatedSiteList.reduce(into: [Int: HomeWidgetTodayData]()) { result, element in
-            guard let blogID = element.dotComID else {
+        let newData = updatedSiteList.reduce(into: [Int: HomeWidgetTodayData]()) { sitesList, site in
+            guard let blogID = site.dotComID else {
                 return
             }
             let existingSite = currentData[blogID.intValue]
 
-            let siteURL = element.url ?? existingSite?.url ?? ""
-            let siteName = (element.title ?? siteURL).isEmpty ? siteURL : element.title ?? siteURL
+            let siteURL = site.url ?? existingSite?.url ?? ""
+            let siteName = (site.title ?? siteURL).isEmpty ? siteURL : site.title ?? siteURL
 
             var iconURL = existingSite?.iconURL
             var timeZone = existingSite?.timeZone ?? TimeZone.current
@@ -29,13 +29,13 @@ extension BlogListViewController {
             let date = existingSite?.date ?? Date()
             let stats = existingSite?.stats ?? TodayWidgetStats()
 
-            result[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
-                                                          siteName: siteName,
-                                                          iconURL: iconURL,
-                                                          url: siteURL,
-                                                          timeZone: timeZone,
-                                                          date: date,
-                                                          stats: stats)
+            sitesList[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
+                                                             siteName: siteName,
+                                                             iconURL: iconURL,
+                                                             url: siteURL,
+                                                             timeZone: timeZone,
+                                                             date: date,
+                                                             stats: stats)
 
 
         }
