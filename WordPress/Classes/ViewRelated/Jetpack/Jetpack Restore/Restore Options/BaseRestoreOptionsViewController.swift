@@ -17,6 +17,7 @@ class BaseRestoreOptionsViewController: UITableViewController {
 
     private(set) var site: JetpackSiteRef
     private(set) var activity: Activity
+    private(set) var store: ActivityStore
     private(set) var restoreTypes = JetpackRestoreTypes()
     private let configuration: JetpackRestoreOptionsConfiguration
 
@@ -34,15 +35,17 @@ class BaseRestoreOptionsViewController: UITableViewController {
 
     // MARK: - Initialization
 
-    init(site: JetpackSiteRef, activity: Activity) {
+    init(site: JetpackSiteRef, activity: Activity, store: ActivityStore) {
         fatalError("A configuration struct needs to be provided")
     }
 
     init(site: JetpackSiteRef,
          activity: Activity,
+         store: ActivityStore,
          configuration: JetpackRestoreOptionsConfiguration) {
         self.site = site
         self.activity = activity
+        self.store = store
         self.configuration = configuration
         super.init(style: .grouped)
     }

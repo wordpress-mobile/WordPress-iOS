@@ -368,13 +368,13 @@ extension BaseActivityListViewController: ActivityPresenter {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
-        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
+        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity, store: store)
         alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: restoreOptionsVC), animated: true)
         })
 
         let backupTitle = NSLocalizedString("Download backup", comment: "Title displayed for download backup action.")
-        let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
+        let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity, store: store)
         alertController.addDefaultActionWithTitle(backupTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: backupOptionsVC), animated: true)
         })
@@ -412,13 +412,13 @@ extension BaseActivityListViewController: ActivityPresenter {
             return
         }
 
-        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
+        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity, store: store)
         let navigationVC = UINavigationController(rootViewController: restoreOptionsVC)
         self.present(navigationVC, animated: true)
     }
 
     func presentBackupFor(activity: Activity) {
-        let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
+        let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity, store: store)
         let navigationVC = UINavigationController(rootViewController: backupOptionsVC)
         self.present(navigationVC, animated: true)
     }

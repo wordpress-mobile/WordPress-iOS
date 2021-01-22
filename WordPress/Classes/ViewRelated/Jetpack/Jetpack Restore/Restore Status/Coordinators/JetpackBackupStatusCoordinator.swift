@@ -12,6 +12,7 @@ class JetpackBackupStatusCoordinator {
 
     private let service: JetpackBackupService
     private let site: JetpackSiteRef
+    private let store: ActivityStore
     private let downloadID: Int
     private let view: JetpackBackupStatusView
 
@@ -21,12 +22,14 @@ class JetpackBackupStatusCoordinator {
     // MARK: - Init
 
     init(site: JetpackSiteRef,
+         store: ActivityStore,
          downloadID: Int,
          view: JetpackBackupStatusView,
          service: JetpackBackupService? = nil,
          context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.service = service ?? JetpackBackupService(managedObjectContext: context)
         self.site = site
+        self.store = store
         self.downloadID = downloadID
         self.view = view
     }

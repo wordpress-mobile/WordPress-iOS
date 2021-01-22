@@ -15,6 +15,7 @@ class JetpackRestoreWarningViewController: UIViewController {
 
     private let site: JetpackSiteRef
     private let activity: Activity
+    private let store: ActivityStore
     private let restoreTypes: JetpackRestoreTypes
 
     private lazy var dateFormatter: DateFormatter = {
@@ -25,9 +26,11 @@ class JetpackRestoreWarningViewController: UIViewController {
 
     init(site: JetpackSiteRef,
          activity: Activity,
+         store: ActivityStore,
          restoreTypes: JetpackRestoreTypes) {
         self.site = site
         self.activity = activity
+        self.store = store
         self.restoreTypes = restoreTypes
         super.init(nibName: nil, bundle: nil)
     }
@@ -85,7 +88,7 @@ extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {
     }
 
     func showRestoreStarted() {
-        let statusVC = JetpackRestoreStatusViewController(site: site, activity: activity)
+        let statusVC = JetpackRestoreStatusViewController(site: site, activity: activity, store: store)
         self.navigationController?.pushViewController(statusVC, animated: true)
     }
 }

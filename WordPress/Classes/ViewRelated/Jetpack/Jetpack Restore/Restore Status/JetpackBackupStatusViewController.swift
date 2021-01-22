@@ -10,12 +10,15 @@ class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
     private let downloadID: Int
 
     private lazy var coordinator: JetpackBackupStatusCoordinator = {
-        return JetpackBackupStatusCoordinator(site: self.site, downloadID: self.downloadID, view: self)
+        return JetpackBackupStatusCoordinator(site: self.site,
+                                              store: self.store,
+                                              downloadID: self.downloadID,
+                                              view: self)
     }()
 
     // MARK: - Initialization
 
-    init(site: JetpackSiteRef, activity: Activity, downloadID: Int) {
+    init(site: JetpackSiteRef, activity: Activity, store: ActivityStore, downloadID: Int) {
         self.downloadID = downloadID
 
         let restoreStatusConfiguration = JetpackRestoreStatusConfiguration(
@@ -29,7 +32,7 @@ class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
             progressDescription: nil
         )
 
-        super.init(site: site, activity: activity, configuration: restoreStatusConfiguration)
+        super.init(site: site, activity: activity, store: store, configuration: restoreStatusConfiguration)
     }
 
     required init?(coder: NSCoder) {
