@@ -229,6 +229,20 @@ extension ActivityStore {
         let restoreStatus = currentStatus?.restore?.status
         return currentStatus != nil && (restoreStatus == .running || restoreStatus == .queued)
     }
+
+    func fetchRewindStatus(site: JetpackSiteRef) {
+        state.fetchingRewindStatus[site] = true
+
+        remote(site: site)?.getRewindStatus(
+            site.siteID,
+            success: { [actionDispatcher] rewindStatus in
+                actionDispatcher.dispatch(ActivityAction.rewindStatusUpdated(site: site, status: rewindStatus))
+            },
+            failure: { [actionDispatcher] error in
+                actionDispatcher.dispatch(ActivityAction.rewindStatusUpdateFailed(site: site, error: error))
+        })
+    }
+
 }
 
 private extension ActivityStore {
@@ -380,19 +394,6 @@ private extension ActivityStore {
         let noticeAction = NoticeAction.post(Notice(title: message))
 
         actionDispatcher.dispatch(noticeAction)
-    }
-
-    func fetchRewindStatus(site: JetpackSiteRef) {
-        state.fetchingRewindStatus[site] = true
-
-        remote(site: site)?.getRewindStatus(
-            site.siteID,
-            success: { [actionDispatcher] rewindStatus in
-                actionDispatcher.dispatch(ActivityAction.rewindStatusUpdated(site: site, status: rewindStatus))
-            },
-            failure: { [actionDispatcher] error in
-                actionDispatcher.dispatch(ActivityAction.rewindStatusUpdateFailed(site: site, error: error))
-        })
     }
 
     func delayedRetryFetchRewindStatus(site: JetpackSiteRef) {

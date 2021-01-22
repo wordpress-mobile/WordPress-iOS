@@ -64,6 +64,12 @@ class BaseRestoreStatusViewController: UIViewController {
         configureRestoreStatusView()
     }
 
+    // MARK: - Public
+
+    func primaryButtonTapped() {
+        fatalError("Must override in subclass")
+    }
+
     // MARK: - Configure
 
     private func configureTitle() {
@@ -91,7 +97,7 @@ class BaseRestoreStatusViewController: UIViewController {
         statusView.update(progress: 0, progressTitle: configuration.placeholderProgressTitle, progressDescription: nil)
 
         statusView.primaryButtonHandler = { [weak self] in
-            self?.dismiss(animated: true)
+            self?.primaryButtonTapped()
         }
 
         view.addSubview(statusView)
@@ -99,6 +105,6 @@ class BaseRestoreStatusViewController: UIViewController {
     }
 
     @objc private func doneTapped() {
-        self.dismiss(animated: true)
+        primaryButtonTapped()
     }
 }

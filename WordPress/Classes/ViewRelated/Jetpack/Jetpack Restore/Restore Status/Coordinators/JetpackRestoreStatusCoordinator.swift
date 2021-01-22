@@ -42,6 +42,10 @@ class JetpackRestoreStatusCoordinator {
         stopPolling()
     }
 
+    func resumeStatusUpdateOnActivityLog() {
+        store.fetchRewindStatus(site: site)
+    }
+
     // MARK: - Private
 
     private func startPolling() {
