@@ -222,8 +222,6 @@ class PreviewWebKitViewController: WebKitViewController {
 
         static let deviceLabelBackgroundColor = UIColor.text.withAlphaComponent(0.8)
 
-        static let devicePickerPopoverOffset: (CGFloat, CGFloat) = (x: -36, y: -2)
-
         static let noPreviewTitle = NSLocalizedString("No Preview URL available", comment: "missing preview URL for blog post preview")
 
         static let publishButtonTitle = NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post.")
@@ -238,7 +236,6 @@ class PreviewWebKitViewController: WebKitViewController {
 
 extension PreviewWebKitViewController {
 
-    // TODO use this
     override func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
         guard popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
             super.prepareForPopoverPresentation(popoverPresentationController)
@@ -256,7 +253,6 @@ extension PreviewWebKitViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        // Reset our source rect and view for a transition to a new size
         guard let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController,
             popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
                 return
@@ -268,7 +264,6 @@ extension PreviewWebKitViewController {
 
 // MARK: WKNavigationDelegate
 
-// TODO use this
 extension PreviewWebKitViewController {
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         setWidth(selectedDevice.width)
