@@ -71,6 +71,7 @@ class WindowManager: NSObject {
         }
 
         show(loginViewController, completion: completion)
+        WordPressAuthenticator.track(.openedLogin)
     }
 
     /// Shows the specified VC as the root VC for the managed window.  Takes care of animating the transition whenever the existing
