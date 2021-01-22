@@ -146,8 +146,7 @@ extension SiteDesignPreviewViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        let script = String(format: "let parent = document.querySelector('meta[name=viewport]'); parent.setAttribute('content', 'width=%1$d, initial-scale=0');", NSInteger(selectedPreviewDevice.width))
-        webView.evaluateJavaScript(script, completionHandler: { [weak self] (_, _) in
+        webView.evaluateJavaScript(selectedPreviewDevice.viewportScript, completionHandler: { [weak self] (_, _) in
             guard let self = self else { return }
             SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoaded(self.siteDesign)
         })

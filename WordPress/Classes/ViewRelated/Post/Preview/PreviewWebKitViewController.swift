@@ -267,7 +267,6 @@ extension PreviewWebKitViewController {
 extension PreviewWebKitViewController {
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         setWidth(selectedDevice.width)
-        let script = String(format: "let parent = document.querySelector('meta[name=viewport]'); parent.setAttribute('content', 'width=%1$d, initial-scale=0');", NSInteger(selectedDevice.width))
-        webView.evaluateJavaScript(script, completionHandler: nil)
+        webView.evaluateJavaScript(selectedDevice.viewportScript, completionHandler: nil)
     }
 }
