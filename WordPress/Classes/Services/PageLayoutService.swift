@@ -74,13 +74,8 @@ class PageLayoutService {
 
     private static let type = "mobile"
 
-    private static let isBeta: String = {
-        let isDevMode = BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
-        if isDevMode == true {
-            return "true"
-        }
-        return "false"
-    }()
+    // Return "true" or "false" for isBeta that gets passed into the endpoint.
+    private static let isBeta = String(BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest])
 
 }
 
