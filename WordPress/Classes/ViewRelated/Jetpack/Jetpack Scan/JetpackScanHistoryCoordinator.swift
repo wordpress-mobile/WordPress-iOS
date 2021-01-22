@@ -13,6 +13,7 @@ class JetpackScanHistoryCoordinator {
     let filterItems = [Filter.all, .fixed, .ignored]
 
     private var actionButtonState: ErrorButtonAction?
+    private var isLoading: Bool?
 
     var threats: [JetpackScanThreat]? {
         guard let threats = model?.threats else {
@@ -47,6 +48,7 @@ class JetpackScanHistoryCoordinator {
     }
 
     public func refreshData() {
+        isLoading = true
         service.getHistory(for: blog) { [weak self] scanObj in
             self?.refreshDidSucceed(with: scanObj)
         } failure: { [weak self] error in
@@ -75,12 +77,15 @@ class JetpackScanHistoryCoordinator {
 
     // MARK: - Private: Handling
     private func refreshDidSucceed(with model: JetpackScanHistory) {
+        isLoading = false
         self.model = model
 
         threatsDidChange()
     }
 
     private func refreshDidFail(with error: Error? = nil) {
+        isLoading = false
+
         let appDelegate = WordPressAppDelegate.shared
 
         guard
@@ -116,6 +121,11 @@ class JetpackScanHistoryCoordinator {
     // MARK: - Filters
     func changeFilter(_ filter: Filter) {
         activeFilter = filter
+
+        // Don't refresh UI if we're still loading
+        guard isLoading == false else {
+            return
+        }
 
         threatsDidChange()
     }
