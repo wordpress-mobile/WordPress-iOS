@@ -64,7 +64,7 @@ import Foundation
     }
 
     // MARK: - History
-    func getHistory(for blog: Blog, success: @escaping(JetpackScanHistory) -> Void, failure: @escaping(Error?) -> Void) {
+    func getHistory(for blog: Blog, success: @escaping(JetpackScanHistory) -> Void, failure: @escaping(Error) -> Void) {
         guard let siteID = blog.dotComID?.intValue else {
             failure(JetpackScanServiceError.invalidSiteID)
             return

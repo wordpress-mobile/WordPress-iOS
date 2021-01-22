@@ -122,7 +122,8 @@ class JetpackScanCoordinator {
     }
 
     public func openSupport() {
-
+        let supportVC = SupportTableViewController()
+        supportVC.showFromTabBar()
     }
 
     // MARK: - Private: Refresh Timer
