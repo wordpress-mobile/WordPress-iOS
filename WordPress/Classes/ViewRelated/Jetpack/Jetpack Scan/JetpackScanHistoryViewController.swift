@@ -68,6 +68,9 @@ class JetpackScanHistoryViewController: UIViewController {
     private func configureTableView() {
         tableView.register(JetpackScanThreatCell.defaultNib, forCellReuseIdentifier: Constants.threatCellIdentifier)
 
+        tableView.register(ActivityListSectionHeaderView.defaultNib,
+                           forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
+
         tableView.tableFooterView = UIView()
 
         tableView.refreshControl = refreshControl
@@ -135,8 +138,16 @@ extension JetpackScanHistoryViewController: JetpackScanHistoryView {
 }
 // MARK: - Table View
 extension JetpackScanHistoryViewController: UITableViewDataSource, UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return coordinator.sections?.count ?? 0
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return coordinator.threats?.count ?? 0
+        guard let historySection = coordinator.sections?[section] else {
+            return 0
+        }
+
+        return historySection.threats.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -153,6 +164,20 @@ extension JetpackScanHistoryViewController: UITableViewDataSource, UITableViewDe
         return cell
     }
 
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let historySection = coordinator.sections?[section],
+            let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActivityListSectionHeaderView.identifier) as? ActivityListSectionHeaderView else {
+            return UIView(frame: .zero)
+        }
+
+        cell.titleLabel.text = historySection.title
+
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return ActivityListSectionHeaderView.height
+    }
 
     private func configureThreatCell(cell: JetpackScanThreatCell, threat: JetpackScanThreat) {
         let model = JetpackScanThreatViewModel(threat: threat)
@@ -160,11 +185,11 @@ extension JetpackScanHistoryViewController: UITableViewDataSource, UITableViewDe
     }
 
     private func threat(for indexPath: IndexPath) -> JetpackScanThreat? {
-        guard let threats = coordinator.threats else {
+        guard let section = coordinator.sections?[indexPath.section] else {
             return nil
         }
 
-        return threats[indexPath.row]
+        return section.threats[indexPath.row]
     }
 }
 
@@ -239,3 +264,5 @@ extension JetpackScanHistoryViewController: NoResultsViewControllerDelegate {
         static let tryAgainButtonText = NSLocalizedString("Try again", comment: "Button label for trying to retrieve the history again")
     }
 }
+
+extension ActivityListSectionHeaderView: NibLoadable { }
