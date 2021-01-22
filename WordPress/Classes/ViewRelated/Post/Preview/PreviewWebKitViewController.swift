@@ -253,12 +253,11 @@ extension PreviewWebKitViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        guard let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController,
-            popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
+        guard let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController else {
                 return
         }
 
-        popoverPresentationController.barButtonItem = previewButton
+        prepareForPopoverPresentation(popoverPresentationController)
     }
 }
 

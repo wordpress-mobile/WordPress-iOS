@@ -286,11 +286,10 @@ extension SiteDesignContentCollectionViewController {
         super.traitCollectionDidChange(previousTraitCollection)
 
         // Reset our source rect and view for a transition to a new size
-        guard let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController,
-            popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
+        guard let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController else {
                 return
         }
 
-        popoverPresentationController.barButtonItem = previewDeviceButtonItem
+        prepareForPopoverPresentation(popoverPresentationController)
     }
 }
