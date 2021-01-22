@@ -1,5 +1,6 @@
 import UIKit
 import CocoaLumberjack
+import WordPressFlux
 import WordPressShared
 import WordPressUI
 
@@ -45,6 +46,11 @@ class JetpackRestoreCompleteViewController: BaseRestoreCompleteViewController {
 
     private func visitSite() {
         guard let homeURL = URL(string: site.homeURL) else {
+
+            let title = NSLocalizedString("Unable to visit site", comment: "Message displayed when visiting a site fails.")
+            let notice = Notice(title: title)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+
             return
         }
 

@@ -51,7 +51,7 @@ extension JetpackBackupOptionsViewController: JetpackBackupOptionsView {
     }
 
     func showBackupRequestFailed() {
-        let errorTitle = NSLocalizedString("Backup failed.", comment: "Title for error displayed when preparing a backup fails.")
+        let errorTitle = NSLocalizedString("Backup failed", comment: "Title for error displayed when preparing a backup fails.")
         let errorMessage = NSLocalizedString("We couldn't create your backup. Please try again later.", comment: "Message for error displayed when preparing a backup fails.")
         let notice = Notice(title: errorTitle, message: errorMessage)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
