@@ -61,7 +61,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .jetpackBackupAndRestore:
             return BuildConfiguration.current == .localDeveloper
         case .todayWidget:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .unseenPosts:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
