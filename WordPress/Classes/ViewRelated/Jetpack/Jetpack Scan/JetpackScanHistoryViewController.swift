@@ -7,7 +7,6 @@ class JetpackScanHistoryViewController: UIViewController {
         return JetpackScanHistoryCoordinator(blog: blog, view: self)
     }()
 
-
     @IBOutlet weak var filterTabBar: FilterTabBar!
 
     // Table View
