@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import WordPressFlux
 
 
 // MARK: - Reader Notifications
@@ -293,6 +294,18 @@ struct ReaderNotificationKeys {
 
     @objc open class func isLoggedIn() -> Bool {
         return AccountHelper.isDotcomAvailable()
+    }
+
+    // MARK: ActionDispatcher Notification helper
+
+    class func dispatchToggleSeenError(post: ReaderPost) {
+        let title = post.isSeen ? ErrorMessages.unseenFailed : ErrorMessages.seenFailed
+        ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title)))
+    }
+
+    private struct ErrorMessages {
+        static let seenFailed = NSLocalizedString("Unable to mark post seen", comment: "Alert displayed to the user when updating a post's seen status failed.")
+        static let unseenFailed = NSLocalizedString("Unable to mark post unseen", comment: "Alert displayed to the user when updating a post's unseen status failed.")
     }
 }
 
