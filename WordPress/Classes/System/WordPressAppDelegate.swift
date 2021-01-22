@@ -707,7 +707,7 @@ extension WordPressAppDelegate {
             removeTodayWidgetConfiguration()
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()
-            windowManager.showSignInIfNecessary()
+            windowManager.showFullscreenSignIn()
 
             if #available(iOS 13, *) {
                 stopObservingAppleIDCredentialRevoked()

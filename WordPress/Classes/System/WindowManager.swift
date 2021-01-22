@@ -7,13 +7,15 @@ import WordPressAuthenticator
 @objc
 class WindowManager: NSObject {
 
+    typealias Completion = () -> Void
+
     /// The App's window.
     ///
     private let window: UIWindow
 
-    /// A boolean to track whether we're showing the sign in flow.
+    /// A boolean to track whether we're showing the sign in flow in fullscreen mode..
     ///
-    private var isSignInVisible = false
+    private(set) var isShowingFullscreenSignIn = false
 
     init(window: UIWindow) {
         self.window = window
@@ -35,38 +37,46 @@ class WindowManager: NSObject {
     /// Shows the SignIn UI flow if the conditions to do so are met.
     ///
     @objc
-    func showSignInIfNecessary() {
-        guard isSignInVisible == false && AccountHelper.isLoggedIn == false else {
+    func showFullscreenSignIn() {
+        guard isShowingFullscreenSignIn == false && AccountHelper.isLoggedIn == false else {
             return
         }
 
         showUIForUnauthenticatedUsers()
     }
 
+    func dismissFullscreenSignIn(completion: Completion? = nil) {
+        guard isShowingFullscreenSignIn == true && AccountHelper.isLoggedIn == true else {
+            return
+        }
+
+        showUIForAuthenticatedUsers(completion: completion)
+    }
+
     /// Shows the UI for authenticated users.
     ///
-    func showUIForAuthenticatedUsers() {
-        isSignInVisible = false
+    private func showUIForAuthenticatedUsers(completion: Completion? = nil) {
+        isShowingFullscreenSignIn = false
 
-        show(WPTabBarController.sharedInstance())
+        show(WPTabBarController.sharedInstance(), completion: completion)
     }
 
     /// Shows the initial UI for unauthenticated users.
     ///
-    func showUIForUnauthenticatedUsers() {
-        isSignInVisible = true
+    func showUIForUnauthenticatedUsers(completion: Completion? = nil) {
+        isShowingFullscreenSignIn = true
 
         guard let loginViewController = WordPressAuthenticator.loginUI() else {
             fatalError("No login UI to show to the user.  There's no way to gracefully handle this error.")
         }
 
-        show(loginViewController)
+        show(loginViewController, completion: completion)
     }
 
     /// Shows the specified VC as the root VC for the managed window.  Takes care of animating the transition whenever the existing
     /// root VC isn't `nil` (this is because a `nil` VC means we're showing the initial VC on a call to this method).
     ///
-    private func show(_ viewController: UIViewController) {
+    private func show(_ viewController: UIViewController, completion: Completion?) {
         // When the App is launched, the root VC will be `nil`.
         // When this is the case we'll simply show the VC without any type of animation.
         guard window.rootViewController != nil else {
@@ -81,6 +91,8 @@ class WindowManager: NSObject {
             duration: WPAnimationDurationSlow,
             options: .transitionFlipFromBottom,
             animations: nil,
-            completion: nil)
+            completion: { _ in
+                completion?()
+            })
     }
 }

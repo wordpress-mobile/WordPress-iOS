@@ -258,7 +258,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             onDismiss()
 
             if navigationController == UIApplication.shared.keyWindow?.rootViewController {
-                self?.windowManager.showUIForAuthenticatedUsers()
+                self?.windowManager.dismissFullscreenSignIn()
             }
         }
 
@@ -277,12 +277,10 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         epilogueViewController.socialService = service
         epilogueViewController.onContinue = { [weak self] in
             if PostSignUpInterstitialViewController.shouldDisplay() {
-                self?.presentPostSignUpInterstitial(in: navigationController) { [weak self] in
-                    self?.windowManager.showUIForAuthenticatedUsers()
-                }
+                self?.presentPostSignUpInterstitial(in: navigationController)
             } else {
-                navigationController.dismiss(animated: true)
-                self?.windowManager.showUIForAuthenticatedUsers()
+                // Signup is only ever shown in fullscreen
+                self?.windowManager.dismissFullscreenSignIn()
             }
 
             UserDefaults.standard.set(false, forKey: UserDefaults.standard.welcomeNotificationSeenKey)
@@ -390,9 +388,37 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 //
 private extension WordPressAuthenticationManager {
     /// Displays the post sign up interstitial if needed, if it's not displayed
-    private func presentPostSignUpInterstitial(in navigationController: UINavigationController, onDismiss: (() -> Void)? = nil) {
+    private func presentPostSignUpInterstitial(
+        in navigationController: UINavigationController,
+        onDismiss: (() -> Void)? = nil) {
+
         let viewController = PostSignUpInterstitialViewController()
-        viewController.onDismiss = onDismiss
+        let windowManager = self.windowManager
+
+        viewController.dismiss = { dismissAction in
+            let completion: (() -> Void)?
+
+            switch dismissAction {
+            case .none:
+                completion = nil
+            case .addSelfHosted:
+                completion = {
+                    NotificationCenter.default.post(name: .addSelfHosted, object: nil)
+                }
+            case .createSite:
+                completion = {
+                    NotificationCenter.default.post(name: .createSite, object: nil)
+                }
+            }
+
+            if windowManager.isShowingFullscreenSignIn {
+                windowManager.dismissFullscreenSignIn(completion: completion)
+            } else {
+                navigationController.dismiss(animated: true, completion: completion)
+            }
+
+            onDismiss?()
+        }
 
         navigationController.pushViewController(viewController, animated: true)
     }

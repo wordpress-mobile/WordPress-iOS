@@ -229,7 +229,7 @@ static NSInteger HideSearchMinSites = 3;
     }
     
     if (![self defaultWordPressComAccount]) {
-        [[WordPressAppDelegate shared].windowManager showSignInIfNecessary];
+        [[WordPressAppDelegate shared].windowManager showFullscreenSignIn];
         return;
     }
 }
