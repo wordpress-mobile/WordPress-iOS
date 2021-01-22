@@ -35,19 +35,19 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Qit-9h-kwB">
-                    <rect key="frame" x="16" y="133" width="382" height="61"/>
+                    <rect key="frame" x="16" y="133" width="382" height="65"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="mwm-EE-zeC">
                             <rect key="frame" x="0.0" y="0.0" width="382" height="20.5"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BtU-j2-Om5">
-                                    <rect key="frame" x="0.0" y="0.0" width="316.5" height="20.5"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HwS-sP-YxX">
+                                    <rect key="frame" x="0.0" y="0.0" width="41.5" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HwS-sP-YxX">
-                                    <rect key="frame" x="340.5" y="0.0" width="41.5" height="20.5"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BtU-j2-Om5">
+                                    <rect key="frame" x="65.5" y="0.0" width="316.5" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -55,10 +55,13 @@
                             </subviews>
                         </stackView>
                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="M1m-lM-aaN">
-                            <rect key="frame" x="0.0" y="28.5" width="382" height="4"/>
+                            <rect key="frame" x="0.0" y="28.5" width="382" height="8"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="8" id="QwX-Xy-ihg"/>
+                            </constraints>
                         </progressView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V9F-s0-Tu4">
-                            <rect key="frame" x="0.0" y="40.5" width="382" height="20.5"/>
+                            <rect key="frame" x="0.0" y="44.5" width="382" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -66,7 +69,7 @@
                     </subviews>
                 </stackView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vL1-GD-nhg" customClass="FancyButton" customModule="WordPressUI">
-                    <rect key="frame" x="16" y="226" width="382" height="44"/>
+                    <rect key="frame" x="16" y="230" width="382" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="ydg-oU-Lfm"/>
                     </constraints>
@@ -76,7 +79,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rvV-Do-FdP">
-                    <rect key="frame" x="16" y="294" width="382" height="20.5"/>
+                    <rect key="frame" x="16" y="298" width="382" height="20.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
