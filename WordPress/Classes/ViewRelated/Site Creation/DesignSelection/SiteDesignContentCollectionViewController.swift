@@ -288,8 +288,6 @@ extension SiteDesignContentCollectionViewController {
         // Reset our source rect and view for a transition to a new size
         guard let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController,
             popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
-            NSLog("returning early")
-
                 return
         }
 
