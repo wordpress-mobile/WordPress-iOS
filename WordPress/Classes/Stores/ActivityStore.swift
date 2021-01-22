@@ -220,12 +220,12 @@ extension ActivityStore {
         return getActivities(site: site)?.filter { $0.rewindID == rewindID }.first
     }
 
-    func getRewindStatus(site: JetpackSiteRef) -> RewindStatus? {
+    func getCurrentRewindStatus(site: JetpackSiteRef) -> RewindStatus? {
         return state.rewindStatus[site] ?? nil
     }
 
     func isRestoreAlreadyRunning(site: JetpackSiteRef) -> Bool {
-        let currentStatus = getRewindStatus(site: site)
+        let currentStatus = getCurrentRewindStatus(site: site)
         let restoreStatus = currentStatus?.restore?.status
         return currentStatus != nil && (restoreStatus == .running || restoreStatus == .queued)
     }
@@ -534,7 +534,7 @@ private extension ActivityStore {
         // we're gonna show users "hey, your rewind finished!". But if the only thing we know the restore is
         // that it has finished in a recent past, we don't do anything special.
 
-        return getRewindStatus(site: site)?.restore?.status == .running ||
-               getRewindStatus(site: site)?.restore?.status == .queued
+        return getCurrentRewindStatus(site: site)?.restore?.status == .running ||
+               getCurrentRewindStatus(site: site)?.restore?.status == .queued
     }
 }

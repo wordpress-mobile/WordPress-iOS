@@ -260,7 +260,7 @@ class ActivityListViewModel: Observable {
     }
 
     private func restoreStatusSection() -> ImmuTableSection? {
-        guard let restore = store.getRewindStatus(site: site)?.restore, restore.status == .running || restore.status == .queued else {
+        guard let restore = store.getCurrentRewindStatus(site: site)?.restore, restore.status == .running || restore.status == .queued else {
             return nil
         }
 
