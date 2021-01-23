@@ -79,6 +79,10 @@ extension ReaderTabViewModel {
             return
         }
         selectedIndex = index
+
+        if tabItems[index].content.type == .saved {
+            setContent?(tabItems[index].content)
+        }
     }
 
     /// switch to the tab whose topic matches the given predicate

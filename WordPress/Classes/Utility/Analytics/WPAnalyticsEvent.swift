@@ -78,6 +78,8 @@ import Foundation
     case readerSuggestedSiteVisited
     case readerSuggestedSiteToggleFollow
     case readerDiscoverContentPresented
+    case readerPostMarkSeen
+    case readerPostMarkUnseen
 
     // What's New - Feature announcements
     case featureAnnouncementShown
@@ -100,6 +102,10 @@ import Foundation
     case activitylogFilterbarRangeButtonTapped
     case activitylogFilterbarSelectRange
     case activitylogFilterbarResetRange
+    case backupListOpened
+    case backupFilterbarRangeButtonTapped
+    case backupFilterbarSelectRange
+    case backupFilterbarResetRange
 
     // Comments
     case commentViewed
@@ -243,11 +249,17 @@ import Foundation
             return "reader_suggested_site_toggle_follow"
         case .readerDiscoverContentPresented:
             return "reader_discover_content_presented"
+        case .readerPostMarkSeen:
+            return "reader_mark_as_seen"
+        case .readerPostMarkUnseen:
+            return "reader_mark_as_unseen"
+
         // What's New - Feature announcements
         case .featureAnnouncementShown:
             return "feature_announcement_shown"
         case .featureAnnouncementButtonTapped:
             return "feature_announcement_button_tapped"
+
         // Stories
         case .storyIntroShown:
             return "story_intro_shown"
@@ -281,6 +293,14 @@ import Foundation
             return "activitylog_filterbar_select_range"
         case .activitylogFilterbarResetRange:
             return "activitylog_filterbar_reset_range"
+        case .backupListOpened:
+            return "backup_list_opened"
+        case .backupFilterbarRangeButtonTapped:
+            return "backup_filterbar_range_button_tapped"
+        case .backupFilterbarSelectRange:
+            return "backup_filterbar_select_range"
+        case .backupFilterbarResetRange:
+            return "backup_filterbar_reset_range"
 
         // Comments
         case .commentViewed:

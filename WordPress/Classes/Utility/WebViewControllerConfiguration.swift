@@ -6,7 +6,6 @@ class WebViewControllerConfiguration: NSObject {
     @objc var optionsButton: UIBarButtonItem?
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
-    @objc var addsHideMasterbarParameters = true
 
     /// Opens any new pages in Safari. Otherwise, a new web view will be opened
     var opensNewInSafari = false

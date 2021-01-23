@@ -1,11 +1,5 @@
 import UIKit
 
-// NSNotification sent when a site or a tag is unfollowed via Reader Manage screen.
-extension NSNotification.Name {
-    static let ReaderTopicUnfollowed = NSNotification.Name(rawValue: "ReaderTopicUnfollowed")
-}
-let topicUserInfoKey = "topic"
-
 
 class ReaderTabView: UIView {
 
@@ -255,7 +249,7 @@ private extension ReaderTabView {
 
     @objc func topicUnfollowed(_ notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo,
-              let topic = userInfo[topicUserInfoKey] as? ReaderAbstractTopic,
+              let topic = userInfo[ReaderNotificationKeys.topic] as? ReaderAbstractTopic,
               let existingFilter = filteredTabs.first(where: { $0.topic == topic }) else {
             return
         }
