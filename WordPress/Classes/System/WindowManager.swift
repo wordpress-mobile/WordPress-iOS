@@ -89,8 +89,8 @@ class WindowManager: NSObject {
 
         UIView.transition(
             with: window,
-            duration: WPAnimationDurationSlow,
-            options: .transitionFlipFromBottom,
+            duration: WPAnimationDurationDefault,
+            options: .transitionCrossDissolve,
             animations: nil,
             completion: { _ in
                 completion?()
