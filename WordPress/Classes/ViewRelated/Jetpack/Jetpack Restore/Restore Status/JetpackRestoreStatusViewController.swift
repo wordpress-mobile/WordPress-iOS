@@ -3,18 +3,26 @@ import CocoaLumberjack
 import WordPressShared
 import WordPressUI
 
+protocol JetpackRestoreStatusViewControllerDelegate: class {
+    func didFinishViewing(_ controller: JetpackRestoreStatusViewController)
+}
+
 class JetpackRestoreStatusViewController: BaseRestoreStatusViewController {
 
     // MARK: - Properties
 
+    weak var delegate: JetpackRestoreStatusViewControllerDelegate?
+
+    // MARK: - Private Properties
+
     private lazy var coordinator: JetpackRestoreStatusCoordinator = {
-        return JetpackRestoreStatusCoordinator(site: self.site, store: self.store, view: self)
+        return JetpackRestoreStatusCoordinator(site: self.site, view: self)
     }()
 
 
     // MARK: - Initialization
 
-    override init(site: JetpackSiteRef, activity: Activity, store: ActivityStore) {
+    override init(site: JetpackSiteRef, activity: Activity) {
         let restoreStatusConfiguration = JetpackRestoreStatusConfiguration(
             title: NSLocalizedString("Restore", comment: "Title for Jetpack Restore Status screen"),
             iconImage: .gridicon(.history),
@@ -25,7 +33,7 @@ class JetpackRestoreStatusViewController: BaseRestoreStatusViewController {
             placeholderProgressTitle: NSLocalizedString("Initializing the restore process", comment: "Placeholder for the restore progress title."),
             progressDescription: NSLocalizedString("Currently restoring: %1$@", comment: "Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored.")
         )
-        super.init(site: site, activity: activity, store: store, configuration: restoreStatusConfiguration)
+        super.init(site: site, activity: activity, configuration: restoreStatusConfiguration)
     }
 
     required init?(coder: NSCoder) {
@@ -47,9 +55,7 @@ class JetpackRestoreStatusViewController: BaseRestoreStatusViewController {
     // MARK: - Override
 
     override func primaryButtonTapped() {
-        self.dismiss(animated: true, completion: { [weak self] in
-            self?.coordinator.resumeStatusUpdateOnActivityLog()
-        })
+        delegate?.didFinishViewing(self)
     }
 }
 

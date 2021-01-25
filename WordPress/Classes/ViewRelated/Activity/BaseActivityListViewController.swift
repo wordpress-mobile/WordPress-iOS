@@ -368,13 +368,15 @@ extension BaseActivityListViewController: ActivityPresenter {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
-        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity, store: store)
+        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
+        restoreOptionsVC.restoreStatusDelegate = self
         alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: restoreOptionsVC), animated: true)
         })
 
         let backupTitle = NSLocalizedString("Download backup", comment: "Title displayed for download backup action.")
-        let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity, store: store)
+        let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
+        backupOptionsVC.backupStatusDelegate = self
         alertController.addDefaultActionWithTitle(backupTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: backupOptionsVC), animated: true)
         })
@@ -412,13 +414,15 @@ extension BaseActivityListViewController: ActivityPresenter {
             return
         }
 
-        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity, store: store)
+        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
+        restoreOptionsVC.restoreStatusDelegate = self
         let navigationVC = UINavigationController(rootViewController: restoreOptionsVC)
         self.present(navigationVC, animated: true)
     }
 
     func presentBackupFor(activity: Activity) {
-        let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity, store: store)
+        let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
+        backupOptionsVC.backupStatusDelegate = self
         let navigationVC = UINavigationController(rootViewController: backupOptionsVC)
         self.present(navigationVC, animated: true)
     }
@@ -470,6 +474,34 @@ private extension BaseActivityListViewController {
         noResultsViewController?.view.isHidden = false
     }
 
+}
+
+// MARK: - Restore Status Handling
+
+extension BaseActivityListViewController: JetpackRestoreStatusViewControllerDelegate {
+
+    func didFinishViewing(_ controller: JetpackRestoreStatusViewController) {
+        controller.dismiss(animated: true, completion: { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.store.fetchRewindStatus(site: self.site)
+        })
+    }
+}
+
+// MARK: - Restore Status Handling
+
+extension BaseActivityListViewController: JetpackBackupStatusViewControllerDelegate {
+
+    func didFinishViewing(_ controller: JetpackBackupStatusViewController) {
+        controller.dismiss(animated: true, completion: { [weak self] in
+            guard let self = self else {
+                return
+            }
+            // TODO: fetch backup status
+        })
+    }
 }
 
 // MARK: - Calendar Handling

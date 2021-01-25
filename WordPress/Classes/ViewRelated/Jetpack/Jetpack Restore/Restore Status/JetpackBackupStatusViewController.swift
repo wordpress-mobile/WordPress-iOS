@@ -3,22 +3,29 @@ import CocoaLumberjack
 import WordPressShared
 import WordPressUI
 
+protocol JetpackBackupStatusViewControllerDelegate: class {
+    func didFinishViewing(_ controller: JetpackBackupStatusViewController)
+}
+
 class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
 
     // MARK: - Properties
+
+    weak var delegate: JetpackBackupStatusViewControllerDelegate?
+
+    // MARK: - Pivate Properties
 
     private let downloadID: Int
 
     private lazy var coordinator: JetpackBackupStatusCoordinator = {
         return JetpackBackupStatusCoordinator(site: self.site,
-                                              store: self.store,
                                               downloadID: self.downloadID,
                                               view: self)
     }()
 
     // MARK: - Initialization
 
-    init(site: JetpackSiteRef, activity: Activity, store: ActivityStore, downloadID: Int) {
+    init(site: JetpackSiteRef, activity: Activity, downloadID: Int) {
         self.downloadID = downloadID
 
         let restoreStatusConfiguration = JetpackRestoreStatusConfiguration(
@@ -32,7 +39,7 @@ class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
             progressDescription: nil
         )
 
-        super.init(site: site, activity: activity, store: store, configuration: restoreStatusConfiguration)
+        super.init(site: site, activity: activity, configuration: restoreStatusConfiguration)
     }
 
     required init?(coder: NSCoder) {
@@ -54,9 +61,7 @@ class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
     // MARK: - Override
 
     override func primaryButtonTapped() {
-        self.dismiss(animated: true, completion: { [weak self] in
-            self?.coordinator.resumeStatusUpdateOnActivityLog()
-        })
+        delegate?.didFinishViewing(self)
     }
 }
 

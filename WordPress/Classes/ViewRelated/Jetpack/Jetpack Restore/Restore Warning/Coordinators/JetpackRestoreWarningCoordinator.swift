@@ -13,7 +13,6 @@ class JetpackRestoreWarningCoordinator {
 
     private let service: JetpackRestoreService
     private let site: JetpackSiteRef
-    private let store: ActivityStore
     private let rewindID: String?
     private let restoreTypes: JetpackRestoreTypes
     private let view: JetpackRestoreWarningView
@@ -21,7 +20,6 @@ class JetpackRestoreWarningCoordinator {
     // MARK: - Init
 
     init(site: JetpackSiteRef,
-         store: ActivityStore,
          restoreTypes: JetpackRestoreTypes,
          rewindID: String?,
          view: JetpackRestoreWarningView,
@@ -29,7 +27,6 @@ class JetpackRestoreWarningCoordinator {
          context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.service = service ?? JetpackRestoreService(managedObjectContext: context)
         self.site = site
-        self.store = store
         self.rewindID = rewindID
         self.restoreTypes = restoreTypes
         self.view = view
@@ -43,11 +40,6 @@ class JetpackRestoreWarningCoordinator {
             return
         }
 
-        if store.isRestoreAlreadyRunning(site: site) {
-            self.view.showRestoreAlreadyRunning()
-            return
-        }
-
         service.restoreSite(site, rewindID: rewindID, restoreTypes: restoreTypes, success: { [weak self] _ in
             self?.view.showRestoreStarted()
         }, failure: { [weak self] error in
@@ -55,10 +47,5 @@ class JetpackRestoreWarningCoordinator {
 
             self?.view.showRestoreRequestFailed()
         })
-    }
-
-    func restoreAlreadyRunning() {
-        let action = ActivityAction.rewindRequestFailed(site: self.site, error: ActivityStoreError.rewindAlreadyRunning)
-        store.actionDispatcher.dispatch(action)
     }
 }

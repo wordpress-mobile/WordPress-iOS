@@ -13,7 +13,6 @@ class JetpackRestoreStatusCoordinator {
 
     private let service: JetpackRestoreService
     private let site: JetpackSiteRef
-    private let store: ActivityStore
     private let view: JetpackRestoreStatusView
 
     private var timer: Timer?
@@ -22,13 +21,11 @@ class JetpackRestoreStatusCoordinator {
     // MARK: - Init
 
     init(site: JetpackSiteRef,
-         store: ActivityStore,
          view: JetpackRestoreStatusView,
          service: JetpackRestoreService? = nil,
          context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.service = service ?? JetpackRestoreService(managedObjectContext: context)
         self.site = site
-        self.store = store
         self.view = view
     }
 
@@ -40,10 +37,6 @@ class JetpackRestoreStatusCoordinator {
 
     func viewWillDisappear() {
         stopPolling()
-    }
-
-    func resumeStatusUpdateOnActivityLog() {
-        store.fetchRewindStatus(site: site)
     }
 
     // MARK: - Private

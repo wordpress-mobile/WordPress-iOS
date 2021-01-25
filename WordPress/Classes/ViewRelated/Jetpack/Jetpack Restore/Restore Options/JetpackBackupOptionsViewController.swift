@@ -9,16 +9,19 @@ class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
 
     // MARK: - Properties
 
+    weak var backupStatusDelegate: JetpackBackupStatusViewControllerDelegate?
+
+    // MARK: - Private Properties
+
     private lazy var coordinator: JetpackBackupOptionsCoordinator = {
         return JetpackBackupOptionsCoordinator(site: self.site,
-                                               store: self.store,
                                                restoreTypes: self.restoreTypes,
                                                view: self)
     }()
 
     // MARK: - Initialization
 
-    override init(site: JetpackSiteRef, activity: Activity, store: ActivityStore) {
+    override init(site: JetpackSiteRef, activity: Activity) {
         let restoreOptionsConfiguration = JetpackRestoreOptionsConfiguration(
             title: NSLocalizedString("Download Backup", comment: "Title for the Jetpack Download Backup Site Screen"),
             iconImage: UIImage.gridicon(.history),
@@ -27,7 +30,7 @@ class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
             generalSectionHeaderText: NSLocalizedString("Choose the items to download", comment: "Downloadable items: general section title"),
             buttonTitle: NSLocalizedString("Create downloadable file", comment: "Button title for download backup action")
         )
-        super.init(site: site, activity: activity, store: store, configuration: restoreOptionsConfiguration)
+        super.init(site: site, activity: activity, configuration: restoreOptionsConfiguration)
     }
 
     required init?(coder: NSCoder) {
@@ -61,7 +64,10 @@ extension JetpackBackupOptionsViewController: JetpackBackupOptionsView {
     }
 
     func showBackupStarted(for downloadID: Int) {
-        let statusVC = JetpackBackupStatusViewController(site: site, activity: activity, store: store, downloadID: downloadID)
+        let statusVC = JetpackBackupStatusViewController(site: site,
+                                                         activity: activity,
+                                                         downloadID: downloadID)
+        statusVC.delegate = backupStatusDelegate
         self.navigationController?.pushViewController(statusVC, animated: true)
     }
 

@@ -7,9 +7,12 @@ class JetpackRestoreWarningViewController: UIViewController {
 
     // MARK: - Properties
 
+    weak var restoreStatusDelegate: JetpackRestoreStatusViewControllerDelegate?
+
+    // MARK: - Private Properties
+
     private lazy var coordinator: JetpackRestoreWarningCoordinator = {
         return JetpackRestoreWarningCoordinator(site: self.site,
-                                                store: self.store,
                                                 restoreTypes: self.restoreTypes,
                                                 rewindID: self.activity.rewindID,
                                                 view: self)
@@ -19,7 +22,6 @@ class JetpackRestoreWarningViewController: UIViewController {
 
     private let site: JetpackSiteRef
     private let activity: Activity
-    private let store: ActivityStore
     private let restoreTypes: JetpackRestoreTypes
 
     private lazy var dateFormatter: DateFormatter = {
@@ -30,11 +32,9 @@ class JetpackRestoreWarningViewController: UIViewController {
 
     init(site: JetpackSiteRef,
          activity: Activity,
-         store: ActivityStore,
          restoreTypes: JetpackRestoreTypes) {
         self.site = site
         self.activity = activity
-        self.store = store
         self.restoreTypes = restoreTypes
         super.init(nibName: nil, bundle: nil)
     }
@@ -80,9 +80,7 @@ extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {
     }
 
     func showRestoreAlreadyRunning() {
-        self.dismiss(animated: true, completion: { [weak self] in
-            self?.coordinator.restoreAlreadyRunning()
-        })
+        // TODO: dimiss and show notice
     }
 
     func showRestoreRequestFailed() {
@@ -93,7 +91,9 @@ extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {
     }
 
     func showRestoreStarted() {
-        let statusVC = JetpackRestoreStatusViewController(site: site, activity: activity, store: store)
+        let statusVC = JetpackRestoreStatusViewController(site: site,
+                                                          activity: activity)
+        statusVC.delegate = restoreStatusDelegate
         self.navigationController?.pushViewController(statusVC, animated: true)
     }
 }

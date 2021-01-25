@@ -6,9 +6,13 @@ import WordPressShared
 
 class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
 
+    // MARK: - Properties
+
+    weak var restoreStatusDelegate: JetpackRestoreStatusViewControllerDelegate?
+
     // MARK: - Initialization
 
-    override init(site: JetpackSiteRef, activity: Activity, store: ActivityStore) {
+    override init(site: JetpackSiteRef, activity: Activity) {
         let restoreOptionsConfiguration = JetpackRestoreOptionsConfiguration(
             title: NSLocalizedString("Restore", comment: "Title for the Jetpack Restore Site Screen"),
             iconImage: UIImage.gridicon(.history),
@@ -17,7 +21,7 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
             generalSectionHeaderText: NSLocalizedString("Choose the items to restore", comment: "Restorable items: general section title"),
             buttonTitle: NSLocalizedString("Restore to this point", comment: "Button title for restore site action")
         )
-        super.init(site: site, activity: activity, store: store, configuration: restoreOptionsConfiguration)
+        super.init(site: site, activity: activity, configuration: restoreOptionsConfiguration)
     }
 
     required init?(coder: NSCoder) {
@@ -35,8 +39,8 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
     override func actionButtonTapped() {
         let warningVC = JetpackRestoreWarningViewController(site: site,
                                                             activity: activity,
-                                                            store: store,
                                                             restoreTypes: restoreTypes)
+        warningVC.restoreStatusDelegate = restoreStatusDelegate
         self.navigationController?.pushViewController(warningVC, animated: true)
     }
 
