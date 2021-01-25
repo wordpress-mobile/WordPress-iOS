@@ -28,9 +28,9 @@ class WindowManager: NSObject {
     ///
     func showUI() {
         if AccountHelper.isLoggedIn {
-            showUIForAuthenticatedUsers()
+            showAppUI()
         } else {
-            showUIForUnauthenticatedUsers()
+            showSignInUI()
         }
     }
 
@@ -42,7 +42,7 @@ class WindowManager: NSObject {
             return
         }
 
-        showUIForUnauthenticatedUsers()
+        showSignInUI()
     }
 
     func dismissFullscreenSignIn(completion: Completion? = nil) {
@@ -50,12 +50,12 @@ class WindowManager: NSObject {
             return
         }
 
-        showUIForAuthenticatedUsers(completion: completion)
+        showAppUI(completion: completion)
     }
 
     /// Shows the UI for authenticated users.
     ///
-    private func showUIForAuthenticatedUsers(completion: Completion? = nil) {
+    private func showAppUI(completion: Completion? = nil) {
         isShowingFullscreenSignIn = false
 
         show(WPTabBarController.sharedInstance(), completion: completion)
@@ -63,7 +63,7 @@ class WindowManager: NSObject {
 
     /// Shows the initial UI for unauthenticated users.
     ///
-    func showUIForUnauthenticatedUsers(completion: Completion? = nil) {
+    func showSignInUI(completion: Completion? = nil) {
         isShowingFullscreenSignIn = true
 
         guard let loginViewController = WordPressAuthenticator.loginUI() else {
