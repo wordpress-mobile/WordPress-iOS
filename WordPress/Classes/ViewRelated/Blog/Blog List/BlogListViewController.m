@@ -399,6 +399,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     self.isSyncing = NO;
     [self.tableView.refreshControl endRefreshing];
+    [self refreshStatsWidgetsSiteList];
 }
 
 - (void)removeBlogItemsFromSpotlight:(Blog *)blog {

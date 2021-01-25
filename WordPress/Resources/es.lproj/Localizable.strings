@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-14 12:46:19+0000 */
+/* Translation-Revision-Date: 2021-01-20 13:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
@@ -16,10 +16,10 @@
 "\"More\" Button" = "Botón «Más»";
 
 /* No comment provided by engineer. */
-"%1$@ is the selected point for your restore." = "%1$@ is the selected point for your restore.";
+"%1$@ is the selected point for your restore." = "%1$@ es el punto seleccionado para la restauración.";
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
-"%1$@ is the selected point to create a downloadable backup." = "%1$@ is the selected point to create a downloadable backup.";
+"%1$@ is the selected point to create a downloadable backup." = "%1$@ es el punto seleccionado para crear una copia de seguridad descargable.";
 
 /* 'AUTHOR on POST TITLE' in a comment list */
 "%1$@ on %2$@" = "%1$@ en %2$@";
@@ -1196,10 +1196,10 @@
 "Choose layout" = "Elegir la estructura";
 
 /* Downloadable items: general section title */
-"Choose the items to download" = "Choose the items to download";
+"Choose the items to download" = "Elige los elementos que quieras descargar";
 
 /* Restorable items: general section title */
-"Choose the items to restore" = "Choose the items to restore";
+"Choose the items to restore" = "Elige los elementos que quieras restaurar";
 
 /* No comment provided by engineer. */
 "Choose video" = "Elegir un vídeo";
@@ -1678,10 +1678,10 @@
 "Create a post, page, or story" = "Crear una entrada, página o historia";
 
 /* Label that describes the download backup action */
-"Create downloadable backup" = "Create downloadable backup";
+"Create downloadable backup" = "Crear una copia de seguridad descargable";
 
 /* Button title for download backup action */
-"Create downloadable file" = "Create downloadable file";
+"Create downloadable file" = "Crear un archivo descargable";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Crea tu propio escritorio personalizado y elige qué informes ver. Céntrate en los datos que más te interesan.";
@@ -1723,7 +1723,7 @@
 "Currently restoring your site" = "Actualmente restaurando tu sitio";
 
 /* Placeholder for Invite People message field. */
-"Custom message…" = "Custom message…";
+"Custom message…" = "Mensaje personalizado…";
 
 /* Customize button that appears in Theme Browser Header
    The menu item to select during a guided tour.
@@ -1993,7 +1993,7 @@
 "Don’t cry because it’s over, smile because it happened." = "No llores porque se ha acabado, sonríe porque ha pasado.";
 
 /* Title for label when there are no threats on the users site */
-"Don’t worry about a thing" = "Don’t worry about a thing";
+"Don’t worry about a thing" = "No te preocupes";
 
 /* Screen reader hint for button that will move the menu item */
 "Double tap and hold to move this menu item up or down" = "Haz un toque doble y manténlo para mover este elemento del menú arriba o abajo";
@@ -2057,7 +2057,7 @@
 
 /* Title displayed for download backup action.
    Title for the Jetpack Download Backup Site Screen */
-"Download Backup" = "Download Backup";
+"Download Backup" = "Descargar copia de seguridad";
 
 /* Label for number of file downloads. */
 "Downloads" = "Descargas";
@@ -2367,7 +2367,7 @@
 "Excerpts are optional hand-crafted summaries of your content." = "Los extractos son resúmenes manuales opcionales de tu contenido.";
 
 /* Downloadable/Restorable items: content section footer text */
-"Excludes themes, plugins, and uploads" = "Excludes themes, plugins, and uploads";
+"Excludes themes, plugins, and uploads" = "Excluye temas, plugins y cargas";
 
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "Salir de la pantalla completa";
@@ -2895,7 +2895,7 @@ translators: sample content for \"Team\" page template */
 "Image Link" = "Enlace de la imagen";
 
 /* No comment provided by engineer. */
-"Image Link URL" = "Image Link URL";
+"Image Link URL" = "URL del vínculo de la imagen";
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Tamaño de imagen";
@@ -2931,7 +2931,7 @@ translators: sample content for \"Team\" page template */
 "Included with Site" = "Incluido con el sitio";
 
 /* Downloadable/Restorable items: general section footer text */
-"Includes wp-config php and any non WordPress files" = "Includes wp-config php and any non WordPress files";
+"Includes wp-config php and any non WordPress files" = "Incluye wp-config php y cualquier archivo que no sea de WordPress";
 
 /* An error message shown when a user signed in with incorrect credentials. */
 "Incorrect username or password. Please try entering your login details again." = "El nombre de usuario o la contraseña son incorrectos. Introduce de nuevo tus datos de acceso.";
@@ -3064,13 +3064,13 @@ translators: sample content for \"Team\" page template */
 "Jetpack FAQ" = "FAQ de Jetpack";
 
 /* Description for a label when the scan has failed */
-"Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team.";
+"Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Jetpack Scan no ha podido realizar un análisis de tu sitio. Comprueba si tu sitio está caído. Si no, vuelve a intentarlo. Si tu sitio está caído o si Jetpack Scan sigue teniendo problemas, ponte en contacto con nuestro equipo de soporte.";
 
 /* Description for a label when there are threats on the site, displays the number of threats, and the site's title */
-"Jetpack Scan found %1$d potential threats on %2$@. Please review each threat and take action." = "Jetpack Scan found %1$d potential threats on %2$@. Please review each threat and take action.";
+"Jetpack Scan found %1$d potential threats on %2$@. Please review each threat and take action." = "Jetpack ha encontrado %1$d posibles amenazas en %2$@. Revisa cada amenaza y toma las medidas necesarias.";
 
 /* Description for a label when there is a single threat on the site, displays the site's title */
-"Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action." = "Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action.";
+"Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action." = "Jetpack Scan ha encontrado 1 posible amenaza en %1$@. Revisa cada amenaza a continuación y toma las medidas necesarias.";
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Ajustes de Jetpack";
@@ -4074,10 +4074,10 @@ translators: sample content for \"Services\" page template */
 "Optional" = "Opcional";
 
 /* Invite: Message Hint. %1$d is the maximum number of characters allowed. */
-"Optional message up to %1$d characters to be included in the invitation." = "Optional message up to %1$d characters to be included in the invitation.";
+"Optional message up to %1$d characters to be included in the invitation." = "Mensaje opcional de hasta %1$d caracteres que se incluirá en la invitación.";
 
 /* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
-"Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "Optional: Enter a custom message up to %1$d characters to be sent with your invitation.";
+"Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "Opcional: Introduce un mensaje personalizado de hasta %1$d caracteres que se enviará con tu invitación.";
 
 /* Divider on initial auth view separating auth options. */
 "Or" = "O";
@@ -6055,7 +6055,7 @@ translators: sample content for \"Services\" page template */
 "The language in which this site is primarily written." = "El idioma principal en el que el sitio está escrito.";
 
 /* Description that informs for label when there are no threats on a users site */
-"The last Jetpack scan completed and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "The last Jetpack scan completed and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today.";
+"The last Jetpack scan completed and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "El último análisis de Jetpack ha finalizado y todo estaba correcto.\n\nEfectúa un análisis manual ahora o espera a que Jetpack analice el sitio más adelante.";
 
 /* Description for label when there are no threats on a users site and how long ago the scan ran */
 "The last Jetpack scan ran %1$@ and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "El último Jetpack Scan se realizó %1$@ y todo parece perfecto.\n\nRealiza un análisis manual ahora o espera a que Jetpack analice tu web más adelante hoy mismo.";

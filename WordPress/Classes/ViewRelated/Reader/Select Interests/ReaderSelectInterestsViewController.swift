@@ -183,7 +183,7 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     private func trackEvents(with selectedInterests: [RemoteReaderInterest]) {
         selectedInterests.forEach {
-            WPAnalytics.track(.readerTagFollowed, withProperties: ["tag": $0.slug])
+            WPAnalytics.track(.readerTagFollowed, withProperties: ["tag": $0.slug, "source": "discover"])
         }
 
         WPAnalytics.trackReader(.selectInterestsPicked, properties: ["quantity": selectedInterests.count])

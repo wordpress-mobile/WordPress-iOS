@@ -212,7 +212,9 @@ open class ReaderPostMenu {
             NotificationCenter.default.post(name: .ReaderPostSeenToggled,
                                             object: nil,
                                             userInfo: [ReaderNotificationKeys.post: post])
-        }, failure: nil)
+        }, failure: { _ in
+            ReaderHelpers.dispatchToggleSeenError(post: post)
+        })
     }
 
     fileprivate class func visitSiteForPost(_ post: ReaderPost, presentingViewController viewController: UIViewController) {
