@@ -105,6 +105,8 @@ class JetpackScanHistoryCoordinator {
 
     private func threatsDidChange() {
         guard let threatCount = threats?.count, threatCount > 0 else {
+            sections = nil
+
             switch activeFilter {
                 case .all:
                     view.showNoHistory()
@@ -113,7 +115,6 @@ class JetpackScanHistoryCoordinator {
                 case .ignored:
                     view.showNoIgnoredThreats()
             }
-
             return
         }
 
@@ -152,6 +153,11 @@ class JetpackScanHistoryCoordinator {
 
     // MARK: - Filters
     func changeFilter(_ filter: Filter) {
+        // Don't do anything if we're already on the filter
+        guard activeFilter != filter else {
+            return
+        }
+
         activeFilter = filter
 
         // Don't refresh UI if we're still loading

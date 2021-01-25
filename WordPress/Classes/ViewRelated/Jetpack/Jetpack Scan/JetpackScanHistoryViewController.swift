@@ -201,6 +201,8 @@ extension JetpackScanHistoryViewController: NoResultsViewControllerDelegate {
         } else {
             noResultsViewController?.view.isHidden = true
         }
+
+        tableView.reloadData()
     }
 
     private func showNoResults(_ viewModel: NoResultsViewController.Model) {
