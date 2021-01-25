@@ -23,6 +23,11 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     var selectedPreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice.default {
         didSet {
             collectionView.reloadData()
+            if let indexPath = selectedIndexPath {
+                DispatchQueue.main.async {
+                    self.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                }
+            }
         }
     }
 
