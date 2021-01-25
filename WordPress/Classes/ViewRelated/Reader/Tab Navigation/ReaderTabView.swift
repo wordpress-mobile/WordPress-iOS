@@ -1,11 +1,5 @@
 import UIKit
 
-// NSNotification sent when a site or a tag is unfollowed via Reader Manage screen.
-extension NSNotification.Name {
-    static let ReaderTopicUnfollowed = NSNotification.Name(rawValue: "ReaderTopicUnfollowed")
-}
-let topicUserInfoKey = "topic"
-
 
 class ReaderTabView: UIView {
 
@@ -21,6 +15,11 @@ class ReaderTabView: UIView {
     private let viewModel: ReaderTabViewModel
 
     private var filteredTabs: [(index: Int, topic: ReaderAbstractTopic)] = []
+    private var previouslySelectedIndex: Int = 0
+
+    private var discoverIndex: Int? {
+        return tabBar.items.firstIndex(where: { $0.title == NSLocalizedString("Discover", comment: "Discover tab name") })
+    }
 
     init(viewModel: ReaderTabViewModel) {
         mainStackView = UIStackView()
@@ -57,15 +56,6 @@ class ReaderTabView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func selectDiscover() {
-        guard let discoverIndex = tabBar.items
-            .firstIndex(where: { $0.title == NSLocalizedString("Discover", comment: "Discover tab name") }) else {
-            return
-        }
-
-        tabBar.setSelectedIndex(discoverIndex)
-        selectedTabDidChange(tabBar)
-    }
 }
 
 // MARK: - UI setup
@@ -109,6 +99,8 @@ extension ReaderTabView {
         guard let tabItem = tabBar.currentlySelectedItem as? ReaderTabItem else {
             return
         }
+
+        previouslySelectedIndex = tabBar.selectedIndex
         buttonsStackView.isHidden = tabItem.shouldHideButtonsView
         horizontalDivider.isHidden = tabItem.shouldHideButtonsView
     }
@@ -189,13 +181,22 @@ private extension ReaderTabView {
         // If the tab was previously filtered, refilter it.
         // Otherwise reset the filter.
         if let existingFilter = filteredTabs.first(where: { $0.index == tabBar.selectedIndex }) {
+
+            if previouslySelectedIndex == discoverIndex {
+                // Reset the container view to show a feed's content.
+                addContentToContainerView()
+            }
+
             viewModel.setFilterContent(topic: existingFilter.topic)
+
             resetFilterButton.isHidden = false
             setFilterButtonTitle(existingFilter.topic.title)
         } else {
             didTapResetFilterButton()
             addContentToContainerView()
         }
+
+        previouslySelectedIndex = tabBar.selectedIndex
 
         viewModel.showTab(at: tabBar.selectedIndex)
         toggleButtonsView()
@@ -248,7 +249,7 @@ private extension ReaderTabView {
 
     @objc func topicUnfollowed(_ notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo,
-              let topic = userInfo[topicUserInfoKey] as? ReaderAbstractTopic,
+              let topic = userInfo[ReaderNotificationKeys.topic] as? ReaderAbstractTopic,
               let existingFilter = filteredTabs.first(where: { $0.topic == topic }) else {
             return
         }

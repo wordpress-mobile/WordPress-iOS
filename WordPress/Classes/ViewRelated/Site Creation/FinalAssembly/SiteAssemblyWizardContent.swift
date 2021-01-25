@@ -226,19 +226,6 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
         }
     }
 
-    /// Returns a list of completed tour items that were taken care of as part of the site creation flow.
-    private var completedTourSteps: [QuickStartTour] {
-        var completedTourSteps: [QuickStartTour] = []
-
-        guard FeatureFlag.siteCreationHomePagePicker.enabled else { return completedTourSteps }
-        /// Only mark the theme tour as completed if the user didn't select the skip
-        if siteCreator.design != nil {
-            completedTourSteps.append(QuickStartThemeTour())
-        }
-
-        return completedTourSteps
-    }
-
     private func showQuickStartAlert(for blog: Blog) {
         guard !UserDefaults.standard.quickStartWasDismissedPermanently else {
             return
@@ -248,7 +235,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             return
         }
 
-        let fancyAlert = FancyAlertViewController.makeQuickStartAlertController(blog: blog, withCompletedSteps: completedTourSteps)
+        let fancyAlert = FancyAlertViewController.makeQuickStartAlertController(blog: blog)
         fancyAlert.modalPresentationStyle = .custom
         fancyAlert.transitioningDelegate = tabBar
         tabBar.present(fancyAlert, animated: true)

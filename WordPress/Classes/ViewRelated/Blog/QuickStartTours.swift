@@ -124,31 +124,6 @@ struct QuickStartThemeTour: QuickStartTour {
     let accessibilityHintText = NSLocalizedString("Guides you through the process of choosing a theme for your site.", comment: "This value is used to set the accessibility hint text for choosing a theme for the user's site.")
 }
 
-struct QuickStartCustomizeTour: QuickStartTour {
-    let key = "quick-start-customize-tour"
-    let analyticsKey = "customize_site"
-    let title = NSLocalizedString("Customize your site", comment: "Title of a Quick Start Tour")
-    let titleMarkedCompleted = NSLocalizedString("Completed: Customize your site", comment: "The Quick Start Tour title after the user finished the step.")
-    let description = NSLocalizedString("Change colors, fonts, and images for a perfectly personalized site.", comment: "Description of a Quick Start Tour")
-    let icon = UIImage.gridicon(.customize)
-    let suggestionNoText = Strings.notNow
-    let suggestionYesText = Strings.yesShowMe
-
-    var waypoints: [WayPoint] = {
-        let step1DescriptionBase = NSLocalizedString("Select %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let step1DescriptionTarget = NSLocalizedString("Themes", comment: "The menu item to select during a guided tour.")
-        let step1: WayPoint = (element: .themes, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: .gridicon(.themes)))
-
-        let step2DescriptionBase = NSLocalizedString("Select %@ to start personalising your site", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let step2DescriptionTarget = NSLocalizedString("Customize", comment: "The menu item to select during a guided tour.")
-        let step2: WayPoint = (element: .customize, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: .gridicon(.themes)))
-
-        return [step1, step2]
-    }()
-
-    let accessibilityHintText = NSLocalizedString("Guides you through the process of customizing your site.", comment: "This value is used to set the accessibility hint text for customizing a user's site.")
-}
-
 struct QuickStartShareTour: QuickStartTour {
     let key = "quick-start-share-tour"
     let analyticsKey = "share_site"
@@ -266,20 +241,44 @@ struct QuickStartSiteIconTour: QuickStartTour {
     let accessibilityHintText = NSLocalizedString("Guides you through the process of uploading an icon for your site.", comment: "This value is used to set the accessibility hint text for uploading a site icon.")
 }
 
-struct QuickStartNewPageTour: QuickStartTour {
-    let key = "quick-start-new-page-tour"
-    let analyticsKey = "new_page"
-    let title = NSLocalizedString("Create a new page", comment: "Title of a Quick Start Tour")
-    let titleMarkedCompleted = NSLocalizedString("Completed: Create a new page", comment: "The Quick Start Tour title after the user finished the step.")
-    let description = NSLocalizedString("Add a page for key content — an “About” page is a great start.", comment: "Description of a Quick Start Tour")
+struct QuickStartReviewPagesTour: QuickStartTour {
+    let key = "quick-start-review-pages-tour"
+    let analyticsKey = "review_pages"
+    let title = NSLocalizedString("Review site pages", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Review site pages", comment: "The Quick Start Tour title after the user finished the step.")
+    let description = NSLocalizedString("Change, add, or remove your site's pages.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.pages)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
-    let showWaypointNotices = false
 
     var waypoints: [WayPoint] = {
-        let descriptionBase = NSLocalizedString("Select %@ to create a new page", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        return [(element: .newPage, description: descriptionBase.highlighting(phrase: "", icon: .gridicon(.create)))]
+        let descriptionBase = NSLocalizedString("Select %@ to see your page list.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let descriptionTarget = NSLocalizedString("Site Pages", comment: "The item to select during a guided tour.")
+        return [(element: .pages, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.pages)))]
+    }()
+
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of creating a new page for your site.", comment: "This value is used to set the accessibility hint text for creating a new page for the user's site.")
+}
+
+struct QuickStartEditHomepageTour: QuickStartTour {
+    let key = "quick-start-edit-homepage-tour"
+    let analyticsKey = "edit_homepage"
+    let title = NSLocalizedString("Edit your homepage", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Edit your homepage", comment: "The Quick Start Tour title after the user finished the step.")
+    let description = NSLocalizedString("Change, add, or remove content from your site's homepage.", comment: "Description of a Quick Start Tour")
+    let icon = UIImage.gridicon(.house)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
+
+    var waypoints: [WayPoint] = {
+        let descriptionBase = NSLocalizedString("Select %@ to see your page list.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let descriptionTarget = NSLocalizedString("Site Pages", comment: "The item to select during a guided tour.")
+        let descriptionHomepage = NSLocalizedString("Select %@ to edit your Homepage.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
+        let homepageTarget = NSLocalizedString("Homepage", comment: "The item to select during a guided tour.")
+        return [
+            (element: .pages, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.pages))),
+            (element: .editHomepage, description: descriptionHomepage.highlighting(phrase: homepageTarget, icon: .gridicon(.house)))
+        ]
     }()
 
     let accessibilityHintText = NSLocalizedString("Guides you through the process of creating a new page for your site.", comment: "This value is used to set the accessibility hint text for creating a new page for the user's site.")
