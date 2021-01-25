@@ -19,8 +19,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     @objc
-    lazy var windowManager = {
-        WindowManager(window: window!)
+    lazy var windowManager: WindowManager = {
+        guard let window = window else {
+            fatalError("The App cannot run without a window.")
+        }
+
+        return WindowManager(window: window)
     }()
 
     var analytics: WPAppAnalytics?
