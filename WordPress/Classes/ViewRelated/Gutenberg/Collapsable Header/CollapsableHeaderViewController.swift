@@ -263,9 +263,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     /*
      * To allow more flexibility in the navigation bar's header items, we keep the navigation bar available.
      * However, that space is also essential to a uniform design of the header. This function updates the design of the
-     * navigation bar. On iOS 13+, we're able to set the design to the `navigationItem`, which is ViewController specific.
-     * On iOS 12 and below, we need to set those values to the `navigationBar`. We cache the original values in
-     * `originalNavBarAppearance` and then revert the changes when the view is dismissed by calling `restoreNavigationBar`
+     * navigation bar. We set the design to the `navigationItem`, which is ViewController specific.
      */
     private func formatNavigationController() {
         let newAppearance = UINavigationBarAppearance()
