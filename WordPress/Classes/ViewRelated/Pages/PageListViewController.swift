@@ -73,6 +73,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         controller.blog = blog
         controller.restorationClass = self
 
+        if QuickStartTourGuide.shared.isCurrentElement(.pages) {
+            controller.filterSettings.setFilterWithPostStatus(BasePost.Status.publish)
+        }
+
         return controller
     }
 
@@ -145,6 +149,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         if traitCollection.horizontalSizeClass == .compact {
             createButtonCoordinator.showCreateButton(for: blog)
         }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        QuickStartTourGuide.shared.endCurrentTour()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -400,6 +409,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.deselectRow(at: indexPath, animated: true)
 
         let page = pageAtIndexPath(indexPath)
+        if page.isSiteHomepage {
+            QuickStartTourGuide.shared.visited(.editHomepage)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
 
         guard page.status != .trash else {
             return
@@ -419,6 +432,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
 
         configureCell(cell, at: indexPath)
+
+        if page.isSiteHomepage && QuickStartTourGuide.shared.isCurrentElement(.editHomepage) {
+            cell.accessoryView = QuickStartSpotlightView()
+        }
 
         return cell
     }

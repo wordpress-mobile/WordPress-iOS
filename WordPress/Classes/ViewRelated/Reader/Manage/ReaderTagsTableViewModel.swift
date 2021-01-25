@@ -61,7 +61,9 @@ extension ReaderTagsTableViewModel {
         }
 
         unfollow(topic)
-        NotificationCenter.default.post(name: .ReaderTopicUnfollowed, object: nil, userInfo: [topicUserInfoKey: topic])
+        NotificationCenter.default.post(name: .ReaderTopicUnfollowed,
+                                        object: nil,
+                                        userInfo: [ReaderNotificationKeys.topic: topic])
     }
 
     /// Presents a new view controller for subscribing to a new tag.

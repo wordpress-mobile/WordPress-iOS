@@ -125,8 +125,6 @@ import WordPressFlux
         }
     }
 
-    private var hideHeader = false
-
     private var isShowingResultStatusView: Bool {
         return resultsStatusView.view?.superview != nil
     }
@@ -306,6 +304,8 @@ import WordPressFlux
         view.isUserInteractionEnabled = readerTopic != nil
 
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(postSeenToggled(_:)), name: .ReaderPostSeenToggled, object: nil)
 
         refreshImageRequestAuthToken()
 
@@ -520,17 +520,12 @@ import WordPressFlux
             return
         }
 
-        guard !hideHeader else {
-            tableView.tableHeaderView = nil
-            hideHeader = false
-            return
-        }
-
         if let tableHeaderView = tableView.tableHeaderView {
             header.isHidden = tableHeaderView.isHidden
         }
 
         tableView.tableHeaderView = header
+
         // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
         let centerConstraint = header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
         let topConstraint = header.topAnchor.constraint(equalTo: tableView.topAnchor)
@@ -1166,6 +1161,23 @@ import WordPressFlux
 
     @objc private func defaultAccountDidChange(_ notification: Foundation.Notification) {
         refreshImageRequestAuthToken()
+    }
+
+    @objc private func postSeenToggled(_ notification: Foundation.Notification) {
+
+        // When a post's seen status is toggled outside the stream (ex: post details),
+        // refresh the post in the stream so the card options menu has the correct
+        // mark as seen/unseen option.
+
+        guard let userInfo = notification.userInfo,
+              let post = userInfo[ReaderNotificationKeys.post] as? ReaderPost,
+              let indexPath = content.indexPath(forObject: post),
+              let cellPost: ReaderPost = content.object(at: indexPath) else {
+            return
+        }
+
+        cellPost.isSeen = post.isSeen
+        tableView.reloadRows(at: [indexPath], with: .fade)
     }
 
     // MARK: - Helpers for TableViewHandler
@@ -1832,12 +1844,13 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
 extension ReaderStreamViewController: ReaderContentViewController {
     func setContent(_ content: ReaderContent) {
         isContentFiltered = content.topicType == .tag || content.topicType == .site
-        hideHeader = content.topicType == .site
         readerTopic = content.topicType == .discover ? nil : content.topic
         contentType = content.type
+
         guard !shouldDisplayNoTopicController else {
             return
         }
+
         siteID = content.topicType == .discover ? ReaderHelpers.discoverSiteID : nil
         trackFilterTime()
     }
@@ -1861,6 +1874,7 @@ extension ReaderStreamViewController: ReaderSavedPostCellActionsDelegate {
 }
 
 // MARK: - Undo
+
 extension ReaderStreamViewController: ReaderPostUndoCellDelegate {
     func readerCellWillUndo(_ cell: ReaderSavedPostUndoCell) {
         if let cellIndex = tableView.indexPath(for: cell),

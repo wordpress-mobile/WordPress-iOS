@@ -73,9 +73,13 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)addStatsViewControllerToView
 {
-    if (self.presentingViewController == nil) {
-        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Widgets", @"Nav bar button title to set the site used for Stats widgets.") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
-        self.navigationItem.rightBarButtonItem = settingsButton;
+    if (@available (iOS 14, *)) {
+        // do not install the widgets button on iOS 14 or later, if today widget feature flag is enabled
+        if (![Feature enabled:FeatureFlagTodayWidget]) {
+            [self installWidgetsButton];
+        }
+    } else if (self.presentingViewController == nil) {
+        [self installWidgetsButton];
     }
 
     [self addChildViewController:self.siteStatsDashboardVC];
@@ -83,6 +87,11 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [self.siteStatsDashboardVC didMoveToParentViewController:self];
 }
 
+- (void) installWidgetsButton
+{
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Widgets", @"Nav bar button title to set the site used for Stats widgets.") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
+    self.navigationItem.rightBarButtonItem = settingsButton;
+}
 
 - (void)initStats
 {
