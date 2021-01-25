@@ -130,7 +130,6 @@ extension ReaderTabViewModel {
         filterTapped?(from, { [weak self] topic in
             if let topic = topic {
                 self?.setFilterContent(topic: topic)
-                self?.setContent?(ReaderContent(topic: topic))
             }
             completion(topic)
         })

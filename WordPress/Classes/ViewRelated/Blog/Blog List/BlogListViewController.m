@@ -247,7 +247,7 @@ static NSInteger HideSearchMinSites = 3;
     }
     
     if (![self defaultWordPressComAccount]) {
-        [[WordPressAppDelegate shared] showWelcomeScreenIfNeededAnimated:YES];
+        [[WordPressAppDelegate shared].windowManager showFullscreenSignIn];
         return;
     }
 }
@@ -420,6 +420,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     self.isSyncing = NO;
     [self.tableView.refreshControl endRefreshing];
+    [self refreshStatsWidgetsSiteList];
 }
 
 - (void)removeBlogItemsFromSpotlight:(Blog *)blog {
