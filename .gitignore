@@ -77,6 +77,7 @@ Scripts/Preview.html
 Scripts/fastlane/test_output/
 Scripts/fastlane/google_cloud_keys.json
 Scripts/fastlane/promo_screenshots
+/Scripts/fastlane/metadata/review_information
 /Scripts/default.profraw
 derived-data/
 

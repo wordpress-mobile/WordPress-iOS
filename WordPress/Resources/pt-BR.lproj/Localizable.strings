@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-14 17:36:11+0000 */
+/* Translation-Revision-Date: 2021-01-21 21:14:16+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pt_BR */
@@ -31,10 +31,10 @@
 "%1$d of %2$d completed" = "%1$d de %2$d concluídas";
 
 /* Format string for single unseen post count. The %1$d is a placeholder for the count. */
-"%1$d unseen post" = "%1$d unseen post";
+"%1$d unseen post" = "%1$d post não visualizado";
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
-"%1$d unseen posts" = "%1$d unseen posts";
+"%1$d unseen posts" = "%1$d posts não visualizados";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: Current value. */
 "%1$s. Current value is %2$s" = "%1$s. Valor atual é %2$s";
@@ -1723,7 +1723,7 @@
 "Currently restoring your site" = "Seu site está sendo restaurado";
 
 /* Placeholder for Invite People message field. */
-"Custom message…" = "Custom message…";
+"Custom message…" = "Mensagem personalizada…";
 
 /* Customize button that appears in Theme Browser Header
    The menu item to select during a guided tour.
@@ -1993,7 +1993,7 @@
 "Don’t cry because it’s over, smile because it happened." = "Não chore por que acabou. Sorria porque aconteceu.";
 
 /* Title for label when there are no threats on the users site */
-"Don’t worry about a thing" = "Don’t worry about a thing";
+"Don’t worry about a thing" = "Não se preocupe";
 
 /* Screen reader hint for button that will move the menu item */
 "Double tap and hold to move this menu item up or down" = "Toque duas vezes e segure para mover este item para cima ou para baixo";
@@ -2057,7 +2057,7 @@
 
 /* Title displayed for download backup action.
    Title for the Jetpack Download Backup Site Screen */
-"Download Backup" = "Download Backup";
+"Download Backup" = "Fazer download do backup";
 
 /* Label for number of file downloads. */
 "Downloads" = "Downloads";
@@ -2367,7 +2367,7 @@
 "Excerpts are optional hand-crafted summaries of your content." = "Os fragmentos são resumos opcionais e feitos manualmente do seu conteúdo.";
 
 /* Downloadable/Restorable items: content section footer text */
-"Excludes themes, plugins, and uploads" = "Excludes themes, plugins, and uploads";
+"Excludes themes, plugins, and uploads" = "Exclui temas, plugins e uploads";
 
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "Sair do modo de tela cheia";
@@ -2522,7 +2522,7 @@
 "First Name" = "Nome";
 
 /* Button title that attempts to fix all fixable threats */
-"Fix All" = "Fix All";
+"Fix All" = "Corrigir tudo";
 
 /* Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
@@ -2895,7 +2895,7 @@ translators: sample content for \"Team\" page template */
 "Image Link" = "Link da imagem";
 
 /* No comment provided by engineer. */
-"Image Link URL" = "Image Link URL";
+"Image Link URL" = "Link da imagem";
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Tamanho da imagem";
@@ -3028,7 +3028,7 @@ translators: sample content for \"Team\" page template */
 "Invite" = "Convide";
 
 /* Invite People Title */
-"Invite People" = "Invite People";
+"Invite People" = "Convidar pessoas";
 
 /* translators: sample content for \"About\" page template */
 "It is our choices, Harry, that show what we truly are, far more than our abilities." = "São as nossas escolhas que revelam o que realmente somos, muito mais do que as nossas qualidades.";
@@ -4948,7 +4948,7 @@ translators: sample content for \"Services\" page template */
 "Restore" = "Restaurar";
 
 /* Label that describes the restore site action */
-"Restore site" = "Restore site";
+"Restore site" = "Restaurar site";
 
 /* Button title for restore site action */
 "Restore to this point" = "Restore to this point";
@@ -5094,13 +5094,13 @@ translators: sample content for \"Services\" page template */
 "Scan" = "Examinar";
 
 /* Button title that triggers a scan */
-"Scan Again" = "Scan Again";
+"Scan Again" = "Examinar novamente";
 
 /* Button title that triggers a scan */
-"Scan Now" = "Scan Now";
+"Scan Now" = "Examinar agora";
 
 /* Title for label when the actively scanning the users site */
-"Scanning files" = "Scanning files";
+"Scanning files" = "Examinando arquivos";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Agendar";
@@ -5550,7 +5550,7 @@ translators: sample content for \"Services\" page template */
 "Site address must be at least 4 characters." = "O endereço do site deve ter pelo menos 4 caracteres.";
 
 /* Downloadable/Restorable items: Site Database */
-"Site database" = "Site database";
+"Site database" = "Banco de dados do site";
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Site excluído";
@@ -6250,7 +6250,7 @@ translators: sample content for \"Services\" page template */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Este aplicativo precisa de permissão para acessar sua biblioteca de mídia e adicionar fotos e\/ou vídeos ao seus posts. Altere as configurações de privacidade para permitir isto.";
 
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
-"This domain is unavailable" = "This domain is unavailable";
+"This domain is unavailable" = "Este domínio não está disponível";
 
 /* An error message informing the user the email address they entered did not match a WordPress.com account. */
 "This email address is not registered on WordPress.com." = "Este endereço de e-mail não está registrado no WordPress.com.";
@@ -6948,7 +6948,7 @@ translators: sample content for \"Services\" page template */
 "WP Admin" = "WP Admin";
 
 /* Downloadable/Restorable items: WP-content directory */
-"WP-content directory" = "WP-content directory";
+"WP-content directory" = "O diretório wp-content";
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Esperando o Google para concluir...";
@@ -7303,7 +7303,7 @@ translators: sample content for \"Services\" page template */
 "WordPress Notifications" = "Notificações do WordPress";
 
 /* Downloadable/Restorable items: WordPress Plugins */
-"WordPress Plugins" = "WordPress Plugins";
+"WordPress Plugins" = "Plugins WordPress";
 
 /* Siri Suggestion to open Me tab */
 "WordPress Profile" = "Perfil do WordPress";
@@ -7315,7 +7315,7 @@ translators: sample content for \"Services\" page template */
 "WordPress Site Details" = "Detalhes do site WordPress";
 
 /* Downloadable/Restorable items: WordPress Themes */
-"WordPress Themes" = "WordPress Themes";
+"WordPress Themes" = "Temas WordPress";
 
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "Suporte do WordPress para iOS";
@@ -7324,7 +7324,7 @@ translators: sample content for \"Services\" page template */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "O WordPress precisa de sua permissão para acessar a localização atual de seu dispositivo para adiconá-la a seu post. Por favor, revise seus ajustes de privacidade.";
 
 /* Downloadable/Restorable items: WordPress root */
-"WordPress root" = "WordPress root";
+"WordPress root" = "Raiz do WordPress";
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "Versão do WordPress muito antiga";
@@ -7583,7 +7583,7 @@ translators: sample content for \"Services\" page template */
 "Your site is visible to everyone, but asks search engines not to index your site." = "Seu site fica visível para todos, mas solicita que os mecanismos de pesquisa não o indexem.";
 
 /* Title for label when there are threats on the users site */
-"Your site may be at risk" = "Your site may be at risk";
+"Your site may be at risk" = "Seu site pode estar em risco";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Your site will be ready shortly" = "Seu site estará pronto em breve";
