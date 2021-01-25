@@ -80,11 +80,9 @@ extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {
     }
 
     func showRestoreAlreadyRunning() {
-        self.dismiss(animated: true, completion: {
-            let title = NSLocalizedString("There's a restore currently in progress, please wait before starting next one", comment: "Text displayed when user tries to start a restore when there is already one running")
-            let notice = Notice(title: title)
-            ActionDispatcher.dispatch(NoticeAction.post(notice))
-        })
+        let title = NSLocalizedString("There's a restore currently in progress, please wait before starting the next one", comment: "Text displayed when user tries to start a restore when there is already one running")
+        let notice = Notice(title: title)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     func showRestoreRequestFailed() {
