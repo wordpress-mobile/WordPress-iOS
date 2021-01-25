@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14269.14" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14252.5"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,7 +13,7 @@
             <rect key="frame" x="0.0" y="0.0" width="323" height="67"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="ArX-Tt-Izx" id="CDt-z4-jmn">
-                <rect key="frame" x="0.0" y="0.0" width="323" height="66.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="323" height="67"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6Gz-B7-Enk" userLabel="icon" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
@@ -32,20 +30,20 @@
                             <constraint firstAttribute="height" constant="24" id="R4E-ax-Lq1"/>
                         </constraints>
                     </imageView>
-                    <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="NER-gg-Sq1">
-                        <rect key="frame" x="64" y="11" width="243" height="40.5"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="NER-gg-Sq1">
+                        <rect key="frame" x="64" y="11" width="243" height="41"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Tbk-Tr-FTw">
-                                <rect key="frame" x="0.0" y="0.0" width="221" height="40.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="191" height="41"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="Dp7-4M-cWe">
-                                        <rect key="frame" x="0.0" y="0.0" width="221" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="191" height="21"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="fTj-Ko-X8N">
-                                        <rect key="frame" x="0.0" y="22.5" width="221" height="18"/>
+                                        <rect key="frame" x="0.0" y="23" width="191" height="18"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -54,21 +52,24 @@
                                 <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="myK-Kw-z4d">
-                                <rect key="frame" x="225" y="0.0" width="18" height="40.5"/>
+                                <rect key="frame" x="199" y="0.0" width="44" height="41"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="alw-xI-pFZ">
-                                        <rect key="frame" x="0.0" y="11.5" width="18" height="18"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hn1-5Q-f8l">
+                                        <rect key="frame" x="0.0" y="20.5" width="44" height="0.0"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="18" id="7jv-wm-9my"/>
-                                            <constraint firstAttribute="width" constant="18" id="8bv-AL-pdH"/>
+                                            <constraint firstAttribute="width" secondItem="hn1-5Q-f8l" secondAttribute="height" constant="44" id="CvI-H8-egN"/>
+                                            <constraint firstAttribute="width" constant="44" id="QPV-7Q-uuK"/>
                                         </constraints>
-                                    </imageView>
+                                        <connections>
+                                            <action selector="didTapActionButton:" destination="ArX-Tt-Izx" eventType="touchUpInside" id="DeM-CI-Js2"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="alw-xI-pFZ" firstAttribute="centerY" secondItem="myK-Kw-z4d" secondAttribute="centerY" id="BNe-fa-7XP"/>
-                                    <constraint firstItem="alw-xI-pFZ" firstAttribute="centerX" secondItem="myK-Kw-z4d" secondAttribute="centerX" id="QrL-4S-sN5"/>
-                                    <constraint firstAttribute="width" priority="999" constant="18" id="gNd-0v-PQ6"/>
+                                    <constraint firstItem="hn1-5Q-f8l" firstAttribute="centerY" secondItem="myK-Kw-z4d" secondAttribute="centerY" id="AB0-GB-ELp"/>
+                                    <constraint firstItem="hn1-5Q-f8l" firstAttribute="centerX" secondItem="myK-Kw-z4d" secondAttribute="centerX" id="DyK-RD-eue"/>
+                                    <constraint firstAttribute="width" priority="999" constant="44" id="gNd-0v-PQ6"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -78,7 +79,7 @@
                         </constraints>
                     </stackView>
                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" insetsLayoutMarginsFromSafeArea="NO" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="nty-aK-z8B">
-                        <rect key="frame" x="0.0" y="62.5" width="323" height="5"/>
+                        <rect key="frame" x="0.0" y="63" width="323" height="5"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="4" id="wWm-ff-q3v"/>
                         </constraints>
@@ -102,12 +103,12 @@
             </tableViewCellContentView>
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
+                <outlet property="actionButton" destination="hn1-5Q-f8l" id="EAM-d1-ABZ"/>
+                <outlet property="actionButtonContainer" destination="myK-Kw-z4d" id="Uqg-x3-Qup"/>
                 <outlet property="contentLabel" destination="Dp7-4M-cWe" id="0li-gE-dou"/>
                 <outlet property="iconBackgroundImageView" destination="6Gz-B7-Enk" id="KLx-eM-FR4"/>
                 <outlet property="iconImageView" destination="0Of-tF-rRE" id="B7M-m6-Cq9"/>
                 <outlet property="progressView" destination="nty-aK-z8B" id="pGi-1E-50A"/>
-                <outlet property="rewindIcon" destination="alw-xI-pFZ" id="So2-ib-HaQ"/>
-                <outlet property="rewindIconContainer" destination="myK-Kw-z4d" id="a0I-Pa-puu"/>
                 <outlet property="summaryLabel" destination="fTj-Ko-X8N" id="7dl-UR-Ydi"/>
             </connections>
             <point key="canvasLocation" x="35.5" y="52.5"/>

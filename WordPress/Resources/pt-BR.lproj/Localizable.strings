@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-04 16:42:17+0000 */
+/* Translation-Revision-Date: 2021-01-21 21:14:16+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pt_BR */
@@ -16,6 +16,12 @@
 "\"More\" Button" = "Botão \"Mais\"";
 
 /* No comment provided by engineer. */
+"%1$@ is the selected point for your restore." = "%1$@ is the selected point for your restore.";
+
+/* Description for the download backup action. $1$@ is a placeholder for the selected date. */
+"%1$@ is the selected point to create a downloadable backup." = "%1$@ is the selected point to create a downloadable backup.";
+
+/* 'AUTHOR on POST TITLE' in a comment list */
 "%1$@ on %2$@" = "%1$@ em %2$@";
 
 /* 'AUTHOR on POST TITLE: COMMENT' in a comment list */
@@ -23,6 +29,12 @@
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d de %2$d concluídas";
+
+/* Format string for single unseen post count. The %1$d is a placeholder for the count. */
+"%1$d unseen post" = "%1$d post não visualizado";
+
+/* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
+"%1$d unseen posts" = "%1$d posts não visualizados";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: Current value. */
 "%1$s. Current value is %2$s" = "%1$s. Valor atual é %2$s";
@@ -153,15 +165,6 @@
 
 /* Age between dates over one year. */
 "%d years" = "%d anos";
-
-/* Relative time format with day unit abbreviation (d): Xd, 1d, 3d, 6d */
-"%dd" = "%dd";
-
-/* Relative time format with hour unit abbreviation (h): Xh, 1h, 10h, 23h */
-"%dh" = "%dh";
-
-/* Relative time format with minute unit abbreviation (m): Xm, 1m, 10m, 59m */
-"%dm" = "%dmin";
 
 /* Max image size in pixels (e.g. 300x300px) */
 "%dx%dpx" = "%1$dx%2$dpx";
@@ -368,10 +371,10 @@
 "Activity Logs" = "Registros de Atividades";
 
 /* Label for the Activity Type filter button */
-"Activity Type" = "Activity Type";
+"Activity Type" = "Tipo de atividade";
 
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
-"Activity Type (%1$d)" = "Activity Type (%1$d)";
+"Activity Type (%1$d)" = "Tipo de atividade (%1$d)";
 
 /* Remove asset from media picker list */
 "Add" = "Adicionar";
@@ -412,9 +415,6 @@
 /* The title on the add category screen */
 "Add a Category" = "Adicionar uma categoria";
 
-/* Invite People Title */
-"Add a Person" = "Adicionar uma pessoa";
-
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Adicionar uma foto ao perfil";
 
@@ -423,9 +423,6 @@
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Adicione uma URL de CSS personalizada aqui para ser carregada no Leitor. Se você estiver rodando o Calypso localmente, pode ser algo como: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
-
-/* Invite Footer Text */
-"Add a custom message (optional)." = "Adicionar uma mensagem personalizada (opcional).";
 
 /* No comment provided by engineer. */
 "Add a description" = "Adicionar uma descrição";
@@ -813,6 +810,10 @@
    Spoken accessibility label */
 "Back" = "Voltar";
 
+/* Noun. Links to a blog's Jetpack Backups screen.
+   Title for the Jetpack's backup list */
+"Backup" = "Backup";
+
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "Gráfico exibindo comentários do período selecionado.";
 
@@ -1009,6 +1010,7 @@
    Option to cancel the email app selection when logging in with magic links
    Text displayed by the left navigation button title
    The title of a cancel button.
+   Title for cancel action. Dismisses the action sheet.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
@@ -1164,13 +1166,13 @@
 "Choose a time" = "Escolha um horário";
 
 /* Title to choose date range in a calendar */
-"Choose date range" = "Choose date range";
+"Choose date range" = "Escolher um intervalo de datas";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Choose domain" = "Escolha o domínio";
 
 /* No comment provided by engineer. */
-"Choose file" = "Choose file";
+"Choose file" = "Escolher arquivo";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Escolher em meu dispositivo";
@@ -1192,6 +1194,12 @@
 
 /* Shortened version of the main title to be used in back navigation */
 "Choose layout" = "Escolha um modelo";
+
+/* Downloadable items: general section title */
+"Choose the items to download" = "Choose the items to download";
+
+/* Restorable items: general section title */
+"Choose the items to restore" = "Choose the items to restore";
 
 /* No comment provided by engineer. */
 "Choose video" = "Escolher vídeo";
@@ -1460,6 +1468,7 @@
 "Contact Email" = "E-mail de contato";
 
 /* Button label for contacting support
+   Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
@@ -1521,7 +1530,7 @@
 "Copy file URL" = "Copiar URL do arquivo";
 
 /* Button title displayed in popup indicating the user copied the local copy */
-"Copy the version from this app" = "Copy the version from this app";
+"Copy the version from this app" = "Copiar a versão deste aplicativo";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Poderia ser melhor";
@@ -1551,7 +1560,7 @@
 "Could not save post for later" = "Não foi possível salvar o post para depois";
 
 /* The app failed to subscribe to the comments for the post */
-"Could not subscribe to comments" = "Could not subscribe to comments";
+"Could not subscribe to comments" = "Não foi possível assinar os comentários";
 
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Não foi possível alternar o status: faltando atributo blogURL";
@@ -1668,6 +1677,12 @@
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "Criar um post, página ou story";
 
+/* Label that describes the download backup action */
+"Create downloadable backup" = "Create downloadable backup";
+
+/* Button title for download backup action */
+"Create downloadable file" = "Create downloadable file";
+
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Crie seu painel personalizado e escolha quais relatórios visualizar. Foque nas informações que você mais se importa.";
 
@@ -1706,6 +1721,9 @@
 
 /* Title of the cell displaying status of a rewind in progress */
 "Currently restoring your site" = "Seu site está sendo restaurado";
+
+/* Placeholder for Invite People message field. */
+"Custom message…" = "Mensagem personalizada…";
 
 /* Customize button that appears in Theme Browser Header
    The menu item to select during a guided tour.
@@ -1751,7 +1769,7 @@
 "Date Format" = "Formato de data";
 
 /* Label of a button that displays a calendar */
-"Date Range" = "Date Range";
+"Date Range" = "Período";
 
 /* Date and Time */
 "Date and Time" = "Data e hora";
@@ -1974,6 +1992,9 @@
 /* translators: sample content for \"About\" page template */
 "Don’t cry because it’s over, smile because it happened." = "Não chore por que acabou. Sorria porque aconteceu.";
 
+/* Title for label when there are no threats on the users site */
+"Don’t worry about a thing" = "Não se preocupe";
+
 /* Screen reader hint for button that will move the menu item */
 "Double tap and hold to move this menu item up or down" = "Toque duas vezes e segure para mover este item para cima ou para baixo";
 
@@ -2034,6 +2055,10 @@
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "Toque duas vezes para desfazer a última alteração";
 
+/* Title displayed for download backup action.
+   Title for the Jetpack Download Backup Site Screen */
+"Download Backup" = "Fazer download do backup";
+
 /* Label for number of file downloads. */
 "Downloads" = "Downloads";
 
@@ -2047,8 +2072,9 @@
    Title of the drafts header in search list. */
 "Drafts" = "Rascunhos";
 
-/* Label for post duplicate option. Tapping displays statistics for a post. */
-"Duplicate" = "Duplicate";
+/* Label for page duplicate option. Tapping creates a copy of the page.
+   Label for post duplicate option. Tapping creates a copy of the post. */
+"Duplicate" = "Duplicar";
 
 /* No comment provided by engineer. */
 "Duplicate block" = "Duplicar bloco";
@@ -2154,7 +2180,7 @@
 
 /* A placeholder for the username textfield.
    Invite Username Placeholder */
-"Email or Username..." = "E-mail ou nome de usuário...";
+"Email or Username…" = "Email or Username…";
 
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-mail enviado!";
@@ -2185,7 +2211,7 @@
 "Encrypted Logs" = "Resumos criptografados";
 
 /* Placeholder for the end date in calendar range selection */
-"End Date" = "End Date";
+"End Date" = "Data final";
 
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Entrar no modo de tela cheia";
@@ -2226,7 +2252,7 @@
 "Enter your email address to log in or create a WordPress.com account." = "Digite seu endereço de e-mail para acessar ou criar uma conta no WordPress.com.";
 
 /* Button title. Takes the user to the login by site address flow. */
-"Enter your existing site address" = "Enter your existing site address";
+"Enter your existing site address" = "Digite o endereço de seu site";
 
 /* Title of a button on the magic link screen.
    Title of a button. */
@@ -2339,6 +2365,9 @@
 
 /* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
 "Excerpts are optional hand-crafted summaries of your content." = "Os fragmentos são resumos opcionais e feitos manualmente do seu conteúdo.";
+
+/* Downloadable/Restorable items: content section footer text */
+"Excludes themes, plugins, and uploads" = "Exclui temas, plugins e uploads";
 
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "Sair do modo de tela cheia";
@@ -2470,7 +2499,7 @@
 "Filter" = "Filtrar";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
-"Filter by activity type" = "Filter by activity type";
+"Filter by activity type" = "Filtrar por tipo de atividade";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Saiba mais";
@@ -2491,6 +2520,9 @@
    Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "Nome";
+
+/* Button title that attempts to fix all fixable threats */
+"Fix All" = "Corrigir tudo";
 
 /* Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
@@ -2532,7 +2564,6 @@
 "Followers" = "Seguidores";
 
 /* Accessibility label for following buttons.
-   Title for Reader Filter Sheet
    Title of the Following Reader tab
    User is following the blog.
    Verb. Button title. The user is following a blog. */
@@ -2863,6 +2894,9 @@ translators: sample content for \"Team\" page template */
 /* Hint for image link on image settings. */
 "Image Link" = "Link da imagem";
 
+/* No comment provided by engineer. */
+"Image Link URL" = "Link da imagem";
+
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Tamanho da imagem";
 
@@ -2895,6 +2929,9 @@ translators: sample content for \"Team\" page template */
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Incluído com o site";
+
+/* Downloadable/Restorable items: general section footer text */
+"Includes wp-config php and any non WordPress files" = "Includes wp-config php and any non WordPress files";
 
 /* An error message shown when a user signed in with incorrect credentials. */
 "Incorrect username or password. Please try entering your login details again." = "Nome de usuário ou senha incorretos. Tente digitar seus dados de login novamente.";
@@ -2990,6 +3027,9 @@ translators: sample content for \"Team\" page template */
 /* Send Person Invite */
 "Invite" = "Convide";
 
+/* Invite People Title */
+"Invite People" = "Convidar pessoas";
+
 /* translators: sample content for \"About\" page template */
 "It is our choices, Harry, that show what we truly are, far more than our abilities." = "São as nossas escolhas que revelam o que realmente somos, muito mais do que as nossas qualidades.";
 
@@ -3022,6 +3062,15 @@ translators: sample content for \"Team\" page template */
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Perguntas frequentes sobre o Jetpack";
+
+/* Description for a label when the scan has failed */
+"Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team.";
+
+/* Description for a label when there are threats on the site, displays the number of threats, and the site's title */
+"Jetpack Scan found %1$d potential threats on %2$@. Please review each threat and take action." = "Jetpack Scan found %1$d potential threats on %2$@. Please review each threat and take action.";
+
+/* Description for a label when there is a single threat on the site, displays the site's title */
+"Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action." = "Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action.";
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Configurações do Jetpack";
@@ -3090,6 +3139,9 @@ translators: sample content for \"Team\" page template */
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "Saiba mais sobre formatação de datas e horas.";
+
+/* Footer text for Invite People role field. */
+"Learn more about roles" = "Learn more about roles";
 
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "Saiba mais...";
@@ -3395,6 +3447,9 @@ translators: sample content for \"Services\" page template */
 /* Message to indicate progress of uploading media to server */
 "Media Uploading" = "Carregamento de mídia";
 
+/* Downloadable/Restorable items: Media Uploads */
+"Media Uploads" = "Media Uploads";
+
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "A mídia não tem um arquivo associado a ser enviado.";
 
@@ -3679,10 +3734,10 @@ translators: sample content for \"Services\" page template */
 "No Title" = "Sem título";
 
 /* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities available" = "No activities available";
+"No activities available" = "Nenhuma atividade disponível";
 
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities recorded in the selected date range." = "No activities recorded in the selected date range.";
+"No activities recorded in the selected date range." = "Nenhuma atividade registrada no período selecionado.";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log */
 "No activity yet" = "Nenhuma atividade ainda";
@@ -3754,7 +3809,7 @@ translators: sample content for \"Services\" page template */
 "No likes yet" = "Nenhuma curtida";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"No matching events found." = "No matching events found.";
+"No matching events found." = "Nenhum evento correspondente encontrado.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso.
    Phrase to show when the user search for images but there are no result to show.
@@ -4018,8 +4073,11 @@ translators: sample content for \"Services\" page template */
 /* Placeholder to indicate that filling out the field is optional. */
 "Optional" = "Opcional";
 
-/* Invite: Message Hint */
-"Optional message to be included in the invitation." = "Mensagem opcional para ser adicionada no convite.";
+/* Invite: Message Hint. %1$d is the maximum number of characters allowed. */
+"Optional message up to %1$d characters to be included in the invitation." = "Optional message up to %1$d characters to be included in the invitation.";
+
+/* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
+"Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "Optional: Enter a custom message up to %1$d characters to be sent with your invitation.";
 
 /* Divider on initial auth view separating auth options. */
 "Or" = "Ou";
@@ -4399,7 +4457,7 @@ translators: sample content for \"Services\" page template */
 "Post scheduled" = "Post agendado";
 
 /* Title displayed in popup when user tries to copy a post with unsaved changes */
-"Post sync conflict" = "Post sync conflict";
+"Post sync conflict" = "Conflito na sincronização do post";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Título do post. %s";
@@ -4457,6 +4515,9 @@ translators: sample content for \"Services\" page template */
 
 /* Title of alert when attempting to delete site with purchases */
 "Premium Upgrades" = "Atualizações premium";
+
+/* Title for label when the preparing to scan the users site */
+"Preparing to scan" = "Preparing to scan";
 
 /* Label to show while converting and/or resizing media to send to server */
 "Preparing..." = "Preparando...";
@@ -4861,8 +4922,14 @@ translators: sample content for \"Services\" page template */
 /* Title of the reset button */
 "Reset" = "Redefinir";
 
+/* Accessibility label for the reset activity type button */
+"Reset Activity Type filter" = "Reset Activity Type filter";
+
 /* No comment provided by engineer. */
 "Reset Block" = "Redefinir bloco";
+
+/* Accessibility label for the reset date range button */
+"Reset Date Range filter" = "Reset Date Range filter";
 
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "Redefinir filtros";
@@ -4875,6 +4942,16 @@ translators: sample content for \"Services\" page template */
 
 /* The largest resolution allowed for uploading */
 "Resolution" = "Resolução";
+
+/* Title displayed for restore action.
+   Title for the Jetpack Restore Site Screen */
+"Restore" = "Restaurar";
+
+/* Label that describes the restore site action */
+"Restore site" = "Restaurar site";
+
+/* Button title for restore site action */
+"Restore to this point" = "Restore to this point";
 
 /* A prompt to attempt the failed network request again
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
@@ -4895,6 +4972,9 @@ translators: sample content for \"Services\" page template */
    User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "Tentar novamente";
+
+/* Button title that triggers a scan */
+"Retry Scan" = "Retry Scan";
 
 /* User action to retry media upload. */
 "Retry Upload" = "Tentar upload novamente";
@@ -5011,7 +5091,16 @@ translators: sample content for \"Services\" page template */
 "Saving..." = "Salvando...";
 
 /* Noun. Links to a blog's Jetpack Scan screen. */
-"Scan" = "Scan";
+"Scan" = "Examinar";
+
+/* Button title that triggers a scan */
+"Scan Again" = "Examinar novamente";
+
+/* Button title that triggers a scan */
+"Scan Now" = "Examinar agora";
+
+/* Title for label when the actively scanning the users site */
+"Scanning files" = "Examinando arquivos";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Agendar";
@@ -5256,7 +5345,7 @@ translators: sample content for \"Services\" page template */
 "Set as Posts Page" = "Definir como página de posts";
 
 /* The Jetpack view button title for the success state */
-"Set up" = "Configurado";
+"Set up" = "Configurar";
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Configurar Jetpack";
@@ -5460,6 +5549,9 @@ translators: sample content for \"Services\" page template */
 /* No comment provided by engineer. */
 "Site address must be at least 4 characters." = "O endereço do site deve ter pelo menos 4 caracteres.";
 
+/* Downloadable/Restorable items: Site Database */
+"Site database" = "Banco de dados do site";
+
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Site excluído";
 
@@ -5510,6 +5602,9 @@ translators: sample content for \"Services\" page template */
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Falha ao fazer upload de algumas mídias. Esta ação removerá todas as mídias que falharam do post.\nSalvar mesmo assim?";
+
+/* Title for a label that appears when the scan failed */
+"Something went wrong" = "Something went wrong";
 
 /* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
 "Something went wrong, please try again." = "Algo deu errado. Tente novamente.";
@@ -5613,7 +5708,7 @@ translators: sample content for \"Services\" page template */
 "Standard" = "Padrão";
 
 /* Placeholder for the start date in calendar range selection */
-"Start Date" = "Start Date";
+"Start Date" = "Data de início";
 
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
@@ -5959,6 +6054,12 @@ translators: sample content for \"Services\" page template */
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "Idioma principal do site.";
 
+/* Description that informs for label when there are no threats on a users site */
+"The last Jetpack scan completed and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "The last Jetpack scan completed and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today.";
+
+/* Description for label when there are no threats on a users site and how long ago the scan ran */
+"The last Jetpack scan ran %1$@ and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "The last Jetpack scan ran %1$@ and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today.";
+
 /* WordPress.com Push Authentication Expired message */
 "The login request has expired. Log in to WordPress.com to try again." = "A solicitação de login expirou. Faça login no WordPress.com para tentar novamente.";
 
@@ -6147,6 +6248,9 @@ translators: sample content for \"Services\" page template */
 
 /* Explaining to the user why the app needs access to the device media library. */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Este aplicativo precisa de permissão para acessar sua biblioteca de mídia e adicionar fotos e\/ou vídeos ao seus posts. Altere as configurações de privacidade para permitir isto.";
+
+/* Notifies the user that the a domain matching the search term wasn't returned in the results */
+"This domain is unavailable" = "Este domínio não está disponível";
 
 /* An error message informing the user the email address they entered did not match a WordPress.com account. */
 "This email address is not registered on WordPress.com." = "Este endereço de e-mail não está registrado no WordPress.com.";
@@ -6363,7 +6467,7 @@ translators: sample content for \"Services\" page template */
 "Try a starter layout" = "Experimente começar com um modelo";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"Try adjusting your date range or activity type filters" = "Try adjusting your date range or activity type filters";
+"Try adjusting your date range or activity type filters" = "Tente ajustar o período ou o filtro de tipos de atividade";
 
 /* Button label for trying to retrieve the activities type again
    Button that lets users try to reload the plugin directory after loading failure
@@ -6843,6 +6947,9 @@ translators: sample content for \"Services\" page template */
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "WP Admin";
 
+/* Downloadable/Restorable items: WP-content directory */
+"WP-content directory" = "O diretório wp-content";
+
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Esperando o Google para concluir...";
 
@@ -6988,6 +7095,9 @@ translators: sample content for \"Services\" page template */
 
 /* Error message displayed when an error occurred sending the magic link email. */
 "We were unable to send you an email at this time. Please try again later." = "Não foi possível enviar um e-mail para você no momento. Tente novamente mais tarde.";
+
+/* Description for label when the actively scanning the users site */
+"We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.";
 
 /* Title for notice displayed on canceling auto-upload published page
    Title for notice displayed on canceling auto-upload published post */
@@ -7192,6 +7302,9 @@ translators: sample content for \"Services\" page template */
 /* Siri Suggestion to open Notifications */
 "WordPress Notifications" = "Notificações do WordPress";
 
+/* Downloadable/Restorable items: WordPress Plugins */
+"WordPress Plugins" = "Plugins WordPress";
+
 /* Siri Suggestion to open Me tab */
 "WordPress Profile" = "Perfil do WordPress";
 
@@ -7201,11 +7314,17 @@ translators: sample content for \"Services\" page template */
 /* Siri Suggestion to open My Sites */
 "WordPress Site Details" = "Detalhes do site WordPress";
 
+/* Downloadable/Restorable items: WordPress Themes */
+"WordPress Themes" = "Temas WordPress";
+
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "Suporte do WordPress para iOS";
 
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "O WordPress precisa de sua permissão para acessar a localização atual de seu dispositivo para adiconá-la a seu post. Por favor, revise seus ajustes de privacidade.";
+
+/* Downloadable/Restorable items: WordPress root */
+"WordPress root" = "Raiz do WordPress";
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "Versão do WordPress muito antiga";
@@ -7440,7 +7559,7 @@ translators: sample content for \"Services\" page template */
 "Your restore is taking longer than usual, please check again in a few minutes." = "O retrocesso à versão anterior está demorando mais que o normal, verifique novamente em alguns minutos.";
 
 /* Body text of alert helping users understand their site address */
-"Your site address appears in the bar at the the top of the screen when you visit your site in Safari." = "O endereço do seu site aparece na barra superior quando você visita o site pelo Safari.";
+"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Your site address appears in the bar at the top of the screen when you visit your site in Safari.";
 
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Seu site foi criado!";
@@ -7462,6 +7581,9 @@ translators: sample content for \"Services\" page template */
 
 /* Hint for users when hidden privacy setting is set */
 "Your site is visible to everyone, but asks search engines not to index your site." = "Seu site fica visível para todos, mas solicita que os mecanismos de pesquisa não o indexem.";
+
+/* Title for label when there are threats on the users site */
+"Your site may be at risk" = "Seu site pode estar em risco";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Your site will be ready shortly" = "Seu site estará pronto em breve";
@@ -7535,9 +7657,6 @@ translators: sample content for \"Services\" page template */
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "em \"Upgrade\"";
-
-/* Relative time format */
-"just now" = "agora mesmo ";
 
 /* Later today */
 "later today" = "mais tarde hoje";

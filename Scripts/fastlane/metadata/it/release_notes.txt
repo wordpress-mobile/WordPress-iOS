@@ -1,11 +1,15 @@
-Ecco cosa c'è di nuovo nell'ultimo rilascio: 
+Quali sono le novità dell'ultimo rilascio?
 
-L'editor a blocchi: ora puoi inserire in un articolo o in una pagina un blocco file che colloca un pulsante di scaricamento per file come documenti. Un aggiornamento relativo al blocco Galleria ha risolto un problema di caricamento che si verificava con l'editor chiuso.
+Editor a blocchi
 
-Creazione del sito: ora, quando costruisci pagine sul tuo sito, le opzioni di layout di pagina sono più facili da visualizzare e selezionare.
+– Quando lavori con i blocchi, potresti notare alcune modifiche. Ora puoi spostare i blocchi verso l'alto e verso il basso nell'articolo o nella pagina tenendo premuti a lungo i pulsanti "Su" e Giù". Abbiamo anche aggiunto il supporto per gli allineamenti Wide e Full width nel blocco Colonne e abbiamo reso più semplice scegliere e impostare un URL per un'immagine nel blocco Immagine.
 
-Creazione di un articolo: desideri duplicare velocemente un articolo? Ora puoi farlo dal tuo elenco degli articoli.
+– Usi P2 per collaborare con il tuo team? Durante la pubblicazione di un nuovo articolo, digita il carattere + per contrassegnare con un tag un altro P2 e pubblicare "con una pubblicazione incrociata" sul sito, avvisando gli utenti del nuovo articolo.
 
-Il Reader: utilizzi P2, uno strumento per collaborare in team e in gruppo? Ora puoi leggere e seguire siti P2 in un nuovo stream.
+Varie correzioni e aggiornamenti:
 
-Commenti: vuoi iscriverti ai thread di commenti sui siti che segui o che ti interessano? Tocca il pulsante "Segui conversazione" nella visualizzazione Commenti.
+– La funzionalità Scegli un dominio ora restituisce più opzioni nei risultati di ricerca. Provala.
+
+– Nell'elenco delle pagine del sito, puoi duplicare rapidamente una pagina. In questo modo puoi risparmiare tempo durante la creazione dei contenuti.
+
+– Altri aggiornamenti, tra cui le modifiche al Reader, migliorano l'esperienza generale con l'app.

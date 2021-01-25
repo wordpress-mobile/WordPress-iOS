@@ -55,6 +55,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic themes;
 @dynamic media;
 @dynamic userSuggestions;
+@dynamic siteSuggestions;
 @dynamic menus;
 @dynamic menuLocations;
 @dynamic roles;
@@ -490,6 +491,8 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeatureOAuth2Login:
             return [self isHostedAtWPcom];
         case BlogFeatureMentions:
+            return [self isAccessibleThroughWPCom];
+        case BlogFeatureXposts:
             return [self isAccessibleThroughWPCom];
         case BlogFeatureReblog:
         case BlogFeaturePlans:

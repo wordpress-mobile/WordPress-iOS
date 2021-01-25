@@ -14,7 +14,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
 
     let containerStackView = UIStackView()
 
-    let filterStackView = UIStackView()
+    let filterView = FilterBarView()
     let dateFilterChip = FilterChipButton()
     let activityTypeFilterChip = FilterChipButton()
 
@@ -32,7 +32,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         return spinner
     }()
 
-    fileprivate var viewModel: ActivityListViewModel
+    var viewModel: ActivityListViewModel
     private enum Constants {
         static let estimatedRowHeight: CGFloat = 62
     }
@@ -158,40 +158,39 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
     }
 
     private func setupFilterBar() {
-        let scrollView = UIScrollView()
-        filterStackView.addArrangedSubview(dateFilterChip)
-        filterStackView.addArrangedSubview(activityTypeFilterChip)
-        scrollView.addSubview(filterStackView)
-        containerStackView.addArrangedSubview(scrollView)
-        filterStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            filterStackView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
-            filterStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            filterStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            scrollView.heightAnchor.constraint(equalTo: filterStackView.heightAnchor)
-        ])
+        containerStackView.addArrangedSubview(filterView)
+
+        filterView.add(button: dateFilterChip)
+        filterView.add(button: activityTypeFilterChip)
 
         setupDateFilter()
-
         setupActivityTypeFilter()
     }
 
     private func setupDateFilter() {
+        dateFilterChip.resetButton.accessibilityLabel = NSLocalizedString("Reset Date Range filter", comment: "Accessibility label for the reset date range button")
+
         dateFilterChip.tapped = { [weak self] in
+            WPAnalytics.track(.activitylogFilterbarRangeButtonTapped)
             self?.showCalendar()
         }
 
         dateFilterChip.resetTapped = { [weak self] in
+            WPAnalytics.track(.activitylogFilterbarResetRange)
             self?.viewModel.removeDateFilter()
             self?.dateFilterChip.disableResetButton()
         }
     }
 
     private func setupActivityTypeFilter() {
+        activityTypeFilterChip.resetButton.accessibilityLabel = NSLocalizedString("Reset Activity Type filter", comment: "Accessibility label for the reset activity type button")
+
         activityTypeFilterChip.tapped = { [weak self] in
             guard let self = self else {
                 return
             }
+
+            WPAnalytics.track(.activitylogFilterbarTypeButtonTapped)
 
             let activityTypeSelectorViewController = ActivityTypeSelectorViewController(
                 viewModel: self.viewModel
@@ -202,6 +201,7 @@ class ActivityListViewController: UIViewController, TableViewContainer, ImmuTabl
         }
 
         activityTypeFilterChip.resetTapped = { [weak self] in
+            WPAnalytics.track(.activitylogFilterbarResetType)
             self?.viewModel.removeGroupFilter()
             self?.activityTypeFilterChip.disableResetButton()
         }
@@ -276,7 +276,7 @@ extension ActivityListViewController: UITableViewDelegate {
         let rewindAction = UITableViewRowAction(style: .normal,
                                                 title: NSLocalizedString("Rewind", comment: "Title displayed when user swipes on a rewind cell"),
                                                 handler: { [weak self] _, indexPath in
-                                                    self?.presentRewindFor(activity: row.activity)
+                                                    self?.presentRestoreFor(activity: row.activity)
         })
         rewindAction.backgroundColor = .primary(.shade40)
 
@@ -304,11 +304,42 @@ extension ActivityListViewController: NoResultsViewControllerDelegate {
     }
 }
 
-// MARK: - ActivityRewindPresenter
+// MARK: - ActivityPresenter
 
-extension ActivityListViewController: ActivityRewindPresenter {
+extension ActivityListViewController: ActivityPresenter {
 
-    func presentRewindFor(activity: Activity) {
+    func presentDetailsFor(activity: FormattableActivity) {
+        let detailVC = ActivityDetailViewController.loadFromStoryboard()
+
+        detailVC.site = site
+        detailVC.formattableActivity = activity
+        detailVC.presenter = self
+
+        self.navigationController?.pushViewController(detailVC, animated: true)
+    }
+
+    func presentBackupOrRestoreFor(activity: FormattableActivity) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
+        let restoreVC = JetpackRestoreViewController(site: site, activity: activity, restoreAction: .restore)
+        alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
+            self.present(UINavigationController(rootViewController: restoreVC), animated: true)
+        })
+
+        let downloadBackupTitle = NSLocalizedString("Download Backup", comment: "Title displayed for download backup action.")
+        let downloadBackupVC = JetpackRestoreViewController(site: site, activity: activity, restoreAction: .downloadBackup)
+        alertController.addDefaultActionWithTitle(downloadBackupTitle, handler: { _ in
+            self.present(UINavigationController(rootViewController: downloadBackupVC), animated: true)
+        })
+
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Title for cancel action. Dismisses the action sheet.")
+        alertController.addCancelActionWithTitle(cancelTitle)
+
+        self.present(alertController, animated: true, completion: nil)
+    }
+
+    func presentRestoreFor(activity: Activity) {
         guard activity.isRewindable, let rewindID = activity.rewindID else {
             return
         }
@@ -331,23 +362,6 @@ extension ActivityListViewController: ActivityRewindPresenter {
                                                       })
         self.present(alertController, animated: true)
     }
-
-}
-extension ActivityListViewController: ActivityDetailPresenter {
-
-    func presentDetailsFor(activity: FormattableActivity) {
-        let activityStoryboard = UIStoryboard(name: "Activity", bundle: nil)
-        guard let detailVC = activityStoryboard.instantiateViewController(withIdentifier: "ActivityDetailViewController") as? ActivityDetailViewController else {
-            return
-        }
-
-        detailVC.site = site
-        detailVC.formattableActivity = activity
-        detailVC.rewindPresenter = self
-
-        self.navigationController?.pushViewController(detailVC, animated: true)
-    }
-
 }
 
 // MARK: - Restores handling
@@ -410,8 +424,33 @@ extension ActivityListViewController: CalendarViewControllerDelegate {
             return
         }
 
+        trackSelectedRange(startDate: startDate, endDate: endDate)
+
         viewModel.refresh(after: startDate, before: endDate, group: viewModel.selectedGroups)
         calendar.dismiss(animated: true, completion: nil)
+    }
+
+    private func trackSelectedRange(startDate: Date?, endDate: Date?) {
+        guard let startDate = startDate else {
+            if viewModel.after != nil || viewModel.before != nil {
+                WPAnalytics.track(.activitylogFilterbarResetRange)
+            }
+
+            return
+        }
+
+        var duration: Int // Number of selected days
+        var distance: Int // Distance from the startDate to today (in days)
+
+        if let endDate = endDate {
+            duration = Int((endDate.timeIntervalSinceReferenceDate - startDate.timeIntervalSinceReferenceDate) / Double(24 * 60 * 60)) + 1
+        } else {
+            duration = 1
+        }
+
+        distance = Int((Date().timeIntervalSinceReferenceDate - startDate.timeIntervalSinceReferenceDate) / Double(24 * 60 * 60))
+
+        WPAnalytics.track(.activitylogFilterbarSelectRange, properties: ["duration": duration, "distance": distance])
     }
 }
 
@@ -427,7 +466,22 @@ extension ActivityListViewController: ActivityTypeSelectorDelegate {
             return
         }
 
+        trackSelectedGroups(groups)
+
         viewModel.refresh(after: viewModel.after, before: viewModel.before, group: groups)
         selectorViewController.dismiss(animated: true, completion: nil)
+    }
+
+    private func trackSelectedGroups(_ selectedGroups: [ActivityGroup]) {
+        if !viewModel.selectedGroups.isEmpty && selectedGroups.isEmpty {
+            WPAnalytics.track(.activitylogFilterbarResetType)
+        } else {
+            let totalActivitiesSelected = selectedGroups.map { $0.count }.reduce(0, +)
+            var selectTypeProperties: [AnyHashable: Any] = [:]
+            selectedGroups.forEach { selectTypeProperties["filter_group_\($0.key)"] = true }
+            selectTypeProperties["num_groups_selected"] = selectedGroups.count
+            selectTypeProperties["num_total_activities_selected"] = totalActivitiesSelected
+            WPAnalytics.track(.activitylogFilterbarSelectType, properties: selectTypeProperties)
+        }
     }
 }

@@ -1,16 +1,16 @@
 GIT
   remote: https://github.com/wordpress-mobile/release-toolkit
-  revision: 2f7ef851ed51fee6b5b8075056d5359c9e6277ea
-  tag: 0.11.0
+  revision: a932bd25320f2b82be0774b66e550c6862cd8765
+  tag: 0.12.0
   specs:
-    fastlane-plugin-wpmreleasetoolkit (0.11.0)
+    fastlane-plugin-wpmreleasetoolkit (0.12.0)
       activesupport (~> 5)
       bigdecimal (~> 1.4)
       chroma (= 0.2.0)
       diffy (~> 3.3)
       git (~> 1.3)
-      jsonlint
-      nokogiri (>= 1.10.4)
+      jsonlint (~> 0.3)
+      nokogiri (~> 1.11)
       octokit (~> 4.18)
       parallel (~> 1.14)
       progress_bar (~> 1.3)
@@ -170,7 +170,7 @@ GEM
     fourflusher (2.3.1)
     fuzzy_match (2.0.4)
     gh_inspector (1.1.3)
-    git (1.7.0)
+    git (1.8.1)
       rchardet (~> 1.8)
     google-api-client (0.38.0)
       addressable (~> 2.5, >= 2.5.1)
@@ -215,7 +215,7 @@ GEM
     memoist (0.16.2)
     mini_magick (4.11.0)
     mini_mime (1.0.2)
-    mini_portile2 (2.4.0)
+    mini_portile2 (2.5.0)
     minitest (5.14.2)
     molinillo (0.6.6)
     multi_json (1.15.0)
@@ -224,12 +224,13 @@ GEM
     nap (1.1.0)
     naturally (2.2.0)
     netrc (0.11.0)
-    nokogiri (1.10.10)
-      mini_portile2 (~> 2.4.0)
+    nokogiri (1.11.1)
+      mini_portile2 (~> 2.5.0)
+      racc (~> 1.4)
     octokit (4.19.0)
       faraday (>= 0.9)
       sawyer (~> 0.8.0, >= 0.5.3)
-    oj (3.10.16)
+    oj (3.10.18)
     optimist (3.0.1)
     options (2.3.2)
     os (1.1.1)
@@ -239,6 +240,7 @@ GEM
       highline (>= 1.6, < 3)
       options (~> 2.3.0)
     public_suffix (4.0.6)
+    racc (1.5.2)
     rake (12.3.3)
     rake-compiler (1.1.1)
       rake
@@ -308,7 +310,7 @@ DEPENDENCIES
   cocoapods (~> 1.10)!
   commonmarker!
   dotenv!
-  fastlane (~> 2.171)!
+  fastlane (~> 2.162)!
   fastlane-plugin-appcenter (~> 1.8)
   fastlane-plugin-sentry
   fastlane-plugin-test_center

@@ -4,15 +4,21 @@ extension SuggestionType {
     var trigger: String {
         switch self {
         case .mention: return "@"
+        case .xpost: return "+"
         }
     }
 }
 
 @objc public extension SuggestionsTableView {
 
-    func suggestions(for siteID: NSNumber, completion: @escaping ([UserSuggestion]?) -> Void) {
+    func userSuggestions(for siteID: NSNumber, completion: @escaping ([UserSuggestion]?) -> Void) {
         guard let blog = SuggestionService.shared.persistedBlog(for: siteID) else { return }
         SuggestionService.shared.suggestions(for: blog, completion: completion)
+    }
+
+    func siteSuggestions(for siteID: NSNumber, completion: @escaping ([SiteSuggestion]?) -> Void) {
+        guard let blog = SuggestionService.shared.persistedBlog(for: siteID) else { return }
+        SiteSuggestionService.shared.suggestions(for: blog, completion: completion)
     }
 
     var suggestionTrigger: String { return suggestionType.trigger }
@@ -21,6 +27,8 @@ extension SuggestionType {
         switch suggestionType {
         case .mention:
             return NSPredicate(format: "(displayName contains[c] %@) OR (username contains[c] %@)", searchQuery, searchQuery)
+        case .xpost:
+            return NSPredicate(format: "(title contains[cd] %@) OR (siteURL.absoluteString contains[cd] %@)", searchQuery, searchQuery)
         }
     }
 
@@ -29,7 +37,10 @@ extension SuggestionType {
         switch (suggestionType, suggestion) {
         case (.mention, let suggestion as UserSuggestion):
             title = suggestion.username
-        default: title = nil
+        case (.xpost, let suggestion as SiteSuggestion):
+            title = suggestion.subdomain
+        default:
+            return nil
         }
         return title.map { suggestionType.trigger.appending($0) }
     }
@@ -38,7 +49,10 @@ extension SuggestionType {
         switch (suggestionType, suggestion) {
         case (.mention, let suggestion as UserSuggestion):
             return suggestion.displayName
-        default: return nil
+        case (.xpost, let suggestion as SiteSuggestion):
+            return suggestion.title
+        default:
+            return nil
         }
     }
 
@@ -48,7 +62,10 @@ extension SuggestionType {
         switch (suggestionType, suggestion) {
         case (.mention, let suggestion as UserSuggestion):
             return suggestion.imageURL
-        default: return nil
+        case (.xpost, let suggestion as SiteSuggestion):
+            return suggestion.blavatarURL
+        default:
+            return nil
         }
     }
 
@@ -68,8 +85,13 @@ extension SuggestionType {
     func fetchSuggestions(for siteID: NSNumber) {
         switch self.suggestionType {
         case .mention:
-            suggestions(for: siteID) { userSuggestions in
+            userSuggestions(for: siteID) { userSuggestions in
                 self.suggestions = userSuggestions
+                self.showSuggestions(forWord: self.searchText)
+            }
+        case .xpost:
+            siteSuggestions(for: siteID) { siteSuggestions in
+                self.suggestions = siteSuggestions
                 self.showSuggestions(forWord: self.searchText)
             }
         }
@@ -79,6 +101,8 @@ extension SuggestionType {
         switch (suggestionType, suggestion) {
         case (.mention, let suggestion as UserSuggestion):
             return suggestion.username
+        case (.xpost, let suggestion as SiteSuggestion):
+            return suggestion.title
         default: return nil
         }
     }

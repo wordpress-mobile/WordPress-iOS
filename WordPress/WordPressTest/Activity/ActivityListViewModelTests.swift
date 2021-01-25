@@ -16,7 +16,7 @@ class ActivityListViewModelTests: XCTestCase {
 
         XCTAssertEqual(activityStoreMock.dispatchedAction, "loadMoreActivities")
         XCTAssertEqual(activityStoreMock.quantity, 20)
-        XCTAssertEqual(activityStoreMock.offset, 0)
+        XCTAssertEqual(activityStoreMock.offset, 20)
     }
 
     // Check if `loadMore` dispatchs the correct offset
@@ -28,10 +28,11 @@ class ActivityListViewModelTests: XCTestCase {
         activityStoreMock.state.activities[jetpackSiteRef] = [Activity.mock(), Activity.mock(), Activity.mock()]
 
         activityListViewModel.loadMore()
+        activityListViewModel.loadMore()
 
         XCTAssertEqual(activityStoreMock.dispatchedAction, "loadMoreActivities")
         XCTAssertEqual(activityStoreMock.quantity, 20)
-        XCTAssertEqual(activityStoreMock.offset, 3)
+        XCTAssertEqual(activityStoreMock.offset, 40)
     }
 
     // Check if `loadMore` dispatchs the correct after/before date and groups
@@ -118,8 +119,8 @@ class ActivityStoreMock: ActivityStore {
 }
 
 extension Activity {
-    static func mock() -> Activity {
-        let dictionary = ["activity_id": "1", "summary": "", "content": ["text": ""], "published": "2020-11-09T13:16:43.701+00:00"] as [String: AnyObject]
+    static func mock(isRewindable: Bool = false) -> Activity {
+        let dictionary = ["activity_id": "1", "summary": "", "is_rewindable": isRewindable, "rewind_id": "1", "content": ["text": ""], "published": "2020-11-09T13:16:43.701+00:00"] as [String: AnyObject]
         return try! Activity(dictionary: dictionary)
     }
 }

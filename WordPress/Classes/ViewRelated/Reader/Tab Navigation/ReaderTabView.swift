@@ -1,5 +1,12 @@
 import UIKit
 
+// NSNotification sent when a site or a tag is unfollowed via Reader Manage screen.
+extension NSNotification.Name {
+    static let ReaderTopicUnfollowed = NSNotification.Name(rawValue: "ReaderTopicUnfollowed")
+}
+let topicUserInfoKey = "topic"
+
+
 class ReaderTabView: UIView {
 
     private let mainStackView: UIStackView
@@ -13,6 +20,12 @@ class ReaderTabView: UIView {
 
     private let viewModel: ReaderTabViewModel
 
+    private var filteredTabs: [(index: Int, topic: ReaderAbstractTopic)] = []
+    private var previouslySelectedIndex: Int = 0
+
+    private var discoverIndex: Int? {
+        return tabBar.items.firstIndex(where: { $0.title == NSLocalizedString("Discover", comment: "Discover tab name") })
+    }
 
     init(viewModel: ReaderTabViewModel) {
         mainStackView = UIStackView()
@@ -39,25 +52,20 @@ class ReaderTabView: UIView {
             self?.hideGhost()
             self?.addContentToContainerView()
         }
+
         setupViewElements()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(topicUnfollowed(_:)), name: .ReaderTopicUnfollowed, object: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func selectDiscover() {
-        guard let discoverIndex = tabBar.items
-            .firstIndex(where: { $0.title == NSLocalizedString("Discover", comment: "Discover tab name") }) else {
-            return
-        }
-
-        tabBar.setSelectedIndex(discoverIndex)
-        selectedTabDidChange(tabBar)
-    }
 }
 
 // MARK: - UI setup
+
 extension ReaderTabView {
 
     /// Call this method to set the title of the filter button
@@ -97,6 +105,8 @@ extension ReaderTabView {
         guard let tabItem = tabBar.currentlySelectedItem as? ReaderTabItem else {
             return
         }
+
+        previouslySelectedIndex = tabBar.selectedIndex
         buttonsStackView.isHidden = tabItem.shouldHideButtonsView
         horizontalDivider.isHidden = tabItem.shouldHideButtonsView
     }
@@ -168,15 +178,37 @@ extension ReaderTabView {
 }
 
 // MARK: - Actions
-extension ReaderTabView {
+
+private extension ReaderTabView {
+
     /// Tab bar
-    @objc private func selectedTabDidChange(_ tabBar: FilterTabBar) {
-        addContentToContainerView()
+    @objc func selectedTabDidChange(_ tabBar: FilterTabBar) {
+
+        // If the tab was previously filtered, refilter it.
+        // Otherwise reset the filter.
+        if let existingFilter = filteredTabs.first(where: { $0.index == tabBar.selectedIndex }) {
+
+            if previouslySelectedIndex == discoverIndex {
+                // Reset the container view to show a feed's content.
+                addContentToContainerView()
+            }
+
+            viewModel.setFilterContent(topic: existingFilter.topic)
+
+            resetFilterButton.isHidden = false
+            setFilterButtonTitle(existingFilter.topic.title)
+        } else {
+            didTapResetFilterButton()
+            addContentToContainerView()
+        }
+
+        previouslySelectedIndex = tabBar.selectedIndex
+
         viewModel.showTab(at: tabBar.selectedIndex)
         toggleButtonsView()
     }
 
-    private func toggleButtonsView() {
+    func toggleButtonsView() {
         guard let tabItems = tabBar.items as? [ReaderTabItem] else {
             return
         }
@@ -190,18 +222,29 @@ extension ReaderTabView {
     }
 
     /// Filter button
-    @objc private func didTapFilterButton() {
+    @objc func didTapFilterButton() {
         /// Present from the image view to align to the left hand side
-        viewModel.presentFilter(from: filterButton.imageView ?? filterButton) { [weak self] title in
-            if let title = title {
-                self?.resetFilterButton.isHidden = false
-                self?.setFilterButtonTitle(title)
+        viewModel.presentFilter(from: filterButton.imageView ?? filterButton) { [weak self] selectedTopic in
+
+            guard let selectedTopic = selectedTopic,
+                  let self = self else {
+                return
             }
+
+            let selectedIndex = self.tabBar.selectedIndex
+
+            // Remove any filters for selected index, then add new filter to array.
+            self.filteredTabs.removeAll(where: { $0.index == selectedIndex })
+            self.filteredTabs.append((index: selectedIndex, topic: selectedTopic))
+
+            self.resetFilterButton.isHidden = false
+            self.setFilterButtonTitle(selectedTopic.title)
         }
     }
 
     /// Reset filter button
-    @objc private func didTapResetFilterButton() {
+    @objc func didTapResetFilterButton() {
+        filteredTabs.removeAll(where: { $0.index == tabBar.selectedIndex })
         setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
         resetFilterButton.isHidden = true
         guard let tabItem = tabBar.currentlySelectedItem as? ReaderTabItem else {
@@ -209,10 +252,26 @@ extension ReaderTabView {
         }
         viewModel.resetFilter(selectedItem: tabItem)
     }
+
+    @objc func topicUnfollowed(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo,
+              let topic = userInfo[topicUserInfoKey] as? ReaderAbstractTopic,
+              let existingFilter = filteredTabs.first(where: { $0.topic == topic }) else {
+            return
+        }
+
+        filteredTabs.removeAll(where: { $0 == existingFilter })
+
+        if existingFilter.index == tabBar.selectedIndex {
+            didTapResetFilterButton()
+        }
+    }
+
 }
 
 
 // MARK: - Ghost
+
 private extension ReaderTabView {
 
     /// Build the ghost tab bar
@@ -255,6 +314,7 @@ private extension ReaderTabView {
 }
 
 // MARK: - Appearance
+
 private extension ReaderTabView {
 
     enum Appearance {
@@ -281,6 +341,7 @@ private extension ReaderTabView {
 
 
 // MARK: - Accessibility
+
 extension ReaderTabView {
     private enum Accessibility {
         static let filterButtonIdentifier = "ReaderFilterButton"
