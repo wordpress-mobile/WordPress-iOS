@@ -1,3 +1,6 @@
+16.7
+-----
+ 
 16.6
 -----
 * [**] Activity Log: adds support for Date Range and Activity Type filters. [https://github.com/wordpress-mobile/WordPress-iOS/issues/15192]
