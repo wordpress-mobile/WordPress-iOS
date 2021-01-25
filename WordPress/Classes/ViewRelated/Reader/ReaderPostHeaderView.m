@@ -143,8 +143,8 @@ const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
 
     [WPStyleGuide applyReaderFollowConversationButtonStyle:button];
 
-    NSString *normalText = NSLocalizedString(@"Follow conversation", @"Verb. Button title. Follow the comments on a post.");
-    NSString *selectedText = NSLocalizedString(@"Following conversation", @"Verb. Button title. The user is following the comments on a post.");
+    NSString *normalText = NSLocalizedString(@"Follow conversation by email", @"Verb. Button title. Follow the comments on a post.");
+    NSString *selectedText = NSLocalizedString(@"Following conversation by email", @"Verb. Button title. The user is following the comments on a post.");
 
     [button setTitle:normalText forState:UIControlStateNormal];
     [button setTitle:selectedText forState:UIControlStateSelected];
@@ -152,7 +152,7 @@ const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
 
     // Default accessibility label and hint.
     button.accessibilityLabel = button.isSelected ? selectedText : normalText;
-    button.accessibilityHint = NSLocalizedString(@"Follows the comments on a post.", @"VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post.");
+    button.accessibilityHint = NSLocalizedString(@"Follows the comments on a post by email.", @"VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post.");
     
     NSLayoutConstraint *height = [button.heightAnchor constraintEqualToConstant:PostHeaderViewFollowConversationButtonHeight];
     [NSLayoutConstraint activateConstraints:@[height]];

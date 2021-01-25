@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-23 12:54:08+0000 */
+/* Translation-Revision-Date: 2021-01-22 17:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -16,10 +16,10 @@
 "\"More\" Button" = "「更多」按鈕";
 
 /* No comment provided by engineer. */
-"%1$@ is the selected point for your restore." = "%1$@ is the selected point for your restore.";
+"%1$@ is the selected point for your restore." = "%1$@ 是選定還原資料的時間點。";
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
-"%1$@ is the selected point to create a downloadable backup." = "%1$@ is the selected point to create a downloadable backup.";
+"%1$@ is the selected point to create a downloadable backup." = "%1$@ 是選定建立可下載備份的時間點。";
 
 /* 'AUTHOR on POST TITLE' in a comment list */
 "%1$@ on %2$@" = "%2$@ 上的 %1$@";
@@ -31,10 +31,10 @@
 "%1$d of %2$d completed" = "已完成 %2$d 個，共 %1$d 個";
 
 /* Format string for single unseen post count. The %1$d is a placeholder for the count. */
-"%1$d unseen post" = "%1$d unseen post";
+"%1$d unseen post" = "%1$d 篇還沒看過的文章";
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
-"%1$d unseen posts" = "%1$d unseen posts";
+"%1$d unseen posts" = "%1$d 篇還沒看過的文章";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: Current value. */
 "%1$s. Current value is %2$s" = "%1$s。目前的值是 %2$s";
@@ -812,7 +812,7 @@
 
 /* Noun. Links to a blog's Jetpack Backups screen.
    Title for the Jetpack's backup list */
-"Backup" = "Backup";
+"Backup" = "備份";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "顯示所選期間留言情況的長條圖。";
@@ -1196,10 +1196,10 @@
 "Choose layout" = "選擇版面配置";
 
 /* Downloadable items: general section title */
-"Choose the items to download" = "Choose the items to download";
+"Choose the items to download" = "選擇要下載的項目";
 
 /* Restorable items: general section title */
-"Choose the items to restore" = "Choose the items to restore";
+"Choose the items to restore" = "選擇要還原的項目";
 
 /* No comment provided by engineer. */
 "Choose video" = "選擇視訊";
@@ -1678,10 +1678,10 @@
 "Create a post, page, or story" = "建立文章、頁面或限時動態";
 
 /* Label that describes the download backup action */
-"Create downloadable backup" = "Create downloadable backup";
+"Create downloadable backup" = "建立可下載的備份";
 
 /* Button title for download backup action */
-"Create downloadable file" = "Create downloadable file";
+"Create downloadable file" = "建立可下載的檔案";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "建立你專屬的自訂儀表板，並選擇要查看的報告。把重心放在你最關心的資料。";
@@ -1723,7 +1723,7 @@
 "Currently restoring your site" = "目前正在還原你的網站";
 
 /* Placeholder for Invite People message field. */
-"Custom message…" = "Custom message…";
+"Custom message…" = "自訂訊息…";
 
 /* Customize button that appears in Theme Browser Header
    The menu item to select during a guided tour.
@@ -1993,7 +1993,7 @@
 "Don’t cry because it’s over, smile because it happened." = "不要因為結束而哭泣，要為曾經發生過而微笑。";
 
 /* Title for label when there are no threats on the users site */
-"Don’t worry about a thing" = "Don’t worry about a thing";
+"Don’t worry about a thing" = "不必擔心";
 
 /* Screen reader hint for button that will move the menu item */
 "Double tap and hold to move this menu item up or down" = "點兩下並按住即可上下移動此選單項目";
@@ -2057,7 +2057,7 @@
 
 /* Title displayed for download backup action.
    Title for the Jetpack Download Backup Site Screen */
-"Download Backup" = "Download Backup";
+"Download Backup" = "下載備份";
 
 /* Label for number of file downloads. */
 "Downloads" = "下載";
@@ -2180,7 +2180,7 @@
 
 /* A placeholder for the username textfield.
    Invite Username Placeholder */
-"Email or Username…" = "Email or Username…";
+"Email or Username…" = "電子郵件或使用者名稱…";
 
 /* Overlay message displayed when export content started */
 "Email sent!" = "已傳送電子郵件！";
@@ -2367,7 +2367,7 @@
 "Excerpts are optional hand-crafted summaries of your content." = "文章摘要是指選擇性手動摘錄的內容。";
 
 /* Downloadable/Restorable items: content section footer text */
-"Excludes themes, plugins, and uploads" = "Excludes themes, plugins, and uploads";
+"Excludes themes, plugins, and uploads" = "排除佈景主題、外掛程式和上傳內容";
 
 /* Accessibility Label for the exit full screen button on the full screen comment reply mode */
 "Exit Full Screen" = "結束全螢幕";
@@ -2522,7 +2522,7 @@
 "First Name" = "名字";
 
 /* Button title that attempts to fix all fixable threats */
-"Fix All" = "Fix All";
+"Fix All" = "全部修復";
 
 /* Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
@@ -2895,7 +2895,7 @@ translators: sample content for \"Team\" page template */
 "Image Link" = "圖片連結";
 
 /* No comment provided by engineer. */
-"Image Link URL" = "Image Link URL";
+"Image Link URL" = "圖片連結 URL";
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "圖片大小";
@@ -2931,7 +2931,7 @@ translators: sample content for \"Team\" page template */
 "Included with Site" = "已隨附於網站中";
 
 /* Downloadable/Restorable items: general section footer text */
-"Includes wp-config php and any non WordPress files" = "Includes wp-config php and any non WordPress files";
+"Includes wp-config php and any non WordPress files" = "包括 wp-config php 和任何非 WordPress 檔案";
 
 /* An error message shown when a user signed in with incorrect credentials. */
 "Incorrect username or password. Please try entering your login details again." = "錯誤的使用者名稱或密碼。請再次嘗試輸入你的登入詳細資料。";
@@ -3028,7 +3028,7 @@ translators: sample content for \"Team\" page template */
 "Invite" = "邀請";
 
 /* Invite People Title */
-"Invite People" = "Invite People";
+"Invite People" = "邀請他人";
 
 /* translators: sample content for \"About\" page template */
 "It is our choices, Harry, that show what we truly are, far more than our abilities." = "哈利，決定我們成為什麼樣的人，並不是我們的能力，而是我們做了什麼選擇。";
@@ -3064,13 +3064,13 @@ translators: sample content for \"Team\" page template */
 "Jetpack FAQ" = "Jetpack 常見問題";
 
 /* Description for a label when the scan has failed */
-"Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team.";
+"Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Jetpack Scan 無法完成網站掃瞄作業。 請檢查你的網站是否已經關閉。若否，請再試一次。 如果網站已關閉，或 Jetpack Scan 仍無法順利掃瞄，請與我們的支援團隊聯絡。";
 
 /* Description for a label when there are threats on the site, displays the number of threats, and the site's title */
-"Jetpack Scan found %1$d potential threats on %2$@. Please review each threat and take action." = "Jetpack Scan found %1$d potential threats on %2$@. Please review each threat and take action.";
+"Jetpack Scan found %1$d potential threats on %2$@. Please review each threat and take action." = "Jetpack Scan 已在 %2$@ 上找到 %1$d 個潛在威脅。 請檢閱各威脅並採取行動。";
 
 /* Description for a label when there is a single threat on the site, displays the site's title */
-"Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action." = "Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action.";
+"Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action." = "Jetpack Scan 已在 %1$@ 上找到 1 個潛在威脅。 請檢閱各威脅並採取行動。";
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack 設定";
@@ -3141,7 +3141,7 @@ translators: sample content for \"Team\" page template */
 "Learn more about date and time formatting." = "深入瞭解日期與時間格式。";
 
 /* Footer text for Invite People role field. */
-"Learn more about roles" = "Learn more about roles";
+"Learn more about roles" = "瞭解更多有關角色的資訊";
 
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "瞭解更多...";
@@ -3448,7 +3448,7 @@ translators: sample content for \"Services\" page template */
 "Media Uploading" = "媒體上傳進度";
 
 /* Downloadable/Restorable items: Media Uploads */
-"Media Uploads" = "Media Uploads";
+"Media Uploads" = "媒體上傳";
 
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "媒體沒有可上傳的相關檔案。";
@@ -4074,10 +4074,10 @@ translators: sample content for \"Services\" page template */
 "Optional" = "可選的";
 
 /* Invite: Message Hint. %1$d is the maximum number of characters allowed. */
-"Optional message up to %1$d characters to be included in the invitation." = "Optional message up to %1$d characters to be included in the invitation.";
+"Optional message up to %1$d characters to be included in the invitation." = "要加入至邀請中的選填訊息 (上限 %1$d 個字元)。";
 
 /* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
-"Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "Optional: Enter a custom message up to %1$d characters to be sent with your invitation.";
+"Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "選填：輸入自訂訊息 (上限 %1$d 個字元)，連同你的邀請一併傳送。";
 
 /* Divider on initial auth view separating auth options. */
 "Or" = "或者";
@@ -4517,7 +4517,7 @@ translators: sample content for \"Services\" page template */
 "Premium Upgrades" = "進階版升級";
 
 /* Title for label when the preparing to scan the users site */
-"Preparing to scan" = "Preparing to scan";
+"Preparing to scan" = "正在準備掃瞄";
 
 /* Label to show while converting and/or resizing media to send to server */
 "Preparing..." = "準備中...";
@@ -4923,13 +4923,13 @@ translators: sample content for \"Services\" page template */
 "Reset" = "重設";
 
 /* Accessibility label for the reset activity type button */
-"Reset Activity Type filter" = "Reset Activity Type filter";
+"Reset Activity Type filter" = "重設活動類型篩選器";
 
 /* No comment provided by engineer. */
 "Reset Block" = "重設區塊";
 
 /* Accessibility label for the reset date range button */
-"Reset Date Range filter" = "Reset Date Range filter";
+"Reset Date Range filter" = "重設日期範圍篩選器";
 
 /* Accessibility label for the reset filter button in the reader. */
 "Reset filter" = "重設篩選條件";
@@ -4948,10 +4948,10 @@ translators: sample content for \"Services\" page template */
 "Restore" = "還原";
 
 /* Label that describes the restore site action */
-"Restore site" = "Restore site";
+"Restore site" = "還原網站";
 
 /* Button title for restore site action */
-"Restore to this point" = "Restore to this point";
+"Restore to this point" = "還原至此時間點";
 
 /* A prompt to attempt the failed network request again
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
@@ -4974,7 +4974,7 @@ translators: sample content for \"Services\" page template */
 "Retry" = "重試";
 
 /* Button title that triggers a scan */
-"Retry Scan" = "Retry Scan";
+"Retry Scan" = "再次掃瞄";
 
 /* User action to retry media upload. */
 "Retry Upload" = "重試上傳";
@@ -5094,13 +5094,13 @@ translators: sample content for \"Services\" page template */
 "Scan" = "掃瞄";
 
 /* Button title that triggers a scan */
-"Scan Again" = "Scan Again";
+"Scan Again" = "重新掃瞄";
 
 /* Button title that triggers a scan */
-"Scan Now" = "Scan Now";
+"Scan Now" = "立即掃瞄";
 
 /* Title for label when the actively scanning the users site */
-"Scanning files" = "Scanning files";
+"Scanning files" = "掃瞄檔案";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "排程";
@@ -5550,7 +5550,7 @@ translators: sample content for \"Services\" page template */
 "Site address must be at least 4 characters." = "網站位址至少必須為 4 個字元。";
 
 /* Downloadable/Restorable items: Site Database */
-"Site database" = "Site database";
+"Site database" = "網站資料庫";
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "已刪除網站";
@@ -5604,7 +5604,7 @@ translators: sample content for \"Services\" page template */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "部分媒體上傳失敗。此動作將移除文章中所有上傳失敗的媒體。\n是否仍要儲存？";
 
 /* Title for a label that appears when the scan failed */
-"Something went wrong" = "Something went wrong";
+"Something went wrong" = "發生錯誤";
 
 /* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
 "Something went wrong, please try again." = "發生錯誤，請再試一次。";
@@ -6055,10 +6055,10 @@ translators: sample content for \"Services\" page template */
 "The language in which this site is primarily written." = "此網站主要使用的語言。";
 
 /* Description that informs for label when there are no threats on a users site */
-"The last Jetpack scan completed and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "The last Jetpack scan completed and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today.";
+"The last Jetpack scan completed and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "Jetpack 上次掃瞄已完成，沒有發現任何問題。\n\n立即執行手動掃瞄，或等待 Jetpack 於今日稍晚掃瞄你的網站。";
 
 /* Description for label when there are no threats on a users site and how long ago the scan ran */
-"The last Jetpack scan ran %1$@ and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "The last Jetpack scan ran %1$@ and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today.";
+"The last Jetpack scan ran %1$@ and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "Jetpack 上次已掃瞄 %1$@，沒有發現任何問題。\n\n立即執行手動掃瞄，或等待 Jetpack 於今日稍晚掃瞄你的網站。";
 
 /* WordPress.com Push Authentication Expired message */
 "The login request has expired. Log in to WordPress.com to try again." = "登入要求已到期。登入 WordPress.com 再試一次。";
@@ -6250,7 +6250,7 @@ translators: sample content for \"Services\" page template */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "此應用程式需要權限才能存取你的裝置媒體庫，以便在你的文章中新增相片和\/或影片。若你希望允許此應用程式功能，請變更隱私設定。";
 
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
-"This domain is unavailable" = "This domain is unavailable";
+"This domain is unavailable" = "此網域不可使用";
 
 /* An error message informing the user the email address they entered did not match a WordPress.com account. */
 "This email address is not registered on WordPress.com." = "這個電子郵件地址沒有在 WordPress.com 上註冊。";
@@ -6948,7 +6948,7 @@ translators: sample content for \"Services\" page template */
 "WP Admin" = "WP 管理員";
 
 /* Downloadable/Restorable items: WP-content directory */
-"WP-content directory" = "WP-content directory";
+"WP-content directory" = "WP 內容目錄";
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "正在等待 Google 完成…";
@@ -7097,7 +7097,7 @@ translators: sample content for \"Services\" page template */
 "We were unable to send you an email at this time. Please try again later." = "我們目前無法寄送電子郵件給你。請稍後再試一次。";
 
 /* Description for label when the actively scanning the users site */
-"We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.";
+"We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "如果發現安全性威脅，我們會傳送電子郵件給你。 這段時間你可以照常使用網站，也可以隨時回來檢視掃瞄進度。";
 
 /* Title for notice displayed on canceling auto-upload published page
    Title for notice displayed on canceling auto-upload published post */
@@ -7303,7 +7303,7 @@ translators: sample content for \"Services\" page template */
 "WordPress Notifications" = "WordPress 通知";
 
 /* Downloadable/Restorable items: WordPress Plugins */
-"WordPress Plugins" = "WordPress Plugins";
+"WordPress Plugins" = "WordPress 外掛程式";
 
 /* Siri Suggestion to open Me tab */
 "WordPress Profile" = "WordPress 個人檔案";
@@ -7315,7 +7315,7 @@ translators: sample content for \"Services\" page template */
 "WordPress Site Details" = "WordPress 網站詳細資料";
 
 /* Downloadable/Restorable items: WordPress Themes */
-"WordPress Themes" = "WordPress Themes";
+"WordPress Themes" = "WordPress 佈景主題";
 
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "支援 iOS 的 WordPress";
@@ -7324,7 +7324,7 @@ translators: sample content for \"Services\" page template */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress 需要取得你的同意以存取裝置目前的位置，並將其新增到你的文章。請更新你的隱私設定。";
 
 /* Downloadable/Restorable items: WordPress root */
-"WordPress root" = "WordPress root";
+"WordPress root" = "WordPress 根目錄";
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "WordPress 版本過舊";
@@ -7583,7 +7583,7 @@ translators: sample content for \"Services\" page template */
 "Your site is visible to everyone, but asks search engines not to index your site." = "所有人都能看見你的網站，但你能要求搜尋引擎別將你的網站納入索引範圍。";
 
 /* Title for label when there are threats on the users site */
-"Your site may be at risk" = "Your site may be at risk";
+"Your site may be at risk" = "你的網站可能存在風險";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Your site will be ready shortly" = "你的網站即將準備就緒";
