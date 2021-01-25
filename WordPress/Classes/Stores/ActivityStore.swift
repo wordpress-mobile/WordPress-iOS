@@ -331,7 +331,7 @@ private extension ActivityStore {
         remoteV1(site: site)?.restoreSite(
             site.siteID,
             rewindID: rewindID,
-            success: { [actionDispatcher] restoreID in
+            success: { [actionDispatcher] restoreID, _ in
                 actionDispatcher.dispatch(ActivityAction.rewindStarted(site: site, rewindID: rewindID, restoreID: restoreID))
             },
             failure: {  [actionDispatcher] error in

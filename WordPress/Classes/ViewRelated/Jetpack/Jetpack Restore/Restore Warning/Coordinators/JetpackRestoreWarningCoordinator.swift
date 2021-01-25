@@ -40,8 +40,15 @@ class JetpackRestoreWarningCoordinator {
             return
         }
 
-        service.restoreSite(site, rewindID: rewindID, restoreTypes: restoreTypes, success: { [weak self] _ in
+        service.restoreSite(site, rewindID: rewindID, restoreTypes: restoreTypes, success: { [weak self] _, jobID in
+
+            if jobID == 0 {
+                self?.view.showRestoreAlreadyRunning()
+                return
+            }
+
             self?.view.showRestoreStarted()
+
         }, failure: { [weak self] error in
             DDLogError("Error restoring site: \(error.localizedDescription)")
 

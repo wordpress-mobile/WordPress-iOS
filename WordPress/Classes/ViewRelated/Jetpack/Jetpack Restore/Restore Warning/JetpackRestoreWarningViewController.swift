@@ -80,7 +80,10 @@ extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {
     }
 
     func showRestoreAlreadyRunning() {
-        // TODO: dimiss and show notice
+        self.dismiss(animated: true, completion: {
+            let notice = Notice(title: "Restore already running")
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+        })
     }
 
     func showRestoreRequestFailed() {

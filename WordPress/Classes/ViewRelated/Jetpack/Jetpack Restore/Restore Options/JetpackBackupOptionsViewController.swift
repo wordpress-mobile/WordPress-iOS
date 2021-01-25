@@ -15,6 +15,7 @@ class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
 
     private lazy var coordinator: JetpackBackupOptionsCoordinator = {
         return JetpackBackupOptionsCoordinator(site: self.site,
+                                               rewindID: self.activity.rewindID,
                                                restoreTypes: self.restoreTypes,
                                                view: self)
     }()
@@ -54,6 +55,13 @@ extension JetpackBackupOptionsViewController: JetpackBackupOptionsView {
 
     func showNoInternetConnection() {
         ReachabilityUtils.showAlertNoInternetConnection()
+    }
+
+    func showBackupAlreadyRunning() {
+        self.dismiss(animated: true, completion: {
+            let notice = Notice(title: "Backup already running")
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+        })
     }
 
     func showBackupRequestFailed() {
