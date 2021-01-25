@@ -8,6 +8,8 @@ class PageLayoutService {
         static let supportedBlocks = "supported_blocks"
         static let previewWidth = "preview_width"
         static let scale = "scale"
+        static let type = "type"
+        static let isBeta = "is_beta"
     }
 
     typealias CompletionHandler = (Swift.Result<Void, Error>) -> Void
@@ -30,6 +32,7 @@ class PageLayoutService {
 
     private static func fetchLayouts(_ api: WordPressComRestApi, _ dotComID: Int?, _ blogPersistentID: NSManagedObjectID, _ thumbnailSize: CGSize, _ completion: CompletionHandler?) {
         let params = parameters(thumbnailSize)
+
         PageLayoutServiceRemote.fetchLayouts(api, forBlogID: dotComID, withParameters: params) { (result) in
             switch result {
             case .success(let remoteLayouts):
@@ -52,7 +55,9 @@ class PageLayoutService {
         return [
             Parameters.supportedBlocks: supportedBlocks as AnyObject,
             Parameters.previewWidth: previewWidth(thumbnailSize) as AnyObject,
-            Parameters.scale: scale as AnyObject
+            Parameters.scale: scale as AnyObject,
+            Parameters.type: type as AnyObject,
+            Parameters.isBeta: isBeta as AnyObject
         ]
     }
 
@@ -66,6 +71,12 @@ class PageLayoutService {
     }
 
     private static let scale = UIScreen.main.nativeScale
+
+    private static let type = "mobile"
+
+    // Return "true" or "false" for isBeta that gets passed into the endpoint.
+    private static let isBeta = String(BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest])
+
 }
 
 extension PageLayoutService {
