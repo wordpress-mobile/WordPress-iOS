@@ -73,6 +73,11 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
         super.viewWillAppear(animated)
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        onDismissWithDeviceSelected?(selectedPreviewDevice)
+    }
+
     @IBAction func actionButtonSelected(_ sender: Any) {
         SiteCreationAnalyticsHelper.trackSiteDesignSelected(siteDesign)
         dismiss(animated: true)
@@ -129,7 +134,6 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
     }
 
     @objc func closeButtonTapped() {
-        onDismissWithDeviceSelected?(selectedPreviewDevice)
         dismiss(animated: true)
     }
 }
