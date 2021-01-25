@@ -58,6 +58,9 @@ class WindowManager: NSObject {
     private func showAppUI(completion: Completion? = nil) {
         isShowingFullscreenSignIn = false
 
+        // This is a bit of a hack to force the UI to be fully rebuilt.
+        WPTabBarController.recreateSharedInstance()
+
         show(WPTabBarController.sharedInstance(), completion: completion)
     }
 
