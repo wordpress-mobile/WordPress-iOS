@@ -16,7 +16,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
             }
         }
     }
-    var onDismissWithDeviceSelected: ((PreviewDeviceSelectionViewController.PreviewDevice) -> ())?
+    private var onDismissWithDeviceSelected: ((PreviewDeviceSelectionViewController.PreviewDevice) -> ())?
 
     lazy var ghostView: GutenGhostView = {
         let ghost = GutenGhostView()
