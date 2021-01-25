@@ -78,6 +78,9 @@ class ActivityListViewModel: Observable {
     }
 
     public func refresh(after: Date? = nil, before: Date? = nil, group: [ActivityGroup] = []) {
+
+        store.fetchRewindStatus(site: site)
+
         // If a new filter is being applied, remove all activities
         if isApplyingNewFilter(after: after, before: before, group: group) {
             ActionDispatcher.dispatch(ActivityAction.resetActivities(site: site))
