@@ -102,7 +102,7 @@ extension SuggestionType {
         case (.mention, let suggestion as UserSuggestion):
             return suggestion.username
         case (.xpost, let suggestion as SiteSuggestion):
-            return suggestion.title
+            return suggestion.subdomain
         default: return nil
         }
     }
