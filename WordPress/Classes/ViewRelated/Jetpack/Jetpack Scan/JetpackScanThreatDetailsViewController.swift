@@ -29,6 +29,9 @@ class JetpackScanThreatDetailsViewController: UIViewController {
 
     private func configureThreatDetailsView() {
         let threatDetailsView = ThreatDetailsView.loadFromNib()
+        let viewModel = JetpackScanThreatViewModel(threat: threat)
+        threatDetailsView.configure(with: viewModel)
+
         threatDetailsView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(threatDetailsView)
         view.pinSubviewToAllEdges(threatDetailsView)
