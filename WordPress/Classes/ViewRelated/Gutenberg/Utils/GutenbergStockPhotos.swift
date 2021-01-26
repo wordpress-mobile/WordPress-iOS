@@ -64,7 +64,7 @@ extension GutenbergStockPhotos: StockPhotosPickerDelegate {
                 return nil
             }
             let mediaUploadID = media.gutenbergUploadID
-            return MediaInfo(id: mediaUploadID, url: asset.URL.absoluteString, type: media.mediaTypeString)
+            return MediaInfo(id: mediaUploadID, url: asset.URL.absoluteString, type: media.mediaTypeString, caption: asset.caption)
         })
 
         callback(mediaInfo)
@@ -75,7 +75,7 @@ extension GutenbergStockPhotos: StockPhotosPickerDelegate {
     func appendOnNewBlocks(assets: ArraySlice<StockPhotosMedia>) {
         assets.forEach {
             if let media = self.mediaInserter.insert(exportableAsset: $0, source: .stockPhotos) {
-                self.gutenberg.appendMedia(id: media.gutenbergUploadID, url: $0.URL, type: .image)
+                self.gutenberg.appendMedia(id: media.gutenbergUploadID, url: $0.URL, type: .image, caption: $0.caption)
             }
         }
     }
