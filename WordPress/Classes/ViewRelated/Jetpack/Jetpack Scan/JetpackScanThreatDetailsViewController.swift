@@ -22,10 +22,22 @@ class JetpackScanThreatDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = Strings.title
+        configureThreatDetailsView()
     }
+
+    // MARK: - Configure
+
+    private func configureThreatDetailsView() {
+        let threatDetailsView = ThreatDetailsView.loadFromNib()
+        threatDetailsView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(threatDetailsView)
+        view.pinSubviewToAllEdges(threatDetailsView)
+    }
+}
+
+extension JetpackScanThreatDetailsViewController {
 
     private enum Strings {
         static let title = NSLocalizedString("Threat details", comment: "Title for the Jetpack Scan Threat Details screen")
     }
-
 }
