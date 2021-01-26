@@ -12,7 +12,7 @@ class RichContentFormatterTests: XCTestCase {
             let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
             let postDict = (try? JSONSerialization.jsonObject(with: data, options: [])) as? NSDictionary,
             let content = postDict.object(forKey: "content") as? NSString,
-            let window = UIApplication.shared.keyWindow else {
+            let window = UIApplication.shared.mainWindow else {
                 XCTFail()
                 return
         }
@@ -36,7 +36,7 @@ class RichContentFormatterTests: XCTestCase {
             let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
             let postDict = (try? JSONSerialization.jsonObject(with: data, options: [])) as? NSDictionary,
             let content = postDict.object(forKey: "content") as? NSString,
-            let window = UIApplication.shared.keyWindow else {
+            let window = UIApplication.shared.mainWindow else {
                 XCTFail()
                 return
         }

@@ -6,7 +6,7 @@ class MyProfileHeaderView: WPTableViewCell {
     @IBOutlet var gravatarButton: UIButton!
 
     var onAddUpdatePhoto: (() -> Void)?
-    let activityIndicator = UIActivityIndicatorView(style: .white)
+    let activityIndicator = UIActivityIndicatorView(style: .medium)
     var showsActivityIndicator: Bool {
         get {
             return activityIndicator.isAnimating

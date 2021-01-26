@@ -193,7 +193,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         tableView.tableHeaderView = searchController.searchBar
 
-        tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
+        tableView.verticalScrollIndicatorInsets.top = searchController.searchBar.bounds.height
     }
 
     override func configureAuthorFilter() {
@@ -935,7 +935,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func didPresentSearchController(_ searchController: UISearchController) {
-        tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y - view.safeAreaInsets.top
+        tableView.verticalScrollIndicatorInsets.top = searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y - view.safeAreaInsets.top
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {

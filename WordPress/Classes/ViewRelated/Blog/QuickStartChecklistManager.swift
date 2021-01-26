@@ -122,17 +122,18 @@ extension QuickStartChecklistManager: UITableViewDelegate {
         return .delete
     }
 
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let section = Sections(rawValue: indexPath.section), section == .todo else {
             return nil
         }
 
         let buttonTitle = NSLocalizedString("Skip", comment: "Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.")
-        let skip = UITableViewRowAction(style: .destructive, title: buttonTitle) { [weak self] (_, indexPath) in
+        let skip = UIContextualAction(style: .destructive, title: buttonTitle) { [weak self] (_, _, _) in
             self?.tableView(tableView, completeTourAt: indexPath)
         }
         skip.backgroundColor = .error
-        return [skip]
+
+        return UISwipeActionsConfiguration(actions: [skip])
     }
 }
 

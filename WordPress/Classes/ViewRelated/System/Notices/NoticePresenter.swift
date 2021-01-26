@@ -65,7 +65,7 @@ class NoticePresenter {
         self.animator = animator
 
         let windowFrame: CGRect
-        if let mainWindow = UIApplication.shared.keyWindow {
+        if let mainWindow = UIApplication.shared.mainWindow {
             windowFrame = mainWindow.offsetToAvoidStatusBar()
         } else {
             windowFrame = .zero

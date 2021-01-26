@@ -157,7 +157,7 @@
     self.definesPresentationContext = YES;
 
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.obscuresBackgroundDuringPresentation = NO;
     self.searchController.hidesNavigationBarDuringPresentation = !_displaysNavigationBarWhenSearching;
     self.searchController.delegate = self;
     self.searchController.searchResultsUpdater = self;

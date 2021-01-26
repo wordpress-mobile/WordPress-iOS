@@ -53,7 +53,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     private var customLoadingIndicator: ActivityIndicatorType?
 
     private lazy var defaultLoadingIndicator: UIActivityIndicatorView = {
-        let loadingIndicator = UIActivityIndicatorView(style: .gray)
+        let loadingIndicator = UIActivityIndicatorView(style: .medium)
         layoutViewCentered(loadingIndicator, size: nil)
         return loadingIndicator
     }()
