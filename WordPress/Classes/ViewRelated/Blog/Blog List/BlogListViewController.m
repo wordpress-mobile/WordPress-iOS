@@ -499,6 +499,16 @@ static NSInteger HideSearchMinSites = 3;
     if (self.splitViewControllerIsHorizontallyCompact) {
         [self.tableView deselectSelectedRowWithAnimation:YES];
     } else {
+        if (!self.selectedBlog) {
+            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+        
+            Blog *blogToSelect = blogService.lastUsedOrFirstBlog;
+            
+            if (blogToSelect) {
+                [self setSelectedBlog:blogToSelect animated:false];
+            }
+        }
+        
         if (self.selectedBlog) {
             NSIndexPath *indexPath = [self.dataSource indexPathForBlog:self.selectedBlog];
             if (indexPath) {
