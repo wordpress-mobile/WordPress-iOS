@@ -33,7 +33,7 @@ class JetpackRestoreWarningCoordinator {
     // MARK: - Public
 
     func restoreSite() {
-        service.restoreSite(site, rewindID: rewindID, restoreTypes: restoreTypes, success: { [weak self] _ in
+        service.restoreSite(site, rewindID: rewindID, restoreTypes: restoreTypes, success: { [weak self] _, _ in
             self?.view.showRestoreStatus()
         }, failure: { [weak self] error in
             DDLogError("Error restoring site: \(error.localizedDescription)")

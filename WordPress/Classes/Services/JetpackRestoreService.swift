@@ -18,7 +18,7 @@ import Foundation
     func restoreSite(_ site: JetpackSiteRef,
                      rewindID: String?,
                      restoreTypes: JetpackRestoreTypes? = nil,
-                     success: @escaping (String) -> Void,
+                     success: @escaping (String, Int) -> Void,
                      failure: @escaping (Error) -> Void) {
         guard let rewindID = rewindID else {
             return
