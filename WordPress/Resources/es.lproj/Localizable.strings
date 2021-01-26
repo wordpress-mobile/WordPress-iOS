@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-20 13:54:07+0000 */
+/* Translation-Revision-Date: 2021-01-26 12:54:53+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
@@ -6993,7 +6993,7 @@
 "Visit %@ for more" = "Visita %@ para saber más";
 
 /* Title for the button that will open a link to this site. */
-"Visit site" = "Visit site";
+"Visit site" = "Visitar sitio";
 
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "Visita el centro de ayuda para obtener respuestas a preguntas frecuentes, o contáctanos para más ayuda.";

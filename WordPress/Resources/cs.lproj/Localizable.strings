@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-17 18:16:04+0000 */
+/* Translation-Revision-Date: 2021-01-26 14:08:43+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: cs_CZ */
@@ -520,7 +520,7 @@
 "All languages" = "Všechny jazyky";
 
 /* Description for the Jetpack Backup Restore message. %1$@ is a placeholder for the selected date. */
-"All of your selected items are now restored back to %1$@." = "All of your selected items are now restored back to %1$@.";
+"All of your selected items are now restored back to %1$@." = "Všechny vaše vybrané položky jsou nyní obnoveny zpět na %1$@.";
 
 /* Title of the congratulation screen that appears when all the tasks are completed */
 "All tasks complete" = "Všechny úkoly jsou dokončeny";
@@ -680,7 +680,7 @@
 "Are you sure you want to permanently delete this item?" = "Opravdu chcete tuto položku trvale smazat?";
 
 /* Message of the confirmation alert when deleting a page from the trash. */
-"Are you sure you want to permanently delete this page?" = "Are you sure you want to permanently delete this page?";
+"Are you sure you want to permanently delete this page?" = "Jste si jistí, že chcete natrvalo smazat tuto stránku?";
 
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Opravdu chcete trvale smazat tento příspěvek?";
@@ -717,7 +717,7 @@
 "Are you sure you want to submit for review?" = "Opravdu chcete odeslat ke kontrole?";
 
 /* Message of the trash page confirmation alert. */
-"Are you sure you want to trash this page?" = "Are you sure you want to trash this page?";
+"Are you sure you want to trash this page?" = "Jste si jistí, že chcete vyhodit tuto stránku?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Opravdu chcete odstranit tento příspěvek?";
@@ -811,7 +811,7 @@
 "Backup" = "Záloha";
 
 /* Title for error displayed when preparing a backup fails. */
-"Backup failed." = "Backup failed.";
+"Backup failed." = "Záloha selhala.";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "Sloupcový graf zobrazující komentáře pro vybrané období.";
@@ -1095,10 +1095,10 @@
 "Change username" = "Změnit uživatelské jméno";
 
 /* Description of a Quick Start Tour */
-"Change, add, or remove content from your site's homepage." = "Change, add, or remove content from your site's homepage.";
+"Change, add, or remove content from your site's homepage." = "Změňte, přidejte nebo odeberte obsah z domovské stránky svého webu.";
 
 /* Description of a Quick Start Tour */
-"Change, add, or remove your site's pages." = "Change, add, or remove your site's pages.";
+"Change, add, or remove your site's pages." = "Změňte, přidejte nebo odeberte stránky svého webu.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Změna zobrazovaného jména";
@@ -1353,7 +1353,7 @@
 "Completed: Create your site" = "Dokončeno: Vytvořte si svůj web";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Edit your homepage" = "Completed: Edit your homepage";
+"Completed: Edit your homepage" = "Dokončeno: Upravte svou domovskou stránku";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Enable post sharing" = "Dokončeno: Povolit sdílení příspěvků";
@@ -1368,7 +1368,7 @@
 "Completed: Publish a post" = "Dokončeno: Publikujte příspěvek";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Review site pages" = "Completed: Review site pages";
+"Completed: Review site pages" = "Dokončeno: Zkontrolujte stránky webu";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Set your site title" = "Dokončeno: Nastavte název svého webu";
@@ -2068,10 +2068,10 @@
 "Download Backup" = "Stáhnout zálohu";
 
 /* Title displayed for download backup action. */
-"Download backup" = "Download backup";
+"Download backup" = "Stáhnout zálohu";
 
 /* Title for the button that will download the backup file. */
-"Download file" = "Download file";
+"Download file" = "Stáhnout soubor";
 
 /* Label for number of file downloads. */
 "Downloads" = "Stahování";
@@ -2147,7 +2147,7 @@
 "Edit video" = "Upravit video";
 
 /* Title of a Quick Start Tour */
-"Edit your homepage" = "Edit your homepage";
+"Edit your homepage" = "Upravte svou domovskou stránku";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Úpravou tohoto GIF odstraníte jeho animaci.";
@@ -2536,7 +2536,7 @@
 "Fix All" = "Opravit vše";
 
 /* Button title, confirm fixing all threats */
-"Fix all threats" = "Fix all threats";
+"Fix all threats" = "Opravte všechny hrozby";
 
 /* Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
@@ -2546,7 +2546,7 @@
 "Follow Site" = "Sledovat web";
 
 /* Verb. Button title. Follow the comments on a post. */
-"Follow conversation by email" = "Follow conversation by email";
+"Follow conversation by email" = "Sledovat konverzaci na e-mailu";
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Sledovat jiné weby";
@@ -2587,7 +2587,7 @@
 "Following %@" = "Následující %@";
 
 /* Verb. Button title. The user is following the comments on a post. */
-"Following conversation by email" = "Following conversation by email";
+"Following conversation by email" = "Konverzace sledována na e-mailu";
 
 /* Filters Follows Notifications */
 "Follows" = "Sledovat";
@@ -3102,7 +3102,7 @@
 "Jetpack Scan will rollback the affected file to the version from %1$@." = "Jetpack Scan will rollback the affected file to the version from %1$@.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will update to a newer version." = "Jetpack Scan will update to a newer version.";
+"Jetpack Scan will update to a newer version." = "Jetpack Scan se aktualizuje na novější verzi.";
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Nastavení Jetpack";
@@ -3265,7 +3265,7 @@
 "Loading Activities..." = "Načítání aktivit ...";
 
 /* Text displayed while loading the activity feed for a site */
-"Loading Backups..." = "Loading Backups...";
+"Loading Backups..." = "Načítání záloh...";
 
 /* Phrase to show when the user has searched for GIFs and they are being loaded. */
 "Loading GIFs..." = "Načítání GIFů...";
@@ -3432,13 +3432,13 @@
 "Mark as Sticky" = "Označit jako připnutý";
 
 /* An option to mark a post as seen. */
-"Mark as seen" = "Mark as seen";
+"Mark as seen" = "Označit jako viditelné";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Označit jako spam.";
 
 /* An option to mark a post as unseen. */
-"Mark as unseen" = "Mark as unseen";
+"Mark as unseen" = "Označit jako neviditelné";
 
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "Přiřaďte účty pomocí e-mailu";
@@ -3532,7 +3532,7 @@
 "Microsoft Outlook" = "Microsoft Outlook";
 
 /* Summary description for a threat */
-"Miscellaneous vulnerability" = "Miscellaneous vulnerability";
+"Miscellaneous vulnerability" = "Různé zranitelnosti";
 
 /* Title for the mobile web preview */
 "Mobile" = "Mobilní";
@@ -3586,7 +3586,7 @@
 "Move block left from position %1$s to position %2$s" = "Přesuňte blok doleva z pozice %1$s do polohy %2$s";
 
 /* No comment provided by engineer. */
-"Move block position" = "Move block position";
+"Move block position" = "Změňte pozici bloku";
 
 /* No comment provided by engineer. */
 "Move block right" = "Přesuňte blok doprava";
@@ -3617,10 +3617,10 @@
 "Move to Trash" = "Přesunout do koše";
 
 /* No comment provided by engineer. */
-"Move to bottom" = "Move to bottom";
+"Move to bottom" = "Přesunout dolů";
 
 /* No comment provided by engineer. */
-"Move to top" = "Move to top";
+"Move to top" = "Přesunout nahoru";
 
 /* Option to move Insight up in the view. */
 "Move up" = "Posunout nahoru";
@@ -3853,7 +3853,7 @@
 "No likes yet" = "Zatím žádné to se mi líbí";
 
 /* Title for the view when there aren't any backups to display for a given filter. */
-"No matching backups found" = "No matching backups found";
+"No matching backups found" = "Nebyly nalezeny žádné odpovídající zálohy";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "No matching events found." = "Nebyly nalezeny žádné odpovídající události.";
@@ -3867,10 +3867,10 @@
 "No menus available" = "Žádné menu není k dispozici";
 
 /* A hint to users about creating a downloadable backup of their site. */
-"No need to wait around. We'll notify you when your backup is ready." = "No need to wait around. We'll notify you when your backup is ready.";
+"No need to wait around. We'll notify you when your backup is ready." = "Není třeba čekat. Až bude vaše záloha připravena, upozorníme vás.";
 
 /* A hint to users about restoring their site. */
-"No need to wait around. We'll notify you when your site has been fully restored." = "No need to wait around. We'll notify you when your site has been fully restored.";
+"No need to wait around. We'll notify you when your site has been fully restored." = "Není třeba čekat. Až bude váš web obnoven, upozorníme vás.";
 
 /* Displayed in the Stats widgets when there is no network */
 "No network available" = "Síť není dostupná";
@@ -4037,7 +4037,7 @@
 "OK" = "OK";
 
 /* Title for the button that will dismiss this view. */
-"OK, notify me!" = "OK, notify me!";
+"OK, notify me!" = "Dobře, upozorněte mě!";
 
 /* Disabled */
 "Off" = "Vyp";
@@ -5003,7 +5003,7 @@
 "Restore" = "Obnovit";
 
 /* Title for error displayed when restoring a site fails. */
-"Restore failed." = "Restore failed.";
+"Restore failed." = "Obnovení se nezdařilo.";
 
 /* Label that describes the restore site action */
 "Restore site" = "Obnovit web";
@@ -5050,7 +5050,7 @@
 "Revert Pending Change" = "Vrátit čekající změnu";
 
 /* Title of a Quick Start Tour */
-"Review site pages" = "Review site pages";
+"Review site pages" = "Zkontrolujte stránky webu";
 
 /* Title of the screen that shows the revisions. */
 "Revision" = "Revize";
@@ -5441,7 +5441,7 @@
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Sdílet informace ohledně používání služeb během přihlášení k vašemu WordPress účtu s naším analytickým nástrojem.";
 
 /* Title for the button that will share the link for the downlodable backup file */
-"Share link" = "Share link";
+"Share link" = "Sdílet odkaz";
 
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
@@ -6350,7 +6350,7 @@
 "Threading" = "Posloupnosti";
 
 /* Title for a threat */
-"Threat Found" = "Threat Found";
+"Threat Found" = "Hrozba nalezena";
 
 /* Summary description for a threat that includes the threat signature */
 "Threat found %1$@" = "Threat found %1$@";
@@ -6494,7 +6494,7 @@
 "Trash" = "Odstranit";
 
 /* Title of the trash page confirmation alert. */
-"Trash this page?" = "Trash this page?";
+"Trash this page?" = "Smazat tuto stránku?";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Smazat tento příspěvek?";
@@ -6993,7 +6993,7 @@
 "Visit %@ for more" = "Navštivte %@ pro více informací";
 
 /* Title for the button that will open a link to this site. */
-"Visit site" = "Visit site";
+"Visit site" = "Zobrazit web";
 
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "Navštivte centrum nápovědy a získejte odpovědi na vaše nejčastější otázky, nebo nás kontaktujte pro další pomoc.";

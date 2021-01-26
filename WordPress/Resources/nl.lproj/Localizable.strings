@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-13 17:58:59+0000 */
+/* Translation-Revision-Date: 2021-01-26 14:24:41+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -259,7 +259,7 @@
 "A featured image is set. Tap to change it." = "Een uitgelichte afbeelding is ingesteld. Klik om het te wijzigen.";
 
 /* Title for a threat */
-"A file contains a malicious code pattern" = "A file contains a malicious code pattern";
+"A file contains a malicious code pattern" = "Een bestand bevat een kwaadaardig codepatroon";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "Een lijst van sites op dit account.";
@@ -717,7 +717,7 @@
 "Are you sure you want to submit for review?" = "Weet je zeker dat deze wilt verzenden voor controle?";
 
 /* Message of the trash page confirmation alert. */
-"Are you sure you want to trash this page?" = "Are you sure you want to trash this page?";
+"Are you sure you want to trash this page?" = "Weet je zeker dat je deze pagina naar de prullenbak wil verplaatsen?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Weet je zeker dat je dit bericht naar de prullenbak wilt verplaatsen?";
@@ -811,7 +811,7 @@
 "Backup" = "Back-up";
 
 /* Title for error displayed when preparing a backup fails. */
-"Backup failed." = "Backup failed.";
+"Backup failed." = "Back-up mislukt.";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "Staafgrafiek waarin het aantal opmerkingen tijdens de geselecteerde periode staan weergegeven.";
@@ -1724,13 +1724,13 @@
 "Currently creating a downloadable backup of your site" = "Currently creating a downloadable backup of your site";
 
 /* Title for the Jetpack Restore Status message. */
-"Currently restoring site" = "Currently restoring site";
+"Currently restoring site" = "Momenteel wordt je site teruggezet";
 
 /* Title of the cell displaying status of a rewind in progress */
 "Currently restoring your site" = "Je site wordt hersteld";
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
-"Currently restoring: %1$@" = "Currently restoring: %1$@";
+"Currently restoring: %1$@" = "Momenteel aan het herstellen: %1$@";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "Aangepast bericht…";
@@ -1771,10 +1771,10 @@
 "Dashboard" = "Dashboard";
 
 /* Title for a threat that includes the number of database rows affected */
-"Database %1$d threats" = "Database %1$d threats";
+"Database %1$d threats" = "Database %1$d bedreigingen";
 
 /* Title for a threat */
-"Database threat" = "Database threat";
+"Database threat" = "Database bedreiging";
 
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
@@ -2068,10 +2068,10 @@
 "Download Backup" = "Backup downloaden";
 
 /* Title displayed for download backup action. */
-"Download backup" = "Download backup";
+"Download backup" = "Back-up downloaden";
 
 /* Title for the button that will download the backup file. */
-"Download file" = "Download file";
+"Download file" = "Bestand downloaden";
 
 /* Label for number of file downloads. */
 "Downloads" = "Downloads";
@@ -2147,7 +2147,7 @@
 "Edit video" = "Bewerk video";
 
 /* Title of a Quick Start Tour */
-"Edit your homepage" = "Edit your homepage";
+"Edit your homepage" = "Bewerk je homepage";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Deze GIF bewerken zal de animatie verwijderen.";
@@ -2536,7 +2536,7 @@
 "Fix All" = "Alles oplossen";
 
 /* Button title, confirm fixing all threats */
-"Fix all threats" = "Fix all threats";
+"Fix all threats" = "Alle bedreigingen oplossen";
 
 /* Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
@@ -2546,7 +2546,7 @@
 "Follow Site" = "Site volgen";
 
 /* Verb. Button title. Follow the comments on a post. */
-"Follow conversation by email" = "Follow conversation by email";
+"Follow conversation by email" = "Volg conversatie per e-mail";
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Volg andere sites";
@@ -2587,7 +2587,7 @@
 "Following %@" = "Volgt %@";
 
 /* Verb. Button title. The user is following the comments on a post. */
-"Following conversation by email" = "Following conversation by email";
+"Following conversation by email" = "Conversatie wordt gevolgd per e-mail";
 
 /* Filters Follows Notifications */
 "Follows" = "Volgt";
@@ -2939,22 +2939,22 @@
 "Includes wp-config php and any non WordPress files" = "Bevat wp-config php en alle niet WordPress bestanden";
 
 /* Downloadable/Restorable items: general section footer text */
-"Includes wp-config.php and any non WordPress files" = "Includes wp-config.php and any non WordPress files";
+"Includes wp-config.php and any non WordPress files" = "Bevat wp-config.php en alle niet WordPress bestanden";
 
 /* An error message shown when a user signed in with incorrect credentials. */
 "Incorrect username or password. Please try entering your login details again." = "Gebruikersnaam of wachtwoord onjuist. Probeer nogmaals je inloggegevens in te voeren.";
 
 /* Title for a threat */
-"Infected core file" = "Infected core file";
+"Infected core file" = "Geïnfecteerd core-bestand";
 
 /* Title for a threat that includes the file name of the file */
-"Infected core file: %1$@" = "Infected core file: %1$@";
+"Infected core file: %1$@" = "Geinfecteerd core-bestand: %1$@";
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Informatie over cursussen en evenementen van WordPress.com (online en op locatie).";
 
 /* Placeholder for the restore progress title. */
-"Initializing the restore process" = "Initializing the restore process";
+"Initializing the restore process" = "Het terugzetproces aan het starten";
 
 /* Default button title used in media picker to insert media (photos / videos) into a post.
    Label action for inserting a link on the editor */
@@ -3084,25 +3084,25 @@
 "Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action." = "Jetpack Scan heeft 1 potentiële bedreiging gevonden op %1$@. Beoordeel elke bedreiging en neem actie.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will delete the affected file or directory." = "Jetpack Scan will delete the affected file or directory.";
+"Jetpack Scan will delete the affected file or directory." = "Jetpack Scan verwijdert het betreffende bestand of de folder.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will edit the affected file or directory." = "Jetpack Scan will edit the affected file or directory.";
+"Jetpack Scan will edit the affected file or directory." = "Jetpack Scan bewerkt het betreffende bestand of folder.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will replace the affected file or directory." = "Jetpack Scan will replace the affected file or directory.";
+"Jetpack Scan will replace the affected file or directory." = "Jetpack Scan vervangt het betreffende bestand of de folder.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will resolve the threat." = "Jetpack Scan will resolve the threat.";
+"Jetpack Scan will resolve the threat." = "Jetpack Scan zal de bedreiging oplossen.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will rollback the affected file to an older (clean) version." = "Jetpack Scan will rollback the affected file to an older (clean) version.";
+"Jetpack Scan will rollback the affected file to an older (clean) version." = "Jetpack Scan zal het getroffen bestand terugdraaien naar een oudere (schone) versie.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will rollback the affected file to the version from %1$@." = "Jetpack Scan will rollback the affected file to the version from %1$@.";
+"Jetpack Scan will rollback the affected file to the version from %1$@." = "Jetpack Scan zal het getroffen bestand terugdraaien naar de versie van %1$@.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will update to a newer version." = "Jetpack Scan will update to a newer version.";
+"Jetpack Scan will update to a newer version." = "Jetpack Scan zal worden geüpdatet naar een nieuwere versie.";
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack Instellingen";
@@ -3114,10 +3114,10 @@
 "Jetpack installed" = "Jetpack geïnstalleerd";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
-"Jetpack will be fixing all the detected active threats." = "Jetpack will be fixing all the detected active threats.";
+"Jetpack will be fixing all the detected active threats." = "Jetpack lost alle gedetecteerde actieve bedreigingen op.";
 
 /* Confirmation message presented before fixing a single threat */
-"Jetpack will be fixing the detected active threat." = "Jetpack will be fixing the detected active threat.";
+"Jetpack will be fixing the detected active threat." = "Jetpack lost alle gedetecteerde actieve bedreigingen op.";
 
 /* Footer for the Serve images from our servers setting */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack zal jouw afbeeldingen optimaliseren en serveren van een server locatie het dichtstbij jouw bezoekers. Ons globale content delivery network zal de laadtijd van jouw site verkorten.";
@@ -3265,7 +3265,7 @@
 "Loading Activities..." = "Activiteiten laden...";
 
 /* Text displayed while loading the activity feed for a site */
-"Loading Backups..." = "Loading Backups...";
+"Loading Backups..." = "Back-ups aan het laden...";
 
 /* Phrase to show when the user has searched for GIFs and they are being loaded. */
 "Loading GIFs..." = "GIF's laden...";
@@ -3432,13 +3432,13 @@
 "Mark as Sticky" = "Markeer als sticky";
 
 /* An option to mark a post as seen. */
-"Mark as seen" = "Mark as seen";
+"Mark as seen" = "Markeer als gezien";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Markeren als spam.";
 
 /* An option to mark a post as unseen. */
-"Mark as unseen" = "Mark as unseen";
+"Mark as unseen" = "Markeer als ongezien";
 
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "Koppel accounts via e-mail";
@@ -3532,7 +3532,7 @@
 "Microsoft Outlook" = "Microsoft Outlook";
 
 /* Summary description for a threat */
-"Miscellaneous vulnerability" = "Miscellaneous vulnerability";
+"Miscellaneous vulnerability" = "Verschillende kwetsbaarheden";
 
 /* Title for the mobile web preview */
 "Mobile" = "Mobiel";
@@ -3586,7 +3586,7 @@
 "Move block left from position %1$s to position %2$s" = "Verplaats blok naar links van positie %1$s naar positie %2$s";
 
 /* No comment provided by engineer. */
-"Move block position" = "Move block position";
+"Move block position" = "Verplaats blokpositie";
 
 /* No comment provided by engineer. */
 "Move block right" = "Verplaats blok naar rechts";
@@ -3617,10 +3617,10 @@
 "Move to Trash" = "Verplaatsen naar prullenbak";
 
 /* No comment provided by engineer. */
-"Move to bottom" = "Move to bottom";
+"Move to bottom" = "Verplaats naar beneden";
 
 /* No comment provided by engineer. */
-"Move to top" = "Move to top";
+"Move to top" = "Verplaats naar boven";
 
 /* Option to move Insight up in the view. */
 "Move up" = "Omhoog verplaatsen";
@@ -3853,7 +3853,7 @@
 "No likes yet" = "Nog geen likes";
 
 /* Title for the view when there aren't any backups to display for a given filter. */
-"No matching backups found" = "No matching backups found";
+"No matching backups found" = "Geen overeenkomende back-ups gevonden";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "No matching events found." = "Geen overeenkomende evenementen gevonden.";
@@ -3867,10 +3867,10 @@
 "No menus available" = "Geen menu's beschikbaar";
 
 /* A hint to users about creating a downloadable backup of their site. */
-"No need to wait around. We'll notify you when your backup is ready." = "No need to wait around. We'll notify you when your backup is ready.";
+"No need to wait around. We'll notify you when your backup is ready." = "Je hoeft niet te wachten. We laten het je weten als je back-up klaar is";
 
 /* A hint to users about restoring their site. */
-"No need to wait around. We'll notify you when your site has been fully restored." = "No need to wait around. We'll notify you when your site has been fully restored.";
+"No need to wait around. We'll notify you when your site has been fully restored." = "Je hoeft niet te wachten. We laten het je weten als je site compleet teruggezet is.";
 
 /* Displayed in the Stats widgets when there is no network */
 "No network available" = "Geen netwerk beschikbaar";
@@ -4037,7 +4037,7 @@
 "OK" = "OK";
 
 /* Title for the button that will dismiss this view. */
-"OK, notify me!" = "OK, notify me!";
+"OK, notify me!" = "OK, waarschuw mij!";
 
 /* Disabled */
 "Off" = "Uit";
@@ -4325,10 +4325,10 @@
 "Please check your internet connection and try again." = "Controleer je internetverbinding en probeer opnieuw.";
 
 /* Confirmation title presented before fixing all the threats, displays the number of threats to be fixed */
-"Please confirm you want to fix all %1$d active threats" = "Please confirm you want to fix all %1$d active threats";
+"Please confirm you want to fix all %1$d active threats" = "Bevestig dat je alle %1$d actieve bedreigingen wil oplossen";
 
 /* Confirmation title presented before fixing a single threat */
-"Please confirm you want to fix this threat" = "Please confirm you want to fix this threat";
+"Please confirm you want to fix this threat" = "Bevestig dat je deze bedreiging wil oplossen";
 
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "Neem contact op met ondersteuning voor assistentie.";
@@ -5000,10 +5000,10 @@
    Title for Jetpack Restore Complete screen
    Title for Jetpack Restore Status screen
    Title for the Jetpack Restore Site Screen */
-"Restore" = "Herstellen";
+"Restore" = "Terugzetten";
 
 /* Title for error displayed when restoring a site fails. */
-"Restore failed." = "Restore failed.";
+"Restore failed." = "Terugzetten mislukt.";
 
 /* Label that describes the restore site action */
 "Restore site" = "Site terugzetten";
@@ -5050,7 +5050,7 @@
 "Revert Pending Change" = "Wijziging in behandeling terugzetten";
 
 /* Title of a Quick Start Tour */
-"Review site pages" = "Review site pages";
+"Review site pages" = "Beoordeel site pagina's";
 
 /* Title of the screen that shows the revisions. */
 "Revision" = "Revisie";
@@ -5252,7 +5252,7 @@
 "Select %@ to discover new themes" = "Selecteer %@ om nieuwe thema's te ontdekken";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to edit your Homepage." = "Select %@ to edit your Homepage.";
+"Select %@ to edit your Homepage." = "Selecteer %@ om je homepage te bewerken.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to look for sites with similar interests" = "Selecteer %@ om te zoeken naar sites met dezelfde interesses";
@@ -5441,7 +5441,7 @@
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Deel informatie met onze analysetool over hoe je services gebruikt terwijl je bent ingelogd op je WordPress.com-account.";
 
 /* Title for the button that will share the link for the downlodable backup file */
-"Share link" = "Share link";
+"Share link" = "Deel link";
 
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
@@ -6086,7 +6086,7 @@
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Het certificaat voor deze server is ongeldig. Je maakt mogelijk verbinding met een server die zich voordoet als “%@”, wat je vertrouwelijke informatie in gevaar kan brengen.\n\nWil je het certificaat toch vertrouwen?";
 
 /* Title for a threat that includes the file name of the file */
-"The file %1$@ contains a malicious code pattern" = "The file %1$@ contains a malicious code pattern";
+"The file %1$@ contains a malicious code pattern" = "Het bestand %1$@ bevat een kwaadaardig codepatroon";
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "De afbeelding kon niet aan de mediabibliotheek toegevoegd worden.";
@@ -6350,10 +6350,10 @@
 "Threading" = "Threading";
 
 /* Title for a threat */
-"Threat Found" = "Threat Found";
+"Threat Found" = "Bedreiging gevonden";
 
 /* Summary description for a threat that includes the threat signature */
-"Threat found %1$@" = "Threat found %1$@";
+"Threat found %1$@" = "Bedreiging gevonden %1$@";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Miniatuur";
@@ -6494,7 +6494,7 @@
 "Trash" = "Prullenmand";
 
 /* Title of the trash page confirmation alert. */
-"Trash this page?" = "Trash this page?";
+"Trash this page?" = "Deze pagina naar prullenbak verplaatsen?";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Bericht naar prullenbak verplaatsen?";
@@ -6517,7 +6517,7 @@
 "Try Again" = "Probeer opnieuw";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
-"Try adjusting your date range filter" = "Try adjusting your date range filter";
+"Try adjusting your date range filter" = "Probeer het met aanpassen van je datumbereik filter";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "Try adjusting your date range or activity type filters" = "Wijzig je filters op datumbereik of type activiteit";
@@ -6602,10 +6602,10 @@
 "Unable to load video." = "Kan video niet laden.";
 
 /* Alert displayed to the user when updating a post's seen status failed. */
-"Unable to mark post seen" = "Unable to mark post seen";
+"Unable to mark post seen" = "Het is niet mogelijk om bericht als gezien te markeren";
 
 /* Alert displayed to the user when updating a post's unseen status failed. */
-"Unable to mark post unseen" = "Unable to mark post unseen";
+"Unable to mark post unseen" = "Niet mogelijk om bericht als niet gezien te markeren";
 
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Niet mogelijk video af te spelen";
@@ -6617,13 +6617,13 @@
 "Unable to register domain" = "Niet mogelijk om domein te registreren";
 
 /* Text displayed when a site restore fails. */
-"Unable to restore your site, please try again later or contact support." = "Niet mogelijk om jouw site te herstellen, probeer later opnieuw of neem contact op met support.";
+"Unable to restore your site, please try again later or contact support." = "Niet mogelijk om je site terug te zetten, probeer later opnieuw of neem contact op met ondersteuning.";
 
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "Niet mogelijk om media op te slaan.";
 
 /* Message that appears when a user tries to trash a page while their device is offline. */
-"Unable to trash pages while offline. Please try again later." = "Unable to trash pages while offline. Please try again later.";
+"Unable to trash pages while offline. Please try again later." = "Onmogelijk om pagina's naar de prullenbak te verwijderen als je offline bent. Probeer het later nog eens.";
 
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "Onmogelijk om berichten te verwijderen wanneer je offline bent. Probeer later opnieuw.";
@@ -6993,7 +6993,7 @@
 "Visit %@ for more" = "Bezoek %@ voor meer";
 
 /* Title for the button that will open a link to this site. */
-"Visit site" = "Visit site";
+"Visit site" = "Bezoek de site";
 
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "Breng een bezoek aan het Help Center voor antwoorden op algemene vragen of neem contact met ons op voor meer hulp.";
@@ -7007,25 +7007,25 @@
 "Visitors" = "Bezoekers";
 
 /* Summary description for a threat */
-"Vulnerability found in WordPress" = "Vulnerability found in WordPress";
+"Vulnerability found in WordPress" = "Kwetsbaarheid gevonden in WordPress";
 
 /* Summary description for a threat */
-"Vulnerability found in plugin" = "Vulnerability found in plugin";
+"Vulnerability found in plugin" = "Kwetsbaarheid gevonden in plugin";
 
 /* Summary description for a threat */
-"Vulnerability found in theme" = "Vulnerability found in theme";
+"Vulnerability found in theme" = "Kwetsbaarheid gevonden in thema";
 
 /* Title for a threat */
-"Vulnerable Plugin" = "Vulnerable Plugin";
+"Vulnerable Plugin" = "Kwetsbare plugin";
 
 /* Title for a threat that includes the file name of the plugin and the affected version */
-"Vulnerable Plugin: %1$@ (version %2$@)" = "Vulnerable Plugin: %1$@ (version %2$@)";
+"Vulnerable Plugin: %1$@ (version %2$@)" = "Kwetsbare plugin: %1$@ (versie %2$@)";
 
 /* Title for a threat */
-"Vulnerable Theme" = "Vulnerable Theme";
+"Vulnerable Theme" = "Kwetsbaar thema";
 
 /* Title for a threat that includes the file name of the theme and the affected version */
-"Vulnerable Theme %1$@ (version %2$@)" = "Vulnerable Theme %1$@ (version %2$@)";
+"Vulnerable Theme %1$@ (version %2$@)" = "Kwetsbaar thema: %1$@ (versie %2$@)";
 
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "WP Admin";
@@ -7095,7 +7095,7 @@
 "We couldn't complete this action." = "We konden deze handeling niet voltooien.";
 
 /* Message for error displayed when preparing a backup fails. */
-"We couldn't create your backup. Please try again later." = "We couldn't create your backup. Please try again later.";
+"We couldn't create your backup. Please try again later." = "We konden je back-up niet maken. Probeer het later nog een keer.";
 
 /* Primary message shown when there are no domains that match the user entered text. */
 "We couldn't find any available address with the words you entered - let's try again." = "We konden geen beschikbaar adres vinden met de woorden die je hebt ingevoerd. Laten we het nogmaals proberen.";
@@ -7113,7 +7113,7 @@
 "We couldn't publish this private post, but we'll try again later." = "We konden dit privébericht niet publiceren, maar we proberen het later nog eens.";
 
 /* Message for error displayed when restoring a site fails. */
-"We couldn't restore your site. Please try again later." = "We couldn't restore your site. Please try again later.";
+"We couldn't restore your site. Please try again later." = "We konden je site niet terugzetten. Probeer het later nog eens.";
 
 /* Description that appears when a media fails to load in the Media Editor. */
 "We couldn't retrieve this media.\nPlease tap to retry." = "We konden deze media niet ophalen.\nTik om opnieuw te proberen.";
@@ -7170,7 +7170,7 @@
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "We hebben grote verbeteringen aan de blokeditor aangebracht en vinden het zeker de moeite waard!\n\nWe hebben deze ingeschakeld voor nieuwe berichten en pagina's, maar als je toch liever de klassieke editor gebruikt, ga naar 'Mijn site' > 'Site-instellingen'.";
 
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
-"We successfully created a backup of your site from %1$@." = "We successfully created a backup of your site from %1$@.";
+"We successfully created a backup of your site from %1$@." = "We hebben met succes een back-up gemaakt van je site van %1$@.";
 
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "We gebruiken ook andere tracking-tools, waaronder een aantal van derden. Bekijk meer informatie over deze tools en hoe je ze kunt beheren.";
@@ -7240,7 +7240,7 @@
 "We'll use this email address to create your new WordPress.com account." = "We zullen dit e-mailadres gebruiken om je nieuwe WordPress account aan te maken.";
 
 /* Description for the Jetpack Backup Status message. %1$@ is a placeholder for the selected date. */
-"We're creating a downloadable backup of your site from %1$@." = "We're creating a downloadable backup of your site from %1$@.";
+"We're creating a downloadable backup of your site from %1$@." = "We zijn een downloadbare back-up van je site aan het maken van %1$@.";
 
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "We voeren de laatste instellingen door, nog even geduld…";
@@ -7632,10 +7632,10 @@
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Je huidige gebruikersnaam is %1$@. Op een paar uitzonderingen na zullen anderen alleen jouw weergavenaam %2$@ zien.";
 
 /* Text displayed in the view when there aren't any Backups to display */
-"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed";
+"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Je eerste back-up verschijnt hier binnen 24 uur en je ontvangt een bericht zodra de back-up is afgerond.";
 
 /* Title for the view when there aren't any Backups to display */
-"Your first backup will be ready soon" = "Your first backup will be ready soon";
+"Your first backup will be ready soon" = "Je eerste back-up is binnenkort klaar";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Je meldingen reizen met je mee. Bekijk reacties en likes wanneer ze binnenkomen.";
@@ -7650,7 +7650,7 @@
 "Your posts, pages, and settings will be mailed to you at %@." = "Je berichten, pagina's en instellingen worden naar je gemaild via %@.";
 
 /* Text displayed when a site restore takes too long. */
-"Your restore is taking longer than usual, please check again in a few minutes." = "Het herstellen duurt langer dan normaal, controleer opnieuw over een paar minuten.";
+"Your restore is taking longer than usual, please check again in a few minutes." = "Je herstel duurt langer dan normaal, controleer opnieuw over een paar minuten.";
 
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Je site-adres verschijnt in de balk boven aan het scherm wanneer je je site bezoekt in Safari.";
@@ -7659,7 +7659,7 @@
 "Your site has been created!" = "Je site is gemaakt!";
 
 /* Title for the Jetpack Restore Complete message. */
-"Your site has been restored" = "Your site has been restored";
+"Your site has been restored" = "Je site is teruggezet";
 
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Je site is succesvol teruggezet";
