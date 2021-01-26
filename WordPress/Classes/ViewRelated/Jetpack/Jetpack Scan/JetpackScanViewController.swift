@@ -87,7 +87,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
 }
 
 // MARK: - Table View
-extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate {
+extension JetpackScanViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = coordinator.threats?.count ?? 0
         return count + Constants.tableHeaderCountOffset
@@ -136,5 +136,19 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
         let row = indexPath.row - Constants.tableHeaderCountOffset
 
         return threats[row]
+    }
+}
+
+extension JetpackScanViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        guard let threat = threat(for: indexPath) else {
+            return
+        }
+
+        let threatDetailsVC = JetpackScanThreatDetailsViewController(threat: threat)
+        self.navigationController?.pushViewController(threatDetailsVC, animated: true)
     }
 }
