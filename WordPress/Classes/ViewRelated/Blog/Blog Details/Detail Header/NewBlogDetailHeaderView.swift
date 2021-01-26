@@ -54,7 +54,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
             refreshIconImage()
             toggleSpotlightOnSiteTitle()
             refreshSiteTitle()
-            //titleView.subtitleLabel.text = blog?.displayURL as String?
+
             if let displayURL = blog?.displayURL as String? {
                 titleView.set(url: displayURL)
             }
@@ -112,11 +112,6 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
     required init(items: [ActionRow.Item]) {
         actionRow = ActionRow(items: items)
-        /*titleView = UIStackView(arrangedSubviews: [
-            siteIconView,
-            titleButton,
-            subtitleLabel,
-        ])*/
         titleView = TitleView(frame: .zero)
 
         super.init(frame: .zero)
@@ -179,20 +174,6 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
             titleView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutSpacing.atSides),
             titleView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutSpacing.atSides)
         ]
-
-        /*
-        titleView.setCustomSpacing(LayoutSpacing.spacingBelowIcon, after: siteIconView)
-        titleView.setCustomSpacing(LayoutSpacing.spacingBelowTitle, after: titleButton)
-
-        let stackViewConstraints = [
-            titleView.trailingAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.trailingAnchor),
-            titleView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: LayoutSpacing.minimumSideSpacing),
-            titleView.topAnchor.constraint(equalTo: topAnchor, constant: LayoutSpacing.interSectionSpacing),
-            titleView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
-        ]
-        stackViewConstraints.forEach { $0.priority = UILayoutPriority(999) }
-        
-        NSLayoutConstraint.activate(stackViewConstraints)*/
     }
 
     // MARK: - User Action Handlers
@@ -217,8 +198,8 @@ fileprivate extension NewBlogDetailHeaderView {
         private enum Dimensions {
             static let siteIconHeight: CGFloat = 64
             static let siteIconWidth: CGFloat = 64
-            static let siteSwitcherHeight: CGFloat = 24
-            static let siteSwitcherWidth: CGFloat = 24
+            static let siteSwitcherHeight: CGFloat = 36
+            static let siteSwitcherWidth: CGFloat = 36
         }
 
         private enum LayoutSpacing {
@@ -240,7 +221,7 @@ fileprivate extension NewBlogDetailHeaderView {
             let label = UILabel()
 
             label.font = WPStyleGuide.fontForTextStyle(.footnote)
-            label.textColor = UIColor.textSubtle
+            label.textColor = WPStyleGuide.darkBlue()
             label.adjustsFontForContentSizeCategory = true
             label.translatesAutoresizingMaskIntoConstraints = false
 
@@ -265,6 +246,7 @@ fileprivate extension NewBlogDetailHeaderView {
             button.setImage(image, for: .normal)
             button.contentMode = .center
             button.translatesAutoresizingMaskIntoConstraints = false
+            button.tintColor = .gray
 
             button.addTarget(self, action: #selector(siteSwitcherTapped), for: .touchUpInside)
 
@@ -311,16 +293,6 @@ fileprivate extension NewBlogDetailHeaderView {
 
         func set(url: String) {
             subtitleLabel.text = url
-            /*
-            let displayURL = NSMutableAttributedString(string: url)
-            let externalLinkAttachment = NSTextAttachment()
-            externalLinkAttachment.image =  UIImage.gridicon(.external, size: CGSize(width: subtitleLabel.font.pointSize, height: subtitleLabel.font.pointSize))
-            
-            let attachmentString = NSMutableAttributedString(attachment: externalLinkAttachment)
-            displayURL.append(NSAttributedString(string: " "))
-            displayURL.append(attachmentString)
-            
-            subtitleLabel.attributedText = displayURL*/
         }
 
         // MARK: - Child View Setup
@@ -330,10 +302,6 @@ fileprivate extension NewBlogDetailHeaderView {
             addSubview(titleStackView)
             addSubview(siteSwitcherButton)
             addSubview(externalLinkImage)
-
-            //backgroundColor = .systemPink
-            //titleStackView.backgroundColor = .green
-            //siteSwitcherButton.backgroundColor = .blue
 
             setupConstraintsForChildViews()
         }
