@@ -149,7 +149,7 @@ extension ReaderSiteTopic {
                         cell.textLabel?.text = topic.title
                         cell.detailTextLabel?.text = topic.siteURL
 
-                        if FeatureFlag.unseenPostCount.enabled {
+                        if FeatureFlag.unseenPosts.enabled {
                             addUnseenPostCount(topic, with: cell)
                         }
                     })

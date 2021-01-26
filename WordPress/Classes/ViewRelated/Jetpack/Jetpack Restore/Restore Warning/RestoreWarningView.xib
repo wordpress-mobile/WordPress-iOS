@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="ZqQ-sO-2aH" customClass="RestoreWarningView" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="300"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HDs-Xm-1E7">
+                    <rect key="frame" x="16" y="24" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="32" id="2DD-LR-cMX"/>
+                        <constraint firstAttribute="width" secondItem="HDs-Xm-1E7" secondAttribute="height" id="L2O-KB-45i"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xzv-RX-M1d">
+                    <rect key="frame" x="16" y="64" width="382" height="20.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EHP-Zk-FQR">
+                    <rect key="frame" x="16" y="88.5" width="382" height="20.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="3lx-s4-WO5">
+                    <rect key="frame" x="16" y="133" width="382" height="104"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kdA-Zi-bHr" customClass="FancyButton" customModule="WordPressUI">
+                            <rect key="frame" x="0.0" y="0.0" width="382" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="IDx-VK-mCB"/>
+                            </constraints>
+                            <state key="normal" title="Button"/>
+                            <connections>
+                                <action selector="confirmButtonTapped:" destination="ZqQ-sO-2aH" eventType="touchUpInside" id="8jb-1i-R6Z"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ga-Hc-Cyk" customClass="FancyButton" customModule="WordPressUI">
+                            <rect key="frame" x="0.0" y="60" width="382" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="304-IK-GSL"/>
+                            </constraints>
+                            <state key="normal" title="Button"/>
+                            <connections>
+                                <action selector="cancelButtonTapped:" destination="ZqQ-sO-2aH" eventType="touchUpInside" id="rMH-2Q-VIW"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Wc3-vw-3AF"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="Xzv-RX-M1d" firstAttribute="top" secondItem="HDs-Xm-1E7" secondAttribute="bottom" constant="8" id="7Yh-9u-yUf"/>
+                <constraint firstItem="3lx-s4-WO5" firstAttribute="leading" secondItem="HDs-Xm-1E7" secondAttribute="leading" id="BKP-q6-Gfg"/>
+                <constraint firstItem="3lx-s4-WO5" firstAttribute="top" secondItem="EHP-Zk-FQR" secondAttribute="bottom" constant="24" id="CTq-CU-aC5"/>
+                <constraint firstItem="HDs-Xm-1E7" firstAttribute="leading" secondItem="Wc3-vw-3AF" secondAttribute="leading" constant="16" id="ElR-MJ-DQZ"/>
+                <constraint firstItem="EHP-Zk-FQR" firstAttribute="centerX" secondItem="Wc3-vw-3AF" secondAttribute="centerX" id="FbP-Ff-GQP"/>
+                <constraint firstItem="Xzv-RX-M1d" firstAttribute="leading" secondItem="HDs-Xm-1E7" secondAttribute="leading" id="QRi-IH-z2j"/>
+                <constraint firstItem="3lx-s4-WO5" firstAttribute="centerX" secondItem="Wc3-vw-3AF" secondAttribute="centerX" id="Qbz-iX-gih"/>
+                <constraint firstItem="EHP-Zk-FQR" firstAttribute="top" secondItem="Xzv-RX-M1d" secondAttribute="bottom" constant="4" id="SQ1-Qt-2Jj"/>
+                <constraint firstItem="Xzv-RX-M1d" firstAttribute="centerX" secondItem="Wc3-vw-3AF" secondAttribute="centerX" id="cZk-1s-YIn"/>
+                <constraint firstItem="HDs-Xm-1E7" firstAttribute="top" secondItem="ZqQ-sO-2aH" secondAttribute="top" constant="24" id="cwU-fN-VR4"/>
+                <constraint firstItem="EHP-Zk-FQR" firstAttribute="leading" secondItem="HDs-Xm-1E7" secondAttribute="leading" id="fE4-bh-EOu"/>
+                <constraint firstItem="Wc3-vw-3AF" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="3lx-s4-WO5" secondAttribute="bottom" constant="24" id="mRN-j3-WFJ"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="cancelButton" destination="9ga-Hc-Cyk" id="wPA-30-GH5"/>
+                <outlet property="confirmButton" destination="kdA-Zi-bHr" id="AHu-Q6-GjN"/>
+                <outlet property="descriptionLabel" destination="EHP-Zk-FQR" id="1la-9s-vkS"/>
+                <outlet property="icon" destination="HDs-Xm-1E7" id="VuX-co-wO6"/>
+                <outlet property="titleLabel" destination="Xzv-RX-M1d" id="gTa-o0-hV7"/>
+            </connections>
+            <point key="canvasLocation" x="-1520" y="-7"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

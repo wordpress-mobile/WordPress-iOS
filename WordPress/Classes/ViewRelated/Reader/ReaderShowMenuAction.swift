@@ -67,6 +67,22 @@ final class ReaderShowMenuAction {
                                                })
         }
 
+        // Seen
+        if FeatureFlag.unseenPosts.enabled {
+            // Only show option for posts that are followed
+            if post.feedItemID != nil {
+                alertController.addActionWithTitle(post.isSeen ? ReaderPostMenuButtonTitles.markUnseen : ReaderPostMenuButtonTitles.markSeen,
+                                                   style: .default,
+                                                   handler: { (action: UIAlertAction) in
+                                                    if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
+                                                        ReaderSeenAction().execute(with: post, context: context, failure: { _ in
+                                                            ReaderHelpers.dispatchToggleSeenError(post: post)
+                                                        })
+                                                    }
+                                                   })
+            }
+        }
+
         // Visit
         alertController.addActionWithTitle(ReaderPostMenuButtonTitles.visit,
                                            style: .default,

@@ -28,7 +28,7 @@ class TableViewKeyboardObserver: NSObject {
         }
 
         var inset = originalInset
-        if UIApplication.shared.statusBarOrientation.isPortrait {
+        if UIApplication.shared.currentStatusBarOrientation.isPortrait {
             inset.bottom += keyboardFrame.height
         } else {
             inset.bottom += keyboardFrame.width
