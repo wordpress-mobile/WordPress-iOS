@@ -64,13 +64,16 @@ open class ReaderPostMenu {
 
         // Seen
         if FeatureFlag.unseenPosts.enabled {
-            alertController.addActionWithTitle(post.isSeen ? ReaderPostMenuButtonTitles.markUnseen : ReaderPostMenuButtonTitles.markSeen,
-                                               style: .default,
-                                               handler: { (action: UIAlertAction) in
-                                                if let post: ReaderPost = self.existingObject(for: post.objectID, context: post.managedObjectContext) {
-                                                    self.toggleSeenForPost(post)
-                                                }
-                                               })
+            // Only show option for posts that are followed
+            if post.feedItemID != nil {
+                alertController.addActionWithTitle(post.isSeen ? ReaderPostMenuButtonTitles.markUnseen : ReaderPostMenuButtonTitles.markSeen,
+                                                   style: .default,
+                                                   handler: { (action: UIAlertAction) in
+                                                    if let post: ReaderPost = self.existingObject(for: post.objectID, context: post.managedObjectContext) {
+                                                        self.toggleSeenForPost(post)
+                                                    }
+                                                   })
+            }
         }
 
         // Visit site
@@ -201,10 +204,17 @@ open class ReaderPostMenu {
             return
         }
 
-        // TODO: add Tracks
+        let event: WPAnalyticsEvent = post.isSeen ? .readerPostMarkUnseen : .readerPostMarkSeen
+        WPAnalytics.track(event, properties: ["source": "post_details"])
 
         let postService = ReaderPostService(managedObjectContext: context)
-        postService.toggleSeen(for: post, success: nil, failure: nil)
+        postService.toggleSeen(for: post, success: {
+            NotificationCenter.default.post(name: .ReaderPostSeenToggled,
+                                            object: nil,
+                                            userInfo: [ReaderNotificationKeys.post: post])
+        }, failure: { _ in
+            ReaderHelpers.dispatchToggleSeenError(post: post)
+        })
     }
 
     fileprivate class func visitSiteForPost(_ post: ReaderPost, presentingViewController viewController: UIViewController) {

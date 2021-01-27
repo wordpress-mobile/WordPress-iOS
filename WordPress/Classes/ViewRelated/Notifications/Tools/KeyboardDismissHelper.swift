@@ -213,14 +213,12 @@ import UIKit
         }
 
         // Proceed Animating
-        UIView.beginAnimations(nil, context: nil)
-        UIView.setAnimationCurve(curve)
-        UIView.setAnimationDuration(duration)
+        let options = UIView.AnimationOptions(rawValue: UInt(curve.rawValue))
+        UIView.animate(withDuration: duration, delay: 0, options: options) { [weak self] in
+            self?.bottomLayoutConstraint.constant = newBottomInset
+            self?.parentView.layoutIfNeeded()
+        } completion: { _ in }
 
-        bottomLayoutConstraint.constant = newBottomInset
-        parentView.layoutIfNeeded()
-
-        UIView.commitAnimations()
     }
 
     fileprivate func bottomInsetFromKeyboardNote(_ note: Foundation.Notification) -> CGFloat {

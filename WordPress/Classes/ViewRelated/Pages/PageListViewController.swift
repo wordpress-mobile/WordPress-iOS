@@ -73,6 +73,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         controller.blog = blog
         controller.restorationClass = self
 
+        if QuickStartTourGuide.shared.isCurrentElement(.pages) {
+            controller.filterSettings.setFilterWithPostStatus(BasePost.Status.publish)
+        }
+
         return controller
     }
 
@@ -147,6 +151,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        QuickStartTourGuide.shared.endCurrentTour()
+    }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if traitCollection.horizontalSizeClass == .compact {
@@ -184,7 +193,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         tableView.tableHeaderView = searchController.searchBar
 
-        tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
+        tableView.verticalScrollIndicatorInsets.top = searchController.searchBar.bounds.height
     }
 
     override func configureAuthorFilter() {
@@ -400,6 +409,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.deselectRow(at: indexPath, animated: true)
 
         let page = pageAtIndexPath(indexPath)
+        if page.isSiteHomepage {
+            QuickStartTourGuide.shared.visited(.editHomepage)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
 
         guard page.status != .trash else {
             return
@@ -419,6 +432,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
 
         configureCell(cell, at: indexPath)
+
+        if page.isSiteHomepage && QuickStartTourGuide.shared.isCurrentElement(.editHomepage) {
+            cell.accessoryView = QuickStartSpotlightView()
+        }
 
         return cell
     }
@@ -918,7 +935,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func didPresentSearchController(_ searchController: UISearchController) {
-        tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y - view.safeAreaInsets.top
+        tableView.verticalScrollIndicatorInsets.top = searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y - view.safeAreaInsets.top
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {

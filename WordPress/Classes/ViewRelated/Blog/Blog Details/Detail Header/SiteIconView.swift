@@ -34,7 +34,7 @@ class SiteIconView: UIView {
     }()
 
     let activityIndicator: UIActivityIndicatorView = {
-        let indicatorView = UIActivityIndicatorView(style: .whiteLarge)
+        let indicatorView = UIActivityIndicatorView(style: .large)
         indicatorView.translatesAutoresizingMaskIntoConstraints = false
         return indicatorView
     }()

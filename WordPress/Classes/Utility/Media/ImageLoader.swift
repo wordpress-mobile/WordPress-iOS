@@ -442,7 +442,7 @@ extension ImageLoader {
         imageView.image = placeholder
         imageView.startLoadingAnimation()
 
-        PHImageManager.default().requestImageData(for: asset,
+        PHImageManager.default().requestImageDataAndOrientation(for: asset,
                                                   options: assetRequestOptions,
                                                   resultHandler: { [weak self] (data, str, orientation, info) -> Void in
             guard info?[PHImageErrorKey] == nil else {
