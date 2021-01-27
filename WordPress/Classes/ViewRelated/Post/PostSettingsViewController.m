@@ -373,7 +373,11 @@ FeaturedImageViewControllerDelegate>
     [self.tableView reloadData];
 }
 
-
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    [self reloadData];
+}
 #pragma mark - TextField Delegate Methods
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
@@ -702,6 +706,7 @@ FeaturedImageViewControllerDelegate>
     textCell.textField.placeholder = NSLocalizedString(@"Enter a password", @"");
     textCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     textCell.textField.secureTextEntry = YES;
+    textCell.textField.textColor = self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ? UIColor.whiteColor : UIColor.blackColor;
     
     textCell.tag = PostSettingsRowPassword;
     
