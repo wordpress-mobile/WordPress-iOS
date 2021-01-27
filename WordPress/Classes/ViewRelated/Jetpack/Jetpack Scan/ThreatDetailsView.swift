@@ -105,17 +105,20 @@ class ThreatDetailsView: UIView, NibLoadable {
     // MARK: - Configure
 
     func configure(with viewModel: JetpackScanThreatViewModel) {
-        icon.image = UIImage(named: "jetpack-scan-state-error")
-        icon.tintColor = .error
+        icon.image = viewModel.detailIconImage
+        icon.tintColor = viewModel.detailIconImageColor
         generalInfoTitleLabel.text = viewModel.title
         generalInfoDescriptionLabel.text = viewModel.description
-        problemTitleLabel.text = "What was the problem?" // FIXME
+        problemTitleLabel.text = viewModel.problemTitle
         problemDescriptionLabel.text = viewModel.problemDescription
-        fixTitleLabel.text = "How will we fix it?" // FIXME
+        fixTitleLabel.text = viewModel.fixTitle
         fixDescriptionLabel.text = viewModel.fixDescription
-        technicalDetailsTitleLabel.text = "The technical details" // FIXME
-        technicalDetailsDescriptionLabel.text = "Threat found in file:" // FIXME
+        technicalDetailsTitleLabel.text = viewModel.technicalDetailsTitle
+        technicalDetailsDescriptionLabel.text = viewModel.technicalDetailsDescription
+        technicalDetailsFileLabel.text = viewModel.fileName
         technicalDetailsContextLabel.text = "" // FIXME
+        primaryActionButton.setTitle(viewModel.primaryButtonTitle, for: .normal)
+        secondaryActionButton.setTitle(viewModel.secondaryButtonTitle, for: .normal)
     }
 
     // MARK: - IBActions
