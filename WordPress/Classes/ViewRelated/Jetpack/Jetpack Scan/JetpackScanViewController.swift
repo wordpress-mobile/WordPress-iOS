@@ -30,7 +30,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         configureTableView()
         coordinator.viewDidLoad()
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "History",
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("History", comment: "Title of a navigation button that opens the scan history view"),
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(showHistory))
