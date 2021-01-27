@@ -12,8 +12,8 @@ class JetpackRestoreStatusFailedViewController: BaseRestoreCompleteViewControlle
             title: NSLocalizedString("Status Update Failed", comment: "Title for Jetpack Restore Status Failed screen"),
             iconImage: .gridicon(.notice),
             iconImageColor: .error,
-            messageTitle: NSLocalizedString("Hmm, we can't update the status of your restore.", comment: "Title for the Jetpack Restore Status Failed message."),
-            messageDescription: "No need to worry. We'll notify you when your site has been fully restored.",  // FIXME: Placholder text
+            messageTitle: NSLocalizedString("Hmm, we can't update the status of your restore", comment: "Message title displayed when we fail to fetch the status of the restore in progress."),
+            messageDescription: NSLocalizedString("We couldn't find the status to say how long your restore will take.", comment: "Message description displayed when we fail to fetch the status of the restore in progress."),
             primaryButtonTitle: NSLocalizedString("Done", comment: "Title for the button that will dismiss this view."),
             secondaryButtonTitle: nil,
             hint: nil
