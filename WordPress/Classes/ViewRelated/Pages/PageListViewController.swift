@@ -412,6 +412,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         if page.isSiteHomepage {
             QuickStartTourGuide.shared.visited(.editHomepage)
             tableView.reloadRows(at: [indexPath], with: .automatic)
+        } else {
+            QuickStartTourGuide.shared.endCurrentTour()
+            tableView.reloadData()
         }
 
         guard page.status != .trash else {
@@ -435,6 +438,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         if page.isSiteHomepage && QuickStartTourGuide.shared.isCurrentElement(.editHomepage) {
             cell.accessoryView = QuickStartSpotlightView()
+        } else {
+            cell.accessoryView = nil
         }
 
         return cell
