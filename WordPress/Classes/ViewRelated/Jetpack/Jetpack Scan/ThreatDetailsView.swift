@@ -80,6 +80,7 @@ class ThreatDetailsView: UIView, NibLoadable {
 
         technicalDetailsFileLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
         technicalDetailsFileLabel.textColor = .text
+        technicalDetailsFileLabel.numberOfLines = 0
 
         technicalDetailsDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
         technicalDetailsDescriptionLabel.textColor = .text
@@ -107,16 +108,26 @@ class ThreatDetailsView: UIView, NibLoadable {
     func configure(with viewModel: JetpackScanThreatViewModel) {
         icon.image = viewModel.detailIconImage
         icon.tintColor = viewModel.detailIconImageColor
+
         generalInfoTitleLabel.text = viewModel.title
         generalInfoDescriptionLabel.text = viewModel.description
+
         problemTitleLabel.text = viewModel.problemTitle
         problemDescriptionLabel.text = viewModel.problemDescription
-        technicalDetailsTitleLabel.text = viewModel.technicalDetailsTitle
-        technicalDetailsDescriptionLabel.text = viewModel.technicalDetailsDescription
-        technicalDetailsFileLabel.text = viewModel.fileName
-        technicalDetailsContextLabel.text = "" // FIXME
+
+        if viewModel.fileContext != nil {
+            technicalDetailsTitleLabel.text = viewModel.technicalDetailsTitle
+            technicalDetailsDescriptionLabel.text = viewModel.technicalDetailsDescription
+            technicalDetailsFileLabel.text = viewModel.fileName
+            technicalDetailsContextLabel.text = "" // FIXME
+            technicalDetailsStackView.isHidden = false
+        } else {
+            technicalDetailsStackView.isHidden = true
+        }
+
         fixTitleLabel.text = viewModel.fixTitle
         fixDescriptionLabel.text = viewModel.fixDescription
+
         primaryActionButton.setTitle(viewModel.primaryButtonTitle, for: .normal)
         secondaryActionButton.setTitle(viewModel.secondaryButtonTitle, for: .normal)
     }
