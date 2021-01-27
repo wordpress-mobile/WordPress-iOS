@@ -71,7 +71,6 @@ final class PageListTableViewHandler: WPTableViewHandler {
         }
     }
 
-
     // MARK: - Public methods
 
     func page(at indexPath: IndexPath) -> Page {
@@ -164,6 +163,15 @@ final class PageListTableViewHandler: WPTableViewHandler {
             return []
         }
 
+        cancelTourIfNeeded()
         return status == .published ? pages.setHomePageFirst().hierarchySort() : pages
     }
+
+    private func cancelTourIfNeeded() {
+        if QuickStartTourGuide.shared.isCurrentElement(.editHomepage) && blog.homepagePageID == nil {
+            // Ends the tour Edit Homepage if the site doesn't have a homepage set or uses the blog.
+            QuickStartTourGuide.shared.visited(.editHomepage)
+        }
+    }
+
 }
