@@ -78,6 +78,12 @@ struct JetpackScanThreatViewModel {
                 description = Strings.details.descriptions.fix.update
             case .edit:
                 description = Strings.details.descriptions.fix.edit
+            case .rollback:
+                if let target = threat.fixable?.target {
+                    description = String(format: Strings.details.descriptions.fix.rollback.withTarget, target)
+                } else {
+                    description = Strings.details.descriptions.fix.rollback.withoutTarget
+                }
             default:
                 description = Strings.details.descriptions.fix.unknown
         }
