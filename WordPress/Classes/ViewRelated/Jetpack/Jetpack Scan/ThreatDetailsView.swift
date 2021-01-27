@@ -15,11 +15,6 @@ class ThreatDetailsView: UIView, NibLoadable {
     @IBOutlet private weak var problemTitleLabel: UILabel!
     @IBOutlet private weak var problemDescriptionLabel: UILabel!
 
-    // Fix
-    @IBOutlet private weak var fixStackView: UIStackView!
-    @IBOutlet private weak var fixTitleLabel: UILabel!
-    @IBOutlet private weak var fixDescriptionLabel: UILabel!
-
     // Technical details
     @IBOutlet private weak var technicalDetailsStackView: UIStackView!
     @IBOutlet private weak var technicalDetailsTitleLabel: UILabel!
@@ -27,6 +22,11 @@ class ThreatDetailsView: UIView, NibLoadable {
     @IBOutlet private weak var technicalDetailsFileContainerView: UIView!
     @IBOutlet private weak var technicalDetailsFileLabel: UILabel!
     @IBOutlet private weak var technicalDetailsContextLabel: UILabel!
+
+    // Fix
+    @IBOutlet private weak var fixStackView: UIStackView!
+    @IBOutlet private weak var fixTitleLabel: UILabel!
+    @IBOutlet private weak var fixDescriptionLabel: UILabel!
 
     // Buttons
     @IBOutlet private weak var buttonsStackView: UIStackView!
@@ -46,8 +46,8 @@ class ThreatDetailsView: UIView, NibLoadable {
         backgroundColor = .basicBackground
         styleGeneralInfoSection()
         styleProblemSection()
-        styleFixSection()
         styleTechnicalDetailsSection()
+        styleFixSection()
         styleButtons()
     }
 
@@ -71,16 +71,6 @@ class ThreatDetailsView: UIView, NibLoadable {
         problemDescriptionLabel.numberOfLines = 0
     }
 
-    private func styleFixSection() {
-        fixTitleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
-        fixTitleLabel.textColor = .text
-        fixTitleLabel.numberOfLines = 0
-
-        fixDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        fixDescriptionLabel.textColor = .text
-        fixDescriptionLabel.numberOfLines = 0
-    }
-
     private func styleTechnicalDetailsSection() {
         technicalDetailsTitleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         technicalDetailsTitleLabel.textColor = .text
@@ -94,6 +84,16 @@ class ThreatDetailsView: UIView, NibLoadable {
         technicalDetailsDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
         technicalDetailsDescriptionLabel.textColor = .text
         technicalDetailsDescriptionLabel.numberOfLines = 0
+    }
+
+    private func styleFixSection() {
+        fixTitleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
+        fixTitleLabel.textColor = .text
+        fixTitleLabel.numberOfLines = 0
+
+        fixDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
+        fixDescriptionLabel.textColor = .text
+        fixDescriptionLabel.numberOfLines = 0
     }
 
     private func styleButtons() {
@@ -111,12 +111,12 @@ class ThreatDetailsView: UIView, NibLoadable {
         generalInfoDescriptionLabel.text = viewModel.description
         problemTitleLabel.text = viewModel.problemTitle
         problemDescriptionLabel.text = viewModel.problemDescription
-        fixTitleLabel.text = viewModel.fixTitle
-        fixDescriptionLabel.text = viewModel.fixDescription
         technicalDetailsTitleLabel.text = viewModel.technicalDetailsTitle
         technicalDetailsDescriptionLabel.text = viewModel.technicalDetailsDescription
         technicalDetailsFileLabel.text = viewModel.fileName
         technicalDetailsContextLabel.text = "" // FIXME
+        fixTitleLabel.text = viewModel.fixTitle
+        fixDescriptionLabel.text = viewModel.fixDescription
         primaryActionButton.setTitle(viewModel.primaryButtonTitle, for: .normal)
         secondaryActionButton.setTitle(viewModel.secondaryButtonTitle, for: .normal)
     }
