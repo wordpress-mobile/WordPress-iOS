@@ -100,7 +100,7 @@ extension JetpackScanThreatDetailsViewController {
         } else {
             primaryActionButton.isHidden = true
         }
-        
+
         secondaryActionButton.setTitle(viewModel.secondaryButtonTitle, for: .normal)
 
         applyStyles()
