@@ -7,8 +7,15 @@ class JetpackRestoreWarningViewController: UIViewController {
 
     // MARK: - Properties
 
+    weak var restoreStatusDelegate: JetpackRestoreStatusViewControllerDelegate?
+
+    // MARK: - Private Properties
+
     private lazy var coordinator: JetpackRestoreWarningCoordinator = {
-        return JetpackRestoreWarningCoordinator(site: self.site, restoreTypes: self.restoreTypes, rewindID: self.activity.rewindID, view: self)
+        return JetpackRestoreWarningCoordinator(site: self.site,
+                                                restoreTypes: self.restoreTypes,
+                                                rewindID: self.activity.rewindID,
+                                                view: self)
     }()
 
     // MARK: - Private Properties
@@ -73,8 +80,9 @@ extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {
     }
 
     func showRestoreAlreadyRunning() {
-        // Go back to activity log and show Notice...?
-        // let errorTitle = NSLocalizedString("There's a restore currently in progress, please wait before starting next one", comment: "Text displayed when user tries to start a restore when there is already one running")
+        let title = NSLocalizedString("There's a restore currently in progress, please wait before starting the next one", comment: "Text displayed when user tries to start a restore when there is already one running")
+        let notice = Notice(title: title)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     func showRestoreRequestFailed() {
@@ -85,7 +93,9 @@ extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {
     }
 
     func showRestoreStarted() {
-        let statusVC = JetpackRestoreStatusViewController(site: site, activity: activity)
+        let statusVC = JetpackRestoreStatusViewController(site: site,
+                                                          activity: activity)
+        statusVC.delegate = restoreStatusDelegate
         self.navigationController?.pushViewController(statusVC, animated: true)
     }
 }

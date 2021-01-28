@@ -3,9 +3,17 @@ import CocoaLumberjack
 import WordPressShared
 import WordPressUI
 
+protocol JetpackRestoreStatusViewControllerDelegate: class {
+    func didFinishViewing(_ controller: JetpackRestoreStatusViewController)
+}
+
 class JetpackRestoreStatusViewController: BaseRestoreStatusViewController {
 
     // MARK: - Properties
+
+    weak var delegate: JetpackRestoreStatusViewControllerDelegate?
+
+    // MARK: - Private Properties
 
     private lazy var coordinator: JetpackRestoreStatusCoordinator = {
         return JetpackRestoreStatusCoordinator(site: self.site, view: self)
@@ -42,6 +50,12 @@ class JetpackRestoreStatusViewController: BaseRestoreStatusViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         coordinator.viewWillDisappear()
+    }
+
+    // MARK: - Override
+
+    override func primaryButtonTapped() {
+        delegate?.didFinishViewing(self)
     }
 }
 

@@ -9,8 +9,15 @@ class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
 
     // MARK: - Properties
 
+    weak var backupStatusDelegate: JetpackBackupStatusViewControllerDelegate?
+
+    // MARK: - Private Properties
+
     private lazy var coordinator: JetpackBackupOptionsCoordinator = {
-        return JetpackBackupOptionsCoordinator(site: self.site, restoreTypes: self.restoreTypes, view: self)
+        return JetpackBackupOptionsCoordinator(site: self.site,
+                                               rewindID: self.activity.rewindID,
+                                               restoreTypes: self.restoreTypes,
+                                               view: self)
     }()
 
     // MARK: - Initialization
@@ -50,6 +57,12 @@ extension JetpackBackupOptionsViewController: JetpackBackupOptionsView {
         ReachabilityUtils.showAlertNoInternetConnection()
     }
 
+    func showBackupAlreadyRunning() {
+        let title = NSLocalizedString("There's a backup currently being prepared, please wait before starting the next one", comment: "Text displayed when user tries to create a downloadable backup when there is already one being prepared")
+        let notice = Notice(title: title)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
     func showBackupRequestFailed() {
         let errorTitle = NSLocalizedString("Backup failed", comment: "Title for error displayed when preparing a backup fails.")
         let errorMessage = NSLocalizedString("We couldn't create your backup. Please try again later.", comment: "Message for error displayed when preparing a backup fails.")
@@ -58,7 +71,10 @@ extension JetpackBackupOptionsViewController: JetpackBackupOptionsView {
     }
 
     func showBackupStarted(for downloadID: Int) {
-        let statusVC = JetpackBackupStatusViewController(site: site, activity: activity, downloadID: downloadID)
+        let statusVC = JetpackBackupStatusViewController(site: site,
+                                                         activity: activity,
+                                                         downloadID: downloadID)
+        statusVC.delegate = backupStatusDelegate
         self.navigationController?.pushViewController(statusVC, animated: true)
     }
 
