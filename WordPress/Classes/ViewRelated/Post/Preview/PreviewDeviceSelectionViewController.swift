@@ -3,30 +3,45 @@ import Foundation
 class PreviewDeviceSelectionViewController: UIViewController {
     enum PreviewDevice: CaseIterable {
         case desktop
-        case `default`
+        case tablet
         case mobile
+
+        static var `default`: PreviewDevice {
+            return UIDevice.current.userInterfaceIdiom == .pad ? .tablet : .mobile
+        }
 
         var title: String {
             switch self {
             case .desktop:
                 return NSLocalizedString("Desktop", comment: "Title for the desktop web preview")
-            case .`default`:
-                return NSLocalizedString("Default", comment: "Title for the default web preview")
+            case .tablet:
+                return NSLocalizedString("Tablet", comment: "Title for the tablet web preview")
             case .mobile:
                 return NSLocalizedString("Mobile", comment: "Title for the mobile web preview")
             }
         }
 
-        static var available: [PreviewDevice] {
-            if UIDevice.current.userInterfaceIdiom == .pad {
-                return [.mobile, .default]
-            } else {
-                return [.desktop, .default]
+        var width: CGFloat {
+            switch self {
+            case .desktop:
+                return 1200
+            case .tablet:
+                return 800
+            case .mobile:
+                return 400
             }
+        }
+
+        static var available: [PreviewDevice] {
+            return [.mobile, .tablet, .desktop]
+        }
+
+        var viewportScript: String {
+            return String(format: "let parent = document.querySelector('meta[name=viewport]'); parent.setAttribute('content', 'width=%1$d, initial-scale=0');", NSInteger(width))
         }
     }
 
-    var selectedOption: PreviewDevice = .default
+    var selectedOption: PreviewDevice = PreviewDevice.default
 
     var dismissHandler: ((PreviewDevice) -> Void)?
 
