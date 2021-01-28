@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import CocoaLumberjack
 import Gridicons
 import WordPressFlux
@@ -46,14 +46,18 @@ class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
 
 extension JetpackBackupOptionsViewController: JetpackBackupOptionsView {
 
-    func showError() {
+    func showNoInternetConnection() {
+        ReachabilityUtils.showAlertNoInternetConnection()
+    }
+
+    func showBackupRequestFailed() {
         let errorTitle = NSLocalizedString("Backup failed.", comment: "Title for error displayed when preparing a backup fails.")
         let errorMessage = NSLocalizedString("We couldn't create your backup. Please try again later.", comment: "Message for error displayed when preparing a backup fails.")
         let notice = Notice(title: errorTitle, message: errorMessage)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
-    func showBackupStatus(for downloadID: Int) {
+    func showBackupStarted(for downloadID: Int) {
         let statusVC = JetpackBackupStatusViewController(site: site, activity: activity, downloadID: downloadID)
         self.navigationController?.pushViewController(statusVC, animated: true)
     }

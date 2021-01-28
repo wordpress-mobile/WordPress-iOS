@@ -59,11 +59,12 @@ extension JetpackBackupStatusViewController: JetpackBackupStatusView {
         statusView.update(progress: progress)
     }
 
-    func showError() {
-        // TODO
+    func showBackupStatusUpdateFailed() {
+        let statusFailedVC = JetpackBackupStatusFailedViewController(site: site, activity: activity)
+        self.navigationController?.pushViewController(statusFailedVC, animated: true)
     }
 
-    func showComplete(_ backup: JetpackBackup) {
+    func showBackupComplete(_ backup: JetpackBackup) {
         let completeVC = JetpackBackupCompleteViewController(site: site, activity: activity, backup: backup)
         self.navigationController?.pushViewController(completeVC, animated: true)
     }

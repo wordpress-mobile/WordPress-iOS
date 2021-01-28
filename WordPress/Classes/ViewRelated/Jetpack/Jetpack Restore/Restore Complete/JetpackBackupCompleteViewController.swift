@@ -15,6 +15,7 @@ class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
         let restoreCompleteConfiguration = JetpackRestoreCompleteConfiguration(
             title: NSLocalizedString("Backup", comment: "Title for Jetpack Backup Complete screen"),
             iconImage: .gridicon(.history),
+            iconImageColor: .success,
             messageTitle: NSLocalizedString("Your backup is now available for download", comment: "Title for the Jetpack Backup Complete message."),
             messageDescription: NSLocalizedString("We successfully created a backup of your site from %1$@.", comment: "Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date."),
             primaryButtonTitle: NSLocalizedString("Download file", comment: "Title for the button that will download the backup file."),

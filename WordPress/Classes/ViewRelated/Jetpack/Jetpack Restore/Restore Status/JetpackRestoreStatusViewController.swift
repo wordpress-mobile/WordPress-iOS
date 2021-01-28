@@ -63,11 +63,17 @@ extension JetpackRestoreStatusViewController: JetpackRestoreStatusView {
                           progressDescription: progressDescription)
     }
 
-    func showError() {
-        // TODO
+    func showRestoreStatusUpdateFailed() {
+        let statusFailedVC = JetpackRestoreStatusFailedViewController(site: site, activity: activity)
+        self.navigationController?.pushViewController(statusFailedVC, animated: true)
     }
 
-    func showComplete() {
+    func showRestoreFailed() {
+        let failedVC = JetpackRestoreFailedViewController(site: site, activity: activity)
+        self.navigationController?.pushViewController(failedVC, animated: true)
+    }
+
+    func showRestoreComplete() {
         let completeVC = JetpackRestoreCompleteViewController(site: site, activity: activity)
         self.navigationController?.pushViewController(completeVC, animated: true)
     }
