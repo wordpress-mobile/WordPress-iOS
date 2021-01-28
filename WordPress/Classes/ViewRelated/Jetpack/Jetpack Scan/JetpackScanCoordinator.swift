@@ -1,7 +1,7 @@
 import Foundation
 
 protocol JetpackScanView {
-    func render(_ scan: JetpackScan)
+    func render()
 
     func showLoading()
     func showNoConnectionError()
@@ -222,15 +222,6 @@ class JetpackScanCoordinator {
         case contactSupport
         case tryAgain
     }
-}
-
-protocol JetpackScanView {
-    func render()
-
-    func showLoading()
-    func showError()
-
-    func presentAlert(_ alert: UIAlertController)
 }
 
 extension JetpackScan {

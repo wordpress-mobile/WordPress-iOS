@@ -54,7 +54,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     }
 
     // MARK: - JetpackScanView
-    func render(_ scan: JetpackScan) {
+    func render() {
         updateNoResults(nil)
 
         refreshControl.endRefreshing()
