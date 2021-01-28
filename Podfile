@@ -45,8 +45,8 @@ end
 def wordpress_kit
     # pod 'WordPressKit', '~> 4.26-beta'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
-    pod 'WordPressKit', :git => 'https://github.com/bozidarsevo/WordPressKit-iOS.git', :commit => 'dbabb64df43d4cf0580ae988cd2b36fa308c0d8d'
+    pod 'WordPressKit', :git => 'https://github.com/bozidarsevo/WordPressKit-iOS.git', :branch => 'feature/fetching-cards-sort-option'
+    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
