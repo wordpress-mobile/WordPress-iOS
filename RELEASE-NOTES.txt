@@ -1,7 +1,8 @@
 16.7
 -----
 * [**] Site Creation: Adds the option to choose between mobile, tablet or desktop thumbnails and previews in the home page design picker when creating a WordPress.com site [https://github.com/wordpress-mobile/WordPress-iOS/pull/15688]
- 
+* [**] Site Creation: Enables dot blog subdomains for each site design. [#15736]
+
 16.6
 -----
 * [**] Activity Log: adds support for Date Range and Activity Type filters. [https://github.com/wordpress-mobile/WordPress-iOS/issues/15192]
