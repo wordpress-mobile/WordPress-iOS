@@ -137,10 +137,6 @@ class ReaderCommentCell: UITableViewCell {
     // MARK: - Configuration
 
     @objc func configureCell(comment: Comment, attributedString: NSAttributedString) {
-        if comment.commentID == self.comment?.commentID {
-            return
-        }
-
         self.comment = comment
         self.attributedString = attributedString
 
