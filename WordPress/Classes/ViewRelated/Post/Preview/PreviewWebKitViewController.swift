@@ -13,12 +13,6 @@ class PreviewWebKitViewController: WebKitViewController {
     private var selectedDevice: PreviewDeviceSelectionViewController.PreviewDevice = .default {
         didSet {
             if selectedDevice != oldValue {
-                switch selectedDevice {
-                case .mobile:
-                    setWidth(Constants.mobilePreviewWidth)
-                default:
-                    setWidth(nil)
-                }
                 webView.reload()
             }
             showLabel(device: selectedDevice)
@@ -228,8 +222,6 @@ class PreviewWebKitViewController: WebKitViewController {
 
         static let deviceLabelBackgroundColor = UIColor.text.withAlphaComponent(0.8)
 
-        static let devicePickerPopoverOffset: (CGFloat, CGFloat) = (x: -36, y: -2)
-
         static let noPreviewTitle = NSLocalizedString("No Preview URL available", comment: "missing preview URL for blog post preview")
 
         static let publishButtonTitle = NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post.")
@@ -237,8 +229,6 @@ class PreviewWebKitViewController: WebKitViewController {
         static let publishButtonColor = UIColor.muriel(color: MurielColor.accent)
 
         static let blankURL = URL(string: "about:blank")
-
-        static let mobilePreviewWidth: CGFloat = 460
     }
 }
 
@@ -247,15 +237,13 @@ class PreviewWebKitViewController: WebKitViewController {
 extension PreviewWebKitViewController {
 
     override func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
-        guard let navigationController = navigationController, popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
+        guard popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
             super.prepareForPopoverPresentation(popoverPresentationController)
             return
         }
 
         popoverPresentationController.permittedArrowDirections = .down
-
-        popoverPresentationController.sourceRect = sourceRect(for: navigationController.toolbar, offsetBy: Constants.devicePickerPopoverOffset)
-        popoverPresentationController.sourceView = navigationController.toolbar.superview
+        popoverPresentationController.barButtonItem = previewButton
     }
 
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
@@ -265,28 +253,11 @@ extension PreviewWebKitViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        // Reset our source rect and view for a transition to a new size
-        guard let navigationController = navigationController,
-            let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController,
-            popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
+        guard let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController else {
                 return
         }
 
-        popoverPresentationController.sourceRect = sourceRect(for: navigationController.toolbar, offsetBy: Constants.devicePickerPopoverOffset)
-        popoverPresentationController.sourceView = navigationController.toolbar.superview
-    }
-
-    /// Returns a rect that represents the far right corner of `view` offset by `offsetBy`.
-    /// - Parameter view: The view to use for finding the upper right corner.
-    /// - Parameter offsetBy: An x, y pair to offset the view's coordinates by
-    func sourceRect(for view: UIView, offsetBy offset: (x: CGFloat, y: CGFloat)) -> CGRect {
-        return CGRect(origin: view.frame.topRightVertex, size: .zero).offsetBy(dx: offset.x, dy: offset.y)
-    }
-}
-
-private extension CGRect {
-    var topRightVertex: CGPoint {
-        return CGPoint(x: maxX, y: minY)
+        prepareForPopoverPresentation(popoverPresentationController)
     }
 }
 
@@ -294,9 +265,7 @@ private extension CGRect {
 
 extension PreviewWebKitViewController {
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        if selectedDevice == .desktop {
-            // Change the viewport scale to match a desktop environment
-            webView.evaluateJavaScript("let parent = document.querySelector('meta[name=viewport]'); parent.setAttribute('content','initial-scale=0');", completionHandler: nil)
-        }
+        setWidth(selectedDevice.width)
+        webView.evaluateJavaScript(selectedDevice.viewportScript, completionHandler: nil)
     }
 }

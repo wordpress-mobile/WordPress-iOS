@@ -60,7 +60,7 @@ open class AlertView: NSObject {
     /// - Returns: The Key View.
     ///
     fileprivate func keyView() -> UIView {
-        return (UIApplication.shared.keyWindow?.subviews.first)!
+        return (UIApplication.shared.mainWindow?.subviews.first)!
     }
 
 

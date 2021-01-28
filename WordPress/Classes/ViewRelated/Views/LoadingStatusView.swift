@@ -28,7 +28,7 @@ class LoadingStatusView: UIView {
     }()
 
     private lazy var activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(style: .white)
+        let indicator = UIActivityIndicatorView(style: .medium)
         indicator.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             indicator.widthAnchor.constraint(equalToConstant: 20.0),

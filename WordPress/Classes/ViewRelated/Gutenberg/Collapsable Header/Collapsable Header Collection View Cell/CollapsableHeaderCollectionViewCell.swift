@@ -154,8 +154,8 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
             self.checkmarkImageView.alpha = targetAlpha
             self.checkmarkBackground.alpha = targetAlpha
         }, completion: { (_) in
-            self.checkmarkImageView.isHidden = isHidden
-            self.checkmarkBackground.isHidden = isHidden
+            self.checkmarkImageView.isHidden = !self.isSelected
+            self.checkmarkBackground.isHidden = !self.isSelected
         })
     }
 

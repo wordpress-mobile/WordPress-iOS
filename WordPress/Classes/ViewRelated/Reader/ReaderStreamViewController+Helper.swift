@@ -42,7 +42,7 @@ extension ReaderStreamViewController {
             return Bundle.main.loadNibNamed("ReaderListStreamHeader", owner: nil, options: nil)?.first as? ReaderListStreamHeader
         }
 
-        if ReaderHelpers.isTopicSite(topic) {
+        if ReaderHelpers.isTopicSite(topic) && !isContentFiltered {
             return Bundle.main.loadNibNamed("ReaderSiteStreamHeader", owner: nil, options: nil)?.first as? ReaderSiteStreamHeader
         }
 

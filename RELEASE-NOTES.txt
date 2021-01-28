@@ -1,9 +1,16 @@
+16.7
+-----
+* [**] Site Creation: Adds the option to choose between mobile, tablet or desktop thumbnails and previews in the home page design picker when creating a WordPress.com site [https://github.com/wordpress-mobile/WordPress-iOS/pull/15688]
+ 
 16.6
 -----
+* [**] Activity Log: adds support for Date Range and Activity Type filters. [https://github.com/wordpress-mobile/WordPress-iOS/issues/15192]
+* [*] Quick Start: Removed the Browse theme step and added guidance for reviewing pages and editing your Homepage. [#15680]
+* [**] iOS 14 Widgets: new Today Widgets to display your Today Stats in your home screen.
 
 16.5
 -----
- 
+
 * [*] In the Pages screen, the options to delete posts are styled to reflect that they are destructive actions, and show confirmation alerts. [#15622]
 * [*] In the Comments view, overly-large twemoji are sized the same as Apple's emoji. [#15503]
 * [*] Reader 'P2s': added ability to filter by site. [#15484]
@@ -17,6 +24,7 @@
 * [**] Block Editor: Added move to top/bottom when long pressing on respective block movers (https://github.com/wordpress-mobile/gutenberg-mobile/pull/2872)
 * [**] Reader: Following now only shows non-P2 sites. [#15585]
 * [**] Reader site filter: selected filters now persist while in app.[#15594]
+* [**] Block Editor: Fix crash in text-based blocks with custom font size [https://github.com/WordPress/gutenberg/pull/28121]
 
 16.4
 -----

@@ -1,5 +1,6 @@
 import UIKit
 import CocoaLumberjack
+import WordPressFlux
 import WordPressShared
 import WordPressUI
 
@@ -11,6 +12,7 @@ class JetpackRestoreCompleteViewController: BaseRestoreCompleteViewController {
         let restoreCompleteConfiguration = JetpackRestoreCompleteConfiguration(
             title: NSLocalizedString("Restore", comment: "Title for Jetpack Restore Complete screen"),
             iconImage: .gridicon(.history),
+            iconImageColor: .success,
             messageTitle: NSLocalizedString("Your site has been restored", comment: "Title for the Jetpack Restore Complete message."),
             messageDescription: NSLocalizedString("All of your selected items are now restored back to %1$@.", comment: "Description for the Jetpack Backup Restore message. %1$@ is a placeholder for the selected date."),
             primaryButtonTitle: NSLocalizedString("Done", comment: "Title for the button that will dismiss this view."),
@@ -44,6 +46,11 @@ class JetpackRestoreCompleteViewController: BaseRestoreCompleteViewController {
 
     private func visitSite() {
         guard let homeURL = URL(string: site.homeURL) else {
+
+            let title = NSLocalizedString("Unable to visit site", comment: "Message displayed when visiting a site fails.")
+            let notice = Notice(title: title)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+
             return
         }
 

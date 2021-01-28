@@ -1,5 +1,16 @@
 import Foundation
 
+protocol JetpackScanView {
+    func render(_ scan: JetpackScan)
+
+    func showLoading()
+    func showNoConnectionError()
+    func showGenericError()
+    func showScanStartError()
+
+    func presentAlert(_ alert: UIAlertController)
+}
+
 class JetpackScanCoordinator {
     private let service: JetpackScanService
     private let view: JetpackScanView
@@ -12,6 +23,8 @@ class JetpackScanCoordinator {
     var threats: [JetpackScanThreat]? {
         return scan?.state == .idle ? scan?.threats : nil
     }
+
+    private var actionButtonState: ErrorButtonAction?
 
     init(blog: Blog,
          view: JetpackScanView,
@@ -35,7 +48,7 @@ class JetpackScanCoordinator {
         } failure: { [weak self] error in
             DDLogError("Error fetching scan object: \(String(describing: error?.localizedDescription))")
 
-            self?.view.showError()
+            self?.refreshDidFail(with: error)
         }
     }
 
@@ -48,6 +61,22 @@ class JetpackScanCoordinator {
         view.render()
 
         togglePolling()
+    }
+
+    private func refreshDidFail(with error: Error? = nil) {
+        let appDelegate = WordPressAppDelegate.shared
+
+        guard
+            let connectionAvailable = appDelegate?.connectionAvailable, connectionAvailable == true
+        else {
+            view.showNoConnectionError()
+            actionButtonState = .tryAgain
+
+            return
+        }
+
+        view.showGenericError()
+        actionButtonState = .contactSupport
     }
 
     public func startScan() {
@@ -65,13 +94,13 @@ class JetpackScanCoordinator {
         service.startScan(for: blog) { [weak self] (success) in
             if success == false {
                 DDLogError("Error starting scan: Scan response returned false")
-
-                self?.view.showError()
+                self?.stopPolling()
+                self?.view.showScanStartError()
             }
         } failure: { [weak self] (error) in
             DDLogError("Error starting scan: \(String(describing: error?.localizedDescription))")
 
-            self?.view.showError()
+            self?.refreshDidFail(with: error)
         }
     }
 
@@ -113,7 +142,7 @@ class JetpackScanCoordinator {
         } failure: { [weak self] (error) in
             DDLogError("Error fixing threats: \(String(describing: error.localizedDescription))")
 
-            self?.view.showError()
+            self?.refreshDidFail(with: error)
         }
     }
 
@@ -125,6 +154,20 @@ class JetpackScanCoordinator {
         let supportVC = SupportTableViewController()
         supportVC.showFromTabBar()
     }
+
+    public func noResultsButtonPressed() {
+        guard let action = actionButtonState else {
+            return
+        }
+
+        switch action {
+            case .contactSupport:
+                openSupport()
+            case .tryAgain:
+                refreshData()
+        }
+    }
+
 
     // MARK: - Private: Refresh Timer
     private var refreshTimer: Timer?
@@ -157,6 +200,7 @@ class JetpackScanCoordinator {
         guard triggerImmediately else {
             return
         }
+
         refreshData()
     }
 
@@ -172,6 +216,11 @@ class JetpackScanCoordinator {
 
         static let fixAllAlertCancelButtonTitle = NSLocalizedString("Cancel", comment: "Button title, cancel fixing all threats")
         static let fixAllAlertConfirmButtonTitle = NSLocalizedString("Fix all threats", comment: "Button title, confirm fixing all threats")
+    }
+
+    private enum ErrorButtonAction {
+        case contactSupport
+        case tryAgain
     }
 }
 
