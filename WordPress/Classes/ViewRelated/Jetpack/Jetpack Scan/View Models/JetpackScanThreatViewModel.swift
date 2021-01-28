@@ -17,7 +17,7 @@ struct JetpackScanThreatViewModel {
     let technicalDetailsDescription: String
     let fileName: String?
     let fileContext: JetpackThreatContext?
-    let primaryButtonTitle: String
+    let primaryButtonTitle: String?
     let secondaryButtonTitle: String
 
     init(threat: JetpackScanThreat) {
@@ -40,7 +40,7 @@ struct JetpackScanThreatViewModel {
         fileName = threat.fileName
         fileContext = threat.context
         primaryButtonTitle = Self.primaryButtonTitle(for: threat)
-        secondaryButtonTitle = Strings.details.buttons.current
+        secondaryButtonTitle = Strings.details.buttons.ignore
     }
 
     private static func fixTitle(for threat: JetpackScanThreat) -> String? {
@@ -183,9 +183,9 @@ struct JetpackScanThreatViewModel {
         return image.imageWithTintColor(.white)
     }
 
-    private static func primaryButtonTitle(for threat: JetpackScanThreat) -> String {
+    private static func primaryButtonTitle(for threat: JetpackScanThreat) -> String? {
         guard threat.fixable?.type != nil else {
-            return Strings.details.buttons.notFixable
+            return nil
         }
 
         return Strings.details.buttons.fixable
@@ -227,9 +227,8 @@ struct JetpackScanThreatViewModel {
             }
 
             struct buttons {
-                static let current = NSLocalizedString("Ignore threat", comment: "Title for button that will ignore the threat")
+                static let ignore = NSLocalizedString("Ignore threat", comment: "Title for button that will ignore the threat")
                 static let fixable = NSLocalizedString("Fix threat", comment: "Title for button that will fix the threat")
-                static let notFixable = NSLocalizedString("Get a free estimate", comment: "Title for button that will get a free estimate for the threat")
             }
         }
 

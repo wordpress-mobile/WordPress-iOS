@@ -94,7 +94,13 @@ extension JetpackScanThreatDetailsViewController {
         fixTitleLabel.text = viewModel.fixTitle
         fixDescriptionLabel.text = viewModel.fixDescription
 
-        primaryActionButton.setTitle(viewModel.primaryButtonTitle, for: .normal)
+        if let primaryButtonTitle = viewModel.primaryButtonTitle {
+            primaryActionButton.setTitle(primaryButtonTitle, for: .normal)
+            primaryActionButton.isHidden = false
+        } else {
+            primaryActionButton.isHidden = true
+        }
+        
         secondaryActionButton.setTitle(viewModel.secondaryButtonTitle, for: .normal)
 
         applyStyles()
