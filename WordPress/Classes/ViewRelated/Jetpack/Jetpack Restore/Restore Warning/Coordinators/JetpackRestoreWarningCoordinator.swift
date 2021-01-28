@@ -1,8 +1,10 @@
 import Foundation
 
 protocol JetpackRestoreWarningView {
-    func showError()
-    func showRestoreStatus()
+    func showNoInternetConnection()
+    func showRestoreAlreadyRunning()
+    func showRestoreRequestFailed()
+    func showRestoreStarted()
 }
 
 class JetpackRestoreWarningCoordinator {
@@ -33,12 +35,24 @@ class JetpackRestoreWarningCoordinator {
     // MARK: - Public
 
     func restoreSite() {
-        service.restoreSite(site, rewindID: rewindID, restoreTypes: restoreTypes, success: { [weak self] _, _ in
-            self?.view.showRestoreStatus()
+        guard ReachabilityUtils.isInternetReachable() else {
+            self.view.showNoInternetConnection()
+            return
+        }
+
+        service.restoreSite(site, rewindID: rewindID, restoreTypes: restoreTypes, success: { [weak self] _, jobID in
+
+            if jobID == 0 {
+                self?.view.showRestoreAlreadyRunning()
+                return
+            }
+
+            self?.view.showRestoreStarted()
+
         }, failure: { [weak self] error in
             DDLogError("Error restoring site: \(error.localizedDescription)")
 
-            self?.view.showError()
+            self?.view.showRestoreRequestFailed()
         })
     }
 }

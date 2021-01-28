@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import CocoaLumberjack
 import WordPressFlux
 import WordPressShared
@@ -7,8 +7,15 @@ class JetpackRestoreWarningViewController: UIViewController {
 
     // MARK: - Properties
 
+    weak var restoreStatusDelegate: JetpackRestoreStatusViewControllerDelegate?
+
+    // MARK: - Private Properties
+
     private lazy var coordinator: JetpackRestoreWarningCoordinator = {
-        return JetpackRestoreWarningCoordinator(site: self.site, restoreTypes: self.restoreTypes, rewindID: self.activity.rewindID, view: self)
+        return JetpackRestoreWarningCoordinator(site: self.site,
+                                                restoreTypes: self.restoreTypes,
+                                                rewindID: self.activity.rewindID,
+                                                view: self)
     }()
 
     // MARK: - Private Properties
@@ -68,15 +75,27 @@ class JetpackRestoreWarningViewController: UIViewController {
 
 extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {
 
-    func showError() {
-        let errorTitle = NSLocalizedString("Restore failed.", comment: "Title for error displayed when restoring a site fails.")
+    func showNoInternetConnection() {
+        ReachabilityUtils.showAlertNoInternetConnection()
+    }
+
+    func showRestoreAlreadyRunning() {
+        let title = NSLocalizedString("There's a restore currently in progress, please wait before starting the next one", comment: "Text displayed when user tries to start a restore when there is already one running")
+        let notice = Notice(title: title)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    func showRestoreRequestFailed() {
+        let errorTitle = NSLocalizedString("Restore failed", comment: "Title for error displayed when restoring a site fails.")
         let errorMessage = NSLocalizedString("We couldn't restore your site. Please try again later.", comment: "Message for error displayed when restoring a site fails.")
         let notice = Notice(title: errorTitle, message: errorMessage)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
-    func showRestoreStatus() {
-        let statusVC = JetpackRestoreStatusViewController(site: site, activity: activity)
+    func showRestoreStarted() {
+        let statusVC = JetpackRestoreStatusViewController(site: site,
+                                                          activity: activity)
+        statusVC.delegate = restoreStatusDelegate
         self.navigationController?.pushViewController(statusVC, animated: true)
     }
 }

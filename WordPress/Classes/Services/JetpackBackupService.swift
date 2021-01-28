@@ -10,10 +10,11 @@ import Foundation
     }()
 
     func prepareBackup(for site: JetpackSiteRef,
+                       rewindID: String? = nil,
                        restoreTypes: JetpackRestoreTypes? = nil,
                        success: @escaping (JetpackBackup) -> Void,
                        failure: @escaping (Error) -> Void) {
-        service.prepareBackup(site.siteID, types: restoreTypes, success: success, failure: failure)
+        service.prepareBackup(site.siteID, rewindID: rewindID, types: restoreTypes, success: success, failure: failure)
     }
 
     func getBackupStatus(for site: JetpackSiteRef, downloadID: Int, success: @escaping (JetpackBackup) -> Void, failure: @escaping (Error) -> Void) {

@@ -43,6 +43,7 @@ extension Row: Equatable {
 
 class ParentPageSettingsViewController: UIViewController {
     var onClose: (() -> Void)?
+    var onSuccess: (() -> Void)?
 
     @IBOutlet private var cancelButton: UIBarButtonItem!
     @IBOutlet private var doneButton: UIBarButtonItem!
@@ -245,6 +246,7 @@ class ParentPageSettingsViewController: UIViewController {
                 self?.selectedPage.parentID = parentId
             } else {
                 self?.dismiss()
+                self?.onSuccess?()
             }
         }
     }
@@ -304,7 +306,7 @@ extension ParentPageSettingsViewController: UITableViewDelegate {
 /// ParentPageSettingsViewController class constructor
 //
 extension ParentPageSettingsViewController {
-    class func navigationController(with pages: [Page], selectedPage: Page, onClose: (() -> Void)? = nil) -> UINavigationController {
+    class func navigationController(with pages: [Page], selectedPage: Page, onClose: (() -> Void)? = nil, onSuccess: (() -> Void)? = nil) -> UINavigationController {
         let storyBoard = UIStoryboard(name: "Pages", bundle: Bundle.main)
         guard let controller = storyBoard.instantiateViewController(withIdentifier: "ParentPageSettings") as? UINavigationController else {
             fatalError("A navigation view controller is required for Parent Page Settings")
@@ -314,6 +316,7 @@ extension ParentPageSettingsViewController {
         }
         parentPageSettingsViewController.set(pages: pages, for: selectedPage)
         parentPageSettingsViewController.onClose = onClose
+        parentPageSettingsViewController.onSuccess = onSuccess
         return controller
     }
 }
