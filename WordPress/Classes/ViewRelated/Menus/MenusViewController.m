@@ -911,7 +911,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     frame = [self.view.window convertRect:frame toView:self.view];
 
     UIEdgeInsets inset = self.scrollView.contentInset;
-    UIEdgeInsets scrollInset = self.scrollView.scrollIndicatorInsets;
+    UIEdgeInsets scrollInset = self.scrollView.verticalScrollIndicatorInsets;
 
     if (frame.origin.y > self.view.frame.size.height) {
         inset.bottom = 0.0;
@@ -930,7 +930,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     self.observesKeyboardChanges = NO;
 
     UIEdgeInsets inset = self.scrollView.contentInset;
-    UIEdgeInsets scrollInset = self.scrollView.scrollIndicatorInsets;
+    UIEdgeInsets scrollInset = self.scrollView.verticalScrollIndicatorInsets;
     inset.bottom = 0;
     scrollInset.bottom = 0;
     self.scrollView.contentInset = inset;

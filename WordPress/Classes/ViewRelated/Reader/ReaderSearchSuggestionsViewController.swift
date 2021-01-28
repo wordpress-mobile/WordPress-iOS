@@ -32,7 +32,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
     @objc let cellIdentifier = "CellIdentifier"
     @objc let rowAndButtonHeight = CGFloat(44.0)
     @objc var maxTableViewRows: Int {
-        let height = UIApplication.shared.keyWindow?.frame.size.height ?? 0
+        let height = UIApplication.shared.mainWindow?.frame.size.height ?? 0
         if height == 320 {
             // iPhone 4s, 5, 5s, in landscape orientation
             return 1

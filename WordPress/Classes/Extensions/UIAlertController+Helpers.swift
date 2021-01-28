@@ -7,7 +7,7 @@ import WordPressFlux
         // This method is required because the presenter ViewController must be visible, and we've got several
         // flows in which the VC that triggers the alert, might not be visible anymore.
         //
-        guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else {
+        guard let rootViewController = UIApplication.shared.mainWindow?.rootViewController else {
             print("Error loading the rootViewController")
             return
         }

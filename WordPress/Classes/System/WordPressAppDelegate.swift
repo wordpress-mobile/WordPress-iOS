@@ -18,6 +18,15 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    @objc
+    lazy var windowManager: WindowManager = {
+        guard let window = window else {
+            fatalError("The App cannot run without a window.")
+        }
+
+        return WindowManager(window: window)
+    }()
+
     var analytics: WPAppAnalytics?
     private lazy var crashLoggingProvider: WPCrashLoggingProvider = {
         return WPCrashLoggingProvider()
@@ -107,6 +116,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         DDLogInfo("didFinishLaunchingWithOptions state: \(application.applicationState)")
 
+        ABTest.start()
+
         if UITextField.shouldActivateWorkaroundForBulgarianKeyboardCrash() {
             // WORKAROUND: this is a workaround for an issue with UITextField in iOS 14.
             // Please refer to the documentation of the called method to learn the details and know
@@ -115,7 +126,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         InteractiveNotificationsManager.shared.registerForUserNotifications()
-        showWelcomeScreenIfNeeded(animated: false)
         setupPingHub()
         setupBackgroundRefresh(application)
         setupComponentsAppearance()
@@ -277,8 +287,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
 
-        window?.rootViewController = WPTabBarController.sharedInstance()
-
+        windowManager.showUI()
         setupNoticePresenter()
     }
 
@@ -318,7 +327,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         if CommandLine.arguments.contains("-no-animations") {
             UIView.setAnimationsEnabled(false)
             application.windows.first?.layer.speed = MAXFLOAT
-            application.keyWindow?.layer.speed = MAXFLOAT
+            application.mainWindow?.layer.speed = MAXFLOAT
         }
     }
 
@@ -432,12 +441,13 @@ extension WordPressAppDelegate {
     }
 
     @objc func configureWordPressAuthenticator() {
-        authManager = WordPressAuthenticationManager()
+        let authManager = WordPressAuthenticationManager(windowManager: windowManager)
 
-        authManager?.initializeWordPressAuthenticator()
-        authManager?.startRelayingSupportNotifications()
+        authManager.initializeWordPressAuthenticator()
+        authManager.startRelayingSupportNotifications()
 
         WordPressAuthenticator.shared.delegate = authManager
+        self.authManager = authManager
     }
 
     func handleWebActivity(_ activity: NSUserActivity) {
@@ -578,31 +588,6 @@ extension WordPressAppDelegate {
         }
     }
 
-
-    @objc(showWelcomeScreenIfNeededAnimated:)
-    func showWelcomeScreenIfNeeded(animated: Bool) {
-        guard isWelcomeScreenVisible == false && AccountHelper.isLoggedIn == false else {
-            return
-        }
-
-        // Check if the presentedVC is UIAlertController because in iPad we show a Sign-out button in UIActionSheet
-        // and it's not dismissed before the check and `dismissViewControllerAnimated` does not work for it
-        if let presenter = window?.rootViewController?.presentedViewController,
-            !(presenter is UIAlertController) {
-            presenter.dismiss(animated: animated, completion: { [weak self] in
-                self?.showWelcomeScreen(animated, thenEditor: false)
-            })
-        } else {
-            showWelcomeScreen(animated, thenEditor: false)
-        }
-    }
-
-    func showWelcomeScreen(_ animated: Bool, thenEditor: Bool) {
-        if let rootViewController = window?.rootViewController {
-            WordPressAuthenticator.showLogin(from: rootViewController, animated: animated)
-        }
-    }
-
     @objc func trackLogoutIfNeeded() {
         if AccountHelper.isLoggedIn == false {
             WPAnalytics.track(.logout)
@@ -726,7 +711,7 @@ extension WordPressAppDelegate {
             removeTodayWidgetConfiguration()
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()
-            showWelcomeScreenIfNeeded(animated: false)
+            windowManager.showFullscreenSignIn()
 
             if #available(iOS 13, *) {
                 stopObservingAppleIDCredentialRevoked()
