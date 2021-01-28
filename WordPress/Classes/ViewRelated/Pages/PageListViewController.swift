@@ -727,6 +727,22 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    override func deletePost(_ apost: AbstractPost) {
+        completeQuickStartStepIfNeeded(apost)
+        super.deletePost(apost)
+    }
+
+    private func completeQuickStartStepIfNeeded(_ page: AbstractPost) {
+        guard let page = page as? Page else { return }
+        guard page.isSiteHomepage else { return }
+
+        if QuickStartTourGuide.shared.isCurrentElement(.editHomepage) {
+            QuickStartTourGuide.shared.visited(.editHomepage)
+        } else {
+            QuickStartTourGuide.shared.complete(tour: QuickStartEditHomepageTour(), for: blog, postNotification: false)
+        }
+    }
+
     private func addEditAction(to controller: UIAlertController, for page: AbstractPost) {
         if page.status == .trash {
             return
