@@ -2,8 +2,9 @@ import Foundation
 
 protocol JetpackRestoreStatusView {
     func render(_ rewindStatus: RewindStatus)
-    func showError()
-    func showComplete()
+    func showRestoreStatusUpdateFailed()
+    func showRestoreFailed()
+    func showRestoreComplete()
 }
 
 class JetpackRestoreStatusCoordinator {
@@ -15,6 +16,7 @@ class JetpackRestoreStatusCoordinator {
     private let view: JetpackRestoreStatusView
 
     private var timer: Timer?
+    private var retryCount: Int = 0
 
     // MARK: - Init
 
@@ -56,22 +58,33 @@ class JetpackRestoreStatusCoordinator {
 
     private func refreshRestoreStatus() {
         service.getRewindStatus(for: self.site, success: { [weak self] rewindStatus in
+            guard let self = self, let restoreStatus = rewindStatus.restore else {
+                return
+            }
+
+            switch restoreStatus.status {
+            case .running, .queued:
+                self.view.render(rewindStatus)
+            case .finished:
+                self.view.showRestoreComplete()
+            case .fail:
+                self.view.showRestoreFailed()
+            }
+
+        }, failure: { [weak self] error in
+            DDLogError("Error fetching rewind status object: \(error.localizedDescription)")
+
             guard let self = self else {
                 return
             }
 
-            if rewindStatus.restore?.status == .finished {
-                self.view.showComplete()
+            if self.retryCount == Constants.maxRetryCount {
+                self.stopPolling()
+                self.view.showRestoreStatusUpdateFailed()
                 return
             }
 
-            self.view.render(rewindStatus)
-
-        }, failure: { error in
-            DDLogError("Error fetching rewind status object: \(error.localizedDescription)")
-
-            self.stopPolling()
-            self.view.showError()
+            self.retryCount += 1
         })
     }
 
@@ -81,5 +94,6 @@ extension JetpackRestoreStatusCoordinator {
 
     private enum Constants {
         static let pollingInterval: TimeInterval = 5
+        static let maxRetryCount: Int = 3
     }
 }

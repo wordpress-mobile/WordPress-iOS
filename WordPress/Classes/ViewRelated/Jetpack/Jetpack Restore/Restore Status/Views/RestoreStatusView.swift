@@ -40,18 +40,21 @@ class RestoreStatusView: UIView, NibLoadable {
         descriptionLabel.textColor = .textSubtle
         descriptionLabel.numberOfLines = 0
 
-        progressTitleLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        progressTitleLabel.textColor = .text
-
         progressValueLabel.font = WPStyleGuide.fontForTextStyle(.body)
         progressValueLabel.textColor = .text
+
+        progressTitleLabel.font = WPStyleGuide.fontForTextStyle(.body)
+        progressTitleLabel.textColor = .text
         if effectiveUserInterfaceLayoutDirection == .leftToRight {
             // swiftlint:disable:next inverse_text_alignment
-            progressValueLabel.textAlignment = .right
+            progressTitleLabel.textAlignment = .right
         } else {
             // swiftlint:disable:next natural_text_alignment
-            progressValueLabel.textAlignment = .left
+            progressTitleLabel.textAlignment = .left
         }
+
+        progressView.layer.cornerRadius = Constants.progressViewCornerRadius
+        progressView.clipsToBounds = true
 
         progressDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
         progressDescriptionLabel.textColor = .textSubtle
@@ -99,4 +102,7 @@ class RestoreStatusView: UIView, NibLoadable {
         primaryButtonHandler?()
     }
 
+    private enum Constants {
+        static let progressViewCornerRadius: CGFloat = 4
+    }
 }
