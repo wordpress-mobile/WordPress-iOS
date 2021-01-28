@@ -15,6 +15,9 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     var selectedIndexPath: IndexPath? = nil
     var siteDesigns: [RemoteSiteDesign] = [] {
         didSet {
+            if oldValue.count == 0 {
+                scrollableView.setContentOffset(.zero, animated: false)
+            }
             contentSizeWillChange()
             collectionView.reloadData()
         }

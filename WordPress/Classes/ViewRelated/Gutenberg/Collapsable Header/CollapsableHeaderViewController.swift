@@ -539,7 +539,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     }
 
     private func updateTitleViewVisibility(_ animated: Bool = true) {
-        let shouldHide = (headerHeightConstraint.constant > midHeaderHeight) && !shouldUseCompactLayout
+        let shouldHide = shouldUseCompactLayout ? false : (headerHeightConstraint.isActive || (headerHeightConstraint.constant > midHeaderHeight))
         titleView.animatableSetIsHidden(shouldHide, animated: animated)
     }
 
@@ -549,7 +549,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard stashedOffset == nil else {
+        guard stashedOffset == nil || stashedOffset == CGPoint.zero else {
             restoreContentOffsetIfNeeded(scrollView)
             return
         }
