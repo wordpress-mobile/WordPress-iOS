@@ -144,7 +144,8 @@ extension JetpackScanViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        guard let threat = threat(for: indexPath) else {
+        guard indexPath.row != 0,
+              let threat = threat(for: indexPath) else {
             return
         }
 
