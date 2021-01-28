@@ -64,7 +64,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
     }()
 
     private lazy var spinner: UIActivityIndicatorView = {
-        let spinner = UIActivityIndicatorView(style: .gray)
+        let spinner = UIActivityIndicatorView(style: .medium)
         spinner.startAnimating()
         spinner.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 44)
         return spinner
@@ -314,19 +314,19 @@ extension BaseActivityListViewController: UITableViewDelegate {
         return row.activity.isRewindable
     }
 
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let row = handler.viewModel.rowAtIndexPath(indexPath) as? ActivityListRow, row.activity.isRewindable else {
             return nil
         }
 
-        let rewindAction = UITableViewRowAction(style: .normal,
-                                                title: NSLocalizedString("Rewind", comment: "Title displayed when user swipes on a rewind cell"),
-                                                handler: { [weak self] _, indexPath in
-                                                    self?.presentRestoreFor(activity: row.activity)
-        })
+        let rewindAction = UIContextualAction(style: .normal,
+                                              title: NSLocalizedString("Rewind", comment: "Title displayed when user swipes on a rewind cell")) { [weak self] (_, _, _) in
+            self?.presentRestoreFor(activity: row.activity)
+        }
+
         rewindAction.backgroundColor = .primary(.shade40)
 
-        return [rewindAction]
+        return UISwipeActionsConfiguration(actions: [rewindAction])
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -369,12 +369,14 @@ extension BaseActivityListViewController: ActivityPresenter {
 
         let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
         let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
+        restoreOptionsVC.restoreStatusDelegate = self
         alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: restoreOptionsVC), animated: true)
         })
 
         let backupTitle = NSLocalizedString("Download backup", comment: "Title displayed for download backup action.")
         let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
+        backupOptionsVC.backupStatusDelegate = self
         alertController.addDefaultActionWithTitle(backupTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: backupOptionsVC), animated: true)
         })
@@ -413,7 +415,15 @@ extension BaseActivityListViewController: ActivityPresenter {
         }
 
         let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
+        restoreOptionsVC.restoreStatusDelegate = self
         let navigationVC = UINavigationController(rootViewController: restoreOptionsVC)
+        self.present(navigationVC, animated: true)
+    }
+
+    func presentBackupFor(activity: Activity) {
+        let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
+        backupOptionsVC.backupStatusDelegate = self
+        let navigationVC = UINavigationController(rootViewController: backupOptionsVC)
         self.present(navigationVC, animated: true)
     }
 }
@@ -464,6 +474,34 @@ private extension BaseActivityListViewController {
         noResultsViewController?.view.isHidden = false
     }
 
+}
+
+// MARK: - Restore Status Handling
+
+extension BaseActivityListViewController: JetpackRestoreStatusViewControllerDelegate {
+
+    func didFinishViewing(_ controller: JetpackRestoreStatusViewController) {
+        controller.dismiss(animated: true, completion: { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.store.fetchRewindStatus(site: self.site)
+        })
+    }
+}
+
+// MARK: - Restore Status Handling
+
+extension BaseActivityListViewController: JetpackBackupStatusViewControllerDelegate {
+
+    func didFinishViewing(_ controller: JetpackBackupStatusViewController) {
+        controller.dismiss(animated: true, completion: { [weak self] in
+            guard let self = self else {
+                return
+            }
+            // TODO: fetch backup status
+        })
+    }
 }
 
 // MARK: - Calendar Handling

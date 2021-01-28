@@ -4,6 +4,7 @@ protocol ActivityPresenter: class {
     func presentDetailsFor(activity: FormattableActivity)
     func presentBackupOrRestoreFor(activity: Activity)
     func presentRestoreFor(activity: Activity)
+    func presentBackupFor(activity: Activity)
 }
 
 class ActivityListViewModel: Observable {
@@ -77,6 +78,9 @@ class ActivityListViewModel: Observable {
     }
 
     public func refresh(after: Date? = nil, before: Date? = nil, group: [ActivityGroup] = []) {
+
+        store.fetchRewindStatus(site: site)
+
         // If a new filter is being applied, remove all activities
         if isApplyingNewFilter(after: after, before: before, group: group) {
             ActionDispatcher.dispatch(ActivityAction.resetActivities(site: site))
@@ -259,7 +263,7 @@ class ActivityListViewModel: Observable {
     }
 
     private func restoreStatusSection() -> ImmuTableSection? {
-        guard let restore = store.getRewindStatus(site: site)?.restore, restore.status == .running || restore.status == .queued else {
+        guard let restore = store.getCurrentRewindStatus(site: site)?.restore, restore.status == .running || restore.status == .queued else {
             return nil
         }
 
@@ -271,8 +275,15 @@ class ActivityListViewModel: Observable {
 
         if let rewindPoint = store.getActivity(site: site, rewindID: restore.id) {
             let dateString = mediumDateFormatterWithTime.string(from: rewindPoint.published)
-            let messageFormat = NSLocalizedString("Rewinding to %@",
-                comment: "Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date.")
+
+            let messageFormat: String
+            if FeatureFlag.jetpackBackupAndRestore.enabled {
+                messageFormat = NSLocalizedString("Restoring to %@",
+                                                  comment: "Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date.")
+            } else {
+                messageFormat = NSLocalizedString("Rewinding to %@",
+                                                  comment: "Text showing the point in time the site is being currently rewinded to. %@' is a placeholder that will expand to a date.")
+            }
 
             summary = String(format: messageFormat, dateString)
         } else {
@@ -285,7 +296,14 @@ class ActivityListViewModel: Observable {
             progress: progress
         )
 
-        return ImmuTableSection(headerText: NSLocalizedString("Rewind", comment: "Title of section showing rewind status"),
+        let headerText: String
+        if FeatureFlag.jetpackBackupAndRestore.enabled {
+            headerText = NSLocalizedString("Restore", comment: "Title of section showing restore status")
+        } else {
+            headerText = NSLocalizedString("Rewind", comment: "Title of section showing rewind status")
+        }
+
+        return ImmuTableSection(headerText: headerText,
                                 rows: [rewindRow],
                                 footerText: nil)
     }

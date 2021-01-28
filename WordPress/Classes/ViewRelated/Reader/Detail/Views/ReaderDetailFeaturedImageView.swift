@@ -411,7 +411,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private var statusBarHeight: CGFloat {
-      return max(UIApplication.shared.statusBarFrame.size.height, UIApplication.shared.delegate?.window??.safeAreaInsets.top ?? 0)
+        return max(UIApplication.shared.currentStatusBarFrame.size.height, UIApplication.shared.delegate?.window??.safeAreaInsets.top ?? 0)
     }
 
     private func topMargin() -> CGFloat {

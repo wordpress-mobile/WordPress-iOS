@@ -3,9 +3,17 @@ import CocoaLumberjack
 import WordPressShared
 import WordPressUI
 
+protocol JetpackRestoreStatusViewControllerDelegate: class {
+    func didFinishViewing(_ controller: JetpackRestoreStatusViewController)
+}
+
 class JetpackRestoreStatusViewController: BaseRestoreStatusViewController {
 
     // MARK: - Properties
+
+    weak var delegate: JetpackRestoreStatusViewControllerDelegate?
+
+    // MARK: - Private Properties
 
     private lazy var coordinator: JetpackRestoreStatusCoordinator = {
         return JetpackRestoreStatusCoordinator(site: self.site, view: self)
@@ -43,6 +51,12 @@ class JetpackRestoreStatusViewController: BaseRestoreStatusViewController {
         super.viewWillDisappear(animated)
         coordinator.viewWillDisappear()
     }
+
+    // MARK: - Override
+
+    override func primaryButtonTapped() {
+        delegate?.didFinishViewing(self)
+    }
 }
 
 extension JetpackRestoreStatusViewController: JetpackRestoreStatusView {
@@ -63,11 +77,17 @@ extension JetpackRestoreStatusViewController: JetpackRestoreStatusView {
                           progressDescription: progressDescription)
     }
 
-    func showError() {
-        // TODO
+    func showRestoreStatusUpdateFailed() {
+        let statusFailedVC = JetpackRestoreStatusFailedViewController(site: site, activity: activity)
+        self.navigationController?.pushViewController(statusFailedVC, animated: true)
     }
 
-    func showComplete() {
+    func showRestoreFailed() {
+        let failedVC = JetpackRestoreFailedViewController(site: site, activity: activity)
+        self.navigationController?.pushViewController(failedVC, animated: true)
+    }
+
+    func showRestoreComplete() {
         let completeVC = JetpackRestoreCompleteViewController(site: site, activity: activity)
         self.navigationController?.pushViewController(completeVC, animated: true)
     }
