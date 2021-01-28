@@ -229,7 +229,7 @@ static NSInteger HideSearchMinSites = 3;
     }
     
     if (![self defaultWordPressComAccount]) {
-        [[WordPressAppDelegate shared] showWelcomeScreenIfNeededAnimated:YES];
+        [[WordPressAppDelegate shared].windowManager showFullscreenSignIn];
         return;
     }
 }
@@ -399,6 +399,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     self.isSyncing = NO;
     [self.tableView.refreshControl endRefreshing];
+    [self refreshStatsWidgetsSiteList];
 }
 
 - (void)removeBlogItemsFromSpotlight:(Blog *)blog {
@@ -648,47 +649,50 @@ static NSInteger HideSearchMinSites = 3;
     }
 }
 
-- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Blog *blog = [self.dataSource blogAtIndexPath:indexPath];
     NSMutableArray *actions = [NSMutableArray array];
     __typeof(self) __weak weakSelf = self;
 
     if ([blog supports:BlogFeatureRemovable]) {
-        UITableViewRowAction *removeAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
-                                                                                title:NSLocalizedString(@"Remove", @"Removes a self hosted site from the app")
-                                                                              handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-                                                                                  [ReachabilityUtils onAvailableInternetConnectionDo:^{
-                                                                                      [weakSelf showRemoveSiteAlertForIndexPath:indexPath];
-                                                                                  }];
-                                                                              }];
+        UIContextualAction *removeAction = [UIContextualAction
+                                            contextualActionWithStyle:UIContextualActionStyleNormal title:NSLocalizedString(@"Remove", @"Removes a self hosted site from the app")
+                                            handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+            [ReachabilityUtils onAvailableInternetConnectionDo:^{
+                [weakSelf showRemoveSiteAlertForIndexPath:indexPath];
+            }];
+        }];
+
         removeAction.backgroundColor = [UIColor murielError];
         [actions addObject:removeAction];
     } else {
         if (blog.visible) {
-            UITableViewRowAction *hideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
-                                                                                  title:NSLocalizedString(@"Hide", @"Hides a site from the site picker list")
-                                                                                handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-                                                                                    [ReachabilityUtils onAvailableInternetConnectionDo:^{
-                                                                                        [weakSelf hideBlogAtIndexPath:indexPath];
-                                                                                    }];
-                                                                                }];
+            UIContextualAction *hideAction = [UIContextualAction
+                                                contextualActionWithStyle:UIContextualActionStyleNormal title:NSLocalizedString(@"Hide", @"Hides a site from the site picker list")
+                                                handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+                [ReachabilityUtils onAvailableInternetConnectionDo:^{
+                    [weakSelf hideBlogAtIndexPath:indexPath];
+                }];
+            }];
+
             hideAction.backgroundColor = [UIColor murielNeutral30];
             [actions addObject:hideAction];
         } else {
-            UITableViewRowAction *unhideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
-                                                                                    title:NSLocalizedString(@"Unhide", @"Unhides a site from the site picker list")
-                                                                                  handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-                                                                                      [ReachabilityUtils onAvailableInternetConnectionDo:^{
-                                                                                          [weakSelf unhideBlogAtIndexPath:indexPath];
-                                                                                      }];
-                                                                                  }];
+            UIContextualAction *unhideAction = [UIContextualAction
+                                                contextualActionWithStyle:UIContextualActionStyleNormal title:NSLocalizedString(@"Unhide", @"Unhides a site from the site picker list")
+                                                handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+                [ReachabilityUtils onAvailableInternetConnectionDo:^{
+                    [weakSelf unhideBlogAtIndexPath:indexPath];
+                }];
+            }];
+
             unhideAction.backgroundColor = [UIColor murielSuccess];
             [actions addObject:unhideAction];
         }
     }
 
-    return actions;
+    return [UISwipeActionsConfiguration configurationWithActions:actions];
 }
 
 - (void)showRemoveSiteAlertForIndexPath:(NSIndexPath *)indexPath

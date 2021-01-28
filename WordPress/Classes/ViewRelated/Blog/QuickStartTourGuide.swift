@@ -265,7 +265,8 @@ open class QuickStartTourGuide: NSObject {
         QuickStartCreateTour(),
         QuickStartSiteTitleTour(),
         QuickStartSiteIconTour(),
-        QuickStartThemeTour(),
+        QuickStartEditHomepageTour(),
+        QuickStartReviewPagesTour(),
         QuickStartViewTour()
     ]
 

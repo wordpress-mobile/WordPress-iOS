@@ -73,7 +73,9 @@ final class ReaderShowMenuAction {
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                    ReaderSeenAction().execute(with: post, context: context)
+                                                    ReaderSeenAction().execute(with: post, context: context, failure: { _ in
+                                                        ReaderHelpers.dispatchToggleSeenError(post: post)
+                                                    })
                                                 }
                                                })
         }

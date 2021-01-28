@@ -106,7 +106,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     
     // Spinner
     UIActivityIndicatorView *indicator      = [[UIActivityIndicatorView alloc] initWithFrame:CommentsActivityFooterFrame];
-    indicator.activityIndicatorViewStyle    = UIActivityIndicatorViewStyleGray;
+    indicator.activityIndicatorViewStyle    = UIActivityIndicatorViewStyleMedium;
     indicator.hidesWhenStopped              = YES;
     indicator.autoresizingMask              = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     indicator.center                        = footerView.center;

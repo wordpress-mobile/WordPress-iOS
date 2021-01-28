@@ -1,3 +1,4 @@
+import CocoaLumberjack
 import Foundation
 
 /// This struct contains data for the Insights Today stats to be displayed in the corresponding widget.

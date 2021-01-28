@@ -1,66 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="61" id="dOQ-a3-TAQ" customClass="JetpackScanThreatCell" customModule="WordPress" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
+        <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="76" id="dOQ-a3-TAQ" customClass="JetpackScanThreatCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="447" height="76"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="dOQ-a3-TAQ" id="VqL-rg-lUd">
-                <rect key="frame" x="0.0" y="0.0" width="293" height="61"/>
+                <rect key="frame" x="0.0" y="0.0" width="416" height="76"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jetpack-scan-state-error" translatesAutoresizingMaskIntoConstraints="NO" id="HjA-hy-W13" userLabel="Icon Image View">
-                        <rect key="frame" x="16" y="11" width="38" height="38"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Xwk-8V-RnB" userLabel="Icon Color Image" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                        <rect key="frame" x="16" y="19" width="38" height="38"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="38" id="KMc-MX-ldV"/>
-                            <constraint firstAttribute="height" constant="38" id="PuT-Vm-p0F"/>
+                            <constraint firstAttribute="width" constant="38" id="eA9-MV-PUz"/>
+                            <constraint firstAttribute="height" constant="38" id="hFv-UU-ZHg"/>
                         </constraints>
                     </imageView>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="tN7-BN-vA3">
-                        <rect key="frame" x="64" y="10" width="219" height="41"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6FZ-37-5Ra" userLabel="Icon Image View">
+                        <rect key="frame" x="23" y="26" width="24" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="24" id="bUU-9d-QIs"/>
+                            <constraint firstAttribute="height" constant="24" id="nHD-U8-Yz1"/>
+                        </constraints>
+                    </imageView>
+                    <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="tN7-BN-vA3">
+                        <rect key="frame" x="64" y="10" width="342" height="56"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="Ln2-7E-dac">
-                                <rect key="frame" x="0.0" y="0.0" width="219" height="20.5"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" text="The file EXAMPLE.php contains a malicious code pattern" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ln2-7E-dac">
+                                <rect key="frame" x="0.0" y="0.0" width="342" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="xmq-j1-2uZ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="749" text="Detail" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="SUt-dt-Wuj">
-                                <rect key="frame" x="0.0" y="22.5" width="219" height="18.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" verticalCompressionResistancePriority="749" text="The file EXAMPLE.php contains a malicious code pattern" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SUt-dt-Wuj">
+                                <rect key="frame" x="0.0" y="38" width="342" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="FOP-Zn-X7D"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="4k3-TD-NZ4"/>
+                        </constraints>
                     </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="tN7-BN-vA3" firstAttribute="leading" secondItem="HjA-hy-W13" secondAttribute="trailing" constant="10" id="5GP-yt-aeS"/>
+                    <constraint firstItem="6FZ-37-5Ra" firstAttribute="centerX" secondItem="Xwk-8V-RnB" secondAttribute="centerX" id="4mJ-oa-RdS"/>
                     <constraint firstAttribute="bottom" secondItem="tN7-BN-vA3" secondAttribute="bottom" constant="10" id="7AR-Aw-mz8"/>
+                    <constraint firstItem="Xwk-8V-RnB" firstAttribute="centerY" secondItem="tN7-BN-vA3" secondAttribute="centerY" id="9Pl-cR-Jh8"/>
                     <constraint firstAttribute="trailing" secondItem="tN7-BN-vA3" secondAttribute="trailing" constant="10" id="EZS-oh-Y4X"/>
-                    <constraint firstItem="HjA-hy-W13" firstAttribute="leading" secondItem="VqL-rg-lUd" secondAttribute="leading" constant="16" id="Thh-Kk-tG1"/>
+                    <constraint firstItem="tN7-BN-vA3" firstAttribute="leading" secondItem="Xwk-8V-RnB" secondAttribute="trailing" constant="10" id="OxF-tf-6WS"/>
+                    <constraint firstItem="6FZ-37-5Ra" firstAttribute="centerY" secondItem="Xwk-8V-RnB" secondAttribute="centerY" id="WML-DP-ykT"/>
                     <constraint firstItem="tN7-BN-vA3" firstAttribute="top" secondItem="VqL-rg-lUd" secondAttribute="top" constant="10" id="brR-tY-mGP"/>
-                    <constraint firstItem="HjA-hy-W13" firstAttribute="top" secondItem="VqL-rg-lUd" secondAttribute="top" constant="11" id="hng-Ye-BnH"/>
+                    <constraint firstItem="Xwk-8V-RnB" firstAttribute="leading" secondItem="VqL-rg-lUd" secondAttribute="leading" constant="16" id="uKd-B8-GmI"/>
                 </constraints>
+                <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
             </tableViewCellContentView>
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="detailLabel" destination="SUt-dt-Wuj" id="m82-tV-rYf"/>
-                <outlet property="iconImageView" destination="HjA-hy-W13" id="cBA-Er-g93"/>
+                <outlet property="iconBackgroundImageView" destination="Xwk-8V-RnB" id="1B0-cm-GXk"/>
+                <outlet property="iconImageView" destination="6FZ-37-5Ra" id="HaR-XU-Gx3"/>
                 <outlet property="titleLabel" destination="Ln2-7E-dac" id="VQ2-hY-wf4"/>
             </connections>
-            <point key="canvasLocation" x="-299" y="-65"/>
+            <point key="canvasLocation" x="-1163" y="14"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="jetpack-scan-state-error" width="36" height="44"/>
-    </resources>
 </document>
