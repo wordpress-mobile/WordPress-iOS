@@ -1,5 +1,6 @@
 import UIKit
 import CocoaLumberjack
+import WordPressFlux
 import WordPressShared
 import WordPressUI
 
@@ -49,13 +50,28 @@ class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
     // MARK: - Private
 
     private func downloadFile() {
-        // TODO
+        guard let url = backup.url,
+              let downloadURL = URL(string: url) else {
+
+            let title = NSLocalizedString("Unable to download file", comment: "Message displayed when opening the link to the downloadable backup fails.")
+            let notice = Notice(title: title)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+            return
+        }
+
+        UIApplication.shared.open(downloadURL)
     }
 
     private func shareLink() {
         guard let url = backup.url,
               let downloadURL = URL(string: url),
               let activities = WPActivityDefaults.defaultActivities() as? [UIActivity] else {
+
+            let title = NSLocalizedString("Unable to share link", comment: "Message displayed when sharing a link to the downloadable backup fails.")
+            let notice = Notice(title: title)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+
             return
         }
 

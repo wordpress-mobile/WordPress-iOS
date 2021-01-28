@@ -78,7 +78,7 @@ extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {
     }
 
     func showRestoreRequestFailed() {
-        let errorTitle = NSLocalizedString("Restore failed.", comment: "Title for error displayed when restoring a site fails.")
+        let errorTitle = NSLocalizedString("Restore failed", comment: "Title for error displayed when restoring a site fails.")
         let errorMessage = NSLocalizedString("We couldn't restore your site. Please try again later.", comment: "Message for error displayed when restoring a site fails.")
         let notice = Notice(title: errorTitle, message: errorMessage)
         ActionDispatcher.dispatch(NoticeAction.post(notice))

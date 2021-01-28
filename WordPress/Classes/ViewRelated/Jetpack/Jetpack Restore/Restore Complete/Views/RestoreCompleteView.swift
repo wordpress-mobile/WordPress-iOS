@@ -32,7 +32,7 @@ class RestoreCompleteView: UIView, NibLoadable {
         titleLabel.numberOfLines = 0
 
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        descriptionLabel.textColor = .text
+        descriptionLabel.textColor = .textSubtle
         descriptionLabel.numberOfLines = 0
 
         primaryButton.isPrimary = true
