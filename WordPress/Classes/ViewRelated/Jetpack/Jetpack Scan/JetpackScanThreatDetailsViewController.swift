@@ -1,4 +1,5 @@
 import UIKit
+import WordPressFlux
 
 protocol JetpackScanThreatDetailsViewControllerDelegate: class {
     func didFixThreat(_ controller: JetpackScanThreatDetailsViewController)
@@ -112,16 +113,18 @@ extension JetpackScanThreatDetailsViewController: JetpackScanThreatDetailsView {
         delegate?.didFixThreat(self)
     }
 
-    func showFixThreatError() {
-
-    }
-
     func showIgnoreThreatSuccess() {
         delegate?.didIgnoreThreat(self)
     }
 
-    func showIgnoreThreatError() {
+    func showFixThreatError() {
+        let notice = Notice(title: viewModel.fixErrorTitle)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
 
+    func showIgnoreThreatError() {
+        let notice = Notice(title: viewModel.ignoreErrorTitle)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 }
 

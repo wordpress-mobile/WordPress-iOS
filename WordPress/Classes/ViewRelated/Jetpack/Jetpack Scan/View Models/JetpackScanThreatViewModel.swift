@@ -6,7 +6,7 @@ struct JetpackScanThreatViewModel {
     let title: String
     let description: String?
 
-    // More details
+    // Threat Details
     let detailIconImage: UIImage?
     let detailIconImageColor: UIColor
     let problemTitle: String
@@ -17,9 +17,15 @@ struct JetpackScanThreatViewModel {
     let technicalDetailsDescription: String
     let fileName: String?
     let fileContext: JetpackThreatContext?
+
+    // Threat Detail Action
     let fixActionTitle: String?
     let ignoreActionTitle: String
     let ignoreActionMessage: String
+
+    // Threat Detail Error
+    let fixErrorTitle: String
+    let ignoreErrorTitle: String
 
     init(threat: JetpackScanThreat) {
         let status = threat.status
@@ -29,7 +35,7 @@ struct JetpackScanThreatViewModel {
         title = Self.title(for: threat)
         description = Self.description(for: threat)
 
-        // More details
+        // Threat Details
         detailIconImage = UIImage(named: "jetpack-scan-state-error")
         detailIconImageColor = .error
         problemTitle = Strings.details.titles.problem
@@ -40,9 +46,15 @@ struct JetpackScanThreatViewModel {
         technicalDetailsDescription = Strings.details.descriptions.technicalDetails
         fileName = threat.fileName
         fileContext = threat.context
+
+        // Threat Details Action
         fixActionTitle = Self.fixActionTitle(for: threat)
         ignoreActionTitle = Strings.details.actions.titles.ignore
         ignoreActionMessage = Strings.details.actions.messages.ignore
+
+        // Threat Details Error
+        fixErrorTitle = Strings.details.error.fix
+        ignoreErrorTitle = Strings.details.error.ignore
     }
 
     private static func fixTitle(for threat: JetpackScanThreat) -> String? {
@@ -235,7 +247,11 @@ struct JetpackScanThreatViewModel {
                 struct messages {
                     static let ignore = NSLocalizedString("You shouldn’t ignore a security unless you are absolute sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".", comment: "Message displayed in ignore threat alert. %1$@ is a placeholer for the blog name.")
                 }
+            }
 
+            struct error {
+                static let fix = NSLocalizedString("Error fixing threat. Please contact our support.", comment: "Error displayed when fixing a threat fails.")
+                static let ignore = NSLocalizedString("Error ignoring threat. Please contact our support.", comment: "Error displayed when ignoring a threat fails.")
             }
         }
 
