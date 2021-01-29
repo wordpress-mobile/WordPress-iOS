@@ -210,7 +210,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     
     [service findSiteIDForURL:siteURL success:^(NSUInteger siteID) {
         ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        NSNumber *site = [[NSNumber alloc] initWithUnsignedLong:siteID];
+        NSNumber *site = [NSNumber numberWithUnsignedLong:siteID];
         ReaderSiteTopic *topic = [topicService findSiteTopicWithSiteID:site];
         success(topic);
     } failure:^(NSError *error) {
