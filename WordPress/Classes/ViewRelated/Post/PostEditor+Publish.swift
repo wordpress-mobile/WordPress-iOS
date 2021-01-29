@@ -214,6 +214,7 @@ extension PostEditor where Self: UIViewController {
         /// Otherwise, we'll show an Action Sheet with options.
         if post.shouldAttemptAutoUpload && post.canSave() {
             editorSession.end(outcome: .cancel)
+            /// If there are ongoing media uploads, save with completion processing
             if MediaCoordinator.shared.isUploadingMedia(for: post) {
                 resumeSaving()
             } else {
