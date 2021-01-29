@@ -73,7 +73,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
     /// Activity indicator used when loading categories
     ///
-    fileprivate lazy var categoryActivityIndicator = UIActivityIndicatorView(style: .gray)
+    fileprivate lazy var categoryActivityIndicator = UIActivityIndicatorView(style: .medium)
 
     /// No results view
     ///

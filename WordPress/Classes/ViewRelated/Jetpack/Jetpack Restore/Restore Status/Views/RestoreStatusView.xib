@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="RestoreStatusView" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="400"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Zbf-a2-qml">
+                    <rect key="frame" x="16" y="24" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="Zbf-a2-qml" secondAttribute="height" id="xhB-kE-Ayz"/>
+                        <constraint firstAttribute="width" constant="32" id="zq7-pS-AZv"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q7a-aL-FAq">
+                    <rect key="frame" x="16" y="64" width="382" height="20.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EU1-QH-BCU">
+                    <rect key="frame" x="16" y="88.5" width="382" height="20.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Qit-9h-kwB">
+                    <rect key="frame" x="16" y="133" width="382" height="65"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="mwm-EE-zeC">
+                            <rect key="frame" x="0.0" y="0.0" width="382" height="20.5"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HwS-sP-YxX">
+                                    <rect key="frame" x="0.0" y="0.0" width="41.5" height="20.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BtU-j2-Om5">
+                                    <rect key="frame" x="65.5" y="0.0" width="316.5" height="20.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                        </stackView>
+                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="M1m-lM-aaN">
+                            <rect key="frame" x="0.0" y="28.5" width="382" height="8"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="8" id="QwX-Xy-ihg"/>
+                            </constraints>
+                        </progressView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V9F-s0-Tu4">
+                            <rect key="frame" x="0.0" y="44.5" width="382" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                </stackView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vL1-GD-nhg" customClass="FancyButton" customModule="WordPressUI">
+                    <rect key="frame" x="16" y="230" width="382" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="ydg-oU-Lfm"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="primaryButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="29c-HA-vme"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rvV-Do-FdP">
+                    <rect key="frame" x="16" y="298" width="382" height="20.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="vL1-GD-nhg" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="3El-QI-UHJ"/>
+                <constraint firstItem="Qit-9h-kwB" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="BgX-pz-NzM"/>
+                <constraint firstItem="Zbf-a2-qml" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="E6I-XW-B4q"/>
+                <constraint firstItem="EU1-QH-BCU" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Egi-bC-BEI"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="rvV-Do-FdP" secondAttribute="bottom" constant="24" id="F9n-cP-3Ok"/>
+                <constraint firstItem="rvV-Do-FdP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="GUX-PU-Nl8"/>
+                <constraint firstItem="Q7a-aL-FAq" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="HBk-MF-c0Q"/>
+                <constraint firstItem="Q7a-aL-FAq" firstAttribute="top" secondItem="Zbf-a2-qml" secondAttribute="bottom" constant="8" id="QzA-kg-v3A"/>
+                <constraint firstItem="Qit-9h-kwB" firstAttribute="top" secondItem="EU1-QH-BCU" secondAttribute="bottom" constant="24" id="RlB-1f-7TW"/>
+                <constraint firstItem="EU1-QH-BCU" firstAttribute="top" secondItem="Q7a-aL-FAq" secondAttribute="bottom" constant="4" id="Sut-hg-iNf"/>
+                <constraint firstItem="Qit-9h-kwB" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="TZd-8T-tTk"/>
+                <constraint firstItem="vL1-GD-nhg" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="W3W-EP-TN7"/>
+                <constraint firstItem="rvV-Do-FdP" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="XMw-pV-Ghf"/>
+                <constraint firstItem="vL1-GD-nhg" firstAttribute="top" secondItem="Qit-9h-kwB" secondAttribute="bottom" constant="32" id="cCb-TB-OfP"/>
+                <constraint firstItem="EU1-QH-BCU" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="dAL-PC-Gen"/>
+                <constraint firstItem="Zbf-a2-qml" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="24" id="lDf-7L-QK2"/>
+                <constraint firstItem="rvV-Do-FdP" firstAttribute="top" secondItem="vL1-GD-nhg" secondAttribute="bottom" constant="24" id="qv5-XF-rfL"/>
+                <constraint firstItem="Q7a-aL-FAq" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="vR9-NA-xhO"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="descriptionLabel" destination="EU1-QH-BCU" id="D3v-9H-Gsa"/>
+                <outlet property="hintLabel" destination="rvV-Do-FdP" id="uos-pD-3KW"/>
+                <outlet property="icon" destination="Zbf-a2-qml" id="6eT-n5-AER"/>
+                <outlet property="primaryButton" destination="vL1-GD-nhg" id="1e2-xk-eN4"/>
+                <outlet property="progressDescriptionLabel" destination="V9F-s0-Tu4" id="LAS-wy-Gbm"/>
+                <outlet property="progressTitleLabel" destination="BtU-j2-Om5" id="iQo-mC-OMS"/>
+                <outlet property="progressValueLabel" destination="HwS-sP-YxX" id="hZq-vg-wC1"/>
+                <outlet property="progressView" destination="M1m-lM-aaN" id="4mg-wq-x6m"/>
+                <outlet property="titleLabel" destination="Q7a-aL-FAq" id="TPC-5L-ZvC"/>
+            </connections>
+            <point key="canvasLocation" x="-16" y="110"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

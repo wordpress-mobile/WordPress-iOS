@@ -226,7 +226,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 
 - (UIActivityIndicatorView *)newSpinner
 {
-    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
     indicatorView.hidesWhenStopped = YES;
     indicatorView.translatesAutoresizingMaskIntoConstraints = NO;
     

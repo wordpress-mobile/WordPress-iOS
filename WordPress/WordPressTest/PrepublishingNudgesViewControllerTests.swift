@@ -8,9 +8,11 @@ class PrepublishingNudgesViewControllerTests: XCTestCase {
     override class func setUp() {
         super.setUp()
 
+        let windowManager = WindowManager(window: UIWindow())
+
         /// We need that in order to initialize the Authenticator, otherwise this test crashes
         /// This is because we're using the NUXButton. Ideally, that component should be extracted
-        WordPressAuthenticationManager().initializeWordPressAuthenticator()
+        WordPressAuthenticationManager(windowManager: windowManager).initializeWordPressAuthenticator()
     }
 
     /// Call the completion block when the "Publish" button is pressed

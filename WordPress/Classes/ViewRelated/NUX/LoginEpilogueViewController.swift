@@ -196,8 +196,6 @@ private extension LoginEpilogueViewController {
     }
 
     func handleConnectAnotherButton() {
-        onDismiss?()
-
         guard let controller = WordPressAuthenticator.signinForWPOrg() else {
             return
         }

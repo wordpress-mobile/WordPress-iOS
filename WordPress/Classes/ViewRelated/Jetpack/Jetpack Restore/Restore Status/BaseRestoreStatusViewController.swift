@@ -9,6 +9,8 @@ struct JetpackRestoreStatusConfiguration {
     let messageDescription: String
     let hint: String
     let primaryButtonTitle: String
+    let placeholderProgressTitle: String?
+    let progressDescription: String?
 }
 
 class BaseRestoreStatusViewController: UIViewController {
@@ -25,8 +27,7 @@ class BaseRestoreStatusViewController: UIViewController {
 
     private(set) var site: JetpackSiteRef
     private(set) var activity: Activity
-    private let restoreTypes: JetpackRestoreTypes
-    private let configuration: JetpackRestoreStatusConfiguration
+    private(set) var configuration: JetpackRestoreStatusConfiguration
 
     private lazy var dateFormatter: DateFormatter = {
         return ActivityDateFormatting.mediumDateFormatterWithTime(for: site)
@@ -34,19 +35,15 @@ class BaseRestoreStatusViewController: UIViewController {
 
     // MARK: - Initialization
 
-    init(site: JetpackSiteRef,
-         activity: Activity,
-         restoreTypes: JetpackRestoreTypes) {
+    init(site: JetpackSiteRef, activity: Activity) {
         fatalError("A configuration struct needs to be provided")
     }
 
     init(site: JetpackSiteRef,
          activity: Activity,
-         restoreTypes: JetpackRestoreTypes,
          configuration: JetpackRestoreStatusConfiguration) {
         self.site = site
         self.activity = activity
-        self.restoreTypes = restoreTypes
         self.configuration = configuration
         super.init(nibName: nil, bundle: nil)
     }
@@ -62,6 +59,12 @@ class BaseRestoreStatusViewController: UIViewController {
         configureTitle()
         configureNavigation()
         configureRestoreStatusView()
+    }
+
+    // MARK: - Public
+
+    func primaryButtonTapped() {
+        fatalError("Must override in subclass")
     }
 
     // MARK: - Configure
@@ -88,8 +91,10 @@ class BaseRestoreStatusViewController: UIViewController {
             hint: configuration.hint
         )
 
+        statusView.update(progress: 0, progressTitle: configuration.placeholderProgressTitle, progressDescription: nil)
+
         statusView.primaryButtonHandler = { [weak self] in
-            self?.dismiss(animated: true)
+            self?.primaryButtonTapped()
         }
 
         view.addSubview(statusView)
@@ -97,6 +102,6 @@ class BaseRestoreStatusViewController: UIViewController {
     }
 
     @objc private func doneTapped() {
-        self.dismiss(animated: true)
+        primaryButtonTapped()
     }
 }

@@ -1,28 +1,45 @@
-import Foundation
+import UIKit
 import CocoaLumberjack
 import WordPressShared
 import WordPressUI
+
+protocol JetpackBackupStatusViewControllerDelegate: class {
+    func didFinishViewing(_ controller: JetpackBackupStatusViewController)
+}
 
 class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
 
     // MARK: - Properties
 
+    weak var delegate: JetpackBackupStatusViewControllerDelegate?
+
+    // MARK: - Pivate Properties
+
+    private let downloadID: Int
+
     private lazy var coordinator: JetpackBackupStatusCoordinator = {
-        return JetpackBackupStatusCoordinator(site: self.site, view: self)
+        return JetpackBackupStatusCoordinator(site: self.site,
+                                              downloadID: self.downloadID,
+                                              view: self)
     }()
 
     // MARK: - Initialization
 
-    override init(site: JetpackSiteRef, activity: Activity, restoreTypes: JetpackRestoreTypes) {
+    init(site: JetpackSiteRef, activity: Activity, downloadID: Int) {
+        self.downloadID = downloadID
+
         let restoreStatusConfiguration = JetpackRestoreStatusConfiguration(
             title: NSLocalizedString("Backup", comment: "Title for Jetpack Backup Status screen"),
             iconImage: .gridicon(.history),
             messageTitle: NSLocalizedString("Currently creating a downloadable backup of your site", comment: "Title for the Jetpack Backup Status message."),
             messageDescription: NSLocalizedString("We're creating a downloadable backup of your site from %1$@.", comment: "Description for the Jetpack Backup Status message. %1$@ is a placeholder for the selected date."),
             hint: NSLocalizedString("No need to wait around. We'll notify you when your backup is ready.", comment: "A hint to users about creating a downloadable backup of their site."),
-            primaryButtonTitle: NSLocalizedString("OK, notify me!", comment: "Title for the button that will dismiss this view.")
+            primaryButtonTitle: NSLocalizedString("OK, notify me!", comment: "Title for the button that will dismiss this view."),
+            placeholderProgressTitle: nil,
+            progressDescription: nil
         )
-        super.init(site: site, activity: activity, restoreTypes: restoreTypes, configuration: restoreStatusConfiguration)
+
+        super.init(site: site, activity: activity, configuration: restoreStatusConfiguration)
     }
 
     required init?(coder: NSCoder) {
@@ -33,9 +50,19 @@ class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        coordinator.start()
+        coordinator.viewDidLoad()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        coordinator.viewWillDisappear()
+    }
+
+    // MARK: - Override
+
+    override func primaryButtonTapped() {
+        delegate?.didFinishViewing(self)
+    }
 }
 
 extension JetpackBackupStatusViewController: JetpackBackupStatusView {
@@ -48,12 +75,13 @@ extension JetpackBackupStatusViewController: JetpackBackupStatusView {
         statusView.update(progress: progress)
     }
 
-    func showError() {
-        // TODO
+    func showBackupStatusUpdateFailed() {
+        let statusFailedVC = JetpackBackupStatusFailedViewController(site: site, activity: activity)
+        self.navigationController?.pushViewController(statusFailedVC, animated: true)
     }
 
-    func showComplete() {
-        let completeVC = JetpackBackupCompleteViewController(site: site, activity: activity)
+    func showBackupComplete(_ backup: JetpackBackup) {
+        let completeVC = JetpackBackupCompleteViewController(site: site, activity: activity, backup: backup)
         self.navigationController?.pushViewController(completeVC, animated: true)
     }
 }

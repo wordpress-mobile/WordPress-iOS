@@ -5,10 +5,11 @@ import WordPressShared
 struct JetpackRestoreCompleteConfiguration {
     let title: String
     let iconImage: UIImage
+    let iconImageColor: UIColor
     let messageTitle: String
     let messageDescription: String
-    let primaryButtonTitle: String
-    let secondaryButtonTitle: String
+    let primaryButtonTitle: String?
+    let secondaryButtonTitle: String?
     let hint: String?
 }
 
@@ -16,7 +17,7 @@ class BaseRestoreCompleteViewController: UIViewController {
 
     // MARK: - Private Properties
 
-    private let site: JetpackSiteRef
+    private(set) var site: JetpackSiteRef
     private let activity: Activity
     private let configuration: JetpackRestoreCompleteConfiguration
 
@@ -86,6 +87,7 @@ class BaseRestoreCompleteViewController: UIViewController {
 
         completeView.configure(
             iconImage: configuration.iconImage,
+            iconImageColor: configuration.iconImageColor,
             title: configuration.messageTitle,
             description: String(format: configuration.messageDescription, publishedDate),
             primaryButtonTitle: configuration.primaryButtonTitle,
