@@ -214,7 +214,7 @@ extension PostEditor where Self: UIViewController {
         /// Otherwise, we'll show an Action Sheet with options.
         if post.shouldAttemptAutoUpload && post.canSave() {
             editorSession.end(outcome: .cancel)
-            if (MediaCoordinator.shared.isUploadingMedia(for: post)) {
+            if MediaCoordinator.shared.isUploadingMedia(for: post) {
                 resumeSaving()
             } else {
                 dismissOrPopView(didSave: false)
@@ -226,10 +226,10 @@ extension PostEditor where Self: UIViewController {
             discardUnsavedChangesAndUpdateGUI()
         }
     }
-    
+
     private func resumeSaving() {
         post.shouldAttemptAutoUpload = false
-        let action : PostEditorAction = post.status == .draft ? .update : .publish
+        let action: PostEditorAction = post.status == .draft ? .update : .publish
         self.postEditorStateContext.action = action
         self.publishPost(action: action, dismissWhenDone: true, analyticsStat: nil)
     }
