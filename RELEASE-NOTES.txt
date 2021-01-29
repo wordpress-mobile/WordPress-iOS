@@ -1,6 +1,7 @@
 16.7
 -----
 * [**] Site Creation: Adds the option to choose between mobile, tablet or desktop thumbnails and previews in the home page design picker when creating a WordPress.com site [https://github.com/wordpress-mobile/WordPress-iOS/pull/15688]
+* [*] Block Editor: Fix issue with uploading media after exiting the editor multiple times [https://github.com/wordpress-mobile/WordPress-iOS/pull/15656].
  
 16.6
 -----
