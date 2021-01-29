@@ -248,9 +248,9 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
                                 message: url.host,
                                 feedbackType: .success)
             self?.post(notice)
-
             self?.syncSites()
             self?.refreshPostsForFollowedTopic()
+            self?.postFollowedNotification(siteUrl: url)
 
         }, failure: { [weak self] error in
             DDLogError("Could not follow site: \(String(describing: error))")
@@ -269,6 +269,19 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         })
     }
 
+    private func postFollowedNotification(siteUrl: URL) {
+        let service = ReaderSiteService(managedObjectContext: managedObjectContext())
+        service.topic(withSiteURL: siteUrl, success: { topic in
+            if let topic = topic {
+                NotificationCenter.default.post(name: .ReaderSiteFollowed,
+                                                object: nil,
+                                                userInfo: [ReaderNotificationKeys.topic: topic])
+            }
+        }, failure: { error in
+            DDLogError("Unable to find topic by siteURL: \(String(describing: error?.localizedDescription))")
+        })
+
+    }
 
     @objc func refreshPostsForFollowedTopic() {
         let service = ReaderPostService(managedObjectContext: managedObjectContext())
