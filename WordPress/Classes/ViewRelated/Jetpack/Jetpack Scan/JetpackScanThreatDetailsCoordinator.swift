@@ -2,8 +2,8 @@ import Foundation
 
 protocol JetpackScanThreatDetailsView {
     func showFixThreatSuccess()
-    func showFixThreatError()
     func showIgnoreThreatSuccess()
+    func showFixThreatError()
     func showIgnoreThreatError()
 }
 
@@ -43,6 +43,12 @@ class JetpackScanThreatDetailsCoordinator {
     }
 
     public func ignoreThreat() {
+        service.ignoreThreat(threat, blog: blog, success: { [weak self] in
+            self?.view.showIgnoreThreatSuccess()
+        }, failure: { [weak self] error in
+            DDLogError("Error ignoring threat: \(error.localizedDescription)")
 
+            self?.view.showIgnoreThreatError()
+        })
     }
 }
