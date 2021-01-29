@@ -170,11 +170,11 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
     }
 
     private func threat(for indexPath: IndexPath) -> JetpackScanThreat? {
-        guard let threats = coordinator.threats else {
+        let row = indexPath.row - Constants.tableHeaderCountOffset
+
+        guard row >= 0, let threats = coordinator.threats else {
             return nil
         }
-
-        let row = indexPath.row - Constants.tableHeaderCountOffset
 
         return threats[row]
     }
@@ -182,8 +182,7 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        guard indexPath.row != 0,
-              let threat = threat(for: indexPath) else {
+        guard let threat = threat(for: indexPath) else {
             return
         }
 
