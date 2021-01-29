@@ -35,11 +35,17 @@ class JetpackScanThreatDetailsViewController: UIViewController {
 
     // MARK: - Properties
 
+    private let blog: Blog
     private let threat: JetpackScanThreat
+
+    private lazy var coordinator: JetpackScanThreatDetailsCoordinator = {
+        return JetpackScanThreatDetailsCoordinator(blog: blog, threat: threat, view: self)
+    }()
 
     // MARK: - Init
 
-    init(threat: JetpackScanThreat) {
+    init(blog: Blog, threat: JetpackScanThreat) {
+        self.blog = blog
         self.threat = threat
         super.init(nibName: nil, bundle: nil)
     }
@@ -61,9 +67,18 @@ class JetpackScanThreatDetailsViewController: UIViewController {
     // MARK: - IBActions
 
     @IBAction private func primaryActionButtonTapped(_ sender: Any) {
+        coordinator.fixThreat()
     }
 
     @IBAction private func secondaryActionButtonTapped(_ sender: Any) {
+        coordinator.ignoreThreat()
+    }
+}
+
+extension JetpackScanThreatDetailsViewController: JetpackScanThreatDetailsView {
+
+    func showError() {
+
     }
 }
 

@@ -186,7 +186,7 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
             return
         }
 
-        let threatDetailsVC = JetpackScanThreatDetailsViewController(threat: threat)
+        let threatDetailsVC = JetpackScanThreatDetailsViewController(blog: blog, threat: threat)
         self.navigationController?.pushViewController(threatDetailsVC, animated: true)
     }
 }
