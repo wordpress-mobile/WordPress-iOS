@@ -134,26 +134,28 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     [remote getBlogsWithSuccess:^(NSArray *blogs) {
-        [self.managedObjectContext performBlock:^{
-            
-            // Let's check if the account object is not nil. Otherwise we'll get an exception below.
-            NSManagedObjectID *accountObjectID = account.objectID;
-            if (!accountObjectID) {
-                DDLogError(@"Error: The Account objectID could not be loaded");
-                return;
-            }
-            
-            // Reload the Account in the current Context
-            NSError *error = nil;
-            WPAccount *accountInContext = (WPAccount *)[self.managedObjectContext existingObjectWithID:accountObjectID
-                                                                                                 error:&error];
-            if (!accountInContext) {
-                DDLogError(@"Error loading WordPress Account: %@", error);
-                return;
-            }
-            
-            [self mergeBlogs:blogs withAccount:accountInContext completion:success];
+        [[[JetpackCapabilitiesService alloc] init] syncWithBlogs:blogs success:^(NSArray<RemoteBlog *> *blogs) {
+            [self.managedObjectContext performBlock:^{
 
+                // Let's check if the account object is not nil. Otherwise we'll get an exception below.
+                NSManagedObjectID *accountObjectID = account.objectID;
+                if (!accountObjectID) {
+                    DDLogError(@"Error: The Account objectID could not be loaded");
+                    return;
+                }
+
+                // Reload the Account in the current Context
+                NSError *error = nil;
+                WPAccount *accountInContext = (WPAccount *)[self.managedObjectContext existingObjectWithID:accountObjectID
+                                                                                                     error:&error];
+                if (!accountInContext) {
+                    DDLogError(@"Error loading WordPress Account: %@", error);
+                    return;
+                }
+
+                [self mergeBlogs:blogs withAccount:accountInContext completion:success];
+
+            }];
         }];
     } failure:^(NSError *error) {
         DDLogError(@"Error syncing blogs: %@", error);
@@ -941,19 +943,21 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                        completionHandler:(void (^)(void))completion
 {
     return ^void(RemoteBlog *remoteBlog) {
-        [self.managedObjectContext performBlock:^{
-            NSError *error = nil;
-            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
-                                                                           error:&error];
-            if (blog) {
-                [self updateBlog:blog withRemoteBlog:remoteBlog];
+        [[[JetpackCapabilitiesService alloc] init] syncWithBlogs:@[remoteBlog] success:^(NSArray<RemoteBlog *> *blogs) {
+            [self.managedObjectContext performBlock:^{
+                NSError *error = nil;
+                Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
+                                                                               error:&error];
+                if (blog) {
+                    [self updateBlog:blog withRemoteBlog:blogs.firstObject];
 
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-            }
+                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                }
 
-            if (completion) {
-                completion();
-            }
+                if (completion) {
+                    completion();
+                }
+            }];
         }];
     };
 }

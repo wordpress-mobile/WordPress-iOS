@@ -94,7 +94,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
 - (void)beginSession
 {
     if (self.loggedInID.length > 0) {
-        [self.tracksService switchToAuthenticatedUserWithUsername:self.loggedInID userID:nil skipAliasEventCreation:YES];
+        [self.tracksService switchToAuthenticatedUserWithUsername:self.loggedInID userID:nil wpComToken:[WPAccount tokenForUsername:self.loggedInID] skipAliasEventCreation:YES];
     } else {
         [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
     }
@@ -171,14 +171,14 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             self.loggedInID = username;
             self.anonymousID = nil;
 
-            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" wpComToken:[WPAccount tokenForUsername:username] skipAliasEventCreation:NO];
         } else if ([self.loggedInID isEqualToString:username]){
             // Username did not change from last refreshMetadata - just make sure Tracks client has it
-            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:YES];
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" wpComToken:[WPAccount tokenForUsername:username] skipAliasEventCreation:YES];
         } else {
             // Username changed for some reason - switch back to anonymous first
             [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
-            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" wpComToken:[WPAccount tokenForUsername:username] skipAliasEventCreation:NO];
             self.loggedInID = username;
             self.anonymousID = nil;
         }
@@ -1471,6 +1471,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatReaderTagFollowed:
             eventName = @"reader_reader_tag_followed";
+            eventProperties = @{ @"source" : @"unknown" };
             break;
         case WPAnalyticsStatReaderTagLoaded:
             eventName = @"reader_tag_loaded";

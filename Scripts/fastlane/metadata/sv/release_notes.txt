@@ -1,11 +1,15 @@
-Här är nyheterna i vår senaste version:
+Nyheter i den senaste utgåvan?
 
-Blockredigeraren: Nu kan du lägga in ett filblock som ger besökaren en knapp för nedladdning av ett dokument eller någon annan fil. Dessutom har en uppdatering av galleriblocket rättat ett fel där redigeraren oväntat kunde stängas vid uppladdning.
+Blockredigeraren:
 
-Webbplatsskapande: När du bygger sidor på din webbplats är det nu enklare att hitta och välja alternativ för sidlayout.
+– Du kan komma att märka några förändringar när du arbetar med block. Nu kan du flytta ett block uppåt och nedåt i ditt inlägg eller din sida genom att trycka länge på någon av knapparna ”upp” eller ”ned”. Vi har även lagt till stöd för fullbred och bred innehållsjustering i kolumnblocket och har gjort det enklare att välja och ange en URL för en bild i bildblocket.
 
-Skapa inlägg: Vill du snabbt skapa en kopia av ett inlägg? Nu kan du duplicera inlägg direkt i inläggslistan.
+– Använder du P2 för att samarbeta inom ditt team? När du publicerar ett nytt inlägg kan du trycka på tecknet ”+” för att markera en annan P2-blogg för att ”korspublicera” till den webbplatsen och informera dess användare om ditt nya inlägg.
 
-Läsaren: Använder du P2, ett verktyg för samarbete i team och grupper? Nu kan du läsa och följa P2-webbplatser via ett nytt flöde.
+Diverse rättelser och uppdateringar:
 
-Kommentarer: Vill du prenumerera på kommentarstrådar på webbplatser du följer eller som du är intresserad av? Tryck på knappen ”Följ konversationen” i kommentarsvyn.
+– Funktionen för att välja ett domännamn erbjuderr nu fler alternativ i sökresultaten. Ta och prova!
+
+– I listan över sidorna på din webbplats kan du snabbt skapa en kopia av en sida, något som kan hjälpa dig att spara tid när du skapar innehåll.
+
+– Andra uppdateringar, bland annat i läsaren, förbättrar din sammantagna upplevelse av appen.

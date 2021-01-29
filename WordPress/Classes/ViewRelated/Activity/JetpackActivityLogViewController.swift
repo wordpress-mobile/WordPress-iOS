@@ -11,7 +11,8 @@ class JetpackActivityLogViewController: BaseActivityListViewController {
             noMatchingSubtitle: NSLocalizedString("Try adjusting your date range or activity type filters", comment: "Text display when the view when there aren't any Activities to display in the Activity Log for a given filter."),
             filterbarRangeButtonTapped: .activitylogFilterbarRangeButtonTapped,
             filterbarSelectRange: .activitylogFilterbarSelectRange,
-            filterbarResetRange: .activitylogFilterbarResetRange
+            filterbarResetRange: .activitylogFilterbarResetRange,
+            numberOfItemsPerPage: 20
         )
 
         super.init(site: site, store: store, configuration: activityListConfiguration, isFreeWPCom: isFreeWPCom)

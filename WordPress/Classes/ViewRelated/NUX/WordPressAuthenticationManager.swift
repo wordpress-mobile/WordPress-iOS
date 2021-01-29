@@ -8,6 +8,11 @@ import Gridicons
 @objc
 class WordPressAuthenticationManager: NSObject {
     static var isPresentingSignIn = false
+    private let windowManager: WindowManager
+
+    init(windowManager: WindowManager) {
+        self.windowManager = windowManager
+    }
 
     /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
     /// We'll setup a mechanism to relay the Support event back to the Authenticator.
@@ -54,6 +59,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 primaryTitleColor: .white,
                                                 secondaryTitleColor: .text,
                                                 disabledTitleColor: .neutral(.shade20),
+                                                disabledButtonActivityIndicatorColor: .text,
                                                 textButtonColor: .primary,
                                                 textButtonHighlightColor: .primaryDark,
                                                 instructionColor: .text,
@@ -109,7 +115,7 @@ extension WordPressAuthenticationManager {
     ///
     @objc
     class func showSigninForWPComFixingAuthToken() {
-        guard let presenter = UIApplication.shared.keyWindow?.rootViewController else {
+        guard let presenter = UIApplication.shared.mainWindow?.rootViewController else {
             assertionFailure()
             return
         }
@@ -248,7 +254,13 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         }
 
         epilogueViewController.credentials = credentials
-        epilogueViewController.onDismiss = onDismiss
+        epilogueViewController.onDismiss = { [weak self] in
+            onDismiss()
+
+            if navigationController == UIApplication.shared.keyWindow?.rootViewController {
+                self?.windowManager.dismissFullscreenSignIn()
+            }
+        }
 
         navigationController.pushViewController(epilogueViewController, animated: true)
     }
@@ -263,11 +275,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         epilogueViewController.credentials = credentials
         epilogueViewController.socialService = service
-        epilogueViewController.onContinue = {
+        epilogueViewController.onContinue = { [weak self] in
             if PostSignUpInterstitialViewController.shouldDisplay() {
-                self.presentPostSignUpInterstitial(in: navigationController)
+                self?.presentPostSignUpInterstitial(in: navigationController)
             } else {
-                navigationController.dismiss(animated: true)
+                // Signup is only ever shown in fullscreen
+                self?.windowManager.dismissFullscreenSignIn()
             }
 
             UserDefaults.standard.set(false, forKey: UserDefaults.standard.welcomeNotificationSeenKey)
@@ -375,9 +388,37 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 //
 private extension WordPressAuthenticationManager {
     /// Displays the post sign up interstitial if needed, if it's not displayed
-    private func presentPostSignUpInterstitial(in navigationController: UINavigationController, onDismiss: (() -> Void)? = nil) {
+    private func presentPostSignUpInterstitial(
+        in navigationController: UINavigationController,
+        onDismiss: (() -> Void)? = nil) {
+
         let viewController = PostSignUpInterstitialViewController()
-        viewController.onDismiss = onDismiss
+        let windowManager = self.windowManager
+
+        viewController.dismiss = { dismissAction in
+            let completion: (() -> Void)?
+
+            switch dismissAction {
+            case .none:
+                completion = nil
+            case .addSelfHosted:
+                completion = {
+                    NotificationCenter.default.post(name: .addSelfHosted, object: nil)
+                }
+            case .createSite:
+                completion = {
+                    NotificationCenter.default.post(name: .createSite, object: nil)
+                }
+            }
+
+            if windowManager.isShowingFullscreenSignIn {
+                windowManager.dismissFullscreenSignIn(completion: completion)
+            } else {
+                navigationController.dismiss(animated: true, completion: completion)
+            }
+
+            onDismiss?()
+        }
 
         navigationController.pushViewController(viewController, animated: true)
     }

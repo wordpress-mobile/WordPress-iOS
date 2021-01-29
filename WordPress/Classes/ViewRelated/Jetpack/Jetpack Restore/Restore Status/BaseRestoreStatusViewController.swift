@@ -9,16 +9,25 @@ struct JetpackRestoreStatusConfiguration {
     let messageDescription: String
     let hint: String
     let primaryButtonTitle: String
+    let placeholderProgressTitle: String?
+    let progressDescription: String?
 }
 
 class BaseRestoreStatusViewController: UIViewController {
 
+    // MARK: - Public Properties
+
+    lazy var statusView: RestoreStatusView = {
+        let statusView = RestoreStatusView.loadFromNib()
+        statusView.translatesAutoresizingMaskIntoConstraints = false
+        return statusView
+    }()
+
     // MARK: - Private Properties
 
-    private let site: JetpackSiteRef
-    private let activity: Activity
-    private let restoreTypes: JetpackRestoreTypes
-    private let configuration: JetpackRestoreStatusConfiguration
+    private(set) var site: JetpackSiteRef
+    private(set) var activity: Activity
+    private(set) var configuration: JetpackRestoreStatusConfiguration
 
     private lazy var dateFormatter: DateFormatter = {
         return ActivityDateFormatting.mediumDateFormatterWithTime(for: site)
@@ -26,19 +35,15 @@ class BaseRestoreStatusViewController: UIViewController {
 
     // MARK: - Initialization
 
-    init(site: JetpackSiteRef,
-         activity: Activity,
-         restoreTypes: JetpackRestoreTypes) {
+    init(site: JetpackSiteRef, activity: Activity) {
         fatalError("A configuration struct needs to be provided")
     }
 
     init(site: JetpackSiteRef,
          activity: Activity,
-         restoreTypes: JetpackRestoreTypes,
          configuration: JetpackRestoreStatusConfiguration) {
         self.site = site
         self.activity = activity
-        self.restoreTypes = restoreTypes
         self.configuration = configuration
         super.init(nibName: nil, bundle: nil)
     }
@@ -56,6 +61,12 @@ class BaseRestoreStatusViewController: UIViewController {
         configureRestoreStatusView()
     }
 
+    // MARK: - Public
+
+    func primaryButtonTapped() {
+        fatalError("Must override in subclass")
+    }
+
     // MARK: - Configure
 
     private func configureTitle() {
@@ -70,7 +81,6 @@ class BaseRestoreStatusViewController: UIViewController {
     }
 
     private func configureRestoreStatusView() {
-        let statusView = RestoreStatusView.loadFromNib()
         let publishedDate = dateFormatter.string(from: activity.published)
 
         statusView.configure(
@@ -81,16 +91,17 @@ class BaseRestoreStatusViewController: UIViewController {
             hint: configuration.hint
         )
 
+        statusView.update(progress: 0, progressTitle: configuration.placeholderProgressTitle, progressDescription: nil)
+
         statusView.primaryButtonHandler = { [weak self] in
-            self?.dismiss(animated: true)
+            self?.primaryButtonTapped()
         }
 
-        statusView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(statusView)
         view.pinSubviewToAllEdges(statusView)
     }
 
     @objc private func doneTapped() {
-        self.dismiss(animated: true)
+        primaryButtonTapped()
     }
 }

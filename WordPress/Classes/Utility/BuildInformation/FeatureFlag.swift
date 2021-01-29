@@ -18,7 +18,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackScan
     case activityLogFilters
     case jetpackBackupAndRestore
-    case unseenPostCount
+    case todayWidget
+    case unseenPosts
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -56,11 +57,13 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .jetpackScan:
             return BuildConfiguration.current == .localDeveloper
         case .activityLogFilters:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .jetpackBackupAndRestore:
             return BuildConfiguration.current == .localDeveloper
-        case .unseenPostCount:
-            return false
+        case .todayWidget:
+            return true
+        case .unseenPosts:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 
@@ -121,8 +124,10 @@ extension FeatureFlag {
             return "Jetpack's Activity Log Filters"
         case .jetpackBackupAndRestore:
             return "Jetpack Backup and Restore"
-        case .unseenPostCount:
-            return "Unseen Posts Count in Reader"
+        case .todayWidget:
+            return "iOS 14 Today Widget"
+        case .unseenPosts:
+            return "Unseen Posts in Reader"
         }
     }
 
@@ -133,6 +138,8 @@ extension FeatureFlag {
         case .swiftCoreData:
             return false
         case .newNavBarAppearance:
+            return false
+        case .todayWidget:
             return false
         default:
             return true

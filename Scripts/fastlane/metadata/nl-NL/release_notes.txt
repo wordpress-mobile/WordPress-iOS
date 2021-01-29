@@ -1,11 +1,15 @@
-Dit is wat er nieuw is in onze nieuwste release:
+Wat is er nieuw in de nieuwste uitgave?
 
-De blok-editor: je kan nu een bestandsblok invoegen in een bericht of pagina, die een downloadknop plaatst voor bestanden zoals documenten. Een update van het galerij-blok lost ook een uploadprobleem op als je editor werd gesloten.
+De blokeditor:
 
-Site maken: wanneer je pagina's op je site maakt, zijn de opties voor pagina lay-out nu gemakkelijker te zien en te selecteren.
+– Bij het gebruik van blokken kan je nu een aantal veranderingen opmerken. Je kan blokken nu naar boven en onder verplaatsen in je bericht of op je pagina door de knoppen 'omhoog' en 'omlaag' ingedrukt te houden. We hebben ook ondersteuning toegevoegd voor uitlijning op volledige grootte en brede uitlijning in het kolommenblok en hebben het makkelijker gemaakt om een URL voor een afbeelding te kiezen en in te stellen in het afbeeldingblok.
 
-Bericht maken: Wil je snel een bericht dupliceren? Je kunt dit nu doen vanuit je berichtenlijst.
+– Gebruik je P2 om samen te werken met je team? Bij het publiceren van een nieuw bericht, kan je het +-teken invoeren om een andere P2 en een 'gekoppeld bericht' op de site te taggen, waarmee je gebruikers op de hoogte brengt van je nieuwe bericht.
 
-De reader: Gebruik je P2, een tool voor team- en groepssamenwerking? Je kunt P2 sites lezen en volgen in een nieuw toegevoegde stream.
+Verschillende verbeteringen en updates:
 
-Reacties: wil je jezelf abonneren op reactie threads op sites die je volgt of waarin je geïnteresseerd bent? Tik op de knop "Gesprek volgen" in de Reacties weergave.
+– De functie Kies een domein bevat nu meer opties in de zoekresultaten. Probeer het nu!
+
+– In je sitepaginalijst kan je snel een pagina dupliceren, wat je tijd bespaart bij het aanmaken van content.
+
+– Andere updates, zoals wijzigingen aan de Reader, verbeteren je algehele app-ervaring.

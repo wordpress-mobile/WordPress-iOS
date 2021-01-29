@@ -328,7 +328,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         searchWrapperView.addSubview(searchController.searchBar)
 
-        tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
+        tableView.verticalScrollIndicatorInsets.top = searchController.searchBar.bounds.height
 
         updateTableHeaderSize()
     }
@@ -755,7 +755,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         updateTableHeaderSize()
         _tableViewHandler.isSearching = true
 
-        tableView.scrollIndicatorInsets.top = searchWrapperView.bounds.height
+        tableView.verticalScrollIndicatorInsets.top = searchWrapperView.bounds.height
         tableView.contentInset.top = 0
     }
 

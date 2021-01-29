@@ -1,11 +1,15 @@
-Voici la nouveauté de notre dernière version :
+Quelles sont les nouveautés de la dernière version ?
 
-Éditeur de blocs : vous pouvez désormais insérer un bloc Fichier afin d’ajouter un bouton de téléchargement de fichiers, comme des documents. Une mise à jour du bloc Galerie a également permis de résoudre un problème de chargement à la fermeture de votre éditeur.
+L’éditeur de blocs :
 
-Création de site : lors de la création de pages sur votre site, les options de mise en page des pages sont désormais plus faciles à voir et à sélectionner.
+– Lorsque vous utilisez des blocs, vous pouvez remarquer quelques changements. Vous pouvez désormais déplacer les blocs vers le haut et vers le bas dans votre article ou votre page en appuyant longuement sur les boutons « haut » et « bas ». Nous avons également ajouté la prise en charge de la pleine largeur et de l’alignement large dans le bloc Colonnes et simplifié la sélection et la définition d’une URL pour une image dans le bloc Image.
 
-Création d’articles : vous souhaitez dupliquer plus rapidement un article ? C’est désormais possible à partir de votre liste d’articles.
+– Utilisez-vous P2 pour collaborer avec votre équipe ? Lors de la publication d’un nouvel article, saisissez le caractère + pour ajouter une étiquette à un autre P2 et partager le contenu sur le site, en alertant ses utilisateurs de votre nouvel article.
 
-Lecteur : utilisez-vous P2, un outil dédié à la collaboration des équipes et des groupes ? Vous pouvez lire et suivre les sites P2 dans un flux qui vient d’être ajouté.
+Diverses résolutions et mises à jour :
 
-Commentaires : vous souhaitez vous abonner aux commentaires imbriqués sur les sites que vous suivez ou qui vous intéressent ? Appuyez sur le bouton « S’abonner à la conversation » dans la vue Commentaires.
+– La fonctionnalité Choisir un domaine renvoie désormais plus d’options dans les résultats de recherche. Essayez-la !
+
+– Dans votre liste Pages du site, vous pouvez rapidement dupliquer une page, ce qui peut vous faire gagner du temps lors de la création de contenu.
+
+– D’autres mises à jour, notamment les modifications apportées au Lecteur, améliorent votre expérience globale de l’application.

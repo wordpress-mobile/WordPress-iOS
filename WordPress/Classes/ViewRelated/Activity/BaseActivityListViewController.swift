@@ -31,6 +31,9 @@ struct ActivityListConfiguration {
 
     /// Event to be fired when the range date reset button is tapped
     let filterbarResetRange: WPAnalyticsEvent
+
+    /// The number of items to be requested for each page
+    let numberOfItemsPerPage: Int
 }
 
 /// ActivityListViewController is used as a base ViewController for
@@ -54,12 +57,14 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
     var tableView: UITableView = UITableView()
     let refreshControl = UIRefreshControl()
 
+    let numberOfItemsPerPage = 100
+
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self, with: self)
     }()
 
     private lazy var spinner: UIActivityIndicatorView = {
-        let spinner = UIActivityIndicatorView(style: .gray)
+        let spinner = UIActivityIndicatorView(style: .medium)
         spinner.startAnimating()
         spinner.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 44)
         return spinner
@@ -90,7 +95,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
         self.store = store
         self.isFreeWPCom = isFreeWPCom
         self.configuration = configuration
-        self.viewModel = ActivityListViewModel(site: site, store: store, noResultsTexts: configuration)
+        self.viewModel = ActivityListViewModel(site: site, store: store, configuration: configuration)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -101,7 +106,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
         view.addSubview(containerStackView)
         containerStackView.axis = .vertical
 
-        if FeatureFlag.activityLogFilters.enabled {
+        if FeatureFlag.activityLogFilters.enabled && site.shouldShowActivityLogFilter() {
             setupFilterBar()
         }
 
@@ -309,19 +314,19 @@ extension BaseActivityListViewController: UITableViewDelegate {
         return row.activity.isRewindable
     }
 
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let row = handler.viewModel.rowAtIndexPath(indexPath) as? ActivityListRow, row.activity.isRewindable else {
             return nil
         }
 
-        let rewindAction = UITableViewRowAction(style: .normal,
-                                                title: NSLocalizedString("Rewind", comment: "Title displayed when user swipes on a rewind cell"),
-                                                handler: { [weak self] _, indexPath in
-                                                    self?.presentRestoreFor(activity: row.activity)
-        })
+        let rewindAction = UIContextualAction(style: .normal,
+                                              title: NSLocalizedString("Rewind", comment: "Title displayed when user swipes on a rewind cell")) { [weak self] (_, _, _) in
+            self?.presentRestoreFor(activity: row.activity)
+        }
+
         rewindAction.backgroundColor = .primary(.shade40)
 
-        return [rewindAction]
+        return UISwipeActionsConfiguration(actions: [rewindAction])
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -363,15 +368,17 @@ extension BaseActivityListViewController: ActivityPresenter {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
-        let restoreVC = JetpackRestoreViewController(site: site, activity: activity)
+        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
+        restoreOptionsVC.restoreStatusDelegate = self
         alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
-            self.present(UINavigationController(rootViewController: restoreVC), animated: true)
+            self.present(UINavigationController(rootViewController: restoreOptionsVC), animated: true)
         })
 
-        let downloadBackupTitle = NSLocalizedString("Download Backup", comment: "Title displayed for download backup action.")
-        let downloadBackupVC = JetpackDownloadBackupViewController(site: site, activity: activity)
-        alertController.addDefaultActionWithTitle(downloadBackupTitle, handler: { _ in
-            self.present(UINavigationController(rootViewController: downloadBackupVC), animated: true)
+        let backupTitle = NSLocalizedString("Download backup", comment: "Title displayed for download backup action.")
+        let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
+        backupOptionsVC.backupStatusDelegate = self
+        alertController.addDefaultActionWithTitle(backupTitle, handler: { _ in
+            self.present(UINavigationController(rootViewController: backupOptionsVC), animated: true)
         })
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Title for cancel action. Dismisses the action sheet.")
@@ -407,8 +414,16 @@ extension BaseActivityListViewController: ActivityPresenter {
             return
         }
 
-        let restoreVC = JetpackRestoreViewController(site: site, activity: activity)
-        let navigationVC = UINavigationController(rootViewController: restoreVC)
+        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
+        restoreOptionsVC.restoreStatusDelegate = self
+        let navigationVC = UINavigationController(rootViewController: restoreOptionsVC)
+        self.present(navigationVC, animated: true)
+    }
+
+    func presentBackupFor(activity: Activity) {
+        let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
+        backupOptionsVC.backupStatusDelegate = self
+        let navigationVC = UINavigationController(rootViewController: backupOptionsVC)
         self.present(navigationVC, animated: true)
     }
 }
@@ -459,6 +474,34 @@ private extension BaseActivityListViewController {
         noResultsViewController?.view.isHidden = false
     }
 
+}
+
+// MARK: - Restore Status Handling
+
+extension BaseActivityListViewController: JetpackRestoreStatusViewControllerDelegate {
+
+    func didFinishViewing(_ controller: JetpackRestoreStatusViewController) {
+        controller.dismiss(animated: true, completion: { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.store.fetchRewindStatus(site: self.site)
+        })
+    }
+}
+
+// MARK: - Restore Status Handling
+
+extension BaseActivityListViewController: JetpackBackupStatusViewControllerDelegate {
+
+    func didFinishViewing(_ controller: JetpackBackupStatusViewController) {
+        controller.dismiss(animated: true, completion: { [weak self] in
+            guard let self = self else {
+                return
+            }
+            // TODO: fetch backup status
+        })
+    }
 }
 
 // MARK: - Calendar Handling
@@ -527,7 +570,7 @@ extension BaseActivityListViewController: ActivityTypeSelectorDelegate {
         } else {
             let totalActivitiesSelected = selectedGroups.map { $0.count }.reduce(0, +)
             var selectTypeProperties: [AnyHashable: Any] = [:]
-            selectedGroups.forEach { selectTypeProperties["filter_group_\($0.key)"] = true }
+            selectedGroups.forEach { selectTypeProperties["group_\($0.key)"] = true }
             selectTypeProperties["num_groups_selected"] = selectedGroups.count
             selectTypeProperties["num_total_activities_selected"] = totalActivitiesSelected
             WPAnalytics.track(.activitylogFilterbarSelectType, properties: selectTypeProperties)

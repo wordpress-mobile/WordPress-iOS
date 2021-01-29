@@ -1,11 +1,15 @@
-En son sürümümüzdeki yenilikler şunlardır:
+En son sürümdeki yenilikler neler?
 
-Blok düzenleyici: Artık bir gönderiye veya sayfaya, belgeler gibi dosyalar için indirme düğmesi yerleştiren bir Dosya bloğu ekleyebilirsiniz. Galeri bloğunda yapılan bir güncelleme, düzenleyiciniz kapatıldığında meydana gelen bir yükleme sorununu da çözmüştür.
+Blok düzenleyici:
 
-Site oluşturma: Sitenizde sayfalar oluştururken, sayfa düzeni seçeneklerini görmek ve seçmek artık daha kolay.
+– Bloklarla çalışırken birkaç değişiklik fark edebilirsiniz.  Artık "yukarı" ve "aşağı" düğmelerine uzun basarak yazınızda veya sayfanızda blokları yukarı ve aşağı taşıyabilirsiniz. Ayrıca Sütunlar bloğuna tam genişlik ve geniş hizalama için destek ekledik ve Görüntü bloğunda bir resim için bir URL seçmeyi ve ayarlamayı kolaylaştırdık.
 
-Gönderi oluşturma: Bir gönderiyi hızlıca kopyalamak mı istiyorsunuz? Artık bunu Gönderiler Listenizden yapabilirsiniz.
+– Ekibinizle işbirliği yapmak için P2 kullanıyor musunuz?  Yeni bir yazı yayınlarken başka bir P2'yi etiketlemek ve siteye "çapraz gönderi yapmak" için + karakterini yazarak kullanıcıları yeni yazınız hakkında uyarın.
 
-Okuyucu: Ekip ve grup işbirliğine yönelik bir araç olan P2'yi kullanıyor musunuz? Yeni eklenen bir akışta P2 sitelerini okuyabilir ve takip edebilirsiniz.
+Çeşitli düzeltmeler ve güncellemeler:
 
-Yorumlar: Takip ettiğiniz veya ilgilendiğiniz sitelerdeki yorum dizilerine abone olmak ister misiniz?  Yorumlar görünümünde "Sohbeti takip et" düğmesine dokunun.
+– Alan Adı Seç özelliği artık arama sonuçlarında daha fazla seçenek sağlıyor. Deneyin!
+
+– Site Sayfaları listenizde bir sayfayı hızla çoğaltabilir, böylece içerik oluştururken zaman kazanabilirsiniz.
+
+– Reader'daki değişiklikler dahil diğer güncellemeler genel uygulama deneyiminizi iyileştirir.

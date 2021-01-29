@@ -234,11 +234,9 @@ class WPRichTextFormatter {
         // to `parsedString`
         while !scanner.isAtEnd {
 
-            var tempString: NSString? = ""
-
             // Scan up to the first tag after the current scanLocation
-            scanner.scanUpTo("<", into: &tempString)
-            processedString += tempString! as String
+            let tempString = scanner.scanUpToString("<") ?? ""
+            processedString += tempString
 
             // The scanner will scan to the end of the string if a tag isn't found.
             if scanner.isAtEnd {
@@ -248,12 +246,11 @@ class WPRichTextFormatter {
 
             // Scan to get the name of the tag and advance one character to
             // omit the opening <.
-            let tagStartLocation = scanner.scanLocation
-            var tagName: NSString? = ""
+            let tagStartLocation = scanner.currentIndex
             let charSet = CharacterSet(charactersIn: " >")
-            scanner.scanLocation += 1
-            scanner.scanUpToCharacters(from: charSet, into: &tagName)
-            scanner.scanLocation = tagStartLocation
+            scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
+            let tagName = scanner.scanUpToCharacters(from: charSet) ?? ""
+            scanner.currentIndex = tagStartLocation
 
             // Process tags of interest.
             if tag.tagName == tagName as String? {
@@ -270,7 +267,7 @@ class WPRichTextFormatter {
                 // and append the "<" to our parsed string. This prevents
                 // the tag from being re-scanned on the next pass.
                 processedString += "<"
-                scanner.scanLocation += 1
+                scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
             }
         }
         return (processedString, attachments)
@@ -316,13 +313,11 @@ class HtmlTagProcessor {
     /// - Returns: A tuple: (Bool, String) where the Bool represents success and the string is the parsed HTML.
     ///
     func extractTag(_ scanner: Scanner) -> (Bool, String) {
-        var parsedString = ""
-        var tempString: NSString? = ""
         var success = false
         let endTag = includesEndTag ? "</\(tagName)>" : ">"
 
-        scanner.scanUpTo(endTag, into: &tempString)
-        parsedString += tempString! as String
+        let tempString = scanner.scanUpToString(endTag) ?? ""
+        var parsedString = tempString
 
         if !scanner.isAtEnd {
             success = true
@@ -331,7 +326,7 @@ class HtmlTagProcessor {
             parsedString += endTag
 
             // Advance the scanner to account for the closing tag.
-            scanner.scanLocation += endTag.count
+            scanner.currentIndex = scanner.string.index(scanner.currentIndex, offsetBy: endTag.count)
         }
 
         return (success, parsedString)
@@ -375,7 +370,8 @@ class BlockquoteTagProcessor: HtmlTagProcessor {
 
         // If the blockquote contains no paragraphs just insert the marker after
         // the tag.
-        if !parsedString.contains("<p>") {
+        let pTag = "<p>"
+        if !parsedString.contains(pTag) {
             var str = parsedString as NSString
             let location = "<\(tagName)>".count
             str = str.replacingCharacters(in: NSRange(location: location, length: 0), with: WPRichTextFormatter.blockquoteIdentifier) as NSString
@@ -385,25 +381,22 @@ class BlockquoteTagProcessor: HtmlTagProcessor {
 
         // For each paragraph contained by the blockquote, insert a marker
         // after the opening paragraph tag.
-        let marker = "<p>" + WPRichTextFormatter.blockquoteIdentifier
+        let marker = pTag + WPRichTextFormatter.blockquoteIdentifier
         var str = ""
-        var tempStr: NSString? = ""
+        var tempStr = ""
         let paragraphScanner = Scanner(string: parsedString)
         paragraphScanner.charactersToBeSkipped = nil
 
         while !paragraphScanner.isAtEnd {
-            paragraphScanner.scanUpTo("<p>", into: &tempStr)
+            tempStr = paragraphScanner.scanUpToString(pTag) ?? ""
 
-            if let tempStr = tempStr {
-                str += tempStr as String
-            }
-
-            tempStr = ""
+            str += tempStr
             if paragraphScanner.isAtEnd {
                 break
             }
 
-            paragraphScanner.scanLocation += 3
+            paragraphScanner.currentIndex = scanner.string.index(paragraphScanner.currentIndex, offsetBy: pTag.count)
+            tempStr = ""
             str += marker
         }
         parsedString = str
@@ -475,7 +468,7 @@ class AttachmentTagProcessor: HtmlTagProcessor {
             return (parsedString, nil)
         }
 
-        let identifier = textAttachmentIdentifier + tagName + String(scanner.scanLocation)
+        let identifier = textAttachmentIdentifier + tagName + String(scanner.currentIndex.utf16Offset(in: scanner.string))
         let attachment = attachmentForHtml(parsedString, identifier: identifier)
 
         return (identifier, attachment)
@@ -586,18 +579,18 @@ class AttachmentTagProcessor: HtmlTagProcessor {
 
         // For most attachments we're only interested in the attributes in the opening tag.
         // We can skip a closing tag and any child elements.
-        var tag: NSString? = ""
-        scanner.scanUpTo(">", into: &tag)
+
+        let tag = scanner.scanUpToString(">") as NSString? ?? ""
 
         let regex = type(of: self).attributeRegex
 
-        let matches = regex.matches(in: tag! as String, options: .reportCompletion, range: NSRange(location: 0, length: tag!.length))
+        let matches = regex.matches(in: tag as String, options: .reportCompletion, range: NSRange(location: 0, length: tag.length))
         for match in matches {
             let keyRange = match.range(at: 1)
             let valueRange = match.range(at: 2)
 
-            let key = tag!.substring(with: keyRange).lowercased()
-            let value = tag!.substring(with: valueRange)
+            let key = tag.substring(with: keyRange).lowercased()
+            let value = tag.substring(with: valueRange)
 
             attrs.updateValue(value, forKey: key)
         }

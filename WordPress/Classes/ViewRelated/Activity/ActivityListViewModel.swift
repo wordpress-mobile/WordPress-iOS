@@ -4,6 +4,7 @@ protocol ActivityPresenter: class {
     func presentDetailsFor(activity: FormattableActivity)
     func presentBackupOrRestoreFor(activity: Activity)
     func presentRestoreFor(activity: Activity)
+    func presentBackupFor(activity: Activity)
 }
 
 class ActivityListViewModel: Observable {
@@ -18,7 +19,7 @@ class ActivityListViewModel: Observable {
     private let noResultsTexts: ActivityListConfiguration
     private var storeReceipt: Receipt?
 
-    private let count = 20
+    private var numberOfItemsPerPage = 20
     private var page = 0
     private(set) var after: Date?
     private(set) var before: Date?
@@ -55,10 +56,13 @@ class ActivityListViewModel: Observable {
 
     init(site: JetpackSiteRef,
          store: ActivityStore = StoreContainer.shared.activity,
-         noResultsTexts: ActivityListConfiguration) {
+         configuration: ActivityListConfiguration) {
         self.site = site
         self.store = store
-        self.noResultsTexts = noResultsTexts
+        self.noResultsTexts = configuration
+
+        numberOfItemsPerPage = configuration.numberOfItemsPerPage
+        store.numberOfItemsPerPage = numberOfItemsPerPage
 
         activitiesReceipt = store.query(.activities(site: site))
         rewindStatusReceipt = store.query(.restoreStatus(site: site))
@@ -74,6 +78,9 @@ class ActivityListViewModel: Observable {
     }
 
     public func refresh(after: Date? = nil, before: Date? = nil, group: [ActivityGroup] = []) {
+
+        store.fetchRewindStatus(site: site)
+
         // If a new filter is being applied, remove all activities
         if isApplyingNewFilter(after: after, before: before, group: group) {
             ActionDispatcher.dispatch(ActivityAction.resetActivities(site: site))
@@ -89,14 +96,14 @@ class ActivityListViewModel: Observable {
         self.before = before
         self.selectedGroups = group
 
-        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: count, afterDate: after, beforeDate: before, group: group.map { $0.key }))
+        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site, quantity: numberOfItemsPerPage, afterDate: after, beforeDate: before, group: group.map { $0.key }))
     }
 
     public func loadMore() {
         if !store.isFetchingActivities(site: site) {
             page += 1
-            let offset = page * count
-            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: count, offset: offset, afterDate: after, beforeDate: before, group: selectedGroups.map { $0.key }))
+            let offset = page * numberOfItemsPerPage
+            ActionDispatcher.dispatch(ActivityAction.loadMoreActivities(site: site, quantity: numberOfItemsPerPage, offset: offset, afterDate: after, beforeDate: before, group: selectedGroups.map { $0.key }))
         }
     }
 
@@ -256,7 +263,7 @@ class ActivityListViewModel: Observable {
     }
 
     private func restoreStatusSection() -> ImmuTableSection? {
-        guard let restore = store.getRewindStatus(site: site)?.restore, restore.status == .running || restore.status == .queued else {
+        guard let restore = store.getCurrentRewindStatus(site: site)?.restore, restore.status == .running || restore.status == .queued else {
             return nil
         }
 
@@ -268,8 +275,15 @@ class ActivityListViewModel: Observable {
 
         if let rewindPoint = store.getActivity(site: site, rewindID: restore.id) {
             let dateString = mediumDateFormatterWithTime.string(from: rewindPoint.published)
-            let messageFormat = NSLocalizedString("Rewinding to %@",
-                comment: "Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date.")
+
+            let messageFormat: String
+            if FeatureFlag.jetpackBackupAndRestore.enabled {
+                messageFormat = NSLocalizedString("Restoring to %@",
+                                                  comment: "Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date.")
+            } else {
+                messageFormat = NSLocalizedString("Rewinding to %@",
+                                                  comment: "Text showing the point in time the site is being currently rewinded to. %@' is a placeholder that will expand to a date.")
+            }
 
             summary = String(format: messageFormat, dateString)
         } else {
@@ -282,7 +296,14 @@ class ActivityListViewModel: Observable {
             progress: progress
         )
 
-        return ImmuTableSection(headerText: NSLocalizedString("Rewind", comment: "Title of section showing rewind status"),
+        let headerText: String
+        if FeatureFlag.jetpackBackupAndRestore.enabled {
+            headerText = NSLocalizedString("Restore", comment: "Title of section showing restore status")
+        } else {
+            headerText = NSLocalizedString("Rewind", comment: "Title of section showing rewind status")
+        }
+
+        return ImmuTableSection(headerText: headerText,
                                 rows: [rewindRow],
                                 footerText: nil)
     }
