@@ -130,15 +130,11 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
 extension JetpackScanViewController: JetpackScanThreatDetailsViewControllerDelegate {
 
     func didFixThreat(_ controller: JetpackScanThreatDetailsViewController) {
-        controller.dismiss(animated: true, completion: { [weak self] in
-            self?.coordinator.refreshData()
-        })
+        controller.navigationController?.popViewController(animated: true)
     }
 
     func didIgnoreThreat(_ controller: JetpackScanThreatDetailsViewController) {
-        controller.dismiss(animated: true, completion: { [weak self] in
-            self?.coordinator.refreshData()
-        })
+        controller.navigationController?.popViewController(animated: true)
     }
 }
 

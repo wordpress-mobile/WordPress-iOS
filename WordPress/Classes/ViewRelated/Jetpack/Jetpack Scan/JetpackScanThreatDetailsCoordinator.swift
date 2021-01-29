@@ -33,7 +33,13 @@ class JetpackScanThreatDetailsCoordinator {
     // MARK: - Public
 
     public func fixThreat() {
+        service.fixThreat(threat, blog: blog, success: { [weak self] _ in
+            self?.view.showFixThreatSuccess()
+        }, failure: { [weak self] error in
+            DDLogError("Error fixing threat: \(error.localizedDescription)")
 
+            self?.view.showFixThreatError()
+        })
     }
 
     public func ignoreThreat() {
