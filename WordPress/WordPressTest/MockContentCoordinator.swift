@@ -30,7 +30,7 @@ class MockContentCoordinator: ContentCoordinator {
     }
 
     func displayBackupWithSiteID(_ siteID: NSNumber?) throws {
-        
+
     }
 
     var streamWasDisplayed = false
