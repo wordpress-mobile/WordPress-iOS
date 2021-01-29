@@ -170,13 +170,24 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
     }
 
     private func threat(for indexPath: IndexPath) -> JetpackScanThreat? {
-        guard let threats = coordinator.threats else {
+        let row = indexPath.row - Constants.tableHeaderCountOffset
+
+        guard row >= 0, let threats = coordinator.threats else {
             return nil
         }
 
-        let row = indexPath.row - Constants.tableHeaderCountOffset
-
         return threats[row]
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        guard let threat = threat(for: indexPath) else {
+            return
+        }
+
+        let threatDetailsVC = JetpackScanThreatDetailsViewController(threat: threat)
+        self.navigationController?.pushViewController(threatDetailsVC, animated: true)
     }
 }
 
@@ -242,6 +253,5 @@ extension JetpackScanViewController: NoResultsViewControllerDelegate {
 
         static let tryAgainButtonText = NSLocalizedString("Try again", comment: "Button label for trying to retrieve the scan status again")
         static let contactSupportButtonText = NSLocalizedString("Contact support", comment: "Button label for contacting support")
-
     }
 }
