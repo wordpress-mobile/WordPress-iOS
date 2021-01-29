@@ -63,6 +63,16 @@ import Foundation
         service.getFixStatusForThreats(threats, siteID: siteID, success: success, failure: failure)
     }
 
+    // MARK: - History
+    func getHistory(for blog: Blog, success: @escaping(JetpackScanHistory) -> Void, failure: @escaping(Error) -> Void) {
+        guard let siteID = blog.dotComID?.intValue else {
+            failure(JetpackScanServiceError.invalidSiteID)
+            return
+        }
+
+        service.getHistoryForSite(siteID, success: success, failure: failure)
+    }
+
     // MARK: - Helpers
     enum JetpackScanServiceError: Error {
         case invalidSiteID
