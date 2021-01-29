@@ -1,5 +1,10 @@
 import UIKit
 
+protocol JetpackScanThreatDetailsViewControllerDelegate: class {
+    func didFixThreat(_ controller: JetpackScanThreatDetailsViewController)
+    func didIgnoreThreat(_ controller: JetpackScanThreatDetailsViewController)
+}
+
 class JetpackScanThreatDetailsViewController: UIViewController {
 
     // MARK: - IBOutlets
@@ -34,6 +39,8 @@ class JetpackScanThreatDetailsViewController: UIViewController {
     @IBOutlet private weak var ignoreThreatButton: FancyButton!
 
     // MARK: - Properties
+
+    weak var delegate: JetpackScanThreatDetailsViewControllerDelegate?
 
     private let blog: Blog
     private let threat: JetpackScanThreat
@@ -101,7 +108,19 @@ class JetpackScanThreatDetailsViewController: UIViewController {
 
 extension JetpackScanThreatDetailsViewController: JetpackScanThreatDetailsView {
 
-    func showError() {
+    func showFixThreatSuccess() {
+        delegate?.didFixThreat(self)
+    }
+
+    func showFixThreatError() {
+
+    }
+
+    func showIgnoreThreatSuccess() {
+        delegate?.didIgnoreThreat(self)
+    }
+
+    func showIgnoreThreatError() {
 
     }
 }

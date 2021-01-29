@@ -127,6 +127,21 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     }
 }
 
+extension JetpackScanViewController: JetpackScanThreatDetailsViewControllerDelegate {
+
+    func didFixThreat(_ controller: JetpackScanThreatDetailsViewController) {
+        controller.dismiss(animated: true, completion: { [weak self] in
+            self?.coordinator.refreshData()
+        })
+    }
+
+    func didIgnoreThreat(_ controller: JetpackScanThreatDetailsViewController) {
+        controller.dismiss(animated: true, completion: { [weak self] in
+            self?.coordinator.refreshData()
+        })
+    }
+}
+
 // MARK: - Table View
 extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -187,6 +202,7 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
         }
 
         let threatDetailsVC = JetpackScanThreatDetailsViewController(blog: blog, threat: threat)
+        threatDetailsVC.delegate = self
         self.navigationController?.pushViewController(threatDetailsVC, animated: true)
     }
 }

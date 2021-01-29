@@ -1,7 +1,10 @@
-import UIKit
+import Foundation
 
 protocol JetpackScanThreatDetailsView {
-    func showError()
+    func showFixThreatSuccess()
+    func showFixThreatError()
+    func showIgnoreThreatSuccess()
+    func showIgnoreThreatError()
 }
 
 class JetpackScanThreatDetailsCoordinator {
