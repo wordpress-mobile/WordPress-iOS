@@ -53,12 +53,10 @@ struct JetpackScanThreatViewModel {
         switch (status, fixable) {
         case (.fixed, _):
             return Strings.details.titles.fix.fixed
-        case (.current, true):
-            return Strings.details.titles.fix.fixable
         case (.current, false):
             return Strings.details.titles.fix.notFixable
         default:
-            return Strings.details.titles.fix.unknown
+            return Strings.details.titles.fix.default
         }
     }
 
@@ -200,10 +198,9 @@ struct JetpackScanThreatViewModel {
                 static let technicalDetails = NSLocalizedString("The technical details", comment: "Title for the technical details section in Threat Details")
 
                 struct fix {
+                    static let `default` = NSLocalizedString("How will we fix it?", comment: "Title for the fix section in Threat Details")
                     static let fixed = NSLocalizedString("How did Jetpack fix it?", comment: "Title for the fix section in Threat Details: Threat is fixed")
-                    static let fixable = NSLocalizedString("How will we fix it?", comment: "Title for the fix section in Threat Details: Threat is fixable")
                     static let notFixable = NSLocalizedString("Resolving the threat", comment: "Title for the fix section in Threat Details: Threat is not fixable")
-                    static let unknown = NSLocalizedString("How will we fix it?", comment: "Title for the fix section in Threat Details: Threat is ignored or unknown")
                 }
             }
 
