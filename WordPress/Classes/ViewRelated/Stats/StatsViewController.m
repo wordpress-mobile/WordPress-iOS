@@ -38,13 +38,13 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 {
     [super viewDidLoad];
 
-    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    self.view.backgroundColor = [UIColor systemGroupedBackgroundColor];
     self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
     
     UINavigationController *statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStatsDashboard" bundle:nil] instantiateInitialViewController];
     self.siteStatsDashboardVC = statsNavVC.viewControllers.firstObject;
 
-    self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
     self.loadingIndicator.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.loadingIndicator];
     [NSLayoutConstraint activateConstraints:@[

@@ -1186,8 +1186,11 @@
 		8B25F8DA24B7683A009DD4C9 /* ReaderCSSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B25F8D924B7683A009DD4C9 /* ReaderCSSTests.swift */; };
 		8B260D7E2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B260D7D2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift */; };
 		8B36256625A60CCA00D7CCE3 /* BackupListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B36256525A60CCA00D7CCE3 /* BackupListViewController.swift */; };
+		8B3626F925A665E500D7CCE3 /* UIApplication+mainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3626F825A665E500D7CCE3 /* UIApplication+mainWindow.swift */; };
 		8B3DECAB2388506400A459C2 /* SentryStartupEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3DECAA2388506400A459C2 /* SentryStartupEvent.swift */; };
 		8B51844525893F140085488D /* FilterBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B51844425893F140085488D /* FilterBarView.swift */; };
+		8B5FEAF125A746CB000CBFF7 /* UIApplication+mainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3626F825A665E500D7CCE3 /* UIApplication+mainWindow.swift */; };
+		8B5FEC0225A750CB000CBFF7 /* UIApplication+mainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3626F825A665E500D7CCE3 /* UIApplication+mainWindow.swift */; };
 		8B64B4B2247EC3A2009A1229 /* reader.css in Resources */ = {isa = PBXBuildFile; fileRef = 8B64B4B1247EC3A2009A1229 /* reader.css */; };
 		8B69F0E4255C2C3F006B1CEF /* ActivityListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69F0E3255C2C3F006B1CEF /* ActivityListViewModelTests.swift */; };
 		8B69F100255C4870006B1CEF /* ActivityStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B69F0FF255C4870006B1CEF /* ActivityStoreTests.swift */; };
@@ -1761,6 +1764,9 @@
 		C71BC73F25A652410023D789 /* JetpackScanStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BC73E25A652410023D789 /* JetpackScanStatusViewModel.swift */; };
 		C768B5B425828A5D00556E75 /* JetpackScanStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C768B5B225828A5D00556E75 /* JetpackScanStatusCell.swift */; };
 		C768B5B525828A5D00556E75 /* JetpackScanStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C768B5B325828A5D00556E75 /* JetpackScanStatusCell.xib */; };
+		C76F48DC25BA202600BFEC87 /* JetpackScanHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76F48DB25BA202600BFEC87 /* JetpackScanHistoryViewController.swift */; };
+		C76F48EE25BA20EF00BFEC87 /* JetpackScanHistoryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76F48ED25BA20EF00BFEC87 /* JetpackScanHistoryCoordinator.swift */; };
+		C76F490025BA23B000BFEC87 /* JetpackScanHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C76F48FF25BA23B000BFEC87 /* JetpackScanHistoryViewController.xib */; };
 		C78543D225B889CC006CEAFB /* JetpackScanThreatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78543D125B889CC006CEAFB /* JetpackScanThreatViewModel.swift */; };
 		C789952525816F96001B7B43 /* JetpackScanCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C789952425816F96001B7B43 /* JetpackScanCoordinator.swift */; };
 		C80512FE243FFD4B00B6B04D /* TenorDataSouceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C856749B243F462F001A995E /* TenorDataSouceTests.swift */; };
@@ -2151,6 +2157,8 @@
 		E6843840221F5A2200752258 /* PostListExcessiveLoadMoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E684383F221F5A2200752258 /* PostListExcessiveLoadMoreTests.swift */; };
 		E68580F61E0D91470090EE63 /* WPHorizontalRuleAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68580F51E0D91470090EE63 /* WPHorizontalRuleAttachment.swift */; };
 		E69551F61B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */; };
+		E696541F25A8ED7C000E2A52 /* UIApplication+mainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3626F825A665E500D7CCE3 /* UIApplication+mainWindow.swift */; };
+		E696542025A8ED7C000E2A52 /* UIApplication+mainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3626F825A665E500D7CCE3 /* UIApplication+mainWindow.swift */; };
 		E69BA1981BB5D7D300078740 /* WPStyleGuide+ReadableMargins.m in Sources */ = {isa = PBXBuildFile; fileRef = E69BA1971BB5D7D300078740 /* WPStyleGuide+ReadableMargins.m */; };
 		E6A215901D1065F200DE5270 /* AbstractPostTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A2158F1D1065F200DE5270 /* AbstractPostTest.swift */; };
 		E6A3384C1BB08E3F00371587 /* ReaderGapMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A3384B1BB08E3F00371587 /* ReaderGapMarker.m */; };
@@ -2233,6 +2241,7 @@
 		F1D690171F82914200200E30 /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690141F828FF000200E30 /* BuildConfiguration.swift */; };
 		F1DB8D292288C14400906E2F /* Uploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DB8D282288C14400906E2F /* Uploader.swift */; };
 		F1DB8D2B2288C24500906E2F /* UploadsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DB8D2A2288C24500906E2F /* UploadsManager.swift */; };
+		F1E3536B25B9F74C00992E3A /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E3536A25B9F74C00992E3A /* WindowManager.swift */; };
 		F1F083F6241FFE930056D3B1 /* AtomicAuthenticationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F083F5241FFE930056D3B1 /* AtomicAuthenticationServiceTests.swift */; };
 		F1F163C125658B4D003DC13B /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F163C025658B4D003DC13B /* IntentHandler.swift */; };
 		F1F163D625658B4D003DC13B /* WordPressIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F1F163BE25658B4D003DC13B /* WordPressIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -2359,6 +2368,8 @@
 		FA4F661425946B8500EAA9F5 /* JetpackRestoreHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4F661325946B8500EAA9F5 /* JetpackRestoreHeaderView.xib */; };
 		FA5C740F1C599BA7000B528C /* TableViewHeaderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5C740E1C599BA7000B528C /* TableViewHeaderDetailView.swift */; };
 		FA77E02A1BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */; };
+		FA7AA45325BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7AA45225BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift */; };
+		FA7AA4A725BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7AA4A625BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib */; };
 		FAB4F32724EDE12A00F259BA /* FollowCommentsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */; };
 		FAB8004925AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */; };
 		FAB800B225AEE3C600D5D54A /* RestoreCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */; };
@@ -2375,6 +2386,9 @@
 		FACB36F11C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACB36F01C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift */; };
 		FAD9457E25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD9457D25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift */; };
 		FAD9458E25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD9458D25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift */; };
+		FAD951A425B6CB3600F011B5 /* JetpackRestoreFailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD951A325B6CB3600F011B5 /* JetpackRestoreFailedViewController.swift */; };
+		FAD954B825B7A99900F011B5 /* JetpackBackupStatusFailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD954B725B7A99900F011B5 /* JetpackBackupStatusFailedViewController.swift */; };
+		FAD95D2725B91BCF00F011B5 /* JetpackRestoreStatusFailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD95D2625B91BCF00F011B5 /* JetpackRestoreStatusFailedViewController.swift */; };
 		FAE4201A1C5AEFE100C1D036 /* StartOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE420191C5AEFE100C1D036 /* StartOverViewController.swift */; };
 		FAE4327425874D140039EB8C /* ReaderSavedPostCellActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE4327325874D140039EB8C /* ReaderSavedPostCellActions.swift */; };
 		FAF13C5325A57ABD003EE470 /* JetpackRestoreWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF13C5225A57ABD003EE470 /* JetpackRestoreWarningViewController.swift */; };
@@ -3851,6 +3865,7 @@
 		8B25F8D924B7683A009DD4C9 /* ReaderCSSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCSSTests.swift; sourceTree = "<group>"; };
 		8B260D7D2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostVisibilitySelectorViewController.swift; sourceTree = "<group>"; };
 		8B36256525A60CCA00D7CCE3 /* BackupListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupListViewController.swift; sourceTree = "<group>"; };
+		8B3626F825A665E500D7CCE3 /* UIApplication+mainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+mainWindow.swift"; sourceTree = "<group>"; };
 		8B3DECAA2388506400A459C2 /* SentryStartupEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentryStartupEvent.swift; sourceTree = "<group>"; };
 		8B51844425893F140085488D /* FilterBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterBarView.swift; sourceTree = "<group>"; };
 		8B64B4B1247EC3A2009A1229 /* reader.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = reader.css; sourceTree = "<group>"; };
@@ -4491,6 +4506,9 @@
 		C71BC73E25A652410023D789 /* JetpackScanStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanStatusViewModel.swift; sourceTree = "<group>"; };
 		C768B5B225828A5D00556E75 /* JetpackScanStatusCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanStatusCell.swift; sourceTree = "<group>"; };
 		C768B5B325828A5D00556E75 /* JetpackScanStatusCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackScanStatusCell.xib; sourceTree = "<group>"; };
+		C76F48DB25BA202600BFEC87 /* JetpackScanHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanHistoryViewController.swift; sourceTree = "<group>"; };
+		C76F48ED25BA20EF00BFEC87 /* JetpackScanHistoryCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanHistoryCoordinator.swift; sourceTree = "<group>"; };
+		C76F48FF25BA23B000BFEC87 /* JetpackScanHistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JetpackScanHistoryViewController.xib; sourceTree = "<group>"; };
 		C78543D125B889CC006CEAFB /* JetpackScanThreatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatViewModel.swift; sourceTree = "<group>"; };
 		C789952425816F96001B7B43 /* JetpackScanCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanCoordinator.swift; sourceTree = "<group>"; };
 		C7F1EB4425A4B845009D1AA2 /* WordPress 110.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 110.xcdatamodel"; sourceTree = "<group>"; };
@@ -5130,6 +5148,7 @@
 		F1D690151F828FF000200E30 /* FeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlag.swift; sourceTree = "<group>"; };
 		F1DB8D282288C14400906E2F /* Uploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uploader.swift; sourceTree = "<group>"; };
 		F1DB8D2A2288C24500906E2F /* UploadsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadsManager.swift; sourceTree = "<group>"; };
+		F1E3536A25B9F74C00992E3A /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		F1F083F5241FFE930056D3B1 /* AtomicAuthenticationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicAuthenticationServiceTests.swift; sourceTree = "<group>"; };
 		F1F163BE25658B4D003DC13B /* WordPressIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordPressIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1F163C025658B4D003DC13B /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
@@ -5221,6 +5240,8 @@
 		FA4F661325946B8500EAA9F5 /* JetpackRestoreHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackRestoreHeaderView.xib; sourceTree = "<group>"; };
 		FA5C740E1C599BA7000B528C /* TableViewHeaderDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewHeaderDetailView.swift; sourceTree = "<group>"; };
 		FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserHeaderView.swift; sourceTree = "<group>"; };
+		FA7AA45225BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatDetailsViewController.swift; sourceTree = "<group>"; };
+		FA7AA4A625BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackScanThreatDetailsViewController.xib; sourceTree = "<group>"; };
 		FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCommentsServiceTests.swift; sourceTree = "<group>"; };
 		FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupCompleteViewController.swift; sourceTree = "<group>"; };
 		FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreCompleteView.swift; sourceTree = "<group>"; };
@@ -5237,6 +5258,9 @@
 		FACB36F01C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeWebNavigationDelegate.swift; sourceTree = "<group>"; };
 		FAD9457D25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupOptionsCoordinator.swift; sourceTree = "<group>"; };
 		FAD9458D25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreWarningCoordinator.swift; sourceTree = "<group>"; };
+		FAD951A325B6CB3600F011B5 /* JetpackRestoreFailedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreFailedViewController.swift; sourceTree = "<group>"; };
+		FAD954B725B7A99900F011B5 /* JetpackBackupStatusFailedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupStatusFailedViewController.swift; sourceTree = "<group>"; };
+		FAD95D2625B91BCF00F011B5 /* JetpackRestoreStatusFailedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreStatusFailedViewController.swift; sourceTree = "<group>"; };
 		FAE420191C5AEFE100C1D036 /* StartOverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartOverViewController.swift; sourceTree = "<group>"; };
 		FAE4327325874D140039EB8C /* ReaderSavedPostCellActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSavedPostCellActions.swift; sourceTree = "<group>"; };
 		FAF13C5225A57ABD003EE470 /* JetpackRestoreWarningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreWarningViewController.swift; sourceTree = "<group>"; };
@@ -8442,6 +8466,7 @@
 				B5FD4520199D0C9A00286FBB /* WordPress-Bridging-Header.h */,
 				1749965E2271BF08007021BD /* WordPressAppDelegate.swift */,
 				43B0BA952229927F00328C69 /* WordPressAppDelegate+openURL.swift */,
+				F1E3536A25B9F74C00992E3A /* WindowManager.swift */,
 				591A428D1A6DC6F2003807A6 /* WPGUIConstants.h */,
 				591A428E1A6DC6F2003807A6 /* WPGUIConstants.m */,
 				17F7C24822770B68002E5C2E /* main.swift */,
@@ -9820,6 +9845,7 @@
 				F12E500223C7C5330068CB5E /* WKWebView+UserAgent.swift */,
 				57276E70239BDFD200515BE2 /* NotificationCenter+ObserveMultiple.swift */,
 				3250490624F988220036B47F /* Interpolation.swift */,
+				8B3626F825A665E500D7CCE3 /* UIApplication+mainWindow.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -10320,14 +10346,19 @@
 		C700F9CD257FD5AA0090938E /* Jetpack Scan */ = {
 			isa = PBXGroup;
 			children = (
-				C71BC73D25A6522D0023D789 /* View Models */,
 				C789952425816F96001B7B43 /* JetpackScanCoordinator.swift */,
-				C700F9D0257FD63A0090938E /* JetpackScanViewController.xib */,
-				C700F9ED257FD64E0090938E /* JetpackScanViewController.swift */,
-				C700FAB0258020DB0090938E /* JetpackScanThreatCell.swift */,
-				C700FAB1258020DB0090938E /* JetpackScanThreatCell.xib */,
+				C76F48ED25BA20EF00BFEC87 /* JetpackScanHistoryCoordinator.swift */,
+				C76F48DB25BA202600BFEC87 /* JetpackScanHistoryViewController.swift */,
+				C76F48FF25BA23B000BFEC87 /* JetpackScanHistoryViewController.xib */,
 				C768B5B225828A5D00556E75 /* JetpackScanStatusCell.swift */,
 				C768B5B325828A5D00556E75 /* JetpackScanStatusCell.xib */,
+				FA7AA45225BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift */,
+				FA7AA4A625BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib */,
+				C700FAB0258020DB0090938E /* JetpackScanThreatCell.swift */,
+				C700FAB1258020DB0090938E /* JetpackScanThreatCell.xib */,
+				C700F9ED257FD64E0090938E /* JetpackScanViewController.swift */,
+				C700F9D0257FD63A0090938E /* JetpackScanViewController.xib */,
+				C71BC73D25A6522D0023D789 /* View Models */,
 			);
 			path = "Jetpack Scan";
 			sourceTree = "<group>";
@@ -11346,11 +11377,10 @@
 			isa = PBXGroup;
 			children = (
 				FAD947A225B56A2C00F011B5 /* Coordinators */,
+				FAD954D525B7AD6800F011B5 /* Views */,
 				FAB8F74F25AD72CE00D5D54A /* BaseRestoreOptionsViewController.swift */,
 				FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */,
 				FAB8F76D25AD73C000D5D54A /* JetpackBackupOptionsViewController.swift */,
-				FA4F660425946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift */,
-				FA4F661325946B8500EAA9F5 /* JetpackRestoreHeaderView.xib */,
 			);
 			path = "Restore Options";
 			sourceTree = "<group>";
@@ -11359,9 +11389,8 @@
 			isa = PBXGroup;
 			children = (
 				FAD947A125B56A1E00F011B5 /* Coordinators */,
+				FAD954D625B7AD7600F011B5 /* Views */,
 				FAF13C5225A57ABD003EE470 /* JetpackRestoreWarningViewController.swift */,
-				FA1A543D25A6E2F60033967D /* RestoreWarningView.swift */,
-				FA1A543F25A6E3080033967D /* RestoreWarningView.xib */,
 			);
 			path = "Restore Warning";
 			sourceTree = "<group>";
@@ -11370,11 +11399,10 @@
 			isa = PBXGroup;
 			children = (
 				FAB8AB5D25AFFCE900F9F8A0 /* Coordinators */,
+				FAD954E525B7AD8300F011B5 /* Views */,
 				FAB8F78B25AD785400D5D54A /* BaseRestoreStatusViewController.swift */,
 				FAF13E2F25A59240003EE470 /* JetpackRestoreStatusViewController.swift */,
 				FAB8F7A925AD792500D5D54A /* JetpackBackupStatusViewController.swift */,
-				FA1A55EE25A6F0740033967D /* RestoreStatusView.swift */,
-				FA1A55FE25A6F07F0033967D /* RestoreStatusView.xib */,
 			);
 			path = "Restore Status";
 			sourceTree = "<group>";
@@ -11407,11 +11435,13 @@
 		FAB8007625AEDDCE00D5D54A /* Restore Complete */ = {
 			isa = PBXGroup;
 			children = (
+				FAD954F425B7AD9200F011B5 /* Views */,
 				FAB8AA2125AF031200F9F8A0 /* BaseRestoreCompleteViewController.swift */,
 				FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */,
 				FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */,
-				FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */,
-				FAB800C125AEE3D200D5D54A /* RestoreCompleteView.xib */,
+				FAD951A325B6CB3600F011B5 /* JetpackRestoreFailedViewController.swift */,
+				FAD954B725B7A99900F011B5 /* JetpackBackupStatusFailedViewController.swift */,
+				FAD95D2625B91BCF00F011B5 /* JetpackRestoreStatusFailedViewController.swift */,
 			);
 			path = "Restore Complete";
 			sourceTree = "<group>";
@@ -11439,6 +11469,42 @@
 				FAD9457D25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift */,
 			);
 			path = Coordinators;
+			sourceTree = "<group>";
+		};
+		FAD954D525B7AD6800F011B5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FA4F660425946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift */,
+				FA4F661325946B8500EAA9F5 /* JetpackRestoreHeaderView.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FAD954D625B7AD7600F011B5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FA1A543D25A6E2F60033967D /* RestoreWarningView.swift */,
+				FA1A543F25A6E3080033967D /* RestoreWarningView.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FAD954E525B7AD8300F011B5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FA1A55EE25A6F0740033967D /* RestoreStatusView.swift */,
+				FA1A55FE25A6F07F0033967D /* RestoreStatusView.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FAD954F425B7AD9200F011B5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */,
+				FAB800C125AEE3D200D5D54A /* RestoreCompleteView.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		FF2716901CAAC87B0006E2D4 /* WordPressUITests */ = {
@@ -12111,9 +12177,11 @@
 				8BA77BCD248340CE00E1EBBF /* ReaderDetailToolbar.xib in Resources */,
 				4070D75C20E5F55A007CEBDA /* RewindStatusTableViewCell.xib in Resources */,
 				5D13FA571AF99C2100F06492 /* PageListSectionHeaderView.xib in Resources */,
+				FA7AA4A725BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib in Resources */,
 				469EB16624D8B12700C764CB /* CollabsableHeaderFilterCollectionViewCell.xib in Resources */,
 				B54E1DF21A0A7BAA00807537 /* ReplyTextView.xib in Resources */,
 				9881296F219CF1310075FF33 /* StatsCellHeader.xib in Resources */,
+				C76F490025BA23B000BFEC87 /* JetpackScanHistoryViewController.xib in Resources */,
 				3249615323F20111004C7733 /* PostSignUpInterstitialViewController.xib in Resources */,
 				4625B6342538B53700C04AAD /* CollapsableHeaderViewController.xib in Resources */,
 				9826AE8C21B5CC8D00C851FA /* PostingActivityMonth.xib in Resources */,
@@ -12588,24 +12656,24 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
-				"${PODS_ROOT}/ZendeskCommonUISDK/CommonUISDK.framework",
 				"${PODS_ROOT}/ZendeskCoreSDK/ZendeskCoreSDK.framework",
-				"${PODS_ROOT}/ZendeskMessagingAPISDK/MessagingAPI.framework",
-				"${PODS_ROOT}/ZendeskMessagingSDK/MessagingSDK.framework",
-				"${PODS_ROOT}/ZendeskSDKConfigurationsSDK/SDKConfigurations.framework",
 				"${PODS_ROOT}/ZendeskSupportProvidersSDK/SupportProvidersSDK.framework",
 				"${PODS_ROOT}/ZendeskSupportSDK/SupportSDK.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/CommonUISDK/CommonUISDK.framework/CommonUISDK",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/MessagingAPI/MessagingAPI.framework/MessagingAPI",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/MessagingSDK/MessagingSDK.framework/MessagingSDK",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/SDKConfigurations/SDKConfigurations.framework/SDKConfigurations",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CommonUISDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZendeskCoreSDK.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SupportProvidersSDK.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SupportSDK.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CommonUISDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessagingAPI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessagingSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDKConfigurations.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SupportProvidersSDK.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SupportSDK.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -13399,6 +13467,7 @@
 				3236F79E24AE75790088E8F3 /* ReaderTopicService+Interests.swift in Sources */,
 				9A2D0B36225E2511009E585F /* JetpackService.swift in Sources */,
 				40F50B7E22130E6C00CBBB73 /* FollowersStatsRecordValue+CoreDataProperties.swift in Sources */,
+				FAD95D2725B91BCF00F011B5 /* JetpackRestoreStatusFailedViewController.swift in Sources */,
 				E66969DC1B9E55C300EC9C00 /* ReaderTopicToReaderListTopic37to38.swift in Sources */,
 				9A2D0B23225CB92B009E585F /* BlogService+JetpackConvenience.swift in Sources */,
 				C856748F243EF177001A995E /* GutenbergTenorMediaPicker.swift in Sources */,
@@ -13446,6 +13515,7 @@
 				98712D1B23DA1C7E00555316 /* WidgetNoConnectionCell.swift in Sources */,
 				7E5887A020FE956100DB6F80 /* AppRatingUtilityType.swift in Sources */,
 				08216FD01CDBF96000304BA7 /* MenuItemSourceFooterView.m in Sources */,
+				FAD951A425B6CB3600F011B5 /* JetpackRestoreFailedViewController.swift in Sources */,
 				F5E032E62408D537003AF350 /* ActionSheetViewController.swift in Sources */,
 				9A4F8F56218B88E000EEDCCC /* PostService+Revisions.swift in Sources */,
 				5DED0E181B432E0400431FCD /* SourcePostAttribution.m in Sources */,
@@ -13661,6 +13731,7 @@
 				32A218D8251109DB00D1AE6C /* ReaderReportPostAction.swift in Sources */,
 				D8D7DF5A20AD18A400B40A2D /* ImgUploadProcessor.swift in Sources */,
 				436D56222117312700CEAA33 /* RegisterDomainDetailsViewModel.swift in Sources */,
+				C76F48DC25BA202600BFEC87 /* JetpackScanHistoryViewController.swift in Sources */,
 				7E407121237163B8003627FA /* GutenbergStockPhotos.swift in Sources */,
 				F11C9F74243B3C3E00921DDC /* MediaHost+Blog.swift in Sources */,
 				E15644ED1CE0E4FE00D96E64 /* PlanListRow.swift in Sources */,
@@ -14058,11 +14129,13 @@
 				3F5B3EAF23A851330060FF1F /* ReaderReblogPresenter.swift in Sources */,
 				7E3E7A6220E44E6A0075D159 /* BodyContentGroup.swift in Sources */,
 				17AD36D51D36C1A60044B10D /* WPStyleGuide+Search.swift in Sources */,
+				F1E3536B25B9F74C00992E3A /* WindowManager.swift in Sources */,
 				FF0148E51DFABBC9001AD265 /* NSFileManager+FolderSize.swift in Sources */,
 				731E88CB21C9A10B0055C014 /* ErrorStateViewController.swift in Sources */,
 				BE87E1A01BD4054F0075D45B /* WP3DTouchShortcutCreator.swift in Sources */,
 				742B7F3A209CB2B6002E3CC9 /* GIFPlaybackStrategy.swift in Sources */,
 				D8212CC520AA83F9008E8AE8 /* ReaderCommentAction.swift in Sources */,
+				FAD954B825B7A99900F011B5 /* JetpackBackupStatusFailedViewController.swift in Sources */,
 				37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */,
 				3FD0316F24201E08005C0993 /* GravatarButtonView.swift in Sources */,
 				7EBB4126206C388100012D98 /* StockPhotosService.swift in Sources */,
@@ -14161,6 +14234,7 @@
 				4054F4622214F50300D261AB /* StreakStatsRecordValue+CoreDataProperties.swift in Sources */,
 				B50C0C641EF42B3A00372C65 /* Header+WordPress.swift in Sources */,
 				7E7BEF7322E1DD27009A880D /* EditorSettingsService.swift in Sources */,
+				C76F48EE25BA20EF00BFEC87 /* JetpackScanHistoryCoordinator.swift in Sources */,
 				17FCA6811FD84B4600DBA9C8 /* NoticeStore.swift in Sources */,
 				9A162F2921C271D300FDC035 /* RevisionBrowserState.swift in Sources */,
 				1751E5911CE0E552000CA08D /* KeyValueDatabase.swift in Sources */,
@@ -14228,6 +14302,7 @@
 				D80BC7A4207487F200614A59 /* MediaLibraryPicker.swift in Sources */,
 				E663D1901C65383E0017F109 /* SharingAccountViewController.swift in Sources */,
 				93DEB88219E5BF7100F9546D /* TodayExtensionService.m in Sources */,
+				8B3626F925A665E500D7CCE3 /* UIApplication+mainWindow.swift in Sources */,
 				3FD83CBF246C751800381999 /* CoreDataIterativeMigrator.swift in Sources */,
 				17CE77EF20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift in Sources */,
 				400A2C832217A985000A8A59 /* TopViewedVideoStatsRecordValue+CoreDataClass.swift in Sources */,
@@ -14256,6 +14331,7 @@
 				E66969DA1B9E55AB00EC9C00 /* ReaderTopicToReaderTagTopic37to38.swift in Sources */,
 				9A4E271A22EF0C78001F6A6B /* ChangeUsernameViewModel.swift in Sources */,
 				172797D91CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift in Sources */,
+				FA7AA45325BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift in Sources */,
 				7EFF208A20EADCB6009C4699 /* NotificationTextContent.swift in Sources */,
 				91DCE84821A6C58C0062F134 /* PostEditor+Publish.swift in Sources */,
 				98921EF721372E12004949AA /* MediaCoordinator.swift in Sources */,
@@ -14691,6 +14767,7 @@
 				986FF2A0214198D9005B28EC /* String+Ranges.swift in Sources */,
 				F15A230520A3ECC500625EA2 /* ImgUploadProcessor.swift in Sources */,
 				74021A0C202E1338006CC39F /* ShareExtractor.swift in Sources */,
+				E696542025A8ED7C000E2A52 /* UIApplication+mainWindow.swift in Sources */,
 				1752D4F9238D702D002B79E7 /* KeyValueDatabase.swift in Sources */,
 				74021A23202E1743006CC39F /* FormatBarItemProviders.swift in Sources */,
 				435B762422973D0600511813 /* UIColor+MurielColors.swift in Sources */,
@@ -14810,6 +14887,7 @@
 				986FF29E2141971D005B28EC /* WPAnimatedBox.m in Sources */,
 				986FF29F214198D9005B28EC /* String+Ranges.swift in Sources */,
 				F15A230420A3EBE300625EA2 /* ImgUploadProcessor.swift in Sources */,
+				E696541F25A8ED7C000E2A52 /* UIApplication+mainWindow.swift in Sources */,
 				1752D4FA238D702E002B79E7 /* KeyValueDatabase.swift in Sources */,
 				74AF4D751FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */,
 				435B762322973D0600511813 /* UIColor+MurielColors.swift in Sources */,
@@ -15112,6 +15190,7 @@
 				5960967F1CF7959300848496 /* PostTests.swift in Sources */,
 				3F751D462491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift in Sources */,
 				8BD36E062395CC4400EFFF1C /* MediaEditorOperation+DescriptionTests.swift in Sources */,
+				8B5FEC0225A750CB000CBFF7 /* UIApplication+mainWindow.swift in Sources */,
 				E6843840221F5A2200752258 /* PostListExcessiveLoadMoreTests.swift in Sources */,
 				325D3B3D23A8376400766DF6 /* FullScreenCommentReplyViewControllerTests.swift in Sources */,
 				57D6C83E22945A10003DDC7E /* PostCompactCellTests.swift in Sources */,
@@ -15225,6 +15304,7 @@
 				CC94FC68221452A4002E5825 /* EditorNoticeComponent.swift in Sources */,
 				BED4D83B1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift in Sources */,
 				CC52188C2278C622008998CE /* EditorFlow.swift in Sources */,
+				8B5FEAF125A746CB000CBFF7 /* UIApplication+mainWindow.swift in Sources */,
 				CC52189C2279D295008998CE /* MediaPickerAlbumScreen.swift in Sources */,
 				BED4D8331FF11E3800A11345 /* LoginFlow.swift in Sources */,
 				98AA22BD25082A87005CCC13 /* PrologueScreen.swift in Sources */,
@@ -15626,7 +15706,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -15694,7 +15774,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -15967,7 +16047,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = WordPressNotificationContentExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -16017,7 +16097,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = WordPressNotificationContentExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -16065,7 +16145,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "WordPressNotificationContentExtension/Info-Internal.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -16113,7 +16193,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "WordPressNotificationContentExtension/Info-Alpha.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -16161,7 +16241,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = WordPressNotificationServiceExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -16211,7 +16291,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = WordPressNotificationServiceExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -16259,7 +16339,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "WordPressNotificationServiceExtension/Info-Internal.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -16307,7 +16387,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "WordPressNotificationServiceExtension/Info-Alpha.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -16361,7 +16441,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = WordPressDraftActionExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -16417,7 +16497,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = WordPressDraftActionExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -16472,7 +16552,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = "WordPressDraftActionExtension/Info-Internal.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -16527,7 +16607,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = "WordPressDraftActionExtension/Info-Alpha.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -16581,7 +16661,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = WordPressScreenshotGeneration/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -16629,7 +16709,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = WordPressScreenshotGeneration/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -16676,7 +16756,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = WordPressScreenshotGeneration/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -16724,7 +16804,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = WordPressScreenshotGeneration/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -16777,7 +16857,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				OTHER_CFLAGS = (
 					"-Wno-incomplete-umbrella",
 					"-Wno-format-security",
@@ -16831,7 +16911,7 @@
 				INFOPLIST_FILE = "WordPress-Alpha-Info.plist";
 				INFOPLIST_PREFIX_HEADER = "InfoPlist-alpha.h";
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -16949,7 +17029,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "WordPressTodayWidget/Info-Alpha.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.alpha.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -17023,7 +17103,7 @@
 					"\"$(SDKROOT)/usr/include/libxml2/\"",
 				);
 				INFOPLIST_FILE = WordPressShareExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
 					"$(inherited)",
@@ -17092,7 +17172,7 @@
 					"\"$(SDKROOT)/usr/include/libxml2/\"",
 				);
 				INFOPLIST_FILE = WordPressShareExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
 					"$(inherited)",
@@ -17160,7 +17240,7 @@
 					"\"$(SDKROOT)/usr/include/libxml2/\"",
 				);
 				INFOPLIST_FILE = "WordPressShareExtension/Info-Internal.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
 					"$(inherited)",
@@ -17229,7 +17309,7 @@
 					"\"$(SDKROOT)/usr/include/libxml2/\"",
 				);
 				INFOPLIST_FILE = "WordPressShareExtension/Info-Alpha.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
 					"$(inherited)",
@@ -17282,7 +17362,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				OTHER_CFLAGS = (
 					"-Wno-incomplete-umbrella",
 					"-Wno-format-security",
@@ -17336,7 +17416,7 @@
 				INFOPLIST_FILE = "WordPress-Internal-Info.plist";
 				INFOPLIST_PREFIX_HEADER = "InfoPlist-internal.h";
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -17444,7 +17524,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = WordPressTodayWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -17501,7 +17581,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = WordPressTodayWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -17558,7 +17638,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "WordPressTodayWidget/Info-Internal.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.internal.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -17604,7 +17684,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = WordPressThisWeekWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -17657,7 +17737,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = WordPressThisWeekWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -17709,7 +17789,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = WordPressThisWeekWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -17761,7 +17841,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = WordPressThisWeekWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -17813,7 +17893,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = WordPressAllTimeWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -17866,7 +17946,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = WordPressAllTimeWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -17918,7 +17998,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "WordPressAllTimeWidget/Info-Internal.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -17970,7 +18050,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "WordPressAllTimeWidget/Info-Alpha.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -18057,7 +18137,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-Wno-incomplete-umbrella",
@@ -18111,7 +18191,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				OTHER_CFLAGS = (
 					"-Wno-incomplete-umbrella",
 					"-Wno-format-security",
@@ -18440,7 +18520,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = WordPressUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -18488,7 +18568,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = WordPressUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -18535,7 +18615,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = WordPressUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -18582,7 +18662,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = WordPressUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

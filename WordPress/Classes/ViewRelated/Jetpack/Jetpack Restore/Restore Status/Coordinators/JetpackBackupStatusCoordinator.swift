@@ -2,8 +2,8 @@ import Foundation
 
 protocol JetpackBackupStatusView {
     func render(_ backup: JetpackBackup)
-    func showError()
-    func showComplete(_ backup: JetpackBackup)
+    func showBackupStatusUpdateFailed()
+    func showBackupComplete(_ backup: JetpackBackup)
 }
 
 class JetpackBackupStatusCoordinator {
@@ -16,6 +16,7 @@ class JetpackBackupStatusCoordinator {
     private let view: JetpackBackupStatusView
 
     private var timer: Timer?
+    private var retryCount: Int = 0
 
     // MARK: - Init
 
@@ -47,7 +48,7 @@ class JetpackBackupStatusCoordinator {
             return
         }
 
-        timer = Timer.scheduledTimer(withTimeInterval: Constants.pollingInterval, repeats: true) { [weak self] timer in
+        timer = Timer.scheduledTimer(withTimeInterval: Constants.pollingInterval, repeats: true) { [weak self] _ in
             self?.refreshBackupStatus(downloadID: downloadID)
         }
     }
@@ -65,7 +66,7 @@ class JetpackBackupStatusCoordinator {
 
             // If a backup url exists, then we've finished creating a downloadable backup.
             if backup.url != nil {
-                self.view.showComplete(backup)
+                self.view.showBackupComplete(backup)
                 return
             }
 
@@ -74,8 +75,17 @@ class JetpackBackupStatusCoordinator {
         }, failure: { [weak self] error in
             DDLogError("Error fetching backup object: \(error.localizedDescription)")
 
-            self?.stopPolling()
-            self?.view.showError()
+            guard let self = self else {
+                return
+            }
+
+            if self.retryCount == Constants.maxRetryCount {
+                self.stopPolling()
+                self.view.showBackupStatusUpdateFailed()
+                return
+            }
+
+            self.retryCount += 1
         })
     }
 
@@ -85,5 +95,6 @@ extension JetpackBackupStatusCoordinator {
 
     private enum Constants {
         static let pollingInterval: TimeInterval = 1
+        static let maxRetryCount: Int = 3
     }
 }

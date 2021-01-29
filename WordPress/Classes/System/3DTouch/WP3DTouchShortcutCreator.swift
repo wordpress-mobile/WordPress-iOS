@@ -9,7 +9,7 @@ public protocol ApplicationShortcutsProvider {
 
 extension UIApplication: ApplicationShortcutsProvider {
     @objc public var is3DTouchAvailable: Bool {
-        return keyWindow?.traitCollection.forceTouchCapability == .available
+        return mainWindow?.traitCollection.forceTouchCapability == .available
     }
 }
 
@@ -141,7 +141,7 @@ open class WP3DTouchShortcutCreator: NSObject {
     }
 
     fileprivate func is3DTouchAvailable() -> Bool {
-        let window = UIApplication.shared.keyWindow
+        let window = UIApplication.shared.mainWindow
 
         return window?.traitCollection.forceTouchCapability == .available
     }

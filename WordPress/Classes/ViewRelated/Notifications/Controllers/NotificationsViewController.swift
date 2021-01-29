@@ -85,7 +85,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     /// Activity Indicator to be shown when refreshing a Jetpack site status.
     ///
     let activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(style: .white)
+        let indicator = UIActivityIndicatorView(style: .medium)
         indicator.hidesWhenStopped = true
         return indicator
     }()
