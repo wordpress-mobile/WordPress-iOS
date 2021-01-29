@@ -17,8 +17,9 @@ struct JetpackScanThreatViewModel {
     let technicalDetailsDescription: String
     let fileName: String?
     let fileContext: JetpackThreatContext?
-    let primaryButtonTitle: String?
-    let secondaryButtonTitle: String
+    let fixActionTitle: String?
+    let ignoreActionTitle: String
+    let ignoreActionMessage: String
 
     init(threat: JetpackScanThreat) {
         let status = threat.status
@@ -39,8 +40,9 @@ struct JetpackScanThreatViewModel {
         technicalDetailsDescription = Strings.details.descriptions.technicalDetails
         fileName = threat.fileName
         fileContext = threat.context
-        primaryButtonTitle = Self.primaryButtonTitle(for: threat)
-        secondaryButtonTitle = Strings.details.buttons.ignore
+        fixActionTitle = Self.fixActionTitle(for: threat)
+        ignoreActionTitle = Strings.details.actions.titles.ignore
+        ignoreActionMessage = Strings.details.actions.messages.ignore
     }
 
     private static func fixTitle(for threat: JetpackScanThreat) -> String? {
@@ -181,12 +183,12 @@ struct JetpackScanThreatViewModel {
         return image.imageWithTintColor(.white)
     }
 
-    private static func primaryButtonTitle(for threat: JetpackScanThreat) -> String? {
+    private static func fixActionTitle(for threat: JetpackScanThreat) -> String? {
         guard threat.fixable?.type != nil else {
             return nil
         }
 
-        return Strings.details.buttons.fixable
+        return Strings.details.actions.titles.fixable
     }
 
     private struct Strings {
@@ -223,9 +225,17 @@ struct JetpackScanThreatViewModel {
                 }
             }
 
-            struct buttons {
-                static let ignore = NSLocalizedString("Ignore threat", comment: "Title for button that will ignore the threat")
-                static let fixable = NSLocalizedString("Fix threat", comment: "Title for button that will fix the threat")
+            struct actions {
+
+                struct titles {
+                    static let ignore = NSLocalizedString("Ignore threat", comment: "Title for button that will ignore the threat")
+                    static let fixable = NSLocalizedString("Fix threat", comment: "Title for button that will fix the threat")
+                }
+
+                struct messages {
+                    static let ignore = NSLocalizedString("You shouldn’t ignore a security unless you are absolute sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".", comment: "Message displayed in ignore threat alert. %1$@ is a placeholer for the blog name.")
+                }
+
             }
         }
 
