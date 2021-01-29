@@ -44,9 +44,9 @@ struct TodayWidgetView: View {
 
 
 private extension HomeWidgetTodayData {
-    static let statsUrl = "\(WPComScheme)://" + "viewstats?siteId="
+    static let statsUrl = "https://wordpress.com/stats/day/"
 
     var statsURL: URL? {
-        URL(string: Self.statsUrl + "\(siteID)")
+        URL(string: Self.statsUrl + "\(siteID)?source=widget")
     }
 }
