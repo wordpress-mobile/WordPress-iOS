@@ -468,7 +468,7 @@ class AttachmentTagProcessor: HtmlTagProcessor {
             return (parsedString, nil)
         }
 
-        let identifier = textAttachmentIdentifier + tagName + String(scanner.currentIndex.utf16Offset(in: parsedString))
+        let identifier = textAttachmentIdentifier + tagName + String(scanner.currentIndex.utf16Offset(in: scanner.string))
         let attachment = attachmentForHtml(parsedString, identifier: identifier)
 
         return (identifier, attachment)

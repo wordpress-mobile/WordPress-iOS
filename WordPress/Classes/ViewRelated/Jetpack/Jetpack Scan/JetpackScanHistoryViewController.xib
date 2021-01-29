@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JetpackScanHistoryViewController" customModule="WordPress" customModuleProvider="target">
+            <connections>
+                <outlet property="filterTabBar" destination="KMc-An-tq8" id="xZq-gg-wy1"/>
+                <outlet property="tableView" destination="BpW-wq-UHw" id="Pbl-Xs-Odk"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="200" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="BpW-wq-UHw">
+                    <rect key="frame" x="0.0" y="90" width="414" height="772"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="RB8-lG-jMi"/>
+                        <outlet property="delegate" destination="-1" id="4BX-Me-DA4"/>
+                    </connections>
+                </tableView>
+                <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="49F-8n-f06" userLabel="Filters View">
+                    <rect key="frame" x="0.0" y="44" width="414" height="46"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KMc-An-tq8" customClass="FilterTabBar" customModule="WordPress" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="46"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="KMc-An-tq8" firstAttribute="top" secondItem="49F-8n-f06" secondAttribute="top" id="DO5-55-Nhr"/>
+                        <constraint firstAttribute="trailing" secondItem="KMc-An-tq8" secondAttribute="trailing" priority="999" id="SO6-jc-9bb"/>
+                        <constraint firstAttribute="height" constant="46" id="eMJ-mf-u4z"/>
+                        <constraint firstItem="KMc-An-tq8" firstAttribute="leading" secondItem="49F-8n-f06" secondAttribute="leading" priority="999" id="jTs-cu-YlP"/>
+                        <constraint firstAttribute="bottom" secondItem="KMc-An-tq8" secondAttribute="bottom" id="vSb-2b-9Ii"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="BpW-wq-UHw" secondAttribute="trailing" id="8cK-P3-nEg"/>
+                <constraint firstItem="49F-8n-f06" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="NcO-k6-puo"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="49F-8n-f06" secondAttribute="trailing" id="XpG-c3-bvz"/>
+                <constraint firstItem="49F-8n-f06" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="jlC-rL-GYK"/>
+                <constraint firstItem="BpW-wq-UHw" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="o9A-DJ-hFI"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="BpW-wq-UHw" secondAttribute="bottom" id="pbj-UL-GjY"/>
+                <constraint firstItem="BpW-wq-UHw" firstAttribute="top" secondItem="49F-8n-f06" secondAttribute="bottom" id="vBW-Yn-4cl"/>
+            </constraints>
+            <point key="canvasLocation" x="-133.33333333333334" y="146.65178571428569"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

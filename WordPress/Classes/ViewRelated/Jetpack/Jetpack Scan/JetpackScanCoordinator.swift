@@ -1,7 +1,7 @@
 import Foundation
 
 protocol JetpackScanView {
-    func render(_ scan: JetpackScan)
+    func render()
 
     func showLoading()
     func showNoConnectionError()
@@ -16,6 +16,7 @@ class JetpackScanCoordinator {
     private let view: JetpackScanView
 
     private(set) var scan: JetpackScan?
+
     let blog: Blog
 
     /// Returns the threats if we're in the idle state
@@ -57,7 +58,7 @@ class JetpackScanCoordinator {
 
     private func refreshDidSucceed(with scanObj: JetpackScan) {
         scan = scanObj
-        view.render(scanObj)
+        view.render()
 
         togglePolling()
     }
@@ -83,9 +84,7 @@ class JetpackScanCoordinator {
         scan?.state = .scanning
 
         // Refresh the view's scan state
-        if let scan = scan {
-            view.render(scan)
-        }
+        view.render()
 
         // Since we've locally entered the scanning state, start polling
         // but don't trigger a refresh immediately after calling because the
@@ -152,7 +151,8 @@ class JetpackScanCoordinator {
     }
 
     public func openSupport() {
-
+        let supportVC = SupportTableViewController()
+        supportVC.showFromTabBar()
     }
 
     public func noResultsButtonPressed() {
