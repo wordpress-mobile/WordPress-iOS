@@ -7,7 +7,8 @@ data model as well as any custom migrations.
 
 @scoutharris 2021-01-29
 
-- Added `isSeenSupported` attribute to  `ReaderPost` entity.
+- `ReaderPost`: added  `isSeenSupported` attribute.
+- `ReaderPost`: changed default value of  `isSeen` to `true`. 
 
 ## WordPress 111
 
