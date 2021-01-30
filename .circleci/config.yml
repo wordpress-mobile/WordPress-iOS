@@ -228,28 +228,20 @@ jobs:
       - run: 
           name: Install other tools
           command: |
-            brew unlink python@2
             brew install imagemagick
             brew install ghostscript
             curl -sL https://sentry.io/get-cli/ | bash
       - run:
           name: Build
-          working_directory: Scripts
           command: | 
-            orig_version=`cat ../config/Version.internal.xcconfig | grep VERSION_SHORT | cut -d'=' -f2`
-            sed -i '' "$(awk '/^VERSION_SHORT/{ print NR; exit }' "../config/Version.internal.xcconfig")s/=.*/="${orig_version}"-`date +"%Y%d%m"`-"${CIRCLE_BUILD_NUM}"/" "../config/Version.internal.xcconfig"
-            bundle exec fastlane build_for_translation_review
+            orig_version=`cat config/Version.internal.xcconfig | grep VERSION_SHORT | cut -d'=' -f2`
+            sed -i '' "$(awk '/^VERSION_SHORT/{ print NR; exit }' "config/Version.internal.xcconfig")s/=.*/="${orig_version}"-`date +"%Y%d%m"`-"${CIRCLE_BUILD_NUM}"/" "config/Version.internal.xcconfig"
 
             VERSION_NAME="all-lang-build-${CIRCLE_BUILD_NUM}"
             echo "export VERSION_NAME=$VERSION_NAME" >> $BASH_ENV
 
-            mkdir -p ../Artifacts
-            mv /var/tmp/Debug-iphonesimulator/WordPress.zip "../Artifacts/WordPress-${VERSION_NAME}.zip"
+            bundle exec fastlane build_for_translation_review version_name:$VERSION_NAME
           no_output_timeout: 60m
-      - run: 
-          name: Upload APP
-          command: |
-            curl --http1.1 https://${APPET_TOKEN}@api.appetize.io/v1/apps/${APPET_APPID} -F "file=@Artifacts/WordPress-${VERSION_NAME}.zip" -F "platform=ios"
       - store_artifacts:
           path: Artifacts
           destination: Artifacts

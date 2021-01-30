@@ -469,30 +469,52 @@ import "./ScreenshotFastfile"
   # This lane builds the app with pending translations for reviewers
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane build_for_translation_review
+  # bundle exec fastlane build_for_translation_review version_name:1234
   #
   # Example:
-  # bundle exec fastlane build_for_translation_review
+  # bundle exec fastlane build_for_translation_review version_name:1234
   #####################################################################################
   desc "Builds and uploads for translation review"
   lane :build_for_translation_review do | options |
     ios_build_preflight() unless (options[:skip_prechecks])
 
-    sh("cd ../.. && ./Scripts/update-translations.rb review current")
-    sh("cd ../.. && ./Scripts/update-translations.rb review waiting")
-    sh("cd ../.. && ./Scripts/update-translations.rb review fuzzy")
+    puts "Building version: #{options[:version_name]}"
 
-    ios_merge_translators_strings(strings_folder:"../WordPress/Resources/")
-    sh("cd ../.. && ./Scripts/extract-framework-translations.swift")
+    update_translations_script_path = File.join( PROJECT_ROOT_FOLDER, 'Scripts', 'update-translations.rb' )
+    sh("#{update_translations_script_path} review current")
+    sh("#{update_translations_script_path} review waiting")
+    sh("#{update_translations_script_path} review fuzzy")
 
-    xcbuild(
-        workspace: "../WordPress.xcworkspace",
-        scheme: "WordPress",
-        configuration: "Debug",
-        xcargs: "-sdk iphonesimulator SYMROOT='/var/tmp/'"
+    ios_merge_translators_strings(strings_folder: File.join( PROJECT_ROOT_FOLDER, "WordPress", "Resources"))
+
+    extract_framework_translations_script_path = File.join( File.join( PROJECT_ROOT_FOLDER, "Scripts", "extract-framework-translations.swift"))
+    sh("#{extract_framework_translations_script_path}")
+
+    gym(
+      clean: true,
+      workspace: WORKSPACE_PATH,
+      scheme: "WordPress",
+      configuration: "Debug",
+      derived_data_path: DERIVED_DATA_PATH,
+      skip_package_ipa: true,
+      skip_archive: true,
+      destination: "generic/platform=iOS Simulator",
     )
 
-    zip(path: "/var/tmp/Debug-iphonesimulator/WordPress.app", output_path: "/var/tmp/Debug-iphonesimulator/WordPress.zip")
+    FileUtils.mkdir_p(File.join(PROJECT_ROOT_FOLDER, "Artifacts"))
+
+    build_path = File.join(DERIVED_DATA_PATH, "Build", "Products", "Debug-iphonesimulator", "WordPress.app")
+    output_path = File.join(PROJECT_ROOT_FOLDER, "Artifacts", "WordPress-#{options[:version_name]}.zip")
+
+    # Appetize.io expects the `.app` bundle to be wrapped in a `.zip` file
+    zip(path: build_path, output_path: output_path)
+
+    # Upload the app to Appetize.io
+    appetize(
+      path: output_path,
+      api_token: ENV["APPET_TOKEN"],
+      public_key: "u33365457th0bw8wga7x856a8r"
+    )
   end
 
   desc "Build for Testing"
