@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-26 14:24:41+0000 */
+/* Translation-Revision-Date: 2021-01-27 14:04:26+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -520,7 +520,7 @@
 "All languages" = "Alle talen";
 
 /* Description for the Jetpack Backup Restore message. %1$@ is a placeholder for the selected date. */
-"All of your selected items are now restored back to %1$@." = "All of your selected items are now restored back to %1$@.";
+"All of your selected items are now restored back to %1$@." = "Alle je geselecteerde items zijn nu teruggezet naar %1$@.";
 
 /* Title of the congratulation screen that appears when all the tasks are completed */
 "All tasks complete" = "Alle taken afgerond";
@@ -680,7 +680,7 @@
 "Are you sure you want to permanently delete this item?" = "Weet je zeker dat je dit item permanent wilt verwijderen?";
 
 /* Message of the confirmation alert when deleting a page from the trash. */
-"Are you sure you want to permanently delete this page?" = "Are you sure you want to permanently delete this page?";
+"Are you sure you want to permanently delete this page?" = "Weet je zeker dat je deze pagina permanent wil verwijderen?";
 
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Weet je zeker dat je dit bericht permanent wilt verwijderen?";
@@ -699,7 +699,7 @@
 "Are you sure you want to remove %1$@?" = "Weet je zeker dat je %1$@ wilt verwijderen?";
 
 /* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
-"Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then.";
+"Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Weet je zeker dat je je site wil terugzetten naar %1$@? Dit zal alle inhoud en opties verwijderen die sindsdien gemaakt of gewijzigd zijn.";
 
 /* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
 "Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "Weet je zeker dat je je site wilt terugspoelen naar %@?\nDit zal alle inhoud en opties verwijderen die sindsdien gemaakt of gewijzigd zijn.";
@@ -1095,10 +1095,10 @@
 "Change username" = "Wijzig gebruikersnaam";
 
 /* Description of a Quick Start Tour */
-"Change, add, or remove content from your site's homepage." = "Change, add, or remove content from your site's homepage.";
+"Change, add, or remove content from your site's homepage." = "Verander, voeg toe, of verwijder inhoud van de homepage van je site.";
 
 /* Description of a Quick Start Tour */
-"Change, add, or remove your site's pages." = "Change, add, or remove your site's pages.";
+"Change, add, or remove your site's pages." = "Verander, voeg toe, of verwijder pagina's van je site.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Weergavenaam wijzigen";
@@ -1353,7 +1353,7 @@
 "Completed: Create your site" = "Afgerond: Maak je site";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Edit your homepage" = "Completed: Edit your homepage";
+"Completed: Edit your homepage" = "Afgerond: Bewerk je homepage";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Enable post sharing" = "Afgerond: Schakel berichten delen in";
@@ -1368,7 +1368,7 @@
 "Completed: Publish a post" = "Afgerond: Publiceer een bericht";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Review site pages" = "Completed: Review site pages";
+"Completed: Review site pages" = "Afgerond: Beoordeel site pagina's";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Set your site title" = "Afgerond: Stel je sitetitel in";
@@ -1567,7 +1567,7 @@
 "Could not toggle Follow: missing blogURL attribute" = "Kon Volgen niet wisselen: ontbrekend blogURL-kenmerk";
 
 /* An error description explaining that Seen could not be toggled due to a missing feedItemID attribute. */
-"Could not toggle Seen: missing feedItemID attribute." = "Could not toggle Seen: missing feedItemID attribute.";
+"Could not toggle Seen: missing feedItemID attribute." = "Kon gezien niet wisselen: ontbrekend feedItemID attribuut.";
 
 /* Title of a prompt. */
 "Could not unfollow site" = "Kon site niet ontvolgen";
@@ -1721,7 +1721,7 @@
 "Current value is %s" = "Huidige waarde is %s";
 
 /* Title for the Jetpack Backup Status message. */
-"Currently creating a downloadable backup of your site" = "Currently creating a downloadable backup of your site";
+"Currently creating a downloadable backup of your site" = "Bezig met het maken van een te downloaden back-up van je site";
 
 /* Title for the Jetpack Restore Status message. */
 "Currently restoring site" = "Momenteel wordt je site teruggezet";
@@ -2599,7 +2599,7 @@
 "Follows the blog." = "Wordt gebruikt om de blog te volgen.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
-"Follows the comments on a post by email." = "Follows the comments on a post by email.";
+"Follows the comments on a post by email." = "Volgt de reacties op een bericht per e-mail.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Volgt de tag.";
@@ -3072,7 +3072,7 @@
 "Jetpack FAQ" = "Veelgestelde vragen Jetpack";
 
 /* Description that explains that we are unable to auto fix the threat */
-"Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site." = "Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site.";
+"Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site." = "Jetpack Scan kon deze bedreiging niet automatisch oplossen. We raden je aan de bedreiging handmatig op te lossen: wees er zeker van dat WordPress, je thema en al je plugins up-to-date zijn en verwijder bedreigende code, thema of plugin van je site.";
 
 /* Description for a label when the scan has failed */
 "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Jetpack Scan kon geen scan van je site afronden. Controleer of je site bereikbaar is - probeer het opnieuw als dat niet het geval is. Als dit het geval is, of als Jetpack Scan nog steeds problemen heeft, neem dan contact op met ons ondersteuningsteam.";
@@ -5270,7 +5270,7 @@
 "Select %@ to see your current plan and other available plans." = "Selecteer %@ om je huidige abonnement en andere beschikbare abonnementen in te zien.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your page list." = "Select %@ to see your page list.";
+"Select %@ to see your page list." = "Selecteer %@ om je paginalijst te zien.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to set a new title." = "Selecteer %@ om een nieuwe titel in te stellen";
@@ -7249,10 +7249,10 @@
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "We kunnen geen verbinding maken met de Jetpack-site via die URL. Neem contact op voor hulp.";
 
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
-"We're restoring your site back to %1$@." = "We're restoring your site back to %1$@.";
+"We're restoring your site back to %1$@." = "We zetten je site terug naar %1$@.";
 
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
-"We've also emailed you a link to your file." = "We've also emailed you a link to your file.";
+"We've also emailed you a link to your file." = "We hebben je ook een link naar je bestand gemaild.";
 
 /* Instruction text after a signup Magic Link was requested. */
 "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "We hebben je een inschrijf link gestuurd om je nieuwe WordPress.com account aan te maken. Controleer je e-mail op dit apparaat en tik op de link in de e-mail die je van WordPress.com ontvangt.";
@@ -7626,7 +7626,7 @@
 "Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "Je app is niet geautoriseerd om de mediabibliotheek te benaderen vanwege actieve restricties zoals ouderlijk toezicht. Controleer de instellingen voor je ouderlijk toezicht op dit apparaat.";
 
 /* Title for the Jetpack Backup Complete message. */
-"Your backup is now available for download" = "Your backup is now available for download";
+"Your backup is now available for download" = "Je back-up is nu beschikbaar om te downloaden";
 
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Je huidige gebruikersnaam is %1$@. Op een paar uitzonderingen na zullen anderen alleen jouw weergavenaam %2$@ zien.";

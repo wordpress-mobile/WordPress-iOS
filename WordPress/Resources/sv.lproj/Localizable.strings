@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-25 22:28:14+0000 */
+/* Translation-Revision-Date: 2021-01-28 02:27:51+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -4573,7 +4573,7 @@
 "Premium Upgrades" = "Premium-uppgraderingar";
 
 /* Title for label when the preparing to scan the users site */
-"Preparing to scan" = "Förbereder att skanna";
+"Preparing to scan" = "Förbereder för att skanna";
 
 /* Label to show while converting and/or resizing media to send to server */
 "Preparing..." = "Förbereder...";
