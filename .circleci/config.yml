@@ -66,7 +66,7 @@ jobs:
           command: rake dependencies
       - run:
           name: Build for Testing
-          command: cd ./Scripts && bundle exec fastlane build_for_testing device:'<< parameters.device >>' ios-version:'<< parameters.ios-version >>'
+          command: bundle exec fastlane build_for_testing device:'<< parameters.device >>' ios-version:'<< parameters.ios-version >>'
       - persist_to_workspace:
           root: ./
           paths:
@@ -94,7 +94,6 @@ jobs:
           command: bundle --path vendor/bundle
       - run:
           name: Run Unit Tests
-          working_directory: Scripts
           command: bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3 device:'<< parameters.device >>' ios-version:'<< parameters.ios-version >>'
       - ios/save-xcodebuild-artifacts:
           result-bundle-path: build/results
@@ -127,7 +126,6 @@ jobs:
           background: true
       - run:
           name: Run UI Tests
-          working_directory: Scripts
           command: bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:'<< parameters.device >>' ios-version:'<< parameters.ios-version >>'
       - ios/save-xcodebuild-artifacts:
           result-bundle-path: build/results
@@ -161,13 +159,12 @@ jobs:
           command: bundle exec fastlane run configure_apply
       - run:
           name: Build
-          working_directory: Scripts
           command: "bundle exec fastlane build_and_upload_installable_build build_number:$CIRCLE_BUILD_NUM"
       - run:
           name: Prepare Artifacts
           command: |
             mkdir -p Artifacts
-            mv "Scripts/fastlane/comment.json" "Artifacts/comment.json"
+            mv "fastlane/comment.json" "Artifacts/comment.json"
       - store_artifacts:
           path: Artifacts
           destination: Artifacts
@@ -199,7 +196,6 @@ jobs:
             curl -sL https://sentry.io/get-cli/ | bash
       - run:
           name: Build
-          working_directory: Scripts
           command: |
             APP_VERSION=$(cat ../config/Version.Public.xcconfig | grep "^VERSION_LONG" | cut -d "=" -f2)
             echo "export SLACK_FAILURE_MESSAGE=':red_circle: Build for WordPress iOS $APP_VERSION failed!'" >> $BASH_ENV

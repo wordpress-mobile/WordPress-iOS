@@ -40,11 +40,6 @@
 # * Chinese (Taiwan) [zh-Hant]
 # * Welsh
 
-if Dir.pwd =~ /Scripts/
-  puts "Must run script from root folder"
-  exit
-end
-
 ALL_LANGS={
   'ar' => 'ar',         # Arabic
   'bg' => 'bg',         # Bulgarian
@@ -124,27 +119,44 @@ else
   langs = ALL_LANGS
 end
 
+script_root = __dir__
+project_dir = File.dirname(script_root)
+
 langs.each do |code,local|
-  lang_dir = File.join('WordPress', 'Resources', "#{local}.lproj")
-  puts "Updating #{code}"
+  lang_dir = File.join(project_dir, 'WordPress', 'Resources', "#{local}.lproj")
+  puts "Updating #{code} in #{lang_dir}"
   system "mkdir -p #{lang_dir}"
 
-  # Download for production
-  system "if [ -e #{lang_dir}/Localizable#{strings_file_ext}.strings ]; then cp #{lang_dir}/Localizable#{strings_file_ext}.strings #{lang_dir}/Localizable#{strings_file_ext}.strings.bak; fi"
+  destination = "#{lang_dir}/Localizable#{strings_file_ext}.strings"
+  backup_destination = "#{destination}.bak"
+
+  # Step 2 – Download the new strings
+  if File.exist? destination
+    FileUtils.copy destination, backup_destination
+  end
 
   url = "#{download_url}/#{code}/default/export-translations?#{strings_filter}format=strings"
-  destination = "#{lang_dir}/Localizable#{strings_file_ext}.strings"
 
-  system "curl -fLso #{destination} \"#{url}\"" or begin
+  system "curl -fgLo #{destination} \"#{url}\"" or begin
     puts "Error downloading #{code}"
   end
 
-  if File.size(destination).to_f == 0
-    abort("\e[31mFatal Error: #{destination} appears to be empty. Exiting.\e[0m")
+  # Step 3 – Validate the new file
+  if !File.exist?(destination) or File.size(destination).to_f == 0
+    puts "\e[31mFatal Error: #{destination} appears to be empty. Exiting.\e[0m"
+    abort()
   end
 
-  system "./Scripts/fix-translation #{lang_dir}/Localizable#{strings_file_ext}.strings"
-  system "plutil -lint #{lang_dir}/Localizable#{strings_file_ext}.strings" and system "rm #{lang_dir}/Localizable#{strings_file_ext}.strings.bak"
+  fix_script_path = File.join(script_root, 'fix-translation')
+
+  system "#{fix_script_path} #{lang_dir}/Localizable#{strings_file_ext}.strings"
+  system "plutil -lint #{lang_dir}/Localizable#{strings_file_ext}.strings"
   system "grep -a '\\x00\\x20\\x00\\x22\\x00\\x22\\x00\\x3b$' #{lang_dir}/Localizable#{strings_file_ext}.strings"
+
+  # Clean up after ourselves
+  FileUtils.rm destination if File.exist? destination
 end
-system "Scripts/extract-framework-translations.swift" if strings_filter.empty? 
+
+extract_framework_translations_script_path = File.join(script_root, 'extract-framework-translations.swift')
+
+system extract_framework_translations_script_path if strings_filter.empty? 

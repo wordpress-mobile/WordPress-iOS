@@ -3,22 +3,30 @@
 import Foundation
 
 let fileManager = FileManager.default
-let cwd = fileManager.currentDirectoryPath
-let script = CommandLine.arguments[0]
 
-let base = cwd
-let projectDir = base.appending("/WordPress")
+let projectRoot = findProjectRoot()
+let projectDir = projectRoot.appending("/WordPress")
 let resources = projectDir.appending("/Resources")
 let frameworkRoots = [
     "WordPressTodayWidget",
     "WordPressShareExtension"
-    ].map({ projectDir.appending("/\($0)") })
+].map({ projectDir.appending("/\($0)") })
 
 guard fileManager.fileExists(atPath: projectDir) else {
     print("Must run script from project root folder")
     exit(1)
 }
 
+/// Crawl our way up the project tree until we find the root
+func findProjectRoot() -> String {
+    var candidate = URL(fileURLWithPath: fileManager.currentDirectoryPath)
+
+    while !fileManager.fileExists(atPath: candidate.appendingPathComponent(".git").path) && candidate.path != "/" {
+        candidate.deleteLastPathComponent()
+    }
+
+    return candidate.path
+}
 
 func projectLanguages() -> [String] {
     return (try? fileManager.contentsOfDirectory(atPath: resources)

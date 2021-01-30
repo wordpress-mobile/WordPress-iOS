@@ -7,8 +7,16 @@ unless FastlaneCore::Helper.bundler?
   UI.user_error!('Please run fastlane via `bundle exec`')
 end
 
+# Paths that are re-used across multiple lanes
+PROJECT_ROOT_FOLDER=File.dirname Dir.pwd
+WORKSPACE_PATH=File.join(PROJECT_ROOT_FOLDER, "WordPress.xcworkspace")
+DERIVED_DATA_PATH=File.join(PROJECT_ROOT_FOLDER, "DerivedData")
+BUILD_PRODUCTS_PATH=File.join(PROJECT_ROOT_FOLDER, "build")
+
+# Env file paths to load
 USER_ENV_FILE_PATH = File.join(Dir.home, '.wpios-env.default')
-PROJECT_ENV_FILE_PATH = File.expand_path(File.join(Dir.pwd, '../../.configure-files/project.env'))
+PROJECT_ENV_FILE_PATH = File.join(PROJECT_ROOT_FOLDER, '.configure-files', 'project.env')
+
 ALL_BUNDLE_IDENTIFIERS = [
       "org.wordpress",
       "org.wordpress.WordPressShare",
@@ -57,10 +65,9 @@ Dotenv.load(USER_ENV_FILE_PATH)
 Dotenv.load(PROJECT_ENV_FILE_PATH)
 ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
 ENV["PROJECT_NAME"]="WordPress"
-ENV["PUBLIC_CONFIG_FILE"]="../config/Version.Public.xcconfig"
-ENV["INTERNAL_CONFIG_FILE"]="../config/Version.internal.xcconfig"
+ENV["PUBLIC_CONFIG_FILE"]=File.join(PROJECT_ROOT_FOLDER, "config", "Version.Public.xcconfig")
+ENV["INTERNAL_CONFIG_FILE"]=File.join(PROJECT_ROOT_FOLDER, "config", "Version.internal.xcconfig")
 ENV["DOWNLOAD_METADATA"]="./fastlane/download_metadata.swift"
-ENV["PROJECT_ROOT_FOLDER"]="../"
 
 ########################################################################
 # Screenshots
@@ -93,7 +100,7 @@ import "./ScreenshotFastfile"
     setbranchprotection(repository:GHHELPER_REPO, branch: "release/#{new_version}")
     setfrozentag(repository:GHHELPER_REPO, milestone: new_version)
     get_prs_list(repository:GHHELPER_REPO, start_tag:"#{old_version}", report_path:"#{File.expand_path('~')}/wpios_prs_list_#{old_version}_#{new_version}.txt")
-    ios_check_beta_deps(podfile:"#{ENV["PROJECT_ROOT_FOLDER"]}Podfile")
+    ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, "Podfile"))
   end
 
 
@@ -130,11 +137,10 @@ import "./ScreenshotFastfile"
   #####################################################################################
   desc "Updates the AppStoreStrings.po file with the latest data"
   lane :update_appstore_strings do | options |
-    prj_folder = Pathname.new(File.join(Dir.pwd, "../..")).expand_path.to_s
-    source_metadata_folder = File.join(prj_folder, "Scripts/fastlane/appstoreres/metadata/source")
+    source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, "fastlane/appstoreres/metadata/source")
 
     files = {
-      whats_new: File.join(prj_folder,  "/WordPress/Resources/release_notes.txt"),
+      whats_new: File.join(PROJECT_ROOT_FOLDER,  "/WordPress/Resources/release_notes.txt"),
       app_store_subtitle: File.join(source_metadata_folder, "subtitle.txt"),
       app_store_desc: File.join(source_metadata_folder, "description.txt"),
       app_store_keywords: File.join(source_metadata_folder, "keywords.txt"),
@@ -151,7 +157,7 @@ import "./ScreenshotFastfile"
       "app_store_screenshot-7" => File.join(source_metadata_folder, "promo_screenshot_7.txt"),
     }
 
-    ios_update_metadata_source(po_file_path: prj_folder + "/WordPress/Resources/AppStoreStrings.po",
+    ios_update_metadata_source(po_file_path: PROJECT_ROOT_FOLDER + "/WordPress/Resources/AppStoreStrings.po",
       source_files: files,
       release_version: options[:version])
   end
@@ -292,7 +298,7 @@ import "./ScreenshotFastfile"
     alpha_code_signing
 
     # Get the current build version, and update it if needed
-    version_config_path = "../../config/Version.internal.xcconfig"
+    version_config_path = File.join(PROJECT_ROOT_FOLDER, "config", "Version.internal.xcconfig")
     versions = Xcodeproj::Config.new(File.new(version_config_path)).to_hash
     build_number = versions["VERSION_LONG"]
 
@@ -308,22 +314,22 @@ import "./ScreenshotFastfile"
 
     gym(
       scheme: "WordPress Alpha",
-      workspace: "../WordPress.xcworkspace",
+      workspace: WORKSPACE_PATH,
       export_method: "enterprise",
       clean: true,
-      output_directory: "../build/",
-      derived_data_path: "../derived-data/alpha/",
+      output_directory: BUILD_PRODUCTS_PATH,
+      derived_data_path: DERIVED_DATA_PATH,
       export_team_id: ENV["INT_EXPORT_TEAM_ID"],
-      export_options: { method: "enterprise" })
-
-    sh("mv ../../build/WordPress.ipa \"../../build/WordPress Alpha.ipa\"")
+      export_options: { method: "enterprise" }
+    )
 
     appcenter_upload(
       api_token: get_required_env("APPCENTER_API_TOKEN"),
       owner_name: "automattic",
       owner_type: "organization",
       app_name: "WPiOS-One-Offs",
-      file: "../build/WordPress Alpha.ipa",
+      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
+      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
       destinations: "All-users-of-WPiOS-One-Offs",
       notify_testers: false
     )
@@ -368,33 +374,30 @@ import "./ScreenshotFastfile"
 
     gym(
       scheme: "WordPress Internal",
-      workspace: "../WordPress.xcworkspace",
+      workspace: WORKSPACE_PATH,
       export_method: "enterprise",
       clean: true,
-      output_directory: "../build/",
-      derived_data_path: "../derived-data/internal/",
+      output_directory: BUILD_PRODUCTS_PATH,
+      derived_data_path: DERIVED_DATA_PATH,
       export_team_id: get_required_env("INT_EXPORT_TEAM_ID"),
-      export_options: { method: "enterprise" })
-
-    sh("mv ../../build/WordPress.ipa \"../../build/WordPress Internal.ipa\"")
+      export_options: { method: "enterprise" }
+    )
 
     appcenter_upload(
       api_token: ENV["APPCENTER_API_TOKEN"],
       owner_name: "automattic",
       owner_type: "organization",
       app_name: "WP-Internal",
-      file: "../build/WordPress Internal.ipa",
+      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
+      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
       notify_testers: false
     )
-
-
-    dSYM_PATH = File.dirname(File.dirname(Dir.pwd)) + "/build/WordPress.app.dSYM.zip"
 
     sentry_upload_dsym(
       auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
       org_slug: 'a8c',
       project_slug: 'wordpress-ios',
-      dsym_path: dSYM_PATH,
+      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH],
     )
 
   end
@@ -419,10 +422,12 @@ import "./ScreenshotFastfile"
 
     appstore_code_signing
 
-    gym(scheme: "WordPress", workspace: "../WordPress.xcworkspace",
+    gym(
+      scheme: "WordPress",
+      workspace: WORKSPACE_PATH,
       clean: true,
       export_team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
-      derived_data_path: "../derived-data/itc/",
+      derived_data_path: DERIVED_DATA_PATH,
       export_options: { method: "app-store" }
     )
 
@@ -432,13 +437,12 @@ import "./ScreenshotFastfile"
     )
 
     sh("cd .. && rm WordPress.ipa")
-    dSYM_PATH = File.dirname(Dir.pwd) + "/WordPress.app.dSYM.zip"
 
     sentry_upload_dsym(
-      dsym_path: dSYM_PATH,
       auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
       org_slug: 'a8c',
       project_slug: 'wordpress-ios',
+      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
     sh("cd .. && rm WordPress.app.dSYM.zip")
@@ -448,9 +452,10 @@ import "./ScreenshotFastfile"
       zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
 
       version = ios_get_app_version()
-      create_release(repository:GHHELPER_REPO,
+      create_release(
+        repository:GHHELPER_REPO,
         version: version,
-        release_notes_file_path:'../WordPress/Resources/release_notes.txt',
+        release_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
         release_assets:"#{archive_zip_path}"
       )
 
@@ -493,9 +498,9 @@ import "./ScreenshotFastfile"
   desc "Build for Testing"
   lane :build_for_testing do | options |
     run_tests(
-      workspace: "../WordPress.xcworkspace",
+      workspace: WORKSPACE_PATH,
       scheme: "WordPress",
-      derived_data_path: "../DerivedData",
+      derived_data_path: DERIVED_DATA_PATH,
       build_for_testing: true,
       device: options[:device],
       deployment_target_version: options[:ios_version],
@@ -612,23 +617,23 @@ import "./ScreenshotFastfile"
   lane :test_without_building do | options |
 
     # Find the referenced .xctestrun file based on its name
-    buildProductsPath = File.expand_path("../DerivedData/Build/Products/", File.dirname(Dir.pwd))
+    buildProductsPath = File.join(DERIVED_DATA_PATH, "Build", "Products")
 
     testPlanPath = Dir.glob(File.join(buildProductsPath, '*.xctestrun') ).select { |e|
       e.include?(options[:name])
     }.first
 
-    UI.user_error!("Unable to find .xctestrun file") unless testPlanPath != nil and File.exists? (testPlanPath)
+    UI.user_error!("Unable to find .xctestrun file at #{buildProductsPath}") unless testPlanPath != nil and File.exists? (testPlanPath)
 
     multi_scan(
-      workspace: "../WordPress.xcworkspace",
+      workspace: WORKSPACE_PATH,
       scheme: "WordPress",
       device: options[:device],
       deployment_target_version: options[:ios_version],
       test_without_building: true,
       xctestrun: testPlanPath,
       try_count: options[:try_count],
-      output_directory: "../build/results",
+      output_directory: File.join(PROJECT_ROOT_FOLDER, "build", "results"),
       result_bundle: true
     )
   end
@@ -645,7 +650,7 @@ import "./ScreenshotFastfile"
   lane :gutenberg_dep_check do | options |
     res = ''
 
-    File.open '../../Podfile' do |file|
+    File.open File.join(PROJECT_ROOT_FOLDER, 'Podfile') do |file|
       res = file.find { |line| line =~ /^(?!\s*#)(?=.*\bgutenberg\b).*(\bcommit|tag\b){1}.+/ }
     end
 
