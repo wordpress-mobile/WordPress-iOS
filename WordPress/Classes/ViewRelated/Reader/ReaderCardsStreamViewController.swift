@@ -9,6 +9,19 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
     /// Refresh counter used to for random posts on pull to refresh
     private var refreshCount = 0
+    
+    /// Sorting option used for fetching cards
+    private var sortingOption: ReaderSortingOption = .popularity {
+        didSet {
+            sortingButton.sortingOption = sortingOption
+        }
+    }
+    
+    private lazy var sortingButton: ReaderSortingOptionButton = {
+        let view = ReaderSortingOptionButton()
+        view.addTarget(self, action: #selector(didTapSortingButton), for: .touchUpInside)
+        return view
+    }()
 
     private var cards: [ReaderCard]? {
         content.content as? [ReaderCard]
@@ -31,9 +44,19 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        updateSortingOption(.popularity, reloadCards: false)
+        
         ReaderWelcomeBanner.displayIfNeeded(in: tableView)
         tableView.register(ReaderTopicsCardCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
         tableView.register(ReaderSitesCardCell.self, forCellReuseIdentifier: readerCardSitesIdentifier)
+        
+        tableView.tableHeaderView = sortingHeaderView
+        
+        NSLayoutConstraint.activate([
+            sortingHeaderView.heightAnchor.constraint(equalToConstant: 44.0),
+            sortingHeaderView.widthAnchor.constraint(equalTo: tableView.widthAnchor),
+        ])
 
         addObservers()
     }
@@ -97,6 +120,33 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     @objc private func reload(_ notification: Foundation.Notification) {
         tableView.reloadData()
     }
+    
+    // MARK: - Sorting
+    
+    private func updateSortingOption(_ sortingOption: ReaderSortingOption, reloadCards: Bool = true) {
+        self.sortingOption = sortingOption
+        if reloadCards {
+            super.syncIfAppropriate(forceSync: true)
+        }
+    }
+    
+    private lazy var sortingHeaderView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(sortingButton)
+        NSLayoutConstraint.activate([
+            sortingButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            sortingButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            sortingButton.topAnchor.constraint(equalTo: view.topAnchor),
+            sortingButton.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+        return view
+    }()
+    
+    @objc func didTapSortingButton() {
+        // TODO: show bottom sheet
+    }
 
     // MARK: - Sync
 
@@ -104,7 +154,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         page = 1
         refreshCount += 1
 
-        cardsService.fetch(isFirstPage: true, refreshCount: refreshCount, success: { [weak self] cardsCount, hasMore in
+        cardsService.fetch(isFirstPage: true, refreshCount: refreshCount, sortingOption: sortingOption.parameterValue, success: { [weak self] cardsCount, hasMore in
             self?.trackContentPresented()
             success(cardsCount, hasMore)
         }, failure: { [weak self] error in
@@ -119,7 +169,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         page += 1
         WPAnalytics.trackReader(.readerDiscoverPaginated, properties: ["page": page])
 
-        cardsService.fetch(isFirstPage: false, success: { _, hasMore in
+        cardsService.fetch(isFirstPage: false, sortingOption: sortingOption.parameterValue, success: { _, hasMore in
             success?(hasMore)
         }, failure: { error in
             guard let error = error else {
