@@ -51,11 +51,11 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         tableView.register(ReaderTopicsCardCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
         tableView.register(ReaderSitesCardCell.self, forCellReuseIdentifier: readerCardSitesIdentifier)
         
-        tableView.tableHeaderView = sortingHeaderView
+        tableView.tableHeaderView = sortingButton
         
         NSLayoutConstraint.activate([
-            sortingHeaderView.heightAnchor.constraint(equalToConstant: 44.0),
-            sortingHeaderView.widthAnchor.constraint(equalTo: tableView.widthAnchor),
+            sortingButton.heightAnchor.constraint(equalToConstant: 44.0),
+            sortingButton.widthAnchor.constraint(equalTo: tableView.widthAnchor),
         ])
 
         addObservers()
@@ -129,20 +129,6 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
             super.syncIfAppropriate(forceSync: true)
         }
     }
-    
-    private lazy var sortingHeaderView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(sortingButton)
-        NSLayoutConstraint.activate([
-            sortingButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            sortingButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            sortingButton.topAnchor.constraint(equalTo: view.topAnchor),
-            sortingButton.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        ])
-        return view
-    }()
     
     @objc func didTapSortingButton() {
         // TODO: show bottom sheet
