@@ -2,11 +2,11 @@ import UIKit
 
 enum ReaderSortingOption: String, CaseIterable {
     case popularity, date
-    
+
     var parameterValue: String {
         return rawValue
     }
-    
+
     var localizedDescription: String {
         // TODO: check if strings are localized
         switch self {
@@ -16,7 +16,7 @@ enum ReaderSortingOption: String, CaseIterable {
             return NSLocalizedString("Popular", comment: "Sorting option description")
         }
     }
-    
+
     var image: UIImage {
         switch self {
         case .date:
@@ -33,14 +33,14 @@ class ReaderSortingOptionButton: UIControl {
     var sourceView: UIView {
         return chevronView
     }
-    
+
     private lazy var iconView: UIImageView = {
         let view = UIImageView()
         view.tintColor = UIColor(light: UIColor(hexString: "4D4D4D"), dark: UIColor(hexString: "BFBFBF"))
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private lazy var label: UILabel = {
         let view = UILabel()
         view.textColor = UIColor(light: .black, dark: .white)
@@ -48,7 +48,7 @@ class ReaderSortingOptionButton: UIControl {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private lazy var chevronView: UIImageView = {
         let view = UIImageView()
         view.image = .gridicon(.chevronDown)
@@ -56,56 +56,56 @@ class ReaderSortingOptionButton: UIControl {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     var sortingOption: ReaderSortingOption? {
         didSet {
             label.text = sortingOption?.localizedDescription
             iconView.image = sortingOption?.image
         }
     }
-    
+
     // TODO: check how should it behave when touched/highlighted
     override var isHighlighted: Bool {
         didSet {
             alpha = isHighlighted ? 0.5 : 1.0
         }
     }
-    
+
     // MARK: - setup
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setup()
     }
-    
+
     convenience init() {
         self.init(frame: CGRect.zero)
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
+
         setup()
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         setup()
     }
-    
+
     private func setup() {
         translatesAutoresizingMaskIntoConstraints = false
-        
+
         // TODO: check if accessibility is set correctly
         accessibilityIdentifier = "Reader sorting option button"
         accessibilityLabel = NSLocalizedString("Sorting option button", comment: "Accessibility label for sorting option button")
-        
+
         addSubview(iconView)
         addSubview(label)
         addSubview(chevronView)
-        
+
         NSLayoutConstraint.activate([
             iconView.centerYAnchor.constraint(equalTo: centerYAnchor),
             iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16.0),

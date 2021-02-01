@@ -9,14 +9,14 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
     /// Refresh counter used to for random posts on pull to refresh
     private var refreshCount = 0
-    
+
     /// Sorting option used for fetching cards
     private var sortingOption: ReaderSortingOption = .popularity {
         didSet {
             sortingButton.sortingOption = sortingOption
         }
     }
-    
+
     private lazy var sortingButton: ReaderSortingOptionButton = {
         let view = ReaderSortingOptionButton()
         view.addTarget(self, action: #selector(didTapSortingButton), for: .touchUpInside)
@@ -44,15 +44,15 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         updateSortingOption(.popularity, reloadCards: false)
-        
+
         ReaderWelcomeBanner.displayIfNeeded(in: tableView)
         tableView.register(ReaderTopicsCardCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
         tableView.register(ReaderSitesCardCell.self, forCellReuseIdentifier: readerCardSitesIdentifier)
-        
+
         tableView.tableHeaderView = sortingButton
-        
+
         NSLayoutConstraint.activate([
             sortingButton.widthAnchor.constraint(equalTo: tableView.widthAnchor),
         ])
@@ -119,16 +119,16 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     @objc private func reload(_ notification: Foundation.Notification) {
         tableView.reloadData()
     }
-    
+
     // MARK: - Sorting
-    
+
     private func updateSortingOption(_ sortingOption: ReaderSortingOption, reloadCards: Bool = true) {
         self.sortingOption = sortingOption
         if reloadCards {
             super.syncIfAppropriate(forceSync: true)
         }
     }
-    
+
     @objc func didTapSortingButton() {
         // TODO: show bottom sheet
     }
