@@ -153,8 +153,28 @@ class JetpackScanCoordinator {
             return
         }
 
-        service.fixThreats(fixableThreats, blog: blog) {  [weak self] (response) in
-            self?.refreshData()
+        // Optimistically trigger the fixing state
+        // and map all the fixable threats to in progress threats
+        scan?.state = .fixingThreats
+        scan?.threatFixStatus = fixableThreats.compactMap {
+            var threatCopy = $0
+            threatCopy.status = .fixing
+            return JetpackThreatFixStatus(with: threatCopy)
+        }
+
+        // Refresh the view to show the new scan state
+        view.render()
+
+        startPolling(triggerImmediately: false)
+
+        service.fixThreats(fixableThreats, blog: blog) { [weak self] (response) in
+            if response.success == false {
+                DDLogError("Error starting scan: Scan response returned false")
+                self?.stopPolling()
+                self?.view.showScanStartError()
+            } else {
+                self?.refreshData()
+            }
         } failure: { [weak self] (error) in
             DDLogError("Error fixing threats: \(String(describing: error.localizedDescription))")
 
@@ -191,7 +211,7 @@ class JetpackScanCoordinator {
     /// Starts or stops the refresh timer based on the status of the scan
     private func togglePolling() {
         switch scan?.state {
-        case .provisioning, .scanning:
+        case .provisioning, .scanning, .fixingThreats:
             startPolling()
         default:
             stopPolling()
