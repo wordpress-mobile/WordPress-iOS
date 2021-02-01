@@ -274,8 +274,11 @@ private extension ReaderTabView {
             return
         }
 
-        // Refresh the Reader menu to ensure Followed P2s is displayed.
-        viewModel.fetchReaderMenu()
+        // If a P2 has been followed but the P2 tab isn't in the Reader tab bar,
+        // refresh the Reader menu to display it.
+        if p2Index == nil {
+            viewModel.fetchReaderMenu()
+        }
     }
 
 }
