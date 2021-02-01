@@ -140,7 +140,7 @@ import "./ScreenshotFastfile"
     source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, "fastlane/appstoreres/metadata/source")
 
     files = {
-      whats_new: File.join(PROJECT_ROOT_FOLDER,  "/WordPress/Resources/release_notes.txt"),
+      whats_new: File.join(PROJECT_ROOT_FOLDER, "WordPress", "Resources", "release_notes.txt"),
       app_store_subtitle: File.join(source_metadata_folder, "subtitle.txt"),
       app_store_desc: File.join(source_metadata_folder, "description.txt"),
       app_store_keywords: File.join(source_metadata_folder, "keywords.txt"),
