@@ -45,7 +45,7 @@
     if (@available(iOS 13.0, *)) {
         _activityIndicator = [[UIActivityIndicatorView alloc] init]; // defaults to Medium
     } else {
-        _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+        _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleMedium];
     }
 
     _activityIndicator.translatesAutoresizingMaskIntoConstraints = false;

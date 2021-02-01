@@ -969,7 +969,7 @@ extension ShareExtensionEditorViewController {
         alertController.popoverPresentationController?.sourceRect = CGRect(origin: position, size: CGSize(width: 1, height: 1))
         alertController.popoverPresentationController?.permittedArrowDirections = .any
         present(alertController, animated: true, completion: { () in
-            UIMenuController.shared.setMenuVisible(false, animated: false)
+            UIMenuController.shared.hideMenu()
         })
     }
 }
@@ -1198,7 +1198,7 @@ private extension ShareExtensionEditorViewController {
     func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
         let referenceView: UIScrollView = richTextView
         let bottomInset = (view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom) + Constants.insetBottomPadding)
-        let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: bottomInset, right: 0)
+        let scrollInsets = UIEdgeInsets(top: referenceView.verticalScrollIndicatorInsets.top, left: 0, bottom: bottomInset, right: 0)
         let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: bottomInset, right: 0)
 
         richTextView.scrollIndicatorInsets = scrollInsets

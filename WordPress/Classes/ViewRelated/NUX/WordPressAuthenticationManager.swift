@@ -115,7 +115,7 @@ extension WordPressAuthenticationManager {
     ///
     @objc
     class func showSigninForWPComFixingAuthToken() {
-        guard let presenter = UIApplication.shared.keyWindow?.rootViewController else {
+        guard let presenter = UIApplication.shared.mainWindow?.rootViewController else {
             assertionFailure()
             return
         }

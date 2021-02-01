@@ -406,6 +406,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self cancelCompletedToursIfNeeded];
     if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
         [self.createButtonCoordinator showCreateButtonFor:self.blog];
     }

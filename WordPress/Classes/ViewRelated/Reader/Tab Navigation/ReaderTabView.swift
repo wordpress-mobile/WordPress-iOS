@@ -50,6 +50,7 @@ class ReaderTabView: UIView {
         setupViewElements()
 
         NotificationCenter.default.addObserver(self, selector: #selector(topicUnfollowed(_:)), name: .ReaderTopicUnfollowed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(siteFollowed(_:)), name: .ReaderSiteFollowed, object: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -259,6 +260,18 @@ private extension ReaderTabView {
         if existingFilter.index == tabBar.selectedIndex {
             didTapResetFilterButton()
         }
+
+    }
+
+    @objc func siteFollowed(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo,
+              let site = userInfo[ReaderNotificationKeys.topic] as? ReaderSiteTopic,
+              site.organizationType == .p2 else {
+            return
+        }
+
+        // Refresh the Reader menu to ensure Followed P2s is displayed.
+        viewModel.fetchReaderMenu()
     }
 
 }

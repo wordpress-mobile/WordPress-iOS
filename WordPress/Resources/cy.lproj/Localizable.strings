@@ -202,9 +202,6 @@
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "'%s' is not fully-supported";
 
-/* translators: sample content for \"Contact\" page template */
-"(555)555-1234" = "(555)555-1234";
-
 /* Empty Post Title */
 "(No Title)" = "(Dim Teitl)";
 
@@ -240,9 +237,6 @@
 /* Alert displayed to the user when a single media item attached to a post has failed to upload. */
 "1 post, 1 file not uploaded" = "1 post, 1 file not uploaded";
 
-/* translators: sample content for \"Contact\" page template */
-"10 Street Road" = "10 Street Road";
-
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
 
@@ -258,17 +252,14 @@
 /* Age between dates less than one hour. */
 "< 1 hour" = "< 1 hour";
 
-/* translators: sample content for \"Contact\" page template */
-"<a href=\"mailto:mail@example.com\">mail@example.com<\/a>" = "<a href=\"mailto:mail@example.com\">mail@example.com<\/a>";
-
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "Mae'r botwm \"rhagor\" yn cynnwys cwymplen sy'n dangos y botymau rhannu";
 
-/* translators: sample content for \"Portfolio\" page template */
-"A description of the project and the works presented." = "A description of the project and the works presented.";
-
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "A featured image is set. Tap to change it.";
+
+/* Title for a threat */
+"A file contains a malicious code pattern" = "A file contains a malicious code pattern";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "A list of sites on this account.";
@@ -278,12 +269,6 @@
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button. */
 "A series of steps to assist with growing your site's audience." = "A series of steps to assist with growing your site's audience.";
-
-/* translators: sample content for \"Team\" page template */
-"A short bio with personal history, key achievements, or an interesting fact." = "A short bio with personal history, key achievements, or an interesting fact.";
-
-/* translators: sample content for \"Services\" page template */
-"A short description of the services you offer." = "A short description of the services you offer.";
 
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "A tag named '%@' already exists.";
@@ -427,9 +412,6 @@
 /* No comment provided by engineer. */
 "Add a description" = "Add a description";
 
-/* Description of a Quick Start Tour */
-"Add a page for key content — an “About” page is a great start." = "Add a page for key content — an “About” page is a great start.";
-
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Add a self-hosted site";
 
@@ -536,6 +518,9 @@
 
 /* Section title for All Languages */
 "All languages" = "Pob iaith";
+
+/* Description for the Jetpack Backup Restore message. %1$@ is a placeholder for the selected date. */
+"All of your selected items are now restored back to %1$@." = "All of your selected items are now restored back to %1$@.";
 
 /* Title of the congratulation screen that appears when all the tasks are completed */
 "All tasks complete" = "All tasks complete";
@@ -694,6 +679,9 @@
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Are you sure you want to permanently delete this item?";
 
+/* Message of the confirmation alert when deleting a page from the trash. */
+"Are you sure you want to permanently delete this page?" = "Are you sure you want to permanently delete this page?";
+
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Are you sure you want to permanently delete this post?";
 
@@ -710,6 +698,9 @@
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name. */
 "Are you sure you want to remove %1$@?" = "Are you sure you want to remove %1$@?";
 
+/* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
+"Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then.";
+
 /* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
 "Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then.";
 
@@ -724,6 +715,9 @@
 
 /* Title of message shown when user taps submit for review. */
 "Are you sure you want to submit for review?" = "Are you sure you want to submit for review?";
+
+/* Message of the trash page confirmation alert. */
+"Are you sure you want to trash this page?" = "Are you sure you want to trash this page?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Are you sure you want to trash this post?";
@@ -811,8 +805,13 @@
 "Back" = "Nôl";
 
 /* Noun. Links to a blog's Jetpack Backups screen.
+   Title for Jetpack Backup Complete screen
+   Title for Jetpack Backup Status screen
    Title for the Jetpack's backup list */
 "Backup" = "Backup";
+
+/* Title for error displayed when preparing a backup fails. */
+"Backup failed." = "Backup failed.";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "Bar Chart depicting Comments for the selected period.";
@@ -886,8 +885,7 @@
 /* No comment provided by engineer. */
 "Block settings" = "Block settings";
 
-/* Opens the WordPress Mobile Blog
-   translators: title for \"Blog\" page template */
+/* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
 
 /* Noun. Title. Links to the blog's Posts screen.
@@ -972,6 +970,7 @@
 /* Alert dismissal title
    Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
+   Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
@@ -1014,7 +1013,8 @@
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection. */
+   Verb. Tapping cancels the publicize account selection.
+   Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Diddymu";
 
 /* Label for the Post List option that cancels automatic uploading of a post.
@@ -1082,9 +1082,6 @@
 /* Button title to edit visibility of sites. */
 "Change Visibility" = "Change Visibility";
 
-/* Description of a Quick Start Tour */
-"Change colors, fonts, and images for a perfectly personalized site." = "Change colors, fonts, and images for a perfectly personalized site.";
-
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Wedi methu newid";
 
@@ -1096,6 +1093,12 @@
 
 /* Change button. */
 "Change username" = "Change username";
+
+/* Description of a Quick Start Tour */
+"Change, add, or remove content from your site's homepage." = "Change, add, or remove content from your site's homepage.";
+
+/* Description of a Quick Start Tour */
+"Change, add, or remove your site's pages." = "Change, add, or remove your site's pages.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Changing display name";
@@ -1212,9 +1215,6 @@
 
 /* Register Domain - Address information field City */
 "City" = "City";
-
-/* translators: sample content for \"Contact\" page template */
-"City, 10100" = "City, 10100";
 
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "Classic Blog";
@@ -1350,13 +1350,10 @@
 "Completed: Continue with site setup" = "Completed: Continue with site setup";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Create a new page" = "Completed: Create a new page";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Create your site" = "Completed: Create your site";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Customize your site" = "Completed: Customize your site";
+"Completed: Edit your homepage" = "Completed: Edit your homepage";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Enable post sharing" = "Completed: Enable post sharing";
@@ -1371,6 +1368,9 @@
 "Completed: Publish a post" = "Completed: Publish a post";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Review site pages" = "Completed: Review site pages";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Set your site title" = "Completed: Set your site title";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1382,7 +1382,8 @@
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Ffurfweddu";
 
-/* Confirm */
+/* Confirm
+   Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Cadarnhau";
 
 /* Title of Delete Site confirmation alert */
@@ -1565,6 +1566,9 @@
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Methu toglo Dilyn: priodwedd URL blog ar goll";
 
+/* An error description explaining that Seen could not be toggled due to a missing feedItemID attribute. */
+"Could not toggle Seen: missing feedItemID attribute." = "Could not toggle Seen: missing feedItemID attribute.";
+
 /* Title of a prompt. */
 "Could not unfollow site" = "Could not unfollow site";
 
@@ -1662,9 +1666,6 @@
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Create a Tag";
 
-/* Title of a Quick Start Tour */
-"Create a new page" = "Create a new page";
-
 /* Title for a button that when tapped starts the site creation process */
 "Create a new site" = "Create a new site";
 
@@ -1719,14 +1720,22 @@
 /* translators: %s: current cell value. */
 "Current value is %s" = "Current value is %s";
 
+/* Title for the Jetpack Backup Status message. */
+"Currently creating a downloadable backup of your site" = "Currently creating a downloadable backup of your site";
+
+/* Title for the Jetpack Restore Status message. */
+"Currently restoring site" = "Currently restoring site";
+
 /* Title of the cell displaying status of a rewind in progress */
 "Currently restoring your site" = "Currently restoring your site";
+
+/* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
+"Currently restoring: %1$@" = "Currently restoring: %1$@";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "Custom message…";
 
 /* Customize button that appears in Theme Browser Header
-   The menu item to select during a guided tour.
    Theme Customize action title */
 "Customize" = "Cyfaddasu";
 
@@ -1749,9 +1758,6 @@
 /* Customize Insights title */
 "Customize your insights" = "Customize your insights";
 
-/* Title of a Quick Start Tour */
-"Customize your site" = "Customize your site";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Cyfaddaswch eich gosodiadau gwefan ar gyfer Hoffi, Sylwadau, Dilyn a rhagor.";
 
@@ -1763,6 +1769,12 @@
 
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Bwrdd Rheoli";
+
+/* Title for a threat that includes the number of database rows affected */
+"Database %1$d threats" = "Database %1$d threats";
+
+/* Title for a threat */
+"Database threat" = "Database threat";
 
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
@@ -1824,12 +1836,14 @@
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Dileu Dewislen";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
+/* Delete option in the confirmation alert when deleting a page from the trash.
+   Delete option in the confirmation alert when deleting a post from the trash.
    Label for a button permanently deletes a page.
    Label for the delete post option. Tapping permanently deletes a post. */
 "Delete Permanently" = "Dileu'n Barhol";
 
-/* Title of the confirmation alert when deleting a post from the trash. */
+/* Title of the confirmation alert when deleting a page from the trash.
+   Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "Delete Permanently?";
 
 /* Button label for deleting the current site
@@ -1986,11 +2000,9 @@
    Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
+   Title for the button that will dismiss this view.
    Title of the Done button on the me page */
 "Done" = "Gorffen";
-
-/* translators: sample content for \"About\" page template */
-"Don’t cry because it’s over, smile because it happened." = "Don’t cry because it’s over, smile because it happened.";
 
 /* Title for label when there are no threats on the users site */
 "Don’t worry about a thing" = "Don’t worry about a thing";
@@ -2043,9 +2055,6 @@
 /* No comment provided by engineer. */
 "Double tap to select an image" = "Double tap to select an image";
 
-/* No comment provided by engineer. */
-"Double tap to select layout" = "Double tap to select layout";
-
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "Double tap to select the option";
 
@@ -2055,15 +2064,17 @@
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "Double tap to undo last change";
 
-/* Title displayed for download backup action.
-   Title for the Jetpack Download Backup Site Screen */
+/* Title for the Jetpack Download Backup Site Screen */
 "Download Backup" = "Download Backup";
+
+/* Title displayed for download backup action. */
+"Download backup" = "Download backup";
+
+/* Title for the button that will download the backup file. */
+"Download file" = "Download file";
 
 /* Label for number of file downloads. */
 "Downloads" = "Downloads";
-
-/* translators: sample content for \"About\" page template */
-"Dr. Seuss" = "Dr. Seuss";
 
 /* Name for the status of a draft post. */
 "Draft" = "Drafft";
@@ -2135,6 +2146,9 @@
 /* No comment provided by engineer. */
 "Edit video" = "Edit video";
 
+/* Title of a Quick Start Tour */
+"Edit your homepage" = "Edit your homepage";
+
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Editing this GIF will remove its animation.";
 
@@ -2171,9 +2185,6 @@
 
 /* The title of an item in a list. */
 "Email me new posts" = "Email me new posts";
-
-/* translators: sample content for \"Team\" page template */
-"Email me: <a href=\"mailto:mail@example.com\">mail@example.com<\/a>" = "Email me: <a href=\"mailto:mail@example.com\">mail@example.com<\/a>";
 
 /* Username Placeholder */
 "Email or Username of the person that should receive your invitation." = "E-bost neu enw defnyddiwr y person y dylai dderbyn eich gwahoddiad.";
@@ -2524,6 +2535,9 @@
 /* Button title that attempts to fix all fixable threats */
 "Fix All" = "Fix All";
 
+/* Button title, confirm fixing all threats */
+"Fix all threats" = "Fix all threats";
+
 /* Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Dilyn";
@@ -2532,7 +2546,7 @@
 "Follow Site" = "Dilyn Gwefan";
 
 /* Verb. Button title. Follow the comments on a post. */
-"Follow conversation" = "Follow conversation";
+"Follow conversation by email" = "Follow conversation by email";
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Follow other sites";
@@ -2573,7 +2587,7 @@
 "Following %@" = "Following %@";
 
 /* Verb. Button title. The user is following the comments on a post. */
-"Following conversation" = "Following conversation";
+"Following conversation by email" = "Following conversation by email";
 
 /* Filters Follows Notifications */
 "Follows" = "Yn Dilyn";
@@ -2585,7 +2599,7 @@
 "Follows the blog." = "Follows the blog.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
-"Follows the comments on a post." = "Follows the comments on a post.";
+"Follows the comments on a post by email." = "Follows the comments on a post by email.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Follows the tag.";
@@ -2641,13 +2655,6 @@
 
 /* Displayed in the Notifications Tab as a message, when there are no notifications */
 "Get active! Comment on posts from blogs you follow." = "Get active! Comment on posts from blogs you follow.";
-
-/* translators: sample content for \"About\" page template
-translators: sample content for \"Contact\" page template
-translators: sample content for \"Portfolio\" page template
-translators: sample content for \"Services\" page template
-translators: sample content for \"Team\" page template */
-"Get in Touch" = "Get in Touch";
 
 /* Accessibility hint for the find out more button in the Feature Announcements screen. */
 "Get more details for this release" = "Get more details for this release";
@@ -2716,9 +2723,6 @@ translators: sample content for \"Team\" page template */
 
 /* This value is used to set the accessibility hint text for creating the user's site. */
 "Guides you through the process of creating your site." = "Guides you through the process of creating your site.";
-
-/* This value is used to set the accessibility hint text for customizing a user's site. */
-"Guides you through the process of customizing your site." = "Guides you through the process of customizing your site.";
 
 /* This value is used to set the accessibility hint text for exploring plans on the user's site. */
 "Guides you through the process of exploring plans for your site." = "Guides you through the process of exploring plans for your site.";
@@ -2831,7 +2835,8 @@ translators: sample content for \"Team\" page template */
    Settings: Comments Moderation */
 "Hold for Moderation" = "Dal ar gyfer Cymedroli";
 
-/* Title for setting which shows the current page assigned as a site's homepage
+/* The item to select during a guided tour.
+   Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
    Title of the Homepage Badge */
 "Homepage" = "Homepage";
@@ -2933,11 +2938,23 @@ translators: sample content for \"Team\" page template */
 /* Downloadable/Restorable items: general section footer text */
 "Includes wp-config php and any non WordPress files" = "Includes wp-config php and any non WordPress files";
 
+/* Downloadable/Restorable items: general section footer text */
+"Includes wp-config.php and any non WordPress files" = "Includes wp-config.php and any non WordPress files";
+
 /* An error message shown when a user signed in with incorrect credentials. */
 "Incorrect username or password. Please try entering your login details again." = "Enw defnyddiwr neu gyfrinair anghywir. Ceisiwch fewngofnodi eto.";
 
+/* Title for a threat */
+"Infected core file" = "Infected core file";
+
+/* Title for a threat that includes the file name of the file */
+"Infected core file: %1$@" = "Infected core file: %1$@";
+
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Gwybodaeth am gyrsiau a digwyddiadau WordPress.com (ar-lein a byw).";
+
+/* Placeholder for the restore progress title. */
+"Initializing the restore process" = "Initializing the restore process";
 
 /* Default button title used in media picker to insert media (photos / videos) into a post.
    Label action for inserting a link on the editor */
@@ -2966,9 +2983,6 @@ translators: sample content for \"Team\" page template */
 
 /* Title of Insights stats filter. */
 "Insights" = "Mewnwelediad";
-
-/* translators: sample content for \"Services\" page template */
-"Inspiration" = "Inspiration";
 
 /* Button label to install a plugin
    Confirmation button displayd in alert displayed when user installs their first plugin. */
@@ -3030,9 +3044,6 @@ translators: sample content for \"Team\" page template */
 /* Invite People Title */
 "Invite People" = "Invite People";
 
-/* translators: sample content for \"About\" page template */
-"It is our choices, Harry, that show what we truly are, far more than our abilities." = "It is our choices, Harry, that show what we truly are, far more than our abilities.";
-
 /* An error message shown during log in when the username or password is incorrect. */
 "It looks like this username\/password isn't associated with this site." = "It looks like this username\/password isn't associated with this site.";
 
@@ -3049,9 +3060,6 @@ translators: sample content for \"Team\" page template */
    Discoverability title for italic formatting keyboard shortcut. */
 "Italic" = "Italig";
 
-/* translators: sample content for \"About\" page template */
-"J.K. Rowling" = "J.K. Rowling";
-
 /* Section title for the publish table section in the blog details screen
    Title for the Jetpack Installation
    Title for the Jetpack section in site settings screen */
@@ -3063,6 +3071,9 @@ translators: sample content for \"Team\" page template */
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack FAQ";
 
+/* Description that explains that we are unable to auto fix the threat */
+"Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site." = "Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site.";
+
 /* Description for a label when the scan has failed */
 "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team.";
 
@@ -3071,6 +3082,27 @@ translators: sample content for \"Team\" page template */
 
 /* Description for a label when there is a single threat on the site, displays the site's title */
 "Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action." = "Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will delete the affected file or directory." = "Jetpack Scan will delete the affected file or directory.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will edit the affected file or directory." = "Jetpack Scan will edit the affected file or directory.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will replace the affected file or directory." = "Jetpack Scan will replace the affected file or directory.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will resolve the threat." = "Jetpack Scan will resolve the threat.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will rollback the affected file to an older (clean) version." = "Jetpack Scan will rollback the affected file to an older (clean) version.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will rollback the affected file to the version from %1$@." = "Jetpack Scan will rollback the affected file to the version from %1$@.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will update to a newer version." = "Jetpack Scan will update to a newer version.";
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack Settings";
@@ -3081,14 +3113,17 @@ translators: sample content for \"Team\" page template */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack installed";
 
+/* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
+"Jetpack will be fixing all the detected active threats." = "Jetpack will be fixing all the detected active threats.";
+
+/* Confirmation message presented before fixing a single threat */
+"Jetpack will be fixing the detected active threat." = "Jetpack will be fixing the detected active threat.";
+
 /* Footer for the Serve images from our servers setting */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site.";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Join a conversation: comment on posts from blogs you follow.";
-
-/* translators: sample content for \"Team\" page template */
-"Juan Pérez" = "Juan Pérez";
 
 /* Button shown if there are unsaved changes and the author is trying to move away from the post.
    Button shown when the author is asked for publishing confirmation.
@@ -3151,16 +3186,6 @@ translators: sample content for \"Team\" page template */
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Gadewch i ni Helpu";
-
-/* translators: sample content for \"Portfolio\" page template */
-"Let's build something together!" = "Let's build something together!";
-
-/* translators: sample content for \"Contact\" page template */
-"Let's talk 👋 Don't hesitate to reach out with the contact information below, or send a message using the form." = "";
-
-/* translators: sample content for \"About\" page template
-translators: sample content for \"Services\" page template */
-"Let’s build something together!" = "Let’s build something together!";
 
 /* Title for the app appearance setting for light mode */
 "Light" = "Light";
@@ -3238,6 +3263,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "Loading Activities...";
+
+/* Text displayed while loading the activity feed for a site */
+"Loading Backups..." = "Loading Backups...";
 
 /* Phrase to show when the user has searched for GIFs and they are being loaded. */
 "Loading GIFs..." = "Loading GIFs...";
@@ -3403,8 +3431,14 @@ translators: sample content for \"Services\" page template */
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Mark as Sticky";
 
+/* An option to mark a post as seen. */
+"Mark as seen" = "Mark as seen";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Mark as spam.";
+
+/* An option to mark a post as unseen. */
+"Mark as unseen" = "Mark as unseen";
 
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "Match accounts using email";
@@ -3497,6 +3531,9 @@ translators: sample content for \"Services\" page template */
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
+/* Summary description for a threat */
+"Miscellaneous vulnerability" = "Miscellaneous vulnerability";
+
 /* Title for the mobile web preview */
 "Mobile" = "Mobile";
 
@@ -3549,6 +3586,9 @@ translators: sample content for \"Services\" page template */
 "Move block left from position %1$s to position %2$s" = "Move block left from position %1$s to position %2$s";
 
 /* No comment provided by engineer. */
+"Move block position" = "Move block position";
+
+/* No comment provided by engineer. */
 "Move block right" = "Move block right";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
@@ -3572,8 +3612,15 @@ translators: sample content for \"Services\" page template */
 
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
-   Trash option in the trash confirmation alert. */
+   Trash option in the trash confirmation alert.
+   Trash option in the trash page confirmation alert. */
 "Move to Trash" = "Symud i'r Sbwriel";
+
+/* No comment provided by engineer. */
+"Move to bottom" = "Move to bottom";
+
+/* No comment provided by engineer. */
+"Move to top" = "Move to top";
 
 /* Option to move Insight up in the view. */
 "Move up" = "Move up";
@@ -3603,9 +3650,6 @@ translators: sample content for \"Services\" page template */
 
 /* Option in Support view to access previous help tickets. */
 "My Tickets" = "My Tickets";
-
-/* translators: sample content for \"Portfolio\" page template */
-"My portfolio showcases various projects created throughout my career. See my contact information below and get in touch." = "My portfolio showcases various projects created throughout my career. See my contact information below and get in touch.";
 
 /* No comment provided by engineer. */
 "My post publish panel" = "My post publish panel";
@@ -3808,6 +3852,9 @@ translators: sample content for \"Services\" page template */
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Dim hoffi eto";
 
+/* Title for the view when there aren't any backups to display for a given filter. */
+"No matching backups found" = "No matching backups found";
+
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "No matching events found." = "No matching events found.";
 
@@ -3818,6 +3865,12 @@ translators: sample content for \"Services\" page template */
 
 /* Menus text shown when no menus were available for loading the Menus editor. */
 "No menus available" = "Dim dewislenni ar gael";
+
+/* A hint to users about creating a downloadable backup of their site. */
+"No need to wait around. We'll notify you when your backup is ready." = "No need to wait around. We'll notify you when your backup is ready.";
+
+/* A hint to users about restoring their site. */
+"No need to wait around. We'll notify you when your site has been fully restored." = "No need to wait around. We'll notify you when your site has been fully restored.";
 
 /* Displayed in the Stats widgets when there is no network */
 "No network available" = "No network available";
@@ -3982,6 +4035,9 @@ translators: sample content for \"Services\" page template */
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
    Title of primary button on alert prompting verify their accounts while attempting to publish */
 "OK" = "Iawn";
+
+/* Title for the button that will dismiss this view. */
+"OK, notify me!" = "OK, notify me!";
 
 /* Disabled */
 "Off" = "Diffodd";
@@ -4268,6 +4324,12 @@ translators: sample content for \"Services\" page template */
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "Gwiriwch eich cysylltiad rhyngrwyd a cheisiwch eto.";
 
+/* Confirmation title presented before fixing all the threats, displays the number of threats to be fixed */
+"Please confirm you want to fix all %1$d active threats" = "Please confirm you want to fix all %1$d active threats";
+
+/* Confirmation title presented before fixing a single threat */
+"Please confirm you want to fix this threat" = "Please confirm you want to fix this threat";
+
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "Please contact support for assistance.";
 
@@ -4392,12 +4454,6 @@ translators: sample content for \"Services\" page template */
 
 /* Section title for Popular Languages */
 "Popular languages" = "Ieithoedd poblogaidd";
-
-/* translators: title for \"Portfolio\" page template */
-"Portfolio" = "Portfolio";
-
-/* translators: sample content for \"Team\" page template */
-"Position or Job Title" = "Position or Job Title";
 
 /* Menu item label for linking a post.
    Noun. Type of content being selected is a blog post */
@@ -4599,9 +4655,6 @@ translators: sample content for \"Services\" page template */
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "Bydd parhau'n golygu tynnu data WordPress.com i gyd o'r ddyfais hon a dileu'r drafftiau lleol rydych wedi'u cadw. Byddwch chi ddim yn colli dim wedi ei gadw i'ch blog(iau) WordPress.com.";
-
-/* translators: sample content for \"Portfolio\" page template */
-"Project Name" = "Project Name";
 
 /* Menu item label for linking a project page. */
 "Projects" = "Projectau";
@@ -4944,8 +4997,13 @@ translators: sample content for \"Services\" page template */
 "Resolution" = "Resolution";
 
 /* Title displayed for restore action.
+   Title for Jetpack Restore Complete screen
+   Title for Jetpack Restore Status screen
    Title for the Jetpack Restore Site Screen */
 "Restore" = "Adfer";
+
+/* Title for error displayed when restoring a site fails. */
+"Restore failed." = "Restore failed.";
 
 /* Label that describes the restore site action */
 "Restore site" = "Restore site";
@@ -4991,6 +5049,9 @@ translators: sample content for \"Services\" page template */
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Dychwelyd y Newid sydd o dan Ystyriaeth";
 
+/* Title of a Quick Start Tour */
+"Review site pages" = "Review site pages";
+
 /* Title of the screen that shows the revisions. */
 "Revision" = "Revision";
 
@@ -5024,12 +5085,6 @@ translators: sample content for \"Services\" page template */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
-
-/* translators: sample content for \"Team\" page template */
-"Sally Smith" = "Sally Smith";
-
-/* translators: sample content for \"Team\" page template */
-"Samuel the Dog" = "Samuel the Dog";
 
 /* Menus save button title
    Save Action
@@ -5191,13 +5246,13 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "Select %@ to continue";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page" = "Select %@ to create a new page";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Select %@ to create a new post";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to discover new themes" = "Select %@ to discover new themes";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to edit your Homepage." = "Select %@ to edit your Homepage.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to look for sites with similar interests" = "Select %@ to look for sites with similar interests";
@@ -5215,10 +5270,10 @@ translators: sample content for \"Services\" page template */
 "Select %@ to see your current plan and other available plans." = "Select %@ to see your current plan and other available plans.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to set a new title." = "Select %@ to set a new title.";
+"Select %@ to see your page list." = "Select %@ to see your page list.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to start personalising your site" = "Select %@ to start personalising your site";
+"Select %@ to set a new title." = "Select %@ to set a new title.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to upload a new one." = "Select %@ to upload a new one.";
@@ -5325,9 +5380,6 @@ translators: sample content for \"Services\" page template */
 /* Label for connected service in Publicize stat. */
 "Service" = "Gwasanaeth";
 
-/* translators: title for \"Services\" page template */
-"Services" = "Services";
-
 /* No comment provided by engineer. */
 "Set Featured Image" = "Gosod Delwedd Nodwedd";
 
@@ -5387,6 +5439,9 @@ translators: sample content for \"Services\" page template */
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Share information with our analytics tool about your use of services while logged in to your WordPress.com account.";
+
+/* Title for the button that will share the link for the downlodable backup file */
+"Share link" = "Share link";
 
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
@@ -5521,6 +5576,7 @@ translators: sample content for \"Services\" page template */
 "Site Language" = "Iaith Gwefan";
 
 /* Noun. Title. Links to the blog's Pages screen.
+   The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
 "Site Pages" = "Site Pages";
 
@@ -5763,9 +5819,6 @@ translators: sample content for \"Services\" page template */
 /* Second story intro item description */
 "Story posts don't disappear" = "Story posts don't disappear";
 
-/* translators: sample content for \"Services\" page template */
-"Strategy" = "Strategy";
-
 /* Title of alert announcing new Create Button feature. */
 "Streamlined navigation" = "Streamlined navigation";
 
@@ -5953,17 +6006,11 @@ translators: sample content for \"Services\" page template */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Tacsonomi";
 
-/* translators: title for \"Team\" page template */
-"Team" = "Team";
-
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Dywedwch wrthym amdanoch eich hun.";
 
 /* Create site, step 1. Select type of site. Title */
 "Tell us what kind of site you'd like to make" = "Tell us what kind of site you'd like to make";
-
-/* No comment provided by engineer. */
-"Template Preview" = "Template Preview";
 
 /* The underlined title sentence */
 "Terms and Conditions" = "Terms and Conditions";
@@ -6037,6 +6084,9 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Mae'r dystysgrif ar gyfer y gweinydd hwn yn annilys. Gall eich bod yn cysylltu â gweinydd sy'n esgus bod yn “%@” sy'n gallu peryglu eich gwybodaeth gyfrinachol.\n\nHoffech chi ymddiried yn y dystysgrif beth bynnag?";
+
+/* Title for a threat that includes the file name of the file */
+"The file %1$@ contains a malicious code pattern" = "The file %1$@ contains a malicious code pattern";
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "The image could not be added to the Media Library.";
@@ -6116,9 +6166,6 @@ translators: sample content for \"Services\" page template */
 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
 "The video could not be added to the Media Library." = "The video could not be added to the Media Library.";
-
-/* translators: sample content for \"About\" page template */
-"The way to get started is to quit talking and begin doing." = "The way to get started is to quit talking and begin doing.";
 
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Thema yn fyw";
@@ -6264,9 +6311,6 @@ translators: sample content for \"Services\" page template */
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy.";
 
-/* translators: sample content for \"About\" page template */
-"This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media.";
-
 /* Select domain name. Subtitle */
 "This is where people will find you on the internet." = "This is where people will find you on the internet.";
 
@@ -6304,6 +6348,12 @@ translators: sample content for \"Services\" page template */
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
 "Threading" = "Edafu";
+
+/* Title for a threat */
+"Threat Found" = "Threat Found";
+
+/* Summary description for a threat that includes the threat signature */
+"Threat found %1$@" = "Threat found %1$@";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Llun bach";
@@ -6443,6 +6493,9 @@ translators: sample content for \"Services\" page template */
    Trashes the comment */
 "Trash" = "Dileu";
 
+/* Title of the trash page confirmation alert. */
+"Trash this page?" = "Trash this page?";
+
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Trash this post?";
 
@@ -6463,8 +6516,8 @@ translators: sample content for \"Services\" page template */
    Try to load the list of interests again. */
 "Try Again" = "Ceisiwch Eto";
 
-/* No comment provided by engineer. */
-"Try a starter layout" = "Try a starter layout";
+/* Text displayed in the view when there aren't any backups to display for a given filter. */
+"Try adjusting your date range filter" = "Try adjusting your date range filter";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "Try adjusting your date range or activity type filters" = "Try adjusting your date range or activity type filters";
@@ -6508,9 +6561,6 @@ translators: sample content for \"Services\" page template */
 /* URL text field placeholder */
 "URL" = "URL";
 
-/* translators: sample content for \"Contact\" page template */
-"USA" = "USA";
-
 /* Menus label for describing which menu the location uses in the header. */
 "USES" = "DEFNYDD";
 
@@ -6551,6 +6601,12 @@ translators: sample content for \"Services\" page template */
 /* Error shown when the app fails to load a video from the user's media library. */
 "Unable to load video." = "Methu llwytho fideo";
 
+/* Alert displayed to the user when updating a post's seen status failed. */
+"Unable to mark post seen" = "Unable to mark post seen";
+
+/* Alert displayed to the user when updating a post's unseen status failed. */
+"Unable to mark post unseen" = "Unable to mark post unseen";
+
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Unable to play video";
 
@@ -6565,6 +6621,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "Unable to save media item.";
+
+/* Message that appears when a user tries to trash a page while their device is offline. */
+"Unable to trash pages while offline. Please try again later." = "Unable to trash pages while offline. Please try again later.";
 
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "Unable to trash posts while offline. Please try again later.";
@@ -6678,6 +6737,9 @@ translators: sample content for \"Services\" page template */
 
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Newidiadau heb eu Cadw.";
+
+/* No comment provided by engineer. */
+"Unsupported" = "Heb ei gynnal";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Untitled";
@@ -6930,6 +6992,9 @@ translators: sample content for \"Services\" page template */
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Ewch i %@ am ragor";
 
+/* Title for the button that will open a link to this site. */
+"Visit site" = "Visit site";
+
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "Ewch i'r Ganolfan Gymorth i gael atebion i gwestiynau cyffredin, neu cysylltwch â ni am fwy o gymorth.";
 
@@ -6941,8 +7006,26 @@ translators: sample content for \"Services\" page template */
    Today's Stats 'Visitors' label */
 "Visitors" = "Ymwelwyr";
 
-/* translators: sample content for \"About\" page template */
-"Visitors will want to know who is on the other side of the page. Use this space to write about yourself, your site, your business, or anything you want. Use the testimonials below to quote others, talking about the same thing – in their own words." = "Visitors will want to know who is on the other side of the page. Use this space to write about yourself, your site, your business, or anything you want. Use the testimonials below to quote others, talking about the same thing – in their own words.";
+/* Summary description for a threat */
+"Vulnerability found in WordPress" = "Vulnerability found in WordPress";
+
+/* Summary description for a threat */
+"Vulnerability found in plugin" = "Vulnerability found in plugin";
+
+/* Summary description for a threat */
+"Vulnerability found in theme" = "Vulnerability found in theme";
+
+/* Title for a threat */
+"Vulnerable Plugin" = "Vulnerable Plugin";
+
+/* Title for a threat that includes the file name of the plugin and the affected version */
+"Vulnerable Plugin: %1$@ (version %2$@)" = "Vulnerable Plugin: %1$@ (version %2$@)";
+
+/* Title for a threat */
+"Vulnerable Theme" = "Vulnerable Theme";
+
+/* Title for a threat that includes the file name of the theme and the affected version */
+"Vulnerable Theme %1$@ (version %2$@)" = "Vulnerable Theme %1$@ (version %2$@)";
 
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "Gweinyddu WP";
@@ -6956,16 +7039,12 @@ translators: sample content for \"Services\" page template */
 /* View title during the Google auth process. */
 "Waiting..." = "Waiting...";
 
-/* translators: sample content for \"About\" page template */
-"Walt Disney" = "Walt Disney";
-
 /* Title of alert asking if users want to try out the quick start checklist. */
 "Want a little help getting started?" = "Want a little help getting started?";
 
-/* translators: sample content for \"Team\" page template */
-"Want to work with us?" = "Want to work with us?";
-
-/* Editing GIF alert title. */
+/* Editing GIF alert title.
+   Noun. Title for Jetpack Restore warning.
+   Title for Jetpack Restore Warning screen */
 "Warning" = "Warning";
 
 /* No comment provided by engineer. */
@@ -6976,9 +7055,6 @@ translators: sample content for \"Services\" page template */
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Watch your audience grow with in-depth analytics." = "Watch your audience grow with in-depth analytics.";
-
-/* translators: sample content for \"Team\" page template */
-"We are a small team of talented professionals with a wide range of skills and experience. We love what we do, and we do it with passion. We look forward to working with you." = "We are a small team of talented professionals with a wide range of skills and experience. We love what we do, and we do it with passion. We look forward to working with you.";
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "Rydym yn cael trafferth llwytho data";
@@ -7018,6 +7094,9 @@ translators: sample content for \"Services\" page template */
    Text displayed after the app fails to upload a post, no new attempt will be made. */
 "We couldn't complete this action." = "We couldn't complete this action.";
 
+/* Message for error displayed when preparing a backup fails. */
+"We couldn't create your backup. Please try again later." = "We couldn't create your backup. Please try again later.";
+
 /* Primary message shown when there are no domains that match the user entered text. */
 "We couldn't find any available address with the words you entered - let's try again." = "We couldn't find any available address with the words you entered - let's try again.";
 
@@ -7032,6 +7111,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed after the app fails to upload a private post, it will attempt to upload it later. */
 "We couldn't publish this private post, but we'll try again later." = "We couldn't publish this private post, but we'll try again later.";
+
+/* Message for error displayed when restoring a site fails. */
+"We couldn't restore your site. Please try again later." = "We couldn't restore your site. Please try again later.";
 
 /* Description that appears when a media fails to load in the Media Editor. */
 "We couldn't retrieve this media.\nPlease tap to retry." = "We couldn't retrieve this media.\nPlease tap to retry.";
@@ -7087,8 +7169,8 @@ translators: sample content for \"Services\" page template */
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'.";
 
-/* translators: sample content for \"Services\" page template */
-"We offer a range of services to help you achieve the results you're after. Not sure what you need, or what it costs? We can explain what services are right for you and tell you more about our fees. Get in touch below." = "We offer a range of services to help you achieve the results you're after. Not sure what you need, or what it costs? We can explain what services are right for you and tell you more about our fees. Get in touch below.";
+/* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
+"We successfully created a backup of your site from %1$@." = "We successfully created a backup of your site from %1$@.";
 
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "We use other tracking tools, including some from third parties. Read about these and how to control them.";
@@ -7157,11 +7239,20 @@ translators: sample content for \"Services\" page template */
 /* Text confirming email address to be used for new account. */
 "We'll use this email address to create your new WordPress.com account." = "We'll use this email address to create your new WordPress.com account.";
 
+/* Description for the Jetpack Backup Status message. %1$@ is a placeholder for the selected date. */
+"We're creating a downloadable backup of your site from %1$@." = "We're creating a downloadable backup of your site from %1$@.";
+
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "We're doing the final setup—almost done…";
 
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance.";
+
+/* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
+"We're restoring your site back to %1$@." = "We're restoring your site back to %1$@.";
+
+/* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
+"We've also emailed you a link to your file." = "We've also emailed you a link to your file.";
 
 /* Instruction text after a signup Magic Link was requested. */
 "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com.";
@@ -7187,9 +7278,6 @@ translators: sample content for \"Services\" page template */
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "Welcome to WordPress";
 
-/* translators: sample content for \"Blog\" page template */
-"Welcome to our new blog" = "Welcome to our new blog";
-
 /* A message title */
 "Welcome to the Reader" = "Croeso i'r Darllenydd";
 
@@ -7210,9 +7298,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title of alert letting users know we've upgraded the quick start checklist. */
 "We’ve made some changes to your checklist" = "We’ve made some changes to your checklist";
-
-/* translators: sample content for \"About\" page template */
-"What People Say" = "What People Say";
 
 /* This is the string we display when prompting the user to review the app */
 "What do you think about WordPress?" = "Beth ydych chi'n ei feddwl o WordPress?";
@@ -7540,8 +7625,17 @@ translators: sample content for \"Services\" page template */
 /* Explaining to the user why the app needs access to the device media library. */
 "Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device.";
 
+/* Title for the Jetpack Backup Complete message. */
+"Your backup is now available for download" = "Your backup is now available for download";
+
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Your current username is %@. With few exceptions, others will only ever see your display name, %@.";
+
+/* Text displayed in the view when there aren't any Backups to display */
+"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed";
+
+/* Title for the view when there aren't any Backups to display */
+"Your first backup will be ready soon" = "Your first backup will be ready soon";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Bydd eich hysbysiadau'n teithio gyda chi - gw. sylwadau a hoffi wrth iddyn nhw ddigwydd.";
@@ -7563,6 +7657,9 @@ translators: sample content for \"Services\" page template */
 
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Your site has been created!";
+
+/* Title for the Jetpack Restore Complete message. */
+"Your site has been restored" = "Your site has been restored";
 
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Your site has been succesfully restored";

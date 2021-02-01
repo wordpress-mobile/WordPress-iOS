@@ -6,6 +6,10 @@ import WordPressShared
 
 class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
 
+    // MARK: - Properties
+
+    weak var restoreStatusDelegate: JetpackRestoreStatusViewControllerDelegate?
+
     // MARK: - Initialization
 
     override init(site: JetpackSiteRef, activity: Activity) {
@@ -36,6 +40,7 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
         let warningVC = JetpackRestoreWarningViewController(site: site,
                                                             activity: activity,
                                                             restoreTypes: restoreTypes)
+        warningVC.restoreStatusDelegate = restoreStatusDelegate
         self.navigationController?.pushViewController(warningVC, animated: true)
     }
 

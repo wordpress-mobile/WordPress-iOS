@@ -193,7 +193,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         tableView.tableHeaderView = searchController.searchBar
 
-        tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
+        tableView.verticalScrollIndicatorInsets.top = searchController.searchBar.bounds.height
     }
 
     override func configureAuthorFilter() {
@@ -412,6 +412,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         if page.isSiteHomepage {
             QuickStartTourGuide.shared.visited(.editHomepage)
             tableView.reloadRows(at: [indexPath], with: .automatic)
+        } else {
+            QuickStartTourGuide.shared.endCurrentTour()
+            tableView.reloadData()
         }
 
         guard page.status != .trash else {
@@ -435,6 +438,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         if page.isSiteHomepage && QuickStartTourGuide.shared.isCurrentElement(.editHomepage) {
             cell.accessoryView = QuickStartSpotlightView()
+        } else {
+            cell.accessoryView = nil
         }
 
         return cell
@@ -722,6 +727,22 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    override func deletePost(_ apost: AbstractPost) {
+        completeQuickStartStepIfNeeded(apost)
+        super.deletePost(apost)
+    }
+
+    private func completeQuickStartStepIfNeeded(_ page: AbstractPost) {
+        guard let page = page as? Page else { return }
+        guard page.isSiteHomepage else { return }
+
+        if QuickStartTourGuide.shared.isCurrentElement(.editHomepage) {
+            QuickStartTourGuide.shared.visited(.editHomepage)
+        } else {
+            QuickStartTourGuide.shared.complete(tour: QuickStartEditHomepageTour(), for: blog, postNotification: false)
+        }
+    }
+
     private func addEditAction(to controller: UIAlertController, for page: AbstractPost) {
         if page.status == .trash {
             return
@@ -772,11 +793,19 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let selectedPage = pageAtIndexPath(index)
         let newIndex = _tableViewHandler.index(for: selectedPage)
         let pages = _tableViewHandler.removePage(from: newIndex)
-        let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: selectedPage) {
-            self._tableViewHandler.isSearching = false
-            self._tableViewHandler.refreshTableView(at: index)
-        }
+        let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: selectedPage, onClose: { [weak self] in
+            self?._tableViewHandler.isSearching = false
+            self?._tableViewHandler.refreshTableView(at: index)
+        }, onSuccess: { [weak self] in
+            self?.handleSetParentSuccess()
+        } )
         present(parentPageNavigationController, animated: true)
+    }
+
+    private func handleSetParentSuccess() {
+        let setParentSuccefullyNotice =  NSLocalizedString("Parent page successfully updated.", comment: "Message informing the user that their pages parent has been set successfully")
+        let notice = Notice(title: setParentSuccefullyNotice, feedbackType: .success)
+        ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
 
     fileprivate func pageForObjectID(_ objectID: NSManagedObjectID) -> Page? {
@@ -935,7 +964,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func didPresentSearchController(_ searchController: UISearchController) {
-        tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y - view.safeAreaInsets.top
+        tableView.verticalScrollIndicatorInsets.top = searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y - view.safeAreaInsets.top
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {

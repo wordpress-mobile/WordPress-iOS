@@ -101,7 +101,7 @@ final class AssembledSiteView: UIView {
         }()
 
         self.activityIndicator = {
-            let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+            let activityIndicator = UIActivityIndicatorView(style: .large)
 
             activityIndicator.translatesAutoresizingMaskIntoConstraints = false
             activityIndicator.hidesWhenStopped = true

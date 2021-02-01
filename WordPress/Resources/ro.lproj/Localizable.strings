@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-12 11:24:02+0000 */
+/* Translation-Revision-Date: 2021-01-26 12:31:32+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -202,9 +202,6 @@
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "„%s” nu este acceptat în totalitate";
 
-/* translators: sample content for \"Contact\" page template */
-"(555)555-1234" = "(555)555-1234";
-
 /* Empty Post Title */
 "(No Title)" = "(Fără titlul)";
 
@@ -240,9 +237,6 @@
 /* Alert displayed to the user when a single media item attached to a post has failed to upload. */
 "1 post, 1 file not uploaded" = "Un articol, un fișier neîncărcat";
 
-/* translators: sample content for \"Contact\" page template */
-"10 Street Road" = "10 Street Road";
-
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
 
@@ -258,17 +252,14 @@
 /* Age between dates less than one hour. */
 "< 1 hour" = "< o oră";
 
-/* translators: sample content for \"Contact\" page template */
-"<a href=\"mailto:mail@example.com\">mail@example.com<\/a>" = "<a href=\"mailto:mail@example.com\">mail@exemplu.com<\/a>";
-
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "Un buton \"mai mult\" conține o listă desfășurată care afișează butoane de partajare";
 
-/* translators: sample content for \"Portfolio\" page template */
-"A description of the project and the works presented." = "O descriere a proiectului și a lucrărilor prezentate.";
-
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "A fost setată o imagine reprezentativă. Atinge pentru a o schimba.";
+
+/* Title for a threat */
+"A file contains a malicious code pattern" = "Un fișier conține un model de cod care poate crea vulnerabilități";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "O listă de situri asociate cu acest cont.";
@@ -278,12 +269,6 @@
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button. */
 "A series of steps to assist with growing your site's audience." = "O serie de pași care te ajută să aduci mai mulți vizitatori pe sit.";
-
-/* translators: sample content for \"Team\" page template */
-"A short bio with personal history, key achievements, or an interesting fact." = "O biografie scurtă, ca un istoric personal, realizări importante sau fapte interesante.";
-
-/* translators: sample content for \"Services\" page template */
-"A short description of the services you offer." = "O scurtă descriere a serviciilor pe care le oferi.";
 
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "Există deja o etichetă cu numele „%@”.";
@@ -427,9 +412,6 @@
 /* No comment provided by engineer. */
 "Add a description" = "Adaugă o descriere";
 
-/* Description of a Quick Start Tour */
-"Add a page for key content — an “About” page is a great start." = "Adaugă o pagină pentru conținutul cheie - o pagină „Despre” este un început excelent.";
-
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Adaugă un sit auto-găzduit";
 
@@ -536,6 +518,9 @@
 
 /* Section title for All Languages */
 "All languages" = "Toate limbile";
+
+/* Description for the Jetpack Backup Restore message. %1$@ is a placeholder for the selected date. */
+"All of your selected items are now restored back to %1$@." = "Toate elementele selectate sunt restaurate acum înapoi la %1$@.";
 
 /* Title of the congratulation screen that appears when all the tasks are completed */
 "All tasks complete" = "Toate sarcinile sunt finalizate";
@@ -694,6 +679,9 @@
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Sigur vrei să ștergi definitiv acest element?";
 
+/* Message of the confirmation alert when deleting a page from the trash. */
+"Are you sure you want to permanently delete this page?" = "Sigur vrei să ștergi definitiv această pagină?";
+
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Sigur vrei să ștergi definitiv acest articol?";
 
@@ -710,6 +698,9 @@
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name. */
 "Are you sure you want to remove %1$@?" = "Sigur vrei să înlături %1$@?";
 
+/* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
+"Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Sigur vrei să-ți restaurezi situl înapoi la %1$@? Această restaurare va înlătura tot conținutul și opțiunile create sau modificate de atunci.";
+
 /* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
 "Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "Sigur vrei să-ți derulezi situl înapoi la %@?\nAsta va înlătura tot conținutul și opțiunile create sau modificate de atunci.";
 
@@ -724,6 +715,9 @@
 
 /* Title of message shown when user taps submit for review. */
 "Are you sure you want to submit for review?" = "Sigur vrei să trimiți pentru revizuire?";
+
+/* Message of the trash page confirmation alert. */
+"Are you sure you want to trash this page?" = "Sigur vrei să arunci la gunoi această pagină?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Sigur vrei să arunci la gunoi acest articol?";
@@ -811,8 +805,13 @@
 "Back" = "Înapoi";
 
 /* Noun. Links to a blog's Jetpack Backups screen.
+   Title for Jetpack Backup Complete screen
+   Title for Jetpack Backup Status screen
    Title for the Jetpack's backup list */
 "Backup" = "Copii de siguranță";
+
+/* Title for error displayed when preparing a backup fails. */
+"Backup failed." = "Copia de siguranță a eșuat.";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "Diagramă cu bare care descrie comentariile din perioada selectată.";
@@ -886,8 +885,7 @@
 /* No comment provided by engineer. */
 "Block settings" = "Setări blocuri";
 
-/* Opens the WordPress Mobile Blog
-   translators: title for \"Blog\" page template */
+/* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
 
 /* Noun. Title. Links to the blog's Posts screen.
@@ -972,6 +970,7 @@
 /* Alert dismissal title
    Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
+   Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
@@ -1014,7 +1013,8 @@
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection. */
+   Verb. Tapping cancels the publicize account selection.
+   Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Anulare";
 
 /* Label for the Post List option that cancels automatic uploading of a post.
@@ -1082,9 +1082,6 @@
 /* Button title to edit visibility of sites. */
 "Change Visibility" = "Schimbă vizibilitatea";
 
-/* Description of a Quick Start Tour */
-"Change colors, fonts, and images for a perfectly personalized site." = "Modifică culorile, fonturile și imaginile pentru un sit perfect personalizat.";
-
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Modificare eșuată";
 
@@ -1096,6 +1093,12 @@
 
 /* Change button. */
 "Change username" = "Schimbă numele de utilizator";
+
+/* Description of a Quick Start Tour */
+"Change, add, or remove content from your site's homepage." = "Modifică conținutul, adaugă sau înlătură conținut, pe prima pagină a sitului tău.";
+
+/* Description of a Quick Start Tour */
+"Change, add, or remove your site's pages." = "Modifică paginile, adaugă sau înlătură pagini pe sit.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Schimb numele de afișat";
@@ -1212,9 +1215,6 @@
 
 /* Register Domain - Address information field City */
 "City" = "Oraș";
-
-/* translators: sample content for \"Contact\" page template */
-"City, 10100" = "City, 10100";
 
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "Blog clasic";
@@ -1350,13 +1350,10 @@
 "Completed: Continue with site setup" = "Finalizat: continuă ci inițializarea sitului";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Create a new page" = "Finalizat: creează o pagină nouă";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Create your site" = "Finalizat: creează-ți situl";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Customize your site" = "Finalizat: personalizează-ți situl";
+"Completed: Edit your homepage" = "Pas finalizat: Editează prima pagină";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Enable post sharing" = "Finalizat: activează partajarea articolelor";
@@ -1371,6 +1368,9 @@
 "Completed: Publish a post" = "Finalizat: publică un articol";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Review site pages" = "Pas finalizat: Revizuiește paginile sitului";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Set your site title" = "Finalizat: setează titlul sitului";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1382,7 +1382,8 @@
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Configurare";
 
-/* Confirm */
+/* Confirm
+   Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Confirmă";
 
 /* Title of Delete Site confirmation alert */
@@ -1565,6 +1566,9 @@
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Nu pot comuta urmărirea: lipsește atributul blogURLv";
 
+/* An error description explaining that Seen could not be toggled due to a missing feedItemID attribute. */
+"Could not toggle Seen: missing feedItemID attribute." = "Nu am putut comuta la Văzut: lipsește atributul feedItemID.";
+
 /* Title of a prompt. */
 "Could not unfollow site" = "N-am putut anula urmărirea sitului";
 
@@ -1662,9 +1666,6 @@
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Creează o etichetă";
 
-/* Title of a Quick Start Tour */
-"Create a new page" = "Creează o pagină nouă";
-
 /* Title for a button that when tapped starts the site creation process */
 "Create a new site" = "Creează un sit nou";
 
@@ -1719,14 +1720,22 @@
 /* translators: %s: current cell value. */
 "Current value is %s" = "Valoarea curentă este %s";
 
+/* Title for the Jetpack Backup Status message. */
+"Currently creating a downloadable backup of your site" = "Acum creăm o copie de siguranță a sitului tău care poate fi descărcată";
+
+/* Title for the Jetpack Restore Status message. */
+"Currently restoring site" = "Îți restaurăm situl acum";
+
 /* Title of the cell displaying status of a rewind in progress */
 "Currently restoring your site" = "Acum îți restaurăm situl";
+
+/* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
+"Currently restoring: %1$@" = "Acum restaurez %1$@";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "Mesaj personalizat...";
 
 /* Customize button that appears in Theme Browser Header
-   The menu item to select during a guided tour.
    Theme Customize action title */
 "Customize" = "Personalizare";
 
@@ -1749,9 +1758,6 @@
 /* Customize Insights title */
 "Customize your insights" = "Personalizează-ți perspectivele";
 
-/* Title of a Quick Start Tour */
-"Customize your site" = "Personalizează-ți situl";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Personalizează-ți situl pentru Aprecieri, Comentarii, Urmăritori și altele.";
 
@@ -1763,6 +1769,12 @@
 
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Panou de control";
+
+/* Title for a threat that includes the number of database rows affected */
+"Database %1$d threats" = "%1$d amenințări în baza de date";
+
+/* Title for a threat */
+"Database threat" = "Amenințare în baza de date";
 
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
@@ -1824,12 +1836,14 @@
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Șterge meniul";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
+/* Delete option in the confirmation alert when deleting a page from the trash.
+   Delete option in the confirmation alert when deleting a post from the trash.
    Label for a button permanently deletes a page.
    Label for the delete post option. Tapping permanently deletes a post. */
 "Delete Permanently" = "Șterge definitiv";
 
-/* Title of the confirmation alert when deleting a post from the trash. */
+/* Title of the confirmation alert when deleting a page from the trash.
+   Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "Ștergi definitiv?";
 
 /* Button label for deleting the current site
@@ -1986,11 +2000,9 @@
    Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
+   Title for the button that will dismiss this view.
    Title of the Done button on the me page */
 "Done" = "Gata";
-
-/* translators: sample content for \"About\" page template */
-"Don’t cry because it’s over, smile because it happened." = "Nu plânge pentru că s-a terminat, zâmbește pentru că s-a întâmplat.";
 
 /* Title for label when there are no threats on the users site */
 "Don’t worry about a thing" = "Nu-ți faci griji pentru nimic";
@@ -2043,9 +2055,6 @@
 /* No comment provided by engineer. */
 "Double tap to select an image" = "Atinge de două ori pentru a selecta o imagine";
 
-/* No comment provided by engineer. */
-"Double tap to select layout" = "Atinge de două ori pentru a selecta aranjamentul";
-
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "Atinge de două ori pentru a selecta opțiunea";
 
@@ -2055,15 +2064,17 @@
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "Atinge de două ori pentru a anula ultima modificare";
 
-/* Title displayed for download backup action.
-   Title for the Jetpack Download Backup Site Screen */
+/* Title for the Jetpack Download Backup Site Screen */
 "Download Backup" = "Descarcă copia de siguranță";
+
+/* Title displayed for download backup action. */
+"Download backup" = "Descarcă copia de siguranță";
+
+/* Title for the button that will download the backup file. */
+"Download file" = "Descarcă fișierul";
 
 /* Label for number of file downloads. */
 "Downloads" = "Descărcări";
-
-/* translators: sample content for \"About\" page template */
-"Dr. Seuss" = "Dr. Seuss";
 
 /* Name for the status of a draft post. */
 "Draft" = "Ciornă";
@@ -2138,6 +2149,9 @@
 /* No comment provided by engineer. */
 "Edit video" = "Editează videoul";
 
+/* Title of a Quick Start Tour */
+"Edit your homepage" = "Editează prima pagină";
+
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Editarea acestui GIF îi va înlătura animația.";
 
@@ -2174,9 +2188,6 @@
 
 /* The title of an item in a list. */
 "Email me new posts" = "Trimite-mi email la articole noi";
-
-/* translators: sample content for \"Team\" page template */
-"Email me: <a href=\"mailto:mail@example.com\">mail@example.com<\/a>" = "Trimite-mi un email la: <a href=\"mailto:mail@example.com\">mail@exemplu.com<\/a>";
 
 /* Username Placeholder */
 "Email or Username of the person that should receive your invitation." = "Emailul sau numele de utilizator al persoanei care ar trebui să primească invitația.";
@@ -2527,6 +2538,9 @@
 /* Button title that attempts to fix all fixable threats */
 "Fix All" = "Corectează tot";
 
+/* Button title, confirm fixing all threats */
+"Fix all threats" = "Înlătură toate amenințările";
+
 /* Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Urmărire";
@@ -2535,7 +2549,7 @@
 "Follow Site" = "Urmărește situl";
 
 /* Verb. Button title. Follow the comments on a post. */
-"Follow conversation" = "Urmărește conversația";
+"Follow conversation by email" = "Urmărește conversația prin email";
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Urmărește alte situri";
@@ -2576,7 +2590,7 @@
 "Following %@" = "Urmăresc %@";
 
 /* Verb. Button title. The user is following the comments on a post. */
-"Following conversation" = "Urmăresc conversația";
+"Following conversation by email" = "Urmăresc conversația prin email";
 
 /* Filters Follows Notifications */
 "Follows" = "Urmăriri";
@@ -2588,7 +2602,7 @@
 "Follows the blog." = "Urmărește blogul.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
-"Follows the comments on a post." = "Urmărește comentariile la un articol.";
+"Follows the comments on a post by email." = "Urmărește comentariile la un articol prin email.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Urmărește eticheta.";
@@ -2644,13 +2658,6 @@
 
 /* Displayed in the Notifications Tab as a message, when there are no notifications */
 "Get active! Comment on posts from blogs you follow." = "Fii activ! Comentează la articole de pe blogurile pe care le urmărești.";
-
-/* translators: sample content for \"About\" page template
-translators: sample content for \"Contact\" page template
-translators: sample content for \"Portfolio\" page template
-translators: sample content for \"Services\" page template
-translators: sample content for \"Team\" page template */
-"Get in Touch" = "Intră în contact";
 
 /* Accessibility hint for the find out more button in the Feature Announcements screen. */
 "Get more details for this release" = "Ai mai multe detalii pentru această lansare";
@@ -2719,9 +2726,6 @@ translators: sample content for \"Team\" page template */
 
 /* This value is used to set the accessibility hint text for creating the user's site. */
 "Guides you through the process of creating your site." = "Te îndrumă în procesul de creare a sitului tău.";
-
-/* This value is used to set the accessibility hint text for customizing a user's site. */
-"Guides you through the process of customizing your site." = "Te îndrumă în procesul de personalizare a sitului tău.";
 
 /* This value is used to set the accessibility hint text for exploring plans on the user's site. */
 "Guides you through the process of exploring plans for your site." = "Te îndrumă în procesul de explorare a planurilor pentru situl tău.";
@@ -2834,7 +2838,8 @@ translators: sample content for \"Team\" page template */
    Settings: Comments Moderation */
 "Hold for Moderation" = "Reșine pentru moderare";
 
-/* Title for setting which shows the current page assigned as a site's homepage
+/* The item to select during a guided tour.
+   Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
    Title of the Homepage Badge */
 "Homepage" = "Prima pagină";
@@ -2936,11 +2941,23 @@ translators: sample content for \"Team\" page template */
 /* Downloadable/Restorable items: general section footer text */
 "Includes wp-config php and any non WordPress files" = "Include wp-config php și toate fișierele care nu sunt din WordPress";
 
+/* Downloadable/Restorable items: general section footer text */
+"Includes wp-config.php and any non WordPress files" = "Include wp-config.php și toate fișierele care nu sunt din WordPress";
+
 /* An error message shown when a user signed in with incorrect credentials. */
 "Incorrect username or password. Please try entering your login details again." = "Nume utilizator incorect sau parolă incorectă. Te rog încearcă să-ți introduci din nou detaliile de autentificare.";
 
+/* Title for a threat */
+"Infected core file" = "Fișier din nucleu infectat";
+
+/* Title for a threat that includes the file name of the file */
+"Infected core file: %1$@" = "Fișier din nucleu infectat: %1$@";
+
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Informații despre cursuri și evenimente WordPress.com (online & în-persoană).";
+
+/* Placeholder for the restore progress title. */
+"Initializing the restore process" = "Inițializez procesul de restaurare";
 
 /* Default button title used in media picker to insert media (photos / videos) into a post.
    Label action for inserting a link on the editor */
@@ -2969,9 +2986,6 @@ translators: sample content for \"Team\" page template */
 
 /* Title of Insights stats filter. */
 "Insights" = "Perspective";
-
-/* translators: sample content for \"Services\" page template */
-"Inspiration" = "Inspirație";
 
 /* Button label to install a plugin
    Confirmation button displayd in alert displayed when user installs their first plugin. */
@@ -3033,9 +3047,6 @@ translators: sample content for \"Team\" page template */
 /* Invite People Title */
 "Invite People" = "Invită persoane";
 
-/* translators: sample content for \"About\" page template */
-"It is our choices, Harry, that show what we truly are, far more than our abilities." = "Sunt alegerile noastre Harry, care arată ceea ce suntem cu adevărat, cu mult mai mult decât abilitățile noastre.";
-
 /* An error message shown during log in when the username or password is incorrect. */
 "It looks like this username\/password isn't associated with this site." = "Se pare că acest nume de utilizator nu este asociat\/această parolă nu este asociată cu acest sit.";
 
@@ -3052,9 +3063,6 @@ translators: sample content for \"Team\" page template */
    Discoverability title for italic formatting keyboard shortcut. */
 "Italic" = "Cursiv";
 
-/* translators: sample content for \"About\" page template */
-"J.K. Rowling" = "J.K. Rowling";
-
 /* Section title for the publish table section in the blog details screen
    Title for the Jetpack Installation
    Title for the Jetpack section in site settings screen */
@@ -3066,6 +3074,9 @@ translators: sample content for \"Team\" page template */
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Întrebări frecvente Jetpack";
 
+/* Description that explains that we are unable to auto fix the threat */
+"Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site." = "Scanarea Jetpack nu poate înlătura automat această amenințare. Îți sugerăm să înlături amenințarea manual: asigură-te că WordPress, tema ta și toate modulele sunt actualizate și înlătură de pe site codul, tema sau modulul care creează probleme.";
+
 /* Description for a label when the scan has failed */
 "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Scanarea Jetpack nu a putut finaliza scanarea sitului tău. Te rog verifică dacă nu ți-a căzut situl - dacă funcționează, încearcă din nou. Dacă ai continuare probleme cu scanarea Jetpack, contactează echipa noastră pentru suport.";
 
@@ -3074,6 +3085,27 @@ translators: sample content for \"Team\" page template */
 
 /* Description for a label when there is a single threat on the site, displays the site's title */
 "Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action." = "Scanarea Jetpack a găsit o posibilă amenințare pe %1$@. Te rog analizează fiecare amenințare și ia măsuri.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will delete the affected file or directory." = "Scanarea Jetpack va șterge fișierul sau directorul afectat.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will edit the affected file or directory." = "Scanarea Jetpack va edita fișierul sau directorul afectat.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will replace the affected file or directory." = "Scanarea Jetpack va înlocui fișierul sau directorul afectat.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will resolve the threat." = "Scanarea Jetpack va înlătura amenințarea.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will rollback the affected file to an older (clean) version." = "Scanarea Jetpack va derula înapoi fișierul afectat la o versiune mai veche (curată).";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will rollback the affected file to the version from %1$@." = "Scanarea Jetpack va derula înapoi fișierul afectat la versiunea din %1$@.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will update to a newer version." = "Scanarea Jetpack va fi actualizată la o versiune mai nouă.";
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Setări Jetpack";
@@ -3084,14 +3116,17 @@ translators: sample content for \"Team\" page template */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack a fost instalat";
 
+/* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
+"Jetpack will be fixing all the detected active threats." = "Jetpack va elimina toate amenințările active detectate.";
+
+/* Confirmation message presented before fixing a single threat */
+"Jetpack will be fixing the detected active threat." = "Jetpack va înlătura amenințarea activă detectată.";
+
 /* Footer for the Serve images from our servers setting */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack îți va optimiza imaginile și le va servi vizitatorilor de la un server situat în apropierea lor. Folosirea rețelei noastre globale de livrare a conținutului îți va crește viteza de încărcare a sitului.";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Alătură-te unei conversații: comentează la articolele de pe blogurile pe care le urmărești.";
-
-/* translators: sample content for \"Team\" page template */
-"Juan Pérez" = "Juan Pérez";
 
 /* Button shown if there are unsaved changes and the author is trying to move away from the post.
    Button shown when the author is asked for publishing confirmation.
@@ -3154,16 +3189,6 @@ translators: sample content for \"Team\" page template */
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Lasă-ne să ajutăm";
-
-/* translators: sample content for \"Portfolio\" page template */
-"Let's build something together!" = "Hai să construim ceva împreună!";
-
-/* translators: sample content for \"Contact\" page template */
-"Let's talk 👋 Don't hesitate to reach out with the contact information below, or send a message using the form." = "Hai să vorbim 👋 Nu ezita să mă contactezi, ai mai jos informațiile mele de contact, sau să-mi trimiți un mesaj folosind formularul.";
-
-/* translators: sample content for \"About\" page template
-translators: sample content for \"Services\" page template */
-"Let’s build something together!" = "Hai să construim ceva împreună!";
 
 /* Title for the app appearance setting for light mode */
 "Light" = "Luminoasă";
@@ -3241,6 +3266,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "Încarc activitățile...";
+
+/* Text displayed while loading the activity feed for a site */
+"Loading Backups..." = "Încarc copiile de siguranță...";
 
 /* Phrase to show when the user has searched for GIFs and they are being loaded. */
 "Loading GIFs..." = "Încarc GIF-uri...";
@@ -3406,8 +3434,14 @@ translators: sample content for \"Services\" page template */
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Marchează ca reprezentativ";
 
+/* An option to mark a post as seen. */
+"Mark as seen" = "Marchează ca văzut";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Marchează ca spam.";
+
+/* An option to mark a post as unseen. */
+"Mark as unseen" = "Marchează ca nevăzut";
 
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "Leagă conturile folosind adrese de email";
@@ -3500,6 +3534,9 @@ translators: sample content for \"Services\" page template */
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
+/* Summary description for a threat */
+"Miscellaneous vulnerability" = "Vulnerabilități diverse";
+
 /* Title for the mobile web preview */
 "Mobile" = "Mobil";
 
@@ -3552,6 +3589,9 @@ translators: sample content for \"Services\" page template */
 "Move block left from position %1$s to position %2$s" = "Mută blocul în stânga din poziția %1$s în poziția %2$s";
 
 /* No comment provided by engineer. */
+"Move block position" = "Mută poziția blocului";
+
+/* No comment provided by engineer. */
 "Move block right" = "Mută blocul în dreapta";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
@@ -3575,8 +3615,15 @@ translators: sample content for \"Services\" page template */
 
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
-   Trash option in the trash confirmation alert. */
+   Trash option in the trash confirmation alert.
+   Trash option in the trash page confirmation alert. */
 "Move to Trash" = "Aruncă la gunoi";
+
+/* No comment provided by engineer. */
+"Move to bottom" = "Mută în jos";
+
+/* No comment provided by engineer. */
+"Move to top" = "Mută în sus";
 
 /* Option to move Insight up in the view. */
 "Move up" = "Mută în sus";
@@ -3606,9 +3653,6 @@ translators: sample content for \"Services\" page template */
 
 /* Option in Support view to access previous help tickets. */
 "My Tickets" = "Tichetele mele";
-
-/* translators: sample content for \"Portfolio\" page template */
-"My portfolio showcases various projects created throughout my career. See my contact information below and get in touch." = "Portofoliul meu prezintă diferite proiecte create de-a lungul carierei mele. Vezi informațiile mele de contact de mai jos și intrăm în legătură.";
 
 /* No comment provided by engineer. */
 "My post publish panel" = "Panoul meu pentru publicare articole";
@@ -3811,6 +3855,9 @@ translators: sample content for \"Services\" page template */
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Încă nicio apreciere";
 
+/* Title for the view when there aren't any backups to display for a given filter. */
+"No matching backups found" = "Nu am găsit nicio copie de siguranță care să se potrivească";
+
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "No matching events found." = "Nu am găsit niciun eveniment care să se potrivească.";
 
@@ -3821,6 +3868,12 @@ translators: sample content for \"Services\" page template */
 
 /* Menus text shown when no menus were available for loading the Menus editor. */
 "No menus available" = "Niciun meniu disponibil";
+
+/* A hint to users about creating a downloadable backup of their site. */
+"No need to wait around. We'll notify you when your backup is ready." = "Nu trebuie să aștepți aici. Te vom anunța când copia de siguranță este gata.";
+
+/* A hint to users about restoring their site. */
+"No need to wait around. We'll notify you when your site has been fully restored." = "Nu trebuie să aștepți aici. Te vom anunța când situl a fost restaurat în totalitate.";
 
 /* Displayed in the Stats widgets when there is no network */
 "No network available" = "Nu este disponibilă nicio rețea";
@@ -3985,6 +4038,9 @@ translators: sample content for \"Services\" page template */
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
    Title of primary button on alert prompting verify their accounts while attempting to publish */
 "OK" = "OK";
+
+/* Title for the button that will dismiss this view. */
+"OK, notify me!" = "Da, anunță-mă";
 
 /* Disabled */
 "Off" = "Oprit";
@@ -4271,6 +4327,12 @@ translators: sample content for \"Services\" page template */
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "Te rog verifică-ți conexiunea internet și încearcă din nou.";
 
+/* Confirmation title presented before fixing all the threats, displays the number of threats to be fixed */
+"Please confirm you want to fix all %1$d active threats" = "Te rog confirmă că vrei să înlături toate amenințările active: %1$d";
+
+/* Confirmation title presented before fixing a single threat */
+"Please confirm you want to fix this threat" = "Te rog confirmă că vrei să înlături această amenințare";
+
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "Te rog contactează suportul pentru asistență.";
 
@@ -4395,12 +4457,6 @@ translators: sample content for \"Services\" page template */
 
 /* Section title for Popular Languages */
 "Popular languages" = "Limbi populare";
-
-/* translators: title for \"Portfolio\" page template */
-"Portfolio" = "Portofoliu";
-
-/* translators: sample content for \"Team\" page template */
-"Position or Job Title" = "Poziția sau funcția";
 
 /* Menu item label for linking a post.
    Noun. Type of content being selected is a blog post */
@@ -4602,9 +4658,6 @@ translators: sample content for \"Services\" page template */
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "Continuând se vor îndepărta toate datele WordPress.com de pe acest dispozitiv și se vor șterge toate ciornele salvate local. Nu vei pierde nimic din ce a fost deja salvat pe blogul\/blogurile tale WordPress.com.";
-
-/* translators: sample content for \"Portfolio\" page template */
-"Project Name" = "Nume proiect";
 
 /* Menu item label for linking a project page. */
 "Projects" = "Proiecte";
@@ -4947,8 +5000,13 @@ translators: sample content for \"Services\" page template */
 "Resolution" = "Rezoluție";
 
 /* Title displayed for restore action.
+   Title for Jetpack Restore Complete screen
+   Title for Jetpack Restore Status screen
    Title for the Jetpack Restore Site Screen */
 "Restore" = "Restaurează";
+
+/* Title for error displayed when restoring a site fails. */
+"Restore failed." = "Restaurarea a eșuat.";
 
 /* Label that describes the restore site action */
 "Restore site" = "Restaurează situl";
@@ -4994,6 +5052,9 @@ translators: sample content for \"Services\" page template */
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Rrenunță la modificare în așteptare";
 
+/* Title of a Quick Start Tour */
+"Review site pages" = "Revizuiește paginile sitului";
+
 /* Title of the screen that shows the revisions. */
 "Revision" = "Revizii";
 
@@ -5027,12 +5088,6 @@ translators: sample content for \"Services\" page template */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
-
-/* translators: sample content for \"Team\" page template */
-"Sally Smith" = "Sally Smith";
-
-/* translators: sample content for \"Team\" page template */
-"Samuel the Dog" = "Samuel the Dog";
 
 /* Menus save button title
    Save Action
@@ -5194,13 +5249,13 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "Selectează %@ pentru a continua";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page" = "Selectează %@ pentru a crea o pagină nouă";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Selectează %@ pentru a crea un articol nou";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to discover new themes" = "Selectează %@ pentru a descoperi teme noi";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to edit your Homepage." = "Selectează %@ pentru a edita Prima pagină.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to look for sites with similar interests" = "Selectează %@ pentru a căuta situri cu preocupări similare";
@@ -5218,10 +5273,10 @@ translators: sample content for \"Services\" page template */
 "Select %@ to see your current plan and other available plans." = "Selectează %@ pentru a vedea planul actual și alte planuri disponibile.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to set a new title." = "Selectează %@ pentru a seta un titlu nou.";
+"Select %@ to see your page list." = "Selectează %@ pentru a vedea lista cu pagini.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to start personalising your site" = "Selectează %@ pentru a începe personalizarea sitului tău";
+"Select %@ to set a new title." = "Selectează %@ pentru a seta un titlu nou.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to upload a new one." = "Selectează %@ pentru a încărca unul nou.";
@@ -5328,9 +5383,6 @@ translators: sample content for \"Services\" page template */
 /* Label for connected service in Publicize stat. */
 "Service" = "Serviciu";
 
-/* translators: title for \"Services\" page template */
-"Services" = "Servicii";
-
 /* No comment provided by engineer. */
 "Set Featured Image" = "Setează imaginea reprezentativă";
 
@@ -5390,6 +5442,9 @@ translators: sample content for \"Services\" page template */
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Partajează informații cu instrumentul nostru de analitice despre utilizarea serviciilor în timp ce ești autentificat în contul tău WordPress.com.";
+
+/* Title for the button that will share the link for the downlodable backup file */
+"Share link" = "Partajează legătura";
 
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
@@ -5524,6 +5579,7 @@ translators: sample content for \"Services\" page template */
 "Site Language" = "Limbă sit";
 
 /* Noun. Title. Links to the blog's Pages screen.
+   The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
 "Site Pages" = "Pagini sit";
 
@@ -5766,9 +5822,6 @@ translators: sample content for \"Services\" page template */
 /* Second story intro item description */
 "Story posts don't disappear" = "Articolele narațiune nu dispar";
 
-/* translators: sample content for \"Services\" page template */
-"Strategy" = "Strategie";
-
 /* Title of alert announcing new Create Button feature. */
 "Streamlined navigation" = "Navigare simplificată";
 
@@ -5956,17 +6009,11 @@ translators: sample content for \"Services\" page template */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomie";
 
-/* translators: title for \"Team\" page template */
-"Team" = "Echipă";
-
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Spune-ne ceva despre tine.";
 
 /* Create site, step 1. Select type of site. Title */
 "Tell us what kind of site you'd like to make" = "Spune-ne ce fel de sit vrei să creezi";
-
-/* No comment provided by engineer. */
-"Template Preview" = "Previzualizare șablon";
 
 /* The underlined title sentence */
 "Terms and Conditions" = "Termeni și condiții";
@@ -6040,6 +6087,9 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Certificatul pentru acest server este invalid. E posibil să te conectezi la un server care pretinde doar că e \"%@\" ceea ce poate pune informațiile tale confidențiale în pericol.vvVrei să considerăm oricum valid certificatul?";
+
+/* Title for a threat that includes the file name of the file */
+"The file %1$@ contains a malicious code pattern" = "Fișierul %1$@ conține un model de cod care poate crea vulnerabilități";
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "Imaginea nu a putut fi adăugată în Biblioteca media.";
@@ -6119,9 +6169,6 @@ translators: sample content for \"Services\" page template */
 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
 "The video could not be added to the Media Library." = "Videoul nu a putut fi adăugat în Biblioteca media.";
-
-/* translators: sample content for \"About\" page template */
-"The way to get started is to quit talking and begin doing." = "Modul de a începe este să renunți la vorbărie și să începi să faci ceva.";
 
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Temă activată";
@@ -6267,9 +6314,6 @@ translators: sample content for \"Services\" page template */
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Aceste informații ne ajută să ne îmbunătățim produsele, să facem un marketing mai relevant pentru tine, să-ți personalizăm experiența WordPress.com și altele, așa cum am detaliat în politica noastră de confidențialitate.";
 
-/* translators: sample content for \"About\" page template */
-"This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Acesta este un exemplu de conținut, inclus în șablon, pentru a ilustra funcționalitățile. Înlătură-l sau înlocuiește-l cu propriile cuvinte și elemente media.";
-
 /* Select domain name. Subtitle */
 "This is where people will find you on the internet." = "Aici te va găsi lumea pe internet.";
 
@@ -6307,6 +6351,12 @@ translators: sample content for \"Services\" page template */
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
 "Threading" = "Înșiruire";
+
+/* Title for a threat */
+"Threat Found" = "Amenințare găsită";
+
+/* Summary description for a threat that includes the threat signature */
+"Threat found %1$@" = "Amenințare găsită: %1$@";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Miniatură";
@@ -6446,6 +6496,9 @@ translators: sample content for \"Services\" page template */
    Trashes the comment */
 "Trash" = "Coș de gunoi";
 
+/* Title of the trash page confirmation alert. */
+"Trash this page?" = "Arunci la gunoi această pagină?";
+
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Arunci la gunoi acest articol?";
 
@@ -6466,8 +6519,8 @@ translators: sample content for \"Services\" page template */
    Try to load the list of interests again. */
 "Try Again" = "Încearcă din nou";
 
-/* No comment provided by engineer. */
-"Try a starter layout" = "Încearcă un aranjament de început";
+/* Text displayed in the view when there aren't any backups to display for a given filter. */
+"Try adjusting your date range filter" = "Încearcă să ajustezi filtrul pentru intervalul de timp";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "Try adjusting your date range or activity type filters" = "Încearcă ajustarea filtrelor pentru intervalul de timp sau tipul de activitate";
@@ -6511,9 +6564,6 @@ translators: sample content for \"Services\" page template */
 /* URL text field placeholder */
 "URL" = "URL";
 
-/* translators: sample content for \"Contact\" page template */
-"USA" = "S.U.A.";
-
 /* Menus label for describing which menu the location uses in the header. */
 "USES" = "UTILIZĂRI";
 
@@ -6554,6 +6604,12 @@ translators: sample content for \"Services\" page template */
 /* Error shown when the app fails to load a video from the user's media library. */
 "Unable to load video." = "Nu pot încărca videoul.";
 
+/* Alert displayed to the user when updating a post's seen status failed. */
+"Unable to mark post seen" = "Nu pot marca articolul ca văzut";
+
+/* Alert displayed to the user when updating a post's unseen status failed. */
+"Unable to mark post unseen" = "Nu pot marca articolul ca nevăzut";
+
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Nu pot rula videoul";
 
@@ -6568,6 +6624,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "Nu pot salva elementul media.";
+
+/* Message that appears when a user tries to trash a page while their device is offline. */
+"Unable to trash pages while offline. Please try again later." = "Paginile nu pot fi aruncate la gunoi în timp ce ești offline. Te rog reîncearcă mai târziu.";
 
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "Nu pot arunca articole la gunoi în timp ce ești offline. Te rog reîncearcă mai târziu.";
@@ -6681,6 +6740,9 @@ translators: sample content for \"Services\" page template */
 
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Modificări nesalvate";
+
+/* No comment provided by engineer. */
+"Unsupported" = "Neacceptat";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Fără titlu";
@@ -6933,6 +6995,9 @@ translators: sample content for \"Services\" page template */
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Vizitează %@ pentru mai mult";
 
+/* Title for the button that will open a link to this site. */
+"Visit site" = "Vizitează situl";
+
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "Vizitează Centrul de ajutor pentru a găsi răspunsuri la întrebări frecvente sau contactează-ne pentru mai mult ajutor.";
 
@@ -6944,8 +7009,26 @@ translators: sample content for \"Services\" page template */
    Today's Stats 'Visitors' label */
 "Visitors" = "Vizitatori";
 
-/* translators: sample content for \"About\" page template */
-"Visitors will want to know who is on the other side of the page. Use this space to write about yourself, your site, your business, or anything you want. Use the testimonials below to quote others, talking about the same thing – in their own words." = "Vizitatorii vor dori să știe cine se află în spatele paginii. Folosește acest spațiu pentru a scrie despre tine, situl tău, afacerea ta sau orice altceva vrei. Folosește testimonialele de mai jos pentru a-i cita pe alții, referitor la aceleași lucruri - cu propriile lor cuvinte.";
+/* Summary description for a threat */
+"Vulnerability found in WordPress" = "Vulnerabilități găsite în WordPress";
+
+/* Summary description for a threat */
+"Vulnerability found in plugin" = "Vulnerabilități găsite în module";
+
+/* Summary description for a threat */
+"Vulnerability found in theme" = "Vulnerabilități găsite în teme";
+
+/* Title for a threat */
+"Vulnerable Plugin" = "Modul vulnerabil";
+
+/* Title for a threat that includes the file name of the plugin and the affected version */
+"Vulnerable Plugin: %1$@ (version %2$@)" = "Modul vulnerabil: %1$@ (versiunea %2$@)";
+
+/* Title for a threat */
+"Vulnerable Theme" = "Temă vulnerabilă";
+
+/* Title for a threat that includes the file name of the theme and the affected version */
+"Vulnerable Theme %1$@ (version %2$@)" = "Temă vulnerabilă: %1$@ (versiunea %2$@)";
 
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "Administrare WP";
@@ -6959,16 +7042,12 @@ translators: sample content for \"Services\" page template */
 /* View title during the Google auth process. */
 "Waiting..." = "Așteaptă...";
 
-/* translators: sample content for \"About\" page template */
-"Walt Disney" = "Walt Disney";
-
 /* Title of alert asking if users want to try out the quick start checklist. */
 "Want a little help getting started?" = "Vrei un pic de ajutor pentru a începe?";
 
-/* translators: sample content for \"Team\" page template */
-"Want to work with us?" = "Vrei să lucrezi cu noi?";
-
-/* Editing GIF alert title. */
+/* Editing GIF alert title.
+   Noun. Title for Jetpack Restore warning.
+   Title for Jetpack Restore Warning screen */
 "Warning" = "Avertizare";
 
 /* No comment provided by engineer. */
@@ -6979,9 +7058,6 @@ translators: sample content for \"Services\" page template */
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Watch your audience grow with in-depth analytics." = "Urmărești cum îți crește audiența cu analitice detaliate.";
-
-/* translators: sample content for \"Team\" page template */
-"We are a small team of talented professionals with a wide range of skills and experience. We love what we do, and we do it with passion. We look forward to working with you." = "Suntem o mică echipă de profesioniști talentați, cu calificare și experiență. Ne place ceea ce facem și o facem cu pasiune. Abia așteptăm să lucrăm cu tine.";
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "Avem probleme cu încărcarea datelor";
@@ -7021,6 +7097,9 @@ translators: sample content for \"Services\" page template */
    Text displayed after the app fails to upload a post, no new attempt will be made. */
 "We couldn't complete this action." = "Nu am putut finaliza această acțiune.";
 
+/* Message for error displayed when preparing a backup fails. */
+"We couldn't create your backup. Please try again later." = "Nu am putut să-ți creăm copia de siguranță. Te rog reîncearcă mai târziu.";
+
 /* Primary message shown when there are no domains that match the user entered text. */
 "We couldn't find any available address with the words you entered - let's try again." = "Nu am putut găsi nicio adresă disponibilă cu cuvintele pe care le-ai introdus - hai să încercăm din nou.";
 
@@ -7035,6 +7114,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed after the app fails to upload a private post, it will attempt to upload it later. */
 "We couldn't publish this private post, but we'll try again later." = "Nu am putut publica acest articol privat, dar vom încerca din nou mai târziu.";
+
+/* Message for error displayed when restoring a site fails. */
+"We couldn't restore your site. Please try again later." = "Nu am putut să-ți restaurăm situl. Te rog reîncearcă mai târziu.";
 
 /* Description that appears when a media fails to load in the Media Editor. */
 "We couldn't retrieve this media.\nPlease tap to retry." = "Nu am putut regăsi acest element media.\nTe rog atinge pentru a reîncerca.";
@@ -7090,8 +7172,8 @@ translators: sample content for \"Services\" page template */
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "Am făcut îmbunătățiri importante la editorul de blocuri și credem că merită să-l încerci!\n\nL-am activat pentru articole și pagini noi, dar dacă vrei să rămâi la editorul clasic mergi la „Situl meu” > „Setări sit”.";
 
-/* translators: sample content for \"Services\" page template */
-"We offer a range of services to help you achieve the results you're after. Not sure what you need, or what it costs? We can explain what services are right for you and tell you more about our fees. Get in touch below." = "Oferim o serie de servicii care te ajută să obții rezultatele pe care le cauți. Nu știi sigur de ce ai nevoie sau cât costă? Îți putem explica care servicii sunt potrivite pentru tine și îți spunem mai multe despre costurile care le implică.";
+/* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
+"We successfully created a backup of your site from %1$@." = "Am creat cu succes o copie de siguranță a sitului tău la %1$@.";
 
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "Folosim și alte instrumente de urmărire, inclusiv unele de la terți. Citește despre ele și despre cum le controlăm.";
@@ -7160,11 +7242,20 @@ translators: sample content for \"Services\" page template */
 /* Text confirming email address to be used for new account. */
 "We'll use this email address to create your new WordPress.com account." = "Vom folosi această adresă de email pentru a-ți crea noul cont WordPress.com.";
 
+/* Description for the Jetpack Backup Status message. %1$@ is a placeholder for the selected date. */
+"We're creating a downloadable backup of your site from %1$@." = "Creăm o copie de siguranță a sitului tău la %1$@, care poate fi descărcată.";
+
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "Facem inițializarea finală — aproape gata...";
 
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Nu putem să ne conectăm la situl Jetpack la acel URL. Contactează-ne pentru asistență.";
+
+/* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
+"We're restoring your site back to %1$@." = "Îți restaurăm înapoi situl la %1$@.";
+
+/* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
+"We've also emailed you a link to your file." = "De asemenea, ți-am trimis prin email o legătură la fișierul tău.";
 
 /* Instruction text after a signup Magic Link was requested. */
 "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Ți-am trimis prin email o legătură de înregistrare pentru a-ți crea noul cont WordPress.com. Verifică emailurile primite pe acest dispozitiv și atinge legătura din emailul primit de la WordPress.com.";
@@ -7190,9 +7281,6 @@ translators: sample content for \"Services\" page template */
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "Bun venit la WordPress";
 
-/* translators: sample content for \"Blog\" page template */
-"Welcome to our new blog" = "Bine ai venit la noul nostru blog";
-
 /* A message title */
 "Welcome to the Reader" = "Bine ai venit în cititor";
 
@@ -7213,9 +7301,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title of alert letting users know we've upgraded the quick start checklist. */
 "We’ve made some changes to your checklist" = "Am făcut câteva modificări în lista de verificări";
-
-/* translators: sample content for \"About\" page template */
-"What People Say" = "Ce spune lumea";
 
 /* This is the string we display when prompting the user to review the app */
 "What do you think about WordPress?" = "Ce vrezi despre WordPress?";
@@ -7543,8 +7628,17 @@ translators: sample content for \"Services\" page template */
 /* Explaining to the user why the app needs access to the device media library. */
 "Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "Aplicația ta nu este autorizată să acceseze biblioteca media din cauza restricțiilor active, cum ar fi controlul parental. Te rog verifică setările controlului parental pentru acest dispozitiv.";
 
+/* Title for the Jetpack Backup Complete message. */
+"Your backup is now available for download" = "Copia ta de siguranță este disponibilă acum pentru descărcare";
+
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Numele tău actual de utilizator este %1$@. Cu câteva excepții, ceilalți îți vor vedea întotdeauna numele pentru afișare, %2$@.";
+
+/* Text displayed in the view when there aren't any Backups to display */
+"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Prima copie de siguranță va apărea aici în maxim 24 de ore și vei primi o notificare după ce copia de siguranță a fost finalizată";
+
+/* Title for the view when there aren't any Backups to display */
+"Your first backup will be ready soon" = "Prima copie de siguranță va fi gata în curând";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Notificările tale călătoresc împreună cu tine — vezi comentariile și aprecierile imediat ce apar.";
@@ -7566,6 +7660,9 @@ translators: sample content for \"Services\" page template */
 
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Situl tău a fost creat!";
+
+/* Title for the Jetpack Restore Complete message. */
+"Your site has been restored" = "Situl tău a fost restaurat";
 
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Situl tău a fost restaurat cu succes";

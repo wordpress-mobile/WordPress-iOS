@@ -918,22 +918,22 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         if richTextView.isFirstResponder {
             return [
-                UIKeyCommand(input: "B", modifierFlags: .command, action: #selector(toggleBold), discoverabilityTitle: NSLocalizedString("Bold", comment: "Discoverability title for bold formatting keyboard shortcut.")),
-                UIKeyCommand(input: "I", modifierFlags: .command, action: #selector(toggleItalic), discoverabilityTitle: NSLocalizedString("Italic", comment: "Discoverability title for italic formatting keyboard shortcut.")),
-                UIKeyCommand(input: "S", modifierFlags: [.command], action: #selector(toggleStrikethrough), discoverabilityTitle: NSLocalizedString("Strikethrough", comment: "Discoverability title for strikethrough formatting keyboard shortcut.")),
-                UIKeyCommand(input: "U", modifierFlags: .command, action: #selector(toggleUnderline(_:)), discoverabilityTitle: NSLocalizedString("Underline", comment: "Discoverability title for underline formatting keyboard shortcut.")),
-                UIKeyCommand(input: "Q", modifierFlags: [.command, .alternate], action: #selector(toggleBlockquote), discoverabilityTitle: NSLocalizedString("Block Quote", comment: "Discoverability title for block quote keyboard shortcut.")),
-                UIKeyCommand(input: "K", modifierFlags: .command, action: #selector(toggleLink), discoverabilityTitle: NSLocalizedString("Insert Link", comment: "Discoverability title for insert link keyboard shortcut.")),
-                UIKeyCommand(input: "M", modifierFlags: [.command, .alternate], action: #selector(presentMediaPickerWasPressed), discoverabilityTitle: NSLocalizedString("Insert Media", comment: "Discoverability title for insert media keyboard shortcut.")),
-                UIKeyCommand(input: "U", modifierFlags: [.command, .alternate], action: #selector(toggleUnorderedList), discoverabilityTitle: NSLocalizedString("Bullet List", comment: "Discoverability title for bullet list keyboard shortcut.")),
-                UIKeyCommand(input: "O", modifierFlags: [.command, .alternate], action: #selector(toggleOrderedList), discoverabilityTitle: NSLocalizedString("Numbered List", comment: "Discoverability title for numbered list keyboard shortcut.")),
-                UIKeyCommand(input: "H", modifierFlags: [.command, .shift], action: #selector(toggleEditingMode), discoverabilityTitle: NSLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
+                UIKeyCommand(action: #selector(toggleBold), input: "B", modifierFlags: .command, discoverabilityTitle: NSLocalizedString("Bold", comment: "Discoverability title for bold formatting keyboard shortcut.")),
+                UIKeyCommand(action: #selector(toggleItalic), input: "I", modifierFlags: .command, discoverabilityTitle: NSLocalizedString("Italic", comment: "Discoverability title for italic formatting keyboard shortcut.")),
+                UIKeyCommand(action: #selector(toggleStrikethrough), input: "S", modifierFlags: [.command], discoverabilityTitle: NSLocalizedString("Strikethrough", comment: "Discoverability title for strikethrough formatting keyboard shortcut.")),
+                UIKeyCommand(action: #selector(toggleUnderline(_:)), input: "U", modifierFlags: .command, discoverabilityTitle: NSLocalizedString("Underline", comment: "Discoverability title for underline formatting keyboard shortcut.")),
+                UIKeyCommand(action: #selector(toggleBlockquote), input: "Q", modifierFlags: [.command, .alternate], discoverabilityTitle: NSLocalizedString("Block Quote", comment: "Discoverability title for block quote keyboard shortcut.")),
+                UIKeyCommand(action: #selector(toggleLink), input: "K", modifierFlags: .command, discoverabilityTitle: NSLocalizedString("Insert Link", comment: "Discoverability title for insert link keyboard shortcut.")),
+                UIKeyCommand(action: #selector(presentMediaPickerWasPressed), input: "M", modifierFlags: [.command, .alternate], discoverabilityTitle: NSLocalizedString("Insert Media", comment: "Discoverability title for insert media keyboard shortcut.")),
+                UIKeyCommand(action: #selector(toggleUnorderedList), input: "U", modifierFlags: [.command, .alternate], discoverabilityTitle: NSLocalizedString("Bullet List", comment: "Discoverability title for bullet list keyboard shortcut.")),
+                UIKeyCommand(action: #selector(toggleOrderedList), input: "O", modifierFlags: [.command, .alternate], discoverabilityTitle: NSLocalizedString("Numbered List", comment: "Discoverability title for numbered list keyboard shortcut.")),
+                UIKeyCommand(action: #selector(toggleEditingMode), input: "H", modifierFlags: [.command, .shift], discoverabilityTitle: NSLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
             ]
         }
 
         if htmlTextView.isFirstResponder {
             return [
-                UIKeyCommand(input: "H", modifierFlags: [.command, .shift], action: #selector(toggleEditingMode), discoverabilityTitle: NSLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
+                UIKeyCommand(action: #selector(toggleEditingMode), input: "H", modifierFlags: [.command, .shift], discoverabilityTitle: NSLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
             ]
         }
 
@@ -2307,7 +2307,7 @@ extension AztecPostViewController {
         var keyboardHeight: CGFloat
 
         // Let's assume a sensible default for the keyboard height based on orientation
-        let keyboardFrameRatioDefault = UIApplication.shared.statusBarOrientation.isPortrait ? Constants.mediaPickerKeyboardHeightRatioPortrait : Constants.mediaPickerKeyboardHeightRatioLandscape
+        let keyboardFrameRatioDefault = UIApplication.shared.currentStatusBarOrientation.isPortrait ? Constants.mediaPickerKeyboardHeightRatioPortrait : Constants.mediaPickerKeyboardHeightRatioLandscape
         let keyboardHeightDefault = (keyboardFrameRatioDefault * UIScreen.main.bounds.height)
 
         // we need to make an assumption the hardware keyboard is attached based on
@@ -2891,7 +2891,7 @@ extension AztecPostViewController {
         alertController.popoverPresentationController?.sourceRect = CGRect(origin: position, size: CGSize(width: 1, height: 1))
         alertController.popoverPresentationController?.permittedArrowDirections = .any
         present(alertController, animated: true, completion: { () in
-            UIMenuController.shared.setMenuVisible(false, animated: false)
+            UIMenuController.shared.hideMenu()
         })
     }
 
