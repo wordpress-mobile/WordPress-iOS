@@ -6785,6 +6785,13 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		3FD672CF25C87060009AB3C1 /* iOS 14 Widgets */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "iOS 14 Widgets";
+			sourceTree = "<group>";
+		};
 		3FD83CBD246C74B800381999 /* Migrator */ = {
 			isa = PBXGroup;
 			children = (
@@ -9107,6 +9114,7 @@
 		98E58A2D2360D1FD00E5534B /* Today Widgets */ = {
 			isa = PBXGroup;
 			children = (
+				3FD672CF25C87060009AB3C1 /* iOS 14 Widgets */,
 				989064F9237CC1A300218CD2 /* Data */,
 				9890650C237CC1E700218CD2 /* Shared Views */,
 				985ED0E323C6950600B8D06A /* WidgetStyles.swift */,
