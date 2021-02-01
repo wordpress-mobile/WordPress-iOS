@@ -60,6 +60,10 @@ extension WPStyleGuide {
             appearance.backgroundColor = .appBarBackground
             appearance.titleTextAttributes = textAttributes
 
+            if FeatureFlag.newNavBarAppearance.enabled {
+                appearance.shadowColor = .clear
+            }
+
             navigationAppearance.standardAppearance = appearance
             navigationAppearance.scrollEdgeAppearance = navigationAppearance.standardAppearance
         }

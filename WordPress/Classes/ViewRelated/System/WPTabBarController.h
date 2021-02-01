@@ -34,6 +34,7 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @property (nonatomic, strong, readonly) ReaderTabViewModel *readerTabViewModel;
 
 + (instancetype)sharedInstance;
++ (void)recreateSharedInstance;
 
 - (NSString *)currentlySelectedScreen;
 

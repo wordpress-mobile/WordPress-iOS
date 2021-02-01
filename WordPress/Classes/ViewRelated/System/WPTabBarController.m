@@ -61,18 +61,25 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 @end
 
+static WPTabBarController *shared = nil;
+
 @implementation WPTabBarController
 
 #pragma mark - Class methods
 
 + (instancetype)sharedInstance
 {
-    static WPTabBarController *shared = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         shared = [[self alloc] init];
     });
     return shared;
+}
+
+/// This is a temporary solution to be able to recreate the whole UI when a user logs out and back in.
+/// Eventually, we should stop using a singleton for the tab bar controller so that this won't be necessary.
++ (void)recreateSharedInstance {
+    shared = [[self alloc] init];
 }
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder

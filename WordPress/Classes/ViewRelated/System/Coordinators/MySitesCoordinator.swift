@@ -27,9 +27,14 @@ class MySitesCoordinator: NSObject {
         splitViewController.restorationIdentifier = MySitesCoordinator.splitViewControllerRestorationID
         splitViewController.presentsWithGesture = false
         splitViewController.setInitialPrimaryViewController(navigationController)
-        splitViewController.wpPrimaryColumnWidth = .narrow
         splitViewController.dimsDetailViewControllerAutomatically = true
         splitViewController.tabBarItem = navigationController.tabBarItem
+
+        if Feature.enabled(.newNavBarAppearance) {
+            splitViewController.wpPrimaryColumnWidth = .default
+        } else {
+            splitViewController.wpPrimaryColumnWidth = .narrow
+        }
 
         return splitViewController
     }()
@@ -54,7 +59,7 @@ class MySitesCoordinator: NSObject {
         navigationController.tabBarItem.accessibilityLabel = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
         navigationController.tabBarItem.accessibilityIdentifier = "mySitesTabButton"
         navigationController.tabBarItem.title = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
-        navigationController.navigationItem.largeTitleDisplayMode = .always
+
         return navigationController
     }()
 

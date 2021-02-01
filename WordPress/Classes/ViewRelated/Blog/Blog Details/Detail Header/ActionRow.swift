@@ -89,8 +89,7 @@ class ActionRow: UIStackView {
 
         self.init(arrangedSubviews: buttons)
 
-        distribution = .equalCentering
-        spacing = Constants.minimumSpacing
+        distribution = .equalSpacing
         translatesAutoresizingMaskIntoConstraints = false
     }
 }

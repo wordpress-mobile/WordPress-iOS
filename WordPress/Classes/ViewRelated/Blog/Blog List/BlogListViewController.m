@@ -69,6 +69,11 @@ static NSInteger HideSearchMinSites = 3;
 {
     self.dataSource = [BlogListDataSource new];
     __weak __typeof(self) weakSelf = self;
+    
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        self.dataSource.showsDisclosureIndicator = NO;
+    }
+    
     self.dataSource.visibilityChanged = ^(Blog *blog, BOOL visible) {
         [weakSelf setVisible:visible forBlog:blog];
     };
@@ -494,6 +499,16 @@ static NSInteger HideSearchMinSites = 3;
     if (self.splitViewControllerIsHorizontallyCompact) {
         [self.tableView deselectSelectedRowWithAnimation:YES];
     } else {
+        if (!self.selectedBlog) {
+            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+        
+            Blog *blogToSelect = blogService.lastUsedOrFirstBlog;
+            
+            if (blogToSelect) {
+                [self setSelectedBlog:blogToSelect animated:false];
+            }
+        }
+        
         if (self.selectedBlog) {
             NSIndexPath *indexPath = [self.dataSource indexPathForBlog:self.selectedBlog];
             if (indexPath) {
@@ -800,15 +815,23 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated
 {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        if (self.blogSelected != nil) {
+            self.blogSelected(self, selectedBlog);
+        } else {
+            // The site picker without a site-selection callback makes no sense.  We'll dismiss the VC to keep
+            // the app running, but the user won't be able to switch sites.
+            DDLogError(@"There's no site-selection callback assigned to the site picker.");
+            [self dismissViewControllerAnimated:animated completion:nil];
+        }
+
+        return;
+    }
+    
     if (selectedBlog != _selectedBlog || !_blogDetailsViewController) {
         _selectedBlog = selectedBlog;
         self.blogDetailsViewController = [self makeBlogDetailsViewController];
         self.blogDetailsViewController.blog = selectedBlog;
-
-        if (![self splitViewControllerIsHorizontallyCompact]) {
-            WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
-            [self showDetailViewController:[(UIViewController <WPSplitViewControllerDetailProvider> *)self.blogDetailsViewController initialDetailViewControllerForSplitView:splitViewController] sender:self];
-        }
     }
 
     /// Issue #7284:

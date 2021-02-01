@@ -399,6 +399,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [self reloadTableViewPreservingSelection];
     [self preloadBlogData];
+    
+    [self showInitialDetails];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -454,6 +456,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     // Required to update disclosure indicators depending on split view status
     [self reloadTableViewPreservingSelection];
+}
+
+- (void)showInitialDetails
+{
+    if ([self splitViewControllerIsHorizontallyCompact]) {
+        return;
+    }
+    
+    [self showDetailViewForSubsection:BlogDetailsSubsectionStats];
 }
 
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section
@@ -1092,6 +1103,30 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)siteTitleTapped
 {
     [self showSiteTitleSettings];
+}
+
+- (void)siteSwitcherTapped
+{
+    BlogListViewController* blogListViewController = [[BlogListViewController alloc] initWithMeScenePresenter:self.meScenePresenter];
+    blogListViewController.blogSelected = ^(BlogListViewController* blogListViewController, Blog *blog) {
+        [self switchToBlog:blog];
+        [blogListViewController dismissViewControllerAnimated:true completion:nil];
+    };
+    
+    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navigationController animated:true completion:nil];
+}
+
+#pragma mark Site Switching
+
+- (void)switchToBlog:(Blog*)blog
+{
+    self.headerView.blog = blog;
+    self.blog = blog;
+    
+    [self showInitialDetails];
+    [self.tableView reloadData];
 }
 
 #pragma mark Site Icon Update Management
