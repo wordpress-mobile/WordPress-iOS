@@ -436,7 +436,7 @@ import "./ScreenshotFastfile"
       team_id: "299112",
     )
 
-    sh("cd .. && rm WordPress.ipa")
+    FileUtils.rm_rf(File.join(PROJECT_ROOT_FOLDER, "WordPress.ipa"))
 
     sentry_upload_dsym(
       auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
@@ -445,7 +445,7 @@ import "./ScreenshotFastfile"
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
-    sh("cd .. && rm WordPress.app.dSYM.zip")
+    FileUtils.rm_rf(File.join(PROJECT_ROOT_FOLDER, "WordPress.app.dSYM.zip"))
 
     if (options[:create_release])
       archive_zip_path = File.dirname(Dir.pwd) + "/WordPress.xarchive.zip"
@@ -459,7 +459,7 @@ import "./ScreenshotFastfile"
         release_assets:"#{archive_zip_path}"
       )
 
-      sh("rm #{archive_zip_path}")
+      FileUtils.rm_rf(archive_zip_path)
     end
   end
 
@@ -481,14 +481,14 @@ import "./ScreenshotFastfile"
     puts "Building version: #{options[:version_name]}"
 
     update_translations_script_path = File.join( PROJECT_ROOT_FOLDER, 'Scripts', 'update-translations.rb' )
-    sh("#{update_translations_script_path} review current")
-    sh("#{update_translations_script_path} review waiting")
-    sh("#{update_translations_script_path} review fuzzy")
+    sh(update_translations_script_path, "review", "current")
+    sh(update_translations_script_path, "review", "waiting")
+    sh(update_translations_script_path, "review", "fuzzy")
 
     ios_merge_translators_strings(strings_folder: File.join( PROJECT_ROOT_FOLDER, "WordPress", "Resources"))
 
     extract_framework_translations_script_path = File.join( File.join( PROJECT_ROOT_FOLDER, "Scripts", "extract-framework-translations.swift"))
-    sh("#{extract_framework_translations_script_path}")
+    sh(extract_framework_translations_script_path)
 
     gym(
       clean: true,
