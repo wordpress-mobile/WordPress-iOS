@@ -18,7 +18,9 @@ class ReaderTabView: UIView {
     private var previouslySelectedIndex: Int = 0
 
     private var discoverIndex: Int? {
-        return tabBar.items.firstIndex(where: { $0.title == NSLocalizedString("Discover", comment: "Discover tab name") })
+        return tabBar.items.firstIndex(where: { ($0 as? ReaderTabItem)?.content.topicType == .discover })
+    }
+
     }
 
     init(viewModel: ReaderTabViewModel) {
