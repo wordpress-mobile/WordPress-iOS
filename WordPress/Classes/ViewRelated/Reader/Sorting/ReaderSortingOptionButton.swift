@@ -1,7 +1,7 @@
 import UIKit
 
 enum ReaderSortingOption: String, CaseIterable {
-    case date, popularity
+    case popularity, date
     
     var parameterValue: String {
         return rawValue
@@ -108,11 +108,13 @@ class ReaderSortingOptionButton: UIControl {
         
         NSLayoutConstraint.activate([
             iconView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18.0),
+            iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16.0),
             label.centerYAnchor.constraint(equalTo: centerYAnchor),
             label.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 6.0),
+            label.topAnchor.constraint(equalTo: topAnchor, constant: 16.0),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16.0),
             chevronView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            chevronView.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: 12.0),
+            chevronView.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: 6.0),
         ])
     }
 }

@@ -54,7 +54,6 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         tableView.tableHeaderView = sortingButton
         
         NSLayoutConstraint.activate([
-            sortingButton.heightAnchor.constraint(equalToConstant: 44.0),
             sortingButton.widthAnchor.constraint(equalTo: tableView.widthAnchor),
         ])
 
