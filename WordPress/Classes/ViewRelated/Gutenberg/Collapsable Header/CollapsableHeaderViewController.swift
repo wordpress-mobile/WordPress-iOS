@@ -238,6 +238,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
 
         if let previousTraitCollection = previousTraitCollection, traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass {
+            isUserInitiatedScroll = false
             layoutHeaderInsets()
 
             // This helps reset the header changes after a rotation.
