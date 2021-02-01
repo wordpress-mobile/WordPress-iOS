@@ -270,15 +270,14 @@ private extension ReaderTabView {
     @objc func siteFollowed(_ notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo,
               let site = userInfo[ReaderNotificationKeys.topic] as? ReaderSiteTopic,
-              site.organizationType == .p2 else {
+              site.organizationType == .p2,
+              p2Index == nil else {
             return
         }
 
-        // If a P2 has been followed but the P2 tab isn't in the Reader tab bar,
+        // If a P2 is followed but the P2 tab is not in the Reader tab bar,
         // refresh the Reader menu to display it.
-        if p2Index == nil {
-            viewModel.fetchReaderMenu()
-        }
+        viewModel.fetchReaderMenu()
     }
 
 }
