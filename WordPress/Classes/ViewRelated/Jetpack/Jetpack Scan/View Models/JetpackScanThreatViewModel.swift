@@ -16,6 +16,7 @@ struct JetpackScanThreatViewModel {
     let technicalDetailsTitle: String
     let technicalDetailsDescription: String
     let fileName: String?
+    let fileNameBackgroundColor: UIColor
     let attributedFileContext: NSAttributedString?
 
     // Threat Detail Action
@@ -49,6 +50,7 @@ struct JetpackScanThreatViewModel {
         technicalDetailsTitle = Strings.details.titles.technicalDetails
         technicalDetailsDescription = Strings.details.descriptions.technicalDetails
         fileName = threat.fileName
+        fileNameBackgroundColor = Constants.normal.backgroundColor
         attributedFileContext = Self.attributedString(for: threat.context)
 
         // Threat Details Action
@@ -316,8 +318,8 @@ extension JetpackScanThreatViewModel {
             return nil
         }
 
-        let lineFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .regular)
-        let numberFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .semibold)
+        let lineFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .semibold)
+        let numberFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .bold)
         let attrString = NSMutableAttributedString()
 
         let biggestLen = String(context.lines.last?.lineNumber ?? 0).count
