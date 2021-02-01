@@ -56,6 +56,11 @@ import Foundation
                 var inProgressThreats: [JetpackThreatFixStatus] = []
 
                 for item in fixResponse.threats {
+                    // Filter any fixable threats that may not be actively being fixed
+                    if item.status == .notStarted {
+                        continue
+                    }
+
                     var threat = threats.filter({ $0.id == item.threatId }).first
                     if item.status == .inProgress {
                         threat?.status = .fixing
