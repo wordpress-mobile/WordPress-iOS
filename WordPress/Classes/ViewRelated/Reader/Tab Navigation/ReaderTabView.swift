@@ -21,6 +21,8 @@ class ReaderTabView: UIView {
         return tabBar.items.firstIndex(where: { ($0 as? ReaderTabItem)?.content.topicType == .discover })
     }
 
+    private var p2Index: Int? {
+        return tabBar.items.firstIndex(where: { (($0 as? ReaderTabItem)?.content.topic as? ReaderTeamTopic)?.organizationID == SiteOrganizationType.p2.rawValue })
     }
 
     init(viewModel: ReaderTabViewModel) {
