@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
+require 'fileutils'
+
 # Supported languages:
 # ar,ca,cs,cy,da,de,el,en,en-CA,en-GB,es,fi,fr,he,hr,hu,id,it,ja,ko,ms,nb,nl,pl,pt,pt-PT,ro,ru,sk,sv,th,tr,uk,vi,zh-Hans,zh-Hant
 # * Arabic
@@ -125,7 +127,7 @@ project_dir = File.dirname(script_root)
 langs.each do |code,local|
   lang_dir = File.join(project_dir, 'WordPress', 'Resources', "#{local}.lproj")
   puts "Updating #{code} in #{lang_dir}"
-  system "mkdir -p #{lang_dir}"
+  system "mkdir", "-p", lang_dir
 
   destination = "#{lang_dir}/Localizable#{strings_file_ext}.strings"
   backup_destination = "#{destination}.bak"
@@ -137,7 +139,7 @@ langs.each do |code,local|
 
   url = "#{download_url}/#{code}/default/export-translations?#{strings_filter}format=strings"
 
-  system "curl -fgLo #{destination} \"#{url}\"" or begin
+  system "curl", "-fgLo", destination, url or begin
     puts "Error downloading #{code}"
   end
 
@@ -149,9 +151,12 @@ langs.each do |code,local|
 
   fix_script_path = File.join(script_root, 'fix-translation')
 
-  system "#{fix_script_path} #{lang_dir}/Localizable#{strings_file_ext}.strings"
-  system "plutil -lint #{lang_dir}/Localizable#{strings_file_ext}.strings"
-  system "grep -a '\\x00\\x20\\x00\\x22\\x00\\x22\\x00\\x3b$' #{lang_dir}/Localizable#{strings_file_ext}.strings"
+  # References a file like: "#{lang_dir}.Localizable-old.strings" where strings_file_ext == "old"
+  strings_file_path = File.join(lang_dir, "Localizable#{strings_file_ext}.strings")
+
+  system fix_script_path, strings_file_path
+  system "plutil", "-lint", strings_file_path
+  system "grep", "-a", "\\x00\\x20\\x00\\x22\\x00\\x22\\x00\\x3b$", strings_file_path
 
   # Clean up after ourselves
   FileUtils.rm destination if File.exist? destination
