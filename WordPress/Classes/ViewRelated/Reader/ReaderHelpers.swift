@@ -1,5 +1,24 @@
 import Foundation
 import WordPressShared
+import WordPressFlux
+
+
+// MARK: - Reader Notifications
+
+extension NSNotification.Name {
+    // Sent when a site or a tag is unfollowed via Reader Manage screen.
+    static let ReaderTopicUnfollowed = NSNotification.Name(rawValue: "ReaderTopicUnfollowed")
+    // Sent when a site is followed via Reader Manage screen.
+    static let ReaderSiteFollowed = NSNotification.Name(rawValue: "ReaderSiteFollowed")
+    // Sent when a post's seen state has been toggled.
+    static let ReaderPostSeenToggled = NSNotification.Name(rawValue: "ReaderPostSeenToggled")
+}
+
+struct ReaderNotificationKeys {
+    static let post = "post"
+    static let topic = "topic"
+}
+
 
 /// A collection of helper methods used by the Reader.
 ///
@@ -218,9 +237,12 @@ import WordPressShared
 
         let userAgent = WPUserAgent.wordPress()
         let path  = NSString(format: "%@?%@", pixel, params.componentsJoined(by: "&")) as String
-        let url = URL(string: path)
 
-        let request = NSMutableURLRequest(url: url!)
+        guard let url = URL(string: path) else {
+            return
+        }
+
+        let request = NSMutableURLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         request.addValue(pixelStatReferrer, forHTTPHeaderField: "Referer")
 
@@ -274,6 +296,18 @@ import WordPressShared
 
     @objc open class func isLoggedIn() -> Bool {
         return AccountHelper.isDotcomAvailable()
+    }
+
+    // MARK: ActionDispatcher Notification helper
+
+    class func dispatchToggleSeenError(post: ReaderPost) {
+        let title = post.isSeen ? ErrorMessages.unseenFailed : ErrorMessages.seenFailed
+        ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title)))
+    }
+
+    private struct ErrorMessages {
+        static let seenFailed = NSLocalizedString("Unable to mark post seen", comment: "Alert displayed to the user when updating a post's seen status failed.")
+        static let unseenFailed = NSLocalizedString("Unable to mark post unseen", comment: "Alert displayed to the user when updating a post's unseen status failed.")
     }
 }
 

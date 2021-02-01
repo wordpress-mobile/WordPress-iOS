@@ -187,7 +187,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         }
 
         if let url = post.featuredImageURL,
-            let desiredWidth = UIApplication.shared.keyWindow?.frame.size.width {
+            let desiredWidth = UIApplication.shared.mainWindow?.frame.size.width {
             featuredImageStackView.isHidden = false
             topPadding.constant = Constants.margin
             loadFeaturedImageIfNeeded(url, preferredSize: CGSize(width: desiredWidth, height: featuredImage.frame.height))

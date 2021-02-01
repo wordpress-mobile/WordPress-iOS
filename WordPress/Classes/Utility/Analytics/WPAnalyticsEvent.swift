@@ -78,6 +78,8 @@ import Foundation
     case readerSuggestedSiteVisited
     case readerSuggestedSiteToggleFollow
     case readerDiscoverContentPresented
+    case readerPostMarkSeen
+    case readerPostMarkUnseen
 
     // What's New - Feature announcements
     case featureAnnouncementShown
@@ -247,11 +249,17 @@ import Foundation
             return "reader_suggested_site_toggle_follow"
         case .readerDiscoverContentPresented:
             return "reader_discover_content_presented"
+        case .readerPostMarkSeen:
+            return "reader_mark_as_seen"
+        case .readerPostMarkUnseen:
+            return "reader_mark_as_unseen"
+
         // What's New - Feature announcements
         case .featureAnnouncementShown:
             return "feature_announcement_shown"
         case .featureAnnouncementButtonTapped:
             return "feature_announcement_button_tapped"
+
         // Stories
         case .storyIntroShown:
             return "story_intro_shown"

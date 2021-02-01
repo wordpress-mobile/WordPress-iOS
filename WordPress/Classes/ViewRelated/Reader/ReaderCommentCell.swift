@@ -31,15 +31,7 @@ class ReaderCommentCell: UITableViewCell {
     @IBOutlet var actionBar: UIStackView!
     @IBOutlet var leadingContentConstraint: NSLayoutConstraint?
 
-    private let textView: WPRichContentView = {
-        let newTextView = WPRichContentView(frame: .zero, textContainer: nil)
-        newTextView.isScrollEnabled = false
-        newTextView.isEditable = false
-        newTextView.translatesAutoresizingMaskIntoConstraints = false
-        newTextView.backgroundColor = .clear
-
-        return newTextView
-    }()
+    private var textView: WPRichContentView!
 
     @objc weak var delegate: ReaderCommentCellDelegate? {
         didSet {
@@ -81,6 +73,7 @@ class ReaderCommentCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
+        textView = newRichContentView()
         setupContentView()
         applyStyles()
     }
@@ -143,11 +136,11 @@ class ReaderCommentCell: UITableViewCell {
 
     // MARK: - Configuration
 
-
     @objc func configureCell(comment: Comment, attributedString: NSAttributedString) {
         self.comment = comment
         self.attributedString = attributedString
 
+        resetTextView()
         configureAvatar()
         configureAuthorButton()
         configureTime()
@@ -155,6 +148,17 @@ class ReaderCommentCell: UITableViewCell {
         configureActionBar()
     }
 
+    // Always reset textView instead of reusing it to prevent http://git.io/Jtl2U
+    func resetTextView() {
+        if textView.attributedText != nil {
+            let newTextView = newRichContentView()
+            newTextView.delegate = delegate
+            textView.removeFromSuperview()
+            textView = newTextView
+            textView.textContainerInset = Constants.textViewInsets
+            parentStackView.insertArrangedSubview(textView, at: 1)
+        }
+    }
 
     @objc func configureAvatar() {
         guard let comment = comment else {
@@ -258,6 +262,16 @@ class ReaderCommentCell: UITableViewCell {
         }
 
         return .publicSite
+    }
+
+    private func newRichContentView() -> WPRichContentView {
+        let newTextView = WPRichContentView(frame: .zero, textContainer: nil)
+        newTextView.isScrollEnabled = false
+        newTextView.isEditable = false
+        newTextView.translatesAutoresizingMaskIntoConstraints = false
+        newTextView.backgroundColor = .clear
+
+        return newTextView
     }
 
     // MARK: - Actions

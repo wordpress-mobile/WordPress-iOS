@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-12 08:19:30+0000 */
+/* Translation-Revision-Date: 2021-01-26 10:39:15+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ru */
@@ -202,9 +202,6 @@
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "'%s' полностью не поддерживается";
 
-/* translators: sample content for \"Contact\" page template */
-"(555)555-1234" = "(555)555-1234";
-
 /* Empty Post Title */
 "(No Title)" = "(без названия)";
 
@@ -240,9 +237,6 @@
 /* Alert displayed to the user when a single media item attached to a post has failed to upload. */
 "1 post, 1 file not uploaded" = "1 запись и 1 файл не загружены";
 
-/* translators: sample content for \"Contact\" page template */
-"10 Street Road" = "улица Лизюкова 2";
-
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
 
@@ -258,17 +252,14 @@
 /* Age between dates less than one hour. */
 "< 1 hour" = "менее 1 часа";
 
-/* translators: sample content for \"Contact\" page template */
-"<a href=\"mailto:mail@example.com\">mail@example.com<\/a>" = "<a href=\"mailto:mail@example.com\">mail@example.com<\/a>";
-
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "При нажатии на кнопку «Ещё» открывается список кнопок «Поделиться»";
 
-/* translators: sample content for \"Portfolio\" page template */
-"A description of the project and the works presented." = "Описание проекта и представляемых работ.";
-
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "Изображение записи установлено. Нажмите, чтобы изменить его.";
+
+/* Title for a threat */
+"A file contains a malicious code pattern" = "Файл содержит элемент вредоносного кода";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "Список сайтов на этой учётной записи.";
@@ -278,12 +269,6 @@
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button. */
 "A series of steps to assist with growing your site's audience." = "Последовательность шагов позволяющая увеличить аудиторию вашего сайта.";
-
-/* translators: sample content for \"Team\" page template */
-"A short bio with personal history, key achievements, or an interesting fact." = "Короткая биография, ключевые достижения или интересные факты.";
-
-/* translators: sample content for \"Services\" page template */
-"A short description of the services you offer." = "Краткое описание предлагаемых услуг.";
 
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "Метка с именем '%@' уже существует.";
@@ -427,9 +412,6 @@
 /* No comment provided by engineer. */
 "Add a description" = "Добавить описание";
 
-/* Description of a Quick Start Tour */
-"Add a page for key content — an “About” page is a great start." = "Добавьте страницу ключевого содержимого, например \"О нас\" будет хорошим началом.";
-
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Добавить автономный веб-сайт";
 
@@ -536,6 +518,9 @@
 
 /* Section title for All Languages */
 "All languages" = "Все языки";
+
+/* Description for the Jetpack Backup Restore message. %1$@ is a placeholder for the selected date. */
+"All of your selected items are now restored back to %1$@." = "Все выбранные элементы восстановлены на %1$@.";
 
 /* Title of the congratulation screen that appears when all the tasks are completed */
 "All tasks complete" = "Все задачи выполнены";
@@ -694,6 +679,9 @@
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Вы хотите навсегда удалить этот элемент?";
 
+/* Message of the confirmation alert when deleting a page from the trash. */
+"Are you sure you want to permanently delete this page?" = "Вы уверены, что хотите удалить эту страницу навсегда?";
+
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Вы точно хотите удалить эту запись навсегда?";
 
@@ -710,6 +698,9 @@
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name. */
 "Are you sure you want to remove %1$@?" = "Вы точно хотите удалить %1$@?";
 
+/* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
+"Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Вы уверены, что хотите откатить ваш сайт назад на %1$@? Вы потеряете все изменения в содержимом и настройки, сделанные после этого времени.";
+
 /* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
 "Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "Вы точно хотите откатить сайт назад на %@?\nЭто удалит все содаржимое и настройки созданные или измененные после этой даты.";
 
@@ -724,6 +715,9 @@
 
 /* Title of message shown when user taps submit for review. */
 "Are you sure you want to submit for review?" = "Вы точно хотите отправить на одобрение?";
+
+/* Message of the trash page confirmation alert. */
+"Are you sure you want to trash this page?" = "Вы уверены, что хотите переместить страницу в корзину?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Вы уверены, что хотите удалить эту запись?";
@@ -811,8 +805,13 @@
 "Back" = "Назад";
 
 /* Noun. Links to a blog's Jetpack Backups screen.
+   Title for Jetpack Backup Complete screen
+   Title for Jetpack Backup Status screen
    Title for the Jetpack's backup list */
 "Backup" = "Резервное копирование";
+
+/* Title for error displayed when preparing a backup fails. */
+"Backup failed." = "Сбой резервного копирования.";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "Столбчатая диаграмма с комментариями за выбранный период.";
@@ -886,8 +885,7 @@
 /* No comment provided by engineer. */
 "Block settings" = "Настройки блока";
 
-/* Opens the WordPress Mobile Blog
-   translators: title for \"Blog\" page template */
+/* Opens the WordPress Mobile Blog */
 "Blog" = "Блог";
 
 /* Noun. Title. Links to the blog's Posts screen.
@@ -972,6 +970,7 @@
 /* Alert dismissal title
    Button label when canceling alert in quick start
    Button shown when the author is asked for publishing confirmation.
+   Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
@@ -1014,7 +1013,8 @@
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection. */
+   Verb. Tapping cancels the publicize account selection.
+   Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Отменить";
 
 /* Label for the Post List option that cancels automatic uploading of a post.
@@ -1082,9 +1082,6 @@
 /* Button title to edit visibility of sites. */
 "Change Visibility" = "Изменить настройки видимости";
 
-/* Description of a Quick Start Tour */
-"Change colors, fonts, and images for a perfectly personalized site." = "Для отлично настроенного сайта смените цвета, шрифты и изображения.";
-
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Не удалось внести изменение.";
 
@@ -1096,6 +1093,12 @@
 
 /* Change button. */
 "Change username" = "Изменить имя пользователя";
+
+/* Description of a Quick Start Tour */
+"Change, add, or remove content from your site's homepage." = "Изменить, добавить или удалить содержимое главной страницы сайта.";
+
+/* Description of a Quick Start Tour */
+"Change, add, or remove your site's pages." = "Изменить, добавить или удалить страницы вашего сайта.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Изменяем отображаемое имя";
@@ -1212,9 +1215,6 @@
 
 /* Register Domain - Address information field City */
 "City" = "Город";
-
-/* translators: sample content for \"Contact\" page template */
-"City, 10100" = "Воронеж, 394077";
 
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "Классический блог";
@@ -1350,13 +1350,10 @@
 "Completed: Continue with site setup" = "Готово: продолжение настроек сайта";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Create a new page" = "Готово: создание новой страницы";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Create your site" = "Готово: создание сайта";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Customize your site" = "Готово: персонализация сайта";
+"Completed: Edit your homepage" = "Готово: редактирование главной страницы";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Enable post sharing" = "Готово: включение возможности делиться записями";
@@ -1371,6 +1368,9 @@
 "Completed: Publish a post" = "Готово: публикация записи";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Review site pages" = "Готово: обзор страниц сайта";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Set your site title" = "Готово: задать название сайта";
 
 /* The Quick Start Tour title after the user finished the step. */
@@ -1382,7 +1382,8 @@
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Настроить";
 
-/* Confirm */
+/* Confirm
+   Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Подтвердить";
 
 /* Title of Delete Site confirmation alert */
@@ -1565,6 +1566,9 @@
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Не удалось переключить подписку: отсутствует атрибут blogURL";
 
+/* An error description explaining that Seen could not be toggled due to a missing feedItemID attribute. */
+"Could not toggle Seen: missing feedItemID attribute." = "Невозможно переключить статус просмотра - отсутствует атрибут feedItemID.";
+
 /* Title of a prompt. */
 "Could not unfollow site" = "Не удалось отменить подписку на веб-сайт";
 
@@ -1662,9 +1666,6 @@
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Создать метку";
 
-/* Title of a Quick Start Tour */
-"Create a new page" = "Создать новую страницу";
-
 /* Title for a button that when tapped starts the site creation process */
 "Create a new site" = "Создание нового сайта";
 
@@ -1719,14 +1720,22 @@
 /* translators: %s: current cell value. */
 "Current value is %s" = "Текущее значение - %s";
 
+/* Title for the Jetpack Backup Status message. */
+"Currently creating a downloadable backup of your site" = "Идёт создание скачиваемой резервной копии вашего сайта";
+
+/* Title for the Jetpack Restore Status message. */
+"Currently restoring site" = "Идёт восстановление сайта";
+
 /* Title of the cell displaying status of a rewind in progress */
 "Currently restoring your site" = "Идет восстановление вашего сайта";
+
+/* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
+"Currently restoring: %1$@" = "Ведётся восстановление: %1$@";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "Пользовательское сообщение...";
 
 /* Customize button that appears in Theme Browser Header
-   The menu item to select during a guided tour.
    Theme Customize action title */
 "Customize" = "Настроить";
 
@@ -1749,9 +1758,6 @@
 /* Customize Insights title */
 "Customize your insights" = "Настройка экрана на виду";
 
-/* Title of a Quick Start Tour */
-"Customize your site" = "Настройте свой сайт";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Настройте уведомления об оценках, комментариях, подписках и так далее.";
 
@@ -1763,6 +1769,12 @@
 
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Консоль";
+
+/* Title for a threat that includes the number of database rows affected */
+"Database %1$d threats" = "Угроза базы данных %1$d";
+
+/* Title for a threat */
+"Database threat" = "Угроза базы данных";
 
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
@@ -1824,12 +1836,14 @@
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Удалить меню";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
+/* Delete option in the confirmation alert when deleting a page from the trash.
+   Delete option in the confirmation alert when deleting a post from the trash.
    Label for a button permanently deletes a page.
    Label for the delete post option. Tapping permanently deletes a post. */
 "Delete Permanently" = "Удалить навсегда";
 
-/* Title of the confirmation alert when deleting a post from the trash. */
+/* Title of the confirmation alert when deleting a page from the trash.
+   Title of the confirmation alert when deleting a post from the trash. */
 "Delete Permanently?" = "Удалить навсегда?";
 
 /* Button label for deleting the current site
@@ -1986,11 +2000,9 @@
    Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
+   Title for the button that will dismiss this view.
    Title of the Done button on the me page */
 "Done" = "Готово";
-
-/* translators: sample content for \"About\" page template */
-"Don’t cry because it’s over, smile because it happened." = "Don’t cry because it’s over, smile because it happened.";
 
 /* Title for label when there are no threats on the users site */
 "Don’t worry about a thing" = "Ни о чем не волнуйтесь";
@@ -2043,9 +2055,6 @@
 /* No comment provided by engineer. */
 "Double tap to select an image" = "Нажмите дважды для выбора изображения";
 
-/* No comment provided by engineer. */
-"Double tap to select layout" = "Нажмите дважды для выбора макета";
-
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "Нажмите дважды для выбора";
 
@@ -2055,15 +2064,17 @@
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "Нажмите дважды для отмены последнего действия";
 
-/* Title displayed for download backup action.
-   Title for the Jetpack Download Backup Site Screen */
+/* Title for the Jetpack Download Backup Site Screen */
 "Download Backup" = "Скачать резервную копию";
+
+/* Title displayed for download backup action. */
+"Download backup" = "Скачать резервную копию";
+
+/* Title for the button that will download the backup file. */
+"Download file" = "Скачать файл";
 
 /* Label for number of file downloads. */
 "Downloads" = "Загрузки";
-
-/* translators: sample content for \"About\" page template */
-"Dr. Seuss" = "Dr. Seuss";
 
 /* Name for the status of a draft post. */
 "Draft" = "Черновик";
@@ -2135,6 +2146,9 @@
 /* No comment provided by engineer. */
 "Edit video" = "Изменить видео";
 
+/* Title of a Quick Start Tour */
+"Edit your homepage" = "Редактировать главную страницу";
+
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Редактирование GIF изображения приведёт к потере анимации.";
 
@@ -2171,9 +2185,6 @@
 
 /* The title of an item in a list. */
 "Email me new posts" = "Отправлять мне новые записи по эл.почте";
-
-/* translators: sample content for \"Team\" page template */
-"Email me: <a href=\"mailto:mail@example.com\">mail@example.com<\/a>" = "Напишите мне: <a href=\"mailto:mail@example.com\">mail@example.com<\/a>";
 
 /* Username Placeholder */
 "Email or Username of the person that should receive your invitation." = "Адрес эл. почты или имя получателя приглашения.";
@@ -2524,6 +2535,9 @@
 /* Button title that attempts to fix all fixable threats */
 "Fix All" = "Устранить все";
 
+/* Button title, confirm fixing all threats */
+"Fix all threats" = "Устранить все угрозы";
+
 /* Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Наблюдать";
@@ -2532,7 +2546,7 @@
 "Follow Site" = "Подписаться на сайт";
 
 /* Verb. Button title. Follow the comments on a post. */
-"Follow conversation" = "Подписаться на беседу";
+"Follow conversation by email" = "Подписаться на эту беседу по email";
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Подпишитесь на другие сайты";
@@ -2573,7 +2587,7 @@
 "Following %@" = "Подписан на %@";
 
 /* Verb. Button title. The user is following the comments on a post. */
-"Following conversation" = "Вы подписаны на беседу";
+"Following conversation by email" = "Вы подписаны на беседу по email";
 
 /* Filters Follows Notifications */
 "Follows" = "Читатели";
@@ -2585,7 +2599,7 @@
 "Follows the blog." = "Подписаться на блог.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
-"Follows the comments on a post." = "Подписка на комментарии к записи.";
+"Follows the comments on a post by email." = "Подписка на комментарии к записи по email.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Подписаться на метку.";
@@ -2641,13 +2655,6 @@
 
 /* Displayed in the Notifications Tab as a message, when there are no notifications */
 "Get active! Comment on posts from blogs you follow." = "Будьте активны! Оставляйте комментарии в блогах, на которые вы подписаны.";
-
-/* translators: sample content for \"About\" page template
-translators: sample content for \"Contact\" page template
-translators: sample content for \"Portfolio\" page template
-translators: sample content for \"Services\" page template
-translators: sample content for \"Team\" page template */
-"Get in Touch" = "Присоединяйтесь";
 
 /* Accessibility hint for the find out more button in the Feature Announcements screen. */
 "Get more details for this release" = "Узнать больше об этом выпуске";
@@ -2716,9 +2723,6 @@ translators: sample content for \"Team\" page template */
 
 /* This value is used to set the accessibility hint text for creating the user's site. */
 "Guides you through the process of creating your site." = "Гид по процессу создания сайта.";
-
-/* This value is used to set the accessibility hint text for customizing a user's site. */
-"Guides you through the process of customizing your site." = "Гид по процессу настройки (персонализации) сайта.";
 
 /* This value is used to set the accessibility hint text for exploring plans on the user's site. */
 "Guides you through the process of exploring plans for your site." = "Гид по тарифам для вашего сайта.";
@@ -2831,7 +2835,8 @@ translators: sample content for \"Team\" page template */
    Settings: Comments Moderation */
 "Hold for Moderation" = "Отправить на модерацию";
 
-/* Title for setting which shows the current page assigned as a site's homepage
+/* The item to select during a guided tour.
+   Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
    Title of the Homepage Badge */
 "Homepage" = "Главная страница";
@@ -2933,11 +2938,23 @@ translators: sample content for \"Team\" page template */
 /* Downloadable/Restorable items: general section footer text */
 "Includes wp-config php and any non WordPress files" = "Включает wp-config.php и все файлы не принадлежащие WordPress";
 
+/* Downloadable/Restorable items: general section footer text */
+"Includes wp-config.php and any non WordPress files" = "Включает wp-config.php и все файлы не принадлежащие WordPress";
+
 /* An error message shown when a user signed in with incorrect credentials. */
 "Incorrect username or password. Please try entering your login details again." = "Неправильное имя пользователя или пароль. Попробуйте ввести учётные данные ещё раз.";
 
+/* Title for a threat */
+"Infected core file" = "Заражение файла ядра";
+
+/* Title for a threat that includes the file name of the file */
+"Infected core file: %1$@" = "Заражен файл ядра: %1$@";
+
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Информация об учебных курсах и мероприятиях WordPress.com (очных и онлайн).";
+
+/* Placeholder for the restore progress title. */
+"Initializing the restore process" = "Запускаем процесс восстановления";
 
 /* Default button title used in media picker to insert media (photos / videos) into a post.
    Label action for inserting a link on the editor */
@@ -2966,9 +2983,6 @@ translators: sample content for \"Team\" page template */
 
 /* Title of Insights stats filter. */
 "Insights" = "Тенденции";
-
-/* translators: sample content for \"Services\" page template */
-"Inspiration" = "Вдохновение";
 
 /* Button label to install a plugin
    Confirmation button displayd in alert displayed when user installs their first plugin. */
@@ -3030,9 +3044,6 @@ translators: sample content for \"Team\" page template */
 /* Invite People Title */
 "Invite People" = "Пригласить людей";
 
-/* translators: sample content for \"About\" page template */
-"It is our choices, Harry, that show what we truly are, far more than our abilities." = "Именно наш выбор, Гарри, определяет, что мы есть на самом деле, куда в большей степени, чем наши способности.";
-
 /* An error message shown during log in when the username or password is incorrect. */
 "It looks like this username\/password isn't associated with this site." = "Похоже, введённое имя пользователя или пароль не связаны с этим сайтом.";
 
@@ -3049,9 +3060,6 @@ translators: sample content for \"Team\" page template */
    Discoverability title for italic formatting keyboard shortcut. */
 "Italic" = "Курсив";
 
-/* translators: sample content for \"About\" page template */
-"J.K. Rowling" = "Дж. К. Роулинг";
-
 /* Section title for the publish table section in the blog details screen
    Title for the Jetpack Installation
    Title for the Jetpack section in site settings screen */
@@ -3063,6 +3071,9 @@ translators: sample content for \"Team\" page template */
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack FAQ";
 
+/* Description that explains that we are unable to auto fix the threat */
+"Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site." = "Jetpack Scan не может автоматически устранить эту угрозу. Мы рекомендуем вам устранить угрозу вручную: убедитесь, что WordPress, ваша тема и все ваши плагины обновлены до актуальной версии, и удалите проблемный код, темы или плагины.";
+
 /* Description for a label when the scan has failed */
 "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Jetpack Scan не удалось завершить проверку вашего сайта. Пожалуйста, проверьте, доступен ли ваш сайт в принципе. Если всё в порядке, то повторите попытку. Если нет, а также если Jetpack Scan по-прежнему не работает, обратитесь в службу поддержки.";
 
@@ -3071,6 +3082,27 @@ translators: sample content for \"Team\" page template */
 
 /* Description for a label when there is a single threat on the site, displays the site's title */
 "Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action." = "Jepack Scan обнаружил одну возможную угрозу на %2$@. Посмотрите информацию и предпримите какое-либо действие.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will delete the affected file or directory." = "Jetpack Scan удалит затронутый файл или папку.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will edit the affected file or directory." = "Jetpack Scan изменит затронутый файл или папку.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will replace the affected file or directory." = "Jetpack Scan заменит затронутый файл или папку.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will resolve the threat." = "Jetpack Scan устранит угрозу.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will rollback the affected file to an older (clean) version." = "Jetpack Scan восстановит пораженный файл до более старой версии.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will rollback the affected file to the version from %1$@." = "Jetpack Scan восстановит пораженный файл до версии от %1$@.";
+
+/* Description that explains how we will fix the threat */
+"Jetpack Scan will update to a newer version." = "Jetpack Scan обновится до последней версии.";
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Параметры Jetpack";
@@ -3081,14 +3113,17 @@ translators: sample content for \"Team\" page template */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack установлен";
 
+/* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
+"Jetpack will be fixing all the detected active threats." = "Jetpack устранит все обнаруженные активные угрозы.";
+
+/* Confirmation message presented before fixing a single threat */
+"Jetpack will be fixing the detected active threat." = "Jetpack устранит обнаруженную активную угрозу.";
+
 /* Footer for the Serve images from our servers setting */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack оптимизирует ваши изображения и отдает их посетителям с ближайшего к ним сервера. Использование нашей глобальной CDN ускорит загрузку вашего сайта.";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Присоединитесь к обсуждениям: оставьте комментарии к записям в блогах, на которые вы подписаны.";
-
-/* translators: sample content for \"Team\" page template */
-"Juan Pérez" = "Juan Pérez";
 
 /* Button shown if there are unsaved changes and the author is trying to move away from the post.
    Button shown when the author is asked for publishing confirmation.
@@ -3151,16 +3186,6 @@ translators: sample content for \"Team\" page template */
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Обратитесь к нам за помощью.";
-
-/* translators: sample content for \"Portfolio\" page template */
-"Let's build something together!" = "Давайте сотворим что-нибудь вместе!";
-
-/* translators: sample content for \"Contact\" page template */
-"Let's talk 👋 Don't hesitate to reach out with the contact information below, or send a message using the form." = "Давайте общаться 👋 Не стесняйтесь воспользоваться контактной информацией ниже или послать сообщение через форму.";
-
-/* translators: sample content for \"About\" page template
-translators: sample content for \"Services\" page template */
-"Let’s build something together!" = "Давайте сотворим что-нибудь вместе!";
 
 /* Title for the app appearance setting for light mode */
 "Light" = "Светлое оформление";
@@ -3238,6 +3263,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed while loading the activity feed for a site */
 "Loading Activities..." = "Загрузка активности...";
+
+/* Text displayed while loading the activity feed for a site */
+"Loading Backups..." = "Загружаются резервные копии...";
 
 /* Phrase to show when the user has searched for GIFs and they are being loaded. */
 "Loading GIFs..." = "Загрузка GIF...";
@@ -3403,8 +3431,14 @@ translators: sample content for \"Services\" page template */
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Прикрепить";
 
+/* An option to mark a post as seen. */
+"Mark as seen" = "Отметить как прочитанное";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Пометить как спам.";
+
+/* An option to mark a post as unseen. */
+"Mark as unseen" = "Отметить как непрочитанное";
 
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "Сопоставить учётные записи, используя адрес электронной почты";
@@ -3497,6 +3531,9 @@ translators: sample content for \"Services\" page template */
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
+/* Summary description for a threat */
+"Miscellaneous vulnerability" = "Прочие уязвимости";
+
 /* Title for the mobile web preview */
 "Mobile" = "Мобильное устройство";
 
@@ -3549,6 +3586,9 @@ translators: sample content for \"Services\" page template */
 "Move block left from position %1$s to position %2$s" = "Переместить блок влево из позиции %1$s в позицию %2$s";
 
 /* No comment provided by engineer. */
+"Move block position" = "Переместить блок";
+
+/* No comment provided by engineer. */
 "Move block right" = "Переместить блок вправо";
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
@@ -3572,8 +3612,15 @@ translators: sample content for \"Services\" page template */
 
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
-   Trash option in the trash confirmation alert. */
+   Trash option in the trash confirmation alert.
+   Trash option in the trash page confirmation alert. */
 "Move to Trash" = "Удалить";
+
+/* No comment provided by engineer. */
+"Move to bottom" = "Сдвинуть вниз";
+
+/* No comment provided by engineer. */
+"Move to top" = "Сдвинуть наверх";
 
 /* Option to move Insight up in the view. */
 "Move up" = "Наверх";
@@ -3603,9 +3650,6 @@ translators: sample content for \"Services\" page template */
 
 /* Option in Support view to access previous help tickets. */
 "My Tickets" = "Мои обращения в поддержку";
-
-/* translators: sample content for \"Portfolio\" page template */
-"My portfolio showcases various projects created throughout my career. See my contact information below and get in touch." = "Мое портфолио демонстрирует различные проекты созданные в течении моей карьеры. Информация для договора представлена ниже, свяжитесь со мной.";
 
 /* No comment provided by engineer. */
 "My post publish panel" = "Панель публикации моей записи";
@@ -3808,6 +3852,9 @@ translators: sample content for \"Services\" page template */
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Оценок пока нет";
 
+/* Title for the view when there aren't any backups to display for a given filter. */
+"No matching backups found" = "Подходящих резервных копий не найдено";
+
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "No matching events found." = "Соответствующие события не найдены.";
 
@@ -3818,6 +3865,12 @@ translators: sample content for \"Services\" page template */
 
 /* Menus text shown when no menus were available for loading the Menus editor. */
 "No menus available" = "Нет доступных меню";
+
+/* A hint to users about creating a downloadable backup of their site. */
+"No need to wait around. We'll notify you when your backup is ready." = "Не обязательно ждать. Мы уведомим вас о готовности резервной копии.";
+
+/* A hint to users about restoring their site. */
+"No need to wait around. We'll notify you when your site has been fully restored." = "Не обязательно ждать. Мы уведомим вас по окончании восстановления сайта.";
 
 /* Displayed in the Stats widgets when there is no network */
 "No network available" = "Сеть недоступна";
@@ -3982,6 +4035,9 @@ translators: sample content for \"Services\" page template */
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
    Title of primary button on alert prompting verify their accounts while attempting to publish */
 "OK" = "ОК";
+
+/* Title for the button that will dismiss this view. */
+"OK, notify me!" = "ОК, уведомите меня!";
 
 /* Disabled */
 "Off" = "Выкл.";
@@ -4268,6 +4324,12 @@ translators: sample content for \"Services\" page template */
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "Проверьте подключение к Интернету и повторите попытку.";
 
+/* Confirmation title presented before fixing all the threats, displays the number of threats to be fixed */
+"Please confirm you want to fix all %1$d active threats" = "Подтвердите исправление %1$d активных угроз.";
+
+/* Confirmation title presented before fixing a single threat */
+"Please confirm you want to fix this threat" = "Подтвердите исправление активной угрозы";
+
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "Обратитесь в службу поддержки.";
 
@@ -4392,12 +4454,6 @@ translators: sample content for \"Services\" page template */
 
 /* Section title for Popular Languages */
 "Popular languages" = "Популярные языки";
-
-/* translators: title for \"Portfolio\" page template */
-"Portfolio" = "Портфолио";
-
-/* translators: sample content for \"Team\" page template */
-"Position or Job Title" = "Должность";
 
 /* Menu item label for linking a post.
    Noun. Type of content being selected is a blog post */
@@ -4599,9 +4655,6 @@ translators: sample content for \"Services\" page template */
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "Если вы продолжите, с вашего устройства будут удалены все данные WordPress.com и сохранённые локально черновики. Всё, что уже сохранено на ваших блогах WordPress.com, не пропадёт.";
-
-/* translators: sample content for \"Portfolio\" page template */
-"Project Name" = "Имя проекта";
 
 /* Menu item label for linking a project page. */
 "Projects" = "Проекты";
@@ -4944,8 +4997,13 @@ translators: sample content for \"Services\" page template */
 "Resolution" = "Разрешение";
 
 /* Title displayed for restore action.
+   Title for Jetpack Restore Complete screen
+   Title for Jetpack Restore Status screen
    Title for the Jetpack Restore Site Screen */
 "Restore" = "Восстановить";
+
+/* Title for error displayed when restoring a site fails. */
+"Restore failed." = "Не удалось восстановить.";
 
 /* Label that describes the restore site action */
 "Restore site" = "Восстановление сайта";
@@ -4991,6 +5049,9 @@ translators: sample content for \"Services\" page template */
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Отменить ожидание изменения";
 
+/* Title of a Quick Start Tour */
+"Review site pages" = "Обзор страниц сайта";
+
 /* Title of the screen that shows the revisions. */
 "Revision" = "Редакция";
 
@@ -5024,12 +5085,6 @@ translators: sample content for \"Services\" page template */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
-
-/* translators: sample content for \"Team\" page template */
-"Sally Smith" = "Елена Васина";
-
-/* translators: sample content for \"Team\" page template */
-"Samuel the Dog" = "котёнок Гав";
 
 /* Menus save button title
    Save Action
@@ -5191,13 +5246,13 @@ translators: sample content for \"Services\" page template */
 "Select %@ to continue" = "Выберите %@ для продолжения";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new page" = "Выберите %@ для создания новой страницы";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to create a new post" = "Выберите %@ для создания новой записи";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to discover new themes" = "Выберите %@ для поиска новых тем";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to edit your Homepage." = "Выберите %@ для редактирования главной страницы.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to look for sites with similar interests" = "Выберите %@ для поиска сайтов с общими интересами";
@@ -5215,10 +5270,10 @@ translators: sample content for \"Services\" page template */
 "Select %@ to see your current plan and other available plans." = "Выберите %@ для просмотра вашего текущего тарифа и других доступных тарифов.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to set a new title." = "Выберите %@ для установки нового названия.";
+"Select %@ to see your page list." = "Выберите %@ для просмотра списка страниц.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to start personalising your site" = "Выберите %@ для начала персонализации вашего сайта";
+"Select %@ to set a new title." = "Выберите %@ для установки нового названия.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to upload a new one." = "Выберите %@ для загрузки нового.";
@@ -5325,9 +5380,6 @@ translators: sample content for \"Services\" page template */
 /* Label for connected service in Publicize stat. */
 "Service" = "Служба";
 
-/* translators: title for \"Services\" page template */
-"Services" = "Услуги";
-
 /* No comment provided by engineer. */
 "Set Featured Image" = "Установить миниатюру";
 
@@ -5387,6 +5439,9 @@ translators: sample content for \"Services\" page template */
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Поделиться информацией с нашей аналитикой по использованию сервисов при входе в вашу учетную запись WordPress.";
+
+/* Title for the button that will share the link for the downlodable backup file */
+"Share link" = "Поделиться ссылкой";
 
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
@@ -5521,6 +5576,7 @@ translators: sample content for \"Services\" page template */
 "Site Language" = "Язык сайта";
 
 /* Noun. Title. Links to the blog's Pages screen.
+   The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
 "Site Pages" = "Страницы сайта";
 
@@ -5763,9 +5819,6 @@ translators: sample content for \"Services\" page template */
 /* Second story intro item description */
 "Story posts don't disappear" = "Записи истории не пропадают";
 
-/* translators: sample content for \"Services\" page template */
-"Strategy" = "Стратегия";
-
 /* Title of alert announcing new Create Button feature. */
 "Streamlined navigation" = "Упрощённая навигация";
 
@@ -5953,17 +6006,11 @@ translators: sample content for \"Services\" page template */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Таксономия";
 
-/* translators: title for \"Team\" page template */
-"Team" = "Команда";
-
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Расскажите нам о себе.";
 
 /* Create site, step 1. Select type of site. Title */
 "Tell us what kind of site you'd like to make" = "Расскажите какой тип сайта вы хотите создать";
-
-/* No comment provided by engineer. */
-"Template Preview" = "Предварительный просмотр шаблона";
 
 /* The underlined title sentence */
 "Terms and Conditions" = "Правила и условия";
@@ -6037,6 +6084,9 @@ translators: sample content for \"Services\" page template */
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Сертификат для этого сервера недействителен. Возможно, вы пытаетесь подключиться к серверу, который имитирует «%@». Это может представлять риск для конфиденциальности вашей информации.\n\nДоверять этому сертификату?";
+
+/* Title for a threat that includes the file name of the file */
+"The file %1$@ contains a malicious code pattern" = "Файл %1$@ содержит элемент вредоносного кода";
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "Невозможно добавить изображение в «Библиотеку медиафайлов».";
@@ -6116,9 +6166,6 @@ translators: sample content for \"Services\" page template */
 
 /* Message shown when a video failed to load while trying to add it to the Media library. */
 "The video could not be added to the Media Library." = "Невозможно добавить видео в «Библиотеку файлов».";
-
-/* translators: sample content for \"About\" page template */
-"The way to get started is to quit talking and begin doing." = "Чтобы начать, нужно перестать говорить и начать делать.";
 
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Тема подключена";
@@ -6264,9 +6311,6 @@ translators: sample content for \"Services\" page template */
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Эта информация позволит нам улушать наши продукты, уточнять маркетинг, персонализировать ваш опыт взаимодействия с WordPress.com, и далее как указано в нашей политике конфиденциальности.";
 
-/* translators: sample content for \"About\" page template */
-"This is sample content, included with the template to illustrate its features. Remove or replace it with your own words and media." = "Это шаблонное содержимое для иллюстрации возможностей. Удалите или замените его своим.";
-
 /* Select domain name. Subtitle */
 "This is where people will find you on the internet." = "Это место, где люди найдут вас в сети.";
 
@@ -6304,6 +6348,12 @@ translators: sample content for \"Services\" page template */
 /* Discussion Settings Title
    Settings: Comments Threading preferences */
 "Threading" = "Ветвление";
+
+/* Title for a threat */
+"Threat Found" = "Обнаружена угроза";
+
+/* Summary description for a threat that includes the threat signature */
+"Threat found %1$@" = "Обнаружена угроза %1$@";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Миниатюра";
@@ -6443,6 +6493,9 @@ translators: sample content for \"Services\" page template */
    Trashes the comment */
 "Trash" = "В корзину";
 
+/* Title of the trash page confirmation alert. */
+"Trash this page?" = "Удалить страницу в корзину?";
+
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Удалить запись в корзину?";
 
@@ -6463,8 +6516,8 @@ translators: sample content for \"Services\" page template */
    Try to load the list of interests again. */
 "Try Again" = "Попробуйте еще раз.";
 
-/* No comment provided by engineer. */
-"Try a starter layout" = "Попробуйте стартовый макет";
+/* Text displayed in the view when there aren't any backups to display for a given filter. */
+"Try adjusting your date range filter" = "Попробуйте задать иной диапазон дат";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "Try adjusting your date range or activity type filters" = "Попробуйте настроить диапазон дат или фильтры по типу активности";
@@ -6508,9 +6561,6 @@ translators: sample content for \"Services\" page template */
 /* URL text field placeholder */
 "URL" = "URL-адрес";
 
-/* translators: sample content for \"Contact\" page template */
-"USA" = "СССР";
-
 /* Menus label for describing which menu the location uses in the header. */
 "USES" = "ВАРИАНТЫ ИСПОЛЬЗОВАНИЯ";
 
@@ -6551,6 +6601,12 @@ translators: sample content for \"Services\" page template */
 /* Error shown when the app fails to load a video from the user's media library. */
 "Unable to load video." = "Невозможно загрузить видео.";
 
+/* Alert displayed to the user when updating a post's seen status failed. */
+"Unable to mark post seen" = "Не удается отметить запись прочитанной";
+
+/* Alert displayed to the user when updating a post's unseen status failed. */
+"Unable to mark post unseen" = "Не удается отметить запись непрочитанной";
+
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Невозможно вопроизвести видео";
 
@@ -6565,6 +6621,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "Невозможно сохранить медиафайл.";
+
+/* Message that appears when a user tries to trash a page while their device is offline. */
+"Unable to trash pages while offline. Please try again later." = "Невозможно удалить страницы корзину при отсутствии подключения к сети. Попробуйте позже.";
 
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "Невозможно удалить записи в корзину при отсутствии подключения к сети. Попробуйте позже.";
@@ -6678,6 +6737,9 @@ translators: sample content for \"Services\" page template */
 
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Несохранённые изменения";
+
+/* No comment provided by engineer. */
+"Unsupported" = "Не поддерживается";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Без названия";
@@ -6930,6 +6992,9 @@ translators: sample content for \"Services\" page template */
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Перейдите на сайт «%@», чтобы читать далее";
 
+/* Title for the button that will open a link to this site. */
+"Visit site" = "Перейти на сайт";
+
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "Перейдите в справочный центр, чтобы получить ответы на часто задаваемые вопросы, или обратитесь к нам за дополнительной информацией.";
 
@@ -6941,8 +7006,26 @@ translators: sample content for \"Services\" page template */
    Today's Stats 'Visitors' label */
 "Visitors" = "Посетители";
 
-/* translators: sample content for \"About\" page template */
-"Visitors will want to know who is on the other side of the page. Use this space to write about yourself, your site, your business, or anything you want. Use the testimonials below to quote others, talking about the same thing – in their own words." = "Посетителям интересно узнать кто за той стороной экрана. Используйте это место для того, чтобы написать о себе, о сайте, о своем бизнесе или чём угодно еще. Используйте отзывы ниже для цитат, на одну тему, своими словами.";
+/* Summary description for a threat */
+"Vulnerability found in WordPress" = "В WordPress обнаружена уязвимость";
+
+/* Summary description for a threat */
+"Vulnerability found in plugin" = "В плагине обнаружена уязвимость";
+
+/* Summary description for a threat */
+"Vulnerability found in theme" = "В теме обнаружена уязвимость";
+
+/* Title for a threat */
+"Vulnerable Plugin" = "Уязвимый плагин";
+
+/* Title for a threat that includes the file name of the plugin and the affected version */
+"Vulnerable Plugin: %1$@ (version %2$@)" = "Уязвимый плагин: %1$@ (версия %2$@)";
+
+/* Title for a threat */
+"Vulnerable Theme" = "Уязвимая тема";
+
+/* Title for a threat that includes the file name of the theme and the affected version */
+"Vulnerable Theme %1$@ (version %2$@)" = "Уязвимая тема: %1$@ (версия %2$@)";
 
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "Консоль";
@@ -6956,16 +7039,12 @@ translators: sample content for \"Services\" page template */
 /* View title during the Google auth process. */
 "Waiting..." = "Ожидайте...";
 
-/* translators: sample content for \"About\" page template */
-"Walt Disney" = "Уолт Дисней";
-
 /* Title of alert asking if users want to try out the quick start checklist. */
 "Want a little help getting started?" = "Нужна небольшая подсказка как начать?";
 
-/* translators: sample content for \"Team\" page template */
-"Want to work with us?" = "Хотите работать с нами?";
-
-/* Editing GIF alert title. */
+/* Editing GIF alert title.
+   Noun. Title for Jetpack Restore warning.
+   Title for Jetpack Restore Warning screen */
 "Warning" = "Предупреждение";
 
 /* No comment provided by engineer. */
@@ -6976,9 +7055,6 @@ translators: sample content for \"Services\" page template */
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Watch your audience grow with in-depth analytics." = "Следите за ростом вашей аудитории с глубокой аналитикой.";
-
-/* translators: sample content for \"Team\" page template */
-"We are a small team of talented professionals with a wide range of skills and experience. We love what we do, and we do it with passion. We look forward to working with you." = "Мы небольшая команда талантливых профессионалов с широким спектром навыков и опытом. Мы страстно любим свое дело. Мы стремимся начать работать с вами.";
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "Не удается загрузить данные.";
@@ -7018,6 +7094,9 @@ translators: sample content for \"Services\" page template */
    Text displayed after the app fails to upload a post, no new attempt will be made. */
 "We couldn't complete this action." = "Невозможно завершить это действие.";
 
+/* Message for error displayed when preparing a backup fails. */
+"We couldn't create your backup. Please try again later." = "Не удалось создать резервную копию. Попробуйте позже.";
+
 /* Primary message shown when there are no domains that match the user entered text. */
 "We couldn't find any available address with the words you entered - let's try again." = "Мы не нашли доступных адресов с введенным ключевым словом, попробуйте еще.";
 
@@ -7032,6 +7111,9 @@ translators: sample content for \"Services\" page template */
 
 /* Text displayed after the app fails to upload a private post, it will attempt to upload it later. */
 "We couldn't publish this private post, but we'll try again later." = "Невозможно опубликовать эту личную запись, но мы попробуем ещё раз позже.";
+
+/* Message for error displayed when restoring a site fails. */
+"We couldn't restore your site. Please try again later." = "Восстановление сайта невозможно. Попробуйте позже.";
 
 /* Description that appears when a media fails to load in the Media Editor. */
 "We couldn't retrieve this media.\nPlease tap to retry." = "Невозможно получить медиафайл.\nНажмите для повтора.";
@@ -7087,8 +7169,8 @@ translators: sample content for \"Services\" page template */
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "Мы значительно улучшили редактор блоков. Вы должны его попробовать!\n\nМы включили редактор блоков для новых записей и страниц. Если вы захотите вернуться на классический редактор, то перейдите в 'Мой сайт' > 'Настройки сайта'.";
 
-/* translators: sample content for \"Services\" page template */
-"We offer a range of services to help you achieve the results you're after. Not sure what you need, or what it costs? We can explain what services are right for you and tell you more about our fees. Get in touch below." = "Мы предлагаем спектр услуг для достижения ваших результатов. Пока  не знаете что именно вам нужно и чего это будет стоить? Мы можем проконсультировать вас! Свяжитесь с нами ниже.";
+/* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
+"We successfully created a backup of your site from %1$@." = "Резервная копия вашего сайта на %1$@.";
 
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "Мы используем другие инструменты отслеживания, включая и инструменты третьих сторон. Прочитайте о них и как их контролировать.";
@@ -7157,11 +7239,20 @@ translators: sample content for \"Services\" page template */
 /* Text confirming email address to be used for new account. */
 "We'll use this email address to create your new WordPress.com account." = "Этот адрес эл.почты будет использован для создания новой учётной записи WordPress.com.";
 
+/* Description for the Jetpack Backup Status message. %1$@ is a placeholder for the selected date. */
+"We're creating a downloadable backup of your site from %1$@." = "Создается резервная копия вашего сайта на %1$@.";
+
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "Завершение установки, все почти готово...";
 
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Не удалось подключиться к сайту Jetpack по этому URL-адресу. Свяжитесь с нами, если потребуется помощь.";
+
+/* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
+"We're restoring your site back to %1$@." = "Выполняется откат к состоянию сайта на %1$@.";
+
+/* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
+"We've also emailed you a link to your file." = "Мы также отправили вам ссылку на файл по email.";
 
 /* Instruction text after a signup Magic Link was requested. */
 "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Мы отослали вам ссылку для создания учётной записи WordPress.com. Проверьте почту на вашем устройстве и нажмите на ссылку, полученную с WordPress.com.";
@@ -7187,9 +7278,6 @@ translators: sample content for \"Services\" page template */
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "Добро пожаловать в WordPress";
 
-/* translators: sample content for \"Blog\" page template */
-"Welcome to our new blog" = "Добро пожаловать в наш новый блог";
-
 /* A message title */
 "Welcome to the Reader" = "Добро пожаловать в раздел «Чтиво».";
 
@@ -7210,9 +7298,6 @@ translators: sample content for \"Services\" page template */
 
 /* Title of alert letting users know we've upgraded the quick start checklist. */
 "We’ve made some changes to your checklist" = "Мы внесли некоторые изменения в ваш список";
-
-/* translators: sample content for \"About\" page template */
-"What People Say" = "Люди говорят";
 
 /* This is the string we display when prompting the user to review the app */
 "What do you think about WordPress?" = "Каково ваше мнение о WordPress?";
@@ -7540,8 +7625,17 @@ translators: sample content for \"Services\" page template */
 /* Explaining to the user why the app needs access to the device media library. */
 "Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "Приложение не может получить доступ к медиатеке, возможно из-за ограничений, например родительского контроля. Пожалуйста, проверьте настройки родительского контроля на этом устройстве.";
 
+/* Title for the Jetpack Backup Complete message. */
+"Your backup is now available for download" = "Резервная копия доступна для скачивания";
+
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Ваше имя пользователя - %1$@. За некоторыми исключениями, другие всегда будут видеть ваше отображаемое имя - %2$@.";
+
+/* Text displayed in the view when there aren't any Backups to display */
+"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Ваша первая резервная копия появится здесь в течение 24 часов. Вы получите уведомление, когда резервная копия будет готова.";
+
+/* Title for the view when there aren't any Backups to display */
+"Your first backup will be ready soon" = "Ваша первая резервная копия скоро будет готова";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Ваши уведомления путешествуют с вами — смотрите комментарии и отметки \"нравится\" в реальном времени.";
@@ -7563,6 +7657,9 @@ translators: sample content for \"Services\" page template */
 
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Ваш сайт создан!";
+
+/* Title for the Jetpack Restore Complete message. */
+"Your site has been restored" = "Ваш сайт был восстановлен";
 
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Ваш сайт был успешно восстановлен";

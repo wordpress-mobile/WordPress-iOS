@@ -16,7 +16,7 @@ class WP3DTouchShortcutCreatorTests: XCTestCase {
     }
 
     fileprivate func is3DTouchAvailable() -> Bool {
-        let window = UIApplication.shared.keyWindow
+        let window = UIApplication.shared.mainWindow
 
         return window?.traitCollection.forceTouchCapability == .available
     }

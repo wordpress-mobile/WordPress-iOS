@@ -187,7 +187,6 @@ static NSInteger WPPickerToolBarHeight = 44.0f;
         picker.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         picker.dataSource = self;
         picker.delegate = self;
-        picker.showsSelectionIndicator = YES;
         self.pickerView = picker;
         [self setPickerStartingIndexes];
     }
