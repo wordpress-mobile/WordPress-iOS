@@ -253,13 +253,13 @@ struct JetpackScanThreatViewModel {
                 }
 
                 struct messages {
-                    static let ignore = NSLocalizedString("You shouldn’t ignore a security unless you are absolute sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".", comment: "Message displayed in ignore threat alert. %1$@ is a placeholer for the blog name.")
+                    static let ignore = NSLocalizedString("You shouldn’t ignore a security unless you are absolute sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".", comment: "Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name.")
                 }
             }
 
             struct success {
                 static let fix = NSLocalizedString("The threat was successfully fixed.", comment: "Message displayed when a threat is fixed successfully.")
-                static let ignore = NSLocalizedString("Thread ignored.", comment: "Message displayed when a threat is ignored successfully.")
+                static let ignore = NSLocalizedString("Threat ignored.", comment: "Message displayed when a threat is ignored successfully.")
             }
 
             struct error {
