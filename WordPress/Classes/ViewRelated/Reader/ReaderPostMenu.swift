@@ -64,13 +64,15 @@ open class ReaderPostMenu {
 
         // Seen
         if FeatureFlag.unseenPosts.enabled {
-            alertController.addActionWithTitle(post.isSeen ? ReaderPostMenuButtonTitles.markUnseen : ReaderPostMenuButtonTitles.markSeen,
-                                               style: .default,
-                                               handler: { (action: UIAlertAction) in
-                                                if let post: ReaderPost = self.existingObject(for: post.objectID, context: post.managedObjectContext) {
-                                                    self.toggleSeenForPost(post)
-                                                }
-                                               })
+            if post.isSeenSupported {
+                alertController.addActionWithTitle(post.isSeen ? ReaderPostMenuButtonTitles.markUnseen : ReaderPostMenuButtonTitles.markSeen,
+                                                   style: .default,
+                                                   handler: { (action: UIAlertAction) in
+                                                    if let post: ReaderPost = self.existingObject(for: post.objectID, context: post.managedObjectContext) {
+                                                        self.toggleSeenForPost(post)
+                                                    }
+                                                   })
+            }
         }
 
         // Visit site

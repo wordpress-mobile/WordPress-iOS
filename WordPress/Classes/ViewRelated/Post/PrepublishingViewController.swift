@@ -392,7 +392,7 @@ extension Set {
 // MARK: - DrawerPresentable
 extension PrepublishingViewController: DrawerPresentable {
     var allowsUserTransition: Bool {
-        return false
+        return true
     }
 
     var collapsedHeight: DrawerHeight {
