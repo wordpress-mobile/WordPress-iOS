@@ -448,7 +448,7 @@ import "./ScreenshotFastfile"
     FileUtils.rm_rf(File.join(PROJECT_ROOT_FOLDER, "WordPress.app.dSYM.zip"))
 
     if (options[:create_release])
-      archive_zip_path = File.dirname(Dir.pwd) + "/WordPress.xarchive.zip"
+      archive_zip_path = File.join(PROJECT_ROOT_FOLDER, "WordPress.xarchive.zip")
       zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
 
       version = ios_get_app_version()
