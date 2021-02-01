@@ -16,7 +16,7 @@ struct JetpackScanThreatViewModel {
     let technicalDetailsTitle: String
     let technicalDetailsDescription: String
     let fileName: String?
-    let fileContext: JetpackThreatContext?
+    let attributedFileContext: NSAttributedString?
 
     // Threat Detail Action
     let fixActionTitle: String?
@@ -49,7 +49,7 @@ struct JetpackScanThreatViewModel {
         technicalDetailsTitle = Strings.details.titles.technicalDetails
         technicalDetailsDescription = Strings.details.descriptions.technicalDetails
         fileName = threat.fileName
-        fileContext = threat.context
+        attributedFileContext = Self.attributedString(for: threat.context)
 
         // Threat Details Action
         fixActionTitle = Self.fixActionTitle(for: threat)
@@ -309,8 +309,128 @@ struct JetpackScanThreatViewModel {
     }
 }
 
+extension JetpackScanThreatViewModel {
+
+    private static func attributedString(for context: JetpackThreatContext?) -> NSAttributedString? {
+        guard let context = context else {
+            return nil
+        }
+
+        let lineFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .regular)
+        let numberFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .semibold)
+        let attrString = NSMutableAttributedString()
+
+        let biggestLen = String(context.lines.last?.lineNumber ?? 0).count
+
+        let longestLine = context.lines.sorted { $0.contents.count > $1.contents.count}.first!
+        let longestLen = longestLine.contents.count
+
+        let paragraph = NSMutableParagraphStyle()
+
+        for line in context.lines {
+
+            // Number attributed string
+
+            var numberStr = String(line.lineNumber)
+            let numberPadding = "".padding(toLength: biggestLen - numberStr.count,
+                                           withPad: Constants.noBreakSpace, startingAt: 0)
+            numberStr = numberPadding + numberStr
+            let numberAttr = NSMutableAttributedString(string: numberStr)
+
+            // Contents attributed string
+
+            let contents = line.contents
+            let contentsPadding = "".padding(toLength: longestLen - contents.count,
+                                             withPad: Constants.noBreakSpace, startingAt: 0)
+
+            let padding = " "
+            let contentsStr = String(format: "%@\n", padding + contents + contentsPadding)
+            let contentsAttr = NSMutableAttributedString(string: contentsStr, attributes: [
+                NSAttributedString.Key.font: lineFont,
+                NSAttributedString.Key.foregroundColor: Constants.normal.textColor,
+                NSAttributedString.Key.backgroundColor: Constants.normal.backgroundColor,
+                NSAttributedString.Key.paragraphStyle: paragraph,
+            ])
+
+            var numberBackgroundColor = Constants.normal.numberBackgroundColor
+
+            // Highlight logic
+
+            if let highlights = line.highlights {
+
+                numberBackgroundColor = Constants.highlighted.numberBackgroundColor
+
+                contentsAttr.addAttribute(.backgroundColor,
+                                          value: numberBackgroundColor,
+                                          range: NSRange(location: 0, length: contentsAttr.length))
+
+                for highlight in highlights {
+                    let location = highlight.location
+                    let length = highlight.length + padding.count
+                    let range = NSRange(location: location, length: length)
+
+                    contentsAttr.addAttributes([
+                        NSAttributedString.Key.font: lineFont,
+                        NSAttributedString.Key.foregroundColor: Constants.highlighted.textColor,
+                        NSAttributedString.Key.backgroundColor: Constants.highlighted.backgroundColor,
+                        NSAttributedString.Key.paragraphStyle: paragraph
+                    ], range: range)
+                }
+            }
+
+            numberAttr.setAttributes([
+                NSAttributedString.Key.font: numberFont,
+                NSAttributedString.Key.foregroundColor: Constants.normal.numberTextColor,
+                NSAttributedString.Key.backgroundColor: numberBackgroundColor,
+            ], range: NSRange(location: 0, length: numberStr.count))
+
+            attrString.append(numberAttr)
+            attrString.append(NSAttributedString(string: ""))
+            attrString.append(contentsAttr)
+        }
+
+        return attrString
+    }
+
+    private struct Constants {
+
+        static let noBreakSpace = "\u{00a0}"
+
+        struct normal {
+            static let textColor = UIColor(rgb: 0x2C3337)
+            static let backgroundColor = UIColor(rgb: 0xF6F7F7)
+            static let numberTextColor = UIColor(rgb: 0x646970)
+            static let numberBackgroundColor = UIColor(rgb: 0xC3C4C7)
+        }
+
+        struct highlighted {
+            static let textColor = UIColor.white
+            static let backgroundColor = UIColor(rgb: 0xD63638)
+            static let numberBackgroundColor = UIColor(rgb: 0xF1DADA)
+        }
+    }
+}
+
 private extension String {
     func fileName() -> String {
         return (self as NSString).lastPathComponent
+    }
+}
+
+private extension UIColor {
+    convenience init(red: Int, green: Int, blue: Int) {
+        assert(red >= 0 && red <= 255, "Invalid red component")
+        assert(green >= 0 && green <= 255, "Invalid green component")
+        assert(blue >= 0 && blue <= 255, "Invalid blue component")
+
+        self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
+    }
+
+    convenience init(rgb: Int) {
+        self.init(
+            red: (rgb >> 16) & 0xFF,
+            green: (rgb >> 8) & 0xFF,
+            blue: rgb & 0xFF
+        )
     }
 }
