@@ -21,7 +21,22 @@ class JetpackScanCoordinator {
 
     /// Returns the threats if we're in the idle state
     var threats: [JetpackScanThreat]? {
-        return scan?.state == .idle ? scan?.threats : nil
+        let returnThreats: [JetpackScanThreat]?
+
+        if scan?.state == .fixingThreats {
+            returnThreats = scan?.threatFixStatus?.compactMap { $0.threat } ?? nil
+        } else {
+            returnThreats = scan?.state == .idle ? scan?.threats : nil
+        }
+
+        // Sort the threats by date then by threat ID
+        return returnThreats?.sorted(by: {
+            if $0.firstDetected != $1.firstDetected {
+                return $0.firstDetected > $1.firstDetected
+            }
+
+            return $0.id > $1.id
+        })
     }
 
     private var actionButtonState: ErrorButtonAction?
