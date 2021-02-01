@@ -8,6 +8,8 @@ import WordPressFlux
 extension NSNotification.Name {
     // Sent when a site or a tag is unfollowed via Reader Manage screen.
     static let ReaderTopicUnfollowed = NSNotification.Name(rawValue: "ReaderTopicUnfollowed")
+    // Sent when a site is followed via Reader Manage screen.
+    static let ReaderSiteFollowed = NSNotification.Name(rawValue: "ReaderSiteFollowed")
     // Sent when a post's seen state has been toggled.
     static let ReaderPostSeenToggled = NSNotification.Name(rawValue: "ReaderPostSeenToggled")
 }

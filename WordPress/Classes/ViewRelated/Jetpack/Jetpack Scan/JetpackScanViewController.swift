@@ -28,8 +28,15 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.title = NSLocalizedString("Scan", comment: "Title of the view")
+
         configureTableView()
         coordinator.viewDidLoad()
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("History", comment: "Title of a navigation button that opens the scan history view"),
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(showHistory))
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -47,7 +54,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     }
 
     // MARK: - JetpackScanView
-    func render(_ scan: JetpackScan) {
+    func render() {
         updateNoResults(nil)
 
         refreshControl.endRefreshing()
@@ -87,6 +94,12 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
 
     func presentAlert(_ alert: UIAlertController) {
         present(alert, animated: true, completion: nil)
+    }
+
+    // MARK: - Actions
+    @objc func showHistory() {
+        let viewController = JetpackScanHistoryViewController(blog: blog)
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     // MARK: - Private: 
@@ -157,13 +170,24 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
     }
 
     private func threat(for indexPath: IndexPath) -> JetpackScanThreat? {
-        guard let threats = coordinator.threats else {
+        let row = indexPath.row - Constants.tableHeaderCountOffset
+
+        guard row >= 0, let threats = coordinator.threats else {
             return nil
         }
 
-        let row = indexPath.row - Constants.tableHeaderCountOffset
-
         return threats[row]
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        guard let threat = threat(for: indexPath) else {
+            return
+        }
+
+        let threatDetailsVC = JetpackScanThreatDetailsViewController(threat: threat)
+        self.navigationController?.pushViewController(threatDetailsVC, animated: true)
     }
 }
 
@@ -229,6 +253,5 @@ extension JetpackScanViewController: NoResultsViewControllerDelegate {
 
         static let tryAgainButtonText = NSLocalizedString("Try again", comment: "Button label for trying to retrieve the scan status again")
         static let contactSupportButtonText = NSLocalizedString("Contact support", comment: "Button label for contacting support")
-
     }
 }

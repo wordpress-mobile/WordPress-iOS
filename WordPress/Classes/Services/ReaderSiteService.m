@@ -4,7 +4,6 @@
 #import "ContextManager.h"
 #import "ReaderPostService.h"
 #import "ReaderPost.h"
-#import "ReaderTopicService.h"
 #import "WPAccount.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
@@ -201,6 +200,21 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         if (failure) {
             failure(error);
         }
+    }];
+}
+
+- (void)topicWithSiteURL:(NSURL *)siteURL success:(void (^)(ReaderSiteTopic *topic))success failure:(void(^)(NSError *error))failure
+{
+    WordPressComRestApi *api = [self apiForRequest];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:api];
+    
+    [service findSiteIDForURL:siteURL success:^(NSUInteger siteID) {
+        ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        NSNumber *site = [NSNumber numberWithUnsignedLong:siteID];
+        ReaderSiteTopic *topic = [topicService findSiteTopicWithSiteID:site];
+        success(topic);
+    } failure:^(NSError *error) {
+        failure(error);
     }];
 }
 

@@ -416,11 +416,13 @@ extension Date {
 
 class WPJTACMonthView: JTACMonthView {
 
-    // Avoids content to scroll above the maximum size
+    // Avoids content to scroll above/below the maximum/minimum size
     override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
         let maxY = contentSize.height - frame.size.height
         if contentOffset.y > maxY {
             super.setContentOffset(CGPoint(x: contentOffset.x, y: maxY), animated: animated)
+        } else if contentOffset.y < 0 {
+            super.setContentOffset(CGPoint(x: contentOffset.x, y: 0), animated: animated)
         } else {
             super.setContentOffset(contentOffset, animated: animated)
         }
