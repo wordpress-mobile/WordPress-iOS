@@ -23,6 +23,10 @@ struct JetpackScanThreatViewModel {
     let ignoreActionTitle: String
     let ignoreActionMessage: String
 
+    // Threat Detail Success
+    let fixSuccessTitle: String
+    let ignoreSuccessTitle: String
+
     // Threat Detail Error
     let fixErrorTitle: String
     let ignoreErrorTitle: String
@@ -51,6 +55,10 @@ struct JetpackScanThreatViewModel {
         fixActionTitle = Self.fixActionTitle(for: threat)
         ignoreActionTitle = Strings.details.actions.titles.ignore
         ignoreActionMessage = Strings.details.actions.messages.ignore
+
+        // Threat Detail Success
+        fixSuccessTitle = Strings.details.success.fix
+        ignoreSuccessTitle = Strings.details.success.ignore
 
         // Threat Details Error
         fixErrorTitle = Strings.details.error.fix
@@ -247,6 +255,11 @@ struct JetpackScanThreatViewModel {
                 struct messages {
                     static let ignore = NSLocalizedString("You shouldn’t ignore a security unless you are absolute sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".", comment: "Message displayed in ignore threat alert. %1$@ is a placeholer for the blog name.")
                 }
+            }
+
+            struct success {
+                static let fix = NSLocalizedString("The threat was successfully fixed.", comment: "Message displayed when a threat is fixed successfully.")
+                static let ignore = NSLocalizedString("Thread ignored.", comment: "Message displayed when a threat is ignored successfully.")
             }
 
             struct error {

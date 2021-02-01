@@ -2,8 +2,8 @@ import UIKit
 import WordPressFlux
 
 protocol JetpackScanThreatDetailsViewControllerDelegate: class {
-    func didFixThreat(_ controller: JetpackScanThreatDetailsViewController)
-    func didIgnoreThreat(_ controller: JetpackScanThreatDetailsViewController)
+    func willFixThreat(_ threat: JetpackScanThreat, controller: JetpackScanThreatDetailsViewController)
+    func willIgnoreThreat(_ threat: JetpackScanThreat, controller: JetpackScanThreatDetailsViewController)
 }
 
 class JetpackScanThreatDetailsViewController: UIViewController {
@@ -46,10 +46,6 @@ class JetpackScanThreatDetailsViewController: UIViewController {
     private let blog: Blog
     private let threat: JetpackScanThreat
 
-    private lazy var coordinator: JetpackScanThreatDetailsCoordinator = {
-        return JetpackScanThreatDetailsCoordinator(blog: blog, threat: threat, view: self)
-    }()
-
     private lazy var viewModel: JetpackScanThreatViewModel = {
         return JetpackScanThreatViewModel(threat: threat)
     }()
@@ -83,7 +79,10 @@ class JetpackScanThreatDetailsViewController: UIViewController {
 
         alert.addAction(UIAlertAction(title: Strings.cancel, style: .cancel))
         alert.addAction(UIAlertAction(title: Strings.ok, style: .default, handler: { [weak self] _ in
-            self?.coordinator.fixThreat()
+            guard let self = self else {
+                return
+            }
+            self.delegate?.willFixThreat(self.threat, controller: self)
         }))
 
         present(alert, animated: true)
@@ -100,31 +99,13 @@ class JetpackScanThreatDetailsViewController: UIViewController {
 
         alert.addAction(UIAlertAction(title: Strings.cancel, style: .cancel))
         alert.addAction(UIAlertAction(title: Strings.ok, style: .default, handler: { [weak self] _ in
-            self?.coordinator.ignoreThreat()
+            guard let self = self else {
+                return
+            }
+            self.delegate?.willIgnoreThreat(self.threat, controller: self)
         }))
 
         present(alert, animated: true)
-    }
-}
-
-extension JetpackScanThreatDetailsViewController: JetpackScanThreatDetailsView {
-
-    func showFixThreatSuccess() {
-        delegate?.didFixThreat(self)
-    }
-
-    func showIgnoreThreatSuccess() {
-        delegate?.didIgnoreThreat(self)
-    }
-
-    func showFixThreatError() {
-        let notice = Notice(title: viewModel.fixErrorTitle)
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
-    }
-
-    func showIgnoreThreatError() {
-        let notice = Notice(title: viewModel.ignoreErrorTitle)
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 }
 
