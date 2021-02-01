@@ -43,8 +43,9 @@ class JetpackScanCoordinator {
     }
 
     public func refreshData() {
-        service.getScan(for: blog) { [weak self] scanObj in
+        service.getScanWithFixableThreatsStatus(for: blog) { [weak self] scanObj in
             self?.refreshDidSucceed(with: scanObj)
+
         } failure: { [weak self] error in
             DDLogError("Error fetching scan object: \(String(describing: error?.localizedDescription))")
 
