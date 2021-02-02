@@ -6,7 +6,7 @@ struct EventLoggingDelegate: AutomatticTracks.EventLoggingDelegate {
     var shouldUploadLogFiles: Bool {
         return
             !ProcessInfo.processInfo.isLowPowerModeEnabled
-            && !WPCrashLoggingProvider.userHasOptedOut
+            && !UserSettings.userHasOptedOutOfCrashLogging
     }
 
     func didQueueLogForUpload(_ log: LogFile) {

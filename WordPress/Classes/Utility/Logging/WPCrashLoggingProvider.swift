@@ -38,7 +38,7 @@ struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
     let sentryDSN: String = ApiCredentials.sentryDSN()
 
     var userHasOptedOut: Bool {
-        WPCrashLoggingProvider.userHasOptedOut
+        return UserSettings.userHasOptedOutOfCrashLogging
     }
 
     var buildType: String = BuildConfiguration.current.rawValue
