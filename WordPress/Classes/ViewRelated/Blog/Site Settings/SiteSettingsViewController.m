@@ -194,7 +194,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         [sections addObject:@(SiteSettingsSectionAccount)];
     }
 
-    [sections addObject:@(SiteSettingsSectionEditor)];
+    // Only add the editor section if the site is not a Simple WP.com site
+    if (self.blog.isAtomic || !self.blog.isHostedAtWPcom) {
+        [sections addObject:@(SiteSettingsSectionEditor)];
+    }
 
     if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
         [sections addObject:@(SiteSettingsSectionWriting)];
