@@ -122,7 +122,9 @@ class PreviewWebKitViewController: WebKitViewController {
                 space,
                 shareButton,
                 space,
-                safariButton
+                safariButton,
+                space,
+                previewButton
             ]
         case .hostOnly:
             if canPublish {
