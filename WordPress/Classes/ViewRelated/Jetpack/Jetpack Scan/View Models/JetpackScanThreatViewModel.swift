@@ -17,6 +17,7 @@ struct JetpackScanThreatViewModel {
     let technicalDetailsDescription: String
     let fileName: String?
     let fileNameBackgroundColor: UIColor
+    let fileNameFont: UIFont
     let attributedFileContext: NSAttributedString?
 
     // Threat Detail Action
@@ -51,6 +52,7 @@ struct JetpackScanThreatViewModel {
         technicalDetailsDescription = Strings.details.descriptions.technicalDetails
         fileName = threat.fileName
         fileNameBackgroundColor = Constants.colors.normal.background
+        fileNameFont = Constants.monospacedFont
 
         let contextConfig = JetpackThreatContext.JetpackThreatContextRendererConfig(
             numberAttributes: [

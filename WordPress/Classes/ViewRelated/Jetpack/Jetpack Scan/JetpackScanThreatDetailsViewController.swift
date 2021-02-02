@@ -127,7 +127,6 @@ extension JetpackScanThreatDetailsViewController {
             technicalDetailsTitleLabel.text = viewModel.technicalDetailsTitle
             technicalDetailsDescriptionLabel.text = viewModel.technicalDetailsDescription
             technicalDetailsFileLabel.text = viewModel.fileName
-            technicalDetailsFileContainerView.backgroundColor = viewModel.fileNameBackgroundColor
             technicalDetailsContextLabel.attributedText = attributedFileContext
             technicalDetailsStackView.isHidden = false
         } else {
@@ -185,7 +184,9 @@ extension JetpackScanThreatDetailsViewController {
         technicalDetailsTitleLabel.textColor = .text
         technicalDetailsTitleLabel.numberOfLines = 0
 
-        technicalDetailsFileLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
+        technicalDetailsFileContainerView.backgroundColor = viewModel.fileNameBackgroundColor
+
+        technicalDetailsFileLabel.font = viewModel.fileNameFont
         technicalDetailsFileLabel.textColor = .text
         technicalDetailsFileLabel.numberOfLines = 0
 
