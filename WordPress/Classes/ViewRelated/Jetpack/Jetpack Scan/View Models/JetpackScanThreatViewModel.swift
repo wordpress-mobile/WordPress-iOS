@@ -6,7 +6,7 @@ struct JetpackScanThreatViewModel {
     let title: String
     let description: String?
 
-    // More details
+    // Threat Details
     let detailIconImage: UIImage?
     let detailIconImageColor: UIColor
     let problemTitle: String
@@ -17,8 +17,19 @@ struct JetpackScanThreatViewModel {
     let technicalDetailsDescription: String
     let fileName: String?
     let fileContext: JetpackThreatContext?
-    let primaryButtonTitle: String?
-    let secondaryButtonTitle: String
+
+    // Threat Detail Action
+    let fixActionTitle: String?
+    let ignoreActionTitle: String
+    let ignoreActionMessage: String
+
+    // Threat Detail Success
+    let fixSuccessTitle: String
+    let ignoreSuccessTitle: String
+
+    // Threat Detail Error
+    let fixErrorTitle: String
+    let ignoreErrorTitle: String
 
     init(threat: JetpackScanThreat) {
         let status = threat.status
@@ -28,7 +39,7 @@ struct JetpackScanThreatViewModel {
         title = Self.title(for: threat)
         description = Self.description(for: threat)
 
-        // More details
+        // Threat Details
         detailIconImage = UIImage(named: "jetpack-scan-state-error")
         detailIconImageColor = .error
         problemTitle = Strings.details.titles.problem
@@ -39,8 +50,19 @@ struct JetpackScanThreatViewModel {
         technicalDetailsDescription = Strings.details.descriptions.technicalDetails
         fileName = threat.fileName
         fileContext = threat.context
-        primaryButtonTitle = Self.primaryButtonTitle(for: threat)
-        secondaryButtonTitle = Strings.details.buttons.ignore
+
+        // Threat Details Action
+        fixActionTitle = Self.fixActionTitle(for: threat)
+        ignoreActionTitle = Strings.details.actions.titles.ignore
+        ignoreActionMessage = Strings.details.actions.messages.ignore
+
+        // Threat Detail Success
+        fixSuccessTitle = Strings.details.success.fix
+        ignoreSuccessTitle = Strings.details.success.ignore
+
+        // Threat Details Error
+        fixErrorTitle = Strings.details.error.fix
+        ignoreErrorTitle = Strings.details.error.ignore
     }
 
     private static func fixTitle(for threat: JetpackScanThreat) -> String? {
@@ -181,12 +203,12 @@ struct JetpackScanThreatViewModel {
         return image.imageWithTintColor(.white)
     }
 
-    private static func primaryButtonTitle(for threat: JetpackScanThreat) -> String? {
+    private static func fixActionTitle(for threat: JetpackScanThreat) -> String? {
         guard threat.fixable?.type != nil else {
             return nil
         }
 
-        return Strings.details.buttons.fixable
+        return Strings.details.actions.titles.fixable
     }
 
     private struct Strings {
@@ -223,9 +245,26 @@ struct JetpackScanThreatViewModel {
                 }
             }
 
-            struct buttons {
-                static let ignore = NSLocalizedString("Ignore threat", comment: "Title for button that will ignore the threat")
-                static let fixable = NSLocalizedString("Fix threat", comment: "Title for button that will fix the threat")
+            struct actions {
+
+                struct titles {
+                    static let ignore = NSLocalizedString("Ignore threat", comment: "Title for button that will ignore the threat")
+                    static let fixable = NSLocalizedString("Fix threat", comment: "Title for button that will fix the threat")
+                }
+
+                struct messages {
+                    static let ignore = NSLocalizedString("You shouldn’t ignore a security unless you are absolute sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".", comment: "Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name.")
+                }
+            }
+
+            struct success {
+                static let fix = NSLocalizedString("The threat was successfully fixed.", comment: "Message displayed when a threat is fixed successfully.")
+                static let ignore = NSLocalizedString("Threat ignored.", comment: "Message displayed when a threat is ignored successfully.")
+            }
+
+            struct error {
+                static let fix = NSLocalizedString("Error fixing threat. Please contact our support.", comment: "Error displayed when fixing a threat fails.")
+                static let ignore = NSLocalizedString("Error ignoring threat. Please contact our support.", comment: "Error displayed when ignoring a threat fails.")
             }
         }
 

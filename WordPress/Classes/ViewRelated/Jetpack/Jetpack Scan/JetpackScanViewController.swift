@@ -1,4 +1,5 @@
 import UIKit
+import WordPressFlux
 
 class JetpackScanViewController: UIViewController, JetpackScanView {
     private let blog: Blog
@@ -96,6 +97,34 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         present(alert, animated: true, completion: nil)
     }
 
+    func showFixThreatSuccess(for threat: JetpackScanThreat) {
+        self.navigationController?.popToViewController(self, animated: true)
+
+        let model = JetpackScanThreatViewModel(threat: threat)
+        let notice = Notice(title: model.fixSuccessTitle)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    func showIgnoreThreatSuccess(for threat: JetpackScanThreat) {
+        self.navigationController?.popToViewController(self, animated: true)
+
+        let model = JetpackScanThreatViewModel(threat: threat)
+        let notice = Notice(title: model.ignoreSuccessTitle)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    func showFixThreatError(for threat: JetpackScanThreat) {
+        let model = JetpackScanThreatViewModel(threat: threat)
+        let notice = Notice(title: model.fixErrorTitle)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    func showIgnoreThreatError(for threat: JetpackScanThreat) {
+        let model = JetpackScanThreatViewModel(threat: threat)
+        let notice = Notice(title: model.ignoreErrorTitle)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
     // MARK: - Actions
     @objc func showHistory() {
         let viewController = JetpackScanHistoryViewController(blog: blog)
@@ -125,6 +154,18 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         /// The number of header rows, used to get the threat rows
         static let tableHeaderCountOffset = 1
     }
+}
+
+extension JetpackScanViewController: JetpackScanThreatDetailsViewControllerDelegate {
+
+    func willFixThreat(_ threat: JetpackScanThreat, controller: JetpackScanThreatDetailsViewController) {
+        coordinator.fixThreat(threat: threat)
+    }
+
+    func willIgnoreThreat(_ threat: JetpackScanThreat, controller: JetpackScanThreatDetailsViewController) {
+        coordinator.ignoreThreat(threat: threat)
+    }
+
 }
 
 // MARK: - Table View
@@ -186,7 +227,8 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
             return
         }
 
-        let threatDetailsVC = JetpackScanThreatDetailsViewController(threat: threat)
+        let threatDetailsVC = JetpackScanThreatDetailsViewController(blog: blog, threat: threat)
+        threatDetailsVC.delegate = self
         self.navigationController?.pushViewController(threatDetailsVC, animated: true)
     }
 }
