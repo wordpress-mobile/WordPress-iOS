@@ -139,7 +139,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         page = 1
         refreshCount += 1
 
-        cardsService.fetch(isFirstPage: true, refreshCount: refreshCount, sortingOption: sortingOption.parameterValue, success: { [weak self] cardsCount, hasMore in
+        cardsService.fetch(isFirstPage: true, refreshCount: refreshCount, sortingOption: sortingOption, success: { [weak self] cardsCount, hasMore in
             self?.trackContentPresented()
             success(cardsCount, hasMore)
         }, failure: { [weak self] error in
@@ -154,7 +154,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         page += 1
         WPAnalytics.trackReader(.readerDiscoverPaginated, properties: ["page": page])
 
-        cardsService.fetch(isFirstPage: false, sortingOption: sortingOption.parameterValue, success: { _, hasMore in
+        cardsService.fetch(isFirstPage: false, sortingOption: sortingOption, success: { _, hasMore in
             success?(hasMore)
         }, failure: { error in
             guard let error = error else {

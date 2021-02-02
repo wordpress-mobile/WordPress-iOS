@@ -1,23 +1,20 @@
 import UIKit
 
-enum ReaderSortingOption: String, CaseIterable {
-    case popularity, date
+extension ReaderSortingOption {
 
-    var parameterValue: String {
-        return rawValue
-    }
-
-    var localizedDescription: String {
+    var localizedDescription: String? {
         // TODO: check if strings are localized
         switch self {
         case .date:
             return NSLocalizedString("Recent", comment: "Sorting option description")
         case .popularity:
             return NSLocalizedString("Popular", comment: "Sorting option description")
+        case .noSorting:
+            return nil
         }
     }
 
-    var image: UIImage {
+    var image: UIImage? {
         switch self {
         case .date:
             // TODO: use proper icon
@@ -25,6 +22,8 @@ enum ReaderSortingOption: String, CaseIterable {
         case .popularity:
             // TODO: use proper icon
             return .gridicon(.lineGraph)
+        case .noSorting:
+            return nil
         }
     }
 }

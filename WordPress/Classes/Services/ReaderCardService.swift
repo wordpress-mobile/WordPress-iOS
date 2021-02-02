@@ -28,7 +28,7 @@ class ReaderCardService {
         self.siteInfoService = siteInfoService ?? ReaderTopicService(managedObjectContext: coreDataStack.mainContext)
     }
 
-    func fetch(isFirstPage: Bool, refreshCount: Int = 0, sortingOption: String? = nil, success: @escaping (Int, Bool) -> Void, failure: @escaping (Error?) -> Void) {
+    func fetch(isFirstPage: Bool, refreshCount: Int = 0, sortingOption: ReaderSortingOption = .noSorting, success: @escaping (Int, Bool) -> Void, failure: @escaping (Error?) -> Void) {
         followedInterestsService.fetchFollowedInterestsLocally { [unowned self] topics in
             guard let interests = topics, !interests.isEmpty else {
                 failure(Errors.noInterests)
