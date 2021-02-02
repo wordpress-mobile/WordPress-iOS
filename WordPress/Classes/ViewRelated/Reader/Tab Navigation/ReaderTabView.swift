@@ -18,7 +18,11 @@ class ReaderTabView: UIView {
     private var previouslySelectedIndex: Int = 0
 
     private var discoverIndex: Int? {
-        return tabBar.items.firstIndex(where: { $0.title == NSLocalizedString("Discover", comment: "Discover tab name") })
+        return tabBar.items.firstIndex(where: { ($0 as? ReaderTabItem)?.content.topicType == .discover })
+    }
+
+    private var p2Index: Int? {
+        return tabBar.items.firstIndex(where: { (($0 as? ReaderTabItem)?.content.topic as? ReaderTeamTopic)?.organizationID == SiteOrganizationType.p2.rawValue })
     }
 
     init(viewModel: ReaderTabViewModel) {
@@ -266,11 +270,13 @@ private extension ReaderTabView {
     @objc func siteFollowed(_ notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo,
               let site = userInfo[ReaderNotificationKeys.topic] as? ReaderSiteTopic,
-              site.organizationType == .p2 else {
+              site.organizationType == .p2,
+              p2Index == nil else {
             return
         }
 
-        // Refresh the Reader menu to ensure Followed P2s is displayed.
+        // If a P2 is followed but the P2 tab is not in the Reader tab bar,
+        // refresh the Reader menu to display it.
         viewModel.fetchReaderMenu()
     }
 
