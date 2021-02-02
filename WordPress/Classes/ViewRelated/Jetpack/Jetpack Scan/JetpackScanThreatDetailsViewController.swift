@@ -123,7 +123,7 @@ extension JetpackScanThreatDetailsViewController {
         problemTitleLabel.text = viewModel.problemTitle
         problemDescriptionLabel.text = viewModel.problemDescription
 
-        if let attributedFileContext = viewModel.attributedFileContext {
+        if let attributedFileContext = self.viewModel.attributedFileContext {
             technicalDetailsTitleLabel.text = viewModel.technicalDetailsTitle
             technicalDetailsDescriptionLabel.text = viewModel.technicalDetailsDescription
             technicalDetailsFileLabel.text = viewModel.fileName

@@ -1,6 +1,9 @@
 import Foundation
 
 struct JetpackScanThreatViewModel {
+
+    private let threat: JetpackScanThreat
+
     let iconImage: UIImage?
     let iconImageColor: UIColor
     let title: String
@@ -18,7 +21,6 @@ struct JetpackScanThreatViewModel {
     let fileName: String?
     let fileNameBackgroundColor: UIColor
     let fileNameFont: UIFont
-    let attributedFileContext: NSAttributedString?
 
     // Threat Detail Action
     let fixActionTitle: String?
@@ -33,27 +35,8 @@ struct JetpackScanThreatViewModel {
     let fixErrorTitle: String
     let ignoreErrorTitle: String
 
-    init(threat: JetpackScanThreat) {
-        let status = threat.status
-
-        iconImage = Self.iconImage(for: status)
-        iconImageColor = Self.iconColor(for: status)
-        title = Self.title(for: threat)
-        description = Self.description(for: threat)
-
-        // Threat Details
-        detailIconImage = UIImage(named: "jetpack-scan-state-error")
-        detailIconImageColor = .error
-        problemTitle = Strings.details.titles.problem
-        problemDescription = threat.description
-        fixTitle = Self.fixTitle(for: threat)
-        fixDescription = Self.fixDescription(for: threat)
-        technicalDetailsTitle = Strings.details.titles.technicalDetails
-        technicalDetailsDescription = Strings.details.descriptions.technicalDetails
-        fileName = threat.fileName
-        fileNameBackgroundColor = Constants.colors.normal.background
-        fileNameFont = Constants.monospacedFont
-
+    // Attributed string
+    lazy var attributedFileContext: NSAttributedString? = {
         let contextConfig = JetpackThreatContext.JetpackThreatContextRendererConfig(
             numberAttributes: [
                 NSAttributedString.Key.font: Constants.monospacedFont,
@@ -82,7 +65,31 @@ struct JetpackScanThreatViewModel {
             ]
         )
 
-        attributedFileContext = threat.context?.attributedString(with: contextConfig)
+        return threat.context?.attributedString(with: contextConfig)
+    }()
+
+    init(threat: JetpackScanThreat) {
+        self.threat = threat
+
+        let status = threat.status
+
+        iconImage = Self.iconImage(for: status)
+        iconImageColor = Self.iconColor(for: status)
+        title = Self.title(for: threat)
+        description = Self.description(for: threat)
+
+        // Threat Details
+        detailIconImage = UIImage(named: "jetpack-scan-state-error")
+        detailIconImageColor = .error
+        problemTitle = Strings.details.titles.problem
+        problemDescription = threat.description
+        fixTitle = Self.fixTitle(for: threat)
+        fixDescription = Self.fixDescription(for: threat)
+        technicalDetailsTitle = Strings.details.titles.technicalDetails
+        technicalDetailsDescription = Strings.details.descriptions.technicalDetails
+        fileName = threat.fileName
+        fileNameBackgroundColor = Constants.colors.normal.background
+        fileNameFont = Constants.monospacedFont
 
         // Threat Details Action
         fixActionTitle = Self.fixActionTitle(for: threat)
