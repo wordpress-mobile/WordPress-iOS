@@ -51,7 +51,36 @@ struct JetpackScanThreatViewModel {
         technicalDetailsDescription = Strings.details.descriptions.technicalDetails
         fileName = threat.fileName
         fileNameBackgroundColor = Constants.colors.normal.background
-        attributedFileContext = Self.attributedString(for: threat.context)
+
+        let contextConfig = JetpackThreatContext.JetpackThreatContextRendererConfig(
+            numberAttributes: [
+                NSAttributedString.Key.font: Constants.monospacedFont,
+                NSAttributedString.Key.foregroundColor: Constants.colors.normal.numberText,
+                NSAttributedString.Key.backgroundColor: Constants.colors.normal.numberBackground
+            ],
+            highlightedNumberAttributes: [
+                NSAttributedString.Key.font: Constants.monospacedFont,
+                NSAttributedString.Key.foregroundColor: Constants.colors.normal.numberText,
+                NSAttributedString.Key.backgroundColor: Constants.colors.highlighted.numberBackground
+            ],
+            contentsAttributes: [
+                NSAttributedString.Key.font: Constants.monospacedFont,
+                NSAttributedString.Key.foregroundColor: Constants.colors.normal.text,
+                NSAttributedString.Key.backgroundColor: Constants.colors.normal.background
+            ],
+            highlightedContentsAttributes: [
+                NSAttributedString.Key.font: Constants.monospacedFont,
+                NSAttributedString.Key.foregroundColor: Constants.colors.normal.text,
+                NSAttributedString.Key.backgroundColor: Constants.colors.highlighted.numberBackground
+            ],
+            highlightedSectionAttributes: [
+                NSAttributedString.Key.font: Constants.monospacedFont,
+                NSAttributedString.Key.foregroundColor: Constants.colors.highlighted.text,
+                NSAttributedString.Key.backgroundColor: Constants.colors.highlighted.background
+            ]
+        )
+
+        attributedFileContext = threat.context?.attributedString(with: contextConfig) ?? nil
 
         // Threat Details Action
         fixActionTitle = Self.fixActionTitle(for: threat)
@@ -309,97 +338,8 @@ struct JetpackScanThreatViewModel {
             static let unknown = NSLocalizedString("Miscellaneous vulnerability", comment: "Summary description for a threat")
         }
     }
-}
-
-extension JetpackScanThreatViewModel {
-
-    private static func attributedString(for context: JetpackThreatContext?) -> NSAttributedString? {
-
-        guard let context = context,
-              let longestLine = context.lines.sorted(by: { $0.contents.count > $1.contents.count }).first else {
-            return nil
-        }
-
-        // Calculates the "longest" number string length
-        // This will be used to pad the number column to make sure it's all the same size regardless of
-        // the line number length
-        //
-        // i.e. Last line number is 1000, which is 4 chars
-        // When processing line 50 we'll append 2 spaces to the end so it ends up being equal to 4
-
-        let lastNumberLength = String(context.lines.last?.lineNumber ?? 0).count
-
-        let longestLineLength = longestLine.contents.count
-
-        let attrString = NSMutableAttributedString()
-
-        for line in context.lines {
-
-            // Number attributed string
-
-            var numberStr = String(line.lineNumber)
-            let numberPadding = String().padding(toLength: lastNumberLength - numberStr.count,
-                                                 withPad: Constants.noBreakSpace, startingAt: 0)
-            numberStr = numberPadding + numberStr
-            let numberAttr = NSMutableAttributedString(string: numberStr)
-
-            // Contents attributed string
-
-            let contents = line.contents
-            let contentsPadding = String().padding(toLength: longestLineLength - contents.count,
-                                                   withPad: Constants.noBreakSpace, startingAt: 0)
-
-            let contentsStr = String(format: Constants.contentsStrFormat, Constants.columnSpacer + contents + contentsPadding)
-            let contentsAttr = NSMutableAttributedString(string: contentsStr, attributes: [
-                NSAttributedString.Key.font: Constants.monospacedFont,
-                NSAttributedString.Key.foregroundColor: Constants.colors.normal.text,
-                NSAttributedString.Key.backgroundColor: Constants.colors.normal.background,
-            ])
-
-            var numberBackgroundColor = Constants.colors.normal.numberBackground
-
-            // Highlight logic
-
-            if let highlights = line.highlights {
-
-                numberBackgroundColor = Constants.colors.highlighted.numberBackground
-
-                contentsAttr.addAttribute(.backgroundColor,
-                                          value: numberBackgroundColor,
-                                          range: NSRange(location: 0, length: contentsAttr.length))
-
-                for highlight in highlights {
-                    let location = highlight.location
-                    let length = highlight.length + Constants.columnSpacer.count
-                    let range = NSRange(location: location, length: length)
-
-                    contentsAttr.addAttributes([
-                        NSAttributedString.Key.font: Constants.monospacedFont,
-                        NSAttributedString.Key.foregroundColor: Constants.colors.highlighted.text,
-                        NSAttributedString.Key.backgroundColor: Constants.colors.highlighted.background,
-                    ], range: range)
-                }
-            }
-
-            numberAttr.setAttributes([
-                NSAttributedString.Key.font: Constants.monospacedFont,
-                NSAttributedString.Key.foregroundColor: Constants.colors.normal.numberText,
-                NSAttributedString.Key.backgroundColor: numberBackgroundColor,
-            ], range: NSRange(location: 0, length: numberStr.count))
-
-            attrString.append(numberAttr)
-            attrString.append(contentsAttr)
-        }
-
-        return attrString
-    }
 
     private struct Constants {
-
-        static let contentsStrFormat = "%@\n"
-        static let noBreakSpace = "\u{00a0}"
-        static let columnSpacer = " "
-
         static let monospacedFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .bold)
 
         struct colors {
@@ -416,6 +356,94 @@ extension JetpackScanThreatViewModel {
                 static let numberBackground = UIColor(red: 0.95, green: 0.85, blue: 0.85, alpha: 1.00)
             }
         }
+    }
+}
+
+private extension JetpackThreatContext {
+
+    struct JetpackThreatContextRendererConfig {
+        let numberAttributes: [NSAttributedString.Key: Any]
+        let highlightedNumberAttributes: [NSAttributedString.Key: Any]
+        let contentsAttributes: [NSAttributedString.Key: Any]
+        let highlightedContentsAttributes: [NSAttributedString.Key: Any]
+        let highlightedSectionAttributes: [NSAttributedString.Key: Any]
+    }
+
+    func attributedString(with config: JetpackThreatContextRendererConfig) -> NSAttributedString? {
+
+        guard let longestLine = lines.sorted(by: { $0.contents.count > $1.contents.count }).first else {
+            return nil
+        }
+
+        // Calculates the "longest" number string length
+        // This will be used to pad the number column to make sure it's all the same size regardless of
+        // the line number length
+        //
+        // i.e. Last line number is 1000, which is 4 chars
+        // When processing line 50 we'll append 2 spaces to the end so it ends up being equal to 4
+
+        let lastNumberLength = String(lines.last?.lineNumber ?? 0).count
+
+        let longestLineLength = longestLine.contents.count
+
+        let attrString = NSMutableAttributedString()
+
+        for line in lines {
+
+            // Number attributed string
+
+            var numberStr = String(line.lineNumber)
+            let numberPadding = String().padding(toLength: lastNumberLength - numberStr.count,
+                                                 withPad: Constants.noBreakSpace, startingAt: 0)
+            numberStr = numberPadding + numberStr
+            let numberAttr = NSMutableAttributedString(string: numberStr)
+
+            // Contents attributed string
+
+            let contents = line.contents
+            let contentsPadding = String().padding(toLength: longestLineLength - contents.count,
+                                                   withPad: Constants.noBreakSpace, startingAt: 0)
+
+            let contentsStr = String(format: Constants.contentsStrFormat, Constants.columnSpacer + contents + contentsPadding)
+            let contentsAttr = NSMutableAttributedString(string: contentsStr)
+
+            // Highlight logic
+
+            if let highlights = line.highlights {
+
+                numberAttr.setAttributes(config.highlightedNumberAttributes,
+                                         range: NSRange(location: 0, length: numberStr.count))
+
+                contentsAttr.addAttributes(config.highlightedContentsAttributes,
+                                           range: NSRange(location: 0, length: contentsStr.count))
+
+                for highlight in highlights {
+                    let location = highlight.location
+                    let length = highlight.length + Constants.columnSpacer.count
+                    let range = NSRange(location: location, length: length)
+
+                    contentsAttr.addAttributes(config.highlightedSectionAttributes, range: range)
+                }
+
+            } else {
+                numberAttr.setAttributes(config.numberAttributes,
+                                         range: NSRange(location: 0, length: numberStr.count))
+
+                contentsAttr.setAttributes(config.contentsAttributes,
+                                           range: NSRange(location: 0, length: contentsStr.count))
+            }
+
+            attrString.append(numberAttr)
+            attrString.append(contentsAttr)
+        }
+
+        return attrString
+    }
+
+    private struct Constants {
+        static let contentsStrFormat = "%@\n"
+        static let noBreakSpace = "\u{00a0}"
+        static let columnSpacer = " "
     }
 }
 
