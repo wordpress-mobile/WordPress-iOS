@@ -38,7 +38,7 @@ class StatsWidgetsService {
             let service = StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: widgetData.siteID, siteTimezone: widgetData.timeZone)
 
             // handle fetching depending on concrete type
-            // we need to do slike this as there is no unique service call
+            // we need to do like this as there is no unique service call
             if let widgetData = widgetData as? HomeWidgetTodayData {
                 fetchTodayStats(service: service, widgetData: widgetData, completion: completion)
             }
