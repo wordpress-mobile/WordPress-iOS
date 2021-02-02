@@ -342,7 +342,7 @@ struct JetpackScanThreatViewModel {
     }
 
     private struct Constants {
-        static let monospacedFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .bold)
+        static let monospacedFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .semibold)
 
         struct colors {
             struct normal {
