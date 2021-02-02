@@ -160,7 +160,7 @@ class PrivacySettingsViewController: UITableViewController {
 
     func crashReportingChanged(_ enabled: Bool) {
       WPCrashLoggingProvider.userHasOptedOut = !enabled
-      CrashLogging.setNeedsDataRefresh()
+        WordPressAppDelegate.crashLogging?.setNeedsDataRefresh()
     }
 
 }
