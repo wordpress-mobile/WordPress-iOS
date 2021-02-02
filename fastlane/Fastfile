@@ -68,6 +68,7 @@ ENV["PROJECT_NAME"]="WordPress"
 ENV["PUBLIC_CONFIG_FILE"]=File.join(PROJECT_ROOT_FOLDER, "config", "Version.Public.xcconfig")
 ENV["INTERNAL_CONFIG_FILE"]=File.join(PROJECT_ROOT_FOLDER, "config", "Version.internal.xcconfig")
 ENV["DOWNLOAD_METADATA"]="./fastlane/download_metadata.swift"
+ENV["PROJECT_ROOT_FOLDER"]=PROJECT_ROOT_FOLDER
 
 ########################################################################
 # Screenshots
