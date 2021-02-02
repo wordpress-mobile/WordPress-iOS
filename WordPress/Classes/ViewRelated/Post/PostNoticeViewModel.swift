@@ -87,7 +87,11 @@ struct PostNoticeViewModel {
         case .pending:
             return NSLocalizedString("Page pending review", comment: "Title of notification displayed when a page has been successfully saved as a draft.")
         default:
-            return NSLocalizedString("Page published", comment: "Title of notification displayed when a page has been successfully published.")
+            if isFirstTimePublish(page) {
+                return NSLocalizedString("Page published", comment: "Title of notification displayed when a page has been successfully published.")
+            } else {
+                return NSLocalizedString("Page updated", comment: "Title of notification displayed when a page has been successfully updated.")
+            }
         }
     }
 
@@ -102,8 +106,20 @@ struct PostNoticeViewModel {
         case .pending:
             return NSLocalizedString("Post pending review", comment: "Title of notification displayed when a post has been successfully saved as a draft.")
         default:
-            return NSLocalizedString("Post published", comment: "Title of notification displayed when a post has been successfully published.")
+            if isFirstTimePublish(post) {
+                return NSLocalizedString("Post published", comment: "Title of notification displayed when a post has been successfully published.")
+            } else {
+                return NSLocalizedString("Post updated", comment: "Title of notification displayed when a post has been successfully updated.")
+            }
         }
+    }
+
+    private func isFirstTimePublish(_ post: AbstractPost) -> Bool {
+        guard let publishDate = post.dateCreated else {
+            return false
+        }
+        let lastMinute = Calendar.current.date(byAdding: .minute, value: -1, to: Date()) ?? Date()
+        return publishDate > lastMinute
     }
 
     private var failureTitle: String {
