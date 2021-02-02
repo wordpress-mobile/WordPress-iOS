@@ -412,6 +412,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         if page.isSiteHomepage {
             QuickStartTourGuide.shared.visited(.editHomepage)
             tableView.reloadRows(at: [indexPath], with: .automatic)
+        } else {
+            QuickStartTourGuide.shared.endCurrentTour()
+            tableView.reloadData()
         }
 
         guard page.status != .trash else {
@@ -435,6 +438,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         if page.isSiteHomepage && QuickStartTourGuide.shared.isCurrentElement(.editHomepage) {
             cell.accessoryView = QuickStartSpotlightView()
+        } else {
+            cell.accessoryView = nil
         }
 
         return cell
@@ -719,6 +724,22 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             presentationController.permittedArrowDirections = .any
             presentationController.sourceView = button
             presentationController.sourceRect = button.bounds
+        }
+    }
+
+    override func deletePost(_ apost: AbstractPost) {
+        completeQuickStartStepIfNeeded(apost)
+        super.deletePost(apost)
+    }
+
+    private func completeQuickStartStepIfNeeded(_ page: AbstractPost) {
+        guard let page = page as? Page else { return }
+        guard page.isSiteHomepage else { return }
+
+        if QuickStartTourGuide.shared.isCurrentElement(.editHomepage) {
+            QuickStartTourGuide.shared.visited(.editHomepage)
+        } else {
+            QuickStartTourGuide.shared.complete(tour: QuickStartEditHomepageTour(), for: blog, postNotification: false)
         }
     }
 
