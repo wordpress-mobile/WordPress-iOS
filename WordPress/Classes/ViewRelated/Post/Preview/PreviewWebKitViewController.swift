@@ -70,6 +70,12 @@ class PreviewWebKitViewController: WebKitViewController {
         super.init(configuration: configuration)
     }
 
+    @objc override init(configuration: WebViewControllerConfiguration) {
+        post = nil
+        canPublish = false
+        super.init(configuration: configuration)
+    }
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
