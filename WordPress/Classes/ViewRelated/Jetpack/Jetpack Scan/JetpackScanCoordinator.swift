@@ -270,3 +270,10 @@ extension JetpackScan {
         return threats?.filter { $0.fixable != nil }
     }
 }
+
+/// Represents a sorted section of threats
+struct JetpackThreatSection {
+    let title: String?
+    let date: Date
+    let threats: [JetpackScanThreat]
+}

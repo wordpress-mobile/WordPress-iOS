@@ -214,10 +214,3 @@ protocol JetpackScanHistoryView {
     func showNoConnectionError()
     func showGenericError()
 }
-
-
-struct JetpackHistorySection {
-    let title: String
-    let date: Date
-    let threats: [JetpackScanThreat]
-}
