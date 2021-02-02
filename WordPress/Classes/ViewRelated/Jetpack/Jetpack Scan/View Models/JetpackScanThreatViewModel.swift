@@ -50,7 +50,7 @@ struct JetpackScanThreatViewModel {
         technicalDetailsTitle = Strings.details.titles.technicalDetails
         technicalDetailsDescription = Strings.details.descriptions.technicalDetails
         fileName = threat.fileName
-        fileNameBackgroundColor = Constants.normal.backgroundColor
+        fileNameBackgroundColor = Constants.colors.normal.background
         attributedFileContext = Self.attributedString(for: threat.context)
 
         // Threat Details Action
@@ -349,20 +349,20 @@ extension JetpackScanThreatViewModel {
             let contentsPadding = String().padding(toLength: longestLineLength - contents.count,
                                                    withPad: Constants.noBreakSpace, startingAt: 0)
 
-            let contentsStr = String(format: "%@\n", Constants.columnSpacer + contents + contentsPadding)
+            let contentsStr = String(format: Constants.contentsStrFormat, Constants.columnSpacer + contents + contentsPadding)
             let contentsAttr = NSMutableAttributedString(string: contentsStr, attributes: [
-                NSAttributedString.Key.font: Constants.contentsFont,
-                NSAttributedString.Key.foregroundColor: Constants.normal.textColor,
-                NSAttributedString.Key.backgroundColor: Constants.normal.backgroundColor,
+                NSAttributedString.Key.font: Constants.monospacedFont,
+                NSAttributedString.Key.foregroundColor: Constants.colors.normal.text,
+                NSAttributedString.Key.backgroundColor: Constants.colors.normal.background,
             ])
 
-            var numberBackgroundColor = Constants.normal.numberBackgroundColor
+            var numberBackgroundColor = Constants.colors.normal.numberBackground
 
             // Highlight logic
 
             if let highlights = line.highlights {
 
-                numberBackgroundColor = Constants.highlighted.numberBackgroundColor
+                numberBackgroundColor = Constants.colors.highlighted.numberBackground
 
                 contentsAttr.addAttribute(.backgroundColor,
                                           value: numberBackgroundColor,
@@ -374,16 +374,16 @@ extension JetpackScanThreatViewModel {
                     let range = NSRange(location: location, length: length)
 
                     contentsAttr.addAttributes([
-                        NSAttributedString.Key.font: Constants.contentsFont,
-                        NSAttributedString.Key.foregroundColor: Constants.highlighted.textColor,
-                        NSAttributedString.Key.backgroundColor: Constants.highlighted.backgroundColor,
+                        NSAttributedString.Key.font: Constants.monospacedFont,
+                        NSAttributedString.Key.foregroundColor: Constants.colors.highlighted.text,
+                        NSAttributedString.Key.backgroundColor: Constants.colors.highlighted.background,
                     ], range: range)
                 }
             }
 
             numberAttr.setAttributes([
-                NSAttributedString.Key.font: Constants.numberFont,
-                NSAttributedString.Key.foregroundColor: Constants.normal.numberTextColor,
+                NSAttributedString.Key.font: Constants.monospacedFont,
+                NSAttributedString.Key.foregroundColor: Constants.colors.normal.numberText,
                 NSAttributedString.Key.backgroundColor: numberBackgroundColor,
             ], range: NSRange(location: 0, length: numberStr.count))
 
@@ -400,20 +400,21 @@ extension JetpackScanThreatViewModel {
         static let noBreakSpace = "\u{00a0}"
         static let columnSpacer = " "
 
-        static let numberFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .semibold)
-        static let contentsFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .bold)
+        static let monospacedFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .bold)
 
-        struct normal {
-            static let textColor = UIColor(rgb: 0x2C3337)
-            static let backgroundColor = UIColor(rgb: 0xF6F7F7)
-            static let numberTextColor = UIColor(rgb: 0x646970)
-            static let numberBackgroundColor = UIColor(rgb: 0xC3C4C7)
-        }
+        struct colors {
+            struct normal {
+                static let text = UIColor(red: 0.17, green: 0.20, blue: 0.22, alpha: 1.00)
+                static let background = UIColor(red: 0.96, green: 0.97, blue: 0.97, alpha: 1.00)
+                static let numberText = UIColor(red: 0.39, green: 0.41, blue: 0.44, alpha: 1.00)
+                static let numberBackground = UIColor(red: 0.76, green: 0.77, blue: 0.78, alpha: 1.00)
+            }
 
-        struct highlighted {
-            static let textColor = UIColor.white
-            static let backgroundColor = UIColor(rgb: 0xD63638)
-            static let numberBackgroundColor = UIColor(rgb: 0xF1DADA)
+            struct highlighted {
+                static let text = UIColor.white
+                static let background = UIColor(red: 0.84, green: 0.21, blue: 0.22, alpha: 1.00)
+                static let numberBackground = UIColor(red: 0.95, green: 0.85, blue: 0.85, alpha: 1.00)
+            }
         }
     }
 }
@@ -421,23 +422,5 @@ extension JetpackScanThreatViewModel {
 private extension String {
     func fileName() -> String {
         return (self as NSString).lastPathComponent
-    }
-}
-
-private extension UIColor {
-    convenience init(red: Int, green: Int, blue: Int) {
-        assert(red >= 0 && red <= 255, "Invalid red component")
-        assert(green >= 0 && green <= 255, "Invalid green component")
-        assert(blue >= 0 && blue <= 255, "Invalid blue component")
-
-        self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
-    }
-
-    convenience init(rgb: Int) {
-        self.init(
-            red: (rgb >> 16) & 0xFF,
-            green: (rgb >> 8) & 0xFF,
-            blue: rgb & 0xFF
-        )
     }
 }
