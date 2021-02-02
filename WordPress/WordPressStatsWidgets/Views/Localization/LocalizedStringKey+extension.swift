@@ -1,7 +1,7 @@
 import SwiftUI
 
 extension LocalizedStringKey {
-    static let defaultBundle = Bundle(for: HomeWidgetTodayRemoteService.self)
+    static let defaultBundle = Bundle(for: StatsWidgetsService.self)
 
     /// LocalizedStringKey is used as a wrapper of NSLocalizedString, in order to use synthetic keys and assign a default value
     /// in case of missing localization. This will need to be updated (if and) as soon as LocalizedStringKey supports default values

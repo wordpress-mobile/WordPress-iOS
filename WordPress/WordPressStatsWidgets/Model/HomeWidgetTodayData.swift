@@ -1,24 +1,24 @@
 
 struct HomeWidgetTodayData: HomeWidgetData {
 
-    typealias WidgetStats = TodayWidgetStats
-
     let siteID: Int
     let siteName: String
     let iconURL: String?
     let url: String
     let timeZone: TimeZone
     let date: Date
-    let stats: WidgetStats
+    let stats: TodayWidgetStats
+    static let filename = "HomeWidgetTodayData.plist"
+
 }
 
 
 // MARK: - Local cache
-extension HomeWidgetTodayData {
+extension HomeWidgetData {
 
-    static func read(from cache: HomeWidgetCache<Self>? = nil) -> [Int: HomeWidgetTodayData]? {
+    static func read(from cache: HomeWidgetCache<Self>? = nil) -> [Int: Self]? {
 
-        let cache = cache ?? HomeWidgetCache<HomeWidgetTodayData>(fileName: Constants.fileName,
+        let cache = cache ?? HomeWidgetCache<Self>(fileName: Self.filename,
                                                                   appGroup: WPAppGroupName)
         do {
             return try cache.read()
@@ -28,9 +28,9 @@ extension HomeWidgetTodayData {
         }
     }
 
-    static func write(items: [Int: HomeWidgetTodayData], to cache: HomeWidgetCache<Self>? = nil) {
+    static func write(items: [Int: Self], to cache: HomeWidgetCache<Self>? = nil) {
 
-        let cache = cache ?? HomeWidgetCache<HomeWidgetTodayData>(fileName: Constants.fileName,
+        let cache = cache ?? HomeWidgetCache<Self>(fileName: Self.filename,
                                                                   appGroup: WPAppGroupName)
 
         do {
@@ -41,7 +41,7 @@ extension HomeWidgetTodayData {
     }
 
     static func delete(cache: HomeWidgetCache<Self>? = nil) {
-        let cache = cache ?? HomeWidgetCache<HomeWidgetTodayData>(fileName: Constants.fileName,
+        let cache = cache ?? HomeWidgetCache<Self>(fileName: Self.filename,
                                                                   appGroup: WPAppGroupName)
 
         do {
@@ -51,8 +51,8 @@ extension HomeWidgetTodayData {
         }
     }
 
-    static func setItem(item: HomeWidgetTodayData, to cache: HomeWidgetCache<Self>? = nil) {
-        let cache = cache ?? HomeWidgetCache<HomeWidgetTodayData>(fileName: Constants.fileName,
+    static func setItem(item: Self, to cache: HomeWidgetCache<Self>? = nil) {
+        let cache = cache ?? HomeWidgetCache<Self>(fileName: Self.filename,
                                                                   appGroup: WPAppGroupName)
 
         do {
@@ -61,14 +61,5 @@ extension HomeWidgetTodayData {
             DDLogError("HomeWidgetToday: Failed writing data item: \(error.localizedDescription)")
         }
 
-    }
-}
-
-
-// MARK: - Constants
-private extension HomeWidgetTodayData {
-
-    enum Constants {
-        static let fileName = "HomeWidgetTodayData.plist"
     }
 }
