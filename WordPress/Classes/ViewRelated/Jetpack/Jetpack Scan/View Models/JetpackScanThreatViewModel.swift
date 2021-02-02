@@ -314,44 +314,46 @@ struct JetpackScanThreatViewModel {
 extension JetpackScanThreatViewModel {
 
     private static func attributedString(for context: JetpackThreatContext?) -> NSAttributedString? {
-        guard let context = context else {
+
+        guard let context = context,
+              let longestLine = context.lines.sorted(by: { $0.contents.count > $1.contents.count }).first else {
             return nil
         }
 
-        let lineFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .semibold)
-        let numberFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .bold)
+        // Calculates the "longest" number string length
+        // This will be used to pad the number column to make sure it's all the same size regardless of
+        // the line number length
+        //
+        // i.e. Last line number is 1000, which is 4 chars
+        // When processing line 50 we'll append 2 spaces to the end so it ends up being equal to 4
+
+        let lastNumberLength = String(context.lines.last?.lineNumber ?? 0).count
+
+        let longestLineLength = longestLine.contents.count
+
         let attrString = NSMutableAttributedString()
-
-        let biggestLen = String(context.lines.last?.lineNumber ?? 0).count
-
-        let longestLine = context.lines.sorted { $0.contents.count > $1.contents.count}.first!
-        let longestLen = longestLine.contents.count
-
-        let paragraph = NSMutableParagraphStyle()
 
         for line in context.lines {
 
             // Number attributed string
 
             var numberStr = String(line.lineNumber)
-            let numberPadding = "".padding(toLength: biggestLen - numberStr.count,
-                                           withPad: Constants.noBreakSpace, startingAt: 0)
+            let numberPadding = String().padding(toLength: lastNumberLength - numberStr.count,
+                                                 withPad: Constants.noBreakSpace, startingAt: 0)
             numberStr = numberPadding + numberStr
             let numberAttr = NSMutableAttributedString(string: numberStr)
 
             // Contents attributed string
 
             let contents = line.contents
-            let contentsPadding = "".padding(toLength: longestLen - contents.count,
-                                             withPad: Constants.noBreakSpace, startingAt: 0)
+            let contentsPadding = String().padding(toLength: longestLineLength - contents.count,
+                                                   withPad: Constants.noBreakSpace, startingAt: 0)
 
-            let padding = " "
-            let contentsStr = String(format: "%@\n", padding + contents + contentsPadding)
+            let contentsStr = String(format: "%@\n", Constants.columnSpacer + contents + contentsPadding)
             let contentsAttr = NSMutableAttributedString(string: contentsStr, attributes: [
-                NSAttributedString.Key.font: lineFont,
+                NSAttributedString.Key.font: Constants.contentsFont,
                 NSAttributedString.Key.foregroundColor: Constants.normal.textColor,
                 NSAttributedString.Key.backgroundColor: Constants.normal.backgroundColor,
-                NSAttributedString.Key.paragraphStyle: paragraph,
             ])
 
             var numberBackgroundColor = Constants.normal.numberBackgroundColor
@@ -368,26 +370,24 @@ extension JetpackScanThreatViewModel {
 
                 for highlight in highlights {
                     let location = highlight.location
-                    let length = highlight.length + padding.count
+                    let length = highlight.length + Constants.columnSpacer.count
                     let range = NSRange(location: location, length: length)
 
                     contentsAttr.addAttributes([
-                        NSAttributedString.Key.font: lineFont,
+                        NSAttributedString.Key.font: Constants.contentsFont,
                         NSAttributedString.Key.foregroundColor: Constants.highlighted.textColor,
                         NSAttributedString.Key.backgroundColor: Constants.highlighted.backgroundColor,
-                        NSAttributedString.Key.paragraphStyle: paragraph
                     ], range: range)
                 }
             }
 
             numberAttr.setAttributes([
-                NSAttributedString.Key.font: numberFont,
+                NSAttributedString.Key.font: Constants.numberFont,
                 NSAttributedString.Key.foregroundColor: Constants.normal.numberTextColor,
                 NSAttributedString.Key.backgroundColor: numberBackgroundColor,
             ], range: NSRange(location: 0, length: numberStr.count))
 
             attrString.append(numberAttr)
-            attrString.append(NSAttributedString(string: ""))
             attrString.append(contentsAttr)
         }
 
@@ -396,7 +396,12 @@ extension JetpackScanThreatViewModel {
 
     private struct Constants {
 
+        static let contentsStrFormat = "%@\n"
         static let noBreakSpace = "\u{00a0}"
+        static let columnSpacer = " "
+
+        static let numberFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .semibold)
+        static let contentsFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .bold)
 
         struct normal {
             static let textColor = UIColor(rgb: 0x2C3337)
