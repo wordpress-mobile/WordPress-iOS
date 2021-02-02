@@ -15,7 +15,11 @@ class JetpackScanCoordinator {
     private let service: JetpackScanService
     private let view: JetpackScanView
 
-    private(set) var scan: JetpackScan?
+    private(set) var scan: JetpackScan? {
+        didSet {
+            threatsDidChange()
+        }
+    }
 
     let blog: Blog
 
@@ -38,6 +42,8 @@ class JetpackScanCoordinator {
             return $0.id > $1.id
         })
     }
+
+    var sections: [JetpackThreatSection]?
 
     private var actionButtonState: ErrorButtonAction?
 
@@ -75,6 +81,7 @@ class JetpackScanCoordinator {
     private func refreshDidSucceed(with scanObj: JetpackScan) {
         scan = scanObj
         view.render()
+
 
         togglePolling()
     }
@@ -204,6 +211,20 @@ class JetpackScanCoordinator {
         }
     }
 
+    private func threatsDidChange() {
+        guard let threats = self.threats, let siteRef = JetpackSiteRef(blog: self.blog) else {
+            sections = nil
+            return
+        }
+
+        guard scan?.state == .fixingThreats else {
+            sections = JetpackScanThreatSectionGrouping(threats: threats, siteRef: siteRef).sections
+
+            return
+        }
+
+        sections = [JetpackThreatSection(title: nil, date: Date(), threats: threats)]
+    }
 
     // MARK: - Private: Refresh Timer
     private var refreshTimer: Timer?
