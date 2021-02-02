@@ -82,7 +82,7 @@ struct JetpackScanThreatViewModel {
             ]
         )
 
-        attributedFileContext = threat.context?.attributedString(with: contextConfig) ?? nil
+        attributedFileContext = threat.context?.attributedString(with: contextConfig)
 
         // Threat Details Action
         fixActionTitle = Self.fixActionTitle(for: threat)
