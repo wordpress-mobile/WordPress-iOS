@@ -54,6 +54,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 @dynamic sourceAttribution;
 @dynamic isSavedForLater;
 @dynamic isSeen;
+@dynamic isSeenSupported;
 
 @dynamic primaryTag;
 @dynamic primaryTagSlug;
@@ -121,6 +122,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.siteID = remotePost.siteID;
     post.sortDate = remotePost.sortDate;
     post.isSeen = remotePost.isSeen;
+    post.isSeenSupported = remotePost.isSeenSupported;
 
     if (existing && [topic isKindOfClass:[ReaderSearchTopic class]]) {
         // Failsafe.  The `read/search` endpoint might return the same post on

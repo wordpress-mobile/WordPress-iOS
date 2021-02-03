@@ -1,18 +1,77 @@
 import Foundation
 
 struct JetpackScanThreatViewModel {
+
+    private let threat: JetpackScanThreat
+
     let iconImage: UIImage?
     let iconImageColor: UIColor
     let title: String
     let description: String?
     let isFixing: Bool
 
-    // More details
+    // Threat Details
+    let detailIconImage: UIImage?
+    let detailIconImageColor: UIColor
+    let problemTitle: String
     let problemDescription: String
+    let fixTitle: String?
     let fixDescription: String?
-    let fileContext: JetpackThreatContext?
+    let technicalDetailsTitle: String
+    let technicalDetailsDescription: String
+    let fileName: String?
+    let fileNameBackgroundColor: UIColor
+    let fileNameFont: UIFont
+
+    // Threat Detail Action
+    let fixActionTitle: String?
+    let ignoreActionTitle: String
+    let ignoreActionMessage: String
+
+    // Threat Detail Success
+    let fixSuccessTitle: String
+    let ignoreSuccessTitle: String
+
+    // Threat Detail Error
+    let fixErrorTitle: String
+    let ignoreErrorTitle: String
+
+    // Attributed string
+    lazy var attributedFileContext: NSAttributedString? = {
+        let contextConfig = JetpackThreatContext.JetpackThreatContextRendererConfig(
+            numberAttributes: [
+                NSAttributedString.Key.font: Constants.monospacedFont,
+                NSAttributedString.Key.foregroundColor: Constants.colors.normal.numberText,
+                NSAttributedString.Key.backgroundColor: Constants.colors.normal.numberBackground
+            ],
+            highlightedNumberAttributes: [
+                NSAttributedString.Key.font: Constants.monospacedFont,
+                NSAttributedString.Key.foregroundColor: Constants.colors.normal.numberText,
+                NSAttributedString.Key.backgroundColor: Constants.colors.highlighted.numberBackground
+            ],
+            contentsAttributes: [
+                NSAttributedString.Key.font: Constants.monospacedFont,
+                NSAttributedString.Key.foregroundColor: Constants.colors.normal.text,
+                NSAttributedString.Key.backgroundColor: Constants.colors.normal.background
+            ],
+            highlightedContentsAttributes: [
+                NSAttributedString.Key.font: Constants.monospacedFont,
+                NSAttributedString.Key.foregroundColor: Constants.colors.normal.text,
+                NSAttributedString.Key.backgroundColor: Constants.colors.highlighted.numberBackground
+            ],
+            highlightedSectionAttributes: [
+                NSAttributedString.Key.font: Constants.monospacedFont,
+                NSAttributedString.Key.foregroundColor: Constants.colors.highlighted.text,
+                NSAttributedString.Key.backgroundColor: Constants.colors.highlighted.background
+            ]
+        )
+
+        return threat.context?.attributedString(with: contextConfig)
+    }()
 
     init(threat: JetpackScanThreat) {
+        self.threat = threat
+
         let status = threat.status
 
         iconImage = Self.iconImage(for: status)
@@ -21,30 +80,74 @@ struct JetpackScanThreatViewModel {
         description = Self.description(for: threat)
         isFixing = status == .fixing
 
-        // More details
+        // Threat Details
+        detailIconImage = UIImage(named: "jetpack-scan-state-error")
+        detailIconImageColor = .error
+        problemTitle = Strings.details.titles.problem
         problemDescription = threat.description
+        fixTitle = Self.fixTitle(for: threat)
         fixDescription = Self.fixDescription(for: threat)
-        fileContext = threat.context
+        technicalDetailsTitle = Strings.details.titles.technicalDetails
+        technicalDetailsDescription = Strings.details.descriptions.technicalDetails
+        fileName = threat.fileName
+        fileNameBackgroundColor = Constants.colors.normal.background
+        fileNameFont = Constants.monospacedFont
+
+        // Threat Details Action
+        fixActionTitle = Self.fixActionTitle(for: threat)
+        ignoreActionTitle = Strings.details.actions.titles.ignore
+        ignoreActionMessage = Strings.details.actions.messages.ignore
+
+        // Threat Detail Success
+        fixSuccessTitle = Strings.details.success.fix
+        ignoreSuccessTitle = Strings.details.success.ignore
+
+        // Threat Details Error
+        fixErrorTitle = Strings.details.error.fix
+        ignoreErrorTitle = Strings.details.error.ignore
+    }
+
+    private static func fixTitle(for threat: JetpackScanThreat) -> String? {
+        guard let status = threat.status else {
+            return nil
+        }
+
+        let fixable = threat.fixable?.type != nil
+
+        switch (status, fixable) {
+        case (.fixed, _):
+            return Strings.details.titles.fix.fixed
+        case (.current, false):
+            return Strings.details.titles.fix.notFixable
+        default:
+            return Strings.details.titles.fix.default
+        }
     }
 
     private static func fixDescription(for threat: JetpackScanThreat) -> String? {
         guard let fixType = threat.fixable?.type else {
-            return Strings.fixDescription.notFixable
+            return Strings.details.descriptions.fix.notFixable
         }
 
         let description: String
 
         switch fixType {
             case .replace:
-                description = Strings.fixDescription.replace
+                description = Strings.details.descriptions.fix.replace
             case .delete:
-                description = Strings.fixDescription.delete
+                description = Strings.details.descriptions.fix.delete
             case .update:
-                description = Strings.fixDescription.update
+                description = Strings.details.descriptions.fix.update
             case .edit:
-                description = Strings.fixDescription.edit
+                description = Strings.details.descriptions.fix.edit
+            case .rollback:
+                if let target = threat.fixable?.target {
+                    description = String(format: Strings.details.descriptions.fix.rollback.withTarget, target)
+                } else {
+                    description = Strings.details.descriptions.fix.rollback.withoutTarget
+                }
             default:
-                description = Strings.fixDescription.unknown
+                description = Strings.details.descriptions.fix.unknown
         }
         return description
     }
@@ -146,7 +249,72 @@ struct JetpackScanThreatViewModel {
         return image.imageWithTintColor(.white)
     }
 
+    private static func fixActionTitle(for threat: JetpackScanThreat) -> String? {
+        guard threat.fixable?.type != nil else {
+            return nil
+        }
+
+        return Strings.details.actions.titles.fixable
+    }
+
     private struct Strings {
+
+        struct details {
+
+            struct titles {
+                static let problem = NSLocalizedString("What was the problem?", comment: "Title for the problem section in the Threat Details")
+                static let technicalDetails = NSLocalizedString("The technical details", comment: "Title for the technical details section in Threat Details")
+
+                struct fix {
+                    static let `default` = NSLocalizedString("How will we fix it?", comment: "Title for the fix section in Threat Details")
+                    static let fixed = NSLocalizedString("How did Jetpack fix it?", comment: "Title for the fix section in Threat Details: Threat is fixed")
+                    static let notFixable = NSLocalizedString("Resolving the threat", comment: "Title for the fix section in Threat Details: Threat is not fixable")
+                }
+            }
+
+            struct descriptions {
+                static let technicalDetails = NSLocalizedString("Threat found in file:", comment: "Description for threat file")
+
+                struct fix {
+                    static let replace = NSLocalizedString("Jetpack Scan will replace the affected file or directory.", comment: "Description that explains how we will fix the threat")
+                    static let delete = NSLocalizedString("Jetpack Scan will delete the affected file or directory.", comment: "Description that explains how we will fix the threat")
+                    static let update = NSLocalizedString("Jetpack Scan will update to a newer version.", comment: "Description that explains how we will fix the threat")
+                    static let edit = NSLocalizedString("Jetpack Scan will edit the affected file or directory.", comment: "Description that explains how we will fix the threat")
+                    struct rollback {
+                        static let withTarget = NSLocalizedString("Jetpack Scan will rollback the affected file to the version from %1$@.", comment: "Description that explains how we will fix the threat")
+                        static let withoutTarget = NSLocalizedString("Jetpack Scan will rollback the affected file to an older (clean) version.", comment: "Description that explains how we will fix the threat")
+                    }
+
+                    static let unknown = NSLocalizedString("Jetpack Scan will resolve the threat.", comment: "Description that explains how we will fix the threat")
+
+                    static let notFixable = NSLocalizedString("Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site.", comment: "Description that explains that we are unable to auto fix the threat")
+                }
+            }
+
+            struct actions {
+
+                struct titles {
+                    static let ignore = NSLocalizedString("Ignore threat", comment: "Title for button that will ignore the threat")
+                    static let fixable = NSLocalizedString("Fix threat", comment: "Title for button that will fix the threat")
+                }
+
+                struct messages {
+                    static let ignore = NSLocalizedString("You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".", comment: "Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name.")
+                }
+            }
+
+            struct success {
+                static let fix = NSLocalizedString("The threat was successfully fixed.", comment: "Message displayed when a threat is fixed successfully.")
+                static let ignore = NSLocalizedString("Threat ignored.", comment: "Message displayed when a threat is ignored successfully.")
+            }
+
+            struct error {
+                static let fix = NSLocalizedString("Error fixing threat. Please contact our support.", comment: "Error displayed when fixing a threat fails.")
+                static let ignore = NSLocalizedString("Error ignoring threat. Please contact our support.", comment: "Error displayed when ignoring a threat fails.")
+            }
+        }
+
+
         struct titles {
             struct core {
                 static let singular = NSLocalizedString("Infected core file", comment: "Title for a threat")
@@ -184,21 +352,113 @@ struct JetpackScanThreatViewModel {
             static let database: String? = nil
             static let unknown = NSLocalizedString("Miscellaneous vulnerability", comment: "Summary description for a threat")
         }
+    }
 
-        struct fixDescription {
-            static let replace = NSLocalizedString("Jetpack Scan will replace the affected file or directory.", comment: "Description that explains how we will fix the threat")
-            static let delete = NSLocalizedString("Jetpack Scan will delete the affected file or directory.", comment: "Description that explains how we will fix the threat")
-            static let update = NSLocalizedString("Jetpack Scan will update to a newer version.", comment: "Description that explains how we will fix the threat")
-            static let edit = NSLocalizedString("Jetpack Scan will edit the affected file or directory.", comment: "Description that explains how we will fix the threat")
-            struct rollback {
-                static let withTarget = NSLocalizedString("Jetpack Scan will rollback the affected file to the version from %1$@.", comment: "Description that explains how we will fix the threat")
-                static let withoutTarget = NSLocalizedString("Jetpack Scan will rollback the affected file to an older (clean) version.", comment: "Description that explains how we will fix the threat")
+    private struct Constants {
+        static let monospacedFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .semibold)
+
+        struct colors {
+            struct normal {
+                static let text = UIColor(red: 0.17, green: 0.20, blue: 0.22, alpha: 1.00)
+                static let background = UIColor(red: 0.96, green: 0.97, blue: 0.97, alpha: 1.00)
+                static let numberText = UIColor(red: 0.39, green: 0.41, blue: 0.44, alpha: 1.00)
+                static let numberBackground = UIColor(red: 0.76, green: 0.77, blue: 0.78, alpha: 1.00)
             }
 
-            static let unknown = NSLocalizedString("Jetpack Scan will resolve the threat.", comment: "Description that explains how we will fix the threat")
-
-            static let notFixable = NSLocalizedString("Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site.", comment: "Description that explains that we are unable to auto fix the threat")
+            struct highlighted {
+                static let text = UIColor.white
+                static let background = UIColor(red: 0.84, green: 0.21, blue: 0.22, alpha: 1.00)
+                static let numberBackground = UIColor(red: 0.95, green: 0.85, blue: 0.85, alpha: 1.00)
+            }
         }
+    }
+}
+
+private extension JetpackThreatContext {
+
+    struct JetpackThreatContextRendererConfig {
+        let numberAttributes: [NSAttributedString.Key: Any]
+        let highlightedNumberAttributes: [NSAttributedString.Key: Any]
+        let contentsAttributes: [NSAttributedString.Key: Any]
+        let highlightedContentsAttributes: [NSAttributedString.Key: Any]
+        let highlightedSectionAttributes: [NSAttributedString.Key: Any]
+    }
+
+    func attributedString(with config: JetpackThreatContextRendererConfig) -> NSAttributedString? {
+
+        guard let longestLine = lines.sorted(by: { $0.contents.count > $1.contents.count }).first else {
+            return nil
+        }
+
+        // Calculates the "longest" number string length
+        // This will be used to pad the number column to make sure it's all the same size regardless of
+        // the line number length
+        //
+        // i.e. Last line number is 1000, which is 4 chars
+        // When processing line 50 we'll append 2 spaces to the end so it ends up being equal to 4
+
+        let lastNumberLength = String(lines.last?.lineNumber ?? 0).count
+
+        let longestLineLength = longestLine.contents.count
+
+        let attrString = NSMutableAttributedString()
+
+        for line in lines {
+
+            // Number attributed string
+
+            var numberStr = String(line.lineNumber)
+            let numberPadding = String().padding(toLength: lastNumberLength - numberStr.count,
+                                                 withPad: Constants.noBreakSpace, startingAt: 0)
+            numberStr = numberPadding + numberStr
+            let numberAttr = NSMutableAttributedString(string: numberStr)
+
+            // Contents attributed string
+
+            let contents = line.contents
+            let contentsPadding = String().padding(toLength: longestLineLength - contents.count,
+                                                   withPad: Constants.noBreakSpace, startingAt: 0)
+
+            let contentsStr = String(format: Constants.contentsStrFormat, Constants.columnSpacer + contents + contentsPadding)
+            let contentsAttr = NSMutableAttributedString(string: contentsStr)
+
+            // Highlight logic
+
+            if let highlights = line.highlights {
+
+                numberAttr.setAttributes(config.highlightedNumberAttributes,
+                                         range: NSRange(location: 0, length: numberStr.count))
+
+                contentsAttr.addAttributes(config.highlightedContentsAttributes,
+                                           range: NSRange(location: 0, length: contentsStr.count))
+
+                for highlight in highlights {
+                    let location = highlight.location
+                    let length = highlight.length + Constants.columnSpacer.count
+                    let range = NSRange(location: location, length: length)
+
+                    contentsAttr.addAttributes(config.highlightedSectionAttributes, range: range)
+                }
+
+            } else {
+                numberAttr.setAttributes(config.numberAttributes,
+                                         range: NSRange(location: 0, length: numberStr.count))
+
+                contentsAttr.setAttributes(config.contentsAttributes,
+                                           range: NSRange(location: 0, length: contentsStr.count))
+            }
+
+            attrString.append(numberAttr)
+            attrString.append(contentsAttr)
+        }
+
+        return attrString
+    }
+
+    private struct Constants {
+        static let contentsStrFormat = "%@\n"
+        static let noBreakSpace = "\u{00a0}"
+        static let columnSpacer = " "
     }
 }
 

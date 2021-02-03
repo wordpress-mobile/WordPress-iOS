@@ -116,6 +116,15 @@ import Foundation
         service.getFixStatusForThreats(threats, siteID: siteID, success: success, failure: failure)
     }
 
+    func ignoreThreat(_ threat: JetpackScanThreat, blog: Blog, success: @escaping() -> Void, failure: @escaping(Error) -> Void) {
+        guard let siteID = blog.dotComID?.intValue else {
+            failure(JetpackScanServiceError.invalidSiteID)
+            return
+        }
+
+        service.ignoreThreat(threat, siteID: siteID, success: success, failure: failure)
+    }
+
     // MARK: - History
     func getHistory(for blog: Blog, success: @escaping(JetpackScanHistory) -> Void, failure: @escaping(Error) -> Void) {
         guard let siteID = blog.dotComID?.intValue else {

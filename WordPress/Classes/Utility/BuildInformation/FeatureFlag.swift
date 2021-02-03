@@ -63,7 +63,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .todayWidget:
             return true
         case .unseenPosts:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         }
     }
 

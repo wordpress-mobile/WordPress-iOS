@@ -26,6 +26,17 @@ class BackupListViewController: BaseActivityListViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    @objc convenience init?(blog: Blog) {
+        precondition(blog.dotComID != nil)
+        guard let siteRef = JetpackSiteRef(blog: blog) else {
+            return nil
+        }
+
+
+        let isFreeWPCom = blog.isHostedAtWPcom && !blog.hasPaidPlan
+        self.init(site: siteRef, store: StoreContainer.shared.activity, isFreeWPCom: isFreeWPCom)
+    }
+
     // MARK: - View lifecycle
 
     override func viewDidLoad() {
