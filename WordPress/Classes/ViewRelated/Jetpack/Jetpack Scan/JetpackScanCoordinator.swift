@@ -22,7 +22,7 @@ class JetpackScanCoordinator {
 
     private(set) var scan: JetpackScan? {
         didSet {
-            threatsDidChange()
+            configureSections()
         }
     }
 
@@ -232,7 +232,7 @@ class JetpackScanCoordinator {
         }
     }
 
-    private func threatsDidChange() {
+    private func configureSections() {
         guard let threats = self.threats, let siteRef = JetpackSiteRef(blog: self.blog) else {
             sections = nil
             return
