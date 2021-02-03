@@ -499,7 +499,8 @@ extension BaseActivityListViewController: JetpackBackupStatusViewControllerDeleg
             guard let self = self else {
                 return
             }
-            // TODO: fetch backup status
+
+            self.viewModel.refresh()
         })
     }
 }
