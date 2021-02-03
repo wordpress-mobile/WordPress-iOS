@@ -20,11 +20,11 @@ struct WordPressHomeWidgetAllTime: Widget {
             kind: WPHomeWidgetAllTimeKind,
             intent: SelectSiteIntent.self,
             provider: SiteListProvider<HomeWidgetAllTimeData>(service: StatsWidgetsService(), placeholderContent: placeholderContent)
-        ) { (entry: StatsWidgetEntry) -> TodayWidgetView in
+        ) { (entry: StatsWidgetEntry) -> StatsWidgetsView in
 
             /// - TODO: ALLTIMEWIDGET - Add tracks call here
 
-            return TodayWidgetView(timelineEntry: entry)
+            return StatsWidgetsView(timelineEntry: entry)
         }
         .configurationDisplayName(LocalizableStrings.allTimeWidgetTitle)
         .description(LocalizableStrings.allTimePreviewDescription)

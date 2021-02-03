@@ -20,13 +20,13 @@ struct WordPressHomeWidgetToday: Widget {
             kind: WPHomeWidgetTodayKind,
             intent: SelectSiteIntent.self,
             provider: SiteListProvider<HomeWidgetTodayData>(service: StatsWidgetsService(), placeholderContent: placeholderContent)
-        ) { (entry: StatsWidgetEntry) -> TodayWidgetView in
+        ) { (entry: StatsWidgetEntry) -> StatsWidgetsView in
 
             defer {
                 tracks.trackWidgetUpdated()
             }
 
-            return TodayWidgetView(timelineEntry: entry)
+            return StatsWidgetsView(timelineEntry: entry)
         }
         .configurationDisplayName(LocalizableStrings.todayWidgetTitle)
         .description(LocalizableStrings.todayPreviewDescription)

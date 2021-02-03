@@ -1,7 +1,7 @@
 import SwiftUI
 import WidgetKit
 
-struct TodayWidgetView: View {
+struct StatsWidgetsView: View {
     @Environment(\.widgetFamily) var family: WidgetFamily
 
     let timelineEntry: StatsWidgetEntry
@@ -20,18 +20,18 @@ struct TodayWidgetView: View {
                 switch family {
 
                 case .systemSmall:
-                    TodayWidgetSmallView(content: content,
+                    SingleStatView(content: content,
                                          widgetTitle: LocalizableStrings.todayWidgetTitle,
-                                         viewsTitle: LocalizableStrings.viewsTitle)
+                                         title: LocalizableStrings.viewsTitle)
                         .padding()
 
                 case .systemMedium:
-                    TodayWidgetMediumView(content: content,
+                    FourStatsView(content: content,
                                           widgetTitle: LocalizableStrings.todayWidgetTitle,
-                                          viewsTitle: LocalizableStrings.viewsTitle,
-                                          visitorsTitle: LocalizableStrings.visitorsTitle,
-                                          likesTitle: LocalizableStrings.likesTitle,
-                                          commentsTitle: LocalizableStrings.commentsTitle)
+                                          upperLeftTitle: LocalizableStrings.viewsTitle,
+                                          upperRightTitle: LocalizableStrings.visitorsTitle,
+                                          lowerLeftTitle: LocalizableStrings.likesTitle,
+                                          lowerRightTitle: LocalizableStrings.commentsTitle)
                         .padding()
 
                 default:
@@ -41,18 +41,18 @@ struct TodayWidgetView: View {
                 switch family {
 
                 case .systemSmall:
-                    TodayWidgetSmallView(content: content,
+                    SingleStatView(content: content,
                                          widgetTitle: LocalizableStrings.allTimeWidgetTitle,
-                                         viewsTitle: LocalizableStrings.viewsTitle)
+                                         title: LocalizableStrings.viewsTitle)
                         .padding()
 
                 case .systemMedium:
-                    TodayWidgetMediumView(content: content,
+                    FourStatsView(content: content,
                                           widgetTitle: LocalizableStrings.allTimeWidgetTitle,
-                                          viewsTitle: LocalizableStrings.viewsTitle,
-                                          visitorsTitle: LocalizableStrings.visitorsTitle,
-                                          likesTitle: LocalizableStrings.postsTitle,
-                                          commentsTitle: LocalizableStrings.bestViewsTitle)
+                                          upperLeftTitle: LocalizableStrings.viewsTitle,
+                                          upperRightTitle: LocalizableStrings.visitorsTitle,
+                                          lowerLeftTitle: LocalizableStrings.postsTitle,
+                                          lowerRightTitle: LocalizableStrings.bestViewsTitle)
                         .padding()
 
                 default:

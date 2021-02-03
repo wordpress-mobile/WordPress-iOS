@@ -1,9 +1,9 @@
 import SwiftUI
 
-struct TodayWidgetSmallView: View {
+struct SingleStatView: View {
     let content: HomeWidgetData
     let widgetTitle: LocalizedStringKey
-    let viewsTitle: LocalizedStringKey
+    let title: LocalizedStringKey
 
     private var views: Int {
         (content as? HomeWidgetTodayData)?.stats.views ?? (content as? HomeWidgetAllTimeData)?.stats.views ?? 0
@@ -15,7 +15,7 @@ struct TodayWidgetSmallView: View {
                 FlexibleCard(axis: .vertical, title: widgetTitle, value: .description(content.siteName))
 
                 Spacer()
-                VerticalCard(title: viewsTitle, value: views, largeText: true)
+                VerticalCard(title: title, value: views, largeText: true)
             }
             Spacer()
         }
