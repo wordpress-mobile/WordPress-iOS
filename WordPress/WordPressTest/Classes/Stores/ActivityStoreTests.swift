@@ -235,7 +235,7 @@ class ActivityServiceRemoteMock: ActivityServiceRemote {
     }
 
     override func getRewindStatus(_ siteID: Int, success: @escaping (RewindStatus) -> Void, failure: @escaping (Error) -> Void) {
-        
+
     }
 }
 
