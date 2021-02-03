@@ -3,14 +3,24 @@ import CocoaLumberjack
 import WordPressShared
 import WordPressUI
 
+protocol JetpackBackupStatusViewControllerDelegate: class {
+    func didFinishViewing(_ controller: JetpackBackupStatusViewController)
+}
+
 class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
 
     // MARK: - Properties
 
+    weak var delegate: JetpackBackupStatusViewControllerDelegate?
+
+    // MARK: - Pivate Properties
+
     private let downloadID: Int
 
     private lazy var coordinator: JetpackBackupStatusCoordinator = {
-        return JetpackBackupStatusCoordinator(site: self.site, downloadID: self.downloadID, view: self)
+        return JetpackBackupStatusCoordinator(site: self.site,
+                                              downloadID: self.downloadID,
+                                              view: self)
     }()
 
     // MARK: - Initialization
@@ -47,6 +57,12 @@ class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
         super.viewWillDisappear(animated)
         coordinator.viewWillDisappear()
     }
+
+    // MARK: - Override
+
+    override func primaryButtonTapped() {
+        delegate?.didFinishViewing(self)
+    }
 }
 
 extension JetpackBackupStatusViewController: JetpackBackupStatusView {
@@ -59,11 +75,12 @@ extension JetpackBackupStatusViewController: JetpackBackupStatusView {
         statusView.update(progress: progress)
     }
 
-    func showError() {
-        // TODO
+    func showBackupStatusUpdateFailed() {
+        let statusFailedVC = JetpackBackupStatusFailedViewController(site: site, activity: activity)
+        self.navigationController?.pushViewController(statusFailedVC, animated: true)
     }
 
-    func showComplete(_ backup: JetpackBackup) {
+    func showBackupComplete(_ backup: JetpackBackup) {
         let completeVC = JetpackBackupCompleteViewController(site: site, activity: activity, backup: backup)
         self.navigationController?.pushViewController(completeVC, animated: true)
     }

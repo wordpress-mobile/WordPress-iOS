@@ -1,7 +1,7 @@
 import UIKit
 import WordPressKit
 
-class SiteDesignContentCollectionViewController: CollapsableHeaderViewController {
+class SiteDesignContentCollectionViewController: CollapsableHeaderViewController, UIPopoverPresentationControllerDelegate {
     let completion: SiteDesignStep.SiteDesignSelection
     let itemSpacing: CGFloat = 20
     static let aspectRatio: CGFloat = 0.75
@@ -15,8 +15,22 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     var selectedIndexPath: IndexPath? = nil
     var siteDesigns: [RemoteSiteDesign] = [] {
         didSet {
+            if oldValue.count == 0 {
+                scrollableView.setContentOffset(.zero, animated: false)
+            }
             contentSizeWillChange()
             collectionView.reloadData()
+        }
+    }
+    var previewDeviceButtonItem: UIBarButtonItem?
+    var selectedPreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice.default {
+        didSet {
+            collectionView.reloadData()
+            if let indexPath = selectedIndexPath {
+                DispatchQueue.main.async {
+                    self.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                }
+            }
         }
     }
 
@@ -61,6 +75,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         fetchSiteDesigns()
         configureCloseButton()
         configureSkipButton()
+        configurePreviewDeviceButton()
         SiteCreationAnalyticsHelper.trackSiteDesignViewed()
         navigationItem.backButtonTitle = NSLocalizedString("Design", comment: "Shortened version of the main title to be used in back navigation")
     }
@@ -120,6 +135,12 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         navigationItem.rightBarButtonItem = skip
     }
 
+    private func configurePreviewDeviceButton() {
+        let button = UIBarButtonItem(image: UIImage(named: "icon-devices"), style: .plain, target: self, action: #selector(previewDeviceButtonTapped))
+        previewDeviceButtonItem = button
+        navigationItem.rightBarButtonItems?.append(button)
+    }
+
     private func configureCloseButton() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: "Cancel site creation"), style: .done, target: self, action: #selector(closeButtonTapped))
     }
@@ -127,6 +148,18 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     @objc func skipButtonTapped(_ sender: Any) {
         SiteCreationAnalyticsHelper.trackSiteDesignSkipped()
         completion(nil)
+    }
+
+    @objc private func previewDeviceButtonTapped() {
+        let popoverContentController = PreviewDeviceSelectionViewController()
+        popoverContentController.selectedOption = selectedPreviewDevice
+        popoverContentController.dismissHandler = { [weak self] device in
+            self?.selectedPreviewDevice = device
+        }
+
+        popoverContentController.modalPresentationStyle = .popover
+        popoverContentController.popoverPresentationController?.delegate = self
+        self.present(popoverContentController, animated: true, completion: nil)
     }
 
     @objc func closeButtonTapped(_ sender: Any) {
@@ -147,7 +180,9 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         guard let selectedIndexPath = selectedIndexPath else { return }
 
         let design = siteDesigns[selectedIndexPath.row]
-        let previewVC = SiteDesignPreviewViewController(siteDesign: design, completion: completion)
+        let previewVC = SiteDesignPreviewViewController(siteDesign: design, selectedPreviewDevice: selectedPreviewDevice, onDismissWithDeviceSelected: { [weak self] device in
+            self?.selectedPreviewDevice = device
+        }, completion: completion)
         let navController = GutenbergLightNavigationController(rootViewController: previewVC)
         if #available(iOS 13.0, *) {
             navController.modalPresentationStyle = .pageSheet
@@ -188,7 +223,16 @@ extension SiteDesignContentCollectionViewController: UICollectionViewDataSource 
         }
 
         let siteDesign = siteDesigns[indexPath.row]
-        cell.previewURL = siteDesign.screenshot
+        cell.previewURL = {
+            switch selectedPreviewDevice {
+            case .mobile:
+                return siteDesign.mobileScreenshot
+            case .tablet:
+                return siteDesign.tabletScreenshot
+            default:
+                return siteDesign.screenshot
+            }
+        }()
         cell.isAccessibilityElement = true
         cell.accessibilityLabel = siteDesign.title
 
@@ -230,5 +274,32 @@ extension SiteDesignContentCollectionViewController: UICollectionViewDelegate {
 extension SiteDesignContentCollectionViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         fetchSiteDesigns()
+    }
+}
+
+// MARK: UIPopoverPresentationDelegate
+extension SiteDesignContentCollectionViewController {
+    func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+        guard popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
+            return
+        }
+
+        popoverPresentationController.permittedArrowDirections = .up
+        popoverPresentationController.barButtonItem = previewDeviceButtonItem
+    }
+
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // Reset our source rect and view for a transition to a new size
+        guard let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController else {
+                return
+        }
+
+        prepareForPopoverPresentation(popoverPresentationController)
     }
 }

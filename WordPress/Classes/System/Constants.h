@@ -69,6 +69,7 @@ extern NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey;
 
 /// iOS 14 Widget Constants
 extern NSString *const WPHomeWidgetTodayKind;
+extern NSString *const WPHomeWidgetAllTimeKind;
 extern NSString *const WPHomeWidgetTodayCount;
 
 /// Apple ID Constants
