@@ -8,6 +8,7 @@ struct JetpackScanThreatViewModel {
     let iconImageColor: UIColor
     let title: String
     let description: String?
+    let isFixing: Bool
 
     // Threat Details
     let detailIconImage: UIImage?
@@ -77,6 +78,7 @@ struct JetpackScanThreatViewModel {
         iconImageColor = Self.iconColor(for: status)
         title = Self.title(for: threat)
         description = Self.description(for: threat)
+        isFixing = status == .fixing
 
         // Threat Details
         detailIconImage = UIImage(named: "jetpack-scan-state-error")
@@ -151,6 +153,10 @@ struct JetpackScanThreatViewModel {
     }
 
     private static func description(for threat: JetpackScanThreat) -> String? {
+        guard threat.status != .fixing else {
+            return Self.fixDescription(for: threat)
+        }
+
         let type = threat.type
         let description: String?
 
@@ -194,14 +200,14 @@ struct JetpackScanThreatViewModel {
 
         case .plugin:
             if let plugin = threat.`extension` {
-                title = String(format: Strings.titles.plugin.multiple, plugin.name, plugin.version)
+                title = String(format: Strings.titles.plugin.multiple, plugin.slug, plugin.version)
             } else {
                 title = Strings.titles.plugin.singular
             }
 
         case .theme:
             if let plugin = threat.`extension` {
-                title = String(format: Strings.titles.theme.multiple, plugin.name, plugin.version)
+                title = String(format: Strings.titles.theme.multiple, plugin.slug, plugin.version)
             } else {
                 title = Strings.titles.theme.singular
             }

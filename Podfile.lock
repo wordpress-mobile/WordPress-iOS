@@ -504,7 +504,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
   - WordPressAuthenticator (~> 1.34.0)
-  - WordPressKit (~> 4.26-beta)
+  - WordPressKit (~> 4.26-beta.8)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.14.0)
   - WordPressUI (~> 1.9.0)
@@ -765,6 +765,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: 43c648e933770b054aa6401caf9f99f53fd6b0e4
+PODFILE CHECKSUM: aceaecff075beee85fa463cb7f39ab112f52e2e0
 
 COCOAPODS: 1.10.0
