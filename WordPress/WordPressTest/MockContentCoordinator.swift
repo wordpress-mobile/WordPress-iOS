@@ -33,6 +33,10 @@ class MockContentCoordinator: ContentCoordinator {
 
     }
 
+    func displayScanWithSiteID(_ siteID: NSNumber?) throws {
+
+    }
+
     var streamWasDisplayed = false
     var streamSiteID: NSNumber?
     func displayStreamWithSiteID(_ siteID: NSNumber?) throws {
