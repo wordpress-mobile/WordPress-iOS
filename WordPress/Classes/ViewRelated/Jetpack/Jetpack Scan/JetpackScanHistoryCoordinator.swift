@@ -131,7 +131,8 @@ class JetpackScanHistoryCoordinator {
         }
 
         let grouping: [DateComponents: [JetpackScanThreat]] = Dictionary(grouping: threats) { (threat) -> DateComponents in
-            return Calendar.current.dateComponents([.day, .year, .month], from: threat.firstDetected)
+            let sortDate = threat.fixedOn ?? threat.firstDetected
+            return Calendar.current.dateComponents([.day, .year, .month], from: sortDate)
         }
 
         let keys = grouping.keys
