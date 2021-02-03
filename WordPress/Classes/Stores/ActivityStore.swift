@@ -28,12 +28,15 @@ enum ActivityAction: Action {
 enum ActivityQuery {
     case activities(site: JetpackSiteRef)
     case restoreStatus(site: JetpackSiteRef)
+    case backupStatus(site: JetpackSiteRef)
 
     var site: JetpackSiteRef {
         switch self {
         case .activities(let site):
             return site
         case .restoreStatus(let site):
+            return site
+        case .backupStatus(let site):
             return site
         }
     }
@@ -51,8 +54,12 @@ struct ActivityStoreState {
     var rewindStatus = [JetpackSiteRef: RewindStatus]()
     var fetchingRewindStatus = [JetpackSiteRef: Bool]()
 
+    var backupStatus = [JetpackSiteRef: JetpackBackup]()
+    var fetchingBackupStatus = [JetpackSiteRef: Bool]()
+
     // This needs to be `fileprivate` because `DelayStateWrapper` is private.
     fileprivate var rewindStatusRetries = [JetpackSiteRef: DelayStateWrapper]()
+    fileprivate var backupStatusRetries = [JetpackSiteRef: DelayStateWrapper]()
 }
 
 
@@ -96,10 +103,12 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
             transaction { state in
                 state.activities = [:]
                 state.rewindStatus = [:]
+                state.backupStatus = [:]
                 state.rewindStatusRetries = [:]
                 state.lastFetch = [:]
                 state.fetchingActivities = [:]
                 state.fetchingRewindStatus = [:]
+                state.fetchingBackupStatus = [:]
             }
             return
         }
@@ -116,6 +125,12 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
                 fetchRewindStatus(site: $0)
         }
 
+        // Fetching Backup Status
+        sitesStatusesToFetch
+            .filter { state.fetchingBackupStatus[$0] != true }
+            .forEach {
+                fetchBackupStatus(site: $0)
+        }
     }
     private var sitesToFetch: [JetpackSiteRef] {
         return activeQueries
@@ -241,6 +256,12 @@ extension ActivityStore {
             failure: { [actionDispatcher] error in
                 actionDispatcher.dispatch(ActivityAction.rewindStatusUpdateFailed(site: site, error: error))
         })
+    }
+
+    func fetchBackupStatus(site: JetpackSiteRef) {
+        state.fetchingBackupStatus[site] = true
+
+        // Fetch status
     }
 
 }
