@@ -21,6 +21,7 @@ enum ActivityAction: Action {
     case rewindStatusUpdateFailed(site: JetpackSiteRef, error: Error)
     case rewindStatusUpdateTimedOut(site: JetpackSiteRef)
 
+    case refreshBackupStatus(site: JetpackSiteRef)
     case backupStatusUpdated(site: JetpackSiteRef, status: JetpackBackup)
     case backupStatusUpdateFailed(site: JetpackSiteRef, error: Error)
     case backupStatusUpdateTimedOut(site: JetpackSiteRef)
@@ -229,6 +230,8 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
             refreshGroups(site: site, afterDate: afterDate, beforeDate: beforeDate)
         case .resetGroups(let site):
             resetGroups(site: site)
+        case .refreshBackupStatus(let site):
+            fetchBackupStatus(site: site)
         case .backupStatusUpdated(let site, let status):
             backupStatusUpdated(site: site, status: status)
         case .backupStatusUpdateFailed(let site, _):
@@ -543,7 +546,7 @@ private extension ActivityStore {
         if let progress = status.progress, progress > 0 {
             delayedRetryFetchBackupStatus(site: site)
         } else {
-            // Show nothing or show complete cell
+            // TODO: show download cell
         }
     }
 
