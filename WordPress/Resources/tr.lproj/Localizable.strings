@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-21 15:54:08+0000 */
+/* Translation-Revision-Date: 2021-02-01 11:34:26+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -6993,7 +6993,7 @@
 "Visit %@ for more" = "daha fazlası için %@ ziyaret edin";
 
 /* Title for the button that will open a link to this site. */
-"Visit site" = "Visit site";
+"Visit site" = "Siteyi ziyaret et";
 
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "Sık karşılaşılan sorulara cevaplar almak ya da daha fazla yardım amacıyla bize ulaşmak için yardım merkezini ziyaret edin.";
