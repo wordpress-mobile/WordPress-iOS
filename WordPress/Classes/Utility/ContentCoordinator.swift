@@ -71,7 +71,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     func displayScanWithSiteID(_ siteID: NSNumber?) throws {
-        guard let blog = blogWithBlogID(siteID) else {
+        guard let blog = blogWithBlogID(siteID), blog.isScanAllowed() else {
             throw DisplayError.missingParameter
         }
 
