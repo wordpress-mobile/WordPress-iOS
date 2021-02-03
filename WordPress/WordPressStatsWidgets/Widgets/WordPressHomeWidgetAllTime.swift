@@ -7,7 +7,6 @@ struct WordPressHomeWidgetAllTime: Widget {
 
     private let placeholderContent = HomeWidgetAllTimeData(siteID: 0,
                                                         siteName: "My WordPress Site",
-                                                        iconURL: nil,
                                                         url: "",
                                                         timeZone: TimeZone.current,
                                                         date: Date(),

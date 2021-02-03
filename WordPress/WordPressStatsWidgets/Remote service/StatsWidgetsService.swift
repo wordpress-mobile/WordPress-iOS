@@ -74,7 +74,6 @@ class StatsWidgetsService {
 
             let newWidgetData = HomeWidgetTodayData(siteID: widgetData.siteID,
                                                     siteName: widgetData.siteName,
-                                                    iconURL: widgetData.iconURL,
                                                     url: widgetData.url,
                                                     timeZone: widgetData.timeZone,
                                                     date: Date(),
@@ -109,7 +108,6 @@ class StatsWidgetsService {
 
             let newWidgetData = HomeWidgetAllTimeData(siteID: widgetData.siteID,
                                                       siteName: widgetData.siteName,
-                                                      iconURL: widgetData.iconURL,
                                                       url: widgetData.url,
                                                       timeZone: widgetData.timeZone,
                                                       date: Date(),

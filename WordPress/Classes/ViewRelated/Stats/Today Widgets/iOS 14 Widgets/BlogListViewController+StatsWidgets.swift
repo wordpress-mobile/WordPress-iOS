@@ -51,7 +51,6 @@ extension BlogListViewController {
 
                 sitesList[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
                                                                  siteName: siteName,
-                                                                 iconURL: nil,
                                                                  url: siteURL,
                                                                  timeZone: timeZone,
                                                                  date: date,
@@ -62,7 +61,6 @@ extension BlogListViewController {
 
                 sitesList[blogID.intValue] = HomeWidgetAllTimeData(siteID: blogID.intValue,
                                                                    siteName: siteName,
-                                                                   iconURL: nil,
                                                                    url: siteURL,
                                                                    timeZone: timeZone,
                                                                    date: date,

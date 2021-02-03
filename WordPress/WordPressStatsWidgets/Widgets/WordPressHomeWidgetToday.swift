@@ -7,7 +7,6 @@ struct WordPressHomeWidgetToday: Widget {
 
     private let placeholderContent = HomeWidgetTodayData(siteID: 0,
                                                         siteName: "My WordPress Site",
-                                                        iconURL: nil,
                                                         url: "",
                                                         timeZone: TimeZone.current,
                                                         date: Date(),
