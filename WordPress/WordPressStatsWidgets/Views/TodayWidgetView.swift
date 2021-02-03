@@ -21,17 +21,38 @@ struct TodayWidgetView: View {
 
                 case .systemSmall:
                     TodayWidgetSmallView(content: content,
-                                         widgetTitle: LocalizableStrings.widgetTitle,
+                                         widgetTitle: LocalizableStrings.todayWidgetTitle,
                                          viewsTitle: LocalizableStrings.viewsTitle)
                         .padding()
 
                 case .systemMedium:
                     TodayWidgetMediumView(content: content,
-                                          widgetTitle: LocalizableStrings.widgetTitle,
+                                          widgetTitle: LocalizableStrings.todayWidgetTitle,
                                           viewsTitle: LocalizableStrings.viewsTitle,
                                           visitorsTitle: LocalizableStrings.visitorsTitle,
                                           likesTitle: LocalizableStrings.likesTitle,
                                           commentsTitle: LocalizableStrings.commentsTitle)
+                        .padding()
+
+                default:
+                    Text("View is unavailable")
+                }
+            } else if let content =  content as? HomeWidgetAllTimeData {
+                switch family {
+
+                case .systemSmall:
+                    TodayWidgetSmallView(content: content,
+                                         widgetTitle: LocalizableStrings.allTimeWidgetTitle,
+                                         viewsTitle: LocalizableStrings.viewsTitle)
+                        .padding()
+
+                case .systemMedium:
+                    TodayWidgetMediumView(content: content,
+                                          widgetTitle: LocalizableStrings.allTimeWidgetTitle,
+                                          viewsTitle: LocalizableStrings.viewsTitle,
+                                          visitorsTitle: LocalizableStrings.visitorsTitle,
+                                          likesTitle: LocalizableStrings.postsTitle,
+                                          commentsTitle: LocalizableStrings.bestViewsTitle)
                         .padding()
 
                 default:

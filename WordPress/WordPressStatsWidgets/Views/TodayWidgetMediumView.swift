@@ -1,7 +1,7 @@
  import SwiftUI
 
  struct TodayWidgetMediumView: View {
-    let content: HomeWidgetTodayData
+    let content: HomeWidgetData
     let widgetTitle: LocalizedStringKey
     let viewsTitle: LocalizedStringKey
     let visitorsTitle: LocalizedStringKey
@@ -16,15 +16,15 @@
             Spacer()
             HStack {
                 makeColumn(upperTitle: viewsTitle,
-                           upperValue: content.stats.views,
+                           upperValue: (content as? HomeWidgetTodayData)?.stats.views ?? (content as? HomeWidgetAllTimeData)?.stats.views ?? 0,
                            lowerTitle: likesTitle,
-                           lowerValue: content.stats.likes)
+                           lowerValue: (content as? HomeWidgetTodayData)?.stats.likes ?? (content as? HomeWidgetAllTimeData)?.stats.posts ?? 0)
                 Spacer()
                 Spacer()
                 makeColumn(upperTitle: visitorsTitle,
-                           upperValue: content.stats.visitors,
+                           upperValue: (content as? HomeWidgetTodayData)?.stats.visitors ?? (content as? HomeWidgetAllTimeData)?.stats.visitors ?? 0,
                            lowerTitle: commentsTitle,
-                           lowerValue: content.stats.comments)
+                           lowerValue: (content as? HomeWidgetTodayData)?.stats.comments ?? (content as? HomeWidgetAllTimeData)?.stats.bestViews ?? 0)
                 Spacer()
             }
         }

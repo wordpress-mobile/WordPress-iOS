@@ -41,6 +41,8 @@ class StatsWidgetsService {
             // we need to do like this as there is no unique service call
             if let widgetData = widgetData as? HomeWidgetTodayData {
                 fetchTodayStats(service: service, widgetData: widgetData, completion: completion)
+            } else if let widgetData = widgetData as? HomeWidgetAllTimeData {
+                fetchAllTimeStats(service: service, widgetData: widgetData, completion: completion)
             }
             /// - TODO: STATSWIDGETS - add the other cases corresponding to the other widgets here
         } catch {
@@ -87,6 +89,43 @@ class StatsWidgetsService {
             }
             self.state = .ready
         }
+    }
+
+    private func fetchAllTimeStats(service: StatsServiceRemoteV2,
+                                   widgetData: HomeWidgetAllTimeData,
+                                   completion: @escaping (Result<HomeWidgetData, Error>) -> Void) {
+
+        service.getInsight { [weak self] (insight: StatsAllTimesInsight?, error) in
+
+            guard let self = self else {
+                return
+            }
+
+            if let error = error {
+                completion(.failure(error))
+                self.state = .error
+                return
+            }
+
+            let newWidgetData = HomeWidgetAllTimeData(siteID: widgetData.siteID,
+                                                      siteName: widgetData.siteName,
+                                                      iconURL: widgetData.iconURL,
+                                                      url: widgetData.url,
+                                                      timeZone: widgetData.timeZone,
+                                                      date: Date(),
+                                                      stats: AllTimeWidgetStats(views:
+                                                                                    insight?.viewsCount,
+                                                                                visitors: insight?.visitorsCount,
+                                                                                posts: insight?.postsCount,
+                                                                                bestViews: insight?.bestViewsPerDayCount))
+            completion(.success(newWidgetData))
+            DispatchQueue.global().async {
+                // update the item in the local cache
+                HomeWidgetAllTimeData.setItem(item: newWidgetData)
+            }
+            self.state = .ready
+        }
+
     }
 }
 

@@ -29,8 +29,8 @@ struct WordPressHomeWidgetToday: Widget {
 
             return TodayWidgetView(timelineEntry: entry)
         }
-        .configurationDisplayName(LocalizableStrings.widgetTitle)
-        .description(LocalizableStrings.previewDescription)
+        .configurationDisplayName(LocalizableStrings.todayWidgetTitle)
+        .description(LocalizableStrings.todayPreviewDescription)
         .supportedFamilies(FeatureFlag.todayWidget.enabled ? [.systemSmall, .systemMedium] : [])
     }
 }
