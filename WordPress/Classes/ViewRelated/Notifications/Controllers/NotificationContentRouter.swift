@@ -85,6 +85,9 @@ struct NotificationContentRouter {
             try coordinator.displayFollowersWithSiteID(range.siteID, expirationTime: expirationFiveMinutes)
         case .user:
             try coordinator.displayStreamWithSiteID(range.siteID)
+        case .scan:
+            try coordinator.displayScanWithSiteID(range.siteID)
+
         default:
             throw DefaultContentCoordinator.DisplayError.unsupportedType
         }
