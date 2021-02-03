@@ -1,7 +1,7 @@
 {
   "project_name": "WordPress-iOS",
   "branch": "trunk",
-  "pinned_hash": "63b94d21658bbe9f7abfd5dd66f37ed861233ac2",
+  "pinned_hash": "2ed6e69e0620cd85fddd186ef4cc82290219a70e",
   "files_to_copy": [
     {
       "file": "iOS/WPiOS/wpcom_app_credentials",
@@ -26,6 +26,11 @@
     {
       "file": "iOS/WPiOS/project.env",
       "destination": ".configure-files/project.env",
+      "encrypt": true
+    },
+    {
+      "file": "iOS/app_store_connect_fastlane_api_key.json",
+      "destination": ".configure-files/app_store_connect_fastlane_api_key.json",
       "encrypt": true
     }
   ],
