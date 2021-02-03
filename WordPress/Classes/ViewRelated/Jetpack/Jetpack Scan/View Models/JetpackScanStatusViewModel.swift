@@ -7,7 +7,7 @@ struct JetpackScanStatusViewModel {
 
     private(set) var primaryButtonTitle: String?
     private(set) var secondaryButtonTitle: String?
-    private(set) var progress: Float? = nil
+    private(set) var progress: Float?
 
     private let coordinator: JetpackScanCoordinator
 
@@ -45,30 +45,36 @@ struct JetpackScanStatusViewModel {
             secondaryButtonTitle = Strings.scanNowTitle
             secondaryButtonAction = .triggerScan
 
-        case .hasThreats, .hasFixableThreats:
-            let threatCount = scan.threats?.count ?? 0
-            let blogName = blog.title ?? ""
-
-            let descriptionTitle: String
-            if threatCount == 1 {
-                descriptionTitle = String(format: Strings.hasSingleThreatDescriptionFormat, blogName)
-            } else {
-                descriptionTitle = String(format: Strings.hasThreatsDescriptionFormat, threatCount, blogName)
-            }
-
+        case .hasThreats, .hasFixableThreats, .fixingThreats:
             imageName = "jetpack-scan-state-error"
-            title = Strings.hasThreatsTitle
-            description = descriptionTitle
 
-            if state == .hasThreats {
-                secondaryButtonTitle = Strings.scanNowTitle
-                secondaryButtonAction = .triggerScan
+            if state == .fixingThreats {
+                title = Strings.fixing.title
+                description = Strings.fixing.details
             } else {
-                primaryButtonTitle = Strings.fixAllTitle
-                primaryButtonAction = .fixAll
+                let threatCount = scan.threats?.count ?? 0
+                let blogName = blog.title ?? ""
 
-                secondaryButtonTitle = Strings.scanAgainTitle
-                secondaryButtonAction = .triggerScan
+                let descriptionTitle: String
+                if threatCount == 1 {
+                    descriptionTitle = String(format: Strings.hasSingleThreatDescriptionFormat, blogName)
+                } else {
+                    descriptionTitle = String(format: Strings.hasThreatsDescriptionFormat, threatCount, blogName)
+                }
+
+                title = Strings.hasThreatsTitle
+                description = descriptionTitle
+
+                if state == .hasThreats {
+                    secondaryButtonTitle = Strings.scanNowTitle
+                    secondaryButtonAction = .triggerScan
+                } else {
+                    primaryButtonTitle = Strings.fixAllTitle
+                    primaryButtonAction = .fixAll
+
+                    secondaryButtonTitle = Strings.scanAgainTitle
+                    secondaryButtonAction = .triggerScan
+                }
             }
 
         case .preparingToScan:
@@ -141,6 +147,7 @@ struct JetpackScanStatusViewModel {
         case hasFixableThreats
         case preparingToScan
         case scanning
+        case fixingThreats
         case error
     }
 
@@ -158,6 +165,8 @@ struct JetpackScanStatusViewModel {
 
                 viewState = .noThreats
             }
+        case .fixingThreats:
+            viewState = .fixingThreats
 
         case .provisioning:
             viewState = .preparingToScan
@@ -209,6 +218,10 @@ struct JetpackScanStatusViewModel {
         static let errorTitle = NSLocalizedString("Something went wrong", comment: "Title for a label that appears when the scan failed")
         static let errorDescription = NSLocalizedString("Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team.", comment: "Description for a label when the scan has failed")
 
+        struct fixing {
+            static let title = NSLocalizedString("Fixing Threats", comment: "Subtitle displayed while the server is fixing threats")
+            static let details = NSLocalizedString("We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.", comment: "Detail text display informing the user that we're fixing threats")
+        }
         // Buttons
         static let contactSupportTitle = NSLocalizedString("Contact Support", comment: "Button title that opens the support page")
         static let retryScanTitle = NSLocalizedString("Retry Scan", comment: "Button title that triggers a scan")

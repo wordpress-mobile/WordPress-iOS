@@ -26,7 +26,22 @@ class JetpackScanCoordinator {
 
     /// Returns the threats if we're in the idle state
     var threats: [JetpackScanThreat]? {
-        return scan?.state == .idle ? scan?.threats : nil
+        let returnThreats: [JetpackScanThreat]?
+
+        if scan?.state == .fixingThreats {
+            returnThreats = scan?.threatFixStatus?.compactMap { $0.threat } ?? nil
+        } else {
+            returnThreats = scan?.state == .idle ? scan?.threats : nil
+        }
+
+        // Sort the threats by date then by threat ID
+        return returnThreats?.sorted(by: {
+            if $0.firstDetected != $1.firstDetected {
+                return $0.firstDetected > $1.firstDetected
+            }
+
+            return $0.id > $1.id
+        })
     }
 
     private var actionButtonState: ErrorButtonAction?
@@ -48,8 +63,9 @@ class JetpackScanCoordinator {
     }
 
     public func refreshData() {
-        service.getScan(for: blog) { [weak self] scanObj in
+        service.getScanWithFixableThreatsStatus(for: blog) { [weak self] scanObj in
             self?.refreshDidSucceed(with: scanObj)
+
         } failure: { [weak self] error in
             DDLogError("Error fetching scan object: \(String(describing: error?.localizedDescription))")
 
@@ -142,8 +158,28 @@ class JetpackScanCoordinator {
             return
         }
 
-        service.fixThreats(fixableThreats, blog: blog) {  [weak self] (response) in
-            self?.refreshData()
+        // Optimistically trigger the fixing state
+        // and map all the fixable threats to in progress threats
+        scan?.state = .fixingThreats
+        scan?.threatFixStatus = fixableThreats.compactMap {
+            var threatCopy = $0
+            threatCopy.status = .fixing
+            return JetpackThreatFixStatus(with: threatCopy)
+        }
+
+        // Refresh the view to show the new scan state
+        view.render()
+
+        startPolling(triggerImmediately: false)
+
+        service.fixThreats(fixableThreats, blog: blog) { [weak self] (response) in
+            if response.success == false {
+                DDLogError("Error starting scan: Scan response returned false")
+                self?.stopPolling()
+                self?.view.showScanStartError()
+            } else {
+                self?.refreshData()
+            }
         } failure: { [weak self] (error) in
             DDLogError("Error fixing threats: \(String(describing: error.localizedDescription))")
 
@@ -196,7 +232,7 @@ class JetpackScanCoordinator {
     /// Starts or stops the refresh timer based on the status of the scan
     private func togglePolling() {
         switch scan?.state {
-        case .provisioning, .scanning:
+        case .provisioning, .scanning, .fixingThreats:
             startPolling()
         default:
             stopPolling()
