@@ -9,6 +9,11 @@ protocol JetpackScanView {
     func showScanStartError()
 
     func presentAlert(_ alert: UIAlertController)
+
+    func showFixThreatSuccess(for threat: JetpackScanThreat)
+    func showIgnoreThreatSuccess(for threat: JetpackScanThreat)
+    func showFixThreatError(for threat: JetpackScanThreat)
+    func showIgnoreThreatError(for threat: JetpackScanThreat)
 }
 
 class JetpackScanCoordinator {
@@ -182,8 +187,24 @@ class JetpackScanCoordinator {
         }
     }
 
-    public func ignoreThreat(threat: JetpackScanThreat) {
+    public func fixThreat(threat: JetpackScanThreat) {
+        service.fixThreat(threat, blog: blog, success: { [weak self] _ in
+            self?.view.showFixThreatSuccess(for: threat)
+        }, failure: { [weak self] error in
+            DDLogError("Error fixing threat: \(error.localizedDescription)")
 
+            self?.view.showFixThreatError(for: threat)
+        })
+    }
+
+    public func ignoreThreat(threat: JetpackScanThreat) {
+        service.ignoreThreat(threat, blog: blog, success: { [weak self] in
+            self?.view.showIgnoreThreatSuccess(for: threat)
+        }, failure: { [weak self] error in
+            DDLogError("Error ignoring threat: \(error.localizedDescription)")
+
+            self?.view.showIgnoreThreatError(for: threat)
+        })
     }
 
     public func openSupport() {

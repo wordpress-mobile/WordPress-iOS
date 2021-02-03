@@ -184,9 +184,15 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     private func fetchAddresses(_ searchTerm: String) {
         isShowingError = false
         data = []
-        // If the segment ID isn't set (which could happen in the case of the user skipping the site design selection) we'll fall through and search for dotcom only domains.
-        guard let segmentID = siteCreator.segment?.identifier ?? siteCreator.design?.segmentID else {
-            fetchDotComAddresses(searchTerm)
+
+        if FeatureFlag.siteCreationHomePagePicker.enabled {
+            fetchDotComAndDotBlogAddresses(searchTerm)
+            return
+        }
+        // If siteCreationHomePagePicker is disabled we'll continue down this path.
+        // If the segment ID isn't set we'll fall through and search for dotcom and blog domains
+        guard let segmentID = siteCreator.segment?.identifier else {
+            fetchDotComAndDotBlogAddresses(searchTerm)
             return
         }
 
@@ -199,9 +205,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     // Fetches Addresss suggestions for dotCom sites without requiring a segment.
-    private func fetchDotComAddresses(_ searchTerm: String) {
-        guard FeatureFlag.siteCreationHomePagePicker.enabled else { return }
-
+    private func fetchDotComAndDotBlogAddresses(_ searchTerm: String) {
         updateIcon(isLoading: true)
         service.addresses(for: searchTerm) { [weak self] results in
             DispatchQueue.main.async {

@@ -102,6 +102,13 @@ extension BlogDetailsViewController {
         showQuickStart(with: .grow)
     }
 
+    @objc func cancelCompletedToursIfNeeded() {
+        if blog.homepagePageID == nil {
+            // Ends the tour Edit Homepage if the site doesn't have a homepage set or uses the blog.
+            QuickStartTourGuide.shared.complete(tour: QuickStartEditHomepageTour(), for: blog, postNotification: false)
+        }
+    }
+
     private func showQuickStart(with type: QuickStartType) {
         let checklist = QuickStartChecklistViewController(blog: blog, type: type)
         let navigationViewController = UINavigationController(rootViewController: checklist)
