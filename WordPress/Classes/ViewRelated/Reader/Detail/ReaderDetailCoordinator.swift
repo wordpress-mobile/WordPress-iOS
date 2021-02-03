@@ -13,6 +13,9 @@ class ReaderDetailCoordinator {
         }
     }
 
+    /// Used to determine if block and report are shown in the options menu.
+    var readerTopic: ReaderAbstractTopic?
+
     /// A post URL to be loaded and be displayed
     var postURL: URL?
 
@@ -301,7 +304,7 @@ class ReaderDetailCoordinator {
 
         ReaderMenuAction(logged: ReaderHelpers.isLoggedIn()).execute(post: post,
                                                                      context: context,
-                                                                     readerTopic: nil,
+                                                                     readerTopic: readerTopic,
                                                                      anchor: anchorView,
                                                                      vc: viewController)
     }
