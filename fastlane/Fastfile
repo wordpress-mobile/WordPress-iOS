@@ -11,7 +11,7 @@ end
 PROJECT_ROOT_FOLDER=File.dirname File.expand_path __dir__
 WORKSPACE_PATH=File.join(PROJECT_ROOT_FOLDER, "WordPress.xcworkspace")
 DERIVED_DATA_PATH=File.join(PROJECT_ROOT_FOLDER, "DerivedData")
-BUILD_PRODUCTS_PATH=File.join(PROJECT_ROOT_FOLDER, "build")
+BUILD_PRODUCTS_PATH=File.join(PROJECT_ROOT_FOLDER, "Artifacts")
 
 # Env file paths to load
 USER_ENV_FILE_PATH = File.join(Dir.home, '.wpios-env.default')
@@ -319,6 +319,7 @@ import "./ScreenshotFastfile"
       export_method: "enterprise",
       clean: true,
       output_directory: BUILD_PRODUCTS_PATH,
+      output_name: "WordPress Alpha",
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: ENV["INT_EXPORT_TEAM_ID"],
       export_options: { method: "enterprise" }
@@ -379,6 +380,7 @@ import "./ScreenshotFastfile"
       export_method: "enterprise",
       clean: true,
       output_directory: BUILD_PRODUCTS_PATH,
+      output_name: "WordPress Internal",
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: get_required_env("INT_EXPORT_TEAM_ID"),
       export_options: { method: "enterprise" }
@@ -428,6 +430,7 @@ import "./ScreenshotFastfile"
       workspace: WORKSPACE_PATH,
       clean: true,
       export_team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
+      output_directory: BUILD_PRODUCTS_PATH,
       derived_data_path: DERIVED_DATA_PATH,
       export_options: { method: "app-store" }
     )
@@ -437,16 +440,12 @@ import "./ScreenshotFastfile"
       team_id: "299112",
     )
 
-    FileUtils.rm_rf(File.join(PROJECT_ROOT_FOLDER, "WordPress.ipa"))
-
     sentry_upload_dsym(
       auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
       org_slug: 'a8c',
       project_slug: 'wordpress-ios',
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
-
-    FileUtils.rm_rf(File.join(PROJECT_ROOT_FOLDER, "WordPress.app.dSYM.zip"))
 
     if (options[:create_release])
       archive_zip_path = File.join(PROJECT_ROOT_FOLDER, "WordPress.xarchive.zip")
