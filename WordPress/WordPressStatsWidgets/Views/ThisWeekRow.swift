@@ -6,7 +6,7 @@ struct ThisWeekRow: View {
 
     let date: Date
     let todayPercentValue: Float
-    let todayData: Int
+    let viewsCount: Int
     let isToday: Bool
 
     var percentFormatter: NumberFormatter = {
@@ -44,7 +44,7 @@ struct ThisWeekRow: View {
                 .fontWeight(Constants.dateViewFontWeight)
                 .foregroundColor(Constants.dateViewFontColor)
             Spacer()
-            Text("\(todayData)")
+            Text("\(viewsCount)")
                 .font(Constants.dataViewFont)
                 .foregroundColor(Constants.dataViewFontColor)
 
@@ -69,7 +69,7 @@ extension ThisWeekRow {
 
 struct ThisWeekRow_Previews: PreviewProvider {
     static var previews: some View {
-        ThisWeekRow(date: Date(), todayPercentValue: 0.9, todayData: 130, isToday: false)
+        ThisWeekRow(date: Date(), todayPercentValue: 0.9, viewsCount: 130, isToday: false)
             .previewContext(WidgetPreviewContext(family: .systemMedium))
     }
 }
