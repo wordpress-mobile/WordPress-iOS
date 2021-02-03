@@ -123,11 +123,11 @@ extension JetpackScanThreatDetailsViewController {
         problemTitleLabel.text = viewModel.problemTitle
         problemDescriptionLabel.text = viewModel.problemDescription
 
-        if viewModel.fileContext != nil {
+        if let attributedFileContext = self.viewModel.attributedFileContext {
             technicalDetailsTitleLabel.text = viewModel.technicalDetailsTitle
             technicalDetailsDescriptionLabel.text = viewModel.technicalDetailsDescription
             technicalDetailsFileLabel.text = viewModel.fileName
-            technicalDetailsContextLabel.text = "" // FIXME
+            technicalDetailsContextLabel.attributedText = attributedFileContext
             technicalDetailsStackView.isHidden = false
         } else {
             technicalDetailsStackView.isHidden = true
@@ -184,15 +184,17 @@ extension JetpackScanThreatDetailsViewController {
         technicalDetailsTitleLabel.textColor = .text
         technicalDetailsTitleLabel.numberOfLines = 0
 
-        technicalDetailsFileContainerView.backgroundColor = .listBackground
+        technicalDetailsFileContainerView.backgroundColor = viewModel.fileNameBackgroundColor
 
-        technicalDetailsFileLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
+        technicalDetailsFileLabel.font = viewModel.fileNameFont
         technicalDetailsFileLabel.textColor = .text
         technicalDetailsFileLabel.numberOfLines = 0
 
         technicalDetailsDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
         technicalDetailsDescriptionLabel.textColor = .text
         technicalDetailsDescriptionLabel.numberOfLines = 0
+
+        technicalDetailsContextLabel.numberOfLines = 0
     }
 
     private func styleFixSection() {
