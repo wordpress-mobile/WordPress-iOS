@@ -1017,7 +1017,6 @@ private extension InsightStoreState {
 
             homeWidgetCache[siteID.intValue] = HomeWidgetTodayData(siteID: siteID.intValue,
                                                                    siteName: blog.title ?? oldData.siteName,
-                                                                   iconURL: nil,
                                                                    url: blog.url ?? oldData.url,
                                                                    timeZone: blogService.timeZone(for: blog),
                                                                    date: Date(),
@@ -1029,7 +1028,6 @@ private extension InsightStoreState {
 
             homeWidgetCache[siteID.intValue] = HomeWidgetAllTimeData(siteID: siteID.intValue,
                                                                      siteName: blog.title ?? oldData.siteName,
-                                                                     iconURL: nil,
                                                                      url: blog.url ?? oldData.url,
                                                                      timeZone: blogService.timeZone(for: blog),
                                                                      date: Date(),
@@ -1055,7 +1053,6 @@ private extension InsightStoreState {
                 if type == HomeWidgetTodayData.self {
                     result[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
                                                                   siteName: title,
-                                                                  iconURL: blog.icon,
                                                                   url: url,
                                                                   timeZone: timeZone,
                                                                   date: Date(),
@@ -1063,7 +1060,6 @@ private extension InsightStoreState {
                 } else if type == HomeWidgetAllTimeData.self {
                     result[blogID.intValue] = HomeWidgetAllTimeData(siteID: blogID.intValue,
                                                                     siteName: title,
-                                                                    iconURL: blog.icon,
                                                                     url: url,
                                                                     timeZone: timeZone,
                                                                     date: Date(),

@@ -7,7 +7,6 @@ struct WordPressHomeWidgetToday: Widget {
 
     private let placeholderContent = HomeWidgetTodayData(siteID: 0,
                                                         siteName: "My WordPress Site",
-                                                        iconURL: nil,
                                                         url: "",
                                                         timeZone: TimeZone.current,
                                                         date: Date(),
@@ -21,13 +20,13 @@ struct WordPressHomeWidgetToday: Widget {
             kind: WPHomeWidgetTodayKind,
             intent: SelectSiteIntent.self,
             provider: SiteListProvider<HomeWidgetTodayData>(service: StatsWidgetsService(), placeholderContent: placeholderContent)
-        ) { (entry: StatsWidgetEntry) -> TodayWidgetView in
+        ) { (entry: StatsWidgetEntry) -> StatsWidgetsView in
 
             defer {
                 tracks.trackWidgetUpdated()
             }
 
-            return TodayWidgetView(timelineEntry: entry)
+            return StatsWidgetsView(timelineEntry: entry)
         }
         .configurationDisplayName(LocalizableStrings.todayWidgetTitle)
         .description(LocalizableStrings.todayPreviewDescription)

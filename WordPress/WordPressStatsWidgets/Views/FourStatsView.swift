@@ -1,12 +1,12 @@
  import SwiftUI
 
- struct TodayWidgetMediumView: View {
+ struct FourStatsView: View {
     let content: HomeWidgetData
     let widgetTitle: LocalizedStringKey
-    let viewsTitle: LocalizedStringKey
-    let visitorsTitle: LocalizedStringKey
-    let likesTitle: LocalizedStringKey
-    let commentsTitle: LocalizedStringKey
+    let upperLeftTitle: LocalizedStringKey
+    let upperRightTitle: LocalizedStringKey
+    let lowerLeftTitle: LocalizedStringKey
+    let lowerRightTitle: LocalizedStringKey
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -15,15 +15,15 @@
                          value: .description(content.siteName))
             Spacer()
             HStack {
-                makeColumn(upperTitle: viewsTitle,
+                makeColumn(upperTitle: upperLeftTitle,
                            upperValue: (content as? HomeWidgetTodayData)?.stats.views ?? (content as? HomeWidgetAllTimeData)?.stats.views ?? 0,
-                           lowerTitle: likesTitle,
+                           lowerTitle: lowerLeftTitle,
                            lowerValue: (content as? HomeWidgetTodayData)?.stats.likes ?? (content as? HomeWidgetAllTimeData)?.stats.posts ?? 0)
                 Spacer()
                 Spacer()
-                makeColumn(upperTitle: visitorsTitle,
+                makeColumn(upperTitle: upperRightTitle,
                            upperValue: (content as? HomeWidgetTodayData)?.stats.visitors ?? (content as? HomeWidgetAllTimeData)?.stats.visitors ?? 0,
-                           lowerTitle: commentsTitle,
+                           lowerTitle: lowerRightTitle,
                            lowerValue: (content as? HomeWidgetTodayData)?.stats.comments ?? (content as? HomeWidgetAllTimeData)?.stats.bestViews ?? 0)
                 Spacer()
             }
