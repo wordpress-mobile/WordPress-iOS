@@ -159,7 +159,12 @@ langs.each do |code,local|
   system "grep", "-a", "\\x00\\x20\\x00\\x22\\x00\\x22\\x00\\x3b$", strings_file_path
 
   # Clean up after ourselves
-  FileUtils.rm destination if File.exist? destination
+  FileUtils.rm_f backup_destination
+
+  # Delete the downloaded file if we're using a strings filter
+  if !strings_file_ext.empty?
+        FileUtils.rm_f destination
+  end
 end
 
 extract_framework_translations_script_path = File.join(script_root, 'extract-framework-translations.swift')
