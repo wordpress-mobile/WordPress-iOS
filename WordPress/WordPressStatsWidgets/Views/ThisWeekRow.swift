@@ -4,19 +4,19 @@ import WidgetKit
 
 struct ThisWeekRow: View {
 
-    let date = Date()
-    let todayPercentValue = 0.9
-    let todayData = 130
-    let isToday = false
+    let date: Date
+    let todayPercentValue: Float
+    let todayData: Int
+    let isToday: Bool
 
-    private var percentFormatter: NumberFormatter = {
+    var percentFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .percent
         formatter.positivePrefix = "+"
         return formatter
     }()
 
-    private var dateFormatter: DateFormatter = {
+    var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.setLocalizedDateFormatFromTemplate("MMM d, yyyy")
         return formatter
@@ -63,9 +63,13 @@ struct ThisWeekRow: View {
     }
 }
 
+extension ThisWeekRow {
+
+}
+
 struct ThisWeekRow_Previews: PreviewProvider {
     static var previews: some View {
-        ThisWeekRow()
+        ThisWeekRow(date: Date(), todayPercentValue: 0.9, todayData: 130, isToday: false)
             .previewContext(WidgetPreviewContext(family: .systemMedium))
     }
 }
