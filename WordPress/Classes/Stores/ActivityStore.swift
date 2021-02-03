@@ -21,6 +21,9 @@ enum ActivityAction: Action {
     case rewindStatusUpdateFailed(site: JetpackSiteRef, error: Error)
     case rewindStatusUpdateTimedOut(site: JetpackSiteRef)
 
+    case backupStatusUpdated(site: JetpackSiteRef, status: JetpackBackup)
+    case backupStatusUpdateTimedOut(site: JetpackSiteRef)
+
     case refreshGroups(site: JetpackSiteRef, afterDate: Date?, beforeDate: Date?)
     case resetGroups(site: JetpackSiteRef)
 }
@@ -225,6 +228,19 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
             refreshGroups(site: site, afterDate: afterDate, beforeDate: beforeDate)
         case .resetGroups(let site):
             resetGroups(site: site)
+        case .backupStatusUpdated(let site, let status):
+            backupStatusUpdated(site: site, status: status)
+        case .backupStatusUpdateTimedOut(site: let site):
+            transaction { state in
+                state.fetchingBackupStatus[site] = false
+                state.backupStatusRetries[site] = nil
+            }
+
+            if shouldPostStateUpdates(for: site) {
+                let notice = Notice(title: NSLocalizedString("Your backup is taking longer than usual, please check again in a few minutes.",
+                                                             comment: "Text displayed when a site backup takes too long."))
+                actionDispatcher.dispatch(NoticeAction.post(notice))
+            }
         }
     }
 }
@@ -244,6 +260,10 @@ extension ActivityStore {
 
     func getCurrentRewindStatus(site: JetpackSiteRef) -> RewindStatus? {
         return state.rewindStatus[site] ?? nil
+    }
+
+    func getBackupStatus(site: JetpackSiteRef) -> JetpackBackup? {
+        return state.backupStatus[site] ?? nil
     }
 
     func isRestoreAlreadyRunning(site: JetpackSiteRef) -> Bool {
@@ -269,7 +289,11 @@ extension ActivityStore {
         state.fetchingBackupStatus[site] = true
 
         backupService.getAllBackupStatus(for: site, success: { [actionDispatcher] backupsStatus in
-            // Update backup
+            guard let status = backupsStatus.first else {
+                return
+            }
+
+            actionDispatcher.dispatch(ActivityAction.backupStatusUpdated(site: site, status: status))
         }, failure: { [actionDispatcher] error in
             // Update backup failure
         })
@@ -462,6 +486,33 @@ private extension ActivityStore {
         state.rewindStatusRetries[site] = existingWrapper
     }
 
+    func delayedRetryFetchBackupStatus(site: JetpackSiteRef) {
+        guard sitesStatusesToFetch.contains(site) == false else {
+            _ = DispatchDelayedAction(delay: .seconds(Constants.delaySequence.last!)) { [weak self] in
+                self?.fetchBackupStatus(site: site)
+            }
+            return
+        }
+
+        guard var existingWrapper = state.backupStatusRetries[site] else {
+            let newDelayWrapper = DelayStateWrapper(delaySequence: Constants.delaySequence) { [weak self] in
+                self?.fetchBackupStatus(site: site)
+            }
+
+            state.backupStatusRetries[site] = newDelayWrapper
+            return
+        }
+
+        guard existingWrapper.retryAttempt < Constants.maxRetries else {
+            existingWrapper.delayedRetryAction.cancel()
+            actionDispatcher.dispatch(ActivityAction.backupStatusUpdateTimedOut(site: site))
+            return
+        }
+
+        existingWrapper.increment()
+        state.backupStatusRetries[site] = existingWrapper
+    }
+
     func rewindStatusUpdated(site: JetpackSiteRef, status: RewindStatus) {
         state.rewindStatus[site] = status
 
@@ -480,6 +531,16 @@ private extension ActivityStore {
             if shouldPostStateUpdates(for: site) {
                 actionDispatcher.dispatch(ActivityAction.rewindFailed(site: site, restoreID: restoreStatus.id))
             }
+        }
+    }
+
+    func backupStatusUpdated(site: JetpackSiteRef, status: JetpackBackup) {
+        state.backupStatus[site] = status
+
+        if let progress = status.progress, progress > 0 {
+            delayedRetryFetchBackupStatus(site: site)
+        } else {
+            // Show nothing or show complete cell
         }
     }
 

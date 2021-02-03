@@ -254,5 +254,8 @@ class JetpackBackupServiceMock: JetpackBackupService {
 
     override func getAllBackupStatus(for site: JetpackSiteRef, success: @escaping ([JetpackBackup]) -> Void, failure: @escaping (Error) -> Void) {
         didCallGetAllBackupStatusWithSite = site
+
+        let jetpackBackup = JetpackBackup(backupPoint: Date(), downloadID: 100, rewindID: "", startedAt: Date(), progress: 10, downloadCount: 0, url: "", validUntil: nil)
+        success([jetpackBackup])
     }
 }
