@@ -63,11 +63,10 @@ WordPress/Derived Sources/
 WordPress/Images.xcassets/AppIcon-Internal.appiconset
 
 # Bundler
-/vendor/bundle/
-.bundle/
+.bundle
 
 # Dependencies
-/vendor/
+vendor
 
 # Fastlane
 fastlane/Preview.html
@@ -82,11 +81,11 @@ default.profraw
 derived-data/
 
 # CI Artifacts Location
-/Artifacts
+Artifacts
 
 # Generated Internal Icons
-/WordPress/Resources/AppImages.xcassets/AppIcon-Internal.appiconset
-/WordPress/Resources/Icons-Internal
+WordPress/Resources/AppImages.xcassets/AppIcon-Internal.appiconset
+WordPress/Resources/Icons-Internal
 
 # All secrets should be stored under .configure-files
 # Everything without a .enc extension is ignored
