@@ -139,7 +139,7 @@ langs.each do |code,local|
 
   url = "#{download_url}/#{code}/default/export-translations?#{strings_filter}format=strings"
 
-  system "curl", "-fgLo", destination, url or begin
+  system "curl", "-fgsLo", destination, url or begin
     puts "Error downloading #{code}"
   end
 
