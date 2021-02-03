@@ -4,10 +4,11 @@ import WidgetKit
 
 struct ThisWeekRow: View {
 
-    let date: Date
-    let todayPercentValue: Float
-    let viewsCount: Int
-    let isToday: Bool
+    let day: ThisWeekWidgetDay
+
+    var isToday: Bool {
+        NSCalendar.current.isDateInToday(day.date)
+    }
 
     var percentFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -26,7 +27,7 @@ struct ThisWeekRow: View {
         guard !isToday else {
             return Constants.neutralColor
         }
-        return todayPercentValue < 0 ? Constants.negativeColor : Constants.positiveColor
+        return day.dailyChangePercent < 0 ? Constants.negativeColor : Constants.positiveColor
     }
 
     var differenceLabelText: LocalizedStringKey {
@@ -34,32 +35,33 @@ struct ThisWeekRow: View {
             return LocalizableStrings.todayWidgetTitle
         }
 
-        return LocalizedStringKey(dateFormatter.string(from: date))
+        return LocalizedStringKey(dateFormatter.string(from: day.date))
     }
 
     var body: some View {
-        HStack {
-            Text(differenceLabelText)
-                .font(Constants.dateViewFont)
-                .fontWeight(Constants.dateViewFontWeight)
-                .foregroundColor(Constants.dateViewFontColor)
-            Spacer()
-            Text("\(viewsCount)")
-                .font(Constants.dataViewFont)
-                .foregroundColor(Constants.dataViewFontColor)
+        VStack{
+            HStack {
+                Text(differenceLabelText)
+                    .font(Constants.dateViewFont)
+                    .fontWeight(Constants.dateViewFontWeight)
+                    .foregroundColor(Constants.dateViewFontColor)
+                Spacer()
+                Text(day.viewsCount.abbreviatedString())
+                    .font(Constants.dataViewFont)
+                    .foregroundColor(Constants.dataViewFontColor)
 
-            Text(percentFormatter.string(for: todayPercentValue) ?? "0")
+                Text(percentFormatter.string(for: day.dailyChangePercent) ?? "0")
 
-                .frame(minWidth: Constants.differenceViewMinWidth,
-                       idealHeight: Constants.differenceViewIdealHeight,
-                       alignment: Constants.differenceViewAlignment)
-                .padding(Constants.differenceViewInsets)
-                .font(Constants.differenceViewFont)
-                .foregroundColor(Constants.differenceTextColor)
-                .background(differenceBackgroundColor)
-                .cornerRadius(Constants.differenceCornerRadius)
+                    .frame(minWidth: Constants.differenceViewMinWidth,
+                           idealHeight: Constants.differenceViewIdealHeight,
+                           alignment: Constants.differenceViewAlignment)
+                    .padding(Constants.differenceViewInsets)
+                    .font(Constants.differenceViewFont)
+                    .foregroundColor(Constants.differenceTextColor)
+                    .background(differenceBackgroundColor)
+                    .cornerRadius(Constants.differenceCornerRadius)
+            }
         }
-        .padding()
     }
 }
 
@@ -69,7 +71,7 @@ extension ThisWeekRow {
 
 struct ThisWeekRow_Previews: PreviewProvider {
     static var previews: some View {
-        ThisWeekRow(date: Date(), todayPercentValue: 0.9, viewsCount: 130, isToday: false)
+        ThisWeekRow(day: ThisWeekWidgetDay(date: Date(), viewsCount: 130, dailyChangePercent: -0.22))
             .previewContext(WidgetPreviewContext(family: .systemMedium))
     }
 }

@@ -468,7 +468,7 @@
 		3FC8D19B244F43B500495820 /* ReaderTabItemsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8D19A244F43B500495820 /* ReaderTabItemsStore.swift */; };
 		3FCC8FD9256C911300810295 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3FCCAA1523F4A1A3004064C0 /* UIBarButtonItem+MeBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCCAA1423F4A1A3004064C0 /* UIBarButtonItem+MeBarButton.swift */; };
-		3FCF66E925CAF8C50047F337 /* ThisWeekContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCF66E825CAF8C50047F337 /* ThisWeekContentView.swift */; };
+		3FCF66E925CAF8C50047F337 /* ThisWeekTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCF66E825CAF8C50047F337 /* ThisWeekTable.swift */; };
 		3FCF66FB25CAF8E00047F337 /* ThisWeekRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCF66FA25CAF8E00047F337 /* ThisWeekRow.swift */; };
 		3FCF670C25CB2D190047F337 /* ThisWeekWidgetStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F93181239AF64800E4E96E /* ThisWeekWidgetStats.swift */; };
 		3FD0316F24201E08005C0993 /* GravatarButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD0316E24201E08005C0993 /* GravatarButtonView.swift */; };
@@ -3096,7 +3096,7 @@
 		3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetTodayData.swift; sourceTree = "<group>"; };
 		3FC8D19A244F43B500495820 /* ReaderTabItemsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabItemsStore.swift; sourceTree = "<group>"; };
 		3FCCAA1423F4A1A3004064C0 /* UIBarButtonItem+MeBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+MeBarButton.swift"; sourceTree = "<group>"; };
-		3FCF66E825CAF8C50047F337 /* ThisWeekContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThisWeekContentView.swift; sourceTree = "<group>"; };
+		3FCF66E825CAF8C50047F337 /* ThisWeekTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThisWeekTable.swift; sourceTree = "<group>"; };
 		3FCF66FA25CAF8E00047F337 /* ThisWeekRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThisWeekRow.swift; sourceTree = "<group>"; };
 		3FD0316E24201E08005C0993 /* GravatarButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GravatarButtonView.swift; sourceTree = "<group>"; };
 		3FD272DF24CF8F270021F0C8 /* UIColor+Notice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Notice.swift"; sourceTree = "<group>"; };
@@ -6738,7 +6738,7 @@
 				3F526D562539FAC60069706C /* TodayWidgetView.swift */,
 				3F5689EF254209790048A9E4 /* TodayWidgetSmallView.swift */,
 				3F5689FF25420DE80048A9E4 /* TodayWidgetMediumView.swift */,
-				3FCF66E825CAF8C50047F337 /* ThisWeekContentView.swift */,
+				3FCF66E825CAF8C50047F337 /* ThisWeekTable.swift */,
 				3FCF66FA25CAF8E00047F337 /* ThisWeekRow.swift */,
 				3F568A1D254210950048A9E4 /* Cards */,
 				3F26569F25AF4DBF0073A832 /* Localization */,
@@ -14652,7 +14652,7 @@
 				3F1FD30D2548B0A80060C53A /* Constants.m in Sources */,
 				3F63B93C258179D100F581BE /* StatsWidgetEntry.swift in Sources */,
 				3FA53E9D256571D800F4D9A2 /* HomeWidgetCache.swift in Sources */,
-				3FCF66E925CAF8C50047F337 /* ThisWeekContentView.swift in Sources */,
+				3FCF66E925CAF8C50047F337 /* ThisWeekTable.swift in Sources */,
 				3F6BC06D25B24787007369D3 /* BuildConfiguration.swift in Sources */,
 				3F1FD2502548AD8B0060C53A /* TodayWidgetStats.swift in Sources */,
 				3F2F0C16256C6B2C003351C7 /* StatsWidgetsService.swift in Sources */,
