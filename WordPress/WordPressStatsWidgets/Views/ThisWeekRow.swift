@@ -39,28 +39,26 @@ struct ThisWeekRow: View {
     }
 
     var body: some View {
-        VStack{
-            HStack {
-                Text(differenceLabelText)
-                    .font(Constants.dateViewFont)
-                    .fontWeight(Constants.dateViewFontWeight)
-                    .foregroundColor(Constants.dateViewFontColor)
-                Spacer()
-                Text(day.viewsCount.abbreviatedString())
-                    .font(Constants.dataViewFont)
-                    .foregroundColor(Constants.dataViewFontColor)
+        HStack(alignment: .center) {
+            Text(differenceLabelText)
+                .font(Constants.dateViewFont)
+                .fontWeight(Constants.dateViewFontWeight)
+                .foregroundColor(Constants.dateViewFontColor)
+            Spacer()
+            Text(day.viewsCount.abbreviatedString())
+                .font(Constants.dataViewFont)
+                .foregroundColor(Constants.dataViewFontColor)
 
-                Text(percentFormatter.string(for: day.dailyChangePercent) ?? "0")
+            Text(percentFormatter.string(for: day.dailyChangePercent) ?? "0")
 
-                    .frame(minWidth: Constants.differenceViewMinWidth,
-                           idealHeight: Constants.differenceViewIdealHeight,
-                           alignment: Constants.differenceViewAlignment)
-                    .padding(Constants.differenceViewInsets)
-                    .font(Constants.differenceViewFont)
-                    .foregroundColor(Constants.differenceTextColor)
-                    .background(differenceBackgroundColor)
-                    .cornerRadius(Constants.differenceCornerRadius)
-            }
+                .frame(minWidth: Constants.differenceViewMinWidth,
+                       idealHeight: Constants.differenceViewIdealHeight,
+                       alignment: Constants.differenceViewAlignment)
+                .padding(Constants.differenceViewInsets)
+                .font(Constants.differenceViewFont)
+                .foregroundColor(Constants.differenceTextColor)
+                .background(differenceBackgroundColor)
+                .cornerRadius(Constants.differenceCornerRadius)
         }
     }
 }
