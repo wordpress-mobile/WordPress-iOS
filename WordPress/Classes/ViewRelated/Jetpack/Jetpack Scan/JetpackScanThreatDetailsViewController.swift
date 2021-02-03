@@ -143,7 +143,12 @@ extension JetpackScanThreatDetailsViewController {
             fixThreatButton.isHidden = true
         }
 
-        ignoreThreatButton.setTitle(viewModel.ignoreActionTitle, for: .normal)
+        if let ignoreActionTitle = viewModel.ignoreActionTitle {
+            ignoreThreatButton.setTitle(ignoreActionTitle, for: .normal)
+            ignoreThreatButton.isHidden = false
+        } else {
+            ignoreThreatButton.isHidden = true
+        }
 
         applyStyles()
     }

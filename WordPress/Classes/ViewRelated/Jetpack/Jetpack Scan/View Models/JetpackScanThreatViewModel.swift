@@ -25,7 +25,7 @@ struct JetpackScanThreatViewModel {
 
     // Threat Detail Action
     let fixActionTitle: String?
-    let ignoreActionTitle: String
+    let ignoreActionTitle: String?
     let ignoreActionMessage: String
 
     // Threat Detail Success
@@ -95,7 +95,7 @@ struct JetpackScanThreatViewModel {
 
         // Threat Details Action
         fixActionTitle = Self.fixActionTitle(for: threat)
-        ignoreActionTitle = Strings.details.actions.titles.ignore
+        ignoreActionTitle = Self.ignoreActionTitle(for: threat)
         ignoreActionMessage = Strings.details.actions.messages.ignore
 
         // Threat Detail Success
@@ -250,11 +250,22 @@ struct JetpackScanThreatViewModel {
     }
 
     private static func fixActionTitle(for threat: JetpackScanThreat) -> String? {
-        guard threat.fixable?.type != nil else {
+        guard
+            threat.fixable?.type != nil,
+            threat.status != .fixed && threat.status != .ignored
+        else {
             return nil
         }
 
         return Strings.details.actions.titles.fixable
+    }
+
+    private static func ignoreActionTitle(for threat: JetpackScanThreat) -> String? {
+        guard threat.status != .fixed && threat.status != .ignored else {
+            return nil
+        }
+
+        return Strings.details.actions.titles.ignore
     }
 
     private struct Strings {
