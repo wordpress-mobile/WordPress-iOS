@@ -31,7 +31,16 @@ class RestoreStatusFailedView: UIView, NibLoadable {
         messageTitleLabel.textColor = .text
         messageTitleLabel.numberOfLines = 0
 
-        let messageLabels = [thirdHintLabel, firstHintLabel, secondHintLabel]
+        firstHintIcon.image = .gridicon(.history)
+        firstHintIcon.tintColor = .warning
+
+        secondHintIcon.image = .gridicon(.checkmarkCircle)
+        secondHintIcon.tintColor = .success
+
+        thirdHintIcon.image = .gridicon(.checkmarkCircle)
+        thirdHintIcon.tintColor = .success
+
+        let messageLabels = [firstHintLabel, secondHintLabel, thirdHintLabel]
         for label in messageLabels {
             label?.font = WPStyleGuide.fontForTextStyle(.body)
             label?.textColor = .text
@@ -48,16 +57,9 @@ class RestoreStatusFailedView: UIView, NibLoadable {
                    secondHint: String,
                    thirdHint: String) {
         messageTitleLabel.text = title
-
-        firstHintIcon.image = .gridicon(.history)
         firstHintLabel.text = firstHint
-
-        secondHintIcon.image = .gridicon(.checkmarkCircle)
         secondHintLabel.text = secondHint
-
-        thirdHintIcon.image = .gridicon(.checkmarkCircle)
         thirdHintLabel.text = thirdHint
-
         doneButton.setTitle(Strings.done, for: .normal)
     }
 
