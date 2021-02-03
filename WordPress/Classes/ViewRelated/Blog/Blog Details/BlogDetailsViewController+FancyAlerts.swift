@@ -117,6 +117,8 @@ extension BlogDetailsViewController {
         }
 
         QuickStartTourGuide.shared.visited(.checklist)
+
+        createButtonCoordinator?.hideCreateButtonTooltip()
     }
 
     @objc func quickStartSectionViewModel() -> BlogDetailsSection {
