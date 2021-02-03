@@ -22,6 +22,7 @@ enum ActivityAction: Action {
     case rewindStatusUpdateTimedOut(site: JetpackSiteRef)
 
     case backupStatusUpdated(site: JetpackSiteRef, status: JetpackBackup)
+    case backupStatusUpdateFailed(site: JetpackSiteRef, error: Error)
     case backupStatusUpdateTimedOut(site: JetpackSiteRef)
 
     case refreshGroups(site: JetpackSiteRef, afterDate: Date?, beforeDate: Date?)
@@ -230,6 +231,8 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
             resetGroups(site: site)
         case .backupStatusUpdated(let site, let status):
             backupStatusUpdated(site: site, status: status)
+        case .backupStatusUpdateFailed(let site, _):
+            delayedRetryFetchBackupStatus(site: site)
         case .backupStatusUpdateTimedOut(site: let site):
             transaction { state in
                 state.fetchingBackupStatus[site] = false
@@ -295,7 +298,7 @@ extension ActivityStore {
 
             actionDispatcher.dispatch(ActivityAction.backupStatusUpdated(site: site, status: status))
         }, failure: { [actionDispatcher] error in
-            // Update backup failure
+            actionDispatcher.dispatch(ActivityAction.backupStatusUpdateFailed(site: site, error: error))
         })
     }
 
