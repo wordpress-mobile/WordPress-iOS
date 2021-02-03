@@ -1,0 +1,9 @@
+Bu sürüm hakkında: 
+
+Not: Bu, uygulamanın iOS 12'yi destekleyen son sürümüdür. 16.7 sürümünden itibaren uygulamanız için iOS 13 veya üzeri gerekir.
+
+Ana Ekranınızda istatistikleri görün: Yeni Bugün Bileşenleri ile, günlük WordPress site istatistiklerinizi iOS 14 cihazınızın Ana Ekranında görüntüleyin.
+
+Sitenizdeki etkinliği takip edin: Etkinlik Günlüğünüzdeki yedeklemeler, eklenti güncellemeleri ve yayınlanan yazılar ve sayfalar gibi öğeleri tarih aralığına ve etkinlik türüne göre filtreleyin ve görüntüleyin.
+
+Uygulamanızı tanıyın: Site sayfalarını gözden geçirme ve ana sayfanızı düzenleme gibi adımlarda size rehberlik eden gelişmiş bir Hızlı Başlangıç turu ile uygulamanızdaki özellikleri öğrenin.
