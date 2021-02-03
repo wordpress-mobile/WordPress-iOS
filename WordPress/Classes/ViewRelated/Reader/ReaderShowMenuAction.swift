@@ -63,10 +63,13 @@ final class ReaderShowMenuAction {
                                                     ReaderFollowAction().execute(with: post,
                                                                                  context: context,
                                                                                  completion: {
-                                                                                    guard let vc = vc as? ReaderStreamViewController else {
-                                                                                        return
+                                                                                    if post.isFollowing {
+                                                                                        vc.dispatchSubscribingNotificationNotice(with: post.blogNameForDisplay(), siteID: post.siteID)
                                                                                     }
-                                                                                    vc.updateStreamHeaderIfNeeded()
+
+                                                                                    if let vc = vc as? ReaderStreamViewController {
+                                                                                        vc.updateStreamHeaderIfNeeded()
+                                                                                    }
                                                                                  },
                                                                                  failure: nil)
                                                 }
