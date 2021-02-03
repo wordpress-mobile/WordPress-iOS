@@ -79,6 +79,8 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
 
     private let activityServiceRemote: ActivityServiceRemote?
 
+    private let backupService: JetpackBackupService
+
     /// When set to true, this store will only return items that are restorable
     var onlyRestorableItems = false
 
@@ -89,8 +91,11 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
         processQueries()
     }
 
-    init(dispatcher: ActionDispatcher = .global, activityServiceRemote: ActivityServiceRemote? = nil) {
+    init(dispatcher: ActionDispatcher = .global,
+         activityServiceRemote: ActivityServiceRemote? = nil,
+         backupService: JetpackBackupService? = nil) {
         self.activityServiceRemote = activityServiceRemote
+        self.backupService = backupService ?? JetpackBackupService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         super.init(initialState: ActivityStoreState(), dispatcher: dispatcher)
     }
 
@@ -150,6 +155,8 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
         return activeQueries
             .filter {
                 if case .restoreStatus = $0 {
+                    return true
+                } else if case .backupStatus = $0 {
                     return true
                 } else {
                     return false
@@ -261,7 +268,11 @@ extension ActivityStore {
     func fetchBackupStatus(site: JetpackSiteRef) {
         state.fetchingBackupStatus[site] = true
 
-        // Fetch status
+        backupService.getAllBackupStatus(for: site, success: { [actionDispatcher] backupsStatus in
+            // Update backup
+        }, failure: { [actionDispatcher] error in
+            // Update backup failure
+        })
     }
 
 }
