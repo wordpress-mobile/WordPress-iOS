@@ -136,6 +136,11 @@ CGFloat const SettingsSelectionDefaultTableViewCellHeight = 44.0f;
     }
 }
 
+- (void)reload:(NSString *)status {
+    _currentValue = status;
+    [self.tableView reloadData];
+}
+
 - (void)reloadWithDictionary:(NSDictionary *)dictionary
 {
     [self setupWithDictionary:dictionary];

@@ -1036,12 +1036,30 @@ FeaturedImageViewControllerDelegate>
     SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:statusDict];
     __weak SettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *status) {
-        [WPAnalytics trackEvent:WPAnalyticsEventEditorPostStatusChanged properties:@{@"via": @"settings"}];
-        self.apost.status = status;
-        [weakVc dismiss];
-        [self.tableView reloadData];
+        if ([(Page *)self.apost isSiteHomepage] && [self.apost.status isEqualToString:PostStatusPublish]) {
+            [self promptHomepageWarningForStatus:status onVC:weakVc];
+        } else {
+            [self updateStatusChange:status onVC:weakVc];
+        }
     };
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)promptHomepageWarningForStatus:(NSString *)status onVC:(SettingsSelectionViewController *)viewController {
+    [PageSettingsUtils promptHomepageWarning:^(BOOL didContinue) {
+        if (didContinue) {
+            [self updateStatusChange:status onVC:viewController];
+        } else {
+            [viewController reload: self.apost.status];
+        }
+    }];
+}
+
+- (void)updateStatusChange:(NSString *)status onVC:(SettingsSelectionViewController *)viewController{
+    [WPAnalytics trackEvent:WPAnalyticsEventEditorPostStatusChanged properties:@{@"via": @"settings"}];
+    self.apost.status = status;
+    [viewController dismiss];
+    [self.tableView reloadData];
 }
 
 - (void)showPostVisibilitySelector

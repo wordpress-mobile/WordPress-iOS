@@ -542,7 +542,14 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         alertController.presentFromRootViewController()
     }
 
-    fileprivate func draftPage(_ apost: AbstractPost, at indexPath: IndexPath?) {
+    fileprivate func draftPage(_ apost: AbstractPost, at indexPath: IndexPath?, shouldPrompt: Bool) {
+        guard !shouldPrompt else {
+            PageSettingsUtils.promptHomepageWarning { [weak self] _ in
+                self?.draftPage(apost, at: indexPath, shouldPrompt: false)
+            }
+            return
+        }
+
         WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
 
         let previousStatus = apost.status
@@ -614,7 +621,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                         return
                 }
 
-                strongSelf.draftPage(page, at: indexPath)
+                strongSelf.draftPage(page, at: indexPath, shouldPrompt: false)
             })
 
             alertController.addActionWithTitle(deleteButtonTitle, style: .destructive, handler: { [weak self] (action) in
@@ -658,7 +665,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                             return
                     }
 
-                    strongSelf.draftPage(page, at: indexPath)
+                    strongSelf.draftPage(page, at: indexPath, shouldPrompt: isHomepage)
                 })
             }
 

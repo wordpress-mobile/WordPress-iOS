@@ -705,6 +705,7 @@
 		469EB16824D9AD8B00C764CB /* CollapsableHeaderFilterBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469EB16724D9AD8B00C764CB /* CollapsableHeaderFilterBar.swift */; };
 		46B30B782582C7DD00A25E66 /* SiteAddressServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B30B772582C7DD00A25E66 /* SiteAddressServiceTests.swift */; };
 		46B30B872582CA2200A25E66 /* domain-suggestions.json in Resources */ = {isa = PBXBuildFile; fileRef = 46B30B862582CA2200A25E66 /* domain-suggestions.json */; };
+		46B5E83A25CC887400471503 /* PageSettingsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B5E83925CC887400471503 /* PageSettingsUtils.swift */; };
 		46C984682527863E00988BB9 /* LayoutPickerAnalyticsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C984672527863E00988BB9 /* LayoutPickerAnalyticsEvent.swift */; };
 		46D6114F2555DAED00B0B7BB /* SiteCreationAnalyticsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D6114E2555DAED00B0B7BB /* SiteCreationAnalyticsHelper.swift */; };
 		46E327D124E705C7000944B3 /* PageLayoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E327D024E705C7000944B3 /* PageLayoutService.swift */; };
@@ -3314,6 +3315,7 @@
 		469EB16724D9AD8B00C764CB /* CollapsableHeaderFilterBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsableHeaderFilterBar.swift; sourceTree = "<group>"; };
 		46B30B772582C7DD00A25E66 /* SiteAddressServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAddressServiceTests.swift; sourceTree = "<group>"; };
 		46B30B862582CA2200A25E66 /* domain-suggestions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "domain-suggestions.json"; sourceTree = "<group>"; };
+		46B5E83925CC887400471503 /* PageSettingsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageSettingsUtils.swift; sourceTree = "<group>"; };
 		46C984672527863E00988BB9 /* LayoutPickerAnalyticsEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutPickerAnalyticsEvent.swift; sourceTree = "<group>"; };
 		46D6114E2555DAED00B0B7BB /* SiteCreationAnalyticsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationAnalyticsHelper.swift; sourceTree = "<group>"; };
 		46E327D024E705C7000944B3 /* PageLayoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageLayoutService.swift; sourceTree = "<group>"; };
@@ -9239,6 +9241,7 @@
 			children = (
 				9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */,
 				F16C35D523F33DE400C81331 /* PageAutoUploadMessageProvider.swift */,
+				46B5E83925CC887400471503 /* PageSettingsUtils.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -13843,6 +13846,7 @@
 				91DCE84621A6A7F50062F134 /* PostEditor+MoreOptions.swift in Sources */,
 				73ACDF992114FE4500233AD4 /* NotificationSupportService.swift in Sources */,
 				08D345531CD7F50900358E8C /* MenusSelectionView.m in Sources */,
+				46B5E83A25CC887400471503 /* PageSettingsUtils.swift in Sources */,
 				5D6C4B131B604190005E3C43 /* UITextView+RichTextView.swift in Sources */,
 				E15644E91CE0E47C00D96E64 /* RoundedButton.swift in Sources */,
 				FFC6ADD41B56F295002F3C84 /* AboutViewController.swift in Sources */,
