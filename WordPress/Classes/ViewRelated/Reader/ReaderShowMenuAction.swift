@@ -65,6 +65,8 @@ final class ReaderShowMenuAction {
                                                                                  completion: {
                                                                                     if post.isFollowing {
                                                                                         vc.dispatchSubscribingNotificationNotice(with: post.blogNameForDisplay(), siteID: post.siteID)
+                                                                                    } else {
+                                                                                        ReaderHelpers.dispatchUnfollowSiteMessage(siteTitle: post.blogNameForDisplay())
                                                                                     }
 
                                                                                     (vc as? ReaderStreamViewController)?.updateStreamHeaderIfNeeded()
@@ -119,7 +121,7 @@ final class ReaderShowMenuAction {
         WPAnalytics.trackReader(.postCardMoreTapped)
     }
 
-    fileprivate func shouldShowBlockSiteMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
+    private func shouldShowBlockSiteMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
         guard let topic = readerTopic,
               isLoggedIn else {
             return false
@@ -131,7 +133,7 @@ final class ReaderShowMenuAction {
             (ReaderHelpers.topicIsFollowing(topic) && !post.isFollowing)
     }
 
-    fileprivate func shouldShowReportPostMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
+    private func shouldShowReportPostMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
         return shouldShowBlockSiteMenuItem(readerTopic: readerTopic, post: post)
     }
 
