@@ -179,6 +179,17 @@ extension JetpackScanHistoryViewController: UITableViewDataSource, UITableViewDe
         return ActivityListSectionHeaderView.height
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        guard let threat = threat(for: indexPath) else {
+            return
+        }
+
+        let threatDetailsVC = JetpackScanThreatDetailsViewController(blog: blog, threat: threat)
+        self.navigationController?.pushViewController(threatDetailsVC, animated: true)
+    }
+
     private func configureThreatCell(cell: JetpackScanThreatCell, threat: JetpackScanThreat) {
         let model = JetpackScanThreatViewModel(threat: threat)
         cell.configure(with: model)
