@@ -545,8 +545,6 @@ private extension ActivityStore {
 
         if let progress = status.progress, progress > 0 {
             delayedRetryFetchBackupStatus(site: site)
-        } else {
-            // TODO: show download cell
         }
     }
 
