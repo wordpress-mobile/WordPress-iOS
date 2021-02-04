@@ -109,6 +109,7 @@ import Foundation
     case restoreOpened
     case restoreConfirmed
     case restoreError
+    case restoreNotifiyMeButtonTapped
 
     // Comments
     case commentViewed
@@ -310,6 +311,8 @@ import Foundation
             return "jetpack_restore_confirmed"
         case .restoreError:
             return "jetpack_restore_error"
+        case .restoreNotifiyMeButtonTapped:
+            return "jetpack_restore_notify_me_button_tapped"
 
         // Comments
         case .commentViewed:
