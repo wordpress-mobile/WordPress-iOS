@@ -301,13 +301,21 @@ struct ReaderNotificationKeys {
     // MARK: ActionDispatcher Notification helper
 
     class func dispatchToggleSeenError(post: ReaderPost) {
-        let title = post.isSeen ? ErrorMessages.unseenFailed : ErrorMessages.seenFailed
-        ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title)))
+        dispatchNotice(Notice(title: post.isSeen ? NoticeMessages.unseenFailed : NoticeMessages.seenFailed))
     }
 
-    private struct ErrorMessages {
+    class func dispatchUnfollowSiteMessage(siteTitle: String) {
+        dispatchNotice(Notice(title: NoticeMessages.unfollowSuccess, message: siteTitle))
+    }
+
+    private class func dispatchNotice(_ notice: Notice) {
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    private struct NoticeMessages {
         static let seenFailed = NSLocalizedString("Unable to mark post seen", comment: "Alert displayed to the user when updating a post's seen status failed.")
         static let unseenFailed = NSLocalizedString("Unable to mark post unseen", comment: "Alert displayed to the user when updating a post's unseen status failed.")
+        static let unfollowSuccess = NSLocalizedString("Unfollowed site", comment: "Notice title when a user successfully unfollowed a site.")
     }
 }
 
