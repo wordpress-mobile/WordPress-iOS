@@ -6,6 +6,7 @@ import WordPressFlux
 class ActivityListViewModelTests: XCTestCase {
 
     let activityListConfiguration = ActivityListConfiguration(
+        identifier: "identifier",
         title: "Title",
         loadingTitle: "Loading Activities...",
         noActivitiesTitle: "No activity yet",
