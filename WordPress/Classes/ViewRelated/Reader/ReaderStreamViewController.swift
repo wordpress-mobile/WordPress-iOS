@@ -1292,7 +1292,7 @@ import WordPressFlux
         let siteTitle = topic.title
 
         if !toFollow {
-            ReaderSubscribingNotificationAction().execute(for: siteID, context: managedObjectContext(), value: !topic.isSubscribedForPostNotifications)
+            ReaderSubscribingNotificationAction().execute(for: siteID, context: managedObjectContext(), subscribe: !topic.isSubscribedForPostNotifications)
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)

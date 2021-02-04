@@ -48,7 +48,7 @@ final class ReaderShowMenuAction {
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let topic: ReaderSiteTopic = ReaderActionHelpers.existingObject(for: siteTopic.objectID, in: context) {
-                                                    ReaderSubscribingNotificationAction().execute(for: topic.siteID, context: context, value: !topic.isSubscribedForPostNotifications)
+                                                    ReaderSubscribingNotificationAction().execute(for: topic.siteID, context: context, subscribe: !topic.isSubscribedForPostNotifications)
                                                 }
             })
         }
@@ -63,10 +63,11 @@ final class ReaderShowMenuAction {
                                                     ReaderFollowAction().execute(with: post,
                                                                                  context: context,
                                                                                  completion: {
-                                                                                    guard let vc = vc as? ReaderStreamViewController else {
-                                                                                        return
+                                                                                    if post.isFollowing {
+                                                                                        vc.dispatchSubscribingNotificationNotice(with: post.blogNameForDisplay(), siteID: post.siteID)
                                                                                     }
-                                                                                    vc.updateStreamHeaderIfNeeded()
+
+                                                                                    (vc as? ReaderStreamViewController)?.updateStreamHeaderIfNeeded()
                                                                                  },
                                                                                  failure: nil)
                                                 }
