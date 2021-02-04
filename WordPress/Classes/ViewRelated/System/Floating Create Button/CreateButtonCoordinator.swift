@@ -160,6 +160,11 @@ import WordPressFlux
         }
     }
 
+    func hideCreateButtonTooltip() {
+        didDismissTooltip = true
+        hideNotice()
+    }
+
     @objc func hideCreateButton() {
         hideNotice()
 
