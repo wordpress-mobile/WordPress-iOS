@@ -155,6 +155,8 @@ class JetpackScanCoordinator {
 
         controller.addAction(UIAlertAction(title: Strings.fixAllAlertCancelButtonTitle, style: .cancel, handler: nil))
         controller.addAction(UIAlertAction(title: Strings.fixAllAlertConfirmButtonTitle, style: .default, handler: { [weak self] _ in
+            WPAnalytics.track(.jetpackScanAllthreatsFixTapped, properties: ["threats_fixed": threatCount])
+
             self?.fixAllThreats()
         }))
 
