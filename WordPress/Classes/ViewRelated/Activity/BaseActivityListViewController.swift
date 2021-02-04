@@ -367,7 +367,7 @@ extension BaseActivityListViewController: ActivityPresenter {
         self.navigationController?.pushViewController(detailVC, animated: true)
     }
 
-    func presentBackupOrRestoreFor(activity: Activity) {
+    func presentBackupOrRestoreFor(activity: Activity, from sender: UIButton) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
@@ -389,6 +389,12 @@ extension BaseActivityListViewController: ActivityPresenter {
         let cancelTitle = NSLocalizedString("Cancel", comment: "Title for cancel action. Dismisses the action sheet.")
         alertController.addCancelActionWithTitle(cancelTitle)
 
+        if let presentationController = alertController.popoverPresentationController {
+            presentationController.permittedArrowDirections = .any
+            presentationController.sourceView = sender
+            presentationController.sourceRect = sender.bounds
+        }
+
         self.present(alertController, animated: true, completion: nil)
     }
 
@@ -408,6 +414,7 @@ extension BaseActivityListViewController: ActivityPresenter {
             let alertController = UIAlertController(title: title,
                                                     message: message,
                                                     preferredStyle: .alert)
+
             alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. A button title."))
             alertController.addDestructiveActionWithTitle(NSLocalizedString("Confirm Rewind",
                                                                             comment: "Confirm Rewind button title"),
