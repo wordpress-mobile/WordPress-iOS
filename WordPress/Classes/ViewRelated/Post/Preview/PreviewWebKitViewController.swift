@@ -172,7 +172,8 @@ class PreviewWebKitViewController: WebKitViewController {
 
         alertController.addCancelActionWithTitle(cancelTitle)
         alertController.addDefaultActionWithTitle(publishTitle) { [unowned self] _ in
-            PostCoordinator.shared.publish(self.post!)
+            guard let post = self.post else { return }
+            PostCoordinator.shared.publish(post)
 
             if let editorVC = (self.presentingViewController?.presentingViewController as? EditPostViewController) {
                 editorVC.closeEditor(true, showPostEpilogue: false, from: self)
