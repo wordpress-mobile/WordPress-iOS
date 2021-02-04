@@ -1,7 +1,7 @@
 import WidgetKit
 
-enum HomeWidgetTodayEntry: TimelineEntry {
-    case siteSelected(HomeWidgetTodayData)
+enum StatsWidgetEntry: TimelineEntry {
+    case siteSelected(HomeWidgetData)
     case loggedOut
 
     var date: Date {

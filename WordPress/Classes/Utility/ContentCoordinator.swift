@@ -9,6 +9,7 @@ protocol ContentCoordinator {
     func displayFullscreenImage(_ image: UIImage)
     func displayPlugin(withSlug pluginSlug: String, on siteSlug: String) throws
     func displayBackupWithSiteID(_ siteID: NSNumber?) throws
+    func displayScanWithSiteID(_ siteID: NSNumber?) throws
 }
 
 
@@ -67,6 +68,15 @@ struct DefaultContentCoordinator: ContentCoordinator {
         }
 
         controller?.navigationController?.pushViewController(backupListViewController, animated: true)
+    }
+
+    func displayScanWithSiteID(_ siteID: NSNumber?) throws {
+        guard Feature.enabled(.jetpackScan), let blog = blogWithBlogID(siteID), blog.isScanAllowed() else {
+            throw DisplayError.missingParameter
+        }
+
+        let scanViewController = JetpackScanViewController(blog: blog)
+        controller?.navigationController?.pushViewController(scanViewController, animated: true)
     }
 
     func displayFollowersWithSiteID(_ siteID: NSNumber?, expirationTime: TimeInterval) throws {

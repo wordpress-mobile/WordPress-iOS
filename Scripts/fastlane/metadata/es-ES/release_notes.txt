@@ -1,0 +1,9 @@
+Sobre esta versión:
+
+Nota: Esta es la última versión de la aplicación que será compatible con iOS 12. A partir de la versión 16.7, la aplicación necesitará iOS 13 o superior.
+
+Mira las estadísticas en tu pantalla de inicio: Muestra las estadísticas del día de tu sitio WordPress en la pantalla de inicio de tu dispositivo iOS 14 con los nuevos widgets «Hoy».
+
+Sigue la actividad de tu sitio: Filtra y visualiza los elementos de tu registro de actividad —como las copias de seguridad, las actualizaciones de plugins y las entradas y páginas publicadas— por rango de fechas y tipo de actividad.
+
+Conoce tu aplicación: Aprende las características de tu aplicación con un recorrido de inicio rápido mejorado, que te guía a través de pasos, como la revisión de las páginas del sitio y la edición de tu página de inicio.

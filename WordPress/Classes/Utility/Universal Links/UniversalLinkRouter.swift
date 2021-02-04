@@ -102,12 +102,12 @@ struct UniversalLinkRouter {
     func canHandle(url: URL) -> Bool {
         let matcherCanHandle = matcher.routesMatching(url).count > 0
 
-        guard let host = url.host else {
+        guard let host = url.host, let scheme = url.scheme else {
             return matcherCanHandle
         }
 
         // If there's a hostname, check it's WordPress.com
-        return host == "wordpress.com" && matcherCanHandle
+        return scheme == "https" && host == "wordpress.com" && matcherCanHandle
     }
 
     /// Attempts to find a route that matches the url's path, and perform its
@@ -136,8 +136,18 @@ struct UniversalLinkRouter {
 
     private func trackDeepLink(matchCount: Int, url: URL) {
         let stat: WPAnalyticsStat = (matchCount > 0) ? .deepLinked : .deepLinkFailed
-        let properties = ["url": url.absoluteString]
+        var properties = [TracksPropertyKeys.url: url.absoluteString]
+
+        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        if let source = components?.queryItems?.first(where: { $0.name == TracksPropertyKeys.source }) {
+            properties[TracksPropertyKeys.source] = source.value
+        }
 
         WPAppAnalytics.track(stat, withProperties: properties)
+    }
+
+    private enum TracksPropertyKeys {
+        static let url = "url"
+        static let source = "source"
     }
 }

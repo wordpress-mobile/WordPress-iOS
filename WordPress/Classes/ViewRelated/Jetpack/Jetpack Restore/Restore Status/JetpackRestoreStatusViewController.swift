@@ -78,7 +78,7 @@ extension JetpackRestoreStatusViewController: JetpackRestoreStatusView {
     }
 
     func showRestoreStatusUpdateFailed() {
-        let statusFailedVC = JetpackRestoreStatusFailedViewController(site: site, activity: activity)
+        let statusFailedVC = JetpackRestoreStatusFailedViewController()
         self.navigationController?.pushViewController(statusFailedVC, animated: true)
     }
 
