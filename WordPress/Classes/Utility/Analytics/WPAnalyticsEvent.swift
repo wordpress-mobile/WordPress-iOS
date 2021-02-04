@@ -294,13 +294,13 @@ import Foundation
         case .activitylogFilterbarResetRange:
             return "activitylog_filterbar_reset_range"
         case .backupListOpened:
-            return "backup_list_opened"
+            return "jetpack_backup_list_opened"
         case .backupFilterbarRangeButtonTapped:
-            return "backup_filterbar_range_button_tapped"
+            return "jetpack_backup_filterbar_range_button_tapped"
         case .backupFilterbarSelectRange:
-            return "backup_filterbar_select_range"
+            return "jetpack_backup_filterbar_select_range"
         case .backupFilterbarResetRange:
-            return "backup_filterbar_reset_range"
+            return "jetpack_backup_filterbar_reset_range"
 
         // Comments
         case .commentViewed:
