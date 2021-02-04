@@ -496,10 +496,7 @@ extension BaseActivityListViewController: JetpackBackupStatusViewControllerDeleg
 
     func didFinishViewing(_ controller: JetpackBackupStatusViewController) {
         controller.dismiss(animated: true, completion: { [weak self] in
-            guard let self = self else {
-                return
-            }
-            // TODO: fetch backup status
+            self?.viewModel.refresh()
         })
     }
 }

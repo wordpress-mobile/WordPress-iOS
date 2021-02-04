@@ -21,10 +21,10 @@ class WebViewControllerFactory: NSObject {
         return controller(configuration: configuration)
     }
 
-    @objc static func controller(url: URL, blog: Blog) -> UIViewController {
+    @objc static func controller(url: URL, blog: Blog, withDeviceModes: Bool = false) -> UIViewController {
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.authenticate(blog: blog)
-        return controller(configuration: configuration)
+        return withDeviceModes ? PreviewWebKitViewController(configuration: configuration) : controller(configuration: configuration)
     }
 
     @objc static func controller(url: URL, account: WPAccount) -> UIViewController {

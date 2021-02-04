@@ -1,0 +1,9 @@
+À propos de cette version :
+
+Remarque : il s’agit de la dernière version de l’application qui prendra en charge iOS 12. Pour la version 16.7 et au-delà, votre application nécessitera iOS 13 ou une version supérieure.
+
+Visualisez les statistiques sur votre écran d’accueil : affichez les statistiques du jour pour votre site WordPress sur l’écran d’accueil de votre appareil avec iOS 14, grâce aux nouveaux widgets du jour.
+
+Suivez l’activité sur votre site : filtrez et affichez des éléments dans votre journal d’activités, tels que des sauvegardes, des mises à jour d’extension, ainsi que des articles et des pages publiés, par période et type d’activité.
+
+Apprivoisez votre application : découvrez les fonctionnalités de votre application grâce à un guide de démarrage rapide qui vous apprendra les différentes étapes pour passer en revue les pages d’un site et modifier votre page d’accueil.

@@ -78,8 +78,9 @@ class ActivityListViewModel: Observable {
     }
 
     public func refresh(after: Date? = nil, before: Date? = nil, group: [ActivityGroup] = []) {
-
         store.fetchRewindStatus(site: site)
+
+        ActionDispatcher.dispatch(ActivityAction.refreshBackupStatus(site: site))
 
         // If a new filter is being applied, remove all activities
         if isApplyingNewFilter(after: after, before: before, group: group) {
@@ -204,7 +205,7 @@ class ActivityListViewModel: Observable {
                                         footerText: nil)
             }
 
-        return ImmuTable(optionalSections: [restoreStatusSection()] + activitiesSections)
+        return ImmuTable(optionalSections: [backupStatusSection(), restoreStatusSection()] + activitiesSections)
         // So far the only "extra" section is the restore one. In the future, this will include
         // showing plugin updates/CTA's and other things like this.
     }
@@ -260,6 +261,30 @@ class ActivityListViewModel: Observable {
 
     private func isApplyingDateFilter(after: Date? = nil, before: Date? = nil) -> Bool {
         after != self.after || before != self.before
+    }
+
+    private func backupStatusSection() -> ImmuTableSection? {
+        guard let backup = store.getBackupStatus(site: site), let backupProgress = backup.progress else {
+            return nil
+        }
+
+        let title = NSLocalizedString("Backing up site", comment: "Title of the cell displaying status of a backup in progress")
+        let summary: String
+        let progress = max(Float(backupProgress) / 100, 0.05)
+        // We don't want to show a completely empty progress bar — it'd seem something is broken. 5% looks acceptable
+        // for the starting state.
+
+        summary = NSLocalizedString("Creating downloadable backup", comment: "Description of the cell displaying status of a backup in progress")
+
+        let rewindRow = RewindStatusRow(
+            title: title,
+            summary: summary,
+            progress: progress
+        )
+
+        return ImmuTableSection(headerText: NSLocalizedString("Backup", comment: "Title of section showing backup status"),
+                                rows: [rewindRow],
+                                footerText: nil)
     }
 
     private func restoreStatusSection() -> ImmuTableSection? {
