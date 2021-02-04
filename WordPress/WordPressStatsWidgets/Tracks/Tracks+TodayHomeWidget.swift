@@ -16,7 +16,7 @@ extension Tracks {
         trackExtensionEvent(.loginLaunched)
     }
 
-    public func trackWidgetUpdated() {
+    public func trackWidgetUpdated(widgetKind: String, widgetCountKey: String) {
 
         DispatchQueue.global().async {
             WidgetCenter.shared.getCurrentConfigurations { result in
@@ -24,7 +24,8 @@ extension Tracks {
                 switch result {
 
                 case .success(let widgetInfo):
-                    self.trackUpdatedWidgetInfo(widgetInfo: widgetInfo)
+                    let widgetKindInfo = widgetInfo.filter { $0.kind == widgetKind }
+                    self.trackUpdatedWidgetInfo(widgetInfo: widgetKindInfo, widgetCountKey: widgetCountKey)
 
                 case .failure(let error):
                     DDLogError("Home Widget Today error: unable to read widget information. \(error.localizedDescription)")
@@ -33,17 +34,17 @@ extension Tracks {
         }
     }
 
-    private func trackUpdatedWidgetInfo(widgetInfo: [WidgetInfo]) {
+    private func trackUpdatedWidgetInfo(widgetInfo: [WidgetInfo], widgetCountKey: String) {
         /// - TODO: TODAYWIDGET - This might need to change depending on wether or not we use one extension for multiple widgets
 
-        let previousCount = UserDefaults(suiteName: WPAppGroupName)?.object(forKey: WPHomeWidgetTodayCount) as? Int ?? 0
+        let previousCount = UserDefaults(suiteName: WPAppGroupName)?.object(forKey: widgetCountKey) as? Int ?? 0
         let newCount = widgetInfo.count
 
         guard previousCount != newCount else {
             return
         }
 
-        UserDefaults(suiteName: WPAppGroupName)?.set(newCount, forKey: WPHomeWidgetTodayCount)
+        UserDefaults(suiteName: WPAppGroupName)?.set(newCount, forKey: widgetCountKey)
 
         let properties = ["total_widgets": newCount,
                           "small_widgets": widgetInfo.filter { $0.family == .systemSmall }.count,

@@ -83,6 +83,7 @@ NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPres
 NSString *const WPHomeWidgetTodayKind                               = @"WordPressHomeWidgetToday";
 NSString *const WPHomeWidgetAllTimeKind                             = @"WordPressHomeWidgetAllTime";
 NSString *const WPHomeWidgetTodayCount                              = @"WordPressHomeWidgetTodayCount";
+NSString *const WPHomeWidgetAllTimeCount                            = @"WordPressHomeWidgetAllTimeCount";
 
 /// Apple ID Constants
 ///
