@@ -119,7 +119,6 @@ import Foundation
     case jetpackScanThreatFixTapped
     case jetpackScanAllThreatsOpen
     case jetpackScanAllthreatsFixTapped
-    case jetpackScanErrorContactTapped
     case jetpackScanError
 
     // Comments
@@ -340,8 +339,6 @@ import Foundation
             return "jetpack_scan_allthreats_open"
         case .jetpackScanAllthreatsFixTapped:
             return "jetpack_scan_allthreats_fix_tapped"
-        case .jetpackScanErrorContactTapped:
-            return "jetpack_scan_error_contact_tapped"
         case .jetpackScanError:
             return "jetpack_scan_error"
 
