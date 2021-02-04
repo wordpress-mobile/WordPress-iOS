@@ -312,6 +312,14 @@ struct ReaderNotificationKeys {
         dispatchNotice(Notice(title: NoticeMessages.unfollowSuccess, message: siteTitle))
     }
 
+    class func dispatchToggleNotificationMessage(topic: ReaderSiteTopic, success: Bool) {
+        if success {
+            dispatchNotice(Notice(title: topic.isSubscribedForPostNotifications ? NoticeMessages.notificationOnSuccess: NoticeMessages.notificationOffSuccess))
+        } else {
+            dispatchNotice(Notice(title: topic.isSubscribedForPostNotifications ? NoticeMessages.notificationOffFail : NoticeMessages.notificationOnFail))
+        }
+    }
+
     private class func dispatchNotice(_ notice: Notice) {
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
@@ -322,6 +330,10 @@ struct ReaderNotificationKeys {
         static let seenSuccess = NSLocalizedString("Marked post as seen", comment: "Notice title when updating a post's seen status succeeds.")
         static let unseenSuccess = NSLocalizedString("Marked post as unseen", comment: "Notice title when updating a post's unseen status succeeds.")
         static let unfollowSuccess = NSLocalizedString("Unfollowed site", comment: "Notice title when a user successfully unfollowed a site.")
+        static let notificationOnFail = NSLocalizedString("Unable to turn on site notifications", comment: "Notice title when turning site notifications on fails.")
+        static let notificationOffFail = NSLocalizedString("Unable to turn off site notifications", comment: "Notice title when turning site notifications off fails.")
+        static let notificationOnSuccess = NSLocalizedString("Turned on site notifications", comment: "Notice title when turning site notifications on succeeds.")
+        static let notificationOffSuccess = NSLocalizedString("Turned off site notifications", comment: "Notice title when turning site notifications off succeeds.")
     }
 }
 

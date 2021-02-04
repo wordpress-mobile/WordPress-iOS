@@ -48,9 +48,19 @@ final class ReaderShowMenuAction {
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let topic: ReaderSiteTopic = ReaderActionHelpers.existingObject(for: siteTopic.objectID, in: context) {
-                                                    ReaderSubscribingNotificationAction().execute(for: topic.siteID, context: context, subscribe: !topic.isSubscribedForPostNotifications)
+                                                    let subscribe = !topic.isSubscribedForPostNotifications
+
+                                                    ReaderSubscribingNotificationAction().execute(for: topic.siteID, context: context, subscribe: subscribe, completion: {
+
+                                                        let event: WPAnalyticsStat = subscribe ? .readerListNotificationMenuOn : .readerListNotificationMenuOff
+                                                        WPAnalytics.track(event)
+
+                                                        ReaderHelpers.dispatchToggleNotificationMessage(topic: topic, success: true)
+                                                    }, failure: { _ in
+                                                        ReaderHelpers.dispatchToggleNotificationMessage(topic: topic, success: false)
+                                                    })
                                                 }
-            })
+                                               })
         }
 
         // Following
