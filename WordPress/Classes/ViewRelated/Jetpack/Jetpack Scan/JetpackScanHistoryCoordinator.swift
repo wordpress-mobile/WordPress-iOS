@@ -30,7 +30,7 @@ class JetpackScanHistoryCoordinator {
         }
     }
 
-    var sections: [JetpackHistorySection]?
+    var sections: [JetpackThreatSection]?
 
     init(blog: Blog,
          view: JetpackScanHistoryView,
@@ -130,25 +130,7 @@ class JetpackScanHistoryCoordinator {
             return
         }
 
-        let grouping: [DateComponents: [JetpackScanThreat]] = Dictionary(grouping: threats) { (threat) -> DateComponents in
-            return Calendar.current.dateComponents([.day, .year, .month], from: threat.firstDetected)
-        }
-
-        let keys = grouping.keys
-        let formatter = ActivityDateFormatting.longDateFormatterWithoutTime(for: siteRef)
-        var sectionsArray: [JetpackHistorySection] = []
-        for key in keys {
-            guard let date = Calendar.current.date(from: key),
-                  let threats = grouping[key]
-            else {
-                continue
-            }
-
-            let title = formatter.string(from: date)
-            sectionsArray.append(JetpackHistorySection(title: title, date: date, threats: threats))
-        }
-
-        self.sections = sectionsArray.sorted(by: { $0.date > $1.date })
+        self.sections = JetpackScanThreatSectionGrouping(threats: threats, siteRef: siteRef).sections
     }
 
     // MARK: - Filters
@@ -213,11 +195,4 @@ protocol JetpackScanHistoryView {
     func showNoIgnoredThreats()
     func showNoConnectionError()
     func showGenericError()
-}
-
-
-struct JetpackHistorySection {
-    let title: String
-    let date: Date
-    let threats: [JetpackScanThreat]
 }

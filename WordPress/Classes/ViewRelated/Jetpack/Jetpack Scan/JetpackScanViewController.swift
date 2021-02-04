@@ -135,6 +135,8 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     private func configureTableView() {
         tableView.register(JetpackScanStatusCell.defaultNib, forCellReuseIdentifier: Constants.statusCellIdentifier)
         tableView.register(JetpackScanThreatCell.defaultNib, forCellReuseIdentifier: Constants.threatCellIdentifier)
+        tableView.register(ActivityListSectionHeaderView.defaultNib,
+                           forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
 
         tableView.tableFooterView = UIView()
 
@@ -170,29 +172,59 @@ extension JetpackScanViewController: JetpackScanThreatDetailsViewControllerDeleg
 
 // MARK: - Table View
 extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let count = coordinator.threats?.count ?? 0
+    func numberOfSections(in tableView: UITableView) -> Int {
+        let count = coordinator.sections?.count ?? 0
         return count + Constants.tableHeaderCountOffset
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section < Constants.tableHeaderCountOffset {
+            return 1
+        }
+
+        guard let historySection = threatSection(for: section) else {
+            return 0
+        }
+
+        return historySection.threats.count
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let title = threatSection(for: section)?.title,
+              let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActivityListSectionHeaderView.identifier) as? ActivityListSectionHeaderView else {
+            return UIView(frame: .zero)
+        }
+
+        cell.titleLabel.text = title
+
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if threatSection(for: section)?.title == nil {
+            return 0
+        }
+
+        return ActivityListSectionHeaderView.height
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell
-        if indexPath.row == 0 {
+
+        if let threat = threat(for: indexPath) {
+            let threatCell = tableView.dequeueReusableCell(withIdentifier: Constants.threatCellIdentifier) as? JetpackScanThreatCell ?? JetpackScanThreatCell(style: .default, reuseIdentifier: Constants.threatCellIdentifier)
+
+            configureThreatCell(cell: threatCell, threat: threat)
+
+            cell = threatCell
+        } else {
             let statusCell = tableView.dequeueReusableCell(withIdentifier: Constants.statusCellIdentifier) as? JetpackScanStatusCell ?? JetpackScanStatusCell(style: .default, reuseIdentifier: Constants.statusCellIdentifier)
 
             configureStatusCell(cell: statusCell)
 
             cell = statusCell
-        } else {
-            let threatCell = tableView.dequeueReusableCell(withIdentifier: Constants.threatCellIdentifier) as? JetpackScanThreatCell ?? JetpackScanThreatCell(style: .default, reuseIdentifier: Constants.threatCellIdentifier)
 
-            if let threat = threat(for: indexPath) {
-                configureThreatCell(cell: threatCell, threat: threat)
-            }
-
-            cell = threatCell
         }
-
         return cell
     }
 
@@ -210,14 +242,22 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
         cell.configure(with: model)
     }
 
-    private func threat(for indexPath: IndexPath) -> JetpackScanThreat? {
-        let row = indexPath.row - Constants.tableHeaderCountOffset
-
-        guard row >= 0, let threats = coordinator.threats else {
+    private func threatSection(for index: Int) -> JetpackThreatSection? {
+        let adjustedIndex = index - Constants.tableHeaderCountOffset
+        guard
+            adjustedIndex >= 0, let section = coordinator.sections?[adjustedIndex] else {
             return nil
         }
 
-        return threats[row]
+        return section
+    }
+
+    private func threat(for indexPath: IndexPath) -> JetpackScanThreat? {
+        guard let section = threatSection(for: indexPath.section) else {
+            return nil
+        }
+
+        return section.threats[indexPath.row]
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
