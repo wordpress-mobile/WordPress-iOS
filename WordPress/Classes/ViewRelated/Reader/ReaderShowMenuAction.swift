@@ -69,9 +69,7 @@ final class ReaderShowMenuAction {
                                                                                         ReaderHelpers.dispatchUnfollowSiteMessage(siteTitle: post.blogNameForDisplay())
                                                                                     }
 
-                                                                                    if let vc = vc as? ReaderStreamViewController {
-                                                                                        vc.updateStreamHeaderIfNeeded()
-                                                                                    }
+                                                                                    (vc as? ReaderStreamViewController)?.updateStreamHeaderIfNeeded()
                                                                                  },
                                                                                  failure: nil)
                                                 }
