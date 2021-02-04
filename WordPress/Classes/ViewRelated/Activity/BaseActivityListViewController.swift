@@ -175,11 +175,11 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
     }
 
     func refreshModel() {
+        updateHeader()
         handler.viewModel = viewModel.tableViewModel(presenter: self)
         updateRefreshControl()
         updateNoResults()
         updateFilters()
-        updateHeader()
     }
 
     private func updateHeader() {
