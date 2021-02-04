@@ -9,7 +9,7 @@ struct JetpackScanThreatSectionGrouping {
         }
 
         let keys = grouping.keys
-        let formatter = ActivityDateFormatting.longDateFormatterWithoutTime(for: siteRef)
+        let formatter = ActivityDateFormatting.longDateFormatter(for: siteRef, withTime: false)
         var sectionsArray: [JetpackThreatSection] = []
         for key in keys {
             guard let date = Calendar.current.date(from: key),

@@ -154,7 +154,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
                                                     for: .normal)
         }
 
-        let dateFormatter = ActivityDateFormatting.longDateFormatterWithoutTime(for: site)
+        let dateFormatter = ActivityDateFormatting.longDateFormatter(for: site, withTime: false)
         dateLabel.text = dateFormatter.string(from: activity.published)
 
         let timeFormatter = DateFormatter()

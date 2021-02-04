@@ -231,6 +231,29 @@ class ActivityListViewModel: Observable {
         return formattedDateRanges.joined(separator: " - ")
     }
 
+    func header() -> UIView? {
+        guard let validUntil = store.getBackupStatus(site: site)?.validUntil,
+              let backupPoint = store.getBackupStatus(site: site)?.backupPoint,
+              let downloadURLString = store.getBackupStatus(site: site)?.url,
+              let downloadURL = URL(string: downloadURLString),
+              Date() < validUntil else {
+            return nil
+        }
+
+        let downloadPromptView = AppFeedbackPromptView()
+        downloadPromptView.setupHeading("We successfuly created a backup of your site as of \(longDateFormatterWithTime.string(from: backupPoint))")
+
+        downloadPromptView.setupYesButton(title: "Download") { _ in
+            UIApplication.shared.open(downloadURL)
+        }
+
+        downloadPromptView.setupNoButton(title: "Dismiss") { [weak self] button in
+            downloadPromptView.removeFromSuperview()
+        }
+
+        return downloadPromptView
+    }
+
     func activityTypeDescription() -> String? {
         if selectedGroups.isEmpty {
             return NSLocalizedString("Activity Type", comment: "Label for the Activity Type filter button")
@@ -348,7 +371,11 @@ class ActivityListViewModel: Observable {
     // MARK: - Date/Time handling
 
     lazy var longDateFormatterWithoutTime: DateFormatter = {
-        return ActivityDateFormatting.longDateFormatterWithoutTime(for: site)
+        return ActivityDateFormatting.longDateFormatter(for: site, withTime: false)
+    }()
+
+    lazy var longDateFormatterWithTime: DateFormatter = {
+        return ActivityDateFormatting.longDateFormatter(for: site, withTime: true)
     }()
 
     lazy var mediumDateFormatterWithTime: DateFormatter = {
