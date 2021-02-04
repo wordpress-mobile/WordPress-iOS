@@ -41,10 +41,12 @@ class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
 
     override func primaryButtonTapped() {
         downloadFile()
+        WPAnalytics.track(.backupFileDownloadTapped)
     }
 
     override func secondaryButtonTapped() {
         shareLink()
+        WPAnalytics.track(.backupDownloadShareLinkTapped)
     }
 
     // MARK: - Private
