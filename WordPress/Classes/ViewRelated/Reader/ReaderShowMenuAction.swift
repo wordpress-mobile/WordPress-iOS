@@ -67,9 +67,7 @@ final class ReaderShowMenuAction {
                                                                                         vc.dispatchSubscribingNotificationNotice(with: post.blogNameForDisplay(), siteID: post.siteID)
                                                                                     }
 
-                                                                                    if let vc = vc as? ReaderStreamViewController {
-                                                                                        vc.updateStreamHeaderIfNeeded()
-                                                                                    }
+                                                                                    (vc as? ReaderStreamViewController)?.updateStreamHeaderIfNeeded()
                                                                                  },
                                                                                  failure: nil)
                                                 }
