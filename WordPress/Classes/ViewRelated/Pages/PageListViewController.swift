@@ -544,8 +544,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     fileprivate func draftPage(_ apost: AbstractPost, at indexPath: IndexPath?, shouldPrompt: Bool) {
         guard !shouldPrompt else {
-            PageSettingsUtils.promptHomepageWarning { [weak self] _ in
-                self?.draftPage(apost, at: indexPath, shouldPrompt: false)
+            PageSettingsUtils.promptHomepageWarning { [weak self] didConfirm in
+                if didConfirm {
+                    self?.draftPage(apost, at: indexPath, shouldPrompt: false)
+                }
             }
             return
         }
