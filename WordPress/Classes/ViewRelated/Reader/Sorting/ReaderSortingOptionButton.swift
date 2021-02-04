@@ -106,14 +106,19 @@ class ReaderSortingOptionButton: UIControl {
         addSubview(chevronView)
 
         NSLayoutConstraint.activate([
+            iconView.heightAnchor.constraint(equalToConstant: 24.0),
+            iconView.widthAnchor.constraint(equalToConstant: 24.0),
             iconView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16.0),
+            iconView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
             label.centerYAnchor.constraint(equalTo: centerYAnchor),
             label.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 6.0),
             label.topAnchor.constraint(equalTo: topAnchor, constant: 16.0),
             label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16.0),
             chevronView.centerYAnchor.constraint(equalTo: centerYAnchor),
             chevronView.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: 6.0),
+            chevronView.trailingAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
+            chevronView.heightAnchor.constraint(equalToConstant: 24.0),
+            chevronView.widthAnchor.constraint(equalToConstant: 24.0),
         ])
     }
 }

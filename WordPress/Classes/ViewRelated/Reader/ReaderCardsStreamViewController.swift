@@ -123,8 +123,9 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     // MARK: - Sorting
 
     private func updateSortingOption(_ sortingOption: ReaderSortingOption, reloadCards: Bool = true) {
+        let optionChanged = self.sortingOption != sortingOption
         self.sortingOption = sortingOption
-        if reloadCards {
+        if optionChanged, reloadCards {
             super.syncIfAppropriate(forceSync: true)
         }
     }
