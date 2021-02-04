@@ -15,6 +15,7 @@ class JetpackBackupStatusCoordinator {
     private let downloadID: Int
     private let view: JetpackBackupStatusView
 
+    private var isLoading: Bool = false
     private var timer: Timer?
     private var retryCount: Int = 0
 
@@ -59,10 +60,18 @@ class JetpackBackupStatusCoordinator {
     }
 
     private func refreshBackupStatus(downloadID: Int) {
+        guard isLoading == false else {
+            return
+        }
+
+        isLoading = true
+
         service.getBackupStatus(for: self.site, downloadID: downloadID, success: { [weak self] backup in
             guard let self = self else {
                 return
             }
+
+            self.isLoading = false
 
             // If a backup url exists, then we've finished creating a downloadable backup.
             if backup.url != nil {
@@ -79,16 +88,17 @@ class JetpackBackupStatusCoordinator {
                 return
             }
 
-            if self.retryCount == Constants.maxRetryCount {
-                self.stopPolling()
-                self.view.showBackupStatusUpdateFailed()
+            self.isLoading = false
+
+            guard self.retryCount >= Constants.maxRetryCount else {
+                self.retryCount += 1
                 return
             }
 
-            self.retryCount += 1
+            self.stopPolling()
+            self.view.showBackupStatusUpdateFailed()
         })
     }
-
 }
 
 extension JetpackBackupStatusCoordinator {
