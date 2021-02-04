@@ -51,7 +51,7 @@ extension Tracks {
                           "medium_widgets": widgetInfo.filter { $0.family == .systemMedium }.count,
                           "large_widgets": widgetInfo.filter { $0.family == .systemLarge }.count]
 
-        trackExtensionEvent(.widgetUpdated, properties: properties as [String: AnyObject]?)
+        trackExtensionEvent(ExtensionEvents.widgetUpdated(for: widgetCountKey), properties: properties as [String: AnyObject]?)
     }
 
     // MARK: - Private Helpers
@@ -68,7 +68,22 @@ extension Tracks {
         case statsLaunched  = "wpios_today_home_extension_stats_launched"
         // User taps widget to login to the app
         case loginLaunched  = "wpios_today_home_extension_login_launched"
-        // User installs an instance of the widget
-        case widgetUpdated = "wpios_today_home_extension_widget_updated"
+        // User installs an instance of the today widget
+        case todayWidgetUpdated = "wpios_today_home_extension_widget_updated"
+        // User installs an instance of the all time widget
+        case allTimeWidgetUpdated = "wpios_alltime_home_extension_widget_updated"
+
+        case noEvent
+
+        static func widgetUpdated(for key: String) -> ExtensionEvents {
+            switch key {
+            case WPHomeWidgetTodayCount:
+                return .todayWidgetUpdated
+            case WPHomeWidgetAllTimeCount:
+                return .allTimeWidgetUpdated
+            default:
+                return .noEvent
+            }
+        }
     }
 }
