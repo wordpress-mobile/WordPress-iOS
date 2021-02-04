@@ -5,6 +5,9 @@ import WordPressShared
 import WordPressFlux
 
 struct ActivityListConfiguration {
+    /// An identifier of the View Controller
+    let identifier: String
+
     /// The title of the View Controller
     let title: String
 
@@ -370,6 +373,7 @@ extension BaseActivityListViewController: ActivityPresenter {
         let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
         let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
         restoreOptionsVC.restoreStatusDelegate = self
+        restoreOptionsVC.presentedFrom = configuration.identifier
         alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: restoreOptionsVC), animated: true)
         })
@@ -377,6 +381,7 @@ extension BaseActivityListViewController: ActivityPresenter {
         let backupTitle = NSLocalizedString("Download backup", comment: "Title displayed for download backup action.")
         let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
         backupOptionsVC.backupStatusDelegate = self
+        restoreOptionsVC.presentedFrom = configuration.identifier
         alertController.addDefaultActionWithTitle(backupTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: backupOptionsVC), animated: true)
         })
