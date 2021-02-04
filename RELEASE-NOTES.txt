@@ -6,7 +6,7 @@
 * [**] Reader post card and post details: added ability to mark a followed post as seen/unseen. [#15638, #15645, #15676]
 * [**] Reader site filter: show unseen post count. [#15581]
 * [*] Reader post options: fixed an issue where the options in post details did not match those on post cards. [#15778]
-* [**] iOS 14 Widgets: new All Time Widgets to display All Time Stats in your home screen.
+* [**] iOS 14 Widgets: new All Time Widgets to display All Time Stats in your home screen. [#15771, #15794]
 
 16.6
 -----
