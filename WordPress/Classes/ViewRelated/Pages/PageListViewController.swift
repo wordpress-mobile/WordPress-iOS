@@ -606,7 +606,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let indexPath = tableView.indexPath(for: cell)
 
         let filter = filterSettings.currentPostListFilter().filterType
-
+        let isHomepage = ((page as? Page)?.isSiteHomepage ?? false)
         if filter == .trashed {
             alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
                 guard let strongSelf = self,
@@ -662,14 +662,16 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 })
             }
 
-            alertController.addActionWithTitle(trashButtonTitle, style: .destructive, handler: { [weak self] (action) in
-                guard let strongSelf = self,
-                    let page = strongSelf.pageForObjectID(objectID) else {
+            if !isHomepage {
+                alertController.addActionWithTitle(trashButtonTitle, style: .destructive, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                          let page = strongSelf.pageForObjectID(objectID) else {
                         return
-                }
+                    }
 
-                strongSelf.handleTrashPage(page)
-            })
+                    strongSelf.handleTrashPage(page)
+                })
+            }
         } else {
             if page.isFailed {
                 alertController.addActionWithTitle(retryButtonTitle, style: .default, handler: { [weak self] (action) in
