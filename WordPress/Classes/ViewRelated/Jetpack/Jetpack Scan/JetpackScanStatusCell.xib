@@ -56,7 +56,7 @@
                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UhM-1P-HcV" customClass="FancyButton" customModule="WordPressUI">
                                 <rect key="frame" x="10" y="161" width="425" height="34"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="34" id="Ha4-Re-jtu"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="Ha4-Re-jtu"/>
                                 </constraints>
                                 <directionalEdgeInsets key="directionalLayoutMargins" top="8" leading="20" bottom="8" trailing="20"/>
                                 <state key="normal" title="Fix All">
@@ -72,7 +72,7 @@
                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="749" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gTh-o0-42f" customClass="FancyButton" customModule="WordPressUI">
                                 <rect key="frame" x="10" y="205" width="425" height="34"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="34" id="tnl-xQ-FTS"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="tnl-xQ-FTS"/>
                                 </constraints>
                                 <directionalEdgeInsets key="directionalLayoutMargins" top="8" leading="20" bottom="8" trailing="20"/>
                                 <state key="normal" title="Scan Again">
