@@ -54,6 +54,10 @@ class ActivityListViewModel: Observable {
         return store.state.groups[site] ?? []
     }
 
+    lazy var downloadPromptView: AppFeedbackPromptView = {
+        AppFeedbackPromptView()
+    }()
+
     init(site: JetpackSiteRef,
          store: ActivityStore = StoreContainer.shared.activity,
          configuration: ActivityListConfiguration) {
@@ -231,16 +235,16 @@ class ActivityListViewModel: Observable {
         return formattedDateRanges.joined(separator: " - ")
     }
 
-    func header() -> UIView? {
+    func backupDownloadHeader() -> UIView? {
         guard let validUntil = store.getBackupStatus(site: site)?.validUntil,
+              Date() < validUntil,
               let backupPoint = store.getBackupStatus(site: site)?.backupPoint,
               let downloadURLString = store.getBackupStatus(site: site)?.url,
               let downloadURL = URL(string: downloadURLString),
-              Date() < validUntil else {
+              let downloadID = store.getBackupStatus(site: site)?.downloadID else {
             return nil
         }
 
-        let downloadPromptView = AppFeedbackPromptView()
         downloadPromptView.setupHeading("We successfuly created a backup of your site as of \(longDateFormatterWithTime.string(from: backupPoint))")
 
         downloadPromptView.setupYesButton(title: "Download") { _ in
@@ -248,7 +252,11 @@ class ActivityListViewModel: Observable {
         }
 
         downloadPromptView.setupNoButton(title: "Dismiss") { [weak self] button in
-            downloadPromptView.removeFromSuperview()
+            guard let self = self else {
+                return
+            }
+
+            ActionDispatcher.dispatch(ActivityAction.dismissBackupNotice(site: self.site, downloadID: downloadID))
         }
 
         return downloadPromptView

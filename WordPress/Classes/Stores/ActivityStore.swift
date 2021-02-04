@@ -25,6 +25,7 @@ enum ActivityAction: Action {
     case backupStatusUpdated(site: JetpackSiteRef, status: JetpackBackup)
     case backupStatusUpdateFailed(site: JetpackSiteRef, error: Error)
     case backupStatusUpdateTimedOut(site: JetpackSiteRef)
+    case dismissBackupNotice(site: JetpackSiteRef, downloadID: Int)
 
     case refreshGroups(site: JetpackSiteRef, afterDate: Date?, beforeDate: Date?)
     case resetGroups(site: JetpackSiteRef)
@@ -236,7 +237,7 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
             backupStatusUpdated(site: site, status: status)
         case .backupStatusUpdateFailed(let site, _):
             delayedRetryFetchBackupStatus(site: site)
-        case .backupStatusUpdateTimedOut(site: let site):
+        case .backupStatusUpdateTimedOut(let site):
             transaction { state in
                 state.fetchingBackupStatus[site] = false
                 state.backupStatusRetries[site] = nil
@@ -247,6 +248,8 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
                                                              comment: "Text displayed when a site backup takes too long."))
                 actionDispatcher.dispatch(NoticeAction.post(notice))
             }
+        case .dismissBackupNotice(let site, let downloadID):
+            dismissBackupNotice(site: site, downloadID: downloadID)
         }
     }
 }
@@ -517,6 +520,11 @@ private extension ActivityStore {
 
         existingWrapper.increment()
         state.backupStatusRetries[site] = existingWrapper
+    }
+
+    func dismissBackupNotice(site: JetpackSiteRef, downloadID: Int) {
+        backupService.dismissBackupNotice(site: site, downloadID: downloadID)
+        state.backupStatus[site] = nil
     }
 
     func rewindStatusUpdated(site: JetpackSiteRef, status: RewindStatus) {

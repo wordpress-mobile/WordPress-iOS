@@ -183,7 +183,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
     }
 
     private func updateHeader() {
-        tableView.tableHeaderView = viewModel.header()
+        tableView.tableHeaderView = viewModel.backupDownloadHeader()
 
         guard let tableHeaderView = tableView.tableHeaderView else {
             return
