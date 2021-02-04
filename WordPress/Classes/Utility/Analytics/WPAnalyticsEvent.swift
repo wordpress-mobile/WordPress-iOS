@@ -108,6 +108,7 @@ import Foundation
     case backupFilterbarResetRange
     case restoreOpened
     case restoreConfirmed
+    case restoreError
 
     // Comments
     case commentViewed
@@ -307,6 +308,8 @@ import Foundation
             return "jetpack_restore_opened"
         case .restoreConfirmed:
             return "jetpack_restore_confirmed"
+        case .restoreError:
+            return "jetpack_restore_error"
 
         // Comments
         case .commentViewed:
