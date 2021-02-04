@@ -209,8 +209,8 @@ struct JetpackScanStatusViewModel {
                                                             comment: "Description that informs for label when there are no threats on a users site")
 
         static let hasThreatsTitle = NSLocalizedString("Your site may be at risk", comment: "Title for label when there are threats on the users site")
-        static let hasThreatsDescriptionFormat = NSLocalizedString("Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button.. We are here to help if you need us.", comment: "Description for a label when there are threats on the site, displays the number of threats, and the site's title")
-        static let hasSingleThreatDescriptionFormat = NSLocalizedString("Jetpack Scan found 1 potential threat with %1$@. Please review them below and take action or tap the fix all button.. We are here to help if you need us.", comment: "Description for a label when there is a single threat on the site, displays the site's title")
+        static let hasThreatsDescriptionFormat = NSLocalizedString("Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us.", comment: "Description for a label when there are threats on the site, displays the number of threats, and the site's title")
+        static let hasSingleThreatDescriptionFormat = NSLocalizedString("Jetpack Scan found 1 potential threat with %1$@. Please review them below and take action or tap the fix all button. We are here to help if you need us.", comment: "Description for a label when there is a single threat on the site, displays the site's title")
 
         static let preparingTitle = NSLocalizedString("Preparing to scan", comment: "Title for label when the preparing to scan the users site")
         static let scanningTitle = NSLocalizedString("Scanning files", comment: "Title for label when the actively scanning the users site")

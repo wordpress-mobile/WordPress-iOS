@@ -396,7 +396,7 @@ extension BaseActivityListViewController: ActivityPresenter {
             let title = NSLocalizedString("Rewind Site",
                                           comment: "Title displayed in the Restore Site alert, should match Calypso")
             let rewindDate = viewModel.mediumDateFormatterWithTime.string(from: activity.published)
-            let messageFormat = NSLocalizedString("Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost..",
+            let messageFormat = NSLocalizedString("Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost.",
                                                   comment: "Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso.")
             let message = String(format: messageFormat, rewindDate)
 
