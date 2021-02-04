@@ -37,6 +37,12 @@ class JetpackScanHistoryViewController: UIViewController {
         coordinator.viewDidLoad()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        WPAnalytics.track(.jetpackScanHistoryAccessed)
+    }
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: { _ in
@@ -53,6 +59,8 @@ class JetpackScanHistoryViewController: UIViewController {
         }
 
         coordinator.changeFilter(filter)
+
+        WPAnalytics.track(.jetpackScanHistoryFilter, properties: ["filter": filter.eventProperty])
     }
 
     // MARK: - Private: Config

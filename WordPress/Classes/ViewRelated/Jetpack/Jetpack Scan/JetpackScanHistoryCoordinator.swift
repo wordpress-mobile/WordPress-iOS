@@ -194,6 +194,17 @@ class JetpackScanHistoryCoordinator {
                     return "filter_toolbar_ignored"
             }
         }
+
+        var eventProperty: String {
+            switch self {
+            case .all:
+                return ""
+            case .fixed:
+                return "fixed"
+            case .ignored:
+                return "ignored"
+            }
+        }
     }
 
     private enum ErrorButtonAction {

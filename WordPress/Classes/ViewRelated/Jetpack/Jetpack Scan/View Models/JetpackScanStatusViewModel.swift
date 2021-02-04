@@ -129,12 +129,15 @@ struct JetpackScanStatusViewModel {
         switch action {
         case .fixAll:
             coordinator.presentFixAllAlert()
+            WPAnalytics.track(.jetpackScanAllThreatsOpen)
 
         case .triggerScan:
             coordinator.startScan()
+            WPAnalytics.track(.jetpackScanRunTapped)
 
         case .contactSupport:
             coordinator.openSupport()
+            WPAnalytics.track(.jetpackScanErrorContactTapped)
         }
     }
 

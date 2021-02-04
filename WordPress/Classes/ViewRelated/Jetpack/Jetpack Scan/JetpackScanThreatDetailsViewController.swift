@@ -83,9 +83,12 @@ class JetpackScanThreatDetailsViewController: UIViewController {
                 return
             }
             self.delegate?.willFixThreat(self.threat, controller: self)
+            self.trackEvent(.jetpackScanThreatFixTapped)
         }))
 
         present(alert, animated: true)
+
+        trackEvent(.jetpackScanFixThreatDialogOpen)
     }
 
     @IBAction private func ignoreThreatButtonTapped(_ sender: Any) {
@@ -103,9 +106,18 @@ class JetpackScanThreatDetailsViewController: UIViewController {
                 return
             }
             self.delegate?.willIgnoreThreat(self.threat, controller: self)
+            self.trackEvent(.jetpackScanThreatIgnoreTapped)
         }))
 
         present(alert, animated: true)
+
+        trackEvent(.jetpackScanIgnoreThreatDialogOpen)
+    }
+
+    // MARK: - Private
+
+    private func trackEvent(_ event: WPAnalyticsEvent) {
+        WPAnalytics.track(event, properties: ["threat_signature": threat.signature])
     }
 }
 

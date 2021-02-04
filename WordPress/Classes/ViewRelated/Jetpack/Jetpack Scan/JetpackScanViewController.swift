@@ -40,6 +40,12 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
                                                             action: #selector(showHistory))
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        WPAnalytics.track(.jetpackScanAccessed)
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
@@ -230,6 +236,8 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
         let threatDetailsVC = JetpackScanThreatDetailsViewController(blog: blog, threat: threat)
         threatDetailsVC.delegate = self
         self.navigationController?.pushViewController(threatDetailsVC, animated: true)
+
+        WPAnalytics.track(.jetpackScanThreatListItemTapped, properties: ["threat_signature": threat.signature, "section": "scanner"])
     }
 }
 
