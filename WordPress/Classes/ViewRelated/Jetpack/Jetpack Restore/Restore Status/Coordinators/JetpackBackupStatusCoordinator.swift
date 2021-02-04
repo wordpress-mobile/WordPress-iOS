@@ -60,7 +60,7 @@ class JetpackBackupStatusCoordinator {
     }
 
     private func refreshBackupStatus(downloadID: Int) {
-        guard isLoading == false else {
+        guard !isLoading else {
             return
         }
 
