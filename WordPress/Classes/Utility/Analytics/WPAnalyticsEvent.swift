@@ -106,6 +106,16 @@ import Foundation
     case backupFilterbarRangeButtonTapped
     case backupFilterbarSelectRange
     case backupFilterbarResetRange
+    case restoreOpened
+    case restoreConfirmed
+    case restoreError
+    case restoreNotifiyMeButtonTapped
+    case backupDownloadOpened
+    case backupDownloadConfirmed
+    case backupFileDownloadError
+    case backupNotifiyMeButtonTapped
+    case backupFileDownloadTapped
+    case backupDownloadShareLinkTapped
 
     // Jetpack Scan
     case jetpackScanAccessed
@@ -308,13 +318,33 @@ import Foundation
         case .activitylogFilterbarResetRange:
             return "activitylog_filterbar_reset_range"
         case .backupListOpened:
-            return "backup_list_opened"
+            return "jetpack_backup_list_opened"
         case .backupFilterbarRangeButtonTapped:
-            return "backup_filterbar_range_button_tapped"
+            return "jetpack_backup_filterbar_range_button_tapped"
         case .backupFilterbarSelectRange:
-            return "backup_filterbar_select_range"
+            return "jetpack_backup_filterbar_select_range"
         case .backupFilterbarResetRange:
-            return "backup_filterbar_reset_range"
+            return "jetpack_backup_filterbar_reset_range"
+        case .restoreOpened:
+            return "jetpack_restore_opened"
+        case .restoreConfirmed:
+            return "jetpack_restore_confirmed"
+        case .restoreError:
+            return "jetpack_restore_error"
+        case .restoreNotifiyMeButtonTapped:
+            return "jetpack_restore_notify_me_button_tapped"
+        case .backupDownloadOpened:
+            return "jetpack_backup_download_opened"
+        case .backupDownloadConfirmed:
+            return "jetpack_backup_download_confirmed"
+        case .backupFileDownloadError:
+            return "jetpack_backup_file_download_error"
+        case .backupNotifiyMeButtonTapped:
+            return "jetpack_backup_notify_me_button_tapped"
+        case .backupFileDownloadTapped:
+            return "jetpack_backup_file_download_tapped"
+        case .backupDownloadShareLinkTapped:
+            return "jetpack_backup_download_share_link_tapped"
 
         // Jetpack Scan
         case .jetpackScanAccessed:
