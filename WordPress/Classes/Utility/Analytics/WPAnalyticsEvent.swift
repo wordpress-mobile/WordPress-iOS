@@ -110,6 +110,7 @@ import Foundation
     case restoreConfirmed
     case restoreError
     case restoreNotifiyMeButtonTapped
+    case backupDownloadOpened
 
     // Comments
     case commentViewed
@@ -313,6 +314,8 @@ import Foundation
             return "jetpack_restore_error"
         case .restoreNotifiyMeButtonTapped:
             return "jetpack_restore_notify_me_button_tapped"
+        case .backupDownloadOpened:
+            return "jetpack_backup_download_opened"
 
         // Comments
         case .commentViewed:

@@ -381,7 +381,7 @@ extension BaseActivityListViewController: ActivityPresenter {
         let backupTitle = NSLocalizedString("Download backup", comment: "Title displayed for download backup action.")
         let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
         backupOptionsVC.backupStatusDelegate = self
-        restoreOptionsVC.presentedFrom = configuration.identifier
+        backupOptionsVC.presentedFrom = configuration.identifier
         alertController.addDefaultActionWithTitle(backupTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: backupOptionsVC), animated: true)
         })
@@ -421,6 +421,7 @@ extension BaseActivityListViewController: ActivityPresenter {
 
         let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
         restoreOptionsVC.restoreStatusDelegate = self
+        restoreOptionsVC.presentedFrom = configuration.identifier
         let navigationVC = UINavigationController(rootViewController: restoreOptionsVC)
         self.present(navigationVC, animated: true)
     }
@@ -428,6 +429,7 @@ extension BaseActivityListViewController: ActivityPresenter {
     func presentBackupFor(activity: Activity) {
         let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
         backupOptionsVC.backupStatusDelegate = self
+        backupOptionsVC.presentedFrom = configuration.identifier
         let navigationVC = UINavigationController(rootViewController: backupOptionsVC)
         self.present(navigationVC, animated: true)
     }

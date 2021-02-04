@@ -40,8 +40,10 @@ class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
 
     // MARK: - View Lifecycle
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        WPAnalytics.track(.backupDownloadOpened, properties: ["source": presentedFrom])
     }
 
     // MARK: - Override
