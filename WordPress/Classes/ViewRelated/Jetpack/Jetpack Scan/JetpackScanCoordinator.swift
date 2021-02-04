@@ -120,11 +120,18 @@ class JetpackScanCoordinator {
         service.startScan(for: blog) { [weak self] (success) in
             if success == false {
                 DDLogError("Error starting scan: Scan response returned false")
+
+                WPAnalytics.track(.jetpackScanError, properties: ["action": "scan",
+                                                                  "cause": "scan response returned false"])
+
                 self?.stopPolling()
                 self?.view.showScanStartError()
             }
         } failure: { [weak self] (error) in
             DDLogError("Error starting scan: \(String(describing: error?.localizedDescription))")
+
+            WPAnalytics.track(.jetpackScanError, properties: ["action": "scan",
+                                                              "cause": error?.localizedDescription ?? "remote"])
 
             self?.refreshDidFail(with: error)
         }
@@ -204,6 +211,9 @@ class JetpackScanCoordinator {
             self?.view.showIgnoreThreatSuccess(for: threat)
         }, failure: { [weak self] error in
             DDLogError("Error ignoring threat: \(error.localizedDescription)")
+
+            WPAnalytics.track(.jetpackScanError, properties: ["action": "ignore",
+                                                              "cause": error.localizedDescription])
 
             self?.view.showIgnoreThreatError(for: threat)
         })

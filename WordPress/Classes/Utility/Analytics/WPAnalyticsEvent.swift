@@ -107,6 +107,21 @@ import Foundation
     case backupFilterbarSelectRange
     case backupFilterbarResetRange
 
+    // Jetpack Scan
+    case jetpackScanAccessed
+    case jetpackScanHistoryAccessed
+    case jetpackScanHistoryFilter
+    case jetpackScanThreatListItemTapped
+    case jetpackScanRunTapped
+    case jetpackScanIgnoreThreatDialogOpen
+    case jetpackScanThreatIgnoreTapped
+    case jetpackScanFixThreatDialogOpen
+    case jetpackScanThreatFixTapped
+    case jetpackScanAllThreatsOpen
+    case jetpackScanAllthreatsFixTapped
+    case jetpackScanErrorContactTapped
+    case jetpackScanError
+
     // Comments
     case commentViewed
     case commentApproved
@@ -302,6 +317,34 @@ import Foundation
         case .backupFilterbarResetRange:
             return "backup_filterbar_reset_range"
 
+        // Jetpack Scan
+        case .jetpackScanAccessed:
+            return "jetpack_scan_accessed"
+        case .jetpackScanHistoryAccessed:
+            return "jetpack_scan_history_accessed"
+        case .jetpackScanHistoryFilter:
+            return "jetpack_scan_history_filter"
+        case .jetpackScanThreatListItemTapped:
+            return "jetpack_scan_threat_list_item_tapped"
+        case .jetpackScanRunTapped:
+            return "jetpack_scan_run_tapped"
+        case .jetpackScanIgnoreThreatDialogOpen:
+            return "jetpack_scan_ignorethreat_dialogopen"
+        case .jetpackScanThreatIgnoreTapped:
+            return "jetpack_scan_threat_ignore_tapped"
+        case .jetpackScanFixThreatDialogOpen:
+            return "jetpack_scan_fixthreat_dialogopen"
+        case .jetpackScanThreatFixTapped:
+            return "jetpack_scan_threat_fix_tapped"
+        case .jetpackScanAllThreatsOpen:
+            return "jetpack_scan_allthreats_open"
+        case .jetpackScanAllthreatsFixTapped:
+            return "jetpack_scan_allthreats_fix_tapped"
+        case .jetpackScanErrorContactTapped:
+            return "jetpack_scan_error_contact_tapped"
+        case .jetpackScanError:
+            return "jetpack_scan_error"
+
         // Comments
         case .commentViewed:
             return "comment_viewed"
@@ -323,7 +366,6 @@ import Foundation
             return "comment_edited"
         case .commentRepliedTo:
             return "comment_replied_to"
-
         }
     }
 

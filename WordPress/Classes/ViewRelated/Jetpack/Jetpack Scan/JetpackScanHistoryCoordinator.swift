@@ -55,6 +55,9 @@ class JetpackScanHistoryCoordinator {
             self?.refreshDidSucceed(with: scanObj)
         } failure: { [weak self] error in
             DDLogError("Error fetching scan object: \(String(describing: error.localizedDescription))")
+
+            WPAnalytics.track(.jetpackScanError, properties: ["action": "fetch_scan_history",
+                                                              "cause": error.localizedDescription])
             self?.refreshDidFail(with: error)
         }
     }
@@ -174,6 +177,17 @@ class JetpackScanHistoryCoordinator {
                     return "filter_toolbar_fixed"
                 case .ignored:
                     return "filter_toolbar_ignored"
+            }
+        }
+
+        var eventProperty: String {
+            switch self {
+            case .all:
+                return ""
+            case .fixed:
+                return "fixed"
+            case .ignored:
+                return "ignored"
             }
         }
     }
