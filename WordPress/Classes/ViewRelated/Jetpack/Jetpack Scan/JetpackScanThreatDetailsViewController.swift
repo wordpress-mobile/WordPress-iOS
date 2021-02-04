@@ -209,7 +209,7 @@ extension JetpackScanThreatDetailsViewController {
         technicalDetailsFileContainerView.backgroundColor = viewModel.fileNameBackgroundColor
 
         technicalDetailsFileLabel.font = viewModel.fileNameFont
-        technicalDetailsFileLabel.textColor = .text
+        technicalDetailsFileLabel.textColor = viewModel.fileNameColor
         technicalDetailsFileLabel.numberOfLines = 0
 
         technicalDetailsDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
