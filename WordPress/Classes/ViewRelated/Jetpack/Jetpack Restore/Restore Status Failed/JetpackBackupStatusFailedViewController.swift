@@ -10,10 +10,10 @@ class JetpackBackupStatusFailedViewController: BaseRestoreStatusFailedViewContro
     override init() {
         let configuration = RestoreStatusFailedConfiguration(
             title: NSLocalizedString("Backup", comment: "Title for Jetpack Backup Update Status Failed screen"),
-            messageTitle: NSLocalizedString("Hmm, we can't find your backup status", comment: "Message title displayed when we fail to fetch the status of the backup in progress."),
-            firstHint: NSLocalizedString("We don't have information on how long creating your backup will take.", comment: "Hint displayed when we fail to fetch the status of the backup in progress."),
-            secondHint: NSLocalizedString("We'll still attempt to create a backup of your site.", comment: "Hint displayed when we fail to fetch the status of the backup in progress."),
-            thirdHint: NSLocalizedString("We'll notify you when it's done.", comment: "Hint displayed when we fail to fetch the status of the backup in progress.")
+            messageTitle: NSLocalizedString("Hmm, we couldn’t find your backup status", comment: "Message title displayed when we fail to fetch the status of the backup in progress."),
+            firstHint: NSLocalizedString("We couldn’t find the status to say how long your backup will take.", comment: "Hint displayed when we fail to fetch the status of the backup in progress."),
+            secondHint: NSLocalizedString("We’ll still attempt to backup your site.", comment: "Hint displayed when we fail to fetch the status of the backup in progress."),
+            thirdHint: NSLocalizedString("We’ll notify you when its done.", comment: "Hint displayed when we fail to fetch the status of the backup in progress.")
         )
         super.init(configuration: configuration)
     }
