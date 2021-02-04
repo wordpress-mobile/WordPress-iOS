@@ -48,7 +48,7 @@ final class ReaderShowMenuAction {
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let topic: ReaderSiteTopic = ReaderActionHelpers.existingObject(for: siteTopic.objectID, in: context) {
-                                                    ReaderSubscribingNotificationAction().execute(for: topic.siteID, context: context, value: !topic.isSubscribedForPostNotifications)
+                                                    ReaderSubscribingNotificationAction().execute(for: topic.siteID, context: context, subscribe: !topic.isSubscribedForPostNotifications)
                                                 }
             })
         }
@@ -63,10 +63,13 @@ final class ReaderShowMenuAction {
                                                     ReaderFollowAction().execute(with: post,
                                                                                  context: context,
                                                                                  completion: {
-                                                                                    guard let vc = vc as? ReaderStreamViewController else {
-                                                                                        return
+                                                                                    if post.isFollowing {
+                                                                                        vc.dispatchSubscribingNotificationNotice(with: post.blogNameForDisplay(), siteID: post.siteID)
+                                                                                    } else {
+                                                                                        ReaderHelpers.dispatchUnfollowSiteMessage(siteTitle: post.blogNameForDisplay())
                                                                                     }
-                                                                                    vc.updateStreamHeaderIfNeeded()
+
+                                                                                    (vc as? ReaderStreamViewController)?.updateStreamHeaderIfNeeded()
                                                                                  },
                                                                                  failure: nil)
                                                 }
@@ -118,7 +121,7 @@ final class ReaderShowMenuAction {
         WPAnalytics.trackReader(.postCardMoreTapped)
     }
 
-    fileprivate func shouldShowBlockSiteMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
+    private func shouldShowBlockSiteMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
         guard let topic = readerTopic,
               isLoggedIn else {
             return false
@@ -130,7 +133,7 @@ final class ReaderShowMenuAction {
             (ReaderHelpers.topicIsFollowing(topic) && !post.isFollowing)
     }
 
-    fileprivate func shouldShowReportPostMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
+    private func shouldShowReportPostMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
         return shouldShowBlockSiteMenuItem(readerTopic: readerTopic, post: post)
     }
 

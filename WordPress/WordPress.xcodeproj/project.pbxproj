@@ -1773,6 +1773,7 @@
 		C700FAB2258020DB0090938E /* JetpackScanThreatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C700FAB0258020DB0090938E /* JetpackScanThreatCell.swift */; };
 		C700FAB3258020DB0090938E /* JetpackScanThreatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C700FAB1258020DB0090938E /* JetpackScanThreatCell.xib */; };
 		C71BC73F25A652410023D789 /* JetpackScanStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BC73E25A652410023D789 /* JetpackScanStatusViewModel.swift */; };
+		C73868C525C9F9820072532C /* JetpackScanThreatSectionGrouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73868C425C9F9820072532C /* JetpackScanThreatSectionGrouping.swift */; };
 		C768B5B425828A5D00556E75 /* JetpackScanStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C768B5B225828A5D00556E75 /* JetpackScanStatusCell.swift */; };
 		C768B5B525828A5D00556E75 /* JetpackScanStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C768B5B325828A5D00556E75 /* JetpackScanStatusCell.xib */; };
 		C76F48DC25BA202600BFEC87 /* JetpackScanHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76F48DB25BA202600BFEC87 /* JetpackScanHistoryViewController.swift */; };
@@ -4522,6 +4523,7 @@
 		C700FAB0258020DB0090938E /* JetpackScanThreatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatCell.swift; sourceTree = "<group>"; };
 		C700FAB1258020DB0090938E /* JetpackScanThreatCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackScanThreatCell.xib; sourceTree = "<group>"; };
 		C71BC73E25A652410023D789 /* JetpackScanStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanStatusViewModel.swift; sourceTree = "<group>"; };
+		C73868C425C9F9820072532C /* JetpackScanThreatSectionGrouping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatSectionGrouping.swift; sourceTree = "<group>"; };
 		C768B5B225828A5D00556E75 /* JetpackScanStatusCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanStatusCell.swift; sourceTree = "<group>"; };
 		C768B5B325828A5D00556E75 /* JetpackScanStatusCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackScanStatusCell.xib; sourceTree = "<group>"; };
 		C76F48DB25BA202600BFEC87 /* JetpackScanHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanHistoryViewController.swift; sourceTree = "<group>"; };
@@ -10380,6 +10382,7 @@
 		C700F9CD257FD5AA0090938E /* Jetpack Scan */ = {
 			isa = PBXGroup;
 			children = (
+				C73868C425C9F9820072532C /* JetpackScanThreatSectionGrouping.swift */,
 				C789952425816F96001B7B43 /* JetpackScanCoordinator.swift */,
 				C76F48ED25BA20EF00BFEC87 /* JetpackScanHistoryCoordinator.swift */,
 				C76F48DB25BA202600BFEC87 /* JetpackScanHistoryViewController.swift */,
@@ -13673,6 +13676,7 @@
 				7E846FF320FD37BD00881F5A /* ActivityCommentRange.swift in Sources */,
 				1E672D95257663CE00421F13 /* GutenbergAudioUploadProcessor.swift in Sources */,
 				9AA0ADB1235F11700027AB5D /* AsyncOperation.swift in Sources */,
+				C73868C525C9F9820072532C /* JetpackScanThreatSectionGrouping.swift in Sources */,
 				FF8791BB1FBAF4B500AD86E6 /* MediaService+Swift.swift in Sources */,
 				D8212CB920AA77AD008E8AE8 /* ReaderActionHelpers.swift in Sources */,
 				B52C4C7D199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift in Sources */,

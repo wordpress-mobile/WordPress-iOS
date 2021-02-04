@@ -84,4 +84,5 @@ extension FormattableRangeKind {
     public static let match      = FormattableRangeKind("match")
     public static let link       = FormattableRangeKind("link")
     public static let italic     = FormattableRangeKind("i")
+    public static let scan       = FormattableRangeKind("scan")
 }
