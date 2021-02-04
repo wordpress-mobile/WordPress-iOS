@@ -94,7 +94,7 @@ class JetpackBackupStatusCoordinator {
 extension JetpackBackupStatusCoordinator {
 
     private enum Constants {
-        static let pollingInterval: TimeInterval = 1
+        static let pollingInterval: TimeInterval = 3
         static let maxRetryCount: Int = 3
     }
 }
