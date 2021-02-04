@@ -107,6 +107,7 @@ import Foundation
     case backupFilterbarSelectRange
     case backupFilterbarResetRange
     case restoreOpened
+    case restoreConfirmed
 
     // Comments
     case commentViewed
@@ -304,6 +305,8 @@ import Foundation
             return "jetpack_backup_filterbar_reset_range"
         case .restoreOpened:
             return "jetpack_restore_opened"
+        case .restoreConfirmed:
+            return "jetpack_restore_confirmed"
 
         // Comments
         case .commentViewed:

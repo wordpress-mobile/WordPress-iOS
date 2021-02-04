@@ -59,7 +59,20 @@ class JetpackRestoreWarningViewController: UIViewController {
         warningView.configure(with: publishedDate)
 
         warningView.confirmHandler = { [weak self] in
-            self?.coordinator.restoreSite()
+            guard let self = self else {
+                return
+            }
+
+            WPAnalytics.track(.restoreConfirmed, properties: ["restore_types": [
+                "themes": self.restoreTypes.themes,
+                "plugins": self.restoreTypes.plugins,
+                "uploads": self.restoreTypes.uploads,
+                "sqls": self.restoreTypes.sqls,
+                "roots": self.restoreTypes.roots,
+                "contents": self.restoreTypes.contents
+            ]])
+
+            self.coordinator.restoreSite()
         }
 
         warningView.cancelHandler = { [weak self] in
