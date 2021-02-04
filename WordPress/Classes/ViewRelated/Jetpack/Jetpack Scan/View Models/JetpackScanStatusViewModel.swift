@@ -137,7 +137,6 @@ struct JetpackScanStatusViewModel {
 
         case .contactSupport:
             coordinator.openSupport()
-            WPAnalytics.track(.jetpackScanErrorContactTapped)
         }
     }
 
