@@ -28,9 +28,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }()
 
     var analytics: WPAppAnalytics?
-    private lazy var crashLoggingProvider: WPCrashLoggingProvider = {
-        return WPCrashLoggingProvider()
-    }()
 
     @objc var internetReachability: Reachability?
     @objc var connectionAvailable: Bool = true
@@ -67,6 +64,18 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return UploadsManager(uploaders: uploaders)
     }()
 
+    private let loggingStack = WPLoggingStack()
+
+    /// Access the crash logging type
+    class var crashLogging: CrashLogging? {
+        shared?.loggingStack.crashLogging
+    }
+
+    /// Access the event logging type
+    class var eventLogging: EventLogging? {
+        shared?.loggingStack.eventLogging
+    }
+
     @objc class var shared: WordPressAppDelegate? {
         return UIApplication.shared.delegate as? WordPressAppDelegate
     }
@@ -82,9 +91,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
-        let dataSource = EventLoggingDataProvider.fromDDFileLogger(WPLogger.shared().fileLogger)
-        let eventLogging = EventLogging(dataSource: dataSource, delegate: crashLoggingProvider.loggingUploadDelegate)
-        CrashLogging.start(withDataProvider: crashLoggingProvider, eventLogging: eventLogging)
+        try? loggingStack.start()
 
         // Configure WPCom API overrides
         configureWordPressComApi()

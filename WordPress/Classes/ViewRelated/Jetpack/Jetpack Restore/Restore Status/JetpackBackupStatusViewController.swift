@@ -62,6 +62,7 @@ class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
 
     override func primaryButtonTapped() {
         delegate?.didFinishViewing(self)
+        WPAnalytics.track(.backupNotifiyMeButtonTapped)
     }
 }
 

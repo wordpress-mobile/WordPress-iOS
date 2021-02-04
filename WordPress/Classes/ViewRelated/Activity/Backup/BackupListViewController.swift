@@ -5,6 +5,7 @@ class BackupListViewController: BaseActivityListViewController {
         store.onlyRestorableItems = true
 
         let activityListConfiguration = ActivityListConfiguration(
+            identifier: "backup",
             title: NSLocalizedString("Backup", comment: "Title for the Jetpack's backup list"),
             loadingTitle: NSLocalizedString("Loading Backups...", comment: "Text displayed while loading the activity feed for a site"),
             noActivitiesTitle: NSLocalizedString("Your first backup will be ready soon", comment: "Title for the view when there aren't any Backups to display"),

@@ -9,6 +9,17 @@ class EncryptedLogTableViewController: UITableViewController {
     /// The label displaying the current status
     private let toolbarLabel = UIBarButtonItem(title: "Running", style: .plain, target: nil, action: nil)
 
+    private let eventLogging: EventLogging
+
+    init(eventLogging: EventLogging) {
+        self.eventLogging = eventLogging
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: UIViewController Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +31,7 @@ class EncryptedLogTableViewController: UITableViewController {
         let item = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addEncryptedLog))
         self.navigationItem.rightBarButtonItem = item
 
-        let name = WPCrashLoggingProvider.QueuedLogsDidChangeNotification
+        let name = WPLoggingStack.QueuedLogsDidChangeNotification
         NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { _ in
             self.updateData()
         }
@@ -70,10 +81,10 @@ class EncryptedLogTableViewController: UITableViewController {
 
     // MARK: Internal Helpers
     private func updateData() {
-        self.logs = CrashLogging.eventLogging?.queuedLogFiles ?? []
+        self.logs = eventLogging.queuedLogFiles
         self.tableView.reloadData()
 
-        if let date = CrashLogging.eventLogging?.uploadsPausedUntil {
+        if let date = self.eventLogging.uploadsPausedUntil {
             let dateString = DateFormatter.localizedString(from: date, dateStyle: .short, timeStyle: .medium)
             self.toolbarLabel.title = "Paused until \(dateString)"
         }
@@ -91,7 +102,7 @@ class EncryptedLogTableViewController: UITableViewController {
             let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
             try data.write(to: url)
 
-            try CrashLogging.eventLogging?.enqueueLogForUpload(log: LogFile(url: url))
+            try self.eventLogging.enqueueLogForUpload(log: LogFile(url: url))
         }
         catch let err {
             let alert = UIAlertController(title: "Unable to create log", message: err.localizedDescription, preferredStyle: .actionSheet)

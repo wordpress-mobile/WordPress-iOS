@@ -107,7 +107,7 @@ import AutomatticTracks
     func loadImage(with url: URL, from post: AbstractPost, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
 
         let host = MediaHost(with: post, failure: { error in
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
         })
 
         loadImage(with: url, from: host, preferredSize: size, placeholder: placeholder, success: success, error: error)
@@ -117,7 +117,7 @@ import AutomatticTracks
     func loadImage(with url: URL, from readerPost: ReaderPost, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
 
         let host = MediaHost(with: readerPost, failure: { error in
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
         })
 
         loadImage(with: url, from: host, preferredSize: size, placeholder: placeholder, success: success, error: error)
@@ -154,7 +154,7 @@ import AutomatticTracks
                 self.downloadGif(from: request)
         },
             onFailure: { error in
-                CrashLogging.logError(error)
+                WordPressAppDelegate.crashLogging?.logError(error)
                 self.callErrorHandler(with: error)
         })
     }
@@ -180,7 +180,7 @@ import AutomatticTracks
         mediaRequestAuthenticator.authenticatedRequest(for: finalURL, from: host, onComplete: { request in
             self.downloadImage(from: request)
         }) { error in
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
             self.callErrorHandler(with: error)
         }
     }
@@ -359,7 +359,7 @@ extension ImageLoader {
         if url.isGif {
             let host = MediaHost(with: media.blog) { error in
                 // We'll log the error, so we know it's there, but we won't halt execution.
-                CrashLogging.logError(error)
+                WordPressAppDelegate.crashLogging?.logError(error)
             }
 
             loadGif(with: url, from: host, preferredSize: size)

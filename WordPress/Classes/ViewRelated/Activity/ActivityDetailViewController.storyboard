@@ -5,6 +5,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -101,7 +102,7 @@
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yPg-ua-Eim">
                                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="0.5"/>
-                                                                <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <color key="backgroundColor" systemColor="quaternaryLabelColor"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="0.5" id="BVA-WF-pjw"/>
                                                                 </constraints>
@@ -124,7 +125,7 @@
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gZy-mE-jTT">
                                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="0.5"/>
-                                                                <color key="backgroundColor" red="0.91372549020000005" green="0.93725490199999995" blue="0.95294117649999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <color key="backgroundColor" systemColor="quaternaryLabelColor"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="0.5" id="qQX-DU-Xuz"/>
                                                                 </constraints>
@@ -188,4 +189,9 @@
             <point key="canvasLocation" x="199" y="-36"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="quaternaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.17999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
 </document>
