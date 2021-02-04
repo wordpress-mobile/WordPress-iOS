@@ -23,15 +23,17 @@ struct StatsWidgetsView: View {
                     SingleStatView(content: content,
                                          widgetTitle: LocalizableStrings.todayWidgetTitle,
                                          title: LocalizableStrings.viewsTitle)
+                        .widgetURL(content.statsURL)
                         .padding()
 
                 case .systemMedium:
-                    FourStatsView(content: content,
+                    MultiStatsView(content: content,
                                           widgetTitle: LocalizableStrings.todayWidgetTitle,
                                           upperLeftTitle: LocalizableStrings.viewsTitle,
                                           upperRightTitle: LocalizableStrings.visitorsTitle,
                                           lowerLeftTitle: LocalizableStrings.likesTitle,
                                           lowerRightTitle: LocalizableStrings.commentsTitle)
+                        .widgetURL(content.statsURL)
                         .padding()
 
                 default:
@@ -44,15 +46,17 @@ struct StatsWidgetsView: View {
                     SingleStatView(content: content,
                                          widgetTitle: LocalizableStrings.allTimeWidgetTitle,
                                          title: LocalizableStrings.viewsTitle)
+                        .widgetURL(content.statsURL)
                         .padding()
 
                 case .systemMedium:
-                    FourStatsView(content: content,
+                    MultiStatsView(content: content,
                                           widgetTitle: LocalizableStrings.allTimeWidgetTitle,
                                           upperLeftTitle: LocalizableStrings.viewsTitle,
                                           upperRightTitle: LocalizableStrings.visitorsTitle,
                                           lowerLeftTitle: LocalizableStrings.postsTitle,
                                           lowerRightTitle: LocalizableStrings.bestViewsTitle)
+                        .widgetURL(content.statsURL)
                         .padding()
 
                 default:
@@ -60,5 +64,23 @@ struct StatsWidgetsView: View {
                 }
             }
         }
+    }
+}
+
+
+private extension HomeWidgetTodayData {
+    static let statsUrl = "https://wordpress.com/stats/day/"
+
+    var statsURL: URL? {
+        URL(string: Self.statsUrl + "\(siteID)?source=widget")
+    }
+}
+
+
+private extension HomeWidgetAllTimeData {
+    static let statsUrl = "https://wordpress.com/stats/insights/"
+
+    var statsURL: URL? {
+        URL(string: Self.statsUrl + "\(siteID)?source=widget")
     }
 }
