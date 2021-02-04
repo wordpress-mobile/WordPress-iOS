@@ -443,7 +443,7 @@ DEPENDENCIES:
   - AMScrollingNavbar (= 5.6.0)
   - AppCenter (= 2.5.1)
   - AppCenter/Distribute (= 2.5.1)
-  - Automattic-Tracks-iOS (~> 0.8.0)
+  - Automattic-Tracks-iOS (~> 0.8.1)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (~> 3.0)
   - CropViewController (= 2.5.3)
@@ -765,6 +765,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: 51fad485974e8f9c2651378787ada36aefe69cb2
+PODFILE CHECKSUM: 8fc9ba53f98c1e6ba820201997d5d0b874cd6986
 
 COCOAPODS: 1.10.0
