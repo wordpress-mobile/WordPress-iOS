@@ -49,6 +49,15 @@ class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
     // MARK: - Override
 
     override func actionButtonTapped() {
+        WPAnalytics.track(.backupDownloadConfirmed, properties: ["restore_types": [
+            "themes": restoreTypes.themes,
+            "plugins": restoreTypes.plugins,
+            "uploads": restoreTypes.uploads,
+            "sqls": restoreTypes.sqls,
+            "roots": restoreTypes.roots,
+            "contents": restoreTypes.contents
+        ]])
+
         coordinator.prepareBackup()
     }
 }
