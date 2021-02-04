@@ -112,6 +112,7 @@ import Foundation
     case restoreNotifiyMeButtonTapped
     case backupDownloadOpened
     case backupDownloadConfirmed
+    case backupFileDownloadError
 
     // Comments
     case commentViewed
@@ -319,6 +320,8 @@ import Foundation
             return "jetpack_backup_download_opened"
         case .backupDownloadConfirmed:
             return "jetpack_backup_download_confirmed"
+        case .backupFileDownloadError:
+            return "jetpack_backup_file_download_error"
 
         // Comments
         case .commentViewed:
