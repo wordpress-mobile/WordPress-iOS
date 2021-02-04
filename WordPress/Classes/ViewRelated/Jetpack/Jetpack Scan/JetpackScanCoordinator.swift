@@ -10,9 +10,7 @@ protocol JetpackScanView {
 
     func presentAlert(_ alert: UIAlertController)
 
-    func showFixThreatSuccess(for threat: JetpackScanThreat)
     func showIgnoreThreatSuccess(for threat: JetpackScanThreat)
-    func showFixThreatError(for threat: JetpackScanThreat)
     func showIgnoreThreatError(for threat: JetpackScanThreat)
 }
 
@@ -156,11 +154,9 @@ class JetpackScanCoordinator {
         view.presentAlert(controller)
     }
 
-    public func fixAllThreats() {
-        let fixableThreats = threats?.filter { $0.fixable != nil } ?? []
-
+    private func fixThreats(threats: [JetpackScanThreat]) {
         // If there are no fixable threats just reload the state since it may be out of date
-        guard fixableThreats.count > 0 else {
+        guard threats.count > 0 else {
             refreshData()
             return
         }
@@ -168,7 +164,7 @@ class JetpackScanCoordinator {
         // Optimistically trigger the fixing state
         // and map all the fixable threats to in progress threats
         scan?.state = .fixingThreats
-        scan?.threatFixStatus = fixableThreats.compactMap {
+        scan?.threatFixStatus = threats.compactMap {
             var threatCopy = $0
             threatCopy.status = .fixing
             return JetpackThreatFixStatus(with: threatCopy)
@@ -179,7 +175,7 @@ class JetpackScanCoordinator {
 
         startPolling(triggerImmediately: false)
 
-        service.fixThreats(fixableThreats, blog: blog) { [weak self] (response) in
+        service.fixThreats(threats, blog: blog) { [weak self] (response) in
             if response.success == false {
                 DDLogError("Error starting scan: Scan response returned false")
                 self?.stopPolling()
@@ -194,14 +190,13 @@ class JetpackScanCoordinator {
         }
     }
 
-    public func fixThreat(threat: JetpackScanThreat) {
-        service.fixThreat(threat, blog: blog, success: { [weak self] _ in
-            self?.view.showFixThreatSuccess(for: threat)
-        }, failure: { [weak self] error in
-            DDLogError("Error fixing threat: \(error.localizedDescription)")
+    public func fixAllThreats() {
+        let fixableThreats = threats?.filter { $0.fixable != nil } ?? []
+        fixThreats(threats: fixableThreats)
+    }
 
-            self?.view.showFixThreatError(for: threat)
-        })
+    public func fixThreat(threat: JetpackScanThreat) {
+        fixThreats(threats: [threat])
     }
 
     public func ignoreThreat(threat: JetpackScanThreat) {

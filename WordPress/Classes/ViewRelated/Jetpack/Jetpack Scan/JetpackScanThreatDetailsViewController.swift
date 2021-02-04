@@ -38,6 +38,7 @@ class JetpackScanThreatDetailsViewController: UIViewController {
     @IBOutlet private weak var buttonsStackView: UIStackView!
     @IBOutlet private weak var fixThreatButton: FancyButton!
     @IBOutlet private weak var ignoreThreatButton: FancyButton!
+    @IBOutlet weak var ignoreActivityIndicatorView: UIActivityIndicatorView!
 
     // MARK: - Properties
 
@@ -102,6 +103,10 @@ class JetpackScanThreatDetailsViewController: UIViewController {
             guard let self = self else {
                 return
             }
+
+            self.ignoreThreatButton.isHidden = true
+            self.ignoreActivityIndicatorView.startAnimating()
+
             self.delegate?.willIgnoreThreat(self.threat, controller: self)
         }))
 

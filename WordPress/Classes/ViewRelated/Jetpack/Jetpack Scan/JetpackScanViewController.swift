@@ -97,29 +97,19 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         present(alert, animated: true, completion: nil)
     }
 
-    func showFixThreatSuccess(for threat: JetpackScanThreat) {
-        self.navigationController?.popToViewController(self, animated: true)
-
-        let model = JetpackScanThreatViewModel(threat: threat)
-        let notice = Notice(title: model.fixSuccessTitle)
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
-    }
-
     func showIgnoreThreatSuccess(for threat: JetpackScanThreat) {
-        self.navigationController?.popToViewController(self, animated: true)
+        navigationController?.popViewController(animated: true)
+        coordinator.refreshData()
 
         let model = JetpackScanThreatViewModel(threat: threat)
         let notice = Notice(title: model.ignoreSuccessTitle)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
-    func showFixThreatError(for threat: JetpackScanThreat) {
-        let model = JetpackScanThreatViewModel(threat: threat)
-        let notice = Notice(title: model.fixErrorTitle)
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
-    }
-
     func showIgnoreThreatError(for threat: JetpackScanThreat) {
+        navigationController?.popViewController(animated: true)
+        coordinator.refreshData()
+
         let model = JetpackScanThreatViewModel(threat: threat)
         let notice = Notice(title: model.ignoreErrorTitle)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
@@ -161,13 +151,14 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
 extension JetpackScanViewController: JetpackScanThreatDetailsViewControllerDelegate {
 
     func willFixThreat(_ threat: JetpackScanThreat, controller: JetpackScanThreatDetailsViewController) {
+        navigationController?.popViewController(animated: true)
+
         coordinator.fixThreat(threat: threat)
     }
 
     func willIgnoreThreat(_ threat: JetpackScanThreat, controller: JetpackScanThreatDetailsViewController) {
         coordinator.ignoreThreat(threat: threat)
     }
-
 }
 
 // MARK: - Table View
