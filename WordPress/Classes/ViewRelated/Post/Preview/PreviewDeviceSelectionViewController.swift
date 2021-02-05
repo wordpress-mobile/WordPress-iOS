@@ -1,10 +1,10 @@
 import Foundation
 
 class PreviewDeviceSelectionViewController: UIViewController {
-    enum PreviewDevice: CaseIterable {
-        case desktop
-        case tablet
-        case mobile
+    enum PreviewDevice: String, CaseIterable {
+        case desktop = "desktop"
+        case tablet = "tablet"
+        case mobile = "mobile"
 
         static var `default`: PreviewDevice {
             return UIDevice.current.userInterfaceIdiom == .pad ? .tablet : .mobile
