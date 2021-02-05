@@ -99,8 +99,8 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
     @objc private func previewDeviceButtonTapped() {
         let popoverContentController = PreviewDeviceSelectionViewController()
         popoverContentController.selectedOption = selectedPreviewDevice
-        popoverContentController.dismissHandler = { [weak self] device in
             self?.selectedPreviewDevice = device
+        popoverContentController.onDeviceChange = { [weak self] device in
         }
 
         popoverContentController.modalPresentationStyle = .popover
