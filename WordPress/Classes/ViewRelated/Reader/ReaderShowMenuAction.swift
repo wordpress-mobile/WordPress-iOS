@@ -76,12 +76,13 @@ final class ReaderShowMenuAction {
                                                                                     if post.isFollowing {
                                                                                         vc.dispatchSubscribingNotificationNotice(with: post.blogNameForDisplay(), siteID: post.siteID)
                                                                                     } else {
-                                                                                        ReaderHelpers.dispatchUnfollowSiteMessage(siteTitle: post.blogNameForDisplay())
+                                                                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: true)
                                                                                     }
 
                                                                                     (vc as? ReaderStreamViewController)?.updateStreamHeaderIfNeeded()
-                                                                                 },
-                                                                                 failure: nil)
+                                                                                 }, failure: { _ in
+                                                                                    ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: false)
+                                                                                 })
                                                 }
                                                })
         }
