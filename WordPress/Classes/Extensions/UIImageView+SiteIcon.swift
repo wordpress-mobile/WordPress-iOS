@@ -92,7 +92,7 @@ extension UIImageView {
                 if case .requestCancelled = (error as? AFIError) {
                     // Do not log intentionally cancelled requests as errors.
                 } else {
-                    CrashLogging.logError(error)
+                    WordPressAppDelegate.crashLogging?.logError(error)
                 }
             }
         })
@@ -122,7 +122,7 @@ extension UIImageView {
 
         let host = MediaHost(with: blog) { error in
             // We'll log the error, so we know it's there, but we won't halt execution.
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
         }
 
         let mediaRequestAuthenticator = MediaRequestAuthenticator()
@@ -132,7 +132,7 @@ extension UIImageView {
             onComplete: { [weak self] request in
                 self?.downloadSiteIcon(with: request, placeholderImage: placeholderImage)
         }) { error in
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
         }
     }
 }

@@ -93,7 +93,7 @@ class PrivacySettingsViewController: UITableViewController {
 
         let reportCrashes = SwitchRow(
             title: NSLocalizedString("Crash reports", comment: "Label for switch to turn on/off sending crashes info"),
-            value: !WPCrashLoggingProvider.userHasOptedOut,
+            value: !UserSettings.userHasOptedOutOfCrashLogging,
             icon: .gridicon(.bug),
             onChange: crashReportingChanged
         )
@@ -159,10 +159,9 @@ class PrivacySettingsViewController: UITableViewController {
     }
 
     func crashReportingChanged(_ enabled: Bool) {
-      WPCrashLoggingProvider.userHasOptedOut = !enabled
-      CrashLogging.setNeedsDataRefresh()
+        UserSettings.userHasOptedOutOfCrashLogging = !enabled
+        WordPressAppDelegate.crashLogging?.setNeedsDataRefresh()
     }
-
 }
 
 private class InfoCell: WPTableViewCellDefault {

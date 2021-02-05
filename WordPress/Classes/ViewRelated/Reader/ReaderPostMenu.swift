@@ -212,7 +212,7 @@ open class ReaderPostMenu {
                                             object: nil,
                                             userInfo: [ReaderNotificationKeys.post: post])
         }, failure: { _ in
-            ReaderHelpers.dispatchToggleSeenError(post: post)
+            ReaderHelpers.dispatchToggleSeenMessage(post: post, success: false)
         })
     }
 

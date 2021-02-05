@@ -25,6 +25,7 @@ enum ActivityAction: Action {
     case backupStatusUpdated(site: JetpackSiteRef, status: JetpackBackup)
     case backupStatusUpdateFailed(site: JetpackSiteRef, error: Error)
     case backupStatusUpdateTimedOut(site: JetpackSiteRef)
+    case dismissBackupNotice(site: JetpackSiteRef, downloadID: Int)
 
     case refreshGroups(site: JetpackSiteRef, afterDate: Date?, beforeDate: Date?)
     case resetGroups(site: JetpackSiteRef)
@@ -236,7 +237,7 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
             backupStatusUpdated(site: site, status: status)
         case .backupStatusUpdateFailed(let site, _):
             delayedRetryFetchBackupStatus(site: site)
-        case .backupStatusUpdateTimedOut(site: let site):
+        case .backupStatusUpdateTimedOut(let site):
             transaction { state in
                 state.fetchingBackupStatus[site] = false
                 state.backupStatusRetries[site] = nil
@@ -247,6 +248,8 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
                                                              comment: "Text displayed when a site backup takes too long."))
                 actionDispatcher.dispatch(NoticeAction.post(notice))
             }
+        case .dismissBackupNotice(let site, let downloadID):
+            dismissBackupNotice(site: site, downloadID: downloadID)
         }
     }
 }
@@ -406,12 +409,12 @@ private extension ActivityStore {
 
         let notice: Notice
         let title = NSLocalizedString("Your site is being restored",
-                                      comment: "Title of a message displayed when user starts a rewind operation")
+                                      comment: "Title of a message displayed when user starts a restore operation")
 
         if let activity = getActivity(site: site, rewindID: rewindID) {
             let formattedString = mediumString(from: activity.published, adjustingTimezoneTo: site)
 
-            let message = String(format: NSLocalizedString("Rewinding to %@", comment: "Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date."), formattedString)
+            let message = String(format: NSLocalizedString("Restoring to %@", comment: "Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date."), formattedString)
             notice = Notice(title: title, message: message)
         } else {
             notice = Notice(title: title)
@@ -433,7 +436,7 @@ private extension ActivityStore {
         if let activity = getActivity(site: site, rewindID: restoreID) {
             let formattedString = mediumString(from: activity.published, adjustingTimezoneTo: site)
 
-            let message = String(format: NSLocalizedString("Rewound to %@", comment: "Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date."), formattedString)
+            let message = String(format: NSLocalizedString("Restored to %@", comment: "Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date."), formattedString)
             notice = Notice(title: title, message: message)
         } else {
             notice = Notice(title: title)
@@ -519,6 +522,11 @@ private extension ActivityStore {
         state.backupStatusRetries[site] = existingWrapper
     }
 
+    func dismissBackupNotice(site: JetpackSiteRef, downloadID: Int) {
+        backupService.dismissBackupNotice(site: site, downloadID: downloadID)
+        state.backupStatus[site] = nil
+    }
+
     func rewindStatusUpdated(site: JetpackSiteRef, status: RewindStatus) {
         state.rewindStatus[site] = status
 
@@ -545,8 +553,6 @@ private extension ActivityStore {
 
         if let progress = status.progress, progress > 0 {
             delayedRetryFetchBackupStatus(site: site)
-        } else {
-            // TODO: show download cell
         }
     }
 
