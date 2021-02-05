@@ -16,7 +16,7 @@ extension Tracks {
         trackExtensionEvent(.loginLaunched)
     }
 
-    public func trackWidgetUpdated(widgetKind: String) {
+    public func trackWidgetUpdated(widgetKind: String, widgetCountKey: String) {
 
         DispatchQueue.global().async {
             WidgetCenter.shared.getCurrentConfigurations { result in
@@ -25,7 +25,7 @@ extension Tracks {
 
                 case .success(let widgetInfo):
                     let widgetKindInfo = widgetInfo.filter { $0.kind == widgetKind }
-                    self.trackUpdatedWidgetInfo(widgetInfo: widgetKindInfo, widgetKind: widgetKind)
+                    self.trackUpdatedWidgetInfo(widgetInfo: widgetKindInfo, widgetPropertiesKey: widgetCountKey)
 
                 case .failure(let error):
                     DDLogError("Home Widget Today error: unable to read widget information. \(error.localizedDescription)")
@@ -34,14 +34,22 @@ extension Tracks {
         }
     }
 
-    private func trackUpdatedWidgetInfo(widgetInfo: [WidgetInfo], widgetKind: String) {
+    private func trackUpdatedWidgetInfo(widgetInfo: [WidgetInfo], widgetPropertiesKey: String) {
 
         let properties = ["total_widgets": widgetInfo.count,
                           "small_widgets": widgetInfo.filter { $0.family == .systemSmall }.count,
                           "medium_widgets": widgetInfo.filter { $0.family == .systemMedium }.count,
                           "large_widgets": widgetInfo.filter { $0.family == .systemLarge }.count]
 
-        trackExtensionEvent(ExtensionEvents.widgetUpdated(for: widgetKind), properties: properties as [String: AnyObject]?)
+        let previousProperties = UserDefaults(suiteName: WPAppGroupName)?.object(forKey: widgetPropertiesKey) as? [String: Int]
+
+        guard previousProperties != properties else {
+            return
+        }
+
+        UserDefaults(suiteName: WPAppGroupName)?.set(properties, forKey: widgetPropertiesKey)
+
+        trackExtensionEvent(ExtensionEvents.widgetUpdated(for: widgetPropertiesKey), properties: properties as [String: AnyObject]?)
     }
 
     // MARK: - Private Helpers
@@ -67,9 +75,9 @@ extension Tracks {
 
         static func widgetUpdated(for key: String) -> ExtensionEvents {
             switch key {
-            case WPHomeWidgetTodayKind:
+            case WPHomeWidgetTodayProperties:
                 return .todayWidgetUpdated
-            case WPHomeWidgetAllTimeKind:
+            case WPHomeWidgetAllTimeProperties:
                 return .allTimeWidgetUpdated
             default:
                 return .noEvent
