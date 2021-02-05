@@ -409,12 +409,12 @@ private extension ActivityStore {
 
         let notice: Notice
         let title = NSLocalizedString("Your site is being restored",
-                                      comment: "Title of a message displayed when user starts a rewind operation")
+                                      comment: "Title of a message displayed when user starts a restore operation")
 
         if let activity = getActivity(site: site, rewindID: rewindID) {
             let formattedString = mediumString(from: activity.published, adjustingTimezoneTo: site)
 
-            let message = String(format: NSLocalizedString("Rewinding to %@", comment: "Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date."), formattedString)
+            let message = String(format: NSLocalizedString("Restoring to %@", comment: "Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date."), formattedString)
             notice = Notice(title: title, message: message)
         } else {
             notice = Notice(title: title)
