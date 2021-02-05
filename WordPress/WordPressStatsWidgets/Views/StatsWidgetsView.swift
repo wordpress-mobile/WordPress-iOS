@@ -13,9 +13,10 @@ struct StatsWidgetsView: View {
 
         case .loggedOut:
             UnconfiguredView()
-
+                .widgetURL(nil)
+                // This seems to prevent a bug where the URL for subsequent widget
+                // types is being triggered if one isn't specified here.
         case .siteSelected(let content):
-            /// - TODO: Handle at least one more case (all time widget)
             if let content = content as? HomeWidgetTodayData {
                 switch family {
 
