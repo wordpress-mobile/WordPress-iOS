@@ -245,7 +245,7 @@ class ActivityListViewModel: Observable {
             return nil
         }
 
-        let headingMessage = NSLocalizedString("We successfuly created a backup of your site as of %@", comment: "Message displayed when a backup has finished")
+        let headingMessage = NSLocalizedString("We successfully created a backup of your site as of %@", comment: "Message displayed when a backup has finished")
         downloadPromptView.setupHeading(String.init(format: headingMessage, arguments: [longDateFormatterWithTime.string(from: backupPoint)]))
 
         let downloadTitle = NSLocalizedString("Download", comment: "Download button title")
