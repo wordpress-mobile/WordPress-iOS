@@ -416,7 +416,7 @@ extension BaseActivityListViewController: ActivityPresenter {
         self.present(alertController, animated: true, completion: nil)
     }
 
-    func presentRestoreFor(activity: Activity) {
+    func presentRestoreFor(activity: Activity, from: String? = nil) {
         guard activity.isRewindable, let rewindID = activity.rewindID else {
             return
         }
@@ -446,15 +446,15 @@ extension BaseActivityListViewController: ActivityPresenter {
 
         let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
         restoreOptionsVC.restoreStatusDelegate = self
-        restoreOptionsVC.presentedFrom = configuration.identifier
+        restoreOptionsVC.presentedFrom = from ?? configuration.identifier
         let navigationVC = UINavigationController(rootViewController: restoreOptionsVC)
         self.present(navigationVC, animated: true)
     }
 
-    func presentBackupFor(activity: Activity) {
+    func presentBackupFor(activity: Activity, from: String? = nil) {
         let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
         backupOptionsVC.backupStatusDelegate = self
-        backupOptionsVC.presentedFrom = configuration.identifier
+        backupOptionsVC.presentedFrom = from ?? configuration.identifier
         let navigationVC = UINavigationController(rootViewController: backupOptionsVC)
         self.present(navigationVC, animated: true)
     }
