@@ -335,21 +335,6 @@ extension BaseActivityListViewController: UITableViewDelegate {
         return row.activity.isRewindable
     }
 
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        guard let row = handler.viewModel.rowAtIndexPath(indexPath) as? ActivityListRow, row.activity.isRewindable else {
-            return nil
-        }
-
-        let rewindAction = UIContextualAction(style: .normal,
-                                              title: NSLocalizedString("Rewind", comment: "Title displayed when user swipes on a rewind cell")) { [weak self] (_, _, _) in
-            self?.presentRestoreFor(activity: row.activity)
-        }
-
-        rewindAction.backgroundColor = .primary(.shade40)
-
-        return UISwipeActionsConfiguration(actions: [rewindAction])
-    }
-
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
