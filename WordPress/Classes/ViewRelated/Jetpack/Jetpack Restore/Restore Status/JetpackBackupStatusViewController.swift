@@ -4,7 +4,7 @@ import WordPressShared
 import WordPressUI
 
 protocol JetpackBackupStatusViewControllerDelegate: class {
-    func didFinishViewing(_ controller: JetpackBackupStatusViewController)
+    func didFinishViewing()
 }
 
 class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
@@ -56,13 +56,15 @@ class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         coordinator.viewWillDisappear()
-        delegate?.didFinishViewing(self)
+        delegate?.didFinishViewing()
     }
 
     // MARK: - Override
 
     override func primaryButtonTapped() {
-        delegate?.didFinishViewing(self)
+        dismiss(animated: true, completion: { [weak self] in
+            self?.delegate?.didFinishViewing()
+        })
         WPAnalytics.track(.backupNotifiyMeButtonTapped)
     }
 }
