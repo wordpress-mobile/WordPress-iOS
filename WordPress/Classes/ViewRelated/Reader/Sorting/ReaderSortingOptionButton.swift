@@ -87,12 +87,6 @@ class ReaderSortingOptionButton: UIControl {
         setup()
     }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        setup()
-    }
-
     private func setup() {
         translatesAutoresizingMaskIntoConstraints = false
 
