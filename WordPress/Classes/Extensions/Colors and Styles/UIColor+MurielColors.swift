@@ -407,6 +407,10 @@ extension UIColor {
             return UIColor.black.withAlphaComponent(0.05)
         }
     }
+
+    static var prologueBackground: UIColor {
+        return muriel(color: MurielColor(name: .blue, shade: .shade0))
+    }
 }
 
 extension UIColor {

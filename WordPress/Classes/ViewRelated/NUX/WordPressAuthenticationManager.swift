@@ -46,6 +46,8 @@ class WordPressAuthenticationManager: NSObject {
                                                                 enableUnifiedAuth: FeatureFlag.unifiedAuth.enabled,
                                                                 enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled)
 
+        let prologueVC: UIViewController? =  FeatureFlag.unifiedPrologueCarousel.enabled ? UnifiedPrologueViewController() : nil
+
         let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
                                                 primaryNormalBorderColor: nil,
                                                 primaryHighlightBackgroundColor: .primaryButtonDownBackground,
@@ -72,7 +74,9 @@ class WordPressAuthenticationManager: NSObject {
                                                 navBarBadgeColor: .accent(.shade20),
                                                 navBarBackgroundColor: UIColor(light: .brand, dark: .gray(.shade100)),  // NEWBARS - This is temporary while we support old style nav bars in some of the auth flows
                                                 prologueBackgroundColor: .primary,
-                                                prologueTitleColor: .textInverted)
+                                                prologueTitleColor: .textInverted,
+                                                prologueTopContainerChildViewController: prologueVC,
+                                                statusBarStyle: .default)
 
         let unifiedStyle = WordPressAuthenticatorUnifiedStyle(borderColor: .divider,
                                                               errorColor: .error,
