@@ -368,7 +368,7 @@ struct JetpackScanThreatViewModel {
     }
 
     private struct Constants {
-        static let monospacedFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .regular)
+        static let monospacedFont = WPStyleGuide.monospacedSystemFontForTextStyle(.footnote)
 
         struct colors {
             struct normal {
@@ -478,5 +478,17 @@ private extension JetpackThreatContext {
 private extension String {
     func fileName() -> String {
         return (self as NSString).lastPathComponent
+    }
+}
+
+
+private extension WPStyleGuide {
+    static func monospacedSystemFontForTextStyle(_ style: UIFont.TextStyle,
+                                          fontWeight weight: UIFont.Weight = .regular) -> UIFont {
+        guard let fontDescriptor = WPStyleGuide.fontForTextStyle(style, fontWeight: weight).fontDescriptor.withDesign(.monospaced) else {
+            return UIFont.monospacedSystemFont(ofSize: 13, weight: weight)
+        }
+
+        return UIFontMetrics.default.scaledFont(for: UIFont(descriptor: fontDescriptor, size: 0.0))
     }
 }
