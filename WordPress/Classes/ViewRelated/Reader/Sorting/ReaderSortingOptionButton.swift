@@ -56,10 +56,9 @@ class ReaderSortingOptionButton: UIControl {
         return view
     }()
 
-    var sortingOption: ReaderSortingOption? {
+    var sortingOption: ReaderSortingOption = .noSorting {
         didSet {
-            label.text = sortingOption?.localizedDescription
-            iconView.image = sortingOption?.image
+            bindSortingOption()
         }
     }
 
@@ -120,5 +119,12 @@ class ReaderSortingOptionButton: UIControl {
             chevronView.heightAnchor.constraint(equalToConstant: 24.0),
             chevronView.widthAnchor.constraint(equalToConstant: 24.0),
         ])
+        
+        bindSortingOption()
+    }
+    
+    private func bindSortingOption() {
+        label.text = sortingOption.localizedDescription
+        iconView.image = sortingOption.image
     }
 }

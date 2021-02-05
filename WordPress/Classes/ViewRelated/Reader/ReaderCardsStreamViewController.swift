@@ -10,13 +10,6 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     /// Refresh counter used to for random posts on pull to refresh
     private var refreshCount = 0
 
-    /// Sorting option used for fetching cards
-    private var sortingOption: ReaderSortingOption = .popularity {
-        didSet {
-            sortingButton.sortingOption = sortingOption
-        }
-    }
-
     private lazy var sortingButton: ReaderSortingOptionButton = {
         let view = ReaderSortingOptionButton()
         view.addTarget(self, action: #selector(didTapSortingButton), for: .touchUpInside)
@@ -123,8 +116,10 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     // MARK: - Sorting
 
     private func updateSortingOption(_ sortingOption: ReaderSortingOption, reloadCards: Bool = true) {
-        let optionChanged = self.sortingOption != sortingOption
-        self.sortingOption = sortingOption
+        let optionChanged = sortingButton.sortingOption != sortingOption
+
+        sortingButton.sortingOption = sortingOption
+
         if optionChanged, reloadCards {
             super.syncIfAppropriate(forceSync: true)
         }
@@ -140,7 +135,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         page = 1
         refreshCount += 1
 
-        cardsService.fetch(isFirstPage: true, refreshCount: refreshCount, sortingOption: sortingOption, success: { [weak self] cardsCount, hasMore in
+        cardsService.fetch(isFirstPage: true, refreshCount: refreshCount, sortingOption: sortingButton.sortingOption, success: { [weak self] cardsCount, hasMore in
             self?.trackContentPresented()
             success(cardsCount, hasMore)
         }, failure: { [weak self] error in
@@ -155,7 +150,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         page += 1
         WPAnalytics.trackReader(.readerDiscoverPaginated, properties: ["page": page])
 
-        cardsService.fetch(isFirstPage: false, sortingOption: sortingOption, success: { _, hasMore in
+        cardsService.fetch(isFirstPage: false, sortingOption: sortingButton.sortingOption, success: { _, hasMore in
             success?(hasMore)
         }, failure: { error in
             guard let error = error else {
