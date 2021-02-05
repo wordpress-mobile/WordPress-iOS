@@ -204,7 +204,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
 
         let host = MediaHost(with: post) { error in
             // We'll log the error, so we know it's there, but we won't halt execution.
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
         }
 
         if currentLoadedFeaturedImage != url.absoluteString {

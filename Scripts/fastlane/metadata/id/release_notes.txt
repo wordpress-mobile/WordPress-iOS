@@ -1,0 +1,9 @@
+Tentang rilis ini:
+
+Catatan: Ini merupakan versi aplikasi terbaru yang akan mendukung iOS 12. Mulai dari versi 16.7, aplikasi Anda memerlukan iOS 13 atau yang lebih baru.
+
+Lihat statistik pada Layar Beranda Anda: Menampilkan statistik situs WordPress per hari pada Layar Beranda perangkat iOS 14 dengan Widget Today yang baru.
+
+Lacak aktivitas situs Anda: Menyaring dan menampilkan item pada Log Aktivitas Anda — seperti pencadangan, pembaruan plugin, serta pos dan halaman yang dipublikasikan — berdasarkan rentang tanggal dan jenis aktivitas.
+
+Kenali aplikasi Anda: Pelajari fitur pada aplikasi Anda dengan tur Mulai Cepat yang ditingkatkan, yang memandu Anda melalui langkah-langkah seperti meninjau halaman situs dan menyunting halaman beranda Anda.

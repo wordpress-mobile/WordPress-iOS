@@ -5,6 +5,9 @@ import WordPressShared
 import WordPressFlux
 
 struct ActivityListConfiguration {
+    /// An identifier of the View Controller
+    let identifier: String
+
     /// The title of the View Controller
     let title: String
 
@@ -370,6 +373,7 @@ extension BaseActivityListViewController: ActivityPresenter {
         let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
         let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
         restoreOptionsVC.restoreStatusDelegate = self
+        restoreOptionsVC.presentedFrom = configuration.identifier
         alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: restoreOptionsVC), animated: true)
         })
@@ -377,6 +381,7 @@ extension BaseActivityListViewController: ActivityPresenter {
         let backupTitle = NSLocalizedString("Download backup", comment: "Title displayed for download backup action.")
         let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
         backupOptionsVC.backupStatusDelegate = self
+        backupOptionsVC.presentedFrom = configuration.identifier
         alertController.addDefaultActionWithTitle(backupTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: backupOptionsVC), animated: true)
         })
@@ -394,9 +399,9 @@ extension BaseActivityListViewController: ActivityPresenter {
 
         guard FeatureFlag.jetpackBackupAndRestore.enabled else {
             let title = NSLocalizedString("Rewind Site",
-                                          comment: "Title displayed in the Rewind Site alert, should match Calypso")
+                                          comment: "Title displayed in the Restore Site alert, should match Calypso")
             let rewindDate = viewModel.mediumDateFormatterWithTime.string(from: activity.published)
-            let messageFormat = NSLocalizedString("Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then.",
+            let messageFormat = NSLocalizedString("Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost.",
                                                   comment: "Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso.")
             let message = String(format: messageFormat, rewindDate)
 
@@ -404,7 +409,7 @@ extension BaseActivityListViewController: ActivityPresenter {
                                                     message: message,
                                                     preferredStyle: .alert)
             alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. A button title."))
-            alertController.addDestructiveActionWithTitle(NSLocalizedString("Confirm Rewind",
+            alertController.addDestructiveActionWithTitle(NSLocalizedString("Confirm",
                                                                             comment: "Confirm Rewind button title"),
                                                           handler: { action in
                                                             self.restoreSiteToRewindID(rewindID)
@@ -416,6 +421,7 @@ extension BaseActivityListViewController: ActivityPresenter {
 
         let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
         restoreOptionsVC.restoreStatusDelegate = self
+        restoreOptionsVC.presentedFrom = configuration.identifier
         let navigationVC = UINavigationController(rootViewController: restoreOptionsVC)
         self.present(navigationVC, animated: true)
     }
@@ -423,6 +429,7 @@ extension BaseActivityListViewController: ActivityPresenter {
     func presentBackupFor(activity: Activity) {
         let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
         backupOptionsVC.backupStatusDelegate = self
+        backupOptionsVC.presentedFrom = configuration.identifier
         let navigationVC = UINavigationController(rootViewController: backupOptionsVC)
         self.present(navigationVC, animated: true)
     }
@@ -496,10 +503,7 @@ extension BaseActivityListViewController: JetpackBackupStatusViewControllerDeleg
 
     func didFinishViewing(_ controller: JetpackBackupStatusViewController) {
         controller.dismiss(animated: true, completion: { [weak self] in
-            guard let self = self else {
-                return
-            }
-            // TODO: fetch backup status
+            self?.viewModel.refresh()
         })
     }
 }

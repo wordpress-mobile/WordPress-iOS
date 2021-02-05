@@ -4,7 +4,7 @@ import WidgetKit
 struct TodayWidgetView: View {
     @Environment(\.widgetFamily) var family: WidgetFamily
 
-    let timelineEntry: StatsWidgetEntry
+    let timelineEntry: HomeWidgetTodayEntry
 
     @ViewBuilder
     var body: some View {
@@ -15,29 +15,38 @@ struct TodayWidgetView: View {
             UnconfiguredView()
 
         case .siteSelected(let content):
-            /// - TODO: Handle at least one more case (all time widget)
-            if let content = content as? HomeWidgetTodayData {
-                switch family {
 
-                case .systemSmall:
-                    TodayWidgetSmallView(content: content,
-                                         widgetTitle: LocalizableStrings.widgetTitle,
-                                         viewsTitle: LocalizableStrings.viewsTitle)
-                        .padding()
+            switch family {
 
-                case .systemMedium:
-                    TodayWidgetMediumView(content: content,
-                                          widgetTitle: LocalizableStrings.widgetTitle,
-                                          viewsTitle: LocalizableStrings.viewsTitle,
-                                          visitorsTitle: LocalizableStrings.visitorsTitle,
-                                          likesTitle: LocalizableStrings.likesTitle,
-                                          commentsTitle: LocalizableStrings.commentsTitle)
-                        .padding()
+            case .systemSmall:
+                TodayWidgetSmallView(content: content,
+                                     widgetTitle: LocalizableStrings.widgetTitle,
+                                     viewsTitle: LocalizableStrings.viewsTitle)
+                    .widgetURL(content.statsURL)
+                    .padding()
 
-                default:
-                    Text("View is unavailable")
-                }
+            case .systemMedium:
+                TodayWidgetMediumView(content: content,
+                                      widgetTitle: LocalizableStrings.widgetTitle,
+                                      viewsTitle: LocalizableStrings.viewsTitle,
+                                      visitorsTitle: LocalizableStrings.visitorsTitle,
+                                      likesTitle: LocalizableStrings.likesTitle,
+                                      commentsTitle: LocalizableStrings.commentsTitle)
+                    .widgetURL(content.statsURL)
+                    .padding()
+
+            default:
+                Text("View is unavailable")
             }
         }
+    }
+}
+
+
+private extension HomeWidgetTodayData {
+    static let statsUrl = "https://wordpress.com/stats/day/"
+
+    var statsURL: URL? {
+        URL(string: Self.statsUrl + "\(siteID)?source=widget")
     }
 }

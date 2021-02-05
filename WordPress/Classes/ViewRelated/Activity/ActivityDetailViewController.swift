@@ -58,7 +58,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         setupViews()
         setupText()
         setupAccesibility()
-        WPAnalytics.track(.activityLogDetailViewed)
+        WPAnalytics.track(.activityLogDetailViewed, withProperties: ["source": presentedFrom()])
     }
 
     @IBAction func rewindButtonTapped(sender: UIButton) {
@@ -218,6 +218,16 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
             setupLabelStyles()
             setupAccesibility()
+        }
+    }
+
+    private func presentedFrom() -> String {
+        if presenter is JetpackActivityLogViewController {
+            return "activity_log"
+        } else if presenter is BackupListViewController {
+            return "backup"
+        } else {
+            return "unknown"
         }
     }
 

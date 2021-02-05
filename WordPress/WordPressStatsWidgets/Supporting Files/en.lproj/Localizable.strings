@@ -21,3 +21,16 @@
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "Stay up to date with today's activity on your WordPress site.";
+
+/* Title of all time widget */
+"widget.alltime.title" = "All Time";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "Posts";
+
+/* Title of best views ever label in all time widget */
+"widget.alltime.bestviews.label" = "Best views ever";
+
+/* Description of all time widget in the preview */
+"widget.alltime.preview.description" = "Stay up to date with all time activity on your WordPress site.";
+

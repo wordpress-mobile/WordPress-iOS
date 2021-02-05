@@ -155,7 +155,7 @@ class RequestAuthenticator: NSObject {
             done()
         }) { error in
             // Make sure this error scenario isn't silently ignored.
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
 
             // Even if getting the auth cookies fail, we'll still try to load the URL
             // so that the user sees a reasonable error situation on screen.
@@ -176,7 +176,7 @@ class RequestAuthenticator: NSObject {
         // a context at all...
         guard let account = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext).defaultWordPressComAccount() else {
 
-            CrashLogging.logMessage("It shouldn't be possible to reach this point without an account.", properties: nil, level: .error)
+            WordPressAppDelegate.crashLogging?.logMessage("It shouldn't be possible to reach this point without an account.", properties: nil, level: .error)
             return
         }
         let authenticationService = AtomicAuthenticationService(account: account)
@@ -185,7 +185,7 @@ class RequestAuthenticator: NSObject {
             done()
         }) { error in
             // Make sure this error scenario isn't silently ignored.
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
 
             // Even if getting the auth cookies fail, we'll still try to load the URL
             // so that the user sees a reasonable error situation on screen.
@@ -215,7 +215,7 @@ class RequestAuthenticator: NSObject {
             done()
         }) { error in
             // Make sure this error scenario isn't silently ignored.
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
 
             // Even if getting the auth cookies fail, we'll still try to load the URL
             // so that the user sees a reasonable error situation on screen.
@@ -261,7 +261,7 @@ class RequestAuthenticator: NSObject {
             done()
         }) { error in
             // Make sure this error scenario isn't silently ignored.
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
 
             // Even if getting the auth cookies fail, we'll still try to load the URL
             // so that the user sees a reasonable error situation on screen.
@@ -282,7 +282,7 @@ class RequestAuthenticator: NSObject {
             done()
         }) { error in
             // Make sure this error scenario isn't silently ignored.
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
 
             // Even if getting the auth cookies fail, we'll still try to load the URL
             // so that the user sees a reasonable error situation on screen.
