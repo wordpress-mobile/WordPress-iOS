@@ -55,7 +55,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .siteCreationHomePagePicker:
             return true
         case .jetpackScan:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .activityLogFilters:
             return true
         case .jetpackBackupAndRestore:
