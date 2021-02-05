@@ -3,7 +3,7 @@ import WordPressKit
 
 class SiteCreationAnalyticsHelper {
     typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice
-    
+
     private static let siteDesignKey = "template"
     private static let previewModeKey = "preview_mode"
 

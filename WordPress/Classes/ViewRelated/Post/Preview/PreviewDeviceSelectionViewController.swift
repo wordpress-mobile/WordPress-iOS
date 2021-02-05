@@ -135,7 +135,7 @@ extension PreviewDeviceSelectionViewController: UITableViewDataSource {
 extension PreviewDeviceSelectionViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let newlySelectedDeviceMode = PreviewDevice.available[indexPath.row]
-        if (newlySelectedDeviceMode != selectedOption) {
+        if newlySelectedDeviceMode != selectedOption {
             onDeviceChange?(newlySelectedDeviceMode)
         }
         dismiss(animated: true, completion: nil)
