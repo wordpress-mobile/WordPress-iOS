@@ -245,13 +245,16 @@ class ActivityListViewModel: Observable {
             return nil
         }
 
-        downloadPromptView.setupHeading("We successfuly created a backup of your site as of \(longDateFormatterWithTime.string(from: backupPoint))")
+        let headingMessage = NSLocalizedString("We successfuly created a backup of your site as of %@", comment: "Message displayed when a backup has finished")
+        downloadPromptView.setupHeading(String.init(format: headingMessage, arguments: [longDateFormatterWithTime.string(from: backupPoint)]))
 
-        downloadPromptView.setupYesButton(title: "Download") { _ in
+        let downloadTitle = NSLocalizedString("Download", comment: "Download button title")
+        downloadPromptView.setupYesButton(title: downloadTitle) { _ in
             UIApplication.shared.open(downloadURL)
         }
 
-        downloadPromptView.setupNoButton(title: "Dismiss") { [weak self] button in
+        let dismissTitle = NSLocalizedString("Dismiss", comment: "Dismiss button title")
+        downloadPromptView.setupNoButton(title: dismissTitle) { [weak self] button in
             guard let self = self else {
                 return
             }
