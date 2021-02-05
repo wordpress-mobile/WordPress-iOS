@@ -29,6 +29,19 @@ extension ReaderSortingOption {
 }
 
 class ReaderSortingOptionButton: UIControl {
+
+    enum Constants {
+        static let fontSize: CGFloat = 15.0
+        static let iconsHeight: CGFloat = 24.0
+        static let iconsWidth: CGFloat = 24.0
+        static let iconLeading: CGFloat = 16.0
+        static let labelLeading: CGFloat = 6.0
+        static let top: CGFloat = 16.0
+        static let bottom: CGFloat = -16.0
+        static let chevronLeading: CGFloat = 6.0
+        static let chevronTrailing: CGFloat = -16.0
+    }
+
     var sourceView: UIView {
         return chevronView
     }
@@ -43,7 +56,7 @@ class ReaderSortingOptionButton: UIControl {
     private lazy var label: UILabel = {
         let view = UILabel()
         view.textColor = UIColor(light: .black, dark: .white)
-        view.font = WPFontManager.systemSemiBoldFont(ofSize: 15.0)
+        view.font = WPFontManager.systemSemiBoldFont(ofSize: Constants.fontSize)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -99,19 +112,19 @@ class ReaderSortingOptionButton: UIControl {
         addSubview(chevronView)
 
         NSLayoutConstraint.activate([
-            iconView.heightAnchor.constraint(equalToConstant: 24.0),
-            iconView.widthAnchor.constraint(equalToConstant: 24.0),
+            iconView.heightAnchor.constraint(equalToConstant: Constants.iconsHeight),
+            iconView.widthAnchor.constraint(equalToConstant: Constants.iconsWidth),
             iconView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            iconView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+            iconView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Constants.iconLeading),
             label.centerYAnchor.constraint(equalTo: centerYAnchor),
-            label.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 6.0),
-            label.topAnchor.constraint(equalTo: topAnchor, constant: 16.0),
-            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16.0),
+            label.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: Constants.labelLeading),
+            label.topAnchor.constraint(equalTo: topAnchor, constant: Constants.top),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.bottom),
             chevronView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            chevronView.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: 6.0),
-            chevronView.trailingAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
-            chevronView.heightAnchor.constraint(equalToConstant: 24.0),
-            chevronView.widthAnchor.constraint(equalToConstant: 24.0),
+            chevronView.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: Constants.chevronLeading),
+            chevronView.trailingAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor, constant: Constants.chevronTrailing),
+            chevronView.heightAnchor.constraint(equalToConstant: Constants.iconsHeight),
+            chevronView.widthAnchor.constraint(equalToConstant: Constants.iconsWidth),
         ])
 
         bindSortingOption()
