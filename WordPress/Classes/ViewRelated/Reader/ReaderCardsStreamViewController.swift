@@ -38,18 +38,11 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        updateSortingOption(.popularity, reloadCards: false)
-
         ReaderWelcomeBanner.displayIfNeeded(in: tableView)
         tableView.register(ReaderTopicsCardCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
         tableView.register(ReaderSitesCardCell.self, forCellReuseIdentifier: readerCardSitesIdentifier)
 
-        tableView.tableHeaderView = sortingButton
-
-        NSLayoutConstraint.activate([
-            sortingButton.widthAnchor.constraint(equalTo: tableView.widthAnchor),
-        ])
-
+        setupSortingButton()
         addObservers()
     }
 
@@ -114,6 +107,14 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     }
 
     // MARK: - Sorting
+
+    private func setupSortingButton() {
+        updateSortingOption(.popularity, reloadCards: false)
+        tableView.tableHeaderView = sortingButton
+        NSLayoutConstraint.activate([
+            sortingButton.widthAnchor.constraint(equalTo: tableView.widthAnchor),
+        ])
+    }
 
     private func updateSortingOption(_ sortingOption: ReaderSortingOption, reloadCards: Bool = true) {
         let optionChanged = sortingButton.sortingOption != sortingOption
