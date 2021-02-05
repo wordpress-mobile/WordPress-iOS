@@ -243,6 +243,7 @@ public protocol ThemePresenter: class {
     fileprivate var themesSyncingPage = 0
     fileprivate var customThemesSyncHelper: WPContentSyncHelper!
     fileprivate let syncPadding = 5
+    fileprivate var activateButton: UIBarButtonItem?
 
     // MARK: - Private Aliases
 
@@ -858,12 +859,11 @@ public protocol ThemePresenter: class {
         configuration.navigationDelegate = customizerNavigationDelegate
         configuration.onClose = onClose
         let webViewController = WebViewControllerFactory.controller(configuration: configuration)
-        var buttons: [UIBarButtonItem]?
+        var activate: UIBarButtonItem?
         if activeButton && !theme.isCurrentTheme() {
-           let activate = UIBarButtonItem(title: ThemeAction.activate.title, style: .plain, target: self, action: #selector(ThemeBrowserViewController.activatePresentingTheme))
-            buttons = [activate]
+           activate = UIBarButtonItem(title: ThemeAction.activate.title, style: .plain, target: self, action: #selector(ThemeBrowserViewController.activatePresentingTheme))
         }
-        webViewController.navigationItem.rightBarButtonItems = buttons
+        webViewController.navigationItem.rightBarButtonItem = activate
         let navigation = UINavigationController(rootViewController: webViewController)
         navigation.modalPresentationStyle = modalStyle
 
@@ -878,6 +878,7 @@ public protocol ThemePresenter: class {
 
     @objc open func activatePresentingTheme() {
         suspendedSearch = ""
+        
         _ = navigationController?.popViewController(animated: true)
         activateTheme(presentingTheme)
         presentingTheme = nil
