@@ -101,18 +101,16 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         return imageRequestAuthToken
     }
 
-    fileprivate func toggleFollowingForPost(_ post: ReaderPost) {
-        let siteTitle = post.blogNameForDisplay()
-        let siteID = post.siteID
-        let toFollow = !post.isFollowing
-
-        ReaderFollowAction().execute(with: post, context: context,
+    private func toggleFollowingForPost(_ post: ReaderPost) {
+        ReaderFollowAction().execute(with: post,
+                                     context: context,
                                      completion: { [weak self] in
-                                        if toFollow {
-                                            self?.origin?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
+                                        if post.isFollowing {
+                                            self?.origin?.dispatchSubscribingNotificationNotice(with: post.blogNameForDisplay(), siteID: post.siteID)
                                         }
-                                     },
-                                     failure: nil)
+                                     }, failure: { _ in
+                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: false)
+                                     })
     }
 
     func toggleSavedForLater(for post: ReaderPost) {
