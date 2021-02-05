@@ -301,11 +301,14 @@ struct ReaderNotificationKeys {
     // MARK: ActionDispatcher Notification helper
 
     class func dispatchToggleSeenMessage(post: ReaderPost, success: Bool) {
-        if success {
-            dispatchNotice(Notice(title: post.isSeen ? NoticeMessages.seenSuccess: NoticeMessages.unseenSuccess))
-        } else {
-            dispatchNotice(Notice(title: post.isSeen ? NoticeMessages.unseenFail : NoticeMessages.seenFail))
+        var notice: Notice {
+            if success {
+                return Notice(title: post.isSeen ? NoticeMessages.seenSuccess: NoticeMessages.unseenSuccess)
+            }
+            return Notice(title: post.isSeen ? NoticeMessages.unseenFail : NoticeMessages.seenFail)
         }
+
+        dispatchNotice(notice)
     }
 
     class func dispatchToggleFollowSiteMessage(post: ReaderPost, success: Bool) {
@@ -331,11 +334,14 @@ struct ReaderNotificationKeys {
     }
 
     class func dispatchToggleNotificationMessage(topic: ReaderSiteTopic, success: Bool) {
-        if success {
-            dispatchNotice(Notice(title: topic.isSubscribedForPostNotifications ? NoticeMessages.notificationOnSuccess: NoticeMessages.notificationOffSuccess))
-        } else {
-            dispatchNotice(Notice(title: topic.isSubscribedForPostNotifications ? NoticeMessages.notificationOffFail : NoticeMessages.notificationOnFail))
+        var notice: Notice {
+            if success {
+                return Notice(title: topic.isSubscribedForPostNotifications ? NoticeMessages.notificationOnSuccess: NoticeMessages.notificationOffSuccess)
+            }
+            return Notice(title: topic.isSubscribedForPostNotifications ? NoticeMessages.notificationOffFail : NoticeMessages.notificationOnFail)
         }
+
+        dispatchNotice(notice)
     }
 
     private class func dispatchNotice(_ notice: Notice) {
