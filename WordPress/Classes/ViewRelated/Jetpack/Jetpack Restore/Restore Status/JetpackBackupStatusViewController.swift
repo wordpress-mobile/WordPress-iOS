@@ -56,6 +56,7 @@ class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         coordinator.viewWillDisappear()
+        delegate?.didFinishViewing(self)
     }
 
     // MARK: - Override

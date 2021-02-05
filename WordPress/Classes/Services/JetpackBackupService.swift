@@ -31,4 +31,8 @@ class JetpackBackupService {
         service.getAllBackupStatus(site.siteID, success: success, failure: failure)
     }
 
+    func dismissBackupNotice(site: JetpackSiteRef, downloadID: Int) {
+        service.markAsDismissed(site.siteID, downloadID: downloadID, success: {}, failure: { _ in })
+    }
+
 }

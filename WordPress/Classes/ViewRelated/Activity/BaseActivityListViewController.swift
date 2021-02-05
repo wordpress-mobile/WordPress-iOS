@@ -175,10 +175,28 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
     }
 
     func refreshModel() {
+        updateHeader()
         handler.viewModel = viewModel.tableViewModel(presenter: self)
         updateRefreshControl()
         updateNoResults()
         updateFilters()
+    }
+
+    private func updateHeader() {
+        tableView.tableHeaderView = viewModel.backupDownloadHeader()
+
+        guard let tableHeaderView = tableView.tableHeaderView else {
+            return
+        }
+
+        tableHeaderView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            tableHeaderView.topAnchor.constraint(equalTo: tableView.topAnchor),
+            tableHeaderView.safeLeadingAnchor.constraint(equalTo: tableView.safeLeadingAnchor),
+            tableHeaderView.safeTrailingAnchor.constraint(equalTo: tableView.safeTrailingAnchor)
+        ])
+        tableView.tableHeaderView?.layoutIfNeeded()
     }
 
     private func updateRefreshControl() {

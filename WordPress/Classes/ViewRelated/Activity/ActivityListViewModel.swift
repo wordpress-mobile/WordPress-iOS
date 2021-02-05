@@ -54,6 +54,10 @@ class ActivityListViewModel: Observable {
         return store.state.groups[site] ?? []
     }
 
+    lazy var downloadPromptView: AppFeedbackPromptView = {
+        AppFeedbackPromptView()
+    }()
+
     init(site: JetpackSiteRef,
          store: ActivityStore = StoreContainer.shared.activity,
          configuration: ActivityListConfiguration) {
@@ -231,6 +235,36 @@ class ActivityListViewModel: Observable {
         return formattedDateRanges.joined(separator: " - ")
     }
 
+    func backupDownloadHeader() -> UIView? {
+        guard let validUntil = store.getBackupStatus(site: site)?.validUntil,
+              Date() < validUntil,
+              let backupPoint = store.getBackupStatus(site: site)?.backupPoint,
+              let downloadURLString = store.getBackupStatus(site: site)?.url,
+              let downloadURL = URL(string: downloadURLString),
+              let downloadID = store.getBackupStatus(site: site)?.downloadID else {
+            return nil
+        }
+
+        let headingMessage = NSLocalizedString("We successfully created a backup of your site as of %@", comment: "Message displayed when a backup has finished")
+        downloadPromptView.setupHeading(String.init(format: headingMessage, arguments: [longDateFormatterWithTime.string(from: backupPoint)]))
+
+        let downloadTitle = NSLocalizedString("Download", comment: "Download button title")
+        downloadPromptView.setupYesButton(title: downloadTitle) { _ in
+            UIApplication.shared.open(downloadURL)
+        }
+
+        let dismissTitle = NSLocalizedString("Dismiss", comment: "Dismiss button title")
+        downloadPromptView.setupNoButton(title: dismissTitle) { [weak self] button in
+            guard let self = self else {
+                return
+            }
+
+            ActionDispatcher.dispatch(ActivityAction.dismissBackupNotice(site: self.site, downloadID: downloadID))
+        }
+
+        return downloadPromptView
+    }
+
     func activityTypeDescription() -> String? {
         if selectedGroups.isEmpty {
             return NSLocalizedString("Activity Type", comment: "Label for the Activity Type filter button")
@@ -348,7 +382,11 @@ class ActivityListViewModel: Observable {
     // MARK: - Date/Time handling
 
     lazy var longDateFormatterWithoutTime: DateFormatter = {
-        return ActivityDateFormatting.longDateFormatterWithoutTime(for: site)
+        return ActivityDateFormatting.longDateFormatter(for: site, withTime: false)
+    }()
+
+    lazy var longDateFormatterWithTime: DateFormatter = {
+        return ActivityDateFormatting.longDateFormatter(for: site, withTime: true)
     }()
 
     lazy var mediumDateFormatterWithTime: DateFormatter = {
