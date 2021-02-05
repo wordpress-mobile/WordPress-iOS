@@ -61,8 +61,18 @@ class SiteCreationAnalyticsHelper {
     }
 
     // MARK: - Common
-    private static func commonProperties(_ siteDesign: RemoteSiteDesign?) -> [AnyHashable: Any] {
-        guard let siteDesign = siteDesign else { return [:] }
-        return  [siteDesignKey: siteDesign.slug]
+    private static func commonProperties(_ properties: Any?...) -> [AnyHashable: Any] {
+        var result: [AnyHashable: Any] = [:]
+
+        for property: Any? in properties {
+            if let siteDesign = property as? RemoteSiteDesign {
+                result.merge([siteDesignKey: siteDesign.slug]) { (_, new) in new }
+            }
+            if let previewMode = property as? PreviewDevice {
+                result.merge([previewModeKey: previewMode.rawValue]) { (_, new) in new }
+            }
+        }
+
+        return result
     }
 }
