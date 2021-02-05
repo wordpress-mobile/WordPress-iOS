@@ -23,7 +23,7 @@ struct WordPressHomeWidgetToday: Widget {
         ) { (entry: StatsWidgetEntry) -> StatsWidgetsView in
 
             defer {
-                tracks.trackWidgetUpdated(widgetKind: WPHomeWidgetTodayKind, widgetCountKey: WPHomeWidgetTodayCount)
+                tracks.trackWidgetUpdated(widgetKind: WPHomeWidgetTodayKind)
             }
 
             return StatsWidgetsView(timelineEntry: entry)

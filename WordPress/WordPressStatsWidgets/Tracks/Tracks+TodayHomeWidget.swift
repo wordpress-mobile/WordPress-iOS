@@ -16,7 +16,7 @@ extension Tracks {
         trackExtensionEvent(.loginLaunched)
     }
 
-    public func trackWidgetUpdated(widgetKind: String, widgetCountKey: String) {
+    public func trackWidgetUpdated(widgetKind: String) {
 
         DispatchQueue.global().async {
             WidgetCenter.shared.getCurrentConfigurations { result in
@@ -25,7 +25,7 @@ extension Tracks {
 
                 case .success(let widgetInfo):
                     let widgetKindInfo = widgetInfo.filter { $0.kind == widgetKind }
-                    self.trackUpdatedWidgetInfo(widgetInfo: widgetKindInfo, widgetCountKey: widgetCountKey)
+                    self.trackUpdatedWidgetInfo(widgetInfo: widgetKindInfo, widgetKind: widgetKind)
 
                 case .failure(let error):
                     DDLogError("Home Widget Today error: unable to read widget information. \(error.localizedDescription)")
@@ -34,24 +34,14 @@ extension Tracks {
         }
     }
 
-    private func trackUpdatedWidgetInfo(widgetInfo: [WidgetInfo], widgetCountKey: String) {
-        /// - TODO: TODAYWIDGET - This might need to change depending on wether or not we use one extension for multiple widgets
+    private func trackUpdatedWidgetInfo(widgetInfo: [WidgetInfo], widgetKind: String) {
 
-        let previousCount = UserDefaults(suiteName: WPAppGroupName)?.object(forKey: widgetCountKey) as? Int ?? 0
-        let newCount = widgetInfo.count
-
-        guard previousCount != newCount else {
-            return
-        }
-
-        UserDefaults(suiteName: WPAppGroupName)?.set(newCount, forKey: widgetCountKey)
-
-        let properties = ["total_widgets": newCount,
+        let properties = ["total_widgets": widgetInfo.count,
                           "small_widgets": widgetInfo.filter { $0.family == .systemSmall }.count,
                           "medium_widgets": widgetInfo.filter { $0.family == .systemMedium }.count,
                           "large_widgets": widgetInfo.filter { $0.family == .systemLarge }.count]
 
-        trackExtensionEvent(ExtensionEvents.widgetUpdated(for: widgetCountKey), properties: properties as [String: AnyObject]?)
+        trackExtensionEvent(ExtensionEvents.widgetUpdated(for: widgetKind), properties: properties as [String: AnyObject]?)
     }
 
     // MARK: - Private Helpers
@@ -77,9 +67,9 @@ extension Tracks {
 
         static func widgetUpdated(for key: String) -> ExtensionEvents {
             switch key {
-            case WPHomeWidgetTodayCount:
+            case WPHomeWidgetTodayKind:
                 return .todayWidgetUpdated
-            case WPHomeWidgetAllTimeCount:
+            case WPHomeWidgetAllTimeKind:
                 return .allTimeWidgetUpdated
             default:
                 return .noEvent
