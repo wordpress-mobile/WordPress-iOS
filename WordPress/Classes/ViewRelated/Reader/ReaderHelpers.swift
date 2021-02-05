@@ -309,14 +309,22 @@ struct ReaderNotificationKeys {
     }
 
     class func dispatchToggleFollowSiteMessage(post: ReaderPost, success: Bool) {
+        dispatchToggleFollowSiteMessage(siteTitle: post.blogNameForDisplay(), siteID: post.siteID, following: post.isFollowing, success: success)
+    }
+
+    class func dispatchToggleFollowSiteMessage(topic: ReaderSiteTopic, success: Bool) {
+        dispatchToggleFollowSiteMessage(siteTitle: topic.title, siteID: topic.siteID, following: topic.following, success: success)
+    }
+
+    private class func dispatchToggleFollowSiteMessage(siteTitle: String, siteID: NSNumber, following: Bool, success: Bool) {
         var notice: Notice
 
         if success {
-            notice = post.isFollowing ?
-                followedSiteNotice(post: post) :
-                Notice(title: NoticeMessages.unfollowSuccess, message: post.blogNameForDisplay())
+            notice = following ?
+                followedSiteNotice(siteTitle: siteTitle, siteID: siteID) :
+                Notice(title: NoticeMessages.unfollowSuccess, message: siteTitle)
         } else {
-            notice = Notice(title: post.isFollowing ? NoticeMessages.unfollowFail : NoticeMessages.followFail)
+            notice = Notice(title: following ? NoticeMessages.unfollowFail : NoticeMessages.followFail)
         }
 
         dispatchNotice(notice)
@@ -334,12 +342,12 @@ struct ReaderNotificationKeys {
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
-    private class func followedSiteNotice(post: ReaderPost) -> Notice {
-        let notice = Notice(title: String(format: NoticeMessages.followSuccess, post.blogNameForDisplay()),
+    private class func followedSiteNotice(siteTitle: String, siteID: NSNumber) -> Notice {
+        let notice = Notice(title: String(format: NoticeMessages.followSuccess, siteTitle),
                             message: NoticeMessages.enableNotifications,
                             actionTitle: NoticeMessages.enableButtonLabel) { _ in
             let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            service.toggleSubscribingNotifications(for: post.siteID.intValue, subscribe: true, {
+            service.toggleSubscribingNotifications(for: siteID.intValue, subscribe: true, {
                 WPAnalytics.track(.readerListNotificationEnabled)
             })
         }
