@@ -6,9 +6,9 @@ extension ReaderSortingOption {
         // TODO: check if strings are localized
         switch self {
         case .date:
-            return NSLocalizedString("Recent", comment: "Sorting option description")
+            return NSLocalizedString("Recent", comment: "Description of the date sorting option in the Discover tab")
         case .popularity:
-            return NSLocalizedString("Popular", comment: "Sorting option description")
+            return NSLocalizedString("Popular", comment: "Description of the popularity sorting option in the Discover tab")
         case .noSorting:
             return nil
         }
