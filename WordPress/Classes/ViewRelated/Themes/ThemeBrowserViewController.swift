@@ -182,6 +182,12 @@ public protocol ThemePresenter: class {
     @objc func resumingSearch() -> Bool {
         return !suspendedSearch.trim().isEmpty
     }
+    
+    fileprivate lazy var activityIndicator: UIActivityIndicatorView = {
+           let indicatorView = UIActivityIndicatorView(style: .medium)
+           indicatorView.translatesAutoresizingMaskIntoConstraints = false
+           return indicatorView
+       }()
 
     open var filterType: ThemeType = ThemeType.mayPurchase ? .all : .free
 
@@ -768,19 +774,28 @@ public protocol ThemePresenter: class {
         guard let theme = theme, !theme.isCurrentTheme() else {
             return
         }
+        
+        activateButton?.isEnabled = false
+        activateButton?.customView = activityIndicator
+        activityIndicator.startAnimating()
+        activityIndicator.hidesWhenStopped = true
 
         _ = themeService.activate(theme,
             for: blog,
             success: { [weak self] (theme: Theme?) in
                 WPAppAnalytics.track(.themesChangedTheme, withProperties: ["theme_id": theme?.themeId ?? ""], with: self?.blog)
+                guard let self = self else { return }
 
-                self?.collectionView?.reloadData()
+                self.collectionView?.reloadData()
 
                 let successTitle = NSLocalizedString("Theme Activated", comment: "Title of alert when theme activation succeeds")
                 let successFormat = NSLocalizedString("Thanks for choosing %@ by %@", comment: "Message of alert when theme activation succeeds")
                 let successMessage = String(format: successFormat, theme?.name ?? "", theme?.author ?? "")
                 let manageTitle = NSLocalizedString("Manage site", comment: "Return to blog screen action when theme activation succeeds")
                 let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
+                self.activityIndicator.stopAnimating()
+                self.activateButton?.customView = nil
+
                 let alertController = UIAlertController(title: successTitle,
                     message: successMessage,
                     preferredStyle: .alert)
@@ -792,11 +807,14 @@ public protocol ThemePresenter: class {
                 alertController.addDefaultActionWithTitle(okTitle, handler: nil)
                 alertController.presentFromRootViewController()
             },
-            failure: { (error) in
+            failure: { [weak self] (error) in
                 DDLogError("Error activating theme \(String(describing: theme.themeId)): \(String(describing: error?.localizedDescription))")
 
                 let errorTitle = NSLocalizedString("Activation Error", comment: "Title of alert when theme activation fails")
                 let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
+                self?.activityIndicator.stopAnimating()
+                self?.activateButton?.customView = nil
+
                 let alertController = UIAlertController(title: errorTitle,
                     message: error?.localizedDescription,
                     preferredStyle: .alert)
@@ -859,11 +877,10 @@ public protocol ThemePresenter: class {
         configuration.navigationDelegate = customizerNavigationDelegate
         configuration.onClose = onClose
         let webViewController = WebViewControllerFactory.controller(configuration: configuration)
-        var activate: UIBarButtonItem?
         if activeButton && !theme.isCurrentTheme() {
-           activate = UIBarButtonItem(title: ThemeAction.activate.title, style: .plain, target: self, action: #selector(ThemeBrowserViewController.activatePresentingTheme))
+           activateButton = UIBarButtonItem(title: ThemeAction.activate.title, style: .plain, target: self, action: #selector(ThemeBrowserViewController.activatePresentingTheme))
         }
-        webViewController.navigationItem.rightBarButtonItem = activate
+        webViewController.navigationItem.rightBarButtonItem = activateButton
         let navigation = UINavigationController(rootViewController: webViewController)
         navigation.modalPresentationStyle = modalStyle
 
@@ -878,8 +895,6 @@ public protocol ThemePresenter: class {
 
     @objc open func activatePresentingTheme() {
         suspendedSearch = ""
-        
-        _ = navigationController?.popViewController(animated: true)
         activateTheme(presentingTheme)
         presentingTheme = nil
     }
