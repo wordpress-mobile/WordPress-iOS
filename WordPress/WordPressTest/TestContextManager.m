@@ -113,10 +113,6 @@ static TestContextManager *_instance;
     return [_stack newMainContextChildContext];
 }
 
-- (BOOL)obtainPermanentIDForObject:(nonnull NSManagedObject *)managedObject {
-    return [_stack obtainPermanentIDForObject:managedObject];
-}
-
 - (NSURL *)storeURL
 {
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
