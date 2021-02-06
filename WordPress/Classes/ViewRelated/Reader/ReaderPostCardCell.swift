@@ -335,7 +335,7 @@ private extension ReaderPostCardCell {
         let mediaRequestAuthenticator = MediaRequestAuthenticator()
         let host = MediaHost(with: contentProvider, failure: { error in
             // We'll log the error, so we know it's there, but we won't halt execution.
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
         })
 
         mediaRequestAuthenticator.authenticatedRequest(
@@ -346,7 +346,7 @@ private extension ReaderPostCardCell {
                 self.avatarImageView.isHidden = false
             },
             onFailure: { error in
-                CrashLogging.logError(error)
+                WordPressAppDelegate.crashLogging?.logError(error)
                 self.avatarImageView.isHidden = true
             })
     }
@@ -451,7 +451,7 @@ private extension ReaderPostCardCell {
         let size = CGSize(width: featuredImageDesiredWidth, height: featuredImageHeight)
         let host = MediaHost(with: contentProvider, failure: { error in
             // We'll log the error, so we know it's there, but we won't halt execution.
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
         })
         imageLoader.loadImage(with: featuredImageURL, from: host, preferredSize: size)
     }

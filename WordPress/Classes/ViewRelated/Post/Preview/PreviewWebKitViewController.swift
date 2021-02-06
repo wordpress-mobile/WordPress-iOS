@@ -4,7 +4,7 @@ import WebKit
 /// An augmentation of WebKitViewController to provide Previewing for different devices
 class PreviewWebKitViewController: WebKitViewController {
 
-    let post: AbstractPost
+    let post: AbstractPost?
 
     private let canPublish: Bool
 
@@ -70,11 +70,19 @@ class PreviewWebKitViewController: WebKitViewController {
         super.init(configuration: configuration)
     }
 
+    @objc override init(configuration: WebViewControllerConfiguration) {
+        post = nil
+        canPublish = false
+        super.init(configuration: configuration)
+    }
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     func trackOpenEvent() {
+        guard let post = post else { return }
+
         let eventProperties: [String: Any] = [
             "post_type": post.analyticsPostType ?? "unsupported",
             "blog_type": post.blog.analyticsType.rawValue
@@ -114,7 +122,9 @@ class PreviewWebKitViewController: WebKitViewController {
                 space,
                 shareButton,
                 space,
-                safariButton
+                safariButton,
+                space,
+                previewButton
             ]
         case .hostOnly:
             if canPublish {
@@ -162,7 +172,8 @@ class PreviewWebKitViewController: WebKitViewController {
 
         alertController.addCancelActionWithTitle(cancelTitle)
         alertController.addDefaultActionWithTitle(publishTitle) { [unowned self] _ in
-            PostCoordinator.shared.publish(self.post)
+            guard let post = self.post else { return }
+            PostCoordinator.shared.publish(post)
 
             if let editorVC = (self.presentingViewController?.presentingViewController as? EditPostViewController) {
                 editorVC.closeEditor(true, showPostEpilogue: false, from: self)

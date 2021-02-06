@@ -1,0 +1,9 @@
+Su questa versione:
+
+Nota: questa sarà l'ultima versione dell'app a supportare iOS 12. A partire dalla versione 16.7, l'app richiederà iOS 13 o versione superiore.
+
+Visualizza le statistiche sulla schermata Home: mostra le statistiche del sito WordPress per la giornata sulla schermata Home del tuo dispositivo iOS 14 con i nuovi widget Oggi.
+
+Monitora l'attività del tuo sito: filtra e visualizza nel log attività gli elementi come backup, aggiornamenti di plugin, articoli e pagine pubblicate, per intervallo di date e tipo di attività.
+
+Familiarizza con la tua app: scopri le funzionalità presenti nell'app con un tour di avvio rapido migliorato che ti guida in passaggi come la revisione delle pagine del sito o la modifica della homepage.

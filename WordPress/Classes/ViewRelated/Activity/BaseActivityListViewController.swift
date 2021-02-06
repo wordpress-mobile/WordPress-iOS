@@ -5,6 +5,9 @@ import WordPressShared
 import WordPressFlux
 
 struct ActivityListConfiguration {
+    /// An identifier of the View Controller
+    let identifier: String
+
     /// The title of the View Controller
     let title: String
 
@@ -172,10 +175,28 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
     }
 
     func refreshModel() {
+        updateHeader()
         handler.viewModel = viewModel.tableViewModel(presenter: self)
         updateRefreshControl()
         updateNoResults()
         updateFilters()
+    }
+
+    private func updateHeader() {
+        tableView.tableHeaderView = viewModel.backupDownloadHeader()
+
+        guard let tableHeaderView = tableView.tableHeaderView else {
+            return
+        }
+
+        tableHeaderView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            tableHeaderView.topAnchor.constraint(equalTo: tableView.topAnchor),
+            tableHeaderView.safeLeadingAnchor.constraint(equalTo: tableView.safeLeadingAnchor),
+            tableHeaderView.safeTrailingAnchor.constraint(equalTo: tableView.safeTrailingAnchor)
+        ])
+        tableView.tableHeaderView?.layoutIfNeeded()
     }
 
     private func updateRefreshControl() {
@@ -314,21 +335,6 @@ extension BaseActivityListViewController: UITableViewDelegate {
         return row.activity.isRewindable
     }
 
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        guard let row = handler.viewModel.rowAtIndexPath(indexPath) as? ActivityListRow, row.activity.isRewindable else {
-            return nil
-        }
-
-        let rewindAction = UIContextualAction(style: .normal,
-                                              title: NSLocalizedString("Rewind", comment: "Title displayed when user swipes on a rewind cell")) { [weak self] (_, _, _) in
-            self?.presentRestoreFor(activity: row.activity)
-        }
-
-        rewindAction.backgroundColor = .primary(.shade40)
-
-        return UISwipeActionsConfiguration(actions: [rewindAction])
-    }
-
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
@@ -364,12 +370,13 @@ extension BaseActivityListViewController: ActivityPresenter {
         self.navigationController?.pushViewController(detailVC, animated: true)
     }
 
-    func presentBackupOrRestoreFor(activity: Activity) {
+    func presentBackupOrRestoreFor(activity: Activity, from sender: UIButton) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
         let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
         restoreOptionsVC.restoreStatusDelegate = self
+        restoreOptionsVC.presentedFrom = configuration.identifier
         alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: restoreOptionsVC), animated: true)
         })
@@ -377,6 +384,7 @@ extension BaseActivityListViewController: ActivityPresenter {
         let backupTitle = NSLocalizedString("Download backup", comment: "Title displayed for download backup action.")
         let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
         backupOptionsVC.backupStatusDelegate = self
+        backupOptionsVC.presentedFrom = configuration.identifier
         alertController.addDefaultActionWithTitle(backupTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: backupOptionsVC), animated: true)
         })
@@ -384,27 +392,34 @@ extension BaseActivityListViewController: ActivityPresenter {
         let cancelTitle = NSLocalizedString("Cancel", comment: "Title for cancel action. Dismisses the action sheet.")
         alertController.addCancelActionWithTitle(cancelTitle)
 
+        if let presentationController = alertController.popoverPresentationController {
+            presentationController.permittedArrowDirections = .any
+            presentationController.sourceView = sender
+            presentationController.sourceRect = sender.bounds
+        }
+
         self.present(alertController, animated: true, completion: nil)
     }
 
-    func presentRestoreFor(activity: Activity) {
+    func presentRestoreFor(activity: Activity, from: String? = nil) {
         guard activity.isRewindable, let rewindID = activity.rewindID else {
             return
         }
 
         guard FeatureFlag.jetpackBackupAndRestore.enabled else {
             let title = NSLocalizedString("Rewind Site",
-                                          comment: "Title displayed in the Rewind Site alert, should match Calypso")
+                                          comment: "Title displayed in the Restore Site alert, should match Calypso")
             let rewindDate = viewModel.mediumDateFormatterWithTime.string(from: activity.published)
-            let messageFormat = NSLocalizedString("Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then.",
+            let messageFormat = NSLocalizedString("Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost.",
                                                   comment: "Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso.")
             let message = String(format: messageFormat, rewindDate)
 
             let alertController = UIAlertController(title: title,
                                                     message: message,
                                                     preferredStyle: .alert)
+
             alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. A button title."))
-            alertController.addDestructiveActionWithTitle(NSLocalizedString("Confirm Rewind",
+            alertController.addDestructiveActionWithTitle(NSLocalizedString("Confirm",
                                                                             comment: "Confirm Rewind button title"),
                                                           handler: { action in
                                                             self.restoreSiteToRewindID(rewindID)
@@ -416,13 +431,15 @@ extension BaseActivityListViewController: ActivityPresenter {
 
         let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
         restoreOptionsVC.restoreStatusDelegate = self
+        restoreOptionsVC.presentedFrom = from ?? configuration.identifier
         let navigationVC = UINavigationController(rootViewController: restoreOptionsVC)
         self.present(navigationVC, animated: true)
     }
 
-    func presentBackupFor(activity: Activity) {
+    func presentBackupFor(activity: Activity, from: String? = nil) {
         let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
         backupOptionsVC.backupStatusDelegate = self
+        backupOptionsVC.presentedFrom = from ?? configuration.identifier
         let navigationVC = UINavigationController(rootViewController: backupOptionsVC)
         self.present(navigationVC, animated: true)
     }
@@ -494,13 +511,8 @@ extension BaseActivityListViewController: JetpackRestoreStatusViewControllerDele
 
 extension BaseActivityListViewController: JetpackBackupStatusViewControllerDelegate {
 
-    func didFinishViewing(_ controller: JetpackBackupStatusViewController) {
-        controller.dismiss(animated: true, completion: { [weak self] in
-            guard let self = self else {
-                return
-            }
-            // TODO: fetch backup status
-        })
+    func didFinishViewing() {
+        viewModel.refresh()
     }
 }
 

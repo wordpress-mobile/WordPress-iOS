@@ -120,14 +120,14 @@ private extension ReaderCrossPostCell {
         }
 
         let host = MediaHost(with: contentProvider) { error in
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
         }
 
         let mediaAuthenticator = MediaRequestAuthenticator()
         mediaAuthenticator.authenticatedRequest(for: url, from: host, onComplete: { [weak self] request in
             self?.blavatarImageView.af_setImage(withURLRequest: request, placeholderImage: placeholder)
         }) { [weak self] error in
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
             self?.blavatarImageView.image = placeholder
         }
     }

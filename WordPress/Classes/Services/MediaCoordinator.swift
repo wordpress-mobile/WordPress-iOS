@@ -715,7 +715,7 @@ extension MediaCoordinator {
             }
 
             self.cancelUploadAndDeleteMedia(media)
-            CrashLogging.logError(mediaError,
+            WordPressAppDelegate.crashLogging?.logError(mediaError,
                                   userInfo: ["description": "Deleting a media object that's failed to upload because of a missing local file."])
 
         }, for: nil)
