@@ -32,7 +32,7 @@ class BlogDetailHeaderView: UIView, BlogDetailHeader {
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
-    
+
     private let siteIconView: SiteIconView = {
         let view = SiteIconView(frame: .zero)
         return view
