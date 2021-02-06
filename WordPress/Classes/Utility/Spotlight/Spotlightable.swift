@@ -27,7 +27,7 @@ class SpotlightableButton: UIButton, Spotlightable {
         setTitle("", for: .normal)
         activityIndicator.startAnimating()
     }
-    
+
     func stopLoading() {
         activityIndicator.stopAnimating()
     }
@@ -36,12 +36,12 @@ class SpotlightableButton: UIButton, Spotlightable {
         let activityIndicator = UIActivityIndicatorView(style: .large)
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         addSubview(activityIndicator)
-        
+
         NSLayoutConstraint.activate([
             activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor)
         ])
-        
+
         return activityIndicator
     }()
 

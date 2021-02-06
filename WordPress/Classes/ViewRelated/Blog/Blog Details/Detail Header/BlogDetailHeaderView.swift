@@ -32,7 +32,7 @@ class BlogDetailHeaderView: UIView, BlogDetailHeader {
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
-
+    
     private let siteIconView: SiteIconView = {
         let view = SiteIconView(frame: .zero)
         return view
@@ -91,7 +91,7 @@ class BlogDetailHeaderView: UIView, BlogDetailHeader {
     @objc func toggleSpotlightOnSiteIcon() {
         siteIconView.spotlightIsShown = QuickStartTourGuide.shared.isCurrentElement(.siteIcon)
     }
-    
+
     @objc func updateLoadingTitle(isLoading: Bool) {
         isLoading ? titleButton.startLoading() : titleButton.stopLoading()
     }

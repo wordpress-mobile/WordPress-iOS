@@ -70,7 +70,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
         toggleSpotlightOnSiteIcon()
     }
-    
+
     func updateLoadingTitle(isLoading: Bool) {
         isLoading ? titleButton.startLoading() : titleButton.stopLoading()
     }

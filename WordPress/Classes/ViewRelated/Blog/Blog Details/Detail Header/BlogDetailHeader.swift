@@ -33,7 +33,7 @@ protocol BlogDetailHeader: NSObjectProtocol {
 
     @objc
     func toggleSpotlightOnSiteIcon()
-    
+
     @objc
     func updateLoadingTitle(isLoading: Bool)
 }
