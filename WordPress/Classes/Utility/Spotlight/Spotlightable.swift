@@ -23,6 +23,28 @@ class SpotlightableButton: UIButton, Spotlightable {
         }
     }
 
+    func startLoading() {
+        setTitle("", for: .normal)
+        activityIndicator.startAnimating()
+    }
+    
+    func stopLoading() {
+        activityIndicator.stopAnimating()
+    }
+
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(activityIndicator)
+        
+        NSLayoutConstraint.activate([
+            activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+        ])
+        
+        return activityIndicator
+    }()
+
     private func setupSpotlight() {
         spotlight?.removeFromSuperview()
 

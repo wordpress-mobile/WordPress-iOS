@@ -67,6 +67,7 @@ extension BlogDetailsViewController {
         // Save the old value in case we need to roll back
         let existingBlogTitle = blog.settings?.name ?? SiteTitleStrings.defaultSiteTitle
         blog.settings?.name = title
+        headerView.updateLoadingTitle(isLoading: true)
 
         let service = BlogService(managedObjectContext: context)
         service.updateSettings(for: blog, success: { [weak self] in
@@ -77,6 +78,7 @@ extension BlogDetailsViewController {
                                 feedbackType: .success)
             ActionDispatcher.global.dispatch(NoticeAction.post(notice))
 
+            self?.headerView.updateLoadingTitle(isLoading: false)
             self?.headerView.refreshSiteTitle()
         }, failure: { [weak self] error in
             self?.blog.settings?.name = existingBlogTitle
