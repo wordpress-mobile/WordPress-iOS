@@ -21,6 +21,12 @@ enum ActivityAction: Action {
     case rewindStatusUpdateFailed(site: JetpackSiteRef, error: Error)
     case rewindStatusUpdateTimedOut(site: JetpackSiteRef)
 
+    case refreshBackupStatus(site: JetpackSiteRef)
+    case backupStatusUpdated(site: JetpackSiteRef, status: JetpackBackup)
+    case backupStatusUpdateFailed(site: JetpackSiteRef, error: Error)
+    case backupStatusUpdateTimedOut(site: JetpackSiteRef)
+    case dismissBackupNotice(site: JetpackSiteRef, downloadID: Int)
+
     case refreshGroups(site: JetpackSiteRef, afterDate: Date?, beforeDate: Date?)
     case resetGroups(site: JetpackSiteRef)
 }
@@ -28,12 +34,15 @@ enum ActivityAction: Action {
 enum ActivityQuery {
     case activities(site: JetpackSiteRef)
     case restoreStatus(site: JetpackSiteRef)
+    case backupStatus(site: JetpackSiteRef)
 
     var site: JetpackSiteRef {
         switch self {
         case .activities(let site):
             return site
         case .restoreStatus(let site):
+            return site
+        case .backupStatus(let site):
             return site
         }
     }
@@ -51,8 +60,12 @@ struct ActivityStoreState {
     var rewindStatus = [JetpackSiteRef: RewindStatus]()
     var fetchingRewindStatus = [JetpackSiteRef: Bool]()
 
+    var backupStatus = [JetpackSiteRef: JetpackBackup]()
+    var fetchingBackupStatus = [JetpackSiteRef: Bool]()
+
     // This needs to be `fileprivate` because `DelayStateWrapper` is private.
     fileprivate var rewindStatusRetries = [JetpackSiteRef: DelayStateWrapper]()
+    fileprivate var backupStatusRetries = [JetpackSiteRef: DelayStateWrapper]()
 }
 
 
@@ -72,6 +85,8 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
 
     private let activityServiceRemote: ActivityServiceRemote?
 
+    private let backupService: JetpackBackupService
+
     /// When set to true, this store will only return items that are restorable
     var onlyRestorableItems = false
 
@@ -82,8 +97,11 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
         processQueries()
     }
 
-    init(dispatcher: ActionDispatcher = .global, activityServiceRemote: ActivityServiceRemote? = nil) {
+    init(dispatcher: ActionDispatcher = .global,
+         activityServiceRemote: ActivityServiceRemote? = nil,
+         backupService: JetpackBackupService? = nil) {
         self.activityServiceRemote = activityServiceRemote
+        self.backupService = backupService ?? JetpackBackupService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         super.init(initialState: ActivityStoreState(), dispatcher: dispatcher)
     }
 
@@ -96,10 +114,12 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
             transaction { state in
                 state.activities = [:]
                 state.rewindStatus = [:]
+                state.backupStatus = [:]
                 state.rewindStatusRetries = [:]
                 state.lastFetch = [:]
                 state.fetchingActivities = [:]
                 state.fetchingRewindStatus = [:]
+                state.fetchingBackupStatus = [:]
             }
             return
         }
@@ -116,6 +136,12 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
                 fetchRewindStatus(site: $0)
         }
 
+        // Fetching Backup Status
+        sitesStatusesToFetch
+            .filter { state.fetchingBackupStatus[$0] != true }
+            .forEach {
+                fetchBackupStatus(site: $0)
+        }
     }
     private var sitesToFetch: [JetpackSiteRef] {
         return activeQueries
@@ -135,6 +161,8 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
         return activeQueries
             .filter {
                 if case .restoreStatus = $0 {
+                    return true
+                } else if case .backupStatus = $0 {
                     return true
                 } else {
                     return false
@@ -203,6 +231,25 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
             refreshGroups(site: site, afterDate: afterDate, beforeDate: beforeDate)
         case .resetGroups(let site):
             resetGroups(site: site)
+        case .refreshBackupStatus(let site):
+            fetchBackupStatus(site: site)
+        case .backupStatusUpdated(let site, let status):
+            backupStatusUpdated(site: site, status: status)
+        case .backupStatusUpdateFailed(let site, _):
+            delayedRetryFetchBackupStatus(site: site)
+        case .backupStatusUpdateTimedOut(let site):
+            transaction { state in
+                state.fetchingBackupStatus[site] = false
+                state.backupStatusRetries[site] = nil
+            }
+
+            if shouldPostStateUpdates(for: site) {
+                let notice = Notice(title: NSLocalizedString("Your backup is taking longer than usual, please check again in a few minutes.",
+                                                             comment: "Text displayed when a site backup takes too long."))
+                actionDispatcher.dispatch(NoticeAction.post(notice))
+            }
+        case .dismissBackupNotice(let site, let downloadID):
+            dismissBackupNotice(site: site, downloadID: downloadID)
         }
     }
 }
@@ -224,6 +271,10 @@ extension ActivityStore {
         return state.rewindStatus[site] ?? nil
     }
 
+    func getBackupStatus(site: JetpackSiteRef) -> JetpackBackup? {
+        return state.backupStatus[site] ?? nil
+    }
+
     func isRestoreAlreadyRunning(site: JetpackSiteRef) -> Bool {
         let currentStatus = getCurrentRewindStatus(site: site)
         let restoreStatus = currentStatus?.restore?.status
@@ -240,6 +291,20 @@ extension ActivityStore {
             },
             failure: { [actionDispatcher] error in
                 actionDispatcher.dispatch(ActivityAction.rewindStatusUpdateFailed(site: site, error: error))
+        })
+    }
+
+    func fetchBackupStatus(site: JetpackSiteRef) {
+        state.fetchingBackupStatus[site] = true
+
+        backupService.getAllBackupStatus(for: site, success: { [actionDispatcher] backupsStatus in
+            guard let status = backupsStatus.first else {
+                return
+            }
+
+            actionDispatcher.dispatch(ActivityAction.backupStatusUpdated(site: site, status: status))
+        }, failure: { [actionDispatcher] error in
+            actionDispatcher.dispatch(ActivityAction.backupStatusUpdateFailed(site: site, error: error))
         })
     }
 
@@ -344,12 +409,12 @@ private extension ActivityStore {
 
         let notice: Notice
         let title = NSLocalizedString("Your site is being restored",
-                                      comment: "Title of a message displayed when user starts a rewind operation")
+                                      comment: "Title of a message displayed when user starts a restore operation")
 
         if let activity = getActivity(site: site, rewindID: rewindID) {
             let formattedString = mediumString(from: activity.published, adjustingTimezoneTo: site)
 
-            let message = String(format: NSLocalizedString("Rewinding to %@", comment: "Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date."), formattedString)
+            let message = String(format: NSLocalizedString("Restoring to %@", comment: "Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date."), formattedString)
             notice = Notice(title: title, message: message)
         } else {
             notice = Notice(title: title)
@@ -371,7 +436,7 @@ private extension ActivityStore {
         if let activity = getActivity(site: site, rewindID: restoreID) {
             let formattedString = mediumString(from: activity.published, adjustingTimezoneTo: site)
 
-            let message = String(format: NSLocalizedString("Rewound to %@", comment: "Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date."), formattedString)
+            let message = String(format: NSLocalizedString("Restored to %@", comment: "Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date."), formattedString)
             notice = Notice(title: title, message: message)
         } else {
             notice = Notice(title: title)
@@ -430,6 +495,38 @@ private extension ActivityStore {
         state.rewindStatusRetries[site] = existingWrapper
     }
 
+    func delayedRetryFetchBackupStatus(site: JetpackSiteRef) {
+        guard sitesStatusesToFetch.contains(site) == false else {
+            _ = DispatchDelayedAction(delay: .seconds(Constants.delaySequence.last!)) { [weak self] in
+                self?.fetchBackupStatus(site: site)
+            }
+            return
+        }
+
+        guard var existingWrapper = state.backupStatusRetries[site] else {
+            let newDelayWrapper = DelayStateWrapper(delaySequence: Constants.delaySequence) { [weak self] in
+                self?.fetchBackupStatus(site: site)
+            }
+
+            state.backupStatusRetries[site] = newDelayWrapper
+            return
+        }
+
+        guard existingWrapper.retryAttempt < Constants.maxRetries else {
+            existingWrapper.delayedRetryAction.cancel()
+            actionDispatcher.dispatch(ActivityAction.backupStatusUpdateTimedOut(site: site))
+            return
+        }
+
+        existingWrapper.increment()
+        state.backupStatusRetries[site] = existingWrapper
+    }
+
+    func dismissBackupNotice(site: JetpackSiteRef, downloadID: Int) {
+        backupService.dismissBackupNotice(site: site, downloadID: downloadID)
+        state.backupStatus[site] = nil
+    }
+
     func rewindStatusUpdated(site: JetpackSiteRef, status: RewindStatus) {
         state.rewindStatus[site] = status
 
@@ -448,6 +545,14 @@ private extension ActivityStore {
             if shouldPostStateUpdates(for: site) {
                 actionDispatcher.dispatch(ActivityAction.rewindFailed(site: site, restoreID: restoreStatus.id))
             }
+        }
+    }
+
+    func backupStatusUpdated(site: JetpackSiteRef, status: JetpackBackup) {
+        state.backupStatus[site] = status
+
+        if let progress = status.progress, progress > 0 {
+            delayedRetryFetchBackupStatus(site: site)
         }
     }
 

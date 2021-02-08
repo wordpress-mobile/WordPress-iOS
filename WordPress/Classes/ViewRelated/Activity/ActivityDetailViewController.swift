@@ -58,21 +58,21 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         setupViews()
         setupText()
         setupAccesibility()
-        WPAnalytics.track(.activityLogDetailViewed)
+        WPAnalytics.track(.activityLogDetailViewed, withProperties: ["source": presentedFrom()])
     }
 
     @IBAction func rewindButtonTapped(sender: UIButton) {
         guard let activity = activity else {
             return
         }
-        presenter?.presentRestoreFor(activity: activity)
+        presenter?.presentRestoreFor(activity: activity, from: "\(presentedFrom())/detail")
     }
 
     @IBAction func backupButtonTapped(sender: UIButton) {
         guard let activity = activity else {
             return
         }
-        presenter?.presentBackupFor(activity: activity)
+        presenter?.presentBackupFor(activity: activity, from: "\(presentedFrom())/detail")
     }
 
     private func setupLabelStyles() {
@@ -154,7 +154,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
                                                     for: .normal)
         }
 
-        let dateFormatter = ActivityDateFormatting.longDateFormatterWithoutTime(for: site)
+        let dateFormatter = ActivityDateFormatting.longDateFormatter(for: site, withTime: false)
         dateLabel.text = dateFormatter.string(from: activity.published)
 
         let timeFormatter = DateFormatter()
@@ -218,6 +218,16 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
             setupLabelStyles()
             setupAccesibility()
+        }
+    }
+
+    private func presentedFrom() -> String {
+        if presenter is JetpackActivityLogViewController {
+            return "activity_log"
+        } else if presenter is BackupListViewController {
+            return "backup"
+        } else {
+            return "unknown"
         }
     }
 

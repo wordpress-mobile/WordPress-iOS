@@ -116,7 +116,7 @@ import AutomatticTracks
         }
 
         if debugKey == ApiCredentials.debuggingKey(), debugType == "force_crash" {
-            CrashLogging.crash()
+            WordPressAppDelegate.crashLogging?.crash()
         }
 
         return true
