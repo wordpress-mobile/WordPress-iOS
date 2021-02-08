@@ -1078,7 +1078,6 @@ private extension StatsInsightsStore {
             return
         }
 
-
         NotificationCenter.default.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged,
                                                object: nil,
                                                queue: nil) { notification in
