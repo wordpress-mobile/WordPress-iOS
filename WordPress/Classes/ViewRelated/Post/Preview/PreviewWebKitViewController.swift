@@ -188,7 +188,7 @@ class PreviewWebKitViewController: WebKitViewController {
     @objc private func previewButtonPressed(_ sender: UIBarButtonItem) {
         let popoverContentController = PreviewDeviceSelectionViewController()
         popoverContentController.selectedOption = selectedDevice
-        popoverContentController.dismissHandler = { [weak self] option in
+        popoverContentController.onDeviceChange = { [weak self] option in
             self?.selectedDevice = option
         }
 

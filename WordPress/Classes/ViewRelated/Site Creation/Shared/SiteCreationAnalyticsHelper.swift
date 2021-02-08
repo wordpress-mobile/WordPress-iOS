@@ -2,11 +2,18 @@ import Foundation
 import WordPressKit
 
 class SiteCreationAnalyticsHelper {
+    typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice
+
     private static let siteDesignKey = "template"
+    private static let previewModeKey = "preview_mode"
 
     // MARK: - Site Design
-    static func trackSiteDesignViewed() {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignViewed)
+    static func trackSiteDesignViewed(previewMode: PreviewDevice) {
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignViewed, withProperties: commonProperties(previewMode))
+    }
+
+    static func trackSiteDesignThumbnailModeButtonTapped(_ previewMode: PreviewDevice) {
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignThumbnailModeButtonTapped, withProperties: commonProperties(previewMode))
     }
 
     static func trackSiteDesignSkipped() {
@@ -18,16 +25,24 @@ class SiteCreationAnalyticsHelper {
     }
 
     // MARK: - Site Design Preview
-    static func trackSiteDesignPreviewViewed(_ siteDesign: RemoteSiteDesign) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewViewed, withProperties: commonProperties(siteDesign))
+    static func trackSiteDesignPreviewViewed(siteDesign: RemoteSiteDesign, previewMode: PreviewDevice) {
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewViewed, withProperties: commonProperties(siteDesign, previewMode))
     }
 
-    static func trackSiteDesignPreviewLoading(_ siteDesign: RemoteSiteDesign) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewLoading, withProperties: commonProperties(siteDesign))
+    static func trackSiteDesignPreviewLoading(siteDesign: RemoteSiteDesign, previewMode: PreviewDevice) {
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewLoading, withProperties: commonProperties(siteDesign, previewMode))
     }
 
-    static func trackSiteDesignPreviewLoaded(_ siteDesign: RemoteSiteDesign) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewLoaded, withProperties: commonProperties(siteDesign))
+    static func trackSiteDesignPreviewLoaded(siteDesign: RemoteSiteDesign, previewMode: PreviewDevice) {
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewLoaded, withProperties: commonProperties(previewMode, siteDesign))
+    }
+
+    static func trackSiteDesignPreviewModeButtonTapped(_ previewMode: PreviewDevice) {
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewModeButtonTapped, withProperties: commonProperties(previewMode))
+    }
+
+    static func trackSiteDesignPreviewModeChanged(_ previewMode: PreviewDevice) {
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignPreviewModeChanged, withProperties: commonProperties(previewMode))
     }
 
     // MARK: - Final Assembly
@@ -61,8 +76,18 @@ class SiteCreationAnalyticsHelper {
     }
 
     // MARK: - Common
-    private static func commonProperties(_ siteDesign: RemoteSiteDesign?) -> [AnyHashable: Any] {
-        guard let siteDesign = siteDesign else { return [:] }
-        return  [siteDesignKey: siteDesign.slug]
+    private static func commonProperties(_ properties: Any?...) -> [AnyHashable: Any] {
+        var result: [AnyHashable: Any] = [:]
+
+        for property: Any? in properties {
+            if let siteDesign = property as? RemoteSiteDesign {
+                result.merge([siteDesignKey: siteDesign.slug]) { (_, new) in new }
+            }
+            if let previewMode = property as? PreviewDevice {
+                result.merge([previewModeKey: previewMode.rawValue]) { (_, new) in new }
+            }
+        }
+
+        return result
     }
 }

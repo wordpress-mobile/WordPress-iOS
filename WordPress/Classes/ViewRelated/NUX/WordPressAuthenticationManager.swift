@@ -257,9 +257,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         epilogueViewController.onDismiss = { [weak self] in
             onDismiss()
 
-            if navigationController == UIApplication.shared.keyWindow?.rootViewController {
-                self?.windowManager.dismissFullscreenSignIn()
-            }
+            self?.windowManager.dismissFullscreenSignIn()
         }
 
         navigationController.pushViewController(epilogueViewController, animated: true)
