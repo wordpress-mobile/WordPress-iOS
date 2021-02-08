@@ -3,7 +3,7 @@ import SwiftUI
 
 
 struct WordPressHomeWidgetAllTime: Widget {
-    /// - TODO: ALLTIMEWIDGET - Add tracks here
+    private let tracks = Tracks(appGroupName: WPAppGroupName)
 
     private let placeholderContent = HomeWidgetAllTimeData(siteID: 0,
                                                         siteName: "My WordPress Site",
@@ -22,7 +22,9 @@ struct WordPressHomeWidgetAllTime: Widget {
             provider: SiteListProvider<HomeWidgetAllTimeData>(service: StatsWidgetsService(), placeholderContent: placeholderContent)
         ) { (entry: StatsWidgetEntry) -> StatsWidgetsView in
 
-            /// - TODO: ALLTIMEWIDGET - Add tracks call here
+            defer {
+                tracks.trackWidgetUpdated(widgetKind: WPHomeWidgetAllTimeKind, widgetCountKey: WPHomeWidgetAllTimeProperties)
+            }
 
             return StatsWidgetsView(timelineEntry: entry)
         }

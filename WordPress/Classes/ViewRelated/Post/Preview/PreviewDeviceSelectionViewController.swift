@@ -1,10 +1,10 @@
 import Foundation
 
 class PreviewDeviceSelectionViewController: UIViewController {
-    enum PreviewDevice: CaseIterable {
-        case desktop
-        case tablet
-        case mobile
+    enum PreviewDevice: String, CaseIterable {
+        case desktop = "desktop"
+        case tablet = "tablet"
+        case mobile = "mobile"
 
         static var `default`: PreviewDevice {
             return UIDevice.current.userInterfaceIdiom == .pad ? .tablet : .mobile
@@ -43,7 +43,7 @@ class PreviewDeviceSelectionViewController: UIViewController {
 
     var selectedOption: PreviewDevice = PreviewDevice.default
 
-    var dismissHandler: ((PreviewDevice) -> Void)?
+    var onDeviceChange: ((PreviewDevice) -> Void)?
 
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -134,7 +134,10 @@ extension PreviewDeviceSelectionViewController: UITableViewDataSource {
 
 extension PreviewDeviceSelectionViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        dismissHandler?(PreviewDevice.available[indexPath.row])
+        let newlySelectedDeviceMode = PreviewDevice.available[indexPath.row]
+        if newlySelectedDeviceMode != selectedOption {
+            onDeviceChange?(newlySelectedDeviceMode)
+        }
         dismiss(animated: true, completion: nil)
     }
 }

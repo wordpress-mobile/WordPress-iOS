@@ -1,6 +1,6 @@
  import SwiftUI
 
- struct FourStatsView: View {
+ struct MultiStatsView: View {
     let content: HomeWidgetData
     let widgetTitle: LocalizedStringKey
     let upperLeftTitle: LocalizedStringKey

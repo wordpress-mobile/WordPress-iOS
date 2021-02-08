@@ -21,6 +21,7 @@ struct JetpackScanThreatViewModel {
     let technicalDetailsDescription: String
     let fileName: String?
     let fileNameBackgroundColor: UIColor
+    let fileNameColor: UIColor
     let fileNameFont: UIFont
 
     // Threat Detail Action
@@ -92,6 +93,7 @@ struct JetpackScanThreatViewModel {
         fileName = threat.fileName
         fileNameBackgroundColor = Constants.colors.normal.background
         fileNameFont = Constants.monospacedFont
+        fileNameColor = Constants.colors.normal.text
 
         // Threat Details Action
         fixActionTitle = Self.fixActionTitle(for: threat)
@@ -366,20 +368,20 @@ struct JetpackScanThreatViewModel {
     }
 
     private struct Constants {
-        static let monospacedFont = UIFont.monospacedSystemFont(ofSize: 13, weight: .semibold)
+        static let monospacedFont = WPStyleGuide.monospacedSystemFontForTextStyle(.footnote)
 
         struct colors {
             struct normal {
-                static let text = UIColor(red: 0.17, green: 0.20, blue: 0.22, alpha: 1.00)
-                static let background = UIColor(red: 0.96, green: 0.97, blue: 0.97, alpha: 1.00)
-                static let numberText = UIColor(red: 0.39, green: 0.41, blue: 0.44, alpha: 1.00)
-                static let numberBackground = UIColor(red: 0.76, green: 0.77, blue: 0.78, alpha: 1.00)
+                static let text = UIColor.muriel(color: .gray, .shade100)
+                static let background = UIColor.muriel(color: .gray, .shade5)
+                static let numberText = UIColor.muriel(color: .gray, .shade100)
+                static let numberBackground = UIColor.muriel(color: .gray, .shade20)
             }
 
             struct highlighted {
                 static let text = UIColor.white
-                static let background = UIColor(red: 0.84, green: 0.21, blue: 0.22, alpha: 1.00)
-                static let numberBackground = UIColor(red: 0.95, green: 0.85, blue: 0.85, alpha: 1.00)
+                static let background = UIColor.muriel(color: .error, .shade50)
+                static let numberBackground = UIColor.muriel(color: .error, .shade5)
             }
         }
     }
@@ -476,5 +478,17 @@ private extension JetpackThreatContext {
 private extension String {
     func fileName() -> String {
         return (self as NSString).lastPathComponent
+    }
+}
+
+
+private extension WPStyleGuide {
+    static func monospacedSystemFontForTextStyle(_ style: UIFont.TextStyle,
+                                          fontWeight weight: UIFont.Weight = .regular) -> UIFont {
+        guard let fontDescriptor = WPStyleGuide.fontForTextStyle(style, fontWeight: weight).fontDescriptor.withDesign(.monospaced) else {
+            return UIFont.monospacedSystemFont(ofSize: 13, weight: weight)
+        }
+
+        return UIFontMetrics.default.scaledFont(for: UIFont(descriptor: fontDescriptor, size: 0.0))
     }
 }

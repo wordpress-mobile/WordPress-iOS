@@ -20,6 +20,9 @@ class JetpackScanThreatCell: UITableViewCell, NibReusable {
         iconImageView.isHidden = model.isFixing
         iconBackgroundImageView.isHidden = model.isFixing
 
+        selectionStyle = model.isFixing ? .none : .default
+        accessoryType = model.isFixing ? .none : .disclosureIndicator
+
         if model.isFixing {
             activityIndicator.startAnimating()
         } else {

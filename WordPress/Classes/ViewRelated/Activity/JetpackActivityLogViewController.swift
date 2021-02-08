@@ -3,6 +3,7 @@ import UIKit
 class JetpackActivityLogViewController: BaseActivityListViewController {
     override init(site: JetpackSiteRef, store: ActivityStore, isFreeWPCom: Bool = false) {
         let activityListConfiguration = ActivityListConfiguration(
+            identifier: "activity_log",
             title: NSLocalizedString("Activity", comment: "Title for the activity list"),
             loadingTitle: NSLocalizedString("Loading Activities...", comment: "Text displayed while loading the activity feed for a site"),
             noActivitiesTitle: NSLocalizedString("No activity yet", comment: "Title for the view when there aren't any Activities to display in the Activity Log"),

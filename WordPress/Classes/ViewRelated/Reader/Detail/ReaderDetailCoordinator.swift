@@ -398,7 +398,7 @@ class ReaderDetailCoordinator {
                                      completion: { [weak self] in
                                          self?.view?.updateHeader()
                                      },
-                                     failure: { [weak self] in
+                                     failure: { [weak self] _ in
                                          self?.view?.updateHeader()
                                      })
     }

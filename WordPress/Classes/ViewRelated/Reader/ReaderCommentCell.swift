@@ -252,12 +252,12 @@ class ReaderCommentCell: UITableViewCell {
         if let blog = comment?.blog {
             return MediaHost(with: blog, failure: { error in
                 // We'll log the error, so we know it's there, but we won't halt execution.
-                CrashLogging.logError(error)
+                WordPressAppDelegate.crashLogging?.logError(error)
             })
         } else if let post = comment?.post as? ReaderPost, post.isPrivate() {
             return MediaHost(with: post, failure: { error in
                 // We'll log the error, so we know it's there, but we won't halt execution.
-                CrashLogging.logError(error)
+                WordPressAppDelegate.crashLogging?.logError(error)
             })
         }
 
