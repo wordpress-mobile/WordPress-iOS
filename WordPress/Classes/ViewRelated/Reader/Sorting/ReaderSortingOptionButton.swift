@@ -40,6 +40,8 @@ class ReaderSortingOptionButton: UIControl {
         static let bottom: CGFloat = -16.0
         static let chevronLeading: CGFloat = 6.0
         static let chevronTrailing: CGFloat = -16.0
+        // TODO: check if we can use iOS system colors here
+        static let iconsTintColor: UIColor = UIColor(light: UIColor(hexString: "4D4D4D"), dark: UIColor(hexString: "BFBFBF"))
     }
 
     var sourceView: UIView {
@@ -48,7 +50,7 @@ class ReaderSortingOptionButton: UIControl {
 
     private lazy var iconView: UIImageView = {
         let view = UIImageView()
-        view.tintColor = UIColor(light: UIColor(hexString: "4D4D4D"), dark: UIColor(hexString: "BFBFBF"))
+        view.tintColor = Constants.iconsTintColor
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -64,7 +66,7 @@ class ReaderSortingOptionButton: UIControl {
     private lazy var chevronView: UIImageView = {
         let view = UIImageView()
         view.image = .gridicon(.chevronDown)
-        view.tintColor = UIColor(light: UIColor(hexString: "4D4D4D"), dark: UIColor(hexString: "BFBFBF"))
+        view.tintColor = Constants.iconsTintColor
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
