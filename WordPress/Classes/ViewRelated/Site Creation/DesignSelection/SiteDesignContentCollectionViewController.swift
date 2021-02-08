@@ -76,7 +76,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         configureCloseButton()
         configureSkipButton()
         configurePreviewDeviceButton()
-        SiteCreationAnalyticsHelper.trackSiteDesignViewed()
+        SiteCreationAnalyticsHelper.trackSiteDesignViewed(previewMode: selectedPreviewDevice)
         navigationItem.backButtonTitle = NSLocalizedString("Design", comment: "Shortened version of the main title to be used in back navigation")
     }
 
@@ -151,10 +151,13 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     @objc private func previewDeviceButtonTapped() {
+        SiteCreationAnalyticsHelper.trackSiteDesignThumbnailModeButtonTapped(selectedPreviewDevice)
         let popoverContentController = PreviewDeviceSelectionViewController()
         popoverContentController.selectedOption = selectedPreviewDevice
-        popoverContentController.dismissHandler = { [weak self] device in
-            self?.selectedPreviewDevice = device
+        popoverContentController.onDeviceChange = { [weak self] device in
+            guard let self = self else { return }
+            SiteCreationAnalyticsHelper.trackSiteDesignPreviewModeChanged(device)
+            self.selectedPreviewDevice = device
         }
 
         popoverContentController.modalPresentationStyle = .popover

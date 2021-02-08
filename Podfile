@@ -16,7 +16,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-    pod 'WordPressShared', '~> 1.14.0'
+    pod 'WordPressShared', '~> 1.15.0-beta.1'
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
@@ -155,7 +155,7 @@ target 'WordPress' do
     ## =====================
     ##
     #gutenberg  :tag => 'v1.46.0'
-    gutenberg  :commit => '1550a22'
+    gutenberg  :commit => '65e0e25'
 
     ## Third party libraries
     ## =====================
