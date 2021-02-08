@@ -115,11 +115,14 @@ struct PostNoticeViewModel {
     }
 
     private func isFirstTimePublish(_ post: AbstractPost) -> Bool {
-        guard let publishDate = post.dateCreated else {
+        guard let publishDate = post.dateCreated, let modifiedDate = post.dateModified else {
             return false
         }
-        let lastMinute = Calendar.current.date(byAdding: .minute, value: -1, to: Date()) ?? Date()
-        return publishDate > lastMinute
+        let publishDateWithThreshold = Calendar.current.date(byAdding: .second, value: 5, to: publishDate) ?? publishDate
+        if publishDateWithThreshold < modifiedDate {
+            return false
+        }
+        return true
     }
 
     private var failureTitle: String {
