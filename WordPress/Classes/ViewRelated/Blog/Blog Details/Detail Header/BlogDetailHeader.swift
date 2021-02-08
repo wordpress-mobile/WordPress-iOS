@@ -35,5 +35,5 @@ protocol BlogDetailHeader: NSObjectProtocol {
     func toggleSpotlightOnSiteIcon()
 
     @objc
-    func updateLoadingTitle(isLoading: Bool)
+    func setTitleLoading(_ isLoading: Bool)
 }

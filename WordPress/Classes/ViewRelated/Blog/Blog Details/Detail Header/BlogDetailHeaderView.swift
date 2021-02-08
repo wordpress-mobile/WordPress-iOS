@@ -92,7 +92,7 @@ class BlogDetailHeaderView: UIView, BlogDetailHeader {
         siteIconView.spotlightIsShown = QuickStartTourGuide.shared.isCurrentElement(.siteIcon)
     }
 
-    @objc func updateLoadingTitle(isLoading: Bool) {
+    @objc func setTitleLoading(_ isLoading: Bool) {
         isLoading ? titleButton.startLoading() : titleButton.stopLoading()
     }
 

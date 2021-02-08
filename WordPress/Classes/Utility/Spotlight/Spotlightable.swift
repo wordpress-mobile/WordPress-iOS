@@ -7,6 +7,7 @@ protocol Spotlightable: UIView {
 class SpotlightableButton: UIButton, Spotlightable {
 
     var spotlight: QuickStartSpotlightView?
+    var originalTtile: String?
 
     var shouldShowSpotlight: Bool {
         get {
@@ -24,12 +25,14 @@ class SpotlightableButton: UIButton, Spotlightable {
     }
 
     func startLoading() {
+        originalTtile = titleLabel?.text
         setTitle("", for: .normal)
         activityIndicator.startAnimating()
     }
 
     func stopLoading() {
         activityIndicator.stopAnimating()
+        setTitle(originalTtile, for: .normal)
     }
 
     private lazy var activityIndicator: UIActivityIndicatorView = {
