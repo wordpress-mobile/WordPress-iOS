@@ -42,6 +42,8 @@ class ReaderSortingOptionButton: UIControl {
         static let chevronTrailing: CGFloat = -16.0
         // TODO: check if we can use iOS system colors here
         static let iconsTintColor: UIColor = UIColor(light: UIColor(hexString: "4D4D4D"), dark: UIColor(hexString: "BFBFBF"))
+        static let isHighlightedAlpha: CGFloat = 0.5
+        static let isNotHighlightedAlpha: CGFloat = 1
     }
 
     var sourceView: UIView {
@@ -80,7 +82,7 @@ class ReaderSortingOptionButton: UIControl {
     // TODO: check how should it behave when touched/highlighted
     override var isHighlighted: Bool {
         didSet {
-            alpha = isHighlighted ? 0.5 : 1.0
+            alpha = isHighlighted ? Constants.isHighlightedAlpha : Constants.isNotHighlightedAlpha
         }
     }
 
