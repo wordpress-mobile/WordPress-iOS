@@ -303,7 +303,7 @@ struct ReaderNotificationKeys {
     class func dispatchToggleSeenMessage(post: ReaderPost, success: Bool) {
         var notice: Notice {
             if success {
-                return Notice(title: post.isSeen ? NoticeMessages.seenSuccess: NoticeMessages.unseenSuccess)
+                return Notice(title: post.isSeen ? NoticeMessages.seenSuccess : NoticeMessages.unseenSuccess)
             }
             return Notice(title: post.isSeen ? NoticeMessages.unseenFail : NoticeMessages.seenFail)
         }
@@ -336,7 +336,7 @@ struct ReaderNotificationKeys {
     class func dispatchToggleNotificationMessage(topic: ReaderSiteTopic, success: Bool) {
         var notice: Notice {
             if success {
-                return Notice(title: topic.isSubscribedForPostNotifications ? NoticeMessages.notificationOnSuccess: NoticeMessages.notificationOffSuccess)
+                return Notice(title: topic.isSubscribedForPostNotifications ? NoticeMessages.notificationOnSuccess : NoticeMessages.notificationOffSuccess)
             }
             return Notice(title: topic.isSubscribedForPostNotifications ? NoticeMessages.notificationOffFail : NoticeMessages.notificationOnFail)
         }
