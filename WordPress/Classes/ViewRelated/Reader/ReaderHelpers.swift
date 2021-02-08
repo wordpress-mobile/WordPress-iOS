@@ -301,34 +301,64 @@ struct ReaderNotificationKeys {
     // MARK: ActionDispatcher Notification helper
 
     class func dispatchToggleSeenMessage(post: ReaderPost, success: Bool) {
-        if success {
-            dispatchNotice(Notice(title: post.isSeen ? NoticeMessages.seenSuccess: NoticeMessages.unseenSuccess))
-        } else {
-            dispatchNotice(Notice(title: post.isSeen ? NoticeMessages.unseenFail : NoticeMessages.seenFail))
+        var notice: Notice {
+            if success {
+                return Notice(title: post.isSeen ? NoticeMessages.seenSuccess : NoticeMessages.unseenSuccess)
+            }
+            return Notice(title: post.isSeen ? NoticeMessages.unseenFail : NoticeMessages.seenFail)
         }
+
+        dispatchNotice(notice)
     }
 
     class func dispatchToggleFollowSiteMessage(post: ReaderPost, success: Bool) {
+        dispatchToggleFollowSiteMessage(siteTitle: post.blogNameForDisplay(), siteID: post.siteID, following: post.isFollowing, success: success)
+    }
+
+    class func dispatchToggleFollowSiteMessage(topic: ReaderSiteTopic, success: Bool) {
+        dispatchToggleFollowSiteMessage(siteTitle: topic.title, siteID: topic.siteID, following: topic.following, success: success)
+    }
+
+    private class func dispatchToggleFollowSiteMessage(siteTitle: String, siteID: NSNumber, following: Bool, success: Bool) {
+        var notice: Notice
+
         if success {
-            if !post.isFollowing {
-                // Following is handled by dispatchSubscribingNotificationNotice.
-                dispatchNotice(Notice(title: NoticeMessages.unfollowSuccess, message: post.blogNameForDisplay()))
-            }
+            notice = following ?
+                followedSiteNotice(siteTitle: siteTitle, siteID: siteID) :
+                Notice(title: NoticeMessages.unfollowSuccess, message: siteTitle)
         } else {
-            dispatchNotice(Notice(title: post.isFollowing ? NoticeMessages.unfollowFail : NoticeMessages.followFail))
+            notice = Notice(title: following ? NoticeMessages.unfollowFail : NoticeMessages.followFail)
         }
+
+        dispatchNotice(notice)
     }
 
     class func dispatchToggleNotificationMessage(topic: ReaderSiteTopic, success: Bool) {
-        if success {
-            dispatchNotice(Notice(title: topic.isSubscribedForPostNotifications ? NoticeMessages.notificationOnSuccess: NoticeMessages.notificationOffSuccess))
-        } else {
-            dispatchNotice(Notice(title: topic.isSubscribedForPostNotifications ? NoticeMessages.notificationOffFail : NoticeMessages.notificationOnFail))
+        var notice: Notice {
+            if success {
+                return Notice(title: topic.isSubscribedForPostNotifications ? NoticeMessages.notificationOnSuccess : NoticeMessages.notificationOffSuccess)
+            }
+            return Notice(title: topic.isSubscribedForPostNotifications ? NoticeMessages.notificationOffFail : NoticeMessages.notificationOnFail)
         }
+
+        dispatchNotice(notice)
     }
 
     private class func dispatchNotice(_ notice: Notice) {
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    private class func followedSiteNotice(siteTitle: String, siteID: NSNumber) -> Notice {
+        let notice = Notice(title: String(format: NoticeMessages.followSuccess, siteTitle),
+                            message: NoticeMessages.enableNotifications,
+                            actionTitle: NoticeMessages.enableButtonLabel) { _ in
+            let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            service.toggleSubscribingNotifications(for: siteID.intValue, subscribe: true, {
+                WPAnalytics.track(.readerListNotificationEnabled)
+            })
+        }
+
+        return notice
     }
 
     private struct NoticeMessages {
@@ -336,6 +366,7 @@ struct ReaderNotificationKeys {
         static let unseenFail = NSLocalizedString("Unable to mark post unseen", comment: "Notice title when updating a post's unseen status failed.")
         static let seenSuccess = NSLocalizedString("Marked post as seen", comment: "Notice title when updating a post's seen status succeeds.")
         static let unseenSuccess = NSLocalizedString("Marked post as unseen", comment: "Notice title when updating a post's unseen status succeeds.")
+        static let followSuccess = NSLocalizedString("Following %1$@", comment: "Notice title when following a site succeeds. %1$@ is a placeholder for the site name.")
         static let unfollowSuccess = NSLocalizedString("Unfollowed site", comment: "Notice title when unfollowing a site succeeds.")
         static let followFail = NSLocalizedString("Unable to follow site", comment: "Notice title when following a site fails.")
         static let unfollowFail = NSLocalizedString("Unable to unfollow site", comment: "Notice title when unfollowing a site fails.")
@@ -343,6 +374,8 @@ struct ReaderNotificationKeys {
         static let notificationOffFail = NSLocalizedString("Unable to turn off site notifications", comment: "Notice title when turning site notifications off fails.")
         static let notificationOnSuccess = NSLocalizedString("Turned on site notifications", comment: "Notice title when turning site notifications on succeeds.")
         static let notificationOffSuccess = NSLocalizedString("Turned off site notifications", comment: "Notice title when turning site notifications off succeeds.")
+        static let enableNotifications = NSLocalizedString("Enable site notifications?", comment: "Message prompting user to enable site notifications.")
+        static let enableButtonLabel = NSLocalizedString("Enable", comment: "Button title for the enable site notifications action.")
     }
 }
 
