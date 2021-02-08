@@ -1,15 +1,9 @@
-Quali sono le novità dell'ultimo rilascio?
+Su questa versione:
 
-Editor a blocchi
+Nota: questa sarà l'ultima versione dell'app a supportare iOS 12. A partire dalla versione 16.7, l'app richiederà iOS 13 o versione superiore.
 
-– Quando lavori con i blocchi, potresti notare alcune modifiche. Ora puoi spostare i blocchi verso l'alto e verso il basso nell'articolo o nella pagina tenendo premuti a lungo i pulsanti "Su" e Giù". Abbiamo anche aggiunto il supporto per gli allineamenti Wide e Full width nel blocco Colonne e abbiamo reso più semplice scegliere e impostare un URL per un'immagine nel blocco Immagine.
+Visualizza le statistiche sulla schermata Home: mostra le statistiche del sito WordPress per la giornata sulla schermata Home del tuo dispositivo iOS 14 con i nuovi widget Oggi.
 
-– Usi P2 per collaborare con il tuo team? Durante la pubblicazione di un nuovo articolo, digita il carattere + per contrassegnare con un tag un altro P2 e pubblicare "con una pubblicazione incrociata" sul sito, avvisando gli utenti del nuovo articolo.
+Monitora l'attività del tuo sito: filtra e visualizza nel log attività gli elementi come backup, aggiornamenti di plugin, articoli e pagine pubblicate, per intervallo di date e tipo di attività.
 
-Varie correzioni e aggiornamenti:
-
-– La funzionalità Scegli un dominio ora restituisce più opzioni nei risultati di ricerca. Provala.
-
-– Nell'elenco delle pagine del sito, puoi duplicare rapidamente una pagina. In questo modo puoi risparmiare tempo durante la creazione dei contenuti.
-
-– Altri aggiornamenti, tra cui le modifiche al Reader, migliorano l'esperienza generale con l'app.
+Familiarizza con la tua app: scopri le funzionalità presenti nell'app con un tour di avvio rapido migliorato che ti guida in passaggi come la revisione delle pagine del sito o la modifica della homepage.

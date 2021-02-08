@@ -228,7 +228,7 @@ public protocol ThemePresenter: class {
      *  @brief      Load theme screenshots at maximum displayed width
      */
     @objc open var screenshotWidth: Int = {
-        let windowSize = UIApplication.shared.keyWindow!.bounds.size
+        let windowSize = UIApplication.shared.mainWindow!.bounds.size
         let vWidth = Styles.imageWidthForFrameWidth(windowSize.width)
         let hWidth = Styles.imageWidthForFrameWidth(windowSize.height)
         let maxWidth = Int(max(hWidth, vWidth))
@@ -291,7 +291,7 @@ public protocol ThemePresenter: class {
         definesPresentationContext = true
 
         searchController = UISearchController(searchResultsController: nil)
-        searchController.dimsBackgroundDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = false
 
         searchController.delegate = self
         searchController.searchResultsUpdater = self
@@ -377,8 +377,8 @@ public protocol ThemePresenter: class {
         let keyboardHeight = collectionView.frame.maxY - keyboardFrame.origin.y
 
         collectionView.contentInset.bottom = keyboardHeight
-        collectionView.scrollIndicatorInsets.top = searchBarHeight
-        collectionView.scrollIndicatorInsets.bottom = keyboardHeight
+        collectionView.verticalScrollIndicatorInsets.top = searchBarHeight
+        collectionView.verticalScrollIndicatorInsets.bottom = keyboardHeight
     }
 
     @objc open func keyboardWillHide(_ notification: Foundation.Notification) {
@@ -386,8 +386,8 @@ public protocol ThemePresenter: class {
 
         collectionView.contentInset.top = view.safeAreaInsets.top
         collectionView.contentInset.bottom = tabBarHeight
-        collectionView.scrollIndicatorInsets.top = searchBarHeight
-        collectionView.scrollIndicatorInsets.bottom = tabBarHeight
+        collectionView.verticalScrollIndicatorInsets.top = searchBarHeight
+        collectionView.verticalScrollIndicatorInsets.bottom = tabBarHeight
     }
 
     fileprivate func localKeyboardFrameFromNotification(_ notification: Foundation.Notification) -> CGRect {
@@ -685,7 +685,7 @@ public protocol ThemePresenter: class {
         if sections[1] == .themes || sections[1] == .customThemes {
             setInfoSectionHidden(false)
         }
-        collectionView.scrollIndicatorInsets.top = view.safeAreaInsets.top
+        collectionView.verticalScrollIndicatorInsets.top = view.safeAreaInsets.top
     }
 
     fileprivate func setInfoSectionHidden(_ hidden: Bool) {
@@ -855,7 +855,6 @@ public protocol ThemePresenter: class {
         configuration.authenticate(blog: theme.blog)
         configuration.secureInteraction = true
         configuration.customTitle = theme.name
-        configuration.addsHideMasterbarParameters = false
         configuration.navigationDelegate = customizerNavigationDelegate
         configuration.onClose = onClose
         let webViewController = WebViewControllerFactory.controller(configuration: configuration)

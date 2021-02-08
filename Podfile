@@ -7,7 +7,7 @@ end
 inhibit_all_warnings!
 use_frameworks!
 
-app_ios_deployment_target = Gem::Version.new('11.0')
+app_ios_deployment_target = Gem::Version.new('13.0')
 
 platform :ios, app_ios_deployment_target.version
 workspace 'WordPress.xcworkspace'
@@ -16,7 +16,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-    pod 'WordPressShared', '~> 1.14.0'
+    pod 'WordPressShared', '~> 1.15.0-beta.1'
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
@@ -43,11 +43,11 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.24'
+    pod 'WordPressKit', '~> 4.26-beta'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
-    # pod 'WordPressKit', :path => '../../WordPressKit-iOS'
+    # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
 def shared_with_all_pods
@@ -154,7 +154,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.44.1'
+    gutenberg :tag => 'v1.46.0'
 
     ## Third party libraries
     ## =====================
@@ -182,9 +182,9 @@ target 'WordPress' do
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.5.1'
+    pod 'Automattic-Tracks-iOS', '~> 0.8.0'
     # While in PR
-    #pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'add/more-logging'
+    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
     # Local Development
     #pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
 
@@ -198,7 +198,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.1.0'
 
-    pod 'WordPressAuthenticator', '~> 1.33.0'
+    pod 'WordPressAuthenticator', '~> 1.34.0'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
@@ -346,6 +346,30 @@ end
 ## ============
 ##
 target 'WordPressThisWeekWidget' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    wordpress_ui
+end
+
+## iOS 14 Today Widget
+## ============
+##
+target 'WordPressStatsWidgets' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    wordpress_ui
+end
+
+## Intents
+## ============
+##
+target 'WordPressIntents' do
     project 'WordPress/WordPress.xcodeproj'
 
     shared_with_all_pods

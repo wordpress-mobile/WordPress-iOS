@@ -62,9 +62,16 @@ extern NSString *const WPShareExtensionRecentSitesKey;
 extern NSString *const WPStatsTodayWidgetKeychainTokenKey;
 extern NSString *const WPStatsTodayWidgetKeychainServiceName;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteIdKey;
+extern NSString *const WPStatsHomeWidgetsUserDefaultsSiteIdKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteUrlKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey;
+
+/// iOS 14 Widget Constants
+extern NSString *const WPHomeWidgetTodayKind;
+extern NSString *const WPHomeWidgetAllTimeKind;
+extern NSString *const WPHomeWidgetTodayProperties;
+extern NSString *const WPHomeWidgetAllTimeProperties;
 
 /// Apple ID Constants
 ///

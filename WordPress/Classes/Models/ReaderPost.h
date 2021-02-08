@@ -34,6 +34,8 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic) BOOL isReblogged;
 @property (nonatomic) BOOL isWPCom;
 @property (nonatomic) BOOL isSavedForLater;
+@property (nonatomic) BOOL isSeen;
+@property (nonatomic) BOOL isSeenSupported;
 @property (nonatomic, strong) NSNumber *organizationID;
 @property (nonatomic, strong) NSNumber *likeCount;
 @property (nonatomic, strong) NSNumber *score;

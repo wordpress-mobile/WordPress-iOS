@@ -356,7 +356,7 @@ protocol ReaderSiteSearchFooterViewDelegate: class {
 
 class ReaderSiteSearchFooterView: UIView {
     private let divider = UIView()
-    private let activityIndicator = UIActivityIndicatorView(style: .gray)
+    private let activityIndicator = UIActivityIndicatorView(style: .medium)
     weak var delegate: ReaderSiteSearchFooterViewDelegate? = nil
 
     private static let expandedHeight: CGFloat = 44.0

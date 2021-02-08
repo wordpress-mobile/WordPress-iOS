@@ -323,7 +323,9 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     }
 }
 
-- (void)toggleFollowingForPost:(ReaderPost *)post success:(void (^)(void))success failure:(void (^)(NSError *error))failure
+- (void)toggleFollowingForPost:(ReaderPost *)post
+                       success:(void (^)(void))success
+                       failure:(void (^)(NSError *error))failure
 {
     // Get a the post in our own context
     NSError *error;
@@ -432,6 +434,80 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
         success();
+    }];
+}
+
+- (void)toggleSeenForPost:(ReaderPost *)post
+                  success:(void (^)(void))success
+                  failure:(void (^)(NSError *error))failure
+{
+    NSError *error = [self validatePostForSeenToggle: post];
+    if (error != nil) {
+        if (failure) {
+            failure(error);
+        }
+
+        return;
+    }
+    
+    [self.managedObjectContext performBlock:^{
+        
+        // Get a the post in our own context
+        NSError *error;
+        ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
+        if (error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (failure) {
+                    failure(error);
+                }
+            });
+            return;
+        }
+        
+        // Keep previous values in case of failure
+        BOOL oldValue = readerPost.isSeen;
+        BOOL seen = !oldValue;
+        
+        // Optimistically update
+        readerPost.isSeen = seen;
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        
+        // Define success block.
+        void (^successBlock)(void) = ^void() {
+            if (success) {
+                success();
+            }
+        };
+        
+        // Define failure block. Make sure rollback happens in the managedObjectContext's queue.
+        void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+            [self.managedObjectContext performBlockAndWait:^{
+                
+                DDLogError(@"Error while toggling post Seen status: %@", error);
+                readerPost.isSeen = oldValue;
+                
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                    if (failure) {
+                        failure(error);
+                    }
+                }];
+            }];
+        };
+        
+        // Call the remote service.
+        ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+        
+        if (readerPost.isWPCom) {
+            [remoteService markBlogPostSeenWithSeen:seen
+                                             blogID:readerPost.siteID
+                                             postID:readerPost.postID
+                                            success:successBlock failure:failureBlock];
+        } else {
+            [remoteService markFeedPostSeenWithSeen:seen
+                                             feedID:readerPost.feedID
+                                         feedItemID:readerPost.feedItemID
+                                            success:successBlock failure:failureBlock];
+        }
     }];
 }
 
@@ -666,6 +742,27 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     return [NSPredicate predicateWithFormat:@"isSavedForLater == NO"];
 }
 
+- (NSError *)validatePostForSeenToggle:(ReaderPost *)post
+{
+    NSString *description = nil;
+    
+    if (post.isWPCom && post.postID == nil) {
+        DDLogError(@"Could not toggle Seen: missing postID.");
+        description = NSLocalizedString(@"Could not toggle Seen: missing postID.", @"An error description explaining that Seen could not be toggled due to a missing postID.");
+        
+    } else if (!post.isWPCom && post.feedItemID == nil) {
+        DDLogError(@"Could not toggle Seen: missing feedItemID.");
+        description = NSLocalizedString(@"Could not toggle Seen: missing feedItemID.", @"An error description explaining that Seen could not be toggled due to a missing feedItemID.");
+    }
+    
+    if (description == nil) {
+        return nil;
+    }
+    
+    NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
+    NSError *error = [NSError errorWithDomain:ReaderPostServiceErrorDomain code:0 userInfo:userInfo];
+    return error;
+}
 
 #pragma mark - Merging and Deletion
 

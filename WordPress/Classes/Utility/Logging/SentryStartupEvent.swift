@@ -45,39 +45,12 @@ startup time. This will block the thread. Do not use unless you're sure.
             ]
         })
 
-        CrashLogging.logErrorAndWait(NSError(domain: title, code: -1, userInfo: [NSLocalizedDescriptionKey: title]), userInfo: userInfo)
-    }
-}
-
-extension CrashLogging {
-    /**
-     Writes the error to the Crash Logging system, and includes a stack trace. This method will block the thread until the event is fired.
-
-     - Parameters:
-     - error: The error object
-     - userInfo: A dictionary containing additional data about this error.
-     - level: The level of severity to report in Sentry (`.error` by default)
-    */
-    static func logErrorAndWait(_ error: Error, userInfo: [String: Any]? = nil, level: SentrySeverity = .error) {
-        let event = Event(level: .error)
-        event.message = error.localizedDescription
-        event.extra = userInfo ?? (error as NSError).userInfo
-        event.timestamp = Date()
-
-        Client.shared?.snapshotStacktrace {
-            Client.shared?.appendStacktrace(to: event)
+        let error = NSError(domain: title, code: -1, userInfo: [NSLocalizedDescriptionKey: title])
+        do {
+            try WordPressAppDelegate.crashLogging?.logErrorAndWait(error, userInfo: userInfo, level: SentryLevel.fatal)
+        } catch let err {
+            DDLogError("⛔️ Unable to send startup error message to Sentry:")
+            DDLogError(err.localizedDescription)
         }
-
-        guard let client = Client.shared else {
-           return
-        }
-
-        let semaphore = DispatchSemaphore(value: 0)
-
-        client.send(event: event) { _ in
-            semaphore.signal()
-        }
-
-        semaphore.wait()
     }
 }

@@ -1,5 +1,24 @@
 import Foundation
 import WordPressShared
+import WordPressFlux
+
+
+// MARK: - Reader Notifications
+
+extension NSNotification.Name {
+    // Sent when a site or a tag is unfollowed via Reader Manage screen.
+    static let ReaderTopicUnfollowed = NSNotification.Name(rawValue: "ReaderTopicUnfollowed")
+    // Sent when a site is followed via Reader Manage screen.
+    static let ReaderSiteFollowed = NSNotification.Name(rawValue: "ReaderSiteFollowed")
+    // Sent when a post's seen state has been toggled.
+    static let ReaderPostSeenToggled = NSNotification.Name(rawValue: "ReaderPostSeenToggled")
+}
+
+struct ReaderNotificationKeys {
+    static let post = "post"
+    static let topic = "topic"
+}
+
 
 /// A collection of helper methods used by the Reader.
 ///
@@ -218,9 +237,12 @@ import WordPressShared
 
         let userAgent = WPUserAgent.wordPress()
         let path  = NSString(format: "%@?%@", pixel, params.componentsJoined(by: "&")) as String
-        let url = URL(string: path)
 
-        let request = NSMutableURLRequest(url: url!)
+        guard let url = URL(string: path) else {
+            return
+        }
+
+        let request = NSMutableURLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         request.addValue(pixelStatReferrer, forHTTPHeaderField: "Referer")
 
@@ -274,6 +296,53 @@ import WordPressShared
 
     @objc open class func isLoggedIn() -> Bool {
         return AccountHelper.isDotcomAvailable()
+    }
+
+    // MARK: ActionDispatcher Notification helper
+
+    class func dispatchToggleSeenMessage(post: ReaderPost, success: Bool) {
+        if success {
+            dispatchNotice(Notice(title: post.isSeen ? NoticeMessages.seenSuccess: NoticeMessages.unseenSuccess))
+        } else {
+            dispatchNotice(Notice(title: post.isSeen ? NoticeMessages.unseenFail : NoticeMessages.seenFail))
+        }
+    }
+
+    class func dispatchToggleFollowSiteMessage(post: ReaderPost, success: Bool) {
+        if success {
+            if !post.isFollowing {
+                // Following is handled by dispatchSubscribingNotificationNotice.
+                dispatchNotice(Notice(title: NoticeMessages.unfollowSuccess, message: post.blogNameForDisplay()))
+            }
+        } else {
+            dispatchNotice(Notice(title: post.isFollowing ? NoticeMessages.unfollowFail : NoticeMessages.followFail))
+        }
+    }
+
+    class func dispatchToggleNotificationMessage(topic: ReaderSiteTopic, success: Bool) {
+        if success {
+            dispatchNotice(Notice(title: topic.isSubscribedForPostNotifications ? NoticeMessages.notificationOnSuccess: NoticeMessages.notificationOffSuccess))
+        } else {
+            dispatchNotice(Notice(title: topic.isSubscribedForPostNotifications ? NoticeMessages.notificationOffFail : NoticeMessages.notificationOnFail))
+        }
+    }
+
+    private class func dispatchNotice(_ notice: Notice) {
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    private struct NoticeMessages {
+        static let seenFail = NSLocalizedString("Unable to mark post seen", comment: "Notice title when updating a post's seen status failed.")
+        static let unseenFail = NSLocalizedString("Unable to mark post unseen", comment: "Notice title when updating a post's unseen status failed.")
+        static let seenSuccess = NSLocalizedString("Marked post as seen", comment: "Notice title when updating a post's seen status succeeds.")
+        static let unseenSuccess = NSLocalizedString("Marked post as unseen", comment: "Notice title when updating a post's unseen status succeeds.")
+        static let unfollowSuccess = NSLocalizedString("Unfollowed site", comment: "Notice title when unfollowing a site succeeds.")
+        static let followFail = NSLocalizedString("Unable to follow site", comment: "Notice title when following a site fails.")
+        static let unfollowFail = NSLocalizedString("Unable to unfollow site", comment: "Notice title when unfollowing a site fails.")
+        static let notificationOnFail = NSLocalizedString("Unable to turn on site notifications", comment: "Notice title when turning site notifications on fails.")
+        static let notificationOffFail = NSLocalizedString("Unable to turn off site notifications", comment: "Notice title when turning site notifications off fails.")
+        static let notificationOnSuccess = NSLocalizedString("Turned on site notifications", comment: "Notice title when turning site notifications on succeeds.")
+        static let notificationOffSuccess = NSLocalizedString("Turned off site notifications", comment: "Notice title when turning site notifications off succeeds.")
     }
 }
 

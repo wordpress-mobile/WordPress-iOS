@@ -71,7 +71,6 @@ final class PageListTableViewHandler: WPTableViewHandler {
         }
     }
 
-
     // MARK: - Public methods
 
     func page(at indexPath: IndexPath) -> Page {
@@ -101,7 +100,7 @@ final class PageListTableViewHandler: WPTableViewHandler {
             do {
                 try publishedResultController.performFetch()
                 if let pages = publishedResultController.fetchedObjects as? [Page] {
-                    return pages.hierarchySort()
+                    return pages.setHomePageFirst().hierarchySort()
                 }
             } catch {
                 DDLogError("Error fetching pages after refreshing the table: \(error)")
@@ -164,6 +163,6 @@ final class PageListTableViewHandler: WPTableViewHandler {
             return []
         }
 
-        return status == .published ? pages.hierarchySort() : pages
+        return status == .published ? pages.setHomePageFirst().hierarchySort() : pages
     }
 }

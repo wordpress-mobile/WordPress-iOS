@@ -94,7 +94,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
 - (void)beginSession
 {
     if (self.loggedInID.length > 0) {
-        [self.tracksService switchToAuthenticatedUserWithUsername:self.loggedInID userID:nil skipAliasEventCreation:YES];
+        [self.tracksService switchToAuthenticatedUserWithUsername:self.loggedInID userID:nil wpComToken:[WPAccount tokenForUsername:self.loggedInID] skipAliasEventCreation:YES];
     } else {
         [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
     }
@@ -153,6 +153,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     }];
 
     NSMutableDictionary *userProperties = [NSMutableDictionary new];
+    userProperties[@"app_scheme"] = WPComScheme;
     userProperties[@"platform"] = @"iOS";
     userProperties[@"dotcom_user"] = @(dotcom_user);
     userProperties[@"jetpack_user"] = @(jetpackBlogsPresent);
@@ -171,14 +172,14 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             self.loggedInID = username;
             self.anonymousID = nil;
 
-            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" wpComToken:[WPAccount tokenForUsername:username] skipAliasEventCreation:NO];
         } else if ([self.loggedInID isEqualToString:username]){
             // Username did not change from last refreshMetadata - just make sure Tracks client has it
-            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:YES];
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" wpComToken:[WPAccount tokenForUsername:username] skipAliasEventCreation:YES];
         } else {
             // Username changed for some reason - switch back to anonymous first
             [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
-            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" wpComToken:[WPAccount tokenForUsername:username] skipAliasEventCreation:NO];
             self.loggedInID = username;
             self.anonymousID = nil;
         }
@@ -682,6 +683,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatEnhancedSiteCreationSiteDesignPreviewLoaded:
             eventName = @"enhanced_site_creation_site_design_preview_loaded";
+            break;
+        case     WPAnalyticsStatEnhancedSiteCreationSiteDesignThumbnailModeButtonTapped:
+            eventName = @"enhanced_site_creation_site_design_thumbnail_mode_button_tapped";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSiteDesignPreviewModeButtonTapped:
+            eventName = @"enhanced_site_creation_site_design_preview_mode_button_tapped";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSiteDesignPreviewModeChanged:
+            eventName = @"enhanced_site_creation_site_design_preview_mode_changed";
             break;
         case WPAnalyticsStatEnhancedSiteCreationVerticalsViewed:
             eventName = @"enhanced_site_creation_verticals_viewed";

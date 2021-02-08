@@ -74,7 +74,7 @@ class PrepublishingViewController: UITableViewController {
 
     private func calculatePreferredContentSize() {
         // Apply additional padding to take into account the navbar / status bar height
-        let safeAreaTop = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0
+        let safeAreaTop = UIApplication.shared.mainWindow?.safeAreaInsets.top ?? 0
         let navBarHeight = navigationController?.navigationBar.frame.height ?? 0
         let offset = navBarHeight - safeAreaTop
 
@@ -392,7 +392,7 @@ extension Set {
 // MARK: - DrawerPresentable
 extension PrepublishingViewController: DrawerPresentable {
     var allowsUserTransition: Bool {
-        return false
+        return true
     }
 
     var collapsedHeight: DrawerHeight {

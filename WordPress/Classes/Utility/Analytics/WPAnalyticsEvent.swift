@@ -78,6 +78,8 @@ import Foundation
     case readerSuggestedSiteVisited
     case readerSuggestedSiteToggleFollow
     case readerDiscoverContentPresented
+    case readerPostMarkSeen
+    case readerPostMarkUnseen
 
     // What's New - Feature announcements
     case featureAnnouncementShown
@@ -100,6 +102,34 @@ import Foundation
     case activitylogFilterbarRangeButtonTapped
     case activitylogFilterbarSelectRange
     case activitylogFilterbarResetRange
+    case backupListOpened
+    case backupFilterbarRangeButtonTapped
+    case backupFilterbarSelectRange
+    case backupFilterbarResetRange
+    case restoreOpened
+    case restoreConfirmed
+    case restoreError
+    case restoreNotifiyMeButtonTapped
+    case backupDownloadOpened
+    case backupDownloadConfirmed
+    case backupFileDownloadError
+    case backupNotifiyMeButtonTapped
+    case backupFileDownloadTapped
+    case backupDownloadShareLinkTapped
+
+    // Jetpack Scan
+    case jetpackScanAccessed
+    case jetpackScanHistoryAccessed
+    case jetpackScanHistoryFilter
+    case jetpackScanThreatListItemTapped
+    case jetpackScanRunTapped
+    case jetpackScanIgnoreThreatDialogOpen
+    case jetpackScanThreatIgnoreTapped
+    case jetpackScanFixThreatDialogOpen
+    case jetpackScanThreatFixTapped
+    case jetpackScanAllThreatsOpen
+    case jetpackScanAllthreatsFixTapped
+    case jetpackScanError
 
     // Comments
     case commentViewed
@@ -243,11 +273,17 @@ import Foundation
             return "reader_suggested_site_toggle_follow"
         case .readerDiscoverContentPresented:
             return "reader_discover_content_presented"
+        case .readerPostMarkSeen:
+            return "reader_mark_as_seen"
+        case .readerPostMarkUnseen:
+            return "reader_mark_as_unseen"
+
         // What's New - Feature announcements
         case .featureAnnouncementShown:
             return "feature_announcement_shown"
         case .featureAnnouncementButtonTapped:
             return "feature_announcement_button_tapped"
+
         // Stories
         case .storyIntroShown:
             return "story_intro_shown"
@@ -281,6 +317,60 @@ import Foundation
             return "activitylog_filterbar_select_range"
         case .activitylogFilterbarResetRange:
             return "activitylog_filterbar_reset_range"
+        case .backupListOpened:
+            return "jetpack_backup_list_opened"
+        case .backupFilterbarRangeButtonTapped:
+            return "jetpack_backup_filterbar_range_button_tapped"
+        case .backupFilterbarSelectRange:
+            return "jetpack_backup_filterbar_select_range"
+        case .backupFilterbarResetRange:
+            return "jetpack_backup_filterbar_reset_range"
+        case .restoreOpened:
+            return "jetpack_restore_opened"
+        case .restoreConfirmed:
+            return "jetpack_restore_confirmed"
+        case .restoreError:
+            return "jetpack_restore_error"
+        case .restoreNotifiyMeButtonTapped:
+            return "jetpack_restore_notify_me_button_tapped"
+        case .backupDownloadOpened:
+            return "jetpack_backup_download_opened"
+        case .backupDownloadConfirmed:
+            return "jetpack_backup_download_confirmed"
+        case .backupFileDownloadError:
+            return "jetpack_backup_file_download_error"
+        case .backupNotifiyMeButtonTapped:
+            return "jetpack_backup_notify_me_button_tapped"
+        case .backupFileDownloadTapped:
+            return "jetpack_backup_file_download_tapped"
+        case .backupDownloadShareLinkTapped:
+            return "jetpack_backup_download_share_link_tapped"
+
+        // Jetpack Scan
+        case .jetpackScanAccessed:
+            return "jetpack_scan_accessed"
+        case .jetpackScanHistoryAccessed:
+            return "jetpack_scan_history_accessed"
+        case .jetpackScanHistoryFilter:
+            return "jetpack_scan_history_filter"
+        case .jetpackScanThreatListItemTapped:
+            return "jetpack_scan_threat_list_item_tapped"
+        case .jetpackScanRunTapped:
+            return "jetpack_scan_run_tapped"
+        case .jetpackScanIgnoreThreatDialogOpen:
+            return "jetpack_scan_ignorethreat_dialogopen"
+        case .jetpackScanThreatIgnoreTapped:
+            return "jetpack_scan_threat_ignore_tapped"
+        case .jetpackScanFixThreatDialogOpen:
+            return "jetpack_scan_fixthreat_dialogopen"
+        case .jetpackScanThreatFixTapped:
+            return "jetpack_scan_threat_fix_tapped"
+        case .jetpackScanAllThreatsOpen:
+            return "jetpack_scan_allthreats_open"
+        case .jetpackScanAllthreatsFixTapped:
+            return "jetpack_scan_allthreats_fix_tapped"
+        case .jetpackScanError:
+            return "jetpack_scan_error"
 
         // Comments
         case .commentViewed:
@@ -303,7 +393,6 @@ import Foundation
             return "comment_edited"
         case .commentRepliedTo:
             return "comment_replied_to"
-
         }
     }
 

@@ -74,4 +74,16 @@ class PreviewWebKitViewControllerTests: XCTestCase {
         XCTAssertTrue(items.contains(vc.forwardButton), "Preview toolbar for page should contain forward button.")
         XCTAssertTrue(items.contains(vc.previewButton), "Preview toolbar for page should contain preview button.")
     }
+
+    func testToolbarItemsWithDefaultConfiguration() {
+        let config = WebViewControllerConfiguration(url: URL(string: "https://example.com"))
+        let vc = PreviewWebKitViewController(configuration: config)
+        let items = vc.toolbarItems(linkBehavior: vc.linkBehavior)
+
+        XCTAssertFalse(items.contains(vc.publishButton), "Preview toolbar for page should not contain publish button.")
+        XCTAssertTrue(items.contains(vc.safariButton), "Preview toolbar for page should contain Safari button.")
+        XCTAssertTrue(items.contains(vc.backButton), "Preview toolbar for page should contain back button.")
+        XCTAssertTrue(items.contains(vc.forwardButton), "Preview toolbar for page should contain forward button.")
+        XCTAssertTrue(items.contains(vc.previewButton), "Preview toolbar for page should contain preview button.")
+    }
 }

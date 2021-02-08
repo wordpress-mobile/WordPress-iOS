@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="JetpackRestoreHeaderView" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="300"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="n7M-ds-fce">
+                    <rect key="frame" x="16" y="24" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="32" id="4tx-db-V8c"/>
+                        <constraint firstAttribute="width" secondItem="n7M-ds-fce" secondAttribute="height" id="d6T-OY-eph"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mst-Hr-reS">
+                    <rect key="frame" x="12" y="64" width="390" height="20.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ag-Xy-HZc">
+                    <rect key="frame" x="12" y="88.5" width="390" height="119.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZHA-ex-Sko" customClass="FancyButton" customModule="WordPressUI">
+                    <rect key="frame" x="16" y="232" width="382" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="dbx-D0-wqq"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="actionButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="u3x-lF-FgS"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="ZHA-ex-Sko" firstAttribute="top" secondItem="6ag-Xy-HZc" secondAttribute="bottom" constant="24" id="70X-f6-Otx"/>
+                <constraint firstItem="6ag-Xy-HZc" firstAttribute="top" secondItem="Mst-Hr-reS" secondAttribute="bottom" constant="4" id="8VK-Hs-pYo"/>
+                <constraint firstItem="ZHA-ex-Sko" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Bxw-W8-qhj"/>
+                <constraint firstItem="6ag-Xy-HZc" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="KEq-KC-yYS"/>
+                <constraint firstItem="Mst-Hr-reS" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="MJ8-yT-Xv2"/>
+                <constraint firstItem="ZHA-ex-Sko" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="Qey-4L-qST"/>
+                <constraint firstItem="6ag-Xy-HZc" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="Z4E-ad-gtP"/>
+                <constraint firstItem="n7M-ds-fce" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="c74-aq-KMQ"/>
+                <constraint firstItem="Mst-Hr-reS" firstAttribute="top" secondItem="n7M-ds-fce" secondAttribute="bottom" constant="8" id="dbE-sr-re1"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="ZHA-ex-Sko" secondAttribute="bottom" constant="24" id="hHM-cm-1Dy"/>
+                <constraint firstItem="n7M-ds-fce" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="24" id="oEw-bW-mvS"/>
+                <constraint firstItem="Mst-Hr-reS" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="qKc-j2-bGE"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="actionButton" destination="ZHA-ex-Sko" id="ftK-cT-i0k"/>
+                <outlet property="descriptionLabel" destination="6ag-Xy-HZc" id="ZBU-Lb-HZp"/>
+                <outlet property="icon" destination="n7M-ds-fce" id="XL3-jc-2wb"/>
+                <outlet property="titleLabel" destination="Mst-Hr-reS" id="yvm-WQ-P3n"/>
+            </connections>
+            <point key="canvasLocation" x="-17" y="69"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

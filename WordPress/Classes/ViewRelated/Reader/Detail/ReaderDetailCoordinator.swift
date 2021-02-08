@@ -13,6 +13,9 @@ class ReaderDetailCoordinator {
         }
     }
 
+    /// Used to determine if block and report are shown in the options menu.
+    var readerTopic: ReaderAbstractTopic?
+
     /// A post URL to be loaded and be displayed
     var postURL: URL?
 
@@ -91,7 +94,7 @@ class ReaderDetailCoordinator {
         postInUse(false)
     }
 
-    /// Start the cordinator
+    /// Start the coordinator
     ///
     func start() {
         view?.showLoading()
@@ -241,6 +244,25 @@ class ReaderDetailCoordinator {
 
         bumpStats()
         bumpPageViewsForPost()
+
+        if FeatureFlag.unseenPosts.enabled {
+            markPostAsSeen()
+        }
+    }
+
+    private func markPostAsSeen() {
+        guard let post = post,
+              let context = post.managedObjectContext,
+              !post.isSeen else {
+            return
+        }
+
+        let postService = ReaderPostService(managedObjectContext: context)
+        postService.toggleSeen(for: post, success: {
+            NotificationCenter.default.post(name: .ReaderPostSeenToggled,
+                                            object: nil,
+                                            userInfo: [ReaderNotificationKeys.post: post])
+        }, failure: nil)
     }
 
     /// If the loaded URL contains a hash/anchor then jump to that spot in the post content
@@ -271,23 +293,20 @@ class ReaderDetailCoordinator {
         WPAppAnalytics.track(.readerSitePreviewed, withProperties: properties)
     }
 
-    /// Show a menu with options forthe current post's site
+    /// Show a menu with options for the current post's site
     ///
     private func showMenu(_ anchorView: UIView) {
         guard let post = post,
-            let context = post.managedObjectContext else {
+            let context = post.managedObjectContext,
+            let viewController = viewController else {
             return
         }
 
-        guard post.isFollowing else {
-            ReaderPostMenu.showMenuForPost(post, fromView: anchorView, inViewController: viewController)
-            return
-        }
-
-        let service: ReaderTopicService = ReaderTopicService(managedObjectContext: context)
-        let siteTopic: ReaderSiteTopic? = service.findSiteTopic(withSiteID: post.siteID)
-
-        ReaderPostMenu.showMenuForPost(post, topic: siteTopic, fromView: anchorView, inViewController: viewController)
+        ReaderMenuAction(logged: ReaderHelpers.isLoggedIn()).execute(post: post,
+                                                                     context: context,
+                                                                     readerTopic: readerTopic,
+                                                                     anchor: anchorView,
+                                                                     vc: viewController)
     }
 
     private func showTopic(_ topic: String) {
@@ -295,7 +314,7 @@ class ReaderDetailCoordinator {
         viewController?.navigationController?.pushViewController(controller, animated: true)
     }
 
-    /// Show a list with posts contianing this tag
+    /// Show a list with posts containing this tag
     ///
     private func showTag() {
         guard let post = post else {
@@ -379,7 +398,7 @@ class ReaderDetailCoordinator {
                                      completion: { [weak self] in
                                          self?.view?.updateHeader()
                                      },
-                                     failure: { [weak self] in
+                                     failure: { [weak self] _ in
                                          self?.view?.updateHeader()
                                      })
     }
@@ -459,7 +478,7 @@ class ReaderDetailCoordinator {
         }
     }
 
-    /// Bum post page view
+    /// Bump post page view
     ///
     private func bumpPageViewsForPost() {
         guard let readerPost = post else {

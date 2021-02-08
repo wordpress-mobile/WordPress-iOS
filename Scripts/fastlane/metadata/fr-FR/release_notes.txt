@@ -1,15 +1,9 @@
-Quelles sont les nouveautés de la dernière version ?
+À propos de cette version :
 
-L’éditeur de blocs :
+Remarque : il s’agit de la dernière version de l’application qui prendra en charge iOS 12. Pour la version 16.7 et au-delà, votre application nécessitera iOS 13 ou une version supérieure.
 
-– Lorsque vous utilisez des blocs, vous pouvez remarquer quelques changements. Vous pouvez désormais déplacer les blocs vers le haut et vers le bas dans votre article ou votre page en appuyant longuement sur les boutons « haut » et « bas ». Nous avons également ajouté la prise en charge de la pleine largeur et de l’alignement large dans le bloc Colonnes et simplifié la sélection et la définition d’une URL pour une image dans le bloc Image.
+Visualisez les statistiques sur votre écran d’accueil : affichez les statistiques du jour pour votre site WordPress sur l’écran d’accueil de votre appareil avec iOS 14, grâce aux nouveaux widgets du jour.
 
-– Utilisez-vous P2 pour collaborer avec votre équipe ? Lors de la publication d’un nouvel article, saisissez le caractère + pour ajouter une étiquette à un autre P2 et partager le contenu sur le site, en alertant ses utilisateurs de votre nouvel article.
+Suivez l’activité sur votre site : filtrez et affichez des éléments dans votre journal d’activités, tels que des sauvegardes, des mises à jour d’extension, ainsi que des articles et des pages publiés, par période et type d’activité.
 
-Diverses résolutions et mises à jour :
-
-– La fonctionnalité Choisir un domaine renvoie désormais plus d’options dans les résultats de recherche. Essayez-la !
-
-– Dans votre liste Pages du site, vous pouvez rapidement dupliquer une page, ce qui peut vous faire gagner du temps lors de la création de contenu.
-
-– D’autres mises à jour, notamment les modifications apportées au Lecteur, améliorent votre expérience globale de l’application.
+Apprivoisez votre application : découvrez les fonctionnalités de votre application grâce à un guide de démarrage rapide qui vous apprendra les différentes étapes pour passer en revue les pages d’un site et modifier votre page d’accueil.

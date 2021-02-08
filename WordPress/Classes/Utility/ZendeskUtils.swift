@@ -627,7 +627,7 @@ private extension ZendeskUtils {
             let delegate = EventLoggingDelegate()
 
             /// Some users may be opted out – let's inform support that this is the case (otherwise the UUID just wouldn't work)
-            if WPCrashLoggingProvider.userHasOptedOut {
+            if UserSettings.userHasOptedOutOfCrashLogging {
                 return "No log file uploaded: User opted out"
             }
 
@@ -731,7 +731,7 @@ private extension ZendeskUtils {
             }
         }()
 
-        let networkCarrier = CTTelephonyNetworkInfo().subscriberCellularProvider
+        let networkCarrier = CTTelephonyNetworkInfo().serviceSubscriberCellularProviders?.values.first
         let carrierName = networkCarrier?.carrierName ?? Constants.unknownValue
         let carrierCountryCode = networkCarrier?.isoCountryCode ?? Constants.unknownValue
 

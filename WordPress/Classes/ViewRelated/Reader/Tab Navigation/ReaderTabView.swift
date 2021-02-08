@@ -1,11 +1,5 @@
 import UIKit
 
-// NSNotification sent when a site or a tag is unfollowed via Reader Manage screen.
-extension NSNotification.Name {
-    static let ReaderTopicUnfollowed = NSNotification.Name(rawValue: "ReaderTopicUnfollowed")
-}
-let topicUserInfoKey = "topic"
-
 
 class ReaderTabView: UIView {
 
@@ -24,7 +18,11 @@ class ReaderTabView: UIView {
     private var previouslySelectedIndex: Int = 0
 
     private var discoverIndex: Int? {
-        return tabBar.items.firstIndex(where: { $0.title == NSLocalizedString("Discover", comment: "Discover tab name") })
+        return tabBar.items.firstIndex(where: { ($0 as? ReaderTabItem)?.content.topicType == .discover })
+    }
+
+    private var p2Index: Int? {
+        return tabBar.items.firstIndex(where: { (($0 as? ReaderTabItem)?.content.topic as? ReaderTeamTopic)?.organizationID == SiteOrganizationType.p2.rawValue })
     }
 
     init(viewModel: ReaderTabViewModel) {
@@ -56,6 +54,7 @@ class ReaderTabView: UIView {
         setupViewElements()
 
         NotificationCenter.default.addObserver(self, selector: #selector(topicUnfollowed(_:)), name: .ReaderTopicUnfollowed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(siteFollowed(_:)), name: .ReaderSiteFollowed, object: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -255,7 +254,7 @@ private extension ReaderTabView {
 
     @objc func topicUnfollowed(_ notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo,
-              let topic = userInfo[topicUserInfoKey] as? ReaderAbstractTopic,
+              let topic = userInfo[ReaderNotificationKeys.topic] as? ReaderAbstractTopic,
               let existingFilter = filteredTabs.first(where: { $0.topic == topic }) else {
             return
         }
@@ -265,6 +264,20 @@ private extension ReaderTabView {
         if existingFilter.index == tabBar.selectedIndex {
             didTapResetFilterButton()
         }
+
+    }
+
+    @objc func siteFollowed(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo,
+              let site = userInfo[ReaderNotificationKeys.topic] as? ReaderSiteTopic,
+              site.organizationType == .p2,
+              p2Index == nil else {
+            return
+        }
+
+        // If a P2 is followed but the P2 tab is not in the Reader tab bar,
+        // refresh the Reader menu to display it.
+        viewModel.fetchReaderMenu()
     }
 
 }
