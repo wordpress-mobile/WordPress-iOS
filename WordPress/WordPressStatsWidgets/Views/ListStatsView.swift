@@ -27,7 +27,7 @@ struct ListStatsView: View {
             FlexibleCard(axis: .horizontal, title: viewData.widgetTitle, value: .description(viewData.siteName))
                 .padding(.bottom, Constants.titleBottomPadding)
             ForEach(Array(displayData.enumerated()), id: \.element) { index, item in
-                StatsListRow(date: item.date, percentValue: item.dailyChangePercent, value: item.viewsCount)
+                ListRow(date: item.date, percentValue: item.dailyChangePercent, value: item.viewsCount)
                 if index != displayData.count - 1 {
                     Divider()
                 }
