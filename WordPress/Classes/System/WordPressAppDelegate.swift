@@ -18,10 +18,16 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    var analytics: WPAppAnalytics?
-    private lazy var crashLoggingProvider: WPCrashLoggingProvider = {
-        return WPCrashLoggingProvider()
+    @objc
+    lazy var windowManager: WindowManager = {
+        guard let window = window else {
+            fatalError("The App cannot run without a window.")
+        }
+
+        return WindowManager(window: window)
     }()
+
+    var analytics: WPAppAnalytics?
 
     @objc var internetReachability: Reachability?
     @objc var connectionAvailable: Bool = true
@@ -58,6 +64,18 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return UploadsManager(uploaders: uploaders)
     }()
 
+    private let loggingStack = WPLoggingStack()
+
+    /// Access the crash logging type
+    class var crashLogging: CrashLogging? {
+        shared?.loggingStack.crashLogging
+    }
+
+    /// Access the event logging type
+    class var eventLogging: EventLogging? {
+        shared?.loggingStack.eventLogging
+    }
+
     @objc class var shared: WordPressAppDelegate? {
         return UIApplication.shared.delegate as? WordPressAppDelegate
     }
@@ -73,9 +91,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
-        let dataSource = EventLoggingDataProvider.fromDDFileLogger(WPLogger.shared().fileLogger)
-        let eventLogging = EventLogging(dataSource: dataSource, delegate: crashLoggingProvider.loggingUploadDelegate)
-        CrashLogging.start(withDataProvider: crashLoggingProvider, eventLogging: eventLogging)
+        try? loggingStack.start()
 
         // Configure WPCom API overrides
         configureWordPressComApi()
@@ -117,7 +133,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         InteractiveNotificationsManager.shared.registerForUserNotifications()
-        showWelcomeScreenIfNeeded(animated: false)
         setupPingHub()
         setupBackgroundRefresh(application)
         setupComponentsAppearance()
@@ -279,8 +294,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
 
-        window?.rootViewController = WPTabBarController.sharedInstance()
-
+        windowManager.showUI()
         setupNoticePresenter()
     }
 
@@ -320,7 +334,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         if CommandLine.arguments.contains("-no-animations") {
             UIView.setAnimationsEnabled(false)
             application.windows.first?.layer.speed = MAXFLOAT
-            application.keyWindow?.layer.speed = MAXFLOAT
+            application.mainWindow?.layer.speed = MAXFLOAT
         }
     }
 
@@ -434,12 +448,13 @@ extension WordPressAppDelegate {
     }
 
     @objc func configureWordPressAuthenticator() {
-        authManager = WordPressAuthenticationManager()
+        let authManager = WordPressAuthenticationManager(windowManager: windowManager)
 
-        authManager?.initializeWordPressAuthenticator()
-        authManager?.startRelayingSupportNotifications()
+        authManager.initializeWordPressAuthenticator()
+        authManager.startRelayingSupportNotifications()
 
         WordPressAuthenticator.shared.delegate = authManager
+        self.authManager = authManager
     }
 
     func handleWebActivity(_ activity: NSUserActivity) {
@@ -580,31 +595,6 @@ extension WordPressAppDelegate {
         }
     }
 
-
-    @objc(showWelcomeScreenIfNeededAnimated:)
-    func showWelcomeScreenIfNeeded(animated: Bool) {
-        guard isWelcomeScreenVisible == false && AccountHelper.isLoggedIn == false else {
-            return
-        }
-
-        // Check if the presentedVC is UIAlertController because in iPad we show a Sign-out button in UIActionSheet
-        // and it's not dismissed before the check and `dismissViewControllerAnimated` does not work for it
-        if let presenter = window?.rootViewController?.presentedViewController,
-            !(presenter is UIAlertController) {
-            presenter.dismiss(animated: animated, completion: { [weak self] in
-                self?.showWelcomeScreen(animated, thenEditor: false)
-            })
-        } else {
-            showWelcomeScreen(animated, thenEditor: false)
-        }
-    }
-
-    func showWelcomeScreen(_ animated: Bool, thenEditor: Bool) {
-        if let rootViewController = window?.rootViewController {
-            WordPressAuthenticator.showLogin(from: rootViewController, animated: animated)
-        }
-    }
-
     @objc func trackLogoutIfNeeded() {
         if AccountHelper.isLoggedIn == false {
             WPAnalytics.track(.logout)
@@ -728,7 +718,7 @@ extension WordPressAppDelegate {
             removeTodayWidgetConfiguration()
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()
-            showWelcomeScreenIfNeeded(animated: false)
+            windowManager.showFullscreenSignIn()
 
             if #available(iOS 13, *) {
                 stopObservingAppleIDCredentialRevoked()

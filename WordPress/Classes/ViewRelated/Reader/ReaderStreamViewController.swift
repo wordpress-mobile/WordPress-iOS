@@ -1292,7 +1292,7 @@ import WordPressFlux
         let siteTitle = topic.title
 
         if !toFollow {
-            ReaderSubscribingNotificationAction().execute(for: siteID, context: managedObjectContext(), value: !topic.isSubscribedForPostNotifications)
+            ReaderSubscribingNotificationAction().execute(for: siteID, context: managedObjectContext(), subscribe: !topic.isSubscribedForPostNotifications)
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
@@ -1590,6 +1590,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         }
 
         let controller = ReaderDetailViewController.controllerWithPost(post)
+        controller.coordinator?.readerTopic = readerTopic
 
         if post.isSavedForLater || contentType == .saved {
             trackSavedPostNavigation()

@@ -5,10 +5,11 @@ import WordPressShared
 struct JetpackRestoreCompleteConfiguration {
     let title: String
     let iconImage: UIImage
+    let iconImageColor: UIColor
     let messageTitle: String
     let messageDescription: String
-    let primaryButtonTitle: String
-    let secondaryButtonTitle: String
+    let primaryButtonTitle: String?
+    let secondaryButtonTitle: String?
     let hint: String?
 }
 
@@ -64,7 +65,7 @@ class BaseRestoreCompleteViewController: UIViewController {
         fatalError("Must override in subclass")
     }
 
-    func secondaryButtonTapped() {
+    func secondaryButtonTapped(from sender: UIButton) {
         fatalError("Must override in subclass")
     }
 
@@ -86,6 +87,7 @@ class BaseRestoreCompleteViewController: UIViewController {
 
         completeView.configure(
             iconImage: configuration.iconImage,
+            iconImageColor: configuration.iconImageColor,
             title: configuration.messageTitle,
             description: String(format: configuration.messageDescription, publishedDate),
             primaryButtonTitle: configuration.primaryButtonTitle,
@@ -97,8 +99,8 @@ class BaseRestoreCompleteViewController: UIViewController {
             self?.primaryButtonTapped()
         }
 
-        completeView.secondaryButtonHandler = { [weak self] in
-            self?.secondaryButtonTapped()
+        completeView.secondaryButtonHandler = { [weak self] sender in
+            self?.secondaryButtonTapped(from: sender)
         }
 
         view.addSubview(completeView)

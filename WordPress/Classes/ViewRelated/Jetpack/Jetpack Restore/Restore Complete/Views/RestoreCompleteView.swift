@@ -13,7 +13,7 @@ class RestoreCompleteView: UIView, NibLoadable {
     @IBOutlet private weak var hintLabel: UILabel!
 
     var primaryButtonHandler: (() -> Void)?
-    var secondaryButtonHandler: (() -> Void)?
+    var secondaryButtonHandler: ((_ sender: UIButton) -> Void)?
 
     // MARK: - Initialization
 
@@ -27,14 +27,12 @@ class RestoreCompleteView: UIView, NibLoadable {
     private func applyStyles() {
         backgroundColor = .basicBackground
 
-        icon.tintColor = .success
-
         titleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         titleLabel.textColor = .text
         titleLabel.numberOfLines = 0
 
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        descriptionLabel.textColor = .text
+        descriptionLabel.textColor = .textSubtle
         descriptionLabel.numberOfLines = 0
 
         primaryButton.isPrimary = true
@@ -50,17 +48,35 @@ class RestoreCompleteView: UIView, NibLoadable {
     // MARK: - Configuration
 
     func configure(iconImage: UIImage,
+                   iconImageColor: UIColor,
                    title: String,
                    description: String,
-                   primaryButtonTitle: String,
-                   secondaryButtonTitle: String,
+                   primaryButtonTitle: String?,
+                   secondaryButtonTitle: String?,
                    hint: String?) {
 
         icon.image = iconImage
+        icon.tintColor = iconImageColor
+
         titleLabel.text = title
+
         descriptionLabel.text = description
-        primaryButton.setTitle(primaryButtonTitle, for: .normal)
+
         secondaryButton.setTitle(secondaryButtonTitle, for: .normal)
+
+        if let primaryButtonTitle = primaryButtonTitle {
+            primaryButton.setTitle(primaryButtonTitle, for: .normal)
+            primaryButton.isHidden = false
+        } else {
+            primaryButton.isHidden = true
+        }
+
+        if let secondaryButtonTitle = secondaryButtonTitle {
+            secondaryButton.setTitle(secondaryButtonTitle, for: .normal)
+            secondaryButton.isHidden = false
+        } else {
+            secondaryButton.isHidden = true
+        }
 
         if let hint = hint {
             hintLabel.text = hint
@@ -76,7 +92,7 @@ class RestoreCompleteView: UIView, NibLoadable {
         primaryButtonHandler?()
     }
 
-    @IBAction private func secondaryButtonTapped(_ sender: Any) {
-        secondaryButtonHandler?()
+    @IBAction private func secondaryButtonTapped(_ sender: UIButton) {
+        secondaryButtonHandler?(sender as UIButton)
     }
 }

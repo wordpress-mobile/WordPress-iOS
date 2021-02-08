@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import CocoaLumberjack
 import Gridicons
 import WordPressFlux
@@ -9,8 +9,15 @@ class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
 
     // MARK: - Properties
 
+    weak var backupStatusDelegate: JetpackBackupStatusViewControllerDelegate?
+
+    // MARK: - Private Properties
+
     private lazy var coordinator: JetpackBackupOptionsCoordinator = {
-        return JetpackBackupOptionsCoordinator(site: self.site, restoreTypes: self.restoreTypes, view: self)
+        return JetpackBackupOptionsCoordinator(site: self.site,
+                                               rewindID: self.activity.rewindID,
+                                               restoreTypes: self.restoreTypes,
+                                               view: self)
     }()
 
     // MARK: - Initialization
@@ -33,28 +40,55 @@ class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
 
     // MARK: - View Lifecycle
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        WPAnalytics.track(.backupDownloadOpened, properties: ["source": presentedFrom])
     }
 
     // MARK: - Override
 
     override func actionButtonTapped() {
+        WPAnalytics.track(.backupDownloadConfirmed, properties: ["restore_types": [
+            "themes": restoreTypes.themes,
+            "plugins": restoreTypes.plugins,
+            "uploads": restoreTypes.uploads,
+            "sqls": restoreTypes.sqls,
+            "roots": restoreTypes.roots,
+            "contents": restoreTypes.contents
+        ]])
+
         coordinator.prepareBackup()
     }
 }
 
 extension JetpackBackupOptionsViewController: JetpackBackupOptionsView {
 
-    func showError() {
-        let errorTitle = NSLocalizedString("Backup failed.", comment: "Title for error displayed when preparing a backup fails.")
+    func showNoInternetConnection() {
+        ReachabilityUtils.showAlertNoInternetConnection()
+        WPAnalytics.track(.backupFileDownloadError, properties: ["cause": "offline"])
+    }
+
+    func showBackupAlreadyRunning() {
+        let title = NSLocalizedString("There's a backup currently being prepared, please wait before starting the next one", comment: "Text displayed when user tries to create a downloadable backup when there is already one being prepared")
+        let notice = Notice(title: title)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+        WPAnalytics.track(.backupFileDownloadError, properties: ["cause": "other"])
+    }
+
+    func showBackupRequestFailed() {
+        let errorTitle = NSLocalizedString("Backup failed", comment: "Title for error displayed when preparing a backup fails.")
         let errorMessage = NSLocalizedString("We couldn't create your backup. Please try again later.", comment: "Message for error displayed when preparing a backup fails.")
         let notice = Notice(title: errorTitle, message: errorMessage)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+        WPAnalytics.track(.backupFileDownloadError, properties: ["cause": "remote"])
     }
 
-    func showBackupStatus(for downloadID: Int) {
-        let statusVC = JetpackBackupStatusViewController(site: site, activity: activity, downloadID: downloadID)
+    func showBackupStarted(for downloadID: Int) {
+        let statusVC = JetpackBackupStatusViewController(site: site,
+                                                         activity: activity,
+                                                         downloadID: downloadID)
+        statusVC.delegate = backupStatusDelegate
         self.navigationController?.pushViewController(statusVC, animated: true)
     }
 

@@ -164,7 +164,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     cell.textLabel.text = [self titleForConnectionCell];
     if (self.connecting) {
-        UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
         cell.accessoryView = activityView;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [activityView startAnimating];

@@ -7,7 +7,7 @@ struct JetpackScanStatusViewModel {
 
     private(set) var primaryButtonTitle: String?
     private(set) var secondaryButtonTitle: String?
-    private(set) var progress: Float? = nil
+    private(set) var progress: Float?
 
     private let coordinator: JetpackScanCoordinator
 
@@ -45,30 +45,36 @@ struct JetpackScanStatusViewModel {
             secondaryButtonTitle = Strings.scanNowTitle
             secondaryButtonAction = .triggerScan
 
-        case .hasThreats, .hasFixableThreats:
-            let threatCount = scan.threats?.count ?? 0
-            let blogName = blog.title ?? ""
-
-            let descriptionTitle: String
-            if threatCount == 1 {
-                descriptionTitle = String(format: Strings.hasSingleThreatDescriptionFormat, blogName)
-            } else {
-                descriptionTitle = String(format: Strings.hasThreatsDescriptionFormat, threatCount, blogName)
-            }
-
+        case .hasThreats, .hasFixableThreats, .fixingThreats:
             imageName = "jetpack-scan-state-error"
-            title = Strings.hasThreatsTitle
-            description = descriptionTitle
 
-            if state == .hasThreats {
-                secondaryButtonTitle = Strings.scanNowTitle
-                secondaryButtonAction = .triggerScan
+            if state == .fixingThreats {
+                title = Strings.fixing.title
+                description = Strings.fixing.details
             } else {
-                primaryButtonTitle = Strings.fixAllTitle
-                primaryButtonAction = .fixAll
+                let threatCount = scan.threats?.count ?? 0
+                let blogName = blog.title ?? ""
 
-                secondaryButtonTitle = Strings.scanAgainTitle
-                secondaryButtonAction = .triggerScan
+                let descriptionTitle: String
+                if threatCount == 1 {
+                    descriptionTitle = String(format: Strings.hasSingleThreatDescriptionFormat, blogName)
+                } else {
+                    descriptionTitle = String(format: Strings.hasThreatsDescriptionFormat, threatCount, blogName)
+                }
+
+                title = Strings.hasThreatsTitle
+                description = descriptionTitle
+
+                if state == .hasThreats {
+                    secondaryButtonTitle = Strings.scanNowTitle
+                    secondaryButtonAction = .triggerScan
+                } else {
+                    primaryButtonTitle = Strings.fixAllTitle
+                    primaryButtonAction = .fixAll
+
+                    secondaryButtonTitle = Strings.scanAgainTitle
+                    secondaryButtonAction = .triggerScan
+                }
             }
 
         case .preparingToScan:
@@ -123,9 +129,11 @@ struct JetpackScanStatusViewModel {
         switch action {
         case .fixAll:
             coordinator.presentFixAllAlert()
+            WPAnalytics.track(.jetpackScanAllThreatsOpen)
 
         case .triggerScan:
             coordinator.startScan()
+            WPAnalytics.track(.jetpackScanRunTapped)
 
         case .contactSupport:
             coordinator.openSupport()
@@ -141,6 +149,7 @@ struct JetpackScanStatusViewModel {
         case hasFixableThreats
         case preparingToScan
         case scanning
+        case fixingThreats
         case error
     }
 
@@ -158,6 +167,8 @@ struct JetpackScanStatusViewModel {
 
                 viewState = .noThreats
             }
+        case .fixingThreats:
+            viewState = .fixingThreats
 
         case .provisioning:
             viewState = .preparingToScan
@@ -195,12 +206,13 @@ struct JetpackScanStatusViewModel {
     // MARK: - Localized Strings
     private struct Strings {
         static let noThreatsTitle = NSLocalizedString("Don’t worry about a thing", comment: "Title for label when there are no threats on the users site")
-        static let noThreatsDescriptionFormat = NSLocalizedString("The last Jetpack scan ran %1$@ and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today.", comment: "Description for label when there are no threats on a users site and how long ago the scan ran")
-        static let noThreatsDescription = NSLocalizedString("The last Jetpack scan completed and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today.", comment: "Description that informs for label when there are no threats on a users site")
+        static let noThreatsDescriptionFormat = NSLocalizedString("The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.", comment: "Description for label when there are no threats on a users site and how long ago the scan ran.")
+        static let noThreatsDescription = NSLocalizedString("The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.",
+                                                            comment: "Description that informs for label when there are no threats on a users site")
 
         static let hasThreatsTitle = NSLocalizedString("Your site may be at risk", comment: "Title for label when there are threats on the users site")
-        static let hasThreatsDescriptionFormat = NSLocalizedString("Jetpack Scan found %1$d potential threats on %2$@. Please review each threat and take action.", comment: "Description for a label when there are threats on the site, displays the number of threats, and the site's title")
-        static let hasSingleThreatDescriptionFormat = NSLocalizedString("Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action.", comment: "Description for a label when there is a single threat on the site, displays the site's title")
+        static let hasThreatsDescriptionFormat = NSLocalizedString("Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us.", comment: "Description for a label when there are threats on the site, displays the number of threats, and the site's title")
+        static let hasSingleThreatDescriptionFormat = NSLocalizedString("Jetpack Scan found 1 potential threat with %1$@. Please review them below and take action or tap the fix all button. We are here to help if you need us.", comment: "Description for a label when there is a single threat on the site, displays the site's title")
 
         static let preparingTitle = NSLocalizedString("Preparing to scan", comment: "Title for label when the preparing to scan the users site")
         static let scanningTitle = NSLocalizedString("Scanning files", comment: "Title for label when the actively scanning the users site")
@@ -208,6 +220,11 @@ struct JetpackScanStatusViewModel {
 
         static let errorTitle = NSLocalizedString("Something went wrong", comment: "Title for a label that appears when the scan failed")
         static let errorDescription = NSLocalizedString("Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team.", comment: "Description for a label when the scan has failed")
+
+        struct fixing {
+            static let title = NSLocalizedString("Fixing Threats", comment: "Subtitle displayed while the server is fixing threats")
+            static let details = NSLocalizedString("We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.", comment: "Detail text display informing the user that we're fixing threats")
+        }
 
         // Buttons
         static let contactSupportTitle = NSLocalizedString("Contact Support", comment: "Button title that opens the support page")

@@ -64,8 +64,7 @@ open class ReaderPostMenu {
 
         // Seen
         if FeatureFlag.unseenPosts.enabled {
-            // Only show option for posts that are followed
-            if post.feedItemID != nil {
+            if post.isSeenSupported {
                 alertController.addActionWithTitle(post.isSeen ? ReaderPostMenuButtonTitles.markUnseen : ReaderPostMenuButtonTitles.markSeen,
                                                    style: .default,
                                                    handler: { (action: UIAlertAction) in
@@ -213,7 +212,7 @@ open class ReaderPostMenu {
                                             object: nil,
                                             userInfo: [ReaderNotificationKeys.post: post])
         }, failure: { _ in
-            ReaderHelpers.dispatchToggleSeenError(post: post)
+            ReaderHelpers.dispatchToggleSeenMessage(post: post, success: false)
         })
     }
 

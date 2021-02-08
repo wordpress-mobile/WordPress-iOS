@@ -36,7 +36,7 @@ final class SiteTagsViewController: UITableViewController {
     fileprivate lazy var searchController: UISearchController = {
         let returnValue = UISearchController(searchResultsController: nil)
         returnValue.hidesNavigationBarDuringPresentation = false
-        returnValue.dimsBackgroundDuringPresentation = false
+        returnValue.obscuresBackgroundDuringPresentation = false
         returnValue.searchResultsUpdater = self
         returnValue.delegate = self
 
