@@ -95,9 +95,3 @@ private extension ListRow {
     }
 }
 
-//struct ThisWeekRow_Previews: PreviewProvider {
-//    static var previews: some View {
-//        StatsListRow(day: ThisWeekWidgetDay(date: Date(), viewsCount: 130, dailyChangePercent: -0.22))
-//            .previewContext(WidgetPreviewContext(family: .systemMedium))
-//    }
-//}
