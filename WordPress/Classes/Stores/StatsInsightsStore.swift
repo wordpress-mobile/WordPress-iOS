@@ -1085,7 +1085,8 @@ private extension StatsInsightsStore {
             WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
             HomeWidgetAllTimeData.delete()
             WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
-
+            HomeWidgetThisWeekData.delete()
+            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
         }
     }
 }

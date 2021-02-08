@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WidgetKit
 
 enum PeriodType: CaseIterable {
     case summary
@@ -130,6 +131,7 @@ struct PeriodStoreState {
     var summary: StatsSummaryTimeIntervalData? {
         didSet {
             storeThisWeekWidgetData()
+            updateThisWeekHomeWidget()
         }
     }
 
@@ -167,6 +169,10 @@ struct PeriodStoreState {
 
     var postStats = [Int: StatsPostDetails?]()
     var postStatsFetchingStatuses = [Int: StoreFetchingStatus]()
+
+    init() {
+        initializeThisWeekHomeWidget()
+    }
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -1373,5 +1379,94 @@ private extension PeriodStoreState {
         }
         return true
     }
+}
 
+
+// MARK: - iOS 14 Widget Data
+private extension PeriodStoreState {
+
+    func initializeThisWeekWidgetData() -> [Int: HomeWidgetThisWeekData] {
+
+        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+
+        return blogService.visibleBlogsForWPComAccounts().reduce(into: [Int: HomeWidgetThisWeekData]()) { result, element in
+            if let blogID = element.dotComID,
+               let url = element.url,
+               let blog = blogService.blog(byBlogId: blogID) {
+                // set the title to the site title, if it's not nil and not empty; otherwise use the site url
+                let title = (element.title ?? url).isEmpty ? url : element.title ?? url
+                let timeZone = blogService.timeZone(for: blog)
+
+                result[blogID.intValue] = HomeWidgetThisWeekData(siteID: blogID.intValue,
+                                                                 siteName: title,
+                                                                 url: url,
+                                                                 timeZone: timeZone,
+                                                                 date: Date(timeIntervalSinceReferenceDate: 0),
+                                                                 stats: ThisWeekWidgetStats())
+
+            }
+        }
+    }
+
+    func storeThisWeekHomeWidgetData(stats: ThisWeekWidgetStats) {
+        guard #available(iOS 14.0, *),
+              let siteID = SiteStatsInformation.sharedInstance.siteID else {
+            return
+        }
+
+        var homeWidgetCache = HomeWidgetThisWeekData.read() ?? initializeThisWeekWidgetData()
+        guard let oldData = homeWidgetCache[siteID.intValue] else {
+            DDLogError("This Week Widget: Failed to find a matching site")
+            return
+        }
+        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+
+        guard let blog = blogService.blog(byBlogId: siteID) else {
+            DDLogError("StatsWidgets: the site does not exist anymore")
+            // if for any reason that site does not exist anymore, remove it from the cache.
+            homeWidgetCache.removeValue(forKey: siteID.intValue)
+            HomeWidgetThisWeekData.write(items: homeWidgetCache)
+            return
+        }
+        homeWidgetCache[siteID.intValue] = HomeWidgetThisWeekData(siteID: siteID.intValue,
+                                                                  siteName: blog.title ?? oldData.siteName,
+                                                                  url: blog.url ?? oldData.url,
+                                                                  timeZone: blogService.timeZone(for: blog),
+                                                                  date: Date(),
+                                                                  stats: stats)
+        HomeWidgetThisWeekData.write(items: homeWidgetCache)
+        WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
+    }
+
+    func updateThisWeekHomeWidget() {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        switch summary?.period {
+        case .day:
+            guard summary?.periodEndDate == StatsDataHelper.currentDateForSite().normalizedDate() else {
+                WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
+                return
+            }
+
+            let summaryData = Array(summary?.summaryData.reversed().prefix(ThisWeekWidgetStats.maxDaysToDisplay + 1) ?? [])
+
+            let stats = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
+            storeThisWeekHomeWidgetData(stats: stats)
+        case .week:
+            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
+        default:
+            break
+        }
+    }
+
+    func initializeThisWeekHomeWidget() {
+
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+
+        HomeWidgetThisWeekData.write(items: initializeThisWeekWidgetData())
+        WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
+    }
 }
