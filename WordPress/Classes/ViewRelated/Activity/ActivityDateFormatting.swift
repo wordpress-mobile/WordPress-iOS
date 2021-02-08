@@ -2,8 +2,7 @@
 // (at the minimum the Activity Log list, detail view, and the `ActivityStore`.
 // This encapsulates those needs in one place.
 struct ActivityDateFormatting {
-    static func mediumDateFormatterWithTime(for site: JetpackSiteRef,
-                                            managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) -> DateFormatter {
+    static func mediumDateFormatterWithTime(for site: JetpackSiteRef) -> DateFormatter {
         let formatter = DateFormatter()
         formatter.doesRelativeDateFormatting = true
         formatter.dateStyle = .medium
@@ -13,11 +12,11 @@ struct ActivityDateFormatting {
         return formatter
     }
 
-    static func longDateFormatterWithoutTime(for site: JetpackSiteRef,
-                                             managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) -> DateFormatter {
+    static func longDateFormatter(for site: JetpackSiteRef,
+                                  withTime: Bool = false) -> DateFormatter {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
-        formatter.timeStyle = .none
+        formatter.timeStyle = withTime ? .short : .none
         formatter.timeZone = timeZone(for: site)
 
         return formatter

@@ -29,6 +29,14 @@ class MockContentCoordinator: ContentCoordinator {
 
     }
 
+    func displayBackupWithSiteID(_ siteID: NSNumber?) throws {
+
+    }
+
+    func displayScanWithSiteID(_ siteID: NSNumber?) throws {
+
+    }
+
     var streamWasDisplayed = false
     var streamSiteID: NSNumber?
     func displayStreamWithSiteID(_ siteID: NSNumber?) throws {

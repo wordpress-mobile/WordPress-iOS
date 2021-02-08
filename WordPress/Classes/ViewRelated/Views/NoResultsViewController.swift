@@ -437,12 +437,21 @@ private extension NoResultsViewController {
     }
 
     func copyTitleLabel() -> UILabel? {
-        guard let titleLabel = titleLabel else {
+        // Copy the `titleLabel` to get the style for Title View Only label
+
+        // Note: unarchivedObjectOfClass:fromData:error: sets secure coding to true
+        // We setup our own unarchiver to work around that
+        guard
+            let titleLabel = titleLabel,
+            let data = try? NSKeyedArchiver.archivedData(withRootObject: titleLabel, requiringSecureCoding: false),
+            let unarchiver = try? NSKeyedUnarchiver(forReadingFrom: data)
+        else {
             return nil
         }
-        // Copy the `titleLabel` to get the style for Title View Only label
-        let data = NSKeyedArchiver.archivedData(withRootObject: titleLabel)
-        return NSKeyedUnarchiver.unarchiveObject(with: data) as? UILabel ?? nil
+
+        unarchiver.requiresSecureCoding = false
+
+        return try? unarchiver.decodeTopLevelObject(of: UILabel.self, forKey: "root")
     }
 
     func configureTitleViewConstraints() {

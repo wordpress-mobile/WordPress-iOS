@@ -13,7 +13,7 @@ extension WKWebView {
     func userAgent() -> String {
         guard let userAgent = value(forKey: WKWebView.userAgentKey) as? String,
             userAgent.count > 0 else {
-                CrashLogging.logMessage(
+                WordPressAppDelegate.crashLogging?.logMessage(
                     "This method for retrieveing the user agent seems to be no longer working.  We need to figure out an alternative.",
                     properties: [:],
                     level: .error)

@@ -107,7 +107,7 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
     func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion) {
         domainsService.getDomainSuggestions(base: query,
                                             quantity: domainRequestQuantity,
-                                            domainSuggestionType: .onlyWordPressDotCom,
+                                            domainSuggestionType: .wordPressDotComAndDotBlogSubdomains,
                                             success: { domainSuggestions in
                                                 completion(Result.success(self.sortSuggestions(for: query, suggestions: domainSuggestions)))
                                             },

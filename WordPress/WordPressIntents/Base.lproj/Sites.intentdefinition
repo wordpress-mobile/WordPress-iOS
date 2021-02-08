@@ -9,16 +9,18 @@
 	<key>INIntentDefinitionNamespace</key>
 	<string>88xZPY</string>
 	<key>INIntentDefinitionSystemVersion</key>
-	<string>20B29</string>
+	<string>20C69</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
-	<string>12B45b</string>
+	<string>12C33</string>
 	<key>INIntentDefinitionToolsVersion</key>
-	<string>12.2</string>
+	<string>12.3</string>
 	<key>INIntents</key>
 	<array>
 		<dict>
 			<key>INIntentCategory</key>
 			<string>information</string>
+			<key>INIntentDescription</key>
+			<string>Select Site Intent</string>
 			<key>INIntentDescriptionID</key>
 			<string>tVvJ9c</string>
 			<key>INIntentEligibleForWidgets</key>

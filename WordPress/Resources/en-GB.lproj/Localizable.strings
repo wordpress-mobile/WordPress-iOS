@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-25 22:08:04+0000 */
+/* Translation-Revision-Date: 2021-01-25 22:13:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: en_GB */
@@ -3096,10 +3096,10 @@
 "Jetpack Scan will resolve the threat." = "Jetpack Scan will resolve the threat.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will rollback the affected file to an older (clean) version." = "Jetpack Scan will rollback the affected file to an older (clean) version.";
+"Jetpack Scan will rollback the affected file to an older (clean) version." = "Jetpack Scan will roll back the affected file to an older (clean) version.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will rollback the affected file to the version from %1$@." = "Jetpack Scan will rollback the affected file to the version from %1$@.";
+"Jetpack Scan will rollback the affected file to the version from %1$@." = "Jetpack Scan will roll back the affected file to the version from %1$@.";
 
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will update to a newer version." = "Jetpack Scan will update to a newer version.";
@@ -6494,7 +6494,7 @@
 "Trash" = "Bin";
 
 /* Title of the trash page confirmation alert. */
-"Trash this page?" = "Trash this page?";
+"Trash this page?" = "Bin this page?";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Bin this post?";
@@ -6623,7 +6623,7 @@
 "Unable to save media item." = "Unable to save media item.";
 
 /* Message that appears when a user tries to trash a page while their device is offline. */
-"Unable to trash pages while offline. Please try again later." = "Unable to trash pages while offline. Please try again later.";
+"Unable to trash pages while offline. Please try again later." = "Unable to bin pages while offline. Please try again later.";
 
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "Unable to bin posts while offline. Please try again later.";

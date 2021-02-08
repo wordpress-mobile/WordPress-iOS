@@ -5,6 +5,14 @@ struct FlexibleCard: View {
     let axis: Axis
     let title: LocalizedStringKey
     let value: Value
+    let lineLimit: Int
+
+    init(axis: Axis, title: LocalizedStringKey, value: Value, lineLimit: Int = 1) {
+        self.axis = axis
+        self.title = title
+        self.value = value
+        self.lineLimit = lineLimit
+    }
 
     enum Value {
         case number(Int)
@@ -22,7 +30,7 @@ struct FlexibleCard: View {
                            font: Appearance.textFont,
                            fontWeight: Appearance.textFontWeight,
                            foregroundColor: Appearance.textColor,
-                           lineLimit: Appearance.textLineLimit)
+                           lineLimit: lineLimit)
 
         case .description(let description):
 
@@ -30,7 +38,7 @@ struct FlexibleCard: View {
                 .font(Appearance.textFont)
                 .fontWeight(Appearance.textFontWeight)
                 .foregroundColor(Appearance.textColor)
-                .lineLimit(Appearance.textLineLimit)
+                .lineLimit(lineLimit)
         }
     }
 
@@ -66,7 +74,6 @@ extension FlexibleCard {
         static let textFont = Font.footnote
         static let textFontWeight = Font.Weight.semibold
         static let textColor = Color(.label)
-        static let textLineLimit = 2
 
         static let titleFont = Font.caption
         static let titleColor = Color(.secondaryLabel)

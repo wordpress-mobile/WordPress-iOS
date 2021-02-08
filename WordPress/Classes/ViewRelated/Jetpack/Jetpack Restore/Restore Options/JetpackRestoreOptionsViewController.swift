@@ -6,6 +6,10 @@ import WordPressShared
 
 class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
 
+    // MARK: - Properties
+
+    weak var restoreStatusDelegate: JetpackRestoreStatusViewControllerDelegate?
+
     // MARK: - Initialization
 
     override init(site: JetpackSiteRef, activity: Activity) {
@@ -26,8 +30,10 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
 
     // MARK: - View Lifecycle
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        WPAnalytics.track(.restoreOpened, properties: ["source": presentedFrom])
     }
 
     // MARK: - Override
@@ -36,6 +42,7 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
         let warningVC = JetpackRestoreWarningViewController(site: site,
                                                             activity: activity,
                                                             restoreTypes: restoreTypes)
+        warningVC.restoreStatusDelegate = restoreStatusDelegate
         self.navigationController?.pushViewController(warningVC, animated: true)
     }
 

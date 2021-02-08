@@ -55,15 +55,15 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .siteCreationHomePagePicker:
             return true
         case .jetpackScan:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .activityLogFilters:
             return true
         case .jetpackBackupAndRestore:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .todayWidget:
             return true
         case .unseenPosts:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         }
     }
 

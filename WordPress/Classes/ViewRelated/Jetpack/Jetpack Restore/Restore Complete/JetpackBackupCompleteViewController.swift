@@ -1,5 +1,6 @@
 import UIKit
 import CocoaLumberjack
+import WordPressFlux
 import WordPressShared
 import WordPressUI
 
@@ -15,6 +16,7 @@ class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
         let restoreCompleteConfiguration = JetpackRestoreCompleteConfiguration(
             title: NSLocalizedString("Backup", comment: "Title for Jetpack Backup Complete screen"),
             iconImage: .gridicon(.history),
+            iconImageColor: .success,
             messageTitle: NSLocalizedString("Your backup is now available for download", comment: "Title for the Jetpack Backup Complete message."),
             messageDescription: NSLocalizedString("We successfully created a backup of your site from %1$@.", comment: "Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date."),
             primaryButtonTitle: NSLocalizedString("Download file", comment: "Title for the button that will download the backup file."),
@@ -39,27 +41,46 @@ class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
 
     override func primaryButtonTapped() {
         downloadFile()
+        WPAnalytics.track(.backupFileDownloadTapped)
     }
 
-    override func secondaryButtonTapped() {
-        shareLink()
+    override func secondaryButtonTapped(from sender: UIButton) {
+        shareLink(from: sender)
+        WPAnalytics.track(.backupDownloadShareLinkTapped)
     }
 
     // MARK: - Private
 
     private func downloadFile() {
-        // TODO
+        guard let url = backup.url,
+              let downloadURL = URL(string: url) else {
+
+            let title = NSLocalizedString("Unable to download file", comment: "Message displayed when opening the link to the downloadable backup fails.")
+            let notice = Notice(title: title)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+            return
+        }
+
+        UIApplication.shared.open(downloadURL)
     }
 
-    private func shareLink() {
+    private func shareLink(from sender: UIButton) {
         guard let url = backup.url,
               let downloadURL = URL(string: url),
               let activities = WPActivityDefaults.defaultActivities() as? [UIActivity] else {
+
+            let title = NSLocalizedString("Unable to share link", comment: "Message displayed when sharing a link to the downloadable backup fails.")
+            let notice = Notice(title: title)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+
             return
         }
 
         let activityVC = UIActivityViewController(activityItems: [downloadURL], applicationActivities: activities)
-        activityVC.popoverPresentationController?.sourceView = self.view
+        activityVC.popoverPresentationController?.sourceView = sender
+        activityVC.modalPresentationStyle = .popover
+
 
         self.present(activityVC, animated: true)
     }

@@ -439,18 +439,14 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 - (void)toggleSeenForPost:(ReaderPost *)post
                   success:(void (^)(void))success
-                  failure:(void (^)(NSError *error))failure;
+                  failure:(void (^)(NSError *error))failure
 {
-    if (post.feedItemID == nil) {
-        DDLogError(@"Could not toggle Seen: missing feedItemID attribute.");
-        NSString *description = NSLocalizedString(@"Could not toggle Seen: missing feedItemID attribute.", @"An error description explaining that Seen could not be toggled due to a missing feedItemID attribute.");
-        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
-        NSError *error = [NSError errorWithDomain:ReaderPostServiceErrorDomain code:0 userInfo:userInfo];
-        
+    NSError *error = [self validatePostForSeenToggle: post];
+    if (error != nil) {
         if (failure) {
             failure(error);
         }
-        
+
         return;
     }
     
@@ -500,10 +496,18 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         
         // Call the remote service.
         ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
-        [remoteService markPostSeenWithSeen:seen
-                                     feedID:readerPost.feedID
-                                 feedItemID:readerPost.feedItemID
-                                    success:successBlock failure:failureBlock];
+        
+        if (readerPost.isWPCom) {
+            [remoteService markBlogPostSeenWithSeen:seen
+                                             blogID:readerPost.siteID
+                                             postID:readerPost.postID
+                                            success:successBlock failure:failureBlock];
+        } else {
+            [remoteService markFeedPostSeenWithSeen:seen
+                                             feedID:readerPost.feedID
+                                         feedItemID:readerPost.feedItemID
+                                            success:successBlock failure:failureBlock];
+        }
     }];
 }
 
@@ -738,6 +742,27 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     return [NSPredicate predicateWithFormat:@"isSavedForLater == NO"];
 }
 
+- (NSError *)validatePostForSeenToggle:(ReaderPost *)post
+{
+    NSString *description = nil;
+    
+    if (post.isWPCom && post.postID == nil) {
+        DDLogError(@"Could not toggle Seen: missing postID.");
+        description = NSLocalizedString(@"Could not toggle Seen: missing postID.", @"An error description explaining that Seen could not be toggled due to a missing postID.");
+        
+    } else if (!post.isWPCom && post.feedItemID == nil) {
+        DDLogError(@"Could not toggle Seen: missing feedItemID.");
+        description = NSLocalizedString(@"Could not toggle Seen: missing feedItemID.", @"An error description explaining that Seen could not be toggled due to a missing feedItemID.");
+    }
+    
+    if (description == nil) {
+        return nil;
+    }
+    
+    NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
+    NSError *error = [NSError errorWithDomain:ReaderPostServiceErrorDomain code:0 userInfo:userInfo];
+    return error;
+}
 
 #pragma mark - Merging and Deletion
 

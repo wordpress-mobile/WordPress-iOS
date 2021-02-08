@@ -63,17 +63,15 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     @IBOutlet var visualEffects: [UIVisualEffectView]! {
         didSet {
-            if #available(iOS 13.0, *) {
-                visualEffects.forEach { (visualEffect) in
-                    visualEffect.effect = UIBlurEffect.init(style: .systemChromeMaterial)
-                }
+            visualEffects.forEach { (visualEffect) in
+                visualEffect.effect = UIBlurEffect.init(style: .systemChromeMaterial)
             }
         }
     }
     private var footerHeight: CGFloat {
         let verticalMargins: CGFloat = 16
         let buttonHeight: CGFloat = 44
-        let safeArea = (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0)
+        let safeArea = (UIApplication.shared.mainWindow?.safeAreaInsets.bottom ?? 0)
         return verticalMargins + buttonHeight + verticalMargins + safeArea
     }
     private var isShowingNoResults: Bool = false {
@@ -114,16 +112,12 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     private var minHeaderHeight: CGFloat = 0
 
     private var accentColor: UIColor {
-        if #available(iOS 13.0, *) {
-            return UIColor { (traitCollection: UITraitCollection) -> UIColor in
-                if traitCollection.userInterfaceStyle == .dark {
-                    return UIColor.muriel(color: .accent, .shade40)
-                } else {
-                    return UIColor.muriel(color: .accent, .shade50)
-                }
+        return UIColor { (traitCollection: UITraitCollection) -> UIColor in
+            if traitCollection.userInterfaceStyle == .dark {
+                return UIColor.muriel(color: .accent, .shade40)
+            } else {
+                return UIColor.muriel(color: .accent, .shade50)
             }
-        } else {
-            return UIColor.muriel(color: .accent, .shade50)
         }
     }
 
@@ -135,18 +129,13 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         closeButton.addTarget(target, action: action, for: .touchUpInside)
 
-        if #available(iOS 13.0, *) {
-            closeButton.tintColor = .secondaryLabel
-            closeButton.backgroundColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
-                if traitCollection.userInterfaceStyle == .dark {
-                    return UIColor.systemFill
-                } else {
-                    return UIColor.quaternarySystemFill
-                }
+        closeButton.tintColor = .secondaryLabel
+        closeButton.backgroundColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
+            if traitCollection.userInterfaceStyle == .dark {
+                return UIColor.systemFill
+            } else {
+                return UIColor.quaternarySystemFill
             }
-        } else {
-            closeButton.tintColor = .textSubtle
-            closeButton.backgroundColor = .quaternaryBackground
         }
 
         return UIBarButtonItem(customView: closeButton)
@@ -198,10 +187,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         setStaticText()
         scrollableView.delegate = self
 
-        if #available(iOS 13.0, *) {} else {
-            headerView.backgroundColor = .basicBackground
-            footerView.backgroundColor = .basicBackground
-        }
         formatNavigationController()
         extendedLayoutIncludesOpaqueBars = true
         edgesForExtendedLayout = .top
@@ -215,11 +200,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        if #available(iOS 13.0, *) {
-            // For iOS 13 the navigation item is being set so there is no need to reconfigure it everytime we're displaying a controller.
-        } else {
-            formatNavigationController()
-        }
         if !isViewOnScreen() {
             layoutHeader()
         }
@@ -229,12 +209,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        if #available(iOS 13.0, *) {
-            // For iOS 13 the navigation item is being set so there is no need to revert everytime we're dismissing the controller.
-        } else {
-            restoreNavigationBar()
-        }
-
         stopObservingKeyboardChanges()
         super.viewWillDisappear(animated)
     }
@@ -259,13 +233,12 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        if #available(iOS 13.0, *) {
-            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-                styleButtons()
-            }
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            styleButtons()
         }
 
         if let previousTraitCollection = previousTraitCollection, traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass {
+            isUserInitiatedScroll = false
             layoutHeaderInsets()
 
             // This helps reset the header changes after a rotation.
@@ -291,56 +264,18 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     /*
      * To allow more flexibility in the navigation bar's header items, we keep the navigation bar available.
      * However, that space is also essential to a uniform design of the header. This function updates the design of the
-     * navigation bar. On iOS 13+, we're able to set the design to the `navigationItem`, which is ViewController specific.
-     * On iOS 12 and below, we need to set those values to the `navigationBar`. We cache the original values in
-     * `originalNavBarAppearance` and then revert the changes when the view is dismissed by calling `restoreNavigationBar`
+     * navigation bar. We set the design to the `navigationItem`, which is ViewController specific.
      */
     private func formatNavigationController() {
-        if #available(iOS 13.0, *) {
-            let newAppearance = UINavigationBarAppearance()
-            newAppearance.configureWithTransparentBackground()
-            newAppearance.backgroundColor = .clear
-            newAppearance.shadowColor = .clear
-            newAppearance.shadowImage = UIImage()
-            navigationItem.standardAppearance = newAppearance
-            navigationItem.scrollEdgeAppearance = newAppearance
-            navigationItem.compactAppearance = newAppearance
-        } else {
-            if originalNavBarAppearance == nil {
-                cacheNavBarAppearance()
-            }
-
-            navigationController?.navigationBar.barStyle = .default
-            navigationController?.navigationBar.barTintColor = .white
-            navigationController?.navigationBar.isTranslucent = true
-            navigationController?.navigationBar.shadowImage = UIImage()
-        }
-
+        let newAppearance = UINavigationBarAppearance()
+        newAppearance.configureWithTransparentBackground()
+        newAppearance.backgroundColor = .clear
+        newAppearance.shadowColor = .clear
+        newAppearance.shadowImage = UIImage()
+        navigationItem.standardAppearance = newAppearance
+        navigationItem.scrollEdgeAppearance = newAppearance
+        navigationItem.compactAppearance = newAppearance
         setNeedsStatusBarAppearanceUpdate()
-    }
-
-    @available(iOS, obsoleted: 13.0, message: "See description on `formatNavigationController`")
-    private var originalNavBarAppearance: (barStyle: UIBarStyle, barTintColor: UIColor?, isTranslucent: Bool, shadowImage: UIImage?)?
-
-    @available(iOS, obsoleted: 13.0, message: "See description on `formatNavigationController`")
-    private func cacheNavBarAppearance() {
-        if #available(iOS 13.0, *) { } else {
-            originalNavBarAppearance = (navigationController?.navigationBar.barStyle ?? .default,
-                                        navigationController?.navigationBar.barTintColor,
-                                        navigationController?.navigationBar.isTranslucent ?? true,
-                                        navigationController?.navigationBar.shadowImage)
-        }
-    }
-
-    @available(iOS, obsoleted: 13.0, message: "See description on `formatNavigationController`")
-    private func restoreNavigationBar() {
-        if #available(iOS 13.0, *) { } else {
-            navigationController?.navigationBar.barStyle = originalNavBarAppearance?.barStyle ?? .default
-            navigationController?.navigationBar.barTintColor = originalNavBarAppearance?.barTintColor
-            navigationController?.navigationBar.isTranslucent = originalNavBarAppearance?.isTranslucent ?? true
-            navigationController?.navigationBar.shadowImage = originalNavBarAppearance?.shadowImage
-            setNeedsStatusBarAppearanceUpdate()
-        }
     }
 
     // MARK: - View Styling
@@ -390,12 +325,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     private func styleButtons() {
-        let seperator: UIColor
-        if #available(iOS 13.0, *) {
-            seperator = .separator
-        } else {
-            seperator = UIColor.muriel(color: .divider)
-        }
+        let seperator = UIColor.separator
 
         [defaultActionButton, secondaryActionButton].forEach { (button) in
             button?.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
@@ -515,6 +445,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     /// order to preserve the header's collpased state we cache the offset and attempt to reapply it if needed.
     private var stashedOffset: CGPoint? = nil
 
+    /// Tracks if the current scroll behavior was intiated by a user drag event
+    private var isUserInitiatedScroll = false
+
     /// A public interface to notify the container that the content size of the scroll view is about to change. This is useful in adjusting the bottom insets to allow the
     /// view to still be scrollable with the content size is less than the total space of the expanded screen.
     public func contentSizeWillChange() {
@@ -610,17 +543,18 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     }
 
     private func updateTitleViewVisibility(_ animated: Bool = true) {
-        let shouldHide = (headerHeightConstraint.constant > midHeaderHeight) && !shouldUseCompactLayout
+        let shouldHide = shouldUseCompactLayout ? false : (headerHeightConstraint.constant > midHeaderHeight)
         titleView.animatableSetIsHidden(shouldHide, animated: animated)
     }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         /// Clear the stashed offset because the user has initiated a change
         stashedOffset = nil
+        isUserInitiatedScroll = true
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard stashedOffset == nil else {
+        guard stashedOffset == nil || stashedOffset == CGPoint.zero else {
             restoreContentOffsetIfNeeded(scrollView)
             return
         }
@@ -633,12 +567,13 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         }
         disableInitialLayoutHelpers()
         resizeHeaderIfNeeded(scrollView)
-        updateTitleViewVisibility()
+        updateTitleViewVisibility(isUserInitiatedScroll)
         updateSeperatorStyle()
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         snapToHeight(scrollView)
+        isUserInitiatedScroll = false
     }
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {

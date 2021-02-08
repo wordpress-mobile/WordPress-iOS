@@ -25,7 +25,7 @@
     self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     
-    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
     indicator.autoresizingMask = UIViewAutoresizingNone;
     CGFloat halfButtonHeight = self.bounds.size.height / 2;
     CGFloat buttonWidth = self.bounds.size.width;
