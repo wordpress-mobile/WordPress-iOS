@@ -54,7 +54,6 @@ struct ListRow: View {
             Text(percentFormatter.string(for: percentValue) ?? "0")
 
                 .frame(minWidth: Constants.differenceViewMinWidth,
-                       idealHeight: Constants.differenceViewIdealHeight,
                        alignment: Constants.differenceViewAlignment)
                 .padding(Constants.differenceViewInsets)
                 .font(Constants.differenceViewFont)
@@ -62,7 +61,7 @@ struct ListRow: View {
                 .background(differenceBackgroundColor)
                 .cornerRadius(Constants.differenceCornerRadius)
         }
-        .frame(height: 20)
+        .frame(height: Constants.innerRowHeight)
         .flipsForRightToLeftLayoutDirection(true)
     }
 }
@@ -78,8 +77,8 @@ private extension ListRow {
 
         static let differenceViewInsets = EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
 
-        static let differenceViewMinWidth: CGFloat = 44.0
-        static let differenceViewIdealHeight: CGFloat = 24.0
+        static let differenceViewMinWidth: CGFloat = 56.0
+        static let innerRowHeight: CGFloat = 20.0
         static let differenceViewAlignment = Alignment.trailing
 
         static let differenceCornerRadius: CGFloat = 4.0

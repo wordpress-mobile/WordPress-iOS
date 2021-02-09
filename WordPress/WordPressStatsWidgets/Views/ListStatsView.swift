@@ -29,7 +29,7 @@ struct ListStatsView: View {
             ForEach(Array(displayData.enumerated()), id: \.element) { index, item in
                 ListRow(date: item.date, percentValue: item.dailyChangePercent, value: item.viewsCount)
                 if index != displayData.count - 1 {
-                    Divider()
+                    Divider().padding(.top, 0)
                 }
             }
         }
@@ -41,7 +41,7 @@ private extension ListStatsView {
         static let mediumSizeRows = 3
         static let largeSizeRows = 7
 
-        static let titleBottomPadding: CGFloat = 6.0
+        static let titleBottomPadding: CGFloat = 8.0
     }
 }
 
