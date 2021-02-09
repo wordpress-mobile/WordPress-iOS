@@ -18,6 +18,6 @@ extension ABTest {
             return
         }
 
-        ExPlat.shared.refreshIfNeeded()
+        ExPlat.shared.refresh()
     }
 }
