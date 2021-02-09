@@ -36,9 +36,10 @@ struct StatsWidgetsView: View {
             }
 
             if let viewData = makeListViewData(from: content) {
+                let padding: CGFloat = family == .systemLarge ? 22 : 16
                 ListStatsView(viewData: viewData)
                     .widgetURL(viewData.statsURL)
-                    .padding()
+                    .padding(.all, padding)
             }
         }
     }
@@ -112,7 +113,7 @@ private extension HomeWidgetAllTimeData {
 
 
 private extension HomeWidgetThisWeekData {
-    static let statsUrl = "https://wordpress.com/stats/weeks/"
+    static let statsUrl = "https://wordpress.com/stats/week/"
 
     var statsURL: URL? {
         URL(string: Self.statsUrl + "\(siteID)?source=widget")
