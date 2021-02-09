@@ -11,8 +11,8 @@ struct StatsWidgetsView: View {
 
         switch timelineEntry {
 
-        case .loggedOut:
-            UnconfiguredView()
+        case .loggedOut(let widgetKind):
+            UnconfiguredView(widgetKind: widgetKind)
                 .widgetURL(nil)
                 // This seems to prevent a bug where the URL for subsequent widget
                 // types is being triggered if one isn't specified here.

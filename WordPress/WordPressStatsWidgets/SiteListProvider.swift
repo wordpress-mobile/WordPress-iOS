@@ -6,6 +6,7 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
 
     let service: StatsWidgetsService
     let placeholderContent: T
+    let widgetKind: StatsWidgetKind
 
     // refresh interval of the widget, in minutes
     let refreshInterval = 60
@@ -57,7 +58,7 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
             if let siteID = defaultSiteID, let content = T.read()?[siteID] {
                 completion(Timeline(entries: [.siteSelected(content)], policy: .never))
             } else {
-                completion(Timeline(entries: [.loggedOut], policy: .never))
+                completion(Timeline(entries: [.loggedOut(widgetKind)], policy: .never))
             }
             return
         }
@@ -92,4 +93,11 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
             }
         }
     }
+}
+
+
+enum StatsWidgetKind {
+    case today
+    case allTime
+    case thisWeek
 }
