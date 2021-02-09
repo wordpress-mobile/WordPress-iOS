@@ -32,7 +32,7 @@ class SpotlightableButton: UIButton, Spotlightable {
 
     func stopLoading() {
         activityIndicator.stopAnimating()
-        setTitle(originalTtile, for: .normal)
+        setTitle(originalTitle, for: .normal)
     }
 
     private lazy var activityIndicator: UIActivityIndicatorView = {
