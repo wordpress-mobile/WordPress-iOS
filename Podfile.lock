@@ -21,7 +21,7 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (2.5.1):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (0.8.1):
+  - Automattic-Tracks-iOS (0.8.2):
     - CocoaLumberjack (~> 3)
     - Reachability (~> 3)
     - Sentry (~> 6)
@@ -441,7 +441,7 @@ DEPENDENCIES:
   - AMScrollingNavbar (= 5.6.0)
   - AppCenter (= 2.5.1)
   - AppCenter/Distribute (= 2.5.1)
-  - Automattic-Tracks-iOS (from `../../Automattic-Tracks-iOS`)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, branch `task/remove_explat_scheduled_refresh`)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (~> 3.0)
   - CropViewController (= 2.5.3)
@@ -566,7 +566,8 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
-    :path: "../../Automattic-Tracks-iOS"
+    :branch: task/remove_explat_scheduled_refresh
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   FBLazyVector:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.46.0/third-party-podspecs/FBLazyVector.podspec.json
   FBReactNativeSpec:
@@ -656,6 +657,9 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.46.0/third-party-podspecs/Yoga.podspec.json
 
 CHECKOUT OPTIONS:
+  Automattic-Tracks-iOS:
+    :commit: 161b3dd054a15924d2eef711c136f1a224c53771
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
@@ -676,7 +680,7 @@ SPEC CHECKSUMS:
   AMScrollingNavbar: cf0ec5a5ee659d76ba2509f630bf14fba7e16dc3
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
-  Automattic-Tracks-iOS: b942ca6067f089660c75c96fd189599fd065f979
+  Automattic-Tracks-iOS: f706ecd3fe22f6cfc6904bf65c5675874c1bceff
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CocoaLumberjack: e8955b9d337ac307103b0a34fd141c32f27e53c5
@@ -763,6 +767,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: d73ccd2dee0392d5175405898c0d11e894d4a8ef
+PODFILE CHECKSUM: 75ab3683d685fe1be50d6ccdbaf8c8046d06f4c0
 
 COCOAPODS: 1.10.0

@@ -181,7 +181,7 @@ target 'WordPress' do
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.8.1'
+    # pod 'Automattic-Tracks-iOS', '~> 0.8.1'
     # While in PR
     pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'task/remove_explat_scheduled_refresh'
     # Local Development
