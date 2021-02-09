@@ -610,7 +610,7 @@ import WordPressFlux
             listentingForBlockedSiteNotification = true
             NotificationCenter.default.addObserver(self,
                 selector: #selector(ReaderStreamViewController.handleBlockSiteNotification(_:)),
-                name: NSNotification.Name(rawValue: ReaderPostMenu.BlockSiteNotification),
+                name: .ReaderSiteBlocked,
                 object: nil)
         }
     }

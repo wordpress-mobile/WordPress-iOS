@@ -12,6 +12,8 @@ extension NSNotification.Name {
     static let ReaderSiteFollowed = NSNotification.Name(rawValue: "ReaderSiteFollowed")
     // Sent when a post's seen state has been toggled.
     static let ReaderPostSeenToggled = NSNotification.Name(rawValue: "ReaderPostSeenToggled")
+    // Sent when a site is blocked.
+    static let ReaderSiteBlocked = NSNotification.Name(rawValue: "ReaderSiteBlocked")
 }
 
 struct ReaderNotificationKeys {
