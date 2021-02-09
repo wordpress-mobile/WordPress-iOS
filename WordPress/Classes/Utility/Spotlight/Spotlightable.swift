@@ -25,7 +25,7 @@ class SpotlightableButton: UIButton, Spotlightable {
     }
 
     func startLoading() {
-        originalTtile = titleLabel?.text
+        originalTitle = titleLabel?.text
         setTitle("", for: .normal)
         activityIndicator.startAnimating()
     }
