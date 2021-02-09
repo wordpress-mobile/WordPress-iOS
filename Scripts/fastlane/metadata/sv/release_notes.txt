@@ -1,0 +1,9 @@
+Om denna version:
+
+Obs! Detta är den senaste versionen av appen som har stöd för iOS 12. Från och med version 16.7 kommer appen att behöva iOS 13 eller högre.
+
+Se statistik på startskärmen: Visa din WordPress-webbplatsstatistik för dagen på iOS 14-enhets startskärm med nya Today-widgetar.
+
+Spåra din webbplatsaktivitet: Filtrera och visa objekt i din aktivitetslogg, som säkerhetskopior, pluginuppdateringar och publicerade inlägg och sidor, efter datumintervall och aktivitetstyp.
+
+Lär känna din app: Lär dig funktionerna i din app med en förbättrad snabbstartsrundtur som guidar dig genom steg som att granska webbplatsens sidor och redigera din startsida.

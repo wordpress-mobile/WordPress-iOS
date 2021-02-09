@@ -13,7 +13,9 @@ struct TodayWidgetView: View {
 
         case .loggedOut:
             UnconfiguredView()
-
+                .widgetURL(nil)
+                // This seems to prevent a bug where the URL for subsequent widget
+                // types is being triggered if one isn't specified here.
         case .siteSelected(let content):
 
             switch family {
@@ -22,6 +24,7 @@ struct TodayWidgetView: View {
                 TodayWidgetSmallView(content: content,
                                      widgetTitle: LocalizableStrings.widgetTitle,
                                      viewsTitle: LocalizableStrings.viewsTitle)
+                    .widgetURL(content.statsURL)
                     .padding()
 
             case .systemMedium:
@@ -31,11 +34,21 @@ struct TodayWidgetView: View {
                                       visitorsTitle: LocalizableStrings.visitorsTitle,
                                       likesTitle: LocalizableStrings.likesTitle,
                                       commentsTitle: LocalizableStrings.commentsTitle)
+                    .widgetURL(content.statsURL)
                     .padding()
 
             default:
                 Text("View is unavailable")
             }
         }
+    }
+}
+
+
+private extension HomeWidgetTodayData {
+    static let statsUrl = "https://wordpress.com/stats/day/"
+
+    var statsURL: URL? {
+        URL(string: Self.statsUrl + "\(siteID)?source=widget")
     }
 }

@@ -5,8 +5,12 @@ screenshots_path "./screenshots/"
 app_identifier "org.wordpress"
 
 # Make sure to update these keys for a new version
-app_version "16.6"
+app_version "16.7"
 
 skip_binary_upload true
 overwrite_screenshots true
 phased_release true
+precheck_include_in_app_purchases false
+
+api_key_path "../.configure-files/app_store_connect_fastlane_api_key.json"
+

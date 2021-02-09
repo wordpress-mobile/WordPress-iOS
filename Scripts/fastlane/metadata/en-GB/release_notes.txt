@@ -1,0 +1,9 @@
+About this release.
+
+Note: this is the last version of the app that will support iOS 12. Starting from version 16.7, your app will require iOS 13 or higher.
+
+See stats on your Home Screen: display your WordPress site stats for the day on your iOS 14 device’s Home Screen with new Today Widgets.
+
+Track your site activity: filter and view items in your Activity Log – like backups, plugin updates, and published posts and pages – by date range and activity type.
+
+Get to know your app: learn the features in your app with an improved Quick Start tour, which guides you through steps like reviewing site pages and editing your homepage.

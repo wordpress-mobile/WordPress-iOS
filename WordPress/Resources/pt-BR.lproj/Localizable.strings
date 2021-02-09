@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-21 21:14:16+0000 */
+/* Translation-Revision-Date: 2021-02-05 22:53:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pt_BR */
@@ -1095,10 +1095,10 @@
 "Change username" = "Alterar nome de usuário";
 
 /* Description of a Quick Start Tour */
-"Change, add, or remove content from your site's homepage." = "Change, add, or remove content from your site's homepage.";
+"Change, add, or remove content from your site's homepage." = "Altere, adicione ou remova conteúdo em sua página inicial.";
 
 /* Description of a Quick Start Tour */
-"Change, add, or remove your site's pages." = "Change, add, or remove your site's pages.";
+"Change, add, or remove your site's pages." = "Altere, adicione ou remova as páginas do seu site.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Alterando nome de exibição";
@@ -1335,7 +1335,7 @@
 "Compact" = "Compacta";
 
 /* The table view header title that displays the number of completed tasks */
-"Complete (%i)" = "Concluída (%i)";
+"Complete (%i)" = "Concluídas (%i)";
 
 /* The action is completed */
 "Completed" = "Operação concluída";
@@ -1353,10 +1353,10 @@
 "Completed: Create your site" = "Concluído: Criar um site";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Edit your homepage" = "Completed: Edit your homepage";
+"Completed: Edit your homepage" = "Concluído: Edite sua página inicial";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Enable post sharing" = "Concluído: Ativar compartilhamento de posts";
+"Completed: Enable post sharing" = "Concluído: Ative compartilhamento de posts";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Explore plans" = "Concluído: Explorar planos";
@@ -1368,13 +1368,13 @@
 "Completed: Publish a post" = "Concluído: Publicar um post";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Review site pages" = "Completed: Review site pages";
+"Completed: Review site pages" = "Concluído: Revise as páginas do site";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Set your site title" = "Concluído: Definir o título do site";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Upload a site icon" = "Concluído: Enviar um ícone do site";
+"Completed: Upload a site icon" = "Concluído: Envie um ícone do site";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "Concluído: Ver seu site";
@@ -2147,7 +2147,7 @@
 "Edit video" = "Editar vídeo";
 
 /* Title of a Quick Start Tour */
-"Edit your homepage" = "Edit your homepage";
+"Edit your homepage" = "Edite sua página inicial";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Editar o gif removerá sua animação.";
@@ -2213,7 +2213,7 @@
 "Enable microphone access to record sound in your videos." = "Ative o acesso ao microfone para gravar áudio em seus vídeos.";
 
 /* Title of a Quick Start Tour */
-"Enable post sharing" = "Ativar compartilhamento de post";
+"Enable post sharing" = "Ative compartilhamento de post";
 
 /* Message informing the user about the enable notifications action */
 "Enable site notifications?" = "Ativar notificações do site?";
@@ -5050,7 +5050,7 @@
 "Revert Pending Change" = "Cancelar mudança pendente";
 
 /* Title of a Quick Start Tour */
-"Review site pages" = "Review site pages";
+"Review site pages" = "Revise as páginas do site";
 
 /* Title of the screen that shows the revisions. */
 "Revision" = "Revisão";
@@ -5252,7 +5252,7 @@
 "Select %@ to discover new themes" = "Toque em %@para descobrir novos temas";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to edit your Homepage." = "Select %@ to edit your Homepage.";
+"Select %@ to edit your Homepage." = "Selecione %@ para editar sua página inicial.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to look for sites with similar interests" = "Toque em %@ para pesquisar por sites com interesses similares";
@@ -5403,7 +5403,7 @@
 "Set up Jetpack" = "Configurar Jetpack";
 
 /* Title of a Quick Start Tour */
-"Set your site title" = "Definir o título do seu site";
+"Set your site title" = "Defina o título do seu site";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "Configurando o tema";
@@ -6623,7 +6623,7 @@
 "Unable to save media item." = "Incapaz de salvar item de média.";
 
 /* Message that appears when a user tries to trash a page while their device is offline. */
-"Unable to trash pages while offline. Please try again later." = "Unable to trash pages while offline. Please try again later.";
+"Unable to trash pages while offline. Please try again later." = "Não é possível enviar páginas para a lixeira no modo off-line. Tente novamente mais tarde.";
 
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "Não é possível enviar posts para a lixeira no modo off-line. Tente novamente mais tarde.";
@@ -6795,7 +6795,7 @@
 "Upload Media" = "Fazer upload de mídia";
 
 /* Title of a Quick Start Tour */
-"Upload a site icon" = "Enviar um ícone do site";
+"Upload a site icon" = "Envie um ícone do site";
 
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
@@ -6961,7 +6961,7 @@
 "View more" = "Ver mais";
 
 /* Title of a Quick Start Tour */
-"View your site" = "Ver seu site";
+"View your site" = "Veja seu site";
 
 /* User role badge */
 "Viewer" = "Leitor";
@@ -7007,25 +7007,25 @@
 "Visitors" = "Visitantes";
 
 /* Summary description for a threat */
-"Vulnerability found in WordPress" = "Vulnerability found in WordPress";
+"Vulnerability found in WordPress" = "Vulnerabilidade encontrada no WordPress";
 
 /* Summary description for a threat */
-"Vulnerability found in plugin" = "Vulnerability found in plugin";
+"Vulnerability found in plugin" = "Vulnerabilidade encontrada no plugin";
 
 /* Summary description for a threat */
-"Vulnerability found in theme" = "Vulnerability found in theme";
+"Vulnerability found in theme" = "Vulnerabilidade encontrada no tema";
 
 /* Title for a threat */
-"Vulnerable Plugin" = "Vulnerable Plugin";
+"Vulnerable Plugin" = "Plugin comprometido";
 
 /* Title for a threat that includes the file name of the plugin and the affected version */
-"Vulnerable Plugin: %1$@ (version %2$@)" = "Vulnerable Plugin: %1$@ (version %2$@)";
+"Vulnerable Plugin: %1$@ (version %2$@)" = "Plugin comprometido: %1$@ (versão %2$@)";
 
 /* Title for a threat */
-"Vulnerable Theme" = "Vulnerable Theme";
+"Vulnerable Theme" = "Tema comprometido";
 
 /* Title for a threat that includes the file name of the theme and the affected version */
-"Vulnerable Theme %1$@ (version %2$@)" = "Vulnerable Theme %1$@ (version %2$@)";
+"Vulnerable Theme %1$@ (version %2$@)" = "Tema comprometido: %1$@ (versão %2$@)";
 
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "WP Admin";
@@ -7095,7 +7095,7 @@
 "We couldn't complete this action." = "Não foi possível concluir essa ação.";
 
 /* Message for error displayed when preparing a backup fails. */
-"We couldn't create your backup. Please try again later." = "We couldn't create your backup. Please try again later.";
+"We couldn't create your backup. Please try again later." = "Não foi possível criar seu backup. Tente novamente.";
 
 /* Primary message shown when there are no domains that match the user entered text. */
 "We couldn't find any available address with the words you entered - let's try again." = "Não foi possível encontrar nenhum endereço disponível com as palavras digitadas. Vamos tentar de novo.";
@@ -7113,7 +7113,7 @@
 "We couldn't publish this private post, but we'll try again later." = "Não foi possível publicar esse post privado mas tentaremos novamente mais tarde.";
 
 /* Message for error displayed when restoring a site fails. */
-"We couldn't restore your site. Please try again later." = "We couldn't restore your site. Please try again later.";
+"We couldn't restore your site. Please try again later." = "Não foi possível restaurar seu site. Tente novamente.";
 
 /* Description that appears when a media fails to load in the Media Editor. */
 "We couldn't retrieve this media.\nPlease tap to retry." = "Não foi possível recuperar essa mídia.\nToque para tentar novamente.";
@@ -7170,7 +7170,7 @@
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "Fizemos grandes melhorias no editor de blocos e achamos que vale a pena testá-lo.\n\nO editor de blocos foi ativado para novos posts e páginas mas, caso você queira voltar ao editor clássico, é possível fazer a alteração em Meu site > Configurações do site.";
 
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
-"We successfully created a backup of your site from %1$@." = "We successfully created a backup of your site from %1$@.";
+"We successfully created a backup of your site from %1$@." = "O backup do seu site em %1$@ foi criado com sucesso.";
 
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "Nós usamos outras ferramentas de acompanhamento, inclusive algumas de terceiros. Leia mais sobre elas e como controlá-las.";
@@ -7240,7 +7240,7 @@
 "We'll use this email address to create your new WordPress.com account." = "Usaremos este endereço de e-mail para criar sua nova conta no WordPress.com.";
 
 /* Description for the Jetpack Backup Status message. %1$@ is a placeholder for the selected date. */
-"We're creating a downloadable backup of your site from %1$@." = "We're creating a downloadable backup of your site from %1$@.";
+"We're creating a downloadable backup of your site from %1$@." = "Estamos criando um backup do seu site para %1$@.";
 
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "Estamos fazendo as últimas configurações. Quase pronto.";
@@ -7249,10 +7249,10 @@
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Não conseguimos conectar ao site do JetPack com esse URL. Entre em contato para ajudarmos.";
 
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
-"We're restoring your site back to %1$@." = "We're restoring your site back to %1$@.";
+"We're restoring your site back to %1$@." = "Estamos restaurando o seu site para %1$@.";
 
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
-"We've also emailed you a link to your file." = "We've also emailed you a link to your file.";
+"We've also emailed you a link to your file." = "Nós também enviamos um e-mail com um link para seu arquivo.";
 
 /* Instruction text after a signup Magic Link was requested. */
 "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Nós enviamos um link de cadastro por e-mail para criar sua nova conta no WordPress.com. Verifique sua caixa de e-mails neste dispositivo e clique no link enviado pelo WordPress.com.";
@@ -7626,16 +7626,16 @@
 "Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "Seu aplicativo não está autorizado a acessar a biblioteca de mídia devido restrições como controle dos pais. Verifique as configurações de controle dos pais neste dispositivo.";
 
 /* Title for the Jetpack Backup Complete message. */
-"Your backup is now available for download" = "Your backup is now available for download";
+"Your backup is now available for download" = "Seu backup já está disponível para download";
 
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Atualmente, seu nome de usuário é %1$@. Com poucas exceções, outras pessoas verão apenas o seu nome de exibição, %2$@.";
 
 /* Text displayed in the view when there aren't any Backups to display */
-"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed";
+"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Seu primeiro backup aparecerá aqui dentro de 24 horas e você receberá uma notificação assim que ele for concluído";
 
 /* Title for the view when there aren't any Backups to display */
-"Your first backup will be ready soon" = "Your first backup will be ready soon";
+"Your first backup will be ready soon" = "Seu primeiro backup estará pronto em breve";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Suas notificações sempre com você - veja comentários e curtidas assim que ocorrerem.";
@@ -7659,7 +7659,7 @@
 "Your site has been created!" = "Seu site foi criado!";
 
 /* Title for the Jetpack Restore Complete message. */
-"Your site has been restored" = "Your site has been restored";
+"Your site has been restored" = "Seu site foi restaurado";
 
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Seu site foi restaurado com sucesso";

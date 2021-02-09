@@ -45,7 +45,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         super.tearDown()
 
         manager = nil
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
     }
 
 
@@ -56,7 +56,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         // Stub Endpoint
         let endpoint = "notifications/"
         let stubPath = OHPathForFile("notifications-load-all.json", type(of: self))!
-        OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
+        HTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         // Make sure the collection is empty, to begin with
         XCTAssert(manager.mainContext.countObjects(ofType: Notification.self) == 0)
@@ -123,7 +123,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         // Stub Endpoint
         let endpoint = "notifications/"
         let stubPath = OHPathForFile("notifications-load-all.json", type(of: self))!
-        OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
+        HTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         // Make sure the collection is empty, to begin with
         XCTAssert(manager.mainContext.countObjects(ofType: Notification.self) == 0)
@@ -151,7 +151,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         // Stub Endpoint
         let endpoint = "notifications/read"
         let stubPath = OHPathForFile("notifications-mark-as-read.json", type(of: self))!
-        OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
+        HTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         // Inject Dummy Note
         let path = "notifications-like.json"
@@ -182,7 +182,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         // Stub Endpoint
         let endpoint = "notifications/seen"
         let stubPath = OHPathForFile("notifications-last-seen.json", type(of: self))!
-        OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
+        HTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         // Mediator Expectations
         let expect = expectation(description: "Update Last Seen")

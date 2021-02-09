@@ -1,4 +1,5 @@
 import XCTest
+import OHHTTPStubs
 @testable import WordPress
 
 class AppRatingUtilityTests: XCTestCase {

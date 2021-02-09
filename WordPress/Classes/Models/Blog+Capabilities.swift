@@ -58,7 +58,7 @@ extension Blog {
     /// Returns true if the current user is allowed to see Jetpack's Scan
     ///
     @objc public func isScanAllowed() -> Bool {
-        return isUserCapableOf("scan")
+        return !hasBusinessPlan && isUserCapableOf("scan")
     }
 
     private func isUserCapableOf(_ capability: String) -> Bool {
