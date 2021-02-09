@@ -996,7 +996,7 @@ private extension InsightStoreState {
             return
         }
 
-        var homeWidgetCache = T.read() ?? initializeHomeWidgetData(type: widgetType)
+        var homeWidgetCache = T.read() ?? Self.initializeHomeWidgetData(type: widgetType)
         guard let oldData = homeWidgetCache[siteID.intValue] else {
             DDLogError("StatsWidgets: Failed to find a matching site")
             return
@@ -1040,7 +1040,7 @@ private extension InsightStoreState {
 
     }
 
-    private func initializeHomeWidgetData<T: HomeWidgetData>(type: T.Type) -> [Int: T] {
+    static func initializeHomeWidgetData<T: HomeWidgetData>(type: T.Type) -> [Int: T] {
         let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
         return blogService.visibleBlogsForWPComAccounts().reduce(into: [Int: T]()) { result, element in
@@ -1055,14 +1055,14 @@ private extension InsightStoreState {
                                                                   siteName: title,
                                                                   url: url,
                                                                   timeZone: timeZone,
-                                                                  date: Date(),
+                                                                  date: Date(timeIntervalSinceReferenceDate: 0),
                                                                   stats: TodayWidgetStats()) as? T
                 } else if type == HomeWidgetAllTimeData.self {
                     result[blogID.intValue] = HomeWidgetAllTimeData(siteID: blogID.intValue,
                                                                     siteName: title,
                                                                     url: url,
                                                                     timeZone: timeZone,
-                                                                    date: Date(),
+                                                                    date: Date(timeIntervalSinceReferenceDate: 0),
                                                                     stats: AllTimeWidgetStats()) as? T
                 }
 
@@ -1078,15 +1078,36 @@ private extension StatsInsightsStore {
             return
         }
 
-
         NotificationCenter.default.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged,
                                                object: nil,
                                                queue: nil) { notification in
-            HomeWidgetTodayData.delete()
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
-            HomeWidgetAllTimeData.delete()
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
 
+            if !AccountHelper.isLoggedIn {
+                HomeWidgetTodayData.delete()
+                HomeWidgetAllTimeData.delete()
+            }
+
+            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
+            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
+        }
+    }
+}
+
+extension StatsViewController {
+    @objc func initializeStatsWidgetsIfNeeded() {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        if HomeWidgetTodayData.read() == nil {
+            DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetTodayData.plist")
+            HomeWidgetTodayData.write(items: InsightStoreState.initializeHomeWidgetData(type: HomeWidgetTodayData.self))
+            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
+        }
+
+        if HomeWidgetAllTimeData.read() == nil {
+            DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetAllTimeData.plist")
+            HomeWidgetAllTimeData.write(items: InsightStoreState.initializeHomeWidgetData(type: HomeWidgetAllTimeData.self))
+            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
         }
     }
 }
