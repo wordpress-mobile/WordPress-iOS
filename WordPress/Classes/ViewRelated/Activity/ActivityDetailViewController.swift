@@ -65,14 +65,14 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         guard let activity = activity else {
             return
         }
-        presenter?.presentRestoreFor(activity: activity)
+        presenter?.presentRestoreFor(activity: activity, from: "\(presentedFrom())/detail")
     }
 
     @IBAction func backupButtonTapped(sender: UIButton) {
         guard let activity = activity else {
             return
         }
-        presenter?.presentBackupFor(activity: activity)
+        presenter?.presentBackupFor(activity: activity, from: "\(presentedFrom())/detail")
     }
 
     private func setupLabelStyles() {
@@ -154,7 +154,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
                                                     for: .normal)
         }
 
-        let dateFormatter = ActivityDateFormatting.longDateFormatterWithoutTime(for: site)
+        let dateFormatter = ActivityDateFormatting.longDateFormatter(for: site, withTime: false)
         dateLabel.text = dateFormatter.string(from: activity.published)
 
         let timeFormatter = DateFormatter()

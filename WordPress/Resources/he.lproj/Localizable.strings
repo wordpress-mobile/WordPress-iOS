@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-03 13:54:08+0000 */
+/* Translation-Revision-Date: 2021-02-05 17:40:25+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -635,7 +635,7 @@
 "Appearance" = "עיצוב";
 
 /* Message shown when Apple authentication fails. */
-"Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication.";
+"Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "אימות אפל נכשל.\nבבקשה תוודא שאתה רשום לiCloud עם Apple ID שמשתמש באימות דו שלבי.";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "החלה";
@@ -1114,7 +1114,7 @@
 "Check Purchases Error" = "שגיאה בעת בדיקת הרכישות";
 
 /* Instruction text after a login Magic Link was requested. */
-"Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Check your email on this device, and tap the link in the email you receive from WordPress.com.";
+"Check your email on this device, and tap the link in the email you receive from WordPress.com." = "בדוק את האימייל שלך במכשיר הנוכחי, ולחץ על הלינק שקיבלת מוורדפרס.";
 
 /* Instructional text on how to open the email containing a magic link. */
 "Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder." = "עליך לבדוק את האימייל ממכשיר זה ולהקיש על הקישור בהודעה שקיבלת מ-WordPress.com.\n\nלא רואה את האימייל? כדאי לבדוק בתיבת הספאם או בדואר הזבל.";
@@ -3963,10 +3963,10 @@
 "Not right now" = "לא כרגע";
 
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
-"Not seeing the email? Check your Spam or Junk Mail folder." = "Not seeing the email? Check your Spam or Junk Mail folder.";
+"Not seeing the email? Check your Spam or Junk Mail folder." = "לא קיבלת את האימייל? בדוק את הספאם או תיקיית הזבל במייל.";
 
 /* No comment provided by engineer. */
-"Note: Column layout may vary between themes and screen sizes" = "Note: Column layout may vary between themes and screen sizes";
+"Note: Column layout may vary between themes and screen sizes" = "שורת הפריסה יכולה להשתנות בין תבניות וגדלי מסך.";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "לא נמצא כלום.";
@@ -4061,7 +4061,7 @@
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "לאחר יצירת אתר ב-WordPress.com, אפשר לפרסם מחדש בבלוג את התוכן שברצונך להציג באתר שלך.";
 
 /* Accessibility label for 1 password button */
-"One Password button" = "One Password button";
+"One Password button" = "כפתור סיסמה אחד";
 
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "הצגה של הנתונים הסטטיסטיים הרלוונטיים ביותר בלבד. להוסיף תובנות שיתאימו לצרכיך.";
@@ -7273,7 +7273,7 @@
 "Weeks" = "שבועות";
 
 /* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
-"Welcome to Reader. Discover millions of blogs at your fingertips." = "Welcome to Reader. Discover millions of blogs at your fingertips.";
+"Welcome to Reader. Discover millions of blogs at your fingertips." = "ברוך הבא ל Reader. גלה מיליוני בלוגים בקצות אצבעותייך.";
 
 /* Post Signup Interstitial Title Text */
 "Welcome to WordPress" = "ברוכים הבאים לוורדפרס";

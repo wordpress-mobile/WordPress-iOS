@@ -1,0 +1,9 @@
+Over deze release:
+
+Opmerking: Dit is de laatste versie van de app die iOS 12 ondersteunt. Vanaf versie 16.7 heb je iOS 13 of hoger nodig om de app te kunnen gebruiken.
+
+Bekijk de statistieken op je startscherm: Geef je WordPress-sitestatistieken voor de dag weer op het startscherm van je iOS 14-apparaat met de nieuwe Today-widgets.
+
+Houd de activiteit op je site bij: Filter en bekijk items in je activiteitenlog (zoals back-ups, plugin-updates en gepubliceerde berichten en pagina's) op datumbereik en type activiteit.
+
+Raak bekend met je app: Leer de functies van je app kennen met een verbeterde Snelstart-rondleiding, die je begeleidt bij stappen zoals het controleren van je sitepagina's en het bewerken van je homepage.
