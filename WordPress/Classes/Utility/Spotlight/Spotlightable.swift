@@ -7,7 +7,7 @@ protocol Spotlightable: UIView {
 class SpotlightableButton: UIButton, Spotlightable {
 
     var spotlight: QuickStartSpotlightView?
-    var originalTtile: String?
+    var originalTitle: String?
 
     var shouldShowSpotlight: Bool {
         get {
