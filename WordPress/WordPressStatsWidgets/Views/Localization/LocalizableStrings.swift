@@ -45,7 +45,7 @@ enum LocalizableStrings {
                                                           comment: "Title of the unconfigured view in all time widget")
 
     static let unconfiguredViewThisWeekTitle = LocalizedStringKey("widget.thisweek.unconfigured.view.title",
-                                                          defaultValue: "Log in to WordPress to see this week stats.",
+                                                          defaultValue: "Log in to WordPress to see this week's stats.",
                                                           comment: "Title of the unconfigured view in this week widget")
 
     // Today Widget Preview

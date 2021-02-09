@@ -38,4 +38,4 @@
 "widget.alltime.unconfigured.view.title" = "Log in to WordPress to see all time stats.";
 
 /* Title of the unconfigured view in this week widget */
-"widget.thisweek.unconfigured.view.title" = "Log in to WordPress to see this week stats.";
+"widget.thisweek.unconfigured.view.title" = "Log in to WordPress to see this week's stats.";
