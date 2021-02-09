@@ -114,20 +114,18 @@ PODS:
   - NSObject-SafeExpectations (0.0.4)
   - "NSURL+IDN (0.4)"
   - OCMock (3.4.3)
-  - OHHTTPStubs (6.1.0):
-    - OHHTTPStubs/Default (= 6.1.0)
-  - OHHTTPStubs/Core (6.1.0)
-  - OHHTTPStubs/Default (6.1.0):
+  - OHHTTPStubs/Core (9.1.0)
+  - OHHTTPStubs/Default (9.1.0):
     - OHHTTPStubs/Core
     - OHHTTPStubs/JSON
     - OHHTTPStubs/NSURLSession
     - OHHTTPStubs/OHPathHelpers
-  - OHHTTPStubs/JSON (6.1.0):
+  - OHHTTPStubs/JSON (9.1.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/NSURLSession (6.1.0):
+  - OHHTTPStubs/NSURLSession (9.1.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/OHPathHelpers (6.1.0)
-  - OHHTTPStubs/Swift (6.1.0):
+  - OHHTTPStubs/OHPathHelpers (9.1.0)
+  - OHHTTPStubs/Swift (9.1.0):
     - OHHTTPStubs/Default
   - RCTRequired (0.61.5)
   - RCTTypeSafety (0.61.5):
@@ -463,8 +461,7 @@ DEPENDENCIES:
   - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
   - OCMock (= 3.4.3)
-  - OHHTTPStubs (= 6.1.0)
-  - OHHTTPStubs/Swift (= 6.1.0)
+  - OHHTTPStubs/Swift (~> 9.1.0)
   - RCTRequired (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.46.0/third-party-podspecs/RCTRequired.podspec.json`)
   - RCTTypeSafety (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.46.0/third-party-podspecs/RCTTypeSafety.podspec.json`)
   - Reachability (= 3.2)
@@ -705,7 +702,7 @@ SPEC CHECKSUMS:
   NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
-  OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
+  OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
   RCTRequired: 3ca691422140f76f04fd2af6dc90914cf0f81ef1
   RCTTypeSafety: aab4e9679dbb3682bf0404fded7b9557d7306795
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
@@ -765,6 +762,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: 757396adf09a7797f8c662e8010c36ad5b021166
+PODFILE CHECKSUM: ff70d8c9bbb16868d6cf4d5ed05d7a091ab7c318
 
 COCOAPODS: 1.10.0
