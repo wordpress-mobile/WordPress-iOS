@@ -3,6 +3,7 @@ import WidgetKit
 extension BlogListViewController {
 
     @objc func refreshStatsWidgetsSiteList() {
+        StatsViewController.initializeStatsWidgetsIfNeeded()
 
         if let newTodayData = refreshStats(type: HomeWidgetTodayData.self) {
             HomeWidgetTodayData.write(items: newTodayData)

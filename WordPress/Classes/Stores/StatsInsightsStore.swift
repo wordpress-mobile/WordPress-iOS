@@ -1094,7 +1094,7 @@ private extension StatsInsightsStore {
 }
 
 extension StatsViewController {
-    @objc func initializeStatsWidgetsIfNeeded() {
+    @objc static func initializeStatsWidgetsIfNeeded() {
         guard #available(iOS 14.0, *) else {
             return
         }
