@@ -441,7 +441,7 @@ DEPENDENCIES:
   - AMScrollingNavbar (= 5.6.0)
   - AppCenter (= 2.5.1)
   - AppCenter/Distribute (= 2.5.1)
-  - Automattic-Tracks-iOS (~> 0.8.1)
+  - Automattic-Tracks-iOS (from `../../Automattic-Tracks-iOS`)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (~> 3.0)
   - CropViewController (= 2.5.3)
@@ -519,7 +519,6 @@ SPEC REPOS:
     - AMScrollingNavbar
     - AppAuth
     - AppCenter
-    - Automattic-Tracks-iOS
     - boost-for-react-native
     - Charts
     - CocoaLumberjack
@@ -566,6 +565,8 @@ SPEC REPOS:
     - ZIPFoundation
 
 EXTERNAL SOURCES:
+  Automattic-Tracks-iOS:
+    :path: "../../Automattic-Tracks-iOS"
   FBLazyVector:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.46.0/third-party-podspecs/FBLazyVector.podspec.json
   FBReactNativeSpec:
@@ -762,6 +763,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: 8cc0ff2a563fa568579cfc75727f1145fbb0aa57
+PODFILE CHECKSUM: d73ccd2dee0392d5175405898c0d11e894d4a8ef
 
 COCOAPODS: 1.10.0
