@@ -93,4 +93,3 @@ private extension ListRow {
         static let dataViewFontColor = Color(.label)
     }
 }
-

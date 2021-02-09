@@ -44,6 +44,3 @@ private extension ListStatsView {
         static let titleBottomPadding: CGFloat = 8.0
     }
 }
-
-
-

@@ -8,4 +8,3 @@ struct ListViewData {
 
     let statsURL: URL?
 }
-
