@@ -1,0 +1,9 @@
+Info zu dieser Version:
+
+Hinweis: Dies ist die letzte Version der App, die iOS 12 unterstützt. Ab Version 16.7 benötigt deine App iOS 13 oder höher.
+
+Statistiken auf der Startseite anzeigen: Mit neuen Today-Widgets kannst du deine Website-Statistiken zu WordPress zum jeweiligen Tag auf dem Startbildschirm deines iOS 14-Geräts anzeigen.
+
+Websiteaktivitäten verfolgen: Du kannst Elemente in deinem Aktivitätsprotokoll – wie Backups, Plugin-Updates und veröffentlichte Beiträge und Seiten – nach Datumsbereich und Aktivitätstyp anzeigen und filtern.
+
+Die App kennenlernen: Lerne die Funktionen in deiner App mit einer verbesserten Schnellstart-Tour kennen, die dich durch Schritte wie die Überprüfung von Website-Seiten und die Bearbeitung deiner Homepage führt.

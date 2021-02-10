@@ -13,11 +13,7 @@ static TestContextManager *_instance;
     self = [super init];
     if (self) {
         // Override the shared ContextManager
-        if([Feature enabled:FeatureFlagSwiftCoreData]) {
-            _stack = [SwiftManagerMock instance];
-        } else {
-            _stack = [[ContextManagerMock alloc] init];
-        }
+        _stack = [[ContextManagerMock alloc] init];
         _requiresTestExpectation = YES;
     }
 
