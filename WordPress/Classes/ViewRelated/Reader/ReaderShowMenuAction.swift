@@ -11,7 +11,8 @@ final class ReaderShowMenuAction {
                  siteTopic: ReaderSiteTopic? = nil,
                  readerTopic: ReaderAbstractTopic? = nil,
                  anchor: UIView,
-                 vc: UIViewController) {
+                 vc: UIViewController,
+                 source: ReaderPostMenuSource) {
 
         // Create the action sheet
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -88,6 +89,10 @@ final class ReaderShowMenuAction {
                 alertController.addActionWithTitle(post.isSeen ? ReaderPostMenuButtonTitles.markUnseen : ReaderPostMenuButtonTitles.markSeen,
                                                    style: .default,
                                                    handler: { (action: UIAlertAction) in
+
+                                                    let event: WPAnalyticsEvent = post.isSeen ? .readerPostMarkUnseen : .readerPostMarkSeen
+                                                    WPAnalytics.track(event, properties: ["source": source.description])
+
                                                     if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
                                                         ReaderSeenAction().execute(with: post, context: context, completion: {
                                                             ReaderHelpers.dispatchToggleSeenMessage(post: post, success: true)

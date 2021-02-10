@@ -80,7 +80,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
             return
         }
 
-        ReaderMenuAction(logged: isLoggedIn).execute(post: post, context: context, readerTopic: topic, anchor: sender, vc: origin)
+        ReaderMenuAction(logged: isLoggedIn).execute(post: post, context: context, readerTopic: topic, anchor: sender, vc: origin, source: ReaderPostMenuSource.card)
     }
 
     func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider) {

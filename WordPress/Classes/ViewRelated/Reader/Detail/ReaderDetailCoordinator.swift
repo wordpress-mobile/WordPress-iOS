@@ -306,7 +306,8 @@ class ReaderDetailCoordinator {
                                                                      context: context,
                                                                      readerTopic: readerTopic,
                                                                      anchor: anchorView,
-                                                                     vc: viewController)
+                                                                     vc: viewController,
+                                                                     source: ReaderPostMenuSource.details)
     }
 
     private func showTopic(_ topic: String) {
