@@ -25,8 +25,7 @@ final class ReaderShowMenuAction {
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
                                                     ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: context, completion: {
-
-                                                        // TODO: show success message
+                                                        ReaderHelpers.dispatchSiteBlockedMessage(post: post, success: true)
 
                                                         // Notify Reader Cards Stream so the post card is updated.
                                                         NotificationCenter.default.post(name: .ReaderSiteBlocked,
@@ -34,7 +33,7 @@ final class ReaderShowMenuAction {
                                                                                         userInfo: [ReaderNotificationKeys.post: post])
                                                     },
                                                     failure: { _ in
-                                                        // TODO: show error message
+                                                        ReaderHelpers.dispatchSiteBlockedMessage(post: post, success: false)
                                                     })
                                                 }
                                                })
