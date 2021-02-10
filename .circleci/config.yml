@@ -288,6 +288,7 @@ workflows:
       #Optionally run UI tests on PRs
       - Optional Tests:
           type: approval
+          post-to-slack: true
           requires: [ "Build Tests" ]
           filters:
             branches:
