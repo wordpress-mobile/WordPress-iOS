@@ -78,9 +78,9 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
 
     /// Core Data Context
     ///
-    private lazy var context: NSManagedObjectContext = {
-        return ContextManager.sharedInstance().newMainContextChildContext()
-    }()
+    private var viewContext: NSManagedObjectContext {
+        ContextManager.sharedInstance().mainContext
+    }
 
     /// Core Data FRC
     ///
@@ -90,7 +90,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         request.predicate = self.predicate
         request.sortDescriptors = self.sortDescriptors
 
-        let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.context, sectionNameKeyPath: nil, cacheName: nil)
+        let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: viewContext, sectionNameKeyPath: nil, cacheName: nil)
         frc.delegate = self
         return frc
     }()
@@ -173,7 +173,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let personViewController = segue.destination as? PersonViewController,
             let selectedIndexPath = tableView.indexPathForSelectedRow {
-            personViewController.context = context
+            personViewController.context = viewContext
             personViewController.blog = blog
             personViewController.person = personAtIndexPath(selectedIndexPath)
             switch filter {
@@ -351,7 +351,7 @@ private extension PeopleViewController {
     func resetManagedPeople() {
         isInitialLoad = true
 
-        guard let blog = blog, let service = PeopleService(blog: blog, context: context) else {
+        guard let blog = blog, let service = PeopleService(blog: blog, context: viewContext) else {
             return
         }
 
@@ -373,7 +373,7 @@ private extension PeopleViewController {
     }
 
     func loadPeoplePage(_ offset: Int = 0, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void)) {
-        guard let blog = blog, let service = PeopleService(blog: blog, context: context) else {
+        guard let blog = blog, let service = PeopleService(blog: blog, context: viewContext) else {
             return
         }
 
@@ -389,8 +389,8 @@ private extension PeopleViewController {
 
     func loadUsersPage(_ offset: Int = 0, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void)) {
         guard let blog = blogInContext,
-            let peopleService = PeopleService(blog: blog, context: context),
-            let roleService = RoleService(blog: blog, context: context) else {
+            let peopleService = PeopleService(blog: blog, context: viewContext),
+            let roleService = RoleService(blog: blog, context: viewContext) else {
                 return
         }
 
@@ -428,7 +428,7 @@ private extension PeopleViewController {
 
     var blogInContext: Blog? {
         guard let objectID = blog?.objectID,
-            let object = try? context.existingObject(with: objectID) else {
+            let object = try? viewContext.existingObject(with: objectID) else {
                 return nil
         }
 
@@ -495,7 +495,7 @@ private extension PeopleViewController {
 
     func role(person: Person) -> Role? {
         guard let blog = blog,
-            let service = RoleService(blog: blog, context: context) else {
+            let service = RoleService(blog: blog, context: viewContext) else {
                 return nil
         }
         return service.getRole(slug: person.role)
