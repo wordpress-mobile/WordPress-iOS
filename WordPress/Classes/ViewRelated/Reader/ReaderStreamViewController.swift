@@ -603,7 +603,7 @@ import WordPressFlux
             listentingForBlockedSiteNotification = true
             NotificationCenter.default.addObserver(self,
                 selector: #selector(ReaderStreamViewController.handleBlockSiteNotification(_:)),
-                name: NSNotification.Name(rawValue: ReaderPostMenu.BlockSiteNotification),
+                name: .ReaderSiteBlocked,
                 object: nil)
         }
     }
@@ -742,23 +742,20 @@ import WordPressFlux
 
     // MARK: - Blocking
 
-    private func blockSiteForPost(_ post: ReaderPost) {
-        guard let indexPath = content.indexPath(forObject: post) else {
+    /// Update the post card when a site is blocked from post details.
+    ///
+    @objc private func handleBlockSiteNotification(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo,
+              let aPost = userInfo[ReaderNotificationKeys.post] as? ReaderPost,
+              let post = (try? viewContext.existingObject(with: aPost.objectID)) as? ReaderPost,
+              let indexPath = content.indexPath(forObject: post) else {
             return
         }
 
-        let objectID = post.objectID
-        recentlyBlockedSitePostObjectIDs.add(objectID)
+        recentlyBlockedSitePostObjectIDs.remove(post.objectID)
         updateAndPerformFetchRequest()
-
         tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
-
-        ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: viewContext) { [weak self] in
-            self?.recentlyBlockedSitePostObjectIDs.remove(objectID)
-            self?.tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
-        }
     }
-
 
     private func unblockSiteForPost(_ post: ReaderPost) {
         guard let indexPath = content.indexPath(forObject: post) else {
@@ -773,26 +770,6 @@ import WordPressFlux
         ReaderBlockSiteAction(asBlocked: false).execute(with: post, context: viewContext) { [weak self] in
             self?.recentlyBlockedSitePostObjectIDs.add(objectID)
             self?.tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
-        }
-    }
-
-
-    /// A user can block a site from the detail screen.  When this happens, we need
-    /// to update the list UI to properly reflect the change. Listen for the
-    /// notification and call blockSiteForPost as needed.
-    ///
-    @objc private func handleBlockSiteNotification(_ notification: Foundation.Notification) {
-        guard let userInfo = notification.userInfo, let aPost = userInfo["post"] as? ReaderPost else {
-            return
-        }
-
-        guard let post = (try? viewContext.existingObject(with: aPost.objectID)) as? ReaderPost else {
-            DDLogError("Error fetching existing post from context.")
-            return
-        }
-
-        if let _ = content.indexPath(forObject: post) {
-            blockSiteForPost(post)
         }
     }
 
@@ -918,7 +895,7 @@ import WordPressFlux
     var topicPostsCount: Int {
         return readerTopic?.posts.count ?? 0
     }
-    /// Used to fetch new content in response to a background refresh event.  
+    /// Used to fetch new content in response to a background refresh event.
     /// Not intended for use as part of a user interaction. See syncIfAppropriate instead.
     ///
     @objc func backgroundFetch(_ completionHandler: @escaping ((UIBackgroundFetchResult) -> Void)) {
