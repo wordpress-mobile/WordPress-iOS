@@ -504,7 +504,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
   - WordPressAuthenticator (~> 1.34.0)
-  - WordPressKit (from `https://github.com/bozidarsevo/WordPressKit-iOS.git`, branch `feature/fetching-cards-sort-option`)
+  - WordPressKit (~> 4.27.0-beta.1)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.15.0-beta.1)
   - WordPressUI (~> 1.9.0)
@@ -553,6 +553,7 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
+    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -653,9 +654,6 @@ EXTERNAL SOURCES:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
     :tag: v1.46.0
-  WordPressKit:
-    :branch: feature/fetching-cards-sort-option
-    :git: https://github.com/bozidarsevo/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.46.0/third-party-podspecs/Yoga.podspec.json
 
@@ -671,9 +669,6 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
     :tag: v1.46.0
-  WordPressKit:
-    :commit: 5f5dcbbb8b74fd119e16bf6fd30da658035292ca
-    :git: https://github.com/bozidarsevo/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -770,6 +765,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: 9c3013b3c1c553b6ecd6b69fc76a7083c20121d6
+PODFILE CHECKSUM: f01dc261d565d964690b50c5717f4ab62dd86e29
 
 COCOAPODS: 1.10.0
