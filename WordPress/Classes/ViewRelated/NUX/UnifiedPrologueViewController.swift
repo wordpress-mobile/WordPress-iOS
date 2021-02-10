@@ -24,12 +24,10 @@ class UnifiedPrologueViewController: UIPageViewController {
         dataSource = self
         delegate = self
 
-        pages.append(UIViewController())
-        pages.append(UIViewController())
-        pages.append(UIViewController())
-        pages.append(UIViewController())
-        pages.append(UIViewController())
-
+        UnifiedProloguePageType.allCases.forEach({ type in
+                                                    pages.append(UnifiedProloguePageViewController(pageType: type))
+        })
+        
         setViewControllers([pages[0]], direction: .forward, animated: false)
         view.backgroundColor = .prologueBackground
 

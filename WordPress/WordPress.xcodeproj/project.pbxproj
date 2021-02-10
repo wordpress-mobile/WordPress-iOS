@@ -197,6 +197,7 @@
 		17BB26AE1E6D8321008CD031 /* MediaLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BB26AD1E6D8321008CD031 /* MediaLibraryViewController.swift */; };
 		17BD4A0820F76A4700975AC3 /* Routes+Banners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BD4A0720F76A4700975AC3 /* Routes+Banners.swift */; };
 		17BD4A192101D31B00975AC3 /* NavigationActionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BD4A182101D31B00975AC3 /* NavigationActionHelpers.swift */; };
+		17C2FF0925D4852400CDB712 /* UnifiedProloguePages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C2FF0825D4852400CDB712 /* UnifiedProloguePages.swift */; };
 		17C64BD2248E26A200AF09D7 /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C64BD1248E26A200AF09D7 /* AppAppearance.swift */; };
 		17CE77ED20C6C2F3001DEA5A /* ReaderSiteSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE77EC20C6C2F3001DEA5A /* ReaderSiteSearchService.swift */; };
 		17CE77EF20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE77EE20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift */; };
@@ -2779,6 +2780,7 @@
 		17BB26AD1E6D8321008CD031 /* MediaLibraryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryViewController.swift; sourceTree = "<group>"; };
 		17BD4A0720F76A4700975AC3 /* Routes+Banners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Routes+Banners.swift"; sourceTree = "<group>"; };
 		17BD4A182101D31B00975AC3 /* NavigationActionHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationActionHelpers.swift; sourceTree = "<group>"; };
+		17C2FF0825D4852400CDB712 /* UnifiedProloguePages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedProloguePages.swift; sourceTree = "<group>"; };
 		17C64BD1248E26A200AF09D7 /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
 		17CE77EC20C6C2F3001DEA5A /* ReaderSiteSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSiteSearchService.swift; sourceTree = "<group>"; };
 		17CE77EE20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSiteSearchViewController.swift; sourceTree = "<group>"; };
@@ -5783,6 +5785,7 @@
 			isa = PBXGroup;
 			children = (
 				176E194625C465F70058F1C5 /* UnifiedPrologueViewController.swift */,
+				17C2FF0825D4852400CDB712 /* UnifiedProloguePages.swift */,
 			);
 			name = Prologue;
 			sourceTree = "<group>";
@@ -13727,6 +13730,7 @@
 				FAE4201A1C5AEFE100C1D036 /* StartOverViewController.swift in Sources */,
 				B57B99D519A2C20200506504 /* NoteTableHeaderView.swift in Sources */,
 				1790A4531E28F0ED00AE54C2 /* UINavigationController+Helpers.swift in Sources */,
+				17C2FF0925D4852400CDB712 /* UnifiedProloguePages.swift in Sources */,
 				400A2C882217A985000A8A59 /* CountryStatsRecordValue+CoreDataClass.swift in Sources */,
 				08D345561CD7FBA900358E8C /* MenuHeaderViewController.m in Sources */,
 				B5120B381D47CC6C0059361A /* NotificationDetailsViewController.swift in Sources */,
