@@ -109,6 +109,9 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     // MARK: - Sorting
 
     private func setupSortingButton() {
+        guard FeatureFlag.readerSortingOption.enabled else {
+            return
+        }
         updateSortingOption(.popularity, reloadCards: false)
         tableView.tableHeaderView = sortingButton
         NSLayoutConstraint.activate([

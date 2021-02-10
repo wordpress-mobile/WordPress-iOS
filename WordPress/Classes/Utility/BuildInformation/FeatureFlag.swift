@@ -19,6 +19,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackBackupAndRestore
     case todayWidget
     case unseenPosts
+    case readerSortingOption
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -61,6 +62,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .unseenPosts:
             return true
+        case .readerSortingOption:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 
@@ -123,6 +126,8 @@ extension FeatureFlag {
             return "iOS 14 Today Widget"
         case .unseenPosts:
             return "Unseen Posts in Reader"
+        case .readerSortingOption:
+            return "Sorting Option in Reader Discover screen"
         }
     }
 
