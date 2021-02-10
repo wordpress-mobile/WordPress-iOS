@@ -24,9 +24,20 @@ final class ReaderShowMenuAction {
                                                style: .destructive,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                    ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: context, completion: {})
+                                                    ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: context, completion: {
+
+                                                        // TODO: show success message
+
+                                                        // Notify Reader Cards Stream so the post card is updated.
+                                                        NotificationCenter.default.post(name: .ReaderSiteBlocked,
+                                                                                        object: nil,
+                                                                                        userInfo: [ReaderNotificationKeys.post: post])
+                                                    },
+                                                    failure: { _ in
+                                                        // TODO: show error message
+                                                    })
                                                 }
-            })
+                                               })
         }
 
         // Report button
