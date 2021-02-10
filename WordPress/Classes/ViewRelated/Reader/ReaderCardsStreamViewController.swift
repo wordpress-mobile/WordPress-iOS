@@ -181,11 +181,6 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     }
 
     private func addObservers() {
-        // Observe the managedObjectContext for changes (likes, saves) and reload the tableView
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(reload(_:)),
-                                               name: .NSManagedObjectContextDidSave,
-                                               object: managedObjectContext())
 
         // Listens for when the reader manage view controller is dismissed
         NotificationCenter.default.addObserver(self,
