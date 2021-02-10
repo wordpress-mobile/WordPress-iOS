@@ -155,7 +155,7 @@ target 'WordPress' do
     ## =====================
     ##
     #gutenberg  :tag => 'v1.46.0'
-    gutenberg  :commit => 'dcacde'
+    gutenberg  :commit => 'fa51f26'
 
     ## Third party libraries
     ## =====================
