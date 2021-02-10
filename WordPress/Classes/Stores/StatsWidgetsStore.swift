@@ -7,6 +7,7 @@ class StatsWidgetsStore {
         observeAccountChangesForWidgets()
     }
 
+    /// Refreshes the site list used to configure the widgets when sites are added or deleted
     @objc func refreshStatsWidgetsSiteList() {
         initializeStatsWidgetsIfNeeded()
 
@@ -27,6 +28,7 @@ class StatsWidgetsStore {
         }
     }
 
+    /// Initialize the local cache for widgets, if it does not exist
     func initializeStatsWidgetsIfNeeded() {
         guard #available(iOS 14.0, *) else {
             return
@@ -44,6 +46,10 @@ class StatsWidgetsStore {
         }
     }
 
+    /// Store stats in the widget cache
+    /// - Parameters:
+    ///   - widgetType: concrete type of the widget
+    ///   - stats: stats to be stored
     func storeHomeWidgetData<T: HomeWidgetData>(widgetType: T.Type, stats: Codable) {
         guard #available(iOS 14.0, *),
               let siteID = SiteStatsInformation.sharedInstance.siteID else {
@@ -90,8 +96,6 @@ class StatsWidgetsStore {
 
         T.write(items: homeWidgetCache)
         WidgetCenter.shared.reloadTimelines(ofKind: widgetKind)
-
-
     }
 }
 
