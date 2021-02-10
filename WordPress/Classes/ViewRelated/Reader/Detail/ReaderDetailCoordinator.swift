@@ -308,6 +308,8 @@ class ReaderDetailCoordinator {
                                                                      anchor: anchorView,
                                                                      vc: viewController,
                                                                      source: ReaderPostMenuSource.details)
+
+        WPAnalytics.trackReader(.readerArticleDetailMoreTapped)
     }
 
     private func showTopic(_ topic: String) {

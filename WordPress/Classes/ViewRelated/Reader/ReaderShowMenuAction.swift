@@ -132,12 +132,9 @@ final class ReaderShowMenuAction {
                 presentationController.sourceView = anchor
                 presentationController.sourceRect = anchor.bounds
             }
-
         } else {
             vc.present(alertController, animated: true)
         }
-
-        WPAnalytics.trackReader(.postCardMoreTapped)
     }
 
     private func shouldShowBlockSiteMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
