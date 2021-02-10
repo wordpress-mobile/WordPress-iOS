@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-28 23:48:08+0000 */
+/* Translation-Revision-Date: 2021-02-04 15:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -259,7 +259,7 @@
 "A featured image is set. Tap to change it." = "تم تعيين صورة بارزة. انقر لتغييرها.";
 
 /* Title for a threat */
-"A file contains a malicious code pattern" = "A file contains a malicious code pattern";
+"A file contains a malicious code pattern" = "يحتوي أحد الملفات على نمط أكواد برمجية ضارة";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "قائمة المواقع الموجودة على هذا الحساب.";
@@ -520,7 +520,7 @@
 "All languages" = "كل اللغات";
 
 /* Description for the Jetpack Backup Restore message. %1$@ is a placeholder for the selected date. */
-"All of your selected items are now restored back to %1$@." = "All of your selected items are now restored back to %1$@.";
+"All of your selected items are now restored back to %1$@." = "تمت الآن استعادة كافة العناصر التي قمت بتحديدها إلى %1$@.";
 
 /* Title of the congratulation screen that appears when all the tasks are completed */
 "All tasks complete" = "جميع المهام مكتملة";
@@ -699,7 +699,7 @@
 "Are you sure you want to remove %1$@?" = "هل تريد بالتأكيد إزالة %1$@؟";
 
 /* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
-"Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then.";
+"Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "هل تريد بالتأكيد استعادة موقعك مرة أخرى إلى %1$@؟ سيؤدي هذا الإجراء إلى حذف كل المحتوى والخيارات التي تم إنشاؤها أو تم تغييرها من ذلك الحين.";
 
 /* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
 "Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "هل أنت متأكد من رغبتك في استرجاع موقعك مرة أخرى إلى %@؟\nسيؤدي هذا الإجراء إلى حذف كل المحتوى والخيارات التي تم إنشاؤها أو تغييرها من ذلك الحين.";
@@ -717,7 +717,7 @@
 "Are you sure you want to submit for review?" = "هل تريد بالتأكيد الإرسال للمراجعة؟";
 
 /* Message of the trash page confirmation alert. */
-"Are you sure you want to trash this page?" = "Are you sure you want to trash this page?";
+"Are you sure you want to trash this page?" = "هل أنت متأكد من رغبتك في نقل هذه الصفحة إلى سلة المهملات؟";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "هل أنت متأكد من رغبتك في نقل هذه المقالة إلى سلة المهملات؟";
@@ -1567,7 +1567,7 @@
 "Could not toggle Follow: missing blogURL attribute" = "تعذر تبديل المتابعة: سمة عنوان URL للمدونة مفقودة";
 
 /* An error description explaining that Seen could not be toggled due to a missing feedItemID attribute. */
-"Could not toggle Seen: missing feedItemID attribute." = "Could not toggle Seen: missing feedItemID attribute.";
+"Could not toggle Seen: missing feedItemID attribute." = "يتعذر التبديل إلى تم الاطلاع عليها: سمة feedItemID مفقودة.";
 
 /* Title of a prompt. */
 "Could not unfollow site" = "تعذر إلغاء متابعة الموقع";
@@ -1721,16 +1721,16 @@
 "Current value is %s" = "القيمة الحالية هي %s";
 
 /* Title for the Jetpack Backup Status message. */
-"Currently creating a downloadable backup of your site" = "Currently creating a downloadable backup of your site";
+"Currently creating a downloadable backup of your site" = "إنشاء نسخة احتياطية قابلة للتنزيل من موقعك في الوقت الحالي";
 
 /* Title for the Jetpack Restore Status message. */
-"Currently restoring site" = "Currently restoring site";
+"Currently restoring site" = "جاري استعادة الموقع حاليًا";
 
 /* Title of the cell displaying status of a rewind in progress */
 "Currently restoring your site" = "استعادة موقعك حاليًا";
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
-"Currently restoring: %1$@" = "Currently restoring: %1$@";
+"Currently restoring: %1$@" = "جاري الآن استعادة: %1$@";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "رسالة مخصصة…";
@@ -3432,13 +3432,13 @@
 "Mark as Sticky" = "وضع علامة كمُثبَّت";
 
 /* An option to mark a post as seen. */
-"Mark as seen" = "Mark as seen";
+"Mark as seen" = "وضع علامة تمت المشاهدة";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "تمييز كمزعج.";
 
 /* An option to mark a post as unseen. */
-"Mark as unseen" = "Mark as unseen";
+"Mark as unseen" = "وضع علامة لم تتم المشاهدة";
 
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "مطابقة الحسابات باستخدام البريد الإلكتروني";
@@ -3532,7 +3532,7 @@
 "Microsoft Outlook" = "Microsoft Outlook";
 
 /* Summary description for a threat */
-"Miscellaneous vulnerability" = "Miscellaneous vulnerability";
+"Miscellaneous vulnerability" = "ثغرات أمنية متنوعة";
 
 /* Title for the mobile web preview */
 "Mobile" = "الهاتف المحمول";
@@ -3586,7 +3586,7 @@
 "Move block left from position %1$s to position %2$s" = "نقل المكوِّن إلى اليسار من الموضع %1$s إلى الموضع %2$s";
 
 /* No comment provided by engineer. */
-"Move block position" = "Move block position";
+"Move block position" = "تحريك موضع المكوّن";
 
 /* No comment provided by engineer. */
 "Move block right" = "نقل المكوِّن إلى اليمين";
@@ -3870,7 +3870,7 @@
 "No need to wait around. We'll notify you when your backup is ready." = "لا داعي للانتظار هنا. سنُخطرك عندما تكون نسختك الاحتياطية جاهزة.";
 
 /* A hint to users about restoring their site. */
-"No need to wait around. We'll notify you when your site has been fully restored." = "No need to wait around. We'll notify you when your site has been fully restored.";
+"No need to wait around. We'll notify you when your site has been fully restored." = "لا داعي للانتظار هنا. سنخطرك عندما تتم استعادة موقعك بالكامل.";
 
 /* Displayed in the Stats widgets when there is no network */
 "No network available" = "لا تتوفر شبكة";
@@ -4325,10 +4325,10 @@
 "Please check your internet connection and try again." = "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.";
 
 /* Confirmation title presented before fixing all the threats, displays the number of threats to be fixed */
-"Please confirm you want to fix all %1$d active threats" = "Please confirm you want to fix all %1$d active threats";
+"Please confirm you want to fix all %1$d active threats" = "يرجى التأكيد على رغبتك في معالجة جميع التهديدات النشطة التي تصل إلى %1$d";
 
 /* Confirmation title presented before fixing a single threat */
-"Please confirm you want to fix this threat" = "Please confirm you want to fix this threat";
+"Please confirm you want to fix this threat" = "الرجاء تأكيد رغبتك في معالجة هذا التهديد";
 
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "يرجى الاتصال بالدعم للحصول على المساعدة.";
@@ -5252,7 +5252,7 @@
 "Select %@ to discover new themes" = "حدّد %@ لاكتشاف القوالب الجديدة";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to edit your Homepage." = "Select %@ to edit your Homepage.";
+"Select %@ to edit your Homepage." = "حدّد %@ لتحرير صفحتك الرئيسية.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to look for sites with similar interests" = "حدّد %@ للبحث عن مواقع ذات اهتمامات متشابهة";
@@ -5270,7 +5270,7 @@
 "Select %@ to see your current plan and other available plans." = "حدّد %@ لرؤية خطتك الحالية والخطط المتاحة الأخرى.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your page list." = "Select %@ to see your page list.";
+"Select %@ to see your page list." = "حدّد %@ لرؤية قائمة صفحاتك.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to set a new title." = "حدِّد %@ لتعيين عنوان جديد.";
@@ -6086,7 +6086,7 @@
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "شهادة هذا الخادم غير صالحة. قد تكون مرتبطًا بخادم يبدو &quot;%@&quot; والذي قد يجعل معلوماتك السرية في خطر.\n\nهل تريد أن تثق في الشهادة على أية حال؟";
 
 /* Title for a threat that includes the file name of the file */
-"The file %1$@ contains a malicious code pattern" = "The file %1$@ contains a malicious code pattern";
+"The file %1$@ contains a malicious code pattern" = "يحتوي الملف %1$@ على نمط أكواد برمجية ضارة";
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "تعذرت إضافة الصورة إلى مكتبة الوسائط.";
@@ -6350,10 +6350,10 @@
 "Threading" = "مؤشر الترابط";
 
 /* Title for a threat */
-"Threat Found" = "Threat Found";
+"Threat Found" = "تم العثور على تهديد";
 
 /* Summary description for a threat that includes the threat signature */
-"Threat found %1$@" = "Threat found %1$@";
+"Threat found %1$@" = "تم العثور على تهديد %1$@";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "صورة مصغرة";
@@ -6494,7 +6494,7 @@
 "Trash" = "سلة المهملات";
 
 /* Title of the trash page confirmation alert. */
-"Trash this page?" = "Trash this page?";
+"Trash this page?" = "هل تريد نقل هذه الصفحة إلى سلة المهملات؟";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "هل تريد نقل هذه المقالة إلى سلة المهملات؟";
@@ -6517,7 +6517,7 @@
 "Try Again" = "حاول مرّة اخرى";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
-"Try adjusting your date range filter" = "Try adjusting your date range filter";
+"Try adjusting your date range filter" = "محاولة ضبط عامل تصفية مدى التاريخ الخاص بك";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "Try adjusting your date range or activity type filters" = "حاول ضبط مدى التاريخ أو مرشحات نوع النشاط";
@@ -6602,10 +6602,10 @@
 "Unable to load video." = "يتعذر رفع مقطع الفيديو.";
 
 /* Alert displayed to the user when updating a post's seen status failed. */
-"Unable to mark post seen" = "Unable to mark post seen";
+"Unable to mark post seen" = "يتعذر وضع علامة على المقالة بوصفها تم الاطلاع عليها";
 
 /* Alert displayed to the user when updating a post's unseen status failed. */
-"Unable to mark post unseen" = "Unable to mark post unseen";
+"Unable to mark post unseen" = "يتعذر وضع علامة على المقالة بوصفها لم يتم الاطلاع عليها";
 
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "يتعذر تشغيل الفيديو";
@@ -6623,7 +6623,7 @@
 "Unable to save media item." = "يتعذر حفظ عنصر الوسائط.";
 
 /* Message that appears when a user tries to trash a page while their device is offline. */
-"Unable to trash pages while offline. Please try again later." = "Unable to trash pages while offline. Please try again later.";
+"Unable to trash pages while offline. Please try again later." = "غير قادر على نقل الصفحات إلى سلة المُهملات في وضع عدم الاتصال. يرجى المحاولة مرة أخرى لاحقًا.";
 
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "غير قادر على نقل المقالات إلى سلة المُهملات في وضع عدم الاتصال. يرجى المحاولة مرة أخرى لاحقًا.";
@@ -7007,13 +7007,13 @@
 "Visitors" = "الزوار";
 
 /* Summary description for a threat */
-"Vulnerability found in WordPress" = "Vulnerability found in WordPress";
+"Vulnerability found in WordPress" = "تم العثور على ثغرة أمنية في ووردبريس";
 
 /* Summary description for a threat */
-"Vulnerability found in plugin" = "Vulnerability found in plugin";
+"Vulnerability found in plugin" = "تم العثور على ثغرة أمنية في إضافة";
 
 /* Summary description for a threat */
-"Vulnerability found in theme" = "Vulnerability found in theme";
+"Vulnerability found in theme" = "تم العثور على ثغرة أمنية في قالب";
 
 /* Title for a threat */
 "Vulnerable Plugin" = "الإضافة المعرَّضة للتهديدات";
@@ -7170,7 +7170,7 @@
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "أجرينا تحسينات هائلة بمحرِّر المكوّنات، ونعتقد أنها تستحق التجربة!\n\nقمنا بتمكينها في المقالات والصفحات الجديدة، ولكن إذا رغبتَ في التغيير إلى المحرِّر التقليدي فانتقل إلى \"موقعي\" > \"إعدادات الموقع\".";
 
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
-"We successfully created a backup of your site from %1$@." = "We successfully created a backup of your site from %1$@.";
+"We successfully created a backup of your site from %1$@." = "أنشأنا نسخة احتياطية من موقعك بنجاح من %1$@.";
 
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "نستخدم أدوات تتبع أخرى، بما في ذلك بعض الأدوات التي تنتمي إلى أطراف ثالثة. اقرأ عن هذه الأدوات وكيفية التحكم فيها.";
@@ -7240,7 +7240,7 @@
 "We'll use this email address to create your new WordPress.com account." = "سنستخدم عنوان البريد الإلكتروني هذا لإنشاء حسابك الجديد على WordPress.com.";
 
 /* Description for the Jetpack Backup Status message. %1$@ is a placeholder for the selected date. */
-"We're creating a downloadable backup of your site from %1$@." = "We're creating a downloadable backup of your site from %1$@.";
+"We're creating a downloadable backup of your site from %1$@." = "سنُنشئ نسخة احتياطية قابلة للتنزيل من موقعك من %1$@.";
 
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "نقوم بالإعداد النهائي — انتهينا تقريبًا…";
@@ -7249,10 +7249,10 @@
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "لا يمكننا الاتصال بموقع Jetpack على عنوان URL هذا. اتصل بنا لطلب المساعدة.";
 
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
-"We're restoring your site back to %1$@." = "We're restoring your site back to %1$@.";
+"We're restoring your site back to %1$@." = "نحن بصدد استعادة موقعك إلى %1$@.";
 
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
-"We've also emailed you a link to your file." = "We've also emailed you a link to your file.";
+"We've also emailed you a link to your file." = "أرسلنا إليك أيضًا رابطًا إلى ملفك عبر البريد الإلكتروني.";
 
 /* Instruction text after a signup Magic Link was requested. */
 "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "أرسلنا إليك رسالة عبر البريد الإلكتروني تتضمن رابط التسجيل لإنشاء حسابك الجديد على WordPress.com. تحقَّق من بريدك الإلكتروني على هذا الجهاز، وانقر على الرابط الموجود في الرسالة التي تم تلقيها عبر البريد الإلكتروني من WordPress.com.";
@@ -7626,13 +7626,13 @@
 "Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "لا يُسمح لتطبيقك بالوصول إلى مكتبة الوسائط بسبب القيود النشطة مثل الرقابة الأبوية. يرجى التحقّق من إعدادات الرقابة الأبوية لديك في هذا الجهاز.";
 
 /* Title for the Jetpack Backup Complete message. */
-"Your backup is now available for download" = "Your backup is now available for download";
+"Your backup is now available for download" = "أصبحت نسختك الاحتياطية متاحة الآن للتنزيل";
 
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "اسم المستخدم الحالي هو %1$@. مع بعض الاستثناءات، لن يرى الآخرون سوى اسم العرض %2$@.";
 
 /* Text displayed in the view when there aren't any Backups to display */
-"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed";
+"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "ستظهر نسختك الاحتياطية الأولى هنا في غضون 24 ساعة وستتلقى إشعارًا بمجرد اكتمال النسخ الاحتياطي";
 
 /* Title for the view when there aren't any Backups to display */
 "Your first backup will be ready soon" = "ستكون نسختك الاحتياطية الأولى جاهزة قريبًا";

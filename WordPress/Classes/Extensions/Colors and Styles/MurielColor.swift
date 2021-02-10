@@ -11,6 +11,7 @@ enum MurielColorName: String, CustomStringConvertible {
     case purple
     case red
     case yellow
+    case jetpackGreen
 
     var description: String {
         // can't use .capitalized because it lowercases the P and B in "wordPressBlue"
@@ -67,6 +68,7 @@ struct MurielColor {
     static let text = MurielColor(name: .gray, shade: .shade80)
     static let textSubtle = MurielColor(name: .gray, shade: .shade50)
     static let warning = MurielColor(name: .yellow)
+    static let jetpackGreen = MurielColor(name: .jetpackGreen)
 
     /// The full name of the color, with required shade value
     func assetName() -> String {

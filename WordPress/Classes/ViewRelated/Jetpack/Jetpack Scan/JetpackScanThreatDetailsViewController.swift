@@ -38,6 +38,7 @@ class JetpackScanThreatDetailsViewController: UIViewController {
     @IBOutlet private weak var buttonsStackView: UIStackView!
     @IBOutlet private weak var fixThreatButton: FancyButton!
     @IBOutlet private weak var ignoreThreatButton: FancyButton!
+    @IBOutlet weak var ignoreActivityIndicatorView: UIActivityIndicatorView!
 
     // MARK: - Properties
 
@@ -83,9 +84,12 @@ class JetpackScanThreatDetailsViewController: UIViewController {
                 return
             }
             self.delegate?.willFixThreat(self.threat, controller: self)
+            self.trackEvent(.jetpackScanThreatFixTapped)
         }))
 
         present(alert, animated: true)
+
+        trackEvent(.jetpackScanFixThreatDialogOpen)
     }
 
     @IBAction private func ignoreThreatButtonTapped(_ sender: Any) {
@@ -102,10 +106,23 @@ class JetpackScanThreatDetailsViewController: UIViewController {
             guard let self = self else {
                 return
             }
+
+            self.ignoreThreatButton.isHidden = true
+            self.ignoreActivityIndicatorView.startAnimating()
+
             self.delegate?.willIgnoreThreat(self.threat, controller: self)
+            self.trackEvent(.jetpackScanThreatIgnoreTapped)
         }))
 
         present(alert, animated: true)
+
+        trackEvent(.jetpackScanIgnoreThreatDialogOpen)
+    }
+
+    // MARK: - Private
+
+    private func trackEvent(_ event: WPAnalyticsEvent) {
+        WPAnalytics.track(event, properties: ["threat_signature": threat.signature])
     }
 }
 
@@ -123,11 +140,11 @@ extension JetpackScanThreatDetailsViewController {
         problemTitleLabel.text = viewModel.problemTitle
         problemDescriptionLabel.text = viewModel.problemDescription
 
-        if viewModel.fileContext != nil {
+        if let attributedFileContext = self.viewModel.attributedFileContext {
             technicalDetailsTitleLabel.text = viewModel.technicalDetailsTitle
             technicalDetailsDescriptionLabel.text = viewModel.technicalDetailsDescription
             technicalDetailsFileLabel.text = viewModel.fileName
-            technicalDetailsContextLabel.text = "" // FIXME
+            technicalDetailsContextLabel.attributedText = attributedFileContext
             technicalDetailsStackView.isHidden = false
         } else {
             technicalDetailsStackView.isHidden = true
@@ -143,7 +160,12 @@ extension JetpackScanThreatDetailsViewController {
             fixThreatButton.isHidden = true
         }
 
-        ignoreThreatButton.setTitle(viewModel.ignoreActionTitle, for: .normal)
+        if let ignoreActionTitle = viewModel.ignoreActionTitle {
+            ignoreThreatButton.setTitle(ignoreActionTitle, for: .normal)
+            ignoreThreatButton.isHidden = false
+        } else {
+            ignoreThreatButton.isHidden = true
+        }
 
         applyStyles()
     }
@@ -184,15 +206,17 @@ extension JetpackScanThreatDetailsViewController {
         technicalDetailsTitleLabel.textColor = .text
         technicalDetailsTitleLabel.numberOfLines = 0
 
-        technicalDetailsFileContainerView.backgroundColor = .listBackground
+        technicalDetailsFileContainerView.backgroundColor = viewModel.fileNameBackgroundColor
 
-        technicalDetailsFileLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
-        technicalDetailsFileLabel.textColor = .text
+        technicalDetailsFileLabel.font = viewModel.fileNameFont
+        technicalDetailsFileLabel.textColor = viewModel.fileNameColor
         technicalDetailsFileLabel.numberOfLines = 0
 
         technicalDetailsDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
         technicalDetailsDescriptionLabel.textColor = .text
         technicalDetailsDescriptionLabel.numberOfLines = 0
+
+        technicalDetailsContextLabel.numberOfLines = 0
     }
 
     private func styleFixSection() {

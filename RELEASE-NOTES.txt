@@ -1,3 +1,6 @@
+16.8
+-----
+ 
 16.7
 -----
 * [**] Site Creation: Adds the option to choose between mobile, tablet or desktop thumbnails and previews in the home page design picker when creating a WordPress.com site [https://github.com/wordpress-mobile/WordPress-iOS/pull/15688]
@@ -5,12 +8,21 @@
 * [**] Site Creation: Enables dot blog subdomains for each site design. [#15736]
 * [**] Reader post card and post details: added ability to mark a followed post as seen/unseen. [#15638, #15645, #15676]
 * [**] Reader site filter: show unseen post count. [#15581]
+* [***] Block Editor: New Block: Audio [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2854, https://github.com/wordpress-mobile/gutenberg-mobile/pull/3070]
+* [**] Block Editor: Add support for setting heading anchors [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2947]
+* [**] Block Editor: Disable Unsupported Block Editor for Reusable blocks [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3067]
+* [**] Block Editor: Add proper handling for single use blocks such as the more block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3042]
+* [*] Reader post options: fixed an issue where the options in post details did not match those on post cards. [#15778]
+* [***] iOS 14 Widgets: new All Time Widgets to display All Time Stats in your home screen. [#15771, #15794]
+* [***] Jetpack: Backup and Restore is now available, depending on your sites plan you can now restore your site to a point in time, or download a backup file. [https://github.com/wordpress-mobile/WordPress-iOS/issues/15191]
+* [***] Jetpack: For sites that have Jetpack Scan enabled you will now see a new section that allows you to scan your site for threats, as well as fix or ignore them. [https://github.com/wordpress-mobile/WordPress-iOS/issues/15190]
 
 16.6
 -----
 * [**] Activity Log: adds support for Date Range and Activity Type filters. [https://github.com/wordpress-mobile/WordPress-iOS/issues/15192]
 * [*] Quick Start: Removed the Browse theme step and added guidance for reviewing pages and editing your Homepage. [#15680]
 * [**] iOS 14 Widgets: new Today Widgets to display your Today Stats in your home screen.
+* [*] Fixes an issue where the submit button was invisible during the domain registration flow.
 
 16.5
 -----

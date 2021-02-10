@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-22 18:54:07+0000 */
+/* Translation-Revision-Date: 2021-02-04 14:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -259,7 +259,7 @@
 "A featured image is set. Tap to change it." = "Ein Beitragsbild wurde festgelegt. Tippen, um es zu ändern.";
 
 /* Title for a threat */
-"A file contains a malicious code pattern" = "A file contains a malicious code pattern";
+"A file contains a malicious code pattern" = "Eine Datei enthält ein bösartiges Codemuster";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "Eine Liste der Websites in diesem Konto.";
@@ -520,7 +520,7 @@
 "All languages" = "Alle Sprachen";
 
 /* Description for the Jetpack Backup Restore message. %1$@ is a placeholder for the selected date. */
-"All of your selected items are now restored back to %1$@." = "All of your selected items are now restored back to %1$@.";
+"All of your selected items are now restored back to %1$@." = "Alle deine ausgewählten Elemente werden jetzt auf den Stand von %1$@ wiederhergestellt.";
 
 /* Title of the congratulation screen that appears when all the tasks are completed */
 "All tasks complete" = "Alle Aufgaben sind erledigt";
@@ -680,7 +680,7 @@
 "Are you sure you want to permanently delete this item?" = "Bist du sicher, dass du dieses Element endgültig löschen möchtest?";
 
 /* Message of the confirmation alert when deleting a page from the trash. */
-"Are you sure you want to permanently delete this page?" = "Are you sure you want to permanently delete this page?";
+"Are you sure you want to permanently delete this page?" = "Bist du sicher, dass du diese Seite endgültig löschen möchtest?";
 
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Bist du sicher, dass du diesen Beitrag endgültig löschen möchtest?";
@@ -699,7 +699,7 @@
 "Are you sure you want to remove %1$@?" = "Möchtest du %1$@ wirklich entfernen?";
 
 /* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
-"Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then.";
+"Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Möchtest du deine Website wirklich auf %1$@ zurücksetzen? Damit werden Inhalte und Optionen, die seit diesem Zeitpunkt erstellt oder geändert wurden, entfernt.";
 
 /* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
 "Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "Bist du sicher, dass du deine Webseite auf den Stand vom %@ zurücksetzen möchtest? Alle Inhalte und Optionen, die seitdem erstellt oder geändert wurden, werden dadurch entfernt.";
@@ -717,7 +717,7 @@
 "Are you sure you want to submit for review?" = "Bist du sicher, dass du den Inhalt zur Überprüfung einreichen möchtest?";
 
 /* Message of the trash page confirmation alert. */
-"Are you sure you want to trash this page?" = "Are you sure you want to trash this page?";
+"Are you sure you want to trash this page?" = "Bist du sicher, dass du diese Seite in den Papierkorb verschieben möchtest?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Willst du diesen Artikel wirklich löschen?";
@@ -811,7 +811,7 @@
 "Backup" = "Backup";
 
 /* Title for error displayed when preparing a backup fails. */
-"Backup failed." = "Backup failed.";
+"Backup failed." = "Backup fehlgeschlagen.";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "Bar Chart depicting Comments for the selected period.";
@@ -1095,10 +1095,10 @@
 "Change username" = "Benutzernamen ändern";
 
 /* Description of a Quick Start Tour */
-"Change, add, or remove content from your site's homepage." = "Change, add, or remove content from your site's homepage.";
+"Change, add, or remove content from your site's homepage." = "Du kannst Inhalte auf der Startseite deiner Website ändern, hinzufügen oder entfernen.";
 
 /* Description of a Quick Start Tour */
-"Change, add, or remove your site's pages." = "Change, add, or remove your site's pages.";
+"Change, add, or remove your site's pages." = "Du kannst die Seiten deiner Website ändern, hinzufügen oder entfernen.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Anzeigename wird geändert";
@@ -1353,7 +1353,7 @@
 "Completed: Create your site" = "Vollständig: Deine Website erstellen";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Edit your homepage" = "Completed: Edit your homepage";
+"Completed: Edit your homepage" = "Abgeschlossen: Startseite bearbeiten";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Enable post sharing" = "Abgeschlossen: Teilen von Beiträgen aktivieren";
@@ -1368,7 +1368,7 @@
 "Completed: Publish a post" = "Abgeschlossen: Einen Beitrag veröffentlichen";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Review site pages" = "Completed: Review site pages";
+"Completed: Review site pages" = "Abgeschlossen: Website-Seiten prüfen";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Set your site title" = "Abgeschlossen: Deinen Website-Titel festlegen";
@@ -1567,7 +1567,7 @@
 "Could not toggle Follow: missing blogURL attribute" = "Konnte Abo nicht umstellen: blogURL-Attribut fehlt";
 
 /* An error description explaining that Seen could not be toggled due to a missing feedItemID attribute. */
-"Could not toggle Seen: missing feedItemID attribute." = "Could not toggle Seen: missing feedItemID attribute.";
+"Could not toggle Seen: missing feedItemID attribute." = "Gesehen kann nicht umgeschaltet werden: feedItemID-Attribut fehlt.";
 
 /* Title of a prompt. */
 "Could not unfollow site" = "Konnte Abo für Website nicht beenden";
@@ -1721,16 +1721,16 @@
 "Current value is %s" = "Der aktuelle Wert ist %s";
 
 /* Title for the Jetpack Backup Status message. */
-"Currently creating a downloadable backup of your site" = "Currently creating a downloadable backup of your site";
+"Currently creating a downloadable backup of your site" = "Wir erstellen momentan ein herunterladbares Backup deiner Website";
 
 /* Title for the Jetpack Restore Status message. */
-"Currently restoring site" = "Currently restoring site";
+"Currently restoring site" = "Website wird derzeit wiederhergestellt";
 
 /* Title of the cell displaying status of a rewind in progress */
 "Currently restoring your site" = "Deine Website wird derzeit wiederhergestellt";
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
-"Currently restoring: %1$@" = "Currently restoring: %1$@";
+"Currently restoring: %1$@" = "Wird derzeit wiederhergestellt: %1$@";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "Individuelle Nachricht ...";
@@ -1771,10 +1771,10 @@
 "Dashboard" = "Dashboard";
 
 /* Title for a threat that includes the number of database rows affected */
-"Database %1$d threats" = "Database %1$d threats";
+"Database %1$d threats" = "Datenbankbedrohung %1$d";
 
 /* Title for a threat */
-"Database threat" = "Database threat";
+"Database threat" = "Datenbank-Bedrohung";
 
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
@@ -2068,10 +2068,10 @@
 "Download Backup" = "Backup herunterladen";
 
 /* Title displayed for download backup action. */
-"Download backup" = "Download backup";
+"Download backup" = "Backup herunterladen";
 
 /* Title for the button that will download the backup file. */
-"Download file" = "Download file";
+"Download file" = "Datei herunterladen";
 
 /* Label for number of file downloads. */
 "Downloads" = "Downloads";
@@ -2147,7 +2147,7 @@
 "Edit video" = "Video bearbeiten";
 
 /* Title of a Quick Start Tour */
-"Edit your homepage" = "Edit your homepage";
+"Edit your homepage" = "Startseite bearbeiten";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Wenn dieses GIF bearbeitet wird, wird die Animation entfernt.";
@@ -2536,7 +2536,7 @@
 "Fix All" = "Alles beheben";
 
 /* Button title, confirm fixing all threats */
-"Fix all threats" = "Fix all threats";
+"Fix all threats" = "Alle Bedrohungen beheben";
 
 /* Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
@@ -2546,7 +2546,7 @@
 "Follow Site" = "Website folgen";
 
 /* Verb. Button title. Follow the comments on a post. */
-"Follow conversation by email" = "Follow conversation by email";
+"Follow conversation by email" = "Unterhaltung per E-Mail folgen";
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Anderen Websites folgen";
@@ -2587,7 +2587,7 @@
 "Following %@" = "Du folgst %@";
 
 /* Verb. Button title. The user is following the comments on a post. */
-"Following conversation by email" = "Following conversation by email";
+"Following conversation by email" = "Du folgst der Unterhaltung per E-Mail";
 
 /* Filters Follows Notifications */
 "Follows" = "Follows";
@@ -2599,7 +2599,7 @@
 "Follows the blog." = "Hiermit folgst du dem Blog.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
-"Follows the comments on a post by email." = "Follows the comments on a post by email.";
+"Follows the comments on a post by email." = "Folgt den Kommentaren zu einem Beitrag per E-Mail.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Folgt dem Schlagwort.";
@@ -2939,22 +2939,22 @@
 "Includes wp-config php and any non WordPress files" = "Beinhaltet wp-config.php und alle Nicht-WordPress-Dateien";
 
 /* Downloadable/Restorable items: general section footer text */
-"Includes wp-config.php and any non WordPress files" = "Includes wp-config.php and any non WordPress files";
+"Includes wp-config.php and any non WordPress files" = "Beinhaltet wp-config.php und alle Nicht-WordPress-Dateien";
 
 /* An error message shown when a user signed in with incorrect credentials. */
 "Incorrect username or password. Please try entering your login details again." = "Falsche Benutzername oder Passwort. Bitte gib deine Zugangsdaten erneut ein.";
 
 /* Title for a threat */
-"Infected core file" = "Infected core file";
+"Infected core file" = "Infizierte Core-Datei";
 
 /* Title for a threat that includes the file name of the file */
-"Infected core file: %1$@" = "Infected core file: %1$@";
+"Infected core file: %1$@" = "Infizierte Core-Datei: %1$@";
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Informationen zu WordPress.com-Kursen und -Veranstaltungen (online und vor Ort).";
 
 /* Placeholder for the restore progress title. */
-"Initializing the restore process" = "Initializing the restore process";
+"Initializing the restore process" = "Wiederherstellungsvorgang wird initialisiert";
 
 /* Default button title used in media picker to insert media (photos / videos) into a post.
    Label action for inserting a link on the editor */
@@ -3072,7 +3072,7 @@
 "Jetpack FAQ" = "Jetpack FAQ";
 
 /* Description that explains that we are unable to auto fix the threat */
-"Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site." = "Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site.";
+"Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site." = "Jetpack Scan kann diese Bedrohung nicht automatisch beheben. Wir empfehlen dir, die Bedrohung manuell zu entfernen: Stelle sicher, dass WordPress, dein Theme und alle deine Plugins auf dem neuesten Stand sind, und entferne anschließend den betroffenen Code, das betroffene Theme oder das betroffene Plugin von deiner Website.";
 
 /* Description for a label when the scan has failed */
 "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Jetpack Scan konnte einen Scan deiner Website ausführen. Schau bitte nach, ob deine Website erreichbar ist. Wenn ja, versuche es erneut. Wenn sie nicht erreichbar ist oder wenn mit Jetpack Scan weiterhin Probleme auftreten, wende dich bitte an unser Support-Team.";
@@ -3084,25 +3084,25 @@
 "Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action." = "Beim Jetpack Scan wurde 1 potenzielle Bedrohung auf %1$@gefunden. Prüfe bitte jede Bedrohung und führe die erforderliche Aktion aus.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will delete the affected file or directory." = "Jetpack Scan will delete the affected file or directory.";
+"Jetpack Scan will delete the affected file or directory." = "Jetpack Scan löscht die betroffene Datei bzw. das betroffene Verzeichnis.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will edit the affected file or directory." = "Jetpack Scan will edit the affected file or directory.";
+"Jetpack Scan will edit the affected file or directory." = "Jetpack Scan bearbeitet die betroffene Datei bzw. das betroffene Verzeichnis.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will replace the affected file or directory." = "Jetpack Scan will replace the affected file or directory.";
+"Jetpack Scan will replace the affected file or directory." = "Jetpack Scan ersetzt die betroffene Datei bzw. das betroffene Verzeichnis.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will resolve the threat." = "Jetpack Scan will resolve the threat.";
+"Jetpack Scan will resolve the threat." = "Jetpack Scan beseitigt die Bedrohung.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will rollback the affected file to an older (clean) version." = "Jetpack Scan will rollback the affected file to an older (clean) version.";
+"Jetpack Scan will rollback the affected file to an older (clean) version." = "Jetpack Scan setzt die betroffene Datei auf eine ältere (virenfreie) Version zurück.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will rollback the affected file to the version from %1$@." = "Jetpack Scan will rollback the affected file to the version from %1$@.";
+"Jetpack Scan will rollback the affected file to the version from %1$@." = "Jetpack Scan setzt die betroffene Datei auf die Version vom %1$@ zurück.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will update to a newer version." = "Jetpack Scan will update to a newer version.";
+"Jetpack Scan will update to a newer version." = "Jetpack Scan wird auf eine neuere Version aktualisiert.";
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack-Einstellungen";
@@ -3114,10 +3114,10 @@
 "Jetpack installed" = "Jetpack installiert";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
-"Jetpack will be fixing all the detected active threats." = "Jetpack will be fixing all the detected active threats.";
+"Jetpack will be fixing all the detected active threats." = "Jetpack wird alle erkannten aktiven Bedrohungen beheben.";
 
 /* Confirmation message presented before fixing a single threat */
-"Jetpack will be fixing the detected active threat." = "Jetpack will be fixing the detected active threat.";
+"Jetpack will be fixing the detected active threat." = "Jetpack wird die erkannte aktive Bedrohung beheben.";
 
 /* Footer for the Serve images from our servers setting */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack optimiert deine Bilder und stellt sie über den Server-Standort bereit, der am nächsten an deinen Website-Besuchern liegt. Unser globales Netzwerk für Content-Auslieferung verkürzt die Ladezeiten deiner Website.";
@@ -3265,7 +3265,7 @@
 "Loading Activities..." = "Aktivitäten werden geladen ...";
 
 /* Text displayed while loading the activity feed for a site */
-"Loading Backups..." = "Loading Backups...";
+"Loading Backups..." = "Backups werden geladen …";
 
 /* Phrase to show when the user has searched for GIFs and they are being loaded. */
 "Loading GIFs..." = "GIFs laden ...";
@@ -3432,13 +3432,13 @@
 "Mark as Sticky" = "Als oben gehalten markieren";
 
 /* An option to mark a post as seen. */
-"Mark as seen" = "Mark as seen";
+"Mark as seen" = "Als gesehen markieren";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Als Spam markieren.";
 
 /* An option to mark a post as unseen. */
-"Mark as unseen" = "Mark as unseen";
+"Mark as unseen" = "Als nicht gesehen markieren";
 
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "Konten per E-Mail abgleichen";
@@ -3532,7 +3532,7 @@
 "Microsoft Outlook" = "Microsoft Outlook";
 
 /* Summary description for a threat */
-"Miscellaneous vulnerability" = "Miscellaneous vulnerability";
+"Miscellaneous vulnerability" = "Verschiedene Schwachstellen";
 
 /* Title for the mobile web preview */
 "Mobile" = "Mobil";
@@ -3586,7 +3586,7 @@
 "Move block left from position %1$s to position %2$s" = "Bewege den Block von Position %1$s nach links zur Position %2$s";
 
 /* No comment provided by engineer. */
-"Move block position" = "Move block position";
+"Move block position" = "Block-Position verschieben";
 
 /* No comment provided by engineer. */
 "Move block right" = "Block nach rechts verschieben";
@@ -3617,10 +3617,10 @@
 "Move to Trash" = "In Papierkorb verschieben";
 
 /* No comment provided by engineer. */
-"Move to bottom" = "Move to bottom";
+"Move to bottom" = "Nach unten verschieben";
 
 /* No comment provided by engineer. */
-"Move to top" = "Move to top";
+"Move to top" = "Nach oben verschieben";
 
 /* Option to move Insight up in the view. */
 "Move up" = "Nach oben verschieben";
@@ -3853,7 +3853,7 @@
 "No likes yet" = "Noch keine Likes";
 
 /* Title for the view when there aren't any backups to display for a given filter. */
-"No matching backups found" = "No matching backups found";
+"No matching backups found" = "Keine passenden Backups gefunden";
 
 /* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "No matching events found." = "Keine passenden Ereignisse gefunden.";
@@ -3867,10 +3867,10 @@
 "No menus available" = "Keine Menüs verfügbar";
 
 /* A hint to users about creating a downloadable backup of their site. */
-"No need to wait around. We'll notify you when your backup is ready." = "No need to wait around. We'll notify you when your backup is ready.";
+"No need to wait around. We'll notify you when your backup is ready." = "Du brauchst nicht zu warten. Wir teilen dir mit, wenn dein Backup fertig ist.";
 
 /* A hint to users about restoring their site. */
-"No need to wait around. We'll notify you when your site has been fully restored." = "No need to wait around. We'll notify you when your site has been fully restored.";
+"No need to wait around. We'll notify you when your site has been fully restored." = "Du brauchst nicht zu warten. Wir benachrichtigen dich, wenn deine Website vollständig wiederhergestellt wurde.";
 
 /* Displayed in the Stats widgets when there is no network */
 "No network available" = "Kein Netzwerk verfügbar";
@@ -4037,7 +4037,7 @@
 "OK" = "OK";
 
 /* Title for the button that will dismiss this view. */
-"OK, notify me!" = "OK, notify me!";
+"OK, notify me!" = "OK, benachrichtige mich!";
 
 /* Disabled */
 "Off" = "Aus";
@@ -4325,10 +4325,10 @@
 "Please check your internet connection and try again." = "Bitte überprüfe deine Internetverbindung und versuche es erneut.";
 
 /* Confirmation title presented before fixing all the threats, displays the number of threats to be fixed */
-"Please confirm you want to fix all %1$d active threats" = "Please confirm you want to fix all %1$d active threats";
+"Please confirm you want to fix all %1$d active threats" = "Bitte bestätige, dass du alle %1$d Bedrohungen beheben möchtest";
 
 /* Confirmation title presented before fixing a single threat */
-"Please confirm you want to fix this threat" = "Please confirm you want to fix this threat";
+"Please confirm you want to fix this threat" = "Bitte bestätige, dass du diese Bedrohung beheben möchtest";
 
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "Für Hilfe wende dich bitte an den Support.";
@@ -5003,7 +5003,7 @@
 "Restore" = "Wiederherstellen";
 
 /* Title for error displayed when restoring a site fails. */
-"Restore failed." = "Restore failed.";
+"Restore failed." = "Wiederherstellung fehlgeschlagen.";
 
 /* Label that describes the restore site action */
 "Restore site" = "Website wiederherstellen";
@@ -5050,7 +5050,7 @@
 "Revert Pending Change" = "Ausstehende Änderung rückgängig machen";
 
 /* Title of a Quick Start Tour */
-"Review site pages" = "Review site pages";
+"Review site pages" = "Website-Seiten prüfen";
 
 /* Title of the screen that shows the revisions. */
 "Revision" = "Revision";
@@ -5252,7 +5252,7 @@
 "Select %@ to discover new themes" = "Wähle %@ aus, um neue Themes zu entdecken";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to edit your Homepage." = "Select %@ to edit your Homepage.";
+"Select %@ to edit your Homepage." = "Wähle %@ aus, um deine Homepage zu bearbeiten.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to look for sites with similar interests" = "Wähle %@ aus, um Websites zu ähnlichen Themen zu finden";
@@ -5270,7 +5270,7 @@
 "Select %@ to see your current plan and other available plans." = "Wähle %@ aus, um deinen aktuellen Plan und andere verfügbare Pläne anzuzeigen.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your page list." = "Select %@ to see your page list.";
+"Select %@ to see your page list." = "Wähle %@ aus, um deine Seitenliste anzuzeigen.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to set a new title." = "Wähle %@ aus, um einen neuen Titel festzulegen.";
@@ -5441,7 +5441,7 @@
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Teile Informationen über deine Nutzung von Diensten mit unserem Analysewerkzeug, während du in deinem WordPress.com-Konto angemeldet bist.";
 
 /* Title for the button that will share the link for the downlodable backup file */
-"Share link" = "Share link";
+"Share link" = "Link teilen";
 
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
@@ -6086,7 +6086,7 @@
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Das Zertifikat für diesen Server ist ungültig. Du könntest zu einem Server verbinden, der nur vorgibt \"%@\" zu sein, was ein Sicherheitsrisiko darstellt.\n\nMöchtest Du dem Zertifikat trotzdem vertrauen?";
 
 /* Title for a threat that includes the file name of the file */
-"The file %1$@ contains a malicious code pattern" = "The file %1$@ contains a malicious code pattern";
+"The file %1$@ contains a malicious code pattern" = "Die Datei %1$@ enthält ein bösartiges Codemuster";
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
 "The image could not be added to the Media Library." = "Das Bild konnte nicht zur Mediathek hinzugefügt werden.";
@@ -6350,10 +6350,10 @@
 "Threading" = "Threading";
 
 /* Title for a threat */
-"Threat Found" = "Threat Found";
+"Threat Found" = "Bedrohung gefunden";
 
 /* Summary description for a threat that includes the threat signature */
-"Threat found %1$@" = "Threat found %1$@";
+"Threat found %1$@" = "Bedrohung gefunden %1$@";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Vorschaubild";
@@ -6494,7 +6494,7 @@
 "Trash" = "Entfernen";
 
 /* Title of the trash page confirmation alert. */
-"Trash this page?" = "Trash this page?";
+"Trash this page?" = "Diese Seite in den Papierkorb verschieben?";
 
 /* Title of the trash confirmation alert. */
 "Trash this post?" = "Diesen Beitrag in den Papierkorb verschieben?";
@@ -6517,7 +6517,7 @@
 "Try Again" = "Erneut versuchen";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
-"Try adjusting your date range filter" = "Try adjusting your date range filter";
+"Try adjusting your date range filter" = "Versuche, den Datumsbereichsfilter anzupassen";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "Try adjusting your date range or activity type filters" = "Versuche, deinen Zeitraum oder Aktivitätsfilter zu ändern";
@@ -6602,10 +6602,10 @@
 "Unable to load video." = "Video konnte nicht geladen werden.";
 
 /* Alert displayed to the user when updating a post's seen status failed. */
-"Unable to mark post seen" = "Unable to mark post seen";
+"Unable to mark post seen" = "Beitrag kann nicht als gesehen markiert werden";
 
 /* Alert displayed to the user when updating a post's unseen status failed. */
-"Unable to mark post unseen" = "Unable to mark post unseen";
+"Unable to mark post unseen" = "Beitrag kann nicht als nicht gesehen markiert werden";
 
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Video konnte nicht abgespielt werden";
@@ -6623,7 +6623,7 @@
 "Unable to save media item." = "Medienelement kann nicht gespeichert werden.";
 
 /* Message that appears when a user tries to trash a page while their device is offline. */
-"Unable to trash pages while offline. Please try again later." = "Unable to trash pages while offline. Please try again later.";
+"Unable to trash pages while offline. Please try again later." = "Seiten können offline nicht in den Papierkorb gelegt werden. Bitte versuche es später erneut.";
 
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "Beiträge können offline nicht in den Papierkorb gelegt werden. Bitte versuche es später erneut.";
@@ -6993,7 +6993,7 @@
 "Visit %@ for more" = "Besuche %@ für mehr";
 
 /* Title for the button that will open a link to this site. */
-"Visit site" = "Visit site";
+"Visit site" = "Website besuchen";
 
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "Besuche das Hilfezentrum um Antworten auf übliche Fragen zu erhalten oder kontaktiere uns, wenn du weitergehende Hilfe benötigst.";
@@ -7007,25 +7007,25 @@
 "Visitors" = "Besucher";
 
 /* Summary description for a threat */
-"Vulnerability found in WordPress" = "Vulnerability found in WordPress";
+"Vulnerability found in WordPress" = "Schwachstelle in WordPress gefunden";
 
 /* Summary description for a threat */
-"Vulnerability found in plugin" = "Vulnerability found in plugin";
+"Vulnerability found in plugin" = "Schwachstelle im Plugin gefunden";
 
 /* Summary description for a threat */
-"Vulnerability found in theme" = "Vulnerability found in theme";
+"Vulnerability found in theme" = "Schwachstelle im Theme gefunden";
 
 /* Title for a threat */
-"Vulnerable Plugin" = "Vulnerable Plugin";
+"Vulnerable Plugin" = "Gefährdetes Plugin";
 
 /* Title for a threat that includes the file name of the plugin and the affected version */
-"Vulnerable Plugin: %1$@ (version %2$@)" = "Vulnerable Plugin: %1$@ (version %2$@)";
+"Vulnerable Plugin: %1$@ (version %2$@)" = "Gefährdetes Plugin: %1$@ (Version %2$@)";
 
 /* Title for a threat */
-"Vulnerable Theme" = "Vulnerable Theme";
+"Vulnerable Theme" = "Gefährdetes Theme";
 
 /* Title for a threat that includes the file name of the theme and the affected version */
-"Vulnerable Theme %1$@ (version %2$@)" = "Vulnerable Theme %1$@ (version %2$@)";
+"Vulnerable Theme %1$@ (version %2$@)" = "Gefährdetes Theme %1$@ (Version %2$@)";
 
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "WP Admin";
@@ -7095,7 +7095,7 @@
 "We couldn't complete this action." = "Wir konnten diese Aktion nicht abschließen.";
 
 /* Message for error displayed when preparing a backup fails. */
-"We couldn't create your backup. Please try again later." = "We couldn't create your backup. Please try again later.";
+"We couldn't create your backup. Please try again later." = "Wir konnten dein Backup nicht erstellen. Bitte versuche es später erneut.";
 
 /* Primary message shown when there are no domains that match the user entered text. */
 "We couldn't find any available address with the words you entered - let's try again." = "Wir konnten mit den von dir eingegebenen Wörtern keine verfügbare Adresse finden. Versuche es bitte noch einmal.";
@@ -7113,7 +7113,7 @@
 "We couldn't publish this private post, but we'll try again later." = "Wir konnten diesen privaten Beitrag nicht veröffentlichen, versuchen es aber später erneut.";
 
 /* Message for error displayed when restoring a site fails. */
-"We couldn't restore your site. Please try again later." = "We couldn't restore your site. Please try again later.";
+"We couldn't restore your site. Please try again later." = "Wir konnten deine Website nicht wiederherstellen. Bitte versuche es später erneut.";
 
 /* Description that appears when a media fails to load in the Media Editor. */
 "We couldn't retrieve this media.\nPlease tap to retry." = "Wir konnten diese Medien nicht abrufen.\nBitte tippe, um es erneut zu versuchen.";
@@ -7170,7 +7170,7 @@
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "Wir haben große Verbesserungen am Block-Editor vorgenommen und denken, dass es sich lohnt, ihn auszuprobieren!\n\nWir haben ihn für neue Beiträge und Seiten aktiviert, aber wenn du zum klassischen Editor wechseln möchtest, gehe zu „Meine Website“ > „Website-Einstellungen“.";
 
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
-"We successfully created a backup of your site from %1$@." = "We successfully created a backup of your site from %1$@.";
+"We successfully created a backup of your site from %1$@." = "Wir haben erfolgreich ein Backup deiner Website vom %1$@ erstellt.";
 
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "Wir verwenden andere Werkzeuge zum Tracking, darunter auch welche von Drittanbietern. Hier erhältst du weitere Informationen und Tipps, wie du sie kontrollierst.";
@@ -7240,7 +7240,7 @@
 "We'll use this email address to create your new WordPress.com account." = "Wir werden diese E-Mail-Adresse verwenden, um dein neues WordPress.com-Konto zu erstellen.";
 
 /* Description for the Jetpack Backup Status message. %1$@ is a placeholder for the selected date. */
-"We're creating a downloadable backup of your site from %1$@." = "We're creating a downloadable backup of your site from %1$@.";
+"We're creating a downloadable backup of your site from %1$@." = "Wir erstellen ein herunterladbares Backup deiner Website vom %1$@.";
 
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "Die finale Einrichtung läuft – fast fertig …";
@@ -7249,10 +7249,10 @@
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Wir können zur Jetpack-Website unter dieser URL keine Verbindung herstellen. Wende dich an uns, um Unterstützung zu erhalten.";
 
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
-"We're restoring your site back to %1$@." = "We're restoring your site back to %1$@.";
+"We're restoring your site back to %1$@." = "Wir stellen deine Website auf %1$@ wieder her.";
 
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
-"We've also emailed you a link to your file." = "We've also emailed you a link to your file.";
+"We've also emailed you a link to your file." = "Wir haben dir auch einen Link zu deiner Datei per E-Mail geschickt.";
 
 /* Instruction text after a signup Magic Link was requested. */
 "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Wir haben dir einen Anmeldelink per E-Mail gesendet, um dein neues WordPress.com-Konto zu erstellen. Überprüfe deine E-Mails auf diesem Gerät und tippe auf den Link in der E-Mail, die du von WordPress.com erhalten hast.";
@@ -7626,16 +7626,16 @@
 "Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "Deine App ist aufgrund aktiver Einschränkungen wie z. B. einer Kindersicherung nicht berechtigt, auf die Medienbibliothek zuzugreifen. Bitte überprüfe die Einstellungen der Kindersicherung in diesem Gerät.";
 
 /* Title for the Jetpack Backup Complete message. */
-"Your backup is now available for download" = "Your backup is now available for download";
+"Your backup is now available for download" = "Du kannst dein Backup nun herunterladen.";
 
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Dein aktueller Benutzername lautet %1$@. Mit einigen Ausnahmen werden andere immer nur deinen Anzeigennamen, %2$@, sehen.";
 
 /* Text displayed in the view when there aren't any Backups to display */
-"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed";
+"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Dein erstes Backup wird innerhalb von 24 Stunden hier bereitgestellt. Du erhältst eine Benachrichtigung, wenn das Backup abgeschlossen ist.";
 
 /* Title for the view when there aren't any Backups to display */
-"Your first backup will be ready soon" = "Your first backup will be ready soon";
+"Your first backup will be ready soon" = "Dein erstes Backup ist bald fertig";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Deine Benachrichtigungen hast du immer dabei – schaue Kommentare und Likes in Echtzeit an.";
@@ -7659,7 +7659,7 @@
 "Your site has been created!" = "Deine Website wurde erstellt.";
 
 /* Title for the Jetpack Restore Complete message. */
-"Your site has been restored" = "Your site has been restored";
+"Your site has been restored" = "Deine Website wurde wiederhergestellt.";
 
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Deine Website wurde erfolgreich wiederhergestellt";

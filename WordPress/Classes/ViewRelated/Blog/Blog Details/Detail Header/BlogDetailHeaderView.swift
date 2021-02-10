@@ -92,6 +92,10 @@ class BlogDetailHeaderView: UIView, BlogDetailHeader {
         siteIconView.spotlightIsShown = QuickStartTourGuide.shared.isCurrentElement(.siteIcon)
     }
 
+    @objc func setTitleLoading(_ isLoading: Bool) {
+        isLoading ? titleButton.startLoading() : titleButton.stopLoading()
+    }
+
     private enum Constants {
         static let spacingBelowIcon: CGFloat = 16
         static let spacingBelowTitle: CGFloat = 8

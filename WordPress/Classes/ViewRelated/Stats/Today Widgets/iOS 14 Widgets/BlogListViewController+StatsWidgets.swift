@@ -4,13 +4,31 @@ extension BlogListViewController {
 
     @objc func refreshStatsWidgetsSiteList() {
 
-        guard let currentData = HomeWidgetTodayData.read() else {
-            return
+        if let newTodayData = refreshStats(type: HomeWidgetTodayData.self) {
+            HomeWidgetTodayData.write(items: newTodayData)
+
+            if #available(iOS 14.0, *) {
+                WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
+            }
+        }
+
+        if let newAllTimeData = refreshStats(type: HomeWidgetAllTimeData.self) {
+            HomeWidgetAllTimeData.write(items: newAllTimeData)
+
+            if #available(iOS 14.0, *) {
+                WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
+            }
+        }
+    }
+
+    private func refreshStats<T: HomeWidgetData>(type: T.Type) -> [Int: T]? {
+        guard let currentData = T.read() else {
+            return nil
         }
         let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
         let updatedSiteList = blogService.visibleBlogsForWPComAccounts()
 
-        let newData = updatedSiteList.reduce(into: [Int: HomeWidgetTodayData]()) { sitesList, site in
+        let newData = updatedSiteList.reduce(into: [Int: T]()) { sitesList, site in
             guard let blogID = site.dotComID else {
                 return
             }
@@ -19,30 +37,37 @@ extension BlogListViewController {
             let siteURL = site.url ?? existingSite?.url ?? ""
             let siteName = (site.title ?? siteURL).isEmpty ? siteURL : site.title ?? siteURL
 
-            var iconURL = existingSite?.iconURL
             var timeZone = existingSite?.timeZone ?? TimeZone.current
 
             if let blog = blogService.blog(byBlogId: blogID) {
-                iconURL = blog.icon
                 timeZone = blogService.timeZone(for: blog)
             }
+
             let date = existingSite?.date ?? Date()
-            let stats = existingSite?.stats ?? TodayWidgetStats()
 
-            sitesList[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
-                                                             siteName: siteName,
-                                                             iconURL: iconURL,
-                                                             url: siteURL,
-                                                             timeZone: timeZone,
-                                                             date: date,
-                                                             stats: stats)
+            if type == HomeWidgetTodayData.self {
 
+                let stats = (existingSite as? HomeWidgetTodayData)?.stats ?? TodayWidgetStats()
 
+                sitesList[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
+                                                                 siteName: siteName,
+                                                                 url: siteURL,
+                                                                 timeZone: timeZone,
+                                                                 date: date,
+                                                                 stats: stats) as? T
+            } else if type == HomeWidgetAllTimeData.self {
+
+                let stats = (existingSite as? HomeWidgetAllTimeData)?.stats ?? AllTimeWidgetStats()
+
+                sitesList[blogID.intValue] = HomeWidgetAllTimeData(siteID: blogID.intValue,
+                                                                   siteName: siteName,
+                                                                   url: siteURL,
+                                                                   timeZone: timeZone,
+                                                                   date: date,
+                                                                   stats: stats) as? T
+
+            }
         }
-
-        HomeWidgetTodayData.write(items: newData)
-        if #available(iOS 14.0, *) {
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
-        }
+        return newData
     }
 }

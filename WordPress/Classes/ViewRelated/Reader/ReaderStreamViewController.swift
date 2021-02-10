@@ -1280,30 +1280,16 @@ import WordPressFlux
     }
 
     private func toggleFollowingForSite(_ topic: ReaderSiteTopic, completion: ((Bool) -> Void)?) {
-        let generator = UINotificationFeedbackGenerator()
-        generator.prepare()
-
-        if !topic.following {
-            generator.notificationOccurred(.success)
-        }
-
-        let toFollow = !topic.following
-        let siteID = topic.siteID
-        let siteTitle = topic.title
-
-        if !toFollow {
-            ReaderSubscribingNotificationAction().execute(for: siteID, context: managedObjectContext(), value: !topic.isSubscribedForPostNotifications)
+        if topic.following {
+            ReaderSubscribingNotificationAction().execute(for: siteID, context: managedObjectContext(), subscribe: false)
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
-        service.toggleFollowing(forSite: topic, success: { [weak self] in
-            if toFollow {
-                self?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
-            }
-
+        service.toggleFollowing(forSite: topic, success: {
+            ReaderHelpers.dispatchToggleFollowSiteMessage(topic: topic, success: true)
             completion?(true)
         }, failure: { (error: Error?) in
-            generator.notificationOccurred(.error)
+            ReaderHelpers.dispatchToggleFollowSiteMessage(topic: topic, success: false)
             completion?(false)
         })
     }
@@ -1590,6 +1576,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         }
 
         let controller = ReaderDetailViewController.controllerWithPost(post)
+        controller.coordinator?.readerTopic = readerTopic
 
         if post.isSavedForLater || contentType == .saved {
             trackSavedPostNavigation()

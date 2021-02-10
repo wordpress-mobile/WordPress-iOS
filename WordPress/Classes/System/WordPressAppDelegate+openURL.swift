@@ -11,6 +11,11 @@ import AutomatticTracks
             return true
         }
 
+        if UniversalLinkRouter.shared.canHandle(url: url) {
+            UniversalLinkRouter.shared.handle(url: url, shouldTrack: true)
+            return true
+        }
+
         guard url.scheme == WPComScheme else {
             return false
         }
@@ -111,7 +116,7 @@ import AutomatticTracks
         }
 
         if debugKey == ApiCredentials.debuggingKey(), debugType == "force_crash" {
-            CrashLogging.crash()
+            WordPressAppDelegate.crashLogging?.crash()
         }
 
         return true
