@@ -203,6 +203,20 @@ open class AboutViewController: UITableViewController {
         return String(format: localizedTitleText, year)
     }()
 
+    fileprivate lazy var versionString: String = {
+
+        guard let bundleVersion = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String else {
+            return Bundle.main.shortVersionString()
+        }
+
+        /// The version number doesn't really matter for debug builds
+        #if DEBUG
+        return Bundle.main.shortVersionString()
+        #else
+        return Bundle.main.shortVersionString() + "(\(bundleVersion))"
+        #endif
+    }()
+
     fileprivate var rows: [[Row]] {
         let appsBlogHostname = URL(string: WPAutomatticAppsBlogURL)?.host ?? String()
 
@@ -211,7 +225,7 @@ open class AboutViewController: UITableViewController {
         return [
             [
                 Row(title: NSLocalizedString("Version", comment: "Displays the version of the App"),
-                    details: Bundle.main.shortVersionString(),
+                    details: versionString,
                     handler: nil),
 
                 Row(title: NSLocalizedString("Terms of Service", comment: "Opens the Terms of Service Web"),
