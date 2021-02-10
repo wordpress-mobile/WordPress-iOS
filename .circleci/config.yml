@@ -298,10 +298,12 @@ workflows:
       - UI Tests:
           name: UI Tests (iPhone 11)
           <<: *iphone_test_device
+          post-to-slack: true
           requires: [ "Optional Tests" ]
       - UI Tests:
           name: UI Tests (iPad Air 4th generation)
           <<: *ipad_test_device
+          post-to-slack: true
           requires: [ "Optional Tests" ]
   Installable Build:
     unless: << pipeline.parameters.translation_review_build >>
