@@ -122,10 +122,6 @@ jobs:
           name: Prepare Bundle
           command: bundle --path vendor/bundle
       - run:
-          name: Run mocks
-          command: ./Pods/WordPressMocks/scripts/start.sh 8282
-          background: true
-      - run:
           name: Run UI Tests
           working_directory: Scripts
           command: bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:'<< parameters.device >>' ios-version:'<< parameters.ios-version >>'
