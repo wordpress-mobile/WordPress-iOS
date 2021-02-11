@@ -542,16 +542,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         alertController.presentFromRootViewController()
     }
 
-    fileprivate func draftPage(_ apost: AbstractPost, at indexPath: IndexPath?, shouldPrompt: Bool) {
-        guard !shouldPrompt else {
-            PageSettingsUtils.promptHomepageWarning { [weak self] didConfirm in
-                if didConfirm {
-                    self?.draftPage(apost, at: indexPath, shouldPrompt: false)
-                }
-            }
-            return
-        }
-
+    fileprivate func draftPage(_ apost: AbstractPost, at indexPath: IndexPath?) {
         WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
 
         let previousStatus = apost.status
@@ -623,7 +614,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                         return
                 }
 
-                strongSelf.draftPage(page, at: indexPath, shouldPrompt: false)
+                strongSelf.draftPage(page, at: indexPath)
             })
 
             alertController.addActionWithTitle(deleteButtonTitle, style: .destructive, handler: { [weak self] (action) in
@@ -661,14 +652,16 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 addSetPostsPageAction(to: alertController, for: page, at: indexPath)
                 addDuplicateAction(to: alertController, for: page)
 
-                alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                        let page = strongSelf.pageForObjectID(objectID) else {
+                if !isHomepage {
+                    alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
+                        guard let strongSelf = self,
+                              let page = strongSelf.pageForObjectID(objectID) else {
                             return
-                    }
+                        }
 
-                    strongSelf.draftPage(page, at: indexPath, shouldPrompt: isHomepage)
-                })
+                        strongSelf.draftPage(page, at: indexPath)
+                    })
+                }
             }
 
             if !isHomepage {
