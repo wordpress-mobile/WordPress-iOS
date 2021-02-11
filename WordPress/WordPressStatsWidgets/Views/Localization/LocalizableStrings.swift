@@ -14,7 +14,7 @@ enum LocalizableStrings {
     // This Week Widget title
     static let thisWeekWidgetTitle = LocalizedStringKey("widget.thisweek.title",
                                                        defaultValue: "This Week",
-                                                       comment: "Title of this weel widget")
+                                                       comment: "Title of this week widget")
 
     // Widgets content
     static let viewsTitle = LocalizedStringKey("widget.today.views.label",
