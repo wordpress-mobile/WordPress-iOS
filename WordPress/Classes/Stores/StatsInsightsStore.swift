@@ -83,7 +83,7 @@ struct InsightStoreState {
                                                     comments: todaysStats?.commentsCount)
 
             storeTodayWidgetData(data: todayWidgetStats)
-            storeHomeWidgetTodayData(stats: todayWidgetStats)
+            Self.storeHomeWidgetTodayData(stats: todayWidgetStats)
         }
     }
     var todaysStatsStatus: StoreFetchingStatus = .idle
@@ -989,7 +989,18 @@ private extension InsightStoreState {
 // MARK: - iOS 14 Widgets Data
 private extension InsightStoreState {
 
-    private func storeHomeWidgetTodayData(stats: TodayWidgetStats) {
+    static func initializeHomeWidgetTodayDataIfNeeded() {
+        guard #available(iOS 14.0, *) else {
+                     return
+        }
+        if HomeWidgetTodayData.read() == nil {
+            DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetTodayData.plist")
+            HomeWidgetTodayData.write(items: initializeHomeWidgetTodayData())
+            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
+        }
+    }
+
+    private static func storeHomeWidgetTodayData(stats: TodayWidgetStats) {
 
         guard #available(iOS 14.0, *),
               let siteID = SiteStatsInformation.sharedInstance.siteID else {
@@ -1024,7 +1035,7 @@ private extension InsightStoreState {
         WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
     }
 
-    private func initializeHomeWidgetTodayData() -> [Int: HomeWidgetTodayData] {
+    private static func initializeHomeWidgetTodayData() -> [Int: HomeWidgetTodayData] {
 
         let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
@@ -1041,7 +1052,7 @@ private extension InsightStoreState {
                                                               iconURL: blog.icon,
                                                               url: url,
                                                               timeZone: timeZone,
-                                                              date: Date(),
+                                                              date: Date(timeIntervalSinceReferenceDate: 0),
                                                               stats: TodayWidgetStats())
             }
         }
@@ -1059,8 +1070,19 @@ private extension StatsInsightsStore {
         NotificationCenter.default.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged,
                                                object: nil,
                                                queue: nil) { notification in
-            HomeWidgetTodayData.delete()
+            if !AccountHelper.isLoggedIn {
+                HomeWidgetTodayData.delete()
+            }
+            UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: WPStatsHomeWidgetsUserDefaultsLoggedIndKey)
             WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
         }
+    }
+}
+
+
+extension StatsViewController {
+
+    @objc func initializeStatsWidgetsIfNeeded() {
+        InsightStoreState.initializeHomeWidgetTodayDataIfNeeded()
     }
 }

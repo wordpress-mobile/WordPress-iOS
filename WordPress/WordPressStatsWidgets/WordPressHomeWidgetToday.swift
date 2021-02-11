@@ -67,7 +67,11 @@ struct SiteListProvider: IntentTimelineProvider {
             if let siteID = defaultSiteID, let content = HomeWidgetTodayData.read()?[siteID] {
                 completion(Timeline(entries: [.siteSelected(content)], policy: .never))
             } else {
-                completion(Timeline(entries: [.loggedOut], policy: .never))
+                if let loggedIn = UserDefaults(suiteName: WPAppGroupName)?.bool(forKey: WPStatsHomeWidgetsUserDefaultsLoggedIndKey), loggedIn == false {
+                    completion(Timeline(entries: [.loggedOut], policy: .never))
+                } else {
+                    completion(Timeline(entries: [.noData], policy: .never))
+                }
             }
             return
         }
@@ -97,7 +101,7 @@ struct SiteListProvider: IntentTimelineProvider {
                 privateCompletion(.siteSelected(widgetData))
             case .success(let widgetData):
 
-                DispatchQueue.global().async {
+                DispatchQueue.main.async {
                     // update the item in the local cache
                     HomeWidgetTodayData.setItem(item: widgetData)
                 }

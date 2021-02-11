@@ -75,6 +75,7 @@ NSString *const WPStatsTodayWidgetKeychainTokenKey                  = @"OAuth2To
 NSString *const WPStatsTodayWidgetKeychainServiceName               = @"TodayWidget";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteIdKey             = @"WordPressTodayWidgetSiteId";
 NSString *const WPStatsHomeWidgetsUserDefaultsSiteIdKey             = @"WordPressHomeWidgetsSiteId";
+NSString *const WPStatsHomeWidgetsUserDefaultsLoggedIndKey          = @"WordPressHomeWidgetsLoggedIn";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey           = @"WordPressTodayWidgetSiteName";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteUrlKey            = @"WordPressTodayWidgetSiteUrl";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPressTodayWidgetTimeZone";

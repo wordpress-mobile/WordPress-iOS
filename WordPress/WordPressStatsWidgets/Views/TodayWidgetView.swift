@@ -12,10 +12,13 @@ struct TodayWidgetView: View {
         switch timelineEntry {
 
         case .loggedOut:
-            UnconfiguredView()
+            UnconfiguredView(message: LocalizableStrings.unconfiguredViewTitle)
                 .widgetURL(nil)
                 // This seems to prevent a bug where the URL for subsequent widget
                 // types is being triggered if one isn't specified here.
+        case .noData:
+            UnconfiguredView(message: LocalizableStrings.noDataViewTitle)
+                .widgetURL(nil)
         case .siteSelected(let content):
 
             switch family {
