@@ -24,9 +24,19 @@ final class ReaderShowMenuAction {
                                                style: .destructive,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                    ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: context, completion: {})
+                                                    ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: context, completion: {
+                                                        ReaderHelpers.dispatchSiteBlockedMessage(post: post, success: true)
+
+                                                        // Notify Reader Cards Stream so the post card is updated.
+                                                        NotificationCenter.default.post(name: .ReaderSiteBlocked,
+                                                                                        object: nil,
+                                                                                        userInfo: [ReaderNotificationKeys.post: post])
+                                                    },
+                                                    failure: { _ in
+                                                        ReaderHelpers.dispatchSiteBlockedMessage(post: post, success: false)
+                                                    })
                                                 }
-            })
+                                               })
         }
 
         // Report button
@@ -48,9 +58,19 @@ final class ReaderShowMenuAction {
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let topic: ReaderSiteTopic = ReaderActionHelpers.existingObject(for: siteTopic.objectID, in: context) {
-                                                    ReaderSubscribingNotificationAction().execute(for: topic.siteID, context: context, value: !topic.isSubscribedForPostNotifications)
+                                                    let subscribe = !topic.isSubscribedForPostNotifications
+
+                                                    ReaderSubscribingNotificationAction().execute(for: topic.siteID, context: context, subscribe: subscribe, completion: {
+
+                                                        let event: WPAnalyticsStat = subscribe ? .readerListNotificationMenuOn : .readerListNotificationMenuOff
+                                                        WPAnalytics.track(event)
+
+                                                        ReaderHelpers.dispatchToggleNotificationMessage(topic: topic, success: true)
+                                                    }, failure: { _ in
+                                                        ReaderHelpers.dispatchToggleNotificationMessage(topic: topic, success: false)
+                                                    })
                                                 }
-            })
+                                               })
         }
 
         // Following
@@ -63,12 +83,11 @@ final class ReaderShowMenuAction {
                                                     ReaderFollowAction().execute(with: post,
                                                                                  context: context,
                                                                                  completion: {
-                                                                                    guard let vc = vc as? ReaderStreamViewController else {
-                                                                                        return
-                                                                                    }
-                                                                                    vc.updateStreamHeaderIfNeeded()
-                                                                                 },
-                                                                                 failure: nil)
+                                                                                    ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: true)
+                                                                                    (vc as? ReaderStreamViewController)?.updateStreamHeaderIfNeeded()
+                                                                                 }, failure: { _ in
+                                                                                    ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: false)
+                                                                                 })
                                                 }
                                                })
         }
@@ -80,8 +99,16 @@ final class ReaderShowMenuAction {
                                                    style: .default,
                                                    handler: { (action: UIAlertAction) in
                                                     if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                        ReaderSeenAction().execute(with: post, context: context, failure: { _ in
-                                                            ReaderHelpers.dispatchToggleSeenError(post: post)
+                                                        ReaderSeenAction().execute(with: post, context: context, completion: {
+                                                            ReaderHelpers.dispatchToggleSeenMessage(post: post, success: true)
+
+                                                            // Notify Reader Stream so the post card is updated.
+                                                            NotificationCenter.default.post(name: .ReaderPostSeenToggled,
+                                                                                            object: nil,
+                                                                                            userInfo: [ReaderNotificationKeys.post: post])
+                                                        },
+                                                        failure: { _ in
+                                                            ReaderHelpers.dispatchToggleSeenMessage(post: post, success: false)
                                                         })
                                                     }
                                                    })
@@ -118,7 +145,7 @@ final class ReaderShowMenuAction {
         WPAnalytics.trackReader(.postCardMoreTapped)
     }
 
-    fileprivate func shouldShowBlockSiteMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
+    private func shouldShowBlockSiteMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
         guard let topic = readerTopic,
               isLoggedIn else {
             return false
@@ -130,7 +157,7 @@ final class ReaderShowMenuAction {
             (ReaderHelpers.topicIsFollowing(topic) && !post.isFollowing)
     }
 
-    fileprivate func shouldShowReportPostMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
+    private func shouldShowReportPostMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
         return shouldShowBlockSiteMenuItem(readerTopic: readerTopic, post: post)
     }
 

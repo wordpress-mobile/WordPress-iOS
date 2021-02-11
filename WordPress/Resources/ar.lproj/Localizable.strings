@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-31 02:13:46+0000 */
+/* Translation-Revision-Date: 2021-02-04 15:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -1567,7 +1567,7 @@
 "Could not toggle Follow: missing blogURL attribute" = "تعذر تبديل المتابعة: سمة عنوان URL للمدونة مفقودة";
 
 /* An error description explaining that Seen could not be toggled due to a missing feedItemID attribute. */
-"Could not toggle Seen: missing feedItemID attribute." = "Could not toggle Seen: missing feedItemID attribute.";
+"Could not toggle Seen: missing feedItemID attribute." = "يتعذر التبديل إلى تم الاطلاع عليها: سمة feedItemID مفقودة.";
 
 /* Title of a prompt. */
 "Could not unfollow site" = "تعذر إلغاء متابعة الموقع";
@@ -3870,7 +3870,7 @@
 "No need to wait around. We'll notify you when your backup is ready." = "لا داعي للانتظار هنا. سنُخطرك عندما تكون نسختك الاحتياطية جاهزة.";
 
 /* A hint to users about restoring their site. */
-"No need to wait around. We'll notify you when your site has been fully restored." = "No need to wait around. We'll notify you when your site has been fully restored.";
+"No need to wait around. We'll notify you when your site has been fully restored." = "لا داعي للانتظار هنا. سنخطرك عندما تتم استعادة موقعك بالكامل.";
 
 /* Displayed in the Stats widgets when there is no network */
 "No network available" = "لا تتوفر شبكة";
@@ -6517,7 +6517,7 @@
 "Try Again" = "حاول مرّة اخرى";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
-"Try adjusting your date range filter" = "Try adjusting your date range filter";
+"Try adjusting your date range filter" = "محاولة ضبط عامل تصفية مدى التاريخ الخاص بك";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
 "Try adjusting your date range or activity type filters" = "حاول ضبط مدى التاريخ أو مرشحات نوع النشاط";
@@ -6602,10 +6602,10 @@
 "Unable to load video." = "يتعذر رفع مقطع الفيديو.";
 
 /* Alert displayed to the user when updating a post's seen status failed. */
-"Unable to mark post seen" = "Unable to mark post seen";
+"Unable to mark post seen" = "يتعذر وضع علامة على المقالة بوصفها تم الاطلاع عليها";
 
 /* Alert displayed to the user when updating a post's unseen status failed. */
-"Unable to mark post unseen" = "Unable to mark post unseen";
+"Unable to mark post unseen" = "يتعذر وضع علامة على المقالة بوصفها لم يتم الاطلاع عليها";
 
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "يتعذر تشغيل الفيديو";

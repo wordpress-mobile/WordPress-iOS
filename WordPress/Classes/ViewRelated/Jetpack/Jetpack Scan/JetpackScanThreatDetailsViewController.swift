@@ -38,6 +38,7 @@ class JetpackScanThreatDetailsViewController: UIViewController {
     @IBOutlet private weak var buttonsStackView: UIStackView!
     @IBOutlet private weak var fixThreatButton: FancyButton!
     @IBOutlet private weak var ignoreThreatButton: FancyButton!
+    @IBOutlet weak var ignoreActivityIndicatorView: UIActivityIndicatorView!
 
     // MARK: - Properties
 
@@ -83,9 +84,12 @@ class JetpackScanThreatDetailsViewController: UIViewController {
                 return
             }
             self.delegate?.willFixThreat(self.threat, controller: self)
+            self.trackEvent(.jetpackScanThreatFixTapped)
         }))
 
         present(alert, animated: true)
+
+        trackEvent(.jetpackScanFixThreatDialogOpen)
     }
 
     @IBAction private func ignoreThreatButtonTapped(_ sender: Any) {
@@ -102,10 +106,23 @@ class JetpackScanThreatDetailsViewController: UIViewController {
             guard let self = self else {
                 return
             }
+
+            self.ignoreThreatButton.isHidden = true
+            self.ignoreActivityIndicatorView.startAnimating()
+
             self.delegate?.willIgnoreThreat(self.threat, controller: self)
+            self.trackEvent(.jetpackScanThreatIgnoreTapped)
         }))
 
         present(alert, animated: true)
+
+        trackEvent(.jetpackScanIgnoreThreatDialogOpen)
+    }
+
+    // MARK: - Private
+
+    private func trackEvent(_ event: WPAnalyticsEvent) {
+        WPAnalytics.track(event, properties: ["threat_signature": threat.signature])
     }
 }
 
@@ -192,7 +209,7 @@ extension JetpackScanThreatDetailsViewController {
         technicalDetailsFileContainerView.backgroundColor = viewModel.fileNameBackgroundColor
 
         technicalDetailsFileLabel.font = viewModel.fileNameFont
-        technicalDetailsFileLabel.textColor = .text
+        technicalDetailsFileLabel.textColor = viewModel.fileNameColor
         technicalDetailsFileLabel.numberOfLines = 0
 
         technicalDetailsDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)

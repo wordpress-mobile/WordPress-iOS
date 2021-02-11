@@ -1,6 +1,5 @@
 @import XCTest;
 @import OHHTTPStubs;
-@import OHHTTPStubs.OHPathHelpers;
 
 #import "Blog.h"
 #import "WPAccount.h"
@@ -51,7 +50,7 @@
     
     _account = nil;
     _blog = nil;
-    [OHHTTPStubs removeAllStubs];
+    [HTTPStubs removeAllStubs];
     [ContextManager overrideSharedInstance:nil];
 
     self.testContextManager = nil;
@@ -94,11 +93,11 @@
 }
 
 - (void)testWPCCShouldntDuplicateBlogs {
-    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+    [HTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return [request.URL.path hasSuffix:@"me/sites"];
-    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+    } withStubResponse:^HTTPStubsResponse *(NSURLRequest *request) {
         NSString* fixture = OHPathForFile(@"me-sites-with-jetpack.json", self.class);
-        return [OHHTTPStubsResponse responseWithFileAtPath:fixture
+        return [HTTPStubsResponse responseWithFileAtPath:fixture
                                                 statusCode:200 headers:@{@"Content-Type":@"application/json"}];
     }];
 
@@ -167,11 +166,11 @@
 
 - (void)testSyncBlogsMigratesJetpackSSL
 {
-    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+    [HTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return [request.URL.path hasSuffix:@"me/sites"];
-    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+    } withStubResponse:^HTTPStubsResponse *(NSURLRequest *request) {
         NSString* fixture = OHPathForFile(@"me-sites-with-jetpack.json", self.class);
-        return [OHHTTPStubsResponse responseWithFileAtPath:fixture
+        return [HTTPStubsResponse responseWithFileAtPath:fixture
                                                 statusCode:200 headers:@{@"Content-Type":@"application/json"}];
     }];
 

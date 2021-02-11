@@ -48,7 +48,7 @@ class AtomicAuthenticationService {
                     }
                 }) { error in
                     // Make sure this error scenario isn't silently ignored.
-                    CrashLogging.logError(error)
+                    WordPressAppDelegate.crashLogging?.logError(error)
 
                     // Even if getting the auth cookies fail, we'll still try to load the URL
                     // so that the user sees a reasonable error situation on screen.

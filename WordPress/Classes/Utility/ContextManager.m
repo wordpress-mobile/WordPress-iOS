@@ -159,26 +159,6 @@ static ContextManager *_override;
     }
 }
 
-- (BOOL)obtainPermanentIDForObject:(NSManagedObject *)managedObject
-{
-    // Failsafe
-    if (!managedObject) {
-        return NO;
-    }
-
-    if (managedObject && ![managedObject.objectID isTemporaryID]) {
-        // Object already has a permanent ID so just return success.
-        return YES;
-    }
-
-    NSError *error;
-    if (![managedObject.managedObjectContext obtainPermanentIDsForObjects:@[managedObject] error:&error]) {
-        DDLogError(@"Error obtaining permanent object ID for %@, %@", managedObject, error);
-        return NO;
-    }
-    return YES;
-}
-
 - (void)mergeChanges:(NSManagedObjectContext *)context fromContextDidSaveNotification:(NSNotification *)notification
 {
     [context performBlock:^{
