@@ -59,10 +59,10 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
         webView.scrollView.contentInset.bottom = footerView.frame.height
         webView.navigationDelegate = self
         webView.backgroundColor = .basicBackground
-        SiteCreationAnalyticsHelper.trackSiteDesignPreviewViewed(siteDesign)
+        SiteCreationAnalyticsHelper.trackSiteDesignPreviewViewed(siteDesign: siteDesign, previewMode: selectedPreviewDevice)
         observeProgressEstimations()
         configurePreviewDeviceButton()
-        navigationItem.rightBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
+        navigationItem.leftBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
     }
 
     deinit {
@@ -93,14 +93,17 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
 
     private func configurePreviewDeviceButton() {
         let button = UIBarButtonItem(image: UIImage(named: "icon-devices"), style: .plain, target: self, action: #selector(previewDeviceButtonTapped))
-        navigationItem.leftBarButtonItem = button
+        navigationItem.rightBarButtonItem = button
     }
 
     @objc private func previewDeviceButtonTapped() {
+        SiteCreationAnalyticsHelper.trackSiteDesignPreviewModeButtonTapped(selectedPreviewDevice)
         let popoverContentController = PreviewDeviceSelectionViewController()
         popoverContentController.selectedOption = selectedPreviewDevice
-        popoverContentController.dismissHandler = { [weak self] device in
-            self?.selectedPreviewDevice = device
+        popoverContentController.onDeviceChange = { [weak self] device in
+            guard let self = self else { return }
+            SiteCreationAnalyticsHelper.trackSiteDesignPreviewModeChanged(device)
+            self.selectedPreviewDevice = device
         }
 
         popoverContentController.modalPresentationStyle = .popover
@@ -141,7 +144,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
 extension SiteDesignPreviewViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoading(siteDesign)
+        SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoading(siteDesign: siteDesign, previewMode: selectedPreviewDevice)
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
@@ -155,7 +158,7 @@ extension SiteDesignPreviewViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webView.evaluateJavaScript(selectedPreviewDevice.viewportScript, completionHandler: { [weak self] (_, _) in
             guard let self = self else { return }
-            SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoaded(self.siteDesign)
+            SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoaded(siteDesign: self.siteDesign, previewMode: self.selectedPreviewDevice)
         })
 
         progressBar.animatableSetIsHidden(true)
@@ -172,7 +175,7 @@ extension SiteDesignPreviewViewController {
         }
 
         popoverPresentationController.permittedArrowDirections = .up
-        popoverPresentationController.barButtonItem = navigationItem.leftBarButtonItem
+        popoverPresentationController.barButtonItem = navigationItem.rightBarButtonItem
     }
 
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {

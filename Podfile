@@ -16,7 +16,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-    pod 'WordPressShared', '~> 1.14.0'
+    pod 'WordPressShared', '~> 1.15.0'
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
@@ -43,7 +43,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.26-beta'
+    pod 'WordPressKit', '~> 4.26'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -64,8 +64,7 @@ def shared_with_networking_pods
 end
 
 def shared_test_pods
-    pod 'OHHTTPStubs', '6.1.0'
-    pod 'OHHTTPStubs/Swift', '6.1.0'
+    pod 'OHHTTPStubs/Swift', '~> 9.1.0'
     pod 'OCMock', '3.4.3'
 end
 
@@ -182,7 +181,7 @@ target 'WordPress' do
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.7.0'
+    pod 'Automattic-Tracks-iOS', '~> 0.8.0'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
     # Local Development
@@ -198,7 +197,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.1.0'
 
-    pod 'WordPressAuthenticator', '~> 1.34.0'
+    pod 'WordPressAuthenticator', '~> 1.35.1'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''

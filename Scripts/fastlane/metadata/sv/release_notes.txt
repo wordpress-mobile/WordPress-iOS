@@ -1,15 +1,9 @@
-Nyheter i den senaste utgåvan?
+Om denna version:
 
-Blockredigeraren:
+Obs! Detta är den senaste versionen av appen som har stöd för iOS 12. Från och med version 16.7 kommer appen att behöva iOS 13 eller högre.
 
-– Du kan komma att märka några förändringar när du arbetar med block. Nu kan du flytta ett block uppåt och nedåt i ditt inlägg eller din sida genom att trycka länge på någon av knapparna ”upp” eller ”ned”. Vi har även lagt till stöd för fullbred och bred innehållsjustering i kolumnblocket och har gjort det enklare att välja och ange en URL för en bild i bildblocket.
+Se statistik på startskärmen: Visa din WordPress-webbplatsstatistik för dagen på iOS 14-enhets startskärm med nya Today-widgetar.
 
-– Använder du P2 för att samarbeta inom ditt team? När du publicerar ett nytt inlägg kan du trycka på tecknet ”+” för att markera en annan P2-blogg för att ”korspublicera” till den webbplatsen och informera dess användare om ditt nya inlägg.
+Spåra din webbplatsaktivitet: Filtrera och visa objekt i din aktivitetslogg, som säkerhetskopior, pluginuppdateringar och publicerade inlägg och sidor, efter datumintervall och aktivitetstyp.
 
-Diverse rättelser och uppdateringar:
-
-– Funktionen för att välja ett domännamn erbjuderr nu fler alternativ i sökresultaten. Ta och prova!
-
-– I listan över sidorna på din webbplats kan du snabbt skapa en kopia av en sida, något som kan hjälpa dig att spara tid när du skapar innehåll.
-
-– Andra uppdateringar, bland annat i läsaren, förbättrar din sammantagna upplevelse av appen.
+Lär känna din app: Lär dig funktionerna i din app med en förbättrad snabbstartsrundtur som guidar dig genom steg som att granska webbplatsens sidor och redigera din startsida.

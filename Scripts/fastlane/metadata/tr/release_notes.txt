@@ -1,15 +1,9 @@
-En son sürümdeki yenilikler neler?
+Bu sürüm hakkında: 
 
-Blok düzenleyici:
+Not: Bu, uygulamanın iOS 12'yi destekleyen son sürümüdür. 16.7 sürümünden itibaren uygulamanız için iOS 13 veya üzeri gerekir.
 
-– Bloklarla çalışırken birkaç değişiklik fark edebilirsiniz.  Artık "yukarı" ve "aşağı" düğmelerine uzun basarak yazınızda veya sayfanızda blokları yukarı ve aşağı taşıyabilirsiniz. Ayrıca Sütunlar bloğuna tam genişlik ve geniş hizalama için destek ekledik ve Görüntü bloğunda bir resim için bir URL seçmeyi ve ayarlamayı kolaylaştırdık.
+Ana Ekranınızda istatistikleri görün: Yeni Bugün Bileşenleri ile, günlük WordPress site istatistiklerinizi iOS 14 cihazınızın Ana Ekranında görüntüleyin.
 
-– Ekibinizle işbirliği yapmak için P2 kullanıyor musunuz?  Yeni bir yazı yayınlarken başka bir P2'yi etiketlemek ve siteye "çapraz gönderi yapmak" için + karakterini yazarak kullanıcıları yeni yazınız hakkında uyarın.
+Sitenizdeki etkinliği takip edin: Etkinlik Günlüğünüzdeki yedeklemeler, eklenti güncellemeleri ve yayınlanan yazılar ve sayfalar gibi öğeleri tarih aralığına ve etkinlik türüne göre filtreleyin ve görüntüleyin.
 
-Çeşitli düzeltmeler ve güncellemeler:
-
-– Alan Adı Seç özelliği artık arama sonuçlarında daha fazla seçenek sağlıyor. Deneyin!
-
-– Site Sayfaları listenizde bir sayfayı hızla çoğaltabilir, böylece içerik oluştururken zaman kazanabilirsiniz.
-
-– Reader'daki değişiklikler dahil diğer güncellemeler genel uygulama deneyiminizi iyileştirir.
+Uygulamanızı tanıyın: Site sayfalarını gözden geçirme ve ana sayfanızı düzenleme gibi adımlarda size rehberlik eden gelişmiş bir Hızlı Başlangıç turu ile uygulamanızdaki özellikleri öğrenin.

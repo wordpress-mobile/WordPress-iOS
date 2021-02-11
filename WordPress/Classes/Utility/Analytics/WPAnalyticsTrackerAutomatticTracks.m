@@ -153,6 +153,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     }];
 
     NSMutableDictionary *userProperties = [NSMutableDictionary new];
+    userProperties[@"app_scheme"] = WPComScheme;
     userProperties[@"platform"] = @"iOS";
     userProperties[@"dotcom_user"] = @(dotcom_user);
     userProperties[@"jetpack_user"] = @(jetpackBlogsPresent);
@@ -682,6 +683,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatEnhancedSiteCreationSiteDesignPreviewLoaded:
             eventName = @"enhanced_site_creation_site_design_preview_loaded";
+            break;
+        case     WPAnalyticsStatEnhancedSiteCreationSiteDesignThumbnailModeButtonTapped:
+            eventName = @"enhanced_site_creation_site_design_thumbnail_mode_button_tapped";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSiteDesignPreviewModeButtonTapped:
+            eventName = @"enhanced_site_creation_site_design_preview_mode_button_tapped";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSiteDesignPreviewModeChanged:
+            eventName = @"enhanced_site_creation_site_design_preview_mode_changed";
             break;
         case WPAnalyticsStatEnhancedSiteCreationVerticalsViewed:
             eventName = @"enhanced_site_creation_verticals_viewed";

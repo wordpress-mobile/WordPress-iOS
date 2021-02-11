@@ -1,15 +1,9 @@
-What’s new in the latest release?
+About this release.
 
-The block editor:
+Note: this is the last version of the app that will support iOS 12. Starting from version 16.7, your app will require iOS 13 or higher.
 
-– When working with blocks, you may notice a few changes. You can now move blocks up and down your post or page by long-pressing on the “up” and “down” buttons. We’ve also added support for full-width and wide alignment in the Columns block and have made it easier to pick and set a URL for an image in the Image block.
+See stats on your Home Screen: display your WordPress site stats for the day on your iOS 14 device’s Home Screen with new Today Widgets.
 
-– Do you use P2 to collaborate with your team? When publishing a new post, type the + character to tag another P2 and “cross-post” to the site, alerting its users of your new post.
+Track your site activity: filter and view items in your Activity Log – like backups, plugin updates, and published posts and pages – by date range and activity type.
 
-Various fixes and updates:
-
-– The Choose a Domain feature now returns more options in search results. Try it out!
-
-– In your Site Pages list, you can quickly duplicate a page, which can save you time when creating content.
-
-– Other updates, including changes in the Reader, improve your overall app experience.
+Get to know your app: learn the features in your app with an improved Quick Start tour, which guides you through steps like reviewing site pages and editing your homepage.

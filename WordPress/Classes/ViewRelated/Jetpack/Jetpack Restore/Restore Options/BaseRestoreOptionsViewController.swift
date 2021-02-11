@@ -32,6 +32,9 @@ class BaseRestoreOptionsViewController: UITableViewController {
         return JetpackRestoreHeaderView.loadFromNib()
     }()
 
+    /// A String identifier from the screen that presented this VC
+    var presentedFrom: String = "unknown"
+
     // MARK: - Initialization
 
     init(site: JetpackSiteRef, activity: Activity) {

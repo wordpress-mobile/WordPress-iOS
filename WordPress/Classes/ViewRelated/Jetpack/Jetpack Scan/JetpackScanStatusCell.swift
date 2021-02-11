@@ -84,7 +84,8 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
 
         progressView.layer.cornerRadius = 4
         progressView.clipsToBounds = true
-        // TODO: Replace hex with styleguide color
-        progressView.tintColor = .init(fromHex: 0x069e08)
+
+        let color = UIColor.muriel(color: .jetpackGreen, .shade50)
+        progressView.tintColor = color
     }
 }

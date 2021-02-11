@@ -414,6 +414,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self cancelCompletedToursIfNeeded];
     if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
         [self.createButtonCoordinator showCreateButtonFor:self.blog];
     }
@@ -1716,7 +1717,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAppAnalytics track:WPAnalyticsStatOpenedViewSite withBlog:self.blog];
     NSURL *targetURL = [NSURL URLWithString:self.blog.homeURL];
 
-    UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog];
+    UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog withDeviceModes:true];
     LightNavigationController *navController = [[LightNavigationController alloc] initWithRootViewController:webViewController];
     if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         navController.modalPresentationStyle = UIModalPresentationFullScreen;

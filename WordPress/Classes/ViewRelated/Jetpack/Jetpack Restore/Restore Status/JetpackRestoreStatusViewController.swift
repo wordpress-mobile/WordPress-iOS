@@ -29,7 +29,7 @@ class JetpackRestoreStatusViewController: BaseRestoreStatusViewController {
             messageTitle: NSLocalizedString("Currently restoring site", comment: "Title for the Jetpack Restore Status message."),
             messageDescription: NSLocalizedString("We're restoring your site back to %1$@.", comment: "Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date."),
             hint: NSLocalizedString("No need to wait around. We'll notify you when your site has been fully restored.", comment: "A hint to users about restoring their site."),
-            primaryButtonTitle: NSLocalizedString("OK, notify me!", comment: "Title for the button that will dismiss this view."),
+            primaryButtonTitle: NSLocalizedString("Let me know when finished!", comment: "Title for the button that will dismiss this view."),
             placeholderProgressTitle: NSLocalizedString("Initializing the restore process", comment: "Placeholder for the restore progress title."),
             progressDescription: NSLocalizedString("Currently restoring: %1$@", comment: "Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored.")
         )
@@ -56,6 +56,7 @@ class JetpackRestoreStatusViewController: BaseRestoreStatusViewController {
 
     override func primaryButtonTapped() {
         delegate?.didFinishViewing(self)
+        WPAnalytics.track(.restoreNotifiyMeButtonTapped)
     }
 }
 
@@ -78,7 +79,7 @@ extension JetpackRestoreStatusViewController: JetpackRestoreStatusView {
     }
 
     func showRestoreStatusUpdateFailed() {
-        let statusFailedVC = JetpackRestoreStatusFailedViewController(site: site, activity: activity)
+        let statusFailedVC = JetpackRestoreStatusFailedViewController()
         self.navigationController?.pushViewController(statusFailedVC, animated: true)
     }
 

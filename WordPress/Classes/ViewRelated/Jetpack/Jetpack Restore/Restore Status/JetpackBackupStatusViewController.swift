@@ -4,7 +4,7 @@ import WordPressShared
 import WordPressUI
 
 protocol JetpackBackupStatusViewControllerDelegate: class {
-    func didFinishViewing(_ controller: JetpackBackupStatusViewController)
+    func didFinishViewing()
 }
 
 class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
@@ -34,7 +34,7 @@ class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
             messageTitle: NSLocalizedString("Currently creating a downloadable backup of your site", comment: "Title for the Jetpack Backup Status message."),
             messageDescription: NSLocalizedString("We're creating a downloadable backup of your site from %1$@.", comment: "Description for the Jetpack Backup Status message. %1$@ is a placeholder for the selected date."),
             hint: NSLocalizedString("No need to wait around. We'll notify you when your backup is ready.", comment: "A hint to users about creating a downloadable backup of their site."),
-            primaryButtonTitle: NSLocalizedString("OK, notify me!", comment: "Title for the button that will dismiss this view."),
+            primaryButtonTitle: NSLocalizedString("Let me know when finished!", comment: "Title for the button that will dismiss this view."),
             placeholderProgressTitle: nil,
             progressDescription: nil
         )
@@ -56,12 +56,16 @@ class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         coordinator.viewWillDisappear()
+        delegate?.didFinishViewing()
     }
 
     // MARK: - Override
 
     override func primaryButtonTapped() {
-        delegate?.didFinishViewing(self)
+        dismiss(animated: true, completion: { [weak self] in
+            self?.delegate?.didFinishViewing()
+        })
+        WPAnalytics.track(.backupNotifiyMeButtonTapped)
     }
 }
 
@@ -76,7 +80,7 @@ extension JetpackBackupStatusViewController: JetpackBackupStatusView {
     }
 
     func showBackupStatusUpdateFailed() {
-        let statusFailedVC = JetpackBackupStatusFailedViewController(site: site, activity: activity)
+        let statusFailedVC = JetpackBackupStatusFailedViewController()
         self.navigationController?.pushViewController(statusFailedVC, animated: true)
     }
 

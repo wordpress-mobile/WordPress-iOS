@@ -19,7 +19,7 @@ final class AuthenticatedImageDownload: AsyncOperation {
         let mediaRequestAuthenticator = MediaRequestAuthenticator()
         let host = MediaHost(with: blog) { error in
             // We'll log the error, so we know it's there, but we won't halt execution.
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
         }
 
         mediaRequestAuthenticator.authenticatedRequest(
