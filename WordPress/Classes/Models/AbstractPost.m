@@ -402,6 +402,11 @@
     return [self.status isEqualToString:PostStatusDraft];
 }
 
+- (BOOL)isPublished
+{
+    return [self.status isEqualToString:PostStatusPublish];
+}
+
 - (BOOL)originalIsDraft
 {
     if ([self.status isEqualToString:PostStatusDraft]) {
