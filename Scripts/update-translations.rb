@@ -139,9 +139,7 @@ langs.each do |code,local|
 
   url = "#{download_url}/#{code}/default/export-translations?#{strings_filter}format=strings"
 
-  system "curl", "-fgsLo", destination, url or begin
-    puts "Error downloading #{code}"
-  end
+  system("curl", "-fgsLo", destination, url) || puts "Error downloading #{url}"
 
   # Step 3 – Validate the new file
   if !File.exist?(destination) or File.size(destination).to_f == 0
