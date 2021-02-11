@@ -1073,7 +1073,7 @@ private extension StatsInsightsStore {
             if !AccountHelper.isLoggedIn {
                 HomeWidgetTodayData.delete()
             }
-            UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: WPStatsHomeWidgetsUserDefaultsLoggedIndKey)
+            UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey)
             WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
         }
     }
