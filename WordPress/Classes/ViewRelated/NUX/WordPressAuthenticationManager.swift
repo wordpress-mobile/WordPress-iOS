@@ -47,6 +47,7 @@ class WordPressAuthenticationManager: NSObject {
                                                                 enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled)
 
         let prologueVC: UIViewController? =  FeatureFlag.unifiedPrologueCarousel.enabled ? UnifiedPrologueViewController() : nil
+        let statusBarStyle: UIStatusBarStyle = FeatureFlag.unifiedPrologueCarousel.enabled ? .default : .lightContent
 
         let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
                                                 primaryNormalBorderColor: nil,
@@ -76,7 +77,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 prologueBackgroundColor: .primary,
                                                 prologueTitleColor: .textInverted,
                                                 prologueTopContainerChildViewController: prologueVC,
-                                                statusBarStyle: .default)
+                                                statusBarStyle: statusBarStyle)
 
         let unifiedStyle = WordPressAuthenticatorUnifiedStyle(borderColor: .divider,
                                                               errorColor: .error,
