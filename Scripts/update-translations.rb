@@ -154,6 +154,9 @@ langs.each do |code,local|
 
   system fix_script_path, strings_file_path
   system "plutil", "-lint", strings_file_path
+  # The fix-translations script is supposed to have replaced all strings with empty translations, to use the key (aka English copy)
+  # as the translation instead, as a fallback. So after that pass we should not have any more empty translations left,
+  # but just as a control, let's grep for lines ending with the UTF-16 sequence ` "";` to ensure there's none left.
   system "grep", "-a", "\\x00\\x20\\x00\\x22\\x00\\x22\\x00\\x3b$", strings_file_path
 
   # Clean up after ourselves
