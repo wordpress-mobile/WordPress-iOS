@@ -161,11 +161,6 @@ langs.each do |code,local|
 
   # Clean up after ourselves
   FileUtils.rm_f backup_destination
-
-  # Delete the downloaded file if we're using a strings filter
-  if !strings_file_ext.empty?
-    FileUtils.rm_f destination
-  end
 end
 
 extract_framework_translations_script_path = File.join(script_root, 'extract-framework-translations.swift')
