@@ -1,6 +1,5 @@
 @import XCTest;
 @import OHHTTPStubs;
-@import OHHTTPStubs.OHPathHelpers;
 
 #import "WPAvatarSource.h"
 
@@ -23,11 +22,11 @@
     [super setUp];
 
     _source = [WPAvatarSource new];
-    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+    [HTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return [[request.URL host] isEqualToString:@"gravatar.com"];
-    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+    } withStubResponse:^HTTPStubsResponse *(NSURLRequest *request) {
         NSString* fixture = OHPathForFile(@"misteryman.jpg", self.class);
-        return [OHHTTPStubsResponse responseWithFileAtPath:fixture
+        return [HTTPStubsResponse responseWithFileAtPath:fixture
                                                 statusCode:200 headers:@{@"Content-Type":@"image/jpeg"}];
     }];
 }
@@ -37,7 +36,7 @@
     [(WPAvatarSource <WPAvatarSourceTesting> *)_source purgeCaches];
     _source = nil;
 
-    [OHHTTPStubs removeAllStubs];
+    [HTTPStubs removeAllStubs];
 
     [super tearDown];
 }

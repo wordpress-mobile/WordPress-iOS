@@ -104,9 +104,9 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     private func toggleFollowingForPost(_ post: ReaderPost) {
         ReaderFollowAction().execute(with: post,
                                      context: context,
-                                     completion: { [weak self] in
+                                     completion: {
                                         if post.isFollowing {
-                                            self?.origin?.dispatchSubscribingNotificationNotice(with: post.blogNameForDisplay(), siteID: post.siteID)
+                                            ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: true)
                                         }
                                      }, failure: { _ in
                                         ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: false)

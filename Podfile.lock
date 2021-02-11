@@ -114,20 +114,18 @@ PODS:
   - NSObject-SafeExpectations (0.0.4)
   - "NSURL+IDN (0.4)"
   - OCMock (3.4.3)
-  - OHHTTPStubs (6.1.0):
-    - OHHTTPStubs/Default (= 6.1.0)
-  - OHHTTPStubs/Core (6.1.0)
-  - OHHTTPStubs/Default (6.1.0):
+  - OHHTTPStubs/Core (9.1.0)
+  - OHHTTPStubs/Default (9.1.0):
     - OHHTTPStubs/Core
     - OHHTTPStubs/JSON
     - OHHTTPStubs/NSURLSession
     - OHHTTPStubs/OHPathHelpers
-  - OHHTTPStubs/JSON (6.1.0):
+  - OHHTTPStubs/JSON (9.1.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/NSURLSession (6.1.0):
+  - OHHTTPStubs/NSURLSession (9.1.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/OHPathHelpers (6.1.0)
-  - OHHTTPStubs/Swift (6.1.0):
+  - OHHTTPStubs/OHPathHelpers (9.1.0)
+  - OHHTTPStubs/Swift (9.1.0):
     - OHHTTPStubs/Default
   - RCTRequired (0.61.5)
   - RCTTypeSafety (0.61.5):
@@ -394,7 +392,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.3)
   - WordPress-Editor-iOS (1.19.3):
     - WordPress-Aztec-iOS (= 1.19.3)
-  - WordPressAuthenticator (1.34.0):
+  - WordPressAuthenticator (1.35.1):
     - 1PasswordExtension (~> 1.8.6)
     - Alamofire (~> 4.8)
     - CocoaLumberjack (~> 3.5)
@@ -463,8 +461,7 @@ DEPENDENCIES:
   - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
   - OCMock (= 3.4.3)
-  - OHHTTPStubs (= 6.1.0)
-  - OHHTTPStubs/Swift (= 6.1.0)
+  - OHHTTPStubs/Swift (~> 9.1.0)
   - RCTRequired (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.47.0-alpha1/third-party-podspecs/RCTRequired.podspec.json`)
   - RCTTypeSafety (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.47.0-alpha1/third-party-podspecs/RCTTypeSafety.podspec.json`)
   - Reachability (= 3.2)
@@ -503,10 +500,10 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.3)
-  - WordPressAuthenticator (~> 1.34.0)
-  - WordPressKit (~> 4.26-beta)
+  - WordPressAuthenticator (~> 1.35.1)
+  - WordPressKit (~> 4.26)
   - WordPressMocks (~> 0.0.9)
-  - WordPressShared (~> 1.15.0-beta.1)
+  - WordPressShared (~> 1.15.0)
   - WordPressUI (~> 1.9.0)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.47.0-alpha1/third-party-podspecs/Yoga.podspec.json`)
@@ -705,7 +702,7 @@ SPEC CHECKSUMS:
   NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
-  OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
+  OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
   RCTRequired: 3ca691422140f76f04fd2af6dc90914cf0f81ef1
   RCTTypeSafety: aab4e9679dbb3682bf0404fded7b9557d7306795
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
@@ -748,7 +745,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: f4bf3b343581a1beacdbf5fb1a8825bd5f05a4a4
   WordPress-Aztec-iOS: b7ac8b30f746992e85d9668453ac87c2cdcecf4f
   WordPress-Editor-iOS: 1886f7fe464d79ee64ccfe7985281f8cf45f75eb
-  WordPressAuthenticator: 7f9c41a084bfe691452bfcec8b2c9a12aed48f90
+  WordPressAuthenticator: 7b7555d43273231e968f1f890166fc3aac72b2a3
   WordPressKit: 63932c352c4199179f15855f68543e4541ec9da0
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 2d2b45d8945221b716a0e2f23932dadb750d9a74
@@ -765,6 +762,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: c6b83247ca514d9bb424eba7e606e0f16a053335
+PODFILE CHECKSUM: ced2c90f103c5b4b75eb92b15e166ad0d5297230
 
 COCOAPODS: 1.10.0

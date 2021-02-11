@@ -24,9 +24,19 @@ final class ReaderShowMenuAction {
                                                style: .destructive,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                    ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: context, completion: {})
+                                                    ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: context, completion: {
+                                                        ReaderHelpers.dispatchSiteBlockedMessage(post: post, success: true)
+
+                                                        // Notify Reader Cards Stream so the post card is updated.
+                                                        NotificationCenter.default.post(name: .ReaderSiteBlocked,
+                                                                                        object: nil,
+                                                                                        userInfo: [ReaderNotificationKeys.post: post])
+                                                    },
+                                                    failure: { _ in
+                                                        ReaderHelpers.dispatchSiteBlockedMessage(post: post, success: false)
+                                                    })
                                                 }
-            })
+                                               })
         }
 
         // Report button
@@ -73,12 +83,7 @@ final class ReaderShowMenuAction {
                                                     ReaderFollowAction().execute(with: post,
                                                                                  context: context,
                                                                                  completion: {
-                                                                                    if post.isFollowing {
-                                                                                        vc.dispatchSubscribingNotificationNotice(with: post.blogNameForDisplay(), siteID: post.siteID)
-                                                                                    } else {
-                                                                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: true)
-                                                                                    }
-
+                                                                                    ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: true)
                                                                                     (vc as? ReaderStreamViewController)?.updateStreamHeaderIfNeeded()
                                                                                  }, failure: { _ in
                                                                                     ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: false)
