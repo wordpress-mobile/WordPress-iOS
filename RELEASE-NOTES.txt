@@ -1,6 +1,8 @@
 16.8
 -----
- 
+* [**] Prevent deleting published homepages which would have the effect of breaking a site. [#15797]
+* [**] Prevent converting published homepage to a draft in the page list and settings which would have the effect of breaking a site. [#15797]
+
 16.7
 -----
 * [**] Site Creation: Adds the option to choose between mobile, tablet or desktop thumbnails and previews in the home page design picker when creating a WordPress.com site [https://github.com/wordpress-mobile/WordPress-iOS/pull/15688]
