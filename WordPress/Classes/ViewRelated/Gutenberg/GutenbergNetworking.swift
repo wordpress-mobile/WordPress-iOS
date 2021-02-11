@@ -8,7 +8,7 @@ struct GutenbergNetworkRequest {
     private unowned let blog: Blog
     private let httpMethod: GutenbergHTTPMethod
     private let parameters: [String: AnyObject]?
-    
+
     init(path: String, blog: Blog) {
         self.path = path
         self.blog = blog
@@ -22,7 +22,7 @@ struct GutenbergNetworkRequest {
         self.httpMethod = .post
         self.parameters = parameters
     }
-    
+
     func request(completion: @escaping CompletionHandler) {
         if blog.isAccessibleThroughWPCom(), let dotComID = blog.dotComID {
             switch httpMethod {
@@ -45,7 +45,7 @@ struct GutenbergNetworkRequest {
             completion(.failure(error.nsError(with: httpResponse)))
         })
     }
-    
+
     private func dotComPostRequest(with dotComID: NSNumber, completion: @escaping CompletionHandler) {
         blog.wordPressComRestApi()?.POST(dotComPath(with: dotComID), parameters: parameters, success: { (response, httpResponse) in
             completion(.success(response))
