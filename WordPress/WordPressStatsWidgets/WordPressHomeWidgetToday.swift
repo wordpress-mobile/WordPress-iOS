@@ -67,7 +67,7 @@ struct SiteListProvider: IntentTimelineProvider {
             if let siteID = defaultSiteID, let content = HomeWidgetTodayData.read()?[siteID] {
                 completion(Timeline(entries: [.siteSelected(content)], policy: .never))
             } else {
-                if let loggedIn = UserDefaults(suiteName: WPAppGroupName)?.bool(forKey: WPStatsHomeWidgetsUserDefaultsLoggedIndKey), loggedIn == false {
+                if let loggedIn = UserDefaults(suiteName: WPAppGroupName)?.bool(forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey), loggedIn == false {
                     completion(Timeline(entries: [.loggedOut], policy: .never))
                 } else {
                     completion(Timeline(entries: [.noData], policy: .never))
