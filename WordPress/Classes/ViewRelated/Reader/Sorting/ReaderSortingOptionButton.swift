@@ -3,7 +3,7 @@ import UIKit
 extension ReaderSortingOption {
 
     var localizedDescription: String? {
-        // TODO: check if strings are localized
+        // TODO: check if strings are localized properly
         switch self {
         case .date:
             return NSLocalizedString("Recent", comment: "Description of the date sorting option in the Discover tab")
@@ -42,8 +42,9 @@ class ReaderSortingOptionButton: UIControl {
         static let chevronTrailing: CGFloat = -16.0
         // TODO: check if we can use iOS system colors here
         static let iconsTintColor: UIColor = UIColor(light: UIColor(hexString: "4D4D4D"), dark: UIColor(hexString: "BFBFBF"))
+        static let labelColor: UIColor = UIColor(light: .black, dark: .white)
         static let isHighlightedAlpha: CGFloat = 0.5
-        static let isNotHighlightedAlpha: CGFloat = 1
+        static let isNotHighlightedAlpha: CGFloat = 1.0
     }
 
     var sourceView: UIView {
@@ -59,7 +60,7 @@ class ReaderSortingOptionButton: UIControl {
 
     private lazy var label: UILabel = {
         let view = UILabel()
-        view.textColor = UIColor(light: .black, dark: .white)
+        view.textColor = Constants.labelColor
         view.font = WPFontManager.systemSemiBoldFont(ofSize: Constants.fontSize)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
