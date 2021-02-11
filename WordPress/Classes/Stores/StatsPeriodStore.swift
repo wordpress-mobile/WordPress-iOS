@@ -1402,10 +1402,20 @@ private extension PeriodStoreState {
                                                                  url: url,
                                                                  timeZone: timeZone,
                                                                  date: Date(timeIntervalSinceReferenceDate: 0),
-                                                                 stats: ThisWeekWidgetStats())
+                                                                 stats: ThisWeekWidgetStats(days: initializedWeekdays))
 
             }
         }
+    }
+
+    // creates a list of days from the current date with empty stats to avoid showing an empty widget preview
+    var initializedWeekdays: [ThisWeekWidgetDay] {
+        let secondsPerDay = 86400.0
+        var days = [ThisWeekWidgetDay]()
+        for index in 0...7 {
+            days.insert(ThisWeekWidgetDay(date: Date(timeIntervalSinceNow: -(Double(index) * secondsPerDay)), viewsCount: 0, dailyChangePercent: 0), at: index)
+        }
+        return days
     }
 
     func storeThisWeekHomeWidgetData(stats: ThisWeekWidgetStats) {
