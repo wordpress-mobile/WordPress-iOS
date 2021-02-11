@@ -164,7 +164,7 @@ langs.each do |code,local|
 
   # Delete the downloaded file if we're using a strings filter
   if !strings_file_ext.empty?
-        FileUtils.rm_f destination
+    FileUtils.rm_f destination
   end
 end
 
