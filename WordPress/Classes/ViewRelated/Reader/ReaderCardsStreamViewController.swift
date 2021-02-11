@@ -128,8 +128,12 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     }
 
     @objc func didTapSortingButton() {
+        WPAnalytics.track(.readerDiscoverSortingOptionButtonTapped)
         let availableSortingOptions: [ReaderSortingOption] = [.popularity, .date]
         let viewController = ReaderSortingOptionViewController(options: availableSortingOptions, preselectedOption: sortingButton.sortingOption) { [weak self] option in
+            if let trackingEvent = option.trackingEvent {
+                WPAnalytics.track(trackingEvent)
+            }
             self?.updateSortingOption(option)
             if self?.presentedViewController != nil {
                 self?.dismiss(animated: true, completion: nil)
@@ -349,5 +353,18 @@ extension ReaderCardsStreamViewController {
 
     public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         return (presentedViewController?.presentationController as? BottomSheetPresentationController)?.interactionController
+    }
+}
+
+extension ReaderSortingOption {
+    var trackingEvent: WPAnalyticsEvent? {
+        switch self {
+        case .date:
+            return .readerDiscoverSortingOptionDateSelected
+        case .popularity:
+            return .readerDiscoverSortingOptionPopularitySelected
+        case .noSorting:
+            return nil
+        }
     }
 }
