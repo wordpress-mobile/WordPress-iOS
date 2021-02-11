@@ -233,10 +233,10 @@ import "./ScreenshotFastfile"
 
     # Wrap up
     version = ios_get_app_version()
-    removebranchprotection(repository:GHHELPER_REPO, branch: "release/#{version}")
-    setfrozentag(repository:GHHELPER_REPO, milestone: version, freeze: false)
-    create_new_milestone(repository:GHHELPER_REPO)
-    close_milestone(repository:GHHELPER_REPO, milestone: version)
+    removebranchprotection(repository: GHHELPER_REPO, branch: "release/#{version}")
+    setfrozentag(repository: GHHELPER_REPO, milestone: version, freeze: false)
+    create_new_milestone(repository: GHHELPER_REPO)
+    close_milestone(repository: GHHELPER_REPO, milestone: version)
   end
 
   #####################################################################################
@@ -271,8 +271,8 @@ import "./ScreenshotFastfile"
   #####################################################################################
   desc "Builds and updates for distribution"
   lane :build_and_upload_release do | options |
-    final_tag = (is_ci() == true) ? ios_validate_ci_build() : false
-    create_release = (final_tag && is_ci()) || options[:create_gh_release]
+    final_tag = is_ci() && ios_validate_ci_build()
+    create_release = final_tag || options[:create_gh_release]
 
     ios_build_prechecks(skip_confirm: options[:skip_confirm],
       internal: !final_tag,
@@ -667,7 +667,7 @@ import "./ScreenshotFastfile"
 ########################################################################
   desc "Get a list of pull request from `start_tag` to the current state"
   lane :get_pullrequests_list do | options |
-    get_prs_list(repository:GHHELPER_REPO, start_tag:"#{options[:start_tag]}", report_path:"#{File.expand_path('~')}/wpios_prs_list.txt")
+    get_prs_list(repository: GHHELPER_REPO, start_tag:"#{options[:start_tag]}", report_path:"#{File.expand_path('~')}/wpios_prs_list.txt")
   end
 
   desc "Verifies that Gutenberg is referenced by release version and not by commit"
