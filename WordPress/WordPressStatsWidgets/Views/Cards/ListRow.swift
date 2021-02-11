@@ -9,7 +9,7 @@ struct ListRow: View {
     let value: Int
 
     private var isToday: Bool {
-        NSCalendar.current.isDateInToday(date)
+        NSCalendar.current.isDateInToday(date) || NSCalendar.current.isDateInTomorrow(date)
     }
 
     let percentFormatter: NumberFormatter = {
