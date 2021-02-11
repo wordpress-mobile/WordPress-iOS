@@ -6,15 +6,31 @@ struct GutenbergNetworkRequest {
 
     private let path: String
     private unowned let blog: Blog
-
+    private let httpMethod: GutenbergHTTPMethod
+    private let parameters: [String: AnyObject]?
+    
     init(path: String, blog: Blog) {
         self.path = path
         self.blog = blog
+        self.httpMethod = .get
+        self.parameters = nil
     }
 
+    init(path: String, blog: Blog, parameters: [String: AnyObject]? = nil) {
+        self.path = path
+        self.blog = blog
+        self.httpMethod = .post
+        self.parameters = parameters
+    }
+    
     func request(completion: @escaping CompletionHandler) {
         if blog.isAccessibleThroughWPCom(), let dotComID = blog.dotComID {
-            dotComRequest(with: dotComID, completion: completion)
+            switch httpMethod {
+            case .post:
+                dotComPostRequest(with: dotComID, completion: completion)
+            case .get:
+                dotComGetRequest(with: dotComID, completion: completion)
+            }
         } else {
             selfHostedRequest(completion: completion)
         }
@@ -22,8 +38,16 @@ struct GutenbergNetworkRequest {
 
     // MARK: - dotCom
 
-    private func dotComRequest(with dotComID: NSNumber, completion: @escaping CompletionHandler) {
+    private func dotComGetRequest(with dotComID: NSNumber, completion: @escaping CompletionHandler) {
         blog.wordPressComRestApi()?.GET(dotComPath(with: dotComID), parameters: nil, success: { (response, httpResponse) in
+            completion(.success(response))
+        }, failure: { (error, httpResponse) in
+            completion(.failure(error.nsError(with: httpResponse)))
+        })
+    }
+    
+    private func dotComPostRequest(with dotComID: NSNumber, completion: @escaping CompletionHandler) {
+        blog.wordPressComRestApi()?.POST(dotComPath(with: dotComID), parameters: parameters, success: { (response, httpResponse) in
             completion(.success(response))
         }, failure: { (error, httpResponse) in
             completion(.failure(error.nsError(with: httpResponse)))
@@ -46,14 +70,26 @@ struct GutenbergNetworkRequest {
             return
         }
 
-        api.GET(path, parameters: nil) { (result, httpResponse) in
-                switch result {
-                    case .success(let response):
-                        completion(.success(response))
-                    case .failure(let error):
-                        completion(.failure(error as NSError))
+        switch httpMethod {
+        case .post:
+            api.POST(path, parameters: parameters) { (result, httpResponse) in
+                    switch result {
+                        case .success(let response):
+                            completion(.success(response))
+                        case .failure(let error):
+                            completion(.failure(error as NSError))
+                    }
                 }
-            }
+        case .get:
+            api.GET(path, parameters: nil) { (result, httpResponse) in
+                    switch result {
+                        case .success(let response):
+                            completion(.success(response))
+                        case .failure(let error):
+                            completion(.failure(error as NSError))
+                    }
+                }
+        }
     }
 
     private var selfHostedPath: String {
@@ -70,4 +106,9 @@ private extension Error {
         let code = URLError.Code(rawValue: errorCode)
         return URLError(code, userInfo: [NSLocalizedDescriptionKey: localizedDescription]) as NSError
     }
+}
+
+enum GutenbergHTTPMethod: String {
+    case get = "GET"
+    case post = "POST"
 }
