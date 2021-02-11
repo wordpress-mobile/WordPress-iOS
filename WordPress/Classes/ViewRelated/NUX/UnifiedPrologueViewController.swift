@@ -27,7 +27,7 @@ class UnifiedPrologueViewController: UIPageViewController {
         UnifiedProloguePageType.allCases.forEach({ type in
                                                     pages.append(UnifiedProloguePageViewController(pageType: type))
         })
-        
+
         setViewControllers([pages[0]], direction: .forward, animated: false)
         view.backgroundColor = .prologueBackground
 
