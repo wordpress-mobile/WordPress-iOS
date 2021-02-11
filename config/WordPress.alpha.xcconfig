@@ -1,2 +1,4 @@
 #include "Version.internal.xcconfig"
 #include "SDKVersions.xcconfig"
+
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) WPCOM_SCHEME='@"wpalpha"' APNS_APP_ID='@"org.wordpress.internal"' APP_GROUP_NAME='@"group.org.wordpress.alpha"' KEYCHAIN_ACCESS_GROUP='@"99KV9Z6BKV.org.wordpress.alpha"'
