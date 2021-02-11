@@ -93,6 +93,7 @@ class PostCoordinator: NSObject {
     func publish(_ post: AbstractPost) {
         if post.status == .draft {
             post.status = .publish
+            post.isFirstTimePublish = true
         }
 
         if post.status != .scheduled {

@@ -262,6 +262,8 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
 
     // Add the post to the uploading queue list
     [self.uploadingList uploading:postObjectID];
+    
+    BOOL isFirstTimePublish = post.isFirstTimePublish;
 
     void (^successBlock)(RemotePost *post) = ^(RemotePost *post) {
         [self.managedObjectContext performBlock:^{
@@ -279,6 +281,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
                     }
                 }
                 
+                postInContext.isFirstTimePublish = isFirstTimePublish;
                 [self updatePost:postInContext withRemotePost:post];
                 postInContext.remoteStatus = AbstractPostRemoteStatusSync;
 
