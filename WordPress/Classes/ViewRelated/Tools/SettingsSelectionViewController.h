@@ -47,12 +47,6 @@ extern NSString * const SettingsSelectionEditableIndexKey;
 - (instancetype)initWithStyle:(UITableViewStyle)style andDictionary:(NSDictionary *)dictionary;
 
 /**
- *  @brief      Reloads the SettingsSelection data.
- *  @param      status  A String containing the desired status.
- */
-- (void)reload:(NSString *)status;
-
-/**
  *  @brief      Reloads the SettingsSelection data with a new dictionary.
  *
  *  @param      dictionary  A Dictionary containing the target "Settings".
