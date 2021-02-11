@@ -45,11 +45,11 @@ enum LocalizableStrings {
                                                           defaultValue: "Log in to WordPress to see today's stats.",
                                                           comment: "Title of the unconfigured view in today widget")
 
-    // Today Widget Preview
+    // Today Widget preview
     static let todayPreviewDescription = LocalizedStringKey("widget.today.preview.description",
                                                        defaultValue: "Stay up to date with today's activity on your WordPress site.",
                                                        comment: "Description of today widget in the preview")
-    // All Time Widget peview
+    // All Time Widget preview
     static let allTimePreviewDescription = LocalizedStringKey("widget.alltime.preview.description",
                                                               defaultValue: "Stay up to date with all time activity on your WordPress site.",
                                                               comment: "Description of all time widget in the preview")
