@@ -106,7 +106,7 @@ class ReaderTopicsTableCardCell: UITableViewCell {
     }
 
     private enum Constants {
-        static let containerInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        static let containerInsets = UIEdgeInsets(top: FeatureFlag.readerSortingOption.enabled ? 0 : 8, left: 0, bottom: 0, right: 0)
     }
 }
 
