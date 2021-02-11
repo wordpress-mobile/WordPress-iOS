@@ -36,13 +36,13 @@ NSString *const WPPushNotificationAppId                             = @"org.word
 #endif
 /// Keychain Constants
 ///
-#ifdef INTERNAL_BUILD
-NSString *const WPAppGroupName                                      = @"group.org.wordpress.internal";
-NSString *const WPAppKeychainAccessGroup                            = @"99KV9Z6BKV.org.wordpress.internal";
-#else
 #ifdef ALPHA_BUILD
 NSString *const WPAppGroupName                                      = @"group.org.wordpress.alpha";
 NSString *const WPAppKeychainAccessGroup                            = @"99KV9Z6BKV.org.wordpress.alpha";
+#else
+#ifdef INTERNAL_BUILD
+NSString *const WPAppGroupName                                      = @"group.org.wordpress.internal";
+NSString *const WPAppKeychainAccessGroup                            = @"99KV9Z6BKV.org.wordpress.internal";
 #else
 NSString *const WPAppGroupName                                      = @"group.org.wordpress";
 NSString *const WPAppKeychainAccessGroup                            = @"3TMU3BH3NK.org.wordpress";
