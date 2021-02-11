@@ -26,6 +26,10 @@ enum LocalizableStrings {
     static let unconfiguredViewTitle = LocalizedStringKey("widget.today.unconfigured.view.title",
                                                           defaultValue: "Log in to WordPress to see today's stats.",
                                                           comment: "Title of the unconfigured view in today widget")
+    // No data view
+    static let noDataViewTitle = LocalizedStringKey("widget.today.nodata.view.title",
+                                                          defaultValue: "Unable to load site stats.",
+                                                          comment: "Title of the nodata view in today widget")
 
     // Preview
     static let previewDescription = LocalizedStringKey("widget.today.preview.description",

@@ -1,8 +1,11 @@
 import SwiftUI
 
 struct UnconfiguredView: View {
+
+    let message: LocalizedStringKey
+
     var body: some View {
-        Text(Self.unconfiguredMessage)
+        Text(message)
             .font(.footnote)
             .foregroundColor(Color(.secondaryLabel))
             .multilineTextAlignment(.center)
@@ -14,6 +17,6 @@ struct UnconfiguredView: View {
 
 struct PlaceholderView_Previews: PreviewProvider {
     static var previews: some View {
-        UnconfiguredView()
+        UnconfiguredView(message: LocalizableStrings.unconfiguredViewTitle)
     }
 }

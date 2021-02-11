@@ -25,24 +25,12 @@ NSString *const WPComDomain                                         = @"wordpres
 
 /// Notifications Constants
 ///
-#ifdef DEBUG
-NSString *const  WPPushNotificationAppId                            = @"org.wordpress.appstore.dev";
-#else
-#ifdef INTERNAL_BUILD
-NSString *const   WPPushNotificationAppId                           = @"org.wordpress.internal";
-#else
-NSString *const WPPushNotificationAppId                             = @"org.wordpress.appstore";
-#endif
-#endif
+NSString *const  WPPushNotificationAppId                            = APNS_APP_ID;
+
 /// Keychain Constants
 ///
-#ifdef INTERNAL_BUILD
-NSString *const WPAppGroupName                                      = @"group.org.wordpress.internal";
-NSString *const WPAppKeychainAccessGroup                            = @"99KV9Z6BKV.org.wordpress.internal";
-#else
-NSString *const WPAppGroupName                                      = @"group.org.wordpress";
-NSString *const WPAppKeychainAccessGroup                            = @"3TMU3BH3NK.org.wordpress";
-#endif
+NSString *const WPAppGroupName                                      = APP_GROUP_NAME;
+NSString *const WPAppKeychainAccessGroup                            = KEYCHAIN_ACCESS_GROUP;
 
 /// Notification Content Extension Constants
 ///
@@ -75,6 +63,7 @@ NSString *const WPStatsTodayWidgetKeychainTokenKey                  = @"OAuth2To
 NSString *const WPStatsTodayWidgetKeychainServiceName               = @"TodayWidget";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteIdKey             = @"WordPressTodayWidgetSiteId";
 NSString *const WPStatsHomeWidgetsUserDefaultsSiteIdKey             = @"WordPressHomeWidgetsSiteId";
+NSString *const WPStatsHomeWidgetsUserDefaultsLoggedInKey          = @"WordPressHomeWidgetsLoggedIn";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey           = @"WordPressTodayWidgetSiteName";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteUrlKey            = @"WordPressTodayWidgetSiteUrl";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPressTodayWidgetTimeZone";
