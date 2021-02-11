@@ -5,7 +5,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol CoreDataStack
 @property (nonatomic, readonly, strong) NSManagedObjectContext *mainContext;
-@property (nonatomic, readonly, strong) NSManagedObjectModel *managedObjectModel;
 - (NSManagedObjectContext *const)newDerivedContext;
 - (NSManagedObjectContext *const)newMainContextChildContext;
 - (void)saveContextAndWait:(NSManagedObjectContext *)context;
@@ -25,11 +24,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 ///----------------------------------------------
 @property (nonatomic, readonly, strong) NSManagedObjectContext *mainContext;
-
-///-------------------------------------------------------------
-///@name Access to the managed object model
-///-------------------------------------------------------------
-@property (nonatomic, readonly, strong) NSManagedObjectModel *managedObjectModel;
 
 ///--------------------------------------
 ///@name ContextManager
