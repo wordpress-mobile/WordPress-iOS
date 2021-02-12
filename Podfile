@@ -50,6 +50,11 @@ def wordpress_kit
     # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
+def kanvas
+  pod 'Kanvas', :git => 'git@github.com:tumblr/kanvas-ios.git', :branch => 'main'
+  #pod 'Kanvas', :path => '../Kanvas-iOS'
+end
+
 def shared_with_all_pods
     wordpress_shared
     pod 'CocoaLumberjack', '~> 3.0'
@@ -178,6 +183,7 @@ target 'WordPress' do
     ##
     wordpress_kit
     wordpress_shared
+    kanvas
 
     # Production
 
