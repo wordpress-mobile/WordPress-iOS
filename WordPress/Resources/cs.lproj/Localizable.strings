@@ -2649,7 +2649,7 @@
 "Following" = "Sleduji";
 
 /* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
-"Following %1$@" = "Následující 1$@";
+"Following %1$@" = "Následující %1$@";
 
 /* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
 "Following %@" = "Následující %@";
