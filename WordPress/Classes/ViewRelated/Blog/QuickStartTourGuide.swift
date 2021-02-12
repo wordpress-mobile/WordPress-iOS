@@ -153,6 +153,10 @@ open class QuickStartTourGuide: NSObject {
     }
 
     func complete(tour: QuickStartTour, for blog: Blog, postNotification: Bool = true) {
+        guard let tourCount = blog.quickStartTours?.count, tourCount > 0 else {
+            // Tours haven't been set up yet or were skipped. No reason to continue.
+            return
+        }
         completed(tour: tour, for: blog, postNotification: postNotification)
     }
 
