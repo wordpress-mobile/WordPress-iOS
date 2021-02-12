@@ -153,6 +153,7 @@ class ReaderSortingOptionViewController: UIViewController {
             guard let image = option.image, let title = option.localizedDescription else {
                 return nil
             }
+            // TODO: what should be the accessibility label/identifer for the bottom sheet options?
             return ReaderSortingActionSheetOptionControl(option: ReaderSortingActionSheetOption(title: title, image: image, checked: option == self.preselectedOption, identifier: title, sortingOption: option)) {
                 self.optionSelected(option)
             }
