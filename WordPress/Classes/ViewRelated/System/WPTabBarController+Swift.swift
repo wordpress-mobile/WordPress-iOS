@@ -84,12 +84,7 @@ extension WPTabBarController {
                 return false
         }
 
-        if tabType == .reader {
-            let variation = ABTest.biasTest.variation == .control ? "control" : "treatment"
-            WPAppAnalytics.track(stat, withProperties: ["experiment_id": 20086, "variation": variation])
-        } else {
-            WPAppAnalytics.track(stat)
-        }
+        WPAppAnalytics.track(stat)
 
         return true
     }
