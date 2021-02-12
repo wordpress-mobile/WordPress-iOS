@@ -1021,11 +1021,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     };
 }
 
-- (NSTimeZone *)timeZoneForBlog:(Blog *)blog
-{
-    return [blog timeZone];
-}
-
 - (void)updateSettings:(BlogSettings *)settings withRemoteSettings:(RemoteBlogSettings *)remoteSettings
 {
     NSParameterAssert(settings);
