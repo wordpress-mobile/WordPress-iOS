@@ -151,4 +151,8 @@ extension PostEditor {
     func uploadFailureNotice(action: PostEditorAction) -> Notice {
         return Notice(title: action.publishingErrorLabel, tag: uploadFailureNoticeTag)
     }
+
+    var prepublishingIdentifiers: [PrepublishingIdentifier] {
+        return [.visibility, .schedule, .tags]
+    }
 }
