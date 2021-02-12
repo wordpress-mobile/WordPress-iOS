@@ -162,6 +162,37 @@ extension ConfettiView: CAAnimationDelegate {
 }
 
 
+extension ConfettiView {
+
+    func emitConfetti() {
+        // Images
+        let star = UIImage(named: "confetti-star")!
+        let circle = UIImage(named: "confetti-circle")!
+        let hotdog = UIImage(named: "confetti-hotdog")!
+
+        // Colors
+        let purple = UIColor(red: 0.75, green: 0.35, blue: 0.95, alpha: 1.00)
+        let orange = UIColor(red: 1.00, green: 0.50, blue: 0.52, alpha: 1.00)
+        let green = UIColor(red: 0.44, green: 0.88, blue: 0.65, alpha: 1.00)
+
+        let particles: [ConfettiView.Particle] = [
+            .init(image: star, tintColor: purple),
+            .init(image: circle, tintColor: orange),
+            .init(image: hotdog, tintColor: green),
+
+            .init(image: star, tintColor: orange),
+            .init(image: circle, tintColor: green),
+            .init(image: hotdog, tintColor: purple),
+
+            .init(image: star, tintColor: green),
+            .init(image: circle, tintColor: purple),
+            .init(image: hotdog, tintColor: orange),
+        ]
+
+        self.emit(with: particles, config: ConfettiView.EmitterConfig())
+    }
+}
+
 extension UIImage {
     public func imageWithTintColor(color: UIColor) -> UIImage? {
         guard let cgImg = cgImage else {
