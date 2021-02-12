@@ -8,6 +8,8 @@ extension AbstractPost {
     /// - **Immediately**: Displays "Publish Immediately" string
     /// - **Published or Draft**: Shows relative date when < 7 days
     public func displayDate() -> String? {
+        assert(self.managedObjectContext != nil)
+
         let timeZone = blog.timeZone
 
         // Unpublished post shows relative or date string
