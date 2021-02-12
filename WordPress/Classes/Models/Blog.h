@@ -198,6 +198,9 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 // Used to check if the blog has an icon set up
 @property (readonly) BOOL hasIcon;
 
+/** Determine timezone for blog from blog options.  If no timezone information is stored on the device, then assume GMT+0 is the default. */
+@property (readonly) NSTimeZone *timeZone;
+
 #pragma mark - Blog information
 
 - (BOOL)isAtomic;
