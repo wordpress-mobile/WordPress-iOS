@@ -8,9 +8,7 @@ extension AbstractPost {
     /// - **Immediately**: Displays "Publish Immediately" string
     /// - **Published or Draft**: Shows relative date when < 7 days
     public func displayDate() -> String? {
-        let context = managedObjectContext ?? ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        let timeZone = blogService.timeZone(for: blog)
+        let timeZone = blog.timeZone
 
         // Unpublished post shows relative or date string
         if originalIsDraft() || status == .pending {
