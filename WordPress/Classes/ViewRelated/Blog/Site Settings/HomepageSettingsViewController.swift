@@ -25,6 +25,15 @@ import WordPressShared
                 return Strings.postsPagePicker
             }
         }
+
+        var publishedPostsOnly: Bool {
+            switch self {
+            case .homepage:
+                return true
+            case .postsPage:
+                return false
+            }
+        }
     }
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
@@ -201,6 +210,7 @@ import WordPressShared
                                                       showsPostType: false,
                                                       entityName: Page.entityName(),
                                                       hiddenPosts: hiddenPosts,
+                                                      publishedOnly: selectionType.publishedPostsOnly,
                                                       callback: { [weak self] (post) in
             if let page = post as? Page {
                 completion(page)

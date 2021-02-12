@@ -205,7 +205,7 @@ class PostCoordinator: NSObject {
         return post.remoteStatus == .pushing
     }
 
-    func posts(for blog: Blog, containsTitle title: String, excludingPostIDs excludedPostIDs: [Int] = [], entityName: String? = nil) -> NSFetchedResultsController<AbstractPost> {
+    func posts(for blog: Blog, containsTitle title: String, excludingPostIDs excludedPostIDs: [Int] = [], entityName: String? = nil, publishedOnly: Bool = false) -> NSFetchedResultsController<AbstractPost> {
         let context = self.mainContext
         let fetchRequest = NSFetchRequest<AbstractPost>(entityName: entityName ?? AbstractPost.entityName())
 
@@ -220,6 +220,9 @@ class PostCoordinator: NSObject {
         }
         if !excludedPostIDs.isEmpty {
             compoundPredicates.append(NSPredicate(format: "NOT (postID IN %@)", excludedPostIDs))
+        }
+        if publishedOnly {
+            compoundPredicates.append(NSPredicate(format: "\(BasePost.statusKeyPath) == '\(PostStatusPublish)'"))
         }
         let resultPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: compoundPredicates)
 
