@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000378">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: default_platform" time="0.000336">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: is_ci" time="0.000215">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: setup_circle_ci" time="0.000548">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: Switch to alpha_code_signing lane" time="0.000207">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="5: match" time="11.43175">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="6: Switch to internal_code_signing lane" time="0.000194">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="7: match" time="8.623431">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="8: Switch to appstore_code_signing lane" time="0.00017">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="9: match" time="8.15001">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>
