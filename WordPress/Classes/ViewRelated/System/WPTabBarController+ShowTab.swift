@@ -1,3 +1,5 @@
+let kanvasService = KanvasService()
+
 extension WPTabBarController {
 
     @objc func showPageEditor(forBlog: Blog? = nil) {
@@ -64,15 +66,30 @@ extension WPTabBarController {
                 StoriesIntroViewController.trackShown()
             })
         } else {
-            //TODO: Show the stories feature
             guard let blog = inBlog ?? self.currentOrLastBlog() else { return }
             let blogID = blog.dotComID?.intValue ?? 0 as Any
 
             WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "story"])
 
-            let viewController = UIViewController()
-            viewController.view.backgroundColor = .red
-            present(viewController, animated: true)
+            let controller = kanvasService.controller(blog: blog, context: ContextManager.shared.mainContext, updated: { [weak self] result in
+
+            }, uploaded: { [weak self] result in
+                switch result {
+                case .success(let post):
+                    ()
+                case .failure(let error):
+                    self?.dismiss(animated: true, completion: nil)
+                    let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)
+                    let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
+                        controller.dismiss(animated: true, completion: nil)
+                    }
+                    controller.addAction(dismiss)
+                    self?.present(controller, animated: true, completion: nil)
+                }
+            })
+
+            kanvasService.delegate = controller.storyService
+            present(controller, animated: true, completion: nil)
         }
     }
 }

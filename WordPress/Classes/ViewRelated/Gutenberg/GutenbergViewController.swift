@@ -3,6 +3,7 @@ import WPMediaPicker
 import Gutenberg
 import Aztec
 import WordPressFlux
+import KanvasCamera
 
 class GutenbergViewController: UIViewController, PostEditor {
 
@@ -45,7 +46,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - Aztec
 
-    internal let replaceEditor: (EditorViewController, EditorViewController) -> ()
+    internal var replaceEditor: (EditorViewController, EditorViewController) -> ()
 
     // MARK: - PostEditor
 
@@ -92,10 +93,6 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     var isUploadingMedia: Bool {
         return mediaInserterHelper.isUploadingMedia()
-    }
-
-    func removeFailedMedia() {
-        // TODO: we can only implement this when GB bridge allows removal of blocks
     }
 
     var hasFailedMedia: Bool {
@@ -220,9 +217,11 @@ class GutenbergViewController: UIViewController, PostEditor {
         }
     }
 
+    fileprivate let kanvas = KanvasService()
+
     /// If true, apply autosave content when the editor creates a revision.
     ///
-    private let loadAutosaveRevision: Bool
+    var loadAutosaveRevision: Bool
 
     let navigationBarManager = PostEditorNavigationBarManager()
 
@@ -631,9 +630,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaImportCallback) {
-        mediaInserterHelper.insertFromDevice(url: url, callback: { media in
-            callback(media?.first)
-        })
+        let media = mediaInserterHelper.insertFromDevice(url: url)
+        callback(media)
     }
 
     func gutenbergDidRequestMediaUploadSync() {
@@ -645,6 +643,67 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             return
         }
         mediaInserterHelper.cancelUploadOf(media: media)
+    }
+
+    struct AnyEncodable: Encodable {
+
+        let value: Encodable
+        init(value: Encodable) {
+            self.value = value
+        }
+
+        func encode(to encoder: Encoder) throws {
+            try value.encode(to: encoder)
+        }
+
+    }
+
+    func gutenbergDidRequestMediaFilesEditorLoad(_ mediaFiles: [[String: Any]], blockId: String) {
+
+        let controller = kanvas.controller(post: post, publishOnCompletion: false, updated: { [weak self] result in
+            switch result {
+            case .success(let output):
+                self?.dismiss(animated: true, completion: nil)
+            case .failure(let error):
+                self?.dismiss(animated: true, completion: nil)
+                let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)
+                let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
+                    controller.dismiss(animated: true, completion: nil)
+                }
+                controller.addAction(dismiss)
+                self?.present(controller, animated: true, completion: nil)
+            }
+        }, uploaded: { [weak self] result in
+            switch result {
+            case .success(let output):
+                if let content = output.0.content {
+                    self?.setHTML(content)
+                }
+            case .failure(let error):
+                let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)
+                let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
+                    controller.dismiss(animated: true, completion: nil)
+                }
+                controller.addAction(dismiss)
+                self?.present(controller, animated: true, completion: nil)
+            }
+        })
+
+        let files = mediaFiles.map({ content in
+            return StoryPoster.MediaFile(alt: content["alt"] as! String, caption: content["caption"] as! String, id: content["id"] as! Double, link: content["link"] as! String, mime: content["mime"] as! String, type: content["type"] as! String, url: content["url"] as! String)
+        })
+
+        controller.delegate = kanvasService
+        kanvasService.delegate = controller.storyService
+
+        controller.populate(with: files, completion: { [weak self] result in
+            switch result {
+            case .success:
+                self?.present(controller, animated: true, completion: {})
+            case .failure(let error):
+                os_log(.error, "Failed to populate Kanvas controller %@", error.localizedDescription)
+            }
+        })
     }
 
     func gutenbergDidRequestMediaUploadActionDialog(for mediaID: Int32) {
@@ -904,7 +963,7 @@ extension GutenbergViewController {
             }
 
             var didSelectSuggestion = false
-            if case .success(_) = result {
+            if case .success = result {
                 didSelectSuggestion = true
             }
 

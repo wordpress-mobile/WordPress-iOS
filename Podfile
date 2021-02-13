@@ -51,8 +51,10 @@ def wordpress_kit
 end
 
 def kanvas
-  pod 'Kanvas', :git => 'git@github.com:tumblr/kanvas-ios.git', :branch => 'main'
-  #pod 'Kanvas', :path => '../Kanvas-iOS'
+  #pod 'Kanvas', :git => 'https://github.com/Automattic/Kanvas-iOS.git', :tag => ''
+  #pod 'Kanvas', :git => 'https://github.com/Automattic/Kanvas-iOS.git', :commit => ''
+  pod 'KanvasCamera', :git => 'git@github.com:tumblr/kanvas-ios.git', :branch => 'stories/build'
+  #pod 'KanvasCamera', :path => '../Kanvas-iOS'
 end
 
 def shared_with_all_pods
