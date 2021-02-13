@@ -138,6 +138,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         setupComponentsAppearance()
         disableAnimationsForUITests(application)
 
+        let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
+        fonts?.forEach({ url in
+            CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
+        })
+
         PushNotificationsManager.shared.deletePendingLocalNotifications()
 
         if #available(iOS 13, *) {
