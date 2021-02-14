@@ -249,7 +249,7 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
     func persistToCoreData() {
         guard
             let siteID = SiteStatsInformation.sharedInstance.siteID,
-            let blog = BlogService.withMainContext().blog(byBlogId: siteID) else {
+            let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
                 return
         }
 
@@ -531,7 +531,7 @@ private extension StatsPeriodStore {
     func loadFromCache(date: Date, period: StatsPeriodUnit) {
         guard
             let siteID = SiteStatsInformation.sharedInstance.siteID,
-            let blog = BlogService.withMainContext().blog(byBlogId: siteID) else {
+            let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
                 return
         }
 
