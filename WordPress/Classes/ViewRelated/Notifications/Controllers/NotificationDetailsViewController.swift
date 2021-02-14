@@ -544,7 +544,7 @@ private extension NotificationDetailsViewController {
 
     var shouldAttachSuggestionsView: Bool {
         guard let siteID = note.metaSiteID,
-              let blog = SuggestionService.shared.persistedBlog(for: siteID) else {
+              let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
             return false
         }
         return shouldAttachReplyView && SuggestionService.shared.shouldShowSuggestions(for: blog)
