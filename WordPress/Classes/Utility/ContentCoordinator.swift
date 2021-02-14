@@ -141,8 +141,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
             return nil
         }
 
-        let service = BlogService(managedObjectContext: mainContext)
-        return service.blog(byBlogId: blogID)
+        return Blog.lookup(withID: blogID, in: mainContext)
     }
 
 }
