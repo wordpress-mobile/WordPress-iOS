@@ -6,14 +6,14 @@ public class KanvasCameraCustomUI {
 
     public static let shared = KanvasCameraCustomUI()
 
-    private static let brightBlue = UIColor.tumblrBrightBlue
-    private static let brightPurple = UIColor.tumblrBrightPurple
-    private static let brightPink = UIColor.tumblrBrightPink
-    private static let brightYellow = UIColor.tumblrBrightYellow
-    private static let brightGreen = UIColor.tumblrBrightGreen
-    private static let brightRed = UIColor.tumblrBrightRed
-    private static let brightOrange = UIColor.tumblrBrightOrange
-    private static let white = UIColor.tumblrWhite
+    private static let brightBlue = UIColor.muriel(color: MurielColor(name: .wordPressBlue))
+    private static let brightPurple = UIColor.muriel(color: MurielColor(name: .purple))
+    private static let brightPink = UIColor.muriel(color: MurielColor(name: .pink))
+    private static let brightYellow = UIColor.muriel(color: MurielColor(name: .yellow))
+    private static let brightGreen = UIColor.muriel(color: MurielColor(name: .green))
+    private static let brightRed = UIColor.muriel(color: MurielColor(name: .red))
+    private static let brightOrange = UIColor.muriel(color: MurielColor(name: .orange))
+    private static let white = UIColor.white
 
     private let pickerColors = [brightBlue,
                          brightBlue,
@@ -52,7 +52,7 @@ public class KanvasCameraCustomUI {
     private let toonColor: UIColor = brightOrange
 
     private let selectedColor = brightBlue // ColorPickerController:29
-    private let black25 = UIColor.tumblrBlack25
+    private let black25 = UIColor(white: 0, alpha: 0.25)
 
     func cameraColors() -> KanvasCameraColors {
         return KanvasCameraColors(
@@ -68,8 +68,10 @@ public class KanvasCameraCustomUI {
             trashColor: Self.brightRed,
             tooltipBackgroundColor: .systemRed,
             closeButtonColor: black25,
-            primaryButtonBackgroundColor: .tumblrBrightRed,
-            overlayColor: .tumblrGray,
+            primaryButtonBackgroundColor: KanvasCameraCustomUI.brightRed,
+            permissionsButtonColor: UIColor.muriel(color: MurielColor(name: .blue)).color(for: UITraitCollection(userInterfaceStyle: .dark)),
+            permissionsButtonAcceptedBackgroundColor: UIColor.muriel(color: MurielColor(name: .green, shade: .shade20)),
+            overlayColor: UIColor.muriel(color: MurielColor.gray),
             filterColors: [
                 .manga: mangaColor,
                 .toon: toonColor,
