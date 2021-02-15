@@ -12,8 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)saveContextAndWait:(NSManagedObjectContext *)context;
 - (void)saveContext:(NSManagedObjectContext *)context;
 - (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock;
-- (BOOL)obtainPermanentIDForObject:(NSManagedObject *)managedObject;
-- (void)mergeChanges:(NSManagedObjectContext *)context fromContextDidSaveNotification:(NSNotification *)notification;
 @end
 
 @interface ContextManager : NSObject <CoreDataStack>
@@ -93,22 +91,6 @@ NS_ASSUME_NONNULL_BEGIN
  @param a completion block that will be executed on the main queue
  */
 - (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock;
-
-/**
- Get a permanent NSManagedObjectID for the specified NSManagedObject
- 
- @param managedObject A managedObject with a temporary NSManagedObjectID
- @return YES if the permanentID was successfully obtained, or NO if it failed.
- */
-- (BOOL)obtainPermanentIDForObject:(NSManagedObject *)managedObject;
-
-/**
- Merge changes for a given context with a fault-protection, on the context's queue.
-
- @param context a NSManagedObject context instance
- @return notification NSNotification from a NSManagedObjectContextDidSaveNotification.
- */
-- (void)mergeChanges:(NSManagedObjectContext *)context fromContextDidSaveNotification:(NSNotification *)notification;
 
 @end
 

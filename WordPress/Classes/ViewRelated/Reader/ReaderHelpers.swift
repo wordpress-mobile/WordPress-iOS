@@ -12,6 +12,8 @@ extension NSNotification.Name {
     static let ReaderSiteFollowed = NSNotification.Name(rawValue: "ReaderSiteFollowed")
     // Sent when a post's seen state has been toggled.
     static let ReaderPostSeenToggled = NSNotification.Name(rawValue: "ReaderPostSeenToggled")
+    // Sent when a site is blocked.
+    static let ReaderSiteBlocked = NSNotification.Name(rawValue: "ReaderSiteBlocked")
 }
 
 struct ReaderNotificationKeys {
@@ -19,6 +21,20 @@ struct ReaderNotificationKeys {
     static let topic = "topic"
 }
 
+// Used for event tracking properties
+enum ReaderPostMenuSource {
+    case card
+    case details
+
+    var description: String {
+        switch self {
+        case .card:
+            return "post_card"
+        case .details:
+            return "post_details"
+        }
+    }
+}
 
 /// A collection of helper methods used by the Reader.
 ///
@@ -344,6 +360,17 @@ struct ReaderNotificationKeys {
         dispatchNotice(notice)
     }
 
+    class func dispatchSiteBlockedMessage(post: ReaderPost, success: Bool) {
+        var notice: Notice {
+            if success {
+                return Notice(title: NoticeMessages.blockSiteSuccess, message: post.blogNameForDisplay())
+            }
+            return Notice(title: NoticeMessages.blockSiteFail, message: post.blogNameForDisplay())
+        }
+
+        dispatchNotice(notice)
+    }
+
     private class func dispatchNotice(_ notice: Notice) {
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
@@ -376,6 +403,8 @@ struct ReaderNotificationKeys {
         static let notificationOffSuccess = NSLocalizedString("Turned off site notifications", comment: "Notice title when turning site notifications off succeeds.")
         static let enableNotifications = NSLocalizedString("Enable site notifications?", comment: "Message prompting user to enable site notifications.")
         static let enableButtonLabel = NSLocalizedString("Enable", comment: "Button title for the enable site notifications action.")
+        static let blockSiteSuccess = NSLocalizedString("Blocked site", comment: "Notice title when blocking a site succeeds.")
+        static let blockSiteFail = NSLocalizedString("Unable to block site", comment: "Notice title when blocking a site fails.")
     }
 }
 

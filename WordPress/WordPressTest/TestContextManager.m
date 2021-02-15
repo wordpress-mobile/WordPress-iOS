@@ -96,21 +96,12 @@ static TestContextManager *_instance;
     }];
 }
 
-- (void)mergeChanges:(nonnull NSManagedObjectContext *)context fromContextDidSaveNotification:(nonnull NSNotification *)notification
-{
-    [_stack mergeChanges: context fromContextDidSaveNotification:notification];
-}
-
 - (nonnull NSManagedObjectContext *const)newDerivedContext {
     return [_stack newDerivedContext];
 }
 
 - (nonnull NSManagedObjectContext *const)newMainContextChildContext {
     return [_stack newMainContextChildContext];
-}
-
-- (BOOL)obtainPermanentIDForObject:(nonnull NSManagedObject *)managedObject {
-    return [_stack obtainPermanentIDForObject:managedObject];
 }
 
 - (NSURL *)storeURL

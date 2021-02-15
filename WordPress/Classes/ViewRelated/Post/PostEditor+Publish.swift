@@ -76,6 +76,8 @@ extension PostEditor where Self: UIViewController {
                 self.post.status = .pending
             }
 
+            self.post.isFirstTimePublish = action == .publish || action == .publishNow
+
             self.post.shouldAttemptAutoUpload = true
 
             if let analyticsStat = analyticsStat {
