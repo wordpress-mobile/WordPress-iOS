@@ -110,7 +110,7 @@ class ReaderSortingOptionButton: UIControl {
 
         // TODO: check if accessibility is set correctly
         accessibilityIdentifier = "Reader sorting option button"
-        accessibilityLabel = NSLocalizedString("Reader sorting option button", comment: "Accessibility label for sorting option button")
+        accessibilityLabel = NSLocalizedString("Choose reader sorting option", comment: "Accessibility label for sorting option button")
 
         addSubview(iconView)
         addSubview(label)

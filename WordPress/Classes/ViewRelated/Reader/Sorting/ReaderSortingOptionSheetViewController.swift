@@ -71,6 +71,7 @@ class ReaderSortingActionSheetOptionControl: ClosureControl {
         label.text = option.title
         accessibilityIdentifier = option.identifier
         accessibilityLabel = option.identifier
+        accessibilityHint = option.sortingOption.accessibilityHint
     }
 
     override init(frame: CGRect, minimalTappableHeight: CGFloat?, closure: @escaping () -> Void) {
@@ -274,5 +275,18 @@ class ClosureControl: UIControl {
             return tappableArea.contains(point)
         }
         return super.point(inside: point, with: event)
+    }
+}
+
+extension ReaderSortingOption {
+    var accessibilityHint: String? {
+        switch self {
+        case .date:
+            return NSLocalizedString("Tap to sort by date", comment: "Accessibility hint for sorting option button.")
+        case .popularity:
+            return NSLocalizedString("Tap to sort by popularity", comment: "Accessibility hint for sorting option button.")
+        case .noSorting:
+            return nil
+        }
     }
 }

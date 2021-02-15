@@ -15,6 +15,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     private lazy var sortingButton: ReaderSortingOptionButton = {
         let view = ReaderSortingOptionButton()
         view.addTarget(self, action: #selector(didTapSortingButton), for: .touchUpInside)
+        view.accessibilityHint = NSLocalizedString("Tap to change sorting option", comment: "Accessibility hint for sorting option button.")
         return view
     }()
 
