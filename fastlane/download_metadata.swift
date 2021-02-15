@@ -47,7 +47,7 @@ func downloadTranslation(languageCode: String, folderName: String) {
     let sema = DispatchSemaphore( value: 0)
 
     print("Downloading Language: \(languageCode)")
-	
+
     let task = session.dataTask(with: urlRequest) {
         (data, response, error) -> Void in
 
@@ -88,7 +88,7 @@ func downloadTranslation(languageCode: String, folderName: String) {
             var originalLanguage = String(key[index...])
             originalLanguage.remove(at: originalLanguage.startIndex)
             let translation = languageCode == "en-us" ? originalLanguage : firstValue
-            
+
             switch keyFirstPart {
             case glotPressSubtitleKey:
                 subtitle = translation
@@ -125,12 +125,11 @@ func downloadTranslation(languageCode: String, folderName: String) {
             print("  Error writing: \(error)")
         }
     }
-    
+
     task.resume()
     sema.wait()
 }
 
-languages.forEach( { (key: String, value: String) in
+languages.forEach({ (key: String, value: String) in
     downloadTranslation(languageCode: value, folderName: key)
 })
-
