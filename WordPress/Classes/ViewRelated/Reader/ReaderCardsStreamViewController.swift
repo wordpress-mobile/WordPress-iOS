@@ -10,6 +10,8 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     /// Refresh counter used to for random posts on pull to refresh
     private var refreshCount = 0
 
+    private static var sortingOption: ReaderSortingOption?
+
     private lazy var sortingButton: ReaderSortingOptionButton = {
         let view = ReaderSortingOptionButton()
         view.addTarget(self, action: #selector(didTapSortingButton), for: .touchUpInside)
@@ -112,7 +114,8 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         guard FeatureFlag.readerSortingOption.enabled else {
             return
         }
-        updateSortingOption(.popularity, reloadCards: false)
+
+        updateSortingOption(ReaderCardsStreamViewController.sortingOption ?? .popularity, reloadCards: false)
         tableView.tableHeaderView = sortingButton
         NSLayoutConstraint.activate([
             sortingButton.widthAnchor.constraint(equalTo: tableView.widthAnchor),
@@ -123,6 +126,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         let optionChanged = sortingButton.sortingOption != sortingOption
 
         sortingButton.sortingOption = sortingOption
+        ReaderCardsStreamViewController.sortingOption = sortingOption
 
         if optionChanged, reloadCards {
             showGhost()
