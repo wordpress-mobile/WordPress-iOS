@@ -21,7 +21,7 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (2.5.1):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (0.8.1):
+  - Automattic-Tracks-iOS (0.8.2):
     - CocoaLumberjack (~> 3)
     - Reachability (~> 3)
     - Sentry (~> 6)
@@ -382,9 +382,9 @@ PODS:
   - RNTAztecView (1.46.0):
     - React-Core
     - WordPress-Aztec-iOS (~> 1.19.3)
-  - Sentry (6.1.4):
-    - Sentry/Core (= 6.1.4)
-  - Sentry/Core (6.1.4)
+  - Sentry (6.2.0):
+    - Sentry/Core (= 6.2.0)
+  - Sentry/Core (6.2.0)
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -441,7 +441,7 @@ DEPENDENCIES:
   - AMScrollingNavbar (= 5.6.0)
   - AppCenter (= 2.5.1)
   - AppCenter/Distribute (= 2.5.1)
-  - Automattic-Tracks-iOS (~> 0.8.0)
+  - Automattic-Tracks-iOS (~> 0.8.2)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (~> 3.0)
   - CropViewController (= 2.5.3)
@@ -675,7 +675,7 @@ SPEC CHECKSUMS:
   AMScrollingNavbar: cf0ec5a5ee659d76ba2509f630bf14fba7e16dc3
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
-  Automattic-Tracks-iOS: b942ca6067f089660c75c96fd189599fd065f979
+  Automattic-Tracks-iOS: f706ecd3fe22f6cfc6904bf65c5675874c1bceff
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CocoaLumberjack: e8955b9d337ac307103b0a34fd141c32f27e53c5
@@ -738,7 +738,7 @@ SPEC CHECKSUMS:
   RNScreens: 6833ac5c29cf2f03eed12103140530bbd75b6aea
   RNSVG: 68a534a5db06dcbdaebfd5079349191598caef7b
   RNTAztecView: 66bb8e7b79392d521f309d4899e9d3d52a93e5ee
-  Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
+  Sentry: 972bd51ddb2aa3430f2c81fadb975fe27f47c2f4
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6

@@ -21,6 +21,20 @@ struct ReaderNotificationKeys {
     static let topic = "topic"
 }
 
+// Used for event tracking properties
+enum ReaderPostMenuSource {
+    case card
+    case details
+
+    var description: String {
+        switch self {
+        case .card:
+            return "post_card"
+        case .details:
+            return "post_details"
+        }
+    }
+}
 
 /// A collection of helper methods used by the Reader.
 ///

@@ -96,11 +96,6 @@ static TestContextManager *_instance;
     }];
 }
 
-- (void)mergeChanges:(nonnull NSManagedObjectContext *)context fromContextDidSaveNotification:(nonnull NSNotification *)notification
-{
-    [_stack mergeChanges: context fromContextDidSaveNotification:notification];
-}
-
 - (nonnull NSManagedObjectContext *const)newDerivedContext {
     return [_stack newDerivedContext];
 }

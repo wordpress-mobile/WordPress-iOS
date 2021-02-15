@@ -5,7 +5,12 @@ final class ReaderMenuAction {
         isLoggedIn = logged
     }
 
-    func execute(post: ReaderPost, context: NSManagedObjectContext, readerTopic: ReaderAbstractTopic? = nil, anchor: UIView, vc: UIViewController) {
+    func execute(post: ReaderPost,
+                 context: NSManagedObjectContext,
+                 readerTopic: ReaderAbstractTopic? = nil,
+                 anchor: UIView,
+                 vc: UIViewController,
+                 source: ReaderPostMenuSource) {
         let service: ReaderTopicService = ReaderTopicService(managedObjectContext: context)
         let siteTopic: ReaderSiteTopic? = post.isFollowing ? service.findSiteTopic(withSiteID: post.siteID) : nil
 
@@ -14,6 +19,7 @@ final class ReaderMenuAction {
                                                            siteTopic: siteTopic,
                                                            readerTopic: readerTopic,
                                                            anchor: anchor,
-                                                           vc: vc)
+                                                           vc: vc,
+                                                           source: source)
     }
 }
