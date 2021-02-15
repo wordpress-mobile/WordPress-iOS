@@ -581,6 +581,15 @@ import "./ScreenshotFastfile"
     )
   end
 
+  lane :test_release_build do | options |
+    circleci_trigger_job(
+      circle_ci_token: ENV["CIRCLE_CI_AUTH_TOKEN"], 
+      repository:PROJECT_NAME, 
+      branch:"feature/trigger-ci-via-api",
+      job_params: {"release_build" => true}
+    )
+  end
+
 ########################################################################
 # Configure Lanes
 ########################################################################
