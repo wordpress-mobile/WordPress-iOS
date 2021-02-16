@@ -201,6 +201,8 @@ extension StatsWidgetsStore {
                 HomeWidgetAllTimeData.delete()
             }
 
+            UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey)
+
             WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
             WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
         }
