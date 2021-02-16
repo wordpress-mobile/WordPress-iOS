@@ -2,6 +2,10 @@
 -----
 * [**] Prevent deleting published homepages which would have the effect of breaking a site. [#15797]
 * [**] Prevent converting published homepage to a draft in the page list and settings which would have the effect of breaking a site. [#15797]
+* [*] Block Editor: Fixed block mover title wording for better clarity from 'Move block position' to 'Change block position'. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3049]
+* [**] Block Editor: Make inserter long-press options "add to beginning" and "add to end" always available. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3074]
+* [**] Block Editor: Add support for setting Cover block focal point. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3028]
+* [*] Block Editor: Fix crash when Column block width attribute was empty. [https://github.com/WordPress/gutenberg/pull/29015]
 
 16.7
 -----
