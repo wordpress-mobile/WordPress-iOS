@@ -58,7 +58,11 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
             if let siteID = defaultSiteID, let content = T.read()?[siteID] {
                 completion(Timeline(entries: [.siteSelected(content)], policy: .never))
             } else {
-                completion(Timeline(entries: [.loggedOut(widgetKind)], policy: .never))
+                if let loggedIn = UserDefaults(suiteName: WPAppGroupName)?.bool(forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey), loggedIn == false {
+                    completion(Timeline(entries: [.loggedOut(widgetKind)], policy: .never))
+                } else {
+                    completion(Timeline(entries: [.noData], policy: .never))
+                }
             }
             return
         }
@@ -100,4 +104,5 @@ enum StatsWidgetKind {
     case today
     case allTime
     case thisWeek
+    case noStats
 }
