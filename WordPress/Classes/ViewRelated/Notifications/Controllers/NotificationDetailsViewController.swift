@@ -98,6 +98,8 @@ class NotificationDetailsViewController: UIViewController {
         }
     }
 
+    var confettiView: ConfettiView?
+
     lazy var coordinator: ContentCoordinator = {
         return DefaultContentCoordinator(controller: self, context: mainContext)
     }()
@@ -146,11 +148,24 @@ class NotificationDetailsViewController: UIViewController {
         setupKeyboardManager()
 
         Environment.current.appRatingUtility.incrementSignificantEvent(section: "notifications")
+
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if let type = note.type, type.contains("achievement") {
+            let newConfettiView = ConfettiView()
 
+            //newConfettiView.translatesAutoresizingMaskIntoConstraints = false
+            //view.addSubview(newConfettiView)
+            //view.pinSubviewToSafeArea(newConfettiView)
+            confettiView = newConfettiView
+
+            newConfettiView.frame = view.frame//UIApplication.shared.mainWindow!.frame
+            navigationController?.view.addSubview(newConfettiView)
+            //UIApplication.shared.mainWindow?.addSubview(newConfettiView)
+        }
         tableView.deselectSelectedRowWithAnimation(true)
         keyboardManager?.startListeningToKeyboardNotifications()
 
@@ -159,12 +174,22 @@ class NotificationDetailsViewController: UIViewController {
         setupNotificationListeners()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        confettiView?.emitConfetti()
+    }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         keyboardManager?.stopListeningToKeyboardNotifications()
         tearDownNotificationListeners()
         storeNotificationReplyIfNeeded()
         dismissNotice()
+
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        confettiView?.removeFromSuperview()
+        confettiView = nil
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
