@@ -1,8 +1,8 @@
 import AVFoundation
 import Foundation
-import KanvasCamera
+import Kanvas
 
-final public class KanvasCameraAnalyticsStub: NSObject, KanvasCameraAnalyticsProvider {
+final public class KanvasAnalyticsStub: NSObject, KanvasAnalyticsProvider {
 
     public func logCameraOpen(mode: CameraMode) {
         logString(string: "logCameraOpen mode:\(modeStringValue(mode))")

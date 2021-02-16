@@ -1,18 +1,18 @@
 import Foundation
-import KanvasCamera
+import Kanvas
 
 /// Contains custom colors and fonts for the KanvasCamera framework
-public class KanvasCameraCustomUI {
+public class KanvasCustomUI {
 
-    public static let shared = KanvasCameraCustomUI()
+    public static let shared = KanvasCustomUI()
 
-    private static let brightBlue = UIColor.muriel(color: MurielColor(name: .wordPressBlue))
-    private static let brightPurple = UIColor.muriel(color: MurielColor(name: .purple))
-    private static let brightPink = UIColor.muriel(color: MurielColor(name: .pink))
-    private static let brightYellow = UIColor.muriel(color: MurielColor(name: .yellow))
-    private static let brightGreen = UIColor.muriel(color: MurielColor(name: .green))
-    private static let brightRed = UIColor.muriel(color: MurielColor(name: .red))
-    private static let brightOrange = UIColor.muriel(color: MurielColor(name: .orange))
+    private static let brightBlue = UIColor.muriel(color: MurielColor(name: .blue)).color(for: UITraitCollection(userInterfaceStyle: .dark))
+    private static let brightPurple = UIColor.muriel(color: MurielColor(name: .purple)).color(for: UITraitCollection(userInterfaceStyle: .dark))
+    private static let brightPink = UIColor.muriel(color: MurielColor(name: .pink)).color(for: UITraitCollection(userInterfaceStyle: .dark))
+    private static let brightYellow = UIColor.muriel(color: MurielColor(name: .yellow)).color(for: UITraitCollection(userInterfaceStyle: .dark))
+    private static let brightGreen = UIColor.muriel(color: MurielColor(name: .green)).color(for: UITraitCollection(userInterfaceStyle: .dark))
+    private static let brightRed = UIColor.muriel(color: MurielColor(name: .red)).color(for: UITraitCollection(userInterfaceStyle: .dark))
+    private static let brightOrange = UIColor.muriel(color: MurielColor(name: .orange)).color(for: UITraitCollection(userInterfaceStyle: .dark))
     private static let white = UIColor.white
 
     private let pickerColors = [brightBlue,
@@ -54,8 +54,8 @@ public class KanvasCameraCustomUI {
     private let selectedColor = brightBlue // ColorPickerController:29
     private let black25 = UIColor(white: 0, alpha: 0.25)
 
-    func cameraColors() -> KanvasCameraColors {
-        return KanvasCameraColors(
+    func cameraColors() -> KanvasColors {
+        return KanvasColors(
             drawingDefaultColor: Self.brightBlue,
             colorPickerColors: pickerColors,
             selectedPickerColor: selectedColor,
@@ -68,9 +68,7 @@ public class KanvasCameraCustomUI {
             trashColor: Self.brightRed,
             tooltipBackgroundColor: .systemRed,
             closeButtonColor: black25,
-            primaryButtonBackgroundColor: KanvasCameraCustomUI.brightRed,
-            permissionsButtonColor: UIColor.muriel(color: MurielColor(name: .blue)).color(for: UITraitCollection(userInterfaceStyle: .dark)),
-            permissionsButtonAcceptedBackgroundColor: UIColor.muriel(color: MurielColor(name: .green, shade: .shade20)),
+            primaryButtonBackgroundColor: Self.brightRed,
             overlayColor: UIColor.muriel(color: MurielColor.gray),
             filterColors: [
                 .manga: mangaColor,
@@ -82,14 +80,14 @@ public class KanvasCameraCustomUI {
     private static let guava85 = UIFont.guava85()
     private static let durianMedium = UIFont.durianMedium()
 
-    private static let cameraPermissions = KanvasCameraFonts.CameraPermissions(titleFont: durianMedium, descriptionFont: guava85, buttonFont: guavaMedium)
-    private static let drawer = KanvasCameraFonts.Drawer(textSelectedFont: UIFont.favoritTumblrMedium(fontSize: 14), textUnselectedFont: UIFont.favoritTumblr85(fontSize: 14))
+    private static let cameraPermissions = KanvasFonts.CameraPermissions(titleFont: durianMedium, descriptionFont: guava85, buttonFont: guavaMedium)
+    private static let drawer = KanvasFonts.Drawer(textSelectedFont: UIFont.favoritTumblrMedium(fontSize: 14), textUnselectedFont: UIFont.favoritTumblr85(fontSize: 14))
 
 
-    func cameraFonts() -> KanvasCameraFonts {
-        let paddingAdjustment: (UIFont) -> KanvasCameraFonts.Padding? = { font in
+    func cameraFonts() -> KanvasFonts {
+        let paddingAdjustment: (UIFont) -> KanvasFonts.Padding? = { font in
             if font == UIFont.favoritTumblr85(fontSize: font.pointSize) {
-                return KanvasCameraFonts.Padding(topMargin: 8.0,
+                return KanvasFonts.Padding(topMargin: 8.0,
                         leftMargin: 5.7,
                         extraVerticalPadding: 0.125 * font.pointSize,
                         extraHorizontalPadding: 0)
@@ -99,7 +97,7 @@ public class KanvasCameraCustomUI {
             }
         }
         let editorFonts: [UIFont] = [.libreBaskerville(fontSize: 20), .nunitoBold(fontSize: 24), .pacifico(fontSize: 24), .shrikhand(fontSize: 22), .spaceMonoBold(fontSize: 20), .oswaldUpper(fontSize: 22)]
-        return KanvasCameraFonts(permissions: Self.cameraPermissions,
+        return KanvasFonts(permissions: Self.cameraPermissions,
                                  drawer: Self.drawer,
                                  editorFonts: editorFonts,
                                  optionSelectorCellFont: .guavaMedium(),
@@ -118,7 +116,7 @@ public class KanvasCameraCustomUI {
     }
 }
 
-enum KanvasFonts: CaseIterable {
+enum CustomKanvasFonts: CaseIterable {
     case libreBaskerville
     case nunitoBold
     case pacifico

@@ -3,7 +3,7 @@ import WPMediaPicker
 import Gutenberg
 import Aztec
 import WordPressFlux
-import KanvasCamera
+import Kanvas
 
 class GutenbergViewController: UIViewController, PostEditor {
 
@@ -630,8 +630,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaImportCallback) {
-        let media = mediaInserterHelper.insertFromDevice(url: url)
-        callback(media)
+        mediaInserterHelper.insertFromDevice(url: url, callback: { media in
+            callback(media?.first)
+        })
     }
 
     func gutenbergDidRequestMediaUploadSync() {

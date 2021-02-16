@@ -1,9 +1,9 @@
 import Foundation
-import KanvasCamera
+import Kanvas
 import Photos
 
 protocol CameraHandlerDelegate: class {
-    func didCreateMedia(media: [Result<KanvasCameraMedia?, Error>])
+    func didCreateMedia(media: [Result<KanvasMedia?, Error>])
 }
 
 class KanvasService {
@@ -28,7 +28,6 @@ class KanvasService {
         settings.features.editorDrawing = false
         settings.features.editorMedia = false
         settings.features.mediaPicking = true
-        settings.features.editorPublishing = true
         settings.features.editorPostOptions = false
         settings.features.newCameraModes = true
         settings.features.gifs = false
@@ -36,10 +35,10 @@ class KanvasService {
         settings.crossIconInEditor = true
         settings.enabledModes = [.normal]
         settings.defaultMode = .normal
+        settings.features.scaleMediaToFill = true
         settings.animateEditorControls = false
+        settings.exportStopMotionPhotoAsVideo = false
         settings.fontSelectorUsesFont = true
-        settings.features.muteButton = true
-        settings.mediaImportSizeLimit = nil // No size limit
 
         return settings
     }
@@ -50,13 +49,13 @@ class KanvasService {
     }
 
     func controller(post: AbstractPost, publishOnCompletion: Bool = false, updated: @escaping (Result<(Post, [Media]), Error>) -> Void, uploaded: @escaping (Result<(Post, [Media]), Error>) -> Void) -> StoryEditor {
-        KanvasCameraColors.shared = KanvasCameraCustomUI.shared.cameraColors()
-        KanvasCameraFonts.shared = KanvasCameraCustomUI.shared.cameraFonts()
+        KanvasColors.shared = KanvasCustomUI.shared.cameraColors()
+        Kanvas.KanvasFonts.shared = KanvasCustomUI.shared.cameraFonts()
         let controller = StoryEditor(post: post,
                                      onClose: nil,
                                      settings: KanvasService.cameraSettings,
-                                     stickerProvider: EmojiStickerProvider(),
-                                     analyticsProvider: KanvasCameraAnalyticsStub(),
+                                     stickerProvider: nil,
+                                     analyticsProvider: KanvasAnalyticsStub(),
                                      quickBlogSelectorCoordinator: nil,
                                      tagCollection: nil,
                                      publishOnCompletion: publishOnCompletion,
@@ -79,7 +78,7 @@ extension KanvasService: CameraControllerDelegate {
         return UIView()
     }
 
-    func didCreateMedia(_ cameraController: CameraController, media: [Result<KanvasCameraMedia?, Error>], exportAction: KanvasExportAction) {
+    func didCreateMedia(_ cameraController: CameraController, media: [Result<KanvasMedia?, Error>], exportAction: KanvasExportAction) {
         delegate?.didCreateMedia(media: media)
     }
 

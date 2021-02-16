@@ -1,4 +1,4 @@
-import KanvasCamera
+import Kanvas
 
 class StoryMediaLoader {
 
@@ -62,10 +62,7 @@ class StoryMediaLoader {
                         let lastComponent = URL(string: file.url)?.lastPathComponent
                         let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!.appendingPathComponent(lastComponent ?? "", isDirectory: false)
                         self?.queue.async {
-                            try! image.writeJPEGToURL(url)
-//                            let source = CGImageSourceCreateWithDataProvider(image.cgImage!.dataProvider!, nil)!
-                            let source = CGImageSourceCreateWithURL(url as CFURL, nil)!
-                            self?.results[idx] = (CameraSegment.image(source, nil, nil, KanvasCamera.MediaInfo(source: .kanvas_camera)), nil)
+                            self?.results[idx] = (CameraSegment.image(image, nil, nil, Kanvas.MediaInfo(source: .kanvas_camera)), nil)
                         }
                     }, onFailure: { error in
                         print("Failed image download")

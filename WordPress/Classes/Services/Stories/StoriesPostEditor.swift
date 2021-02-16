@@ -1,5 +1,5 @@
 import Foundation
-import KanvasCamera
+import Kanvas
 
 class StoryEditor: CameraController {
 
@@ -34,7 +34,7 @@ class StoryEditor: CameraController {
                      onClose: ((Bool, Bool) -> Void)?,
                      settings: CameraSettings,
                      stickerProvider: StickerProvider?,
-                     analyticsProvider: KanvasCameraAnalyticsProvider?,
+                     analyticsProvider: KanvasAnalyticsProvider?,
                      quickBlogSelectorCoordinator: KanvasQuickBlogSelectorCoordinating?,
                      tagCollection: UIView?,
                      publishOnCompletion: Bool,
@@ -46,8 +46,9 @@ class StoryEditor: CameraController {
         let saveDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
 
         super.init(settings: KanvasService.cameraSettings,
-                 stickerProvider: EmojiStickerProvider(),
-                 analyticsProvider: KanvasCameraAnalyticsStub(),
+                 mediaPicker: nil,
+                 stickerProvider: nil,
+                 analyticsProvider: KanvasAnalyticsStub(),
                  quickBlogSelectorCoordinator: nil,
                  tagCollection: nil,
                  saveDirectory: saveDirectory)

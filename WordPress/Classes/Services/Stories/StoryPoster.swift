@@ -8,8 +8,8 @@ class StoryPoster {
     struct MediaItem {
         let url: URL
         let size: CGSize
-        let archive: URL
-        let original: URL
+        let archive: URL?
+        let original: URL?
 
         var mimeType: String {
             return url.mimeType
@@ -90,7 +90,7 @@ class StoryPoster {
 
     func move(mediaItems: [MediaItem], to newMedia: [Media]) throws {
         let urls = mediaItems.compactMap { item in
-            return item.archive.deletingPathExtension()
+            return item.archive?.deletingPathExtension()
         }
 
         try zip(urls, newMedia).forEach({ (url, media) in

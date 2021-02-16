@@ -1,4 +1,4 @@
-import KanvasCamera
+import Kanvas
 
 class KanvasStoryService: CameraHandlerDelegate {
 
@@ -33,7 +33,7 @@ class KanvasStoryService: CameraHandlerDelegate {
         cameraHandler.delegate = self
     }
 
-    func didCreateMedia(media: [Result<KanvasCameraMedia?, Error>]) {
+    func didCreateMedia(media: [Result<KanvasMedia?, Error>]) {
         poster = StoryPoster(context: blog.managedObjectContext ?? ContextManager.shared.mainContext)
         let postMedia: [StoryPoster.MediaItem] = media.compactMap { result in
             switch result {

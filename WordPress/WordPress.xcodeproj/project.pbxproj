@@ -319,7 +319,7 @@
 		241E60B325CA0D2900912CEB /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241E60B225CA0D2900912CEB /* UserSettings.swift */; };
 		24ADA24C24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24ADA24B24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift */; };
 		24B1AE3124FEC79900B9F334 /* RemoteFeatureFlagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1AE3024FEC79900B9F334 /* RemoteFeatureFlagTests.swift */; };
-		24CE2EB1258D687A0000C297 /* WordPressFlux in Frameworks */ = {isa = PBXBuildFile; productRef = 24CE2EB0258D687A0000C297 /* WordPressFlux */; };
+		24CE2EB1258D687A0000C297 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 24CE2EB0258D687A0000C297 /* SwiftPackageProductDependency */; };
 		2611CC62A62F9E6BC25350FE /* Pods_WordPressScreenshotGeneration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB390AA9C94F16E78184E9D1 /* Pods_WordPressScreenshotGeneration.framework */; };
 		26D66DEC36ACF7442186B07D /* Pods_WordPressThisWeekWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979B445A45E13F3289F2E99E /* Pods_WordPressThisWeekWidget.framework */; };
 		2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2906F810110CDA8900169D56 /* EditCommentViewController.m */; };
@@ -2259,7 +2259,6 @@
 		F504D2B525D60C5900A2764C /* KanvasService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F504D2AF25D60C5900A2764C /* KanvasService.swift */; };
 		F504D2DF25D60CDA00A2764C /* UIFont+Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F504D2D825D60CD900A2764C /* UIFont+Fonts.swift */; };
 		F504D2E125D60CDA00A2764C /* KanvasCameraAnalyticsStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = F504D2DA25D60CD900A2764C /* KanvasCameraAnalyticsStub.swift */; };
-		F504D2E225D60CDA00A2764C /* UIColor+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F504D2DB25D60CD900A2764C /* UIColor+Colors.swift */; };
 		F504D2E325D60CDA00A2764C /* KanvasCameraCustomUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F504D2DC25D60CD900A2764C /* KanvasCameraCustomUI.swift */; };
 		F504D2F525D6346400A2764C /* StoriesPostEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F504D2AD25D60C5900A2764C /* StoriesPostEditor.swift */; };
 		F504D43725D717EF00A2764C /* PostEditor+BlogPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DCE84321A6A7840062F134 /* PostEditor+BlogPicker.swift */; };
@@ -5429,7 +5428,7 @@
 				296890780FE971DC00770264 /* Security.framework in Frameworks */,
 				83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */,
 				83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */,
-				24CE2EB1258D687A0000C297 /* WordPressFlux in Frameworks */,
+				24CE2EB1258D687A0000C297 /* BuildFile in Frameworks */,
 				8355D7D911D260AA00A61362 /* CoreData.framework in Frameworks */,
 				834CE7341256D0DE0046A4A3 /* CFNetwork.framework in Frameworks */,
 				83043E55126FA31400EC9953 /* MessageUI.framework in Frameworks */,
@@ -6034,7 +6033,7 @@
 			path = GutenbergWeb;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				98D31BBF239720E4009CFF43 /* MainInterface.storyboard */,
@@ -11707,7 +11706,7 @@
 			);
 			name = WordPress;
 			packageProductDependencies = (
-				24CE2EB0258D687A0000C297 /* WordPressFlux */,
+				24CE2EB0258D687A0000C297 /* SwiftPackageProductDependency */,
 			);
 			productName = WordPress;
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
@@ -12126,7 +12125,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -13029,7 +13028,7 @@
 				"${PODS_ROOT}/Gutenberg/src/block-support/supported-blocks.json",
 				"${PODS_ROOT}/Gutenberg/resources/unsupported-block-editor/extra-localstorage-entries.js",
 				"${PODS_ROOT}/Gutenberg/resources/unsupported-block-editor/remove-nux.js",
-				"${PODS_CONFIGURATION_BUILD_DIR}/KanvasCamera/KanvasCamera.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Kanvas/Kanvas.bundle",
 				"${BUILT_PRODUCTS_DIR}/MediaEditor/MediaEditor.framework/MediaEditorDrawing.storyboardc",
 				"${BUILT_PRODUCTS_DIR}/MediaEditor/MediaEditor.framework/MediaEditorFilters.storyboardc",
 				"${BUILT_PRODUCTS_DIR}/MediaEditor/MediaEditor.framework/MediaEditorHub.storyboardc",
@@ -13063,7 +13062,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/supported-blocks.json",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/extra-localstorage-entries.js",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/remove-nux.js",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/KanvasCamera.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Kanvas.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorDrawing.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorFilters.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorHub.storyboardc",
@@ -13699,7 +13698,6 @@
 				D82253DF2199418B0014D0E2 /* WebAddressWizardContent.swift in Sources */,
 				400A2C782217A8A0000A8A59 /* VisitsSummaryStatsRecordValue+CoreDataProperties.swift in Sources */,
 				D853723C21952DC90076F461 /* SiteSegmentsStep.swift in Sources */,
-				F504D2E425D60CDA00A2764C /* EmojiStickerProvider.swift in Sources */,
 				32E1BFDA24A66F2A007A08F0 /* ReaderInterestsCollectionViewFlowLayout.swift in Sources */,
 				FF70A3221FD5840500BC270D /* PHAsset+Metadata.swift in Sources */,
 				5DA5BF4418E32DCF005F11F9 /* Theme.m in Sources */,
@@ -13808,7 +13806,6 @@
 				E1B912891BB01288003C25B9 /* PeopleViewController.swift in Sources */,
 				436D561F2117312700CEAA33 /* RegisterDomainSuggestionsViewController.swift in Sources */,
 				8BC12F7523201917004DDA72 /* PostService+MarkAsFailedAndDraftIfNeeded.swift in Sources */,
-				F504D2E225D60CDA00A2764C /* UIColor+Colors.swift in Sources */,
 				B0B68A9D252FA91E0001B28C /* UserSuggestion+CoreDataProperties.swift in Sources */,
 				405BFB21223B37A000CD5BEA /* FollowersCountStatsRecordValue+CoreDataProperties.swift in Sources */,
 				D8212CC720AA85C1008E8AE8 /* ReaderHeaderAction.swift in Sources */,
@@ -14526,7 +14523,6 @@
 				98579BC7203DD86F004086E4 /* EpilogueSectionHeaderFooter.swift in Sources */,
 				2F605FA8251430C200F99544 /* PostCategoriesViewController.swift in Sources */,
 				17D4153C22C2308D006378EF /* StatsPeriodHelper.swift in Sources */,
-				F504D2DE25D60CDA00A2764C /* ExperimentalStickerProvider.swift in Sources */,
 				7E3E7A5920E44D2F0075D159 /* FooterContentStyles.swift in Sources */,
 				C81CCD7E243BF7A600A83E27 /* TenorMedia.swift in Sources */,
 				E19B17B21E5C8F36007517C6 /* AbstractPost.swift in Sources */,
@@ -19057,7 +19053,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		24CE2EB0258D687A0000C297 /* WordPressFlux */ = {
+		24CE2EB0258D687A0000C297 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WordPressFlux;
 		};
