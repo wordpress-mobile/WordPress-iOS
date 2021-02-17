@@ -1,7 +1,54 @@
 import Foundation
 import WordPressFlux
 
-extension PostEditor where Self: UIViewController {
+protocol PublishingEditor where Self: UIViewController {
+    //TODO: Add publishing things
+    var post: AbstractPost { get set }
+
+    var isUploadingMedia: Bool { get }
+
+    /// Post editor state context
+    var postEditorStateContext: PostEditorStateContext { get }
+
+    /// Editor Session information for analytics reporting
+    var editorSession: PostEditorAnalyticsSession { get set }
+
+    /// Verification prompt helper
+    var verificationPromptHelper: VerificationPromptHelper? { get }
+
+    /// Describes the editor type to be used in analytics reporting
+    var analyticsEditorSource: String { get }
+
+    /// Title of the post
+    var postTitle: String { get set }
+
+    var prepublishingSourceView: UIView? { get }
+
+    var alertBarButtonItem: UIBarButtonItem? { get }
+
+    /// Closure to be executed when the editor gets closed.
+    var onClose: ((_ changesSaved: Bool, _ shouldShowPostPost: Bool) -> Void)? { get set }
+
+    /// Return the current html in the editor
+    func getHTML() -> String
+
+    /// Cancels all ongoing uploads
+    func cancelUploadOfAllMedia(for post: AbstractPost)
+
+    func removeFailedMedia()
+
+    /// Returns the word counts of the content in the editor.
+    var wordCount: UInt { get }
+
+    /// Debouncer used to save the post locally with a delay
+    var debouncer: Debouncer { get }
+}
+
+extension PublishingEditor where Self: UIViewController {
+
+    func removeFailedMedia() {
+        // TODO: we can only implement this when GB bridge allows removal of blocks
+    }
 
     // The debouncer will perform this callback every 500ms in order to save the post locally with a delay.
     var debouncerCallback: (() -> Void) {
@@ -27,6 +74,8 @@ extension PostEditor where Self: UIViewController {
             dismissWhenDone: action.dismissesEditor,
             analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
     }
+
+
 
     func publishPost(
         action: PostEditorAction,
@@ -155,12 +204,18 @@ extension PostEditor where Self: UIViewController {
         // End editing to avoid issues with accessibility
         view.endEditing(true)
 
-        let prepublishing = PrepublishingViewController(post: post) { _ in
+        let prepublishing = PrepublishingViewController(post: post) { post in
+            self.post = post
             publishAction()
         }
+
         let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing)
         let bottomSheet = BottomSheetViewController(childViewController: prepublishingNavigationController, customHeaderSpacing: 0)
-        bottomSheet.show(from: self, sourceView: navigationBarManager.publishButton)
+        if let sourceView = prepublishingSourceView {
+            bottomSheet.show(from: self, sourceView: sourceView)
+        } else {
+            bottomSheet.show(from: self.topmostPresentedViewController)
+        }
     }
 
     /// Displays a publish confirmation alert with two options: "Keep Editing" and String for Action.
@@ -334,7 +389,7 @@ extension PostEditor where Self: UIViewController {
             self.discardUnsavedChangesAndUpdateGUI()
         }
 
-        alertController.popoverPresentationController?.barButtonItem = navigationBarManager.closeBarButtonItem
+        alertController.popoverPresentationController?.barButtonItem = alertBarButtonItem
         present(alertController, animated: true, completion: nil)
     }
 
@@ -351,7 +406,7 @@ extension PostEditor where Self: UIViewController {
     }
 }
 
-extension PostEditor where Self: UIViewController {
+extension PublishingEditor where Self: UIViewController {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?) -> UIPresentationController? {
         guard presented is FancyAlertViewController else {
             return nil
@@ -363,7 +418,7 @@ extension PostEditor where Self: UIViewController {
 
 // MARK: - Publishing
 
-extension PostEditor where Self: UIViewController {
+extension PublishingEditor where Self: UIViewController {
 
     /// Shows the publishing overlay and starts the publishing process.
     ///
@@ -507,6 +562,14 @@ extension PostEditor where Self: UIViewController {
 
             ContextManager.sharedInstance().save(managedObjectContext)
         }
+    }
+
+    var uploadFailureNoticeTag: Notice.Tag {
+        return "PostEditor.UploadFailed"
+    }
+
+    func uploadFailureNotice(action: PostEditorAction) -> Notice {
+        return Notice(title: action.publishingErrorLabel, tag: uploadFailureNoticeTag)
     }
 }
 
