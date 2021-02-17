@@ -35,6 +35,9 @@ protocol PublishingEditor where Self: UIViewController {
     /// Cancels all ongoing uploads
     func cancelUploadOfAllMedia(for post: AbstractPost)
 
+    /// When the Prepublishing sheet or Prepublishing alert is dismissed, this is called.
+    func publishingDismissed()
+
     func removeFailedMedia()
 
     /// Returns the word counts of the content in the editor.
@@ -45,6 +48,10 @@ protocol PublishingEditor where Self: UIViewController {
 }
 
 extension PublishingEditor where Self: UIViewController {
+
+    func publishingDismissed() {
+
+    }
 
     func removeFailedMedia() {
         // TODO: we can only implement this when GB bridge allows removal of blocks
@@ -152,7 +159,7 @@ extension PublishingEditor where Self: UIViewController {
             WPAnalytics.track(.editorPostPublishTap)
 
             // Only display confirmation alert for unpublished posts
-            displayPublishConfirmationAlert(for: action, onPublish: publishBlock)
+            displayPublishConfirmationAlert(for: action, onPublish: publishBlock, onDismiss: { [weak self] in self?.publishingDismissed() })
         } else {
             publishBlock()
         }
@@ -187,11 +194,11 @@ extension PublishingEditor where Self: UIViewController {
     /// - Parameters:
     ///     - action: Publishing action being performed
     ///
-    fileprivate func displayPublishConfirmationAlert(for action: PostEditorAction, onPublish publishAction: @escaping () -> ()) {
+    fileprivate func displayPublishConfirmationAlert(for action: PostEditorAction, onPublish publishAction: @escaping () -> (), onDismiss dismissAction: @escaping () -> ()) {
         if let post = post as? Post {
-            displayPrepublishingNudges(post: post, onPublish: publishAction)
+            displayPrepublishingNudges(post: post, onPublish: publishAction, onDismiss: dismissAction)
         } else {
-            displayPublishConfirmationAlertForPage(for: action, onPublish: publishAction)
+            displayPublishConfirmationAlertForPage(for: action, onPublish: publishAction, onDismiss: dismissAction)
         }
     }
 
@@ -200,13 +207,18 @@ extension PublishingEditor where Self: UIViewController {
     /// - Parameters:
     ///     - action: Publishing action being performed
     ///
-    fileprivate func displayPrepublishingNudges(post: Post, onPublish publishAction: @escaping () -> ()) {
+    fileprivate func displayPrepublishingNudges(post: Post, onPublish publishAction: @escaping () -> (), onDismiss dismissAction: @escaping () -> ()) {
         // End editing to avoid issues with accessibility
         view.endEditing(true)
 
-        let prepublishing = PrepublishingViewController(post: post) { post in
-            self.post = post
-            publishAction()
+        let prepublishing = PrepublishingViewController(post: post) { result in
+            switch result {
+            case .completed(let post):
+                self.post = post
+                publishAction()
+            case .dismissed:
+                dismissAction()
+            }
         }
 
         let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing)
@@ -223,14 +235,16 @@ extension PublishingEditor where Self: UIViewController {
     /// - Parameters:
     ///     - action: Publishing action being performed
     ///
-    fileprivate func displayPublishConfirmationAlertForPage(for action: PostEditorAction, onPublish publishAction: @escaping () -> ()) {
+    fileprivate func displayPublishConfirmationAlertForPage(for action: PostEditorAction, onPublish publishAction: @escaping () -> (), onDismiss dismissAction: @escaping () -> ()) {
         let title = action.publishingActionQuestionLabel
         let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
         let publishTitle = action.publishActionLabel
         let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
 
-        alertController.addCancelActionWithTitle(keepEditingTitle)
+        alertController.addCancelActionWithTitle(keepEditingTitle) { _ in
+            dismissAction()
+        }
         alertController.addDefaultActionWithTitle(publishTitle) { _ in
             publishAction()
         }

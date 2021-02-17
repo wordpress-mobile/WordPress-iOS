@@ -96,7 +96,13 @@ class StoryEditor: CameraController {
         self.onClose = onClose
         self.publishOnCompletion = publishOnCompletion
 
-        let saveDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        let saveDirectory: URL?
+        do {
+            saveDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        } catch let error {
+            assertionFailure("Should be able to create a save directory in documents \(error)")
+            saveDirectory = nil
+        }
 
         super.init(settings: settings,
                  mediaPicker: nil,
@@ -146,6 +152,10 @@ extension StoryEditor: PublishingEditor {
 
     func cancelUploadOfAllMedia(for post: AbstractPost) {
 
+    }
+
+    func publishingDismissed() {
+        hideLoading()
     }
 
     var wordCount: UInt {
