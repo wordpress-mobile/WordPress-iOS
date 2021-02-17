@@ -18,6 +18,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackBackupAndRestore
     case todayWidget
     case unseenPosts
+    case milestoneNotifications
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -58,6 +59,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .unseenPosts:
             return true
+        case .milestoneNotifications:
+            return false
         }
     }
 
@@ -118,6 +121,8 @@ extension FeatureFlag {
             return "iOS 14 Today Widget"
         case .unseenPosts:
             return "Unseen Posts in Reader"
+        case .milestoneNotifications:
+            return "Milestone notifications"
         }
     }
 
