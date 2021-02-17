@@ -140,7 +140,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         let availableSortingOptions: [ReaderSortingOption] = [.popularity, .date]
         let viewController = ReaderSortingOptionViewController(options: availableSortingOptions, preselectedOption: sortingButton.sortingOption) { [weak self] option in
             if let trackingEvent = option.trackingEvent {
-                WPAnalytics.track(trackingEvent)
+                WPAnalytics.track(trackingEvent, properties: ["sortingOption": option.rawValue])
             }
             self?.updateSortingOption(option)
             if self?.presentedViewController != nil {
@@ -366,13 +366,9 @@ extension ReaderCardsStreamViewController {
 
 extension ReaderSortingOption {
     var trackingEvent: WPAnalyticsEvent? {
-        switch self {
-        case .date:
-            return .readerDiscoverSortingOptionDateSelected
-        case .popularity:
-            return .readerDiscoverSortingOptionPopularitySelected
-        case .noSorting:
+        if self == .noSorting {
             return nil
         }
+        return .readerDiscoverSortingOptionSelected
     }
 }
