@@ -79,7 +79,7 @@ PODS:
     - React-RCTImage (= 0.61.5)
     - RNTAztecView
   - JTAppleCalendar (8.0.3)
-  - KanvasCamera (1.0.0)
+  - Kanvas (1.1.1)
   - lottie-ios (3.1.9)
   - MediaEditor (1.2.1):
     - CropViewController (~> 2.5.3)
@@ -456,7 +456,7 @@ DEPENDENCIES:
   - Gridicons (~> 1.1.0)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v1.47.0-alpha1`)
   - JTAppleCalendar (~> 8.0.2)
-  - "KanvasCamera (from `git@github.com:tumblr/kanvas-ios.git`, branch `stories/build`)"
+  - "Kanvas (from `git@github.com:tumblr/kanvas-ios.git`, branch `stories/archiving`)"
   - MediaEditor (~> 1.2.1)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.3.1)
@@ -583,8 +583,8 @@ EXTERNAL SOURCES:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
     :tag: v1.47.0-alpha1
-  KanvasCamera:
-    :branch: stories/build
+  Kanvas:
+    :branch: stories/archiving
     :git: "git@github.com:tumblr/kanvas-ios.git"
   RCTRequired:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.47.0-alpha1/third-party-podspecs/RCTRequired.podspec.json
@@ -667,8 +667,8 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
     :tag: v1.47.0-alpha1
-  KanvasCamera:
-    :commit: 9efe371109f3a6ca462f4a5de6bcac706c13d42f
+  Kanvas:
+    :commit: fdcbd627eef7ce729d4394e6a422a523453d292c
     :git: "git@github.com:tumblr/kanvas-ios.git"
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
@@ -703,7 +703,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Gutenberg: f283b145b3669f82ce13e6d8a6f0130172b19301
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
-  KanvasCamera: c45a4a77ab183b729a302996378dd4fe31637291
+  Kanvas: 565caff19d90e883194e6e646f6ea994e14fcde5
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
@@ -771,6 +771,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: b4a14dc51cf0650578724df81fdba15d3a1facb1
+PODFILE CHECKSUM: d742ac444a9718c14fff77da727bc719b26413bc
 
 COCOAPODS: 1.10.0
