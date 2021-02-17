@@ -154,18 +154,7 @@ class NotificationDetailsViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let type = note.type, type.contains("achievement") {
-            let newConfettiView = ConfettiView()
-
-            //newConfettiView.translatesAutoresizingMaskIntoConstraints = false
-            //view.addSubview(newConfettiView)
-            //view.pinSubviewToSafeArea(newConfettiView)
-            confettiView = newConfettiView
-
-            newConfettiView.frame = view.frame//UIApplication.shared.mainWindow!.frame
-            navigationController?.view.addSubview(newConfettiView)
-            //UIApplication.shared.mainWindow?.addSubview(newConfettiView)
-        }
+        addConfettiViewIfNeeded()
         tableView.deselectSelectedRowWithAnimation(true)
         keyboardManager?.startListeningToKeyboardNotifications()
 
@@ -176,7 +165,7 @@ class NotificationDetailsViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        confettiView?.emitConfetti()
+        showConfetti()
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -188,10 +177,9 @@ class NotificationDetailsViewController: UIViewController {
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        confettiView?.removeFromSuperview()
-        confettiView = nil
+        super.viewDidDisappear(animated)
+        removeConfettiView()
     }
-
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: { context in
@@ -1246,7 +1234,48 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate {
     }
 }
 
+// MARK: - Milestone notifications
+//
+private extension NotificationDetailsViewController {
 
+    /// Determines if the notification contains an achievement
+    /// - TODO: - MILESTONE_NOTIF - this is temporary set to the existing achievement system.
+    var isAchievement: Bool {
+        if let type = note.type, type.contains("achievement"), FeatureFlag.milestoneNotifications.enabled {
+            return true
+        }
+        return false
+    }
+
+    func addConfettiViewIfNeeded() {
+        guard isAchievement else {
+            return
+        }
+        let newConfettiView = ConfettiView()
+
+        confettiView = newConfettiView
+        guard let navigationController = navigationController else {
+            return
+        }
+        newConfettiView.frame = navigationController.view.frame
+        newConfettiView.clipsToBounds = false
+
+        UIApplication.shared.mainWindow?.addSubview(newConfettiView)
+    }
+
+    func showConfetti() {
+        /// - TODO: MILESTONE_NOTIF - Handle orientation changes
+        guard FeatureFlag.milestoneNotifications.enabled else {
+            return
+        }
+        confettiView?.emitConfetti()
+    }
+
+    func removeConfettiView() {
+        confettiView?.removeFromSuperview()
+        confettiView = nil
+    }
+}
 
 // MARK: - Navigation Helpers
 //
@@ -1258,6 +1287,9 @@ extension NotificationDetailsViewController {
 
         onSelectedNoteChange?(previous)
         note = previous
+        removeConfettiView()
+        addConfettiViewIfNeeded()
+        showConfetti()
     }
 
     @IBAction func nextNotificationWasPressed() {
@@ -1267,6 +1299,9 @@ extension NotificationDetailsViewController {
 
         onSelectedNoteChange?(next)
         note = next
+        removeConfettiView()
+        addConfettiViewIfNeeded()
+        showConfetti()
     }
 
     var shouldEnablePreviousButton: Bool {
