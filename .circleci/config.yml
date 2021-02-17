@@ -174,7 +174,7 @@ jobs:
       - store_artifacts:
           path: Artifacts
           destination: Artifacts
-  Beta Build:
+  beta-build:
     executor:
       name: ios/default
       <<: *xcode_version
@@ -349,7 +349,7 @@ workflows:
   Beta Build:
     when: or [ << pipeline.parameters.beta_build >>, << pipeline.parameters.release_build >> ]
     jobs: 
-      - Beta Build
+      - beta-build
   Translation Review Build:
     when: << pipeline.parameters.translation_review_build >>
     jobs:
