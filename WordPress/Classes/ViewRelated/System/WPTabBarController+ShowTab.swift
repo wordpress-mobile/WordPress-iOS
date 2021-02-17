@@ -69,7 +69,20 @@ extension WPTabBarController {
 
             WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "story"])
 
-            let controller = StoryEditor.editor(blog: blog, context: ContextManager.shared.mainContext)
+            let controller = StoryEditor.editor(blog: blog, context: ContextManager.shared.mainContext, updated: {_ in }, uploaded: { [weak self] result in
+                switch result {
+                case .success:
+                    ()
+                case .failure(let error):
+                    self?.dismiss(animated: true, completion: nil)
+                    let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)
+                    let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
+                        controller.dismiss(animated: true, completion: nil)
+                    }
+                    controller.addAction(dismiss)
+                    self?.present(controller, animated: true, completion: nil)
+                }
+            })
 
             present(controller, animated: true, completion: nil)
         }
