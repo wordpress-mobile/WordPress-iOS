@@ -182,7 +182,7 @@ public protocol ThemePresenter: class {
     @objc func resumingSearch() -> Bool {
         return !suspendedSearch.trim().isEmpty
     }
-    
+
     fileprivate var activityIndicator: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView(style: .medium)
         //TODO update color with white headers
@@ -776,7 +776,7 @@ public protocol ThemePresenter: class {
         guard let theme = theme, !theme.isCurrentTheme() else {
             return
         }
-        
+
         activateButton?.customView = activityIndicator
         activityIndicator.startAnimating()
 
