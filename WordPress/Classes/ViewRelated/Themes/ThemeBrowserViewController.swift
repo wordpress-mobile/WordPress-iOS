@@ -183,10 +183,12 @@ public protocol ThemePresenter: class {
         return !suspendedSearch.trim().isEmpty
     }
     
-    fileprivate lazy var activityIndicator: UIActivityIndicatorView = {
-           let indicatorView = UIActivityIndicatorView(style: .medium)
-           indicatorView.translatesAutoresizingMaskIntoConstraints = false
-           return indicatorView
+    fileprivate var activityIndicator: UIActivityIndicatorView = {
+        let indicatorView = UIActivityIndicatorView(style: .medium)
+        //TODO update color with white headers
+        indicatorView.color = .white
+        indicatorView.startAnimating()
+        return indicatorView
        }()
 
     open var filterType: ThemeType = ThemeType.mayPurchase ? .all : .free
@@ -775,10 +777,8 @@ public protocol ThemePresenter: class {
             return
         }
         
-        activateButton?.isEnabled = false
         activateButton?.customView = activityIndicator
         activityIndicator.startAnimating()
-        activityIndicator.hidesWhenStopped = true
 
         _ = themeService.activate(theme,
             for: blog,
@@ -793,8 +793,11 @@ public protocol ThemePresenter: class {
                 let successMessage = String(format: successFormat, theme?.name ?? "", theme?.author ?? "")
                 let manageTitle = NSLocalizedString("Manage site", comment: "Return to blog screen action when theme activation succeeds")
                 let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
+
                 self.activityIndicator.stopAnimating()
                 self.activateButton?.customView = nil
+                self.activateButton?.isEnabled = false
+                self.activateButton?.title = ThemeAction.active.title
 
                 let alertController = UIAlertController(title: successTitle,
                     message: successMessage,
@@ -812,6 +815,7 @@ public protocol ThemePresenter: class {
 
                 let errorTitle = NSLocalizedString("Activation Error", comment: "Title of alert when theme activation fails")
                 let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
+
                 self?.activityIndicator.stopAnimating()
                 self?.activateButton?.customView = nil
 
@@ -876,10 +880,12 @@ public protocol ThemePresenter: class {
         configuration.customTitle = theme.name
         configuration.navigationDelegate = customizerNavigationDelegate
         configuration.onClose = onClose
+
+        let title = activeButton ? ThemeAction.activate.title : ThemeAction.active.title
+        activateButton = UIBarButtonItem(title: title, style: .plain, target: self, action: #selector(ThemeBrowserViewController.activatePresentingTheme))
+        activateButton?.isEnabled = !theme.isCurrentTheme()
+
         let webViewController = WebViewControllerFactory.controller(configuration: configuration)
-        if activeButton && !theme.isCurrentTheme() {
-           activateButton = UIBarButtonItem(title: ThemeAction.activate.title, style: .plain, target: self, action: #selector(ThemeBrowserViewController.activatePresentingTheme))
-        }
         webViewController.navigationItem.rightBarButtonItem = activateButton
         let navigation = UINavigationController(rootViewController: webViewController)
         navigation.modalPresentationStyle = modalStyle
