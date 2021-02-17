@@ -84,6 +84,7 @@ public protocol ThemePresenter: class {
 
     @objc static let reuseIdentifierForThemesHeader = "ThemeBrowserSectionHeaderViewThemes"
     @objc static let reuseIdentifierForCustomThemesHeader = "ThemeBrowserSectionHeaderViewCustomThemes"
+    static let themesLoaderFrame = CGRect(x: 0.0, y: 0.0, width: 40.0, height: 20.0)
 
     // MARK: - Properties: must be set by parent
 
@@ -185,7 +186,7 @@ public protocol ThemePresenter: class {
 
     fileprivate var activityIndicator: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView(style: .medium)
-        indicatorView.frame = CGRect(x: 0.0, y: 0.0, width: 40.0, height: 20.0)
+        indicatorView.frame = themesLoaderFrame
         //TODO update color with white headers
         indicatorView.color = .white
         indicatorView.startAnimating()
@@ -218,6 +219,18 @@ public protocol ThemePresenter: class {
             return customThemesController.object(at: IndexPath(row: indexPath.row, section: 0)) as? Theme
         }
         return nil
+    }
+
+    fileprivate func updateActivateButton(isLoading: Bool) {
+        if isLoading {
+            activateButton?.customView = activityIndicator
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+            activateButton?.customView = nil
+            activateButton?.isEnabled = false
+            activateButton?.title = ThemeAction.active.title
+        }
     }
 
     fileprivate var presentingTheme: Theme?
@@ -778,8 +791,7 @@ public protocol ThemePresenter: class {
             return
         }
 
-        activateButton?.customView = activityIndicator
-        activityIndicator.startAnimating()
+        updateActivateButton(isLoading: true)
 
         _ = themeService.activate(theme,
             for: blog,
@@ -794,10 +806,7 @@ public protocol ThemePresenter: class {
                 let manageTitle = NSLocalizedString("Manage site", comment: "Return to blog screen action when theme activation succeeds")
                 let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
 
-                self?.activityIndicator.stopAnimating()
-                self?.activateButton?.customView = nil
-                self?.activateButton?.isEnabled = false
-                self?.activateButton?.title = ThemeAction.active.title
+                self?.updateActivateButton(isLoading: false)
 
                 let alertController = UIAlertController(title: successTitle,
                     message: successMessage,
