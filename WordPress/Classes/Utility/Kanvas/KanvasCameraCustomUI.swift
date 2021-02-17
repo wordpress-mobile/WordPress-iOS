@@ -15,38 +15,26 @@ public class KanvasCustomUI {
     private static let brightOrange = UIColor.muriel(color: MurielColor(name: .orange)).color(for: UITraitCollection(userInterfaceStyle: .dark))
     private static let white = UIColor.white
 
-    private let pickerColors = [brightBlue,
-                         brightBlue,
-                         brightPurple,
-                         brightPink,
-                         brightRed,
-                         brightYellow,
-                         brightGreen,
-                         brightGreen] // ColorPickerView:37
+    static private var firstPrimary: UIColor {
+        return KanvasCustomUI.primaryColors.first ?? UIColor.blue
+    }
 
-    private let segmentColors = [brightBlue,
-                                   brightPurple,
-                                   brightPink,
-                                   brightRed,
-                                   brightOrange,
-                                   brightYellow,
-                                   brightGreen,
-                                   brightBlue,
-                                   brightPurple,
-                                   brightPink,
-                                   brightRed,
-                                   brightOrange,
-                                   brightYellow,
-                                   brightGreen,
-                                   brightBlue]
+    static private var lastPrimary: UIColor {
+        return KanvasCustomUI.primaryColors.last ?? UIColor.green
+    }
 
-    private let backgroundColorCollection = [brightBlue,
-                                                         brightPurple,
-                                                         brightPink,
-                                                         brightRed,
-                                                         brightOrange,
-                                                         brightYellow,
-                                                         brightGreen]
+    private let pickerColors: [UIColor] = [KanvasCustomUI.firstPrimary] + KanvasCustomUI.primaryColors + [KanvasCustomUI.lastPrimary]
+
+    private let segmentColors: [UIColor] = KanvasCustomUI.primaryColors + KanvasCustomUI.primaryColors + [KanvasCustomUI.firstPrimary]
+
+    static private let primaryColors: [UIColor] = [.blue,
+                                            .purple,
+                                            .magenta,
+                                            .red,
+                                            .yellow,
+                                            .green]
+
+    private let backgroundColorCollection: [UIColor] = KanvasCustomUI.primaryColors
 
     private let mangaColor: UIColor = brightPink
     private let toonColor: UIColor = brightOrange
@@ -55,16 +43,17 @@ public class KanvasCustomUI {
     private let black25 = UIColor(white: 0, alpha: 0.25)
 
     func cameraColors() -> KanvasColors {
+        let firstPrimary = KanvasCustomUI.primaryColors.first ?? .blue
         return KanvasColors(
-            drawingDefaultColor: Self.brightBlue,
+            drawingDefaultColor: firstPrimary,
             colorPickerColors: pickerColors,
             selectedPickerColor: selectedColor,
             timeSegmentColors: segmentColors,
             backgroundColors: backgroundColorCollection,
-            strokeColor: Self.brightBlue,
-            sliderActiveColor: Self.brightBlue,
-            sliderOuterCircleColor: Self.brightBlue,
-            trimBackgroundColor: Self.brightBlue,
+            strokeColor: firstPrimary,
+            sliderActiveColor: firstPrimary,
+            sliderOuterCircleColor: firstPrimary,
+            trimBackgroundColor: firstPrimary,
             trashColor: Self.brightRed,
             tooltipBackgroundColor: .systemRed,
             closeButtonColor: black25,
