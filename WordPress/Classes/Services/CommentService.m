@@ -14,6 +14,7 @@
 NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 NSInteger const  WPNumberOfCommentsToSync = 100;
 static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minutes
+NSString *commentStatusAll = @"all";
 
 @implementation CommentService
 
@@ -117,7 +118,16 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 }
 
 // Sync comments
+
 - (void)syncCommentsForBlog:(Blog *)blog
+                    success:(void (^)(BOOL hasMore))success
+                    failure:(void (^)(NSError *error))failure
+{
+    [self syncCommentsForBlog:blog withStatus:commentStatusAll success:success failure:failure];
+}
+
+- (void)syncCommentsForBlog:(Blog *)blog
+                 withStatus:(NSString *)status
                     success:(void (^)(BOOL hasMore))success
                     failure:(void (^)(NSError *error))failure
 {
@@ -130,40 +140,49 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         return;
     }
     
-    id<CommentServiceRemote> remote = [self remoteForBlog:blog];
-    [remote getCommentsWithMaximumCount:WPNumberOfCommentsToSync success:^(NSArray *comments) {
-         [self.managedObjectContext performBlock:^{
-             Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-             if (blogInContext) {
-                 [self mergeComments:comments
-                             forBlog:blog
-                       purgeExisting:YES
-                   completionHandler:^{
-                     [[self class] stopSyncingCommentsForBlog:blogID];
+    // If the comment status is not specified, default to all.
+    NSDictionary *options = @{ @"status": status ?: commentStatusAll };
 
-                     [self.managedObjectContext performBlock:^{
-                         blogInContext.lastCommentsSync = [NSDate date];
-                         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                             if (success) {
-                                 // Note:
-                                 // We'll assume that if the requested page size couldn't be filled, there are no
-                                 // more comments left to retrieve.
-                                 BOOL hasMore = comments.count >= WPNumberOfCommentsToSync;
-                                 success(hasMore);
-                             }
-                         }];
-                     }];
-                   }];
-             }
-         }];
-     } failure:^(NSError *error) {
-         [[self class] stopSyncingCommentsForBlog:blogID];
-         if (failure) {
-             [self.managedObjectContext performBlock:^{
-                 failure(error);
-             }];
-         }
-     }];
+    id<CommentServiceRemote> remote = [self remoteForBlog:blog];
+    
+    [remote getCommentsWithMaximumCount:WPNumberOfCommentsToSync
+                                options:options
+                                success:^(NSArray *comments) {
+        [self.managedObjectContext performBlock:^{
+            Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+            
+            if (!blogInContext) {
+                return;
+            }
+            
+            [self mergeComments:comments
+                        forBlog:blog
+                  purgeExisting:YES
+              completionHandler:^{
+                [[self class] stopSyncingCommentsForBlog:blogID];
+                
+                [self.managedObjectContext performBlock:^{
+                    blogInContext.lastCommentsSync = [NSDate date];
+                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                        if (success) {
+                            // Note:
+                            // We'll assume that if the requested page size couldn't be filled, there are no
+                            // more comments left to retrieve.
+                            BOOL hasMore = comments.count >= WPNumberOfCommentsToSync;
+                            success(hasMore);
+                        }
+                    }];
+                }];
+            }];
+        }];
+    } failure:^(NSError *error) {
+        [[self class] stopSyncingCommentsForBlog:blogID];
+        if (failure) {
+            [self.managedObjectContext performBlock:^{
+                failure(error);
+            }];
+        }
+    }];
 }
 
 - (Comment *)oldestCommentForBlog:(Blog *)blog {
@@ -180,6 +199,14 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                         success:(void (^)(BOOL hasMore))success
                         failure:(void (^)(NSError *))failure
 {
+    [self loadMoreCommentsForBlog:blog withStatus:commentStatusAll success:success failure:failure];
+}
+
+- (void)loadMoreCommentsForBlog:(Blog *)blog
+                     withStatus:(NSString *)status
+                        success:(void (^)(BOOL hasMore))success
+                        failure:(void (^)(NSError *))failure
+{
     NSManagedObjectID *blogID = blog.objectID;
     if (![[self class] startSyncingCommentsForBlog:blogID]){
         // We assume success because a sync is already running and it will change the comments
@@ -188,8 +215,12 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         }
     }
 
-    id<CommentServiceRemote> remote = [self remoteForBlog:blog];
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
+    // If the comment status is not specified, default to all.
+    options[@"status"] = status ?: commentStatusAll;
+
+    id<CommentServiceRemote> remote = [self remoteForBlog:blog];
+    
     if ([remote isKindOfClass:[CommentServiceRemoteREST class]]) {
         Comment *oldestComment = [self oldestCommentForBlog:blog];
         if (oldestComment.dateCreated) {
@@ -200,18 +231,22 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         NSUInteger commentCount = [blog.comments count];
         options[@"offset"] = @(commentCount);
     }
-    [remote getCommentsWithMaximumCount:WPNumberOfCommentsToSync options:options success:^(NSArray *comments) {
+    
+    [remote getCommentsWithMaximumCount:WPNumberOfCommentsToSync
+                                options:options
+                                success:^(NSArray *comments) {
         [self.managedObjectContext performBlock:^{
             Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
             if (!blog) {
                 return;
             }
+
             [self mergeComments:comments forBlog:blog purgeExisting:NO completionHandler:^{
-                 [[self class] stopSyncingCommentsForBlog:blogID];
-                 if (success) {
-                     success(comments.count > 1);
-                 }
-             }];
+                [[self class] stopSyncingCommentsForBlog:blogID];
+                if (success) {
+                    success(comments.count > 1);
+                }
+            }];
         }];
         
     } failure:^(NSError *error) {
