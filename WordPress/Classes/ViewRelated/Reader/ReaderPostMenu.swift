@@ -18,7 +18,6 @@ struct ReaderPostMenuButtonTitles {
 
 
 open class ReaderPostMenu {
-    public static let BlockSiteNotification = "ReaderPostMenuBlockSiteNotification"
 
     open class func showMenuForPost(_ post: ReaderPost, topic: ReaderSiteTopic? = nil, fromView anchorView: UIView, inViewController viewController: UIViewController?) {
 
@@ -142,9 +141,7 @@ open class ReaderPostMenu {
 
 
     fileprivate class func blockSiteForPost(_ post: ReaderPost) {
-        // TODO: Dispatch notification to block the site for the specified post.
-        // The list and the detail will need to handle this separately
-        NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: BlockSiteNotification), object: nil, userInfo: ["post": post])
+        NotificationCenter.default.post(name: .ReaderSiteBlocked, object: nil, userInfo: ["post": post])
     }
 
 

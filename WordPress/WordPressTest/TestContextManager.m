@@ -13,11 +13,7 @@ static TestContextManager *_instance;
     self = [super init];
     if (self) {
         // Override the shared ContextManager
-        if([Feature enabled:FeatureFlagSwiftCoreData]) {
-            _stack = [SwiftManagerMock instance];
-        } else {
-            _stack = [[ContextManagerMock alloc] init];
-        }
+        _stack = [[ContextManagerMock alloc] init];
         _requiresTestExpectation = YES;
     }
 
@@ -100,21 +96,12 @@ static TestContextManager *_instance;
     }];
 }
 
-- (void)mergeChanges:(nonnull NSManagedObjectContext *)context fromContextDidSaveNotification:(nonnull NSNotification *)notification
-{
-    [_stack mergeChanges: context fromContextDidSaveNotification:notification];
-}
-
 - (nonnull NSManagedObjectContext *const)newDerivedContext {
     return [_stack newDerivedContext];
 }
 
 - (nonnull NSManagedObjectContext *const)newMainContextChildContext {
     return [_stack newMainContextChildContext];
-}
-
-- (BOOL)obtainPermanentIDForObject:(nonnull NSManagedObject *)managedObject {
-    return [_stack obtainPermanentIDForObject:managedObject];
 }
 
 - (NSURL *)storeURL

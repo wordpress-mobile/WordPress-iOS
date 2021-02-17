@@ -860,6 +860,14 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         })
     }
 
+    func gutenbergDidRequestFocalPointPickerTooltipShown() -> Bool {
+        return gutenbergSettings.focalPointPickerTooltipShown
+    }
+
+    func gutenbergDidRequestSetFocalPointPickerTooltipShown(_ tooltipShown: Bool) {
+        gutenbergSettings.focalPointPickerTooltipShown = tooltipShown
+    }
+
     func gutenbergDidSendButtonPressedAction(_ buttonType: Gutenberg.ActionButtonType) {
         switch buttonType {
             case .missingBlockAlertActionButton:
