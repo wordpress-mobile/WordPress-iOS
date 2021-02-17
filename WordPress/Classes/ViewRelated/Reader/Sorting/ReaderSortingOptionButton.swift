@@ -142,7 +142,7 @@ class ReaderSortingOptionButton: UIControl {
         label.text = sortingOption.localizedDescription
         iconView.image = sortingOption.image
     }
-    
+
     public func setLabelBottomCompensation(_ compensation: CGFloat) {
         labelBottomConstraint.constant = Constants.bottom + compensation
     }

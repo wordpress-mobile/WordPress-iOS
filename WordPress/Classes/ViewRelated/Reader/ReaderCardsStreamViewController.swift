@@ -346,6 +346,8 @@ extension ReaderCardsStreamViewController: ReaderSitesCardCellDelegate {
     }
 }
 
+// MARK: - UIViewControllerTransitioningDelegate
+
 extension ReaderCardsStreamViewController {
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return BottomSheetAnimationController(transitionType: .presenting)
