@@ -784,9 +784,8 @@ public protocol ThemePresenter: class {
             for: blog,
             success: { [weak self] (theme: Theme?) in
                 WPAppAnalytics.track(.themesChangedTheme, withProperties: ["theme_id": theme?.themeId ?? ""], with: self?.blog)
-                guard let self = self else { return }
 
-                self.collectionView?.reloadData()
+                self?.collectionView?.reloadData()
 
                 let successTitle = NSLocalizedString("Theme Activated", comment: "Title of alert when theme activation succeeds")
                 let successFormat = NSLocalizedString("Thanks for choosing %@ by %@", comment: "Message of alert when theme activation succeeds")
@@ -794,10 +793,10 @@ public protocol ThemePresenter: class {
                 let manageTitle = NSLocalizedString("Manage site", comment: "Return to blog screen action when theme activation succeeds")
                 let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
 
-                self.activityIndicator.stopAnimating()
-                self.activateButton?.customView = nil
-                self.activateButton?.isEnabled = false
-                self.activateButton?.title = ThemeAction.active.title
+                self?.activityIndicator.stopAnimating()
+                self?.activateButton?.customView = nil
+                self?.activateButton?.isEnabled = false
+                self?.activateButton?.title = ThemeAction.active.title
 
                 let alertController = UIAlertController(title: successTitle,
                     message: successMessage,
