@@ -412,8 +412,9 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
         if (!blogInContext) {
             return;
         }
-        
+
         [commentService syncCommentsForBlog:blogInContext
+                                 withStatus:commentStatusAll
                                     success:^(BOOL hasMore) {
                                         if (success) {
                                             dispatch_async(dispatch_get_main_queue(), ^{
@@ -448,8 +449,9 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
         if (!blogInContext) {
             return;
         }
-        
+
         [commentService loadMoreCommentsForBlog:blogInContext
+                                     withStatus:commentStatusAll
                                         success:^(BOOL hasMore) {
                                                     if (success) {
                                                         dispatch_async(dispatch_get_main_queue(), ^{
