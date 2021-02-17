@@ -2,68 +2,54 @@ import Foundation
 import WordPressShared.WPTableViewCell
 
 open class CommentsTableViewCell: WPTableViewCell {
-    // MARK: - Public Properties
-    @objc open var author: String? {
-        didSet {
-            refreshDetailsLabel()
-        }
-    }
-    @objc open var postTitle: String? {
-        didSet {
-            refreshDetailsLabel()
-        }
-    }
-    @objc open var content: String? {
-        didSet {
-            refreshDetailsLabel()
-        }
-    }
-    @objc open var timestamp: String? {
-        didSet {
-            refreshTimestampLabel()
-        }
-    }
-    @objc open var approved: Bool = false {
-        didSet {
-            refreshTimestampLabel()
-            refreshDetailsLabel()
-            refreshBackground()
-            refreshImages()
-        }
+
+    // MARK: - IBOutlets
+
+    @IBOutlet private weak var gravatarImageView: CircularImageView!
+    @IBOutlet private weak var detailsLabel: UILabel!
+    @IBOutlet private weak var timestampImageView: UIImageView!
+    @IBOutlet private weak var timestampLabel: UILabel!
+
+    // MARK: - Private Properties
+
+    private var author: String?
+    private var postTitle: String?
+    private var content: String?
+    private var timestamp: String?
+    private var approved: Bool = false
+    private var gravatarURL: URL?
+    private typealias Style = WPStyleGuide.Comments
+
+    private var placeholderImage: UIImage {
+        return Style.gravatarPlaceholderImage(isApproved: approved)
     }
 
+    // MARK: - Public Properties
+
+    @objc static let reuseIdentifier = "CommentsTableViewCell"
 
     // MARK: - Public Methods
-    @objc open func downloadGravatarWithURL(_ url: URL?) {
-        if url == gravatarURL {
-            return
+
+    @objc func configureWithComment(_ comment: Comment) {
+        author = comment.authorForDisplay() ?? String()
+        approved = (comment.status == CommentStatusApproved)
+        postTitle = comment.titleForDisplay()
+        content = comment.contentPreviewForDisplay()
+        timestamp = comment.dateCreated.mediumString()
+
+        if let avatarURLForDisplay = comment.avatarURLForDisplay() {
+            downloadGravatarWithURL(avatarURLForDisplay)
+        } else {
+            downloadGravatarWithGravatarEmail(comment.gravatarEmailForDisplay())
         }
 
-        let gravatar = url.flatMap { Gravatar($0) }
-        gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
-
-        gravatarURL = url
+        refreshDetailsLabel()
+        refreshTimestampLabel()
+        refreshBackground()
+        refreshImages()
     }
-
-    @objc open func downloadGravatarWithGravatarEmail(_ email: String?) {
-        guard let unwrappedEmail = email else {
-            gravatarImageView.image = placeholderImage
-            return
-        }
-
-        gravatarImageView.downloadGravatarWithEmail(unwrappedEmail, placeholderImage: placeholderImage)
-    }
-
 
     // MARK: - Overwritten Methods
-    open override func awakeFromNib() {
-        super.awakeFromNib()
-
-        assert(gravatarImageView != nil)
-        assert(detailsLabel != nil)
-        assert(timestampImageView != nil)
-        assert(timestampLabel != nil)
-    }
 
     open override func setSelected(_ selected: Bool, animated: Bool) {
         // Note: this is required, since the cell unhighlight mechanism will reset the new background color
@@ -77,45 +63,69 @@ open class CommentsTableViewCell: WPTableViewCell {
         refreshBackground()
     }
 
+}
 
+private extension CommentsTableViewCell {
 
-    // MARK: - Private Helpers
-    fileprivate func refreshDetailsLabel() {
+    // MARK: - Gravatar Downloading
+
+    func downloadGravatarWithURL(_ url: URL?) {
+        if url == gravatarURL {
+            return
+        }
+
+        let gravatar = url.flatMap { Gravatar($0) }
+        gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
+
+        gravatarURL = url
+    }
+
+    func downloadGravatarWithGravatarEmail(_ email: String?) {
+        guard let unwrappedEmail = email else {
+            gravatarImageView.image = placeholderImage
+            return
+        }
+
+        gravatarImageView.downloadGravatarWithEmail(unwrappedEmail, placeholderImage: placeholderImage)
+    }
+
+    // MARK: - Refresh UI
+
+    func refreshDetailsLabel() {
         detailsLabel.attributedText = attributedDetailsText(approved)
         layoutIfNeeded()
     }
 
-    fileprivate func refreshTimestampLabel() {
+    func refreshTimestampLabel() {
         guard let timestamp = timestamp else {
             return
         }
-        let style               = Style.timestampStyle(isApproved: approved)
+
+        let style = Style.timestampStyle(isApproved: approved)
         let formattedTimestamp: String
+
         if approved {
             formattedTimestamp = timestamp
         } else {
             let pendingLabel = NSLocalizedString("Pending", comment: "Status name for a comment that hasn't yet been approved.")
             formattedTimestamp = "\(timestamp) · \(pendingLabel)"
         }
+
         timestampLabel?.attributedText = NSAttributedString(string: formattedTimestamp, attributes: style)
     }
 
-    fileprivate func refreshBackground() {
-        let color = Style.backgroundColor(isApproved: approved)
-        backgroundColor = color
+    func refreshBackground() {
+        backgroundColor = Style.backgroundColor(isApproved: approved)
     }
 
-    fileprivate func refreshImages() {
+    func refreshImages() {
         timestampImageView.image = Style.timestampImage(isApproved: approved)
         if !approved {
             timestampImageView.tintColor = WPStyleGuide.alertYellowDark()
         }
     }
 
-
-
-    // MARK: - Details Helpers
-    fileprivate func attributedDetailsText(_ isApproved: Bool) -> NSAttributedString {
+    func attributedDetailsText(_ isApproved: Bool) -> NSAttributedString {
         // Unwrap
         let unwrappedAuthor     = author ?? String()
         let unwrappedTitle      = postTitle ?? NSLocalizedString("(No Title)", comment: "Empty Post Title")
@@ -155,22 +165,4 @@ open class CommentsTableViewCell: WPTableViewCell {
         return attributedDetails
     }
 
-
-
-    // MARK: - Aliases
-    typealias Style = WPStyleGuide.Comments
-
-    // MARK: - Private Properties
-    fileprivate var gravatarURL: URL?
-
-    // MARK: - Private Calculated Properties
-    fileprivate var placeholderImage: UIImage {
-        return Style.gravatarPlaceholderImage(isApproved: approved)
-    }
-
-    // MARK: - IBOutlets
-    @IBOutlet fileprivate var gravatarImageView: CircularImageView!
-    @IBOutlet fileprivate var detailsLabel: UILabel!
-    @IBOutlet fileprivate var timestampImageView: UIImageView!
-    @IBOutlet fileprivate var timestampLabel: UILabel!
 }
