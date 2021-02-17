@@ -1,10 +1,11 @@
 import Kanvas
 
+/// Handles basic `CameraControllerDelegate` methods and calls `createdMedia` on export.
 class CameraHandler: CameraControllerDelegate {
 
-    let createdMedia: ([Result<KanvasMedia?, Error>]) -> Void
+    let createdMedia: (CameraController.MediaOutput) -> Void
 
-    init(created: @escaping ([Result<KanvasMedia?, Error>]) -> Void) {
+    init(created: @escaping (CameraController.MediaOutput) -> Void) {
         createdMedia = created
     }
 
@@ -16,7 +17,7 @@ class CameraHandler: CameraControllerDelegate {
         return UIView()
     }
 
-    func didCreateMedia(_ cameraController: CameraController, media: [Result<KanvasMedia?, Error>], exportAction: KanvasExportAction) {
+    func didCreateMedia(_ cameraController: CameraController, media: CameraController.MediaOutput, exportAction: KanvasExportAction) {
         createdMedia(media)
     }
 

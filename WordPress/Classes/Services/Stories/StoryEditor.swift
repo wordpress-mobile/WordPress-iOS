@@ -1,6 +1,7 @@
 import Foundation
 import Kanvas
 
+/// An story editor which displays the Kanvas camera + editing screens.
 class StoryEditor: CameraController {
 
     var post: AbstractPost = AbstractPost()
@@ -94,7 +95,6 @@ class StoryEditor: CameraController {
         return controller
     }
 
-
     init(post: AbstractPost,
                      onClose: ((Bool, Bool) -> Void)?,
                      settings: CameraSettings,
@@ -110,7 +110,13 @@ class StoryEditor: CameraController {
         self.post = post
         self.onClose = onClose
 
-        let saveDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        let saveDirectory: URL?
+        do {
+            saveDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        } catch let error {
+            assertionFailure("Should be able to create a save directory in documents \(error)")
+            saveDirectory = nil
+        }
 
         super.init(settings: settings,
                  mediaPicker: nil,
@@ -188,6 +194,10 @@ extension StoryEditor: PublishingEditor {
 
     func cancelUploadOfAllMedia(for post: AbstractPost) {
 
+    }
+
+    func publishingDismissed() {
+        hideLoading()
     }
 
     var wordCount: UInt {
