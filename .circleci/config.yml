@@ -347,7 +347,8 @@ workflows:
             tags:
               only: /^\d.\d?(.\d)?(.\d)?(.\d{1,4})$/
   Beta Build:
-    when: << pipeline.parameters.beta_build >>
+    when: 
+      or: [ << pipeline.parameters.beta_build >>, << pipeline.parameters.release_build >> ]
     jobs: 
       - Beta Build
   Translation Review Build:
