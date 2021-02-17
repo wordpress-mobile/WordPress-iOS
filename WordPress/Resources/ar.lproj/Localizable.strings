@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-09 14:20:59+0000 */
+/* Translation-Revision-Date: 2021-02-12 13:34:46+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -2091,7 +2091,7 @@
 "Double tap to select a video" = "الضغط المزدوج لتحديد مقطع الفيديو";
 
 /* No comment provided by engineer. */
-"Double tap to select an audio file" = "Double tap to select an audio file";
+"Double tap to select an audio file" = "الضغط المزدوج لتحديد ملف صوت";
 
 /* No comment provided by engineer. */
 "Double tap to select an image" = "الضغط المزدوج لتحديد صورة";
@@ -3894,7 +3894,7 @@
 "No activity yet" = "لا يوجد نشاط حتى الآن";
 
 /* No comment provided by engineer. */
-"No application can handle this request." = "No application can handle this request.";
+"No application can handle this request." = "لا يوجد تطبيق يمكنه معالجة هذا الطلب.";
 
 /* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "لا يتوفر تطبيق لمعالجة هذا الطلب. يرجى تثبيت متصفح ويب.";
@@ -5155,11 +5155,11 @@
 "Restore to this point" = "استعادة إلى هذه النقطة";
 
 /* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
-"Restored to %@" = "Restored to %@";
+"Restored to %@" = "تمت الاستعادة إلى %@";
 
 /* Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date.
    Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
-"Restoring to %@" = "Restoring to %@";
+"Restoring to %@" = "جاري الاستعادة إلى %@";
 
 /* A prompt to attempt the failed network request again
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
@@ -7532,13 +7532,13 @@
 
 /* Hint displayed when we fail to fetch the status of the backup in progress.
    Hint displayed when we fail to fetch the status of the restore in progress. */
-"We’ll notify you when its done." = "We’ll notify you when its done.";
+"We’ll notify you when its done." = "سنقوم بإعلامك عند الانتهاء.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
-"We’ll still attempt to backup your site." = "We’ll still attempt to backup your site.";
+"We’ll still attempt to backup your site." = "سنستمر في محاولة عمل نسخة احتياطية من موقعك.";
 
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
-"We’ll still attempt to restore your site." = "We’ll still attempt to restore your site.";
+"We’ll still attempt to restore your site." = "سنستمر في محاولة استعادة موقعك.";
 
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "سنرشدك إلى أساسيات بناء موقعك وتنميته";
@@ -7849,7 +7849,7 @@
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "يبدو أنك قمت بتثبيت مكون إضافي للمحمول من DudaMobile الذي يمنع هذا التطبيق من الاتصال بالمدونة الخاصة بك";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
-"You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".";
+"You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "لا ينبغي أن تتجاهل الأمان إلا إذا كنت متأكدًا تمامًا من أنه غير ضار. إذا اخترت تجاهل هذا التهديد، فسيبقى على موقعك \"%1$@\".";
 
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "لن تتمكن من تغيير اسم المستخدم الخاص بك مرة أخرى.";
