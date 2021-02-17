@@ -185,6 +185,7 @@ public protocol ThemePresenter: class {
 
     fileprivate var activityIndicator: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView(style: .medium)
+        indicatorView.frame = CGRect(x: 0.0, y: 0.0, width: 40.0, height: 20.0)
         //TODO update color with white headers
         indicatorView.color = .white
         indicatorView.startAnimating()
