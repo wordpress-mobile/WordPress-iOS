@@ -130,6 +130,7 @@ struct PeriodStoreState {
     var summary: StatsSummaryTimeIntervalData? {
         didSet {
             storeThisWeekWidgetData()
+            storeTodayHomeWidgetData()
         }
     }
 
@@ -1345,6 +1346,22 @@ extension StatsPeriodStore {
 // MARK: - Widget Data
 
 private extension PeriodStoreState {
+
+    // Store data for the iOS 14 Today widget. We don't need to check if the site
+    // matches here, as `storeHomeWidgetData` does that for us.
+    func storeTodayHomeWidgetData() {
+        guard summary?.period == .day,
+              summary?.periodEndDate == StatsDataHelper.currentDateForSite().normalizedDate(),
+              let todayData = summary?.summaryData.last else {
+            return
+        }
+
+        let todayWidgetStats = TodayWidgetStats(views: todayData.viewsCount,
+                                                visitors: todayData.visitorsCount,
+                                                likes: todayData.likesCount,
+                                                comments: todayData.commentsCount)
+        StoreContainer.shared.statsWidgets.storeHomeWidgetData(widgetType: HomeWidgetTodayData.self, stats: todayWidgetStats)
+    }
 
     func storeThisWeekWidgetData() {
         // Only store data if:
