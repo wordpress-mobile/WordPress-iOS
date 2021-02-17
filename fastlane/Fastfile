@@ -185,7 +185,7 @@ import "./ScreenshotFastfile"
   lane :new_beta_release do | options |
     ios_betabuild_prechecks(options)
     ios_update_metadata(options)
-    ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
+    #ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta()
     ios_tag_build()
   end
