@@ -22,7 +22,7 @@ import Foundation
             return
         }
 
-        siteTimeZone = blogService.timeZone(for: blog)
+        siteTimeZone = blog.timeZone
     }
 
     func timeZoneMatchesDevice() -> Bool {

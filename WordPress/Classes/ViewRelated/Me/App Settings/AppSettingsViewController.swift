@@ -481,8 +481,7 @@ private extension AppSettingsViewController {
             rows.append(debugRow)
         }
 
-        if FeatureFlag.whatIsNew.enabled,
-            let presenter = WPTabBarController.sharedInstance()?.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
+        if let presenter = WPTabBarController.sharedInstance()?.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
             presenter.versionHasAnnouncements {
             let whatIsNewRow = NavigationItemRow(title: NSLocalizedString("What's New in WordPress",
                                                                           comment: "Opens the What's New / Feature Announcement modal"),
