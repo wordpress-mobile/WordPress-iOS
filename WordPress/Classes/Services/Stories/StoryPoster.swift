@@ -17,9 +17,11 @@ class StoryPoster {
     }
 
     let context: NSManagedObjectContext
+    private let oldMediaFiles: [MediaFile]?
 
-    init(context: NSManagedObjectContext) {
+    init(context: NSManagedObjectContext, mediaFiles: [MediaFile]?) {
         self.context = context
+        self.oldMediaFiles = mediaFiles
     }
 
     struct Story: Codable {
@@ -80,7 +82,15 @@ class StoryPoster {
 
         do {
             let mediaJSON = try json(files: mediaFiles)
-            post.content = StoryBlock.wrap(mediaJSON)
+            if let oldMediaFiles = self.oldMediaFiles {
+                let newContent = StoryBlock.wrap(mediaJSON, includeFooter: false)
+                let matchingStory = findStory(content: post.content ?? "", mediaFiles: oldMediaFiles)
+                post.content = post.content?.replacingOccurrences(of: matchingStory, with: newContent)
+            } else {
+                let newContent = StoryBlock.wrap(mediaJSON, includeFooter: true)
+                post.content = newContent
+                try post.managedObjectContext?.save()
+            }
         } catch let error {
             WordPressAppDelegate.crashLogging?.logMessage("Failed to encode Story")
             let error = StoryPosterError.jsonEncodeError(error)
@@ -99,20 +109,6 @@ class StoryPoster {
             print("\(newURL.path) - \(FileManager.default.fileExists(atPath: newURL.path.removingSuffix("\(media.mediaID!.intValue)")))")
             try FileManager.default.moveItem(at: url, to: newURL)
         })
-    }
-
-    /// Posts the media to a blog with the given parameters.
-    /// - Parameters:
-    ///   - media: The set of MediaItems which compose the story.
-    ///   - title: The title of the story.
-    ///   - blog: The blog to publish the post to.
-    /// - Returns: A `Result` containing either the created `Post` or an `Error`.
-    func post(mediaItems: [MediaItem], title: String, to blog: Blog, post: Post? = nil, inserter: GutenbergMediaInserterHelper? = nil, completion: @escaping (Result<Post, Error>) -> Void) {
-
-        let post = post ?? PostService(managedObjectContext: context).createDraftPost(for: blog)
-
-        completion(.success(post))
-
     }
 
     func upload(mediaItems: [MediaItem], post: Post, completion: @escaping (Result<(Post, [Media]
@@ -140,21 +136,40 @@ class StoryPoster {
         return media
     }
 
-    func updateMedia<T: Collection>(content: String, media: T) throws -> String where T.Element == Media {
+    func findStory(content: String, mediaFiles: [MediaFile]) -> String {
+        let storyJSON = StoryBlock.parse(content)
+        return storyJSON.first(where: { story in
+            return story.contains("\(Int(mediaFiles.first!.id))")
+        })!
+    }
+
+    func parseStory(content: String) -> [MediaFile]? {
         let storyJSON = StoryBlock.parse(content)
 
-        guard let jsonData = storyJSON?.data(using: .utf8) else {
-            throw StoryPosterError.contentDataEncodingError
+        let matchingFiles = try! storyJSON.map({ block -> [MediaFile] in
+            let blockJSON = StoryBlock.unwrap(block)
+            guard let jsonData = blockJSON.data(using: .utf8) else {
+                throw StoryPosterError.contentDataEncodingError
+            }
+
+            let decoder = JSONDecoder()
+            return try! decoder.decode(Story.self, from: jsonData).mediaFiles
+        }).first!
+
+        return matchingFiles
+    }
+
+    func updateMedia<T: Collection>(content: String, media: T) throws -> String where T.Element == Media {
+        guard let mediaFiles = parseStory(content: content) else {
+            WordPressAppDelegate.crashLogging?.logMessage("Failed to find matching Story in draft")
+            return content
         }
 
-        let decoder = JSONDecoder()
-        let mediaItems = try decoder.decode(Story.self, from: jsonData).mediaFiles
-
-        let urls = mediaItems.compactMap { item in
+        let urls = mediaFiles.compactMap { item in
             return URL(string: item.url)
         }
 
-        let newFiles: [MediaFile] = mediaItems.compactMap { file in
+        let newFiles: [MediaFile] = mediaFiles.compactMap { file in
             guard let media = media.first(where: { media in
                 return match(media: media, mediaFile: file)
             }) else {
@@ -176,25 +191,7 @@ class StoryPoster {
         })
 
         let mediaJSON = try json(files: newFiles)
-        return StoryBlock.wrap(mediaJSON)
-    }
-
-    /// Updates the Post content with the new media details after they have finished uploading. These values are not known until the post is saved and uploaded.
-    /// - Parameter post: The Post to update with the new Media details.
-    func update(post: AbstractPost) {
-        guard let content = post.content else {
-            return
-        }
-
-        do {
-            post.content = try updateMedia(content: content, media: post.media)
-//            post.status = .publish
-            PostCoordinator.shared.save(post)
-        } catch let error {
-            WordPressAppDelegate.crashLogging?.logMessage("Failed to decode Story")
-            let error = StoryPosterError.jsonDecodeError(error)
-            WordPressAppDelegate.crashLogging?.logError(error)
-        }
+        return StoryBlock.wrap(mediaJSON, includeFooter: false)
     }
 
     /// Matches Media and MediaFile based on their filenames.
@@ -229,30 +226,37 @@ struct StoryBlock {
 
     private static let openTag = "<!-- wp:jetpack/story"
     private static let closeTag = "-->"
+    private static let footer = """
+        <div class="wp-story wp-block-jetpack-story"></div>
+        <!-- /wp:jetpack/story -->
+        """
 
     /// Parse a blog post for Story contents.
     /// - Parameter string: The string containing the HTML for a blog post.
     /// - Returns: The JSON of the first story found in the post content as a String (or `nil` if there isn't one).
-    static func parse(_ string: String) -> String? {
-        guard let lowerBound = string.range(of: openTag, options: .caseInsensitive)?.upperBound,
-              let upperBound = string.range(of: closeTag, options: .caseInsensitive, range: lowerBound..<string.endIndex)?.lowerBound
-        else {
-            return nil
+    static func parse(_ string: String) -> [String] {
+        let matches = string.matches(regex: "\(openTag).*\(closeTag)")
+        let contents = matches.map { match -> String in
+            let stringRange = string.range(from: match.range)
+            return String(string[stringRange])
         }
-        return String(string[lowerBound..<upperBound])
+        return contents
     }
 
     /// Wraps the JSON of a Story into a story block.
     /// - Parameter json: The JSON string to wrap in a story block.
     /// - Returns: The string containing the full Story block.
-    static func wrap(_ json: String) -> String {
+    static func wrap(_ json: String, includeFooter: Bool) -> String {
         let content = """
         \(openTag)
         \(json)
         \(closeTag)
-        <div class="wp-story wp-block-jetpack-story"></div>
-        <!-- /wp:jetpack/story -->
+        \(includeFooter ? footer : "")
         """
         return content
+    }
+
+    static func unwrap(_ string: String) -> String {
+        return string.replacingOccurrences(of: openTag, with: "").replacingOccurrences(of: closeTag, with: "").replacingOccurrences(of: footer, with: "")
     }
 }

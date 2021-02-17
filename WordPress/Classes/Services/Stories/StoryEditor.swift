@@ -27,7 +27,6 @@ class StoryEditor: CameraController {
         return "wp_stories_creator"
     }
 
-    private let publishOnCompletion: Bool
     private var cameraHandler: CameraHandler?
     private var poster: StoryPoster?
     private var storyLoader: StoryMediaLoader? = StoryMediaLoader()
@@ -71,10 +70,11 @@ class StoryEditor: CameraController {
                        updated: @escaping (Result<(Post, [Media]), Error>) -> Void,
                        uploaded: @escaping (Result<(Post, [Media]), Error>) -> Void) -> StoryEditor {
         let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
-        return editor(post: post, publishOnCompletion: true, updated: updated, uploaded: uploaded)
+        return editor(post: post, mediaFiles: nil, publishOnCompletion: true, updated: updated, uploaded: uploaded)
     }
 
     static func editor(post: AbstractPost,
+                       mediaFiles: [StoryPoster.MediaFile]?,
                        publishOnCompletion: Bool = false,
                        updated: @escaping (Result<(Post, [Media]), Error>) -> Void,
                        uploaded: @escaping (Result<(Post, [Media]), Error>) -> Void) -> StoryEditor {
@@ -85,6 +85,7 @@ class StoryEditor: CameraController {
                                      analyticsProvider: nil,
                                      quickBlogSelectorCoordinator: nil,
                                      tagCollection: nil,
+                                     mediaFiles: mediaFiles,
                                      publishOnCompletion: publishOnCompletion,
                                      updated: updated,
                                      uploaded: uploaded)
@@ -101,13 +102,13 @@ class StoryEditor: CameraController {
                      analyticsProvider: KanvasAnalyticsProvider?,
                      quickBlogSelectorCoordinator: KanvasQuickBlogSelectorCoordinating?,
                      tagCollection: UIView?,
+                     mediaFiles: [StoryPoster.MediaFile]?,
                      publishOnCompletion: Bool,
                      updated: @escaping (Result<(Post, [Media]), Error>) -> Void,
                      uploaded: @escaping (Result<(Post, [Media]), Error>) -> Void
                     ) {
         self.post = post
         self.onClose = onClose
-        self.publishOnCompletion = publishOnCompletion
 
         let saveDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
 
@@ -120,7 +121,7 @@ class StoryEditor: CameraController {
                  saveDirectory: saveDirectory)
 
         cameraHandler = CameraHandler(created: { [weak self] media in
-            self?.poster = StoryPoster(context: post.blog.managedObjectContext ?? ContextManager.shared.mainContext)
+            self?.poster = StoryPoster(context: post.blog.managedObjectContext ?? ContextManager.shared.mainContext, mediaFiles: mediaFiles)
             let postMedia: [StoryPoster.MediaItem] = media.compactMap { result in
                 switch result {
                 case .success(let item):
@@ -131,24 +132,18 @@ class StoryEditor: CameraController {
                 }
             }
 
-            self?.poster?.post(mediaItems: postMedia, title: "Post from iOS", to: post.blog, post: post as? Post) { [weak self] result in
-                switch result {
-                case .success(let post):
-                    guard let self = self else { return }
-                    let media = self.poster?.upload(mediaItems: postMedia, post: post, completion: uploaded)
-                    if let media = media {
-                        updated(.success((post, media)))
-                    }
-                case .failure(let error):
-                    updated(.failure(error))
-                }
+            guard let self = self else { return }
+            let media = self.poster?.upload(mediaItems: postMedia, post: post as! Post, completion: uploaded)
+            if let media = media {
+                updated(.success((post as! Post, media)))
             }
 
             if publishOnCompletion {
-                self?.publishPost(action: .publish, dismissWhenDone: true, analyticsStat:
+                post.content = "<!-- wp:jetpack/story {} --> <div class=\"wp-story wp-block-jetpack-story\"></div><!-- /wp:jetpack/story -->"
+                self.publishPost(action: .publish, dismissWhenDone: true, analyticsStat:
                                     .editorPublishedPost)
             } else {
-                self?.dismiss(animated: true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
             }
         })
         self.delegate = cameraHandler

@@ -659,7 +659,11 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidRequestMediaFilesEditorLoad(_ mediaFiles: [[String: Any]], blockId: String) {
 
-        let controller = StoryEditor.editor(post: post, publishOnCompletion: false, updated: { [weak self] result in
+        let files = mediaFiles.map({ content in
+            return StoryPoster.MediaFile(alt: content["alt"] as! String, caption: content["caption"] as! String, id: content["id"] as! Double, link: content["link"] as! String, mime: content["mime"] as! String, type: content["type"] as! String, url: content["url"] as! String)
+        })
+
+        let controller = StoryEditor.editor(post: post, mediaFiles: files, publishOnCompletion: false, updated: { [weak self] result in
             switch result {
             case .success(let output):
                 self?.dismiss(animated: true, completion: nil)
@@ -676,6 +680,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             switch result {
             case .success(let output):
                 if let content = output.0.content {
+
                     self?.setHTML(content)
                 }
             case .failure(let error):
@@ -686,10 +691,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 controller.addAction(dismiss)
                 self?.present(controller, animated: true, completion: nil)
             }
-        })
-
-        let files = mediaFiles.map({ content in
-            return StoryPoster.MediaFile(alt: content["alt"] as! String, caption: content["caption"] as! String, id: content["id"] as! Double, link: content["link"] as! String, mime: content["mime"] as! String, type: content["type"] as! String, url: content["url"] as! String)
         })
 
         controller.populate(with: files, completion: { [weak self] result in
