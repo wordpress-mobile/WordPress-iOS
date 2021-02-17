@@ -1,5 +1,6 @@
 import Kanvas
 
+/// Handles basic `CameraControllerDelegate` methods and calls `createdMedia` on export.
 class CameraHandler: CameraControllerDelegate {
 
     let createdMedia: ([Result<KanvasMedia?, Error>]) -> Void

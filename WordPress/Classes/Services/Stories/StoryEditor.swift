@@ -1,6 +1,7 @@
 import Foundation
 import Kanvas
 
+/// An story editor which displays the Kanvas camera + editing screens.
 class StoryEditor: CameraController {
 
     var post: AbstractPost = AbstractPost()
@@ -82,7 +83,6 @@ class StoryEditor: CameraController {
         controller.modalTransitionStyle = .crossDissolve
         return controller
     }
-
 
     init(post: AbstractPost,
                      onClose: ((Bool, Bool) -> Void)?,
