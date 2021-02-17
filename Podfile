@@ -64,8 +64,7 @@ def shared_with_networking_pods
 end
 
 def shared_test_pods
-    pod 'OHHTTPStubs', '6.1.0'
-    pod 'OHHTTPStubs/Swift', '6.1.0'
+    pod 'OHHTTPStubs/Swift', '~> 9.1.0'
     pod 'OCMock', '3.4.3'
 end
 
@@ -182,7 +181,7 @@ target 'WordPress' do
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.8.0'
+    pod 'Automattic-Tracks-iOS', '~> 0.8.2'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
     # Local Development

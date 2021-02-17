@@ -21,7 +21,7 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (2.5.1):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (0.8.1):
+  - Automattic-Tracks-iOS (0.8.2):
     - CocoaLumberjack (~> 3)
     - Reachability (~> 3)
     - Sentry (~> 6)
@@ -114,20 +114,18 @@ PODS:
   - NSObject-SafeExpectations (0.0.4)
   - "NSURL+IDN (0.4)"
   - OCMock (3.4.3)
-  - OHHTTPStubs (6.1.0):
-    - OHHTTPStubs/Default (= 6.1.0)
-  - OHHTTPStubs/Core (6.1.0)
-  - OHHTTPStubs/Default (6.1.0):
+  - OHHTTPStubs/Core (9.1.0)
+  - OHHTTPStubs/Default (9.1.0):
     - OHHTTPStubs/Core
     - OHHTTPStubs/JSON
     - OHHTTPStubs/NSURLSession
     - OHHTTPStubs/OHPathHelpers
-  - OHHTTPStubs/JSON (6.1.0):
+  - OHHTTPStubs/JSON (9.1.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/NSURLSession (6.1.0):
+  - OHHTTPStubs/NSURLSession (9.1.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/OHPathHelpers (6.1.0)
-  - OHHTTPStubs/Swift (6.1.0):
+  - OHHTTPStubs/OHPathHelpers (9.1.0)
+  - OHHTTPStubs/Swift (9.1.0):
     - OHHTTPStubs/Default
   - RCTRequired (0.61.5)
   - RCTTypeSafety (0.61.5):
@@ -384,9 +382,9 @@ PODS:
   - RNTAztecView (1.47.0):
     - React-Core
     - WordPress-Aztec-iOS (~> 1.19.3)
-  - Sentry (6.1.4):
-    - Sentry/Core (= 6.1.4)
-  - Sentry/Core (6.1.4)
+  - Sentry (6.2.0):
+    - Sentry/Core (= 6.2.0)
+  - Sentry/Core (6.2.0)
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -443,7 +441,7 @@ DEPENDENCIES:
   - AMScrollingNavbar (= 5.6.0)
   - AppCenter (= 2.5.1)
   - AppCenter/Distribute (= 2.5.1)
-  - Automattic-Tracks-iOS (~> 0.8.0)
+  - Automattic-Tracks-iOS (~> 0.8.2)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (~> 3.0)
   - CropViewController (= 2.5.3)
@@ -463,8 +461,7 @@ DEPENDENCIES:
   - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
   - OCMock (= 3.4.3)
-  - OHHTTPStubs (= 6.1.0)
-  - OHHTTPStubs/Swift (= 6.1.0)
+  - OHHTTPStubs/Swift (~> 9.1.0)
   - RCTRequired (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/076266e4380af19fe858a2825615a5a3d278517f/third-party-podspecs/RCTRequired.podspec.json`)
   - RCTTypeSafety (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/076266e4380af19fe858a2825615a5a3d278517f/third-party-podspecs/RCTTypeSafety.podspec.json`)
   - Reachability (= 3.2)
@@ -678,7 +675,7 @@ SPEC CHECKSUMS:
   AMScrollingNavbar: cf0ec5a5ee659d76ba2509f630bf14fba7e16dc3
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
-  Automattic-Tracks-iOS: b942ca6067f089660c75c96fd189599fd065f979
+  Automattic-Tracks-iOS: f706ecd3fe22f6cfc6904bf65c5675874c1bceff
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CocoaLumberjack: e8955b9d337ac307103b0a34fd141c32f27e53c5
@@ -705,7 +702,7 @@ SPEC CHECKSUMS:
   NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
-  OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
+  OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
   RCTRequired: 3ca691422140f76f04fd2af6dc90914cf0f81ef1
   RCTTypeSafety: aab4e9679dbb3682bf0404fded7b9557d7306795
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
@@ -741,7 +738,7 @@ SPEC CHECKSUMS:
   RNScreens: 6833ac5c29cf2f03eed12103140530bbd75b6aea
   RNSVG: 68a534a5db06dcbdaebfd5079349191598caef7b
   RNTAztecView: cea0ff4ba758e0e52d3b9694ce5dfcf04c0afe44
-  Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
+  Sentry: 972bd51ddb2aa3430f2c81fadb975fe27f47c2f4
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -765,6 +762,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: daa76b0c1a5a1bcb00b6e1a45177e1f6a4275136
+PODFILE CHECKSUM: 196055936ae4bc235956e11d3986a3f5fde4d29d
 
 COCOAPODS: 1.10.0
