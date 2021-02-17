@@ -66,6 +66,10 @@ class ReaderSortingOptionButton: UIControl {
         return view
     }()
 
+    private lazy var labelBottomConstraint: NSLayoutConstraint = {
+        return label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.bottom)
+    }()
+
     private lazy var chevronView: UIImageView = {
         let view = UIImageView()
         view.image = .gridicon(.chevronDown)
@@ -119,13 +123,12 @@ class ReaderSortingOptionButton: UIControl {
         NSLayoutConstraint.activate([
             iconView.heightAnchor.constraint(equalToConstant: Constants.iconsHeight),
             iconView.widthAnchor.constraint(equalToConstant: Constants.iconsWidth),
-            iconView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            iconView.centerYAnchor.constraint(equalTo: label.centerYAnchor),
             iconView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Constants.iconLeading),
-            label.centerYAnchor.constraint(equalTo: centerYAnchor),
             label.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: Constants.labelLeading),
             label.topAnchor.constraint(equalTo: topAnchor, constant: Constants.top),
-            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.bottom),
-            chevronView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            labelBottomConstraint,
+            chevronView.centerYAnchor.constraint(equalTo: label.centerYAnchor),
             chevronView.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: Constants.chevronLeading),
             chevronView.trailingAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor, constant: Constants.chevronTrailing),
             chevronView.heightAnchor.constraint(equalToConstant: Constants.iconsHeight),
@@ -138,5 +141,9 @@ class ReaderSortingOptionButton: UIControl {
     private func bindSortingOption() {
         label.text = sortingOption.localizedDescription
         iconView.image = sortingOption.image
+    }
+    
+    public func setLabelBottomCompensation(_ compensation: CGFloat) {
+        labelBottomConstraint.constant = Constants.bottom + compensation
     }
 }

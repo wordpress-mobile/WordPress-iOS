@@ -116,6 +116,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
             return
         }
 
+        sortingButton.setLabelBottomCompensation(8.0)
         updateSortingOption(ReaderCardsStreamViewController.sortingOption ?? .popularity, reloadCards: false)
         tableView.tableHeaderView = sortingButton
         NSLayoutConstraint.activate([
