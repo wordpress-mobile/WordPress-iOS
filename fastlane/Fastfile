@@ -69,6 +69,7 @@ ENV["PUBLIC_CONFIG_FILE"]=File.join(PROJECT_ROOT_FOLDER, "config", "Version.Publ
 ENV["INTERNAL_CONFIG_FILE"]=File.join(PROJECT_ROOT_FOLDER, "config", "Version.internal.xcconfig")
 ENV["DOWNLOAD_METADATA"]="./fastlane/download_metadata.swift"
 ENV["PROJECT_ROOT_FOLDER"]=PROJECT_ROOT_FOLDER
+REPOSITORY_NAME="WordPress-iOS"
 
 ########################################################################
 # Screenshots
@@ -568,6 +569,24 @@ import "./ScreenshotFastfile"
     add_all_devices_to_provisioning_profiles(
       team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
       app_identifier: ALL_BUNDLE_IDENTIFIERS
+    )
+  end
+
+  lane :test_beta_build do | options |
+    circleci_trigger_job(
+      circle_ci_token: ENV["CIRCLE_CI_AUTH_TOKEN"], 
+      repository: REPOSITORY_NAME, 
+      branch: "feature/trigger-ci-via-api",
+      job_params: {"beta_build" => true}
+    )
+  end
+
+  lane :test_release_build do | options |
+    circleci_trigger_job(
+      circle_ci_token: ENV["CIRCLE_CI_AUTH_TOKEN"], 
+      repository: REPOSITORY_NAME, 
+      branch: "feature/trigger-ci-via-api",
+      job_params: {"release_build" => true}
     )
   end
 
