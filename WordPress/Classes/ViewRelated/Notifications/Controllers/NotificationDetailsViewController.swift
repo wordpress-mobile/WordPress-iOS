@@ -1241,15 +1241,13 @@ private extension NotificationDetailsViewController {
     }
 
     func addConfettiViewIfNeeded() {
-        guard isViewMilestone else {
+        guard isViewMilestone, let navigationController = navigationController else {
             return
         }
         let newConfettiView = ConfettiView()
 
         confettiView = newConfettiView
-        guard let navigationController = navigationController else {
-            return
-        }
+
         newConfettiView.frame = navigationController.view.frame
         newConfettiView.clipsToBounds = false
 
