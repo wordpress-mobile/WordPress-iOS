@@ -1,4 +1,5 @@
 import Foundation
+import WordPressFlux
 
 protocol JetpackScanView {
     func render()
@@ -21,6 +22,7 @@ class JetpackScanCoordinator {
     private(set) var scan: JetpackScan? {
         didSet {
             configureSections()
+            scanDidChange(from: oldValue, to: scan)
         }
     }
 
@@ -81,30 +83,6 @@ class JetpackScanCoordinator {
         stopPolling()
     }
 
-    private func refreshDidSucceed(with scanObj: JetpackScan) {
-        scan = scanObj
-        view.render()
-
-
-        togglePolling()
-    }
-
-    private func refreshDidFail(with error: Error? = nil) {
-        let appDelegate = WordPressAppDelegate.shared
-
-        guard
-            let connectionAvailable = appDelegate?.connectionAvailable, connectionAvailable == true
-        else {
-            view.showNoConnectionError()
-            actionButtonState = .tryAgain
-
-            return
-        }
-
-        view.showGenericError()
-        actionButtonState = .contactSupport
-    }
-
     public func startScan() {
         // Optimistically trigger the scanning state
         scan?.state = .scanning
@@ -137,6 +115,7 @@ class JetpackScanCoordinator {
         }
     }
 
+    // MARK: - Public Actions
     public func presentFixAllAlert() {
         let threatCount = scan?.fixableThreats?.count ?? 0
 
@@ -254,6 +233,60 @@ class JetpackScanCoordinator {
         sections = [JetpackThreatSection(title: nil, date: Date(), threats: threats)]
     }
 
+    // MARK: - Private: Network Handlers
+    private func refreshDidSucceed(with scanObj: JetpackScan) {
+        scan = scanObj
+        view.render()
+
+
+        togglePolling()
+    }
+
+    private func refreshDidFail(with error: Error? = nil) {
+        let appDelegate = WordPressAppDelegate.shared
+
+        guard
+            let connectionAvailable = appDelegate?.connectionAvailable, connectionAvailable == true
+        else {
+            view.showNoConnectionError()
+            actionButtonState = .tryAgain
+
+            return
+        }
+
+        view.showGenericError()
+        actionButtonState = .contactSupport
+    }
+
+    private func scanDidChange(from: JetpackScan?, to: JetpackScan?) {
+        let fromState = from?.state ?? .unknown
+        let toState = to?.state ?? .unknown
+
+        // Trigger scan finished alert
+        guard fromState == .scanning, toState == .idle else {
+            return
+        }
+
+        let threatCount = threats?.count ?? 0
+
+        let message: String
+
+        switch threatCount {
+            case 0:
+                message = Strings.scanNotice.message
+
+            case 1:
+                message = Strings.scanNotice.messageSingleThreatFound
+
+            default:
+                message = String(format: Strings.scanNotice.messageThreatsFound, threatCount)
+        }
+
+        let notice = Notice(title: Strings.scanNotice.title, message: message)
+
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
     // MARK: - Private: Refresh Timer
     private var refreshTimer: Timer?
 
@@ -294,6 +327,13 @@ class JetpackScanCoordinator {
     }
 
     private struct Strings {
+        struct scanNotice {
+            static let title = NSLocalizedString("Scan Finished", comment: "Title for a notice informing the user their scan has completed")
+            static let message = NSLocalizedString("No threats found", comment: "Message for a notice informing the user their scan completed and no threats were found")
+            static let messageThreatsFound = NSLocalizedString("%d potential threats found", comment: "Message for a notice informing the user their scan completed and %d threats were found")
+            static let messageSingleThreatFound = NSLocalizedString("1 potential threat found", comment: "Message for a notice informing the user their scan completed and 1 threat was found")
+
+        }
         static let fixAllAlertTitleFormat = NSLocalizedString("Please confirm you want to fix all %1$d active threats", comment: "Confirmation title presented before fixing all the threats, displays the number of threats to be fixed")
         static let fixAllSingleAlertTitle = NSLocalizedString("Please confirm you want to fix this threat", comment: "Confirmation title presented before fixing a single threat")
         static let fixAllAlertTitleMessage = NSLocalizedString("Jetpack will be fixing all the detected active threats.", comment: "Confirmation message presented before fixing all the threats, displays the number of threats to be fixed")
