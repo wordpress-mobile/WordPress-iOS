@@ -74,7 +74,6 @@ class ConfettiView: UIView {
         animation.keyTimes = [0, 0.5, 1]
         animation.isRemovedOnCompletion = false
 
-        layer.beginTime = CACurrentMediaTime()
         layer.birthRate = 1.0
 
         CATransaction.begin()
@@ -130,7 +129,7 @@ class ConfettiView: UIView {
                 lifetime = config.lifetime
                 scale = config.scale
                 scaleRange = config.scaleRange
-
+                beginTime = CACurrentMediaTime()
                 velocity = CGFloat(birthRate * lifetime)
                 velocityRange = velocity * 0.5
                 emissionLongitude = .pi
