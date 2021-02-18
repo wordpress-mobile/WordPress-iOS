@@ -1237,7 +1237,7 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate {
 //
 private extension NotificationDetailsViewController {
 
-    /// Determines if the notification content is a views milestone
+    /// Determines if the notification content is a view milestone
     var isViewMilestone: Bool {
         if let type = note.type, type.contains("view_milestone"), FeatureFlag.milestoneNotifications.enabled {
             return true
