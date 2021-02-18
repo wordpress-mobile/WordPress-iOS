@@ -294,7 +294,7 @@ extension JetpackScanViewController: NoResultsViewControllerDelegate {
             }
 
             if noResultsViewController.view.superview != tableView {
-                tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+                tableView.addSubview(noResultsViewController.view)
             }
 
             addChild(noResultsViewController)
