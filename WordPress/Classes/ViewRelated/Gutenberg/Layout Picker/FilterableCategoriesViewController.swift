@@ -13,6 +13,8 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
     }
     internal let filterBar: CollapsableHeaderFilterBar
     
+    internal var categorySections: [CategorySection] = []
+
     init(
         mainTitle: String,
         prompt: String,

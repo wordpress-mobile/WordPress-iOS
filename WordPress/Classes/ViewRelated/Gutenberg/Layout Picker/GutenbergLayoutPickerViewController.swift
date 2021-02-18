@@ -23,9 +23,13 @@ class GutenbergLayoutSection: CategorySection {
 }
 
 class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
-    private var filteredSections: [GutenbergLayoutSection]?
     private var sections: [GutenbergLayoutSection] = []
+    internal var filteredSections: [CategorySection]?
     internal var visibleSections: [CategorySection] { filteredSections ?? sections }
+    internal override var categorySections: [CategorySection] {
+        get { sections }
+        set {  }
+    }
     lazy var resultsController: NSFetchedResultsController<PageTemplateCategory> = {
         let resultsController = PageLayoutService.resultsController(forBlog: blog, delegate: self)
         sections = makeSectionData(with: resultsController)
@@ -190,8 +194,8 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
     }
     
     private func containsSelectedItem(_ selectedIndexPath: IndexPath, atIndexPath indexPath: IndexPath) -> Bool {
-        let sectionSlug = sections[selectedIndexPath.section].section.slug
         let rowSection = visibleSections[indexPath.row]
+        let sectionSlug = categorySections[selectedIndexPath.section].categorySlug
         return (sectionSlug == rowSection.categorySlug)
     }
 }
@@ -288,7 +292,7 @@ extension GutenbergLayoutPickerViewController: CollapsableHeaderFilterBarDelegat
         var row: IndexPath? = nil
         let rowSlug = sections[index.item].section.slug
         for i in 0..<filteredSections.count {
-            if filteredSections[i].section.slug == rowSlug {
+            if filteredSections[i].categorySlug == rowSlug {
                 let indexPath = IndexPath(row: i, section: 0)
                 self.filteredSections?.remove(at: i)
                 row = indexPath
