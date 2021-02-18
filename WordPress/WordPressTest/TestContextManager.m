@@ -148,6 +148,12 @@ static TestContextManager *_instance;
     return dict;
 }
 
+- (MockContext *) getMockContext {
+    MockContext *managedObjectContext = [[MockContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
+    managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    return managedObjectContext;
+}
+
 + (instancetype)sharedInstance
 {
     if (_instance) {
