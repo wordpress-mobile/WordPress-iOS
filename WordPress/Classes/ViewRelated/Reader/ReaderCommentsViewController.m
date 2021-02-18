@@ -205,13 +205,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     [super traitCollectionDidChange:previousTraitCollection];
 
-    if (@available(iOS 13.0, *)) {
-        // Update cached attributed strings when toggling light/dark mode.
-        self.userInterfaceStyleChanged = self.traitCollection.userInterfaceStyle != previousTraitCollection.userInterfaceStyle;
-        [self refreshTableViewAndNoResultsView];
-    } else {
-        self.userInterfaceStyleChanged = NO;
-    }
+    self.userInterfaceStyleChanged = self.traitCollection.userInterfaceStyle != previousTraitCollection.userInterfaceStyle;
+    [self refreshTableViewAndNoResultsView];
 }
 
 #pragma mark - Split View Support

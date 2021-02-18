@@ -26,16 +26,12 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
     }()
 
     private var accentColor: UIColor {
-        if #available(iOS 13.0, *) {
-            return UIColor { (traitCollection: UITraitCollection) -> UIColor in
-                if traitCollection.userInterfaceStyle == .dark {
-                    return UIColor.muriel(color: .accent, .shade40)
-                } else {
-                    return UIColor.muriel(color: .accent, .shade50)
-                }
+        return UIColor { (traitCollection: UITraitCollection) -> UIColor in
+            if traitCollection.userInterfaceStyle == .dark {
+                return UIColor.muriel(color: .accent, .shade40)
+            } else {
+                return UIColor.muriel(color: .accent, .shade50)
             }
-        } else {
-            return UIColor.muriel(color: .accent, .shade50)
         }
     }
 
