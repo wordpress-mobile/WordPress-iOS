@@ -1267,6 +1267,13 @@ private extension NotificationDetailsViewController {
         confettiView?.removeFromSuperview()
         confettiView = nil
     }
+
+    /// convenience method
+    func showConfettiIfNeeded() {
+        removeConfettiView()
+        addConfettiViewIfNeeded()
+        showConfetti()
+    }
 }
 
 // MARK: - Navigation Helpers
@@ -1279,9 +1286,7 @@ extension NotificationDetailsViewController {
 
         onSelectedNoteChange?(previous)
         note = previous
-        removeConfettiView()
-        addConfettiViewIfNeeded()
-        showConfetti()
+        showConfettiIfNeeded()
     }
 
     @IBAction func nextNotificationWasPressed() {
@@ -1291,9 +1296,7 @@ extension NotificationDetailsViewController {
 
         onSelectedNoteChange?(next)
         note = next
-        removeConfettiView()
-        addConfettiViewIfNeeded()
-        showConfetti()
+        showConfettiIfNeeded()
     }
 
     var shouldEnablePreviousButton: Bool {
