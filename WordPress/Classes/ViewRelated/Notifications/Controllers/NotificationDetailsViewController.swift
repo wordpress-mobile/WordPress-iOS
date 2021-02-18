@@ -165,6 +165,7 @@ class NotificationDetailsViewController: UIViewController {
         super.viewDidAppear(animated)
         showConfetti()
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         keyboardManager?.stopListeningToKeyboardNotifications()
@@ -177,6 +178,7 @@ class NotificationDetailsViewController: UIViewController {
         super.viewDidDisappear(animated)
         removeConfettiView()
     }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: { context in
