@@ -173,7 +173,6 @@ class NotificationDetailsViewController: UIViewController {
         tearDownNotificationListeners()
         storeNotificationReplyIfNeeded()
         dismissNotice()
-
     }
 
     override func viewDidDisappear(_ animated: Bool) {
