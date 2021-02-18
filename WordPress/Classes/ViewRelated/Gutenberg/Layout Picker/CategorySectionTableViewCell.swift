@@ -2,12 +2,19 @@ import UIKit
 import Gutenberg
 
 protocol CategorySectionTableViewCellDelegate: class {
-    func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell)
+    func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell, slug: String)
     func didDeselectItem(forCell cell: CategorySectionTableViewCell)
     func accessibilityElementDidBecomeFocused(forCell cell: CategorySectionTableViewCell)
 }
 
 class CategorySectionTableViewCell: UITableViewCell {
+    
+    struct Thumbnail {
+        var urlDesktop: String
+        var urlTablet: String
+        var urlMobile: String
+        var slug: String
+    }
 
     static let cellReuseIdentifier = "\(CategorySectionTableViewCell.self)"
     static let nib = UINib(nibName: "\(CategorySectionTableViewCell.self)", bundle: Bundle.main)
@@ -19,15 +26,16 @@ class CategorySectionTableViewCell: UITableViewCell {
 
     weak var delegate: CategorySectionTableViewCellDelegate?
 
-    private var layouts = [PageTemplateLayout]() {
+    private var thumbnails = [Thumbnail]() {
         didSet {
             collectionView.reloadData()
         }
     }
-    var section: GutenbergLayoutSection? = nil {
+
+    var section: CategorySection? = nil {
         didSet {
-            layouts = section?.layouts ?? []
-            categoryTitle.text = section?.section.desc ?? ""
+            thumbnails = section?.thumbnails ?? []
+            categoryTitle.text = section?.title
             collectionView.contentOffset = section?.scrollOffset ?? .zero
         }
     }
@@ -76,7 +84,8 @@ extension CategorySectionTableViewCell: UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.didSelectItemAt(indexPath.item, forCell: self)
+        guard let slug = section?.categorySlug else { return }
+        delegate?.didSelectItemAt(indexPath.item, forCell: self, slug: slug)
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -92,7 +101,7 @@ extension CategorySectionTableViewCell: UICollectionViewDelegateFlowLayout {
 
 extension CategorySectionTableViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return isGhostCell ? 1 : layouts.count
+        return isGhostCell ? 1 : thumbnails.count
     }
 
     func collectionView(_ LayoutPickerCategoryTableViewCell: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -105,10 +114,10 @@ extension CategorySectionTableViewCell: UICollectionViewDataSource {
             return cell
         }
 
-        let layout = layouts[indexPath.row]
-        cell.previewURL = layout.preview
+        let thumbnail = thumbnails[indexPath.row]
+        cell.previewURL = thumbnail.urlDesktop // TODO: update this for device mode picker
         cell.isAccessibilityElement = true
-        cell.accessibilityLabel = layout.slug
+        cell.accessibilityLabel = thumbnail.slug
         return cell
     }
 }

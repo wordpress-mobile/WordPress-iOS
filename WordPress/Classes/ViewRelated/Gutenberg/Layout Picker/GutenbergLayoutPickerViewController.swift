@@ -2,10 +2,18 @@ import UIKit
 import Gridicons
 import Gutenberg
 
-class GutenbergLayoutSection {
+class GutenbergLayoutSection: CategorySection {
     var section: PageTemplateCategory
     var layouts: [PageTemplateLayout]
     var scrollOffset: CGPoint
+    
+    var categorySlug: String { section.slug }
+    var title: String? { section.desc }
+    
+    var thumbnails: [Thumbnail] {
+        // TODO: pass device different modes
+        layouts.map({ Thumbnail(urlDesktop: $0.preview, urlTablet: $0.preview, urlMobile: $0.preview, slug: $0.slug) })
+    }
     
     init(_ section: PageTemplateCategory) {
         let layouts = Array(section.layouts ?? []).sorted()
@@ -13,6 +21,14 @@ class GutenbergLayoutSection {
         self.layouts = layouts
         self.scrollOffset = .zero
     }
+}
+
+protocol CategorySection {
+    typealias Thumbnail = CategorySectionTableViewCell.Thumbnail
+    var categorySlug: String { get }
+    var title: String? { get }
+    var thumbnails: [Thumbnail] { get }
+    var scrollOffset: CGPoint { get set }
 }
 
 class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
@@ -190,9 +206,8 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
 
 extension GutenbergLayoutPickerViewController: CategorySectionTableViewCellDelegate {
     
-    func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell) {
+    func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell, slug: String) {
         guard let cellIndexPath = tableView.indexPath(for: cell),
-              let slug = cell.section?.section.slug,
               let sectionIndex = sections.firstIndex(where: { $0.section.slug == slug })
         else { return }
         
