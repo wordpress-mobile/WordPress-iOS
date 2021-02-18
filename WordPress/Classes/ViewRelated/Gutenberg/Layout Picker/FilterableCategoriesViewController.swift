@@ -11,7 +11,7 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
             }
         }
     }
-    internal let filterBar: CollapsableHeaderFilterBar
+    private let filterBar: CollapsableHeaderFilterBar
 
     /* This should be overriden by the subclass to provide a conforming collection of categories */
     internal var categorySections: [CategorySection] { get { [] } }
@@ -32,13 +32,17 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
         }
     }
     
+    private var backButtonTitle: String
+    
     init(
         mainTitle: String,
         prompt: String,
         primaryActionTitle: String,
         secondaryActionTitle: String? = nil,
-        defaultActionTitle: String? = nil
+        defaultActionTitle: String? = nil,
+        backButtonTitle: String
     ) {
+        self.backButtonTitle = backButtonTitle
         tableView = UITableView(frame: .zero, style: .plain)
         tableView.separatorStyle = .singleLine
         tableView.separatorInset = .zero
@@ -55,6 +59,23 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.register(CategorySectionTableViewCell.nib, forCellReuseIdentifier: CategorySectionTableViewCell.cellReuseIdentifier)
+        filterBar.filterDelegate = self
+        tableView.dataSource = self
+        configureCloseButton()
+        navigationItem.backButtonTitle = backButtonTitle
+    }
+
+    private func configureCloseButton() {
+        navigationItem.rightBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
+    }
+    
+    @objc func closeButtonTapped(_ sender: Any) {
+        dismiss(animated: true)
     }
 
     override func estimatedContentSize() -> CGSize {
