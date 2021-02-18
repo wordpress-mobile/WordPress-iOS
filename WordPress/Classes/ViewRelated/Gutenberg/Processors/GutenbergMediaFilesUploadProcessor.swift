@@ -21,8 +21,8 @@ class GutenbergMediaFilesUploadProcessor: Processor {
         guard let mediaFileAttributes = block.attributes["mediaFiles"] as? [[String: Any]] else {
             return nil
         }
-        let mediaFiles = mediaFileAttributes.map { attributes in
-            return MediaFile(dictionary: attributes)
+        let mediaFiles = mediaFileAttributes.compactMap { attributes in
+            return MediaFile.file(from: attributes)
         }
 
         let media: [MediaFile] = mediaFiles.map { mediaFile -> MediaFile in

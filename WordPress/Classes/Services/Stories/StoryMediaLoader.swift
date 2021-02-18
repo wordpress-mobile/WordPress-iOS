@@ -65,7 +65,7 @@ class StoryMediaLoader {
                                 self?.results[idx] = (CameraSegment.image(image, nil, nil, Kanvas.MediaInfo(source: .kanvas_camera)), nil)
                             }
                         }, onFailure: { error in
-                            print("Failed image download")
+                            DDLogWarn("Failed Stories image download: \(error)")
                         })
                         self.downloadTasks.append(task)
                     }
@@ -77,15 +77,15 @@ class StoryMediaLoader {
                                 self?.results[idx] = (CameraSegment.video(videoURL, nil), nil)
                             }
                         case .failure(let error):
-                            print("Failed video download \(error)")
+                            DDLogWarn("Failed stories video download: \(error)")
                         }
                     }
                 default:
-                    print("Unexpected Media Type")
+                    DDLogWarn("Unexpected Stories media type: \(mediaType)")
                 }
 
             }) { (error) in
-                print("Media fetch error \(error)")
+                DDLogWarn("Stories media fetch error \(error)")
             }
         }
     }

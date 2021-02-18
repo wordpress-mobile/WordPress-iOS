@@ -34,14 +34,52 @@ struct MediaFile: Codable {
         self.url = url
     }
 
-    init(dictionary: [String: Any]) {
-        self.init(alt: dictionary["alt"] as! String,
-            caption: dictionary["caption"] as! String,
-            id: dictionary["id"] as! Double,
-            link: dictionary["link"] as! String,
-            mime: dictionary["mime"] as! String,
-            type: dictionary["type"] as! String,
-            url: dictionary["url"] as! String)
+    init(dictionary: [String: Any]) throws {
+        self.init(alt: try dictionary.value(key: CodingKeys.alt.stringValue, type: String.self),
+            caption: try dictionary.value(key: CodingKeys.caption.stringValue, type: String.self),
+            id: try dictionary.value(key: CodingKeys.id.stringValue, type: Double.self),
+            link: try dictionary.value(key: CodingKeys.link.stringValue, type: String.self),
+            mime: try dictionary.value(key: CodingKeys.mime.stringValue, type: String.self),
+            type: try dictionary.value(key: CodingKeys.type.stringValue, type: String.self),
+            url: try dictionary.value(key: CodingKeys.url.stringValue, type: String.self))
+    }
+
+    static func file(from dictionary: [String: Any]) -> MediaFile? {
+        do {
+            return try self.init(dictionary: dictionary)
+        } catch let error {
+            DDLogWarn("MediaFile error: \(error)")
+            return nil
+        }
+    }
+}
+
+extension Dictionary where Key == String, Value == Any {
+    enum ValueError: Error, CustomDebugStringConvertible {
+        case missingKey(String)
+        case wrongType(String, Any)
+
+        var debugDescription: String {
+            switch self {
+            case Dictionary.ValueError.missingKey(let key):
+                return "Dictionary is missing key: \(key)"
+            case Dictionary.ValueError.wrongType(let key, let value):
+                return "Dictionary has wrong type for \(key): \(type(of: value))"
+            }
+        }
+    }
+
+    func value<T: Any>(key: String, type: T.Type) throws -> T {
+        let value = self[key]
+        if let castValue = value as? T {
+            return castValue
+        } else {
+            if let value = value {
+                throw ValueError.wrongType(key, value)
+            } else {
+                throw ValueError.missingKey(key)
+            }
+        }
     }
 }
 

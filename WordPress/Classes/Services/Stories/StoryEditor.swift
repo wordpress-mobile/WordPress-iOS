@@ -30,7 +30,9 @@ class StoryEditor: CameraController {
 
     private var cameraHandler: CameraHandler?
     private var poster: StoryPoster?
-    private var storyLoader: StoryMediaLoader? = StoryMediaLoader()
+    private lazy var storyLoader: StoryMediaLoader = {
+        return StoryMediaLoader()
+    }()
 
     private static let useMetal = true
 
@@ -179,11 +181,10 @@ class StoryEditor: CameraController {
     }
 
     func populate(with files: [MediaFile], completion: @escaping (Result<Void, Error>) -> Void) {
-        storyLoader?.download(files: files, for: post) { [weak self] output in
+        storyLoader.download(files: files, for: post) { [weak self] output in
             DispatchQueue.main.async {
                 self?.show(media: output)
                 completion(.success(()))
-                print(output)
             }
         }
     }

@@ -46,7 +46,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - Aztec
 
-    internal var replaceEditor: (EditorViewController, EditorViewController) -> ()
+    var replaceEditor: (EditorViewController, EditorViewController) -> ()
 
     // MARK: - PostEditor
 
@@ -659,13 +659,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidRequestMediaFilesEditorLoad(_ mediaFiles: [[String: Any]], blockId: String) {
 
-        let files = mediaFiles.map({ content in
-            return MediaFile(dictionary: content)
+        let files = mediaFiles.compactMap({ content -> MediaFile? in
+            return MediaFile.file(from: content)
         })
 
         let controller = StoryEditor.editor(post: post, mediaFiles: files, publishOnCompletion: false, updated: { [weak self] result in
             switch result {
-            case .success(let output):
+            case .success:
                 self?.dismiss(animated: true, completion: nil)
             case .failure(let error):
                 self?.dismiss(animated: true, completion: nil)

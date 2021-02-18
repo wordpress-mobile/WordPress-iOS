@@ -250,6 +250,7 @@ class PostCoordinator: NSObject {
 
         change(post: post, status: .pushingMedia)
 
+        // Only observe if we're not already
         guard !isObserving(post: post) else {
             return []
         }
