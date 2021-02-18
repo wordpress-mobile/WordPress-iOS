@@ -1233,6 +1233,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)updateBlogIconWithMedia:(Media *)media
 {
+    [[QuickStartTourGuide shared] completeSiteIconTourForBlog:self.blog];
+
     self.blog.settings.iconMediaID = media.mediaID;
     [self updateBlogSettingsAndRefreshIcon];
 }

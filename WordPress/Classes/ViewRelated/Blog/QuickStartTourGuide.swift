@@ -152,6 +152,17 @@ open class QuickStartTourGuide: NSObject {
         showCurrentStep()
     }
 
+    // Required for now because obj-c doesn't know about Quick Start tours
+    @objc func completeSiteIconTour(forBlog blog: Blog) {
+        complete(tour: QuickStartSiteIconTour(), silentlyForBlog: blog)
+    }
+
+    /// Complete the specified tour without posting a notification.
+    ///
+    func complete(tour: QuickStartTour, silentlyForBlog blog: Blog) {
+        complete(tour: tour, for: blog, postNotification: false)
+    }
+
     func complete(tour: QuickStartTour, for blog: Blog, postNotification: Bool = true) {
         guard let tourCount = blog.quickStartTours?.count, tourCount > 0 else {
             // Tours haven't been set up yet or were skipped. No reason to continue.
