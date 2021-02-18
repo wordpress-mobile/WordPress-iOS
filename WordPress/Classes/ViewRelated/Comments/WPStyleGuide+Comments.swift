@@ -10,7 +10,7 @@ extension WPStyleGuide {
         static let gravatarPlaceholderImage = UIImage(named: "gravatar") ?? UIImage()
         static let backgroundColor = UIColor.listForeground
 
-        static let detailFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        static let detailFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         static let detailTextColor = UIColor.textSubtle
 
         private static let titleTextColor = UIColor.text
