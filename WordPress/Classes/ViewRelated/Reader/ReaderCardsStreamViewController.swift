@@ -10,9 +10,12 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     /// Refresh counter used to for random posts on pull to refresh
     private var refreshCount = 0
 
+    private static var sortingOption: ReaderSortingOption?
+
     private lazy var sortingButton: ReaderSortingOptionButton = {
         let view = ReaderSortingOptionButton()
         view.addTarget(self, action: #selector(didTapSortingButton), for: .touchUpInside)
+        view.accessibilityHint = NSLocalizedString("Tap to change sorting option", comment: "Accessibility hint for sorting option button.")
         return view
     }()
 
@@ -112,7 +115,9 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         guard FeatureFlag.readerSortingOption.enabled else {
             return
         }
-        updateSortingOption(.popularity, reloadCards: false)
+
+        sortingButton.setLabelBottomCompensation(8.0)
+        updateSortingOption(ReaderCardsStreamViewController.sortingOption ?? .popularity, reloadCards: false)
         tableView.tableHeaderView = sortingButton
         NSLayoutConstraint.activate([
             sortingButton.widthAnchor.constraint(equalTo: tableView.widthAnchor),
@@ -123,14 +128,38 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         let optionChanged = sortingButton.sortingOption != sortingOption
 
         sortingButton.sortingOption = sortingOption
+        ReaderCardsStreamViewController.sortingOption = sortingOption
 
         if optionChanged, reloadCards {
+            showGhost()
             super.syncIfAppropriate(forceSync: true)
         }
     }
 
     @objc func didTapSortingButton() {
-        // TODO: show bottom sheet
+        WPAnalytics.track(.readerDiscoverSortingOptionButtonTapped)
+        let availableSortingOptions: [ReaderSortingOption] = [.popularity, .date]
+        let viewController = ReaderSortingOptionViewController(options: availableSortingOptions, preselectedOption: sortingButton.sortingOption) { [weak self] option in
+            if let trackingEvent = option.trackingEvent {
+                WPAnalytics.track(trackingEvent, properties: ["sortingOption": option.rawValue])
+            }
+            self?.updateSortingOption(option)
+            if self?.presentedViewController != nil {
+                self?.dismiss(animated: true, completion: nil)
+            }
+        }
+
+        if traitCollection.horizontalSizeClass == .regular && traitCollection.verticalSizeClass == .regular {
+            viewController.modalPresentationStyle = .popover
+        } else {
+            viewController.modalPresentationStyle = .custom
+        }
+        viewController.popoverPresentationController?.sourceView = self.sortingButton.sourceView
+        viewController.popoverPresentationController?.sourceRect = self.sortingButton.sourceView.bounds
+        viewController.popoverPresentationController?.permittedArrowDirections = .up
+        viewController.transitioningDelegate = self
+
+        present(viewController, animated: true, completion: nil)
     }
 
     // MARK: - Sync
@@ -140,9 +169,11 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         refreshCount += 1
 
         cardsService.fetch(isFirstPage: true, refreshCount: refreshCount, sortingOption: sortingButton.sortingOption, success: { [weak self] cardsCount, hasMore in
+            self?.hideGhost()
             self?.trackContentPresented()
             success(cardsCount, hasMore)
         }, failure: { [weak self] error in
+            self?.hideGhost()
             self?.trackContentPresented()
             failure(error)
         })
@@ -312,5 +343,35 @@ extension ReaderCardsStreamViewController: ReaderSitesCardCellDelegate {
         toggleFollowingForTopic(topic) { success in
             cell.didToggleFollowing(topic, with: success)
         }
+    }
+}
+
+// MARK: - UIViewControllerTransitioningDelegate
+
+extension ReaderCardsStreamViewController {
+    public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return BottomSheetAnimationController(transitionType: .presenting)
+    }
+
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return BottomSheetAnimationController(transitionType: .dismissing)
+    }
+
+    public override func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        let presentationController = BottomSheetPresentationController(presentedViewController: presented, presenting: presenting)
+        return presentationController
+    }
+
+    public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return (presentedViewController?.presentationController as? BottomSheetPresentationController)?.interactionController
+    }
+}
+
+extension ReaderSortingOption {
+    var trackingEvent: WPAnalyticsEvent? {
+        if self == .noSorting {
+            return nil
+        }
+        return .readerDiscoverSortingOptionSelected
     }
 }

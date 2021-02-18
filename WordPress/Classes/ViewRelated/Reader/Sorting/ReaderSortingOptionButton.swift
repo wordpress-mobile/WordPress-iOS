@@ -3,7 +3,7 @@ import UIKit
 extension ReaderSortingOption {
 
     var localizedDescription: String? {
-        // TODO: check if strings are localized
+        // TODO: check if strings are localized properly
         switch self {
         case .date:
             return NSLocalizedString("Recent", comment: "Description of the date sorting option in the Discover tab")
@@ -42,8 +42,9 @@ class ReaderSortingOptionButton: UIControl {
         static let chevronTrailing: CGFloat = -16.0
         // TODO: check if we can use iOS system colors here
         static let iconsTintColor: UIColor = UIColor(light: UIColor(hexString: "4D4D4D"), dark: UIColor(hexString: "BFBFBF"))
+        static let labelColor: UIColor = UIColor(light: .black, dark: .white)
         static let isHighlightedAlpha: CGFloat = 0.5
-        static let isNotHighlightedAlpha: CGFloat = 1
+        static let isNotHighlightedAlpha: CGFloat = 1.0
     }
 
     var sourceView: UIView {
@@ -59,10 +60,14 @@ class ReaderSortingOptionButton: UIControl {
 
     private lazy var label: UILabel = {
         let view = UILabel()
-        view.textColor = UIColor(light: .black, dark: .white)
+        view.textColor = Constants.labelColor
         view.font = WPFontManager.systemSemiBoldFont(ofSize: Constants.fontSize)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }()
+
+    private lazy var labelBottomConstraint: NSLayoutConstraint = {
+        return label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.bottom)
     }()
 
     private lazy var chevronView: UIImageView = {
@@ -109,7 +114,7 @@ class ReaderSortingOptionButton: UIControl {
 
         // TODO: check if accessibility is set correctly
         accessibilityIdentifier = "Reader sorting option button"
-        accessibilityLabel = NSLocalizedString("Sorting option button", comment: "Accessibility label for sorting option button")
+        accessibilityLabel = NSLocalizedString("Choose reader sorting option", comment: "Accessibility label for sorting option button")
 
         addSubview(iconView)
         addSubview(label)
@@ -118,13 +123,12 @@ class ReaderSortingOptionButton: UIControl {
         NSLayoutConstraint.activate([
             iconView.heightAnchor.constraint(equalToConstant: Constants.iconsHeight),
             iconView.widthAnchor.constraint(equalToConstant: Constants.iconsWidth),
-            iconView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            iconView.centerYAnchor.constraint(equalTo: label.centerYAnchor),
             iconView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Constants.iconLeading),
-            label.centerYAnchor.constraint(equalTo: centerYAnchor),
             label.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: Constants.labelLeading),
             label.topAnchor.constraint(equalTo: topAnchor, constant: Constants.top),
-            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.bottom),
-            chevronView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            labelBottomConstraint,
+            chevronView.centerYAnchor.constraint(equalTo: label.centerYAnchor),
             chevronView.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: Constants.chevronLeading),
             chevronView.trailingAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor, constant: Constants.chevronTrailing),
             chevronView.heightAnchor.constraint(equalToConstant: Constants.iconsHeight),
@@ -137,5 +141,9 @@ class ReaderSortingOptionButton: UIControl {
     private func bindSortingOption() {
         label.text = sortingOption.localizedDescription
         iconView.image = sortingOption.image
+    }
+
+    public func setLabelBottomCompensation(_ compensation: CGFloat) {
+        labelBottomConstraint.constant = Constants.bottom + compensation
     }
 }

@@ -80,6 +80,8 @@ import Foundation
     case readerDiscoverContentPresented
     case readerPostMarkSeen
     case readerPostMarkUnseen
+    case readerDiscoverSortingOptionButtonTapped
+    case readerDiscoverSortingOptionSelected
 
     // What's New - Feature announcements
     case featureAnnouncementShown
@@ -277,6 +279,10 @@ import Foundation
             return "reader_mark_as_seen"
         case .readerPostMarkUnseen:
             return "reader_mark_as_unseen"
+        case .readerDiscoverSortingOptionButtonTapped:
+            return "reader_discover_sorting_option_button_tapped"
+        case .readerDiscoverSortingOptionSelected:
+            return "reader_discover_sorting_option_selected"
 
         // What's New - Feature announcements
         case .featureAnnouncementShown:
