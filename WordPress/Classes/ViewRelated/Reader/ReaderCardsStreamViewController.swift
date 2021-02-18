@@ -247,22 +247,38 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     }
 
     private func addObservers() {
-        // Observe the managedObjectContext for changes (likes, saves) and reload the tableView
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(reload(_:)),
-                                               name: .NSManagedObjectContextDidSave,
-                                               object: managedObjectContext())
 
         // Listens for when the reader manage view controller is dismissed
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(manageControllerWasDismissed(_:)),
                                                name: .readerManageControllerWasDismissed,
                                                object: nil)
+
+        // Listens for when a site is blocked
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(siteBlocked(_:)),
+                                               name: .ReaderSiteBlocked,
+                                               object: nil)
     }
 
-    @objc func manageControllerWasDismissed(_ notification: Foundation.Notification) {
+    @objc private func manageControllerWasDismissed(_ notification: Foundation.Notification) {
         shouldForceRefresh = true
         self.displaySelectInterestsIfNeeded()
+    }
+
+    /// Update the post card when a site is blocked from post details.
+    ///
+    @objc private func siteBlocked(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo,
+              let post = userInfo[ReaderNotificationKeys.post] as? ReaderPost,
+              let posts = content.content as? [ReaderCard], // let posts = cards
+              let contentPost = posts.first(where: { $0.post?.postID == post.postID }),
+              let indexPath = content.indexPath(forObject: contentPost) else {
+            return
+        }
+
+        super.syncIfAppropriate(forceSync: true)
+        tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
     }
 }
 

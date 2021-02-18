@@ -6,10 +6,18 @@ import XCTest
 class PostCardCellGhostableTests: XCTestCase {
 
     var postCell: PostCardCell!
+    private var coreDataStack: TestContextManager!
 
     override func setUp() {
         postCell = postCellFromNib()
         postCell.ghostAnimationWillStart()
+        coreDataStack = TestContextManager()
+        super.setUp()
+    }
+
+    override func tearDown() {
+        coreDataStack = nil
+        super.tearDown()
     }
 
     func testHideFeaturedImage() {
@@ -57,7 +65,7 @@ class PostCardCellGhostableTests: XCTestCase {
     }
 
     func testIsInteractiveAfterAConfigure() {
-        let post = PostBuilder().build()
+        let post = PostBuilder(coreDataStack.mainContext).build()
 
         postCell.configure(with: post)
 
@@ -65,7 +73,7 @@ class PostCardCellGhostableTests: XCTestCase {
     }
 
     func testVerticalContentSpacingAfterConfigure() {
-        let post = PostBuilder().build()
+        let post = PostBuilder(coreDataStack.mainContext).build()
 
         postCell.configure(with: post)
 
@@ -73,15 +81,15 @@ class PostCardCellGhostableTests: XCTestCase {
     }
 
     func testActionBarOpacityAfterConfigure() {
-        let post = PostBuilder().build()
-
+        let post = PostBuilder(coreDataStack.mainContext).build()
+        assert(post.managedObjectContext != nil)
         postCell.configure(with: post)
 
         XCTAssertEqual(postCell.actionBarView.layer.opacity, 1)
     }
 
     func testHideGhostView() {
-        let post = PostBuilder().build()
+        let post = PostBuilder(coreDataStack.mainContext).build()
 
         postCell.configure(with: post)
 

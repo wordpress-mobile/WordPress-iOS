@@ -9,7 +9,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case homepageSettings
     case gutenbergMentions
     case gutenbergXposts
-    case whatIsNew
     case newNavBarAppearance
     case unifiedPrologueCarousel
     case stories
@@ -20,6 +19,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case todayWidget
     case unseenPosts
     case readerSortingOption
+    case milestoneNotifications
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -42,8 +42,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .gutenbergXposts:
             return true
-        case .whatIsNew:
-            return true
         case .newNavBarAppearance:
             return BuildConfiguration.current == .localDeveloper
         case .unifiedPrologueCarousel:
@@ -64,6 +62,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .readerSortingOption:
             return BuildConfiguration.current == .localDeveloper
+        case .milestoneNotifications:
+            return false
         }
     }
 
@@ -106,8 +106,6 @@ extension FeatureFlag {
             return "Mentions in Gutenberg"
         case .gutenbergXposts:
             return "Xposts in Gutenberg"
-        case .whatIsNew:
-            return "What's New / Feature Announcement"
         case .newNavBarAppearance:
             return "New Navigation Bar Appearance"
         case .unifiedPrologueCarousel:
@@ -128,6 +126,8 @@ extension FeatureFlag {
             return "Unseen Posts in Reader"
         case .readerSortingOption:
             return "Sorting Option in Reader Discover screen"
+        case .milestoneNotifications:
+            return "Milestone notifications"
         }
     }
 

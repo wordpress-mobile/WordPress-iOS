@@ -48,6 +48,8 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     }
 
     func configure(with post: Post) {
+        assert(post.managedObjectContext != nil)
+
         if post != self.post {
             viewModel = PostCardStatusViewModel(post: post)
         }

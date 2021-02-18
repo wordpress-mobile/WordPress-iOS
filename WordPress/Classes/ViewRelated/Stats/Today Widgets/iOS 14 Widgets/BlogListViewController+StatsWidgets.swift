@@ -40,7 +40,7 @@ extension BlogListViewController {
             var timeZone = existingSite?.timeZone ?? TimeZone.current
 
             if let blog = blogService.blog(byBlogId: blogID) {
-                timeZone = blogService.timeZone(for: blog)
+                timeZone = blog.timeZone
             }
 
             let date = existingSite?.date ?? Date()
