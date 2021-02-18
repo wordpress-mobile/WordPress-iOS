@@ -9,12 +9,11 @@ class GutenbergLayoutSection: CategorySection {
     
     var categorySlug: String { section.slug }
     var title: String? { section.desc }
-    
     var thumbnails: [Thumbnail] {
         // TODO: pass device different modes
-        layouts.map({ Thumbnail(urlDesktop: $0.preview, urlTablet: $0.preview, urlMobile: $0.preview, slug: $0.slug) })
+        layouts.map { Thumbnail(urlDesktop: $0.preview, urlTablet: $0.preview, urlMobile: $0.preview, slug: $0.slug) }
     }
-    
+
     init(_ section: PageTemplateCategory) {
         let layouts = Array(section.layouts ?? []).sorted()
         self.section = section
@@ -26,6 +25,7 @@ class GutenbergLayoutSection: CategorySection {
 class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     private var filteredSections: [GutenbergLayoutSection]?
     private var sections: [GutenbergLayoutSection] = []
+    internal var visibleSections: [CategorySection] { filteredSections ?? sections }
     lazy var resultsController: NSFetchedResultsController<PageTemplateCategory> = {
         let resultsController = PageLayoutService.resultsController(forBlog: blog, delegate: self)
         sections = makeSectionData(with: resultsController)
@@ -127,7 +127,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     }
     
     override func estimatedContentSize() -> CGSize {
-        let rowCount = CGFloat(max((filteredSections ?? sections).count, 1))
+        let rowCount = CGFloat(max(visibleSections.count, 1))
         let estimatedRowHeight: CGFloat = CategorySectionTableViewCell.estimatedCellHeight
         let estimatedHeight = (estimatedRowHeight * rowCount)
         return CGSize(width: tableView.contentSize.width, height: estimatedHeight)
@@ -167,7 +167,7 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isLoading ? 1 : ((filteredSections ?? sections).count)
+        return isLoading ? 1 : (visibleSections.count)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -177,7 +177,7 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
         }
         cell.delegate = self
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        cell.section = isLoading ? nil : (filteredSections ?? sections)[indexPath.row]
+        cell.section = isLoading ? nil : visibleSections[indexPath.row]
         cell.isGhostCell = isLoading
         cell.layer.masksToBounds = false
         cell.clipsToBounds = false
@@ -190,9 +190,9 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
     }
     
     private func containsSelectedItem(_ selectedIndexPath: IndexPath, atIndexPath indexPath: IndexPath) -> Bool {
-        let rowSection = (filteredSections ?? sections)[indexPath.row]
         let sectionSlug = sections[selectedIndexPath.section].section.slug
-        return (sectionSlug == rowSection.section.slug)
+        let rowSection = visibleSections[indexPath.row]
+        return (sectionSlug == rowSection.categorySlug)
     }
 }
 
