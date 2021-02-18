@@ -177,6 +177,7 @@ class NotificationDetailsViewController: UIViewController {
         super.viewDidDisappear(animated)
         removeConfettiView()
     }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: { context in
