@@ -983,11 +983,13 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     }
 
     func gutenbergCapabilities() -> [Capabilities: Bool] {
+        let isFreeWPCom = post.blog.isHostedAtWPcom && !post.blog.hasPaidPlan
         return [
             .mentions: FeatureFlag.gutenbergMentions.enabled && SuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .xposts: FeatureFlag.gutenbergXposts.enabled && SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
+            .audioBlock: !isFreeWPCom // Disable audio block until it's usable on free sites via "Insert from URL" capability
         ]
     }
 
