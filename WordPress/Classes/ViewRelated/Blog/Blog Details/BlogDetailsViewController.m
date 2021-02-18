@@ -1518,7 +1518,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
 
     if ([CommentService shouldRefreshCacheFor:self.blog]) {
-        [commentService syncCommentsForBlog:self.blog success:nil failure:nil];
+        [commentService syncCommentsForBlog:self.blog withStatus:commentStatusAll success:nil failure:nil];
     }
 }
 

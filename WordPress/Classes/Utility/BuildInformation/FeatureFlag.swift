@@ -60,7 +60,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .unseenPosts:
             return true
         case .milestoneNotifications:
-            return true
+            return false
         }
     }
 
