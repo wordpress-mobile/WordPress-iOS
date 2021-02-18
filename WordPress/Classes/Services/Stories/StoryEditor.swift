@@ -66,7 +66,7 @@ class StoryEditor: CameraController {
         return settings
     }
 
-    typealias Results = Result<Post, PostCoordinator.SavingError>
+    typealias Results = Result<AbstractPost, PostCoordinator.SavingError>
 
     static func editor(blog: Blog,
                        context: NSManagedObjectContext,
@@ -141,7 +141,8 @@ class StoryEditor: CameraController {
             }
 
             guard let self = self else { return }
-            let uploads: (String, [Media])? = self.poster?.upload(mediaItems: postMedia, post: post as! Post, completion: { post in
+
+            let uploads: (String, [Media])? = try? self.poster?.upload(mediaItems: postMedia, post: post, completion: { post in
                 uploaded(post)
             })
 
@@ -159,9 +160,13 @@ class StoryEditor: CameraController {
                 post.content = uploads?.0
             }
 
-            try! post.managedObjectContext?.save()
+            do {
+                try post.managedObjectContext?.save()
+            } catch let error {
+                assertionFailure("Failed to save post during story upload: \(error)")
+            }
 
-            updated(.success(post as! Post))
+            updated(.success(post))
 
             if publishOnCompletion {
                 self.publishPost(action: .publish, dismissWhenDone: true, analyticsStat:

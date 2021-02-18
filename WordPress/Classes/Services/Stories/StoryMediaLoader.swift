@@ -58,16 +58,17 @@ class StoryMediaLoader {
                 switch mediaType {
                 case .image:
                     let size = media.pixelSize()
-                    let task = self.mediaUtility.downloadImage(from: URL(string: file.url)!, size: size, scale: 1, post: post, success: { [weak self] image in
-                        let lastComponent = URL(string: file.url)?.lastPathComponent
-                        let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!.appendingPathComponent(lastComponent ?? "", isDirectory: false)
-                        self?.queue.async {
-                            self?.results[idx] = (CameraSegment.image(image, nil, nil, Kanvas.MediaInfo(source: .kanvas_camera)), nil)
-                        }
-                    }, onFailure: { error in
-                        print("Failed image download")
-                    })
-                    self.downloadTasks.append(task)
+                    if let url = URL(string: file.url) {
+                        let task = self.mediaUtility.downloadImage(from: url, size: size, scale: 1, post: post, success: { [weak self] image in
+                            let lastComponent = URL(string: file.url)?.lastPathComponent
+                            self?.queue.async {
+                                self?.results[idx] = (CameraSegment.image(image, nil, nil, Kanvas.MediaInfo(source: .kanvas_camera)), nil)
+                            }
+                        }, onFailure: { error in
+                            print("Failed image download")
+                        })
+                        self.downloadTasks.append(task)
+                    }
                 case .video:
                     EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] result in
                         switch result {
@@ -90,8 +91,11 @@ class StoryMediaLoader {
     }
 
     func unarchive(file: MediaFile) throws -> (CameraSegment, Data?)? {
-        let archiveURL = StoryPoster.filePath.appendingPathComponent("\(Int(file.id))")
-        return try CameraController.unarchive(archiveURL)
+        if let archiveURL = StoryPoster.filePath?.appendingPathComponent("\(Int(file.id))") {
+            return try CameraController.unarchive(archiveURL)
+        } else {
+            return nil
+        }
     }
 
     func cancel() {

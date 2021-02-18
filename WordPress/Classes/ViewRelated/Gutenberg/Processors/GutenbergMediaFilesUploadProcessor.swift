@@ -30,7 +30,9 @@ class GutenbergMediaFilesUploadProcessor: Processor {
                 return mediaFile
             }
 
-            let newURL = StoryPoster.filePath.appendingPathComponent("\(self.serverMediaID)")
+            guard let newURL = StoryPoster.filePath?.appendingPathComponent("\(self.serverMediaID)") else {
+                return mediaFile
+            }
 
             do {
                 try FileManager.default.moveItem(at: URL(string: mediaFile.url)!, to: newURL)
@@ -63,15 +65,6 @@ class GutenbergMediaFilesUploadProcessor: Processor {
             return nil
         }
     })
-
-//    func replacer(_ text: String) -> String {
-//        do {
-//            return try self.replace(fileBlock: text)
-//        } catch let error {
-//            print("Failed to swap mediaFilesBlock contents during upload: \(error)")
-//            return text
-//        }
-//    }
 
     func process(_ text: String) -> String {
         return mediaFilesProcessor.process(text)

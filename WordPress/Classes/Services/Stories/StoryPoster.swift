@@ -3,6 +3,7 @@ import UIKit
 import WordPressKit
 import AutomatticTracks
 
+/// A type representing the Story block
 struct Story: Codable {
     let mediaFiles: [MediaFile]
 }
@@ -65,25 +66,23 @@ class StoryPoster {
         self.oldMediaFiles = mediaFiles
     }
 
-    enum StoryPosterError: Error {
-        case jsonEncodeError(Error) // JSON from the draft post cannot be decoded. The Error contains the original decoding error
-        case jsonDecodeError(Error) // JSON from the draft post cannot be decoded. The Error contains the original decoding error
-        case contentDataEncodingError // JSON from the draft post couldn't be converted to utf8 encoded data.
-    }
-
-    func upload(assets: [ExportableAsset], post: AbstractPost, completion: @escaping (Result<Post, PostCoordinator.SavingError>) -> Void) -> [Media] {
-        return PostCoordinator.shared.upload(assets: assets, to: post as! Post, completion: { result in
-            completion(result)
-        }).compactMap { return $0 }
-    }
-
-    func upload(mediaItems: [MediaItem], post: Post, completion: @escaping (Result<Post, PostCoordinator.SavingError>) -> Void) -> (String, [Media]) {
+    /// Uploads media to a post and updates the post contents upon completion.
+    /// - Parameters:
+    ///   - mediaItems: The media items to upload.
+    ///   - post: The post to add media items to.
+    ///   - completion: Called on completion with the new post or an error.
+    /// - Returns: `(String, [Media])` A tuple containing the Block which was added to contain the media and the new uploading Media objects will be returned.
+    func upload(mediaItems: [MediaItem], post: AbstractPost, completion: @escaping (Result<AbstractPost, PostCoordinator.SavingError>) -> Void) throws -> (String, [Media]) {
         let assets = mediaItems.map { item in
             return item.url as ExportableAsset
         }
 
-        let media = upload(assets: assets, post: post, completion: completion)
+        // Uploades the media and notifies upong completion with the updated post.
+        let media = PostCoordinator.shared.upload(assets: assets, to: post, completion: { result in
+            completion(result)
+        }).compactMap { return $0 }
 
+        // Update set of `MediaItem`s with values from the new added uploading `Media`.
         let mediaFiles: [MediaFile] = media.enumerated().map { (idx, media) -> MediaFile in
             return MediaFile(alt: media.alt ?? "",
                              caption: media.caption ?? "",
@@ -94,18 +93,22 @@ class StoryPoster {
                              url: mediaItems[idx].archive?.absoluteString ?? "")
         }
 
-
         let story = Story(mediaFiles: mediaFiles)
         let encoder = JSONEncoder()
-        let json = String(data: try! encoder.encode(story), encoding: .utf8)
+        let json = String(data: try encoder.encode(story), encoding: .utf8)
         let block = StoryBlock.wrap(json ?? "", includeFooter: true)
         return (block, media)
     }
 
-    static var filePath: URL = {
-        let media = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("KanvasMedia")
-        try! FileManager.default.createDirectory(at: media, withIntermediateDirectories: true, attributes: nil)
-        return media
+    static var filePath: URL? = {
+        do {
+            let media = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("KanvasMedia")
+            try FileManager.default.createDirectory(at: media, withIntermediateDirectories: true, attributes: nil)
+            return media
+        } catch let error {
+            assertionFailure("Failed to create media file path: \(error)")
+            return nil
+        }
     }()
 }
 
@@ -118,18 +121,6 @@ struct StoryBlock {
         <!-- /wp:jetpack/story -->
         """
 
-    /// Parse a blog post for Story contents.
-    /// - Parameter string: The string containing the HTML for a blog post.
-    /// - Returns: The JSON of the first story found in the post content as a String (or `nil` if there isn't one).
-    static func parse(_ string: String) -> [String] {
-        let matches = string.matches(regex: "\(openTag).*\(closeTag)")
-        let contents = matches.map { match -> String in
-            let stringRange = string.range(from: match.range)
-            return String(string[stringRange])
-        }
-        return contents
-    }
-
     /// Wraps the JSON of a Story into a story block.
     /// - Parameter json: The JSON string to wrap in a story block.
     /// - Returns: The string containing the full Story block.
@@ -141,9 +132,5 @@ struct StoryBlock {
         \(includeFooter ? footer : "")
         """
         return content
-    }
-
-    static func unwrap(_ string: String) -> String {
-        return string.replacingOccurrences(of: openTag, with: "").replacingOccurrences(of: footer, with: "").replacingOccurrences(of: closeTag, with: "")
     }
 }
