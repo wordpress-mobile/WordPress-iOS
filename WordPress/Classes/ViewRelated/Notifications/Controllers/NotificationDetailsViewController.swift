@@ -1238,17 +1238,16 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate {
 //
 private extension NotificationDetailsViewController {
 
-    /// Determines if the notification contains an achievement
-    /// - TODO: - MILESTONE_NOTIF - this is temporary set to the existing achievement system.
-    var isAchievement: Bool {
-        if let type = note.type, type.contains("achievement"), FeatureFlag.milestoneNotifications.enabled {
+    /// Determines if the notification content is a views milestone
+    var isViewMilestone: Bool {
+        if let type = note.type, type.contains("view_milestone"), FeatureFlag.milestoneNotifications.enabled {
             return true
         }
         return false
     }
 
     func addConfettiViewIfNeeded() {
-        guard isAchievement else {
+        guard isViewMilestone else {
             return
         }
         let newConfettiView = ConfettiView()
@@ -1264,7 +1263,6 @@ private extension NotificationDetailsViewController {
     }
 
     func showConfetti() {
-        /// - TODO: MILESTONE_NOTIF - Handle orientation changes
         guard FeatureFlag.milestoneNotifications.enabled else {
             return
         }
