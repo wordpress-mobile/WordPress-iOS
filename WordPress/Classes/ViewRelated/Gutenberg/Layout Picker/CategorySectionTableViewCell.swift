@@ -10,7 +10,9 @@ protocol CategorySectionTableViewCellDelegate: class {
 protocol CategorySection {
     typealias Thumbnail = CategorySectionTableViewCell.Thumbnail
     var categorySlug: String { get }
-    var title: String? { get }
+    var title: String { get }
+    var emoji: String? { get }
+    var description: String? { get }
     var thumbnails: [Thumbnail] { get }
     var scrollOffset: CGPoint { get set }
 }

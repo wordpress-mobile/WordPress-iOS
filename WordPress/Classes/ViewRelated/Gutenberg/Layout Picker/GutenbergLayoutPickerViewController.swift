@@ -7,8 +7,10 @@ class GutenbergLayoutSection: CategorySection {
     var layouts: [PageTemplateLayout]
     var scrollOffset: CGPoint
     
+    var title: String { section.title }
+    var emoji: String? { section.emoji }
     var categorySlug: String { section.slug }
-    var title: String? { section.desc }
+    var description: String? { section.desc }
     var thumbnails: [Thumbnail] {
         // TODO: pass device different modes
         layouts.map { Thumbnail(urlDesktop: $0.preview, urlTablet: $0.preview, urlMobile: $0.preview, slug: $0.slug) }
