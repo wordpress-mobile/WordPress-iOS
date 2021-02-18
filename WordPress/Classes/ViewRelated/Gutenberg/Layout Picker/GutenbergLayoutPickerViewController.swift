@@ -25,31 +25,13 @@ class GutenbergLayoutSection: CategorySection {
 }
 
 class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
-    private var sections: [GutenbergLayoutSection] = []
-    internal var filteredSections: [CategorySection]?
-    internal var visibleSections: [CategorySection] { filteredSections ?? sections }
-    internal override var categorySections: [CategorySection] {
-        get { sections }
-        set {  }
-    }
+    internal var sections: [GutenbergLayoutSection] = []
+    internal override var categorySections: [CategorySection] { get { sections }}
     lazy var resultsController: NSFetchedResultsController<PageTemplateCategory> = {
         let resultsController = PageLayoutService.resultsController(forBlog: blog, delegate: self)
         sections = makeSectionData(with: resultsController)
         return resultsController
     }()
-    
-    private var isLoading: Bool = true {
-        didSet {
-            if isLoading {
-                tableView.startGhostAnimation(style: GhostCellStyle.muriel)
-            } else {
-                tableView.stopGhostAnimation()
-            }
-            
-            loadingStateChanged(isLoading)
-            tableView.reloadData()
-        }
-    }
     
     let completion: PageCoordinator.TemplateSelectionCompletion
     let blog: Blog
@@ -131,13 +113,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
             return GutenbergLayoutSection(category)
         }) ?? []
     }
-    
-    override func estimatedContentSize() -> CGSize {
-        let rowCount = CGFloat(max(visibleSections.count, 1))
-        let estimatedRowHeight: CGFloat = CategorySectionTableViewCell.estimatedCellHeight
-        let estimatedHeight = (estimatedRowHeight * rowCount)
-        return CGSize(width: tableView.contentSize.width, height: estimatedHeight)
-    }
+
     
     // MARK: - Footer Actions
     override func defaultActionSelected(_ sender: Any) {
@@ -158,157 +134,12 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     override func secondaryActionSelected(_ sender: Any) {
         presentPreview()
     }
-    
-    public func loadingStateChanged(_ isLoading: Bool) {
-        filterBar.shouldShowGhostContent = isLoading
-        filterBar.allowsMultipleSelection = !isLoading
-        filterBar.reloadData()
-    }
 }
 
-extension GutenbergLayoutPickerViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CategorySectionTableViewCell.estimatedCellHeight
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isLoading ? 1 : (visibleSections.count)
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellReuseIdentifier = CategorySectionTableViewCell.cellReuseIdentifier
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? CategorySectionTableViewCell else {
-            fatalError("Expected the cell with identifier \"\(cellReuseIdentifier)\" to be a \(CategorySectionTableViewCell.self). Please make sure the table view is registering the correct nib before loading the data")
-        }
-        cell.delegate = self
-        cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        cell.section = isLoading ? nil : visibleSections[indexPath.row]
-        cell.isGhostCell = isLoading
-        cell.layer.masksToBounds = false
-        cell.clipsToBounds = false
-        cell.collectionView.allowsSelection = !isLoading
-        if let selectedItem = selectedItem, containsSelectedItem(selectedItem, atIndexPath: indexPath) {
-            cell.selectItemAt(selectedItem.item)
-        }
-        
-        return cell
-    }
-    
-    private func containsSelectedItem(_ selectedIndexPath: IndexPath, atIndexPath indexPath: IndexPath) -> Bool {
-        let rowSection = visibleSections[indexPath.row]
-        let sectionSlug = categorySections[selectedIndexPath.section].categorySlug
-        return (sectionSlug == rowSection.categorySlug)
-    }
-}
 
-extension GutenbergLayoutPickerViewController: CategorySectionTableViewCellDelegate {
-    
-    func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell, slug: String) {
-        guard let cellIndexPath = tableView.indexPath(for: cell),
-              let sectionIndex = sections.firstIndex(where: { $0.section.slug == slug })
-        else { return }
-        
-        tableView.selectRow(at: cellIndexPath, animated: false, scrollPosition: .none)
-        deselectCurrentLayout()
-        selectedItem = IndexPath(item: position, section: sectionIndex)
-    }
-    
-    func didDeselectItem(forCell cell: CategorySectionTableViewCell) {
-        selectedItem = nil
-    }
-    
-    func accessibilityElementDidBecomeFocused(forCell cell: CategorySectionTableViewCell) {
-        guard UIAccessibility.isVoiceOverRunning, let cellIndexPath = tableView.indexPath(for: cell) else { return }
-        tableView.scrollToRow(at: cellIndexPath, at: .middle, animated: true)
-    }
-    
-    private func deselectCurrentLayout() {
-        guard let previousSelection = selectedItem else { return }
-        
-        tableView.indexPathsForVisibleRows?.forEach { (indexPath) in
-            if containsSelectedItem(previousSelection, atIndexPath: indexPath) {
-                (tableView.cellForRow(at: indexPath) as? CategorySectionTableViewCell)?.deselectItems()
-            }
-        }
-    }
-}
 
-extension GutenbergLayoutPickerViewController: CollapsableHeaderFilterBarDelegate {
-    func numberOfFilters() -> Int {
-        return sections.count
-    }
-    
-    func filter(forIndex index: Int) -> CollabsableHeaderFilterOption {
-        return sections[index].section
-    }
-    
-    func didSelectFilter(withIndex selectedIndex: IndexPath, withSelectedIndexes selectedIndexes: [IndexPath]) {
-        guard filteredSections == nil else {
-            insertFilterRow(withIndex: selectedIndex, withSelectedIndexes: selectedIndexes)
-            return
-        }
-        
-        let rowsToRemove = (0..<sections.count).compactMap { ($0 == selectedIndex.item) ? nil : IndexPath(row: $0, section: 0) }
-        
-        filteredSections = [sections[selectedIndex.item]]
-        tableView.performBatchUpdates({
-            contentSizeWillChange()
-            tableView.deleteRows(at: rowsToRemove, with: .fade)
-        })
-    }
-    
-    func insertFilterRow(withIndex selectedIndex: IndexPath, withSelectedIndexes selectedIndexes: [IndexPath]) {
-        let sortedIndexes = selectedIndexes.sorted(by: { $0.item < $1.item })
-        for i in 0..<sortedIndexes.count {
-            if sortedIndexes[i].item == selectedIndex.item {
-                filteredSections?.insert(sections[selectedIndex.item], at: i)
-                break
-            }
-        }
-        
-        tableView.performBatchUpdates({
-            if selectedIndexes.count == 2 {
-                contentSizeWillChange()
-            }
-            tableView.reloadSections([0], with: .automatic)
-        })
-    }
-    
-    func didDeselectFilter(withIndex index: IndexPath, withSelectedIndexes selectedIndexes: [IndexPath]) {
-        guard selectedIndexes.count == 0 else {
-            removeFilterRow(withIndex: index)
-            return
-        }
-        
-        filteredSections = nil
-        tableView.performBatchUpdates({
-            contentSizeWillChange()
-            tableView.reloadSections([0], with: .fade)
-        })
-    }
-    
-    func removeFilterRow(withIndex index: IndexPath) {
-        guard let filteredSections = filteredSections else { return }
-        
-        var row: IndexPath? = nil
-        let rowSlug = sections[index.item].section.slug
-        for i in 0..<filteredSections.count {
-            if filteredSections[i].categorySlug == rowSlug {
-                let indexPath = IndexPath(row: i, section: 0)
-                self.filteredSections?.remove(at: i)
-                row = indexPath
-                break
-            }
-        }
-        
-        guard let rowToRemove = row else { return }
-        tableView.performBatchUpdates({
-            contentSizeWillChange()
-            tableView.deleteRows(at: [rowToRemove], with: .fade)
-        })
-    }
-}
+
+
 
 extension GutenbergLayoutPickerViewController: NSFetchedResultsControllerDelegate {
     
