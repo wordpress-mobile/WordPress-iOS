@@ -7,6 +7,14 @@ protocol CategorySectionTableViewCellDelegate: class {
     func accessibilityElementDidBecomeFocused(forCell cell: CategorySectionTableViewCell)
 }
 
+protocol CategorySection {
+    typealias Thumbnail = CategorySectionTableViewCell.Thumbnail
+    var categorySlug: String { get }
+    var title: String? { get }
+    var thumbnails: [Thumbnail] { get }
+    var scrollOffset: CGPoint { get set }
+}
+
 class CategorySectionTableViewCell: UITableViewCell {
     
     struct Thumbnail {

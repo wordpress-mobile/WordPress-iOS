@@ -23,14 +23,6 @@ class GutenbergLayoutSection: CategorySection {
     }
 }
 
-protocol CategorySection {
-    typealias Thumbnail = CategorySectionTableViewCell.Thumbnail
-    var categorySlug: String { get }
-    var title: String? { get }
-    var thumbnails: [Thumbnail] { get }
-    var scrollOffset: CGPoint { get set }
-}
-
 class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     private var filteredSections: [GutenbergLayoutSection]?
     private var sections: [GutenbergLayoutSection] = []
