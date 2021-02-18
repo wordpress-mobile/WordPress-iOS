@@ -49,7 +49,7 @@ class StoryMediaLoader {
                     }
                 }
             } catch let error {
-                print("Error unarchiving \(file.url) - \(error)")
+                DDLogError("Error unarchiving \(file.url) - \(error)")
             }
 
             service.getMediaWithID(NSNumber(value: file.id), in: post.blog, success: { [weak self] media in
@@ -60,7 +60,6 @@ class StoryMediaLoader {
                     let size = media.pixelSize()
                     if let url = URL(string: file.url) {
                         let task = self.mediaUtility.downloadImage(from: url, size: size, scale: 1, post: post, success: { [weak self] image in
-                            let lastComponent = URL(string: file.url)?.lastPathComponent
                             self?.queue.async {
                                 self?.results[idx] = (CameraSegment.image(image, nil, nil, Kanvas.MediaInfo(source: .kanvas_camera)), nil)
                             }
