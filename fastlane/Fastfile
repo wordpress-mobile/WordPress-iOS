@@ -324,7 +324,7 @@ import "./ScreenshotFastfile"
     ios_build_preflight()
 
     build_and_upload_internal(skip_prechecks: true, skip_confirm: options[:skip_confirm]) if options[:beta_release]
-    build_and_upload_itc(skip_prechecks: true, skip_confirm: options[:skip_confirm], create_release: options[:create_release])
+    build_and_upload_itc(skip_prechecks: true, skip_confirm: options[:skip_confirm], create_release: options[:create_gh_release])
   end
 
   #####################################################################################
