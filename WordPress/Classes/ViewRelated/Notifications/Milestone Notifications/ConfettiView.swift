@@ -1,5 +1,5 @@
 import UIKit
-
+import WordPressUI
 
 class ConfettiView: UIView {
     public struct EmitterConfig {
@@ -19,8 +19,8 @@ class ConfettiView: UIView {
         /// Percent value that defines the range of sizes the particles can be
         var scaleRange: CGFloat = 0.1
 
-        // Percent value that defines the scale of the contents of the particle
-        // based on the the Particle image size
+        /// Percent value that defines the scale of the contents of the particle
+        /// based on the the Particle image size
         var scale: CGFloat = 0.4
     }
 
@@ -29,7 +29,7 @@ class ConfettiView: UIView {
         let tintColor: UIColor
 
         func tintedImage() -> UIImage {
-            guard let returnImage = image.imageWithTintColor(color: tintColor) else {
+            guard let returnImage = image.imageWithTintColor(tintColor) else {
                 return image
             }
 
@@ -190,34 +190,5 @@ extension ConfettiView {
         ]
 
         self.emit(with: particles, config: ConfettiView.EmitterConfig())
-    }
-}
-
-extension UIImage {
-    public func imageWithTintColor(color: UIColor) -> UIImage? {
-        guard let cgImg = cgImage else {
-            return nil
-        }
-
-        UIGraphicsBeginImageContextWithOptions(size, false, scale)
-        guard let context = UIGraphicsGetCurrentContext() else {
-            UIGraphicsEndImageContext()
-            return nil
-        }
-
-        let bounds = CGRect(origin: CGPoint.zero, size: size)
-
-        let flipTransform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: size.height)
-        context.concatenate(flipTransform)
-
-        context.clip(to: bounds, mask: cgImg)
-
-        color.setFill()
-        context.fill(bounds)
-
-        let tintedImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-
-        return tintedImage
     }
 }
