@@ -84,6 +84,11 @@ extension PostEditor where Self: UIViewController {
                 self.trackPostSave(stat: analyticsStat)
             }
 
+            if self.post.isFirstTimePublish {
+                QuickStartTourGuide.shared.complete(tour: QuickStartPublishTour(),
+                                                    silentlyForBlog: self.post.blog)
+            }
+
             if dismissWhenDone {
                 self.editorSession.end(outcome: action.analyticsEndOutcome)
             } else {

@@ -157,6 +157,14 @@ open class QuickStartTourGuide: NSObject {
         complete(tour: QuickStartSiteIconTour(), silentlyForBlog: blog)
     }
 
+    @objc func completeViewSiteTour(forBlog blog: Blog) {
+        complete(tour: QuickStartViewTour(), silentlyForBlog: blog)
+    }
+
+    @objc func completeSharingTour(forBlog blog: Blog) {
+        complete(tour: QuickStartShareTour(), silentlyForBlog: blog)
+    }
+
     /// Complete the specified tour without posting a notification.
     ///
     func complete(tour: QuickStartTour, silentlyForBlog blog: Blog) {
