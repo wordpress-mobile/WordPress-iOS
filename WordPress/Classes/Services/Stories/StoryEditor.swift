@@ -122,10 +122,13 @@ class StoryEditor: CameraController {
             saveDirectory = nil
         }
 
+        KanvasColors.shared = KanvasCustomUI.shared.cameraColors()
+        Kanvas.KanvasFonts.shared = KanvasCustomUI.shared.cameraFonts()
+
         super.init(settings: settings,
                  mediaPicker: nil,
                  stickerProvider: nil,
-                 analyticsProvider: nil,
+                 analyticsProvider: KanvasAnalyticsStub(),
                  quickBlogSelectorCoordinator: nil,
                  tagCollection: nil,
                  saveDirectory: saveDirectory)
