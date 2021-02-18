@@ -15,8 +15,7 @@ class GutenbergLayoutSection {
     }
 }
 
-class GutenbergLayoutPickerViewController: CollapsableHeaderViewController {
-    let tableView: UITableView
+class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     private var selectedLayout: IndexPath? = nil {
         didSet {
             if !(oldValue != nil && selectedLayout != nil) {
@@ -52,13 +51,9 @@ class GutenbergLayoutPickerViewController: CollapsableHeaderViewController {
     init(blog: Blog, completion: @escaping PageCoordinator.TemplateSelectionCompletion) {
         self.blog = blog
         self.completion = completion
-        tableView = UITableView(frame: .zero, style: .plain)
-        tableView.separatorStyle = .singleLine
-        tableView.separatorInset = .zero
-        tableView.showsVerticalScrollIndicator = false
         filterBar = CollapsableHeaderFilterBar()
 
-        super.init(scrollableView: tableView,
+        super.init(
                    mainTitle: NSLocalizedString("Choose a Layout", comment: "Title for the screen to pick a template for a page"),
                    prompt: NSLocalizedString("Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page.", comment: "Prompt for the screen to pick a template for a page"),
                    primaryActionTitle: NSLocalizedString("Create Page", comment: "Title for button to make a page with the contents of the selected layout"),
