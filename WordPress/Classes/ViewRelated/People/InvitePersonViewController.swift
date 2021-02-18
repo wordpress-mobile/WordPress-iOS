@@ -126,6 +126,20 @@ class InvitePersonViewController: UITableViewController {
 
     // MARK: - UITableView Methods
 
+    // TODO: Uncomment when ready to merge.
+//    override func numberOfSections(in tableView: UITableView) -> Int {
+//        // Hide the last section if the site is not a p2.
+//        let count = super.numberOfSections(in: tableView)
+//        return blog.isWPForTeams() ? count : count - 1
+//    }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard Section.inviteLink == Section(rawValue: section) else {
+            return nil
+        }
+        return NSLocalizedString("Invite Link", comment: "Title for the Invite Link section of the Invite Person screen.")
+    }
+
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         let sectionType = Section(rawValue: section)
         var footerText = sectionType?.footerText
@@ -239,6 +253,7 @@ class InvitePersonViewController: UITableViewController {
         case username
         case role
         case message
+        case inviteLink
 
         var footerText: String? {
             switch self {
@@ -247,6 +262,8 @@ class InvitePersonViewController: UITableViewController {
             case .message:
                 // messageCharacterLimit cannot be accessed here, so the caller will insert it in the string.
                 return NSLocalizedString("Optional: Enter a custom message up to %1$d characters to be sent with your invitation.", comment: "Footer text for Invite People message field. %1$d is the maximum number of characters allowed.")
+            case .inviteLink:
+                return NSLocalizedString("Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted people.", comment: "Footer text for Invite Links section of the Invite People screen.")
             default:
                 return nil
             }
