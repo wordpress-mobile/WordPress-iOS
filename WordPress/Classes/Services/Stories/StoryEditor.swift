@@ -66,19 +66,21 @@ class StoryEditor: CameraController {
         return settings
     }
 
+    typealias Results = Result<Post, PostCoordinator.SavingError>
+
     static func editor(blog: Blog,
                        context: NSManagedObjectContext,
-                       updated: @escaping (Result<(Post, [Media]), Error>) -> Void,
-                       uploaded: @escaping (Result<(Post, [Media]), Error>) -> Void) -> StoryEditor {
+                       updated: @escaping (Results) -> Void,
+                       uploaded: @escaping (Results) -> Void) -> StoryEditor {
         let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
         return editor(post: post, mediaFiles: nil, publishOnCompletion: true, updated: updated, uploaded: uploaded)
     }
 
     static func editor(post: AbstractPost,
-                       mediaFiles: [StoryPoster.MediaFile]?,
+                       mediaFiles: [MediaFile]?,
                        publishOnCompletion: Bool = false,
-                       updated: @escaping (Result<(Post, [Media]), Error>) -> Void,
-                       uploaded: @escaping (Result<(Post, [Media]), Error>) -> Void) -> StoryEditor {
+                       updated: @escaping (Results) -> Void,
+                       uploaded: @escaping (Results) -> Void) -> StoryEditor {
         let controller = StoryEditor(post: post,
                                      onClose: nil,
                                      settings: cameraSettings,
@@ -102,10 +104,10 @@ class StoryEditor: CameraController {
                      analyticsProvider: KanvasAnalyticsProvider?,
                      quickBlogSelectorCoordinator: KanvasQuickBlogSelectorCoordinating?,
                      tagCollection: UIView?,
-                     mediaFiles: [StoryPoster.MediaFile]?,
+                     mediaFiles: [MediaFile]?,
                      publishOnCompletion: Bool,
-                     updated: @escaping (Result<(Post, [Media]), Error>) -> Void,
-                     uploaded: @escaping (Result<(Post, [Media]), Error>) -> Void
+                     updated: @escaping (Results) -> Void,
+                     uploaded: @escaping (Results) -> Void
                     ) {
         self.post = post
         self.onClose = onClose
@@ -139,13 +141,29 @@ class StoryEditor: CameraController {
             }
 
             guard let self = self else { return }
-            let media = self.poster?.upload(mediaItems: postMedia, post: post as! Post, completion: uploaded)
-            if let media = media {
-                updated(.success((post as! Post, media)))
+            let uploads: (String, [Media])? = self.poster?.upload(mediaItems: postMedia, post: post as! Post, completion: { post in
+                uploaded(post)
+            })
+
+            if let firstMediaFile = mediaFiles?.first {
+                let processor = GutenbergBlockProcessor(for: "wp:jetpack/story", replacer: { block in
+                    let mediaFiles = block.attributes["mediaFiles"] as? [[String: Any]]
+                    if let mediaFile = mediaFiles?.first, mediaFile["url"] as? String == firstMediaFile.url {
+                        return uploads?.0
+                    } else {
+                        return nil
+                    }
+                })
+                post.content = processor.process(post.content ?? "")
+            } else {
+                post.content = uploads?.0
             }
 
+            try! post.managedObjectContext?.save()
+
+            updated(.success(post as! Post))
+
             if publishOnCompletion {
-                post.content = "<!-- wp:jetpack/story {} --> <div class=\"wp-story wp-block-jetpack-story\"></div><!-- /wp:jetpack/story -->"
                 self.publishPost(action: .publish, dismissWhenDone: true, analyticsStat:
                                     .editorPublishedPost)
             } else {
@@ -155,7 +173,7 @@ class StoryEditor: CameraController {
         self.delegate = cameraHandler
     }
 
-    func populate(with files: [StoryPoster.MediaFile], completion: @escaping (Result<Void, Error>) -> Void) {
+    func populate(with files: [MediaFile], completion: @escaping (Result<Void, Error>) -> Void) {
         storyLoader?.download(files: files, for: post) { [weak self] output in
             DispatchQueue.main.async {
                 self?.show(media: output)

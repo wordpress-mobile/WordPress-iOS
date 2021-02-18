@@ -19,7 +19,7 @@ class StoryMediaLoader {
     private let mediaUtility = EditorMediaUtility()
     private let queue = DispatchQueue.global(qos: .userInitiated)
 
-    func download(files: [StoryPoster.MediaFile], for post: AbstractPost, completion: @escaping ([Output]) -> Void) {
+    func download(files: [MediaFile], for post: AbstractPost, completion: @escaping ([Output]) -> Void) {
 
         self.completion = completion
         results = [Output?](repeating: nil, count: files.count)
@@ -69,15 +69,11 @@ class StoryMediaLoader {
                     })
                     self.downloadTasks.append(task)
                 case .video:
-                    //videoAssetWithCompletionHandler
                     EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] result in
                         switch result {
                         case .success((let videoURL, _)):
                             self?.queue.async {
-//                                if let url = url {
-                                    //TODO: Move video file?
-                                    self?.results[idx] = (CameraSegment.video(videoURL, nil), nil)
-//                                }
+                                self?.results[idx] = (CameraSegment.video(videoURL, nil), nil)
                             }
                         case .failure(let error):
                             print("Failed video download \(error)")
@@ -93,7 +89,7 @@ class StoryMediaLoader {
         }
     }
 
-    func unarchive(file: StoryPoster.MediaFile) throws -> (CameraSegment, Data?)? {
+    func unarchive(file: MediaFile) throws -> (CameraSegment, Data?)? {
         let archiveURL = StoryPoster.filePath.appendingPathComponent("\(Int(file.id))")
         return try CameraController.unarchive(archiveURL)
     }

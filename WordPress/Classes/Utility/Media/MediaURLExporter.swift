@@ -76,19 +76,18 @@ class MediaURLExporter: MediaExporter {
     /// - Note: You can query the expected type via MediaURLExporter.expectedExport(with:).
     ///
     func exportURL(fileURL: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
+        // Verify the export is permissible
+        if let urlExportOptions = urlOptions,
+            !urlExportOptions.allowableFileExtensions.isEmpty,
+            let fileExtension = fileURL.typeIdentifierFileExtension {
+            if !urlExportOptions.allowableFileExtensions.contains(fileExtension) {
+                onError(exporterErrorWith(error: URLExportError.unsupportedFileType))
+                return Progress.discreteCompletedProgress()
+            }
+        }
         // Initiate export
         do {
             let expected = try MediaURLExporter.expectedExport(with: fileURL)
-            // Verify the export is permissible
-            if expected != .video,
-               let urlExportOptions = urlOptions,
-                !urlExportOptions.allowableFileExtensions.isEmpty,
-                let fileExtension = fileURL.typeIdentifierFileExtension {
-                if !urlExportOptions.allowableFileExtensions.contains(fileExtension) {
-                    onError(exporterErrorWith(error: URLExportError.unsupportedFileType))
-                    return Progress.discreteCompletedProgress()
-                }
-            }
             switch expected {
             case .image:
                 return exportImage(atURL: fileURL, onCompletion: onCompletion, onError: onError)
