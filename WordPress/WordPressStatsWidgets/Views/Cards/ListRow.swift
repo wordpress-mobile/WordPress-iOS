@@ -9,7 +9,11 @@ struct ListRow: View {
     let value: Int
 
     private var isToday: Bool {
-        NSCalendar.current.isDateInToday(date) || NSCalendar.current.isDateInTomorrow(date)
+        NSCalendar.current.isDateInToday(date)
+    }
+
+    private var isTomorrow: Bool {
+        NSCalendar.current.isDateInTomorrow(date)
     }
 
     let percentFormatter: NumberFormatter = {
@@ -26,7 +30,7 @@ struct ListRow: View {
     }()
 
     private var differenceBackgroundColor: Color {
-        guard !isToday else {
+        guard !(isToday || isTomorrow) else {
             return Constants.neutralColor
         }
         return percentValue < 0 ? Constants.negativeColor : Constants.positiveColor
