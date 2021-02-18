@@ -148,8 +148,6 @@ class NotificationDetailsViewController: UIViewController {
         setupKeyboardManager()
 
         Environment.current.appRatingUtility.incrementSignificantEvent(section: "notifications")
-
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
