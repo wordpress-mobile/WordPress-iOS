@@ -3,10 +3,22 @@ import SwiftUI
 import WidgetKit
 
 struct ListRow: View {
+    @Environment(\.widgetFamily) var family: WidgetFamily
 
     let date: Date
     let percentValue: Float
     let value: Int
+
+    private var rowHeight: CGFloat {
+        switch family {
+        case .systemMedium:
+            return Constants.mediumRowHeight
+        case .systemLarge:
+            return Constants.largeRowHeight
+        default:
+            return 0
+        }
+    }
 
     private var isToday: Bool {
         NSCalendar.current.isDateInToday(date)
@@ -65,7 +77,7 @@ struct ListRow: View {
                 .background(differenceBackgroundColor)
                 .cornerRadius(Constants.differenceCornerRadius)
         }
-        .frame(height: Constants.innerRowHeight)
+        .frame(height: rowHeight)
         .flipsForRightToLeftLayoutDirection(true)
     }
 }
@@ -82,7 +94,8 @@ private extension ListRow {
         static let differenceViewInsets = EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
 
         static let differenceViewMinWidth: CGFloat = 56.0
-        static let innerRowHeight: CGFloat = 20.0
+        static let largeRowHeight: CGFloat = 20.0
+        static let mediumRowHeight: CGFloat = 16.0
         static let differenceViewAlignment = Alignment.trailing
 
         static let differenceCornerRadius: CGFloat = 4.0
