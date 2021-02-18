@@ -1,23 +1,23 @@
 import UIKit
 import Gutenberg
 
-protocol LayoutPickerSectionTableViewCellDelegate: class {
-    func didSelectLayoutAt(_ position: Int, forCell cell: LayoutPickerSectionTableViewCell)
-    func didDeselectItem(forCell cell: LayoutPickerSectionTableViewCell)
-    func accessibilityElementDidBecomeFocused(forCell cell: LayoutPickerSectionTableViewCell)
+protocol CategorySectionTableViewCellDelegate: class {
+    func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell)
+    func didDeselectItem(forCell cell: CategorySectionTableViewCell)
+    func accessibilityElementDidBecomeFocused(forCell cell: CategorySectionTableViewCell)
 }
 
-class LayoutPickerSectionTableViewCell: UITableViewCell {
+class CategorySectionTableViewCell: UITableViewCell {
 
-    static let cellReuseIdentifier = "LayoutPickerSectionTableViewCell"
-    static let nib = UINib(nibName: "LayoutPickerSectionTableViewCell", bundle: Bundle.main)
-    static let expectedTumbnailSize = CGSize(width: 160.0, height: 230.0)
+    static let cellReuseIdentifier = "\(CategorySectionTableViewCell.self)"
+    static let nib = UINib(nibName: "\(CategorySectionTableViewCell.self)", bundle: Bundle.main)
+    static let expectedThumbnailSize = CGSize(width: 160.0, height: 230.0)
     static let estimatedCellHeight: CGFloat = 310.0
 
     @IBOutlet weak var categoryTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
 
-    weak var delegate: LayoutPickerSectionTableViewCellDelegate?
+    weak var delegate: CategorySectionTableViewCellDelegate?
 
     private var layouts = [PageTemplateLayout]() {
         didSet {
@@ -66,7 +66,7 @@ class LayoutPickerSectionTableViewCell: UITableViewCell {
     }
 }
 
-extension LayoutPickerSectionTableViewCell: UICollectionViewDelegate {
+extension CategorySectionTableViewCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         if collectionView.cellForItem(at: indexPath)?.isSelected ?? false {
             deselectItem(indexPath)
@@ -76,7 +76,7 @@ extension LayoutPickerSectionTableViewCell: UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.didSelectLayoutAt(indexPath.item, forCell: self)
+        delegate?.didSelectItemAt(indexPath.item, forCell: self)
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -84,13 +84,13 @@ extension LayoutPickerSectionTableViewCell: UICollectionViewDelegate {
     }
 }
 
-extension LayoutPickerSectionTableViewCell: UICollectionViewDelegateFlowLayout {
+extension CategorySectionTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return LayoutPickerSectionTableViewCell.expectedTumbnailSize
+        return CategorySectionTableViewCell.expectedThumbnailSize
      }
 }
 
-extension LayoutPickerSectionTableViewCell: UICollectionViewDataSource {
+extension CategorySectionTableViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return isGhostCell ? 1 : layouts.count
     }
@@ -114,7 +114,7 @@ extension LayoutPickerSectionTableViewCell: UICollectionViewDataSource {
 }
 
 /// Accessibility
-extension LayoutPickerSectionTableViewCell {
+extension CategorySectionTableViewCell {
     override func accessibilityElementDidBecomeFocused() {
         delegate?.accessibilityElementDidBecomeFocused(forCell: self)
     }

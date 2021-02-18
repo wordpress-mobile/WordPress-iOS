@@ -59,7 +59,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(LayoutPickerSectionTableViewCell.nib, forCellReuseIdentifier: LayoutPickerSectionTableViewCell.cellReuseIdentifier)
+        tableView.register(CategorySectionTableViewCell.nib, forCellReuseIdentifier: CategorySectionTableViewCell.cellReuseIdentifier)
         filterBar.filterDelegate = self
         tableView.dataSource = self
         fetchLayouts()
@@ -91,7 +91,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     
     private func fetchLayouts() {
         isLoading = resultsController.isEmpty()
-        let expectedThumbnailSize = LayoutPickerSectionTableViewCell.expectedTumbnailSize
+        let expectedThumbnailSize = CategorySectionTableViewCell.expectedThumbnailSize
         PageLayoutService.fetchLayouts(forBlog: blog, withThumbnailSize: expectedThumbnailSize) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
@@ -120,7 +120,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     
     override func estimatedContentSize() -> CGSize {
         let rowCount = CGFloat(max((filteredSections ?? sections).count, 1))
-        let estimatedRowHeight: CGFloat = LayoutPickerSectionTableViewCell.estimatedCellHeight
+        let estimatedRowHeight: CGFloat = CategorySectionTableViewCell.estimatedCellHeight
         let estimatedHeight = (estimatedRowHeight * rowCount)
         return CGSize(width: tableView.contentSize.width, height: estimatedHeight)
     }
@@ -155,7 +155,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
 extension GutenbergLayoutPickerViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return LayoutPickerSectionTableViewCell.estimatedCellHeight
+        return CategorySectionTableViewCell.estimatedCellHeight
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -163,9 +163,9 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellReuseIdentifier = LayoutPickerSectionTableViewCell.cellReuseIdentifier
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? LayoutPickerSectionTableViewCell else {
-            fatalError("Expected the cell with identifier \"\(cellReuseIdentifier)\" to be a \(LayoutPickerSectionTableViewCell.self). Please make sure the table view is registering the correct nib before loading the data")
+        let cellReuseIdentifier = CategorySectionTableViewCell.cellReuseIdentifier
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? CategorySectionTableViewCell else {
+            fatalError("Expected the cell with identifier \"\(cellReuseIdentifier)\" to be a \(CategorySectionTableViewCell.self). Please make sure the table view is registering the correct nib before loading the data")
         }
         cell.delegate = self
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
@@ -188,9 +188,9 @@ extension GutenbergLayoutPickerViewController: UITableViewDataSource {
     }
 }
 
-extension GutenbergLayoutPickerViewController: LayoutPickerSectionTableViewCellDelegate {
+extension GutenbergLayoutPickerViewController: CategorySectionTableViewCellDelegate {
     
-    func didSelectLayoutAt(_ position: Int, forCell cell: LayoutPickerSectionTableViewCell) {
+    func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell) {
         guard let cellIndexPath = tableView.indexPath(for: cell),
               let slug = cell.section?.section.slug,
               let sectionIndex = sections.firstIndex(where: { $0.section.slug == slug })
@@ -201,11 +201,11 @@ extension GutenbergLayoutPickerViewController: LayoutPickerSectionTableViewCellD
         selectedItem = IndexPath(item: position, section: sectionIndex)
     }
     
-    func didDeselectItem(forCell cell: LayoutPickerSectionTableViewCell) {
+    func didDeselectItem(forCell cell: CategorySectionTableViewCell) {
         selectedItem = nil
     }
     
-    func accessibilityElementDidBecomeFocused(forCell cell: LayoutPickerSectionTableViewCell) {
+    func accessibilityElementDidBecomeFocused(forCell cell: CategorySectionTableViewCell) {
         guard UIAccessibility.isVoiceOverRunning, let cellIndexPath = tableView.indexPath(for: cell) else { return }
         tableView.scrollToRow(at: cellIndexPath, at: .middle, animated: true)
     }
@@ -215,7 +215,7 @@ extension GutenbergLayoutPickerViewController: LayoutPickerSectionTableViewCellD
         
         tableView.indexPathsForVisibleRows?.forEach { (indexPath) in
             if containsSelectedItem(previousSelection, atIndexPath: indexPath) {
-                (tableView.cellForRow(at: indexPath) as? LayoutPickerSectionTableViewCell)?.deselectItems()
+                (tableView.cellForRow(at: indexPath) as? CategorySectionTableViewCell)?.deselectItems()
             }
         }
     }
