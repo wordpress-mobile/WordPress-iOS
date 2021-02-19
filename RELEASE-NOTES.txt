@@ -3,6 +3,7 @@
 * [**] Prevent deleting published homepages which would have the effect of breaking a site. [#15797]
 * [**] Prevent converting published homepage to a draft in the page list and editor's status settings which would have the effect of breaking a site. [#15797]
 * [*] Prevent selection of unpublished homepages the homepage settings which would have the effect of breaking a site. [#15885]
+* [*] Quick Start: Completing a step outside of a tour now automatically marks it as complete. [#15712]
 
 16.7
 -----

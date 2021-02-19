@@ -29,7 +29,12 @@ class PrepublishingViewController: UITableViewController {
         return (navigationController as? PrepublishingNavigationController)?.presentedVC
     }()
 
-    private let completion: (AbstractPost) -> ()
+    enum CompletionResult {
+        case completed(AbstractPost)
+        case dismissed
+    }
+
+    private let completion: (CompletionResult) -> ()
 
     private let options: [PrepublishingOption] = [
         PrepublishingOption(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility")),
@@ -47,7 +52,7 @@ class PrepublishingViewController: UITableViewController {
         return nuxButton
     }()
 
-    init(post: Post, completion: @escaping (AbstractPost) -> ()) {
+    init(post: Post, completion: @escaping (CompletionResult) -> ()) {
         self.post = post
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
@@ -291,7 +296,7 @@ class PrepublishingViewController: UITableViewController {
         didTapPublish = true
         navigationController?.dismiss(animated: true) {
             WPAnalytics.track(.editorPostPublishNowTapped)
-            self.completion(self.post)
+            self.completion(.completed(self.post))
         }
     }
 
@@ -359,6 +364,7 @@ extension PrepublishingViewController: PrepublishingHeaderViewDelegate {
 
 extension PrepublishingViewController: PrepublishingDismissible {
     func handleDismiss() {
+        defer { completion(.dismissed) }
         guard
             !didTapPublish,
             post.status == .publishPrivate,

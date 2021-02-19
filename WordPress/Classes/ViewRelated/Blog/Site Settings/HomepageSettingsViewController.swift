@@ -97,7 +97,7 @@ import WordPressShared
         }
 
         let homepageRows: [ImmuTableRow]
-        if case .homepageType(_) = inProgressChange {
+        if case .homepageType = inProgressChange {
             homepageRows = updatingHomepageTypeRows
         } else {
             homepageRows = homepageTypeRows

@@ -30,6 +30,6 @@ struct ActivityDateFormatting {
             return TimeZone(secondsFromGMT: 0)!
         }
 
-        return blogService.timeZone(for: blog)
+        return blog.timeZone
     }
 }
