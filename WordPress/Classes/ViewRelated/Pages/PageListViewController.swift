@@ -410,7 +410,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let page = pageAtIndexPath(indexPath)
         if page.isSiteHomepage {
-            QuickStartTourGuide.shared.visited(.editHomepage)
+            let guide = QuickStartTourGuide.shared
+            if guide.isCurrentElement(.editHomepage) {
+                QuickStartTourGuide.shared.visited(.editHomepage)
+            } else {
+                QuickStartTourGuide.shared.complete(tour: QuickStartEditHomepageTour(), silentlyForBlog: blog)
+            }
+
             tableView.reloadRows(at: [indexPath], with: .automatic)
         } else {
             QuickStartTourGuide.shared.endCurrentTour()

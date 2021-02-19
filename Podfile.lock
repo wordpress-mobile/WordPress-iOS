@@ -79,6 +79,7 @@ PODS:
     - React-RCTImage (= 0.61.5)
     - RNTAztecView
   - JTAppleCalendar (8.0.3)
+  - Kanvas (1.1.1)
   - lottie-ios (3.1.9)
   - MediaEditor (1.2.1):
     - CropViewController (~> 2.5.3)
@@ -455,6 +456,7 @@ DEPENDENCIES:
   - Gridicons (~> 1.1.0)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v1.47.0`)
   - JTAppleCalendar (~> 8.0.2)
+  - "Kanvas (from `git@github.com:tumblr/kanvas-ios.git`, branch `main`)"
   - MediaEditor (~> 1.2.1)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.3.1)
@@ -581,6 +583,9 @@ EXTERNAL SOURCES:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
     :tag: v1.47.0
+  Kanvas:
+    :branch: main
+    :git: "git@github.com:tumblr/kanvas-ios.git"
   RCTRequired:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.47.0/third-party-podspecs/RCTRequired.podspec.json
   RCTTypeSafety:
@@ -662,6 +667,9 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
     :tag: v1.47.0
+  Kanvas:
+    :commit: 08e47a4f5892e939fc7c5466e909575bd9b189e4
+    :git: "git@github.com:tumblr/kanvas-ios.git"
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
@@ -695,6 +703,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Gutenberg: ad561c8d21878ab1d14b7e499855da43dd6f183d
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
+  Kanvas: 565caff19d90e883194e6e646f6ea994e14fcde5
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
@@ -762,6 +771,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: 2db62b4255590c62aea6a483936d6696a0646545
+PODFILE CHECKSUM: cb1f9a1c50055364c32df792d8758b9dfa09ff0b
 
 COCOAPODS: 1.10.0

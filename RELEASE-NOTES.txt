@@ -6,6 +6,7 @@
 * [**] Block Editor: Make inserter long-press options "add to beginning" and "add to end" always available. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3074]
 * [**] Block Editor: Add support for setting Cover block focal point. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3028]
 * [*] Block Editor: Fix crash when Column block width attribute was empty. [https://github.com/WordPress/gutenberg/pull/29015]
+* [*] Quick Start: Completing a step outside of a tour now automatically marks it as complete. [#15712]
 
 16.7
 -----
