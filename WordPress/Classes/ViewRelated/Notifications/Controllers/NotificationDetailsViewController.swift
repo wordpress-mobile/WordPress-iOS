@@ -175,11 +175,6 @@ class NotificationDetailsViewController: UIViewController {
         dismissNotice()
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        removeConfettiView()
-    }
-
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: { context in
@@ -1263,7 +1258,8 @@ private extension NotificationDetailsViewController {
     }
 
     func removeConfettiView() {
-        confettiView?.removeFromSuperview()
+        let oldConfettiViews = UIApplication.shared.mainWindow?.subviews.filter { $0.isKind(of: ConfettiView.self) }
+        oldConfettiViews?.forEach { $0.removeFromSuperview() }
         confettiView = nil
     }
 
