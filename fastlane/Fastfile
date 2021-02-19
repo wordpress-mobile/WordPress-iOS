@@ -68,7 +68,7 @@ ENV["PROJECT_NAME"]="WordPress"
 ENV["PUBLIC_CONFIG_FILE"]=File.join(PROJECT_ROOT_FOLDER, "config", "Version.Public.xcconfig")
 ENV["INTERNAL_CONFIG_FILE"]=File.join(PROJECT_ROOT_FOLDER, "config", "Version.internal.xcconfig")
 ENV["DOWNLOAD_METADATA"]="./fastlane/download_metadata.swift"
-ENV["PROJECT_ROOT_FOLDER"]=PROJECT_ROOT_FOLDER
+ENV["PROJECT_ROOT_FOLDER"]=PROJECT_ROOT_FOLDER + "/"
 
 ########################################################################
 # Screenshots
@@ -138,7 +138,7 @@ import "./ScreenshotFastfile"
   #####################################################################################
   desc "Updates the AppStoreStrings.po file with the latest data"
   lane :update_appstore_strings do | options |
-    source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, "fastlane/appstoreres/metadata/source")
+    source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, "fastlane", "appstoreres", "metadata", "source")
 
     files = {
       whats_new: File.join(PROJECT_ROOT_FOLDER, "WordPress", "Resources", "release_notes.txt"),

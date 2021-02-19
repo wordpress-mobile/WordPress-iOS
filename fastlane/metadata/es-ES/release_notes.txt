@@ -1,9 +1,11 @@
-Sobre esta versión:
+Aquí están los aspectos más destacados de esta versión:
 
-Nota: Esta es la última versión de la aplicación que será compatible con iOS 12. A partir de la versión 16.7, la aplicación necesitará iOS 13 o superior.
+La copia de seguridad de Jetpack ya está disponible. Dependiendo del plan actual de tu sitio, ahora puedes restaurar tu sitio o descargar una copia de seguridad de tu sitio desde un momento específico. Si has activado Jetpack Scan, ahora podrás explorar tu sitio en busca de amenazas - y arreglarlas o ignorarlas como quieras.
 
-Mira las estadísticas en tu pantalla de inicio: Muestra las estadísticas del día de tu sitio WordPress en la pantalla de inicio de tu dispositivo iOS 14 con los nuevos widgets «Hoy».
+¿Te gusta hacer un seguimiento de tus estadísticas? Hemos añadido compatibilidad con los nuevos widgets de todos los tiempos, que muestran las estadísticas de todos los tiempos de tu sitio en la pantalla de inicio de tu dispositivo iOS 14.
 
-Sigue la actividad de tu sitio: Filtra y visualiza los elementos de tu registro de actividad —como las copias de seguridad, las actualizaciones de plugins y las entradas y páginas publicadas— por rango de fechas y tipo de actividad.
+Ahora puedes establecer anclajes en el bloque de encabezado para crear saltos de página en tu contenido. Hemos realizado otras actualizaciones, como mejoras en los bloques reutilizables y en los bloques que se insertan una sola vez en las publicaciones, como el bloque Más.
 
-Conoce tu aplicación: Aprende las características de tu aplicación con un recorrido de inicio rápido mejorado, que te guía a través de pasos, como la revisión de las páginas del sitio y la edición de tu página de inicio.
+La creación de un sitio en la aplicación sigue mejorando. Al crear una página de inicio, puedes previsualizar el aspecto del diseño en una pantalla de móvil, tableta o escritorio. Ahora también puedes elegir un subdominio .blog para tu sitio.
+
+Por último, seguimos mejorando la experiencia en tu Reader, y ahora puedes marcar las entradas como "vistas", así como ver el total de entradas "no vistas".

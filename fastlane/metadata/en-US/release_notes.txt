@@ -1,9 +1,11 @@
-About this release:
+Here are highlights from this release:
 
-Note: This is the last version of the app that will support iOS 12. Starting version 16.7, your app will require iOS 13 or higher.
+Jetpack Backup is now available! Depending on your site’s current plan, you can now restore your site or download a backup of your site from a specific moment in time. If you’ve enabled Jetpack Scan, you’ll now be able to scan your site for threats — and fix or ignore them as you wish.
 
-See stats on your Home Screen: Display your WordPress site stats for the day on your iOS 14 device’s Home Screen with new Today Widgets.
+Love keeping track of your stats? We’ve added support for new All Time Widgets, which display your site’s All Time stats on the Home Screen of your iOS 14 device.
 
-Track your site activity: Filter and view items in your Activity Log — like backups, plugin updates, and published posts and pages — by date range and activity type.
+You can now set anchors in the Heading block to create page jumps in your content. We’ve made other updates, like improvements to Reusable blocks and blocks you insert just once in your posts, like the More block.
 
-Get to know your app: Learn the features in your app with an improved Quick Start tour, which guides you through steps like reviewing site pages and editing your homepage.
+Creating a site on the app keeps getting better. When building a homepage, you can preview how a design looks on a mobile, tablet, or desktop screen. You can also now choose a .blog subdomain for your site.
+
+Finally, we continue to improve the experience in your Reader, and you can now mark posts as “seen” as well as view your total of “unseen” posts.
