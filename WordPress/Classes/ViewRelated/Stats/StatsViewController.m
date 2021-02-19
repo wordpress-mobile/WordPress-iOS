@@ -103,10 +103,9 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         SiteStatsInformation.sharedInstance.siteID = self.blog.dotComID;
         
         [self addStatsViewControllerToView];
-        
+        [self initializeStatsWidgetsIfNeeded];
         return;
     }
-
     [self refreshStatus];
 }
 

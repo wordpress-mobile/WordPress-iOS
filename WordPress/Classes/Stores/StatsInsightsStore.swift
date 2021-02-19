@@ -60,7 +60,7 @@ struct InsightStoreState {
                                                         posts: allTimeStats?.postsCount,
                                                         bestViews: allTimeStats?.bestViewsPerDayCount)
             storeAllTimeWidgetData(data: allTimeWidgetStats)
-            storeHomeWidgetData(widgetType: HomeWidgetAllTimeData.self, stats: allTimeWidgetStats)
+            StoreContainer.shared.statsWidgets.storeHomeWidgetData(widgetType: HomeWidgetAllTimeData.self, stats: allTimeWidgetStats)
         }
     }
     var allTimeStatus: StoreFetchingStatus = .idle
@@ -88,7 +88,7 @@ struct InsightStoreState {
                                                     comments: todaysStats?.commentsCount)
 
             storeTodayWidgetData(data: todayWidgetStats)
-            storeHomeWidgetData(widgetType: HomeWidgetTodayData.self, stats: todayWidgetStats)
+            StoreContainer.shared.statsWidgets.storeHomeWidgetData(widgetType: HomeWidgetTodayData.self, stats: todayWidgetStats)
         }
     }
     var todaysStatsStatus: StoreFetchingStatus = .idle
@@ -121,7 +121,6 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
 
     init() {
         super.init(initialState: InsightStoreState())
-        observeAccountChangesForWidgets()
     }
 
     override func onDispatch(_ action: Action) {
@@ -984,7 +983,6 @@ private extension InsightStoreState {
         }
         return true
     }
-
 }
 
 // MARK: - iOS 14 Widgets Data

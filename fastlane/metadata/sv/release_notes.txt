@@ -1,9 +1,11 @@
-Om denna version:
+Här är det viktigaste i denna utgåva:
 
-Obs! Detta är den senaste versionen av appen som har stöd för iOS 12. Från och med version 16.7 kommer appen att behöva iOS 13 eller högre.
+Nu är säkerhetskopiering via Jetpack Backup tillgänglig! Beroende på vilket tjänstepaket din webbplats har idag kan du nu återställa din webbplats eller ladda ned en säkerhetskopia av din webbplats från en viss tidpunkt. Om du har aktiverat Jetpack Scan kan du nu genomsöka webbplatsen efter hot, och sedan korrigera eller ignorera dem som du vill.
 
-Se statistik på startskärmen: Visa din WordPress-webbplatsstatistik för dagen på iOS 14-enhets startskärm med nya Today-widgetar.
+Gillar du att håll koll på din statistik? Nu har vi lagt till stöd för nya widgetar med rubriken ” All time” som visar totalsiffror på startskärmen i din iOS 14-enhet.
 
-Spåra din webbplatsaktivitet: Filtrera och visa objekt i din aktivitetslogg, som säkerhetskopior, pluginuppdateringar och publicerade inlägg och sidor, efter datumintervall och aktivitetstyp.
+Nu kan du ange länkmål i rubrikblocket för att kunna hoppa inom sidor till ditt innehåll. Och vi har gjort fler uppdateringar, till exempel förbättringar av återanvändbara block och block som du bara infogar en gång i dina inlägg, såsom blocket ”läs mer”.
 
-Lär känna din app: Lär dig funktionerna i din app med en förbättrad snabbstartsrundtur som guidar dig genom steg som att granska webbplatsens sidor och redigera din startsida.
+Det går allt bättre att skapa en ny webbplats i appen. När du bygger en startsida kan du nu förhandsvisa hur en design kommer att se ut på en mobil, en surfplatta och på dator. Dessutom kan du välja en underdomän under .blog för din webbplats.
+
+Slutligen fortsätter vi att förbättra användarupplevelsen i läsaren. Nu kan du markera inlägg som ”lästa” och även se hur många ”ej lästa” inlägg du har.
