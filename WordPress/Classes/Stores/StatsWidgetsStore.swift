@@ -78,7 +78,7 @@ class StatsWidgetsStore {
             homeWidgetCache[siteID.intValue] = HomeWidgetTodayData(siteID: siteID.intValue,
                                                                    siteName: blog.title ?? oldData.siteName,
                                                                    url: blog.url ?? oldData.url,
-                                                                   timeZone: blogService.timeZone(for: blog),
+                                                                   timeZone: blog.timeZone,
                                                                    date: Date(),
                                                                    stats: stats) as? T
 
@@ -89,7 +89,7 @@ class StatsWidgetsStore {
             homeWidgetCache[siteID.intValue] = HomeWidgetAllTimeData(siteID: siteID.intValue,
                                                                      siteName: blog.title ?? oldData.siteName,
                                                                      url: blog.url ?? oldData.url,
-                                                                     timeZone: blogService.timeZone(for: blog),
+                                                                     timeZone: blog.timeZone,
                                                                      date: Date(),
                                                                      stats: stats) as? T
         }
@@ -122,7 +122,7 @@ extension StatsWidgetsStore {
             var timeZone = existingSite?.timeZone ?? TimeZone.current
 
             if let blog = blogService.blog(byBlogId: blogID) {
-                timeZone = blogService.timeZone(for: blog)
+                timeZone = blog.timeZone
             }
 
             let date = existingSite?.date ?? Date()
@@ -162,7 +162,7 @@ extension StatsWidgetsStore {
                let blog = blogService.blog(byBlogId: blogID) {
                 // set the title to the site title, if it's not nil and not empty; otherwise use the site url
                 let title = (element.title ?? url).isEmpty ? url : element.title ?? url
-                let timeZone = blogService.timeZone(for: blog)
+                let timeZone = blog.timeZone
                 if type == HomeWidgetTodayData.self {
                     result[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
                                                                   siteName: title,
