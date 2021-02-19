@@ -165,9 +165,11 @@ extension ConfettiView {
 
     func emitConfetti() {
         // Images
-        let star = UIImage(named: "confetti-star")!
-        let circle = UIImage(named: "confetti-circle")!
-        let hotdog = UIImage(named: "confetti-hotdog")!
+        guard let star = UIImage(named: "confetti-star"),
+              let circle = UIImage(named: "confetti-circle"),
+              let hotdog = UIImage(named: "confetti-hotdog") else {
+            return
+        }
 
         // Colors
         let purple = UIColor(red: 0.75, green: 0.35, blue: 0.95, alpha: 1.00)
