@@ -91,7 +91,7 @@ class NotificationDetailsViewController: UIViewController {
             guard oldValue != note && isViewLoaded else {
                 return
             }
-
+            confettiWasShown = false
             router = makeRouter()
             refreshInterface()
             markAsReadIfNeeded()
@@ -99,6 +99,8 @@ class NotificationDetailsViewController: UIViewController {
     }
 
     var confettiView: ConfettiView?
+
+    var confettiWasShown = false
 
     lazy var coordinator: ContentCoordinator = {
         return DefaultContentCoordinator(controller: self, context: mainContext)
@@ -152,7 +154,6 @@ class NotificationDetailsViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addConfettiViewIfNeeded()
         tableView.deselectSelectedRowWithAnimation(true)
         keyboardManager?.startListeningToKeyboardNotifications()
 
@@ -163,7 +164,7 @@ class NotificationDetailsViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showConfetti()
+        showConfettiIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -1243,7 +1244,7 @@ private extension NotificationDetailsViewController {
     }
 
     func addConfettiViewIfNeeded() {
-        guard isViewMilestone, let navigationController = navigationController else {
+        guard let navigationController = navigationController else {
             return
         }
         let newConfettiView = ConfettiView()
@@ -1257,10 +1258,8 @@ private extension NotificationDetailsViewController {
     }
 
     func showConfetti() {
-        guard FeatureFlag.milestoneNotifications.enabled else {
-            return
-        }
         confettiView?.emitConfetti()
+        confettiWasShown = true
     }
 
     func removeConfettiView() {
@@ -1268,9 +1267,13 @@ private extension NotificationDetailsViewController {
         confettiView = nil
     }
 
-    /// convenience method
     func showConfettiIfNeeded() {
+        // always remove any previous confetti view
         removeConfettiView()
+        // only add and show confetti if needed
+        guard FeatureFlag.milestoneNotifications.enabled, isViewMilestone, !confettiWasShown else {
+            return
+        }
         addConfettiViewIfNeeded()
         showConfetti()
     }
