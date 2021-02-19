@@ -11,6 +11,11 @@ enum LocalizableStrings {
                                                        defaultValue: "All Time",
                                                        comment: "Title of all time widget")
 
+    // This Week Widget title
+    static let thisWeekWidgetTitle = LocalizedStringKey("widget.thisweek.title",
+                                                       defaultValue: "This Week",
+                                                       comment: "Title of this week widget")
+
     // Widgets content
     static let viewsTitle = LocalizedStringKey("widget.today.views.label",
                                                defaultValue: "Views",
@@ -56,10 +61,16 @@ enum LocalizableStrings {
     static let todayPreviewDescription = LocalizedStringKey("widget.today.preview.description",
                                                        defaultValue: "Stay up to date with today's activity on your WordPress site.",
                                                        comment: "Description of today widget in the preview")
-
+    // All Time Widget preview
     static let allTimePreviewDescription = LocalizedStringKey("widget.alltime.preview.description",
                                                               defaultValue: "Stay up to date with all time activity on your WordPress site.",
                                                               comment: "Description of all time widget in the preview")
+
+    // This Week Widget preview
+    static let thisWeekPreviewDescription = LocalizedStringKey("widget.thisweek.preview.description",
+                                                              defaultValue: "Stay up to date with this week activity on your WordPress site.",
+                                                              comment: "Description of all time widget in the preview")
+
     // Errors
     static let unavailableViewTitle = LocalizedStringKey("widget.today.view.unavailable.title",
                                                          defaultValue: "View is unavailable",
