@@ -78,6 +78,8 @@ struct ListRow: View {
                 .cornerRadius(Constants.differenceCornerRadius)
         }
         .frame(height: rowHeight)
+        .offset(x: 0, y: Constants.verticalCenteringOffset) // each row isn't _quite_ centered vertically
+                                                            // and we're not entirely sure why yet, but this fixes it
         .flipsForRightToLeftLayoutDirection(true)
     }
 }
@@ -96,6 +98,7 @@ private extension ListRow {
         static let differenceViewMinWidth: CGFloat = 56.0
         static let largeRowHeight: CGFloat = 20.0
         static let mediumRowHeight: CGFloat = 16.0
+        static let verticalCenteringOffset: CGFloat = 2.0
         static let differenceViewAlignment = Alignment.trailing
 
         static let differenceCornerRadius: CGFloat = 4.0
