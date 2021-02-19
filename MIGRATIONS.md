@@ -7,7 +7,7 @@ data model as well as any custom migrations.
 
 @aerych 2021-02-19
 
-- Ajdded `InviteLinks` entity.
+- Added `InviteLinks` entity.
 
 ## WordPress 112
 
