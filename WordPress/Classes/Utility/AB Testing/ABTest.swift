@@ -6,7 +6,7 @@ enum ABTest: String, CaseIterable {
 
     /// Returns a variation for the given experiment
     var variation: Variation {
-        return ExPlat.shared.experiment(self.rawValue)
+        return ExPlat.shared?.experiment(self.rawValue) ?? .control
     }
 }
 
@@ -18,6 +18,6 @@ extension ABTest {
             return
         }
 
-        ExPlat.shared.refresh()
+        ExPlat.shared?.refresh()
     }
 }
