@@ -5,6 +5,8 @@ open class CommentsTableViewCell: WPTableViewCell {
 
     // MARK: - IBOutlets
 
+    @IBOutlet private weak var pendingIndicator: UIView!
+    @IBOutlet private weak var pendingIndicatorWidthConstraint: NSLayoutConstraint!
     @IBOutlet private weak var gravatarImageView: CircularImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var detailLabel: UILabel!
@@ -33,6 +35,12 @@ open class CommentsTableViewCell: WPTableViewCell {
 
     // MARK: - Public Methods
 
+    open override func awakeFromNib() {
+        super.awakeFromNib()
+        backgroundColor = Style.backgroundColor
+        pendingIndicator.layer.cornerRadius = pendingIndicatorWidthConstraint.constant / 2
+    }
+
     @objc func configureWithComment(_ comment: Comment) {
         author = comment.authorForDisplay() ?? String()
         approved = (comment.status == CommentStatusApproved)
@@ -46,10 +54,9 @@ open class CommentsTableViewCell: WPTableViewCell {
             downloadGravatarWithGravatarEmail(comment.gravatarEmailForDisplay())
         }
 
-        backgroundColor = Style.backgroundColor
-        refreshCommentLabels()
-        refreshTimestampLabel()
-        refreshImages()
+        configurePendingIndicator()
+        configureCommentLabels()
+        configureTimestamp()
     }
 
 }
@@ -78,38 +85,25 @@ private extension CommentsTableViewCell {
         gravatarImageView.downloadGravatarWithEmail(unwrappedEmail, placeholderImage: placeholderImage)
     }
 
-    // MARK: - Refresh UI
+    // MARK: - Configure UI
 
-    func refreshCommentLabels() {
+    func configurePendingIndicator() {
+        pendingIndicator.backgroundColor = approved ? .clear : Style.pendingIndicatorColor
+    }
+
+    func configureCommentLabels() {
         titleLabel.attributedText = attributedTitle()
         detailLabel.text = content
         detailLabel.font = Style.detailFont
         detailLabel.textColor = Style.detailTextColor
     }
 
-    func refreshTimestampLabel() {
-        guard let timestamp = timestamp else {
-            return
-        }
+    func configureTimestamp() {
+        timestampLabel.text = timestamp
+        timestampLabel.font = Style.timestampFont
+        timestampLabel.textColor = Style.detailTextColor
+        timestampImageView.image = Style.timestampImage
 
-        let style = Style.timestampStyle(isApproved: approved)
-        let formattedTimestamp: String
-
-        if approved {
-            formattedTimestamp = timestamp
-        } else {
-            let pendingLabel = NSLocalizedString("Pending", comment: "Status name for a comment that hasn't yet been approved.")
-            formattedTimestamp = "\(timestamp) · \(pendingLabel)"
-        }
-
-        timestampLabel?.attributedText = NSAttributedString(string: formattedTimestamp, attributes: style)
-    }
-
-    func refreshImages() {
-        timestampImageView.image = Style.timestampImage(isApproved: approved)
-        if !approved {
-            timestampImageView.tintColor = WPStyleGuide.alertYellowDark()
-        }
     }
 
     func attributedTitle() -> NSAttributedString {

@@ -9,6 +9,10 @@ extension WPStyleGuide {
 
         static let gravatarPlaceholderImage = UIImage(named: "gravatar") ?? UIImage()
         static let backgroundColor = UIColor.listForeground
+        static let pendingIndicatorColor = UIColor.muriel(color: MurielColor(name: .yellow, shade: .shade20))
+
+        static let timestampFont = WPStyleGuide.fontForTextStyle(.caption1)
+        static let timestampImage = UIImage(named: "reader-postaction-time") ?? UIImage()
 
         static let detailFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         static let detailTextColor = UIColor.textSubtle
@@ -25,17 +29,5 @@ extension WPStyleGuide {
             .font: WPStyleGuide.fontForTextStyle(titleTextStyle, fontWeight: .regular),
             .foregroundColor: titleTextColor
         ]
-
-        static func timestampStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            return  [.font: WPStyleGuide.fontForTextStyle(.caption1),
-                     .foregroundColor: UIColor.textSubtle ]
-        }
-
-        static func timestampImage(isApproved approved: Bool) -> UIImage {
-            guard let timestampImage = UIImage(named: "reader-postaction-time") else {
-                return UIImage()
-            }
-            return approved ? timestampImage : timestampImage.withRenderingMode(.alwaysTemplate)
-        }
     }
 }
