@@ -35,6 +35,12 @@ open class CommentsTableViewCell: WPTableViewCell {
 
     // MARK: - Public Methods
 
+    open override func awakeFromNib() {
+        super.awakeFromNib()
+        backgroundColor = Style.backgroundColor
+        pendingIndicator.layer.cornerRadius = pendingIndicatorWidthConstraint.constant / 2
+    }
+
     @objc func configureWithComment(_ comment: Comment) {
         author = comment.authorForDisplay() ?? String()
         approved = (comment.status == CommentStatusApproved)
@@ -48,7 +54,6 @@ open class CommentsTableViewCell: WPTableViewCell {
             downloadGravatarWithGravatarEmail(comment.gravatarEmailForDisplay())
         }
 
-        backgroundColor = Style.backgroundColor
         configurePendingIndicator()
         configureCommentLabels()
         configureTimestamp()
@@ -83,7 +88,6 @@ private extension CommentsTableViewCell {
     // MARK: - Configure UI
 
     func configurePendingIndicator() {
-        pendingIndicator.layer.cornerRadius = pendingIndicatorWidthConstraint.constant / 2
         pendingIndicator.backgroundColor = approved ? .clear : Style.pendingIndicatorColor
     }
 
