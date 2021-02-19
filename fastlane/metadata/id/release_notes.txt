@@ -1,9 +1,11 @@
-Tentang rilis ini:
+Berikut sorotan dari rilis ini:
 
-Catatan: Ini merupakan versi aplikasi terbaru yang akan mendukung iOS 12. Mulai dari versi 16.7, aplikasi Anda memerlukan iOS 13 atau yang lebih baru.
+Jetpack Backup sudah tersedia! Tergantung paket untuk situs Anda saat ini, Anda kini dapat memulihkan situs atau mengunduh cadangan situs pada waktu tertentu. Jika sudah mengaktifkan Jetpack Scan, Anda sekarang dapat memindai situs untuk mendeteksi ancaman — dan memperbaiki atau mengabaikan ancaman sesuka Anda.
 
-Lihat statistik pada Layar Beranda Anda: Menampilkan statistik situs WordPress per hari pada Layar Beranda perangkat iOS 14 dengan Widget Today yang baru.
+Suka mengikuti perkembangan statistik Anda? Kami telah menambahkan dukungan untuk Widget Sepanjang Waktu, yang menampilkan statistik Sepanjang Waktu situs Anda pada Layar Beranda perangkat iOS 14.
 
-Lacak aktivitas situs Anda: Menyaring dan menampilkan item pada Log Aktivitas Anda — seperti pencadangan, pembaruan plugin, serta pos dan halaman yang dipublikasikan — berdasarkan rentang tanggal dan jenis aktivitas.
+Anda sekarang dapat memasang jangkar di blok Judul untuk membuat lompatan halaman di konten. Kami juga menyertakan pembaruan lainnya, seperti peningkatan pada blok Pakai Ulang dan blok yang hanya perlu dimasukkan sekali saja ke pos, seperti blok Selengkapnya.
 
-Kenali aplikasi Anda: Pelajari fitur pada aplikasi Anda dengan tur Mulai Cepat yang ditingkatkan, yang memandu Anda melalui langkah-langkah seperti meninjau halaman situs dan menyunting halaman beranda Anda.
+Membuat situs di aplikasi makin baik. Saat membuat halaman beranda, Anda dapat mempratinjau tampilan desain pada layar seluler, tablet, atau desktop. Anda sekarang juga dapat memilih subdomain .blog untuk situs Anda.
+
+Terakhir, kami terus meningkatkan pengalaman di Pembaca, dan Anda sekarang dapat menandai pos sebagai “dilihat” serta melihat jumlah total pos yang “belum dilihat”.
