@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WidgetKit
 
 enum PeriodType: CaseIterable {
     case summary
@@ -130,6 +131,7 @@ struct PeriodStoreState {
     var summary: StatsSummaryTimeIntervalData? {
         didSet {
             storeThisWeekWidgetData()
+            StoreContainer.shared.statsWidgets.updateThisWeekHomeWidget(summary: summary)
             storeTodayHomeWidgetData()
         }
     }
@@ -1390,5 +1392,4 @@ private extension PeriodStoreState {
         }
         return true
     }
-
 }

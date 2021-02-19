@@ -26,6 +26,14 @@ class StatsWidgetsStore {
                 WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
             }
         }
+
+        if let newThisWeekData = refreshStats(type: HomeWidgetThisWeekData.self) {
+            HomeWidgetThisWeekData.write(items: newThisWeekData)
+
+            if #available(iOS 14.0, *) {
+                WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
+            }
+        }
     }
 
     /// Initialize the local cache for widgets, if it does not exist
@@ -37,6 +45,12 @@ class StatsWidgetsStore {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetTodayData.plist")
             HomeWidgetTodayData.write(items: initializeHomeWidgetData(type: HomeWidgetTodayData.self))
             WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
+        }
+
+        if HomeWidgetThisWeekData.read() == nil {
+            DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetThisWeekData.plist")
+            HomeWidgetThisWeekData.write(items: initializeHomeWidgetData(type: HomeWidgetThisWeekData.self))
+            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
         }
 
         if HomeWidgetAllTimeData.read() == nil {
@@ -92,6 +106,15 @@ class StatsWidgetsStore {
                                                                      timeZone: blog.timeZone,
                                                                      date: Date(),
                                                                      stats: stats) as? T
+
+        } else if widgetType == HomeWidgetThisWeekData.self, let stats = stats as? ThisWeekWidgetStats {
+
+            homeWidgetCache[siteID.intValue] = HomeWidgetThisWeekData(siteID: siteID.intValue,
+                                                                      siteName: blog.title ?? oldData.siteName,
+                                                                      url: blog.url ?? oldData.url,
+                                                                      timeZone: blog.timeZone,
+                                                                      date: Date(),
+                                                                      stats: stats) as? T
         }
 
         T.write(items: homeWidgetCache)
@@ -101,9 +124,23 @@ class StatsWidgetsStore {
 
 
 // MARK: - Helper methods
-extension StatsWidgetsStore {
+private extension StatsWidgetsStore {
 
-    private func refreshStats<T: HomeWidgetData>(type: T.Type) -> [Int: T]? {
+    // creates a list of days from the current date with empty stats to avoid showing an empty widget preview
+    var initializedWeekdays: [ThisWeekWidgetDay] {
+        var days = [ThisWeekWidgetDay]()
+        for index in 0...7 {
+            days.insert(ThisWeekWidgetDay(date: NSCalendar.current.date(byAdding: .day,
+                                                                        value: -index,
+                                                                        to: Date()) ?? Date(),
+                                          viewsCount: 0,
+                                          dailyChangePercent: 0),
+                        at: index)
+        }
+        return days
+    }
+
+    func refreshStats<T: HomeWidgetData>(type: T.Type) -> [Int: T]? {
         guard let currentData = T.read() else {
             return nil
         }
@@ -148,12 +185,22 @@ extension StatsWidgetsStore {
                                                                    date: date,
                                                                    stats: stats) as? T
 
+            } else if type == HomeWidgetThisWeekData.self {
+
+                let stats = (existingSite as? HomeWidgetThisWeekData)?.stats ?? ThisWeekWidgetStats(days: initializedWeekdays)
+
+                sitesList[blogID.intValue] = HomeWidgetThisWeekData(siteID: blogID.intValue,
+                                                                    siteName: siteName,
+                                                                    url: siteURL,
+                                                                    timeZone: timeZone,
+                                                                    date: date,
+                                                                    stats: stats) as? T
             }
         }
         return newData
     }
 
-    private func initializeHomeWidgetData<T: HomeWidgetData>(type: T.Type) -> [Int: T] {
+    func initializeHomeWidgetData<T: HomeWidgetData>(type: T.Type) -> [Int: T] {
         let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
         return blogService.visibleBlogsForWPComAccounts().reduce(into: [Int: T]()) { result, element in
@@ -177,6 +224,13 @@ extension StatsWidgetsStore {
                                                                     timeZone: timeZone,
                                                                     date: Date(timeIntervalSinceReferenceDate: 0),
                                                                     stats: AllTimeWidgetStats()) as? T
+                } else if type == HomeWidgetThisWeekData.self {
+                    result[blogID.intValue] = HomeWidgetThisWeekData(siteID: blogID.intValue,
+                                                                     siteName: title,
+                                                                     url: url,
+                                                                     timeZone: timeZone,
+                                                                     date: Date(timeIntervalSinceReferenceDate: 0),
+                                                                     stats: ThisWeekWidgetStats(days: initializedWeekdays)) as? T
                 }
             }
         }
@@ -184,10 +238,34 @@ extension StatsWidgetsStore {
 }
 
 
-// MARK: - Login/Logout notifications
+// MARK: - Extract this week data
 extension StatsWidgetsStore {
+    func updateThisWeekHomeWidget(summary: StatsSummaryTimeIntervalData?) {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        switch summary?.period {
+        case .day:
+            guard summary?.periodEndDate == StatsDataHelper.currentDateForSite().normalizedDate() else {
+                return
+            }
+            let summaryData = Array(summary?.summaryData.reversed().prefix(ThisWeekWidgetStats.maxDaysToDisplay + 1) ?? [])
 
-    private func observeAccountChangesForWidgets() {
+            let stats = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
+            StoreContainer.shared.statsWidgets.storeHomeWidgetData(widgetType: HomeWidgetThisWeekData.self, stats: stats)
+        case .week:
+            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
+        default:
+            break
+        }
+    }
+}
+
+
+// MARK: - Login/Logout notifications
+private extension StatsWidgetsStore {
+
+    func observeAccountChangesForWidgets() {
         guard #available(iOS 14.0, *) else {
             return
         }
@@ -198,12 +276,14 @@ extension StatsWidgetsStore {
 
             if !AccountHelper.isLoggedIn {
                 HomeWidgetTodayData.delete()
+                HomeWidgetThisWeekData.delete()
                 HomeWidgetAllTimeData.delete()
             }
 
             UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey)
 
             WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
+            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
             WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
         }
     }
