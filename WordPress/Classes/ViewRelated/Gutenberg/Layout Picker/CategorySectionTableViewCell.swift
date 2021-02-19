@@ -18,7 +18,7 @@ protocol CategorySection {
 }
 
 class CategorySectionTableViewCell: UITableViewCell {
-    
+
     struct Thumbnail {
         var urlDesktop: String?
         var urlTablet: String?

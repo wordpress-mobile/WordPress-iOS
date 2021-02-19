@@ -18,7 +18,7 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
 
     private var filteredSections: [CategorySection]?
     private var visibleSections: [CategorySection] { filteredSections ?? categorySections }
-    
+
     internal var isLoading: Bool = true {
         didSet {
             if isLoading {
@@ -26,14 +26,14 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
             } else {
                 tableView.stopGhostAnimation()
             }
-            
+
             loadingStateChanged(isLoading)
             tableView.reloadData()
         }
     }
-    
+
     private var backButtonTitle: String
-    
+
     init(
         mainTitle: String,
         prompt: String,
@@ -56,11 +56,11 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
                    defaultActionTitle: defaultActionTitle,
                    accessoryView: filterBar)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(CategorySectionTableViewCell.nib, forCellReuseIdentifier: CategorySectionTableViewCell.cellReuseIdentifier)
@@ -73,7 +73,7 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
     private func configureCloseButton() {
         navigationItem.rightBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
     }
-    
+
     @objc func closeButtonTapped(_ sender: Any) {
         dismiss(animated: true)
     }
@@ -93,15 +93,15 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
 }
 
 extension FilterableCategoriesViewController: UITableViewDataSource {
-    
+
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return CategorySectionTableViewCell.estimatedCellHeight
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return isLoading ? 1 : (visibleSections.count)
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellReuseIdentifier = CategorySectionTableViewCell.cellReuseIdentifier
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? CategorySectionTableViewCell else {
@@ -117,10 +117,10 @@ extension FilterableCategoriesViewController: UITableViewDataSource {
         if let selectedItem = selectedItem, containsSelectedItem(selectedItem, atIndexPath: indexPath) {
             cell.selectItemAt(selectedItem.item)
         }
-        
+
         return cell
     }
-    
+
     private func containsSelectedItem(_ selectedIndexPath: IndexPath, atIndexPath indexPath: IndexPath) -> Bool {
         let rowSection = visibleSections[indexPath.row]
         let sectionSlug = categorySections[selectedIndexPath.section].categorySlug
@@ -129,29 +129,29 @@ extension FilterableCategoriesViewController: UITableViewDataSource {
 }
 
 extension FilterableCategoriesViewController: CategorySectionTableViewCellDelegate {
-    
+
     func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell, slug: String) {
         guard let cellIndexPath = tableView.indexPath(for: cell),
               let sectionIndex = categorySections.firstIndex(where: { $0.categorySlug == slug })
         else { return }
-        
+
         tableView.selectRow(at: cellIndexPath, animated: false, scrollPosition: .none)
         deselectCurrentLayout()
         selectedItem = IndexPath(item: position, section: sectionIndex)
     }
-    
+
     func didDeselectItem(forCell cell: CategorySectionTableViewCell) {
         selectedItem = nil
     }
-    
+
     func accessibilityElementDidBecomeFocused(forCell cell: CategorySectionTableViewCell) {
         guard UIAccessibility.isVoiceOverRunning, let cellIndexPath = tableView.indexPath(for: cell) else { return }
         tableView.scrollToRow(at: cellIndexPath, at: .middle, animated: true)
     }
-    
+
     private func deselectCurrentLayout() {
         guard let previousSelection = selectedItem else { return }
-        
+
         tableView.indexPathsForVisibleRows?.forEach { (indexPath) in
             if containsSelectedItem(previousSelection, atIndexPath: indexPath) {
                 (tableView.cellForRow(at: indexPath) as? CategorySectionTableViewCell)?.deselectItems()
@@ -164,26 +164,26 @@ extension FilterableCategoriesViewController: CollapsableHeaderFilterBarDelegate
     func numberOfFilters() -> Int {
         return categorySections.count
     }
-    
+
     func filter(forIndex index: Int) -> CategorySection {
         return categorySections[index]
     }
-    
+
     func didSelectFilter(withIndex selectedIndex: IndexPath, withSelectedIndexes selectedIndexes: [IndexPath]) {
         guard filteredSections == nil else {
             insertFilterRow(withIndex: selectedIndex, withSelectedIndexes: selectedIndexes)
             return
         }
-        
+
         let rowsToRemove = (0..<categorySections.count).compactMap { ($0 == selectedIndex.item) ? nil : IndexPath(row: $0, section: 0) }
-        
+
         filteredSections = [categorySections[selectedIndex.item]]
         tableView.performBatchUpdates({
             contentSizeWillChange()
             tableView.deleteRows(at: rowsToRemove, with: .fade)
         })
     }
-    
+
     func insertFilterRow(withIndex selectedIndex: IndexPath, withSelectedIndexes selectedIndexes: [IndexPath]) {
         let sortedIndexes = selectedIndexes.sorted(by: { $0.item < $1.item })
         for i in 0..<sortedIndexes.count {
@@ -192,7 +192,7 @@ extension FilterableCategoriesViewController: CollapsableHeaderFilterBarDelegate
                 break
             }
         }
-        
+
         tableView.performBatchUpdates({
             if selectedIndexes.count == 2 {
                 contentSizeWillChange()
@@ -200,23 +200,23 @@ extension FilterableCategoriesViewController: CollapsableHeaderFilterBarDelegate
             tableView.reloadSections([0], with: .automatic)
         })
     }
-    
+
     func didDeselectFilter(withIndex index: IndexPath, withSelectedIndexes selectedIndexes: [IndexPath]) {
         guard selectedIndexes.count == 0 else {
             removeFilterRow(withIndex: index)
             return
         }
-        
+
         filteredSections = nil
         tableView.performBatchUpdates({
             contentSizeWillChange()
             tableView.reloadSections([0], with: .fade)
         })
     }
-    
+
     func removeFilterRow(withIndex index: IndexPath) {
         guard let filteredSections = filteredSections else { return }
-        
+
         var row: IndexPath? = nil
         let rowSlug = categorySections[index.item].categorySlug
         for i in 0..<filteredSections.count {
@@ -227,7 +227,7 @@ extension FilterableCategoriesViewController: CollapsableHeaderFilterBarDelegate
                 break
             }
         }
-        
+
         guard let rowToRemove = row else { return }
         tableView.performBatchUpdates({
             contentSizeWillChange()

@@ -6,7 +6,7 @@ class GutenbergLayoutSection: CategorySection {
     var section: PageTemplateCategory
     var layouts: [PageTemplateLayout]
     var scrollOffset: CGPoint
-    
+
     var title: String { section.title }
     var emoji: String? { section.emoji }
     var categorySlug: String { section.slug }
@@ -32,14 +32,14 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
         sections = makeSectionData(with: resultsController)
         return resultsController
     }()
-    
+
     let completion: PageCoordinator.TemplateSelectionCompletion
     let blog: Blog
-    
+
     init(blog: Blog, completion: @escaping PageCoordinator.TemplateSelectionCompletion) {
         self.blog = blog
         self.completion = completion
-        
+
         super.init(
             mainTitle: NSLocalizedString("Choose a Layout", comment: "Title for the screen to pick a template for a page"),
             prompt: NSLocalizedString("Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page.", comment: "Prompt for the screen to pick a template for a page"),
@@ -49,7 +49,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
             backButtonTitle: NSLocalizedString("Choose layout", comment: "Shortened version of the main title to be used in back navigation")
         )
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -66,13 +66,13 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
         LayoutPickerAnalyticsEvent.templatePreview(slug: layout.slug)
         navigationController?.pushViewController(destination, animated: true)
     }
-    
+
     private func createPage(layout: PageTemplateLayout?) {
         dismiss(animated: true) {
             self.completion(layout)
         }
     }
-    
+
     private func fetchLayouts() {
         isLoading = resultsController.isEmpty()
         let expectedThumbnailSize = CategorySectionTableViewCell.expectedThumbnailSize
@@ -87,7 +87,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
             }
         }
     }
-    
+
     private func handleErrors(_ error: Error) {
         guard resultsController.isEmpty() else { return }
         isLoading = false
@@ -95,30 +95,30 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
         let subtitleText = NSLocalizedString("Check your network connection and try again or create a blank page.", comment: "Default subtitle for no-results when there is no connection with a prompt to create a new page instead.")
         displayNoResultsController(title: titleText, subtitle: subtitleText, resultsDelegate: self)
     }
-    
+
     private func makeSectionData(with controller: NSFetchedResultsController<PageTemplateCategory>?) -> [GutenbergLayoutSection] {
         return controller?.fetchedObjects?.map({ (category) -> GutenbergLayoutSection in
             return GutenbergLayoutSection(category)
         }) ?? []
     }
 
-    
+
     // MARK: - Footer Actions
     override func defaultActionSelected(_ sender: Any) {
         createPage(layout: nil)
     }
-    
+
     override func primaryActionSelected(_ sender: Any) {
         guard let sectionIndex = selectedItem?.section, let position = selectedItem?.item else {
             createPage(layout: nil)
             return
         }
-        
+
         let layout = sections[sectionIndex].layouts[position]
         LayoutPickerAnalyticsEvent.templateApplied(slug: layout.slug)
         createPage(layout: layout)
     }
-    
+
     override func secondaryActionSelected(_ sender: Any) {
         presentPreview()
     }
@@ -130,7 +130,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
 
 
 extension GutenbergLayoutPickerViewController: NSFetchedResultsControllerDelegate {
-    
+
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         sections = makeSectionData(with: resultsController)
         isLoading = resultsController.isEmpty()

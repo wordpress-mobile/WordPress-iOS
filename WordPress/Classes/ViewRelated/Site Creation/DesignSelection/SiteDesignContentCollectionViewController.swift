@@ -13,7 +13,7 @@ class SiteDesignSection: CategorySection {
         designs.map { Thumbnail(urlDesktop: $0.screenshot, urlTablet: $0.tabletScreenshot, urlMobile: $0.mobileScreenshot, slug: $0.slug)}
     }
     var scrollOffset: CGPoint
-    
+
     init(category: RemoteSiteDesignCategory, designs: [RemoteSiteDesign]) {
         self.category = category
         self.designs = designs
@@ -63,10 +63,10 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
         guard let sectionIndex = selectedItem?.section, let position = selectedItem?.item else { return nil }
         return sections[sectionIndex].designs[position]
     }
- 
+
     init(_ completion: @escaping SiteDesignStep.SiteDesignSelection) {
         self.completion = completion
-        
+
         super.init(
             mainTitle: NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site."),
             prompt: NSLocalizedString("Pick your favorite homepage layout. You can edit and customize it later.", comment: "Prompt for the screen to pick a design and homepage for a site."),
