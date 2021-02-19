@@ -94,7 +94,8 @@ private extension CommentsTableViewCell {
 
     func configureCommentLabels() {
         titleLabel.attributedText = attributedTitle()
-        detailLabel.text = content
+        // Some Comment content has leading newlines. Let's nix that.
+        detailLabel.text = content.trimmingCharacters(in: .whitespacesAndNewlines)
         detailLabel.font = Style.detailFont
         detailLabel.textColor = Style.detailTextColor
     }
