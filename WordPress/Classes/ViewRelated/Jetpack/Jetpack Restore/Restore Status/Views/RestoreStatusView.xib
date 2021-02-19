@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -68,18 +68,8 @@
                         </label>
                     </subviews>
                 </stackView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vL1-GD-nhg" customClass="FancyButton" customModule="WordPressUI">
-                    <rect key="frame" x="16" y="230" width="382" height="44"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="ydg-oU-Lfm"/>
-                    </constraints>
-                    <state key="normal" title="Button"/>
-                    <connections>
-                        <action selector="primaryButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="29c-HA-vme"/>
-                    </connections>
-                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rvV-Do-FdP">
-                    <rect key="frame" x="16" y="298" width="382" height="20.5"/>
+                    <rect key="frame" x="16" y="230" width="382" height="20.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -88,23 +78,19 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="vL1-GD-nhg" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="3El-QI-UHJ"/>
                 <constraint firstItem="Qit-9h-kwB" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="BgX-pz-NzM"/>
                 <constraint firstItem="Zbf-a2-qml" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="E6I-XW-B4q"/>
                 <constraint firstItem="EU1-QH-BCU" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Egi-bC-BEI"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="rvV-Do-FdP" secondAttribute="bottom" constant="24" id="F9n-cP-3Ok"/>
                 <constraint firstItem="rvV-Do-FdP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="GUX-PU-Nl8"/>
                 <constraint firstItem="Q7a-aL-FAq" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="HBk-MF-c0Q"/>
                 <constraint firstItem="Q7a-aL-FAq" firstAttribute="top" secondItem="Zbf-a2-qml" secondAttribute="bottom" constant="8" id="QzA-kg-v3A"/>
                 <constraint firstItem="Qit-9h-kwB" firstAttribute="top" secondItem="EU1-QH-BCU" secondAttribute="bottom" constant="24" id="RlB-1f-7TW"/>
                 <constraint firstItem="EU1-QH-BCU" firstAttribute="top" secondItem="Q7a-aL-FAq" secondAttribute="bottom" constant="4" id="Sut-hg-iNf"/>
                 <constraint firstItem="Qit-9h-kwB" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="TZd-8T-tTk"/>
-                <constraint firstItem="vL1-GD-nhg" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="W3W-EP-TN7"/>
                 <constraint firstItem="rvV-Do-FdP" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="XMw-pV-Ghf"/>
-                <constraint firstItem="vL1-GD-nhg" firstAttribute="top" secondItem="Qit-9h-kwB" secondAttribute="bottom" constant="32" id="cCb-TB-OfP"/>
                 <constraint firstItem="EU1-QH-BCU" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="dAL-PC-Gen"/>
                 <constraint firstItem="Zbf-a2-qml" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="24" id="lDf-7L-QK2"/>
-                <constraint firstItem="rvV-Do-FdP" firstAttribute="top" secondItem="vL1-GD-nhg" secondAttribute="bottom" constant="24" id="qv5-XF-rfL"/>
+                <constraint firstItem="rvV-Do-FdP" firstAttribute="top" secondItem="Qit-9h-kwB" secondAttribute="bottom" constant="32" id="rZ7-kB-oAY"/>
                 <constraint firstItem="Q7a-aL-FAq" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="vR9-NA-xhO"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -112,7 +98,6 @@
                 <outlet property="descriptionLabel" destination="EU1-QH-BCU" id="D3v-9H-Gsa"/>
                 <outlet property="hintLabel" destination="rvV-Do-FdP" id="uos-pD-3KW"/>
                 <outlet property="icon" destination="Zbf-a2-qml" id="6eT-n5-AER"/>
-                <outlet property="primaryButton" destination="vL1-GD-nhg" id="1e2-xk-eN4"/>
                 <outlet property="progressDescriptionLabel" destination="V9F-s0-Tu4" id="LAS-wy-Gbm"/>
                 <outlet property="progressTitleLabel" destination="BtU-j2-Om5" id="iQo-mC-OMS"/>
                 <outlet property="progressValueLabel" destination="HwS-sP-YxX" id="hZq-vg-wC1"/>

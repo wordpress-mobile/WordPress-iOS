@@ -28,8 +28,11 @@ class StoryEditor: CameraController {
         return "wp_stories_creator"
     }
 
-    private let publishOnCompletion: Bool
     private var cameraHandler: CameraHandler?
+    private var poster: StoryPoster?
+    private lazy var storyLoader: StoryMediaLoader = {
+        return StoryMediaLoader()
+    }()
 
     private static let useMetal = true
 
@@ -65,12 +68,21 @@ class StoryEditor: CameraController {
         return settings
     }
 
-    static func editor(blog: Blog, context: NSManagedObjectContext) -> StoryEditor {
+    typealias Results = Result<AbstractPost, PostCoordinator.SavingError>
+
+    static func editor(blog: Blog,
+                       context: NSManagedObjectContext,
+                       updated: @escaping (Results) -> Void,
+                       uploaded: @escaping (Results) -> Void) -> StoryEditor {
         let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
-        return editor(post: post, publishOnCompletion: true)
+        return editor(post: post, mediaFiles: nil, publishOnCompletion: true, updated: updated, uploaded: uploaded)
     }
 
-    static func editor(post: AbstractPost, publishOnCompletion: Bool = false) -> StoryEditor {
+    static func editor(post: AbstractPost,
+                       mediaFiles: [MediaFile]?,
+                       publishOnCompletion: Bool = false,
+                       updated: @escaping (Results) -> Void,
+                       uploaded: @escaping (Results) -> Void) -> StoryEditor {
         let controller = StoryEditor(post: post,
                                      onClose: nil,
                                      settings: cameraSettings,
@@ -78,7 +90,10 @@ class StoryEditor: CameraController {
                                      analyticsProvider: nil,
                                      quickBlogSelectorCoordinator: nil,
                                      tagCollection: nil,
-                                     publishOnCompletion: publishOnCompletion)
+                                     mediaFiles: mediaFiles,
+                                     publishOnCompletion: publishOnCompletion,
+                                     updated: updated,
+                                     uploaded: uploaded)
         controller.modalPresentationStyle = .fullScreen
         controller.modalTransitionStyle = .crossDissolve
         return controller
@@ -91,10 +106,13 @@ class StoryEditor: CameraController {
                      analyticsProvider: KanvasAnalyticsProvider?,
                      quickBlogSelectorCoordinator: KanvasQuickBlogSelectorCoordinating?,
                      tagCollection: UIView?,
-                     publishOnCompletion: Bool) {
+                     mediaFiles: [MediaFile]?,
+                     publishOnCompletion: Bool,
+                     updated: @escaping (Results) -> Void,
+                     uploaded: @escaping (Results) -> Void
+                    ) {
         self.post = post
         self.onClose = onClose
-        self.publishOnCompletion = publishOnCompletion
 
         let saveDirectory: URL?
         do {
@@ -112,15 +130,63 @@ class StoryEditor: CameraController {
                  tagCollection: nil,
                  saveDirectory: saveDirectory)
 
-        cameraHandler = CameraHandler(created: { [weak self] _ in
+        cameraHandler = CameraHandler(created: { [weak self] media in
+            self?.poster = StoryPoster(context: post.blog.managedObjectContext ?? ContextManager.shared.mainContext, mediaFiles: mediaFiles)
+            let postMedia: [StoryPoster.MediaItem] = media.compactMap { result in
+                switch result {
+                case .success(let item):
+                    guard let item = item else { return nil }
+                    return StoryPoster.MediaItem(url: item.output, size: item.size, archive: item.archive, original: item.unmodified)
+                case .failure:
+                    return nil
+                }
+            }
+
+            guard let self = self else { return }
+
+            let uploads: (String, [Media])? = try? self.poster?.upload(mediaItems: postMedia, post: post, completion: { post in
+                uploaded(post)
+            })
+
+            if let firstMediaFile = mediaFiles?.first {
+                let processor = GutenbergBlockProcessor(for: "wp:jetpack/story", replacer: { block in
+                    let mediaFiles = block.attributes["mediaFiles"] as? [[String: Any]]
+                    if let mediaFile = mediaFiles?.first, mediaFile["url"] as? String == firstMediaFile.url {
+                        return uploads?.0
+                    } else {
+                        return nil
+                    }
+                })
+                post.content = processor.process(post.content ?? "")
+            } else {
+                post.content = uploads?.0
+            }
+
+            do {
+                try post.managedObjectContext?.save()
+            } catch let error {
+                assertionFailure("Failed to save post during story upload: \(error)")
+            }
+
+            updated(.success(post))
+
             if publishOnCompletion {
-                self?.publishPost(action: .publish, dismissWhenDone: true, analyticsStat:
+                self.publishPost(action: .publish, dismissWhenDone: true, analyticsStat:
                                     .editorPublishedPost)
             } else {
-                self?.dismiss(animated: true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
             }
         })
         self.delegate = cameraHandler
+    }
+
+    func populate(with files: [MediaFile], completion: @escaping (Result<Void, Error>) -> Void) {
+        storyLoader.download(files: files, for: post) { [weak self] output in
+            DispatchQueue.main.async {
+                self?.show(media: output)
+                completion(.success(()))
+            }
+        }
     }
 }
 

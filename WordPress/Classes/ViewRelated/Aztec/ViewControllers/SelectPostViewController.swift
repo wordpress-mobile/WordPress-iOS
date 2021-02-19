@@ -18,6 +18,9 @@ class SelectPostViewController: UITableViewController {
     /// The IDs of posts which should be hidden from the list
     private let hiddenPosts: [Int]
 
+    /// Only include pubilished posts
+    private let publishedOnly: Bool
+
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
@@ -28,7 +31,7 @@ class SelectPostViewController: UITableViewController {
     }()
 
     private lazy var fetchController: NSFetchedResultsController<AbstractPost> = {
-        return PostCoordinator.shared.posts(for: blog, containsTitle: "", excludingPostIDs: hiddenPosts, entityName: entityName)
+        return PostCoordinator.shared.posts(for: blog, containsTitle: "", excludingPostIDs: hiddenPosts, entityName: entityName, publishedOnly: publishedOnly)
     }()
 
     // MARK: - Initialization
@@ -38,6 +41,7 @@ class SelectPostViewController: UITableViewController {
          showsPostType: Bool = true,
          entityName: String? = nil,
          hiddenPosts: [Int] = [],
+         publishedOnly: Bool = false,
          callback: SelectPostCallback? = nil) {
         self.blog = blog
         self.isSelectedPost = isSelectedPost
@@ -45,6 +49,7 @@ class SelectPostViewController: UITableViewController {
         self.showsPostType = showsPostType
         self.entityName = entityName
         self.hiddenPosts = hiddenPosts
+        self.publishedOnly = publishedOnly
         super.init(style: .plain)
     }
 
@@ -135,7 +140,7 @@ extension SelectPostViewController: UISearchResultsUpdating {
 
     func updateSearchResults(for searchController: UISearchController) {
         let searchText = searchController.searchBar.text ?? ""
-        fetchController = PostCoordinator.shared.posts(for: blog, containsTitle: searchText, excludingPostIDs: hiddenPosts, entityName: entityName)
+        fetchController = PostCoordinator.shared.posts(for: blog, containsTitle: searchText, excludingPostIDs: hiddenPosts, entityName: entityName, publishedOnly: publishedOnly)
         tableView.reloadData()
     }
 }

@@ -69,6 +69,9 @@ extension BlogDetailsViewController {
         blog.settings?.name = title
         headerView.setTitleLoading(true)
 
+        QuickStartTourGuide.shared.complete(tour: QuickStartSiteTitleTour(),
+                                                    silentlyForBlog: blog)
+
         let service = BlogService(managedObjectContext: context)
         service.updateSettings(for: blog, success: { [weak self] in
             NotificationCenter.default.post(name: NSNotification.Name.WPBlogUpdated, object: nil)
