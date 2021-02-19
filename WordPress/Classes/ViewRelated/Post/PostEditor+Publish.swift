@@ -45,6 +45,8 @@ protocol PublishingEditor where Self: UIViewController {
 
     /// Debouncer used to save the post locally with a delay
     var debouncer: Debouncer { get }
+
+    var prepublishingIdentifiers: [PrepublishingIdentifier] { get }
 }
 
 extension PublishingEditor where Self: UIViewController {
@@ -216,7 +218,7 @@ extension PublishingEditor where Self: UIViewController {
         // End editing to avoid issues with accessibility
         view.endEditing(true)
 
-        let prepublishing = PrepublishingViewController(post: post) { result in
+        let prepublishing = PrepublishingViewController(post: post, identifiers: prepublishingIdentifiers) { result in
             switch result {
             case .completed(let post):
                 self.post = post
