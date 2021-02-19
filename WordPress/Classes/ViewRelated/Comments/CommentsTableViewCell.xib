@@ -18,11 +18,11 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="btO-r2-hQO" userLabel="Pending Indicator">
-                        <rect key="frame" x="5" y="31" width="12" height="12"/>
+                        <rect key="frame" x="6" y="32" width="10" height="10"/>
                         <color key="backgroundColor" systemColor="systemYellowColor"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="btO-r2-hQO" secondAttribute="height" multiplier="1:1" id="Fuu-CE-1fC"/>
-                            <constraint firstAttribute="width" constant="12" id="WeL-cC-lqa"/>
+                            <constraint firstAttribute="width" constant="10" id="WeL-cC-lqa"/>
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar" translatesAutoresizingMaskIntoConstraints="NO" id="0Gm-n3-CNm" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
@@ -75,8 +75,8 @@
                     <constraint firstItem="0Gm-n3-CNm" firstAttribute="top" secondItem="p6H-P7-J7f" secondAttribute="top" constant="16" id="2A1-34-eCB"/>
                     <constraint firstAttribute="trailing" secondItem="TCy-wp-wTe" secondAttribute="trailing" constant="16" id="JIi-rX-zaD"/>
                     <constraint firstItem="btO-r2-hQO" firstAttribute="centerY" secondItem="0Gm-n3-CNm" secondAttribute="centerY" id="R5k-6J-G5m"/>
-                    <constraint firstItem="btO-r2-hQO" firstAttribute="leading" secondItem="p6H-P7-J7f" secondAttribute="leading" constant="5" id="bYE-0r-D2f"/>
-                    <constraint firstItem="0Gm-n3-CNm" firstAttribute="leading" secondItem="btO-r2-hQO" secondAttribute="trailing" constant="5" id="mf3-C6-VyD"/>
+                    <constraint firstItem="btO-r2-hQO" firstAttribute="leading" secondItem="p6H-P7-J7f" secondAttribute="leading" constant="6" id="bYE-0r-D2f"/>
+                    <constraint firstItem="0Gm-n3-CNm" firstAttribute="leading" secondItem="btO-r2-hQO" secondAttribute="trailing" constant="6" id="mf3-C6-VyD"/>
                     <constraint firstItem="TCy-wp-wTe" firstAttribute="top" secondItem="p6H-P7-J7f" secondAttribute="top" constant="16" id="p7L-HY-qIn"/>
                     <constraint firstItem="TCy-wp-wTe" firstAttribute="leading" secondItem="0Gm-n3-CNm" secondAttribute="trailing" constant="10" id="zUJ-4Q-fMK"/>
                 </constraints>
