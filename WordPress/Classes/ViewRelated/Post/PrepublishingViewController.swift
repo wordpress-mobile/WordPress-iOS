@@ -64,10 +64,13 @@ class PrepublishingViewController: UITableViewController {
         return nuxButton
     }()
 
+    /// Determines whether the text has been first responder already. If it has, don't force it back on the user unless it's been selected by them.
+    private var hasSelectedText: Bool = false
+
     init(post: Post, identifiers: [PrepublishingIdentifier], completion: @escaping (CompletionResult) -> ()) {
         self.post = post
         self.options = identifiers.map { identifier in
-            return PrepublishingViewController.option(for: identifier)
+            return PrepublishingOption(identifier: identifier)
         }
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
@@ -224,36 +227,26 @@ class PrepublishingViewController: UITableViewController {
         tableView.reloadData()
     }
 
-    private static func option(for identifier: PrepublishingIdentifier) -> PrepublishingOption {
-        switch identifier {
-        case .title:
-            return PrepublishingOption(id: .title, title: Constants.titlePlaceholder, type: .textField)
-        case .schedule:
-            return PrepublishingOption(id: .schedule, title: Constants.publishDateLabel, type: .value)
-        case .categories:
-            return PrepublishingOption(id: .categories, title: NSLocalizedString("Categories", comment: "Label for Categories"), type: .value)
-        case .visibility:
-            return PrepublishingOption(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility"), type: .value)
-        case .tags:
-            return PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"), type: .value)
-        }
-    }
-
     private func setupTextFieldCell(_ cell: WPTextFieldTableViewCell) {
         WPStyleGuide.configureTableViewTextCell(cell)
         cell.delegate = self
     }
 
-    // MARK: - Titls
+    // MARK: - Title
 
     private func configureTitleCell(_ cell: WPTextFieldTableViewCell) {
         cell.textField.text = post.postTitle
+        cell.textField.adjustsFontForContentSizeCategory = true
+        cell.textField.font = .preferredFont(forTextStyle: .body)
         cell.textField.textColor = .text
-        cell.textField.placeholder = "Title"
+        cell.textField.placeholder = Constants.titlePlaceholder
         cell.textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         cell.textField.autocorrectionType = .yes
         cell.textField.autocapitalizationType = .sentences
-        cell.textField.becomeFirstResponder()
+        if !hasSelectedText {
+            cell.textField.becomeFirstResponder()
+            hasSelectedText = true
+        }
     }
 
     // MARK: - Tags
@@ -434,7 +427,7 @@ class PrepublishingViewController: UITableViewController {
         presentedVC?.transition(to: position)
     }
 
-    private enum Constants {
+    fileprivate enum Constants {
         static let reuseIdentifier = "wpTableViewCell"
         static let textFieldReuseIdentifier = "wpTextFieldCell"
         static let nuxButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
@@ -509,5 +502,22 @@ extension PrepublishingViewController: DrawerPresentable {
 
     var collapsedHeight: DrawerHeight {
         return .intrinsicHeight
+    }
+}
+
+private extension PrepublishingOption {
+    init(identifier: PrepublishingIdentifier) {
+        switch identifier {
+        case .title:
+            self.init(id: .title, title: PrepublishingViewController.Constants.titlePlaceholder, type: .textField)
+        case .schedule:
+            self.init(id: .schedule, title: PrepublishingViewController.Constants.publishDateLabel, type: .value)
+        case .categories:
+            self.init(id: .categories, title: NSLocalizedString("Categories", comment: "Label for Categories"), type: .value)
+        case .visibility:
+            self.init(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility"), type: .value)
+        case .tags:
+            self.init(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"), type: .value)
+        }
     }
 }
