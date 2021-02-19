@@ -26,7 +26,6 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 @property (nonatomic, strong) NoResultsViewController   *noResultsViewController;
 @property (nonatomic, strong) UIActivityIndicatorView   *footerActivityIndicator;
 @property (nonatomic, strong) UIView                    *footerView;
-@property (nonatomic, strong) NSCache                   *estimatedRowHeights;
 @end
 
 @implementation CommentsViewController
@@ -43,7 +42,6 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
     if (self) {
         self.restorationClass = [self class];
         self.restorationIdentifier = NSStringFromClass([self class]);
-        self.estimatedRowHeights = [[NSCache alloc] init];
     }
     return self;
 }
@@ -166,11 +164,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSNumber *cachedHeight = [self.estimatedRowHeights objectForKey:indexPath];
-    if (cachedHeight.doubleValue) {
-        return cachedHeight.doubleValue;
-    }
-    return WPTableViewDefaultRowHeight;
+    return CommentsTableViewCell.estimatedRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -192,8 +186,6 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.estimatedRowHeights setObject:@(cell.frame.size.height) forKey:indexPath];
-
     // Refresh only when we reach the last 3 rows in the last section
     NSInteger numberOfRowsInSection     = [self.tableViewHandler tableView:tableView numberOfRowsInSection:indexPath.section];
     NSInteger lastSection               = [self.tableViewHandler numberOfSectionsInTableView:tableView] - 1;

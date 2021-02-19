@@ -32,6 +32,7 @@ open class CommentsTableViewCell: WPTableViewCell {
     // MARK: - Public Properties
 
     @objc static let reuseIdentifier = "CommentsTableViewCell"
+    @objc static let estimatedRowHeight = 150
 
     // MARK: - Public Methods
 
