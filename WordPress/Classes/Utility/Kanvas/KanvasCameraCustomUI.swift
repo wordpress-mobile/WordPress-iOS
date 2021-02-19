@@ -167,10 +167,6 @@ enum CustomKanvasFonts: CaseIterable {
             return nil
         }
     }
-
-//    var spacing: CGFloat {
-//
-//    }
 }
 
 extension UIFont {

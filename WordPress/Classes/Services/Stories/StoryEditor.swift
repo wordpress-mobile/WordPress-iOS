@@ -128,7 +128,7 @@ class StoryEditor: CameraController {
         super.init(settings: settings,
                  mediaPicker: nil,
                  stickerProvider: nil,
-                 analyticsProvider: KanvasAnalyticsStub(),
+                 analyticsProvider: KanvasAnalyticsHandler(),
                  quickBlogSelectorCoordinator: nil,
                  tagCollection: nil,
                  saveDirectory: saveDirectory)
