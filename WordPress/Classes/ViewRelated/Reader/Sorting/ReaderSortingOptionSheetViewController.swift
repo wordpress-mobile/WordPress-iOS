@@ -69,9 +69,17 @@ class ReaderSortingActionSheetOptionControl: ClosureControl {
         isSelected = option.checked
         imageView.image = option.image
         label.text = option.title
+
+        isAccessibilityElement = true
+        checkView.isAccessibilityElement = false
+        imageView.isAccessibilityElement = false
+        label.isAccessibilityElement = false
+
         accessibilityIdentifier = option.identifier
-        accessibilityLabel = option.identifier
+        accessibilityLabel = option.sortingOption.accessibilityLabel
         accessibilityHint = option.sortingOption.accessibilityHint
+        accessibilityValue = option.sortingOption.accessibilityValue
+        accessibilityTraits = UIAccessibilityTraits.button
     }
 
     override init(frame: CGRect, minimalTappableHeight: CGFloat?, closure: @escaping () -> Void) {
@@ -154,7 +162,6 @@ class ReaderSortingOptionViewController: UIViewController {
             guard let image = option.image, let title = option.localizedDescription else {
                 return nil
             }
-            // TODO: what should be the accessibility label/identifer for the bottom sheet options?
             return ReaderSortingActionSheetOptionControl(option: ReaderSortingActionSheetOption(title: title, image: image, checked: option == self.preselectedOption, identifier: title, sortingOption: option)) {
                 self.optionSelected(option)
             }
@@ -186,6 +193,7 @@ class ReaderSortingOptionViewController: UIViewController {
 
         setupContent()
         refreshForTraits()
+        prepareForVoiceOver()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -249,6 +257,15 @@ class ReaderSortingOptionViewController: UIViewController {
     }
 }
 
+extension ReaderSortingOptionViewController: Accessible {
+    func prepareForVoiceOver() {
+        gripButton.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Accessibility label for the grip button which is used to dismiss the dialog.")
+
+        headerLabel.accessibilityLabel = headerLabel.text
+        headerLabel.accessibilityTraits = .header
+    }
+}
+
 class ClosureControl: UIControl {
     private let minimalTappableHeight: CGFloat?
     private let closure: () -> Void
@@ -288,5 +305,13 @@ extension ReaderSortingOption {
         case .noSorting:
             return nil
         }
+    }
+
+    var accessibilityLabel: String {
+        return NSLocalizedString("Sorting option", comment: "Accessibility label for sorting option")
+    }
+
+    var accessibilityValue: String? {
+        return localizedDescription
     }
 }
