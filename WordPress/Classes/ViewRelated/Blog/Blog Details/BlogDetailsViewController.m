@@ -1233,6 +1233,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)updateBlogIconWithMedia:(Media *)media
 {
+    [[QuickStartTourGuide shared] completeSiteIconTourForBlog:self.blog];
+
     self.blog.settings.iconMediaID = media.mediaID;
     [self updateBlogSettingsAndRefreshIcon];
 }
@@ -1727,7 +1729,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self toggleSpotlightOnHeaderView];
     }];
 
-    [[QuickStartTourGuide shared] visited:QuickStartTourElementViewSite];
+    QuickStartTourGuide *guide = [QuickStartTourGuide shared];
+
+    if ([guide isCurrentElement:QuickStartTourElementViewSite]) {
+        [[QuickStartTourGuide shared] visited:QuickStartTourElementViewSite];
+    } else {
+        // Just mark as completed if we've viewed the site and aren't
+        //  currently working on the View Site tour.
+        [[QuickStartTourGuide shared] completeViewSiteTourForBlog:self.blog];
+    }
+
     self.additionalSafeAreaInsets = UIEdgeInsetsZero;
 }
 

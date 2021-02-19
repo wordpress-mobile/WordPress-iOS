@@ -2,7 +2,9 @@
 -----
 * [**] Prevent deleting published homepages which would have the effect of breaking a site. [#15797]
 * [**] Prevent converting published homepage to a draft in the page list and settings which would have the effect of breaking a site. [#15797]
-* [*] Under-the-hood improvements to the Reader Stream, People Management, and Sharing Buttons
+* [*] Under-the-hood improvements to the Reader Stream, People Management, and Sharing Buttons [#15849, #15861, #15862]
+* [*] Prevent selection of unpublished homepages the homepage settings which would have the effect of breaking a site. [#15885]
+* [*] Quick Start: Completing a step outside of a tour now automatically marks it as complete. [#15712]
 
 16.7
 -----
