@@ -20,10 +20,11 @@ protocol CategorySection {
 class CategorySectionTableViewCell: UITableViewCell {
     
     struct Thumbnail {
-        var urlDesktop: String
-        var urlTablet: String
-        var urlMobile: String
+        var urlDesktop: String?
+        var urlTablet: String?
+        var urlMobile: String?
         var slug: String
+
     }
 
     static let cellReuseIdentifier = "\(CategorySectionTableViewCell.self)"
