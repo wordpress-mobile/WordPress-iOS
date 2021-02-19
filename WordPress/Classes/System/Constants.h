@@ -63,6 +63,7 @@ extern NSString *const WPStatsTodayWidgetKeychainTokenKey;
 extern NSString *const WPStatsTodayWidgetKeychainServiceName;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteIdKey;
 extern NSString *const WPStatsHomeWidgetsUserDefaultsSiteIdKey;
+extern NSString *const WPStatsHomeWidgetsUserDefaultsLoggedInKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteUrlKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey;

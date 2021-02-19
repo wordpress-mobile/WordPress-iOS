@@ -83,7 +83,7 @@ class StatsWidgetsService {
                                                                             likes: insight.likesCount,
                                                                             comments: insight.commentsCount))
             completion(.success(newWidgetData))
-            DispatchQueue.global().async {
+            DispatchQueue.main.async {
                 // update the item in the local cache
                 HomeWidgetTodayData.setItem(item: newWidgetData)
             }
@@ -118,7 +118,7 @@ class StatsWidgetsService {
                                                                                 posts: insight?.postsCount,
                                                                                 bestViews: insight?.bestViewsPerDayCount))
             completion(.success(newWidgetData))
-            DispatchQueue.global().async {
+            DispatchQueue.main.async {
                 // update the item in the local cache
                 HomeWidgetAllTimeData.setItem(item: newWidgetData)
             }

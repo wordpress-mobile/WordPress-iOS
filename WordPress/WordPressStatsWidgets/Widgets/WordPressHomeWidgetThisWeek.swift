@@ -3,35 +3,11 @@ import SwiftUI
 
 
 struct WordPressHomeWidgetThisWeek: Widget {
-
     private let tracks = Tracks(appGroupName: WPAppGroupName)
 
-    var body: some WidgetConfiguration {
-        IntentConfiguration(
-            kind: WPHomeWidgetThisWeekKind,
-            intent: SelectSiteIntent.self,
-            provider: SiteListProvider<HomeWidgetThisWeekData>(service: StatsWidgetsService(),
-                                                               placeholderContent: Self.placeholderContent)
-        ) { (entry: StatsWidgetEntry) -> StatsWidgetsView in
-
-            defer {
-                tracks.trackWidgetUpdated(widgetKind: WPHomeWidgetThisWeekKind,
-                                          widgetCountKey: WPHomeWidgetThisWeekProperties)
-            }
-
-            return StatsWidgetsView(timelineEntry: entry)
-        }
-        .configurationDisplayName(LocalizableStrings.thisWeekWidgetTitle)
-        .description(LocalizableStrings.thisWeekPreviewDescription)
-        .supportedFamilies(FeatureFlag.todayWidget.enabled ? [.systemMedium, .systemLarge] : [])
-    }
-}
-
-
-// MARK: - Placeholder
-private extension WordPressHomeWidgetThisWeek {
     static let secondsPerDay = 86400.0
-    static let placeholderContent = HomeWidgetThisWeekData(siteID: 0,
+
+    private let placeholderContent = HomeWidgetThisWeekData(siteID: 0,
                                                             siteName: "My WordPress Site",
                                                             url: "",
                                                             timeZone: TimeZone.current,
@@ -57,4 +33,23 @@ private extension WordPressHomeWidgetThisWeek {
                                                                                               ThisWeekWidgetDay(date: Date(timeIntervalSinceNow: -(Self.secondsPerDay * 6)),
                                                                                                                 viewsCount: 310,
                                                                                                                 dailyChangePercent: 0.07)]))
+
+    var body: some WidgetConfiguration {
+        IntentConfiguration(
+            kind: WPHomeWidgetThisWeekKind,
+            intent: SelectSiteIntent.self,
+            provider: SiteListProvider<HomeWidgetThisWeekData>(service: StatsWidgetsService(), placeholderContent: placeholderContent, widgetKind: .thisWeek)
+        ) { (entry: StatsWidgetEntry) -> StatsWidgetsView in
+
+            defer {
+                tracks.trackWidgetUpdated(widgetKind: WPHomeWidgetThisWeekKind,
+                                          widgetCountKey: WPHomeWidgetThisWeekProperties)
+            }
+
+            return StatsWidgetsView(timelineEntry: entry)
+        }
+        .configurationDisplayName(LocalizableStrings.thisWeekWidgetTitle)
+        .description(LocalizableStrings.thisWeekPreviewDescription)
+        .supportedFamilies(FeatureFlag.todayWidget.enabled ? [.systemMedium, .systemLarge] : [])
+    }
 }

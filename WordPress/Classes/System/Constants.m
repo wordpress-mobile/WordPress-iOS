@@ -64,6 +64,7 @@ NSString *const WPShareExtensionKeychainTokenKey                    = @"OAuth2To
 NSString *const WPShareExtensionKeychainServiceName                 = @"ShareExtension";
 NSString *const WPShareExtensionUserDefaultsPrimarySiteName         = @"WPShareUserDefaultsPrimarySiteName";
 NSString *const WPShareExtensionUserDefaultsPrimarySiteID           = @"WPShareUserDefaultsPrimarySiteID";
+NSString *const WPStatsHomeWidgetsUserDefaultsLoggedInKey           = @"WordPressHomeWidgetsLoggedIn";
 NSString *const WPShareExtensionUserDefaultsLastUsedSiteName        = @"WPShareUserDefaultsLastUsedSiteName";
 NSString *const WPShareExtensionUserDefaultsLastUsedSiteID          = @"WPShareUserDefaultsLastUsedSiteID";
 NSString *const WPShareExtensionMaximumMediaDimensionKey            = @"WPShareExtensionMaximumMediaDimensionKey";

@@ -9,6 +9,8 @@ struct EventLoggingDelegate: AutomatticTracks.EventLoggingDelegate {
             && !UserSettings.userHasOptedOutOfCrashLogging
     }
 
+    let shouldEnableAutomaticSessionTracking: Bool = true
+
     func didQueueLogForUpload(_ log: LogFile) {
         NotificationCenter.default.post(name: WPLoggingStack.QueuedLogsDidChangeNotification, object: log)
         DDLogDebug("📜 Added log to queue: \(log.uuid)")
