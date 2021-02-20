@@ -79,7 +79,7 @@ PODS:
     - React-RCTImage (= 0.61.5)
     - RNTAztecView
   - JTAppleCalendar (8.0.3)
-  - Kanvas (1.1.1)
+  - Kanvas (1.2.0)
   - lottie-ios (3.1.9)
   - MediaEditor (1.2.1):
     - CropViewController (~> 2.5.3)
@@ -456,7 +456,7 @@ DEPENDENCIES:
   - Gridicons (~> 1.1.0)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v1.47.0-alpha2`)
   - JTAppleCalendar (~> 8.0.2)
-  - "Kanvas (from `git@github.com:tumblr/kanvas-ios.git`, branch `main`)"
+  - Kanvas (from `https://github.com/tumblr/Kanvas-iOS.git`, commit `885a889`)
   - MediaEditor (~> 1.2.1)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.3.1)
@@ -584,8 +584,8 @@ EXTERNAL SOURCES:
     :submodules: true
     :tag: v1.47.0-alpha2
   Kanvas:
-    :branch: main
-    :git: "git@github.com:tumblr/kanvas-ios.git"
+    :commit: 885a889
+    :git: https://github.com/tumblr/Kanvas-iOS.git
   RCTRequired:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.47.0-alpha2/third-party-podspecs/RCTRequired.podspec.json
   RCTTypeSafety:
@@ -668,8 +668,8 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.47.0-alpha2
   Kanvas:
-    :commit: 08e47a4f5892e939fc7c5466e909575bd9b189e4
-    :git: "git@github.com:tumblr/kanvas-ios.git"
+    :commit: 885a889
+    :git: https://github.com/tumblr/Kanvas-iOS.git
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
@@ -703,7 +703,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Gutenberg: f283b145b3669f82ce13e6d8a6f0130172b19301
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
-  Kanvas: 565caff19d90e883194e6e646f6ea994e14fcde5
+  Kanvas: 3112027c434d89273e642de5f27f165368705ab1
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
@@ -771,6 +771,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: 821b48e0dc4b91ff4d4017e77d27f2fa0673ff2d
+PODFILE CHECKSUM: d72fac397a8025a158376adabf9cb3bb5a3fc56d
 
 COCOAPODS: 1.10.0
