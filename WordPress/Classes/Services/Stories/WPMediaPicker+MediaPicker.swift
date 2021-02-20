@@ -86,25 +86,38 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
         case unexpectedAssetType // `WPMediaAsset.assetType()` was not an image or video
     }
 
+    private struct ExportOutput {
+        let index: Int
+        let media: PickedMedia
+    }
+
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
 
-        let mediaExports: [AnyPublisher<PickedMedia, Error>] = assets.map({ asset -> AnyPublisher<PickedMedia, Error> in
+        let mediaExports: [AnyPublisher<(Int, PickedMedia), Error>] = assets.enumerated().map({ (index, asset) -> AnyPublisher<(Int, PickedMedia), Error> in
             switch asset.assetType() {
             case .image:
                 return asset.imagePublisher().map({ (image, url) in
-                    PickedMedia.image(image, url)
+                    (index, PickedMedia.image(image, url))
                 }).eraseToAnyPublisher()
             case .video:
                 return asset.videoURLPublisher().map { url in
-                    return PickedMedia.video(url)
+                    (index, PickedMedia.video(url))
                 }.eraseToAnyPublisher()
             default:
-                return Fail(outputType: PickedMedia.self, failure: ExportErrors.unexpectedAssetType).eraseToAnyPublisher()
+                return Fail(outputType: (Int, PickedMedia).self, failure: ExportErrors.unexpectedAssetType).eraseToAnyPublisher()
             }
         })
 
         Publishers.MergeMany(mediaExports)
         .collect(assets.count) // Wait for all assets to complete before receiving.
+        .map({ media in
+            // Sort our media back into the original order since they may be mixed up after export.
+            return media.sorted(by: { left, right in
+                return left.0 < right.0
+            }).map({
+                return $0.1
+            })
+        })
         .receive(on: DispatchQueue.main).sink(receiveCompletion: { completion in
 
         }, receiveValue: { [weak self] media in
