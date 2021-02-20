@@ -20,6 +20,7 @@ import Foundation
 
     // Settings and Prepublishing Nudges
     case editorPostPublishTap
+    case editorPostPublishDismissed
     case editorPostScheduledChanged
     case editorPostTitleChanged
     case editorPostVisibilityChanged
@@ -172,6 +173,8 @@ import Foundation
         // Editor    
         case .editorPostPublishTap:
             return "editor_post_publish_tapped"
+        case .editorPostPublishDismissed:
+            return "editor_post_publish_dismissed"
         case .editorPostScheduledChanged:
             return "editor_post_scheduled_changed"
         case .editorPostTitleChanged:

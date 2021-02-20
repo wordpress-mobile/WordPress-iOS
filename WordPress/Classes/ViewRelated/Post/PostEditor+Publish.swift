@@ -166,7 +166,10 @@ extension PublishingEditor where Self: UIViewController {
             WPAnalytics.track(.editorPostPublishTap)
 
             // Only display confirmation alert for unpublished posts
-            displayPublishConfirmationAlert(for: action, onPublish: publishBlock, onDismiss: { [weak self] in self?.publishingDismissed() })
+            displayPublishConfirmationAlert(for: action, onPublish: publishBlock, onDismiss: { [weak self] in
+                self?.publishingDismissed()
+                WPAnalytics.track(.editorPostPublishDismissed)
+            })
         } else {
             publishBlock()
         }
