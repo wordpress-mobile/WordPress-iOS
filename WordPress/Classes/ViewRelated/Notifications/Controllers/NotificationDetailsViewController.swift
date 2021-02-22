@@ -413,7 +413,8 @@ extension NotificationDetailsViewController {
             NoteBlockActionsTableViewCell.self,
             NoteBlockCommentTableViewCell.self,
             NoteBlockImageTableViewCell.self,
-            NoteBlockUserTableViewCell.self
+            NoteBlockUserTableViewCell.self,
+            NoteBlockButtonTableViewCell.self
         ]
 
         for cellClass in cellClassNames {
@@ -609,6 +610,8 @@ private extension NotificationDetailsViewController {
             return NoteBlockImageTableViewCell.reuseIdentifier()
         case .user:
             return NoteBlockUserTableViewCell.reuseIdentifier()
+        case .button:
+            return NoteBlockButtonTableViewCell.reuseIdentifier()
         default:
             assertionFailure("Unmanaged group kind: \(blockGroup.kind)")
             return NoteBlockTextTableViewCell.reuseIdentifier()
@@ -644,6 +647,8 @@ private extension NotificationDetailsViewController {
             setupImageCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockTextTableViewCell:
             setupTextCell(cell, blockGroup: blockGroup, at: indexPath)
+        case let cell as NoteBlockButtonTableViewCell:
+            setupButtonCell(cell, blockGroup: blockGroup)
         default:
             assertionFailure("NotificationDetails: Please, add support for \(cell)")
         }
@@ -864,6 +869,15 @@ private extension NotificationDetailsViewController {
 
             self.displayURL(url)
         }
+    }
+
+    func setupButtonCell(_ cell: NoteBlockButtonTableViewCell, blockGroup: FormattableContentGroup) {
+        guard let textBlock = blockGroup.blocks.first as? NotificationTextContent else {
+            assertionFailure("Missing Text Block for Notification \(note.notificationId)")
+            return
+        }
+
+        cell.title = textBlock.text
     }
 }
 
@@ -1238,11 +1252,6 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate {
 //
 private extension NotificationDetailsViewController {
 
-    /// Determines if the notification content is a view milestone
-    var isViewMilestone: Bool {
-        FeatureFlag.milestoneNotifications.enabled && note.type == "view_milestone"
-    }
-
     func addConfettiViewIfNeeded() {
         guard let navigationController = navigationController else {
             return
@@ -1271,7 +1280,7 @@ private extension NotificationDetailsViewController {
         // always remove any previous confetti view
         removeConfettiView()
         // only add and show confetti if needed
-        guard FeatureFlag.milestoneNotifications.enabled, isViewMilestone, !confettiWasShown else {
+        guard FeatureFlag.milestoneNotifications.enabled, note.isViewMilestone, !confettiWasShown else {
             return
         }
         addConfettiViewIfNeeded()
