@@ -17,7 +17,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fNm-7n-pb1" customClass="FancyButton" customModule="WordPressUI">
-                        <rect key="frame" x="145" y="7" width="30" height="30"/>
+                        <rect key="frame" x="145" y="11" width="30" height="22"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
                         </userDefinedRuntimeAttributes>
@@ -25,6 +25,8 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="fNm-7n-pb1" secondAttribute="trailing" id="O5C-7d-F5c"/>
+                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="fNm-7n-pb1" secondAttribute="bottom" id="P4g-7U-30C"/>
+                    <constraint firstItem="fNm-7n-pb1" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7nQ-Pw-2Hj" secondAttribute="topMargin" id="PMm-dk-cEA"/>
                     <constraint firstItem="fNm-7n-pb1" firstAttribute="centerY" secondItem="7nQ-Pw-2Hj" secondAttribute="centerY" id="Rnd-wT-hOY"/>
                     <constraint firstItem="fNm-7n-pb1" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7nQ-Pw-2Hj" secondAttribute="leadingMargin" id="a8r-7h-rRY"/>
                     <constraint firstItem="fNm-7n-pb1" firstAttribute="centerX" secondItem="7nQ-Pw-2Hj" secondAttribute="centerX" id="cyh-RX-rwg"/>
