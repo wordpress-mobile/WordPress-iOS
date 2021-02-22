@@ -1219,15 +1219,28 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.postHeaderView.isSubscribedToPost = newIsSubscribed;
 
     // Define success block
-    void (^successBlock)(void) = ^void() {
-        NSString *title = newIsSubscribed
-            ? NSLocalizedString(@"Successfully subscribed to the comments", @"The app successfully subscribed to the comments for the post")
-            : NSLocalizedString(@"Successfully unsubscribed from the comments", @"The app successfully unsubscribed from the comments for the post");
+    void (^successBlock)(BOOL taskSucceeded) = ^void(BOOL taskSucceeded) {
+        if (taskSucceeded == NO) {
+            NSString *title = newIsSubscribed
+                ? NSLocalizedString(@"Unable to subscribe to the comments", @"The app failed to subscribe to the comments for the post")
+                : NSLocalizedString(@"Unable to unsubscribe from the comments", @"The app failed to unsubscribe from the comments for the post");
 
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
-            [weakSelf displayNoticeWithTitle:title message:nil];
-        });
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
+                [weakSelf displayNoticeWithTitle:title message:nil];
+            });
+        } else {
+            NSString *title = newIsSubscribed
+                ? NSLocalizedString(@"Successfully subscribed to the comments", @"The app successfully subscribed to the comments for the post")
+                : NSLocalizedString(@"Successfully unsubscribed from the comments", @"The app successfully unsubscribed from the comments for the post");
+
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
+                [weakSelf displayNoticeWithTitle:title message:nil];
+            });
+        }
+        self.postHeaderView.isSubscribedToPost = taskSucceeded;
     };
 
     // Define failure block
