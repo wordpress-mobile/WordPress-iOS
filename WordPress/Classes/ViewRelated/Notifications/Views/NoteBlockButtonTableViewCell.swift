@@ -20,4 +20,18 @@ class NoteBlockButtonTableViewCell: NoteBlockTableViewCell {
             return button.title(for: .normal)
         }
     }
+
+    /// An block to be invoked when the button is tapped.
+    var action: (() -> Void)?
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+    }
+
+    @objc
+    private func buttonTapped() {
+        action?()
+    }
 }
