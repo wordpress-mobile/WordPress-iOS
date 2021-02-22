@@ -32,6 +32,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     private let table: UITableView
     private let searchHeader: UIView
     private let searchTextField: SearchTextField
+    private var sitePromptView: SitePromptView!
 
     /// The underlying data represented by the provider
     var data: [DomainSuggestion] {
@@ -128,6 +129,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         setupTable()
         WPAnalytics.track(.enhancedSiteCreationDomainsAccessed)
         loadHeaderView()
+        addAddressHintView()
     }
 
     private func loadHeaderView() {
@@ -370,6 +372,21 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         }
 
         performSearchIfNeeded(query: query)
+    }
+
+    // MARK: - Search logic
+
+    private func addAddressHintView() {
+        sitePromptView = SitePromptView(frame: .zero)
+        sitePromptView.isUserInteractionEnabled = false
+        sitePromptView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(sitePromptView)
+        NSLayoutConstraint.activate([
+            sitePromptView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 50),
+            sitePromptView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -50),
+            sitePromptView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0),
+            sitePromptView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 25)
+        ])
     }
 
     // MARK: - Others

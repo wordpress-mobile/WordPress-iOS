@@ -706,6 +706,8 @@
 		465B097A24C877E500336B6C /* GutenbergLightNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465B097924C877E500336B6C /* GutenbergLightNavigationController.swift */; };
 		46638DF6244904A3006E8439 /* GutenbergBlockProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46638DF5244904A3006E8439 /* GutenbergBlockProcessor.swift */; };
 		4666534A2501552A00165DD4 /* LayoutPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466653492501552A00165DD4 /* LayoutPreviewViewController.swift */; };
+		467D3DFA25E4436000EB9CB0 /* SitePromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467D3DF925E4436000EB9CB0 /* SitePromptView.swift */; };
+		467D3E0C25E4436D00EB9CB0 /* SitePromptView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 467D3E0B25E4436D00EB9CB0 /* SitePromptView.xib */; };
 		46963F5924649542000D356D /* EditorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46963F5824649542000D356D /* EditorTheme.swift */; };
 		469CE06D24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469CE06B24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.swift */; };
 		469CE06E24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 469CE06C24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.xib */; };
@@ -3333,6 +3335,8 @@
 		465B097924C877E500336B6C /* GutenbergLightNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GutenbergLightNavigationController.swift; sourceTree = "<group>"; };
 		46638DF5244904A3006E8439 /* GutenbergBlockProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergBlockProcessor.swift; sourceTree = "<group>"; };
 		466653492501552A00165DD4 /* LayoutPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutPreviewViewController.swift; sourceTree = "<group>"; };
+		467D3DF925E4436000EB9CB0 /* SitePromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SitePromptView.swift; sourceTree = "<group>"; };
+		467D3E0B25E4436D00EB9CB0 /* SitePromptView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SitePromptView.xib; sourceTree = "<group>"; };
 		46963F5824649542000D356D /* EditorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTheme.swift; sourceTree = "<group>"; };
 		469CE06B24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutPickerSectionTableViewCell.swift; sourceTree = "<group>"; };
 		469CE06C24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LayoutPickerSectionTableViewCell.xib; sourceTree = "<group>"; };
@@ -10642,6 +10646,8 @@
 				D82253E4219956540014D0E2 /* AddressCell.xib */,
 				D853723921952DAF0076F461 /* WebAddressStep.swift */,
 				D82253DD2199418B0014D0E2 /* WebAddressWizardContent.swift */,
+				467D3DF925E4436000EB9CB0 /* SitePromptView.swift */,
+				467D3E0B25E4436D00EB9CB0 /* SitePromptView.xib */,
 			);
 			path = WebAddress;
 			sourceTree = "<group>";
@@ -12286,6 +12292,7 @@
 				17E3630622C41725000E0C79 /* wordpress_dark_icon_60pt@2x.png in Resources */,
 				820ADD701F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib in Resources */,
 				17E3633E22C417F0000E0C79 /* jetpack_green_icon_40pt@2x.png in Resources */,
+				467D3E0C25E4436D00EB9CB0 /* SitePromptView.xib in Resources */,
 				746A6F571E71C691003B67E3 /* DeleteSite.storyboard in Resources */,
 				17E3639A22C41DBA000E0C79 /* hot_pink_icon_20pt@3x.png in Resources */,
 				F5A34D1225DF2F7F00C9654B /* Noticons.ttf in Resources */,
@@ -14223,6 +14230,7 @@
 				D88A6496208D7B0B008AE9BC /* NullStockPhotosService.swift in Sources */,
 				9A162F2321C26D7500FDC035 /* RevisionPreviewViewController.swift in Sources */,
 				3F30E50923FB362700225013 /* WPTabBarController+MeNavigation.swift in Sources */,
+				467D3DFA25E4436000EB9CB0 /* SitePromptView.swift in Sources */,
 				FAB8AA2225AF031200F9F8A0 /* BaseRestoreCompleteViewController.swift in Sources */,
 				E616E4B31C480896002C024E /* SharingService.swift in Sources */,
 				43D74AC820F8D17A004AD934 /* DomainSuggestionsButtonViewPresenter.swift in Sources */,
