@@ -10,6 +10,7 @@
 * [*] Quick Start: Completing a step outside of a tour now automatically marks it as complete. [#15712]
 * [internal] Site Comments: updated UI. Should be no functional changes. [#15944]
 * [***] iOS 14 Widgets: new This Week Widgets to display This Week Stats in your home screen. [#15844]
+* [***] Stories: There is now a new Story post type available to quickly and conveniently post images and videos to your blog.
 
 16.7
 -----
