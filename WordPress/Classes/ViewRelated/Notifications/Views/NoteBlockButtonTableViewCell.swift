@@ -1,11 +1,3 @@
-//
-//  NoteBlockButtonTableViewCell.swift
-//  WordPress
-//
-//  Created by James Frost on 19/02/2021.
-//  Copyright © 2021 WordPress. All rights reserved.
-//
-
 import UIKit
 
 class NoteBlockButtonTableViewCell: NoteBlockTableViewCell {
