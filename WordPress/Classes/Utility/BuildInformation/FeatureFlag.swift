@@ -46,7 +46,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .unifiedPrologueCarousel:
             return false
         case .stories:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .siteCreationHomePagePicker:
             return true
         case .jetpackScan:
