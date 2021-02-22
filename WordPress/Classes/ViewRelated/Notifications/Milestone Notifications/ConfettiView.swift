@@ -37,6 +37,9 @@ class ConfettiView: UIView {
         }
     }
 
+    typealias AnimationCompletion = (ConfettiView) -> Void
+    public var onAnimationCompletion: AnimationCompletion?
+
     // MARK: - Config
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -157,6 +160,8 @@ extension ConfettiView: CAAnimationDelegate {
 
         layer.removeAllAnimations()
         layer.removeFromSuperlayer()
+
+        onAnimationCompletion?(self)
     }
 }
 
@@ -165,9 +170,11 @@ extension ConfettiView {
 
     func emitConfetti() {
         // Images
-        let star = UIImage(named: "confetti-star")!
-        let circle = UIImage(named: "confetti-circle")!
-        let hotdog = UIImage(named: "confetti-hotdog")!
+        guard let star = UIImage(named: "confetti-star"),
+              let circle = UIImage(named: "confetti-circle"),
+              let hotdog = UIImage(named: "confetti-hotdog") else {
+            return
+        }
 
         // Colors
         let purple = UIColor(red: 0.75, green: 0.35, blue: 0.95, alpha: 1.00)
@@ -189,5 +196,56 @@ extension ConfettiView {
         ]
 
         self.emit(with: particles, config: ConfettiView.EmitterConfig())
+    }
+}
+
+// MARK: - Convenience methods to add/remove ConfettiView from any view
+extension ConfettiView {
+
+    /// Adds an instance of ConfettiView to the specified view
+    /// - Parameters:
+    ///   - view: the view where to add the ConfettiView
+    ///   - frame: optional frame for ConfettiView
+    ///   - onAnimationCompletion: optional closure to be executed when the animation ends
+    /// - Returns: the newly created instance of ConfettiView
+    static func add(on view: UIView,
+                    frame: CGRect? = nil,
+                    onAnimationCompletion: AnimationCompletion? = nil) -> ConfettiView {
+
+        let confettiView = ConfettiView()
+
+        if let frame = frame {
+            confettiView.frame = frame
+        }
+
+        confettiView.onAnimationCompletion = onAnimationCompletion
+
+        view.addSubview(confettiView)
+
+        return confettiView
+    }
+
+    /// Remove any existing instance of ConfettiView from the specified view
+    /// - Parameter view: the view to remove ConfettiView instances from
+    static func removeAll(from view: UIView) {
+
+        let existingConfettiViews = view.subviews.filter { $0.isKind(of: ConfettiView.self) }
+
+        existingConfettiViews.forEach {
+            $0.removeFromSuperview()
+        }
+    }
+
+    /// combines the two previous methods, removing any existing ConfettiView instance before adding a new one and firing the animation
+    static func cleanupAndAnimate(on view: UIView,
+                                  frame: CGRect? = nil,
+                                  onAnimationCompletion: AnimationCompletion? = nil) {
+
+        removeAll(from: view)
+
+        add(on: view,
+            frame: frame,
+            onAnimationCompletion: onAnimationCompletion)
+        .emitConfetti()
     }
 }

@@ -98,9 +98,9 @@ class NotificationDetailsViewController: UIViewController {
         }
     }
 
-    var confettiView: ConfettiView?
-
-    var confettiWasShown = false
+    /// Wether a confetti animation was presented on this notification or not
+    ///
+    private var confettiWasShown = false
 
     lazy var coordinator: ContentCoordinator = {
         return DefaultContentCoordinator(controller: self, context: mainContext)
@@ -173,11 +173,6 @@ class NotificationDetailsViewController: UIViewController {
         tearDownNotificationListeners()
         storeNotificationReplyIfNeeded()
         dismissNotice()
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        removeConfettiView()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -1261,39 +1256,20 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate {
 //
 private extension NotificationDetailsViewController {
 
-    func addConfettiViewIfNeeded() {
-        guard let navigationController = navigationController else {
-            return
-        }
-        let newConfettiView = ConfettiView()
-
-        confettiView = newConfettiView
-
-        newConfettiView.frame = navigationController.view.frame
-        newConfettiView.clipsToBounds = false
-
-        UIApplication.shared.mainWindow?.addSubview(newConfettiView)
-    }
-
-    func showConfetti() {
-        confettiView?.emitConfetti()
-        confettiWasShown = true
-    }
-
-    func removeConfettiView() {
-        confettiView?.removeFromSuperview()
-        confettiView = nil
-    }
-
     func showConfettiIfNeeded() {
-        // always remove any previous confetti view
-        removeConfettiView()
-        // only add and show confetti if needed
-        guard FeatureFlag.milestoneNotifications.enabled, note.isViewMilestone, !confettiWasShown else {
+        guard FeatureFlag.milestoneNotifications.enabled,
+              note.isViewMilestone,
+              !confettiWasShown,
+              let view = UIApplication.shared.mainWindow,
+              let frame = navigationController?.view.frame else {
             return
         }
-        addConfettiViewIfNeeded()
-        showConfetti()
+
+        // removing this instance only after the animation completes, will prevent
+        // the animation to suddenly stop if users navigate away from the note
+        ConfettiView.cleanupAndAnimate(on: view, frame: frame) { $0.removeFromSuperview() }
+
+        confettiWasShown = true
     }
 }
 
