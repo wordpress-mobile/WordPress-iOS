@@ -9,6 +9,7 @@ struct JetpackRestoreOptionsConfiguration {
     let messageDescription: String
     let generalSectionHeaderText: String
     let buttonTitle: String
+    let detailButtonTitle: String?
 }
 
 class BaseRestoreOptionsViewController: UITableViewController {
@@ -76,6 +77,10 @@ class BaseRestoreOptionsViewController: UITableViewController {
         fatalError("Must override in subclass")
     }
 
+    func detailActionButtonTapped() {
+        fatalError("Must override in subclass")
+    }
+
     // MARK: - Configure
 
     private func configureTitle() {
@@ -100,11 +105,16 @@ class BaseRestoreOptionsViewController: UITableViewController {
             iconImage: configuration.iconImage,
             title: configuration.messageTitle,
             description: String(format: configuration.messageDescription, publishedDate),
-            buttonTitle: configuration.buttonTitle
+            buttonTitle: configuration.buttonTitle,
+            detailButtonTitle: configuration.detailButtonTitle
         )
 
         headerView.actionButtonHandler = { [weak self] in
             self?.actionButtonTapped()
+        }
+
+        headerView.detailActionButtonHandler = { [weak self] in
+            self?.detailActionButtonTapped()
         }
 
         self.tableView.tableHeaderView = headerView
