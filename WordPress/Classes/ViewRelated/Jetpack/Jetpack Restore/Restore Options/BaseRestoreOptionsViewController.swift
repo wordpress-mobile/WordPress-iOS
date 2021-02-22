@@ -9,7 +9,7 @@ struct JetpackRestoreOptionsConfiguration {
     let messageDescription: String
     let generalSectionHeaderText: String
     let buttonTitle: String
-    let detailButtonTitle: String?
+    let warningButtonTitle: String?
     let isRestoreTypesConfigurable: Bool
 }
 
@@ -120,7 +120,7 @@ class BaseRestoreOptionsViewController: UITableViewController {
             title: configuration.messageTitle,
             description: String(format: configuration.messageDescription, publishedDate),
             buttonTitle: configuration.buttonTitle,
-            detailButtonTitle: configuration.detailButtonTitle
+            warningButtonTitle: configuration.warningButtonTitle
         )
 
         headerView.toggleActionButton(isEnabled: configuration.isRestoreTypesConfigurable)
@@ -129,7 +129,7 @@ class BaseRestoreOptionsViewController: UITableViewController {
             self?.actionButtonTapped()
         }
 
-        headerView.detailActionButtonHandler = { [weak self] in
+        headerView.warningButtonHandler = { [weak self] in
             self?.detailActionButtonTapped()
         }
 

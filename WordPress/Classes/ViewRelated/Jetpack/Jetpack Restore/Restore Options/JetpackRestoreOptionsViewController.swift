@@ -25,7 +25,7 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
             messageDescription: NSLocalizedString("%1$@ is the selected point for your restore.", comment: "Description for the restore action. $1$@ is a placeholder for the selected date."),
             generalSectionHeaderText: NSLocalizedString("Choose the items to restore", comment: "Restorable items: general section title"),
             buttonTitle: NSLocalizedString("Restore to this point", comment: "Button title for restore site action"),
-            detailButtonTitle: isAwaitingCredentials ? NSLocalizedString("Enter your server credentials to enable one click site restores from backups.", comment: "Error message displayed when restoring a site fails due to credentials not being configured.") : nil,
+            warningButtonTitle: isAwaitingCredentials ? NSLocalizedString("Enter your server credentials to enable one click site restores from backups.", comment: "Error message displayed when restoring a site fails due to credentials not being configured.") : nil,
             isRestoreTypesConfigurable: !isAwaitingCredentials
         )
 
