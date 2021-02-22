@@ -1,6 +1,7 @@
 import Foundation
 import CocoaLumberjack
 import Gridicons
+import WordPressFlux
 import WordPressUI
 import WordPressShared
 
@@ -55,7 +56,19 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
     }
 
     override func detailActionButtonTapped() {
-        // TODO
+        guard let jetpackSettingsURL = URL(string: "https://wordpress.com/settings/jetpack/\(site.displayURL)") else {
+
+            let title = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
+            let notice = Notice(title: title)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+            return
+        }
+
+        let webVC = WebViewControllerFactory.controller(url: jetpackSettingsURL)
+        let navigationVC = LightNavigationController(rootViewController: webVC)
+
+        self.present(navigationVC, animated: true)
     }
 
 }
