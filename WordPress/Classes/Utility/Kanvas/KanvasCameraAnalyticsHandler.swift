@@ -96,8 +96,10 @@ final public class KanvasAnalyticsHandler: NSObject, KanvasAnalyticsProvider {
         logString(string: "logEditorBack")
     }
 
-    public func logMediaPickerPickedMedia(ofType mediaType: KanvasMediaType) {
-        logString(string: "logMediaPickerPickedMedia mediaType:\(mediaType.string())")
+    public func logMediaPickerPickedMedia(ofTypes mediaTypes: [KanvasMediaType]) {
+        mediaTypes.forEach({ mediaType in
+            logString(string: "logMediaPickerPickedMedia mediaType:\(mediaType.string())")
+        })
     }
 
     public func logEditorFiltersOpen() {

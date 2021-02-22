@@ -130,7 +130,7 @@ class StoryEditor: CameraController {
         )
 
         super.init(settings: settings,
-                 mediaPicker: nil,
+                 mediaPicker: WPMediaPickerForKanvas.self,
                  stickerProvider: nil,
                  analyticsProvider: KanvasAnalyticsHandler(),
                  quickBlogSelectorCoordinator: nil,
