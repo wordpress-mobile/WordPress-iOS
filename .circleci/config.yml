@@ -234,7 +234,7 @@ jobs:
                   APP_VERSION=$(cat ../config/Version.Public.xcconfig | grep "^VERSION_LONG" | cut -d "=" -f2)
                   echo "export SLACK_FAILURE_MESSAGE=':red_circle: Build for WordPress iOS $APP_VERSION failed!'" >> $BASH_ENV
                   echo "export SLACK_SUCCESS_MESSAGE=':tada: WordPress iOS $APP_VERSION has been deployed!'" >> $BASH_ENV 
-                  bundle exec fastlane build_and_upload_beta_release skip_confirm:true
+                  bundle exec fastlane build_and_upload_beta_release skip_confirm:true create_gh_release: true
                 no_output_timeout: 60m
       - when: 
           condition: << pipeline.parameters.release_build >>
@@ -245,7 +245,7 @@ jobs:
                   APP_VERSION=$(cat ../config/Version.Public.xcconfig | grep "^VERSION_LONG" | cut -d "=" -f2)
                   echo "export SLACK_FAILURE_MESSAGE=':red_circle: Build for WordPress iOS $APP_VERSION failed!'" >> $BASH_ENV
                   echo "export SLACK_SUCCESS_MESSAGE=':tada: WordPress iOS $APP_VERSION has been deployed!'" >> $BASH_ENV 
-                  bundle exec fastlane build_and_upload_stable_release skip_confirm:true
+                  bundle exec fastlane build_and_upload_stable_release skip_confirm:true create_gh_release: true
                 no_output_timeout: 60m
       - slack/status:
           include_job_number_field: false
