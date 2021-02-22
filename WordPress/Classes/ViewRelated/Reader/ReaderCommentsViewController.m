@@ -205,6 +205,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     [super traitCollectionDidChange:previousTraitCollection];
 
+    // Update cached attributed strings when toggling light/dark mode.
     self.userInterfaceStyleChanged = self.traitCollection.userInterfaceStyle != previousTraitCollection.userInterfaceStyle;
     [self refreshTableViewAndNoResultsView];
 }
