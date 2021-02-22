@@ -381,4 +381,7 @@ workflows:
             - not: << pipeline.parameters.beta_build >>
             - not: << pipeline.parameters.release_build >>
     jobs:
-      - translation-review-build
+      - translation-review-build:
+          filters:
+            branches:
+              ignore: /.*/
