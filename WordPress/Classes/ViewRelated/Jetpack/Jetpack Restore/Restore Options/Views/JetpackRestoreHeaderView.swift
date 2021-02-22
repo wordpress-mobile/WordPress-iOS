@@ -8,10 +8,10 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var descriptionLabel: UILabel!
     @IBOutlet private weak var actionButton: FancyButton!
-    @IBOutlet private weak var detailActionButton: UIButton!
+    @IBOutlet private weak var warningButton: UIButton!
 
     var actionButtonHandler: (() -> Void)?
-    var detailActionButtonHandler: (() -> Void)?
+    var warningButtonHandler: (() -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,22 +33,22 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
 
         actionButton.isPrimary = true
 
-        detailActionButton.titleLabel?.lineBreakMode = .byWordWrapping
+        warningButton.titleLabel?.lineBreakMode = .byWordWrapping
     }
 
     // MARK: - Configuration
 
-    func configure(iconImage: UIImage, title: String, description: String, buttonTitle: String, detailButtonTitle: String?) {
+    func configure(iconImage: UIImage, title: String, description: String, buttonTitle: String, warningButtonTitle: String?) {
         icon.image = iconImage
         titleLabel.text = title
         descriptionLabel.text = description
         actionButton.setTitle(buttonTitle, for: .normal)
 
-        if let detailButtonTitle = detailButtonTitle {
-            detailActionButton.setTitle(detailButtonTitle, for: .normal)
-            detailActionButton.isHidden = false
+        if let warningButtonTitle = warningButtonTitle {
+            warningButton.setTitle(warningButtonTitle, for: .normal)
+            warningButton.isHidden = false
         } else {
-            detailActionButton.isHidden = true
+            warningButton.isHidden = true
         }
     }
 
@@ -64,7 +64,7 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
         actionButtonHandler?()
     }
 
-    @IBAction private func detailActionButtonTapped(_ sender: UIButton) {
-        detailActionButtonHandler?()
+    @IBAction private func warningButtonTapped(_ sender: UIButton) {
+        warningButtonHandler?()
     }
 }

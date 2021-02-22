@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -51,7 +49,7 @@
                             <rect key="frame" x="0.0" y="60" width="382" height="30"/>
                             <state key="normal" title="Button"/>
                             <connections>
-                                <action selector="detailActionButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="ehh-9G-PcQ"/>
+                                <action selector="warningButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="ehh-9G-PcQ"/>
                             </connections>
                         </button>
                     </subviews>
@@ -77,9 +75,9 @@
             <connections>
                 <outlet property="actionButton" destination="ZHA-ex-Sko" id="ftK-cT-i0k"/>
                 <outlet property="descriptionLabel" destination="6ag-Xy-HZc" id="ZBU-Lb-HZp"/>
-                <outlet property="detailActionButton" destination="5jP-J3-oaJ" id="BH1-El-vym"/>
                 <outlet property="icon" destination="n7M-ds-fce" id="XL3-jc-2wb"/>
                 <outlet property="titleLabel" destination="Mst-Hr-reS" id="yvm-WQ-P3n"/>
+                <outlet property="warningButton" destination="5jP-J3-oaJ" id="BH1-El-vym"/>
             </connections>
             <point key="canvasLocation" x="-17" y="69"/>
         </view>
