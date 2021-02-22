@@ -23,11 +23,6 @@ class SiteDesignSection: CategorySection {
 
 class SiteDesignContentCollectionViewController: FilterableCategoriesViewController, UIPopoverPresentationControllerDelegate {
     let completion: SiteDesignStep.SiteDesignSelection
-    let itemSpacing: CGFloat = 20
-    static let aspectRatio: CGFloat = 0.75
-    static let cellWidth: CGFloat = 160
-    static let cellHeight: CGFloat = cellWidth / aspectRatio
-    let cellSize = CGSize(width: cellWidth, height: cellHeight)
     let restAPI = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
     var selectedIndexPath: IndexPath? = nil
     private var sections: [SiteDesignSection] = []
@@ -91,7 +86,8 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
 
     private func fetchSiteDesigns() {
         isLoading = true
-        let request = SiteDesignRequest(previewSize: cellSize, scale: UIScreen.main.nativeScale)
+        let thumbnailSize = CategorySectionTableViewCell.expectedThumbnailSize
+        let request = SiteDesignRequest(withThumbnailSize: thumbnailSize)
         SiteDesignServiceRemote.fetchSiteDesigns(restAPI, request: request) { [weak self] (response) in
             DispatchQueue.main.async {
                 switch response {
