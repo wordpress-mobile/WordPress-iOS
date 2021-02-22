@@ -102,7 +102,7 @@ public class KanvasCustomUI {
     }
 
     func cameraImages() -> KanvasImages {
-        return KanvasImages(confirmImage: UIImage(named: "stories-confirm-button"), nextImage: UIImage(named: "stories-next-button"))
+        return KanvasImages(confirmImage: UIImage(named: "stories-confirm-button"), editorConfirmImage: UIImage(named: "stories-confirm-button"), nextImage: UIImage(named: "stories-next-button"))
     }
 }
 
