@@ -20,7 +20,7 @@ class PrepublishingNudgesViewControllerTests: XCTestCase {
     func testCallCompletionBlockWhenButtonTapped() {
         var post = PostBuilder().build()
         var returnedPost: AbstractPost?
-        let prepublishingViewController = PrepublishingViewController(post: post) { result in
+        let prepublishingViewController = PrepublishingViewController(post: post, identifiers: [.schedule, .visibility, .tags, .categories]) { result in
             switch result {
             case .completed(let completedPost):
                 if let completedPost = completedPost as? Post {

@@ -45,6 +45,8 @@ protocol PublishingEditor where Self: UIViewController {
 
     /// Debouncer used to save the post locally with a delay
     var debouncer: Debouncer { get }
+
+    var prepublishingIdentifiers: [PrepublishingIdentifier] { get }
 }
 
 extension PublishingEditor where Self: UIViewController {
@@ -140,6 +142,11 @@ extension PublishingEditor where Self: UIViewController {
                 self.trackPostSave(stat: analyticsStat)
             }
 
+            if self.post.isFirstTimePublish {
+                QuickStartTourGuide.shared.complete(tour: QuickStartPublishTour(),
+                                                    silentlyForBlog: self.post.blog)
+            }
+
             if dismissWhenDone {
                 self.editorSession.end(outcome: action.analyticsEndOutcome)
             } else {
@@ -159,7 +166,10 @@ extension PublishingEditor where Self: UIViewController {
             WPAnalytics.track(.editorPostPublishTap)
 
             // Only display confirmation alert for unpublished posts
-            displayPublishConfirmationAlert(for: action, onPublish: publishBlock, onDismiss: { [weak self] in self?.publishingDismissed() })
+            displayPublishConfirmationAlert(for: action, onPublish: publishBlock, onDismiss: { [weak self] in
+                self?.publishingDismissed()
+                WPAnalytics.track(.editorPostPublishDismissed)
+            })
         } else {
             publishBlock()
         }
@@ -211,7 +221,7 @@ extension PublishingEditor where Self: UIViewController {
         // End editing to avoid issues with accessibility
         view.endEditing(true)
 
-        let prepublishing = PrepublishingViewController(post: post) { result in
+        let prepublishing = PrepublishingViewController(post: post, identifiers: prepublishingIdentifiers) { result in
             switch result {
             case .completed(let post):
                 self.post = post
