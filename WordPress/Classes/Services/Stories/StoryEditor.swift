@@ -57,6 +57,8 @@ class StoryEditor: CameraController {
         settings.features.newCameraModes = true
         settings.features.gifs = false
         settings.features.multipleExports = true
+        settings.features.editorConfirmAtTop = true
+        settings.features.muteButton = true
         settings.crossIconInEditor = true
         settings.enabledModes = [.normal]
         settings.defaultMode = .normal
@@ -122,8 +124,9 @@ class StoryEditor: CameraController {
             saveDirectory = nil
         }
 
-        KanvasColors.shared = KanvasCustomUI.shared.cameraColors()
+        Kanvas.KanvasColors.shared = KanvasCustomUI.shared.cameraColors()
         Kanvas.KanvasFonts.shared = KanvasCustomUI.shared.cameraFonts()
+        Kanvas.KanvasImages.shared = KanvasCustomUI.shared.cameraImages()
         Kanvas.KanvasStrings.shared = KanvasStrings(
             cameraPermissionsTitleLabel: NSLocalizedString("Post to WordPress", comment: "Title of camera permissions screen"),
             cameraPermissionsDescriptionLabel: NSLocalizedString("Allow access so you can start taking photos and videos.", comment: "Message on camera permissions screen to explain why the app needs camera and microphone permissions")

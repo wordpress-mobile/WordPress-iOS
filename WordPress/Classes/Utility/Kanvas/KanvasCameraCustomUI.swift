@@ -70,7 +70,6 @@ public class KanvasCustomUI {
     private static let cameraPermissions = KanvasFonts.CameraPermissions(titleFont: UIFont.systemFont(ofSize: 26, weight: .medium), descriptionFont: UIFont.systemFont(ofSize: 16), buttonFont: UIFont.systemFont(ofSize: 16, weight: .medium))
     private static let drawer = KanvasFonts.Drawer(textSelectedFont: UIFont.systemFont(ofSize: 14, weight: .medium), textUnselectedFont: UIFont.systemFont(ofSize: 14))
 
-
     func cameraFonts() -> KanvasFonts {
         let paddingAdjustment: (UIFont) -> KanvasFonts.Padding? = { font in
             if font == UIFont.systemFont(ofSize: font.pointSize) {
@@ -100,6 +99,10 @@ public class KanvasCustomUI {
                                  gifMakerRevertButtonFont: UIFont.systemFont(ofSize: 15, weight: .bold),
                                  paddingAdjustment: paddingAdjustment
                                  )
+    }
+
+    func cameraImages() -> KanvasImages {
+        return KanvasImages(confirmImage: UIImage(named: "stories-confirm-button"), editorConfirmImage: UIImage(named: "stories-confirm-button"), nextImage: UIImage(named: "stories-next-button"))
     }
 }
 
