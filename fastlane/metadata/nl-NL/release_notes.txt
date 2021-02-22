@@ -1,0 +1,11 @@
+Dit zijn de hoogtepunten van deze uitgave:
+
+Jetpack Backup is nu beschikbaar! Afhankelijk van het huidige abonnement van je site, kan je je site nu herstellen of een back-up van je site van een specifiek tijdstip downloaden. Als je Jetpack Scan hebt ingeschakeld, kan je je site nu scannen op bedreigingen en deze naar eigen gelang oplossen of negeren.
+
+Hou je van het bijhouden van je statistieken? We hebben ondersteuning toegevoegd voor nieuwe All Time Widgets, waarmee all-time statistieken van je site worden weergegeven op het startscherm van je iOS 14-apparaat.
+
+Je kan nu ankers in het Kopblok instellen om pagina-verspringing in je content te creëren. We hebben andere updates doorgevoerd, zoals verbeteringen aan de herbruikbare blokken en blokken die je slechts eenmaal in je berichten invoert, zoals het Meer-blok.
+
+Het aanmaken van een site in de app wordt steeds beter. Bij het bouwen van een homepage kan je een voorbeeld bekijken van hoe je ontwerp eruitziet op een mobiel, tablet of desktop-scherm. Je kan nu ook een .blog-subdomein voor je site kiezen.
+
+Tot slot blijven we verbeteringen aanbrengen aan je Reader en je kan nu berichten als 'gelezen' markeren en je totale 'ongelezen' berichten bekijken.
