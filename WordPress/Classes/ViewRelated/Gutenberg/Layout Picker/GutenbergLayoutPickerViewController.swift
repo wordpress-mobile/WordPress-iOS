@@ -12,8 +12,7 @@ class GutenbergLayoutSection: CategorySection {
     var categorySlug: String { section.slug }
     var description: String? { section.desc }
     var thumbnails: [Thumbnail] {
-        // TODO: pass device different modes after data model supports them
-        layouts.map { Thumbnail(urlDesktop: $0.preview, urlTablet: $0.preview, urlMobile: $0.preview, slug: $0.slug) }
+        layouts
     }
 
     init(_ section: PageTemplateCategory) {

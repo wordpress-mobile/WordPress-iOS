@@ -1,6 +1,20 @@
 import UIKit
 import WordPressKit
 
+extension RemoteSiteDesign: Thumbnail {
+    var urlDesktop: String? {
+        screenshot
+    }
+
+    var urlTablet: String? {
+        tabletScreenshot
+    }
+
+    var urlMobile: String? {
+        mobileScreenshot
+    }
+}
+
 class SiteDesignSection: CategorySection {
     var category: RemoteSiteDesignCategory
     var designs: [RemoteSiteDesign]
@@ -10,7 +24,7 @@ class SiteDesignSection: CategorySection {
     var emoji: String? { category.emoji }
     var description: String? { category.description }
     var thumbnails: [Thumbnail] {
-        designs.map { Thumbnail(urlDesktop: $0.screenshot, urlTablet: $0.tabletScreenshot, urlMobile: $0.mobileScreenshot, slug: $0.slug)}
+        designs
     }
     var scrollOffset: CGPoint
 

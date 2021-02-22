@@ -7,8 +7,15 @@ protocol CategorySectionTableViewCellDelegate: class {
     func accessibilityElementDidBecomeFocused(forCell cell: CategorySectionTableViewCell)
 }
 
+protocol Thumbnail {
+    var urlDesktop: String? { get }
+    var urlTablet: String? { get }
+    var urlMobile: String? { get }
+    var slug: String { get }
+
+}
+
 protocol CategorySection {
-    typealias Thumbnail = CategorySectionTableViewCell.Thumbnail
     var categorySlug: String { get }
     var title: String { get }
     var emoji: String? { get }
@@ -18,14 +25,6 @@ protocol CategorySection {
 }
 
 class CategorySectionTableViewCell: UITableViewCell {
-
-    struct Thumbnail {
-        var urlDesktop: String?
-        var urlTablet: String?
-        var urlMobile: String?
-        var slug: String
-
-    }
 
     static let cellReuseIdentifier = "\(CategorySectionTableViewCell.self)"
     static let nib = UINib(nibName: "\(CategorySectionTableViewCell.self)", bundle: Bundle.main)
