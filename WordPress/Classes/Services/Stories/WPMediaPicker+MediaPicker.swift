@@ -93,12 +93,12 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
 
-        let mediaExports: [AnyPublisher<(Int, PickedMedia), Error>] = assets.enumerated().map({ (index, asset) -> AnyPublisher<(Int, PickedMedia), Error> in
+        let mediaExports: [AnyPublisher<(Int, PickedMedia), Error>] = assets.enumerated().map { (index, asset) -> AnyPublisher<(Int, PickedMedia), Error> in
             switch asset.assetType() {
             case .image:
-                return asset.imagePublisher().map({ (image, url) in
+                return asset.imagePublisher().map { (image, url) in
                     (index, PickedMedia.image(image, url))
-                }).eraseToAnyPublisher()
+                }.eraseToAnyPublisher()
             case .video:
                 return asset.videoURLPublisher().map { url in
                     (index, PickedMedia.video(url))
@@ -106,18 +106,18 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
             default:
                 return Fail(outputType: (Int, PickedMedia).self, failure: ExportErrors.unexpectedAssetType).eraseToAnyPublisher()
             }
-        })
+        }
 
         Publishers.MergeMany(mediaExports)
         .collect(assets.count) // Wait for all assets to complete before receiving.
-        .map({ media in
+        .map { media in
             // Sort our media back into the original order since they may be mixed up after export.
-            return media.sorted(by: { left, right in
+            return media.sorted { left, right in
                 return left.0 < right.0
-            }).map({
+            }.map {
                 return $0.1
-            })
-        })
+            }
+        }
         .receive(on: DispatchQueue.main).sink(receiveCompletion: { completion in
 
         }, receiveValue: { [weak self] media in
@@ -159,7 +159,7 @@ extension WPMediaAsset {
     /// Produces a Publisher containing a URL of saved video and any errors which occurred.
     /// - Returns: Publisher containing the URL to a saved video and any errors which occurred.
     func videoURLPublisher() -> AnyPublisher<URL, Error> {
-        return videoAssetPublisher().tryMap({ asset -> AnyPublisher<URL, Error> in
+        return videoAssetPublisher().tryMap { asset -> AnyPublisher<URL, Error> in
             let filename = UUID().uuidString
             let url = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(filename).appendingPathExtension("mp4")
             let urlAsset = asset as? AVURLAsset
@@ -167,12 +167,12 @@ extension WPMediaAsset {
             if let assetURL = urlAsset?.url {
                 if urlAsset?.url.scheme != "file" {
                     // Download any file which isn't local and move it to the proper location.
-                    return URLSession.shared.downloadTaskPublisher(url: assetURL).tryMap({ (location, _) -> URL in
+                    return URLSession.shared.downloadTaskPublisher(url: assetURL).tryMap { (location, _) -> URL in
                         if let location = location {
                             try FileManager.default.moveItem(at: location, to: url)
                         }
                         return url
-                    }).eraseToAnyPublisher()
+                    }.eraseToAnyPublisher()
                 }
                 try FileManager.default.moveItem(at: assetURL, to: url)
                 return Just(url).setFailureType(to: Error.self).eraseToAnyPublisher()
@@ -187,7 +187,7 @@ extension WPMediaAsset {
                     throw WPMediaAssetError.videoAssetExportFailed
                 }
             }
-        }).flatMap { publisher -> AnyPublisher<URL, Error> in
+        }.flatMap { publisher -> AnyPublisher<URL, Error> in
             return publisher
         }.eraseToAnyPublisher()
     }
