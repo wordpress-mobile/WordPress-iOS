@@ -45,8 +45,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
             prompt: NSLocalizedString("Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page.", comment: "Prompt for the screen to pick a template for a page"),
             primaryActionTitle: NSLocalizedString("Create Page", comment: "Title for button to make a page with the contents of the selected layout"),
             secondaryActionTitle: NSLocalizedString("Preview", comment: "Title for button to preview a selected layout"),
-            defaultActionTitle: NSLocalizedString("Create Blank Page", comment: "Title for button to make a blank page"),
-            backButtonTitle: NSLocalizedString("Choose layout", comment: "Shortened version of the main title to be used in back navigation")
+            defaultActionTitle: NSLocalizedString("Create Blank Page", comment: "Title for button to make a blank page")
         )
     }
 
@@ -56,6 +55,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.backButtonTitle = NSLocalizedString("Choose layout", comment: "Shortened version of the main title to be used in back navigation")
         fetchLayouts()
     }
 

@@ -32,17 +32,13 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
         }
     }
 
-    private var backButtonTitle: String
-
     init(
         mainTitle: String,
         prompt: String,
         primaryActionTitle: String,
         secondaryActionTitle: String? = nil,
-        defaultActionTitle: String? = nil,
-        backButtonTitle: String
+        defaultActionTitle: String? = nil
     ) {
-        self.backButtonTitle = backButtonTitle
         tableView = UITableView(frame: .zero, style: .plain)
         tableView.separatorStyle = .singleLine
         tableView.separatorInset = .zero
@@ -67,7 +63,6 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
         filterBar.filterDelegate = self
         tableView.dataSource = self
         configureCloseButton()
-        navigationItem.backButtonTitle = backButtonTitle
     }
 
     private func configureCloseButton() {
