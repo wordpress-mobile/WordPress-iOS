@@ -5,36 +5,48 @@ open class CommentsTableViewCell: WPTableViewCell {
 
     // MARK: - IBOutlets
 
+    @IBOutlet private weak var pendingIndicator: UIView!
+    @IBOutlet private weak var pendingIndicatorWidthConstraint: NSLayoutConstraint!
     @IBOutlet private weak var gravatarImageView: CircularImageView!
-    @IBOutlet private weak var detailsLabel: UILabel!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var detailLabel: UILabel!
     @IBOutlet private weak var timestampImageView: UIImageView!
     @IBOutlet private weak var timestampLabel: UILabel!
 
     // MARK: - Private Properties
 
-    private var author: String?
-    private var postTitle: String?
-    private var content: String?
+    private var author = String()
+    private var postTitle = String()
+    private var content = String()
     private var timestamp: String?
     private var approved: Bool = false
     private var gravatarURL: URL?
     private typealias Style = WPStyleGuide.Comments
+    private let placeholderImage = Style.gravatarPlaceholderImage
 
-    private var placeholderImage: UIImage {
-        return Style.gravatarPlaceholderImage(isApproved: approved)
+    private enum Labels {
+        static let noTitle = NSLocalizedString("(No Title)", comment: "Empty Post Title")
+        static let titleFormat = NSLocalizedString("%1$@ on %2$@", comment: "Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title.")
     }
 
     // MARK: - Public Properties
 
     @objc static let reuseIdentifier = "CommentsTableViewCell"
+    @objc static let estimatedRowHeight = 150
 
     // MARK: - Public Methods
+
+    open override func awakeFromNib() {
+        super.awakeFromNib()
+        backgroundColor = Style.backgroundColor
+        pendingIndicator.layer.cornerRadius = pendingIndicatorWidthConstraint.constant / 2
+    }
 
     @objc func configureWithComment(_ comment: Comment) {
         author = comment.authorForDisplay() ?? String()
         approved = (comment.status == CommentStatusApproved)
-        postTitle = comment.titleForDisplay()
-        content = comment.contentPreviewForDisplay()
+        postTitle = comment.titleForDisplay() ?? Labels.noTitle
+        content = comment.contentPreviewForDisplay() ?? String()
         timestamp = comment.dateCreated.mediumString()
 
         if let avatarURLForDisplay = comment.avatarURLForDisplay() {
@@ -43,24 +55,9 @@ open class CommentsTableViewCell: WPTableViewCell {
             downloadGravatarWithGravatarEmail(comment.gravatarEmailForDisplay())
         }
 
-        refreshDetailsLabel()
-        refreshTimestampLabel()
-        refreshBackground()
-        refreshImages()
-    }
-
-    // MARK: - Overwritten Methods
-
-    open override func setSelected(_ selected: Bool, animated: Bool) {
-        // Note: this is required, since the cell unhighlight mechanism will reset the new background color
-        super.setSelected(selected, animated: animated)
-        refreshBackground()
-    }
-
-    open override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        // Note: this is required, since the cell unhighlight mechanism will reset the new background color
-        super.setHighlighted(highlighted, animated: animated)
-        refreshBackground()
+        configurePendingIndicator()
+        configureCommentLabels()
+        configureTimestamp()
     }
 
 }
@@ -89,80 +86,45 @@ private extension CommentsTableViewCell {
         gravatarImageView.downloadGravatarWithEmail(unwrappedEmail, placeholderImage: placeholderImage)
     }
 
-    // MARK: - Refresh UI
+    // MARK: - Configure UI
 
-    func refreshDetailsLabel() {
-        detailsLabel.attributedText = attributedDetailsText(approved)
-        layoutIfNeeded()
+    func configurePendingIndicator() {
+        pendingIndicator.backgroundColor = approved ? .clear : Style.pendingIndicatorColor
     }
 
-    func refreshTimestampLabel() {
-        guard let timestamp = timestamp else {
-            return
-        }
-
-        let style = Style.timestampStyle(isApproved: approved)
-        let formattedTimestamp: String
-
-        if approved {
-            formattedTimestamp = timestamp
-        } else {
-            let pendingLabel = NSLocalizedString("Pending", comment: "Status name for a comment that hasn't yet been approved.")
-            formattedTimestamp = "\(timestamp) · \(pendingLabel)"
-        }
-
-        timestampLabel?.attributedText = NSAttributedString(string: formattedTimestamp, attributes: style)
+    func configureCommentLabels() {
+        titleLabel.attributedText = attributedTitle()
+        // Some Comment content has leading newlines. Let's nix that.
+        detailLabel.text = content.trimmingCharacters(in: .whitespacesAndNewlines)
+        detailLabel.font = Style.detailFont
+        detailLabel.textColor = Style.detailTextColor
     }
 
-    func refreshBackground() {
-        backgroundColor = Style.backgroundColor(isApproved: approved)
+    func configureTimestamp() {
+        timestampLabel.text = timestamp
+        timestampLabel.font = Style.timestampFont
+        timestampLabel.textColor = Style.detailTextColor
+        timestampImageView.image = Style.timestampImage
+
     }
 
-    func refreshImages() {
-        timestampImageView.image = Style.timestampImage(isApproved: approved)
-        if !approved {
-            timestampImageView.tintColor = WPStyleGuide.alertYellowDark()
-        }
-    }
-
-    func attributedDetailsText(_ isApproved: Bool) -> NSAttributedString {
-        // Unwrap
-        let unwrappedAuthor     = author ?? String()
-        let unwrappedTitle      = postTitle ?? NSLocalizedString("(No Title)", comment: "Empty Post Title")
-        let unwrappedContent    = content ?? String()
-
-        // Styles
-        let detailsBoldStyle    = Style.detailsBoldStyle(isApproved: isApproved)
-        let detailsItalicsStyle = Style.detailsItalicsStyle(isApproved: isApproved)
-        let detailsRegularStyle = Style.detailsRegularStyle(isApproved: isApproved)
-        let regularRedStyle     = Style.detailsRegularRedStyle(isApproved: isApproved)
-
-        // Localize the format
-        var details = NSLocalizedString("%1$@ on %2$@: %3$@", comment: "'AUTHOR on POST TITLE: COMMENT' in a comment list")
-        if unwrappedContent.isEmpty {
-            details = NSLocalizedString("%1$@ on %2$@", comment: "'AUTHOR on POST TITLE' in a comment list")
-        }
-
-        // Arrange the Replacement Map
-        let replacementMap  = [
-            "%1$@": NSAttributedString(string: unwrappedAuthor, attributes: detailsBoldStyle),
-            "%2$@": NSAttributedString(string: unwrappedTitle, attributes: detailsItalicsStyle),
-            "%3$@": NSAttributedString(string: unwrappedContent, attributes: detailsRegularStyle)
+    func attributedTitle() -> NSAttributedString {
+        let replacementMap = [
+            "%1$@": NSAttributedString(string: author, attributes: Style.titleBoldAttributes),
+            "%2$@": NSAttributedString(string: postTitle, attributes: Style.titleBoldAttributes)
         ]
 
-        // Replace Author + Title + Content
-        let attributedDetails = NSMutableAttributedString(string: details, attributes: regularRedStyle)
+        // Replace Author + Title
+        let attributedTitle = NSMutableAttributedString(string: Labels.titleFormat, attributes: Style.titleRegularAttributes)
 
         for (key, attributedString) in replacementMap {
-            let range = (attributedDetails.string as NSString).range(of: key)
-            if range.location == NSNotFound {
-                continue
+            let range = (attributedTitle.string as NSString).range(of: key)
+            if range.location != NSNotFound {
+                attributedTitle.replaceCharacters(in: range, with: attributedString)
             }
-
-            attributedDetails.replaceCharacters(in: range, with: attributedString)
         }
 
-        return attributedDetails
+        return attributedTitle
     }
 
 }

@@ -139,4 +139,8 @@ extension PostEditor {
     var prepublishingSourceView: UIView? {
         return navigationBarManager.publishButton
     }
+
+    var prepublishingIdentifiers: [PrepublishingIdentifier] {
+        return [.visibility, .schedule, .tags]
+    }
 }

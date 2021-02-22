@@ -75,6 +75,7 @@ fastlane/README.md
 Preview.html
 fastlane/test_output/
 fastlane/google_cloud_keys.json
+fastlane/screenshots
 fastlane/promo_screenshots
 fastlane/metadata/review_information
 default.profraw
