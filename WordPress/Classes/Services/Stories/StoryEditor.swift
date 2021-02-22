@@ -58,6 +58,7 @@ class StoryEditor: CameraController {
         settings.features.gifs = false
         settings.features.multipleExports = true
         settings.features.editorConfirmAtTop = true
+        settings.features.muteButton = true
         settings.crossIconInEditor = true
         settings.enabledModes = [.normal]
         settings.defaultMode = .normal
