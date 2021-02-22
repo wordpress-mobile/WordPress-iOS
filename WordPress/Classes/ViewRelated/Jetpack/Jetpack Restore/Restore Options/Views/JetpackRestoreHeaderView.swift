@@ -50,8 +50,6 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
         } else {
             detailActionButton.isHidden = true
         }
-
-        toggleActionButton(isEnabled: detailActionButton.isHidden)
     }
 
     // MARK: - Public
