@@ -5,6 +5,7 @@ import WidgetKit
 struct WordPressStatsWidgets: WidgetBundle {
     var body: some Widget {
         WordPressHomeWidgetToday()
+        WordPressHomeWidgetThisWeek()
         WordPressHomeWidgetAllTime()
     }
 }

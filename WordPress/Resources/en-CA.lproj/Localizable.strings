@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2020-12-24 19:22:03+0000 */
+/* Translation-Revision-Date: 2021-02-15 14:46:13+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: en_CA */
@@ -730,7 +730,7 @@
 "Are you sure you want to submit for review?" = "Are you sure you want to submit for review?";
 
 /* Message of the trash page confirmation alert. */
-"Are you sure you want to trash this page?" = "Are you sure you want to trash this page?";
+"Are you sure you want to trash this page?" = "Are you sure you want to bin this page?";
 
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Are you sure you want to trash this post?";
@@ -838,7 +838,7 @@
 "Backup" = "Backup";
 
 /* Title for error displayed when preparing a backup fails. */
-"Backup failed" = "Backup failed";
+"Backup failed" = "Backup failed.";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "Bar Chart depicting Comments for the selected period.";
@@ -1387,7 +1387,7 @@
 "Completed: Create your site" = "Completed: create your site";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Edit your homepage" = "Completed: Edit your homepage";
+"Completed: Edit your homepage" = "Completed: edit your homepage";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Enable post sharing" = "Completed: enable post sharing";
@@ -1402,7 +1402,7 @@
 "Completed: Publish a post" = "Completed: publish a post";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Review site pages" = "Completed: Review site pages";
+"Completed: Review site pages" = "Completed: review site pages";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Set your site title" = "Completed: set your site title";
@@ -3023,10 +3023,10 @@
 "Included with Site" = "Included with Site";
 
 /* Downloadable/Restorable items: general section footer text */
-"Includes wp-config php and any non WordPress files" = "Includes wp-config php and any non WordPress files";
+"Includes wp-config php and any non WordPress files" = "Includes wp-config php and any non-WordPress files";
 
 /* Downloadable/Restorable items: general section footer text */
-"Includes wp-config.php and any non WordPress files" = "Includes wp-config.php and any non WordPress files";
+"Includes wp-config.php and any non WordPress files" = "Includes wp-config.php and any non-WordPress files";
 
 /* An error message shown when a user signed in with incorrect credentials. */
 "Incorrect username or password. Please try entering your login details again." = "Incorrect username or password. Please try entering your login details again.";
@@ -3184,10 +3184,10 @@
 "Jetpack Scan will resolve the threat." = "Jetpack Scan will resolve the threat.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will rollback the affected file to an older (clean) version." = "Jetpack Scan will rollback the affected file to an older (clean) version.";
+"Jetpack Scan will rollback the affected file to an older (clean) version." = "Jetpack Scan will roll back the affected file to an older (clean) version.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will rollback the affected file to the version from %1$@." = "Jetpack Scan will rollback the affected file to the version from %1$@.";
+"Jetpack Scan will rollback the affected file to the version from %1$@." = "Jetpack Scan will roll back the affected file to the version from %1$@.";
 
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will update to a newer version." = "Jetpack Scan will update to a newer version.";
@@ -3383,10 +3383,10 @@
 "Loading Plugins..." = "Loading Plugins…";
 
 /* Text displayed while loading the scan history for a site */
-"Loading Scan History..." = "Loading Scan History...";
+"Loading Scan History..." = "Loading Scan History…";
 
 /* Text displayed while loading the scan section for a site */
-"Loading Scan..." = "Loading Scan...";
+"Loading Scan..." = "Loading Scan &hellip;";
 
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "Loading domains";
@@ -4249,10 +4249,10 @@
 "Optional" = "Optional";
 
 /* Invite: Message Hint. %1$d is the maximum number of characters allowed. */
-"Optional message up to %1$d characters to be included in the invitation." = "Optional message up to %1$d characters to be included in the invitation.";
+"Optional message up to %1$d characters to be included in the invitation." = "Optional message of up to %1$d characters to be included in the invitation.";
 
 /* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
-"Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "Optional: Enter a custom message up to %1$d characters to be sent with your invitation.";
+"Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "Optional: enter a custom message of up to %1$d characters to be sent with your invitation.";
 
 /* Divider on initial auth view separating auth options. */
 "Or" = "Or";
@@ -5143,7 +5143,7 @@
 "Restore" = "Restore";
 
 /* Title for Jetpack Restore Failed screen */
-"Restore Failed" = "Restore Failed";
+"Restore Failed" = "Restore failed.";
 
 /* Title for error displayed when restoring a site fails. */
 "Restore failed" = "Restore failed";
@@ -6835,7 +6835,7 @@
 "Unable to share link" = "Unable to share link";
 
 /* Message that appears when a user tries to trash a page while their device is offline. */
-"Unable to trash pages while offline. Please try again later." = "Unable to trash pages while offline. Please try again later.";
+"Unable to trash pages while offline. Please try again later." = "Unable to bin pages while offline. Please try again later.";
 
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "Unable to trash posts while offline. Please try again later.";
@@ -7416,7 +7416,7 @@
 "We were unable to send you an email at this time. Please try again later." = "We were unable to send you an email at this time. Please try again later.";
 
 /* Description for label when the actively scanning the users site */
-"We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.";
+"We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "We will send you an email if security threats are found. In the meantime, feel free to continue to use your site as normal, you can check back on progress at any time.";
 
 /* Title for notice displayed on canceling auto-upload published page
    Title for notice displayed on canceling auto-upload published post */

@@ -122,10 +122,17 @@ class StoryEditor: CameraController {
             saveDirectory = nil
         }
 
+        KanvasColors.shared = KanvasCustomUI.shared.cameraColors()
+        Kanvas.KanvasFonts.shared = KanvasCustomUI.shared.cameraFonts()
+        Kanvas.KanvasStrings.shared = KanvasStrings(
+            cameraPermissionsTitleLabel: NSLocalizedString("Post to WordPress", comment: "Title of camera permissions screen"),
+            cameraPermissionsDescriptionLabel: NSLocalizedString("Allow access so you can start taking photos and videos.", comment: "Message on camera permissions screen to explain why the app needs camera and microphone permissions")
+        )
+
         super.init(settings: settings,
                  mediaPicker: nil,
                  stickerProvider: nil,
-                 analyticsProvider: nil,
+                 analyticsProvider: KanvasAnalyticsHandler(),
                  quickBlogSelectorCoordinator: nil,
                  tagCollection: nil,
                  saveDirectory: saveDirectory)
@@ -191,6 +198,10 @@ class StoryEditor: CameraController {
 }
 
 extension StoryEditor: PublishingEditor {
+    var prepublishingIdentifiers: [PrepublishingIdentifier] {
+        return  [.title, .visibility, .schedule, .tags]
+    }
+
     var prepublishingSourceView: UIView? {
         return nil
     }

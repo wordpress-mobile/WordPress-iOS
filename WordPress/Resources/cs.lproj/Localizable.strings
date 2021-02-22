@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-10 19:30:17+0000 */
+/* Translation-Revision-Date: 2021-02-16 20:38:34+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: cs_CZ */
@@ -7483,7 +7483,7 @@
 "We're doing the final setup—almost done…" = "Provádíme konečné nastavení - téměř hotovo ...";
 
 /* Detail text display informing the user that we're fixing threats */
-"We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.";
+"We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Tvrdě pracujeme na opravování těchto hrozeb na pozadí. Mezitím můžete svůj web nadále používat jako obvykle, pokrok můžete kdykoli zkontrolovat.";
 
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Na dané adrese URL se nemůžeme připojit k webu Jetpack. Požádejte nás o pomoc.";
@@ -7532,13 +7532,13 @@
 
 /* Hint displayed when we fail to fetch the status of the backup in progress.
    Hint displayed when we fail to fetch the status of the restore in progress. */
-"We’ll notify you when its done." = "We’ll notify you when its done.";
+"We’ll notify you when its done." = "Až bude hotovo, upozorníme vás.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
-"We’ll still attempt to backup your site." = "We’ll still attempt to backup your site.";
+"We’ll still attempt to backup your site." = "Stále se pokoušíme váš web zálohovat.";
 
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
-"We’ll still attempt to restore your site." = "We’ll still attempt to restore your site.";
+"We’ll still attempt to restore your site." = "Stále se pokoušíme obnovit váš web.";
 
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "Provedeme vás základy budování a rozšiřování vašeho webu";
@@ -7556,7 +7556,7 @@
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Co chcete s tímto souborem udělat: nahrát jej a přidat odkaz na soubor do vašeho příspěvku, nebo přidat obsah souboru přímo do příspěvku?";
 
 /* Title for the problem section in the Threat Details */
-"What was the problem?" = "What was the problem?";
+"What was the problem?" = "Jaký byl problém?";
 
 /* Title of section that contains plugins' change log */
 "What's New" = "Co je nového";
@@ -7849,7 +7849,7 @@
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Vypadá to, že jste nainstalovali mobilní plugin DudaMobile. Ten zabraňuje aplikaci propojit se s vaší webovou stránkou. ";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
-"You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".";
+"You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Zabezpečení byste neměli ignorovat, pokud si nejste zcela jisti, že je neškodný. Pokud se rozhodnete tuto hrozbu ignorovat, zůstane na vašem webu „%1$@“.";
 
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "Nebudete moci změnit své uživatelské jméno zpět.";
@@ -7885,7 +7885,7 @@
 "Your backup is now available for download" = "Vaše záloha je nyní k dispozici ke stažení";
 
 /* Text displayed when a site backup takes too long. */
-"Your backup is taking longer than usual, please check again in a few minutes." = "Your backup is taking longer than usual, please check again in a few minutes.";
+"Your backup is taking longer than usual, please check again in a few minutes." = "Záloha trvá déle než obvykle, zkontrolujte to prosím znovu za několik minut.";
 
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Vaše aktuální uživatelské jméno je %1$@. Až na několik výjimek uvidí ostatní pouze vaše zobrazované jméno, %2$@.";

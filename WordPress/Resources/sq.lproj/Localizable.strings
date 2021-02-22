@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-31 10:10:11+0000 */
+/* Translation-Revision-Date: 2021-02-13 09:29:39+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -10,7 +10,7 @@
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nPër ripohim, ju lutemi, para se të fshihet, rijepni adresën e sajtit tuaj.\n\n";
 
 /* No comment provided by engineer. */
-" audio file" = " audio file";
+" audio file" = " kartelë audio";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Figura “Lazy-load”";
@@ -289,7 +289,7 @@
 "ACTIVE" = "AKTIVE";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "ADD AUDIO";
+"ADD AUDIO" = "SHTONI AUDIO";
 
 /* No comment provided by engineer. */
 "ADD BLOCK HERE" = "SHTONI BLLOK KËTU";
@@ -575,7 +575,7 @@
 "An active internet connection is required" = "Lypse një lidhje internet aktive";
 
 /* Error message shown when trying to view the scan status and there is no internet connection. */
-"An active internet connection is required to view Jetpack Scan" = "An active internet connection is required to view Jetpack Scan";
+"An active internet connection is required to view Jetpack Scan" = "Që të shihni Jetpack Scan, lypset një lidhje internet aktive";
 
 /* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
 "An active internet connection is required to view activities" = "Që të shihni veprimtari lypse një lidhje internet aktive";
@@ -591,7 +591,7 @@
 "An active internet connection is required to view stats" = "Që të shihni statistikat, lypset një lidhje internet aktive";
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
-"An active internet connection is required to view the history" = "An active internet connection is required to view the history";
+"An active internet connection is required to view the history" = "Që të shihni historikun, lypset një lidhje internet aktive";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "Ndodhi një gabim në krijimin e Menusë.";
@@ -715,7 +715,7 @@
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Jeni i sigurt se doni të rikthehet sajti juaj në gjendjen më %1$@? Kjo të sjellë heqjen e krejt lëndës së krijuar apo ndryshuar dhe mundësive të ndryshuara që nga ajo datë.";
 
 /* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
-"Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost." = "Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost.";
+"Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost." = "Jeni i sigurt se doni të rikthehet sajti juaj në gjendjen më %@?\nÇfarëdo gjëje që keni ndryshuar që atëherë, do të humbë.";
 
 /* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
 "Are you sure you want to save as draft?" = "Jeni i sigurt se doni të ruhet si skicë?";
@@ -745,13 +745,13 @@
 "Attach File as Link" = "Bashkëngjite Kartelën si Lidhje";
 
 /* No comment provided by engineer. */
-"Audio Player" = "Audio Player";
+"Audio Player" = "Luajtës Audio";
 
 /* translators: accessibility text. %s: Audio caption. */
-"Audio caption. %s" = "Audio caption. %s";
+"Audio caption. %s" = "Marrje audio. %s";
 
 /* translators: accessibility text. Empty Audio caption. */
-"Audio caption. Empty" = "Audio caption. Empty";
+"Audio caption. Empty" = "Marrje audio. E zbrazët";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "Audio, %@";
@@ -827,7 +827,7 @@
 "Back" = "Mbrapsht";
 
 /* Title of the cell displaying status of a backup in progress */
-"Backing up site" = "Backing up site";
+"Backing up site" = "Kopjeruajtje sajti";
 
 /* Noun. Links to a blog's Jetpack Backups screen.
    Title for Jetpack Backup Complete screen
@@ -838,7 +838,7 @@
 "Backup" = "Kopjeruaje";
 
 /* Title for error displayed when preparing a backup fails. */
-"Backup failed" = "Backup failed";
+"Backup failed" = "Kopjeruajtja dështoi";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "Grafik Me Shtylla që tregon Komente për periudhën e përzgjedhur.";
@@ -1111,7 +1111,7 @@
 "Change Visibility" = "Ndryshojini Dukshmërinë";
 
 /* No comment provided by engineer. */
-"Change block position" = "Change block position";
+"Change block position" = "Ndryshoni pozicion blloku";
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Ndryshimi dështoi";
@@ -1200,7 +1200,7 @@
 "Choose a time" = "Zgjidhni një kohë";
 
 /* No comment provided by engineer. */
-"Choose audio" = "Choose audio";
+"Choose audio" = "Zgjidhni audio";
 
 /* Title to choose date range in a calendar */
 "Choose date range" = "Zgjidhni interval datash";
@@ -1595,10 +1595,10 @@
 "Could not toggle Follow: missing blogURL attribute" = "S’u krye dot veprim Ndjekjeje: mungon atribut blogURL";
 
 /* An error description explaining that Seen could not be toggled due to a missing feedItemID. */
-"Could not toggle Seen: missing feedItemID." = "Could not toggle Seen: missing feedItemID.";
+"Could not toggle Seen: missing feedItemID." = "S’u ndryshua dot gjendje “I parë”: mungon atribut feedItemID.";
 
 /* An error description explaining that Seen could not be toggled due to a missing postID. */
-"Could not toggle Seen: missing postID." = "Could not toggle Seen: missing postID.";
+"Could not toggle Seen: missing postID." = "S’u ndryshua dot gjendje “I parë”: mungon atribut postID.";
 
 /* Title of a prompt. */
 "Could not unfollow site" = "S’u hoq dot ndjekja e sajtit";
@@ -1734,7 +1734,7 @@
 "Creating dashboard" = "Krijim pulti";
 
 /* Description of the cell displaying status of a backup in progress */
-"Creating downloadable backup" = "Creating downloadable backup";
+"Creating downloadable backup" = "Po krijohet kopjeruajtje e shkarkueshme";
 
 /* No comment provided by engineer. */
 "Current" = "I tanishmi";
@@ -1808,7 +1808,7 @@
 "Database %1$d threats" = "Database %1$d threats";
 
 /* Title for a threat */
-"Database threat" = "Database threat";
+"Database threat" = "Kërcënim baze të dhënash";
 
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
@@ -1921,7 +1921,7 @@
 "Details" = "Hollësi";
 
 /* Instructions after a Magic Link was sent, but email is incorrect. */
-"Didn't mean to create a new account? Go back to re-enter your email address." = "Didn't mean to create a new account? Go back to re-enter your email address.";
+"Didn't mean to create a new account? Go back to re-enter your email address." = "S’e kishit fjalën për të krijuar një llogari të re? Shkoni mbrapsht, që të rijepni adresën tuaj email.";
 
 /* Label for the dimensions in pixels for a media asset (image / video) */
 "Dimensions" = "Përmasa";
@@ -2061,7 +2061,7 @@
 "Double tap to go to color settings" = "Që të kaloni te rregullimet e ngjyrave, prekeni dyfish";
 
 /* No comment provided by engineer. */
-"Double tap to listen the audio file" = "Double tap to listen the audio file";
+"Double tap to listen the audio file" = "Prekeni dy herë që të dëgjoni kartelën audio";
 
 /* No comment provided by engineer. */
 "Double tap to move the block down" = "Që ta ulni bllokun poshtë, prekeni dyfish";
@@ -2091,7 +2091,7 @@
 "Double tap to select a video" = "Që të përzgjidhni një video, prekeni dyfish";
 
 /* No comment provided by engineer. */
-"Double tap to select an audio file" = "Double tap to select an audio file";
+"Double tap to select an audio file" = "Prekeni dy herë që të përzgjidhni një kartelë audio";
 
 /* No comment provided by engineer. */
 "Double tap to select an image" = "Që të përzgjidhni një figurë, prekeni dyfish";
@@ -2106,7 +2106,7 @@
 "Double tap to undo last change" = "Që të zhbëhet ndryshimi i fundit, prekeni dyfish";
 
 /* Download button title */
-"Download" = "Download";
+"Download" = "Shkarkoje";
 
 /* Title for the Jetpack Download Backup Site Screen */
 "Download Backup" = "Shkarkoje Kopjeruajtjen";
@@ -2353,10 +2353,10 @@
 "Error enabling autoupdates for %@." = "Gabim në aktivizim vetëpërditësimesh për %@.";
 
 /* Error displayed when fixing a threat fails. */
-"Error fixing threat. Please contact our support." = "Error fixing threat. Please contact our support.";
+"Error fixing threat. Please contact our support." = "Gabim në zgjidhje kërcënimi. Ju lutemi, lidhuni me asistencën tonë.";
 
 /* Error displayed when ignoring a threat fails. */
-"Error ignoring threat. Please contact our support." = "Error ignoring threat. Please contact our support.";
+"Error ignoring threat. Please contact our support." = "Gabim në shpërfillje kërcënimi. Ju lutemi, lidhuni me asistencën tonë.";
 
 /* Notice displayed after attempt to install a plugin fails. */
 "Error installing %@." = "Gabim gjatë instalimit të %@.";
@@ -2485,7 +2485,7 @@
 "Failed" = "Dështoi";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file. Please tap for options." = "Failed to insert audio file. Please tap for options.";
+"Failed to insert audio file. Please tap for options." = "S’u arrit të futej kartelë audio. Ju lutemi, prekeni për mundësi.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Dështoi në futje mediash.\nJu lutemi, prekeni për mundësi.";
@@ -2595,13 +2595,13 @@
 "Fix all threats" = "Zgjidhi krejt kërcënimet";
 
 /* Title for button that will fix the threat */
-"Fix threat" = "Fix threat";
+"Fix threat" = "Zgjidhe kërcënimin";
 
 /* Displays the fixed threats */
-"Fixed" = "Fixed";
+"Fixed" = "Të zgjidhur";
 
 /* Subtitle displayed while the server is fixing threats */
-"Fixing Threats" = "Fixing Threats";
+"Fixing Threats" = "Zgjidhje Kërcënimesh";
 
 /* Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
@@ -2649,7 +2649,7 @@
 "Following" = "E ndiqni";
 
 /* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
-"Following %1$@" = "Following %1$@";
+"Following %1$@" = "Po ndiqet %1$@";
 
 /* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
 "Following %@" = "Po ndiqni %@";
@@ -2901,10 +2901,10 @@
 "History" = "Historik";
 
 /* Message title displayed when we fail to fetch the status of the backup in progress. */
-"Hmm, we couldn’t find your backup status" = "Hmm, we couldn’t find your backup status";
+"Hmm, we couldn’t find your backup status" = "Hëm, s’gjetëm dot gjendjen e kopjeruajtjes tuaj";
 
 /* Message title displayed when we fail to fetch the status of the restore in progress. */
-"Hmm, we couldn’t find your restore status" = "Hmm, we couldn’t find your restore status";
+"Hmm, we couldn’t find your restore status" = "Hëm, s’gjetëm dot gjendjen e rikthimit tuaj";
 
 /* Moderation Keys Title
    Settings: Comments Moderation */
@@ -2927,13 +2927,13 @@
 "Hooray!\nAlmost done" = "Urra!\nPothuajse mbaruat";
 
 /* Title for the fix section in Threat Details: Threat is fixed */
-"How did Jetpack fix it?" = "How did Jetpack fix it?";
+"How did Jetpack fix it?" = "Si e ndreqi Jetpack-u?";
 
 /* How to create story description */
 "How to create a story post" = "Si të krijohet një postim shkrimi";
 
 /* Title for the fix section in Threat Details */
-"How will we fix it?" = "How will we fix it?";
+"How will we fix it?" = "Si do ta ndreqim?";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "Më Pëlqen";
@@ -2969,10 +2969,10 @@
 "Ignore" = "Shpërfille";
 
 /* Title for button that will ignore the threat */
-"Ignore threat" = "Ignore threat";
+"Ignore threat" = "Shpërfille kërcënimin";
 
 /* Displays the ignored threats */
-"Ignored" = "Ignored";
+"Ignored" = "Të shpërfillur";
 
 /* Hint for image alt on image settings. */
 "Image Alt" = "Tekst Alternativ Figure";
@@ -3166,10 +3166,10 @@
 "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Jetpack Scan s’plotësoi dot një kontroll të sajtit tuaj. Ju lutemi, kontrolloni se mos sajti juaj s’është në funksionim – nëse është, riprovoni. Nëse s’është, ose në Jetpack Scan prapë ka probleme, lidhuni me ekipin tonë të asistencës.";
 
 /* Description for a label when there are threats on the site, displays the number of threats, and the site's title */
-"Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us.";
+"Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Jetpack Scan gjeti %1$d kërcënime potenciale me %2$@. Ju lutemi, shqyrtojini më poshtë dhe ndërmerrni një veprim, ose prekni butonin “Zgjidhi Krejt”. Jemi këtu për t’ju ndihmuar, nëse keni nevojë për ne.";
 
 /* Description for a label when there is a single threat on the site, displays the site's title */
-"Jetpack Scan found 1 potential threat with %1$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Jetpack Scan found 1 potential threat with %1$@. Please review them below and take action or tap the fix all button. We are here to help if you need us.";
+"Jetpack Scan found 1 potential threat with %1$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Jetpack Scan gjeti 1 kërcënim potencial me %1$@. Ju lutemi, shqyrtojeni më poshtë dhe ndërrmerrni një veprim, ose prektni butonin “Zgjidhi Krejt”. Jemi këtu për t’ju ndihmuar, nëse keni nevojë për ne.";
 
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will delete the affected file or directory." = "Jetpack Scan-i do të fshijë kartelën ose drejtorinë e prekur.";
@@ -3276,7 +3276,7 @@
 "Let Us Help" = "Le T’ju Ndihmojmë";
 
 /* Title for the button that will dismiss this view. */
-"Let me know when finished!" = "Let me know when finished!";
+"Let me know when finished!" = "Bëmani të ditur kur të mbarojë!";
 
 /* Title for the app appearance setting for light mode */
 "Light" = "E çelët";
@@ -3383,10 +3383,10 @@
 "Loading Plugins..." = "Po ngarkohen Shtojca…";
 
 /* Text displayed while loading the scan history for a site */
-"Loading Scan History..." = "Loading Scan History...";
+"Loading Scan History..." = "Po ngarkohet Historik Kontrollesh…";
 
 /* Text displayed while loading the scan section for a site */
-"Loading Scan..." = "Loading Scan...";
+"Loading Scan..." = "Po ngarkohet Skanim…";
 
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "Po ngarkohen përkatësi";
@@ -3435,7 +3435,7 @@
 "Location unknown" = "Vendndodhje e panjohur";
 
 /* No comment provided by engineer. */
-"Lock icon" = "Lock icon";
+"Lock icon" = "Ikonë kyçjeje";
 
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "Kartela Regjistër Sipas Datash Krijimi";
@@ -3459,7 +3459,7 @@
 
 /* Button title. Takes the user to the login by email flow.
    Button title. Tapping begins our normal log in process. */
-"Log in or sign up with WordPress.com" = "Log in or sign up with WordPress.com";
+"Log in or sign up with WordPress.com" = "Hyni ose regjistrohuni me WordPress.com";
 
 /* Instruction text on the login's email address screen. */
 "Log in to the WordPress.com account you used to connect Jetpack." = "Bëni hyrjen te llogaria WordPress.com që përdorët për t’ia përshoqëruar Jetpack-ut.";
@@ -3545,10 +3545,10 @@
 "Mark as unseen" = "Hiqi shenjë si i parë";
 
 /* Notice title when updating a post's seen status succeeds. */
-"Marked post as seen" = "Marked post as seen";
+"Marked post as seen" = "Postimit iu vu shenjë si i parë";
 
 /* Notice title when updating a post's unseen status succeeds. */
-"Marked post as unseen" = "Marked post as unseen";
+"Marked post as unseen" = "Postimit iu hoq shenja si i parë";
 
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "Përputhjet në llogari kërkoji sipas email-esh";
@@ -3894,7 +3894,7 @@
 "No activity yet" = "Ende pa veprimtari";
 
 /* No comment provided by engineer. */
-"No application can handle this request." = "No application can handle this request.";
+"No application can handle this request." = "S’ka aplikacion për ta trajtuar këtë kërkesë.";
 
 /* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "S’ka aplikacion për ta trajtuar këtë kërkesë. Ju lutemi, instaloni një shfletues.";
@@ -3931,7 +3931,7 @@
 "No data yet" = "Ende pa të dhëna";
 
 /* Title for the view when there aren't any fixed threats to display */
-"No fixed threats" = "No fixed threats";
+"No fixed threats" = "S’ka kërcënime të zgjidhur";
 
 /* Title for the no followed sites result screen */
 "No followed sites" = "Pa sajte të ndjekur";
@@ -3944,7 +3944,7 @@
 "No history yet" = "Ende pa historik";
 
 /* Title for the view when there aren't any ignored threats to display */
-"No ignored threats" = "No ignored threats";
+"No ignored threats" = "S’ka kërcënime të shpërfillur";
 
 /* Title displayed when the user has removed all Insights from display. */
 "No insights added yet" = "Ende pa shtim prirjesh";
@@ -4155,7 +4155,7 @@
 "OK" = "OK";
 
 /* No comment provided by engineer. */
-"OPEN" = "OPEN";
+"OPEN" = "HAPE";
 
 /* Disabled */
 "Off" = "Off";
@@ -4361,7 +4361,7 @@
 "Parent Category" = "Kategori Mëmë";
 
 /* Message informing the user that their pages parent has been set successfully */
-"Parent page successfully updated." = "Parent page successfully updated.";
+"Parent page successfully updated." = "Faqja mëmë u përditësua me sukses.";
 
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
@@ -4522,7 +4522,7 @@
 "Please try again later" = "Ju lutemi, riprovoni më vonë";
 
 /* Description for the Jetpack Restore Failed message. */
-"Please try again later or contact support." = "Please try again later or contact support.";
+"Please try again later or contact support." = "Ju lutemi, riprovoni më vonë ose lidhuni me asistencën.";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "Ju lutemi, riprovoni më vonë.";
@@ -4773,7 +4773,7 @@
 "Problem loading stream" = "Problem në ngarkimin e rrjedhës";
 
 /* No comment provided by engineer. */
-"Problem opening the audio" = "Problem opening the audio";
+"Problem opening the audio" = "Problem me hapjen e audios";
 
 /* No comment provided by engineer. */
 "Problem opening the video" = "Problem me hapjen e videos";
@@ -5046,10 +5046,10 @@
 "Replace Current Block" = "Zëvendëso Bllokun e Tanishëm";
 
 /* No comment provided by engineer. */
-"Replace audio" = "Replace audio";
+"Replace audio" = "Zëvendësoni audio";
 
 /* No comment provided by engineer. */
-"Replace file" = "Replace file";
+"Replace file" = "Zëvendësoni kartelë";
 
 /* No comment provided by engineer. */
 "Replace image or video" = "Zëvendësoni figurë ose video";
@@ -5131,7 +5131,7 @@
 "Resolution" = "Qartësi";
 
 /* Title for the fix section in Threat Details: Threat is not fixable */
-"Resolving the threat" = "Resolving the threat";
+"Resolving the threat" = "Zgjidhje kërcënimi";
 
 /* Title displayed for restore action.
    Title for button allowing user to restore their Jetpack site
@@ -5143,10 +5143,10 @@
 "Restore" = "Riktheje";
 
 /* Title for Jetpack Restore Failed screen */
-"Restore Failed" = "Restore Failed";
+"Restore Failed" = "Rikthimi Dështoi";
 
 /* Title for error displayed when restoring a site fails. */
-"Restore failed" = "Restore failed";
+"Restore failed" = "Rikthimi dështoi";
 
 /* Label that describes the restore site action */
 "Restore site" = "Riktheje sajtin";
@@ -5155,11 +5155,11 @@
 "Restore to this point" = "Riktheje te kjo pikë";
 
 /* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
-"Restored to %@" = "Restored to %@";
+"Restored to %@" = "U rikthye te %@";
 
 /* Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date.
    Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
-"Restoring to %@" = "Restoring to %@";
+"Restoring to %@" = "Po rikthehet te %@";
 
 /* A prompt to attempt the failed network request again
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
@@ -5197,10 +5197,10 @@
 "Return to post" = "Kthehu te postim";
 
 /* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for Android" = "Reusable blocks aren't editable on WordPress for Android";
+"Reusable blocks aren't editable on WordPress for Android" = "Blloqet e ripërdorshëm s’janë të përpunueshëm në WordPress për Android";
 
 /* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for iOS" = "Reusable blocks aren't editable on WordPress for iOS";
+"Reusable blocks aren't editable on WordPress for iOS" = "Blloqet e ripërdorshëm s’janë të përpunueshëm në WordPress për iOS";
 
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Prapëso Ndryshimin Pezull";
@@ -5304,7 +5304,7 @@
 "Scan Again" = "Riskanoje";
 
 /* Title of the view */
-"Scan History" = "Scan History";
+"Scan History" = "Historik Kontrollesh";
 
 /* Button title that triggers a scan */
 "Scan Now" = "Skanoje Tani";
@@ -5809,10 +5809,10 @@
 "Slug" = "Identifikues";
 
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"So far, there are no fixed threats on your site." = "So far, there are no fixed threats on your site.";
+"So far, there are no fixed threats on your site." = "Deri këtu, s’ka kërcënime të zgjidhura në sajtin tuaj.";
 
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"So far, there are no ignored threats on your site." = "So far, there are no ignored threats on your site.";
+"So far, there are no ignored threats on your site." = "Deri këtu, s’ka kërcënime të shpërfillura në sajtin tuaj.";
 
 /* Follower Totals label for social media followers */
 "Social" = "Shoqërore";
@@ -6270,10 +6270,10 @@
 "The language in which this site is primarily written." = "Gjuha në të cilën shkruhet kryesisht në këtë sajt.";
 
 /* Description for label when there are no threats on a users site and how long ago the scan ran. */
-"The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.";
+"The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "Kontrolli i fundit nga Jetpack u bë më %1$@ dhe s’gjeti ndonjë rrezik.\n\nQë të shqyrtoni sajtin tuaj sërish bëni një kontroll dorazi, ose prisni që Jetpack-u të skanojë sajtin tuaj më vonë sot.";
 
 /* Description that informs for label when there are no threats on a users site */
-"The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.";
+"The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "Kontrolli i fundit nga Jetpack s’gjeti ndonjë rrezik.\n\nQë të shqyrtoni sajtin tuaj sërish bëni një kontroll dorazi, ose prisni që Jetpack-u të skanojë sajtin tuaj më vonë sot.";
 
 /* WordPress.com Push Authentication Expired message */
 "The login request has expired. Log in to WordPress.com to try again." = "Kërkesa për hyrje skadoi. Hyni te WordPress.com që të riprovoni.";
@@ -6321,10 +6321,10 @@
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "Përdoruesi i treguar s’gjendet dot. Ju lutemi, verifikoni që është shkruar si duhet.";
 
 /* Title for the technical details section in Threat Details */
-"The technical details" = "The technical details";
+"The technical details" = "Hollësitë teknike";
 
 /* Message displayed when a threat is fixed successfully. */
-"The threat was successfully fixed." = "The threat was successfully fixed.";
+"The threat was successfully fixed." = "Kërcënim u zgjidh me sukses.";
 
 /* People: Invitation Error */
 "The user already has the specified role. Please, try assigning a different role." = "Përdoruesi e ka tashmë rolin e treguar. Ju lutemi, provoni t’i akordoni një rol tjetër.";
@@ -6438,10 +6438,10 @@
 "There was an error loading the plan" = "Pati një gabim në ngarkimin e planit";
 
 /* Text displayed when there is a failure loading the history feed */
-"There was an error loading the scan history" = "There was an error loading the scan history";
+"There was an error loading the scan history" = "Pati një gabim në ngarkimin e historikut të kontrolleve";
 
 /* Text displayed when there is a failure loading the status */
-"There was an error loading the scan status" = "There was an error loading the scan status";
+"There was an error loading the scan status" = "Pati një gabim në ngarkimin e gjendjes së kontrollit";
 
 /* Text displayed when there is a failure loading the plugin */
 "There was an error loading this plugin" = "Pati një gabim në ngarkimin e kësaj shtojce";
@@ -6456,13 +6456,13 @@
 "There was an error updating @%@" = "Pati një gabim gjatë përditësimit të @%@";
 
 /* Text displayed when user tries to create a downloadable backup when there is already one being prepared */
-"There's a backup currently being prepared, please wait before starting the next one" = "There's a backup currently being prepared, please wait before starting the next one";
+"There's a backup currently being prepared, please wait before starting the next one" = "Ka një kopjeruajtje që po kryhet, ju lutemi, pritni, përpara se të filloni një të re";
 
 /* Text displayed when user tries to start a restore when there is already one running */
 "There's a restore currently in progress, please wait before starting next one" = "Po kryhet një rikthim, ju lutemi, pritni, përpara se të nisni një tjetër";
 
 /* Text displayed when user tries to start a restore when there is already one running */
-"There's a restore currently in progress, please wait before starting the next one" = "There's a restore currently in progress, please wait before starting the next one";
+"There's a restore currently in progress, please wait before starting the next one" = "Po kryhet një rikthim, ju lutemi, pritni, përpara se të nisni një tjetër";
 
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "Botohen si postim i ri blogu në sajtin tuaj, që kështu publiku juaj kurrë të mos humbë një gjë.";
@@ -6536,16 +6536,16 @@
 "Threat Found" = "U gjet Kërcënim";
 
 /* Title for the Jetpack Scan Threat Details screen */
-"Threat details" = "Threat details";
+"Threat details" = "Hollësi kërcënimi";
 
 /* Summary description for a threat that includes the threat signature */
 "Threat found %1$@" = "U gjet kërcënim %1$@";
 
 /* Description for threat file */
-"Threat found in file:" = "Threat found in file:";
+"Threat found in file:" = "U gjet kërcënim te kartela:";
 
 /* Message displayed when a threat is ignored successfully. */
-"Threat ignored." = "Threat ignored.";
+"Threat ignored." = "Kërcënimi u shpërfill.";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Miniaturë";
@@ -6738,10 +6738,10 @@
 "Turn on site notifications" = "Aktivizoni njoftime sajti";
 
 /* Notice title when turning site notifications off succeeds. */
-"Turned off site notifications" = "Turned off site notifications";
+"Turned off site notifications" = "U çaktivizuan njoftime sajti";
 
 /* Notice title when turning site notifications on succeeds. */
-"Turned on site notifications" = "Turned on site notifications";
+"Turned on site notifications" = "U aktivizuan njoftime sajti";
 
 /* Launches the Twitter App */
 "Twitter" = "Twitter";
@@ -6783,10 +6783,10 @@
 "Unable to delete media item." = "S’arrihet të fshihet objekt media.";
 
 /* Message displayed when opening the link to the downloadable backup fails. */
-"Unable to download file" = "Unable to download file";
+"Unable to download file" = "S’arrihet të shkarkohet kartelë";
 
 /* Notice title when following a site fails. */
-"Unable to follow site" = "Unable to follow site";
+"Unable to follow site" = "S’arrihet të ndiqet sajti";
 
 /* Error message displayed when we were unable to copy the URL for an item in the user's media library. */
 "Unable to get URL for media item." = "S’arrihet të merret URL-ja për objekt media.";
@@ -6823,7 +6823,7 @@
 "Unable to register domain" = "S’arrihet të regjistrohet përkatësi";
 
 /* Title for the Jetpack Restore Failed message. */
-"Unable to restore your site" = "Unable to restore your site";
+"Unable to restore your site" = "S’arrihet të rikthehet sajti juaj";
 
 /* Text displayed when a site restore fails. */
 "Unable to restore your site, please try again later or contact support." = "S’arrihet të rikthehet sajti juaj, ju lutemi, riprovoni më vonë ose lidhuni me asistencën.";
@@ -6832,7 +6832,7 @@
 "Unable to save media item." = "S’arrihet të ruhet objekt media.";
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
-"Unable to share link" = "Unable to share link";
+"Unable to share link" = "S’arrihet t’u jepet lidhja të tjerëve";
 
 /* Message that appears when a user tries to trash a page while their device is offline. */
 "Unable to trash pages while offline. Please try again later." = "S’arrihet të shpihen faqe te hedhurina, ndërkohë që jeni i palidhur. Ju lutemi, riprovoni më vonë.";
@@ -6841,13 +6841,13 @@
 "Unable to trash posts while offline. Please try again later." = "S’arrihet të shpihen postime te hedhurina ndërkohë që jeni i palidhur. Ju lutemi, riprovoni më vonë.";
 
 /* Notice title when turning site notifications off fails. */
-"Unable to turn off site notifications" = "Unable to turn off site notifications";
+"Unable to turn off site notifications" = "S’arrihet të çaktivizohen njoftime sajti";
 
 /* Notice title when turning site notifications on fails. */
-"Unable to turn on site notifications" = "Unable to turn on site notifications";
+"Unable to turn on site notifications" = "S’arrihet të aktivizohen njoftime sajti";
 
 /* Notice title when unfollowing a site fails. */
-"Unable to unfollow site" = "Unable to unfollow site";
+"Unable to unfollow site" = "S’arrihet të ndërpritet ndjekja e sajtit";
 
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "S’arrihet të përditësohen rregullimet e faqes hyrëse";
@@ -6877,7 +6877,7 @@
 "Unable to verify the email address. Please try again later." = "S’u arrit të verifikohej adresa email. Ju lutemi, riprovoni më vonë.";
 
 /* Message displayed when visiting a site fails. */
-"Unable to visit site" = "Unable to visit site";
+"Unable to visit site" = "S’arrihet të vizitohet sajti";
 
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "S’arrihet të shkruhet figura në kartelë";
@@ -7068,7 +7068,7 @@
 "Uploading..." = "Po ngarkohet…";
 
 /* No comment provided by engineer. */
-"Uploading…" = "Uploading…";
+"Uploading…" = "Po ngarkohet…";
 
 /* Title for alert when trying to save post with failed media items */
 "Uploads failed" = "Ngarkimet dështuan";
@@ -7386,10 +7386,10 @@
 "We couldn't upload this media." = "S’e ngarkuam dot këtë media.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
-"We couldn’t find the status to say how long your backup will take." = "We couldn’t find the status to say how long your backup will take.";
+"We couldn’t find the status to say how long your backup will take." = "S’gjetëm dot gjendjen, që të themi se sa do të zgjasë krijimi i kopjeruajtjes tuaj.";
 
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
-"We couldn’t find the status to say how long your restore will take." = "We couldn’t find the status to say how long your restore will take.";
+"We couldn’t find the status to say how long your restore will take." = "S’e gjetëm dot gjendjen, që të themi se sa do të zgjasë rikthimi juaj.";
 
 /* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
 "We had trouble loading connections for %@" = "Patëm probleme me ngarkimin e lidhjeve për %@";
@@ -7404,7 +7404,7 @@
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "Kemi bërë përmirësime të mëdha te përpunuesi me blloqe dhe mendojmë se ia vlen të provohet!\n\nE kemi aktivizuar për postime dhe faqe të reja, por nëse doni ta këmbeni me përpunuesin klasik, kaloni te 'Sajti Im' > 'Rregullime Sajti'.";
 
 /* Message displayed when a backup has finished */
-"We successfully created a backup of your site as of %@" = "We successfully created a backup of your site as of %@";
+"We successfully created a backup of your site as of %@" = "Krijuam me sukses një kopjeruajtje të sajtit tuaj, siç qe më %1$@";
 
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
 "We successfully created a backup of your site from %1$@." = "Krijuam me sukses një kopjeruajtje të sajtit tuaj prej %1$@.";
@@ -7483,7 +7483,7 @@
 "We're doing the final setup—almost done…" = "Po kryejmë hapin përfundimtar — thuajse mbaruam…";
 
 /* Detail text display informing the user that we're fixing threats */
-"We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.";
+"We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Po punojmë fort për t’i zgjidhur këto kërcënime në prapaskenë. Ndërkohë mos ngurroni të vazhdoni ta përdorni sajtin tuaj si normalisht, ecurinë këtu mund ta kontrolloni në çfarëdo kohe.";
 
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "S’qemë në gjendje të lidheshim me sajtin Jetpack te ajo URL.  Për asistencë, lidhuni me ne.";
@@ -7532,13 +7532,13 @@
 
 /* Hint displayed when we fail to fetch the status of the backup in progress.
    Hint displayed when we fail to fetch the status of the restore in progress. */
-"We’ll notify you when its done." = "We’ll notify you when its done.";
+"We’ll notify you when its done." = "Do t’’ju njoftojmë kur të jetë kryer.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
-"We’ll still attempt to backup your site." = "We’ll still attempt to backup your site.";
+"We’ll still attempt to backup your site." = "Do të provojmë prapë të kopjeruajmë sajtin tuaj.";
 
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
-"We’ll still attempt to restore your site." = "We’ll still attempt to restore your site.";
+"We’ll still attempt to restore your site." = "Do të përpiqemi të rikthejmë sajtin tuaj.";
 
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "Do t’ju heqim udhën nëpër hapat bazë të ndërtimit dhe fuqizimit të sajtit tuaj";
@@ -7556,7 +7556,7 @@
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Ç’doni të bëni me këtë kartelë: të ngarkohet dhe të shtohet te postimi juaj një lidhje për te kartela, apo të shtohet lënda e kartelës drejt e te postimi?";
 
 /* Title for the problem section in the Threat Details */
-"What was the problem?" = "What was the problem?";
+"What was the problem?" = "Cili qe problemi?";
 
 /* Title of section that contains plugins' change log */
 "What's New" = "Ç’ka të Re";
@@ -7849,7 +7849,7 @@
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Duket se keni instaluar një shtojcë celulari nga DudaMobile që e pengon aplikacionin të lidhet te blogu juaj";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
-"You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".";
+"You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "S’duhet ta shpërfillni një çështje sigurie, veç në qofshi absolutisht i sigurt se është e padëmshme. Nëse zgjidhni të shpërfillet ky kërcënim, do të mbetet në sajtin tuaj \"%1$@\".";
 
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "S'do të jeni në gjendje të ndryshoni prapë emrin tuaj të përdoruesit.";
@@ -7885,7 +7885,7 @@
 "Your backup is now available for download" = "Kopjeruajtja juaj tani është gati për shkarkim";
 
 /* Text displayed when a site backup takes too long. */
-"Your backup is taking longer than usual, please check again in a few minutes." = "Your backup is taking longer than usual, please check again in a few minutes.";
+"Your backup is taking longer than usual, please check again in a few minutes." = "Rikthimi juaj po zgjat më shumë se zakonisht, ju lutemi, rikontrolloni pas pak minutash.";
 
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Emri juaj i tanishëm i përdoruesit është %1$@. Me pak përjashtime, të tjerët zor se do të shohin emrin tuaj të ekranit, %2$@.";
