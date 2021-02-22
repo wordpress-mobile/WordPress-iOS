@@ -372,8 +372,6 @@ workflows:
           filters:
             branches:
               ignore: /.*/
-            tags:
-              only: /^\d.\d?(.\d)?(.\d)?(.\d{1,4})$/
   Translation Review Build:
     when: 
       condition: 
