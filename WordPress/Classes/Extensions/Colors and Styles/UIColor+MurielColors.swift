@@ -409,7 +409,7 @@ extension UIColor {
     }
 
     static var prologueBackground: UIColor {
-        return muriel(color: MurielColor(name: .blue, shade: .shade0))
+        return UIColor(light: muriel(color: MurielColor(name: .blue, shade: .shade0)), dark: .systemBackground)
     }
 }
 
