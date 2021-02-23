@@ -2,6 +2,13 @@ import UIKit
 import Gridicons
 import Gutenberg
 
+extension PageTemplateLayout: Thumbnail {
+    // TODO: add support for tablet and mobile previews
+    var urlDesktop: String? { preview }
+    var urlTablet: String? { preview }
+    var urlMobile: String? { preview }
+}
+
 class GutenbergLayoutSection: CategorySection {
     var section: PageTemplateCategory
     var layouts: [PageTemplateLayout]
@@ -11,9 +18,7 @@ class GutenbergLayoutSection: CategorySection {
     var emoji: String? { section.emoji }
     var categorySlug: String { section.slug }
     var description: String? { section.desc }
-    var thumbnails: [Thumbnail] {
-        layouts
-    }
+    var thumbnails: [Thumbnail] { layouts }
 
     init(_ section: PageTemplateCategory) {
         let layouts = Array(section.layouts ?? []).sorted()
