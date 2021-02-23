@@ -20,7 +20,8 @@ class BadgeContentStyles: FormattableContentStyles {
             .user: WPStyleGuide.Notifications.badgeBoldStyle,
             .post: WPStyleGuide.Notifications.badgeItalicsStyle,
             .comment: WPStyleGuide.Notifications.badgeItalicsStyle,
-            .blockquote: WPStyleGuide.Notifications.badgeQuotedStyle
+            .blockquote: WPStyleGuide.Notifications.badgeQuotedStyle,
+            .site: WPStyleGuide.Notifications.badgeBoldStyle
         ]
     }
 

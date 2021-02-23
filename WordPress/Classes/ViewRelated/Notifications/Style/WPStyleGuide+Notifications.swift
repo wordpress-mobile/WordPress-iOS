@@ -111,12 +111,23 @@ extension WPStyleGuide {
         public static let badgeLinkColor            = blockLinkColor
 
         public static let badgeRegularStyle: [NSAttributedString.Key: Any] = [.paragraphStyle: badgeParagraph,
-                                                                             .font: blockRegularFont,
-                                                                             .foregroundColor: blockTextColor]
+                                                                              .font: FeatureFlag.milestoneNotifications.enabled ? badgeRegularFont : blockRegularFont,
+                                                                              .foregroundColor: blockTextColor]
 
-        public static let badgeBoldStyle            = blockBoldStyle
-        public static let badgeItalicsStyle         = blockItalicsStyle
-        public static let badgeQuotedStyle          = blockQuotedStyle
+        public static let badgeBoldStyle: [NSAttributedString.Key: Any] = FeatureFlag.milestoneNotifications.enabled ?
+                                                                          [.paragraphStyle: badgeParagraph,
+                                                                           .font: badgeBoldFont,
+                                                                           .foregroundColor: blockTextColor ] : blockBoldStyle
+
+        public static let badgeItalicsStyle: [NSAttributedString.Key: Any] = FeatureFlag.milestoneNotifications.enabled ?
+                                                                             [.paragraphStyle: badgeParagraph,
+                                                                              .font: badgeItalicsFont,
+                                                                              .foregroundColor: blockTextColor ] : blockItalicsStyle
+
+        public static let badgeQuotedStyle: [NSAttributedString.Key: Any] = FeatureFlag.milestoneNotifications.enabled ?
+                                                                            [.paragraphStyle: badgeParagraph,
+                                                                             .font: badgeItalicsFont,
+                                                                             .foregroundColor: blockQuotedColor ] : blockQuotedStyle
 
         // Blocks
         public static let contentBlockRegularFont   = WPFontManager.notoRegularFont(ofSize: blockFontSize)
@@ -124,6 +135,15 @@ extension WPStyleGuide {
         public static let contentBlockItalicFont    = WPFontManager.notoItalicFont(ofSize: blockFontSize)
         public static let blockRegularFont          = WPFontManager.systemRegularFont(ofSize: blockFontSize)
         public static let blockBoldFont             = WPFontManager.systemSemiBoldFont(ofSize: blockFontSize)
+        public static let badgeRegularFont          = WPStyleGuide.serifFontForTextStyle(.title1)
+        public static let badgeBoldFont             = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
+        public static var badgeItalicsFont: UIFont  {
+            guard let descriptor = badgeRegularFont.fontDescriptor.withSymbolicTraits(.traitItalic) else {
+                return badgeRegularFont
+            }
+
+            return UIFont(descriptor: descriptor, size: 0)
+        }
 
         public static let blockTextColor            = UIColor.text
         public static let blockQuotedColor          = UIColor.neutral
@@ -323,9 +343,9 @@ extension WPStyleGuide {
         fileprivate static let contentBlockParagraph     = NSMutableParagraphStyle(
             minLineHeight: contentBlockLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
-        fileprivate static let badgeParagraph           = NSMutableParagraphStyle(
-            minLineHeight: blockLineSize, maxLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .center
-        )
+        fileprivate static let badgeParagraph           = FeatureFlag.milestoneNotifications.enabled ?
+            NSMutableParagraphStyle(minLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .center) :
+            NSMutableParagraphStyle(minLineHeight: blockLineSize, maxLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .center)
 
         // Colors
         fileprivate static let sectionHeaderTextColor   = UIColor.textSubtle
