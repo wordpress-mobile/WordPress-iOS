@@ -2,10 +2,11 @@ import AutomatticTracks
 
 enum ABTest: String, CaseIterable {
     case unknown = "unknown"
+    case biasTest = "explat_test_aa_weekly_wpios_2021_week_06"
 
     /// Returns a variation for the given experiment
     var variation: Variation {
-        return ExPlat.shared.experiment(self.rawValue)
+        return ExPlat.shared?.experiment(self.rawValue) ?? .control
     }
 }
 
@@ -17,6 +18,6 @@ extension ABTest {
             return
         }
 
-        ExPlat.shared.refreshIfNeeded()
+        ExPlat.shared?.refresh()
     }
 }

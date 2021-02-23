@@ -85,6 +85,7 @@ extension WPTabBarController {
         }
 
         WPAppAnalytics.track(stat)
+
         return true
     }
 

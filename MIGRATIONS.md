@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 113
+
+@aerych 2021-02-19
+
+- Added `InviteLinks` entity.
+
 ## WordPress 112
 
 @scoutharris 2021-01-29

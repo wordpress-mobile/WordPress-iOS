@@ -100,10 +100,6 @@ static TestContextManager *_instance;
     return [_stack newDerivedContext];
 }
 
-- (nonnull NSManagedObjectContext *const)newMainContextChildContext {
-    return [_stack newMainContextChildContext];
-}
-
 - (NSURL *)storeURL
 {
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
@@ -146,6 +142,12 @@ static TestContextManager *_instance;
                                                             error:nil];
     NSAssert(dict, @"Mockup data could not be parsed");
     return dict;
+}
+
+- (MockContext *) getMockContext {
+    MockContext *managedObjectContext = [[MockContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
+    managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    return managedObjectContext;
 }
 
 + (instancetype)sharedInstance
