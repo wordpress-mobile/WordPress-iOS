@@ -60,7 +60,7 @@ struct InsightStoreState {
                                                         posts: allTimeStats?.postsCount,
                                                         bestViews: allTimeStats?.bestViewsPerDayCount)
             storeAllTimeWidgetData(data: allTimeWidgetStats)
-            storeHomeWidgetData(widgetType: HomeWidgetAllTimeData.self, stats: allTimeWidgetStats)
+            StoreContainer.shared.statsWidgets.storeHomeWidgetData(widgetType: HomeWidgetAllTimeData.self, stats: allTimeWidgetStats)
         }
     }
     var allTimeStatus: StoreFetchingStatus = .idle
@@ -88,7 +88,7 @@ struct InsightStoreState {
                                                     comments: todaysStats?.commentsCount)
 
             storeTodayWidgetData(data: todayWidgetStats)
-            storeHomeWidgetData(widgetType: HomeWidgetTodayData.self, stats: todayWidgetStats)
+            StoreContainer.shared.statsWidgets.storeHomeWidgetData(widgetType: HomeWidgetTodayData.self, stats: todayWidgetStats)
         }
     }
     var todaysStatsStatus: StoreFetchingStatus = .idle
@@ -121,7 +121,6 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
 
     init() {
         super.init(initialState: InsightStoreState())
-        observeAccountChangesForWidgets()
     }
 
     override func onDispatch(_ action: Action) {
@@ -983,110 +982,5 @@ private extension InsightStoreState {
                 return false
         }
         return true
-    }
-
-}
-
-// MARK: - iOS 14 Widgets Data
-private extension InsightStoreState {
-
-    private func storeHomeWidgetData<T: HomeWidgetData>(widgetType: T.Type, stats: Codable) {
-        guard #available(iOS 14.0, *),
-              let siteID = SiteStatsInformation.sharedInstance.siteID else {
-            return
-        }
-
-        var homeWidgetCache = T.read() ?? initializeHomeWidgetData(type: widgetType)
-        guard let oldData = homeWidgetCache[siteID.intValue] else {
-            DDLogError("StatsWidgets: Failed to find a matching site")
-            return
-        }
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
-
-        guard let blog = blogService.blog(byBlogId: siteID) else {
-            DDLogError("StatsWidgets: the site does not exist anymore")
-            // if for any reason that site does not exist anymore, remove it from the cache.
-            homeWidgetCache.removeValue(forKey: siteID.intValue)
-            T.write(items: homeWidgetCache)
-            return
-        }
-        var widgetKind = ""
-        if widgetType == HomeWidgetTodayData.self, let stats = stats as? TodayWidgetStats {
-
-            widgetKind = WPHomeWidgetTodayKind
-
-            homeWidgetCache[siteID.intValue] = HomeWidgetTodayData(siteID: siteID.intValue,
-                                                                   siteName: blog.title ?? oldData.siteName,
-                                                                   url: blog.url ?? oldData.url,
-                                                                   timeZone: blogService.timeZone(for: blog),
-                                                                   date: Date(),
-                                                                   stats: stats) as? T
-
-
-        } else if widgetType == HomeWidgetAllTimeData.self, let stats = stats as? AllTimeWidgetStats {
-            widgetKind = WPHomeWidgetAllTimeKind
-
-            homeWidgetCache[siteID.intValue] = HomeWidgetAllTimeData(siteID: siteID.intValue,
-                                                                     siteName: blog.title ?? oldData.siteName,
-                                                                     url: blog.url ?? oldData.url,
-                                                                     timeZone: blogService.timeZone(for: blog),
-                                                                     date: Date(),
-                                                                     stats: stats) as? T
-        }
-
-        T.write(items: homeWidgetCache)
-        WidgetCenter.shared.reloadTimelines(ofKind: widgetKind)
-
-
-    }
-
-    private func initializeHomeWidgetData<T: HomeWidgetData>(type: T.Type) -> [Int: T] {
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
-
-        return blogService.visibleBlogsForWPComAccounts().reduce(into: [Int: T]()) { result, element in
-            if let blogID = element.dotComID,
-               let url = element.url,
-               let blog = blogService.blog(byBlogId: blogID) {
-                // set the title to the site title, if it's not nil and not empty; otherwise use the site url
-                let title = (element.title ?? url).isEmpty ? url : element.title ?? url
-                let timeZone = blogService.timeZone(for: blog)
-                if type == HomeWidgetTodayData.self {
-                    result[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
-                                                                  siteName: title,
-                                                                  url: url,
-                                                                  timeZone: timeZone,
-                                                                  date: Date(),
-                                                                  stats: TodayWidgetStats()) as? T
-                } else if type == HomeWidgetAllTimeData.self {
-                    result[blogID.intValue] = HomeWidgetAllTimeData(siteID: blogID.intValue,
-                                                                    siteName: title,
-                                                                    url: url,
-                                                                    timeZone: timeZone,
-                                                                    date: Date(),
-                                                                    stats: AllTimeWidgetStats()) as? T
-                }
-
-            }
-        }
-    }
-}
-
-// refresh iOS 14 widgets at login/logout
-private extension StatsInsightsStore {
-    func observeAccountChangesForWidgets() {
-        guard #available(iOS 14.0, *) else {
-            return
-        }
-
-
-        NotificationCenter.default.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged,
-                                               object: nil,
-                                               queue: nil) { notification in
-            HomeWidgetTodayData.delete()
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
-            HomeWidgetAllTimeData.delete()
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
-
-        }
     }
 }

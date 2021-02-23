@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-27 14:04:26+0000 */
+/* Translation-Revision-Date: 2021-02-09 16:33:43+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -9,13 +9,16 @@
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nOm te bevestigen, vul je site-adres opnieuw in alvorens te verwijderen.\n";
 
+/* No comment provided by engineer. */
+" audio file" = " audiobestand";
+
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "\"Lazy-load\" afbeeldingen";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "\"Meer\" knop";
 
-/* No comment provided by engineer. */
+/* Description for the restore action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point for your restore." = "%1$@ is het geselecteerde punt voor het terugzetten.";
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
@@ -286,6 +289,9 @@
 "ACTIVE" = "ACTIEF";
 
 /* No comment provided by engineer. */
+"ADD AUDIO" = "AUDIO TOEVOEGEN";
+
+/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "BLOK HIER TOEVOEGEN";
 
 /* No comment provided by engineer. */
@@ -507,6 +513,7 @@
 
 /* Autoapprove every comment
    Browse all themes selection title
+   Displays all of the historical threats
    Displays all of the Notifications, unfiltered */
 "All" = "Alles";
 
@@ -567,6 +574,9 @@
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "Een actieve internetverbinding is vereist";
 
+/* Error message shown when trying to view the scan status and there is no internet connection. */
+"An active internet connection is required to view Jetpack Scan" = "Een actieve internetverbinding is vereist om Jetpack Scan te bekijken";
+
 /* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
 "An active internet connection is required to view activities" = "Een actieve internetverbinding is vereist om activiteiten te bekijken";
 
@@ -579,6 +589,9 @@
 
 /* Error message shown when trying to view Stats and there is no internet connection. */
 "An active internet connection is required to view stats" = "Een actieve internetverbinding is vereist om statistieken weer te geven";
+
+/* Error message shown when trying to view the Scan History feature and there is no internet connection. */
+"An active internet connection is required to view the history" = "Een actieve internetverbinding is vereist om de geschiedenis te bekijken";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "Fout bij aanmaken van het menu.";
@@ -702,7 +715,7 @@
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Weet je zeker dat je je site wil terugzetten naar %1$@? Dit zal alle inhoud en opties verwijderen die sindsdien gemaakt of gewijzigd zijn.";
 
 /* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
-"Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "Weet je zeker dat je je site wilt terugspoelen naar %@?\nDit zal alle inhoud en opties verwijderen die sindsdien gemaakt of gewijzigd zijn.";
+"Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost." = "Weet je zeker dat je je site wil terugzetten naar %@?\nAlles wat je sindsdien hebt veranderd, gaat verloren.";
 
 /* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
 "Are you sure you want to save as draft?" = "Weet je zeker dat je wilt opslaan als concept?";
@@ -730,6 +743,15 @@
 
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Bestand als link bijvoegen";
+
+/* No comment provided by engineer. */
+"Audio Player" = "Audiospeler";
+
+/* translators: accessibility text. %s: Audio caption. */
+"Audio caption. %s" = "Audio bijschrift. %s";
+
+/* translators: accessibility text. Empty Audio caption. */
+"Audio caption. Empty" = "Audio bijschrift. Leeg";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "Audio, %@";
@@ -804,14 +826,19 @@
    Spoken accessibility label */
 "Back" = "Terug";
 
+/* Title of the cell displaying status of a backup in progress */
+"Backing up site" = "Er wordt een back-up gemaakt van de site";
+
 /* Noun. Links to a blog's Jetpack Backups screen.
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
-   Title for the Jetpack's backup list */
+   Title for Jetpack Backup Update Status Failed screen
+   Title for the Jetpack's backup list
+   Title of section showing backup status */
 "Backup" = "Back-up";
 
 /* Title for error displayed when preparing a backup fails. */
-"Backup failed." = "Back-up mislukt.";
+"Backup failed" = "Back-up mislukt";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "Staafgrafiek waarin het aantal opmerkingen tijdens de geselecteerde periode staan weergegeven.";
@@ -983,6 +1010,7 @@
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
+   Cancel button for alert
    Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
@@ -1082,6 +1110,9 @@
 /* Button title to edit visibility of sites. */
 "Change Visibility" = "Zichtbaarheid wijzigen";
 
+/* No comment provided by engineer. */
+"Change block position" = "Wijzig blokpositie";
+
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Wijzigen mislukt";
 
@@ -1167,6 +1198,9 @@
 
 /* Label for Publish time picker */
 "Choose a time" = "Kies een tijd";
+
+/* No comment provided by engineer. */
+"Choose audio" = "Kies audio";
 
 /* Title to choose date range in a calendar */
 "Choose date range" = "Kies datumbereik";
@@ -1383,14 +1417,12 @@
 "Configure" = "Configureren";
 
 /* Confirm
+   Confirm Rewind button title
    Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Bevestigen";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Site verwijderen bevestigen";
-
-/* Confirm Rewind button title */
-"Confirm Rewind" = "Bevestig terugspoelen";
 
 /* Instructional text about the Sharing feature. */
 "Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "Bevestig dat dit het account is dat je wilt autoriseren. Je berichten worden automatisch gedeeld op het geselecteerde account.";
@@ -1508,10 +1540,6 @@
 /* Button title. Tapping begins log in using Google. */
 "Continue with Google" = "Doorgaan met Google";
 
-/* Button title. Takes the user to the login by email flow.
-   Button title. Tapping begins our normal log in process. */
-"Continue with WordPress.com" = "Ga verder met WordPress.com";
-
 /* Title of a Quick Start Tour */
 "Continue with site setup" = "Ga verder met het configureren van je site";
 
@@ -1566,8 +1594,11 @@
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Kon Volgen niet wisselen: ontbrekend blogURL-kenmerk";
 
-/* An error description explaining that Seen could not be toggled due to a missing feedItemID attribute. */
-"Could not toggle Seen: missing feedItemID attribute." = "Kon gezien niet wisselen: ontbrekend feedItemID attribuut.";
+/* An error description explaining that Seen could not be toggled due to a missing feedItemID. */
+"Could not toggle Seen: missing feedItemID." = "Kon gezien niet togglen: ontbrekend feedItemID.";
+
+/* An error description explaining that Seen could not be toggled due to a missing postID. */
+"Could not toggle Seen: missing postID." = "Kon gezien niet togglen: ontbrekend berichtID.";
 
 /* Title of a prompt. */
 "Could not unfollow site" = "Kon site niet ontvolgen";
@@ -1702,6 +1733,9 @@
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Creating dashboard" = "Dashboard aanmaken";
 
+/* Description of the cell displaying status of a backup in progress */
+"Creating downloadable backup" = "Er wordt een downloadbare back-up gemaakt";
+
 /* No comment provided by engineer. */
 "Current" = "Huidig";
 
@@ -1803,8 +1837,7 @@
 "December 17, 2017" = "December 17, 2017";
 
 /* Description of the default paragraph formatting style in the editor.
-   Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.
-   Title for the default web preview */
+   Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "Standaard";
 
 /* Label for selecting the default category of a post
@@ -1887,6 +1920,9 @@
    Theme Details action title */
 "Details" = "Details";
 
+/* Instructions after a Magic Link was sent, but email is incorrect. */
+"Didn't mean to create a new account? Go back to re-enter your email address." = "Wilde je geen nieuw account aanmaken? Ga terug om je e-mailadres opnieuw in te voeren.";
+
 /* Label for the dimensions in pixels for a media asset (image / video) */
 "Dimensions" = "Afmetingen";
 
@@ -1923,9 +1959,6 @@
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Door dit account los te koppelen worden gepubliceerde berichten niet meer automatisch gedeeld met %@";
 
-/* Discover tab name */
-"Discover" = "Ontdek";
-
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Ontdek sites";
 
@@ -1941,6 +1974,7 @@
    Action to show on alert when view asset fails.
    Customize Insights button title
    Dismiss a view. Verb
+   Dismiss button title
    Dismiss button title.
    Dismiss the AlertView
    Share extension error dialog cancel button label.
@@ -2000,6 +2034,7 @@
    Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
+   Title for button that will dismiss this view
    Title for the button that will dismiss this view.
    Title of the Done button on the me page */
 "Done" = "Klaar";
@@ -2024,6 +2059,9 @@
 
 /* translators: accessibility text (hint for moving to color settings) */
 "Double tap to go to color settings" = "Tik tweemaal om naar de kleurinstellingen te gaan.";
+
+/* No comment provided by engineer. */
+"Double tap to listen the audio file" = "Twee keer tikken om te luisteren naar het audiobestand";
 
 /* No comment provided by engineer. */
 "Double tap to move the block down" = "Tik tweemaal om het blok omlaag te verplaatsen";
@@ -2053,6 +2091,9 @@
 "Double tap to select a video" = "Tik tweemaal om een video te selecteren";
 
 /* No comment provided by engineer. */
+"Double tap to select an audio file" = "Twee keer tikken om een audiobestand te selecteren";
+
+/* No comment provided by engineer. */
 "Double tap to select an image" = "Tik tweemaal om een afbeelding te selecteren";
 
 /* translators: accessibility text (hint for selecting option) */
@@ -2064,10 +2105,14 @@
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "Tik tweemaal om laatste wijziging ongedaan te maken";
 
+/* Download button title */
+"Download" = "Download";
+
 /* Title for the Jetpack Download Backup Site Screen */
 "Download Backup" = "Backup downloaden";
 
-/* Title displayed for download backup action. */
+/* Title displayed for download backup action.
+   Title for button allowing user to backup their Jetpack site */
 "Download backup" = "Back-up downloaden";
 
 /* Title for the button that will download the backup file. */
@@ -2203,7 +2248,8 @@
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Lege URL";
 
-/* Button title about the enable notifications action */
+/* Button title about the enable notifications action
+   Button title for the enable site notifications action. */
 "Enable" = "Inschakelen";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
@@ -2215,7 +2261,8 @@
 /* Title of a Quick Start Tour */
 "Enable post sharing" = "Berichten delen inschakelen";
 
-/* Message informing the user about the enable notifications action */
+/* Message informing the user about the enable notifications action
+   Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Site meldingen inschakelen?";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
@@ -2304,6 +2351,12 @@
 
 /* There was an error enabling autoupdates for a plugin, placeholder is the plugin name */
 "Error enabling autoupdates for %@." = "Fout tijdens inschakelen autoupdates voor %@.";
+
+/* Error displayed when fixing a threat fails. */
+"Error fixing threat. Please contact our support." = "Fout bij oplossen van de bedreiging. Neem contact op met onze ondersteuning.";
+
+/* Error displayed when ignoring a threat fails. */
+"Error ignoring threat. Please contact our support." = "Fout bij negeren van de bedreiging, Neem contact op met onze ondersteuning.";
 
 /* Notice displayed after attempt to install a plugin fails. */
 "Error installing %@." = "Fout tijdens installatie %@.";
@@ -2431,6 +2484,9 @@
    The action failed */
 "Failed" = "Mislukt";
 
+/* No comment provided by engineer. */
+"Failed to insert audio file. Please tap for options." = "Invoegen van audiobestand mislukt. Tik voor opties.";
+
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Invoegen media mislukt.\n Tik voor opties.";
 
@@ -2538,6 +2594,15 @@
 /* Button title, confirm fixing all threats */
 "Fix all threats" = "Alle bedreigingen oplossen";
 
+/* Title for button that will fix the threat */
+"Fix threat" = "Bedreiging oplossen";
+
+/* Displays the fixed threats */
+"Fixed" = "Opgelost";
+
+/* Subtitle displayed while the server is fixing threats */
+"Fixing Threats" = "Bezig met bedreigingen oplossen";
+
 /* Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Volgen";
@@ -2582,6 +2647,9 @@
    User is following the blog.
    Verb. Button title. The user is following a blog. */
 "Following" = "Volgend";
+
+/* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
+"Following %1$@" = "Volgt %1$@";
 
 /* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
 "Following %@" = "Volgt %@";
@@ -2828,8 +2896,15 @@
 "Hide keyboard" = "Toetsenbord verbergen";
 
 /* Displays the History screen from the editor's alert sheet
+   Title of a navigation button that opens the scan history view
    Title of the post history screen */
 "History" = "Geschiedenis";
+
+/* Message title displayed when we fail to fetch the status of the backup in progress. */
+"Hmm, we couldn’t find your backup status" = "We konden je back-up status niet vinden";
+
+/* Message title displayed when we fail to fetch the status of the restore in progress. */
+"Hmm, we couldn’t find your restore status" = "We konden je terugzet status niet vinden";
 
 /* Moderation Keys Title
    Settings: Comments Moderation */
@@ -2851,8 +2926,14 @@
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hoera!\nBijna klaar";
 
+/* Title for the fix section in Threat Details: Threat is fixed */
+"How did Jetpack fix it?" = "Hoe heeft Jetpack het opgelost?";
+
 /* How to create story description */
 "How to create a story post" = "Hoe maak je een verhaal";
+
+/* Title for the fix section in Threat Details */
+"How will we fix it?" = "Hoe lossen we het op?";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "Ik vind dit leuk";
@@ -2886,6 +2967,12 @@
 
 /* Ignore action. Verb */
 "Ignore" = "Negeren";
+
+/* Title for button that will ignore the threat */
+"Ignore threat" = "Bedreiging negeren";
+
+/* Displays the ignored threats */
+"Ignored" = "Genegeerd";
 
 /* Hint for image alt on image settings. */
 "Image Alt" = "Afbeelding alt-tag";
@@ -3074,14 +3161,15 @@
 /* Description that explains that we are unable to auto fix the threat */
 "Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site." = "Jetpack Scan kon deze bedreiging niet automatisch oplossen. We raden je aan de bedreiging handmatig op te lossen: wees er zeker van dat WordPress, je thema en al je plugins up-to-date zijn en verwijder bedreigende code, thema of plugin van je site.";
 
-/* Description for a label when the scan has failed */
+/* Description for a label when the scan has failed
+   Error message shown when the scan start has failed. */
 "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Jetpack Scan kon geen scan van je site afronden. Controleer of je site bereikbaar is - probeer het opnieuw als dat niet het geval is. Als dit het geval is, of als Jetpack Scan nog steeds problemen heeft, neem dan contact op met ons ondersteuningsteam.";
 
 /* Description for a label when there are threats on the site, displays the number of threats, and the site's title */
-"Jetpack Scan found %1$d potential threats on %2$@. Please review each threat and take action." = "Jetpack Scan heeft %1$d potentiële bedreigingen gevonden op %2$@. Beoordeel elke bedreiging en neem actie.";
+"Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "De scan vond %1$d potentiële bedreigingen met %2$@. Bekijk ze hieronder en onderneem actie of tik op de knop Alles herstellen. We zijn hier om te helpen als je ons nodig hebt.";
 
 /* Description for a label when there is a single threat on the site, displays the site's title */
-"Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action." = "Jetpack Scan heeft 1 potentiële bedreiging gevonden op %1$@. Beoordeel elke bedreiging en neem actie.";
+"Jetpack Scan found 1 potential threat with %1$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "De scan vond 1 potentiële bedreiging met %1$@. Bekijk ze hieronder en onderneem actie of tik op de knop Alles herstellen. We zijn hier om te helpen als je ons nodig hebt.";
 
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will delete the affected file or directory." = "Jetpack Scan verwijdert het betreffende bestand of de folder.";
@@ -3187,6 +3275,9 @@
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Laat ons je helpen";
 
+/* Title for the button that will dismiss this view. */
+"Let me know when finished!" = "Laat het mij weten als het klaar is!";
+
 /* Title for the app appearance setting for light mode */
 "Light" = "Licht";
 
@@ -3291,6 +3382,12 @@
 /* Text displayed while loading plugins for a site */
 "Loading Plugins..." = "Plugins laden...";
 
+/* Text displayed while loading the scan history for a site */
+"Loading Scan History..." = "Scan geschiedenis aan het laden...";
+
+/* Text displayed while loading the scan section for a site */
+"Loading Scan..." = "Scan laden...";
+
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "Domeinen laden";
 
@@ -3338,6 +3435,9 @@
 "Location unknown" = "Locatie onbekend";
 
 /* No comment provided by engineer. */
+"Lock icon" = "Slot-pictogram";
+
+/* No comment provided by engineer. */
 "Log Files By Created Date" = "Log bestanden op creëer datum";
 
 /* Button title.  Tapping takes the user to the login form.
@@ -3356,6 +3456,10 @@
 
 /* A generic error message for a failed log in. */
 "Log in failed. Please try again." = "Inloggen mislukt. Probeer het nogmaals.";
+
+/* Button title. Takes the user to the login by email flow.
+   Button title. Tapping begins our normal log in process. */
+"Log in or sign up with WordPress.com" = "Log in of meld je aan bij WordPress.com";
 
 /* Instruction text on the login's email address screen. */
 "Log in to the WordPress.com account you used to connect Jetpack." = "Login met je WordPress.com account die je gebruikt hebt om verbinding met Jetpack te maken.";
@@ -3439,6 +3543,12 @@
 
 /* An option to mark a post as unseen. */
 "Mark as unseen" = "Markeer als ongezien";
+
+/* Notice title when updating a post's seen status succeeds. */
+"Marked post as seen" = "Bericht gemarkeerd als gezien";
+
+/* Notice title when updating a post's unseen status succeeds. */
+"Marked post as unseen" = "Bericht gemarkeerd als ongezien";
 
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "Koppel accounts via e-mail";
@@ -3584,9 +3694,6 @@
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "Verplaats blok naar links van positie %1$s naar positie %2$s";
-
-/* No comment provided by engineer. */
-"Move block position" = "Verplaats blokpositie";
 
 /* No comment provided by engineer. */
 "Move block right" = "Verplaats blok naar rechts";
@@ -3787,6 +3894,9 @@
 "No activity yet" = "Nog geen activiteit";
 
 /* No comment provided by engineer. */
+"No application can handle this request." = "Geen enkele applicatie kan deze aanvraag behandelen.";
+
+/* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "Er is geen toepassing die deze aanvraag kan verwerken. Installeer een webbrowser.";
 
 /* A short message that informs the user no WordPress.com sites could be found. */
@@ -3820,14 +3930,21 @@
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "Nog geen gegevens";
 
+/* Title for the view when there aren't any fixed threats to display */
+"No fixed threats" = "Geen opgeloste bedreigingen";
+
 /* Title for the no followed sites result screen */
 "No followed sites" = "Nog geen sites gevolgd";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "Nog geen volgers";
 
-/* Displayed when a call is made to load the revisions but there's no result or an error. */
+/* Displayed when a call is made to load the revisions but there's no result or an error.
+   Title for the view when there aren't any history items to display */
 "No history yet" = "Nog geen geschiedenis";
+
+/* Title for the view when there aren't any ignored threats to display */
+"No ignored threats" = "Geen genegeerde bedreigingen";
 
 /* Title displayed when the user has removed all Insights from display. */
 "No insights added yet" = "Nog geen inzichten toegevoegd";
@@ -4024,6 +4141,7 @@
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    OK
+   OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
@@ -4036,8 +4154,8 @@
    Title of primary button on alert prompting verify their accounts while attempting to publish */
 "OK" = "OK";
 
-/* Title for the button that will dismiss this view. */
-"OK, notify me!" = "OK, waarschuw mij!";
+/* No comment provided by engineer. */
+"OPEN" = "OPEN";
 
 /* Disabled */
 "Off" = "Uit";
@@ -4071,6 +4189,7 @@
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
    Title for the view when there's an error loading time zones */
@@ -4241,6 +4360,9 @@
    Title for selecting parent category of a category */
 "Parent Category" = "Bovenliggende categorie";
 
+/* Message informing the user that their pages parent has been set successfully */
+"Parent page successfully updated." = "Hoofdpagina met succes geüpdatet.";
+
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
    Label for the password field. Should be the same as WP core.
@@ -4398,6 +4520,9 @@
 
 /* Used on an error alert to prompt the user to try again */
 "Please try again later" = "Probeer later opnieuw";
+
+/* Description for the Jetpack Restore Failed message. */
+"Please try again later or contact support." = "Probeer het later opnieuw of neem contact op met ondersteuning.";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "Probeer het later opnieuw.";
@@ -4646,6 +4771,9 @@
 
 /* Error message title informing the user that a stream could not be loaded. */
 "Problem loading stream" = "Probleem bij laden van stream";
+
+/* No comment provided by engineer. */
+"Problem opening the audio" = "Probleem met openen audio";
 
 /* No comment provided by engineer. */
 "Problem opening the video" = "Probleem met openen video";
@@ -4918,6 +5046,12 @@
 "Replace Current Block" = "Vervang huidige blok";
 
 /* No comment provided by engineer. */
+"Replace audio" = "Vervang audio";
+
+/* No comment provided by engineer. */
+"Replace file" = "Vervang bestand";
+
+/* No comment provided by engineer. */
 "Replace image or video" = "Afbeelding of video vervangen";
 
 /* No comment provided by engineer. */
@@ -4996,20 +5130,36 @@
 /* The largest resolution allowed for uploading */
 "Resolution" = "Resolutie";
 
+/* Title for the fix section in Threat Details: Threat is not fixable */
+"Resolving the threat" = "Bedreiging aan het oplossen";
+
 /* Title displayed for restore action.
+   Title for button allowing user to restore their Jetpack site
    Title for Jetpack Restore Complete screen
+   Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen */
+   Title for the Jetpack Restore Site Screen
+   Title of section showing restore status */
 "Restore" = "Terugzetten";
 
+/* Title for Jetpack Restore Failed screen */
+"Restore Failed" = "Terugzetten mislukt";
+
 /* Title for error displayed when restoring a site fails. */
-"Restore failed." = "Terugzetten mislukt.";
+"Restore failed" = "Terugzetten mislukt";
 
 /* Label that describes the restore site action */
 "Restore site" = "Site terugzetten";
 
 /* Button title for restore site action */
 "Restore to this point" = "Terugzetten naar dit punt";
+
+/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
+"Restored to %@" = "Teruggezet naar %@";
+
+/* Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date.
+   Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
+"Restoring to %@" = "Aan het terugzetten naar %@";
 
 /* A prompt to attempt the failed network request again
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
@@ -5046,6 +5196,12 @@
 /* Share extension error dialog cancel button text */
 "Return to post" = "Terug naar bericht";
 
+/* No comment provided by engineer. */
+"Reusable blocks aren't editable on WordPress for Android" = "Herbruikbare blokken zijn niet bewerkbaar in WordPress voor Android";
+
+/* No comment provided by engineer. */
+"Reusable blocks aren't editable on WordPress for iOS" = "Herbruikbare blokken zijn niet bewerkbaar in WordPress voor iOS";
+
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Wijziging in behandeling terugzetten";
 
@@ -5055,20 +5211,15 @@
 /* Title of the screen that shows the revisions. */
 "Revision" = "Revisie";
 
-/* Title displayed when user swipes on a rewind cell
-   Title for button allowing user to rewind their Jetpack site
+/* Title for button allowing user to rewind their Jetpack site
    Title of section showing rewind status */
 "Rewind" = "Terugspoelen";
 
-/* Title displayed in the Rewind Site alert, should match Calypso */
+/* Title displayed in the Restore Site alert, should match Calypso */
 "Rewind Site" = "Site terugspoelen";
 
-/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date.
-   Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
+/* Text showing the point in time the site is being currently rewinded to. %@' is a placeholder that will expand to a date. */
 "Rewinding to %@" = "Terugzetten naar %@";
-
-/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
-"Rewound to %@" = "Teruggezet naar %@";
 
 /* Post Rich content */
 "Rich Content" = "Verrijkte inhoud";
@@ -5145,11 +5296,15 @@
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Opslaan...";
 
-/* Noun. Links to a blog's Jetpack Scan screen. */
+/* Noun. Links to a blog's Jetpack Scan screen.
+   Title of the view */
 "Scan" = "Scan";
 
 /* Button title that triggers a scan */
 "Scan Again" = "Opnieuw scannen";
+
+/* Title of the view */
+"Scan History" = "Scan geschiedenis";
 
 /* Button title that triggers a scan */
 "Scan Now" = "Nu scannen";
@@ -5653,13 +5808,20 @@
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Slug";
 
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"So far, there are no fixed threats on your site." = "Tot nut toe zijn er geen opgeloste bedreigingen op je site.";
+
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"So far, there are no ignored threats on your site." = "Tot nu toe zijn er geen genegeerde bedreigingen op je site.";
+
 /* Follower Totals label for social media followers */
 "Social" = "Sociaal";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Er zijn uploads van media mislukt. Door deze handeling worden alle mislukte media uit het bericht verwijderd.\nToch opslaan?";
 
-/* Title for a label that appears when the scan failed */
+/* Title for a label that appears when the scan failed
+   Title for the error view when the scan start has failed */
 "Something went wrong" = "Er is iets fout gegaan";
 
 /* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
@@ -5921,6 +6083,9 @@
 /* Accessibility of stats table. Placeholders will be populated with names of data shown in table. */
 "Table showing %@ and %@" = "Tabel toont %1$@ en %2$@";
 
+/* Title for the tablet web preview */
+"Tablet" = "Tablet";
+
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
 "Tag" = "Tag";
@@ -6104,11 +6269,11 @@
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "De taal waarin deze site hoofdzakelijk is geschreven.";
 
-/* Description that informs for label when there are no threats on a users site */
-"The last Jetpack scan completed and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "De laatste Jetpack scan is afgerond en alles zag er geweldig uit.\n\nVoer nu een handmatige scan uit of wacht tot Jetpack later op de dag je site scant.";
+/* Description for label when there are no threats on a users site and how long ago the scan ran. */
+"The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "De laatste Jetpack-scan is uitgevoerd %1$@ en er zijn geen risico's gevonden.\n\nOm je site opnieuw te bekijken, voer je een handmatige scan uit, of wacht tot Jetpack je site later vandaag scant.";
 
-/* Description for label when there are no threats on a users site and how long ago the scan ran */
-"The last Jetpack scan ran %1$@ and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "De laatste Jetpack scan dateert van %1$@ en alles zag er goed uit.\n\nVoer nu een handmatige scan uit of wacht tot Jetpack later vandaag je site scant.";
+/* Description that informs for label when there are no threats on a users site */
+"The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "Bij de laatste jetpack-scan zijn geen risico's gevonden.\n\nOm je site opnieuw te bekijken, voer je een handmatige scan uit, of wacht tot Jetpack je site later vandaag scant.";
 
 /* WordPress.com Push Authentication Expired message */
 "The login request has expired. Log in to WordPress.com to try again." = "Het aanmeldingsverzoek is verlopen. Meld je aan op WordPress.com en probeer het opnieuw.";
@@ -6154,6 +6319,12 @@
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "De opgegeven gebruiker kan niet worden gevonden. Controleer of de naam juist is gespeld.";
+
+/* Title for the technical details section in Threat Details */
+"The technical details" = "De technische details";
+
+/* Message displayed when a threat is fixed successfully. */
+"The threat was successfully fixed." = "De bedreiging is met succes opgelost.";
 
 /* People: Invitation Error */
 "The user already has the specified role. Please, try assigning a different role." = "De gebruiker heeft de opgegeven rol al. Probeer een andere rol toe te wijzen.";
@@ -6266,6 +6437,12 @@
 /* Text displayed when there is a failure loading the plan details */
 "There was an error loading the plan" = "Er is een fout opgetreden bij het laden van het abonnement.";
 
+/* Text displayed when there is a failure loading the history feed */
+"There was an error loading the scan history" = "Er is een fout opgetreden bij het laden van de scan geschiedenis";
+
+/* Text displayed when there is a failure loading the status */
+"There was an error loading the scan status" = "Er is een fout opgetreden bij het laden van de scan status.";
+
 /* Text displayed when there is a failure loading the plugin */
 "There was an error loading this plugin" = "Er is een fout opgetreden bij het laden van deze plugin";
 
@@ -6278,8 +6455,14 @@
 /* Updating Role failed error message */
 "There was an error updating @%@" = "Er deed zich een fout voor tijdens bijwerken @%@";
 
+/* Text displayed when user tries to create a downloadable backup when there is already one being prepared */
+"There's a backup currently being prepared, please wait before starting the next one" = "Er wordt momenteel een back-up voorbereid, wacht voordat je de volgende start";
+
 /* Text displayed when user tries to start a restore when there is already one running */
 "There's a restore currently in progress, please wait before starting next one" = "Er loopt op dit moment een herstelproces, wacht alvorens de volgende te starten";
+
+/* Text displayed when user tries to start a restore when there is already one running */
+"There's a restore currently in progress, please wait before starting the next one" = "Er loopt op dit moment een terugzet proces, wacht voordat je de volgende start";
 
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "Zij worden gepubliceerd als een nieuw blogbericht op je site zodat je publiek nooit iets mist.";
@@ -6352,8 +6535,17 @@
 /* Title for a threat */
 "Threat Found" = "Bedreiging gevonden";
 
+/* Title for the Jetpack Scan Threat Details screen */
+"Threat details" = "Bedreiging details";
+
 /* Summary description for a threat that includes the threat signature */
 "Threat found %1$@" = "Bedreiging gevonden %1$@";
+
+/* Description for threat file */
+"Threat found in file:" = "Bedreiging gevonden in bestand:";
+
+/* Message displayed when a threat is ignored successfully. */
+"Threat ignored." = "Bedreiging genegeerd.";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Miniatuur";
@@ -6523,6 +6715,8 @@
 "Try adjusting your date range or activity type filters" = "Wijzig je filters op datumbereik of type activiteit";
 
 /* Button label for trying to retrieve the activities type again
+   Button label for trying to retrieve the history again
+   Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
@@ -6542,6 +6736,12 @@
 
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "Zet site meldingen aan";
+
+/* Notice title when turning site notifications off succeeds. */
+"Turned off site notifications" = "Site meldingen zijn uitgeschakeld";
+
+/* Notice title when turning site notifications on succeeds. */
+"Turned on site notifications" = "Site meldingen zijn ingeschakeld";
 
 /* Launches the Twitter App */
 "Twitter" = "Twitter";
@@ -6582,6 +6782,12 @@
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Niet mogelijk om media te verwijderen.";
 
+/* Message displayed when opening the link to the downloadable backup fails. */
+"Unable to download file" = "Kan bestand niet downloaden";
+
+/* Notice title when following a site fails. */
+"Unable to follow site" = "Kan de site niet volgen";
+
 /* Error message displayed when we were unable to copy the URL for an item in the user's media library. */
 "Unable to get URL for media item." = "Niet gelukt om de URL op te halen voor het media-item.";
 
@@ -6601,10 +6807,10 @@
 /* Error shown when the app fails to load a video from the user's media library. */
 "Unable to load video." = "Kan video niet laden.";
 
-/* Alert displayed to the user when updating a post's seen status failed. */
+/* Notice title when updating a post's seen status failed. */
 "Unable to mark post seen" = "Het is niet mogelijk om bericht als gezien te markeren";
 
-/* Alert displayed to the user when updating a post's unseen status failed. */
+/* Notice title when updating a post's unseen status failed. */
 "Unable to mark post unseen" = "Niet mogelijk om bericht als niet gezien te markeren";
 
 /* Dialog box title for when the user is canceling an upload. */
@@ -6616,17 +6822,32 @@
 /* Alert title when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
 "Unable to register domain" = "Niet mogelijk om domein te registreren";
 
+/* Title for the Jetpack Restore Failed message. */
+"Unable to restore your site" = "Kan je site niet terugzetten";
+
 /* Text displayed when a site restore fails. */
 "Unable to restore your site, please try again later or contact support." = "Niet mogelijk om je site terug te zetten, probeer later opnieuw of neem contact op met ondersteuning.";
 
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "Niet mogelijk om media op te slaan.";
 
+/* Message displayed when sharing a link to the downloadable backup fails. */
+"Unable to share link" = "Kan de link niet delen";
+
 /* Message that appears when a user tries to trash a page while their device is offline. */
 "Unable to trash pages while offline. Please try again later." = "Onmogelijk om pagina's naar de prullenbak te verwijderen als je offline bent. Probeer het later nog eens.";
 
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "Onmogelijk om berichten te verwijderen wanneer je offline bent. Probeer later opnieuw.";
+
+/* Notice title when turning site notifications off fails. */
+"Unable to turn off site notifications" = "Kan de site meldingen niet uitschakelen";
+
+/* Notice title when turning site notifications on fails. */
+"Unable to turn on site notifications" = "Kan de site meldingen niet inschakelen";
+
+/* Notice title when unfollowing a site fails. */
+"Unable to unfollow site" = "Kan de site niet ontvolgen";
 
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "Niet mogelijk om homepage-instellingen bij te werken";
@@ -6654,6 +6875,9 @@
 
 /* Error message displayed when an error occurred checking for email availability. */
 "Unable to verify the email address. Please try again later." = "Niet mogelijk om e-mailadres te verifiëren. Probeer het later opnieuw.";
+
+/* Message displayed when visiting a site fails. */
+"Unable to visit site" = "Kan de site niet bezoeken";
 
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "Niet mogelijk afbeelding naar bestand te schrijven";
@@ -6688,7 +6912,8 @@
 /* Verb. An option to unfollow a site. */
 "Unfollow Site" = "Site niet meer volgen";
 
-/* User unfollowed a site. */
+/* Notice title when unfollowing a site succeeds.
+   User unfollowed a site. */
 "Unfollowed site" = "Site die niet langer gevolgd wordt";
 
 /* Spoken hint describing action for selected following buttons. */
@@ -6841,6 +7066,9 @@
 
 /* Label to show while uploading media to server */
 "Uploading..." = "Bezig met uploaden...";
+
+/* No comment provided by engineer. */
+"Uploading…" = "Uploaden...";
 
 /* Title for alert when trying to save post with failed media items */
 "Uploads failed" = "Uploads mislukt";
@@ -7157,6 +7385,12 @@
 /* Text displayed if a media couldnt be uploaded. */
 "We couldn't upload this media." = "We konden deze media niet uploaden.";
 
+/* Hint displayed when we fail to fetch the status of the backup in progress. */
+"We couldn’t find the status to say how long your backup will take." = "We konden de status niet vinden om te zeggen hoe lang het maken van je back-up zal duren.";
+
+/* Hint displayed when we fail to fetch the status of the restore in progress. */
+"We couldn’t find the status to say how long your restore will take." = "We konden de status niet vinden om te zeggen hoe lang het terugzetten zal duren.";
+
 /* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
 "We had trouble loading connections for %@" = "We ondervonden problemen met het laden van connecties voor %@";
 
@@ -7168,6 +7402,9 @@
 
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "We hebben grote verbeteringen aan de blokeditor aangebracht en vinden het zeker de moeite waard!\n\nWe hebben deze ingeschakeld voor nieuwe berichten en pagina's, maar als je toch liever de klassieke editor gebruikt, ga naar 'Mijn site' > 'Site-instellingen'.";
+
+/* Message displayed when a backup has finished */
+"We successfully created a backup of your site as of %@" = "We hebben met succes een back-up gemaakt van je site vanaf %@";
 
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
 "We successfully created a backup of your site from %1$@." = "We hebben met succes een back-up gemaakt van je site van %1$@.";
@@ -7245,6 +7482,9 @@
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "We voeren de laatste instellingen door, nog even geduld…";
 
+/* Detail text display informing the user that we're fixing threats */
+"We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "We zijn hard aan het werk om deze bedreigingen op de achtergrond te verhelpen. In de tussentijd kan je je site gewoon blijven gebruiken, je kan op elk moment de voortgang bekijken.";
+
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "We kunnen geen verbinding maken met de Jetpack-site via die URL. Neem contact op voor hulp.";
 
@@ -7290,6 +7530,16 @@
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "We sturen altijd belangrijke e-mails met betrekking tot je account, maar je kunt ook aanvullende nuttige berichten ontvangen.";
 
+/* Hint displayed when we fail to fetch the status of the backup in progress.
+   Hint displayed when we fail to fetch the status of the restore in progress. */
+"We’ll notify you when its done." = "We laten het je weten als het klaar is.";
+
+/* Hint displayed when we fail to fetch the status of the backup in progress. */
+"We’ll still attempt to backup your site." = "We proberen nog steeds om een back-up van je site te maken.";
+
+/* Hint displayed when we fail to fetch the status of the restore in progress. */
+"We’ll still attempt to restore your site." = "We proberen nog steeds om je site terug te zetten.";
+
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "We lopen je door de basis om je site te bouwen en te laten groeien";
 
@@ -7304,6 +7554,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Wat wil je doen met dit bestand? Wil je het uploaden en een link naar het bestand aan je bericht toevoegen of wil je de inhoud van het bestand rechtstreeks aan het bericht toevoegen?";
+
+/* Title for the problem section in the Threat Details */
+"What was the problem?" = "Wat was het probleem?";
 
 /* Title of section that contains plugins' change log */
 "What's New" = "Wat is nieuw?";
@@ -7595,6 +7848,9 @@
 /* No comment provided by engineer. */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Het lijkt erop dat je een mobiele plugin van DudaMobile hebt geïnstalleerd die voorkomt dat de app zich kan verbinden met je blog";
 
+/* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
+"You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Je moet een bedreiging niet negeren, tenzij je zeker weet dat deze niet gevaarlijk is. Als je ervoor kiest om deze bedreiging te negeren, blijft deze aanwezig op je site \"%1$@\".";
+
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "Je kunt je gebruikersnaam niet meer terug veranderen.";
 
@@ -7627,6 +7883,9 @@
 
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "Je back-up is nu beschikbaar om te downloaden";
+
+/* Text displayed when a site backup takes too long. */
+"Your backup is taking longer than usual, please check again in a few minutes." = "Je back-up duurt langer dan normaal, controleer opnieuw over een paar minuten.";
 
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Je huidige gebruikersnaam is %1$@. Op een paar uitzonderingen na zullen anderen alleen jouw weergavenaam %2$@ zien.";
@@ -7664,7 +7923,7 @@
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Je site is succesvol teruggezet";
 
-/* Title of a message displayed when user starts a rewind operation */
+/* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Je site wordt teruggezet";
 
 /* Hint for users when private privacy setting is set */
