@@ -19,8 +19,8 @@ class NoteBlockButtonTableViewCell: NoteBlockTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        selectedBackgroundView = UIView()
-        selectedBackgroundView?.backgroundColor = .clear
+        backgroundColor = .clear
+        selectionStyle = .none
 
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     }
