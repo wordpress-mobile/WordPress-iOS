@@ -1,7 +1,7 @@
 {
   "project_name": "WordPress-iOS",
   "branch": "trunk",
-  "pinned_hash": "b4bf1be9fb1145f148432e2e577ad886308f057e",
+  "pinned_hash": "08326245479c863a15ce4470601d9a1c2a73dede",
   "files_to_copy": [
     {
       "file": "iOS/WPiOS/wpcom_app_credentials",
