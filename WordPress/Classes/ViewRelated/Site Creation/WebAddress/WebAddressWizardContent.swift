@@ -8,8 +8,11 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     // MARK: Properties
     private struct Metrics {
-        static let maxLabelWidth        = CGFloat(290)
-        static let noResultsTopInset    = CGFloat(64)
+        static let maxLabelWidth            = CGFloat(290)
+        static let noResultsTopInset        = CGFloat(64)
+        static let sitePromptEdgeMargin     = CGFloat(50)
+        static let sitePromptBottomMargin   = CGFloat(10)
+        static let sitePromptTopMargin      = CGFloat(25)
     }
 
     override var seperatorStyle: SeperatorStyle {
@@ -181,6 +184,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         itemSelectionChanged(false)
         data = []
         lastSearchQuery = nil
+        sitePromptView.animatableSetIsHidden(false)
     }
 
     private func fetchAddresses(_ searchTerm: String) {
@@ -228,6 +232,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func handleData(_ data: [DomainSuggestion]) {
+        sitePromptView.isHidden = true
         let resultsHavePreviousSelection = data.contains { (suggestion) -> Bool in self.selectedDomain?.domainName == suggestion.domainName }
         if !resultsHavePreviousSelection {
             clearSelectionAndCreateSiteButton()
@@ -382,10 +387,10 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         sitePromptView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(sitePromptView)
         NSLayoutConstraint.activate([
-            sitePromptView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 50),
-            sitePromptView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -50),
-            sitePromptView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0),
-            sitePromptView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 25)
+            sitePromptView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Metrics.sitePromptEdgeMargin),
+            sitePromptView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Metrics.sitePromptEdgeMargin),
+            sitePromptView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: Metrics.sitePromptBottomMargin),
+            sitePromptView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin)
         ])
     }
 

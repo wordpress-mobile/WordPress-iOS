@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 
 class SitePromptView: UIView {
 
@@ -20,6 +21,7 @@ class SitePromptView: UIView {
     @IBOutlet weak var lockIcon: UIImageView! {
         didSet {
             lockIcon.tintColor = .textSubtle
+            lockIcon.image = UIImage.gridicon(.lock)
         }
     }
 

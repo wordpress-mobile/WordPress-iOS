@@ -26,8 +26,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v8V-S8-GVv">
                     <rect key="frame" x="10" y="54" width="394" height="30"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Woc-4J-ACa">
-                            <rect key="frame" x="132" y="5" width="130" height="20"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Woc-4J-ACa">
+                            <rect key="frame" x="137" y="5" width="120" height="20"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="0Kf-t2-GD9">
                                     <rect key="frame" x="0.0" y="0.5" width="18.5" height="18.5"/>
@@ -37,7 +37,7 @@
                                     </constraints>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="example.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HsV-QT-rIO">
-                                    <rect key="frame" x="28.5" y="0.0" width="101.5" height="20"/>
+                                    <rect key="frame" x="18.5" y="0.0" width="101.5" height="20"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -59,7 +59,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ypS-iN-cUK">
-                    <rect key="frame" x="10" y="104" width="130" height="30"/>
+                    <rect key="frame" x="10" y="104" width="155.5" height="30"/>
                     <color key="backgroundColor" systemColor="systemGray5Color"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -68,7 +68,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kzX-Rf-Pzt">
-                    <rect key="frame" x="325" y="104" width="79" height="30"/>
+                    <rect key="frame" x="310.5" y="104" width="93.5" height="30"/>
                     <color key="backgroundColor" systemColor="systemGray5Color"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -89,8 +89,7 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="ypS-iN-cUK" firstAttribute="width" secondItem="v8V-S8-GVv" secondAttribute="width" multiplier="0.33" id="2Qk-4d-c0n"/>
-                <constraint firstItem="kzX-Rf-Pzt" firstAttribute="width" secondItem="v8V-S8-GVv" secondAttribute="width" multiplier="0.2" id="7ah-yO-fA9"/>
+                <constraint firstItem="kzX-Rf-Pzt" firstAttribute="width" secondItem="ypS-iN-cUK" secondAttribute="width" multiplier="0.6" id="2dl-9p-IX8"/>
                 <constraint firstItem="kzX-Rf-Pzt" firstAttribute="top" secondItem="ypS-iN-cUK" secondAttribute="top" id="9Py-tm-v0J"/>
                 <constraint firstItem="ypS-iN-cUK" firstAttribute="top" secondItem="v8V-S8-GVv" secondAttribute="bottom" constant="20" id="9tc-2u-Mbt"/>
                 <constraint firstItem="ypS-iN-cUK" firstAttribute="height" secondItem="v8V-S8-GVv" secondAttribute="height" id="AsG-HH-XlN"/>
@@ -102,6 +101,7 @@
                 <constraint firstItem="puR-dc-cIz" firstAttribute="trailing" secondItem="kzX-Rf-Pzt" secondAttribute="trailing" id="RFk-j9-I9b"/>
                 <constraint firstItem="v8V-S8-GVv" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="10" id="Zkr-Vh-72A"/>
                 <constraint firstItem="kzX-Rf-Pzt" firstAttribute="height" secondItem="ypS-iN-cUK" secondAttribute="height" id="igN-kV-pDZ"/>
+                <constraint firstItem="ypS-iN-cUK" firstAttribute="trailing" secondItem="0Kf-t2-GD9" secondAttribute="trailing" id="mgF-h6-wLO"/>
                 <constraint firstItem="puR-dc-cIz" firstAttribute="leading" secondItem="ypS-iN-cUK" secondAttribute="leading" id="s7s-EW-fi7"/>
                 <constraint firstItem="ypS-iN-cUK" firstAttribute="leading" secondItem="v8V-S8-GVv" secondAttribute="leading" id="yjC-Yd-w2q"/>
             </constraints>
