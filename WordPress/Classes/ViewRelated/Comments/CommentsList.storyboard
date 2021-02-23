@@ -48,6 +48,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="filterTabBar" destination="bno-oB-pDf" id="HTz-ai-FRw"/>
                         <outlet property="tableView" destination="7aR-Vp-g6a" id="b8S-2O-Yk9"/>
                     </connections>
                 </viewController>

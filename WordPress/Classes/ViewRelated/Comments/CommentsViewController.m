@@ -3,12 +3,9 @@
 #import "CommentService.h"
 #import "Comment.h"
 #import "Blog.h"
-
 #import "WordPress-Swift.h"
 #import "WPTableViewHandler.h"
-#import "ContextManager.h"
 #import <WordPressShared/WPStyleGuide.h>
-#import <WordPressUI/WordPressUI.h>
 
 
 
@@ -26,7 +23,8 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 @property (nonatomic, strong) UIView                    *footerView;
 @property (nonatomic, strong) Blog                      *blog;
 
-@property (weak, nonatomic) IBOutlet UITableView        *tableView;
+@property (weak, nonatomic) IBOutlet FilterTabBar *filterTabBar;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @end
 
 @implementation CommentsViewController
@@ -62,6 +60,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
     // toggle constraints per FF.
     
     [self configureNavBar];
+    [self configureFilterTabBar:self.filterTabBar];
     [self configureLoadMoreSpinner];
     [self configureNoResultsView];
     [self configureRefreshControl];
