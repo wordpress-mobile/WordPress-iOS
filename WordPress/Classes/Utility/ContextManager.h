@@ -6,7 +6,6 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol CoreDataStack
 @property (nonatomic, readonly, strong) NSManagedObjectContext *mainContext;
 - (NSManagedObjectContext *const)newDerivedContext;
-- (NSManagedObjectContext *const)newMainContextChildContext;
 - (void)saveContextAndWait:(NSManagedObjectContext *)context;
 - (void)saveContext:(NSManagedObjectContext *)context;
 - (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock;
@@ -49,18 +48,6 @@ NS_ASSUME_NONNULL_BEGIN
  with the parent context as the main context
 */
 - (NSManagedObjectContext *const)newDerivedContext;
-
-/**
- For usage as a snapshot of the main context. This is useful when operations 
- should happen on the main queue (fetches) but not immedately reflect changes to
- the main context.
-
- Make sure to save using saveContext:
-
- @return a new MOC with NSMainQueueConcurrencyType,
- with the parent context as the main context
- */
-- (NSManagedObjectContext *const)newMainContextChildContext;
 
 /**
  Save a given context synchronously.

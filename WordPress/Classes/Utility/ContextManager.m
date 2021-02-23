@@ -57,11 +57,6 @@ static ContextManager *_override;
     return [self newChildContextWithConcurrencyType:NSPrivateQueueConcurrencyType];
 }
 
-- (NSManagedObjectContext *const)newMainContextChildContext
-{
-    return [self newChildContextWithConcurrencyType:NSMainQueueConcurrencyType];
-}
-
 - (NSManagedObjectContext *const)writerContext
 {
     static dispatch_once_t onceToken;

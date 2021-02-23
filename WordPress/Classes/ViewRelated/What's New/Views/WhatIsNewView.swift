@@ -233,8 +233,7 @@ private extension WhatIsNewView {
 
         // title
         static var headlineFont: UIFont {
-            if #available(iOS 13.0, *),
-                let serifHeadlineDescriptor = UIFontDescriptor
+            if let serifHeadlineDescriptor = UIFontDescriptor
                     .preferredFontDescriptor(withTextStyle: .headline)
                     .withDesign(.serif) {
 
@@ -260,11 +259,7 @@ private extension WhatIsNewView {
         static let continueButtonFont = UIFont.systemFont(ofSize: 22, weight: .medium)
         static let continueButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static var material: UIBlurEffect.Style {
-            if #available(iOS 13.0, *) {
-                return .systemChromeMaterial
-            } else {
-                return .regular
-            }
+            return .systemChromeMaterial
         }
 
         // back button

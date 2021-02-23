@@ -1,9 +1,11 @@
-À propos de cette version :
+Voici les points forts de cette version :
 
-Remarque : il s’agit de la dernière version de l’application qui prendra en charge iOS 12. Pour la version 16.7 et au-delà, votre application nécessitera iOS 13 ou une version supérieure.
+Jetpack Backup est désormais disponible ! Suivant le plan actuel de votre site, vous pouvez désormais restaurer votre site ou télécharger une sauvegarde de ce dernier à partir d’un point spécifique dans le temps. Si vous avez activé Jetpack Scan, vous pouvez analyser votre site pour rechercher des menaces et résoudre ou ignorer ces dernières après leur détection.
 
-Visualisez les statistiques sur votre écran d’accueil : affichez les statistiques du jour pour votre site WordPress sur l’écran d’accueil de votre appareil avec iOS 14, grâce aux nouveaux widgets du jour.
+Vous aimez suivre vos statistiques ? Nous avons ajouté une assistance pour les nouveaux widgets All Time qui affichent les statistiques All Time de votre site sur l’écran d’accueil de votre appareil iOS 14.
 
-Suivez l’activité sur votre site : filtrez et affichez des éléments dans votre journal d’activités, tels que des sauvegardes, des mises à jour d’extension, ainsi que des articles et des pages publiés, par période et type d’activité.
+Vous pouvez désormais configurer des ancres dans le bloc En-tête pour créer des accès directs aux pages constituant votre contenu. Nous avons apporté d’autres mises à jour en améliorant notamment les blocs réutilisables, ainsi que les blocs que vous n’insérez qu’une seule fois dans vos articles comme le bloc Lire la suite.
 
-Apprivoisez votre application : découvrez les fonctionnalités de votre application grâce à un guide de démarrage rapide qui vous apprendra les différentes étapes pour passer en revue les pages d’un site et modifier votre page d’accueil.
+La création de site dans l’application connaît des améliorations constantes. Lors de la création d’une page d’accueil, vous pouvez prévisualiser l’affichage d’un design sur l’écran d’un mobile, d’une tablette ou d’un ordinateur de bureau. Désormais, vous pouvez également choisir un sous-domaine .blog pour votre site.
+
+Enfin, nous continuons d’améliorer l’expérience dans votre Lecteur. Vous pouvez désormais marquer des articles comme étant « lus » de même qu’afficher le nombre total d’articles « non lus ».

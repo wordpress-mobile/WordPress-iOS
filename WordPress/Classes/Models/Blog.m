@@ -52,6 +52,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic comments;
 @dynamic connections;
 @dynamic domains;
+@dynamic inviteLinks;
 @dynamic themes;
 @dynamic media;
 @dynamic userSuggestions;

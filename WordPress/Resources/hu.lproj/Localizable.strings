@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2019-01-17 19:16:09+0000 */
+/* Translation-Revision-Date: 2021-02-17 12:53:31+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: hu */
@@ -1519,7 +1519,7 @@
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Content Structure\nBlocks: %li, Words: %li, Characters: %li";
 
 /* No comment provided by engineer. */
-"Content…" = "Content…";
+"Content…" = "Tartalom…";
 
 /* Action title to dismiss domain credit redemption success screen
    Apply changes localy to single block edition in the web block editor
@@ -4525,7 +4525,7 @@
 "Please try again later or contact support." = "Please try again later or contact support.";
 
 /* Prompt for the user to retry a failed action again later */
-"Please try again later." = "Please try again later.";
+"Please try again later." = "Próbáljuk meg később.";
 
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Adjuk meg újra a bejelentkezési adatainkat.";
@@ -7126,7 +7126,7 @@
 "Version" = "Version";
 
 /* Description for the version label in the What's new page. */
-"Version " = "Version ";
+"Version " = "Verzió";
 
 /* Version of a plugin to install
    Version of an installed plugin */
