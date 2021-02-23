@@ -112,10 +112,6 @@ class ReaderSortingOptionButton: UIControl {
     private func setup() {
         translatesAutoresizingMaskIntoConstraints = false
 
-        // TODO: check if accessibility is set correctly
-        accessibilityIdentifier = "Reader sorting option button"
-        accessibilityLabel = NSLocalizedString("Choose reader sorting option", comment: "Accessibility label for sorting option button")
-
         addSubview(iconView)
         addSubview(label)
         addSubview(chevronView)
@@ -141,9 +137,26 @@ class ReaderSortingOptionButton: UIControl {
     private func bindSortingOption() {
         label.text = sortingOption.localizedDescription
         iconView.image = sortingOption.image
+
+        prepareForVoiceOver()
     }
 
     public func setLabelBottomCompensation(_ compensation: CGFloat) {
         labelBottomConstraint.constant = Constants.bottom + compensation
+    }
+}
+
+extension ReaderSortingOptionButton: Accessible {
+    func prepareForVoiceOver() {
+        isAccessibilityElement = true
+        iconView.isAccessibilityElement = false
+        label.isAccessibilityElement = false
+        chevronView.isAccessibilityElement = false
+
+        // TODO: check if accessibility is set correctly
+        accessibilityIdentifier = "Reader sorting option button"
+        accessibilityLabel = NSLocalizedString("Sorting option", comment: "Accessibility label for sorting option button")
+        accessibilityValue = sortingOption.localizedDescription
+        accessibilityTraits = UIAccessibilityTraits.button
     }
 }
