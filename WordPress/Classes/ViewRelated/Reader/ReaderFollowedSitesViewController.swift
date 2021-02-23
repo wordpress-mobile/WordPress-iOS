@@ -136,11 +136,9 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         searchBar.keyboardType = .URL
         searchBar.setImage(UIImage(named: "icon-clear-textfield"), for: .clear, state: UIControl.State())
         searchBar.setImage(UIImage(named: "icon-reader-search-plus"), for: .search, state: UIControl.State())
-        if #available(iOS 13.0, *) {
-            searchBar.searchTextField.accessibilityLabel = NSLocalizedString("Site URL", comment: "The accessibility label for the followed sites search field")
-            searchBar.searchTextField.accessibilityValue = nil
-            searchBar.searchTextField.accessibilityHint = placeholderText
-        }
+        searchBar.searchTextField.accessibilityLabel = NSLocalizedString("Site URL", comment: "The accessibility label for the followed sites search field")
+        searchBar.searchTextField.accessibilityValue = nil
+        searchBar.searchTextField.accessibilityHint = placeholderText
     }
 
     func setupBackgroundTapGestureRecognizer() {

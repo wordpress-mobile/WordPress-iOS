@@ -84,11 +84,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-
-        if #available(iOS 13.0, *) {
-            // Overrides the current user interface appearance
-            AppAppearance.overrideAppearance()
-        }
+        AppAppearance.overrideAppearance()
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
         try? loggingStack.start()
@@ -138,11 +134,15 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         setupComponentsAppearance()
         disableAnimationsForUITests(application)
 
+        // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
+        let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
+        fonts?.forEach({ url in
+            CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
+        })
+
         PushNotificationsManager.shared.deletePendingLocalNotifications()
 
-        if #available(iOS 13, *) {
-            startObservingAppleIDCredentialRevoked()
-        }
+        startObservingAppleIDCredentialRevoked()
 
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
         return true
@@ -189,9 +189,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         DDLogInfo("\(self) \(#function)")
 
         // This is done here so the check is done on app launch and app switching.
-        if #available(iOS 13, *) {
-            checkAppleIDCredentialState()
-        }
+        checkAppleIDCredentialState()
+
         GutenbergSettings().performGutenbergPhase2MigrationIfNeeded()
     }
 
@@ -709,20 +708,14 @@ extension WordPressAppDelegate {
         if notification.object != nil {
             setupShareExtensionToken()
             configureNotificationExtension()
-
-            if #available(iOS 13, *) {
-                startObservingAppleIDCredentialRevoked()
-            }
+            startObservingAppleIDCredentialRevoked()
         } else {
             trackLogoutIfNeeded()
             removeTodayWidgetConfiguration()
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()
             windowManager.showFullscreenSignIn()
-
-            if #available(iOS 13, *) {
-                stopObservingAppleIDCredentialRevoked()
-            }
+            stopObservingAppleIDCredentialRevoked()
         }
 
         toggleExtraDebuggingIfNeeded()
@@ -853,7 +846,6 @@ extension WordPressAppDelegate {
 
 // MARK: - Apple Account Handling
 
-@available(iOS 13.0, *)
 extension WordPressAppDelegate {
 
     func checkAppleIDCredentialState() {

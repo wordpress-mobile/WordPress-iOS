@@ -100,10 +100,6 @@ static TestContextManager *_instance;
     return [_stack newDerivedContext];
 }
 
-- (nonnull NSManagedObjectContext *const)newMainContextChildContext {
-    return [_stack newMainContextChildContext];
-}
-
 - (NSURL *)storeURL
 {
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,

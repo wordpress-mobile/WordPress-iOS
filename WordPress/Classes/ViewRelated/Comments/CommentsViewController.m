@@ -19,9 +19,6 @@ static CGFloat const CommentsActivityFooterHeight               = 50.0;
 static NSInteger const CommentsRefreshRowPadding                = 4;
 static NSInteger const CommentsFetchBatchSize                   = 10;
 
-static NSString *CommentsReuseIdentifier                        = @"CommentsReuseIdentifier";
-static NSString *CommentsLayoutIdentifier                       = @"CommentsLayoutIdentifier";
-
 
 @interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate>
 @property (nonatomic, strong) WPTableViewHandler        *tableViewHandler;
@@ -29,7 +26,6 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 @property (nonatomic, strong) NoResultsViewController   *noResultsViewController;
 @property (nonatomic, strong) UIActivityIndicatorView   *footerActivityIndicator;
 @property (nonatomic, strong) UIView                    *footerView;
-@property (nonatomic, strong) NSCache                   *estimatedRowHeights;
 @end
 
 @implementation CommentsViewController
@@ -46,7 +42,6 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     if (self) {
         self.restorationClass = [self class];
         self.restorationIdentifier = NSStringFromClass([self class]);
-        self.estimatedRowHeights = [[NSCache alloc] init];
     }
     return self;
 }
@@ -68,13 +63,8 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
-    [self.tableView deselectSelectedRowWithAnimation:YES];
-    
-    // Refresh the UI
-    [self refreshNoResultsView];
 
+    [self refreshNoResultsView];
     [self refreshAndSyncIfNeeded];
 }
 
@@ -114,7 +104,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
     [footerView addSubview:indicator];
 
-    // Keep References!
+    // Keep References
     self.footerActivityIndicator            = indicator;
     self.footerView                         = footerView;
 }
@@ -132,7 +122,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)configureRefreshControl
 {
-    UIRefreshControl *refreshControl        = [UIRefreshControl new];
+    UIRefreshControl *refreshControl = [UIRefreshControl new];
     [refreshControl addTarget:self action:@selector(refreshAndSyncWithInteraction) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refreshControl;
 }
@@ -152,15 +142,14 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     // Register the cells
-    NSString *nibName   = [CommentsTableViewCell classNameWithoutNamespaces];
-    UINib *nibInstance  = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:nibInstance forCellReuseIdentifier:CommentsReuseIdentifier];
+    NSString *nibName = [CommentsTableViewCell classNameWithoutNamespaces];
+    UINib *nibInstance = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
+    [self.tableView registerNib:nibInstance forCellReuseIdentifier:CommentsTableViewCell.reuseIdentifier];
 }
 
 - (void)configureTableViewFooter
 {
-    // Notes:
-    //  -  Hide the cellSeparators, when the table is empty
+    // Hide the cellSeparators when the table is empty
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
@@ -175,11 +164,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSNumber *cachedHeight = [self.estimatedRowHeights objectForKey:indexPath];
-    if (cachedHeight.doubleValue) {
-        return cachedHeight.doubleValue;
-    }
-    return WPTableViewDefaultRowHeight;
+    return CommentsTableViewCell.estimatedRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -189,19 +174,19 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CommentsTableViewCell *cell = (CommentsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CommentsReuseIdentifier];
-    NSAssert([cell isKindOfClass:[CommentsTableViewCell class]], nil);
+    CommentsTableViewCell *cell = (CommentsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CommentsTableViewCell.reuseIdentifier];
     
-    [self configureCell:cell atIndexPath:indexPath];
-    
+    if (!cell) {
+        cell = [[CommentsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CommentsTableViewCell.reuseIdentifier];
+    }
+
+    [self configureCell:cell atIndexPath:indexPath];    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.estimatedRowHeights setObject:@(cell.frame.size.height) forKey:indexPath];
-
-    // Refresh only when we reach the last 3 rows in the last section!
+    // Refresh only when we reach the last 3 rows in the last section
     NSInteger numberOfRowsInSection     = [self.tableViewHandler tableView:tableView numberOfRowsInSection:indexPath.section];
     NSInteger lastSection               = [self.tableViewHandler numberOfSectionsInTableView:tableView] - 1;
     
@@ -306,10 +291,10 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 {
     [CommentAnalytics trackCommentUnApprovedWithComment:comment];
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        
+
     [self.tableView setEditing:NO animated:YES];
     [service approveComment:comment success:nil failure:^(NSError *error) {
-        DDLogError(@"#### Error approving comment: %@", error);
+        DDLogError(@"Error approving comment: %@", error);
     }];
 }
 
@@ -320,7 +305,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     
     [self.tableView setEditing:NO animated:YES];
     [service unapproveComment:comment success:nil failure:^(NSError *error) {
-        DDLogError(@"#### Error unapproving comment: %@", error);
+        DDLogError(@"Error unapproving comment: %@", error);
     }];
 }
 
@@ -356,29 +341,9 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     return fetchRequest;
 }
 
-- (void)configureCell:(CommentsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    NSParameterAssert(cell);
-    NSParameterAssert(indexPath);
-    
-    Comment *comment    = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    
-    cell.author         = comment.authorForDisplay;
-    cell.approved       = [comment.status isEqualToString:CommentStatusApproved];
-    cell.postTitle      = comment.titleForDisplay;
-    cell.content        = comment.contentPreviewForDisplay;
-    cell.timestamp      = [comment.dateCreated mediumString];
-    
-    // Don't download the gravatar, if it's the layout cell!
-    if ([cell.reuseIdentifier isEqualToString:CommentsLayoutIdentifier]) {
-        return;
-    }
-    
-    if (comment.avatarURLForDisplay) {
-        [cell downloadGravatarWithURL:comment.avatarURLForDisplay];
-    } else {
-        [cell downloadGravatarWithGravatarEmail:comment.gravatarEmailForDisplay];
-    }
+- (void)configureCell:(nonnull CommentsTableViewCell *)cell atIndexPath:(nonnull NSIndexPath *)indexPath {
+    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    [cell configureWithComment:comment];
 }
 
 - (NSString *)entityName
