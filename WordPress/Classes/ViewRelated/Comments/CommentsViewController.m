@@ -25,6 +25,13 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 
 @property (weak, nonatomic) IBOutlet FilterTabBar *filterTabBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+// When commentFilters feature flag is removed:
+// Both these outlets can be removed.
+// tableViewTopConstraintFilterHidden can be deleted in CommentsList.storyboard.
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTopConstraintFilterHidden;
+
 @end
 
 @implementation CommentsViewController
@@ -54,13 +61,16 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // TODO: - feature flag
-    // need separate table top constraint.
-    // toggle constraints per FF.
-    
-    [self configureNavBar];
+
+    // Configure view per commentFilters feature flag.
+    // When commentFilters feature flag is removed, only configureFilterTabBar is needed.
     [self configureFilterTabBar:self.filterTabBar];
+    BOOL filtersEnabled = [Feature enabled:FeatureFlagCommentFilters];
+    self.tableViewTopConstraint.active = filtersEnabled;
+    self.tableViewTopConstraintFilterHidden.active = !filtersEnabled;
+    self.filterTabBar.hidden = !filtersEnabled;
+
+    [self configureNavBar];
     [self configureLoadMoreSpinner];
     [self configureNoResultsView];
     [self configureRefreshControl];
@@ -151,7 +161,6 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 
 - (void)configureTableViewFooter
 {
-    // TODO: needed?
     // Hide the cellSeparators when the table is empty
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }

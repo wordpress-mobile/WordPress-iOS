@@ -38,6 +38,7 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="7aR-Vp-g6a" firstAttribute="top" secondItem="MpO-o7-pbX" secondAttribute="bottom" id="2Jb-OS-eae"/>
                             <constraint firstItem="bno-oB-pDf" firstAttribute="leading" secondItem="gDw-cc-yIW" secondAttribute="leading" id="7Jf-su-8WM"/>
                             <constraint firstAttribute="trailing" secondItem="bno-oB-pDf" secondAttribute="trailing" id="AgG-aE-VG8"/>
                             <constraint firstItem="7aR-Vp-g6a" firstAttribute="leading" secondItem="gDw-cc-yIW" secondAttribute="leading" id="Nt5-JK-DbB"/>
@@ -46,10 +47,17 @@
                             <constraint firstAttribute="trailing" secondItem="7aR-Vp-g6a" secondAttribute="trailing" id="htA-bQ-QaF"/>
                             <constraint firstItem="bno-oB-pDf" firstAttribute="top" secondItem="MpO-o7-pbX" secondAttribute="bottom" id="tfA-U7-Sc2"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="2Jb-OS-eae"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="filterTabBar" destination="bno-oB-pDf" id="HTz-ai-FRw"/>
                         <outlet property="tableView" destination="7aR-Vp-g6a" id="b8S-2O-Yk9"/>
+                        <outlet property="tableViewTopConstraint" destination="Rmm-F3-kCp" id="P4H-ty-YIf"/>
+                        <outlet property="tableViewTopConstraintFilterHidden" destination="2Jb-OS-eae" id="pCX-b1-ZAy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wHe-tJ-scb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
