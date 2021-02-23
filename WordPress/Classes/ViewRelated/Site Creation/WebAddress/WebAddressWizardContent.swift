@@ -389,7 +389,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         NSLayoutConstraint.activate([
             sitePromptView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Metrics.sitePromptEdgeMargin),
             sitePromptView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Metrics.sitePromptEdgeMargin),
-            sitePromptView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: Metrics.sitePromptBottomMargin),
+            sitePromptView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Metrics.sitePromptBottomMargin),
             sitePromptView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin)
         ])
     }
