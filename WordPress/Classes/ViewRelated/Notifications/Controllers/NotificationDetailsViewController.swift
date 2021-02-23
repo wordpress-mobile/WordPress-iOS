@@ -877,9 +877,11 @@ private extension NotificationDetailsViewController {
         if let linkRange = textBlock.ranges.map({ $0 as? LinkContentRange }).first,
            let url = linkRange?.url {
             cell.action = { [weak self] in
-                if UniversalLinkRouter.shared.canHandle(url: url) {
-                    UniversalLinkRouter.shared.handle(url: url, shouldTrack: false, source: self)
+                guard let `self` = self, self.isViewOnScreen() else {
+                    return
                 }
+
+                self.displayURL(url)
             }
         }
     }
