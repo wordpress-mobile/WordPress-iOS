@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SitePromptView" customModule="WordPress" customModuleProvider="target">
             <connections>
                 <outlet property="lockIcon" destination="0Kf-t2-GD9" id="iC6-lA-22Y"/>
+                <outlet property="sitePrompt" destination="HsV-QT-rIO" id="q0z-xO-bQ1"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

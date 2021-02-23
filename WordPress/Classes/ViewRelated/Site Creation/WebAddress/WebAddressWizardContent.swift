@@ -411,7 +411,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
                                                       comment: "Select domain name. Subtitle")
         static let createSite: String = NSLocalizedString("Create Site",
                                                           comment: "Button to progress to the next step")
-        static let searchPlaceholder: String = NSLocalizedString("Search Domains",
+        static let searchPlaceholder: String = NSLocalizedString("Type a name for your site",
                                                                  comment: "Site creation. Seelect a domain, search field placeholder")
         static let searchAccessibility: String = NSLocalizedString("Searches for available domains to use for your site.",
                                                                    comment: "Accessibility hint for the domains search field in Site Creation.")

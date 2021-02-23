@@ -8,6 +8,12 @@ class SitePromptView: UIView {
         static let borderWidth = CGFloat(1)
     }
 
+    @IBOutlet weak var sitePrompt: UILabel! {
+        didSet {
+            sitePrompt.text = NSLocalizedString("example.com", comment: "Provides a sample of what a domain name looks like.")
+        }
+    }
+
     @IBOutlet weak var lockIcon: UIImageView! {
         didSet {
             lockIcon.image = UIImage.gridicon(.lock)
