@@ -108,6 +108,6 @@ private enum Constants {
     }
 
     fileprivate enum MetaKeys {
-        static let Button = "button"
+        static let Button = "is_mobile_button"
     }
 }
