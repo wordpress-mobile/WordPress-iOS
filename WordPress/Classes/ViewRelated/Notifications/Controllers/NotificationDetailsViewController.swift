@@ -836,6 +836,10 @@ private extension NotificationDetailsViewController {
 
         let mediaURL = imageBlock.media.first?.mediaURL
         cell.downloadImage(mediaURL)
+
+        if note.isViewMilestone {
+            cell.backgroundImage = UIImage(named: Assets.confettiBackground)
+        }
     }
 
     func setupTextCell(_ cell: NoteBlockTextTableViewCell, blockGroup: FormattableContentGroup, at indexPath: IndexPath) {
@@ -1342,5 +1346,9 @@ private extension NotificationDetailsViewController {
         static let numberOfSections         = 1
         static let estimatedRowHeight       = CGFloat(44)
         static let expirationFiveMinutes    = TimeInterval(60 * 5)
+    }
+
+    enum Assets {
+        static let confettiBackground       = "notifications-confetti-background"
     }
 }
