@@ -5,6 +5,7 @@ protocol CategorySectionTableViewCellDelegate: class {
     func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell, slug: String)
     func didDeselectItem(forCell cell: CategorySectionTableViewCell)
     func accessibilityElementDidBecomeFocused(forCell cell: CategorySectionTableViewCell)
+    var selectedPreviewDevice: PreviewDeviceSelectionViewController.PreviewDevice { get }
 }
 
 protocol Thumbnail {
@@ -12,7 +13,6 @@ protocol Thumbnail {
     var urlTablet: String? { get }
     var urlMobile: String? { get }
     var slug: String { get }
-
 }
 
 protocol CategorySection {
@@ -125,10 +125,22 @@ extension CategorySectionTableViewCell: UICollectionViewDataSource {
         }
 
         let thumbnail = thumbnails[indexPath.row]
-        cell.previewURL = thumbnail.urlDesktop // TODO: update this for device mode picker
+        cell.previewURL = thumbnailUrl(forThumbnail: thumbnail)
         cell.isAccessibilityElement = true
         cell.accessibilityLabel = thumbnail.slug
         return cell
+    }
+    
+    private func thumbnailUrl(forThumbnail thumbnail: Thumbnail) -> String? {
+        guard let delegate = delegate else { return thumbnail.urlDesktop }
+        switch delegate.selectedPreviewDevice {
+        case .desktop:
+            return thumbnail.urlDesktop
+        case .tablet:
+            return thumbnail.urlTablet
+        case .mobile:
+            return thumbnail.urlMobile
+        }
     }
 }
 

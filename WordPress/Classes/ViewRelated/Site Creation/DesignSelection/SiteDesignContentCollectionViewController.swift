@@ -56,17 +56,6 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
         }
     }
     var previewDeviceButtonItem: UIBarButtonItem?
-    // TODO: we need to introduce this in the super class in order to avoid a feature-loss regression for this flow
-    var selectedPreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice.default {
-        didSet {
-            tableView.reloadData()
-            if let indexPath = selectedIndexPath {
-                DispatchQueue.main.async {
-//                    self.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
-                }
-            }
-        }
-    }
 
     var selectedDesign: RemoteSiteDesign? {
         guard let sectionIndex = selectedItem?.section, let position = selectedItem?.item else { return nil }

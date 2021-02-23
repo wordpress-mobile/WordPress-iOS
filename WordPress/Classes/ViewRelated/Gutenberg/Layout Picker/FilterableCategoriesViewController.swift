@@ -3,6 +3,7 @@ import Gridicons
 import Gutenberg
 
 class FilterableCategoriesViewController: CollapsableHeaderViewController {
+    typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice
     let tableView: UITableView
     internal var selectedItem: IndexPath? = nil {
         didSet {
@@ -28,6 +29,12 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
             }
 
             loadingStateChanged(isLoading)
+            tableView.reloadData()
+        }
+    }
+
+    var selectedPreviewDevice = PreviewDevice.default {
+        didSet {
             tableView.reloadData()
         }
     }
@@ -124,7 +131,6 @@ extension FilterableCategoriesViewController: UITableViewDataSource {
 }
 
 extension FilterableCategoriesViewController: CategorySectionTableViewCellDelegate {
-
     func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell, slug: String) {
         guard let cellIndexPath = tableView.indexPath(for: cell),
               let sectionIndex = categorySections.firstIndex(where: { $0.categorySlug == slug })
