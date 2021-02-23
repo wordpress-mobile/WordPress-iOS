@@ -358,7 +358,20 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(willEnterForeground),
+                                               name: UIApplication.willEnterForegroundNotification,
+                                               object: nil)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(siteBlocked(_:)),
+                                               name: .ReaderSiteBlocked,
+                                               object: nil)
+    }
+
+    @objc private func siteBlocked(_ notification: Foundation.Notification) {
+        navigationController?.popViewController(animated: true)
+        dismiss(animated: true, completion: nil)
     }
 
     /// Ask the coordinator to present the share sheet

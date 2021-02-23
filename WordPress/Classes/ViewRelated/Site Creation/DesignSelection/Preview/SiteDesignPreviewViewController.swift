@@ -26,16 +26,12 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
     }()
 
     private var accentColor: UIColor {
-        if #available(iOS 13.0, *) {
-            return UIColor { (traitCollection: UITraitCollection) -> UIColor in
-                if traitCollection.userInterfaceStyle == .dark {
-                    return UIColor.muriel(color: .accent, .shade40)
-                } else {
-                    return UIColor.muriel(color: .accent, .shade50)
-                }
+        return UIColor { (traitCollection: UITraitCollection) -> UIColor in
+            if traitCollection.userInterfaceStyle == .dark {
+                return UIColor.muriel(color: .accent, .shade40)
+            } else {
+                return UIColor.muriel(color: .accent, .shade50)
             }
-        } else {
-            return UIColor.muriel(color: .accent, .shade50)
         }
     }
 
@@ -62,7 +58,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
         SiteCreationAnalyticsHelper.trackSiteDesignPreviewViewed(siteDesign: siteDesign, previewMode: selectedPreviewDevice)
         observeProgressEstimations()
         configurePreviewDeviceButton()
-        navigationItem.rightBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
+        navigationItem.leftBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
     }
 
     deinit {
@@ -93,7 +89,7 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
 
     private func configurePreviewDeviceButton() {
         let button = UIBarButtonItem(image: UIImage(named: "icon-devices"), style: .plain, target: self, action: #selector(previewDeviceButtonTapped))
-        navigationItem.leftBarButtonItem = button
+        navigationItem.rightBarButtonItem = button
     }
 
     @objc private func previewDeviceButtonTapped() {
@@ -175,7 +171,7 @@ extension SiteDesignPreviewViewController {
         }
 
         popoverPresentationController.permittedArrowDirections = .up
-        popoverPresentationController.barButtonItem = navigationItem.leftBarButtonItem
+        popoverPresentationController.barButtonItem = navigationItem.rightBarButtonItem
     }
 
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {

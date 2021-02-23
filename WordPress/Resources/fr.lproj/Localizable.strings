@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-03 16:54:44+0000 */
+/* Translation-Revision-Date: 2021-02-18 12:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -9,13 +9,16 @@
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nPour confirmer, veuillez saisir à nouveau votre adresse de site avant de supprimer.\n";
 
+/* No comment provided by engineer. */
+" audio file" = "fichier audio";
+
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Images « Lazy-load »";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "Bouton \"Plus\"";
 
-/* No comment provided by engineer. */
+/* Description for the restore action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point for your restore." = "%1$@ correspond au point sélectionné pour le rétablissement.";
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
@@ -286,6 +289,9 @@
 "ACTIVE" = "ACTIF";
 
 /* No comment provided by engineer. */
+"ADD AUDIO" = "AJOUTER UN FICHIER AUDIO";
+
+/* No comment provided by engineer. */
 "ADD BLOCK HERE" = "AJOUTER BLOC ICI";
 
 /* No comment provided by engineer. */
@@ -507,6 +513,7 @@
 
 /* Autoapprove every comment
    Browse all themes selection title
+   Displays all of the historical threats
    Displays all of the Notifications, unfiltered */
 "All" = "Toutes";
 
@@ -567,6 +574,9 @@
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "Une connexion internet est obligatoire";
 
+/* Error message shown when trying to view the scan status and there is no internet connection. */
+"An active internet connection is required to view Jetpack Scan" = "Une connexion Internet active est nécessaire pour afficher Jetpack Scan";
+
 /* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
 "An active internet connection is required to view activities" = "Une connexion internet est nécessaire pour voir les activités.";
 
@@ -579,6 +589,9 @@
 
 /* Error message shown when trying to view Stats and there is no internet connection. */
 "An active internet connection is required to view stats" = "Une connexion Internet active est nécessaire pour afficher les stats";
+
+/* Error message shown when trying to view the Scan History feature and there is no internet connection. */
+"An active internet connection is required to view the history" = "Une connexion Internet active est nécessaire pour afficher l’historique";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "Un erreur est survenue lors de la création du menu.";
@@ -702,7 +715,7 @@
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Voulez-vous vraiment rétablir la version %1$@ de votre site ? Cela supprimera le contenu et les options créés ou modifiés jusqu’à maintenant.";
 
 /* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
-"Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "Confirmez-vous vouloir rétablir votre site au %@ ?\nCela supprimera tout le contenu et les options créés ou modifiés jusqu’à maintenant.";
+"Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost." = "Voulez-vous vraiment rétablir la version %@ de votre site ?\nToutes les modifications apportées depuis seront perdues.";
 
 /* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
 "Are you sure you want to save as draft?" = "Confirmez-vous vouloir enregistrer comme brouillon ?";
@@ -730,6 +743,15 @@
 
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Joindre le fichier comme lien";
+
+/* No comment provided by engineer. */
+"Audio Player" = "Lecteur audio";
+
+/* translators: accessibility text. %s: Audio caption. */
+"Audio caption. %s" = "Légende audio. %s";
+
+/* translators: accessibility text. Empty Audio caption. */
+"Audio caption. Empty" = "Légende audio. Vide";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "Audio, %@";
@@ -804,14 +826,19 @@
    Spoken accessibility label */
 "Back" = "Retour";
 
+/* Title of the cell displaying status of a backup in progress */
+"Backing up site" = "Sauvegarde du site";
+
 /* Noun. Links to a blog's Jetpack Backups screen.
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
-   Title for the Jetpack's backup list */
+   Title for Jetpack Backup Update Status Failed screen
+   Title for the Jetpack's backup list
+   Title of section showing backup status */
 "Backup" = "Sauvegardes";
 
 /* Title for error displayed when preparing a backup fails. */
-"Backup failed." = "Échec de la sauvegarde.";
+"Backup failed" = "Échec de la sauvegarde de l’archive";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "Graphique à barres représentant les commentaires pour la période sélectionnée.";
@@ -983,6 +1010,7 @@
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
+   Cancel button for alert
    Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
@@ -1082,6 +1110,9 @@
 /* Button title to edit visibility of sites. */
 "Change Visibility" = "Modifier la visibilité";
 
+/* No comment provided by engineer. */
+"Change block position" = "Modifier l’emplacement du bloc";
+
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Les changements ont échoué";
 
@@ -1167,6 +1198,9 @@
 
 /* Label for Publish time picker */
 "Choose a time" = "Choisir une heure";
+
+/* No comment provided by engineer. */
+"Choose audio" = "Choisir un fichier sonore";
 
 /* Title to choose date range in a calendar */
 "Choose date range" = "Choisir la plage de dates";
@@ -1383,14 +1417,12 @@
 "Configure" = "Configurer";
 
 /* Confirm
+   Confirm Rewind button title
    Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Confirmer";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Confirmer la suppression du site";
-
-/* Confirm Rewind button title */
-"Confirm Rewind" = "Confirmez le rétablissement";
 
 /* Instructional text about the Sharing feature. */
 "Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "Confirmez qu'il s'agit bien du compte que vous souhaitez autoriser. Veuillez noter que vos articles seront automatiquement partagés sur ce compte.";
@@ -1508,10 +1540,6 @@
 /* Button title. Tapping begins log in using Google. */
 "Continue with Google" = "Continuer avec Google";
 
-/* Button title. Takes the user to the login by email flow.
-   Button title. Tapping begins our normal log in process. */
-"Continue with WordPress.com" = "Continuer avec WordPress.com";
-
 /* Title of a Quick Start Tour */
 "Continue with site setup" = "Continuez à configurer le site";
 
@@ -1566,8 +1594,11 @@
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Impossible de basculer sur S’abonner : attribut blogURL manquant";
 
-/* An error description explaining that Seen could not be toggled due to a missing feedItemID attribute. */
-"Could not toggle Seen: missing feedItemID attribute." = "Impossible de basculer vers Lu : attribut feedItemID manquant.";
+/* An error description explaining that Seen could not be toggled due to a missing feedItemID. */
+"Could not toggle Seen: missing feedItemID." = "Impossible de basculer sur Lu : feedItemID manquant.";
+
+/* An error description explaining that Seen could not be toggled due to a missing postID. */
+"Could not toggle Seen: missing postID." = "Impossible de basculer sur Lu : postID manquant.";
 
 /* Title of a prompt. */
 "Could not unfollow site" = "Impossible de se désabonner du site";
@@ -1702,6 +1733,9 @@
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Creating dashboard" = "Création du tableau de bord";
 
+/* Description of the cell displaying status of a backup in progress */
+"Creating downloadable backup" = "Création d’une sauvegarde téléchargeable";
+
 /* No comment provided by engineer. */
 "Current" = "Actuel";
 
@@ -1803,8 +1837,7 @@
 "December 17, 2017" = "17 décembre 2017";
 
 /* Description of the default paragraph formatting style in the editor.
-   Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.
-   Title for the default web preview */
+   Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "Par défaut";
 
 /* Label for selecting the default category of a post
@@ -1887,6 +1920,9 @@
    Theme Details action title */
 "Details" = "Détails";
 
+/* Instructions after a Magic Link was sent, but email is incorrect. */
+"Didn't mean to create a new account? Go back to re-enter your email address." = "Vous ne voulez pas créer de nouveau compte ? Revenez en arrière et ressaisissez votre adresse e-mail.";
+
 /* Label for the dimensions in pixels for a media asset (image / video) */
 "Dimensions" = "Dimensions";
 
@@ -1923,9 +1959,6 @@
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "La déconnexion de ce compte ne vous permettra plus de partager automatiquement sur %@ vos articles publiés.";
 
-/* Discover tab name */
-"Discover" = "Découvrir";
-
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Découvrez des sites ";
 
@@ -1941,6 +1974,7 @@
    Action to show on alert when view asset fails.
    Customize Insights button title
    Dismiss a view. Verb
+   Dismiss button title
    Dismiss button title.
    Dismiss the AlertView
    Share extension error dialog cancel button label.
@@ -2000,6 +2034,7 @@
    Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
+   Title for button that will dismiss this view
    Title for the button that will dismiss this view.
    Title of the Done button on the me page */
 "Done" = "Terminé";
@@ -2024,6 +2059,9 @@
 
 /* translators: accessibility text (hint for moving to color settings) */
 "Double tap to go to color settings" = "Toucher deux fois pour aller aux réglages de couleur";
+
+/* No comment provided by engineer. */
+"Double tap to listen the audio file" = "Appuyer deux fois pour écouter le fichier audio";
 
 /* No comment provided by engineer. */
 "Double tap to move the block down" = "Toucher deux fois pour faire descendre le bloc";
@@ -2053,6 +2091,9 @@
 "Double tap to select a video" = "Toucher deux fois pour sélectionner une vidéo";
 
 /* No comment provided by engineer. */
+"Double tap to select an audio file" = "Appuyer deux fois pour sélectionner un fichier audio";
+
+/* No comment provided by engineer. */
 "Double tap to select an image" = "Toucher deux fois pour sélectionner une image";
 
 /* translators: accessibility text (hint for selecting option) */
@@ -2064,10 +2105,14 @@
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "Toucher deux fois pour annuler la dernière modification";
 
+/* Download button title */
+"Download" = "Téléchargement";
+
 /* Title for the Jetpack Download Backup Site Screen */
 "Download Backup" = "Télécharger la sauvegarde";
 
-/* Title displayed for download backup action. */
+/* Title displayed for download backup action.
+   Title for button allowing user to backup their Jetpack site */
 "Download backup" = "Télécharger la sauvegarde";
 
 /* Title for the button that will download the backup file. */
@@ -2203,7 +2248,8 @@
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Adresse vide";
 
-/* Button title about the enable notifications action */
+/* Button title about the enable notifications action
+   Button title for the enable site notifications action. */
 "Enable" = "Activer";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
@@ -2215,7 +2261,8 @@
 /* Title of a Quick Start Tour */
 "Enable post sharing" = "Activer le partage d’articles";
 
-/* Message informing the user about the enable notifications action */
+/* Message informing the user about the enable notifications action
+   Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Activer les notifications de site ?";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
@@ -2304,6 +2351,12 @@
 
 /* There was an error enabling autoupdates for a plugin, placeholder is the plugin name */
 "Error enabling autoupdates for %@." = "Erreur lors de l’activation des mises à jour automatiques pour %@.";
+
+/* Error displayed when fixing a threat fails. */
+"Error fixing threat. Please contact our support." = "Erreur lors de la correction de la menace. Veuillez contacter l’assistance.";
+
+/* Error displayed when ignoring a threat fails. */
+"Error ignoring threat. Please contact our support." = "Une erreur s’est produite, l’erreur n’a pas pu être ignorée. Veuillez contacter l’assistance.";
 
 /* Notice displayed after attempt to install a plugin fails. */
 "Error installing %@." = "Erreur lors de l'installation de %@.";
@@ -2431,6 +2484,9 @@
    The action failed */
 "Failed" = "Échec";
 
+/* No comment provided by engineer. */
+"Failed to insert audio file. Please tap for options." = "Échec d’insertion du fichier audio Veuillez appuyer pour afficher les options.";
+
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "L’insertion du média a échoué.\nVeuillez toucher pour les options.";
 
@@ -2538,6 +2594,15 @@
 /* Button title, confirm fixing all threats */
 "Fix all threats" = "Corriger l’ensemble des menaces";
 
+/* Title for button that will fix the threat */
+"Fix threat" = "Résoudre la menace";
+
+/* Displays the fixed threats */
+"Fixed" = "Exact";
+
+/* Subtitle displayed while the server is fixing threats */
+"Fixing Threats" = "Correction des menaces";
+
 /* Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Suivre ";
@@ -2582,6 +2647,9 @@
    User is following the blog.
    Verb. Button title. The user is following a blog. */
 "Following" = "Blogs suivis";
+
+/* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
+"Following %1$@" = "Après %1$@";
 
 /* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
 "Following %@" = "Suivant %@";
@@ -2828,8 +2896,15 @@
 "Hide keyboard" = "Cacher le clavier";
 
 /* Displays the History screen from the editor's alert sheet
+   Title of a navigation button that opens the scan history view
    Title of the post history screen */
 "History" = "Historique";
+
+/* Message title displayed when we fail to fetch the status of the backup in progress. */
+"Hmm, we couldn’t find your backup status" = "L’état de votre sauvegarde est introuvable.";
+
+/* Message title displayed when we fail to fetch the status of the restore in progress. */
+"Hmm, we couldn’t find your restore status" = "L’état de votre restauration est introuvable.";
 
 /* Moderation Keys Title
    Settings: Comments Moderation */
@@ -2851,8 +2926,14 @@
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hourra !\nC’est presque fini.";
 
+/* Title for the fix section in Threat Details: Threat is fixed */
+"How did Jetpack fix it?" = "Comment Jetpack a-t-il réparé ?";
+
 /* How to create story description */
 "How to create a story post" = "Comment créer une publication de story";
+
+/* Title for the fix section in Threat Details */
+"How will we fix it?" = "Comment allons-nous y remédier ?";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "J’aime";
@@ -2886,6 +2967,12 @@
 
 /* Ignore action. Verb */
 "Ignore" = "Ignorer";
+
+/* Title for button that will ignore the threat */
+"Ignore threat" = "Ignorer la menace";
+
+/* Displays the ignored threats */
+"Ignored" = "Ignoré";
 
 /* Hint for image alt on image settings. */
 "Image Alt" = "Image alternative";
@@ -3074,14 +3161,15 @@
 /* Description that explains that we are unable to auto fix the threat */
 "Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site." = "Jetpack Scan ne peut pas résoudre cette menace automatiquement. Nous vous conseillons de procéder à une résolution manuelle. Vérifiez que WordPress, votre thème, ainsi que toutes vos extensions sont bien à jour, puis supprimez le code, le thème ou l’extension corrompue de votre site.";
 
-/* Description for a label when the scan has failed */
+/* Description for a label when the scan has failed
+   Error message shown when the scan start has failed. */
 "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Jetpack Scan n’a pas pu terminer l’analyse de votre site. Veuillez vérifier si votre site est indisponible. Si ce n’est pas le cas, réessayez. S’il l’est, ou si Jetpack Scan rencontre toujours des problèmes, contactez notre équipe d’assistance.";
 
 /* Description for a label when there are threats on the site, displays the number of threats, and the site's title */
-"Jetpack Scan found %1$d potential threats on %2$@. Please review each threat and take action." = "Jetpack Scan a trouvé %1$d menaces potentielles sur %2$@. Veuillez passer en revue chaque menace et corriger.";
+"Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Jetpack Scan a trouvé %1$d menaces potentielles avec %2$@. Veuillez passer en revue les éléments ci-dessous et corriger ou appuyer sur le bouton Tout corriger. Nous sommes disponibles pour vous aider au besoin.";
 
 /* Description for a label when there is a single threat on the site, displays the site's title */
-"Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action." = "Jetpack Scan a trouvé 1 menace potentielle sur %1$@. Veuillez passer en revue chaque menace et corriger.";
+"Jetpack Scan found 1 potential threat with %1$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Jetpack Scan a trouvé 1 menace potentielle avec %1$@. Veuillez passer en revue les éléments ci-dessous et corriger ou appuyer sur le bouton Tout corriger. Nous sommes disponibles pour vous aider au besoin.";
 
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will delete the affected file or directory." = "Jetpack Scan supprimera le fichier ou répertoire concerné.";
@@ -3187,6 +3275,9 @@
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Laissez-nous vous aider";
 
+/* Title for the button that will dismiss this view. */
+"Let me know when finished!" = "Indiquez-moi lorsque l’opération est terminée !";
+
 /* Title for the app appearance setting for light mode */
 "Light" = "Clair";
 
@@ -3291,6 +3382,12 @@
 /* Text displayed while loading plugins for a site */
 "Loading Plugins..." = "Chargement des extensions en cours…";
 
+/* Text displayed while loading the scan history for a site */
+"Loading Scan History..." = "Chargement de l’historique d’analyse…";
+
+/* Text displayed while loading the scan section for a site */
+"Loading Scan..." = "Chargement de l’analyse…";
+
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "Chargement des domaines";
 
@@ -3338,6 +3435,9 @@
 "Location unknown" = "Lieu inconnu";
 
 /* No comment provided by engineer. */
+"Lock icon" = "Icône de verrouillage";
+
+/* No comment provided by engineer. */
 "Log Files By Created Date" = "Fichiers logs par date de création";
 
 /* Button title.  Tapping takes the user to the login form.
@@ -3356,6 +3456,10 @@
 
 /* A generic error message for a failed log in. */
 "Log in failed. Please try again." = "La connexion a échoué. Veuillez réessayer.";
+
+/* Button title. Takes the user to the login by email flow.
+   Button title. Tapping begins our normal log in process. */
+"Log in or sign up with WordPress.com" = "Se connecter ou s’inscrire avec WordPress.com";
 
 /* Instruction text on the login's email address screen. */
 "Log in to the WordPress.com account you used to connect Jetpack." = "Connectez-vous à votre compte WordPress.com que vous utilisez pour connecter Jetpack.";
@@ -3439,6 +3543,12 @@
 
 /* An option to mark a post as unseen. */
 "Mark as unseen" = "Marquer comme non lu";
+
+/* Notice title when updating a post's seen status succeeds. */
+"Marked post as seen" = "Article marqué comme lu";
+
+/* Notice title when updating a post's unseen status succeeds. */
+"Marked post as unseen" = "Article marqué comme non lu";
 
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "Vérifier les comptes en utilisant les e-mails";
@@ -3584,9 +3694,6 @@
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "Déplace le bloc à gauche de la position %1$s vers la position %2$s";
-
-/* No comment provided by engineer. */
-"Move block position" = "Déplacer la position du bloc";
 
 /* No comment provided by engineer. */
 "Move block right" = "Déplacer le bloc à droite";
@@ -3787,6 +3894,9 @@
 "No activity yet" = "Aucune activité pour l’instant";
 
 /* No comment provided by engineer. */
+"No application can handle this request." = "Aucune application ne peut traiter cette requête.";
+
+/* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "Aucune application ne peut traiter cette requête. Veuillez installer un navigateur Internet.";
 
 /* A short message that informs the user no WordPress.com sites could be found. */
@@ -3820,14 +3930,21 @@
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "Aucune donnée pour le moment.";
 
+/* Title for the view when there aren't any fixed threats to display */
+"No fixed threats" = "Aucune menace corrigée";
+
 /* Title for the no followed sites result screen */
 "No followed sites" = "Aucun site suivi";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "Aucun abonné pour le moment";
 
-/* Displayed when a call is made to load the revisions but there's no result or an error. */
+/* Displayed when a call is made to load the revisions but there's no result or an error.
+   Title for the view when there aren't any history items to display */
 "No history yet" = "Pas encore d’historique";
+
+/* Title for the view when there aren't any ignored threats to display */
+"No ignored threats" = "Aucune menace ignorée";
 
 /* Title displayed when the user has removed all Insights from display. */
 "No insights added yet" = "Aucune thématique ajoutée pour le moment";
@@ -4024,6 +4141,7 @@
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    OK
+   OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
@@ -4036,8 +4154,8 @@
    Title of primary button on alert prompting verify their accounts while attempting to publish */
 "OK" = "OK";
 
-/* Title for the button that will dismiss this view. */
-"OK, notify me!" = "D’accord, m’avertir !";
+/* No comment provided by engineer. */
+"OPEN" = "OUVRIR";
 
 /* Disabled */
 "Off" = "Éteint";
@@ -4071,6 +4189,7 @@
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
    Title for the view when there's an error loading time zones */
@@ -4241,6 +4360,9 @@
    Title for selecting parent category of a category */
 "Parent Category" = "Catégorie mère";
 
+/* Message informing the user that their pages parent has been set successfully */
+"Parent page successfully updated." = "Page parente mise à jour avec succès.";
+
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
    Label for the password field. Should be the same as WP core.
@@ -4398,6 +4520,9 @@
 
 /* Used on an error alert to prompt the user to try again */
 "Please try again later" = "Veuillez réessayer ultérieurement";
+
+/* Description for the Jetpack Restore Failed message. */
+"Please try again later or contact support." = "Réessayez ultérieurement ou contactez le service d’assistance.";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "Veuillez réessayer plus tard.";
@@ -4646,6 +4771,9 @@
 
 /* Error message title informing the user that a stream could not be loaded. */
 "Problem loading stream" = "Problème lors du chargement du flux";
+
+/* No comment provided by engineer. */
+"Problem opening the audio" = "Un problème est survenu lors de l’ouverture du fichier audio";
 
 /* No comment provided by engineer. */
 "Problem opening the video" = "Problème pour ouvrir la vidéo";
@@ -4918,6 +5046,12 @@
 "Replace Current Block" = "Remplacer le bloc actuel";
 
 /* No comment provided by engineer. */
+"Replace audio" = "Remplacer le son";
+
+/* No comment provided by engineer. */
+"Replace file" = "Remplacer le fichier";
+
+/* No comment provided by engineer. */
 "Replace image or video" = "Remplacer l’image ou la vidéo";
 
 /* No comment provided by engineer. */
@@ -4996,20 +5130,36 @@
 /* The largest resolution allowed for uploading */
 "Resolution" = "Résolution";
 
+/* Title for the fix section in Threat Details: Threat is not fixable */
+"Resolving the threat" = "Résolution de la menace en cours";
+
 /* Title displayed for restore action.
+   Title for button allowing user to restore their Jetpack site
    Title for Jetpack Restore Complete screen
+   Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen */
+   Title for the Jetpack Restore Site Screen
+   Title of section showing restore status */
 "Restore" = "Rétablir";
 
+/* Title for Jetpack Restore Failed screen */
+"Restore Failed" = "Échec de la restauration";
+
 /* Title for error displayed when restoring a site fails. */
-"Restore failed." = "Échec de la restauration.";
+"Restore failed" = "Échec de la restauration.";
 
 /* Label that describes the restore site action */
 "Restore site" = "Rétablir le site";
 
 /* Button title for restore site action */
 "Restore to this point" = "Rétablir à cette version";
+
+/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
+"Restored to %@" = "Restauré vers %@";
+
+/* Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date.
+   Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
+"Restoring to %@" = "Restauration vers %@";
 
 /* A prompt to attempt the failed network request again
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
@@ -5046,6 +5196,12 @@
 /* Share extension error dialog cancel button text */
 "Return to post" = "Retourner à l’article";
 
+/* No comment provided by engineer. */
+"Reusable blocks aren't editable on WordPress for Android" = "Les blocs réutilisables ne sont pas modifiables sur WordPress pour Android";
+
+/* No comment provided by engineer. */
+"Reusable blocks aren't editable on WordPress for iOS" = "Les blocs réutilisables ne sont pas modifiables sur WordPress pour iOS";
+
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Annuler les modifications en attente";
 
@@ -5055,20 +5211,15 @@
 /* Title of the screen that shows the revisions. */
 "Revision" = "Révision";
 
-/* Title displayed when user swipes on a rewind cell
-   Title for button allowing user to rewind their Jetpack site
+/* Title for button allowing user to rewind their Jetpack site
    Title of section showing rewind status */
 "Rewind" = "Rembobiner";
 
-/* Title displayed in the Rewind Site alert, should match Calypso */
+/* Title displayed in the Restore Site alert, should match Calypso */
 "Rewind Site" = "Rétablir le site";
 
-/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date.
-   Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
+/* Text showing the point in time the site is being currently rewinded to. %@' is a placeholder that will expand to a date. */
 "Rewinding to %@" = "Rembobinage à la version du %@";
-
-/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
-"Rewound to %@" = "Rembobiné à la version du %@";
 
 /* Post Rich content */
 "Rich Content" = "Contenu enrichi";
@@ -5145,11 +5296,15 @@
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Enregistrement en cours...";
 
-/* Noun. Links to a blog's Jetpack Scan screen. */
+/* Noun. Links to a blog's Jetpack Scan screen.
+   Title of the view */
 "Scan" = "Analyser";
 
 /* Button title that triggers a scan */
 "Scan Again" = "Analyser de nouveau";
+
+/* Title of the view */
+"Scan History" = "Analyser l’historique";
 
 /* Button title that triggers a scan */
 "Scan Now" = "Lancer une analyse";
@@ -5653,13 +5808,20 @@
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Slug";
 
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"So far, there are no fixed threats on your site." = "Il n’y a aucune menace résolue sur votre site à ce jour.";
+
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"So far, there are no ignored threats on your site." = "Il n’y a aucune menace ignorée sur votre site à ce jour.";
+
 /* Follower Totals label for social media followers */
 "Social" = "Social";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Certains téléversements de média ont échoués. Cette action va supprimer tous ces médias de l’article. \nEnregistrer quand même ?";
 
-/* Title for a label that appears when the scan failed */
+/* Title for a label that appears when the scan failed
+   Title for the error view when the scan start has failed */
 "Something went wrong" = "Un problème est survenu…";
 
 /* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
@@ -5921,6 +6083,9 @@
 /* Accessibility of stats table. Placeholders will be populated with names of data shown in table. */
 "Table showing %@ and %@" = "Le tableau affiche %1$@ et %2$@";
 
+/* Title for the tablet web preview */
+"Tablet" = "Tablette";
+
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
 "Tag" = "Étiquette";
@@ -6104,11 +6269,11 @@
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "La langue dans laquelle ce site est principalement écrit.";
 
-/* Description that informs for label when there are no threats on a users site */
-"The last Jetpack scan completed and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "La dernière analyse Jetpack a eu lieu et tout avait l’air normal.\n\nExécutez une analyse manuelle maintenant ou attendez la prochaine analyse Jetpack plus tard dans la journée.";
+/* Description for label when there are no threats on a users site and how long ago the scan ran. */
+"The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "La dernière analyse Jetpack exécutée le %1$@ n’a détecté aucun risque.\n\nPour contrôler à nouveau votre site, exécutez une analyse manuelle ou attendez la prochaine analyse Jetpack plus tard dans la journée.";
 
-/* Description for label when there are no threats on a users site and how long ago the scan ran */
-"The last Jetpack scan ran %1$@ and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "La dernière analyse Jetpack a eu lieu %1$@ et tout avait l’air normal.\n\nExécutez une analyse manuelle maintenant ou attendez la prochaine analyse Jetpack plus tard dans la journée.";
+/* Description that informs for label when there are no threats on a users site */
+"The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "La dernière analyse Jetpack n’a détecté aucun risque.\n\nPour contrôler à nouveau votre site, exécutez une analyse manuelle ou attendez la prochaine analyse Jetpack plus tard dans la journée.";
 
 /* WordPress.com Push Authentication Expired message */
 "The login request has expired. Log in to WordPress.com to try again." = "La demande de connexion a expiré. Connectez-vous à WordPress.com pour réessayer.";
@@ -6154,6 +6319,12 @@
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "L'utilisateur spécifié est introuvable. Veuillez vérifier que son nom a été correctement orthographié.";
+
+/* Title for the technical details section in Threat Details */
+"The technical details" = "Détails techniques";
+
+/* Message displayed when a threat is fixed successfully. */
+"The threat was successfully fixed." = "La menace a été corrigée avec succès.";
 
 /* People: Invitation Error */
 "The user already has the specified role. Please, try assigning a different role." = "L'utilisateur possède déjà le rôle spécifié. Essayez en attribuant un rôle différent.";
@@ -6266,6 +6437,12 @@
 /* Text displayed when there is a failure loading the plan details */
 "There was an error loading the plan" = "Une erreur s’est produite lors du chargement du plan.";
 
+/* Text displayed when there is a failure loading the history feed */
+"There was an error loading the scan history" = "Une erreur s’est produite lors du chargement de l’historique de l’analyse.";
+
+/* Text displayed when there is a failure loading the status */
+"There was an error loading the scan status" = "Une erreur s’est produite lors du chargement de l’état de l’analyse.";
+
 /* Text displayed when there is a failure loading the plugin */
 "There was an error loading this plugin" = "Il y a eu une erreur en chargeant cette extension";
 
@@ -6278,8 +6455,14 @@
 /* Updating Role failed error message */
 "There was an error updating @%@" = "Une erreur s’est produite en mettant à jour @%@";
 
+/* Text displayed when user tries to create a downloadable backup when there is already one being prepared */
+"There's a backup currently being prepared, please wait before starting the next one" = "Une sauvegarde est en cours de préparation, veuillez patienter avant d’en commencer une autre";
+
 /* Text displayed when user tries to start a restore when there is already one running */
 "There's a restore currently in progress, please wait before starting next one" = "Une restauration est en cours, veuillez patienter avant d'en commencer une autre";
+
+/* Text displayed when user tries to start a restore when there is already one running */
+"There's a restore currently in progress, please wait before starting the next one" = "Une restauration est en cours, veuillez patienter avant d’en commencer une autre";
 
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "Elles sont publiées en tant que nouvel article de blog sur votre site afin que votre public ne rate jamais rien.";
@@ -6352,8 +6535,17 @@
 /* Title for a threat */
 "Threat Found" = "menace détectée";
 
+/* Title for the Jetpack Scan Threat Details screen */
+"Threat details" = "Détails de la menace";
+
 /* Summary description for a threat that includes the threat signature */
 "Threat found %1$@" = "Menace détectée : %1$@";
+
+/* Description for threat file */
+"Threat found in file:" = "Menace détectée dans le fichier :";
+
+/* Message displayed when a threat is ignored successfully. */
+"Threat ignored." = "Menace ignorée.";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Miniature";
@@ -6523,6 +6715,8 @@
 "Try adjusting your date range or activity type filters" = "Essayez d’ajuster les fitres d’activités ou la période.";
 
 /* Button label for trying to retrieve the activities type again
+   Button label for trying to retrieve the history again
+   Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
@@ -6542,6 +6736,12 @@
 
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "Activer les notifications";
+
+/* Notice title when turning site notifications off succeeds. */
+"Turned off site notifications" = "Notifications de site désactivées";
+
+/* Notice title when turning site notifications on succeeds. */
+"Turned on site notifications" = "Notifications de site activées";
 
 /* Launches the Twitter App */
 "Twitter" = "Twitter";
@@ -6582,6 +6782,12 @@
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Impossible de supprimer le média.";
 
+/* Message displayed when opening the link to the downloadable backup fails. */
+"Unable to download file" = "Impossible de télécharger le fichier";
+
+/* Notice title when following a site fails. */
+"Unable to follow site" = "Impossible de s’abonner au site";
+
 /* Error message displayed when we were unable to copy the URL for an item in the user's media library. */
 "Unable to get URL for media item." = "Impossible d’obtenir l’URL de l’élément multimédia.";
 
@@ -6601,10 +6807,10 @@
 /* Error shown when the app fails to load a video from the user's media library. */
 "Unable to load video." = "Impossible de charger la vidéo.";
 
-/* Alert displayed to the user when updating a post's seen status failed. */
+/* Notice title when updating a post's seen status failed. */
 "Unable to mark post seen" = "Impossible de marquer l’article comme lu";
 
-/* Alert displayed to the user when updating a post's unseen status failed. */
+/* Notice title when updating a post's unseen status failed. */
 "Unable to mark post unseen" = "Impossible de marquer l’article comme non lu";
 
 /* Dialog box title for when the user is canceling an upload. */
@@ -6616,17 +6822,32 @@
 /* Alert title when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
 "Unable to register domain" = "Impossible d’enregistrer le domaine";
 
+/* Title for the Jetpack Restore Failed message. */
+"Unable to restore your site" = "Impossible de restaurer votre site";
+
 /* Text displayed when a site restore fails. */
 "Unable to restore your site, please try again later or contact support." = "Impossible de restaurer votre site, veuillez essayer plus tard ou contactez le support.";
 
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "Impossible d’enregistrer le média.";
 
+/* Message displayed when sharing a link to the downloadable backup fails. */
+"Unable to share link" = "Impossible de partager le lien";
+
 /* Message that appears when a user tries to trash a page while their device is offline. */
 "Unable to trash pages while offline. Please try again later." = "Impossible de déplacer des pages vers la corbeille en étant hors ligne. Veuillez réessayer plus tard.";
 
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "Impossible de mettre des publications à la corbeille en mode hors connexion. Veuillez réessayer ultérieurement.";
+
+/* Notice title when turning site notifications off fails. */
+"Unable to turn off site notifications" = "Impossible de désactiver les notifications de site";
+
+/* Notice title when turning site notifications on fails. */
+"Unable to turn on site notifications" = "Impossible d’activer les notifications de site";
+
+/* Notice title when unfollowing a site fails. */
+"Unable to unfollow site" = "Impossible de se désabonner du site";
 
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "Impossible de mettre à jour les réglages de page d’accueil";
@@ -6654,6 +6875,9 @@
 
 /* Error message displayed when an error occurred checking for email availability. */
 "Unable to verify the email address. Please try again later." = "Impossible de vérifier l’adresse e-mail. Veuillez réessayer ultérieurement.";
+
+/* Message displayed when visiting a site fails. */
+"Unable to visit site" = "Impossible de visiter le site";
 
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "Impossible d'écrire le fichier de l'image";
@@ -6688,7 +6912,8 @@
 /* Verb. An option to unfollow a site. */
 "Unfollow Site" = "Ne plus suivre ce site";
 
-/* User unfollowed a site. */
+/* Notice title when unfollowing a site succeeds.
+   User unfollowed a site. */
 "Unfollowed site" = "Site non suivi";
 
 /* Spoken hint describing action for selected following buttons. */
@@ -6841,6 +7066,9 @@
 
 /* Label to show while uploading media to server */
 "Uploading..." = "Téléversement…";
+
+/* No comment provided by engineer. */
+"Uploading…" = "Téléversement...";
 
 /* Title for alert when trying to save post with failed media items */
 "Uploads failed" = "Échec des téléversements";
@@ -7157,6 +7385,12 @@
 /* Text displayed if a media couldnt be uploaded. */
 "We couldn't upload this media." = "Nous ne pouvons pas mettre en ligne ce média.";
 
+/* Hint displayed when we fail to fetch the status of the backup in progress. */
+"We couldn’t find the status to say how long your backup will take." = "L’état permettant d’indiquer la durée de création de votre sauvegarde est introuvable.";
+
+/* Hint displayed when we fail to fetch the status of the restore in progress. */
+"We couldn’t find the status to say how long your restore will take." = "L’état permettant d’indiquer la durée de votre restauration est introuvable.";
+
 /* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
 "We had trouble loading connections for %@" = "Nous avons quelques problèmes de connexions à %@";
 
@@ -7168,6 +7402,9 @@
 
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "Nous avons apporté de grosses améliorations à l’éditeur de blocs et nous pensons que ça vaut le coup d’essayer !\n\nNous l’avons activé pour les nouveaux articles et pages mais si vous voulez changer pour l’éditeur classique, allez à Mes sites > Réglages de sites.";
+
+/* Message displayed when a backup has finished */
+"We successfully created a backup of your site as of %@" = "Nous avons créé une sauvegarde de votre site en date du %@  !";
 
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
 "We successfully created a backup of your site from %1$@." = "Nous avons créé une sauvegarde de votre site tel qu’il était le %1$@.";
@@ -7245,6 +7482,9 @@
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "Nous faisons les derniers réglages. Bientôt fini…";
 
+/* Detail text display informing the user that we're fixing threats */
+"We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Nous rencontrons des difficultés à résoudre ces menaces en arrière-plan. Pendant ce temps, vous pouvez continuer à utiliser votre site comme d’habitude, tout en revenant de temps à autre pour vérifier la progression de l’analyse.";
+
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Impossible de se connecter au site Jetpack à cette URL. Contactez-nous pour une assistance.";
 
@@ -7290,6 +7530,16 @@
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Nous vous enverrons toujours des e-mails importants sur votre compte, mais vous pouvez aussi recevoir des conseils utiles !";
 
+/* Hint displayed when we fail to fetch the status of the backup in progress.
+   Hint displayed when we fail to fetch the status of the restore in progress. */
+"We’ll notify you when its done." = "Nous vous préviendrons lorsque cela sera fait.";
+
+/* Hint displayed when we fail to fetch the status of the backup in progress. */
+"We’ll still attempt to backup your site." = "Nous essayerons encore de sauvegarder votre site.";
+
+/* Hint displayed when we fail to fetch the status of the restore in progress. */
+"We’ll still attempt to restore your site." = "Nous essayerons encore de restaurer votre site.";
+
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "Nous allons vous présenter les bases de la construction et de la croissance de votre site.";
 
@@ -7304,6 +7554,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Que voulez-vous faire avec ce fichier : le téléverser et ajouter un lien vers ce fichier dans votre article, ou ajouter le contenu de ce fichier directement dans l’article ?";
+
+/* Title for the problem section in the Threat Details */
+"What was the problem?" = "Quel était le problème ?";
 
 /* Title of section that contains plugins' change log */
 "What's New" = "Quoi de neuf ?";
@@ -7595,6 +7848,9 @@
 /* No comment provided by engineer. */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Il semble que vous ayez installé une extension mobile à partir de DudaMobile qui empêche l'application de se connecter à votre blog";
 
+/* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
+"You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Vous ne devriez pas ignorer un problème de sécurité, à moins d’avoir la certitude qu’il n’y a aucun danger. Si vous choisissez d’ignorer cette menace, elle restera présente sur votre site « %1$@ ».";
+
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "Vous ne pourrez pas revenir à ce nom d’utilisateur.";
 
@@ -7627,6 +7883,9 @@
 
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "Votre sauvegarde peut désormais être téléchargée";
+
+/* Text displayed when a site backup takes too long. */
+"Your backup is taking longer than usual, please check again in a few minutes." = "Votre sauvegarde prend plus de temps qu’à l’habitude, veuillez vérifiez dans quelques minutes.";
 
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Votre identifiant actuel est « %1$@ ». À quelques exceptions près, le nom que verront les autres utilisateurs est « %2$@ ».";
@@ -7664,7 +7923,7 @@
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Votre site a été restauré avec succès";
 
-/* Title of a message displayed when user starts a rewind operation */
+/* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Votre site est en cours de restauration.";
 
 /* Hint for users when private privacy setting is set */

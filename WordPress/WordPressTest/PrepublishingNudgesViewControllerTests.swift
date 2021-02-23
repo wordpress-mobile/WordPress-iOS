@@ -18,9 +18,17 @@ class PrepublishingNudgesViewControllerTests: XCTestCase {
     /// Call the completion block when the "Publish" button is pressed
     ///
     func testCallCompletionBlockWhenButtonTapped() {
-        let post = PostBuilder().build()
+        var post = PostBuilder().build()
         var returnedPost: AbstractPost?
-        let prepublishingViewController = PrepublishingViewController(post: post) { post in
+        let prepublishingViewController = PrepublishingViewController(post: post, identifiers: [.schedule, .visibility, .tags, .categories]) { result in
+            switch result {
+            case .completed(let completedPost):
+                if let completedPost = completedPost as? Post {
+                    post = completedPost
+                }
+            case .dismissed:
+                ()
+            }
             returnedPost = post
         }
         _ = UINavigationController(rootViewController: prepublishingViewController)

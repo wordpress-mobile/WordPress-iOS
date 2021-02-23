@@ -53,16 +53,15 @@ extension WPStyleGuide {
 
         navigationAppearance.titleTextAttributes = textAttributes
 
-        if #available(iOS 13.0, *) {
-            // Required to fix detail navigation controller appearance due to https://stackoverflow.com/q/56615513
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = .appBarBackground
-            appearance.titleTextAttributes = textAttributes
+        // Required to fix detail navigation controller appearance due to https://stackoverflow.com/q/56615513
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .appBarBackground
+        appearance.titleTextAttributes = textAttributes
 
-            navigationAppearance.standardAppearance = appearance
-            navigationAppearance.scrollEdgeAppearance = navigationAppearance.standardAppearance
-        }
+        navigationAppearance.standardAppearance = appearance
+        navigationAppearance.scrollEdgeAppearance = navigationAppearance.standardAppearance
+
 
         // Makes bar buttons visible in "Other Apps" media source picker.
         // Setting title text attributes makes bar button items not go blank when switching between the tabs of the picker.
@@ -96,12 +95,7 @@ extension WPStyleGuide {
     /// Style the `LightNavigationController` UINavigationBar and BarButtonItems
     class func configureLightNavigationBarAppearance() {
         let separatorColor: UIColor
-
-        if #available(iOS 13.0, *) {
-            separatorColor = .systemGray4
-        } else {
-            separatorColor = .lightGray
-        }
+        separatorColor = .systemGray4
 
         let navigationBarAppearanceProxy = UINavigationBar.appearance(whenContainedInInstancesOf: [LightNavigationController.self])
         navigationBarAppearanceProxy.backgroundColor = .white // Only used on iOS 12 so doesn't need dark mode support
@@ -112,12 +106,10 @@ extension WPStyleGuide {
             NSAttributedString.Key.foregroundColor: UIColor.text
         ]
 
-        if #available(iOS 13.0, *) {
-            let appearance = UINavigationBarAppearance()
-            appearance.backgroundColor = .systemBackground
-            appearance.shadowColor = separatorColor
-            navigationBarAppearanceProxy.standardAppearance = appearance
-        }
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .systemBackground
+        appearance.shadowColor = separatorColor
+        navigationBarAppearanceProxy.standardAppearance = appearance
 
         let tintColor = UIColor(light: .brand, dark: .white)
 

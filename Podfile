@@ -43,11 +43,18 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    # pod 'WordPressKit', '~> 4.26'
+    pod 'WordPressKit', '~> 4.27-beta'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'add/wporg-api-post-requests'
+    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     # pod 'WordPressKit', :path => '../WordPressKit-iOS'
+end
+
+def kanvas
+  pod 'Kanvas', '~> 1.2.2'
+  #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
+  #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
+  #pod 'Kanvas', :path => '../Kanvas-iOS'
 end
 
 def shared_with_all_pods
@@ -153,8 +160,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    # gutenberg :tag => 'v1.46.0'
-    gutenberg :commit => '693b47ba448c8c24d44e297b823e3e126ab2389d'
+    gutenberg :tag => 'v1.47.0'
 
     ## Third party libraries
     ## =====================
@@ -179,10 +185,11 @@ target 'WordPress' do
     ##
     wordpress_kit
     wordpress_shared
+    kanvas
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.8.0'
+    pod 'Automattic-Tracks-iOS', '~> 0.8.2'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
     # Local Development
