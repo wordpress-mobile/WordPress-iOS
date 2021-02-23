@@ -76,9 +76,11 @@ class ReaderSortingActionSheetOptionControl: ClosureControl {
         label.isAccessibilityElement = false
 
         accessibilityIdentifier = option.identifier
-        accessibilityLabel = option.sortingOption.accessibilityLabel
-        accessibilityHint = option.sortingOption.accessibilityHint
-        accessibilityValue = option.sortingOption.accessibilityValue
+        accessibilityLabel = NSLocalizedString("Sorting option", comment: "Accessibility label for sorting option")
+        accessibilityValue = option.sortingOption.localizedDescription
+        if option.checked {
+            accessibilityHint = NSLocalizedString("Selected", comment: "Accessibility value for selected sorting option")
+        }
         accessibilityTraits = UIAccessibilityTraits.button
     }
 
@@ -259,7 +261,7 @@ class ReaderSortingOptionViewController: UIViewController {
 
 extension ReaderSortingOptionViewController: Accessible {
     func prepareForVoiceOver() {
-        gripButton.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Accessibility label for the grip button which is used to dismiss the dialog.")
+        gripButton.isAccessibilityElement = false
 
         headerLabel.accessibilityLabel = headerLabel.text
         headerLabel.accessibilityTraits = .header
@@ -296,22 +298,10 @@ class ClosureControl: UIControl {
 }
 
 extension ReaderSortingOption {
-    var accessibilityHint: String? {
-        switch self {
-        case .date:
-            return NSLocalizedString("Tap to sort by date", comment: "Accessibility hint for sorting option button.")
-        case .popularity:
-            return NSLocalizedString("Tap to sort by popularity", comment: "Accessibility hint for sorting option button.")
-        case .noSorting:
-            return nil
+    var buttonAccessibilityLabel: String? {
+        if let localizedDescription = localizedDescription {
+            return String(format: NSLocalizedString("Sorting option button - %1$@", comment: "Accessibility label for sorting option"), localizedDescription)
         }
-    }
-
-    var accessibilityLabel: String {
-        return NSLocalizedString("Sorting option", comment: "Accessibility label for sorting option")
-    }
-
-    var accessibilityValue: String? {
-        return localizedDescription
+        return nil
     }
 }

@@ -155,7 +155,7 @@ extension ReaderSortingOptionButton: Accessible {
 
         // TODO: check if accessibility is set correctly
         accessibilityIdentifier = "Reader sorting option button"
-        accessibilityLabel = NSLocalizedString("Sorting option button", comment: "Accessibility label for sorting option button")
+        accessibilityLabel = NSLocalizedString("Sorting option", comment: "Accessibility label for sorting option button")
         accessibilityValue = sortingOption.localizedDescription
         accessibilityTraits = UIAccessibilityTraits.button
     }
