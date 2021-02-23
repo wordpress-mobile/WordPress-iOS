@@ -24,6 +24,6 @@
                 ],
     "text" : "xxxxxx xxxxxx and 658 others liked your post Bookmark Posts with Save For Later",
     "meta": {
-        "button": true
+        "is_mobile_button": true
     }
 }
