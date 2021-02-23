@@ -130,7 +130,7 @@ extension CategorySectionTableViewCell: UICollectionViewDataSource {
         cell.accessibilityLabel = thumbnail.slug
         return cell
     }
-    
+
     private func thumbnailUrl(forThumbnail thumbnail: Thumbnail) -> String? {
         guard let delegate = delegate else { return thumbnail.urlDesktop }
         switch delegate.selectedPreviewDevice {
