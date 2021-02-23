@@ -296,12 +296,3 @@ class ClosureControl: UIControl {
         return super.point(inside: point, with: event)
     }
 }
-
-extension ReaderSortingOption {
-    var buttonAccessibilityLabel: String? {
-        if let localizedDescription = localizedDescription {
-            return String(format: NSLocalizedString("Sorting option button - %1$@", comment: "Accessibility label for sorting option"), localizedDescription)
-        }
-        return nil
-    }
-}
