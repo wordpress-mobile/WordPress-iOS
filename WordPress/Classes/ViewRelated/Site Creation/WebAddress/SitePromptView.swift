@@ -4,31 +4,13 @@ import Gridicons
 class SitePromptView: UIView {
 
     private struct Parameters {
-        static let shadowOffset = CGSize(width: 0, height: 5)
-        static let shadowOpacity = Float(0.2)
-        static let shadowRadius = CGFloat(8)
         static let cornerRadius = CGFloat(8)
-    }
-
-    @IBOutlet var views: [UIView]! {
-        didSet {
-            views.forEach { (view) in
-                view.backgroundColor = .listBackground
-            }
-        }
+        static let borderWidth = CGFloat(1)
     }
 
     @IBOutlet weak var lockIcon: UIImageView! {
         didSet {
-            lockIcon.tintColor = .textSubtle
             lockIcon.image = UIImage.gridicon(.lock)
-        }
-    }
-
-    @IBOutlet weak var sampleAddress: UILabel! {
-        didSet {
-            sampleAddress.textColor = .textSubtle
-            sampleAddress.font = WPStyleGuide.fontForTextStyle(.footnote)
         }
     }
 
@@ -57,11 +39,8 @@ class SitePromptView: UIView {
         NSLayoutConstraint.activate(
             contentView.constrainToSuperViewEdges()
         )
-
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = Parameters.shadowOffset
-        layer.shadowOpacity = Parameters.shadowOpacity
-        layer.shadowRadius = Parameters.shadowRadius
         contentView.layer.cornerRadius = Parameters.cornerRadius
+        contentView.layer.borderColor = UIColor.primaryButtonBorder.cgColor
+        contentView.layer.borderWidth = Parameters.borderWidth
     }
 }
