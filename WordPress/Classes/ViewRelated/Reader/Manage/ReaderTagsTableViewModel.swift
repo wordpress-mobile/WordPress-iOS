@@ -15,6 +15,8 @@ class ReaderTagsTableViewModel: NSObject {
         self.context = context
         super.init()
         handler.delegate = self
+
+        tableView.register(ReaderTagsFooter.defaultNib, forHeaderFooterViewReuseIdentifier: ReaderTagsFooter.defaultReuseID)
     }
 }
 
@@ -46,6 +48,31 @@ extension ReaderTagsTableViewModel: WPTableViewHandlerDelegate {
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
         let topic = tableViewHandler.object(at: indexPath) as? ReaderTagTopic
         configure(cell: cell, for: topic)
+    }
+
+    // MARK: - Discover more topics footer
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard section == 0 else {
+            return CGFloat.leastNormalMagnitude
+        }
+        return UITableView.automaticDimension
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard section == 0,
+              let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReaderTagsFooter.defaultReuseID) as? ReaderTagsFooter else {
+            return nil
+        }
+
+        let title = NSLocalizedString("Discover more topics", comment: "Button title. Tapping shows the Follow Topics screen.")
+        footer.actionButton.setTitle(title, for: .normal)
+
+        footer.actionButtonHandler = { [weak self] in
+            // TODO
+        }
+
+        return footer
     }
 }
 

@@ -2415,6 +2415,8 @@
 		FA77E02A1BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */; };
 		FA7AA45325BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7AA45225BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift */; };
 		FA7AA4A725BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7AA4A625BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib */; };
+		FA7F92B825E61C7E00502D2A /* ReaderTagsFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7F92B725E61C7E00502D2A /* ReaderTagsFooter.swift */; };
+		FA7F92CA25E61C9300502D2A /* ReaderTagsFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7F92C925E61C9300502D2A /* ReaderTagsFooter.xib */; };
 		FAB4F32724EDE12A00F259BA /* FollowCommentsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */; };
 		FAB8004925AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */; };
 		FAB800B225AEE3C600D5D54A /* RestoreCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */; };
@@ -5328,6 +5330,8 @@
 		FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserHeaderView.swift; sourceTree = "<group>"; };
 		FA7AA45225BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatDetailsViewController.swift; sourceTree = "<group>"; };
 		FA7AA4A625BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackScanThreatDetailsViewController.xib; sourceTree = "<group>"; };
+		FA7F92B725E61C7E00502D2A /* ReaderTagsFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTagsFooter.swift; sourceTree = "<group>"; };
+		FA7F92C925E61C9300502D2A /* ReaderTagsFooter.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderTagsFooter.xib; sourceTree = "<group>"; };
 		FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCommentsServiceTests.swift; sourceTree = "<group>"; };
 		FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupCompleteViewController.swift; sourceTree = "<group>"; };
 		FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreCompleteView.swift; sourceTree = "<group>"; };
@@ -11495,6 +11499,8 @@
 				F5B9151E244653C100179876 /* TabbedViewController.swift */,
 				F5A738C2244E7A6F00EDE065 /* ReaderTagsTableViewModel.swift */,
 				F52CACC9244FA7AA00661380 /* ReaderManageScenePresenter.swift */,
+				FA7F92B725E61C7E00502D2A /* ReaderTagsFooter.swift */,
+				FA7F92C925E61C9300502D2A /* ReaderTagsFooter.xib */,
 			);
 			path = Manage;
 			sourceTree = "<group>";
@@ -12323,6 +12329,7 @@
 				439F4F38219B636500F8D0C7 /* Revisions.storyboard in Resources */,
 				4019B27120885AB900A0C7EB /* ActivityDetailViewController.storyboard in Resources */,
 				8B0CE7D32481CFF8004C4799 /* ReaderDetailHeaderView.xib in Resources */,
+				FA7F92CA25E61C9300502D2A /* ReaderTagsFooter.xib in Resources */,
 				9848DF8321B8BB6900B99DA4 /* PostingActivityLegend.xib in Resources */,
 				981C986B21B9BF6000A7C0C8 /* PostingActivityViewController.storyboard in Resources */,
 				98880A4B22B2E5E400464538 /* TwoColumnCell.xib in Resources */,
@@ -13968,6 +13975,7 @@
 				F5660D03235CF73800020B1E /* SchedulingCalendarViewController.swift in Sources */,
 				1702BBE01CF3034E00766A33 /* DomainsService.swift in Sources */,
 				8B1CF00F2433902700578582 /* PasswordAlertController.swift in Sources */,
+				FA7F92B825E61C7E00502D2A /* ReaderTagsFooter.swift in Sources */,
 				D817799420ABFDB300330998 /* ReaderPostCellActions.swift in Sources */,
 				402B2A7920ACD7690027C1DC /* ActivityStore.swift in Sources */,
 				E62AFB6A1DC8E593007484FC /* NSAttributedString+WPRichText.swift in Sources */,
