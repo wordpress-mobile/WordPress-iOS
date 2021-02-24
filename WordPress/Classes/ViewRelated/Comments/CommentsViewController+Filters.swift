@@ -16,6 +16,16 @@ extension CommentsViewController {
             case .spam: return NSLocalizedString("Spam", comment: "Title of spam Comments filter.")
             }
         }
+
+        var statusFilter: CommentStatusFilter {
+            switch self {
+            case .all: return CommentStatusFilterAll
+            case .pending: return CommentStatusFilterUnapproved
+            case .approved: return CommentStatusFilterApproved
+            case .trashed: return CommentStatusFilterTrash
+            case .spam: return CommentStatusFilterSpam
+            }
+        }
     }
 
     @objc func configureFilterTabBar(_ filterTabBar: FilterTabBar) {
@@ -25,6 +35,11 @@ extension CommentsViewController {
     }
 
     @objc private func selectedFilterDidChange(_ filterTabBar: FilterTabBar) {
+        guard let filter = CommentFilter(rawValue: filterTabBar.selectedIndex) else {
+            return
+        }
+
+        refresh(with: filter.statusFilter)
     }
 
 }

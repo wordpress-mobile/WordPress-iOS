@@ -1,6 +1,5 @@
 #import "CommentsViewController.h"
 #import "CommentViewController.h"
-#import "CommentService.h"
 #import "Comment.h"
 #import "Blog.h"
 #import "WordPress-Swift.h"
@@ -23,6 +22,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 @property (nonatomic, strong) UIView                    *footerView;
 @property (nonatomic, strong) Blog                      *blog;
 
+@property (nonatomic) CommentStatusFilter currentStatusFilter;
 @property (weak, nonatomic) IBOutlet FilterTabBar *filterTabBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTopConstraint;
@@ -53,6 +53,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
     [self configureFilterTabBar:self.filterTabBar];
     [self setTableConstraints];
 
+    self.currentStatusFilter = CommentStatusFilterAll;
     [self configureNavBar];
     [self configureLoadMoreSpinner];
     [self configureNoResultsView];
@@ -394,7 +395,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
         }
 
         [commentService syncCommentsForBlog:blogInContext
-                                 withStatus:commentStatusAll
+                                 withStatus:self.currentStatusFilter
                                     success:^(BOOL hasMore) {
                                         if (success) {
                                             dispatch_async(dispatch_get_main_queue(), ^{
@@ -431,7 +432,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
         }
 
         [commentService loadMoreCommentsForBlog:blogInContext
-                                     withStatus:commentStatusAll
+                                     withStatus:self.currentStatusFilter
                                         success:^(BOOL hasMore) {
                                                     if (success) {
                                                         dispatch_async(dispatch_get_main_queue(), ^{
@@ -476,6 +477,12 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
     if ([CommentService shouldRefreshCacheFor:self.blog]) {
         [self.syncHelper syncContent];
     }
+}
+
+- (void)refreshWithStatusFilter:(CommentStatusFilter)statusFilter
+{
+    self.currentStatusFilter = statusFilter;
+    [self refreshAndSyncWithInteraction];
 }
 
 - (void)refreshInfiniteScroll
