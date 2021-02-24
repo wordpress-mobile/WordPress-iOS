@@ -1,6 +1,8 @@
 16.9
 -----
- 
+* [*] Adds helper UI to Choose a Domain screen to provide a hint of what a domain is. [#15962]
+
+
 16.8
 -----
 * [**] Prevent deleting published homepages which would have the effect of breaking a site. [#15797]
