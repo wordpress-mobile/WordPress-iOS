@@ -91,12 +91,16 @@ class NotificationDetailsViewController: UIViewController {
             guard oldValue != note && isViewLoaded else {
                 return
             }
-
+            confettiWasShown = false
             router = makeRouter()
             refreshInterface()
             markAsReadIfNeeded()
         }
     }
+
+    /// Wether a confetti animation was presented on this notification or not
+    ///
+    private var confettiWasShown = false
 
     lazy var coordinator: ContentCoordinator = {
         return DefaultContentCoordinator(controller: self, context: mainContext)
@@ -150,13 +154,17 @@ class NotificationDetailsViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         tableView.deselectSelectedRowWithAnimation(true)
         keyboardManager?.startListeningToKeyboardNotifications()
 
         refreshInterface()
         markAsReadIfNeeded()
         setupNotificationListeners()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        showConfettiIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -1221,7 +1229,37 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate {
     }
 }
 
+// MARK: - Milestone notifications
+//
+private extension NotificationDetailsViewController {
 
+    /// Determines if the notification content is a view milestone
+    var isViewMilestone: Bool {
+        FeatureFlag.milestoneNotifications.enabled && note.type == "view_milestone"
+    }
+
+    func showConfettiIfNeeded() {
+        guard FeatureFlag.milestoneNotifications.enabled,
+              isViewMilestone,
+              !confettiWasShown,
+              let view = UIApplication.shared.mainWindow,
+              let frame = navigationController?.view.frame else {
+
+            return
+        }
+        // This method will remove any existing `ConfettiView` before adding a new one
+        // This ensures that when we navigate through notifications, if there is an
+        // ongoging animation, it will be removed and replaced by a new one
+        ConfettiView.cleanupAndAnimate(on: view, frame: frame) { confettiView in
+
+            // removing this instance when the animation completes, will prevent
+            // the animation to suddenly stop if users navigate away from the note
+            confettiView.removeFromSuperview()
+        }
+
+        confettiWasShown = true
+    }
+}
 
 // MARK: - Navigation Helpers
 //
@@ -1233,6 +1271,7 @@ extension NotificationDetailsViewController {
 
         onSelectedNoteChange?(previous)
         note = previous
+        showConfettiIfNeeded()
     }
 
     @IBAction func nextNotificationWasPressed() {
@@ -1242,6 +1281,7 @@ extension NotificationDetailsViewController {
 
         onSelectedNoteChange?(next)
         note = next
+        showConfettiIfNeeded()
     }
 
     var shouldEnablePreviousButton: Bool {
