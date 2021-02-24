@@ -274,7 +274,8 @@ import "./ScreenshotFastfile"
   #####################################################################################
   desc "Builds and uploads a beta release for distribution"
   lane :build_and_upload_beta_release do | options |
-    build_and_upload_release(skip_confirm: options[:skip_confirm], 
+    build_and_upload_release(
+      skip_confirm: options[:skip_confirm], 
       create_gh_release: options[:create_gh_release],
       beta_release: true)
   end
@@ -296,7 +297,8 @@ import "./ScreenshotFastfile"
   #####################################################################################
   desc "Builds and uploads a stable release for distribution"
   lane :build_and_upload_stable_release do | options |
-    build_and_upload_release(skip_confirm: options[:skip_confirm], 
+    build_and_upload_release(
+      skip_confirm: options[:skip_confirm], 
       create_gh_release: options[:create_gh_release],
       beta_release: false)
   end
