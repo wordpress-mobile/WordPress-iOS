@@ -857,7 +857,7 @@ private extension NotificationDetailsViewController {
 
         if note.isBadge {
             let isFirstTextGroup = indexPath.row == indexOfFirstContentGroup(ofKind: .text)
-            text = formatter.render(content: textBlock, with: BadgeContentStyles(cachingKey: "Badge-\(indexPath)")
+            text = formatter.render(content: textBlock, with: BadgeContentStyles(cachingKey: "Badge-\(indexPath)", isTitle: isFirstTextGroup))
             cell.isTitle = isFirstTextGroup
         } else {
             text = formatter.render(content: textBlock, with: RichTextContentStyles(key: "Rich-Text-\(indexPath)"))
