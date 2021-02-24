@@ -25,12 +25,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 
 @property (weak, nonatomic) IBOutlet FilterTabBar *filterTabBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-
-// When commentFilters feature flag is removed:
-// Both these outlets can be removed.
-// tableViewTopConstraintFilterHidden can be deleted in CommentsList.storyboard.
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTopConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTopConstraintFilterHidden;
 
 @end
 
@@ -55,13 +50,8 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 {
     [super viewDidLoad];
 
-    // Configure view per commentFilters feature flag.
-    // When commentFilters feature flag is removed, only configureFilterTabBar is needed.
     [self configureFilterTabBar:self.filterTabBar];
-    BOOL filtersEnabled = [Feature enabled:FeatureFlagCommentFilters];
-    self.tableViewTopConstraint.active = filtersEnabled;
-    self.tableViewTopConstraintFilterHidden.active = !filtersEnabled;
-    self.filterTabBar.hidden = !filtersEnabled;
+    [self setTableConstraints];
 
     [self configureNavBar];
     [self configureLoadMoreSpinner];
@@ -71,6 +61,21 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
     [self configureTableView];
     [self configureTableViewFooter];
     [self configureTableViewHandler];
+}
+
+- (void)setTableConstraints
+{
+    // Configure view per commentFilters feature flag.
+    // When commentFilters feature flag is removed, this entire method can be removed.
+
+    BOOL filtersEnabled = [Feature enabled:FeatureFlagCommentFilters];
+    self.filterTabBar.hidden = !filtersEnabled;
+    
+    if (!filtersEnabled) {
+        self.tableViewTopConstraint.constant = -self.filterTabBar.frame.size.height;
+    } else {
+        self.tableViewTopConstraint.constant = 0;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
