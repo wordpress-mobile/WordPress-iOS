@@ -169,6 +169,17 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         clearContent()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: nil) { [weak self] (_) in
+            guard let `self` = self else { return }
+            if !self.sitePromptView.isHidden {
+                self.updateTitleViewVisibility(true)
+            }
+        }
+    }
+
     override func estimatedContentSize() -> CGSize {
         guard !isShowingError else { return CGSize(width: view.frame.width, height: 44) }
         guard data.count > 0 else { return .zero }
@@ -184,7 +195,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         itemSelectionChanged(false)
         data = []
         lastSearchQuery = nil
-        sitePromptView.animatableSetIsHidden(false)
+        setAddressHintVisibility(isHidden: false)
+        expandHeader()
     }
 
     private func fetchAddresses(_ searchTerm: String) {
@@ -232,7 +244,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func handleData(_ data: [DomainSuggestion]) {
-        sitePromptView.isHidden = true
+        setAddressHintVisibility(isHidden: true)
         let resultsHavePreviousSelection = data.contains { (suggestion) -> Bool in self.selectedDomain?.domainName == suggestion.domainName }
         if !resultsHavePreviousSelection {
             clearSelectionAndCreateSiteButton()
@@ -381,6 +393,11 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     // MARK: - Search logic
 
+    private func setAddressHintVisibility(isHidden: Bool) {
+        sitePromptView.isHidden = isHidden
+        scrollableView.isScrollEnabled = isHidden
+    }
+
     private func addAddressHintView() {
         sitePromptView = SitePromptView(frame: .zero)
         sitePromptView.isUserInteractionEnabled = false
@@ -392,6 +409,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
             sitePromptView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Metrics.sitePromptBottomMargin),
             sitePromptView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin)
         ])
+        setAddressHintVisibility(isHidden: true)
     }
 
     // MARK: - Others
