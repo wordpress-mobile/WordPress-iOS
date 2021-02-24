@@ -8,7 +8,6 @@ extension JetpackSiteRef {
             "siteID": \(siteID),
             "username": "\(username)",
             "homeURL": "url",
-            "displayURL": "url",
             "hasBackup": true,
             "hasPaidPlan": true,
         }
