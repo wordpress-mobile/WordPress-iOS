@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-18 11:54:08+0000 */
+/* Translation-Revision-Date: 2021-02-19 15:27:19+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -1921,7 +1921,7 @@
 "Details" = "تفاصيل";
 
 /* Instructions after a Magic Link was sent, but email is incorrect. */
-"Didn't mean to create a new account? Go back to re-enter your email address." = "ألم تقصد إنشاء حساب جديد؟ ارجع لإعادة إدخال عنوان بريدك الإلكتروني.";
+"Didn't mean to create a new account? Go back to re-enter your email address." = "ألم تقصد إنشاء حساب جديد؟ العودة للخلف لإعادة إدخال عنوان بريدك الإلكتروني.";
 
 /* Label for the dimensions in pixels for a media asset (image / video) */
 "Dimensions" = "الأبعاد";
