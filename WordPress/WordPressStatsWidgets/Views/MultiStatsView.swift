@@ -1,30 +1,25 @@
  import SwiftUI
 
  struct MultiStatsView: View {
-    let content: HomeWidgetData
-    let widgetTitle: LocalizedStringKey
-    let upperLeftTitle: LocalizedStringKey
-    let upperRightTitle: LocalizedStringKey
-    let lowerLeftTitle: LocalizedStringKey
-    let lowerRightTitle: LocalizedStringKey
+    let viewData: GroupedViewData
 
     var body: some View {
         VStack(alignment: .leading) {
             FlexibleCard(axis: .horizontal,
-                         title: widgetTitle,
-                         value: .description(content.siteName))
+                         title: viewData.widgetTitle,
+                         value: .description(viewData.siteName))
             Spacer()
             HStack {
-                makeColumn(upperTitle: upperLeftTitle,
-                           upperValue: (content as? HomeWidgetTodayData)?.stats.views ?? (content as? HomeWidgetAllTimeData)?.stats.views ?? 0,
-                           lowerTitle: lowerLeftTitle,
-                           lowerValue: (content as? HomeWidgetTodayData)?.stats.likes ?? (content as? HomeWidgetAllTimeData)?.stats.posts ?? 0)
+                makeColumn(upperTitle: viewData.upperLeftTitle,
+                           upperValue: viewData.upperLeftValue,
+                           lowerTitle: viewData.lowerLeftTitle,
+                           lowerValue: viewData.lowerLeftValue)
                 Spacer()
                 Spacer()
-                makeColumn(upperTitle: upperRightTitle,
-                           upperValue: (content as? HomeWidgetTodayData)?.stats.visitors ?? (content as? HomeWidgetAllTimeData)?.stats.visitors ?? 0,
-                           lowerTitle: lowerRightTitle,
-                           lowerValue: (content as? HomeWidgetTodayData)?.stats.comments ?? (content as? HomeWidgetAllTimeData)?.stats.bestViews ?? 0)
+                makeColumn(upperTitle: viewData.upperRightTitle,
+                           upperValue: viewData.upperRightValue,
+                           lowerTitle: viewData.lowerRightTitle,
+                           lowerValue: viewData.lowerRightValue)
                 Spacer()
             }
         }

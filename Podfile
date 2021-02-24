@@ -43,11 +43,18 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.27-beta'
+    pod 'WordPressKit', '~> 4.27.0'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     # pod 'WordPressKit', :path => '../WordPressKit-iOS'
+end
+
+def kanvas
+  pod 'Kanvas', '~> 1.2.2'
+  #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
+  #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
+  #pod 'Kanvas', :path => '../Kanvas-iOS'
 end
 
 def shared_with_all_pods
@@ -153,7 +160,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.47.0-alpha2'
+    gutenberg :tag => 'v1.47.0'
 
     ## Third party libraries
     ## =====================
@@ -178,6 +185,7 @@ target 'WordPress' do
     ##
     wordpress_kit
     wordpress_shared
+    kanvas
 
     # Production
 

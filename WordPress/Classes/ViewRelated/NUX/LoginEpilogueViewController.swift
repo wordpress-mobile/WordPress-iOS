@@ -30,11 +30,7 @@ class LoginEpilogueViewController: UIViewController {
     /// Blur effect on button panel
     ///
     private var blurEffect: UIBlurEffect.Style {
-        if #available(iOS 13.0, *) {
-            return .systemChromeMaterial
-        }
-
-        return .regular
+        return .systemChromeMaterial
     }
 
     /// Links to the Epilogue TableViewController

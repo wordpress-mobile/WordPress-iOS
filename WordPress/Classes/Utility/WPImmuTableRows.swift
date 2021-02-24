@@ -151,11 +151,7 @@ struct ActivityIndicatorRow: ImmuTableRow {
         cell.textLabel?.text = title
 
         let indicator: UIActivityIndicatorView
-        if #available(iOS 13, *) {
-            indicator = UIActivityIndicatorView(style: .medium)
-        } else {
-            indicator = UIActivityIndicatorView(style: .gray)
-        }
+        indicator = UIActivityIndicatorView(style: .medium)
 
         if animating {
             indicator.startAnimating()

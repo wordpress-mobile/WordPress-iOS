@@ -103,26 +103,14 @@ private extension UIColor {
     }
 
     static var ghostBlockBackground: UIColor {
-        if #available(iOS 13.0, *) {
-            return UIColor(light: .clear, dark: .systemGray5)
-        } else {
-            return .clear
-        }
+        return UIColor(light: .clear, dark: .systemGray5)
     }
 
     static var beatEndColor: UIColor {
-        if #available(iOS 13.0, *) {
-            return UIColor(light: .systemGray6, dark: .clear)
-        } else {
-            return .placeholderElementFaded
-        }
+        return UIColor(light: .systemGray6, dark: .clear)
     }
 
     static var background: UIColor {
-        if #available(iOS 13.0, *) {
-            return .systemBackground
-        } else {
-            return .white
-        }
+        return .systemBackground
     }
 }
