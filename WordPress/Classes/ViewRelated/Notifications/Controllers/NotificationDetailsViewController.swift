@@ -91,12 +91,16 @@ class NotificationDetailsViewController: UIViewController {
             guard oldValue != note && isViewLoaded else {
                 return
             }
-
+            confettiWasShown = false
             router = makeRouter()
             refreshInterface()
             markAsReadIfNeeded()
         }
     }
+
+    /// Wether a confetti animation was presented on this notification or not
+    ///
+    private var confettiWasShown = false
 
     lazy var coordinator: ContentCoordinator = {
         return DefaultContentCoordinator(controller: self, context: mainContext)
@@ -150,13 +154,17 @@ class NotificationDetailsViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         tableView.deselectSelectedRowWithAnimation(true)
         keyboardManager?.startListeningToKeyboardNotifications()
 
         refreshInterface()
         markAsReadIfNeeded()
         setupNotificationListeners()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        showConfettiIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -400,7 +408,8 @@ extension NotificationDetailsViewController {
             NoteBlockActionsTableViewCell.self,
             NoteBlockCommentTableViewCell.self,
             NoteBlockImageTableViewCell.self,
-            NoteBlockUserTableViewCell.self
+            NoteBlockUserTableViewCell.self,
+            NoteBlockButtonTableViewCell.self
         ]
 
         for cellClass in cellClassNames {
@@ -596,6 +605,8 @@ private extension NotificationDetailsViewController {
             return NoteBlockImageTableViewCell.reuseIdentifier()
         case .user:
             return NoteBlockUserTableViewCell.reuseIdentifier()
+        case .button:
+            return NoteBlockButtonTableViewCell.reuseIdentifier()
         default:
             assertionFailure("Unmanaged group kind: \(blockGroup.kind)")
             return NoteBlockTextTableViewCell.reuseIdentifier()
@@ -631,6 +642,8 @@ private extension NotificationDetailsViewController {
             setupImageCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockTextTableViewCell:
             setupTextCell(cell, blockGroup: blockGroup, at: indexPath)
+        case let cell as NoteBlockButtonTableViewCell:
+            setupButtonCell(cell, blockGroup: blockGroup)
         default:
             assertionFailure("NotificationDetails: Please, add support for \(cell)")
         }
@@ -850,6 +863,26 @@ private extension NotificationDetailsViewController {
             }
 
             self.displayURL(url)
+        }
+    }
+
+    func setupButtonCell(_ cell: NoteBlockButtonTableViewCell, blockGroup: FormattableContentGroup) {
+        guard let textBlock = blockGroup.blocks.first as? NotificationTextContent else {
+            assertionFailure("Missing Text Block for Notification \(note.notificationId)")
+            return
+        }
+
+        cell.title = textBlock.text
+
+        if let linkRange = textBlock.ranges.map({ $0 as? LinkContentRange }).first,
+           let url = linkRange?.url {
+            cell.action = { [weak self] in
+                guard let `self` = self, self.isViewOnScreen() else {
+                    return
+                }
+
+                self.displayURL(url)
+            }
         }
     }
 }
@@ -1221,7 +1254,31 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate {
     }
 }
 
+// MARK: - Milestone notifications
+//
+private extension NotificationDetailsViewController {
 
+    func showConfettiIfNeeded() {
+        guard FeatureFlag.milestoneNotifications.enabled,
+              note.isViewMilestone,
+              !confettiWasShown,
+              let view = UIApplication.shared.mainWindow,
+              let frame = navigationController?.view.frame else {
+            return
+        }
+        // This method will remove any existing `ConfettiView` before adding a new one
+        // This ensures that when we navigate through notifications, if there is an
+        // ongoging animation, it will be removed and replaced by a new one
+        ConfettiView.cleanupAndAnimate(on: view, frame: frame) { confettiView in
+
+            // removing this instance when the animation completes, will prevent
+            // the animation to suddenly stop if users navigate away from the note
+            confettiView.removeFromSuperview()
+        }
+
+        confettiWasShown = true
+    }
+}
 
 // MARK: - Navigation Helpers
 //
@@ -1233,6 +1290,7 @@ extension NotificationDetailsViewController {
 
         onSelectedNoteChange?(previous)
         note = previous
+        showConfettiIfNeeded()
     }
 
     @IBAction func nextNotificationWasPressed() {
@@ -1242,6 +1300,7 @@ extension NotificationDetailsViewController {
 
         onSelectedNoteChange?(next)
         note = next
+        showConfettiIfNeeded()
     }
 
     var shouldEnablePreviousButton: Bool {
