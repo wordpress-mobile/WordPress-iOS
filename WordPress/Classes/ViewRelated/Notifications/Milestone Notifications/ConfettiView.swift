@@ -178,29 +178,21 @@ extension ConfettiView {
         }
 
         // Colors
-        let purple = UIColor(light: UIColor(named: "Purple20") ?? .systemPurple,
-                             dark: UIColor(named: "Purple40") ?? .systemPurple)
+        let purple = UIColor(light: .muriel(name: .purple, .shade20), dark: .muriel(name: .purple, .shade40))
 
-        let orange = UIColor(light: UIColor(named: "Orange10") ?? .systemOrange,
-                             dark: UIColor(named: "Orange30") ?? .systemOrange)
+        let orange = UIColor(light: .muriel(name: .orange, .shade10), dark: .muriel(name: .orange, .shade30))
 
-        let green = UIColor(light: UIColor(named: "Green10") ?? .systemGreen,
-                            dark: UIColor(named: "Green30") ?? .systemGreen)
+        let green = UIColor(light: .muriel(name: .green, .shade10), dark: .muriel(name: .green, .shade30))
 
-        let celadon = UIColor(light: UIColor(named: "Celadon10") ?? .systemTeal,
-                              dark: UIColor(named: "Celadon20") ?? .systemTeal)
+        let celadon = UIColor(light: .muriel(name: .celadon, .shade10), dark: .muriel(name: .celadon, .shade20))
 
-        let pink = UIColor(light: UIColor(named: "Pink20") ?? .systemPink,
-                           dark: UIColor(named: "Pink40") ?? .systemPink)
+        let pink = UIColor(light: .muriel(name: .pink, .shade20), dark: .muriel(name: .pink, .shade40))
 
-        let red = UIColor(light: UIColor(named: "Red10") ?? .systemRed,
-                          dark: UIColor(named: "Red30") ?? .systemRed)
+        let red = UIColor(light: .muriel(name: .red, .shade10), dark: .muriel(name: .red, .shade30))
 
-        let wpBlue = UIColor(light: UIColor(named: "WordPressBlue30") ?? .systemBlue,
-                             dark: UIColor(named: "WordPressBlue50") ?? .systemBlue)
+        let wpBlue = UIColor(light: .muriel(name: .wordPressBlue, .shade30), dark: .muriel(name: .wordPressBlue, .shade50))
 
-        let yellow = UIColor(light: UIColor(named: "Yellow10") ?? .systemYellow,
-                             dark: UIColor(named: "Yellow30") ?? .systemYellow)
+        let yellow = UIColor(light: .muriel(name: .yellow, .shade10), dark: .muriel(name: .yellow, .shade30))
 
 
         let starParticles = [purple, orange, green, wpBlue].map { Particle(image: star, tintColor: $0) }
