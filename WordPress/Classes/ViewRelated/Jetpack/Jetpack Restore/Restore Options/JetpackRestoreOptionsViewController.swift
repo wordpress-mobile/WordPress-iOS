@@ -1,7 +1,6 @@
 import Foundation
 import CocoaLumberjack
 import Gridicons
-import WordPressFlux
 import WordPressUI
 import WordPressShared
 
@@ -60,8 +59,8 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
         guard let jetpackSettingsURL = URL(string: "https://wordpress.com/settings/jetpack/\(site.displayURL)") else {
 
             let title = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
-            let notice = Notice(title: title)
-            ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+            displayNotice(title: title)
 
             return
         }
