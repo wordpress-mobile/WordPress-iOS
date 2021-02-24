@@ -408,7 +408,8 @@ extension NotificationDetailsViewController {
             NoteBlockActionsTableViewCell.self,
             NoteBlockCommentTableViewCell.self,
             NoteBlockImageTableViewCell.self,
-            NoteBlockUserTableViewCell.self
+            NoteBlockUserTableViewCell.self,
+            NoteBlockButtonTableViewCell.self
         ]
 
         for cellClass in cellClassNames {
@@ -604,6 +605,8 @@ private extension NotificationDetailsViewController {
             return NoteBlockImageTableViewCell.reuseIdentifier()
         case .user:
             return NoteBlockUserTableViewCell.reuseIdentifier()
+        case .button:
+            return NoteBlockButtonTableViewCell.reuseIdentifier()
         default:
             assertionFailure("Unmanaged group kind: \(blockGroup.kind)")
             return NoteBlockTextTableViewCell.reuseIdentifier()
@@ -639,6 +642,8 @@ private extension NotificationDetailsViewController {
             setupImageCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockTextTableViewCell:
             setupTextCell(cell, blockGroup: blockGroup, at: indexPath)
+        case let cell as NoteBlockButtonTableViewCell:
+            setupButtonCell(cell, blockGroup: blockGroup)
         default:
             assertionFailure("NotificationDetails: Please, add support for \(cell)")
         }
@@ -858,6 +863,26 @@ private extension NotificationDetailsViewController {
             }
 
             self.displayURL(url)
+        }
+    }
+
+    func setupButtonCell(_ cell: NoteBlockButtonTableViewCell, blockGroup: FormattableContentGroup) {
+        guard let textBlock = blockGroup.blocks.first as? NotificationTextContent else {
+            assertionFailure("Missing Text Block for Notification \(note.notificationId)")
+            return
+        }
+
+        cell.title = textBlock.text
+
+        if let linkRange = textBlock.ranges.map({ $0 as? LinkContentRange }).first,
+           let url = linkRange?.url {
+            cell.action = { [weak self] in
+                guard let `self` = self, self.isViewOnScreen() else {
+                    return
+                }
+
+                self.displayURL(url)
+            }
         }
     }
 }
@@ -1233,18 +1258,12 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate {
 //
 private extension NotificationDetailsViewController {
 
-    /// Determines if the notification content is a view milestone
-    var isViewMilestone: Bool {
-        FeatureFlag.milestoneNotifications.enabled && note.type == "view_milestone"
-    }
-
     func showConfettiIfNeeded() {
         guard FeatureFlag.milestoneNotifications.enabled,
-              isViewMilestone,
+              note.isViewMilestone,
               !confettiWasShown,
               let view = UIApplication.shared.mainWindow,
               let frame = navigationController?.view.frame else {
-
             return
         }
         // This method will remove any existing `ConfettiView` before adding a new one

@@ -54,6 +54,13 @@ final class NotificationTextContentTests: XCTestCase {
         XCTAssertNil(value)
     }
 
+    func testKindReturnsButtonForButtonContent() {
+        subject = NotificationTextContent(dictionary: mockButtonContentDictionary(), actions: mockedActions(), ranges: [], parent: loadLikeNotification())
+        let notificationKind = subject?.kind
+
+        XCTAssertEqual(notificationKind, .button)
+    }
+
     func testParentReturnsValuePassedAsParameter() {
         let injectedParent = loadLikeNotification()
 
@@ -82,6 +89,10 @@ final class NotificationTextContentTests: XCTestCase {
 
     private func mockDictionary() -> [String: AnyObject] {
         return getDictionaryFromFile(named: "notifications-text-content.json")
+    }
+
+    private func mockButtonContentDictionary() -> [String: AnyObject] {
+        return getDictionaryFromFile(named: "notifications-button-text-content.json")
     }
 
     private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
