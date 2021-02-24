@@ -17,19 +17,21 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hE4-fp-yCe" customClass="RichTextView" customModule="WordPress">
-                        <rect key="frame" x="40" y="8" width="240" height="25"/>
+                        <rect key="frame" x="20" y="8" width="280" height="25"/>
                         <color key="backgroundColor" red="0.90245449542999268" green="0.91623926162719727" blue="0.93599998950958252" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="hE4-fp-yCe" firstAttribute="top" secondItem="viy-Fi-ur6" secondAttribute="topMargin" constant="-3" id="NKT-QG-MST"/>
                     <constraint firstAttribute="bottomMargin" secondItem="hE4-fp-yCe" secondAttribute="bottom" id="PRW-Vw-tNv"/>
-                    <constraint firstAttribute="trailing" secondItem="hE4-fp-yCe" secondAttribute="trailing" constant="40" id="dkA-7C-ajm"/>
-                    <constraint firstItem="hE4-fp-yCe" firstAttribute="leading" secondItem="viy-Fi-ur6" secondAttribute="leading" constant="40" id="hYV-Xw-F9X"/>
+                    <constraint firstAttribute="trailing" secondItem="hE4-fp-yCe" secondAttribute="trailing" constant="20" id="dkA-7C-ajm"/>
+                    <constraint firstItem="hE4-fp-yCe" firstAttribute="leading" secondItem="viy-Fi-ur6" secondAttribute="leading" constant="20" id="hYV-Xw-F9X"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="textView" destination="hE4-fp-yCe" id="dPZ-RS-zf9"/>
+                <outletCollection property="horizontalEdgeConstraints" destination="hYV-Xw-F9X" collectionClass="NSMutableArray" id="Oe5-3o-grc"/>
+                <outletCollection property="horizontalEdgeConstraints" destination="dkA-7C-ajm" collectionClass="NSMutableArray" id="XLl-RR-YO8"/>
             </connections>
             <point key="canvasLocation" x="139" y="154"/>
         </tableViewCell>

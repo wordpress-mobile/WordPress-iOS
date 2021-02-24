@@ -853,9 +853,15 @@ private extension NotificationDetailsViewController {
         let mediaRanges = textBlock.buildRangesToImagesMap(mediaMap)
 
         // Load the attributedText
-        let text = note.isBadge ?
-            formatter.render(content: textBlock, with: BadgeContentStyles(cachingKey: "Badge-\(indexPath)")) :
-            formatter.render(content: textBlock, with: RichTextContentStyles(key: "Rich-Text-\(indexPath)"))
+        let text: NSAttributedString
+
+        if note.isBadge {
+            let isFirstTextGroup = indexPath.row == indexOfFirstContentGroup(ofKind: .text)
+            text = formatter.render(content: textBlock, with: BadgeContentStyles(cachingKey: "Badge-\(indexPath)")
+            cell.isTitle = isFirstTextGroup
+        } else {
+            text = formatter.render(content: textBlock, with: RichTextContentStyles(key: "Rich-Text-\(indexPath)"))
+        }
 
         // Setup: Properties
         cell.attributedText = text.stringByEmbeddingImageAttachments(mediaRanges)
@@ -952,6 +958,10 @@ private extension NotificationDetailsViewController {
 
     func contentGroup(for indexPath: IndexPath) -> FormattableContentGroup {
         return note.headerAndBodyContentGroups[indexPath.row]
+    }
+
+    func indexOfFirstContentGroup(ofKind kind: FormattableContentGroup.Kind) -> Int? {
+        return note.headerAndBodyContentGroups.firstIndex(where: { $0.kind == kind })
     }
 }
 
