@@ -47,15 +47,8 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CommentsList" bundle:nil];
     CommentsViewController *controller = [storyboard instantiateInitialViewController];
-    [controller setupWithBlog:blog];
+    controller.blog = blog;
     return controller;
-}
-
-- (void)setupWithBlog:(Blog *)blog
-{
-    self.blog = blog;
-    self.restorationClass = [self class];
-    self.restorationIdentifier = NSStringFromClass([self class]);
 }
 
 - (void)viewDidLoad

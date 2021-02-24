@@ -11,7 +11,7 @@
         <!--Comments View Controller-->
         <scene sceneID="Zaz-EE-DkY">
             <objects>
-                <viewController storyboardIdentifier="CommentsViewController" id="cBt-Sc-5RS" customClass="CommentsViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CommentsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cBt-Sc-5RS" customClass="CommentsViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="MpO-o7-pbX"/>
                         <viewControllerLayoutGuide type="bottom" id="uCp-uQ-tOJ"/>
