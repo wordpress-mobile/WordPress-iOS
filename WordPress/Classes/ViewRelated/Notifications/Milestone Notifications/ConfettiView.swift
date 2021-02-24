@@ -178,26 +178,34 @@ extension ConfettiView {
         }
 
         // Colors
-        guard
-            let purple = UIColor(named: "Purple40"),
-            let orange = UIColor(named: "Orange30"),
-            let green = UIColor(named: "Green30"),
-            let celadon = UIColor(named: "Celadon20"),
-            let pink = UIColor(named: "Pink40"),
-            let red = UIColor(named: "Red30"),
-            let wpBlue = UIColor(named: "WordPressBlue50"),
-            let yellow = UIColor(named: "Yellow10") else {
+        let purple = UIColor(light: UIColor(named: "Purple20") ?? .systemPurple,
+                             dark: UIColor(named: "Purple40") ?? .systemPurple)
 
-            return
-        }
+        let orange = UIColor(light: UIColor(named: "Orange10") ?? .systemOrange,
+                             dark: UIColor(named: "Orange30") ?? .systemOrange)
 
-        let palette1 = [purple, orange, green, wpBlue]
-        let palette2 = [celadon, pink, red, yellow]
-        let palette3 = [orange, pink, wpBlue, red]
+        let green = UIColor(light: UIColor(named: "Green10") ?? .systemGreen,
+                            dark: UIColor(named: "Green30") ?? .systemGreen)
 
-        let starParticles = palette1.map { Particle(image: star, tintColor: $0) }
-        let circleParticles = palette2.map { Particle(image: circle, tintColor: $0) }
-        let hotdogParticles = palette3.map { Particle(image: hotdog, tintColor: $0) }
+        let celadon = UIColor(light: UIColor(named: "Celadon10") ?? .systemTeal,
+                              dark: UIColor(named: "Celadon20") ?? .systemTeal)
+
+        let pink = UIColor(light: UIColor(named: "Pink20") ?? .systemPink,
+                           dark: UIColor(named: "Pink40") ?? .systemPink)
+
+        let red = UIColor(light: UIColor(named: "Red10") ?? .systemRed,
+                          dark: UIColor(named: "Red30") ?? .systemRed)
+
+        let wpBlue = UIColor(light: UIColor(named: "WordPressBlue30") ?? .systemBlue,
+                             dark: UIColor(named: "WordPressBlue50") ?? .systemBlue)
+
+        let yellow = UIColor(light: UIColor(named: "Yellow10") ?? .systemYellow,
+                             dark: UIColor(named: "Yellow30") ?? .systemYellow)
+
+
+        let starParticles = [purple, orange, green, wpBlue].map { Particle(image: star, tintColor: $0) }
+        let circleParticles = [celadon, pink, red, yellow].map { Particle(image: circle, tintColor: $0) }
+        let hotdogParticles = [orange, pink, wpBlue, red].map { Particle(image: hotdog, tintColor: $0) }
 
         let particles = starParticles + circleParticles + hotdogParticles
 
