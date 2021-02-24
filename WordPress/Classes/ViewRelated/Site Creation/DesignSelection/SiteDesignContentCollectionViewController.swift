@@ -26,6 +26,9 @@ class SiteDesignSection: CategorySection {
 }
 
 class SiteDesignContentCollectionViewController: FilterableCategoriesViewController, UIPopoverPresentationControllerDelegate {
+    typealias TemplateGroup = SiteDesignRequest.TemplateGroup
+    private let templateGroups: [TemplateGroup] = [.original, .singlePage]
+
     let completion: SiteDesignStep.SiteDesignSelection
     let restAPI = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
     var selectedIndexPath: IndexPath? = nil
@@ -80,7 +83,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
     private func fetchSiteDesigns() {
         isLoading = true
         let thumbnailSize = CategorySectionTableViewCell.expectedThumbnailSize
-        let request = SiteDesignRequest(withThumbnailSize: thumbnailSize)
+        let request = SiteDesignRequest(withThumbnailSize: thumbnailSize, withGroups: templateGroups)
         SiteDesignServiceRemote.fetchSiteDesigns(restAPI, request: request) { [weak self] (response) in
             DispatchQueue.main.async {
                 switch response {
