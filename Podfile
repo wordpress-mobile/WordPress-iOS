@@ -76,7 +76,7 @@ def shared_test_pods
 end
 
 def shared_with_extension_pods
-    pod 'Gridicons', '~> 1.1.0'
+    pod 'Gridicons', :git => 'https://github.com/bozidarsevo/Gridicons-iOS.git', :branch => 'feature/add-recent-trending-icons'
     pod 'ZIPFoundation', '~> 0.9.8'
     pod 'Down', '~> 0.6.6'
 end
@@ -203,7 +203,7 @@ target 'WordPress' do
     # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
     # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
 
-    pod 'Gridicons', '~> 1.1.0'
+    pod 'Gridicons', :git => 'https://github.com/bozidarsevo/Gridicons-iOS.git', :branch => 'feature/add-recent-trending-icons'
 
     pod 'WordPressAuthenticator', '~> 1.35.1'
     # While in PR

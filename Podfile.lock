@@ -64,7 +64,7 @@ PODS:
     - AppAuth (~> 1.2)
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - Gridicons (1.1.0)
+  - Gridicons (1.2.0-beta.1)
   - GTMAppAuth (1.1.0):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher (~> 1.4)
@@ -453,7 +453,7 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.2.0)
   - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.47.0-alpha2/third-party-podspecs/glog.podspec.json`)
-  - Gridicons (~> 1.1.0)
+  - Gridicons (from `https://github.com/bozidarsevo/Gridicons-iOS.git`, branch `feature/add-recent-trending-icons`)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v1.47.0-alpha2`)
   - JTAppleCalendar (~> 8.0.2)
   - "Kanvas (from `git@github.com:tumblr/kanvas-ios.git`, branch `main`)"
@@ -531,7 +531,6 @@ SPEC REPOS:
     - FormatterKit
     - Gifu
     - GoogleSignIn
-    - Gridicons
     - GTMAppAuth
     - GTMSessionFetcher
     - JTAppleCalendar
@@ -579,6 +578,9 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   glog:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.47.0-alpha2/third-party-podspecs/glog.podspec.json
+  Gridicons:
+    :branch: feature/add-recent-trending-icons
+    :git: https://github.com/bozidarsevo/Gridicons-iOS.git
   Gutenberg:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
@@ -663,6 +665,9 @@ CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
+  Gridicons:
+    :commit: 376217b02d6f491178162b43fa66c2c57d68966e
+    :git: https://github.com/bozidarsevo/Gridicons-iOS.git
   Gutenberg:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
@@ -698,7 +703,7 @@ SPEC CHECKSUMS:
   Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
-  Gridicons: 17d660b97ce4231d582101b02f8280628b141c9a
+  Gridicons: 05d5f9408700f5469a6bbb772eadb5e943d09c71
   GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Gutenberg: f283b145b3669f82ce13e6d8a6f0130172b19301
@@ -771,6 +776,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: 821b48e0dc4b91ff4d4017e77d27f2fa0673ff2d
+PODFILE CHECKSUM: 4740be16285647a8ed6b99d6f5a3d3c0e8b780eb
 
 COCOAPODS: 1.10.0

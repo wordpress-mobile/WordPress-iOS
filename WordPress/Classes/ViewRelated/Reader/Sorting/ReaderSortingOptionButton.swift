@@ -17,11 +17,9 @@ extension ReaderSortingOption {
     var image: UIImage? {
         switch self {
         case .date:
-            // TODO: use proper icon
-            return .gridicon(.calendar)
+            return .gridicon(.recent)
         case .popularity:
-            // TODO: use proper icon
-            return .gridicon(.lineGraph)
+            return .gridicon(.trending)
         case .noSorting:
             return nil
         }
