@@ -66,9 +66,9 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
         }
 
         let webVC = WebViewControllerFactory.controller(url: jetpackSettingsURL)
-        let navigationVC = LightNavigationController(rootViewController: webVC)
+        let navigationVC = UINavigationController(rootViewController: webVC)
 
-        self.present(navigationVC, animated: true)
+        present(navigationVC, animated: true)
     }
 
 }
