@@ -14,7 +14,7 @@ class ConfettiView: UIView {
 
         /// A range of when particles are created
         /// honestly not really sure, 10 seems to be good though heh.
-        var lifetime: Float = 10
+        var lifetime: Float = 15
 
         /// Percent value that defines the range of sizes the particles can be
         var scaleRange: CGFloat = 0.1
@@ -71,7 +71,7 @@ class ConfettiView: UIView {
     private func fadeOut(layer: ParticleEmitterLayer, after duration: TimeInterval) {
         let animation = CAKeyframeAnimation(keyPath: #keyPath(CAEmitterLayer.birthRate))
         animation.duration = duration
-        animation.timingFunction = CAMediaTimingFunction(name: .linear)
+        animation.timingFunction = CAMediaTimingFunction(name: .easeOut)
         animation.fillMode = .forwards
         animation.values = [1, 0, 0]
         animation.keyTimes = [0, 0.5, 1]
@@ -130,6 +130,7 @@ class ConfettiView: UIView {
                 contents = particle.tintedImage().cgImage
                 birthRate = config.birthRate
                 lifetime = config.lifetime
+                lifetimeRange = 7
                 scale = config.scale
                 scaleRange = config.scaleRange
                 beginTime = CACurrentMediaTime()
@@ -177,23 +178,28 @@ extension ConfettiView {
         }
 
         // Colors
-        let purple = UIColor(red: 0.75, green: 0.35, blue: 0.95, alpha: 1.00)
-        let orange = UIColor(red: 1.00, green: 0.50, blue: 0.52, alpha: 1.00)
-        let green = UIColor(red: 0.44, green: 0.88, blue: 0.65, alpha: 1.00)
+        guard
+            let purple = UIColor(named: "Purple40"),
+            let orange = UIColor(named: "Orange30"),
+            let green = UIColor(named: "Green30"),
+            let celadon = UIColor(named: "Celadon20"),
+            let pink = UIColor(named: "Pink40"),
+            let red = UIColor(named: "Red30"),
+            let wpBlue = UIColor(named: "WordPressBlue50"),
+            let yellow = UIColor(named: "Yellow10") else {
 
-        let particles: [ConfettiView.Particle] = [
-            .init(image: star, tintColor: purple),
-            .init(image: circle, tintColor: orange),
-            .init(image: hotdog, tintColor: green),
+            return
+        }
 
-            .init(image: star, tintColor: orange),
-            .init(image: circle, tintColor: green),
-            .init(image: hotdog, tintColor: purple),
+        let palette1 = [purple, orange, green, wpBlue]
+        let palette2 = [celadon, pink, red, yellow]
+        let palette3 = [orange, pink, wpBlue, red]
 
-            .init(image: star, tintColor: green),
-            .init(image: circle, tintColor: purple),
-            .init(image: hotdog, tintColor: orange),
-        ]
+        let starParticles = palette1.map { Particle(image: star, tintColor: $0) }
+        let circleParticles = palette2.map { Particle(image: circle, tintColor: $0) }
+        let hotdogParticles = palette3.map { Particle(image: hotdog, tintColor: $0) }
+
+        let particles = starParticles + circleParticles + hotdogParticles
 
         self.emit(with: particles, config: ConfettiView.EmitterConfig())
     }
@@ -246,6 +252,6 @@ extension ConfettiView {
         add(on: view,
             frame: frame,
             onAnimationCompletion: onAnimationCompletion)
-        .emitConfetti()
+            .emitConfetti()
     }
 }
