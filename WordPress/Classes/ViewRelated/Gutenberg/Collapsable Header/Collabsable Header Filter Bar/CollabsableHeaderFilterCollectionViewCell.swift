@@ -37,16 +37,12 @@ class CollabsableHeaderFilterCollectionViewCell: UICollectionViewCell {
     }
 
     var checkmarkTintColor: UIColor {
-        if #available(iOS 13.0, *) {
-            return UIColor { (traitCollection: UITraitCollection) -> UIColor in
-                if traitCollection.userInterfaceStyle == .dark {
-                    return UIColor.darkText
-                } else {
-                    return UIColor.white
-                }
+        return UIColor { (traitCollection: UITraitCollection) -> UIColor in
+            if traitCollection.userInterfaceStyle == .dark {
+                return UIColor.darkText
+            } else {
+                return UIColor.white
             }
-        } else {
-            return UIColor.white
         }
     }
 
@@ -61,11 +57,7 @@ class CollabsableHeaderFilterCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         filterLabel.font = CollabsableHeaderFilterCollectionViewCell.font
-        if #available(iOS 13.0, *) {
-            checkmark.image = UIImage(systemName: "checkmark")
-        } else {
-            checkmark.image = UIImage.gridicon(.checkmark)
-        }
+        checkmark.image = UIImage(systemName: "checkmark")
         checkmark.tintColor = checkmarkTintColor
         updateSelectedStyle()
 
@@ -81,24 +73,17 @@ class CollabsableHeaderFilterCollectionViewCell: UICollectionViewCell {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-
-        if #available(iOS 13.0, *) {
-            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-                updateSelectedStyle()
-            }
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            updateSelectedStyle()
         }
     }
 
     private func updateSelectedStyle() {
-        if #available(iOS 13.0, *) {
-            let oppositeInterfaceStyle: UIUserInterfaceStyle = (traitCollection.userInterfaceStyle == .dark) ? .light : .dark
-            let selectedColor: UIColor = UIColor.systemGray6.color(for: UITraitCollection(userInterfaceStyle: oppositeInterfaceStyle))
-            pillBackgroundView.backgroundColor = isSelected ? selectedColor : .quaternarySystemFill
-        } else {
-            pillBackgroundView.backgroundColor = isSelected ? .black : .gray(.shade0)
-        }
+        let oppositeInterfaceStyle: UIUserInterfaceStyle = (traitCollection.userInterfaceStyle == .dark) ? .light : .dark
+        let selectedColor: UIColor = UIColor.systemGray6.color(for: UITraitCollection(userInterfaceStyle: oppositeInterfaceStyle))
+        pillBackgroundView.backgroundColor = isSelected ? selectedColor : .quaternarySystemFill
 
-        if #available(iOS 13.0, *), traitCollection.userInterfaceStyle == .dark {
+        if traitCollection.userInterfaceStyle == .dark {
             filterLabel.textColor = isSelected ? .darkText : .white
         } else {
             filterLabel.textColor = isSelected ? .white : .darkText

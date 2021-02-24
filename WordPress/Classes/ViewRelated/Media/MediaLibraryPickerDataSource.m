@@ -362,7 +362,7 @@
         return nil;
     }
     [mainContext performBlockAndWait:^{
-        NSManagedObjectID *assetID = [[[ContextManager sharedInstance] persistentStoreCoordinator] managedObjectIDForURIRepresentation:assetURL];
+        NSManagedObjectID *assetID = [[mainContext persistentStoreCoordinator] managedObjectIDForURIRepresentation:assetURL];
         media = (Media *)[mainContext objectWithID:assetID];
     }];
 

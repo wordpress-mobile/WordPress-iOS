@@ -96,17 +96,8 @@ static TestContextManager *_instance;
     }];
 }
 
-- (void)mergeChanges:(nonnull NSManagedObjectContext *)context fromContextDidSaveNotification:(nonnull NSNotification *)notification
-{
-    [_stack mergeChanges: context fromContextDidSaveNotification:notification];
-}
-
 - (nonnull NSManagedObjectContext *const)newDerivedContext {
     return [_stack newDerivedContext];
-}
-
-- (nonnull NSManagedObjectContext *const)newMainContextChildContext {
-    return [_stack newMainContextChildContext];
 }
 
 - (NSURL *)storeURL
@@ -151,6 +142,12 @@ static TestContextManager *_instance;
                                                             error:nil];
     NSAssert(dict, @"Mockup data could not be parsed");
     return dict;
+}
+
+- (MockContext *) getMockContext {
+    MockContext *managedObjectContext = [[MockContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
+    managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    return managedObjectContext;
 }
 
 + (instancetype)sharedInstance

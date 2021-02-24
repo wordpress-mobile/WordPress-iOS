@@ -188,9 +188,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         showNotificationPrimerAlertIfNeeded()
         showSecondNotificationsAlertIfNeeded()
 
-        if FeatureFlag.whatIsNew.enabled {
-            WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
-        }
+        WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

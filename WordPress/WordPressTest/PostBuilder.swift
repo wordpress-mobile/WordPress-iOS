@@ -198,6 +198,8 @@ class PostBuilder {
     }
 
     func build() -> Post {
+        // Todo: Enable this assertion once we can ensure that the post's MOC isn't being deallocated after the `PostBuilder` is
+        // assert(post.managedObjectContext != nil)
         return post
     }
 
