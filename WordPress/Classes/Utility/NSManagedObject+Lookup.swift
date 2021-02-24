@@ -9,6 +9,6 @@ extension NSManagedObject {
     ///   - context:  An NSManagedObjectContext that contains the associated object.
     /// - Returns: The `NSManagedObject` subclass associated with the given `objectID`, if it exists.
     static func lookup(withObjectID objectID: NSManagedObjectID, in context: NSManagedObjectContext) -> Self? {
-        return context.object(with: objectID) as? Self
+        return try? context.existingObject(with: objectID) as? Self
     }
 }
