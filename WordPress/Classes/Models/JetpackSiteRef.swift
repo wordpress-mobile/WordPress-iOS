@@ -15,8 +15,6 @@ struct JetpackSiteRef: Hashable, Codable {
     let username: String
     /// The homeURL string  for a site.
     let homeURL: String
-    /// The dipslayURL string for a site.
-    let displayURL: String
 
     private var hasBackup = false
 
@@ -25,14 +23,12 @@ struct JetpackSiteRef: Hashable, Codable {
     init?(blog: Blog) {
         guard let username = blog.account?.username,
             let siteID = blog.dotComID as? Int,
-            let homeURL = blog.homeURL as String?,
-            let displayURL = blog.displayURL as String? else {
+            let homeURL = blog.homeURL as String? else {
                 return nil
         }
         self.siteID = siteID
         self.username = username
         self.homeURL = homeURL
-        self.displayURL = displayURL
         self.hasBackup = blog.isBackupsAllowed()
         self.hasPaidPlan = blog.hasPaidPlan
     }
@@ -45,7 +41,6 @@ struct JetpackSiteRef: Hashable, Codable {
         return lhs.siteID == rhs.siteID
             && lhs.username == rhs.username
             && lhs.homeURL == rhs.homeURL
-            && lhs.displayURL == rhs.displayURL
             && lhs.hasBackup == rhs.hasBackup
             && lhs.hasPaidPlan == rhs.hasPaidPlan
     }
