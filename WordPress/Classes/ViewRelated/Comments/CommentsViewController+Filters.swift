@@ -25,7 +25,6 @@ extension CommentsViewController {
     }
 
     @objc private func selectedFilterDidChange(_ filterTabBar: FilterTabBar) {
-        print("🔴 tab selected: ", filterTabBar.selectedIndex)
     }
 
 }
