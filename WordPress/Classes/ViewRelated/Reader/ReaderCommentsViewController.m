@@ -1224,6 +1224,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
             dispatch_async(dispatch_get_main_queue(), ^{
                 [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
                 [weakSelf displayNoticeWithTitle:title message:nil];
+
+                // The task failed, fall back to the old subscription status
+                self.postHeaderView.isSubscribedToPost = oldIsSubscribed;
             });
         } else {
             NSString *title = newIsSubscribed
@@ -1236,7 +1239,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                 [weakSelf displayNoticeWithTitle:title message:nil];
             });
         }
-        self.postHeaderView.isSubscribedToPost = taskSucceeded;
     };
 
     // Define failure block
