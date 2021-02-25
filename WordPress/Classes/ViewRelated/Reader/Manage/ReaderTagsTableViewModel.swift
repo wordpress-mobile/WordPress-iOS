@@ -120,7 +120,13 @@ extension ReaderTagsTableViewModel {
 
     /// Presents a new view controller for selecting topics to follow.
     private func showSelectInterests() {
-        let controller = ReaderSelectInterestsViewController()
+        let configuration = ReaderSelectInterestsConfiguration(
+            title: NSLocalizedString("Follow topics", comment: "Screen title. Reader select interests title label text."),
+            subtitle: nil,
+            buttonTitle: nil
+        )
+
+        let controller = ReaderSelectInterestsViewController(configuration: configuration)
 
         controller.didSaveInterests = { [weak self] in
             self?.dismissModal()

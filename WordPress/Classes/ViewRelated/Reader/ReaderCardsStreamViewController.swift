@@ -22,7 +22,20 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     /// This is set to true after the Reader Manage view is dismissed
     private var shouldForceRefresh = false
 
-    private var selectInterestsViewController: ReaderSelectInterestsViewController = ReaderSelectInterestsViewController()
+    private lazy var selectInterestsViewController: ReaderSelectInterestsViewController = {
+        let title = NSLocalizedString("Discover and follow blogs you love", comment: "Reader select interests title label text")
+        let subtitle = NSLocalizedString("Choose your interests", comment: "Reader select interests subtitle label text")
+        let buttonTitleEnabled = NSLocalizedString("Done", comment: "Reader select interests next button enabled title text")
+        let buttonTitleDisabled = NSLocalizedString("Select a few to continue", comment: "Reader select interests next button disabled title text")
+
+        let configuration = ReaderSelectInterestsConfiguration(
+            title: title,
+            subtitle: subtitle,
+            buttonTitle: (enabled: buttonTitleEnabled, disabled: buttonTitleDisabled)
+        )
+
+        return ReaderSelectInterestsViewController(configuration: configuration)
+    }()
 
     /// Whether the current view controller is visible
     private var isVisible: Bool {
