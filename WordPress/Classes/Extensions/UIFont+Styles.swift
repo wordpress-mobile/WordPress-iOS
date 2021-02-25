@@ -9,7 +9,7 @@ extension UIFont {
         return withWeight(.semibold)
     }
 
-    func withSymbolicTraits(_ traits: UIFontDescriptor.SymbolicTraits) -> UIFont {
+    private func withSymbolicTraits(_ traits: UIFontDescriptor.SymbolicTraits) -> UIFont {
         guard let descriptor = fontDescriptor.withSymbolicTraits(traits) else {
             return self
         }
@@ -17,7 +17,7 @@ extension UIFont {
         return UIFont(descriptor: descriptor, size: 0)
     }
 
-    func withWeight(_ weight: UIFont.Weight) -> UIFont {
+    private func withWeight(_ weight: UIFont.Weight) -> UIFont {
         let descriptor = fontDescriptor.addingAttributes([.traits: [UIFontDescriptor.TraitKey.weight: weight]])
 
         return UIFont(descriptor: descriptor, size: 0)
