@@ -47,14 +47,16 @@ class ReaderInterestsDataSource {
     }
 
     private var interestsService: ReaderInterestsService
+    private let topics: [ReaderTagTopic]
 
     /// Creates a new instance of the data source
     /// - Parameter topicService: An Optional `ReaderTopicService` to use. If this is `nil` one will be created on the main context
-    init(service: ReaderInterestsService? = nil) {
+    init(topics: [ReaderTagTopic], service: ReaderInterestsService? = nil) {
+        self.topics = topics
+
         guard let service = service else {
             let context = ContextManager.sharedInstance().mainContext
             self.interestsService = ReaderTopicService(managedObjectContext: context)
-
             return
         }
 
@@ -64,7 +66,19 @@ class ReaderInterestsDataSource {
     /// Fetches the interests from the topic service
     public func reload() {
         interestsService.fetchInterests(success: { [weak self] interests in
-            self?.interests = interests.map { ReaderInterestViewModel(interest: $0) }
+            guard let self = self else {
+                return
+            }
+
+            self.interests = interests
+                .filter { interest in
+                    // Filter out interests that are already being followed
+                    !self.topics.contains(where: { followedTopic in
+                        followedTopic.title.caseInsensitiveCompare(interest.slug) == .orderedSame
+                    })
+                }
+                .map { ReaderInterestViewModel(interest: $0) }
+
         }) { [weak self] (error: Error) in
             DDLogError("Error: Could not retrieve reader interests: \(String(describing: error))")
 

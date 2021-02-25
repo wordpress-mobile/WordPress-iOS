@@ -126,7 +126,10 @@ extension ReaderTagsTableViewModel {
             buttonTitle: nil
         )
 
-        let controller = ReaderSelectInterestsViewController(configuration: configuration)
+        let topics = tableViewHandler.resultsController.fetchedObjects as? [ReaderTagTopic] ?? []
+
+        let controller = ReaderSelectInterestsViewController(configuration: configuration,
+                                                             topics: topics)
 
         controller.didSaveInterests = { [weak self] in
             self?.dismissModal()

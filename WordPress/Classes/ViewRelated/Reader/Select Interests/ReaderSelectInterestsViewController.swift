@@ -39,18 +39,24 @@ class ReaderSelectInterestsViewController: UIViewController {
     @IBOutlet weak var bottomSpaceHeightConstraint: NSLayoutConstraint!
 
     // MARK: - Data
-    private let dataSource: ReaderInterestsDataSource = ReaderInterestsDataSource()
+    private lazy var dataSource: ReaderInterestsDataSource = {
+        return ReaderInterestsDataSource(topics: topics)
+    }()
+
     private let coordinator: ReaderSelectInterestsCoordinator = ReaderSelectInterestsCoordinator()
 
     private let noResultsViewController = NoResultsViewController.controller()
+
+    private let topics: [ReaderTagTopic]
 
     private let configuration: ReaderSelectInterestsConfiguration
 
     var didSaveInterests: (() -> Void)? = nil
 
     // MARK: - Init
-    init(configuration: ReaderSelectInterestsConfiguration) {
+    init(configuration: ReaderSelectInterestsConfiguration, topics: [ReaderTagTopic] = []) {
         self.configuration = configuration
+        self.topics = topics
         super.init(nibName: nil, bundle: nil)
     }
 
