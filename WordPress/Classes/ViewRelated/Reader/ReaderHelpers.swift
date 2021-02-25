@@ -283,12 +283,7 @@ struct ReaderPostMenuButtonTitles {
     }
 
     @objc open class func isUserAdminOnSiteWithID(_ siteID: NSNumber) -> Bool {
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        if let blog = blogService.blog(byBlogId: siteID) {
-            return blog.isAdmin
-        }
-        return false
+        Blog.lookup(withID: siteID, in: ContextManager.sharedInstance().mainContext)?.isAdmin ?? false
     }
 
     // convenience method that returns the topic type
