@@ -69,7 +69,7 @@ extension ReaderTagsTableViewModel: WPTableViewHandlerDelegate {
         footer.actionButton.setTitle(title, for: .normal)
 
         footer.actionButtonHandler = { [weak self] in
-            // TODO
+            self?.showSelectInterests()
         }
 
         return footer
@@ -111,6 +111,20 @@ extension ReaderTagsTableViewModel {
 
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissModal))
         controller.navigationItem.leftBarButtonItem = cancelButton
+
+        let navController = UINavigationController(rootViewController: controller)
+        navController.modalPresentationStyle = .formSheet
+
+        presentingViewController?.present(navController, animated: true, completion: nil)
+    }
+
+    /// Presents a new view controller for selecting topics to follow.
+    private func showSelectInterests() {
+        let controller = ReaderSelectInterestsViewController()
+
+        controller.didSaveInterests = { [weak self] in
+            self?.dismissModal()
+        }
 
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
