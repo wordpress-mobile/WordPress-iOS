@@ -64,6 +64,7 @@ class ReaderSelectInterestsViewController: UIViewController {
 
         dataSource.delegate = self
 
+        configureNavigationBar()
         configureI18N()
         configureCollectionView()
         configureNoResultsViewController()
@@ -151,6 +152,16 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     }
 
+    private func configureNavigationBar() {
+        guard isModal() else {
+            return
+        }
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
+                                                           target: self,
+                                                           action: #selector(saveSelectedInterests))
+    }
+
     private func configureI18N() {
 
         if isModal() {
@@ -196,7 +207,13 @@ class ReaderSelectInterestsViewController: UIViewController {
         stopLoading()
     }
 
-    private func saveSelectedInterests() {
+    @objc private func saveSelectedInterests() {
+        guard !dataSource.selectedInterests.isEmpty else {
+            self.didSaveInterests?()
+            return
+        }
+
+        navigationItem.rightBarButtonItem?.isEnabled = false
         startLoading()
         announceLoadingTopics()
 
