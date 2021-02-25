@@ -676,6 +676,26 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     [remote restorePost:remotePost success:successBlock failure:failureBlock];
 }
 
+- (void)getLikesForPost:(AbstractPost *)post
+                success:(void (^)(NSArray<RemoteUser *> * _Nullable))success
+                failure:(void (^)(NSError * _Nullable))failure
+{
+    NSParameterAssert(post.postID);
+    
+    // ensure that the remote is REST, since fetching likes is only available in REST.
+    id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
+    if (remote && [remote isKindOfClass:[PostServiceRemoteREST class]]) {
+        [(PostServiceRemoteREST *)remote getLikesForPostID:post.postID
+                                                   success:success
+                                                   failure:failure];
+    } else {
+        NSError *error = [NSError errorWithDomain:PostServiceErrorDomain
+                                             code:0
+                                         userInfo:@{ NSLocalizedDescriptionKey : @"Fetching likes is only available on REST remotes." }];
+        failure(error);
+    }
+}
+
 #pragma mark - Helpers
 
 - (void)initializeDraft:(AbstractPost *)post {
