@@ -66,3 +66,57 @@ class ReaderInterestsStyleGuide {
         indicator.color = UIColor(light: .black, dark: .white)
     }
 }
+
+class ReaderSuggestedTopicsStyleGuide {
+    struct TopicStyle {
+        let textColor: UIColor
+        let backgroundColor: UIColor
+        let borderColor: UIColor
+    }
+
+    /// The array of colors from the designs
+    /// Note: I am explictly using the MurielColor names instead of using the semantic ones
+    ///       since these are explicit and not semantic colors.
+    static let colors: [TopicStyle] = [
+        // Green
+        .init(textColor: .muriel(color: MurielColor(name: .green), .shade50),
+              backgroundColor: .muriel(color: MurielColor(name: .green), .shade0),
+              borderColor: .muriel(color: MurielColor(name: .green), .shade5)),
+
+        // Blue
+        .init(textColor: .muriel(color: MurielColor(name: .blue), .shade50),
+              backgroundColor: .muriel(color: MurielColor(name: .blue), .shade0),
+              borderColor: .muriel(color: MurielColor(name: .blue), .shade5)),
+
+        // Yellow
+        .init(textColor: .muriel(color: MurielColor(name: .yellow), .shade50),
+              backgroundColor: .muriel(color: MurielColor(name: .yellow), .shade0),
+              borderColor: .muriel(color: MurielColor(name: .yellow), .shade5)),
+
+        // Orange
+        .init(textColor: .muriel(color: MurielColor(name: .orange), .shade50),
+              backgroundColor: .muriel(color: MurielColor(name: .orange), .shade0),
+              borderColor: .muriel(color: MurielColor(name: .orange), .shade5)),
+    ]
+
+    private class func topicStyle(for index: Int) -> TopicStyle {
+        let colorCount = Self.colors.count
+
+        // Safety feature if for some reason the count of returned topics ever increases past 4 we will
+        // loop through the list colors again. 
+        return Self.colors[index % colorCount]
+    }
+
+    public static var topicFont: UIFont = WPStyleGuide.fontForTextStyle(.body)
+
+    public class func applySuggestedTopicStyle(label: UILabel, with index: Int) {
+        let style = Self.topicStyle(for: index)
+
+        label.font = WPStyleGuide.fontForTextStyle(.body)
+        label.textColor = style.textColor
+
+        label.layer.borderColor = style.borderColor.cgColor
+        label.layer.borderWidth = .hairlineBorderWidth
+        label.layer.backgroundColor = style.backgroundColor.cgColor
+    }
+}
