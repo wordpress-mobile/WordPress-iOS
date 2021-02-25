@@ -8,9 +8,7 @@ class StoryEditor: CameraController {
 
     var onClose: ((Bool, Bool) -> Void)? = nil
 
-    lazy var editorSession: PostEditorAnalyticsSession = {
-        PostEditorAnalyticsSession(editor: .stories, post: post)
-    }()
+    var editorSession: PostEditorAnalyticsSession
 
     let navigationBarManager: PostEditorNavigationBarManager? = nil
 
@@ -132,10 +130,13 @@ class StoryEditor: CameraController {
             cameraPermissionsDescriptionLabel: NSLocalizedString("Allow access so you can start taking photos and videos.", comment: "Message on camera permissions screen to explain why the app needs camera and microphone permissions")
         )
 
+        let analyticsSession = PostEditorAnalyticsSession(editor: .stories, post: post)
+        self.editorSession = analyticsSession
+
         super.init(settings: settings,
                  mediaPicker: WPMediaPickerForKanvas.self,
                  stickerProvider: nil,
-                 analyticsProvider: KanvasAnalyticsHandler(),
+                 analyticsProvider: KanvasAnalyticsHandler(editorAnalyticsSession: analyticsSession),
                  quickBlogSelectorCoordinator: nil,
                  tagCollection: nil,
                  saveDirectory: saveDirectory)

@@ -4,6 +4,12 @@ import Kanvas
 
 final public class KanvasAnalyticsHandler: NSObject, KanvasAnalyticsProvider {
 
+    var editorAnalyticsSession: PostEditorAnalyticsSession
+
+    init(editorAnalyticsSession: PostEditorAnalyticsSession) {
+        self.editorAnalyticsSession = editorAnalyticsSession
+    }
+
     public func logCameraOpen(mode: CameraMode) {
         logString(string: "logCameraOpen mode:\(modeStringValue(mode))")
     }
@@ -89,7 +95,9 @@ final public class KanvasAnalyticsHandler: NSObject, KanvasAnalyticsProvider {
     }
 
     public func logEditorOpen() {
-        logString(string: "logEditorOpen")
+        if editorAnalyticsSession.started == false {
+            editorAnalyticsSession.start()
+        }
     }
 
     public func logEditorBack() {
@@ -97,9 +105,8 @@ final public class KanvasAnalyticsHandler: NSObject, KanvasAnalyticsProvider {
     }
 
     public func logMediaPickerPickedMedia(ofTypes mediaTypes: [KanvasMediaType]) {
-        mediaTypes.forEach({ mediaType in
-            logString(string: "logMediaPickerPickedMedia mediaType:\(mediaType.string())")
-        })
+        let typeStrings = mediaTypes.map { $0.string() }
+        WPAnalytics.track(.storyAddedMedia, properties: ["mediaTypes": typeStrings.joined(separator: ",")])
     }
 
     public func logEditorFiltersOpen() {
