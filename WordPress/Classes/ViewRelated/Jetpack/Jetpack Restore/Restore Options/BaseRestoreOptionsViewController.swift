@@ -277,7 +277,7 @@ extension BaseRestoreOptionsViewController {
         static let pluginsRowTitle = NSLocalizedString("WordPress Plugins", comment: "Downloadable/Restorable items: WordPress Plugins")
         static let mediaUploadsRowTitle = NSLocalizedString("Media Uploads", comment: "Downloadable/Restorable items: Media Uploads")
         static let rootRowTitle = NSLocalizedString("WordPress root", comment: "Downloadable/Restorable items: WordPress root")
-        static let generalSectionFooterText = NSLocalizedString("Includes wp-config php and any non WordPress files", comment: "Downloadable/Restorable items: general section footer text")
+        static let generalSectionFooterText = NSLocalizedString("Includes wp-config.php and any non WordPress files", comment: "Downloadable/Restorable items: general section footer text")
         static let contentRowTitle = NSLocalizedString("WP-content directory", comment: "Downloadable/Restorable items: WP-content directory")
         static let contentSectionFooterText = NSLocalizedString("Excludes themes, plugins, and uploads", comment: "Downloadable/Restorable items: content section footer text")
         static let databaseRowTitle = NSLocalizedString("Site database", comment: "Downloadable/Restorable items: Site Database")
