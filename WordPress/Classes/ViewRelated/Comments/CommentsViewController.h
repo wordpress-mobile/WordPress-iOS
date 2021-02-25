@@ -1,10 +1,9 @@
 #import <Foundation/Foundation.h>
 
-
 @class Blog;
 
-@interface CommentsViewController : UITableViewController
+@interface CommentsViewController : UIViewController
 
-@property (nonatomic, strong) Blog *blog;
++ (CommentsViewController *)controllerWithBlog:(Blog *)blog;
 
 @end
