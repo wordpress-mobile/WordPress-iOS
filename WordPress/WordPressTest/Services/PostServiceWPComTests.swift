@@ -256,6 +256,41 @@ class PostServiceWPComTests: XCTestCase {
         expect(post.remoteStatus).to(equal(.failed))
     }
 
+    func testFetchingPostLikesSuccessfullyShouldCallSuccessBlock() {
+        // Arrange
+        let expectedUsers = [createRemoteUser()]
+        let post = PostBuilder(context).published().withRemote().with(remoteStatus: .sync).build()
+        try! context.save()
+        remoteMock.remoteUsersToReturnOnGetLikes = expectedUsers
+
+        // Act
+        waitUntil(timeout: 2) { done in
+            self.service.getLikesFor(post, success: { users in
+                // Assert
+                expect(users?.count) == 1
+                done()
+            }, failure: { _ in
+                fail("This closure should not be called")
+            })
+        }
+    }
+
+    func testFailingFetchPostLikesShouldCallFailureBlock() {
+        // Arrange
+        let post = PostBuilder(context).published().withRemote().with(remoteStatus: .sync).build()
+        try! context.save()
+        remoteMock.fetchLikesShouldSucceed = false
+
+        // Act
+        waitUntil(timeout: 2) { done in
+            self.service.getLikesFor(post, success: { users in
+                fail("this closure should not be called")
+            }, failure: { _ in
+                done()
+            })
+        }
+    }
+
     private func createRemotePost(_ status: BasePost.Status = .draft) -> RemotePost {
         let remotePost = RemotePost(siteID: 1,
                                     status: status.rawValue,
@@ -263,6 +298,17 @@ class PostServiceWPComTests: XCTestCase {
                                     content: "Velit tempore rerum")!
         remotePost.type = "qui"
         return remotePost
+    }
+
+    private func createRemoteUser() -> RemoteUser {
+        let remoteUser = RemoteUser()
+        remoteUser.userID = NSNumber(value: 123)
+        remoteUser.primaryBlogID = NSNumber(value: 456)
+        remoteUser.username = "johndoe"
+        remoteUser.displayName = "John Doe"
+        remoteUser.avatarURL = "avatar URL"
+
+        return remoteUser
     }
 }
 
@@ -287,6 +333,10 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
     var remotePostToReturnOnTrashPost: RemotePost?
 
     var autoSaveStubbedBehavior = StubbedBehavior.success(nil)
+
+    // related to fetching likes
+    var fetchLikesShouldSucceed: Bool = true
+    var remoteUsersToReturnOnGetLikes: [RemoteUser]? = nil
 
     private(set) var invocationsCountOfCreatePost = 0
     private(set) var invocationsCountOfAutoSave = 0
@@ -333,6 +383,16 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
                 failure(nil)
             case .success(let remotePost):
                 success(remotePost, nil)
+            }
+        }
+    }
+
+    override func getLikesForPostID(_ postID: NSNumber!, success: (([RemoteUser]?) -> Void)!, failure: ((Error?) -> Void)!) {
+        DispatchQueue.global().async {
+            if self.fetchLikesShouldSucceed {
+                success(self.remoteUsersToReturnOnGetLikes)
+            } else {
+                failure(nil)
             }
         }
     }
