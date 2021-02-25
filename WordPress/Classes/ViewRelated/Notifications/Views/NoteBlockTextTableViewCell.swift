@@ -47,7 +47,9 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
             }
 
             let spacing: CGFloat = isTitle ? Metrics.titleHorizontalSpacing : Metrics.standardHorizontalSpacing
-            horizontalEdgeConstraints.forEach({ $0.constant = spacing })
+            // Conditional chaining here means this won't crash for any subclasses
+            // that don't have edge constraints (such as comment cells)
+            horizontalEdgeConstraints?.forEach({ $0.constant = spacing })
         }
     }
 
