@@ -109,14 +109,41 @@ extension WPStyleGuide {
         // Badges
         public static let badgeBackgroundColor      = UIColor.clear
         public static let badgeLinkColor            = blockLinkColor
+        public static let badgeTextColor            = blockTextColor
+        public static let badgeQuotedColor          = blockQuotedColor
 
-        public static let badgeRegularStyle: [NSAttributedString.Key: Any] = [.paragraphStyle: badgeParagraph,
-                                                                             .font: blockRegularFont,
-                                                                             .foregroundColor: blockTextColor]
+        public static let badgeRegularFont          = UIFont.preferredFont(forTextStyle: .body)
+        public static let badgeBoldFont             = badgeRegularFont.semibold()
+        public static let badgeItalicsFont          = badgeRegularFont.italic()
 
-        public static let badgeBoldStyle            = blockBoldStyle
-        public static let badgeItalicsStyle         = blockItalicsStyle
-        public static let badgeQuotedStyle          = blockQuotedStyle
+        public static let badgeTitleFont            = WPStyleGuide.serifFontForTextStyle(.title1)
+        public static let badgeTitleBoldFont        = badgeTitleFont.semibold()
+        public static let badgeTitleItalicsFont     = badgeTitleFont.italic()
+
+        public static var badgeRegularStyle: [NSAttributedString.Key: Any] {
+            badgeStyle(withFont: FeatureFlag.milestoneNotifications.enabled ? badgeRegularFont : blockRegularFont)
+        }
+
+        public static var badgeBoldStyle: [NSAttributedString.Key: Any] {
+            FeatureFlag.milestoneNotifications.enabled ? badgeStyle(withFont: badgeBoldFont) : blockBoldStyle
+        }
+
+        public static var badgeItalicsStyle: [NSAttributedString.Key: Any] {
+            FeatureFlag.milestoneNotifications.enabled ? badgeStyle(withFont: badgeItalicsFont) : blockItalicsStyle
+        }
+
+        public static var badgeQuotedStyle: [NSAttributedString.Key: Any] {
+            FeatureFlag.milestoneNotifications.enabled ? badgeStyle(withFont: badgeItalicsFont, color: badgeQuotedColor) : blockQuotedStyle
+        }
+
+        public static let badgeTitleStyle: [NSAttributedString.Key: Any] = badgeStyle(withFont: badgeTitleFont)
+        public static var badgeTitleBoldStyle: [NSAttributedString.Key: Any] = badgeStyle(withFont: badgeTitleBoldFont)
+        public static var badgeTitleItalicsStyle: [NSAttributedString.Key: Any] = badgeStyle(withFont: badgeTitleItalicsFont)
+        public static var badgeTitleQuotedStyle: [NSAttributedString.Key: Any] = badgeStyle(withFont: badgeTitleItalicsFont, color: badgeQuotedColor)
+
+        private static func badgeStyle(withFont font: UIFont, color: UIColor = badgeTextColor) -> [NSAttributedString.Key: Any] {
+            return [.paragraphStyle: badgeParagraph, .font: font, .foregroundColor: color ]
+        }
 
         // Blocks
         public static let contentBlockRegularFont   = WPFontManager.notoRegularFont(ofSize: blockFontSize)
@@ -323,9 +350,9 @@ extension WPStyleGuide {
         fileprivate static let contentBlockParagraph     = NSMutableParagraphStyle(
             minLineHeight: contentBlockLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
-        fileprivate static let badgeParagraph           = NSMutableParagraphStyle(
-            minLineHeight: blockLineSize, maxLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .center
-        )
+        fileprivate static let badgeParagraph           = FeatureFlag.milestoneNotifications.enabled ?
+            NSMutableParagraphStyle(minLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .center) :
+            NSMutableParagraphStyle(minLineHeight: blockLineSize, maxLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .center)
 
         // Colors
         fileprivate static let sectionHeaderTextColor   = UIColor.textSubtle

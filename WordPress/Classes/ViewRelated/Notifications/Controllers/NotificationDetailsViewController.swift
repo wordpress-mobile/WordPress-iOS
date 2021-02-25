@@ -836,6 +836,10 @@ private extension NotificationDetailsViewController {
 
         let mediaURL = imageBlock.media.first?.mediaURL
         cell.downloadImage(mediaURL)
+
+        if note.isViewMilestone {
+            cell.backgroundImage = UIImage(named: Assets.confettiBackground)
+        }
     }
 
     func setupTextCell(_ cell: NoteBlockTextTableViewCell, blockGroup: FormattableContentGroup, at indexPath: IndexPath) {
@@ -849,9 +853,15 @@ private extension NotificationDetailsViewController {
         let mediaRanges = textBlock.buildRangesToImagesMap(mediaMap)
 
         // Load the attributedText
-        let text = note.isBadge ?
-            formatter.render(content: textBlock, with: BadgeContentStyles(cachingKey: "Badge-\(indexPath)")) :
-            formatter.render(content: textBlock, with: RichTextContentStyles(key: "Rich-Text-\(indexPath)"))
+        let text: NSAttributedString
+
+        if note.isBadge {
+            let isFirstTextGroup = indexPath.row == indexOfFirstContentGroup(ofKind: .text)
+            text = formatter.render(content: textBlock, with: BadgeContentStyles(cachingKey: "Badge-\(indexPath)", isTitle: isFirstTextGroup))
+            cell.isTitle = isFirstTextGroup
+        } else {
+            text = formatter.render(content: textBlock, with: RichTextContentStyles(key: "Rich-Text-\(indexPath)"))
+        }
 
         // Setup: Properties
         cell.attributedText = text.stringByEmbeddingImageAttachments(mediaRanges)
@@ -948,6 +958,10 @@ private extension NotificationDetailsViewController {
 
     func contentGroup(for indexPath: IndexPath) -> FormattableContentGroup {
         return note.headerAndBodyContentGroups[indexPath.row]
+    }
+
+    func indexOfFirstContentGroup(ofKind kind: FormattableContentGroup.Kind) -> Int? {
+        return note.headerAndBodyContentGroups.firstIndex(where: { $0.kind == kind })
     }
 }
 
@@ -1347,5 +1361,9 @@ private extension NotificationDetailsViewController {
         static let numberOfSections         = 1
         static let estimatedRowHeight       = CGFloat(44)
         static let expirationFiveMinutes    = TimeInterval(60 * 5)
+    }
+
+    enum Assets {
+        static let confettiBackground       = "notifications-confetti-background"
     }
 }
