@@ -93,6 +93,7 @@ import Foundation
     case storyIntroDismissed
     case storyIntroCreateStoryButtonTapped
     case storyAddedMedia
+    case storyBlockAddMediaTapped
 
     // Jetpack
     case jetpackSettingsViewed
@@ -304,6 +305,8 @@ import Foundation
             return "story_intro_create_story_button_tapped"
         case .storyAddedMedia:
             return "story_added_media"
+        case .storyBlockAddMediaTapped:
+            return "story_block_add_media_tapped"
 
         // Jetpack
         case .jetpackSettingsViewed:

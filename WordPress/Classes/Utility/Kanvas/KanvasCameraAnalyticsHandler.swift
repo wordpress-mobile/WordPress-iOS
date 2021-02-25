@@ -4,12 +4,6 @@ import Kanvas
 
 final public class KanvasAnalyticsHandler: NSObject, KanvasAnalyticsProvider {
 
-    var editorAnalyticsSession: PostEditorAnalyticsSession
-
-    init(editorAnalyticsSession: PostEditorAnalyticsSession) {
-        self.editorAnalyticsSession = editorAnalyticsSession
-    }
-
     public func logCameraOpen(mode: CameraMode) {
         logString(string: "logCameraOpen mode:\(modeStringValue(mode))")
     }
@@ -95,9 +89,7 @@ final public class KanvasAnalyticsHandler: NSObject, KanvasAnalyticsProvider {
     }
 
     public func logEditorOpen() {
-        if editorAnalyticsSession.started == false {
-            editorAnalyticsSession.start()
-        }
+        logString(string: "logEditorOpen")
     }
 
     public func logEditorBack() {

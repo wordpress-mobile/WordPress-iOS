@@ -659,6 +659,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidRequestMediaFilesEditorLoad(_ mediaFiles: [[String: Any]], blockId: String) {
 
+        if mediaFiles.isEmpty {
+            WPAnalytics.track(.storyBlockAddMediaTapped)
+        }
+
         let files = mediaFiles.compactMap({ content -> MediaFile? in
             return MediaFile.file(from: content)
         })
@@ -690,6 +694,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             }
         })
 
+        controller.trackOpen()
         controller.populate(with: files, completion: { [weak self] result in
             switch result {
             case .success:

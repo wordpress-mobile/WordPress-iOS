@@ -136,7 +136,7 @@ class StoryEditor: CameraController {
         super.init(settings: settings,
                  mediaPicker: WPMediaPickerForKanvas.self,
                  stickerProvider: nil,
-                 analyticsProvider: KanvasAnalyticsHandler(editorAnalyticsSession: analyticsSession),
+                 analyticsProvider: KanvasAnalyticsHandler(),
                  quickBlogSelectorCoordinator: nil,
                  tagCollection: nil,
                  saveDirectory: saveDirectory)
@@ -198,6 +198,10 @@ class StoryEditor: CameraController {
                 completion(.success(()))
             }
         }
+    }
+
+    func trackOpen() {
+        editorSession.start()
     }
 }
 
