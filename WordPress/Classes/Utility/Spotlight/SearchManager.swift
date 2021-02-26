@@ -253,8 +253,8 @@ fileprivate extension SearchManager {
                    onSuccess: @escaping (_ post: AbstractPost) -> Void,
                    onFailure: @escaping () -> Void) {
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        guard let blog = blogService.blog(byBlogId: blogID) else {
+
+        guard let blog = Blog.lookup(withID: blogID, in: context) else {
                 onFailure()
                 return
         }
@@ -291,8 +291,8 @@ fileprivate extension SearchManager {
                    onSuccess: @escaping (_ blog: Blog) -> Void,
                    onFailure: @escaping () -> Void) {
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        guard let blog = blogService.blog(byBlogId: blogID) else {
+
+        guard let blog = Blog.lookup(withID: blogID, in: context) else {
             onFailure()
             return
         }

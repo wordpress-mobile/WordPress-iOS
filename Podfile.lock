@@ -393,7 +393,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.3)
   - WordPress-Editor-iOS (1.19.3):
     - WordPress-Aztec-iOS (= 1.19.3)
-  - WordPressAuthenticator (1.35.1):
+  - WordPressAuthenticator (1.35.2):
     - 1PasswordExtension (~> 1.8.6)
     - Alamofire (~> 4.8)
     - CocoaLumberjack (~> 3.5)
@@ -405,7 +405,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.28.0-beta.2):
+  - WordPressKit (4.28.0-beta.4):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -433,7 +433,7 @@ PODS:
   - ZendeskSupportSDK (5.1.1):
     - ZendeskMessagingSDK (~> 3.8.0)
     - ZendeskSupportProvidersSDK (~> 5.1.1)
-  - ZIPFoundation (0.9.11)
+  - ZIPFoundation (0.9.12)
 
 DEPENDENCIES:
   - Alamofire (= 4.8.0)
@@ -672,7 +672,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.47.0
   WordPressKit:
-    :commit: fa1240a493b3bb64968ba8a77daee721f70c909f
+    :commit: 7fb60cd084879e8de00d17a8d2cc337d045b54de
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
@@ -754,8 +754,8 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: f4bf3b343581a1beacdbf5fb1a8825bd5f05a4a4
   WordPress-Aztec-iOS: b7ac8b30f746992e85d9668453ac87c2cdcecf4f
   WordPress-Editor-iOS: 1886f7fe464d79ee64ccfe7985281f8cf45f75eb
-  WordPressAuthenticator: 7b7555d43273231e968f1f890166fc3aac72b2a3
-  WordPressKit: 8a9b6756be6f076c0751848f5f6309350edc4f87
+  WordPressAuthenticator: 73887798e340abe3cf021163644e59ca5388affb
+  WordPressKit: 9f5a58b839ca4ae37b152521d6cee3b5187552b0
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 2d2b45d8945221b716a0e2f23932dadb750d9a74
   WordPressUI: 3b70cccc4c44cff09024ca3e94ae25a8768b26c1
@@ -769,7 +769,7 @@ SPEC CHECKSUMS:
   ZendeskSDKConfigurationsSDK: 45fa87ec8418697f7fce5e56bec472052f0aedb5
   ZendeskSupportProvidersSDK: 51c9d4a826f7bd87e3109e5c801c602a6b62c762
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
-  ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
+  ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
 PODFILE CHECKSUM: 5653c79850ff007b0c5eb0d2323e4654926ceb29
 

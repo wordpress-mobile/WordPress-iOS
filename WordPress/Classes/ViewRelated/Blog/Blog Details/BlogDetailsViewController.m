@@ -900,10 +900,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                        callback:^{
                                                            [weakSelf showComments];
                                                        }];
-    NSUInteger numberOfPendingComments = [self.blog numberOfPendingComments];
-    if (numberOfPendingComments > 0) {
-        commentsRow.detail = [NSString stringWithFormat:@"%d", numberOfPendingComments];
-    }
     [rows addObject:commentsRow];
 
     NSString *title = NSLocalizedString(@"Publish", @"Section title for the publish table section in the blog details screen");
@@ -1555,8 +1551,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showComments
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedComments withBlog:self.blog];
-    CommentsViewController *controller = [[CommentsViewController alloc] initWithStyle:UITableViewStylePlain];
-    controller.blog = self.blog;
+    CommentsViewController *controller = [CommentsViewController controllerWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];

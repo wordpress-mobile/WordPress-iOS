@@ -46,14 +46,13 @@ class ShareNoticeNavigationCoordinator {
                                   onSuccess: @escaping (_ post: Post?) -> Void,
                                   onFailure: @escaping () -> Void) {
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
         let postService = PostService(managedObjectContext: context)
 
         guard let postIDString = userInfo[ShareNoticeUserInfoKey.postID] as? String,
             let postID = NumberFormatter().number(from: postIDString),
             let siteIDString = userInfo[ShareNoticeUserInfoKey.blogID] as? String,
             let siteID = NumberFormatter().number(from: siteIDString),
-            let blog = blogService.blog(byBlogId: siteID) else {
+            let blog = Blog.lookup(withID: siteID, in: context) else {
                 onFailure()
                 return
         }
@@ -78,9 +77,7 @@ class ShareNoticeNavigationCoordinator {
                 return
         }
 
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        let blog = blogService.blog(byBlogId: siteID)
-        onSuccess(blog)
+        let context = ContextManager.shared.mainContext
+        onSuccess(Blog.lookup(withID: siteID, in: context))
     }
 }

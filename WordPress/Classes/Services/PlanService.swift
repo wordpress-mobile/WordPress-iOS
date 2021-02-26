@@ -238,9 +238,9 @@ struct PlanStorage {
     static func activatePlan(_ planID: Int, forSite siteID: Int) {
         let manager = ContextManager.sharedInstance()
         let context = manager.newDerivedContext()
-        let service = BlogService(managedObjectContext: context)
+
         context.performAndWait {
-            guard let blog = service.blog(byBlogId: NSNumber(value: siteID)) else {
+            guard let blog = try? Blog.lookup(withID: siteID, in: context) else {
                 let error = "Tried to activate a plan for a non-existing site (ID: \(siteID))"
                 assertionFailure(error)
                 DDLogError(error)
@@ -256,9 +256,9 @@ struct PlanStorage {
     static func updateHasDomainCredit(_ planID: Int, forSite siteID: Int, hasDomainCredit: Bool) {
         let manager = ContextManager.sharedInstance()
         let context = manager.newDerivedContext()
-        let service = BlogService(managedObjectContext: context)
+
         context.performAndWait {
-            guard let blog = service.blog(byBlogId: NSNumber(value: siteID)) else {
+            guard let blog = try? Blog.lookup(withID: siteID, in: context) else {
                 let error = "Tried to update a plan for a non-existing site (ID: \(siteID))"
                 assertionFailure(error)
                 DDLogError(error)
