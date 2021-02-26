@@ -88,8 +88,8 @@ import WordPressFlux
             }
 
             let context = ContextManager.sharedInstance().mainContext
-            let blogService = BlogService(managedObjectContext: context)
-            guard let blog = blogService.blog(byBlogId: NSNumber(value: postUploadOp.siteID)) else {
+
+            guard let blog = try? Blog.lookup(withID: postUploadOp.siteID, in: context) else {
                 return
             }
 
