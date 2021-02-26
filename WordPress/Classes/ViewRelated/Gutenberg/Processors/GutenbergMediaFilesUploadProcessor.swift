@@ -42,7 +42,7 @@ class GutenbergMediaFilesUploadProcessor: Processor {
 
             let file = MediaFile(alt: mediaFile.alt,
                                   caption: mediaFile.caption,
-                                  id: Double(self.serverMediaID),
+                                  id: "\(self.serverMediaID)",
                                   link: mediaFile.link,
                                   mime: mediaFile.mime,
                                   type: mediaFile.type,

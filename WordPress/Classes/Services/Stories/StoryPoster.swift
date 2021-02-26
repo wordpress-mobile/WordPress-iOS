@@ -12,7 +12,7 @@ struct Story: Codable {
 struct MediaFile: Codable {
     let alt: String
     let caption: String
-    let id: Double
+    let id: String
     let link: String
     let mime: String
     let type: String
@@ -20,7 +20,7 @@ struct MediaFile: Codable {
 
     init(alt: String,
          caption: String,
-         id: Double,
+         id: String,
          link: String,
          mime: String,
          type: String,
@@ -37,7 +37,7 @@ struct MediaFile: Codable {
     init(dictionary: [String: Any]) throws {
         self.init(alt: try dictionary.value(key: CodingKeys.alt.stringValue, type: String.self),
             caption: try dictionary.value(key: CodingKeys.caption.stringValue, type: String.self),
-            id: try dictionary.value(key: CodingKeys.id.stringValue, type: Double.self),
+            id: try dictionary.value(key: CodingKeys.id.stringValue, type: String.self),
             link: try dictionary.value(key: CodingKeys.link.stringValue, type: String.self),
             mime: try dictionary.value(key: CodingKeys.mime.stringValue, type: String.self),
             type: try dictionary.value(key: CodingKeys.type.stringValue, type: String.self),
@@ -124,7 +124,7 @@ class StoryPoster {
         let mediaFiles: [MediaFile] = media.enumerated().map { (idx, media) -> MediaFile in
             return MediaFile(alt: media.alt ?? "",
                              caption: media.caption ?? "",
-                             id: Double(media.gutenbergUploadID),
+                             id: String(media.gutenbergUploadID),
                              link: media.remoteURL ?? "",
                              mime: media.mimeType() ?? "",
                              type: String(media.mimeType()?.split(separator: "/").first ?? ""),
