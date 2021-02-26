@@ -28,7 +28,7 @@ class CategorySectionTableViewCell: UITableViewCell {
 
     static let cellReuseIdentifier = "\(CategorySectionTableViewCell.self)"
     static let nib = UINib(nibName: "\(CategorySectionTableViewCell.self)", bundle: Bundle.main)
-    static let expectedThumbnailSize = CGSize(width: 160.0, height: 230.0)
+    static let expectedThumbnailSize = CGSize(width: 160.0, height: 160.0 / 0.75)
     static let estimatedCellHeight: CGFloat = 310.0
 
     @IBOutlet weak var categoryTitle: UILabel!
