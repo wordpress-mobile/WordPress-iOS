@@ -353,6 +353,12 @@ extension PeopleService {
     func merge(remoteInvites: [RemoteInviteLink], for siteID: Int, onComplete: @escaping (() -> Void)) {
         let context = ContextManager.shared.newDerivedContext()
         context.perform {
+            guard let blog = try? Blog.lookup(withID: siteID, in: context) else {
+                DispatchQueue.main.async {
+                    onComplete()
+                }
+                return
+            }
 
             // Delete Stale Items
             let inviteKeys = remoteInvites.map { invite -> String in
@@ -361,7 +367,6 @@ extension PeopleService {
             deleteMissingInviteLinks(keys: inviteKeys, for: siteID, from: context)
 
             // Create or Update items
-            let blog = BlogService(managedObjectContext: context).blog(byBlogId: NSNumber(value: siteID))!
             for remoteInvite in remoteInvites {
                 createOrUpdateInviteLink(remoteInvite: remoteInvite, blog: blog, context: context)
             }
