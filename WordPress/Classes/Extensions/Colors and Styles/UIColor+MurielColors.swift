@@ -21,6 +21,16 @@ extension UIColor {
         let newColor = MurielColor(from: color, shade: shade)
         return muriel(color: newColor)
     }
+
+    /// Get a UIColor from the Muriel color palette by name, adjusted to a given shade
+    /// - Parameters:
+    ///   - name: a MurielColorName
+    ///   - shade: a MurielColorShade
+    /// - Returns: the desired color/shade
+    class func muriel(name: MurielColorName, _ shade: MurielColorShade) -> UIColor {
+        let newColor = MurielColor(name: name, shade: shade)
+        return muriel(color: newColor)
+    }
 }
 // MARK: - Basic Colors
 extension UIColor {
