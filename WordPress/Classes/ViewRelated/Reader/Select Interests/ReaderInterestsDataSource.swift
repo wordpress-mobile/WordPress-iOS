@@ -74,6 +74,16 @@ class ReaderInterestsDataSource {
                 .filter { interest in
                     // Filter out interests that are already being followed
                     !self.topics.contains(where: { followedTopic in
+
+                        // NOTE: Comparing the topic's title against the interest's slug is a workaround for
+                        // topics that contain multiple words.
+                        //
+                        // We need this workaround because of an unfortunate bug:
+                        // When we sync the remotely fetched topic with the locally stored topic, the
+                        // "display_name" value is mapped to the local topic's title instead of the "title" value.
+                        //
+                        // See: ReaderTopicServiceRemote.m, normalizeTopicDictionary:subscribed:recommended:
+
                         followedTopic.title.caseInsensitiveCompare(interest.slug) == .orderedSame
                     })
                 }
