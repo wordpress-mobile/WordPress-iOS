@@ -14,8 +14,9 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
     }
     private let filterBar: CollapsableHeaderFilterBar
 
-    /* This should be overriden by the subclass to provide a conforming collection of categories */
-    internal var categorySections: [CategorySection] { get { [] } }
+    internal var categorySections: [CategorySection] { get {
+        fatalError("This should be overridden by the subclass to provide a conforming collection of categories")
+    } }
 
     private var filteredSections: [CategorySection]?
     private var visibleSections: [CategorySection] { filteredSections ?? categorySections }
