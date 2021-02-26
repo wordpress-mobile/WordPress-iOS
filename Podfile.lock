@@ -405,7 +405,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.28.0-beta.2):
+  - WordPressKit (4.28.0-beta.3):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -750,7 +750,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: b7ac8b30f746992e85d9668453ac87c2cdcecf4f
   WordPress-Editor-iOS: 1886f7fe464d79ee64ccfe7985281f8cf45f75eb
   WordPressAuthenticator: 73887798e340abe3cf021163644e59ca5388affb
-  WordPressKit: 8a9b6756be6f076c0751848f5f6309350edc4f87
+  WordPressKit: 789bfe88dd8a11e1d8f6d237c45fc3350d6ccdc2
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 2d2b45d8945221b716a0e2f23932dadb750d9a74
   WordPressUI: 3b70cccc4c44cff09024ca3e94ae25a8768b26c1
