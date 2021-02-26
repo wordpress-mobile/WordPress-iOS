@@ -93,6 +93,9 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
 
+        SVProgressHUD.setDefaultMaskType(.black)
+        SVProgressHUD.showProgress(-1)
+
         let mediaExports: [AnyPublisher<(Int, PickedMedia), Error>] = assets.enumerated().map { (index, asset) -> AnyPublisher<(Int, PickedMedia), Error> in
             switch asset.assetType() {
             case .image:
@@ -122,6 +125,7 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
 
         }, receiveValue: { [weak self] media in
             self?.presenter?.dismiss(animated: true, completion: nil)
+            SVProgressHUD.dismiss()
             self?.kanvasDelegate?.didPick(media: media)
         }).store(in: &cancellables)
     }
@@ -161,35 +165,49 @@ extension WPMediaAsset {
     func videoURLPublisher() -> AnyPublisher<URL, Error> {
         return videoAssetPublisher().tryMap { asset -> AnyPublisher<URL, Error> in
             let filename = UUID().uuidString
-            let url = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(filename).appendingPathExtension("mp4")
+            let url = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(filename)
             let urlAsset = asset as? AVURLAsset
 
             if let assetURL = urlAsset?.url {
+                let existingExtension = assetURL.pathExtension
+                let exportURL = url.appendingPathExtension(existingExtension)
                 if urlAsset?.url.scheme != "file" {
                     // Download any file which isn't local and move it to the proper location.
                     return URLSession.shared.downloadTaskPublisher(url: assetURL).tryMap { (location, _) -> URL in
                         if let location = location {
-                            try FileManager.default.moveItem(at: location, to: url)
+                            try FileManager.default.moveItem(at: location, to: exportURL)
+                            return exportURL
+                        } else {
+                            return url
                         }
-                        return url
                     }.eraseToAnyPublisher()
                 }
-                try FileManager.default.moveItem(at: assetURL, to: url)
-                return Just(url).setFailureType(to: Error.self).eraseToAnyPublisher()
+                do {
+                    try FileManager.default.copyItem(at: assetURL, to: exportURL)
+                    return Just(exportURL).setFailureType(to: Error.self).eraseToAnyPublisher()
+                } catch {
+                    return try asset.exportPublisher(url: url)
+                }
             } else {
                 // Export any other file which isn't an AVURLAsset since we don't have a URL to use.
-                if let asset = asset,
-                   let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) {
-                    exportSession.outputURL = url
-                    exportSession.outputFileType = .mov
-                    return exportSession.exportPublisher(url: url)
-                } else {
-                    throw WPMediaAssetError.videoAssetExportFailed
-                }
+                return try asset.exportPublisher(url: url)
             }
         }.flatMap { publisher -> AnyPublisher<URL, Error> in
             return publisher
         }.eraseToAnyPublisher()
+    }
+}
+
+private extension AVAsset {
+    func exportPublisher(url: URL) throws -> AnyPublisher<URL, Error> {
+        if let exportSession = AVAssetExportSession(asset: self, presetName: AVAssetExportPresetHighestQuality) {
+            exportSession.outputURL = url
+            exportSession.outputFileType = .mov
+            let exportURL = url.appendingPathExtension("mov")
+            return exportSession.exportPublisher(url: exportURL)
+        } else {
+            throw WPMediaAssetError.videoAssetExportFailed
+        }
     }
 }
 
@@ -201,8 +219,8 @@ enum WPMediaAssetError: Error {
 extension WPMediaAsset {
     /// Produces a Publisher  `AVAsset` from a `WPMediaAsset` object.
     /// - Returns: Publisher with an AVAsset and any errors which occur during export.
-    func videoAssetPublisher() -> AnyPublisher<AVAsset?, Error> {
-        return Future<AVAsset?, Error> { [weak self] promise in
+    func videoAssetPublisher() -> AnyPublisher<AVAsset, Error> {
+        return Future<AVAsset, Error> { [weak self] promise in
             self?.videoAsset(completionHandler: { asset, error in
                 guard let asset = asset else {
                     if let error = error {
