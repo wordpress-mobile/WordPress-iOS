@@ -35,7 +35,7 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
         // Configure collection view
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.register(ReaderInterestsCollectionViewCell.defaultNib,
-                                forCellWithReuseIdentifier: Constants.reuseIdentifier)
+                                forCellWithReuseIdentifier: ReaderInterestsCollectionViewCell.defaultReuseID)
     }
 
     private func applyStyles() {
@@ -52,7 +52,7 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
     private struct Constants {
         static let title = NSLocalizedString("You might like", comment: "A suggestion of topics the user might like")
 
-        static let reuseIdentifier = ReaderInterestsCollectionViewCell.classNameWithoutNamespaces()
+        static let reuseIdentifier = ReaderInterestsCollectionViewCell.defaultReuseID
     }
 }
 
