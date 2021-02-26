@@ -44,7 +44,7 @@ before_all do |lane|
   unless lane == :test_without_building
     # Check that the env files exist
     unless is_ci || File.file?(USER_ENV_FILE_PATH)
-      UI.user_error!("~/.wpios-env.default not found: Please copy env/user.env-example to #{USER_ENV_FILE_PATH} and fill in the values")
+      UI.user_error!("~/.wpios-env.default not found: Please copy fastlane/env/user.env-example to #{USER_ENV_FILE_PATH} and fill in the values")
     end
     unless File.file?(PROJECT_ENV_FILE_PATH)
       UI.user_error!("project.env not found: Make sure your configuration is up to date with `rake dependencies`")
@@ -68,8 +68,9 @@ ENV["PROJECT_NAME"]="WordPress"
 ENV["PUBLIC_CONFIG_FILE"]=File.join(PROJECT_ROOT_FOLDER, "config", "Version.Public.xcconfig")
 ENV["INTERNAL_CONFIG_FILE"]=File.join(PROJECT_ROOT_FOLDER, "config", "Version.internal.xcconfig")
 ENV["DOWNLOAD_METADATA"]="./fastlane/download_metadata.swift"
-ENV["PROJECT_ROOT_FOLDER"]=PROJECT_ROOT_FOLDER
+ENV["PROJECT_ROOT_FOLDER"]=PROJECT_ROOT_FOLDER + "/"
 REPOSITORY_NAME="WordPress-iOS"
+
 
 ########################################################################
 # Screenshots
@@ -140,7 +141,7 @@ import "./ScreenshotFastfile"
   #####################################################################################
   desc "Updates the AppStoreStrings.po file with the latest data"
   lane :update_appstore_strings do | options |
-    source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, "fastlane/appstoreres/metadata/source")
+    source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, "fastlane", "appstoreres", "metadata", "source")
 
     files = {
       whats_new: File.join(PROJECT_ROOT_FOLDER, "WordPress", "Resources", "release_notes.txt"),
@@ -280,7 +281,8 @@ import "./ScreenshotFastfile"
   #####################################################################################
   desc "Builds and uploads a beta release for distribution"
   lane :build_and_upload_beta_release do | options |
-    build_and_upload_release(skip_confirm: options[:skip_confirm], 
+    build_and_upload_release(
+      skip_confirm: options[:skip_confirm], 
       create_gh_release: options[:create_gh_release],
       beta_release: true)
   end
@@ -302,7 +304,8 @@ import "./ScreenshotFastfile"
   #####################################################################################
   desc "Builds and uploads a stable release for distribution"
   lane :build_and_upload_stable_release do | options |
-    build_and_upload_release(skip_confirm: options[:skip_confirm], 
+    build_and_upload_release(
+      skip_confirm: options[:skip_confirm], 
       create_gh_release: options[:create_gh_release],
       beta_release: false)
   end

@@ -60,7 +60,7 @@ struct InsightStoreState {
                                                         posts: allTimeStats?.postsCount,
                                                         bestViews: allTimeStats?.bestViewsPerDayCount)
             storeAllTimeWidgetData(data: allTimeWidgetStats)
-            storeHomeWidgetData(widgetType: HomeWidgetAllTimeData.self, stats: allTimeWidgetStats)
+            StoreContainer.shared.statsWidgets.storeHomeWidgetData(widgetType: HomeWidgetAllTimeData.self, stats: allTimeWidgetStats)
         }
     }
     var allTimeStatus: StoreFetchingStatus = .idle
@@ -88,7 +88,7 @@ struct InsightStoreState {
                                                     comments: todaysStats?.commentsCount)
 
             storeTodayWidgetData(data: todayWidgetStats)
-            storeHomeWidgetData(widgetType: HomeWidgetTodayData.self, stats: todayWidgetStats)
+            StoreContainer.shared.statsWidgets.storeHomeWidgetData(widgetType: HomeWidgetTodayData.self, stats: todayWidgetStats)
         }
     }
     var todaysStatsStatus: StoreFetchingStatus = .idle
@@ -121,7 +121,6 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
 
     init() {
         super.init(initialState: InsightStoreState())
-        observeAccountChangesForWidgets()
     }
 
     override func onDispatch(_ action: Action) {
@@ -186,7 +185,7 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
     func persistToCoreData() {
         guard
             let siteID = SiteStatsInformation.sharedInstance.siteID,
-            let blog = BlogService.withMainContext().blog(byBlogId: siteID) else {
+            let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
                 return
         }
 
@@ -327,7 +326,7 @@ private extension StatsInsightsStore {
     func loadFromCache() {
         guard
             let siteID = SiteStatsInformation.sharedInstance.siteID,
-            let blog = BlogService.withMainContext().blog(byBlogId: siteID) else {
+            let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
                 return
         }
 
@@ -984,7 +983,6 @@ private extension InsightStoreState {
         }
         return true
     }
-
 }
 
 // MARK: - iOS 14 Widgets Data
@@ -1001,9 +999,8 @@ private extension InsightStoreState {
             DDLogError("StatsWidgets: Failed to find a matching site")
             return
         }
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
-        guard let blog = blogService.blog(byBlogId: siteID) else {
+        guard let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
             DDLogError("StatsWidgets: the site does not exist anymore")
             // if for any reason that site does not exist anymore, remove it from the cache.
             homeWidgetCache.removeValue(forKey: siteID.intValue)
@@ -1018,7 +1015,7 @@ private extension InsightStoreState {
             homeWidgetCache[siteID.intValue] = HomeWidgetTodayData(siteID: siteID.intValue,
                                                                    siteName: blog.title ?? oldData.siteName,
                                                                    url: blog.url ?? oldData.url,
-                                                                   timeZone: blogService.timeZone(for: blog),
+                                                                   timeZone: blog.timeZone,
                                                                    date: Date(),
                                                                    stats: stats) as? T
 
@@ -1029,7 +1026,7 @@ private extension InsightStoreState {
             homeWidgetCache[siteID.intValue] = HomeWidgetAllTimeData(siteID: siteID.intValue,
                                                                      siteName: blog.title ?? oldData.siteName,
                                                                      url: blog.url ?? oldData.url,
-                                                                     timeZone: blogService.timeZone(for: blog),
+                                                                     timeZone: blog.timeZone,
                                                                      date: Date(),
                                                                      stats: stats) as? T
         }
@@ -1046,10 +1043,10 @@ private extension InsightStoreState {
         return blogService.visibleBlogsForWPComAccounts().reduce(into: [Int: T]()) { result, element in
             if let blogID = element.dotComID,
                let url = element.url,
-               let blog = blogService.blog(byBlogId: blogID) {
+               let blog = Blog.lookup(withID: blogID, in: ContextManager.shared.mainContext) {
                 // set the title to the site title, if it's not nil and not empty; otherwise use the site url
                 let title = (element.title ?? url).isEmpty ? url : element.title ?? url
-                let timeZone = blogService.timeZone(for: blog)
+                let timeZone = blog.timeZone
                 if type == HomeWidgetTodayData.self {
                     result[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
                                                                   siteName: title,
@@ -1065,7 +1062,6 @@ private extension InsightStoreState {
                                                                     date: Date(),
                                                                     stats: AllTimeWidgetStats()) as? T
                 }
-
             }
         }
     }

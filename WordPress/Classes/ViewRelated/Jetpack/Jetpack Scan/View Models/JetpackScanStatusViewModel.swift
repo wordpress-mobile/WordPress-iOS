@@ -189,17 +189,11 @@ struct JetpackScanStatusViewModel {
         let dateString: String
 
         // Temporary check until iOS 13 is the deployment target
-        if #available(iOS 13.0, *) {
-            let formatter = RelativeDateTimeFormatter()
-            formatter.dateTimeStyle = .named
-            formatter.unitsStyle = .full
+        let formatter = RelativeDateTimeFormatter()
+        formatter.dateTimeStyle = .named
+        formatter.unitsStyle = .full
 
-            dateString = formatter.localizedString(for: date, relativeTo: Date())
-        } else {
-            let relativeFormatter = TTTTimeIntervalFormatter()
-            dateString = relativeFormatter.string(forTimeInterval: date.timeIntervalSinceNow)
-        }
-
+        dateString = formatter.localizedString(for: date, relativeTo: Date())
         return dateString
     }
 

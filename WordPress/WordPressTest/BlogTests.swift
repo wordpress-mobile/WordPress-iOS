@@ -31,4 +31,35 @@ final class BlogTests: XCTestCase {
 
         XCTAssertFalse(blog.isAtomic())
     }
+
+    func testThatLookupByBlogIDWorks() throws {
+        let blog = BlogBuilder(context).build()
+        XCTAssertNotNil(blog.dotComID)
+        XCTAssertNotNil(Blog.lookup(withID: blog.dotComID!, in: context))
+    }
+
+    func testThatLookupByBlogIDFailsForInvalidBlogID() throws {
+        XCTAssertNil(Blog.lookup(withID: NSNumber(integerLiteral: 1), in: context))
+    }
+
+    func testThatLookupByBlogIDWorksForIntegerBlogID() throws {
+        let blog = BlogBuilder(context).build()
+        XCTAssertNotNil(blog.dotComID)
+        XCTAssertNotNil(try Blog.lookup(withID: blog.dotComID!.intValue, in: context))
+    }
+
+    func testThatLookupByBlogIDFailsForInvalidIntegerBlogID() throws {
+        XCTAssertNil(try Blog.lookup(withID: 1, in: context))
+    }
+
+    func testThatLookupBlogIDWorksForInt64BlogID() throws {
+        let blog = BlogBuilder(context).build()
+        XCTAssertNotNil(blog.dotComID)
+        XCTAssertNotNil(try Blog.lookup(withID: blog.dotComID!.int64Value, in: context))
+    }
+
+    func testThatLookupByBlogIDFailsForInvalidInt64BlogID() throws {
+        XCTAssertNil(try Blog.lookup(withID: Int64(1), in: context))
+    }
+
 }

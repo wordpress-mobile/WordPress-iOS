@@ -636,8 +636,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        SiteStatsInformation.sharedInstance.siteTimeZone = service.timeZone(for: blog)
+        SiteStatsInformation.sharedInstance.siteTimeZone = blog.timeZone
         SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
         SiteStatsInformation.sharedInstance.siteID = blog.dotComID
 

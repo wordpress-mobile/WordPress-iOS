@@ -225,15 +225,18 @@ jobs:
             brew install imagemagick
             brew install ghostscript
             curl -sL https://sentry.io/get-cli/ | bash
+      - run: 
+          name: Setup notifications
+          command: |
+            APP_VERSION=$(cat config/Version.Public.xcconfig | grep "^VERSION_LONG" | cut -d "=" -f2)
+            echo "export SLACK_FAILURE_MESSAGE=':red_circle: Build for WordPress iOS $APP_VERSION failed!'" >> $BASH_ENV
+            echo "export SLACK_SUCCESS_MESSAGE=':tada: WordPress iOS $APP_VERSION has been deployed!'" >> $BASH_ENV 
       - when: 
           condition: << pipeline.parameters.beta_build >>
           steps:
             - run:
                 name: Build
                 command: |
-                  APP_VERSION=$(cat ../config/Version.Public.xcconfig | grep "^VERSION_LONG" | cut -d "=" -f2)
-                  echo "export SLACK_FAILURE_MESSAGE=':red_circle: Build for WordPress iOS $APP_VERSION failed!'" >> $BASH_ENV
-                  echo "export SLACK_SUCCESS_MESSAGE=':tada: WordPress iOS $APP_VERSION has been deployed!'" >> $BASH_ENV 
                   bundle exec fastlane build_and_upload_beta_release skip_confirm:true create_gh_release: true
                 no_output_timeout: 60m
       - when: 
@@ -241,10 +244,7 @@ jobs:
           steps:
             - run:
                 name: Build
-                command: |
-                  APP_VERSION=$(cat ../config/Version.Public.xcconfig | grep "^VERSION_LONG" | cut -d "=" -f2)
-                  echo "export SLACK_FAILURE_MESSAGE=':red_circle: Build for WordPress iOS $APP_VERSION failed!'" >> $BASH_ENV
-                  echo "export SLACK_SUCCESS_MESSAGE=':tada: WordPress iOS $APP_VERSION has been deployed!'" >> $BASH_ENV 
+                command: | 
                   bundle exec fastlane build_and_upload_stable_release skip_confirm:true create_gh_release: true
                 no_output_timeout: 60m
       - slack/status:

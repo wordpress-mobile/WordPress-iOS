@@ -84,12 +84,7 @@ private extension ReaderReblogPresenter {
     /// returns an AdaptiveNavigationController with preconfigured modal presentation style
     func getNavigationController(_ controller: UIViewController) -> AdaptiveNavigationController {
         let navigationController = AdaptiveNavigationController(rootViewController: controller)
-        if #available(iOS 13.0, *) {
-            navigationController.modalPresentationStyle = .automatic
-        } else {
-            // suits both iPad and iPhone
-            navigationController.modalPresentationStyle = .pageSheet
-        }
+        navigationController.modalPresentationStyle = .automatic
         return navigationController
     }
 }

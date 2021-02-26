@@ -12,12 +12,12 @@ extension SuggestionType {
 @objc public extension SuggestionsTableView {
 
     func userSuggestions(for siteID: NSNumber, completion: @escaping ([UserSuggestion]?) -> Void) {
-        guard let blog = SuggestionService.shared.persistedBlog(for: siteID) else { return }
+        guard let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else { return }
         SuggestionService.shared.suggestions(for: blog, completion: completion)
     }
 
     func siteSuggestions(for siteID: NSNumber, completion: @escaping ([SiteSuggestion]?) -> Void) {
-        guard let blog = SuggestionService.shared.persistedBlog(for: siteID) else { return }
+        guard let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else { return }
         SiteSuggestionService.shared.suggestions(for: blog, completion: completion)
     }
 

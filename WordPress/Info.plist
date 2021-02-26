@@ -260,6 +260,12 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>Noticons.ttf</string>
+		<string>oswald_upper.ttf</string>
+		<string>Shrikhand-Regular.ttf</string>
+		<string>LibreBaskerville-Regular.ttf</string>
+		<string>SpaceMono-Bold.ttf</string>
+		<string>Pacifico-Regular.ttf</string>
+		<string>Nunito-Bold.ttf</string>
 	</array>
 	<key>UIApplicationShortcutWidget</key>
 	<string>org.wordpress.WordPressTodayWidget</string>

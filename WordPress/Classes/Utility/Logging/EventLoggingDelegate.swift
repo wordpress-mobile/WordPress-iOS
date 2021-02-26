@@ -9,9 +9,7 @@ struct EventLoggingDelegate: AutomatticTracks.EventLoggingDelegate {
             && !UserSettings.userHasOptedOutOfCrashLogging
     }
 
-    var shouldEnableAutomaticSessionTracking: Bool {
-        return !UserSettings.userHasOptedOutOfCrashLogging
-    }
+    let shouldEnableAutomaticSessionTracking: Bool = true
 
     func didQueueLogForUpload(_ log: LogFile) {
         NotificationCenter.default.post(name: WPLoggingStack.QueuedLogsDidChangeNotification, object: log)

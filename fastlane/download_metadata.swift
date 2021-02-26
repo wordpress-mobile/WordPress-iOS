@@ -3,7 +3,7 @@
 import Foundation
 
 let glotPressSubtitleKey = "app_store_subtitle"
-let glotPressWhatsNewKey = "v16.7-whats-new"
+let glotPressWhatsNewKey = "v16.8-whats-new"
 let glotPressDescriptionKey = "app_store_desc"
 let glotPressKeywordsKey = "app_store_keywords"
 let baseFolder = "./metadata"
@@ -47,7 +47,7 @@ func downloadTranslation(languageCode: String, folderName: String) {
     let sema = DispatchSemaphore( value: 0)
 
     print("Downloading Language: \(languageCode)")
-	
+
     let task = session.dataTask(with: urlRequest) {
         (data, response, error) -> Void in
 
@@ -88,7 +88,7 @@ func downloadTranslation(languageCode: String, folderName: String) {
             var originalLanguage = String(key[index...])
             originalLanguage.remove(at: originalLanguage.startIndex)
             let translation = languageCode == "en-us" ? originalLanguage : firstValue
-            
+
             switch keyFirstPart {
             case glotPressSubtitleKey:
                 subtitle = translation
@@ -125,12 +125,11 @@ func downloadTranslation(languageCode: String, folderName: String) {
             print("  Error writing: \(error)")
         }
     }
-    
+
     task.resume()
     sema.wait()
 }
 
-languages.forEach( { (key: String, value: String) in
+languages.forEach { (key: String, value: String) in
     downloadTranslation(languageCode: value, folderName: key)
-})
-
+}

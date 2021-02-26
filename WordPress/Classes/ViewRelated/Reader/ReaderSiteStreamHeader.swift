@@ -61,10 +61,8 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
                    preferredContentSizeDidChange()
         }
 
-        if #available(iOS 13.0, *) {
-            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-                WPStyleGuide.applyReaderFollowButtonStyle(followButton)
-            }
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            WPStyleGuide.applyReaderFollowButtonStyle(followButton)
         }
     }
 
