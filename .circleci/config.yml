@@ -294,11 +294,10 @@ jobs:
 workflows:
   wordpress_ios:
     when:
-      condition:
-        and:
-          - equal: [ false, << pipeline.parameters.translation_review_build >> ]
-          - equal: [ false, << pipeline.parameters.beta_build >> ]
-          - equal: [ false, << pipeline.parameters.release_build >> ]
+      and:
+        - not: << pipeline.parameters.translation_review_build >> 
+        - not: << pipeline.parameters.beta_build >>
+        - not: << pipeline.parameters.release_build >>
     jobs:
       - Build Tests:
           <<: *iphone_test_device
@@ -345,11 +344,10 @@ workflows:
           requires: [ "Optional Tests" ]
   Installable Build:
     when:
-      condition:
-        and:
-          - equal: [ false, << pipeline.parameters.translation_review_build >> ]
-          - equal: [ false, << pipeline.parameters.beta_build >> ]
-          - equal: [ false, << pipeline.parameters.release_build >> ]
+      and:
+        - not: << pipeline.parameters.translation_review_build >> 
+        - not: << pipeline.parameters.beta_build >>
+        - not: << pipeline.parameters.release_build >>
     jobs:
       - Hold:
           type: approval
@@ -363,23 +361,11 @@ workflows:
               ignore: /pull\/[0-9]+/
   Release Build:
     when: 
-      condition:
-        and:
-        - or: [ << pipeline.parameters.beta_build >>, << pipeline.parameters.release_build >> ]
-        - not: << pipeline.parameters.translation_review_build >>
+      or: [ << pipeline.parameters.beta_build >>, << pipeline.parameters.release_build >> ]
     jobs:
-      - Release Build: 
-          filters:
-            branches:
-              ignore: /.*/
+      - Release Build
   Translation Review Build:
-    when: 
-      condition: 
-        and:
-          - equal: [ true, << pipeline.parameters.translation_review_build >> ]
-          - and:
-            - not: << pipeline.parameters.beta_build >>
-            - not: << pipeline.parameters.release_build >>
+    when: << pipeline.parameters.translation_review_build >> 
     jobs:
       - translation-review-build:
           filters:
