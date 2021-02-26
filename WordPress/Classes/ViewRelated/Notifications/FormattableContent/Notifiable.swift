@@ -53,6 +53,9 @@ extension NotificationKind {
         return kindsWithRichNotificationSupport.contains(kind)
     }
 
+    /// Indicates whether or not a given kind is view milestone.
+    /// - Parameter kind: the notification type to evaluate
+    /// - Returns: `true` if the notification kind is `viewMilestone`, `false` otherwise
     static func isViewMilestone(_ kind: NotificationKind) -> Bool {
         return kind == .viewMilestone
     }
