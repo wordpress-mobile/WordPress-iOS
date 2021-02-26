@@ -165,7 +165,9 @@ extension WPMediaAsset {
     func videoURLPublisher() -> AnyPublisher<URL, Error> {
         return videoAssetPublisher().tryMap { asset -> AnyPublisher<URL, Error> in
             let filename = UUID().uuidString
-            let url = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(filename)
+            let storiesURL = try MediaFileManager.cache.directoryURL().appendingPathComponent("Stories", isDirectory: true)
+            try FileManager.default.createDirectory(at: storiesURL, withIntermediateDirectories: true, attributes: nil)
+            let url = storiesURL.appendingPathComponent(filename)
             let urlAsset = asset as? AVURLAsset
 
             if let assetURL = urlAsset?.url {
@@ -181,12 +183,8 @@ extension WPMediaAsset {
                             return url
                         }
                     }.eraseToAnyPublisher()
-                }
-                do {
-                    try FileManager.default.copyItem(at: assetURL, to: exportURL)
-                    return Just(exportURL).setFailureType(to: Error.self).eraseToAnyPublisher()
-                } catch {
-                    return try asset.exportPublisher(url: url)
+                } else {
+                    return Just(assetURL).setFailureType(to: Error.self).eraseToAnyPublisher()
                 }
             } else {
                 // Export any other file which isn't an AVURLAsset since we don't have a URL to use.
