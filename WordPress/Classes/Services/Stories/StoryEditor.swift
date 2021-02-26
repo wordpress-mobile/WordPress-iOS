@@ -23,7 +23,7 @@ class StoryEditor: CameraController {
     var verificationPromptHelper: VerificationPromptHelper? = nil
 
     var analyticsEditorSource: String {
-        return "wp_stories_creator"
+        return "stories"
     }
 
     private var cameraHandler: CameraHandler?
