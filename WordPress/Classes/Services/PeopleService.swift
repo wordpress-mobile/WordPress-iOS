@@ -270,7 +270,7 @@ extension PeopleService {
     /// Convenience method for retrieving invite links from core data.
     ///
     /// - Parameters:
-    ///   - siteID: The ID of the site.  The site should be a P2.
+    ///   - siteID: The ID of the site.
     ///   - success: A success block.
     ///   - failure: A failure block
     ///
@@ -286,7 +286,7 @@ extension PeopleService {
     /// Fetch any existing Invite Links
     ///
     /// - Parameters:
-    ///   - siteID: The ID of the site.  The site should be a P2.
+    ///   - siteID: The ID of the site.
     ///   - success: A success block.
     ///   - failure: A failure block
     ///
@@ -306,7 +306,7 @@ extension PeopleService {
     /// Generate new Invite Links
     ///
     /// - Parameters:
-    ///   - siteID: The ID of the site.  The site should be a P2.
+    ///   - siteID: The ID of the site.
     ///   - success: A success block.
     ///   - failure: A failure block
     ///
@@ -326,7 +326,7 @@ extension PeopleService {
     /// Disable existing Invite Links
     ///
     /// - Parameters:
-    ///   - siteID: The ID of the site.  The site should be a P2.
+    ///   - siteID: The ID of the site.
     ///   - success: A success block.
     ///   - failure: A failure block
     ///
