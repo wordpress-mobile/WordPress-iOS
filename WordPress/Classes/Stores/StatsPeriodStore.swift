@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WidgetKit
 
 enum PeriodType: CaseIterable {
     case summary
@@ -130,6 +131,8 @@ struct PeriodStoreState {
     var summary: StatsSummaryTimeIntervalData? {
         didSet {
             storeThisWeekWidgetData()
+            StoreContainer.shared.statsWidgets.updateThisWeekHomeWidget(summary: summary)
+            storeTodayHomeWidgetData()
         }
     }
 
@@ -246,7 +249,7 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
     func persistToCoreData() {
         guard
             let siteID = SiteStatsInformation.sharedInstance.siteID,
-            let blog = BlogService.withMainContext().blog(byBlogId: siteID) else {
+            let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
                 return
         }
 
@@ -528,7 +531,7 @@ private extension StatsPeriodStore {
     func loadFromCache(date: Date, period: StatsPeriodUnit) {
         guard
             let siteID = SiteStatsInformation.sharedInstance.siteID,
-            let blog = BlogService.withMainContext().blog(byBlogId: siteID) else {
+            let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
                 return
         }
 
@@ -1346,6 +1349,22 @@ extension StatsPeriodStore {
 
 private extension PeriodStoreState {
 
+    // Store data for the iOS 14 Today widget. We don't need to check if the site
+    // matches here, as `storeHomeWidgetData` does that for us.
+    func storeTodayHomeWidgetData() {
+        guard summary?.period == .day,
+              summary?.periodEndDate == StatsDataHelper.currentDateForSite().normalizedDate(),
+              let todayData = summary?.summaryData.last else {
+            return
+        }
+
+        let todayWidgetStats = TodayWidgetStats(views: todayData.viewsCount,
+                                                visitors: todayData.visitorsCount,
+                                                likes: todayData.likesCount,
+                                                comments: todayData.commentsCount)
+        StoreContainer.shared.statsWidgets.storeHomeWidgetData(widgetType: HomeWidgetTodayData.self, stats: todayWidgetStats)
+    }
+
     func storeThisWeekWidgetData() {
         // Only store data if:
         // - The widget is using the current site
@@ -1373,5 +1392,4 @@ private extension PeriodStoreState {
         }
         return true
     }
-
 }

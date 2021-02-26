@@ -50,9 +50,7 @@ class ReaderTabViewController: UIViewController {
 
         ReaderTracker.shared.start(.main)
 
-        if FeatureFlag.whatIsNew.enabled {
-            WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
-        }
+        WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

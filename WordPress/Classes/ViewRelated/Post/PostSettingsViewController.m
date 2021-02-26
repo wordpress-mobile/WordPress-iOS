@@ -264,7 +264,7 @@ FeaturedImageViewControllerDelegate>
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateStyle = NSDateFormatterLongStyle;
     dateFormatter.timeStyle = NSDateFormatterShortStyle;
-    dateFormatter.timeZone = [self.blogService timeZoneForBlog:self.apost.blog];
+    dateFormatter.timeZone = [self.apost.blog timeZone];
     self.postDateFormatter = dateFormatter;
 }
 

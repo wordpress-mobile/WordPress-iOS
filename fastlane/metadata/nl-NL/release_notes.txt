@@ -1,9 +1,11 @@
-Over deze release:
+Dit zijn de hoogtepunten van deze uitgave:
 
-Opmerking: Dit is de laatste versie van de app die iOS 12 ondersteunt. Vanaf versie 16.7 heb je iOS 13 of hoger nodig om de app te kunnen gebruiken.
+Jetpack Backup is nu beschikbaar! Afhankelijk van het huidige abonnement van je site, kan je je site nu herstellen of een back-up van je site van een specifiek tijdstip downloaden. Als je Jetpack Scan hebt ingeschakeld, kan je je site nu scannen op bedreigingen en deze naar eigen gelang oplossen of negeren.
 
-Bekijk de statistieken op je startscherm: Geef je WordPress-sitestatistieken voor de dag weer op het startscherm van je iOS 14-apparaat met de nieuwe Today-widgets.
+Hou je van het bijhouden van je statistieken? We hebben ondersteuning toegevoegd voor nieuwe All Time Widgets, waarmee all-time statistieken van je site worden weergegeven op het startscherm van je iOS 14-apparaat.
 
-Houd de activiteit op je site bij: Filter en bekijk items in je activiteitenlog (zoals back-ups, plugin-updates en gepubliceerde berichten en pagina's) op datumbereik en type activiteit.
+Je kan nu ankers in het Kopblok instellen om pagina-verspringing in je content te creëren. We hebben andere updates doorgevoerd, zoals verbeteringen aan de herbruikbare blokken en blokken die je slechts eenmaal in je berichten invoert, zoals het Meer-blok.
 
-Raak bekend met je app: Leer de functies van je app kennen met een verbeterde Snelstart-rondleiding, die je begeleidt bij stappen zoals het controleren van je sitepagina's en het bewerken van je homepage.
+Het aanmaken van een site in de app wordt steeds beter. Bij het bouwen van een homepage kan je een voorbeeld bekijken van hoe je ontwerp eruitziet op een mobiel, tablet of desktop-scherm. Je kan nu ook een .blog-subdomein voor je site kiezen.
+
+Tot slot blijven we verbeteringen aanbrengen aan je Reader en je kan nu berichten als 'gelezen' markeren en je totale 'ongelezen' berichten bekijken.

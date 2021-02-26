@@ -96,9 +96,7 @@ struct DomainsService {
     }
 
     fileprivate func blogForSiteID(_ siteID: Int) -> Blog? {
-        let service = BlogService(managedObjectContext: context)
-
-        guard let blog = service.blog(byBlogId: NSNumber(value: siteID)) else {
+        guard let blog = try? Blog.lookup(withID: siteID, in: context) else {
             let error = "Tried to obtain a Blog for a non-existing site (ID: \(siteID))"
             assertionFailure(error)
             DDLogError(error)

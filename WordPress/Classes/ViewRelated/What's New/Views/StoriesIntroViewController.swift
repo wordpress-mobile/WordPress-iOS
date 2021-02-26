@@ -9,7 +9,7 @@ class StoriesIntroViewController: WhatIsNewViewController {
 
         static let example1Image = UIImage(named: "stories_intro_cover_1")
         static let example1Description = NSLocalizedString("How to create a story post", comment: "How to create story description")
-        static let example1URL = URL(string: "https://wpstories.wordpress.com/2020/12/02/story-demo-01/")
+        static let example1URL = URL(string: "https://wpstories.wordpress.com/2021/02/09/story-demo-03/")
 
         static let example2Image = UIImage(named: "stories_intro_cover_2")
         static let example2Description = NSLocalizedString("Example story title", comment: "Example story title description")
