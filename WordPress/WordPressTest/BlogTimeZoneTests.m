@@ -102,8 +102,9 @@
 
 - (void)cleanUpNSUserDefaultValues
 {
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
-    if ([service defaultWordPressComAccount]) {
+    NSManagedObjectContext *context = [ContextManager sharedInstance].mainContext;
+    if ( [WPAccount lookupDefaultWordPressComAccountInContext:context] ) {
+        AccountService *service = [[AccountService alloc] initWithManagedObjectContext:context];
         [service removeDefaultWordPressComAccount];
     }
 }

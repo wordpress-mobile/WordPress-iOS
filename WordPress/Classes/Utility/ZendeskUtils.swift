@@ -197,7 +197,7 @@ extension NSNotification.Name {
         }
     }
 
-    func cacheUnlocalizedSitePlans(accountService: AccountService? = nil, planService: PlanService? = nil) {
+    func cacheUnlocalizedSitePlans(planService: PlanService? = nil) {
         let context = ContextManager.shared.mainContext
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
             return

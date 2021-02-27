@@ -78,17 +78,18 @@
     XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
     self.testContextManager.testExpectation = saveExpectation;
 
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+    NSManagedObjectContext *context = [ContextManager sharedInstance].mainContext;
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *wpComAccount = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
-    WPAccount * defaultAccount = [accountService defaultWordPressComAccount];
+    WPAccount * defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
     XCTAssertEqualObjects(wpComAccount, defaultAccount);
 
     saveExpectation = [self expectationWithDescription:@"Context save expectation"];
     self.testContextManager.testExpectation = saveExpectation;
     [accountService createOrUpdateAccountWithUsername:@"test1" authToken:@"token1"];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
-    defaultAccount = [accountService defaultWordPressComAccount];
+    defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
     XCTAssertEqualObjects(wpComAccount, defaultAccount);
 }
 
@@ -104,7 +105,8 @@
     XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
     self.testContextManager.testExpectation = saveExpectation;
 
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
+    NSManagedObjectContext *context = self.testContextManager.mainContext;
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
     WPAccount *wpComAccount = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
 
@@ -133,7 +135,7 @@
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
     // test.blog + wp.com + jetpack
-    XCTAssertEqual(1, [accountService numberOfAccounts]);
+    XCTAssertEqual(1, [WPAccount lookupNumberOfAccountsInContext: context]);
     // test.blog + wp.com + jetpack (legacy)
     XCTAssertEqual(3, [blogService blogCountForAllAccounts]);
     // dotcom1.wordpress.com
@@ -150,7 +152,7 @@
     [self waitForExpectationsWithTimeout:5.0 handler:nil];
 
     // test.blog + wp.com
-    XCTAssertEqual(1, [accountService numberOfAccounts]);
+    XCTAssertEqual(1, [WPAccount lookupNumberOfAccountsInContext: context]);
     // dotcom1.wordpress.com + jetpack.example.com
     XCTAssertEqual(2, wpComAccount.blogs.count);
     // test.blog + wp.com + jetpack (wpcc)
@@ -177,7 +179,8 @@
     XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
     self.testContextManager.testExpectation = saveExpectation;
 
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
+    NSManagedObjectContext *context = self.testContextManager.mainContext;
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
     WPAccount *wpComAccount = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
 
@@ -194,7 +197,7 @@
     // Wait on the merge to be completed
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
-    XCTAssertEqual(1, [accountService numberOfAccounts]);
+    XCTAssertEqual(1, [WPAccount lookupNumberOfAccountsInContext: context]);
     // test.blog + wp.com + jetpack (legacy)
     XCTAssertEqual(3, [blogService blogCountForAllAccounts]);
     // dotcom1.wordpress.com
@@ -209,7 +212,7 @@
     [self waitForExpectationsWithTimeout:5.0 handler:nil];
 
     // test.blog + wp.com
-    XCTAssertEqual(1, [accountService numberOfAccounts]);
+    XCTAssertEqual(1, [WPAccount lookupNumberOfAccountsInContext: context]);
     // dotcom1.wordpress.com + jetpack.example.com
     XCTAssertEqual(2, wpComAccount.blogs.count);
     // test.blog + wp.com + jetpack (wpcc)

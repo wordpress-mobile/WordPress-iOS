@@ -7,12 +7,6 @@ import ZendeskCoreSDK
 
 class ZendeskUtilsPlans: XCTestCase {
 
-    class MockAccountService: AccountService {
-        override func defaultWordPressComAccount() -> WPAccount? {
-            return WPAccount(context: TestContextManager.sharedInstance().mainContext)
-        }
-    }
-
     class MockPlanService: PlanService {
         var presetPlans = [Int: RemotePlanSimpleDescription]()
 
@@ -65,17 +59,26 @@ class ZendeskUtilsPlans: XCTestCase {
         }
     }
 
-    var accountService: MockAccountService!
+    var contextManager: TestContextManager!
     var planService: MockPlanService!
 
-    override func setUp() {
-        accountService = MockAccountService(managedObjectContext: TestContextManager.sharedInstance().mainContext)
-        planService = MockPlanService(managedObjectContext: TestContextManager.sharedInstance().mainContext)
+    override func setUpWithError() throws {
+        contextManager = TestContextManager()
+        planService = MockPlanService(managedObjectContext: contextManager.mainContext)
+
+        let account = WPAccount(context: contextManager.mainContext)
+        account.userID = 1
+        account.username = "1"
+        account.authToken = "authToken"
+        account.uuid = UUID().uuidString
+        try contextManager.mainContext.save()
+
+        AccountService(managedObjectContext: contextManager.mainContext).setDefaultWordPressComAccount(account)
     }
 
     override func tearDown() {
-        accountService = nil
         planService = nil
+        contextManager = nil
     }
 
     func testEcommercePlanSelected() {
@@ -86,7 +89,7 @@ class ZendeskUtilsPlans: XCTestCase {
                                    4: RemotePlanSimpleDescription(planID: 4, name: "Personal"),
                                    5: RemotePlanSimpleDescription(planID: 5, name: "Blogger"),
                                    6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
-        ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
+        ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(planService: planService)
         // When
         let requestFields = ZendeskUtils.sharedInstance.createRequest(planService: planService).customFields
         // Then
@@ -103,7 +106,7 @@ class ZendeskUtilsPlans: XCTestCase {
                                    4: RemotePlanSimpleDescription(planID: 4, name: "Personal"),
                                    5: RemotePlanSimpleDescription(planID: 5, name: "Blogger"),
                                    6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
-        ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
+        ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(planService: planService)
         // When
         let requestFields = ZendeskUtils.sharedInstance.createRequest(planService: planService).customFields
         // Then
@@ -120,7 +123,7 @@ class ZendeskUtilsPlans: XCTestCase {
                                    4: RemotePlanSimpleDescription(planID: 4, name: "Personal"),
                                    5: RemotePlanSimpleDescription(planID: 5, name: "Blogger"),
                                    6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
-        ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
+        ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(planService: planService)
         // When
         let requestFields = ZendeskUtils.sharedInstance.createRequest(planService: planService).customFields
         // Then
@@ -137,7 +140,7 @@ class ZendeskUtilsPlans: XCTestCase {
                                    4: RemotePlanSimpleDescription(planID: 4, name: "Personal"),
                                    5: RemotePlanSimpleDescription(planID: 5, name: "Blogger"),
                                    6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
-        ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
+        ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(planService: planService)
         // When
         let requestFields = ZendeskUtils.sharedInstance.createRequest(planService: planService).customFields
         // Then
@@ -154,7 +157,7 @@ class ZendeskUtilsPlans: XCTestCase {
                                    4: RemotePlanSimpleDescription(planID: 4, name: "Free"),
                                    5: RemotePlanSimpleDescription(planID: 5, name: "Blogger"),
                                    6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
-        ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
+        ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(planService: planService)
         // When
         let requestFields = ZendeskUtils.sharedInstance.createRequest(planService: planService).customFields
         // Then
@@ -167,7 +170,7 @@ class ZendeskUtilsPlans: XCTestCase {
         // Given
         planService.presetPlans = [1: RemotePlanSimpleDescription(planID: 1, name: "NewPlan"),
                                    2: RemotePlanSimpleDescription(planID: 2, name: "Free")]
-        ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
+        ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(planService: planService)
         // When
         let requestFields = ZendeskUtils.sharedInstance.createRequest(planService: planService).customFields
         // Then
@@ -179,7 +182,7 @@ class ZendeskUtilsPlans: XCTestCase {
     func testNoPlanSelected() {
         // Given
         planService.presetPlans = [:]
-        ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(accountService: accountService, planService: planService)
+        ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans(planService: planService)
         // When
         let requestFields = ZendeskUtils.sharedInstance.createRequest(planService: planService).customFields
         // Then

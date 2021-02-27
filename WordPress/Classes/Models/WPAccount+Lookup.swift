@@ -47,7 +47,7 @@ public extension WPAccount {
 
     static func lookup(withUUIDString uuidString: String, in context: NSManagedObjectContext) throws -> WPAccount? {
         let fetchRequest = NSFetchRequest<Self>(entityName: WPAccount.entityName())
-        fetchRequest.predicate = NSPredicate(format: "uuid == %@", uuidString)
+        fetchRequest.predicate = NSPredicate(format: "uuid = %@", uuidString)
 
         guard let defaultAccount = try context.fetch(fetchRequest).first else {
             return nil
@@ -59,6 +59,14 @@ public extension WPAccount {
         }
 
         return defaultAccount
+    }
+
+    /// An Objective-C wrapper around the `lookupDefaultWordPressComAccount` method.
+    ///
+    /// Prefer using `lookupDefaultWordPressComAccount` directly
+    @objc(lookupNumberOfAccountsInContext:)
+    static func objc_lookupNumberOfAccounts(in context: NSManagedObjectContext) -> Int {
+        return (try? lookupNumberOfAccounts(in: context)) ?? 0
     }
 
     static func lookupNumberOfAccounts(in context: NSManagedObjectContext) throws -> Int {

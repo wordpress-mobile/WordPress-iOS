@@ -70,8 +70,7 @@ class GravatarServiceTests: XCTestCase {
         contextManager.saveContextAndWait(mainContext)
 
         accountService.setDefaultWordPressComAccount(defaultAccount)
-        XCTAssertNotNil(accountService.defaultWordPressComAccount())
-
+        XCTAssertTrue(try! WPAccount.lookupHasDefaultWordPressComAccount(in: mainContext))
         return defaultAccount
     }
 }
