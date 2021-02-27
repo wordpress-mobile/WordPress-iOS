@@ -140,15 +140,4 @@ class SiteSuggestionService {
         guard let suggestions = blog.siteSuggestions else { return nil }
         return Array(suggestions)
     }
-
-    /**
-     Retrieve the persisted blog/site for a given site ID
-
-     @param siteID the dotComID to retrieve
-     @return Blog the blog/site
-     */
-    func persistedBlog(for siteID: NSNumber) -> Blog? {
-        let context = ContextManager.shared.mainContext
-        return BlogService(managedObjectContext: context).blog(byBlogId: siteID)
-    }
 }

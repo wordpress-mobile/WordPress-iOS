@@ -246,8 +246,7 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
 
     func displayMediaWithID(_ mediaID: NSNumber) {
 
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID,
-            let blog = blogService.blog(byBlogId: siteID) else {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID, let blog = Blog.lookup(withID: siteID, in: mainContext) else {
                 DDLogInfo("Unable to get blog when trying to show media from Stats.")
                 return
         }
