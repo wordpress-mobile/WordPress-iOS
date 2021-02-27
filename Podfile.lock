@@ -405,11 +405,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-<<<<<<< HEAD
   - WordPressKit (4.28.0-beta.2):
-=======
-  - WordPressKit (4.28.0-beta.4):
->>>>>>> feature/15662-notification_likes
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -656,14 +652,10 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
-<<<<<<< HEAD
-    :tag: v1.47.0
+    :tag: v1.48.0-alpha1
   WordPressKit:
     :branch: feature/15662-notification_likes_support
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-=======
-    :tag: v1.48.0-alpha1
->>>>>>> feature/15662-notification_likes
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.48.0-alpha1/third-party-podspecs/Yoga.podspec.json
 
@@ -678,14 +670,10 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
-<<<<<<< HEAD
-    :tag: v1.47.0
+    :tag: v1.48.0-alpha1
   WordPressKit:
     :commit: 1901a95db81637c16002e6ad4af83a83faf55504
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-=======
-    :tag: v1.48.0-alpha1
->>>>>>> feature/15662-notification_likes
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
