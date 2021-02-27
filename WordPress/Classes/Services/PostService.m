@@ -696,6 +696,28 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     }
 }
 
+- (void)getLikesForPostID:(NSNumber *)postID
+                   siteID:(NSNumber *)siteID
+                  success:(void (^)(NSArray<RemoteUser *> *))success
+                  failure:(void (^)(NSError * _Nullable))failure
+{
+    NSParameterAssert(postID);
+    NSParameterAssert(siteID);
+
+    PostServiceRemoteREST *remote = [self.postServiceRemoteFactory restRemoteForSiteID:siteID
+                                                                               context:self.managedObjectContext];
+    if (remote) {
+        [remote getLikesForPostID:postID
+                          success:success
+                          failure:failure];
+    } else {
+        NSError *error = [NSError errorWithDomain:PostServiceErrorDomain
+                                             code:0
+                                         userInfo:@{ NSLocalizedDescriptionKey : @"Unable to create a REST remote for posts." }];
+        failure(error);
+    }
+}
+
 #pragma mark - Helpers
 
 - (void)initializeDraft:(AbstractPost *)post {

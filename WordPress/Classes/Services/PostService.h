@@ -175,13 +175,14 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
  Fetches a list of users that liked the post with the given ID.
  
  @param postID The ID of the post to fetch likes for
- @param blog The blog that has the post
+ @param siteID The ID of the site that contains the post
  @param success A success block
  @param failure A failure block
  */
-- (void)getLikesForPost:(AbstractPost *)post
-                success:(void (^)(NSArray<RemoteUser *> * _Nullable users))success
-                failure:(void (^)(NSError * _Nullable error))failure;
+- (void)getLikesForPostID:(NSNumber *)postID
+                   siteID:(NSNumber *)siteID
+                  success:(void (^)(NSArray<RemoteUser *> *users))success
+                  failure:(void (^)(NSError * _Nullable error))failure;
 
 @end
 
