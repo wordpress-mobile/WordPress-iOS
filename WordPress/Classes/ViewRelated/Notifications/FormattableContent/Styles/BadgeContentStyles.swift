@@ -32,7 +32,8 @@ class BadgeContentStyles: FormattableContentStyles {
                 .post: WPStyleGuide.Notifications.badgeTitleItalicsStyle,
                 .comment: WPStyleGuide.Notifications.badgeTitleItalicsStyle,
                 .blockquote: WPStyleGuide.Notifications.badgeTitleQuotedStyle,
-                .site: WPStyleGuide.Notifications.badgeTitleBoldStyle
+                .site: WPStyleGuide.Notifications.badgeTitleBoldStyle,
+                .strong: WPStyleGuide.Notifications.badgeTitleBoldStyle
             ]
         }
 
