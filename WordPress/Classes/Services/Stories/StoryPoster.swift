@@ -122,13 +122,14 @@ class StoryPoster {
 
         // Update set of `MediaItem`s with values from the new added uploading `Media`.
         let mediaFiles: [MediaFile] = media.enumerated().map { (idx, media) -> MediaFile in
+            let item = mediaItems[idx]
             return MediaFile(alt: media.alt ?? "",
                              caption: media.caption ?? "",
                              id: String(media.gutenbergUploadID),
                              link: media.remoteURL ?? "",
-                             mime: media.mimeType() ?? "",
-                             type: String(media.mimeType()?.split(separator: "/").first ?? ""),
-                             url: mediaItems[idx].archive?.absoluteString ?? "")
+                             mime: item.mimeType,
+                             type: String(item.mimeType.split(separator: "/").first ?? ""),
+                             url: item.archive?.absoluteString ?? "")
         }
 
         let story = Story(mediaFiles: mediaFiles)
