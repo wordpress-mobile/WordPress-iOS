@@ -454,7 +454,7 @@ DEPENDENCIES:
   - Gifu (= 3.2.0)
   - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.48.0-alpha1/third-party-podspecs/glog.podspec.json`)
   - Gridicons (~> 1.1.0)
-  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v1.48.0-alpha1`)
+  - Gutenberg (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.48.0-alpha1`)
   - JTAppleCalendar (~> 8.0.2)
   - Kanvas (~> 1.2.2)
   - MediaEditor (~> 1.2.1)
@@ -498,7 +498,7 @@ DEPENDENCIES:
   - RNReanimated (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.48.0-alpha1/third-party-podspecs/RNReanimated.podspec.json`)
   - RNScreens (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.48.0-alpha1/third-party-podspecs/RNScreens.podspec.json`)
   - RNSVG (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.48.0-alpha1/third-party-podspecs/RNSVG.podspec.json`)
-  - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v1.48.0-alpha1`)
+  - RNTAztecView (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.48.0-alpha1`)
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
@@ -581,7 +581,7 @@ EXTERNAL SOURCES:
   glog:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.48.0-alpha1/third-party-podspecs/glog.podspec.json
   Gutenberg:
-    :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+    :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.48.0-alpha1
   RCTRequired:
@@ -651,7 +651,7 @@ EXTERNAL SOURCES:
   RNSVG:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.48.0-alpha1/third-party-podspecs/RNSVG.podspec.json
   RNTAztecView:
-    :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+    :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.48.0-alpha1
   Yoga:
@@ -662,11 +662,11 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-    :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+    :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.48.0-alpha1
   RNTAztecView:
-    :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+    :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.48.0-alpha1
 
@@ -766,6 +766,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 3e4e8ed46d30423393f5d7414660e486aa37b3b2
+PODFILE CHECKSUM: a0ccf26321fe0137fcd601934b71d8ffb73f9d1e
 
 COCOAPODS: 1.10.0
