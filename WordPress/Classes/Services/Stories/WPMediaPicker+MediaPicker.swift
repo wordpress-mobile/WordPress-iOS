@@ -138,24 +138,61 @@ enum VideoURLErrors: Error {
     case failedVideoDownload
 }
 
+private extension PHAsset {
+    // TODO: Update MPMediaPicker with degraded image implementation.
+    func sizedImage(with size: CGSize, completionHandler: @escaping (UIImage?, Error?) -> Void) {
+        let options = PHImageRequestOptions()
+        options.isSynchronous = false
+        options.deliveryMode = .opportunistic
+        options.resizeMode = .fast
+        options.isNetworkAccessAllowed = true
+        PHImageManager.default().requestImage(for: self, targetSize: size, contentMode: .aspectFit, options: options, resultHandler: { (result, info) in
+            let error = info?[PHImageErrorKey] as? Error
+            let cancelled = info?[PHImageCancelledKey] as? Bool
+            if let error = error, cancelled != true {
+                completionHandler(nil, error)
+            }
+            // Wait for resized image instead of thumbnail
+            if let degraded = info?[PHImageResultIsDegradedKey] as? Bool, degraded == false {
+                completionHandler(result, nil)
+            }
+        })
+    }
+}
+
 extension WPMediaAsset {
+
+    private func fit(size: CGSize) -> CGSize {
+        let assetSize = pixelSize()
+        let aspect = assetSize.width / assetSize.height
+        if size.width / aspect <= size.height {
+            return CGSize(width: size.width, height: round(size.width / aspect))
+        } else {
+            return CGSize(width: round(size.height * aspect), height: round(size.height))
+        }
+    }
+
+    func sizedImage(with size: CGSize, completionHandler: @escaping (UIImage?, Error?) -> Void) {
+        if let asset = self as? PHAsset {
+            asset.sizedImage(with: size, completionHandler: completionHandler)
+        } else {
+            image(with: size, completionHandler: completionHandler)
+        }
+    }
 
     /// Produces a Publisher which contains a resulting image and image URL where available.
     /// - Returns: A Publisher containing resuling image, URL and any errors during export.
     func imagePublisher() -> AnyPublisher<(UIImage, URL?), Error> {
         return Future<(UIImage, URL?), Error> { promise in
-            let pixelSize = self.pixelSize()
-            self.image(with: pixelSize) { (image, error) in
+            let size = self.fit(size: UIScreen.main.nativeBounds.size)
+            self.sizedImage(with: size) { (image, error) in
                 guard let image = image else {
                     if let error = error {
                         return promise(.failure(error))
                     }
                     return promise(.failure(WPMediaAssetError.imageAssetExportFailed))
                 }
-                if image.size.width >= pixelSize.width && image.size.height >= pixelSize.height {
-                    return promise(.success((image, nil)))
-                }
-                // `deliveryMode` is opportunistic so we wait for the full sized asset
+                return promise(.success((image, nil)))
             }
         }.eraseToAnyPublisher()
     }
