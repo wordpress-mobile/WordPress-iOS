@@ -258,18 +258,20 @@ class PostServiceWPComTests: XCTestCase {
 
     func testFetchingPostLikesSuccessfullyShouldCallSuccessBlock() {
         // Arrange
+        let postID = NSNumber(value: 1)
+        let siteID = NSNumber(value: 2)
         let expectedUsers = [createRemoteUser()]
-        let post = PostBuilder(context).published().withRemote().with(remoteStatus: .sync).build()
         try! context.save()
         remoteMock.remoteUsersToReturnOnGetLikes = expectedUsers
 
         // Act
         waitUntil(timeout: 2) { done in
-            self.service.getLikesFor(post, success: { users in
+            self.service.getLikesForPostID(postID, siteID: siteID, success: { users in
                 // Assert
-                expect(users?.count) == 1
+                expect(users.count) == 1
                 done()
-            }, failure: { _ in
+            },
+            failure: { _ in
                 fail("This closure should not be called")
             })
         }
@@ -277,15 +279,17 @@ class PostServiceWPComTests: XCTestCase {
 
     func testFailingFetchPostLikesShouldCallFailureBlock() {
         // Arrange
-        let post = PostBuilder(context).published().withRemote().with(remoteStatus: .sync).build()
+        let postID = NSNumber(value: 1)
+        let siteID = NSNumber(value: 2)
         try! context.save()
         remoteMock.fetchLikesShouldSucceed = false
 
         // Act
         waitUntil(timeout: 2) { done in
-            self.service.getLikesFor(post, success: { users in
+            self.service.getLikesForPostID(postID, siteID: siteID, success: { users in
                 fail("this closure should not be called")
-            }, failure: { _ in
+            },
+            failure: { _ in
                 done()
             })
         }
@@ -317,6 +321,10 @@ private class PostServiceRemoteFactoryMock: PostServiceRemoteFactory {
 
     override func forBlog(_ blog: Blog) -> PostServiceRemote? {
         return remoteToReturn
+    }
+
+    override func restRemoteFor(siteID: NSNumber, context: NSManagedObjectContext) -> PostServiceRemoteREST? {
+        return remoteToReturn as? PostServiceRemoteREST
     }
 }
 
