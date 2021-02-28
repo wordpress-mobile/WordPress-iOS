@@ -93,7 +93,12 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
 
+        let selected = picker.selectedAssets
+        picker.clearSelectedAssets(false)
+        picker.reloadInputViews() // Reloads the bottom bar so it is hidden while loading
+
         SVProgressHUD.setDefaultMaskType(.black)
+        SVProgressHUD.setContainerView(presenter?.view)
         SVProgressHUD.showProgress(-1)
 
         let mediaExports: [AnyPublisher<(Int, PickedMedia), Error>] = assets.enumerated().map { (index, asset) -> AnyPublisher<(Int, PickedMedia), Error> in
@@ -122,10 +127,26 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
             }
         }
         .receive(on: DispatchQueue.main).sink(receiveCompletion: { completion in
+            switch completion {
+            case .failure(let error):
+                picker.selectedAssets = selected
 
+                let title = NSLocalizedString("Failed Media Export", comment: "Error title when picked media cannot be imported into stories.")
+                let message = NSLocalizedString("Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Error message when picked media cannot be imported into stories.")
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
+                    alert.dismiss(animated: true, completion: nil)
+                }
+                alert.addAction(dismiss)
+                picker.present(alert, animated: true, completion: nil)
+
+                DDLogError("Failed to export picked Stories media: \(error)")
+            case .finished:
+                break
+            }
+            SVProgressHUD.dismiss()
         }, receiveValue: { [weak self] media in
             self?.presenter?.dismiss(animated: true, completion: nil)
-            SVProgressHUD.dismiss()
             self?.kanvasDelegate?.didPick(media: media)
         }).store(in: &cancellables)
     }
