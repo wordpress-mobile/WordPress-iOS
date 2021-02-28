@@ -229,8 +229,7 @@ extension WPMediaAsset {
             let urlAsset = asset as? AVURLAsset
 
             if let assetURL = urlAsset?.url {
-                let existingExtension = assetURL.pathExtension
-                let exportURL = url.appendingPathExtension(existingExtension)
+                let exportURL = url.appendingPathExtension(assetURL.pathExtension)
                 if urlAsset?.url.scheme != "file" {
                     // Download any file which isn't local and move it to the proper location.
                     return URLSession.shared.downloadTaskPublisher(url: assetURL).tryMap { (location, _) -> URL in
