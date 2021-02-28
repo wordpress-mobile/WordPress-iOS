@@ -70,8 +70,7 @@
 - (BOOL)hasAuthTokenIssues
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *account = [accountService defaultWordPressComAccount];
+    WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:context];
 
     BOOL hasAuthTokenIssues = account && ![account authToken];
 

@@ -199,8 +199,7 @@ extension NSNotification.Name {
 
     func cacheUnlocalizedSitePlans(accountService: AccountService? = nil, planService: PlanService? = nil) {
         let context = ContextManager.shared.mainContext
-        let accountService = accountService ?? AccountService(managedObjectContext: context)
-        guard let account = accountService.defaultWordPressComAccount() else {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
             return
         }
 
@@ -415,8 +414,7 @@ private extension ZendeskUtils {
         let context = ContextManager.sharedInstance().mainContext
 
         // 1. Check for WP account
-        let accountService = AccountService(managedObjectContext: context)
-        if let defaultAccount = accountService.defaultWordPressComAccount() {
+        if let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context) {
             DDLogDebug("Zendesk - Using defaultAccount for suggested identity.")
             getUserInformationFrom(wpAccount: defaultAccount)
             completion()
@@ -691,8 +689,7 @@ private extension ZendeskUtils {
         }
 
         // If there is a WP account, add wpcom tag.
-        let accountService = AccountService(managedObjectContext: context)
-        if let _ = accountService.defaultWordPressComAccount() {
+        if let _ = try? WPAccount.lookupDefaultWordPressComAccount(in: context) {
             tags.append(Constants.wpComTag)
         }
 

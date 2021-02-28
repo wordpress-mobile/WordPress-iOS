@@ -14,12 +14,7 @@ class ReaderSelectInterestsCoordinator {
          context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
 
         self.interestsService = service ?? ReaderTopicService(managedObjectContext: context)
-        self.userId = userId ?? {
-            let acctServ = AccountService(managedObjectContext: context)
-            let account = acctServ.defaultWordPressComAccount()
-
-            return account?.userID
-        }()
+        self.userId = try? userId ?? WPAccount.lookupDefaultWordPressComAccount(in: context)?.userID
     }
 
     // MARK: - Saving

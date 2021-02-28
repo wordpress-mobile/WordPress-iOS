@@ -79,7 +79,7 @@
     if (onlyDefault) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+        WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext: context];
         self.dataSource.account = defaultAccount;
     } else {
         self.dataSource.account = nil;
@@ -239,9 +239,8 @@
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     
     [context performBlock:^{
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+        WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
         
         if (!defaultAccount) {
             return;

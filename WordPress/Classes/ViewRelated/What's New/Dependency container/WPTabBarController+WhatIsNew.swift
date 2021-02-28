@@ -29,8 +29,8 @@ extension WPTabBarController {
     }
 
     private func makeApi() -> WordPressComRestApi {
-        let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
-        let defaultAccount = accountService.defaultWordPressComAccount()
+        let context = ContextManager.shared.mainContext
+        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
         let token: String? = defaultAccount?.authToken
 
         return WordPressComRestApi.defaultApi(oAuthToken: token,

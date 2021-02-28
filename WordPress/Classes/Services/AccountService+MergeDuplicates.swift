@@ -3,7 +3,10 @@ import Foundation
 extension AccountService {
 
     func mergeDuplicatesIfNecessary() {
-        guard numberOfAccounts() > 1 else {
+        guard
+            let count = try? WPAccount.lookupNumberOfAccounts(in: managedObjectContext),
+            count > 1
+        else {
             return
         }
 
@@ -27,7 +30,7 @@ extension AccountService {
         // If one of the accounts is the default account, merge the rest into it.
         // Otherwise just use the first account.
         var destination = accounts.first!
-        if let defaultAccount = defaultWordPressComAccount(), accounts.contains(defaultAccount) {
+        if let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext), accounts.contains(defaultAccount) {
             destination = defaultAccount
         }
 

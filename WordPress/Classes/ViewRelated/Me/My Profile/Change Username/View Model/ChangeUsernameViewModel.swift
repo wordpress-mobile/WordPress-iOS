@@ -14,7 +14,12 @@ class ChangeUsernameViewModel {
         return settings?.displayName ?? ""
     }
     var formattedCreatedDate: String? {
-        return accountService.defaultWordPressComAccount()?.dateCreated.mediumString()
+        let context = ContextManager.sharedInstance().mainContext
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
+            return nil
+        }
+
+        return account.dateCreated.mediumString()
     }
     var isReachable: Bool {
         return reachability?.isReachable() ?? false
@@ -38,7 +43,6 @@ class ChangeUsernameViewModel {
     private let settings: AccountSettings?
     private let store: AccountSettingsStore
     private let reachability = Reachability.forInternetConnection()
-    private let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
     private var receipt: Receipt?
     private var saveUsernameBlock: StateBlock?
     private var reloadAllSections: Bool = true

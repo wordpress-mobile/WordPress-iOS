@@ -364,8 +364,7 @@ static NSInteger HideSearchMinSites = 3;
     }
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
 
     if (!defaultAccount) {
         [self handleSyncEnded];
@@ -904,8 +903,7 @@ static NSInteger HideSearchMinSites = 3;
 - (WPAccount *)defaultWordPressComAccount
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    return [accountService defaultWordPressComAccount];
+    return [WPAccount lookupDefaultWordPressComAccountInContext:context];
 }
 
 - (void)showLoginControllerForAddingSelfHostedSite
@@ -941,7 +939,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                      NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
                                                                      [context performBlock:^{
                                                                          AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-                                                                         WPAccount *account = [accountService defaultWordPressComAccount];
+                                                                         WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:context];
                                                                          [accountService setVisibility:visible forBlogs:[account.blogs allObjects]];
                                                                          [[ContextManager sharedInstance] saveContext:context];
                                                                      }];

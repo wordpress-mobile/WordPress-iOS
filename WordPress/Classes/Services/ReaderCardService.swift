@@ -135,8 +135,8 @@ class ReaderCardService {
 /// Used to inject the ReaderPostServiceRemote as an dependency
 extension ReaderPostServiceRemote {
     class func withDefaultApi() -> ReaderPostServiceRemote {
-        let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
-        let defaultAccount = accountService.defaultWordPressComAccount()
+        let context = ContextManager.shared.mainContext
+        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
         let token: String? = defaultAccount?.authToken
 
         let api = WordPressComRestApi.defaultApi(oAuthToken: token,

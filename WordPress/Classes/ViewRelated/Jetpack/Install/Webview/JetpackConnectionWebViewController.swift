@@ -325,9 +325,9 @@ private extension JetpackConnectionWebViewController {
     }
 
     func defaultAccount() -> WPAccount? {
+        assert(Thread.isMainThread, "\(#function) can only be called on the main thread")
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        return service.defaultWordPressComAccount()
+        return try? WPAccount.lookupDefaultWordPressComAccount(in: context)
     }
 
     enum Debug {

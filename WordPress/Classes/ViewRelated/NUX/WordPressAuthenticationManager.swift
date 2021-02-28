@@ -109,8 +109,7 @@ extension WordPressAuthenticationManager {
     @objc
     class func signinForWPComFixingAuthToken(_ onDismissed: ((_ cancelled: Bool) -> Void)? = nil) -> UIViewController {
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let account = service.defaultWordPressComAccount()
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
 
         return WordPressAuthenticator.signinForWPCom(dotcomEmailAddress: account?.email, dotcomUsername: account?.username, onDismissed: onDismissed)
     }
@@ -197,8 +196,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// We allow to connect with WordPress.com account only if there is no default account connected already.
     var allowWPComLogin: Bool {
-        let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
-        return accountService.defaultWordPressComAccount() == nil
+        let context = ContextManager.shared.mainContext
+        return (try? WPAccount.lookupDefaultWordPressComAccount(in: context)) == nil
     }
 
     /// Returns an instance of a SupportView, configured to be displayed from a specified Support Source.
@@ -301,10 +300,11 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         }
 
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let numberOfBlogs = service.defaultWordPressComAccount()?.blogs?.count ?? 0
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
+            return false
+        }
 
-        return numberOfBlogs > 0
+        return account.hasBlogs
     }
 
     /// Indicates if the Signup Epilogue should be displayed.
@@ -319,11 +319,10 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func createdWordPressComAccount(username: String, authToken: String) {
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
 
-        let account = service.createOrUpdateAccount(withUsername: username, authToken: authToken)
-        if service.defaultWordPressComAccount() == nil {
-            service.setDefaultWordPressComAccount(account)
+        let account = AccountService(managedObjectContext: context).createOrUpdateAccount(withUsername: username, authToken: authToken)
+        if !account.isDefaultWordPressComAccount {
+            AccountService(managedObjectContext: context).setDefaultWordPressComAccount(account)
         }
     }
 

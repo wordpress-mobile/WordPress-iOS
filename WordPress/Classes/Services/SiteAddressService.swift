@@ -65,10 +65,9 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
     // MARK: LocalCoreDataService
 
     override convenience init(managedObjectContext context: NSManagedObjectContext) {
-        let accountService = AccountService(managedObjectContext: context)
 
         let api: WordPressComRestApi
-        if let wpcomApi = accountService.defaultWordPressComAccount()?.wordPressComRestApi {
+        if let wpcomApi = try? WPAccount.lookupDefaultWordPressComAccount(in: context)?.wordPressComRestApi {
             api = wpcomApi
         } else {
             api = WordPressComRestApi.defaultApi(userAgent: WPUserAgent.wordPress())

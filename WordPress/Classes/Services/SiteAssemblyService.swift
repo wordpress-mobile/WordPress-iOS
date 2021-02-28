@@ -34,7 +34,7 @@ final class EnhancedSiteCreationService: LocalCoreDataService, SiteAssemblyServi
         self.blogService = BlogService(managedObjectContext: context)
 
         let api: WordPressComRestApi
-        if let wpcomApi = accountService.defaultWordPressComAccount()?.wordPressComRestApi {
+        if let wpcomApi = try? WPAccount.lookupDefaultWordPressComAccount(in: context)?.wordPressComRestApi {
             api = wpcomApi
         } else {
             api = WordPressComRestApi.defaultApi(userAgent: WPUserAgent.wordPress())
@@ -126,7 +126,7 @@ final class EnhancedSiteCreationService: LocalCoreDataService, SiteAssemblyServi
     }
 
     private func synchronize(createdSite: CreatedSite) {
-        guard let defaultAccount = accountService.defaultWordPressComAccount() else {
+        guard let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext) else {
             endFailedAssembly()
             return
         }

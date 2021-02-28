@@ -172,10 +172,8 @@ class RequestAuthenticator: NSObject {
             completion(request)
         }
 
-        // We should really consider refactoring how we retrieve the default account since it doesn't really use
-        // a context at all...
-        guard let account = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext).defaultWordPressComAccount() else {
-
+        let context = ContextManager.sharedInstance().mainContext
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)  else {
             WordPressAppDelegate.crashLogging?.logMessage("It shouldn't be possible to reach this point without an account.", properties: nil, level: .error)
             return
         }

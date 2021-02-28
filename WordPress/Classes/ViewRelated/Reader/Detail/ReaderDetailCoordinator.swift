@@ -24,7 +24,7 @@ class ReaderDetailCoordinator {
 
     /// An authenticator to ensure any request made to WP sites is properly authenticated
     lazy var authenticator: RequestAuthenticator? = {
-        guard let account = AccountService(managedObjectContext: coreDataStack.mainContext).defaultWordPressComAccount() else {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: coreDataStack.mainContext) else {
             DDLogInfo("Account not available for Reader authentication")
             return nil
         }

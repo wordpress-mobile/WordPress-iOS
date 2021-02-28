@@ -11,6 +11,7 @@ class SignupEpilogueViewController: UIViewController {
 
     var credentials: AuthenticatorCredentials?
     var socialService: SocialService?
+    var accountService: AccountService!
 
     /// Closure to be executed upon tapping the continue button.
     ///
@@ -38,6 +39,7 @@ class SignupEpilogueViewController: UIViewController {
     // MARK: - View
 
     override func viewDidLoad() {
+        precondition(accountService != nil, "accountService cannot be nil")
         super.viewDidLoad()
         view.backgroundColor = .basicBackground
         defaultTableViewMargin = tableViewLeadingConstraint.constant
@@ -211,11 +213,12 @@ private extension SignupEpilogueViewController {
         }
 
         let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        guard let account = accountService.defaultWordPressComAccount(),
-            let api = account.wordPressComRestApi else {
-                navigationController?.popViewController(animated: true)
-                return
+        guard
+            let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
+            let api = account.wordPressComRestApi
+        else {
+            navigationController?.popViewController(animated: true)
+            return
         }
 
         let settingsService = AccountSettingsService(userID: account.userID.intValue, api: api)
@@ -232,10 +235,12 @@ private extension SignupEpilogueViewController {
 
     func changeDisplayName(to newDisplayName: String, finished: @escaping (() -> Void)) {
         let context = ContextManager.sharedInstance().mainContext
-        guard let defaultAccount = AccountService(managedObjectContext: context).defaultWordPressComAccount(),
-            let restApi = defaultAccount.wordPressComRestApi else {
-                finished()
-                return
+        guard
+            let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
+            let restApi = defaultAccount.wordPressComRestApi
+        else {
+            finished()
+            return
         }
 
         let accountSettingService = AccountSettingsService(userID: defaultAccount.userID.intValue, api: restApi)
@@ -249,13 +254,13 @@ private extension SignupEpilogueViewController {
     }
 
     func changePassword(to newPassword: String, finished: @escaping (_ success: Bool, _ error: Error?) -> Void) {
-
         let context = ContextManager.sharedInstance().mainContext
-
-        guard let defaultAccount = AccountService(managedObjectContext: context).defaultWordPressComAccount(),
-            let restApi = defaultAccount.wordPressComRestApi else {
-                finished(false, nil)
-                return
+        guard
+            let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
+            let restApi = defaultAccount.wordPressComRestApi
+        else {
+            finished(false, nil)
+            return
         }
 
         let accountSettingService = AccountSettingsService(userID: defaultAccount.userID.intValue, api: restApi)
@@ -284,12 +289,11 @@ private extension SignupEpilogueViewController {
 
     func refreshAccountDetails(finished: @escaping () -> Void) {
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        guard let account = service.defaultWordPressComAccount() else {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
             self.dismissEpilogue()
             return
         }
-        service.updateUserDetails(for: account, success: { () in
+        accountService.updateUserDetails(for: account, success: { () in
             finished()
         }, failure: { _ in
             finished()

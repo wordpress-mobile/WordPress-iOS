@@ -119,7 +119,7 @@ open class AppIconViewController: UITableViewController {
     private var shouldShowJetpackIcon: Bool {
         let context = ContextManager.shared.mainContext
         let hasJetpackSite = BlogService(managedObjectContext: context).hasAnyJetpackBlogs()
-        let hasWPComSite = AccountService(managedObjectContext: context).defaultWordPressComAccount() != nil
+        let hasWPComSite = (try? WPAccount.lookupDefaultWordPressComAccount(in: context)) != nil
 
         return hasJetpackSite || hasWPComSite
     }

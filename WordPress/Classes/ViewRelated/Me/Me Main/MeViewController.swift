@@ -310,9 +310,7 @@ class MeViewController: UITableViewController {
     // and initializing stuff with safer values like userID
     fileprivate func defaultAccount() -> WPAccount? {
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let account = service.defaultWordPressComAccount()
-        return account
+        return try? WPAccount.lookupDefaultWordPressComAccount(in: context)
     }
 
     fileprivate func refreshAccountDetails() {

@@ -181,8 +181,7 @@ private class MyProfileController: SettingsController {
     // and initializing stuff with safer values like userID
     fileprivate func defaultAccount() -> WPAccount? {
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let account = service.defaultWordPressComAccount()
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
         // Again, ! isn't cool, but let's keep it for now until we refactor the VC
         // initialization parameters.
         return account

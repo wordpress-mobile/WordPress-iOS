@@ -11,13 +11,8 @@ class PostSignUpInterstitialCoordinator {
     init(database: KeyValueDatabase = UserDefaults.standard, userId: NSNumber? = nil ) {
         self.database = database
 
-        self.userId = userId ?? {
-            let context = ContextManager.sharedInstance().mainContext
-            let acctServ = AccountService(managedObjectContext: context)
-            let account = acctServ.defaultWordPressComAccount()
-
-            return account?.userID
-        }()
+        let context = ContextManager.shared.mainContext
+        self.userId = try? userId ?? WPAccount.lookupDefaultWordPressComAccount(in: context)?.userID
     }
 
     /// Generates the user defaults key for the logged in user

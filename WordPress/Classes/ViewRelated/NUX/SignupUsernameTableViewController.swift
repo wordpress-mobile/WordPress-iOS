@@ -213,8 +213,7 @@ extension SignupUsernameTableViewController {
         isSearching = true
 
         let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        guard let account = accountService.defaultWordPressComAccount(),
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
             let api = account.wordPressComRestApi else {
                 return
         }

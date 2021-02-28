@@ -118,10 +118,11 @@ class DomainSuggestionsTableViewController: UITableViewController {
 
         isSearching = true
 
-        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let api = accountService.defaultWordPressComAccount()?.wordPressComRestApi ?? WordPressComRestApi.defaultApi(oAuthToken: "")
+        let context = ContextManager.sharedInstance().mainContext
+        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+        let api = defaultAccount?.wordPressComRestApi ?? WordPressComRestApi.defaultApi(oAuthToken: "")
 
-        let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
+        let service = DomainsService(managedObjectContext: context, remote: DomainsServiceRemote(wordPressComRestApi: api))
         SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
 
         service.getDomainSuggestions(base: searchTerm,

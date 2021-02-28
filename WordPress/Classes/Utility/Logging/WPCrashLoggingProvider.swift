@@ -45,8 +45,8 @@ struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
 
     var currentUser: TracksUser? {
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        guard let account = service.defaultWordPressComAccount() else {
+
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
             return nil
         }
 

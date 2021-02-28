@@ -45,19 +45,14 @@ import Foundation
     ///
     fileprivate func apiForRequest() -> WordPressComRestApi {
 
-        var api: WordPressComRestApi? = nil
-
-        let accountService = AccountService(managedObjectContext: managedObjectContext)
-        if let unwrappedRestApi = accountService.defaultWordPressComAccount()?.wordPressComRestApi {
-            if unwrappedRestApi.hasCredentials() {
-                api = unwrappedRestApi
-            }
+        guard
+            let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext),
+            let restAPI = defaultAccount.wordPressComRestApi,
+            restAPI.hasCredentials()
+        else {
+            return WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
         }
 
-        if api == nil {
-            api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
-        }
-
-        return api!
+        return restAPI
     }
 }

@@ -27,7 +27,7 @@ final class SiteCreationSegmentsService: LocalCoreDataService, SiteSegmentsServi
         self.accountService = AccountService(managedObjectContext: context)
 
         let api: WordPressComRestApi
-        if let account = accountService.defaultWordPressComAccount() {
+        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) {
             api = account.wordPressComRestV2Api
         } else {
             api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)

@@ -53,7 +53,7 @@ class WordPressComSyncService {
             blogService.associateSyncedBlogs(toJetpackAccount: account, success: onSuccessInternal, failure: onFailureInternal)
 
         } else {
-            if accountService.defaultWordPressComAccount()?.isEqual(account) == false {
+            if !account.isDefaultWordPressComAccount {
                 accountService.removeDefaultWordPressComAccount()
             }
 

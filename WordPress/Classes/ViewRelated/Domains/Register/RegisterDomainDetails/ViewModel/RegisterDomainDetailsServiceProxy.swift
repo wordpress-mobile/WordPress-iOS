@@ -46,8 +46,9 @@ protocol RegisterDomainDetailsServiceProxyProtocol {
 class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtocol {
 
     private lazy var restApi: WordPressComRestApi = {
-        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        return accountService.defaultWordPressComAccount()?.wordPressComRestApi ?? WordPressComRestApi.defaultApi(oAuthToken: "")
+        let context = ContextManager.shared.mainContext
+        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+        return defaultAccount?.wordPressComRestApi ?? WordPressComRestApi.defaultApi(oAuthToken: "")
     }()
 
     private lazy var domainsServiceRemote = {

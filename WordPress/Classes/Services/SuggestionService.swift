@@ -8,6 +8,10 @@ class SuggestionService {
 
     static let shared = SuggestionService()
 
+    var context: NSManagedObjectContext {
+        ContextManager.shared.mainContext
+    }
+
     /**
     Fetch cached suggestions if available, otherwise from the network if the device is online.
 
@@ -54,20 +58,23 @@ class SuggestionService {
         // add this blog to currently being requested list
         blogsCurrentlyBeingRequested.append(blogId)
 
-        defaultAccount()?.wordPressComRestApi.GET(suggestPath, parameters: params, success: { [weak self] responseObject, httpResponse in
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
+            return
+        }
+
+        account.wordPressComRestApi.GET(suggestPath, parameters: params, success: { [weak self] responseObject, httpResponse in
+            precondition(Thread.isMainThread, "This callback must be run on the main thread")
             guard let `self` = self else { return }
             guard let payload = responseObject as? [String: Any] else { return }
             guard let restSuggestions = payload["suggestions"] as? [[String: Any]] else { return }
 
-            let context = ContextManager.shared.mainContext
-
             // Delete any existing `UserSuggestion` objects
             self.retrievePersistedSuggestions(for: blog)?.forEach { suggestion in
-                context.delete(suggestion)
+                self.context.delete(suggestion)
             }
 
             // Create new `UserSuggestion` objects
-            let suggestions = restSuggestions.compactMap { UserSuggestion(dictionary: $0, context: context) }
+            let suggestions = restSuggestions.compactMap { UserSuggestion(dictionary: $0, context: self.context) }
 
             // Associate `UserSuggestion` objects with blog
             blog.userSuggestions = Set(suggestions)
@@ -107,12 +114,6 @@ class SuggestionService {
         }
 
         return blog.supports(.mentions)
-    }
-
-    private func defaultAccount() -> WPAccount? {
-        let context = ContextManager.shared.mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        return accountService.defaultWordPressComAccount()
     }
 
     private func retrievePersistedSuggestions(for blog: Blog) -> [UserSuggestion]? {

@@ -27,8 +27,7 @@ extension GravatarUploader {
     func uploadGravatarImage(_ newGravatar: UIImage) {
 
         let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        guard let account = accountService.defaultWordPressComAccount() else {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
             return
         }
 

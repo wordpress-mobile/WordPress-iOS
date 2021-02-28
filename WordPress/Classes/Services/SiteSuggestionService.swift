@@ -132,8 +132,7 @@ class SiteSuggestionService {
 
     private func defaultAccount() -> WPAccount? {
         let context = ContextManager.shared.mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        return accountService.defaultWordPressComAccount()
+        return try? WPAccount.lookupDefaultWordPressComAccount(in: context)
     }
 
     func retrievePersistedSuggestions(for blog: Blog) -> [SiteSuggestion]? {

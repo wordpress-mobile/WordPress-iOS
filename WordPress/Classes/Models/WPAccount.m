@@ -118,12 +118,6 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
     return [visibleBlogs sortedArrayUsingDescriptors:@[descriptor]];
 }
 
-- (BOOL)isDefault {
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *defaultAccount = [service defaultWordPressComAccount];
-    return [defaultAccount isEqual:self];
-}
-
 #pragma mark - Static methods
 
 + (NSString *)tokenForUsername:(NSString *)username
@@ -151,7 +145,7 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
             [_wordPressComRestApi setInvalidTokenHandler:^{
                 [weakSelf setAuthToken:nil];
                 [WordPressAuthenticationManager showSigninForWPComFixingAuthToken];
-                if (weakSelf.isDefault) {
+                if (weakSelf.isDefaultWordPressComAccount) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:weakSelf];
                 }
             }];

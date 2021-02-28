@@ -119,10 +119,8 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     __block WPAccount *account;
 
     [context performBlockAndWait:^{
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        account = [accountService defaultWordPressComAccount];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-
+        WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext: context];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
         blogCount = [blogService blogCountForAllAccounts];
         jetpackBlogsPresent = [blogService hasAnyJetpackBlogs];

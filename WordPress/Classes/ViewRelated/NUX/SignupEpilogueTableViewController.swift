@@ -164,8 +164,8 @@ private extension SignupEpilogueTableViewController {
 
     func getUserInfo() {
 
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        guard let account = service.defaultWordPressComAccount() else {
+        let context = ContextManager.sharedInstance().mainContext
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
             return
         }
 

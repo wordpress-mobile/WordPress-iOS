@@ -751,12 +751,16 @@ extension WordPressAppDelegate {
     // MARK: - Share Extension
 
     func setupShareExtensionToken() {
-        let accountService = AccountService(managedObjectContext: mainContext)
 
-        if let account = accountService.defaultWordPressComAccount(), let authToken = account.authToken {
-            ShareExtensionService.configureShareExtensionToken(authToken)
-            ShareExtensionService.configureShareExtensionUsername(account.username)
+        guard
+            let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext),
+            let authToken = account.authToken
+        else {
+            return
         }
+
+        ShareExtensionService.configureShareExtensionToken(authToken)
+        ShareExtensionService.configureShareExtensionUsername(account.username)
     }
 
     func removeShareExtensionConfiguration() {
@@ -771,16 +775,20 @@ extension WordPressAppDelegate {
     // MARK: - Notification Service Extension
 
     func configureNotificationExtension() {
-        let accountService = AccountService(managedObjectContext: mainContext)
 
-        if let account = accountService.defaultWordPressComAccount(), let authToken = account.authToken {
-            NotificationSupportService.insertContentExtensionToken(authToken)
-            NotificationSupportService.insertContentExtensionUsername(account.username)
-
-            NotificationSupportService.insertServiceExtensionToken(authToken)
-            NotificationSupportService.insertServiceExtensionUsername(account.username)
-            NotificationSupportService.insertServiceExtensionUserID(account.userID.stringValue)
+        guard
+            let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext),
+            let authToken = account.authToken
+        else {
+            return
         }
+
+        NotificationSupportService.insertContentExtensionToken(authToken)
+        NotificationSupportService.insertContentExtensionUsername(account.username)
+
+        NotificationSupportService.insertServiceExtensionToken(authToken)
+        NotificationSupportService.insertServiceExtensionUsername(account.username)
+        NotificationSupportService.insertServiceExtensionUserID(account.userID.stringValue)
     }
 
     func removeNotificationExtensionConfiguration() {

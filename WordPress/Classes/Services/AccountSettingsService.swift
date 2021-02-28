@@ -260,11 +260,5 @@ struct AccountSettingsHelper {
     }
 
     func updateTracksOptOutSetting(_ optOut: Bool) {
-        guard let account = accountService.defaultWordPressComAccount() else {
-            return
-        }
-
-        let change = AccountSettingsChange.tracksOptOut(optOut)
-        AccountSettingsService(userID: account.userID.intValue, api: account.wordPressComRestApi).saveChange(change)
     }
 }

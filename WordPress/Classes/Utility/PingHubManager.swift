@@ -5,13 +5,15 @@ import Reachability
 // This is added as a top level function to avoid cluttering PingHubManager.init
 private func defaultAccountToken() -> String? {
     let context = ContextManager.sharedInstance().mainContext
-    let service = AccountService(managedObjectContext: context)
-    guard let account = service.defaultWordPressComAccount() else {
+
+    guard
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
+        let token = account.authToken,
+        !token.isEmpty
+    else {
         return nil
     }
-    guard let token = account.authToken, !token.isEmpty else {
-        return nil
-    }
+
     return token
 }
 

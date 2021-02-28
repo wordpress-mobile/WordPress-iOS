@@ -43,12 +43,11 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
     func syncPlans() {
         let context = ContextManager.shared.mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        guard let account = accountService.defaultWordPressComAccount() else {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
             return
         }
 
-        let plansService = PlanService.init(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let plansService = PlanService.init(managedObjectContext: context)
         plansService.getWpcomPlans(account,
                                    success: { [weak self] in
             self?.updateViewModel()
