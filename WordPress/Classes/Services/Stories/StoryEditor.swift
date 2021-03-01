@@ -15,7 +15,9 @@ class StoryEditor: CameraController {
     }
 
     static func saveDirectory() throws -> URL {
-        return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(directoryName)
+        let saveDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(directoryName, isDirectory: true)
+        try FileManager.default.createDirectory(at: saveDirectory, withIntermediateDirectories: true, attributes: nil)
+        return saveDirectory
     }
 
     var onClose: ((Bool, Bool) -> Void)? = nil
@@ -138,7 +140,7 @@ class StoryEditor: CameraController {
 
         let saveDirectory: URL?
         do {
-            saveDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(Self.directoryName)
+            saveDirectory = try Self.saveDirectory()
         } catch let error {
             assertionFailure("Should be able to create a save directory in Documents \(error)")
             saveDirectory = nil
