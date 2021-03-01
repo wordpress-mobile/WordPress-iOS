@@ -1,16 +1,10 @@
 #import "CommentsViewController.h"
 #import "CommentViewController.h"
-#import "CommentService.h"
 #import "Comment.h"
 #import "Blog.h"
-
 #import "WordPress-Swift.h"
 #import "WPTableViewHandler.h"
-#import "WPGUIConstants.h"
-#import "UIView+Subviews.h"
-#import "ContextManager.h"
 #import <WordPressShared/WPStyleGuide.h>
-#import <WordPressUI/WordPressUI.h>
 
 
 
@@ -26,6 +20,13 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 @property (nonatomic, strong) NoResultsViewController   *noResultsViewController;
 @property (nonatomic, strong) UIActivityIndicatorView   *footerActivityIndicator;
 @property (nonatomic, strong) UIView                    *footerView;
+@property (nonatomic, strong) Blog                      *blog;
+
+@property (nonatomic) CommentStatusFilter currentStatusFilter;
+@property (weak, nonatomic) IBOutlet FilterTabBar *filterTabBar;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTopConstraint;
+
 @end
 
 @implementation CommentsViewController
@@ -36,20 +37,23 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
     _tableViewHandler.delegate = nil;
 }
 
-- (instancetype)init
++ (CommentsViewController *)controllerWithBlog:(Blog *)blog
 {
-    self = [super init];
-    if (self) {
-        self.restorationClass = [self class];
-        self.restorationIdentifier = NSStringFromClass([self class]);
-    }
-    return self;
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CommentsList" bundle:nil];
+    CommentsViewController *controller = [storyboard instantiateInitialViewController];
+    controller.blog = blog;
+    return controller;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
+    [self configureFilterTabBar:self.filterTabBar];
+    [self setTableConstraints];
+
+    self.currentStatusFilter = CommentStatusFilterAll;
     [self configureNavBar];
     [self configureLoadMoreSpinner];
     [self configureNoResultsView];
@@ -58,6 +62,21 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
     [self configureTableView];
     [self configureTableViewFooter];
     [self configureTableViewHandler];
+}
+
+- (void)setTableConstraints
+{
+    // Configure view per commentFilters feature flag.
+    // When commentFilters feature flag is removed, this entire method can be removed.
+
+    BOOL filtersEnabled = [Feature enabled:FeatureFlagCommentFilters];
+    self.filterTabBar.hidden = !filtersEnabled;
+    
+    if (!filtersEnabled) {
+        self.tableViewTopConstraint.constant = -self.filterTabBar.frame.size.height;
+    } else {
+        self.tableViewTopConstraint.constant = 0;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -71,12 +90,6 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self dismissConnectionErrorNotice];
-}
-
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    [self.tableViewHandler clearCachedRowHeights];
 }
 
 
@@ -124,7 +137,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 {
     UIRefreshControl *refreshControl = [UIRefreshControl new];
     [refreshControl addTarget:self action:@selector(refreshAndSyncWithInteraction) forControlEvents:UIControlEventValueChanged];
-    self.refreshControl = refreshControl;
+    self.tableView.refreshControl = refreshControl;
 }
 
 - (void)configureSyncHelper
@@ -136,9 +149,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 
 - (void)configureTableView
 {
-    self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
     self.tableView.accessibilityIdentifier  = @"Comments Table";
-
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     // Register the cells
@@ -161,6 +172,11 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 }
 
 #pragma mark - UITableViewDelegate Methods
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.tableViewHandler tableView:tableView numberOfRowsInSection:section];
+}
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -379,7 +395,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
         }
 
         [commentService syncCommentsForBlog:blogInContext
-                                 withStatus:commentStatusAll
+                                 withStatus:self.currentStatusFilter
                                     success:^(BOOL hasMore) {
                                         if (success) {
                                             dispatch_async(dispatch_get_main_queue(), ^{
@@ -416,7 +432,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
         }
 
         [commentService loadMoreCommentsForBlog:blogInContext
-                                     withStatus:commentStatusAll
+                                     withStatus:self.currentStatusFilter
                                         success:^(BOOL hasMore) {
                                                     if (success) {
                                                         dispatch_async(dispatch_get_main_queue(), ^{
@@ -463,6 +479,12 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
     }
 }
 
+- (void)refreshWithStatusFilter:(CommentStatusFilter)statusFilter
+{
+    self.currentStatusFilter = statusFilter;
+    [self refreshAndSyncWithInteraction];
+}
+
 - (void)refreshInfiniteScroll
 {
     NSParameterAssert(self.footerView);
@@ -478,8 +500,8 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 
 - (void)refreshPullToRefresh
 {
-    if (self.refreshControl.isRefreshing) {
-        [self.refreshControl endRefreshing];
+    if (self.tableView.refreshControl.isRefreshing) {
+        [self.tableView.refreshControl endRefreshing];
     }
 }
 
@@ -510,7 +532,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
     // Adjust the NRV placement based on the tableHeader to accommodate for the refreshControl.
     if (!self.tableView.tableHeaderView) {
         CGRect noResultsFrame = self.noResultsViewController.view.frame;
-        noResultsFrame.origin.y -= self.refreshControl.frame.size.height;
+        noResultsFrame.origin.y -= self.tableView.refreshControl.frame.size.height;
         self.noResultsViewController.view.frame = noResultsFrame;
     }
     

@@ -8,6 +8,7 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
 
     // MARK: - IBOutlets
     @IBOutlet private weak var textView: RichTextView!
+    @IBOutlet private var horizontalEdgeConstraints: [NSLayoutConstraint]!
 
     /// onUrlClick: Called whenever a URL is pressed within the textView's Area.
     ///
@@ -34,6 +35,21 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
     override var isBadge: Bool {
         didSet {
             backgroundColor = WPStyleGuide.Notifications.blockBackgroundColorForRichText(isBadge)
+        }
+    }
+
+    /// Indicates if this should be styled as a larger title
+    ///
+    var isTitle: Bool = false {
+        didSet {
+            guard FeatureFlag.milestoneNotifications.enabled else {
+                return
+            }
+
+            let spacing: CGFloat = isTitle ? Metrics.titleHorizontalSpacing : Metrics.standardHorizontalSpacing
+            // Conditional chaining here means this won't crash for any subclasses
+            // that don't have edge constraints (such as comment cells)
+            horizontalEdgeConstraints?.forEach({ $0.constant = spacing })
         }
     }
 
@@ -101,6 +117,11 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         textView.translatesAutoresizingMaskIntoConstraints = false
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        isTitle = false
+    }
 
     // MARK: - RichTextView Data Source
 
@@ -116,5 +137,10 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
     func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange) -> Bool {
         onAttachmentClick?(textAttachment)
         return false
+    }
+
+    private enum Metrics {
+        static let standardHorizontalSpacing: CGFloat = 20
+        static let titleHorizontalSpacing: CGFloat = 40
     }
 }
