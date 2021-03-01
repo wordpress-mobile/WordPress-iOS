@@ -367,7 +367,4 @@ workflows:
   Translation Review Build:
     when: << pipeline.parameters.translation_review_build >> 
     jobs:
-      - translation-review-build:
-          filters:
-            branches:
-              ignore: /.*/
+      - translation-review-build
