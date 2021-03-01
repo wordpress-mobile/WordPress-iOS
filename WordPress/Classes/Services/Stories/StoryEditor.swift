@@ -8,12 +8,18 @@ class StoryEditor: CameraController {
 
     static let directoryName = "Stories"
 
+    /// A directory to temporarily hold imported media.
+    /// - Throws: Any errors resulting from URL or directory creation.
+    /// - Returns: A URL with the media cache directory.
     static func mediaCacheDirectory() throws -> URL {
         let storiesURL = try MediaFileManager.cache.directoryURL().appendingPathComponent(directoryName, isDirectory: true)
         try FileManager.default.createDirectory(at: storiesURL, withIntermediateDirectories: true, attributes: nil)
         return storiesURL
     }
 
+    /// A directory to temporary hold saved archives.
+    /// - Throws: Any errors resulting from URL or directory creation.
+    /// - Returns: A URL with the save directory.
     static func saveDirectory() throws -> URL {
         let saveDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(directoryName, isDirectory: true)
         try FileManager.default.createDirectory(at: saveDirectory, withIntermediateDirectories: true, attributes: nil)
