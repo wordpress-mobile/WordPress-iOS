@@ -662,6 +662,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidRequestMediaFilesEditorLoad(_ mediaFiles: [[String: Any]], blockId: String) {
 
+        if mediaFiles.isEmpty {
+            WPAnalytics.track(.storyBlockAddMediaTapped)
+        }
+
         let files = mediaFiles.compactMap({ content -> MediaFile? in
             return MediaFile.file(from: content)
         })
@@ -698,6 +702,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             }
         })
 
+        storyEditor?.trackOpen()
         storyEditor?.present(on: self, with: files)
     }
 
@@ -1043,7 +1048,8 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .xposts: FeatureFlag.gutenbergXposts.enabled && SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
-            .audioBlock: !isFreeWPCom // Disable audio block until it's usable on free sites via "Insert from URL" capability
+            .audioBlock: !isFreeWPCom, // Disable audio block until it's usable on free sites via "Insert from URL" capability
+            .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories)
         ]
     }
 
