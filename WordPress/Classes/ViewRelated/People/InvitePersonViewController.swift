@@ -171,10 +171,20 @@ class InvitePersonViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Workaround for UIKit issue where labels text are set to nil
         // when user changes system font size in static tables (dynamic type)
-        setupRoleCell()
-        refreshRoleCell()
-        refreshUsernameCell()
-        refreshMessageTextView()
+        switch Section(rawValue: indexPath.section) {
+        case .username:
+            refreshUsernameCell()
+        case .role:
+            setupRoleCell()
+            refreshRoleCell()
+        case .message:
+            refreshMessageTextView()
+        case .inviteLink:
+            break
+        case .none:
+            break
+        }
+
         return super.tableView(tableView, cellForRowAt: indexPath)
     }
 
