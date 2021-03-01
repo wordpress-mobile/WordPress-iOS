@@ -67,7 +67,7 @@ extension WPTabBarController {
             guard let blog = inBlog ?? self.currentOrLastBlog() else { return }
             let blogID = blog.dotComID?.intValue ?? 0 as Any
 
-            WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "story"])
+            WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyEditorSource: "stories", WPAppAnalyticsKeyPostType: "post"])
 
             let controller = StoryEditor.editor(blog: blog, context: ContextManager.shared.mainContext, updated: {_ in }, uploaded: { [weak self] result in
                 switch result {
