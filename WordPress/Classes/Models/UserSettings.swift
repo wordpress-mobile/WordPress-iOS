@@ -2,13 +2,31 @@ import Foundation
 
 class UserSettings {
 
+    /// Stores all `UserSettings` keys.
+    ///
+    /// The additional level of indirection allows these keys to be retrieved from tests.
+    ///
+    /// **IMPORTANT NOTE:**
+    ///
+    /// Any change to these keys is a breaking change without some kind of migration.
+    /// It's probably best never to change them.
+    struct Keys {
+        static let crashLoggingOptOutKey = "crashlytics_opt_out"
+        static let forceCrashLoggingKey = "force-crash-logging"
+        static let defaultDotComUUIDKey = "AccountDefaultDotcomUUID"
+    }
+
     @objc
-    @UserDefault("crashlytics_opt_out", defaultValue: false)
+    @UserDefault(Keys.crashLoggingOptOutKey, defaultValue: false)
     static var userHasOptedOutOfCrashLogging: Bool
 
     @objc
-    @UserDefault("force-crash-logging", defaultValue: false)
+    @UserDefault(Keys.forceCrashLoggingKey, defaultValue: false)
     static var userHasForcedCrashLoggingEnabled: Bool
+
+    @objc
+    @EraseableUserDefault(Keys.defaultDotComUUIDKey)
+    static var defaultDotComUUID: String?
 }
 
 /// A property wrapper for UserDefaults access
@@ -28,6 +46,29 @@ struct UserDefault<T> {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: key)
+        }
+    }
+}
+
+/// A property wrapper for optional UserDefaults that return `nil` by default
+@propertyWrapper
+struct EraseableUserDefault<T> {
+    let key: String
+
+    init(_ key: String) {
+        self.key = key
+    }
+
+    var wrappedValue: T? {
+        get {
+            return UserDefaults.standard.object(forKey: key) as? T
+        }
+        set {
+            if let newValue = newValue {
+                UserDefaults.standard.set(newValue, forKey: key)
+            } else {
+                UserDefaults.standard.removeObject(forKey: key)
+            }
         }
     }
 }
