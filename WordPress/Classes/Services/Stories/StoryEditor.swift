@@ -28,9 +28,7 @@ class StoryEditor: CameraController {
 
     var onClose: ((Bool, Bool) -> Void)? = nil
 
-    lazy var editorSession: PostEditorAnalyticsSession = {
-        PostEditorAnalyticsSession(editor: .stories, post: post)
-    }()
+    var editorSession: PostEditorAnalyticsSession
 
     let navigationBarManager: PostEditorNavigationBarManager? = nil
 
@@ -45,7 +43,7 @@ class StoryEditor: CameraController {
     var verificationPromptHelper: VerificationPromptHelper? = nil
 
     var analyticsEditorSource: String {
-        return "wp_stories_creator"
+        return "stories"
     }
 
     private var cameraHandler: CameraHandler?
@@ -135,6 +133,7 @@ class StoryEditor: CameraController {
                     ) {
         self.post = post
         self.onClose = onClose
+        self.editorSession = PostEditorAnalyticsSession(editor: .stories, post: post)
 
         Kanvas.KanvasColors.shared = KanvasCustomUI.shared.cameraColors()
         Kanvas.KanvasFonts.shared = KanvasCustomUI.shared.cameraFonts()
@@ -217,6 +216,10 @@ class StoryEditor: CameraController {
                 completion(.success(()))
             }
         }
+    }
+
+    func trackOpen() {
+        editorSession.start()
     }
 }
 

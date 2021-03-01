@@ -21,6 +21,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             static let restorePageCellNibName = "RestorePageTableViewCell"
             static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
         }
+
+        struct Events {
+            static let source = "page_list"
+            static let pagePostType = "page"
+        }
     }
 
     fileprivate lazy var sectionFooterSeparatorView: UIView = {
@@ -51,9 +56,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }()
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
-        return CreateButtonCoordinator(self, actions: [PageAction(handler: { [weak self] in
+        let action = PageAction(handler: { [weak self] in
             self?.createPost()
-        })])
+        }, source: Constant.Events.source)
+        return CreateButtonCoordinator(self, actions: [action], source: Constant.Events.source)
     }()
 
     // MARK: - GUI
@@ -494,7 +500,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Post Actions
 
     override func createPost() {
-        WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: "posts_view", WPAppAnalyticsKeyPostType: "page"], with: blog)
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: Constant.Events.source, WPAppAnalyticsKeyPostType: Constant.Events.pagePostType], with: blog)
 
         PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] (selectedLayout) in
             self?.createPage(selectedLayout)
