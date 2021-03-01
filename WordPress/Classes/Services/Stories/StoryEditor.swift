@@ -6,7 +6,7 @@ class StoryEditor: CameraController {
 
     var post: AbstractPost = AbstractPost()
 
-    static let directoryName = "Stories"
+    private static let directoryName = "Stories"
 
     /// A directory to temporarily hold imported media.
     /// - Throws: Any errors resulting from URL or directory creation.
@@ -17,7 +17,7 @@ class StoryEditor: CameraController {
         return storiesURL
     }
 
-    /// A directory to temporary hold saved archives.
+    /// A directory to temporarily hold saved archives.
     /// - Throws: Any errors resulting from URL or directory creation.
     /// - Returns: A URL with the save directory.
     static func saveDirectory() throws -> URL {
