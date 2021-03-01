@@ -30,7 +30,7 @@ class GutenbergMediaFilesUploadProcessor: Processor {
                 return mediaFile
             }
 
-            guard let newURL = StoryPoster.filePath?.appendingPathComponent("\(self.serverMediaID)") else {
+            guard let newURL = StoryPoster.filePath?.appendingPathComponent(String(self.serverMediaID)) else {
                 return mediaFile
             }
 
@@ -46,7 +46,7 @@ class GutenbergMediaFilesUploadProcessor: Processor {
 
             let file = MediaFile(alt: mediaFile.alt,
                                   caption: mediaFile.caption,
-                                  id: Double(self.serverMediaID),
+                                  id: String(self.serverMediaID),
                                   link: mediaFile.link,
                                   mime: mediaFile.mime,
                                   type: mediaFile.type,

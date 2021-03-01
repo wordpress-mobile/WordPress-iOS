@@ -52,7 +52,7 @@ class StoryMediaLoader {
                 DDLogError("Error unarchiving \(file.url) - \(error)")
             }
 
-            service.getMediaWithID(NSNumber(value: file.id), in: post.blog, success: { [weak self] media in
+            service.getMediaWithID(NSNumber(value: Double(file.id) ?? 0), in: post.blog, success: { [weak self] media in
                 guard let self = self else { return }
                 let mediaType = media.mediaType
                 switch mediaType {
@@ -90,7 +90,7 @@ class StoryMediaLoader {
     }
 
     func unarchive(file: MediaFile) throws -> (CameraSegment, Data?)? {
-        if let archiveURL = StoryPoster.filePath?.appendingPathComponent("\(Int(file.id))") {
+        if let archiveURL = StoryPoster.filePath?.appendingPathComponent(file.id) {
             return try CameraController.unarchive(archiveURL)
         } else {
             return nil

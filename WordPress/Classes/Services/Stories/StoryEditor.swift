@@ -209,11 +209,12 @@ class StoryEditor: CameraController {
         self.delegate = cameraHandler
     }
 
-    func populate(with files: [MediaFile], completion: @escaping (Result<Void, Error>) -> Void) {
+    func present(on: UIViewController, with files: [MediaFile]) {
         storyLoader.download(files: files, for: post) { [weak self] output in
+            guard let self = self else { return }
             DispatchQueue.main.async {
-                self?.show(media: output)
-                completion(.success(()))
+                self.show(media: output)
+                on.present(self, animated: true, completion: {})
             }
         }
     }
