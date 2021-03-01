@@ -126,12 +126,23 @@ class InvitePersonViewController: UITableViewController {
 
     // MARK: - UITableView Methods
 
-    // TODO: Uncomment when ready to merge.
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        // Hide the last section if the site is not a p2.
-//        let count = super.numberOfSections(in: tableView)
-//        return blog.isWPForTeams() ? count : count - 1
-//    }
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // Hide the last section if the site is not a p2.
+        let count = super.numberOfSections(in: tableView)
+        return blog.isWPForTeams() ? count : count - 1
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard
+            blog.isWPForTeams(),
+            section == numberOfSections(in: tableView) - 1
+        else {
+            // If not a P2 or not the last section, just call super.
+            return super.tableView(tableView, numberOfRowsInSection: section)
+        }
+        // One cell for no cached inviteLinks. Otherwise 4.
+        return blog.inviteLinks?.count == 0 ? 1 : 4
+    }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard Section.inviteLink == Section(rawValue: section) else {
