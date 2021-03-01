@@ -6,6 +6,26 @@ class StoryEditor: CameraController {
 
     var post: AbstractPost = AbstractPost()
 
+    private static let directoryName = "Stories"
+
+    /// A directory to temporarily hold imported media.
+    /// - Throws: Any errors resulting from URL or directory creation.
+    /// - Returns: A URL with the media cache directory.
+    static func mediaCacheDirectory() throws -> URL {
+        let storiesURL = try MediaFileManager.cache.directoryURL().appendingPathComponent(directoryName, isDirectory: true)
+        try FileManager.default.createDirectory(at: storiesURL, withIntermediateDirectories: true, attributes: nil)
+        return storiesURL
+    }
+
+    /// A directory to temporarily hold saved archives.
+    /// - Throws: Any errors resulting from URL or directory creation.
+    /// - Returns: A URL with the save directory.
+    static func saveDirectory() throws -> URL {
+        let saveDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(directoryName, isDirectory: true)
+        try FileManager.default.createDirectory(at: saveDirectory, withIntermediateDirectories: true, attributes: nil)
+        return saveDirectory
+    }
+
     var onClose: ((Bool, Bool) -> Void)? = nil
 
     var editorSession: PostEditorAnalyticsSession
@@ -113,14 +133,7 @@ class StoryEditor: CameraController {
                     ) {
         self.post = post
         self.onClose = onClose
-
-        let saveDirectory: URL?
-        do {
-            saveDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-        } catch let error {
-            assertionFailure("Should be able to create a save directory in documents \(error)")
-            saveDirectory = nil
-        }
+        self.editorSession = PostEditorAnalyticsSession(editor: .stories, post: post)
 
         Kanvas.KanvasColors.shared = KanvasCustomUI.shared.cameraColors()
         Kanvas.KanvasFonts.shared = KanvasCustomUI.shared.cameraFonts()
@@ -130,8 +143,13 @@ class StoryEditor: CameraController {
             cameraPermissionsDescriptionLabel: NSLocalizedString("Allow access so you can start taking photos and videos.", comment: "Message on camera permissions screen to explain why the app needs camera and microphone permissions")
         )
 
-        let analyticsSession = PostEditorAnalyticsSession(editor: .stories, post: post)
-        self.editorSession = analyticsSession
+        let saveDirectory: URL?
+        do {
+            saveDirectory = try Self.saveDirectory()
+        } catch let error {
+            assertionFailure("Should be able to create a save directory in Documents \(error)")
+            saveDirectory = nil
+        }
 
         super.init(settings: settings,
                  mediaPicker: WPMediaPickerForKanvas.self,
