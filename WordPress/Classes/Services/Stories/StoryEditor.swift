@@ -207,7 +207,7 @@ class StoryEditor: CameraController {
 
 extension StoryEditor: PublishingEditor {
     var prepublishingIdentifiers: [PrepublishingIdentifier] {
-        return  [.title, .visibility, .schedule, .tags]
+        return  [.title, .visibility, .schedule, .tags, .categories]
     }
 
     var prepublishingSourceView: UIView? {
