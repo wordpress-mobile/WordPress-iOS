@@ -425,9 +425,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self scrollToElement:QuickStartTourElementViewSite];
         self.shouldScrollToViewSite = NO;
     }
-    if([Feature enabled:FeatureFlagWhatIsNew]) {
-        [WPTabBarController.sharedInstance presentWhatIsNewOn:self];
-    }
+    [WPTabBarController.sharedInstance presentWhatIsNewOn:self];
 }
 
 - (CreateButtonCoordinator *)createButtonCoordinator
@@ -902,10 +900,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                        callback:^{
                                                            [weakSelf showComments];
                                                        }];
-    NSUInteger numberOfPendingComments = [self.blog numberOfPendingComments];
-    if (numberOfPendingComments > 0) {
-        commentsRow.detail = [NSString stringWithFormat:@"%d", numberOfPendingComments];
-    }
     [rows addObject:commentsRow];
 
     NSString *title = NSLocalizedString(@"Publish", @"Section title for the publish table section in the blog details screen");
@@ -1235,6 +1229,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)updateBlogIconWithMedia:(Media *)media
 {
+    [[QuickStartTourGuide shared] completeSiteIconTourForBlog:self.blog];
+
     self.blog.settings.iconMediaID = media.mediaID;
     [self updateBlogSettingsAndRefreshIcon];
 }
@@ -1520,7 +1516,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
 
     if ([CommentService shouldRefreshCacheFor:self.blog]) {
-        [commentService syncCommentsForBlog:self.blog success:nil failure:nil];
+        [commentService syncCommentsForBlog:self.blog withStatus:CommentStatusFilterAll success:nil failure:nil];
     }
 }
 
@@ -1555,8 +1551,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showComments
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedComments withBlog:self.blog];
-    CommentsViewController *controller = [[CommentsViewController alloc] initWithStyle:UITableViewStylePlain];
-    controller.blog = self.blog;
+    CommentsViewController *controller = [CommentsViewController controllerWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
@@ -1729,7 +1724,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self toggleSpotlightOnHeaderView];
     }];
 
-    [[QuickStartTourGuide shared] visited:QuickStartTourElementViewSite];
+    QuickStartTourGuide *guide = [QuickStartTourGuide shared];
+
+    if ([guide isCurrentElement:QuickStartTourElementViewSite]) {
+        [[QuickStartTourGuide shared] visited:QuickStartTourElementViewSite];
+    } else {
+        // Just mark as completed if we've viewed the site and aren't
+        //  currently working on the View Site tour.
+        [[QuickStartTourGuide shared] completeViewSiteTourForBlog:self.blog];
+    }
+
     self.additionalSafeAreaInsets = UIEdgeInsetsZero;
 }
 

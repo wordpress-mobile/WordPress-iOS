@@ -17,11 +17,6 @@ extern NSString *const WPBlogUpdatedNotification;
 - (instancetype) init __attribute__((unavailable("must use initWithManagedObjectContext")));
 
 /**
- Returns the blog that matches with a given blogID
- */
-- (nullable Blog *)blogByBlogId:(NSNumber *)blogID;
-
-/**
  Returns the blog that matches with a given blogID and account.username
  */
 - (nullable Blog *)blogByBlogId:(NSNumber *)blogID andUsername:(NSString *)username;
@@ -185,13 +180,6 @@ extern NSString *const WPBlogUpdatedNotification;
  Returns every stored blog, arranged in a Dictionary by blogId.
  */
 - (NSDictionary *)blogsForAllAccountsById;
-
-/*! Determine timezone for blog from blog options.  If no timezone information is stored on
- *  the device, then assume GMT+0 is the default.
- *  
- *  \param blog     The blog/site to determine the timezone for.
- */
-- (NSTimeZone *)timeZoneForBlog:(Blog *)blog;
 
 - (void)removeBlog:(Blog *)blog;
 

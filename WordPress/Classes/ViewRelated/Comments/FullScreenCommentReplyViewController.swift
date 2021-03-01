@@ -136,15 +136,13 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
 
     /// Updates the iOS 13 title color
     private func configureAppearance() {
-        if #available(iOS 13.0, *) {
-            guard let navigationBar = navigationController?.navigationBar else {
-                return
-            }
-
-            navigationBar.standardAppearance.titleTextAttributes = [
-                NSAttributedString.Key.foregroundColor: UIColor.text
-            ]
+        guard let navigationBar = navigationController?.navigationBar else {
+            return
         }
+
+        navigationBar.standardAppearance.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.text
+        ]
     }
 
     /// Creates the `replyButton` to be used as the `rightBarButtonItem`
@@ -357,7 +355,7 @@ private extension FullScreenCommentReplyViewController {
 
     /// Determine if suggestions are enabled and visible for this site
     var shouldShowSuggestions: Bool {
-        guard let siteID = self.siteID, let blog = SuggestionService.shared.persistedBlog(for: siteID) else { return false }
+        guard let siteID = self.siteID, let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else { return false }
         return SuggestionService.shared.shouldShowSuggestions(for: blog)
     }
 

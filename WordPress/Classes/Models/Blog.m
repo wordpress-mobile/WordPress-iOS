@@ -52,6 +52,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic comments;
 @dynamic connections;
 @dynamic domains;
+@dynamic inviteLinks;
 @dynamic themes;
 @dynamic media;
 @dynamic userSuggestions;
@@ -318,6 +319,36 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     // A blog without an icon has the blog url in icon, so we can't directly check its
     // length to determine if we have an icon or not
     return self.icon.length > 0 ? [NSURL URLWithString:self.icon].pathComponents.count > 1 : NO;
+}
+
+- (NSTimeZone *)timeZone
+{
+    CGFloat const OneHourInSeconds = 60.0 * 60.0;
+
+    NSString *timeZoneName = [self getOptionValue:@"timezone"];
+    NSNumber *gmtOffSet = [self getOptionValue:@"gmt_offset"];
+    id optionValue = [self getOptionValue:@"time_zone"];
+
+    NSTimeZone *timeZone = nil;
+    if (timeZoneName.length > 0) {
+        timeZone = [NSTimeZone timeZoneWithName:timeZoneName];
+    }
+
+    if (!timeZone && gmtOffSet != nil) {
+        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:(gmtOffSet.floatValue * OneHourInSeconds)];
+    }
+
+    if (!timeZone && optionValue != nil) {
+        NSInteger timeZoneOffsetSeconds = [optionValue floatValue] * OneHourInSeconds;
+        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:timeZoneOffsetSeconds];
+    }
+
+    if (!timeZone) {
+        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    }
+
+    return timeZone;
+
 }
 
 - (NSString *)postFormatTextFromSlug:(NSString *)postFormatSlug

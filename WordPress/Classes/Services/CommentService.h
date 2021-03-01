@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
 
+@import WordPressKit;
+
 extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 
 @class Blog;
@@ -28,6 +30,11 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                     success:(void (^)(BOOL hasMore))success
                     failure:(void (^)(NSError *error))failure;
 
+- (void)syncCommentsForBlog:(Blog *)blog
+                 withStatus:(CommentStatusFilter)status
+                    success:(void (^)(BOOL hasMore))success
+                    failure:(void (^)(NSError *error))failure;
+
 // Determine if a recent cache is available
 + (BOOL)shouldRefreshCacheFor:(Blog *)blog;
 
@@ -36,6 +43,11 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                         success:(void (^)(BOOL hasMore))success
                         failure:(void (^)(NSError *))failure;
 
+- (void)loadMoreCommentsForBlog:(Blog *)blog
+                     withStatus:(CommentStatusFilter)status
+                        success:(void (^)(BOOL hasMore))success
+                        failure:(void (^)(NSError *))failure;
+    
 // Upload comment
 - (void)uploadComment:(Comment *)comment
               success:(void (^)(void))success

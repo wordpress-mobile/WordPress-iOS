@@ -26,10 +26,4 @@ class MockContext: NSManagedObjectContext {
         successExpectation?.fulfill()
         return returnedObjects!
     }
-
-    class func getContext() -> MockContext? {
-            let managedObjectContext = MockContext(concurrencyType: .privateQueueConcurrencyType)
-            managedObjectContext.persistentStoreCoordinator = ContextManager.sharedInstance().persistentStoreCoordinator
-            return managedObjectContext
-    }
 }
