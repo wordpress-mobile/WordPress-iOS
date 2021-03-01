@@ -223,9 +223,7 @@ extension WPMediaAsset {
     func videoURLPublisher() -> AnyPublisher<URL, Error> {
         return videoAssetPublisher().tryMap { asset -> AnyPublisher<URL, Error> in
             let filename = UUID().uuidString
-            let storiesURL = try MediaFileManager.cache.directoryURL().appendingPathComponent("Stories", isDirectory: true)
-            try FileManager.default.createDirectory(at: storiesURL, withIntermediateDirectories: true, attributes: nil)
-            let url = storiesURL.appendingPathComponent(filename)
+            let url = try StoryEditor.mediaCacheDirectory().appendingPathComponent(filename)
             let urlAsset = asset as? AVURLAsset
 
             if let assetURL = urlAsset?.url {

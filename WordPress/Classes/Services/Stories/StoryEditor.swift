@@ -6,6 +6,18 @@ class StoryEditor: CameraController {
 
     var post: AbstractPost = AbstractPost()
 
+    static let directoryName = "Stories"
+
+    static func mediaCacheDirectory() throws -> URL {
+        let storiesURL = try MediaFileManager.cache.directoryURL().appendingPathComponent(directoryName, isDirectory: true)
+        try FileManager.default.createDirectory(at: storiesURL, withIntermediateDirectories: true, attributes: nil)
+        return storiesURL
+    }
+
+    static func saveDirectory() throws -> URL {
+        return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(directoryName)
+    }
+
     var onClose: ((Bool, Bool) -> Void)? = nil
 
     lazy var editorSession: PostEditorAnalyticsSession = {
@@ -116,14 +128,6 @@ class StoryEditor: CameraController {
         self.post = post
         self.onClose = onClose
 
-        let saveDirectory: URL?
-        do {
-            saveDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-        } catch let error {
-            assertionFailure("Should be able to create a save directory in documents \(error)")
-            saveDirectory = nil
-        }
-
         Kanvas.KanvasColors.shared = KanvasCustomUI.shared.cameraColors()
         Kanvas.KanvasFonts.shared = KanvasCustomUI.shared.cameraFonts()
         Kanvas.KanvasImages.shared = KanvasCustomUI.shared.cameraImages()
@@ -131,6 +135,14 @@ class StoryEditor: CameraController {
             cameraPermissionsTitleLabel: NSLocalizedString("Post to WordPress", comment: "Title of camera permissions screen"),
             cameraPermissionsDescriptionLabel: NSLocalizedString("Allow access so you can start taking photos and videos.", comment: "Message on camera permissions screen to explain why the app needs camera and microphone permissions")
         )
+
+        let saveDirectory: URL?
+        do {
+            saveDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(Self.directoryName)
+        } catch let error {
+            assertionFailure("Should be able to create a save directory in Documents \(error)")
+            saveDirectory = nil
+        }
 
         super.init(settings: settings,
                  mediaPicker: WPMediaPickerForKanvas.self,
