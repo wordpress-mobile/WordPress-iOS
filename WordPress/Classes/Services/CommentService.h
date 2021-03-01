@@ -1,8 +1,9 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
 
+@import WordPressKit;
+
 extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
-extern NSString *commentStatusAll;
 
 @class Blog;
 @class Comment;
@@ -30,7 +31,7 @@ extern NSString *commentStatusAll;
                     failure:(void (^)(NSError *error))failure;
 
 - (void)syncCommentsForBlog:(Blog *)blog
-                 withStatus:(NSString *)status
+                 withStatus:(CommentStatusFilter)status
                     success:(void (^)(BOOL hasMore))success
                     failure:(void (^)(NSError *error))failure;
 
@@ -43,7 +44,7 @@ extern NSString *commentStatusAll;
                         failure:(void (^)(NSError *))failure;
 
 - (void)loadMoreCommentsForBlog:(Blog *)blog
-                     withStatus:(NSString *)status
+                     withStatus:(CommentStatusFilter)status
                         success:(void (^)(BOOL hasMore))success
                         failure:(void (^)(NSError *))failure;
     

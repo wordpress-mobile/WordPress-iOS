@@ -39,8 +39,10 @@ public extension Blog {
     /// - Returns: The `Blog` object associated with the given `blogID`, if it exists.
     @objc
     static func lookup(withID id: NSNumber, in context: NSManagedObjectContext) -> Blog? {
-        let fetchRequest = NSFetchRequest<Self>(entityName: Blog.entityName())
-        fetchRequest.predicate = NSPredicate(format: "blogID == %@", id)
-        return try? context.fetch(fetchRequest).first
+        // Because a `nil` NSNumber can be passed from Objective-C, we can't trust the object
+        // to have a valid value. For that reason, we'll unwrap it to an `int64` and look that up instead.
+        // That way, if the `id` is `nil`, it'll return nil instead of crashing while trying to
+        // assemble the predicate as in `NSPredicate("blogID == %@")`
+        try? lookup(withID: id.int64Value, in: context)
     }
 }
