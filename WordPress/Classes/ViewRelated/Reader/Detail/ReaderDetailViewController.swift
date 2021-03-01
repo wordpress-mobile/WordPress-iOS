@@ -221,6 +221,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Shown an error
     func showError() {
+        isLoadingWebView = false
+        hideLoading()
+
         displayLoadingView(title: LoadingText.errorLoadingTitle)
     }
 
@@ -536,6 +539,9 @@ private extension ReaderDetailViewController {
         addChild(noResultsViewController)
         view.addSubview(withFadeAnimation: noResultsViewController.view)
         noResultsViewController.didMove(toParent: self)
+
+        noResultsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToAllEdges(noResultsViewController.view)
     }
 
     func hideLoadingView() {
