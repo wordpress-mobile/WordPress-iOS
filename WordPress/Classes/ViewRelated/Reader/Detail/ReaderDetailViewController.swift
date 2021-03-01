@@ -565,7 +565,10 @@ private extension ReaderDetailViewController {
             safariButtonItem()
         ]
 
-        navigationItem.leftBarButtonItem = backButtonItem()
+        if navigationController?.viewControllers.first != self {
+            navigationItem.leftBarButtonItem = backButtonItem()
+        }
+
         navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
     }
 
