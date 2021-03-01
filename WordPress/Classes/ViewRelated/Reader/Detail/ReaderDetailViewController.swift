@@ -324,6 +324,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             return
         }
 
+        featuredImage.useCompatibilityMode = useCompatibilityMode
+
         featuredImage.delegate = coordinator
 
         view.insertSubview(featuredImage, belowSubview: loadingView)
@@ -340,15 +342,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private func configureHeader() {
         header.delegate = coordinator
         headerContainerView.addSubview(header)
+        headerContainerView.translatesAutoresizingMaskIntoConstraints = false
+
         headerContainerView.pinSubviewToAllEdges(header)
         headerContainerView.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true
-        headerContainerView.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func configureToolbar() {
         toolbarContainerView.addSubview(toolbar)
-        toolbarContainerView.pinSubviewToAllEdges(toolbar)
         toolbarContainerView.translatesAutoresizingMaskIntoConstraints = false
+
+        toolbarContainerView.pinSubviewToAllEdges(toolbar)
         toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
     }
 

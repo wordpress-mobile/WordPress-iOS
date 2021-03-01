@@ -39,6 +39,14 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     /// Keeps track of if we've loaded the image before
     var isLoaded: Bool = false
 
+    /// Temporary work around until white headers are shipped app-wide,
+    /// allowing Reader Detail to use a blue navbar.
+    var useCompatibilityMode: Bool = false {
+        didSet {
+            updateUI()
+        }
+    }
+
     // MARK: - Private: Properties
 
     /// Image loader for the featured image
@@ -70,7 +78,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     private var navBarTintColor: UIColor = Styles.endTintColor {
         didSet {
-            navigationBar?.setItemTintColor(navBarTintColor)
+            navigationBar?.setItemTintColor(useCompatibilityMode ? .textInverted : navBarTintColor)
         }
     }
 
@@ -139,17 +147,20 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     public func deviceDidRotate() {
+        guard !useCompatibilityMode else {
+            return
+        }
+
         updateInitialHeight(resetContentOffset: false)
     }
 
     func applyTransparentNavigationBarAppearance(to navigationBar: UINavigationBar?) {
-        guard let navigationBar = navigationBar else {
+        guard let navigationBar = navigationBar,
+              useCompatibilityMode == false else {
             return
         }
 
-        if #available(iOS 13.0, *) {
-            navigationBar.standardAppearance.configureWithTransparentBackground()
-        }
+        navigationBar.standardAppearance.configureWithTransparentBackground()
 
         NavBarAppearance.transparent.apply(navigationBar)
         if isLoaded, imageView.image == nil {
@@ -224,6 +235,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     private func update() {
         guard
+            !useCompatibilityMode,
             imageSize != nil,
             let scrollView = self.scrollView
         else {
@@ -281,6 +293,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     // MARK: - Private: Network Helpers
     public func load(completion: @escaping () -> Void) {
         guard
+            !useCompatibilityMode,
             !isLoading,
             let post = self.post,
             let imageURL = URL(string: post.featuredImage),
@@ -371,7 +384,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func reset() {
-        navigationBar?.setItemTintColor(Styles.endTintColor)
+        navigationBar?.setItemTintColor(useCompatibilityMode ? .appBarTint : Styles.endTintColor)
 
         resetStatusBarStyle()
         heightConstraint.constant = 0
@@ -381,11 +394,14 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func resetStatusBarStyle() {
-        if #available(iOS 13.0, *) {
-            let isDark = traitCollection.userInterfaceStyle == .dark
-
-            currentStatusBarStyle = isDark ? .lightContent : .darkContent
+        guard useCompatibilityMode == false else {
+            currentStatusBarStyle = .lightContent
+            return
         }
+
+        let isDark = traitCollection.userInterfaceStyle == .dark
+
+        currentStatusBarStyle = isDark ? .lightContent : .darkContent
     }
 
     // MARK: - Private: Calculations
