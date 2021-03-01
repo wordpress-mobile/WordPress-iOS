@@ -95,6 +95,13 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Tracks whether the webview has called -didFinish:navigation
     var isLoadingWebView = true
 
+    /// Temporary work around until white headers are shipped app-wide,
+    /// allowing Reader Detail to use a blue navbar.
+    var useCompatibilityMode: Bool {
+        // Use compatibility mode if not presented within the Reader
+        return WPTabBarController.sharedInstance()?.readerNavigationController.viewControllers.contains(self) == false
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -161,6 +168,13 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         coordinator.animate(alongsideTransition: { _ in
             self.featuredImage.deviceDidRotate()
         })
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // Bar items may change if we're moving single pane to split view
+        self.configureNavigationBar()
     }
 
     override func accessibilityPerformEscape() -> Bool {
@@ -573,6 +587,8 @@ private extension ReaderDetailViewController {
 
         if navigationController?.viewControllers.first != self {
             navigationItem.leftBarButtonItem = backButtonItem()
+        } else {
+            navigationItem.leftBarButtonItem = nil
         }
 
         navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
