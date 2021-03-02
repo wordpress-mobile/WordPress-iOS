@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-18 21:41:33+0000 */
+/* Translation-Revision-Date: 2021-02-23 19:43:59+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: cs_CZ */
@@ -10,7 +10,7 @@
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nPro potvrzení prosím před smazáním znovu zadejte adresu vašeho webu.\n\n";
 
 /* No comment provided by engineer. */
-" audio file" = " audio file";
+" audio file" = "zvukový soubor";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Postupné načítání obrázků \"Lazy-load\"";
@@ -24,11 +24,8 @@
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point to create a downloadable backup." = "%1$@ je vybraný bod pro vytvoření zálohy ke stažení.";
 
-/* 'AUTHOR on POST TITLE' in a comment list */
+/* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@ na %2$@";
-
-/* 'AUTHOR on POST TITLE: COMMENT' in a comment list */
-"%1$@ on %2$@: %3$@" = "%1$@ na %2$@: %3$@";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d z %2$d dokončeno";
@@ -166,6 +163,9 @@
 /* Number of posts */
 "%d posts" = "%d příspěvků";
 
+/* Message for a notice informing the user their scan completed and %d threats were found */
+"%d potential threats found" = "Nalezeno %d potenciálních hrozeb";
+
 /* Age between dates over one year. */
 "%d years" = "%d roky";
 
@@ -240,6 +240,9 @@
 /* Alert displayed to the user when a single media item attached to a post has failed to upload. */
 "1 post, 1 file not uploaded" = "1 příspěvek, 1 soubor nebyl nahrán";
 
+/* Message for a notice informing the user their scan completed and 1 threat was found */
+"1 potential threat found" = "Nalezena 1 potenciální hrozba";
+
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
 
@@ -289,7 +292,7 @@
 "ACTIVE" = "AKTIVNÍ";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "ADD AUDIO";
+"ADD AUDIO" = "PŘIDAT ZVUK";
 
 /* No comment provided by engineer. */
 "ADD BLOCK HERE" = "PŘIDAT BLOK TADY";
@@ -341,6 +344,7 @@
 "Activation Error" = "Cyba aktivace";
 
 /* Describes a status of a plugin
+   Label for active Theme
    Whether a plugin is active on a site */
 "Active" = "Aktivní";
 
@@ -544,6 +548,9 @@
 /* Jetpack Settings: Allow WordPress.com login */
 "Allow WordPress.com login" = "Povolit přihlášení pomocí WordPress.com";
 
+/* Message on camera permissions screen to explain why the app needs camera and microphone permissions */
+"Allow access so you can start taking photos and videos." = "Povolte přístup, abyste mohli začít pořizovat fotografie a videa.";
+
 /* A short description of the comment like sharing setting. */
 "Allow all comments to be Liked by you and your readers" = "Povolit všechny komentáře, které mají být To se mi líbíod vás a vašim čtenářům";
 
@@ -575,7 +582,7 @@
 "An active internet connection is required" = "Je vyžadováno aktivní připojení k internetu";
 
 /* Error message shown when trying to view the scan status and there is no internet connection. */
-"An active internet connection is required to view Jetpack Scan" = "An active internet connection is required to view Jetpack Scan";
+"An active internet connection is required to view Jetpack Scan" = "K prohlížení Jetpack Skenu je vyžadováno aktivní připojení k internetu ";
 
 /* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
 "An active internet connection is required to view activities" = "K prohlížení aktivit je vyžadováno aktivní připojení k internetu";
@@ -591,7 +598,7 @@
 "An active internet connection is required to view stats" = "Aktivní připojení k internetu je nutné pro zobrazení statistik";
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
-"An active internet connection is required to view the history" = "An active internet connection is required to view the history";
+"An active internet connection is required to view the history" = "K prohlížení historie je vyžadováno aktivní připojení k internetu";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "Došlo k chybě při vytváření menu.";
@@ -715,7 +722,7 @@
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Opravdu chcete obnovit stav stránky z %1$@? Akce nenávratně odstraní obsah, včetně obsahu a změn nastavení, co jste od té doby udělali.";
 
 /* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
-"Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost." = "Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost.";
+"Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost." = "Opravdu chcete obnovit web zpět na %@?\nCokoli co jste od té doby změnili, bude ztraceno. ";
 
 /* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
 "Are you sure you want to save as draft?" = "Opravdu chcete uložit jako koncept?";
@@ -748,10 +755,10 @@
 "Audio Player" = "Audio přehrávač";
 
 /* translators: accessibility text. %s: Audio caption. */
-"Audio caption. %s" = "Audio caption. %s";
+"Audio caption. %s" = "Zvukový titulek. %s";
 
 /* translators: accessibility text. Empty Audio caption. */
-"Audio caption. Empty" = "Audio caption. Empty";
+"Audio caption. Empty" = "Zvukový titulek. Prázdný";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "Audio, %@";
@@ -827,7 +834,7 @@
 "Back" = "Zpět";
 
 /* Title of the cell displaying status of a backup in progress */
-"Backing up site" = "Backing up site";
+"Backing up site" = "Zálohování webu";
 
 /* Noun. Links to a blog's Jetpack Backups screen.
    Title for Jetpack Backup Complete screen
@@ -885,9 +892,6 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Citace";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block This Site" = "Zablokovat tento web";
-
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Blok zkopírován";
 
@@ -911,6 +915,12 @@
 
 /* No comment provided by engineer. */
 "Block settings" = "Nastavení bloku";
+
+/* The title of a button that triggers blocking a site from the user's reader. */
+"Block this site" = "Zablokovat tento web";
+
+/* Notice title when blocking a site succeeds. */
+"Blocked site" = "Blokovaný web";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
@@ -1175,10 +1185,13 @@
 /* Title for the button to progress with the selected site homepage design */
 "Choose" = "Vybrat";
 
+/* Title for selecting a new homepage */
+"Choose Homepage" = "Zvolit domovskou stránku";
+
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Vyberte stránky";
 
-/* Title for selecting a new home page */
+/* Title for selecting a new posts page */
 "Choose Posts Page" = "Vyberte stránku příspěvků";
 
 /* Title for the screen to pick a template for a page */
@@ -1595,10 +1608,10 @@
 "Could not toggle Follow: missing blogURL attribute" = "Nepodařilo se přepnout kvůli: chybějící atribut URL blogu";
 
 /* An error description explaining that Seen could not be toggled due to a missing feedItemID. */
-"Could not toggle Seen: missing feedItemID." = "Could not toggle Seen: missing feedItemID.";
+"Could not toggle Seen: missing feedItemID." = "Nelze přepnout na viditelné: chybí feedItemID.";
 
 /* An error description explaining that Seen could not be toggled due to a missing postID. */
-"Could not toggle Seen: missing postID." = "Could not toggle Seen: missing postID.";
+"Could not toggle Seen: missing postID." = "Nelze přepnout na viditelné: chybí ID příspěvku.";
 
 /* Title of a prompt. */
 "Could not unfollow site" = "Nemůžu přestat sledovat web";
@@ -1734,7 +1747,7 @@
 "Creating dashboard" = "Vytváření řídicího panelu";
 
 /* Description of the cell displaying status of a backup in progress */
-"Creating downloadable backup" = "Creating downloadable backup";
+"Creating downloadable backup" = "Vytváření zálohy ke stažení";
 
 /* No comment provided by engineer. */
 "Current" = "Aktuální";
@@ -1921,7 +1934,7 @@
 "Details" = "Detaily";
 
 /* Instructions after a Magic Link was sent, but email is incorrect. */
-"Didn't mean to create a new account? Go back to re-enter your email address." = "Didn't mean to create a new account? Go back to re-enter your email address.";
+"Didn't mean to create a new account? Go back to re-enter your email address." = "Nechtěli jste vytvořit nový účet? Vraťte se zpět a znovu zadejte svou emailovou adresu.";
 
 /* Label for the dimensions in pixels for a media asset (image / video) */
 "Dimensions" = "Rozměry";
@@ -2061,7 +2074,7 @@
 "Double tap to go to color settings" = "Dvojitým klepnutím přejdete do nastavení barev";
 
 /* No comment provided by engineer. */
-"Double tap to listen the audio file" = "Double tap to listen the audio file";
+"Double tap to listen the audio file" = "Dvojitým klepnutním poslechnete zvukový soubor";
 
 /* No comment provided by engineer. */
 "Double tap to move the block down" = "Dvojitým klepnutím přesunete blok dolů";
@@ -2076,7 +2089,13 @@
 "Double tap to move the block up" = "Dvojitým klepnutím posunete blok nahoru";
 
 /* No comment provided by engineer. */
+"Double tap to open Action Sheet to edit, replace, or clear the image" = "Dvojitým klepnutím otevřete akční list, kde můžete obrázek upravit, nahradit nebo vymazat";
+
+/* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "Dvojitým klepnutím otevřete akční list s dostupnými možnostmi";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Dvojitým klepnutím otevřete spodní list, kde můžete obrázek upravit, nahradit nebo vymazat";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet with available options" = "Dvojitým klepnutím otevřete spodní list s dostupnými možnostmi";
@@ -2176,6 +2195,9 @@
 /* No comment provided by engineer. */
 "Edit file" = "Upravit soubor";
 
+/* No comment provided by engineer. */
+"Edit focal point" = "Změňte zaostřovací pole";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Upravujte nové příspěvky a stránky pomocí editoru bloků.";
 
@@ -2248,8 +2270,7 @@
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Prázdná URL";
 
-/* Button title about the enable notifications action
-   Button title for the enable site notifications action. */
+/* Button title for the enable site notifications action. */
 "Enable" = "Aktivovat";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
@@ -2261,8 +2282,7 @@
 /* Title of a Quick Start Tour */
 "Enable post sharing" = "Povolit sdílení příspěvků";
 
-/* Message informing the user about the enable notifications action
-   Message prompting user to enable site notifications. */
+/* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Povolit oznámení na webu?";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
@@ -2321,9 +2341,6 @@
    Generic popup title for any type of error. */
 "Error" = "Chyba";
 
-/* Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader. */
-"Error Blocking Site" = "Chyba při blokování webu";
-
 /* Menus error title for a menu that received an error while trying to delete it. */
 "Error Deleting Menu" = "Chyba pro mazání menu";
 
@@ -2353,10 +2370,10 @@
 "Error enabling autoupdates for %@." = "Chyba při povolení automatických aktualizací pro %@.";
 
 /* Error displayed when fixing a threat fails. */
-"Error fixing threat. Please contact our support." = "Error fixing threat. Please contact our support.";
+"Error fixing threat. Please contact our support." = "Chyba při opravování hrozby. Prosím kontaktujte naši podporu.";
 
 /* Error displayed when ignoring a threat fails. */
-"Error ignoring threat. Please contact our support." = "Error ignoring threat. Please contact our support.";
+"Error ignoring threat. Please contact our support." = "Chyba při ignorování hrozby. Prosím kontaktujte naši podporu.";
 
 /* Notice displayed after attempt to install a plugin fails. */
 "Error installing %@." = "Chyba při instalaci %@.";
@@ -2485,7 +2502,7 @@
 "Failed" = "Selhalo";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file. Please tap for options." = "Failed to insert audio file. Please tap for options.";
+"Failed to insert audio file. Please tap for options." = "Vložení zvukového souboru se nezdařilo. Klepněte pro možnosti.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Chyba při nahrávání média.\nKliknutím otevřete nastavení.";
@@ -2607,14 +2624,14 @@
    Verb. Button title. Follow a new blog. */
 "Follow" = "Sledovat";
 
-/* Verb. An option to follow a site. */
-"Follow Site" = "Sledovat web";
-
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "Sledovat konverzaci na e-mailu";
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Sledovat jiné weby";
+
+/* Verb. An option to follow a site. */
+"Follow site" = "Sledovat web";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "Sledujte své oblíbené stránky a objevujte nová čtení.";
@@ -2650,9 +2667,6 @@
 
 /* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
 "Following %1$@" = "Následující %1$@";
-
-/* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
-"Following %@" = "Následující %@";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Following conversation by email" = "Konverzace sledována na e-mailu";
@@ -2901,10 +2915,10 @@
 "History" = "Historie";
 
 /* Message title displayed when we fail to fetch the status of the backup in progress. */
-"Hmm, we couldn’t find your backup status" = "Hmm, we couldn’t find your backup status";
+"Hmm, we couldn’t find your backup status" = "Hmm, nemohli jsme najít stav zálohy";
 
 /* Message title displayed when we fail to fetch the status of the restore in progress. */
-"Hmm, we couldn’t find your restore status" = "Hmm, we couldn’t find your restore status";
+"Hmm, we couldn’t find your restore status" = "Hmm, nemohli jsme najít stav obnovení";
 
 /* Moderation Keys Title
    Settings: Comments Moderation */
@@ -3166,10 +3180,10 @@
 "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Jetpack Scan nemohl dokončit skenování vašeho webu. Zkontrolujte, zda váš web funguje - pokud ne, zkuste to znovu. Pokud ano, nebo pokud má Jetpack Scan stále problémy, obraťte se na náš tým podpory.";
 
 /* Description for a label when there are threats on the site, displays the number of threats, and the site's title */
-"Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us.";
+"Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Jetpack Scan našel %1$d potenciálních hrozeb s %1$@. Níže je prosím zkontrolujte a přijměte opatření nebo klepněte na tlačítko opravit vše. Jsme tu, abychom vám pomohli, pokud nás potřebujete. ";
 
 /* Description for a label when there is a single threat on the site, displays the site's title */
-"Jetpack Scan found 1 potential threat with %1$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Jetpack Scan found 1 potential threat with %1$@. Please review them below and take action or tap the fix all button. We are here to help if you need us.";
+"Jetpack Scan found 1 potential threat with %1$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Jetpack Scan našel 1 potenciální hrozbu s %1$@. Níže je prosím zkontrolujte a přijměte opatření nebo klepněte na tlačítko opravit vše. Jsme tu, abychom vám pomohli, pokud nás potřebujete. ";
 
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will delete the affected file or directory." = "Jetpack Scan odstraní ovlivněný soubor nebo adresář.";
@@ -3276,7 +3290,7 @@
 "Let Us Help" = "Pomůžeme";
 
 /* Title for the button that will dismiss this view. */
-"Let me know when finished!" = "Let me know when finished!";
+"Let me know when finished!" = "Po dokončení mi dejte vědět!";
 
 /* Title for the app appearance setting for light mode */
 "Light" = "Světlý";
@@ -3383,7 +3397,7 @@
 "Loading Plugins..." = "Načítání pluginů...";
 
 /* Text displayed while loading the scan history for a site */
-"Loading Scan History..." = "Loading Scan History...";
+"Loading Scan History..." = "Načítání historie skenování...";
 
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Načítání webu...";
@@ -3435,7 +3449,7 @@
 "Location unknown" = "Neznámá poloha";
 
 /* No comment provided by engineer. */
-"Lock icon" = "Lock icon";
+"Lock icon" = "Ikona zámku";
 
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "Zaznamenávat soubory dle data vytvoření";
@@ -3459,7 +3473,7 @@
 
 /* Button title. Takes the user to the login by email flow.
    Button title. Tapping begins our normal log in process. */
-"Log in or sign up with WordPress.com" = "Log in or sign up with WordPress.com";
+"Log in or sign up with WordPress.com" = "Přihlaste se nebo se zaregistrujte pomocí WordPress.com ";
 
 /* Instruction text on the login's email address screen. */
 "Log in to the WordPress.com account you used to connect Jetpack." = "Přihlaste se k účtu WordPress.com, který jste použili k připojení Jetpack.";
@@ -3545,10 +3559,10 @@
 "Mark as unseen" = "Označit jako neviditelné";
 
 /* Notice title when updating a post's seen status succeeds. */
-"Marked post as seen" = "Marked post as seen";
+"Marked post as seen" = "Příspěvek byl označeno jako viditelný";
 
 /* Notice title when updating a post's unseen status succeeds. */
-"Marked post as unseen" = "Marked post as unseen";
+"Marked post as unseen" = "Příspěvek byl označen jako neviditelný";
 
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "Přiřaďte účty pomocí e-mailu";
@@ -3566,6 +3580,7 @@
 "Me" = "Já";
 
 /* Noun. Title. Links to the blog's Media library.
+   Tab bar title for the Media tab in Media Picker
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -3894,7 +3909,7 @@
 "No activity yet" = "Zatím žádná aktivita";
 
 /* No comment provided by engineer. */
-"No application can handle this request." = "No application can handle this request.";
+"No application can handle this request." = "Aplikace nedokáže zpracovat tento požadavek. ";
 
 /* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "Žádost nedokáže zpracovat tento požadavek. Nainstalujte si prosím webový prohlížeč.";
@@ -3931,7 +3946,7 @@
 "No data yet" = "Zatím žádná data";
 
 /* Title for the view when there aren't any fixed threats to display */
-"No fixed threats" = "No fixed threats";
+"No fixed threats" = "Žádné opravené hrozby";
 
 /* Title for the no followed sites result screen */
 "No followed sites" = "Žádné sledované weby";
@@ -3944,7 +3959,7 @@
 "No history yet" = "Zatím žádná historie";
 
 /* Title for the view when there aren't any ignored threats to display */
-"No ignored threats" = "No ignored threats";
+"No ignored threats" = "Žádné ignorované hrozby";
 
 /* Title displayed when the user has removed all Insights from display. */
 "No insights added yet" = "Zatím nebyly přidány žádné statistiky";
@@ -4043,6 +4058,9 @@
 
 /* Text displayed when theme name search has no matches */
 "No themes matching your search" = "Žádné šablony neodpovídají hledanému výrazu";
+
+/* Message for a notice informing the user their scan completed and no threats were found */
+"No threats found" = "Nalezeny hrozby";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -4147,15 +4165,13 @@
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    OK button to close the informative dialog on Gutenberg editor
    Submit button on prompt for user information.
-   Text for an alert's dismissal button.
-   Text of an OK button to dismiss a prompt.
    Title of a button that dismisses a prompt
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
    Title of primary button on alert prompting verify their accounts while attempting to publish */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
-"OPEN" = "OPEN";
+"OPEN" = "OTEVŘENO";
 
 /* Disabled */
 "Off" = "Vyp";
@@ -4347,6 +4363,9 @@
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "Název stránky. Prázdný";
 
+/* Title of notification displayed when a page has been successfully updated. */
+"Page updated" = "Stránka aktualizována";
+
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
 "Pages" = "Stránky";
@@ -4361,7 +4380,7 @@
 "Parent Category" = "Nadřazená rubrika";
 
 /* Message informing the user that their pages parent has been set successfully */
-"Parent page successfully updated." = "Parent page successfully updated.";
+"Parent page successfully updated." = "Nadřazená stránka byla úspěšně aktualizována.";
 
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
@@ -4390,8 +4409,7 @@
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Vložit bez formátování";
 
-/* Status for Media object that is being processed locally.
-   Status name for a comment that hasn't yet been approved. */
+/* Status for Media object that is being processed locally. */
 "Pending" = "Čekající na schválení";
 
 /* No comment provided by engineer. */
@@ -4417,6 +4435,9 @@
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Knihovna fotek";
+
+/* Tab bar title for the Photos tab in Media Picker */
+"Photos" = "Fotky";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Fotografie poskytla společnost Pexels";
@@ -4522,7 +4543,7 @@
 "Please try again later" = "Prosím zkuste to znovu později";
 
 /* Description for the Jetpack Restore Failed message. */
-"Please try again later or contact support." = "Please try again later or contact support.";
+"Please try again later or contact support." = "Zkuste to později znovu nebo kontaktujte podporu.";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "Prosím zkuste to znovu později.";
@@ -4646,6 +4667,12 @@
 /* translators: accessibility text. empty post title. */
 "Post title. Empty" = "Název příspěvku. Prázdný";
 
+/* Title of camera permissions screen */
+"Post to WordPress" = "Příspěvek na WordPress";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"Post updated" = "Příspěvek aktualizován";
+
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "PSČ";
 
@@ -4757,12 +4784,6 @@
    Title of the Private Badge */
 "Private" = "Soukromé";
 
-/* Title of a prompt */
-"Problem Following Site" = "Problém s začátkem sledováním webu";
-
-/* Title of a prompt */
-"Problem Unfollowing Site" = "Problém s ukončením sledování webu";
-
 /* No comment provided by engineer. */
 "Problem displaying block" = "Blok se zobrazením problému";
 
@@ -4773,7 +4794,7 @@
 "Problem loading stream" = "Problém s načítáním strýmu ";
 
 /* No comment provided by engineer. */
-"Problem opening the audio" = "Problem opening the audio";
+"Problem opening the audio" = "Problém s otevřením zvuku";
 
 /* No comment provided by engineer. */
 "Problem opening the video" = "Problém s otevřením videa";
@@ -5046,10 +5067,10 @@
 "Replace Current Block" = "Vyměňte aktuální blok";
 
 /* No comment provided by engineer. */
-"Replace audio" = "Replace audio";
+"Replace audio" = "Nahradit zvuk";
 
 /* No comment provided by engineer. */
-"Replace file" = "Replace file";
+"Replace file" = "Nahradit soubor";
 
 /* No comment provided by engineer. */
 "Replace image or video" = "Vyměňte obrázek nebo video";
@@ -5083,7 +5104,7 @@
 "Reply to post…" = "Odpovědět na příspěvek...";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
-"Report This Post" = "Nahlásit tento příspěvek";
+"Report this post" = "Nahlásit tento příspěvek";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Vyžadovat schválení pro komentáře, které obsahují více než tento počet odkazů.";
@@ -5131,7 +5152,7 @@
 "Resolution" = "Rozlišení";
 
 /* Title for the fix section in Threat Details: Threat is not fixable */
-"Resolving the threat" = "Resolving the threat";
+"Resolving the threat" = "Řešení hrozby";
 
 /* Title displayed for restore action.
    Title for button allowing user to restore their Jetpack site
@@ -5155,11 +5176,11 @@
 "Restore to this point" = "Obnovte do tohoto bodu";
 
 /* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
-"Restored to %@" = "Restored to %@";
+"Restored to %@" = "Obnoveno k %@";
 
 /* Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date.
    Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
-"Restoring to %@" = "Restoring to %@";
+"Restoring to %@" = "Obnovování do %@";
 
 /* A prompt to attempt the failed network request again
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
@@ -5197,10 +5218,10 @@
 "Return to post" = "Vrátit se k příspěvku";
 
 /* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for Android" = "Reusable blocks aren't editable on WordPress for Android";
+"Reusable blocks aren't editable on WordPress for Android" = "Opakovaně použitelné bloky nelze upravovat na WordPress pro Android";
 
 /* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for iOS" = "Reusable blocks aren't editable on WordPress for iOS";
+"Reusable blocks aren't editable on WordPress for iOS" = "Opakovaně použitelné bloky nelze upravovat na WordPress pro iOS";
 
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Vrátit čekající změnu";
@@ -5302,6 +5323,9 @@
 
 /* Button title that triggers a scan */
 "Scan Again" = "Skenovat znovu";
+
+/* Title for a notice informing the user their scan has completed */
+"Scan Finished" = "Skenování dokončeno";
 
 /* Title of the view */
 "Scan History" = "Historie skenování";
@@ -5809,10 +5833,10 @@
 "Slug" = "Slug";
 
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"So far, there are no fixed threats on your site." = "So far, there are no fixed threats on your site.";
+"So far, there are no fixed threats on your site." = "Na webu nejsou žádné opravené hrozby.";
 
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"So far, there are no ignored threats on your site." = "So far, there are no ignored threats on your site.";
+"So far, there are no ignored threats on your site." = "Na webu nejsou žádné ignorované hrozby.";
 
 /* Follower Totals label for social media followers */
 "Social" = "Sociální";
@@ -6270,10 +6294,10 @@
 "The language in which this site is primarily written." = "Jazyk ve kterém je tento web primárně napsaný.";
 
 /* Description for label when there are no threats on a users site and how long ago the scan ran. */
-"The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.";
+"The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "Poslední Jetpack sken proběhl %1$@ a nebylo nalezeno žádné riziko.\n\nChcete-li znovu zkontrolovat web, spusťte ruční skenování nebo počkejte až Jetpack prohledá váš web později.";
 
 /* Description that informs for label when there are no threats on a users site */
-"The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.";
+"The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "Poslední skenování Jetpacku nezjistilo žádná rizika.\n\nChcete-li znovu zkontrolovat web, spusťte ruční skenování nebo počkejte až Jetpack prohledá váš web později.";
 
 /* WordPress.com Push Authentication Expired message */
 "The login request has expired. Log in to WordPress.com to try again." = "Žádost vypršela. Přihlaste se znovu k WordPress.com.";
@@ -6321,10 +6345,10 @@
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "Zadaný uživatel nebyl nalezen. Zkontrolujte, jestli je to správně napsaný.";
 
 /* Title for the technical details section in Threat Details */
-"The technical details" = "The technical details";
+"The technical details" = "Technické podrobnosti";
 
 /* Message displayed when a threat is fixed successfully. */
-"The threat was successfully fixed." = "The threat was successfully fixed.";
+"The threat was successfully fixed." = "Hrozba byla úspěšně opravena.";
 
 /* People: Invitation Error */
 "The user already has the specified role. Please, try assigning a different role." = "Uživatel už tuto roli má přiřazenou. Zkuste přiřadit jinou roli.";
@@ -6394,9 +6418,6 @@
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Došlo k potížím při zobrazování tohoto příspěvku.";
 
-/* Short notice that there was a problem following a site and instructions on how to notify us of the problem. */
-"There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen." = "Došlo k potížím při začátku sledování webu. Pokud problém přetrvává můžete nás kontaktovat prostřednictvím > Pomoc a podpora. ";
-
 /* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
 "There was a problem loading the media item." = "Vyskytl se problém s načtením mediální položky.";
 
@@ -6408,9 +6429,6 @@
 
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "Došlo k chybě při ukládání změn v nastavení sdílení.";
-
-/* Short notice that there was a problem unfollowing a site and instructions on how to notify us of the problem. */
-"There was a problem unfollowing the site. If the problem persists you can contact us via the Me > Help & Support screen." = "Došlo k potížím při ukončování sledování webu. Pokud problém přetrvává můžete nás kontaktovat prostřednictvím > Pomoc a podpora.";
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Došlo k chybě při pokusu načíst vaší polohu. Zkuste to později znovu.";
@@ -6438,10 +6456,10 @@
 "There was an error loading the plan" = "Došlo k chybě při načítání plánu";
 
 /* Text displayed when there is a failure loading the history feed */
-"There was an error loading the scan history" = "There was an error loading the scan history";
+"There was an error loading the scan history" = "Při načítání historie skenování došlo k chybě";
 
 /* Text displayed when there is a failure loading the status */
-"There was an error loading the scan status" = "There was an error loading the scan status";
+"There was an error loading the scan status" = "Při načítání stavu skenování došlo k chybě";
 
 /* Text displayed when there is a failure loading the plugin */
 "There was an error loading this plugin" = "Při načítání tohoto pluginu došlo k chybě";
@@ -6456,13 +6474,13 @@
 "There was an error updating @%@" = "Došlo k chybě při aktualizaci @%@";
 
 /* Text displayed when user tries to create a downloadable backup when there is already one being prepared */
-"There's a backup currently being prepared, please wait before starting the next one" = "There's a backup currently being prepared, please wait before starting the next one";
+"There's a backup currently being prepared, please wait before starting the next one" = "Právě se připravuje záloha, počkejte prosím před zahájením dalšího";
 
 /* Text displayed when user tries to start a restore when there is already one running */
 "There's a restore currently in progress, please wait before starting next one" = "Právě probíhá obnovení, počkejte prosím před zahájením dalšího";
 
 /* Text displayed when user tries to start a restore when there is already one running */
-"There's a restore currently in progress, please wait before starting the next one" = "There's a restore currently in progress, please wait before starting the next one";
+"There's a restore currently in progress, please wait before starting the next one" = "Právě probíhá obnovení, počkejte prosím před zahájením dalšího";
 
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "Jsou publikovány jako nový blogový příspěvek na vašem webu, takže vašemu publiku nikdy nic neunikne.";
@@ -6536,16 +6554,16 @@
 "Threat Found" = "Hrozba nalezena";
 
 /* Title for the Jetpack Scan Threat Details screen */
-"Threat details" = "Threat details";
+"Threat details" = "Podrobnosti hrozby";
 
 /* Summary description for a threat that includes the threat signature */
 "Threat found %1$@" = "Nalezena hrozba %1$@";
 
 /* Description for threat file */
-"Threat found in file:" = "Threat found in file:";
+"Threat found in file:" = "Hrozba nalezena v souboru:";
 
 /* Message displayed when a threat is ignored successfully. */
-"Threat ignored." = "Threat ignored.";
+"Threat ignored." = "Hrozba ignorována.";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Náhled";
@@ -6571,6 +6589,7 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
+   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "Název";
@@ -6738,10 +6757,10 @@
 "Turn on site notifications" = "Zapnout notifikace";
 
 /* Notice title when turning site notifications off succeeds. */
-"Turned off site notifications" = "Turned off site notifications";
+"Turned off site notifications" = "Notifikace webu jsou vypnuty";
 
 /* Notice title when turning site notifications on succeeds. */
-"Turned on site notifications" = "Turned on site notifications";
+"Turned on site notifications" = "Notifikace webu jsou zapnuty";
 
 /* Launches the Twitter App */
 "Twitter" = "Twitter";
@@ -6776,6 +6795,9 @@
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Nelze synchronizovat";
 
+/* Notice title when blocking a site fails. */
+"Unable to block site" = "Nepodařilo se zablokovat web";
+
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "Nelze smazat všechny mediální položky.";
 
@@ -6783,10 +6805,10 @@
 "Unable to delete media item." = "Nelze smazat mediální položku.";
 
 /* Message displayed when opening the link to the downloadable backup fails. */
-"Unable to download file" = "Unable to download file";
+"Unable to download file" = "Soubor nelze stáhnout";
 
 /* Notice title when following a site fails. */
-"Unable to follow site" = "Unable to follow site";
+"Unable to follow site" = "Web nelze sledovat";
 
 /* Error message displayed when we were unable to copy the URL for an item in the user's media library. */
 "Unable to get URL for media item." = "Nelze získat URL pro mediální položky.";
@@ -6823,7 +6845,7 @@
 "Unable to register domain" = "Nelze zaregistrovat doménu";
 
 /* Title for the Jetpack Restore Failed message. */
-"Unable to restore your site" = "Unable to restore your site";
+"Unable to restore your site" = "Web nelze obnovit";
 
 /* Text displayed when a site restore fails. */
 "Unable to restore your site, please try again later or contact support." = "Váš web nelze obnovit, zkuste to znovu později nebo kontaktujte podporu.";
@@ -6832,7 +6854,7 @@
 "Unable to save media item." = "Nelze uložit mediální položku.";
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
-"Unable to share link" = "Unable to share link";
+"Unable to share link" = "Odkaz nelze sdílet";
 
 /* Message that appears when a user tries to trash a page while their device is offline. */
 "Unable to trash pages while offline. Please try again later." = "V režimu offline nelze stránky vyhodit do koše. Prosím zkuste to znovu později.";
@@ -6841,13 +6863,13 @@
 "Unable to trash posts while offline. Please try again later." = "V režimu offline nelze příspěvky vyhodit do koše. Prosím zkuste to znovu později.";
 
 /* Notice title when turning site notifications off fails. */
-"Unable to turn off site notifications" = "Unable to turn off site notifications";
+"Unable to turn off site notifications" = "Nelze vypnout notifikace webu";
 
 /* Notice title when turning site notifications on fails. */
-"Unable to turn on site notifications" = "Unable to turn on site notifications";
+"Unable to turn on site notifications" = "Nelze zapnout notifikace webu";
 
 /* Notice title when unfollowing a site fails. */
-"Unable to unfollow site" = "Unable to unfollow site";
+"Unable to unfollow site" = "Web nelze zrušit sledování";
 
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "Nelze aktualizovat nastavení domovské stránky";
@@ -6877,7 +6899,7 @@
 "Unable to verify the email address. Please try again later." = "E-mailovou adresu nelze ověřit. Prosím zkuste to znovu později.";
 
 /* Message displayed when visiting a site fails. */
-"Unable to visit site" = "Unable to visit site";
+"Unable to visit site" = "Web nelze navštívit";
 
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "Nejde zapisovat do souboru na disku";
@@ -6910,7 +6932,7 @@
 "Unfollow %@" = "Zrušit sledování %@";
 
 /* Verb. An option to unfollow a site. */
-"Unfollow Site" = "Zrušení sledování tohoto webu";
+"Unfollow site" = "Zrušení sledování tohoto webu";
 
 /* Notice title when unfollowing a site succeeds.
    User unfollowed a site. */
@@ -7068,7 +7090,7 @@
 "Uploading..." = "Nahrávám...";
 
 /* No comment provided by engineer. */
-"Uploading…" = "Uploading…";
+"Uploading…" = "Nahrávám...";
 
 /* Title for alert when trying to save post with failed media items */
 "Uploads failed" = "Nahrávání selhalo";
@@ -7386,10 +7408,10 @@
 "We couldn't upload this media." = "Toto médium se nám nepodařilo nahrát.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
-"We couldn’t find the status to say how long your backup will take." = "We couldn’t find the status to say how long your backup will take.";
+"We couldn’t find the status to say how long your backup will take." = "Nepodařilo se najít stav, který by říkal, jak dlouho bude trvat zálohování.";
 
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
-"We couldn’t find the status to say how long your restore will take." = "We couldn’t find the status to say how long your restore will take.";
+"We couldn’t find the status to say how long your restore will take." = "Nepodařilo se nám najít stav, který by říkal, jak dlouho bude obnovení trvat.";
 
 /* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
 "We had trouble loading connections for %@" = "Při načítání připojení jsme měli potíže %@";
@@ -7404,7 +7426,7 @@
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "Udělali jsme velká vylepšení editoru bloků a myslíme si, že to stojí za vyzkoušení!\n\nPovolili jsme to pro nové příspěvky a stránky, ale pokud chcete přejít na klasický editor, přejděte do části „Můj web“> „Nastavení webu“.";
 
 /* Message displayed when a backup has finished */
-"We successfully created a backup of your site as of %@" = "We successfully created a backup of your site as of %@";
+"We successfully created a backup of your site as of %@" = "Úspěšně jsme vytvořili zálohu vašeho webu od %@";
 
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
 "We successfully created a backup of your site from %1$@." = "Úspěšně jsme vytvořili zálohu vašeho webu z %1$@.";
@@ -7849,7 +7871,7 @@
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Vypadá to, že jste nainstalovali mobilní plugin DudaMobile. Ten zabraňuje aplikaci propojit se s vaší webovou stránkou. ";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
-"You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Zabezpečení byste neměli ignorovat, pokud si nejste zcela jisti, že je neškodný. Pokud se rozhodnete tuto hrozbu ignorovat, zůstane na vašem webu „%1$@“.";
+"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Zabezpečení problém byste neměli ignorovat, pokud si nejste zcela jisti, že je neškodný. Pokud se rozhodnete tuto hrozbu ignorovat, zůstane na vašem webu „%1$@“.";
 
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "Nebudete moci změnit své uživatelské jméno zpět.";

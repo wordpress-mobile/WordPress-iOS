@@ -24,11 +24,8 @@
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point to create a downloadable backup." = "%1$@은(는) 다운로드할 수 있는 백업을 만들도록 선택한 지점입니다.";
 
-/* 'AUTHOR on POST TITLE' in a comment list */
+/* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@(%2$@)";
-
-/* 'AUTHOR on POST TITLE: COMMENT' in a comment list */
-"%1$@ on %2$@: %3$@" = "%1$@ %2$@: %3$@";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d\/%2$d 완료됨";
@@ -166,6 +163,9 @@
 /* Number of posts */
 "%d posts" = "%d개의 글";
 
+/* Message for a notice informing the user their scan completed and %d threats were found */
+"%d potential threats found" = "%d potential threats found";
+
 /* Age between dates over one year. */
 "%d years" = "%d 년";
 
@@ -239,6 +239,9 @@
 
 /* Alert displayed to the user when a single media item attached to a post has failed to upload. */
 "1 post, 1 file not uploaded" = "1개의 글과 1개의 파일이 업로드되지 않음";
+
+/* Message for a notice informing the user their scan completed and 1 threat was found */
+"1 potential threat found" = "1 potential threat found";
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
@@ -341,6 +344,7 @@
 "Activation Error" = "활성화 오류";
 
 /* Describes a status of a plugin
+   Label for active Theme
    Whether a plugin is active on a site */
 "Active" = "활성";
 
@@ -543,6 +547,9 @@
 
 /* Jetpack Settings: Allow WordPress.com login */
 "Allow WordPress.com login" = "워드프레스닷컴 로그인 허용";
+
+/* Message on camera permissions screen to explain why the app needs camera and microphone permissions */
+"Allow access so you can start taking photos and videos." = "Allow access so you can start taking photos and videos.";
 
 /* A short description of the comment like sharing setting. */
 "Allow all comments to be Liked by you and your readers" = "회원님과 독자가 좋아요를 표시한 모든 댓글 허용";
@@ -885,9 +892,6 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "인용 차단";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block This Site" = "이 사이트 차단";
-
 /* translators: displayed right after the block is copied. */
 "Block copied" = "블록을 복사하였습니다";
 
@@ -911,6 +915,12 @@
 
 /* No comment provided by engineer. */
 "Block settings" = "블록 설정";
+
+/* The title of a button that triggers blocking a site from the user's reader. */
+"Block this site" = "Block this site";
+
+/* Notice title when blocking a site succeeds. */
+"Blocked site" = "Blocked site";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "블로그";
@@ -1175,10 +1185,13 @@
 /* Title for the button to progress with the selected site homepage design */
 "Choose" = "선택하기";
 
+/* Title for selecting a new homepage */
+"Choose Homepage" = "Choose Homepage";
+
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "페이지 선택";
 
-/* Title for selecting a new home page */
+/* Title for selecting a new posts page */
 "Choose Posts Page" = "글 페이지 선택";
 
 /* Title for the screen to pick a template for a page */
@@ -2076,7 +2089,13 @@
 "Double tap to move the block up" = "블록을 위로 이동하려면 두 번 탭하세요.";
 
 /* No comment provided by engineer. */
+"Double tap to open Action Sheet to edit, replace, or clear the image" = "Double tap to open Action Sheet to edit, replace, or clear the image";
+
+/* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "사용할 수 있는 옵션이 포함된 작업 시트를 열려면 두 번 누르세요.";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Double tap to open Bottom Sheet to edit, replace, or clear the image";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet with available options" = "사용할 수 있는 옵션이 포함된 하위 시트를 열려면 두 번 누르세요.";
@@ -2176,6 +2195,9 @@
 /* No comment provided by engineer. */
 "Edit file" = "파일 편집하기";
 
+/* No comment provided by engineer. */
+"Edit focal point" = "Edit focal point";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "블록 편집기에서 새 글과 페이지를 편집하세요.";
 
@@ -2248,8 +2270,7 @@
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "빈 URL";
 
-/* Button title about the enable notifications action
-   Button title for the enable site notifications action. */
+/* Button title for the enable site notifications action. */
 "Enable" = "활성화";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
@@ -2261,8 +2282,7 @@
 /* Title of a Quick Start Tour */
 "Enable post sharing" = "글 공유 설정";
 
-/* Message informing the user about the enable notifications action
-   Message prompting user to enable site notifications. */
+/* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "사이트 알림을 활성화하시겠습니까?";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
@@ -2320,9 +2340,6 @@
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "에러";
-
-/* Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader. */
-"Error Blocking Site" = "사이트 차단 오류";
 
 /* Menus error title for a menu that received an error while trying to delete it. */
 "Error Deleting Menu" = "메뉴 삭제 중 오류 발생";
@@ -2607,14 +2624,14 @@
    Verb. Button title. Follow a new blog. */
 "Follow" = "팔로우";
 
-/* Verb. An option to follow a site. */
-"Follow Site" = "사이트 팔로우";
-
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "이메일로 대화 팔로우";
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "다른 사이트 팔로우";
+
+/* Verb. An option to follow a site. */
+"Follow site" = "Follow site";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "좋아하는 사이트를 팔로우하고 새 읽을 거리를 발견하세요.";
@@ -2650,9 +2667,6 @@
 
 /* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
 "Following %1$@" = "%1$@ 팔로우 중";
-
-/* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
-"Following %@" = "%@ 팔로우 중";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Following conversation by email" = "이메일로 대화 팔로우 중";
@@ -3566,6 +3580,7 @@
 "Me" = "나";
 
 /* Noun. Title. Links to the blog's Media library.
+   Tab bar title for the Media tab in Media Picker
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -4044,6 +4059,9 @@
 /* Text displayed when theme name search has no matches */
 "No themes matching your search" = "검색과 일치하는 테마 없음";
 
+/* Message for a notice informing the user their scan completed and no threats were found */
+"No threats found" = "No threats found";
+
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
    No comment will be autoapproved
@@ -4147,8 +4165,6 @@
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    OK button to close the informative dialog on Gutenberg editor
    Submit button on prompt for user information.
-   Text for an alert's dismissal button.
-   Text of an OK button to dismiss a prompt.
    Title of a button that dismisses a prompt
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
    Title of primary button on alert prompting verify their accounts while attempting to publish */
@@ -4347,6 +4363,9 @@
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "페이지 제목입니다. 비었습니다";
 
+/* Title of notification displayed when a page has been successfully updated. */
+"Page updated" = "Page updated";
+
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
 "Pages" = "페이지";
@@ -4390,8 +4409,7 @@
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "서식없이 붙여넣기";
 
-/* Status for Media object that is being processed locally.
-   Status name for a comment that hasn't yet been approved. */
+/* Status for Media object that is being processed locally. */
 "Pending" = "대기중";
 
 /* No comment provided by engineer. */
@@ -4417,6 +4435,9 @@
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "사진 라이브러리";
+
+/* Tab bar title for the Photos tab in Media Picker */
+"Photos" = "Photos";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Pexels 제공 사진";
@@ -4646,6 +4667,12 @@
 /* translators: accessibility text. empty post title. */
 "Post title. Empty" = "글 제목. 비어 있음";
 
+/* Title of camera permissions screen */
+"Post to WordPress" = "Post to WordPress";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"Post updated" = "Post updated";
+
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "우편번호";
 
@@ -4756,12 +4783,6 @@
    Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "개인용";
-
-/* Title of a prompt */
-"Problem Following Site" = "사이트를 팔로우하는 데 문제 발생";
-
-/* Title of a prompt */
-"Problem Unfollowing Site" = "사이트 팔로우를 취소하는 데 문제 발생";
 
 /* No comment provided by engineer. */
 "Problem displaying block" = "블록 표시 문제";
@@ -5083,7 +5104,7 @@
 "Reply to post…" = "답글 달기…";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
-"Report This Post" = "이 글 신고하기";
+"Report this post" = "Report this post";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "이 링크 수보다 링크가 많이 포함된 댓글에 대한 수동 승인이 필요합니다.";
@@ -5302,6 +5323,9 @@
 
 /* Button title that triggers a scan */
 "Scan Again" = "다시 검사하기";
+
+/* Title for a notice informing the user their scan has completed */
+"Scan Finished" = "Scan Finished";
 
 /* Title of the view */
 "Scan History" = "스캔 기록";
@@ -6394,9 +6418,6 @@
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "글을 표시하는 데 문제가 있습니다.";
 
-/* Short notice that there was a problem following a site and instructions on how to notify us of the problem. */
-"There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen." = "사이트 팔로우하는 데 문제가 발생했습니다. 문제가 지속될 경우 내 계정 > 도움 & 지원 화면을 통해 문의할 수 있습니다.";
-
 /* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
 "There was a problem loading the media item." = "미디어 항목을 로드하는 데 문제가 발생했습니다.";
 
@@ -6408,9 +6429,6 @@
 
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "공유 관리 변경 사항을 저장하는 데 문제가 발생했습니다.";
-
-/* Short notice that there was a problem unfollowing a site and instructions on how to notify us of the problem. */
-"There was a problem unfollowing the site. If the problem persists you can contact us via the Me > Help & Support screen." = "사이트 팔로우를 취소하는 데 문제가 발생했습니다. 문제가 지속될 경우 내 계정 > 도움 & 지원 화면을 통해 문의할 수 있습니다.";
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "위치 액세스 시도 중 문제가 발생했습니다. 나중에 다시 시도해 주세요.";
@@ -6571,6 +6589,7 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
+   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "제목";
@@ -6776,6 +6795,9 @@
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "동기화할 수 없음";
 
+/* Notice title when blocking a site fails. */
+"Unable to block site" = "Unable to block site";
+
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "모든 미디어 항목을 삭제할 수 없습니다.";
 
@@ -6910,7 +6932,7 @@
 "Unfollow %@" = "%@(을)를 팔로우 취소하기";
 
 /* Verb. An option to unfollow a site. */
-"Unfollow Site" = "사이트의 팔로우 취소";
+"Unfollow site" = "Unfollow site";
 
 /* Notice title when unfollowing a site succeeds.
    User unfollowed a site. */
@@ -7849,7 +7871,7 @@
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "DudaMobile에서 설치한 모바일 플러그인으로 인해 앱이 블로그에 연결할 수 없습니다.";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
-"You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "안전한 것이 확실하지 않은 한 보안을 무시해서는 안 됩니다. 이 위협 무시를 선택하면 사이트 \"%1$@\"에서 위협이 유지됩니다.";
+"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".";
 
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "사용자명은 다시 바꿀 수 없게 됩니다.";
