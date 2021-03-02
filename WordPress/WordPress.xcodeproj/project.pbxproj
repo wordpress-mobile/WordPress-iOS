@@ -1601,6 +1601,8 @@
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddPostCategoryViewController.m */; };
+		AB2211D225ED68E300BF72FC /* CommentServiceRemoteFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB2211D125ED68E300BF72FC /* CommentServiceRemoteFactory.swift */; };
+		AB2211F425ED6E7A00BF72FC /* CommentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB2211F325ED6E7A00BF72FC /* CommentServiceTests.swift */; };
 		ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */; };
 		ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ADF544C1195A0F620092213D /* CustomHighlightButton.m */; };
 		B03B9234250BC593000A40AF /* SuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03B9233250BC593000A40AF /* SuggestionService.swift */; };
@@ -4346,6 +4348,8 @@
 		A20971B819B0BC570058F395 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		A27DA63A5ECD1D0262C589EC /* Pods-WordPressNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressNotificationServiceExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressNotificationServiceExtension/Pods-WordPressNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		A284044518BFE7F300D982B6 /* WordPress 15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 15.xcdatamodel"; sourceTree = "<group>"; };
+		AB2211D125ED68E300BF72FC /* CommentServiceRemoteFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentServiceRemoteFactory.swift; sourceTree = "<group>"; };
+		AB2211F325ED6E7A00BF72FC /* CommentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentServiceTests.swift; sourceTree = "<group>"; };
 		AB390AA9C94F16E78184E9D1 /* Pods_WordPressScreenshotGeneration.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressScreenshotGeneration.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC6024D92F44AE4CB4A8C1B3 /* Pods-WordPressScreenshotGeneration.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressScreenshotGeneration.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressScreenshotGeneration/Pods-WordPressScreenshotGeneration.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		ACBAB5FC0E121C7300F38795 /* PostSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsViewController.h; sourceTree = "<group>"; usesTabs = 0; };
@@ -8867,6 +8871,7 @@
 				7E7BEF7222E1DD27009A880D /* EditorSettingsService.swift */,
 				E1556CF0193F6FE900FC52EA /* CommentService.h */,
 				E1556CF1193F6FE900FC52EA /* CommentService.m */,
+				AB2211D125ED68E300BF72FC /* CommentServiceRemoteFactory.swift */,
 				E16A76F21FC4766900A661E3 /* CredentialsService.swift */,
 				1702BBDF1CF3034E00766A33 /* DomainsService.swift */,
 				FA00863C24EB68B100C863F2 /* FollowCommentsService.swift */,
@@ -10070,6 +10075,7 @@
 				E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */,
 				930FD0A519882742000CC81D /* BlogServiceTest.m */,
 				E18549DA230FBFEF003C620E /* BlogServiceDeduplicationTests.swift */,
+				AB2211F325ED6E7A00BF72FC /* CommentServiceTests.swift */,
 				74585B981F0D58F300E7E667 /* DomainsServiceTests.swift */,
 				FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */,
 				B5772AC51C9C84900031F97E /* GravatarServiceTests.swift */,
@@ -13606,6 +13612,7 @@
 				E1DD4CCB1CAE41B800C3863E /* PagedViewController.swift in Sources */,
 				B549BA681CF7447E0086C608 /* InvitePersonViewController.swift in Sources */,
 				B535209B1AF7BBB800B33BA8 /* PushAuthenticationManager.swift in Sources */,
+				AB2211D225ED68E300BF72FC /* CommentServiceRemoteFactory.swift in Sources */,
 				319D6E8119E44C680013871C /* SuggestionsTableView.m in Sources */,
 				40E728851FF3D9070010E7C9 /* PluginDetailViewHeaderCell.swift in Sources */,
 				46183D1F251BD6A0004F9AFD /* PageTemplateCategory+CoreDataClass.swift in Sources */,
@@ -15410,6 +15417,7 @@
 				7E987F5A2108122A00CAFB88 /* NotificationUtility.swift in Sources */,
 				7E442FC720F677CB00DEACA5 /* ActivityLogRangesTest.swift in Sources */,
 				8B25F8DA24B7683A009DD4C9 /* ReaderCSSTests.swift in Sources */,
+				AB2211F425ED6E7A00BF72FC /* CommentServiceTests.swift in Sources */,
 				08E77F471EE9D72F006F9515 /* MediaThumbnailExporterTests.swift in Sources */,
 				59FBD5621B5684F300734466 /* ThemeServiceTests.m in Sources */,
 				85F8E19D1B018698000859BB /* PushAuthenticationServiceTests.swift in Sources */,
