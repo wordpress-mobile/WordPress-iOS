@@ -66,6 +66,30 @@ class InvitePersonViewController: UITableViewController {
         return roles
     }
 
+    private var sortedInviteLinks: [InviteLinks] {
+        guard
+            let links = blog.inviteLinks?.array as? [InviteLinks],
+            let sortedRoles = blog.sortedRoles
+        else {
+            return []
+        }
+        return sortedRoles.compactMap { role -> InviteLinks? in
+            return links.first { link -> Bool in
+                link.role == role.slug
+            }
+        }
+    }
+
+    private var selectedInviteLinkIndex = 0
+
+    private var currentInviteLink: InviteLinks? {
+        let links = sortedInviteLinks
+        guard links.count > 0 && selectedInviteLinkIndex < links.count else {
+            return nil
+        }
+        return links[selectedInviteLinkIndex]
+    }
+
     private let rolesDefinitionUrl = "https://wordpress.com/support/user-roles/"
     private let messageCharacterLimit = 500
 
@@ -510,11 +534,23 @@ private extension InvitePersonViewController {
     }
 
     func refreshCurrentInviteCell() {
-        // TODO: Update with selected invite
+        guard let invite = currentInviteLink else {
+            return
+        }
+        currentInviteCell.textLabel?.text = NSLocalizedString("Role", comment: "Title. Indicates the user role an invite link is for.")
+        currentInviteCell.detailTextLabel?.text = invite.role
     }
 
     func refreshExpirationCell() {
-        // TODO: Update with selected invite.
+        guard let invite = currentInviteLink else {
+            return
+        }
+        expirationCell.textLabel?.text = NSLocalizedString("Expires on", comment: "Title. Indicates an expiration date.")
+
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        let date = Date(timeIntervalSince1970: Double(invite.expiry))
+        expirationCell.detailTextLabel?.text = formatter.string(from: date)
     }
 
     func syncInviteLinks() {
