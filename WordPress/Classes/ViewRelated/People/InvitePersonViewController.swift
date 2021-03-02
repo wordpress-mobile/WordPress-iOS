@@ -106,6 +106,11 @@ class InvitePersonViewController: UITableViewController {
         }
     }
 
+    @IBOutlet private var generateShareCell: UITableViewCell! {
+        didSet {
+            setupGenerateShareCell()
+        }
+    }
 
 
     // MARK: - View Lifecyle Methods
@@ -116,6 +121,7 @@ class InvitePersonViewController: UITableViewController {
         setupDefaultRole()
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+        syncInviteLinks()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -180,7 +186,7 @@ class InvitePersonViewController: UITableViewController {
         case .message:
             refreshMessageTextView()
         case .inviteLink:
-            break
+            refreshInviteLinkCell(indexPath: indexPath)
         case .none:
             break
         }
@@ -467,12 +473,50 @@ private extension InvitePersonViewController {
 //
 private extension InvitePersonViewController {
 
-    func syncInviteLinks() {
+    func refreshInviteLinkCell(indexPath: IndexPath) {
+        guard let row = InviteLinkRow(rawValue: indexPath.row) else {
+            return
+        }
+        switch row {
+        case .generateShare:
+            setupGenerateShareCell()
+        default:
+            break
+        }
+    }
 
+    func setupGenerateShareCell() {
+        if blog.inviteLinks?.count == 0 {
+            generateShareCell.textLabel?.text = NSLocalizedString("Generate new link", comment: "Title. A call to action to generate a new invite link.")
+        } else {
+            generateShareCell.textLabel?.text = NSLocalizedString("Share invite link", comment: "Title. A call to action to share an invite link.")
+        }
+    }
+
+    func syncInviteLinks() {
+        guard let siteID = blog.dotComID?.intValue else {
+            return
+        }
+        let service = PeopleService(blog: blog, context: context)
+        service?.fetchInviteLinks(siteID, success: { [weak self] _ in
+            self?.tableView.reloadData()
+        }, failure: { error in
+            // Fail silently.
+            DDLogError("Error syncing invite links. \(error)")
+        })
     }
 
     func generateInviteLinks() {
-        print("generate")
+        guard let siteID = blog.dotComID?.intValue else {
+            return
+        }
+        let service = PeopleService(blog: blog, context: context)
+        service?.generateInviteLinks(siteID, success: { [weak self] _ in
+            self?.tableView.reloadData()
+        }, failure: { error in
+            // TODO: Report an error.
+            DDLogError("Error generating invite links. \(error)")
+        })
     }
 
     func shareInviteLink() {
@@ -480,7 +524,16 @@ private extension InvitePersonViewController {
     }
 
     func disableInviteLinks() {
-        print("disable")
+        guard let siteID = blog.dotComID?.intValue else {
+            return
+        }
+        let service = PeopleService(blog: blog, context: context)
+        service?.disableInviteLinks(siteID, success: { [weak self] in
+            self?.tableView.reloadData()
+        }, failure: { error in
+            // TODO: Report an error.
+            DDLogError("Error disabling invite links. \(error)")
+        })
     }
 
     func selectInviteLink() {
