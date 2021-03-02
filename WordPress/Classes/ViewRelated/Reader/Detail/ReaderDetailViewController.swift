@@ -340,6 +340,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureHeader() {
+        header.useCompatibilityMode = useCompatibilityMode
         header.delegate = coordinator
         headerContainerView.addSubview(header)
         headerContainerView.translatesAutoresizingMaskIntoConstraints = false
