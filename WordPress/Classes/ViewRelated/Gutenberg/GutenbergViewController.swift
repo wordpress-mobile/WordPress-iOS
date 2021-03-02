@@ -34,6 +34,8 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     let ghostView = GutenGhostView()
 
+    private var storyEditor: StoryEditor?
+
     private lazy var service: BlogJetpackSettingsService? = {
         guard
             let settings = post.blog.settings,
@@ -353,6 +355,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // Handles refreshing controls with state context after options screen is dismissed
+        storyEditor = nil
         editorContentWasUpdated()
     }
 
@@ -667,6 +670,11 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             return MediaFile.file(from: content)
         })
 
+        // If the story editor is already shown, ignore this new load request
+        guard presentedViewController is StoryEditor == false else {
+            return
+        }
+
         do {
             try showEditor(files: files)
         } catch let error {
@@ -721,15 +729,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             }
         })
 
-        controller.trackOpen()
-        controller.populate(with: files, completion: { [weak self] result in
-            switch result {
-            case .success:
-                self?.present(controller, animated: true, completion: {})
-            case .failure(let error):
-                os_log(.error, "Failed to populate Kanvas controller %@", error.localizedDescription)
-            }
-        })
+        storyEditor?.trackOpen()
+        storyEditor?.present(on: self, with: files)
     }
 
     func gutenbergDidRequestMediaUploadActionDialog(for mediaID: Int32) {
