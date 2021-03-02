@@ -2432,6 +2432,8 @@
 		FAB8F7AA25AD792500D5D54A /* JetpackBackupStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8F7A925AD792500D5D54A /* JetpackBackupStatusViewController.swift */; };
 		FAB8FD5025AEB0F500D5D54A /* JetpackBackupStatusCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8FD4F25AEB0F500D5D54A /* JetpackBackupStatusCoordinator.swift */; };
 		FAB8FD6E25AEB23600D5D54A /* JetpackBackupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8FD6D25AEB23600D5D54A /* JetpackBackupService.swift */; };
+		FAC085FA25EDE7CB00B94F2A /* ReaderRelatedPostsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC085F825EDE7CB00B94F2A /* ReaderRelatedPostsCollectionViewCell.swift */; };
+		FAC085FB25EDE7CB00B94F2A /* ReaderRelatedPostsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAC085F925EDE7CB00B94F2A /* ReaderRelatedPostsCollectionViewCell.xib */; };
 		FACB36F11C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACB36F01C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift */; };
 		FAD9457E25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD9457D25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift */; };
 		FAD9458E25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD9458D25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift */; };
@@ -5350,6 +5352,8 @@
 		FAB8F7A925AD792500D5D54A /* JetpackBackupStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupStatusViewController.swift; sourceTree = "<group>"; };
 		FAB8FD4F25AEB0F500D5D54A /* JetpackBackupStatusCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupStatusCoordinator.swift; sourceTree = "<group>"; };
 		FAB8FD6D25AEB23600D5D54A /* JetpackBackupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupService.swift; sourceTree = "<group>"; };
+		FAC085F825EDE7CB00B94F2A /* ReaderRelatedPostsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderRelatedPostsCollectionViewCell.swift; sourceTree = "<group>"; };
+		FAC085F925EDE7CB00B94F2A /* ReaderRelatedPostsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderRelatedPostsCollectionViewCell.xib; sourceTree = "<group>"; };
 		FACB36F01C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeWebNavigationDelegate.swift; sourceTree = "<group>"; };
 		FAD9457D25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupOptionsCoordinator.swift; sourceTree = "<group>"; };
 		FAD9458D25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreWarningCoordinator.swift; sourceTree = "<group>"; };
@@ -8711,6 +8715,8 @@
 				8BDA5A6A247C2EAF00AB124C /* ReaderDetailViewController.swift */,
 				8BDA5A71247C5E5800AB124C /* ReaderDetailCoordinator.swift */,
 				8BDA5A6E247C308300AB124C /* ReaderDetailViewController.storyboard */,
+				FAC085F825EDE7CB00B94F2A /* ReaderRelatedPostsCollectionViewCell.swift */,
+				FAC085F925EDE7CB00B94F2A /* ReaderRelatedPostsCollectionViewCell.xib */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -12514,6 +12520,7 @@
 				F5A34D1025DF2F7F00C9654B /* Shrikhand-Regular.ttf in Resources */,
 				9A73CB082350DE4C002EF20C /* StatsGhostSingleRowCell.xib in Resources */,
 				596C03601B84F24000899EEB /* ThemeBrowser.storyboard in Resources */,
+				FAC085FB25EDE7CB00B94F2A /* ReaderRelatedPostsCollectionViewCell.xib in Resources */,
 				9A9E3FB2230EB74300909BC4 /* StatsGhostTabbedCell.xib in Resources */,
 				469CE06E24BCED75003BDC8B /* LayoutPickerSectionTableViewCell.xib in Resources */,
 				17E3639F22C41DBA000E0C79 /* hot_pink_icon_20pt.png in Resources */,
@@ -14029,6 +14036,7 @@
 				E1DB326C1D9ACD4A00C8FEBC /* ReaderTeamTopic.swift in Sources */,
 				E12DB07B1C48D1C200A6C1D4 /* WPAccount+AccountSettings.swift in Sources */,
 				17B7C8A020EC1D6A0042E260 /* Route.swift in Sources */,
+				FAC085FA25EDE7CB00B94F2A /* ReaderRelatedPostsCollectionViewCell.swift in Sources */,
 				436D56252117312700CEAA33 /* RegisterDomainDetailsViewController+Cells.swift in Sources */,
 				7371E6D221FA730700596C0A /* ReaderStreamViewController+Sharing.swift in Sources */,
 				17A28DC3205001A900EA6D9E /* FilterTabBar.swift in Sources */,

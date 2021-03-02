@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="ReaderRelatedPostsCollectionViewCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="520" height="365"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="520" height="365"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9bq-B1-2Di">
+                        <rect key="frame" x="0.0" y="0.0" width="520" height="232.5"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vdw-VQ-5vf">
+                        <rect key="frame" x="0.0" y="248.5" width="520" height="116.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="vdw-VQ-5vf" firstAttribute="top" secondItem="9bq-B1-2Di" secondAttribute="bottom" constant="16" id="C1X-1g-EMd"/>
+                <constraint firstItem="9bq-B1-2Di" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="ElG-Q9-PAr"/>
+                <constraint firstItem="vdw-VQ-5vf" firstAttribute="height" secondItem="9bq-B1-2Di" secondAttribute="height" multiplier="0.5" id="HQt-Eq-3jT"/>
+                <constraint firstAttribute="bottom" secondItem="vdw-VQ-5vf" secondAttribute="bottom" id="Vcc-d4-eEc"/>
+                <constraint firstItem="vdw-VQ-5vf" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Z12-sI-HpF"/>
+                <constraint firstAttribute="trailing" secondItem="vdw-VQ-5vf" secondAttribute="trailing" id="ZI6-09-KS9"/>
+                <constraint firstItem="9bq-B1-2Di" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="auf-fq-JeB"/>
+                <constraint firstAttribute="trailing" secondItem="9bq-B1-2Di" secondAttribute="trailing" id="trI-U3-puF"/>
+            </constraints>
+            <size key="customSize" width="520" height="365"/>
+            <connections>
+                <outlet property="featuredImageView" destination="9bq-B1-2Di" id="9wi-9D-fJS"/>
+                <outlet property="titleLabel" destination="vdw-VQ-5vf" id="Fsw-Oh-evo"/>
+            </connections>
+            <point key="canvasLocation" x="323.1884057971015" y="183.81696428571428"/>
+        </collectionViewCell>
+    </objects>
+</document>
