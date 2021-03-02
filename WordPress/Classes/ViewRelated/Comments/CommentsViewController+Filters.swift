@@ -49,7 +49,7 @@ extension CommentsViewController {
             return
         }
 
-        refresh(with: filter.statusFilter)
+        refresh(with: filter.statusFilter, andPredicate: filter.statusPredicate)
     }
 
 }

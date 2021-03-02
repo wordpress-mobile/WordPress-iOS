@@ -23,6 +23,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 @property (nonatomic, strong) Blog                      *blog;
 
 @property (nonatomic) CommentStatusFilter currentStatusFilter;
+@property (nonatomic, strong) NSPredicate *statusPredicate;
 @property (weak, nonatomic) IBOutlet FilterTabBar *filterTabBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTopConstraint;
@@ -52,8 +53,8 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 
     [self configureFilterTabBar:self.filterTabBar];
     [self setTableConstraints];
-
     self.currentStatusFilter = CommentStatusFilterAll;
+
     [self configureNavBar];
     [self configureLoadMoreSpinner];
     [self configureNoResultsView];
@@ -346,15 +347,31 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 
 - (NSFetchRequest *)fetchRequest
 {
-    NSFetchRequest *fetchRequest            = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
-    fetchRequest.predicate                  = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, CommentStatusSpam];
-    
-    NSSortDescriptor *sortDescriptorStatus  = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
-    NSSortDescriptor *sortDescriptorDate    = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
-    fetchRequest.sortDescriptors            = @[sortDescriptorStatus, sortDescriptorDate];
-    fetchRequest.fetchBatchSize             = CommentsFetchBatchSize;
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
+
+    if ([Feature enabled:FeatureFlagCommentFilters]) {
+        fetchRequest.predicate = self.filteredCommentsPredicate;
+    } else {
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, CommentStatusSpam];
+    }
+
+    NSSortDescriptor *sortDescriptorStatus = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
+    NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
+    fetchRequest.sortDescriptors = @[sortDescriptorStatus, sortDescriptorDate];
+    fetchRequest.fetchBatchSize = CommentsFetchBatchSize;
     
     return fetchRequest;
+}
+
+- (NSPredicate *)filteredCommentsPredicate
+{
+    NSMutableArray *subpredicates = [NSMutableArray arrayWithObjects:[NSPredicate predicateWithFormat:@"blog == %@", self.blog], nil];
+
+    if (self.statusPredicate != NULL) {
+        [subpredicates addObject:self.statusPredicate];
+    }
+    
+    return [NSCompoundPredicate andPredicateWithSubpredicates:subpredicates];
 }
 
 - (void)configureCell:(nonnull CommentsTableViewCell *)cell atIndexPath:(nonnull NSIndexPath *)indexPath {
@@ -479,9 +496,10 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
     }
 }
 
-- (void)refreshWithStatusFilter:(CommentStatusFilter)statusFilter
+- (void)refreshWithStatusFilter:(CommentStatusFilter)statusFilter andPredicate:(NSPredicate *)statusPredicate
 {
     self.currentStatusFilter = statusFilter;
+    self.statusPredicate = statusPredicate;
     [self refreshAndSyncWithInteraction];
 }
 
