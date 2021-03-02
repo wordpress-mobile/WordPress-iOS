@@ -2432,8 +2432,8 @@
 		FAB8F7AA25AD792500D5D54A /* JetpackBackupStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8F7A925AD792500D5D54A /* JetpackBackupStatusViewController.swift */; };
 		FAB8FD5025AEB0F500D5D54A /* JetpackBackupStatusCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8FD4F25AEB0F500D5D54A /* JetpackBackupStatusCoordinator.swift */; };
 		FAB8FD6E25AEB23600D5D54A /* JetpackBackupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8FD6D25AEB23600D5D54A /* JetpackBackupService.swift */; };
-		FAC086D725EDFB1E00B94F2A /* RelatedPostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC086D525EDFB1E00B94F2A /* RelatedPostsTableViewCell.swift */; };
-		FAC086D825EDFB1E00B94F2A /* RelatedPostsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAC086D625EDFB1E00B94F2A /* RelatedPostsTableViewCell.xib */; };
+		FAC086D725EDFB1E00B94F2A /* ReaderRelatedPostsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC086D525EDFB1E00B94F2A /* ReaderRelatedPostsCell.swift */; };
+		FAC086D825EDFB1E00B94F2A /* ReaderRelatedPostsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAC086D625EDFB1E00B94F2A /* ReaderRelatedPostsCell.xib */; };
 		FACB36F11C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACB36F01C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift */; };
 		FAD9457E25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD9457D25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift */; };
 		FAD9458E25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD9458D25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift */; };
@@ -5352,8 +5352,8 @@
 		FAB8F7A925AD792500D5D54A /* JetpackBackupStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupStatusViewController.swift; sourceTree = "<group>"; };
 		FAB8FD4F25AEB0F500D5D54A /* JetpackBackupStatusCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupStatusCoordinator.swift; sourceTree = "<group>"; };
 		FAB8FD6D25AEB23600D5D54A /* JetpackBackupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupService.swift; sourceTree = "<group>"; };
-		FAC086D525EDFB1E00B94F2A /* RelatedPostsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelatedPostsTableViewCell.swift; sourceTree = "<group>"; };
-		FAC086D625EDFB1E00B94F2A /* RelatedPostsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RelatedPostsTableViewCell.xib; sourceTree = "<group>"; };
+		FAC086D525EDFB1E00B94F2A /* ReaderRelatedPostsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderRelatedPostsCell.swift; sourceTree = "<group>"; };
+		FAC086D625EDFB1E00B94F2A /* ReaderRelatedPostsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderRelatedPostsCell.xib; sourceTree = "<group>"; };
 		FACB36F01C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeWebNavigationDelegate.swift; sourceTree = "<group>"; };
 		FAD9457D25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupOptionsCoordinator.swift; sourceTree = "<group>"; };
 		FAD9458D25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreWarningCoordinator.swift; sourceTree = "<group>"; };
@@ -8715,8 +8715,6 @@
 				8BDA5A6A247C2EAF00AB124C /* ReaderDetailViewController.swift */,
 				8BDA5A71247C5E5800AB124C /* ReaderDetailCoordinator.swift */,
 				8BDA5A6E247C308300AB124C /* ReaderDetailViewController.storyboard */,
-				FAC086D525EDFB1E00B94F2A /* RelatedPostsTableViewCell.swift */,
-				FAC086D625EDFB1E00B94F2A /* RelatedPostsTableViewCell.xib */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -8751,6 +8749,8 @@
 				3223393D24FEC2A700BDD4BF /* ReaderDetailFeaturedImageView.xib */,
 				3278D4992524F438008080AA /* ReaderDetailCommentsView.swift */,
 				3278D4A82524F46F008080AA /* ReaderDetailCommentsView.xib */,
+				FAC086D525EDFB1E00B94F2A /* ReaderRelatedPostsCell.swift */,
+				FAC086D625EDFB1E00B94F2A /* ReaderRelatedPostsCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -12315,7 +12315,7 @@
 				9826AE8821B5C73400C851FA /* PostingActivityDay.xib in Resources */,
 				8BB185CC24B6058600A4CCE8 /* reader-cards-success.json in Resources */,
 				17E3639B22C41DBA000E0C79 /* hot_pink_icon_20pt@2x.png in Resources */,
-				FAC086D825EDFB1E00B94F2A /* RelatedPostsTableViewCell.xib in Resources */,
+				FAC086D825EDFB1E00B94F2A /* ReaderRelatedPostsCell.xib in Resources */,
 				17DC4C3922C5E6910059CA11 /* open_source_dark_icon_29pt@2x.png in Resources */,
 				17DC4C5522C5E6D60059CA11 /* open_source_icon_40pt@2x.png in Resources */,
 				17E363E922C4280A000E0C79 /* pride_icon_60pt@3x.png in Resources */,
@@ -14691,7 +14691,7 @@
 				7E14635720B3BEAB00B95F41 /* WPStyleGuide+Loader.swift in Sources */,
 				087EBFA81F02313E001F7ACE /* MediaThumbnailService.swift in Sources */,
 				08F8CD2A1EBD22EF0049D0C0 /* MediaExporter.swift in Sources */,
-				FAC086D725EDFB1E00B94F2A /* RelatedPostsTableViewCell.swift in Sources */,
+				FAC086D725EDFB1E00B94F2A /* ReaderRelatedPostsCell.swift in Sources */,
 				324780E1247F2E2A00987525 /* NoResultsViewController+FollowedSites.swift in Sources */,
 				98F0297C2405C9E500FFD862 /* LoginEpilogueConnectSiteCell.swift in Sources */,
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,

@@ -335,8 +335,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private func configureRelatedPosts() {
         tableView.isScrollEnabled = false
-        tableView.register(RelatedPostsTableViewCell.defaultNib,
-                           forCellReuseIdentifier: RelatedPostsTableViewCell.defaultReuseID)
+        tableView.register(ReaderRelatedPostsCell.defaultNib,
+                           forCellReuseIdentifier: ReaderRelatedPostsCell.defaultReuseID)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.reloadData()
@@ -484,8 +484,8 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: RelatedPostsTableViewCell.defaultReuseID, for: indexPath) as? RelatedPostsTableViewCell else {
-            fatalError("Expected RelatedPostsTableViewCell with identifier: \(RelatedPostsTableViewCell.defaultReuseID)")
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ReaderRelatedPostsCell.defaultReuseID, for: indexPath) as? ReaderRelatedPostsCell else {
+            fatalError("Expected RelatedPostsTableViewCell with identifier: \(ReaderRelatedPostsCell.defaultReuseID)")
         }
         cell.configure()
         return cell

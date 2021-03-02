@@ -1,4 +1,4 @@
-class RelatedPostsTableViewCell: UITableViewCell, NibReusable {
+class ReaderRelatedPostsCell: UITableViewCell, NibReusable {
 
     @IBOutlet weak var featuredImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -14,11 +14,11 @@ class RelatedPostsTableViewCell: UITableViewCell, NibReusable {
         featuredImageView.layer.cornerRadius = Constants.cornerRadius
 
         titleLabel.numberOfLines = 0
-        titleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
+        titleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         titleLabel.textColor = .text
 
-        excerptLabel.numberOfLines = 0
-        excerptLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
+        excerptLabel.numberOfLines = 3
+        excerptLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
         excerptLabel.textColor = .text
     }
 
