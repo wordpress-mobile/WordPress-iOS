@@ -68,35 +68,30 @@ class ReaderInterestsStyleGuide {
 }
 
 class ReaderSuggestedTopicsStyleGuide {
-    struct TopicStyle {
-        let textColor: UIColor
-        let backgroundColor: UIColor
-        let borderColor: UIColor
-    }
-
     /// The array of colors from the designs
     /// Note: I am explictly using the MurielColor names instead of using the semantic ones
     ///       since these are explicit and not semantic colors.
     static let colors: [TopicStyle] = [
         // Green
-        .init(textColor: .muriel(color: MurielColor(name: .green), .shade50),
-              backgroundColor: .muriel(color: MurielColor(name: .green), .shade0),
-              borderColor: .muriel(color: MurielColor(name: .green), .shade5)),
+        .init(textColor: .init(colorName: .green, section: .text),
+              backgroundColor: .init(colorName: .green, section: .background),
+              borderColor: .init(colorName: .green, section: .border)),
 
         // Blue
-        .init(textColor: .muriel(color: MurielColor(name: .blue), .shade50),
-              backgroundColor: .muriel(color: MurielColor(name: .blue), .shade0),
-              borderColor: .muriel(color: MurielColor(name: .blue), .shade5)),
+        .init(textColor: .init(colorName: .purple, section: .text),
+              backgroundColor: .init(colorName: .purple, section: .background),
+              borderColor: .init(colorName: .purple, section: .border)),
+
 
         // Yellow
-        .init(textColor: .muriel(color: MurielColor(name: .yellow), .shade50),
-              backgroundColor: .muriel(color: MurielColor(name: .yellow), .shade0),
-              borderColor: .muriel(color: MurielColor(name: .yellow), .shade5)),
+        .init(textColor: .init(colorName: .yellow, section: .text),
+              backgroundColor: .init(colorName: .yellow, section: .background),
+              borderColor: .init(colorName: .yellow, section: .border)),
 
         // Orange
-        .init(textColor: .muriel(color: MurielColor(name: .orange), .shade50),
-              backgroundColor: .muriel(color: MurielColor(name: .orange), .shade0),
-              borderColor: .muriel(color: MurielColor(name: .orange), .shade5)),
+        .init(textColor: .init(colorName: .orange, section: .text),
+              backgroundColor: .init(colorName: .orange, section: .background),
+              borderColor: .init(colorName: .orange, section: .border)),
     ]
 
     private class func topicStyle(for index: Int) -> TopicStyle {
@@ -107,16 +102,54 @@ class ReaderSuggestedTopicsStyleGuide {
         return Self.colors[index % colorCount]
     }
 
-    public static var topicFont: UIFont = WPStyleGuide.fontForTextStyle(.body)
+    public static var topicFont: UIFont = WPStyleGuide.fontForTextStyle(.footnote)
 
     public class func applySuggestedTopicStyle(label: UILabel, with index: Int) {
         let style = Self.topicStyle(for: index)
 
-        label.font = WPStyleGuide.fontForTextStyle(.body)
-        label.textColor = style.textColor
+        label.font = Self.topicFont
+        label.textColor = style.textColor.color()
 
-        label.layer.borderColor = style.borderColor.cgColor
+        label.layer.borderColor = style.borderColor.color().cgColor
         label.layer.borderWidth = .hairlineBorderWidth
-        label.layer.backgroundColor = style.backgroundColor.cgColor
+        label.layer.backgroundColor = style.backgroundColor.color().cgColor
+    }
+
+    // MARK: - Color Representation
+    struct TopicStyle {
+        let textColor: TopicColor
+        let backgroundColor: TopicColor
+        let borderColor: TopicColor
+
+        struct TopicColor {
+            enum StyleSection {
+                case text, background, border
+            }
+
+            let colorName: MurielColorName
+            let section: StyleSection
+
+            func color() -> UIColor {
+                let lightShade: MurielColorShade
+                let darkShade: MurielColorShade
+
+                switch section {
+                    case .text:
+                        lightShade = .shade50
+                        darkShade = .shade40
+
+                    case .border:
+                        lightShade = .shade5
+                        darkShade = .shade100
+
+                    case .background:
+                        lightShade = .shade0
+                        darkShade = .shade90
+                }
+
+                return UIColor(light: .muriel(color: MurielColor(name: colorName, shade: lightShade)),
+                               dark: .muriel(color: MurielColor(name: colorName, shade: darkShade)))
+            }
+        }
     }
 }
