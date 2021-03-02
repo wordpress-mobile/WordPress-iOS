@@ -3,10 +3,9 @@ import Gridicons
 import Gutenberg
 
 extension PageTemplateLayout: Thumbnail {
-    // TODO: add support for tablet and mobile previews
     var urlDesktop: String? { preview }
-    var urlTablet: String? { preview }
-    var urlMobile: String? { preview }
+    var urlTablet: String? { previewTablet }
+    var urlMobile: String? { previewMobile }
 }
 
 class GutenbergLayoutSection: CategorySection {
@@ -39,6 +38,8 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
 
     let completion: PageCoordinator.TemplateSelectionCompletion
     let blog: Blog
+    var previewDeviceButtonItem: UIBarButtonItem?
+
 
     init(blog: Blog, completion: @escaping PageCoordinator.TemplateSelectionCompletion) {
         self.blog = blog
@@ -61,8 +62,27 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
         super.viewDidLoad()
         navigationItem.backButtonTitle = NSLocalizedString("Choose layout", comment: "Shortened version of the main title to be used in back navigation")
         fetchLayouts()
+        configurePreviewDeviceButton()
     }
 
+    private func configurePreviewDeviceButton() {
+        let button = UIBarButtonItem(image: UIImage(named: "icon-devices"), style: .plain, target: self, action: #selector(previewDeviceButtonTapped))
+        previewDeviceButtonItem = button
+        navigationItem.rightBarButtonItems?.append(button)
+    }
+
+    @objc private func previewDeviceButtonTapped() {
+        let popoverContentController = PreviewDeviceSelectionViewController()
+        popoverContentController.selectedOption = selectedPreviewDevice
+        popoverContentController.onDeviceChange = { [weak self] device in
+            guard let self = self else { return }
+            self.selectedPreviewDevice = device
+        }
+
+        popoverContentController.modalPresentationStyle = .popover
+        popoverContentController.popoverPresentationController?.delegate = self
+        self.present(popoverContentController, animated: true, completion: nil)
+    }
     private func presentPreview() {
         guard let sectionIndex = selectedItem?.section, let position = selectedItem?.item else { return }
         let layout = sections[sectionIndex].layouts[position]
@@ -146,5 +166,32 @@ extension GutenbergLayoutPickerViewController: NSFetchedResultsControllerDelegat
 extension GutenbergLayoutPickerViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         fetchLayouts()
+    }
+}
+
+// MARK: UIPopoverPresentationDelegate
+extension GutenbergLayoutPickerViewController: UIPopoverPresentationControllerDelegate {
+    func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+        guard popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
+            return
+        }
+
+        popoverPresentationController.permittedArrowDirections = .up
+        popoverPresentationController.barButtonItem = previewDeviceButtonItem
+    }
+
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // Reset our source rect and view for a transition to a new size
+        guard let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController else {
+                return
+        }
+
+        prepareForPopoverPresentation(popoverPresentationController)
     }
 }
