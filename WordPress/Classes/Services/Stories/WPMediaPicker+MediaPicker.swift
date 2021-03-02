@@ -3,6 +3,16 @@ import Kanvas
 import Gridicons
 import Combine
 
+class PortraitTabBarController: UITabBarController {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+
+    override var shouldAutorotate: Bool {
+        return false
+    }
+}
+
 class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker {
 
     private struct Constants {
@@ -37,7 +47,7 @@ class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker
             return
         }
 
-        let tabBar = UITabBarController()
+        let tabBar = PortraitTabBarController()
 
         let mediaPickerDelegate = MediaPickerDelegate(kanvasDelegate: delegate, presenter: tabBar)
         let options = WPMediaPickerOptions()
@@ -226,7 +236,10 @@ extension WPMediaAsset {
             let url = try StoryEditor.mediaCacheDirectory().appendingPathComponent(filename)
             let urlAsset = asset as? AVURLAsset
 
-            if let assetURL = urlAsset?.url {
+            // Portrait video is exported so that it is rotated for use in Kanvas.
+            // Once the Metal renderer is fixed to properly rotate this media, this can be removed.
+            let trackTransform = asset.tracks(withMediaType: .video).first?.preferredTransform
+            if let assetURL = urlAsset?.url, trackTransform == CGAffineTransform.identity {
                 let exportURL = url.appendingPathExtension(assetURL.pathExtension)
                 if urlAsset?.url.scheme != "file" {
                     // Download any file which isn't local and move it to the proper location.
@@ -239,6 +252,7 @@ extension WPMediaAsset {
                         }
                     }.eraseToAnyPublisher()
                 } else {
+                    // Return the local asset URL which we will use directly.
                     return Just(assetURL).setFailureType(to: Error.self).eraseToAnyPublisher()
                 }
             } else {
@@ -253,20 +267,57 @@ extension WPMediaAsset {
 
 private extension AVAsset {
     func exportPublisher(url: URL) throws -> AnyPublisher<URL, Error> {
-        if let exportSession = AVAssetExportSession(asset: self, presetName: AVAssetExportPresetHighestQuality) {
-            exportSession.outputURL = url
+        let exportURL = url.appendingPathExtension("mov")
+
+        let (composition, videoComposition) = try rotate()
+
+        if let exportSession = AVAssetExportSession(asset: composition, presetName: AVAssetExportPreset1920x1080) {
+            exportSession.videoComposition = videoComposition
+            exportSession.outputURL = exportURL
             exportSession.outputFileType = .mov
-            let exportURL = url.appendingPathExtension("mov")
             return exportSession.exportPublisher(url: exportURL)
         } else {
             throw WPMediaAssetError.videoAssetExportFailed
         }
     }
+
+    /// Applies the `preferredTransform` of the video track.
+    /// - Returns: Returns both an AVMutableComposition containing video + audio and an AVVideoComposition of the rotate video.
+    private func rotate() throws -> (AVMutableComposition, AVVideoComposition) {
+        guard let videoTrack = tracks(withMediaType: .video).first else {
+            throw WPMediaAssetError.assetMissingVideoTrack
+        }
+
+        let videoComposition = AVMutableVideoComposition(propertiesOf: self)
+        let size = videoTrack.naturalSize.applying(videoTrack.preferredTransform)
+        videoComposition.renderSize = CGSize(width: abs(size.width), height: abs(size.height))
+        let instruction = AVMutableVideoCompositionInstruction()
+        instruction.timeRange = CMTimeRange(start: .zero, duration: videoTrack.timeRange.duration)
+
+        let transformer = AVMutableVideoCompositionLayerInstruction(assetTrack: videoTrack)
+        transformer.setTransform(videoTrack.preferredTransform, at: .zero)
+        instruction.layerInstructions = [transformer]
+        videoComposition.instructions = [instruction]
+
+        let composition = AVMutableComposition()
+
+        let mutableVideoTrack = composition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid)
+        try? mutableVideoTrack?.insertTimeRange(CMTimeRange(start: .zero, end: videoTrack.timeRange.duration), of: videoTrack, at: .zero)
+
+        if let audioTrack = tracks(withMediaType: .audio).first {
+            let mutableAudioTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
+            try? mutableAudioTrack?.insertTimeRange(CMTimeRange(start: .zero, duration: audioTrack.timeRange.duration), of: audioTrack, at: .zero)
+        }
+
+        return (composition, videoComposition)
+    }
 }
+
 
 enum WPMediaAssetError: Error {
     case imageAssetExportFailed
     case videoAssetExportFailed
+    case assetMissingVideoTrack
 }
 
 extension WPMediaAsset {

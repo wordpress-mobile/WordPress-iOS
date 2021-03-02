@@ -675,7 +675,34 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             return
         }
 
-        storyEditor = StoryEditor.editor(post: post, mediaFiles: files, publishOnCompletion: false, updated: { [weak self] result in
+        do {
+            try showEditor(files: files)
+        } catch let error {
+            switch error {
+            case StoryEditor.EditorCreationError.unsupportedDevice:
+                let title = NSLocalizedString("Unsupported Device", comment: "Title for stories unsupported device error.")
+                let message = NSLocalizedString("The Stories editor is not currently available for your iPad. Please try Stories on your iPhone.", comment: "Message for stories unsupported device error.")
+                let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
+                    controller.dismiss(animated: true, completion: nil)
+                }
+                controller.addAction(dismiss)
+                present(controller, animated: true, completion: nil)
+            default:
+                let title = NSLocalizedString("Unable to Create Stories Editor", comment: "Title for stories unknown error.")
+                let message = NSLocalizedString("There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Message for stories unknown error.")
+                let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
+                    controller.dismiss(animated: true, completion: nil)
+                }
+                controller.addAction(dismiss)
+                present(controller, animated: true, completion: nil)
+            }
+        }
+    }
+
+    func showEditor(files: [MediaFile]) throws {
+        let controller = try StoryEditor.editor(post: post, mediaFiles: files, publishOnCompletion: false, updated: { [weak self] result in
             switch result {
             case .success:
                 self?.dismiss(animated: true, completion: nil)
@@ -1049,7 +1076,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .audioBlock: !isFreeWPCom, // Disable audio block until it's usable on free sites via "Insert from URL" capability
-            .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories)
+            .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories) && !UIDevice.isPad()
         ]
     }
 
