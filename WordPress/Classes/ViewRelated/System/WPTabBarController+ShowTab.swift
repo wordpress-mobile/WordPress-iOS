@@ -73,7 +73,7 @@ extension WPTabBarController {
                 let controller = try StoryEditor.editor(blog: blog, context: ContextManager.shared.mainContext, updated: {_ in }, uploaded: { [weak self] result in
                     switch result {
                     case .success:
-                        ()
+                        break
                     case .failure(let error):
                         self?.dismiss(animated: true, completion: nil)
                         let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)

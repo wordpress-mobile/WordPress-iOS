@@ -681,7 +681,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             switch error {
             case StoryEditor.EditorCreationError.unsupportedDevice:
                 let title = NSLocalizedString("Unsupported Device", comment: "Title for stories unsupported device error.")
-                let message = NSLocalizedString("We are still working on the Stories editor for iPad. In the meantime, please try Stories on your iPhone.", comment: "Message for stories unsupported device error.")
+                let message = NSLocalizedString("The Stories editor is not currently available for your iPad. Please try Stories on your iPhone.", comment: "Message for stories unsupported device error.")
                 let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
                     controller.dismiss(animated: true, completion: nil)

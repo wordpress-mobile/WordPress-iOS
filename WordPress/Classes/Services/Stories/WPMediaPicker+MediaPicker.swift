@@ -269,7 +269,7 @@ private extension AVAsset {
     func exportPublisher(url: URL) throws -> AnyPublisher<URL, Error> {
         let exportURL = url.appendingPathExtension("mov")
 
-        let (composition, videoComposition) = rotate()
+        let (composition, videoComposition) = try rotate()
 
         if let exportSession = AVAssetExportSession(asset: composition, presetName: AVAssetExportPreset1920x1080) {
             exportSession.videoComposition = videoComposition
@@ -283,8 +283,10 @@ private extension AVAsset {
 
     /// Applies the `preferredTransform` of the video track.
     /// - Returns: Returns both an AVMutableComposition containing video + audio and an AVVideoComposition of the rotate video.
-    private func rotate() -> (AVMutableComposition, AVVideoComposition) {
-        let videoTrack = tracks(withMediaType: .video).first!
+    private func rotate() throws -> (AVMutableComposition, AVVideoComposition) {
+        guard let videoTrack = tracks(withMediaType: .video).first else {
+            throw WPMediaAssetError.assetMissingVideoTrack
+        }
 
         let videoComposition = AVMutableVideoComposition(propertiesOf: self)
         let size = videoTrack.naturalSize.applying(videoTrack.preferredTransform)
@@ -315,6 +317,7 @@ private extension AVAsset {
 enum WPMediaAssetError: Error {
     case imageAssetExportFailed
     case videoAssetExportFailed
+    case assetMissingVideoTrack
 }
 
 extension WPMediaAsset {
