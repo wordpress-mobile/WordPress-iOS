@@ -26,6 +26,16 @@ extension CommentsViewController {
             case .spam: return CommentStatusFilterSpam
             }
         }
+
+        var statusPredicate: NSPredicate {
+            switch self {
+            case .all: return NSPredicate(format: "(status == %@ OR status == %@)", CommentStatusApproved, CommentStatusPending)
+            case .pending: return NSPredicate(format: "status == %@", CommentStatusPending)
+            case .approved: return NSPredicate(format: "status == %@", CommentStatusApproved)
+            case .trashed: return NSPredicate(format: "status == %@", CommentStatusUnapproved)
+            case .spam: return NSPredicate(format: "status == %@", CommentStatusSpam)
+            }
+        }
     }
 
     @objc func configureFilterTabBar(_ filterTabBar: FilterTabBar) {
