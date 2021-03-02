@@ -79,6 +79,14 @@ extension ReaderTopicsCardCell: UICollectionViewDelegate, UICollectionViewDataSo
         return cell
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            collectionView.reloadData()
+        }
+    }
+
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
