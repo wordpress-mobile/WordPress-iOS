@@ -188,6 +188,13 @@ class InvitePersonViewController: UITableViewController {
         return super.tableView(tableView, cellForRowAt: indexPath)
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.section == Section.inviteLink.rawValue else {
+            // There is no valid `super` implementation so do not call it.
+            return
+        }
+        handleInviteLinkRowTapped(indexPath: indexPath)
+    }
 
     // MARK: - Storyboard Methods
 
@@ -289,6 +296,14 @@ class InvitePersonViewController: UITableViewController {
                 return nil
             }
         }
+    }
+
+    // These represent the rows of the invite links section, in the order the rows appear.
+    private enum InviteLinkRow: Int {
+        case generateShare
+        case role
+        case expires
+        case disable
     }
 
 }
@@ -448,6 +463,51 @@ private extension InvitePersonViewController {
     }
 }
 
+// MARK: - Invite Links related.
+//
+private extension InvitePersonViewController {
+
+    func syncInviteLinks() {
+
+    }
+
+    func generateInviteLinks() {
+        print("generate")
+    }
+
+    func shareInviteLink() {
+        print("share")
+    }
+
+    func disableInviteLinks() {
+        print("disable")
+    }
+
+    func selectInviteLink() {
+        print("select")
+    }
+
+    func handleInviteLinkRowTapped(indexPath: IndexPath) {
+        guard let row = InviteLinkRow(rawValue: indexPath.row) else {
+            return
+        }
+        switch row {
+        case .generateShare:
+            if blog.inviteLinks?.count == 0 {
+                generateInviteLinks()
+            } else {
+                shareInviteLink()
+            }
+        case .role:
+            selectInviteLink()
+        case .expires:
+            // No op.
+            break
+        case .disable:
+            disableInviteLinks()
+        }
+    }
+}
 
 // MARK: - Private Helpers: Initializing Interface
 //
