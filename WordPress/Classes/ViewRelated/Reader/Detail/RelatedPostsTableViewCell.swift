@@ -1,9 +1,8 @@
-import UIKit
-
-class ReaderRelatedPostsCollectionViewCell: UICollectionViewCell, NibReusable {
+class RelatedPostsTableViewCell: UITableViewCell {
 
     @IBOutlet weak var featuredImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var excerptLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -17,11 +16,16 @@ class ReaderRelatedPostsCollectionViewCell: UICollectionViewCell, NibReusable {
         titleLabel.numberOfLines = 0
         titleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         titleLabel.textColor = .text
+
+        excerptLabel.numberOfLines = 0
+        excerptLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
+        excerptLabel.textColor = .text
     }
 
     func configure() {
         featuredImageView.backgroundColor = .green // FIXME
         titleLabel.text = "Placeholder title" // FIXME
+        excerptLabel.text = "Lored ipsum..." // FIXME
     }
 
     private enum Constants {
