@@ -108,7 +108,19 @@ class InvitePersonViewController: UITableViewController {
 
     @IBOutlet private var generateShareCell: UITableViewCell! {
         didSet {
-            setupGenerateShareCell()
+            refreshGenerateShareCell()
+        }
+    }
+
+    @IBOutlet private var currentInviteCell: UITableViewCell! {
+        didSet {
+            refreshCurrentInviteCell()
+        }
+    }
+
+    @IBOutlet private var expirationCell: UITableViewCell! {
+        didSet {
+            refreshExpirationCell()
         }
     }
 
@@ -479,18 +491,30 @@ private extension InvitePersonViewController {
         }
         switch row {
         case .generateShare:
-            setupGenerateShareCell()
+            refreshGenerateShareCell()
+        case .role:
+            refreshCurrentInviteCell()
+        case .expires:
+            refreshExpirationCell()
         default:
             break
         }
     }
 
-    func setupGenerateShareCell() {
+    func refreshGenerateShareCell() {
         if blog.inviteLinks?.count == 0 {
             generateShareCell.textLabel?.text = NSLocalizedString("Generate new link", comment: "Title. A call to action to generate a new invite link.")
         } else {
             generateShareCell.textLabel?.text = NSLocalizedString("Share invite link", comment: "Title. A call to action to share an invite link.")
         }
+    }
+
+    func refreshCurrentInviteCell() {
+        // TODO: Update with selected invite
+    }
+
+    func refreshExpirationCell() {
+        // TODO: Update with selected invite.
     }
 
     func syncInviteLinks() {

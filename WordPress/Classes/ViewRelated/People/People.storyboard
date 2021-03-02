@@ -374,7 +374,7 @@
                             </tableViewSection>
                             <tableViewSection id="eT7-if-lvZ">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="none" indentationWidth="10" textLabel="Zm5-2s-RgM" rowHeight="42" style="IBUITableViewCellStyleDefault" id="SnT-bj-ro5">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" textLabel="Zm5-2s-RgM" rowHeight="42" style="IBUITableViewCellStyleDefault" id="SnT-bj-ro5">
                                         <rect key="frame" x="0.0" y="314" width="375" height="42"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="SnT-bj-ro5" id="BXy-E7-KZb">
@@ -391,7 +391,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="g40-Lu-Tb6" detailTextLabel="ni2-FN-yoP" rowHeight="42" style="IBUITableViewCellStyleValue1" id="1pf-gg-Sfn">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="g40-Lu-Tb6" detailTextLabel="ni2-FN-yoP" rowHeight="42" style="IBUITableViewCellStyleValue1" id="1pf-gg-Sfn">
                                         <rect key="frame" x="0.0" y="356" width="375" height="42"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="1pf-gg-Sfn" id="lBf-2e-rNX">
@@ -439,7 +439,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="none" indentationWidth="10" textLabel="JlS-gd-WUF" rowHeight="42" style="IBUITableViewCellStyleDefault" id="Kcp-F4-LVf">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" textLabel="JlS-gd-WUF" rowHeight="42" style="IBUITableViewCellStyleDefault" id="Kcp-F4-LVf">
                                         <rect key="frame" x="0.0" y="440" width="375" height="42"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="Kcp-F4-LVf" id="MDM-e0-ex4">
@@ -466,6 +466,8 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Add a Person" id="MO7-QW-hIa"/>
                     <connections>
+                        <outlet property="currentInviteCell" destination="1pf-gg-Sfn" id="Xfc-o1-ziz"/>
+                        <outlet property="expirationCell" destination="dOH-RD-Vok" id="IbZ-VI-hTQ"/>
                         <outlet property="generateShareCell" destination="SnT-bj-ro5" id="Bn1-fV-5wZ"/>
                         <outlet property="messageTextView" destination="nh9-39-Mdw" id="EvO-0d-MLp"/>
                         <outlet property="placeholderLabel" destination="Jyo-4B-Bt9" id="xG0-wq-EAn"/>
