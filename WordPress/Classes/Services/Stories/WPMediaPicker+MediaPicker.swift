@@ -3,6 +3,16 @@ import Kanvas
 import Gridicons
 import Combine
 
+class PortraitTabBarController: UITabBarController {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+
+    override var shouldAutorotate: Bool {
+        return false
+    }
+}
+
 class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker {
 
     private struct Constants {
@@ -37,7 +47,7 @@ class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker
             return
         }
 
-        let tabBar = UITabBarController()
+        let tabBar = PortraitTabBarController()
 
         let mediaPickerDelegate = MediaPickerDelegate(kanvasDelegate: delegate, presenter: tabBar)
         let options = WPMediaPickerOptions()
