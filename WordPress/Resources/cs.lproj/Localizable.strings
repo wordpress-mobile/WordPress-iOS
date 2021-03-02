@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-23 19:43:59+0000 */
+/* Translation-Revision-Date: 2021-03-02 18:56:20+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: cs_CZ */
@@ -3180,7 +3180,7 @@
 "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Jetpack Scan nemohl dokončit skenování vašeho webu. Zkontrolujte, zda váš web funguje - pokud ne, zkuste to znovu. Pokud ano, nebo pokud má Jetpack Scan stále problémy, obraťte se na náš tým podpory.";
 
 /* Description for a label when there are threats on the site, displays the number of threats, and the site's title */
-"Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Jetpack Scan našel %1$d potenciálních hrozeb s %1$@. Níže je prosím zkontrolujte a přijměte opatření nebo klepněte na tlačítko opravit vše. Jsme tu, abychom vám pomohli, pokud nás potřebujete. ";
+"Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Jetpack Scan našel %1$d potenciálních hrozeb s %2$@. Níže je prosím zkontrolujte a přijměte opatření nebo klepněte na tlačítko opravit vše. Jsme tu, abychom vám pomohli, pokud nás potřebujete. ";
 
 /* Description for a label when there is a single threat on the site, displays the site's title */
 "Jetpack Scan found 1 potential threat with %1$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Jetpack Scan našel 1 potenciální hrozbu s %1$@. Níže je prosím zkontrolujte a přijměte opatření nebo klepněte na tlačítko opravit vše. Jsme tu, abychom vám pomohli, pokud nás potřebujete. ";
