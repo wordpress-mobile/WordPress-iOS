@@ -88,21 +88,30 @@ class StoryEditor: CameraController {
         return settings
     }
 
+    enum EditorCreationError: Error {
+        case unsupportedDevice
+    }
+
     typealias Results = Result<AbstractPost, PostCoordinator.SavingError>
 
     static func editor(blog: Blog,
                        context: NSManagedObjectContext,
                        updated: @escaping (Results) -> Void,
-                       uploaded: @escaping (Results) -> Void) -> StoryEditor {
+                       uploaded: @escaping (Results) -> Void) throws -> StoryEditor {
         let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
-        return editor(post: post, mediaFiles: nil, publishOnCompletion: true, updated: updated, uploaded: uploaded)
+        return try editor(post: post, mediaFiles: nil, publishOnCompletion: true, updated: updated, uploaded: uploaded)
     }
 
     static func editor(post: AbstractPost,
                        mediaFiles: [MediaFile]?,
                        publishOnCompletion: Bool = false,
                        updated: @escaping (Results) -> Void,
-                       uploaded: @escaping (Results) -> Void) -> StoryEditor {
+                       uploaded: @escaping (Results) -> Void) throws -> StoryEditor {
+
+        guard !UIDevice.isPad() else {
+            throw EditorCreationError.unsupportedDevice
+        }
+
         let controller = StoryEditor(post: post,
                                      onClose: nil,
                                      settings: cameraSettings,
