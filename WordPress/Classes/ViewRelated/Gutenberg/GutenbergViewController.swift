@@ -1076,7 +1076,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .audioBlock: !isFreeWPCom, // Disable audio block until it's usable on free sites via "Insert from URL" capability
-            .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories)
+            .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories) && !UIDevice.isPad()
         ]
     }
 
