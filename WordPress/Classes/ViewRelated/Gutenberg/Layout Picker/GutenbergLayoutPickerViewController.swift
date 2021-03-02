@@ -62,13 +62,18 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
         super.viewDidLoad()
         navigationItem.backButtonTitle = NSLocalizedString("Choose layout", comment: "Shortened version of the main title to be used in back navigation")
         fetchLayouts()
+        configureCloseButton()
         configurePreviewDeviceButton()
+    }
+
+    private func configureCloseButton() {
+        navigationItem.leftBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
     }
 
     private func configurePreviewDeviceButton() {
         let button = UIBarButtonItem(image: UIImage(named: "icon-devices"), style: .plain, target: self, action: #selector(previewDeviceButtonTapped))
         previewDeviceButtonItem = button
-        navigationItem.rightBarButtonItems?.append(button)
+        navigationItem.rightBarButtonItem = button
     }
 
     @objc private func previewDeviceButtonTapped() {
@@ -147,11 +152,6 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
         presentPreview()
     }
 }
-
-
-
-
-
 
 extension GutenbergLayoutPickerViewController: NSFetchedResultsControllerDelegate {
 
