@@ -1,4 +1,4 @@
-class RelatedPostsTableViewCell: UITableViewCell {
+class RelatedPostsTableViewCell: UITableViewCell, NibReusable {
 
     @IBOutlet weak var featuredImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -25,7 +25,7 @@ class RelatedPostsTableViewCell: UITableViewCell {
     func configure() {
         featuredImageView.backgroundColor = .green // FIXME
         titleLabel.text = "Placeholder title" // FIXME
-        excerptLabel.text = "Lored ipsum..." // FIXME
+        excerptLabel.text = "Lorem ipsum..." // FIXME
     }
 
     private enum Constants {

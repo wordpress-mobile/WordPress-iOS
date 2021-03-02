@@ -10,6 +10,7 @@ protocol ReaderDetailView: class {
 }
 
 class ReaderDetailViewController: UIViewController, ReaderDetailView {
+
     /// Content scroll view
     @IBOutlet weak var scrollView: UIScrollView!
 
@@ -18,6 +19,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// WebView height constraint
     @IBOutlet weak var webViewHeight: NSLayoutConstraint!
+
+    /// The table view that displays Related Posts
+    @IBOutlet weak var tableView: IntrinsicTableView!
 
     /// Header container
     @IBOutlet weak var headerContainerView: UIView!
@@ -103,6 +107,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureWebView()
         configureFeaturedImage()
         configureHeader()
+        configureRelatedPosts()
         configureToolbar()
         configureNoResultsViewController()
         observeWebViewHeight()
@@ -328,6 +333,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         headerContainerView.translatesAutoresizingMaskIntoConstraints = false
     }
 
+    private func configureRelatedPosts() {
+        tableView.isScrollEnabled = false
+        tableView.register(RelatedPostsTableViewCell.defaultNib,
+                           forCellReuseIdentifier: RelatedPostsTableViewCell.defaultReuseID)
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.reloadData()
+
+        tableView.invalidateIntrinsicContentSize()
+    }
+
     private func configureToolbar() {
         toolbarContainerView.addSubview(toolbar)
         toolbarContainerView.pinSubviewToAllEdges(toolbar)
@@ -452,6 +468,35 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 extension ReaderDetailViewController: StoryboardLoadable {
     static var defaultStoryboardName: String {
         return "ReaderDetailViewController"
+    }
+}
+
+// MARK: - Related Posts
+
+extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        1
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        2
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: RelatedPostsTableViewCell.defaultReuseID, for: indexPath) as? RelatedPostsTableViewCell else {
+            fatalError("Expected RelatedPostsTableViewCell with identifier: \(RelatedPostsTableViewCell.defaultReuseID)")
+        }
+        cell.configure()
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Section title"
     }
 }
 
