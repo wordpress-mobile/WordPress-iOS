@@ -193,7 +193,11 @@ class InvitePersonViewController: UITableViewController {
         setupDefaultRole()
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
-        syncInviteLinks()
+
+        if blog.isWPForTeams() {
+            syncInviteLinks()
+            bumpStat(event: .inviteLinksGetStatus, error: nil)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -647,8 +651,10 @@ private extension InvitePersonViewController {
         updatingInviteLinks = true
         let service = PeopleService(blog: blog, context: context)
         service?.generateInviteLinks(siteID, success: { [weak self] _ in
+            self?.bumpStat(event: .inviteLinksGenerate, error: nil)
             self?.syncInviteLinks()
         }, failure: { [weak self] error in
+            self?.bumpStat(event: .inviteLinksGenerate, error: error)
             self?.updatingInviteLinks = false
             self?.displayNotice(title: NSLocalizedString("Unable to create new invite links.", comment: "An error message shown when there is an issue creating new invite links."))
             DDLogError("Error generating invite links. \(error)")
@@ -665,6 +671,7 @@ private extension InvitePersonViewController {
 
         let controller = PostSharingController()
         controller.shareURL(url: url, fromRect: generateShareCell.frame, inView: view, inViewController: self)
+        bumpStat(event: .inviteLinksShare, error: nil)
     }
 
     func handleDisableTapped() {
@@ -692,9 +699,11 @@ private extension InvitePersonViewController {
         updatingInviteLinks = true
         let service = PeopleService(blog: blog, context: context)
         service?.disableInviteLinks(siteID, success: { [weak self] in
+            self?.bumpStat(event: .inviteLinksDisable, error: nil)
             self?.updatingInviteLinks = false
             self?.tableView.reloadData()
         }, failure: { [weak self] error in
+            self?.bumpStat(event: .inviteLinksDisable, error: error)
             self?.updatingInviteLinks = false
             self?.displayNotice(title: NSLocalizedString("Unable to disable invite links.", comment: "An error message shown when there is an issue creating new invite links."))
             DDLogError("Error disabling invite links. \(error)")
@@ -721,6 +730,23 @@ private extension InvitePersonViewController {
         case .disable:
             handleDisableTapped()
         }
+    }
+
+    func bumpStat(event: WPAnalyticsEvent, error: Error?) {
+        let resultKey = "invite_links_action_result"
+        let errorKey = "invite_links_action_error_message"
+        var props = [AnyHashable: Any]()
+        if let err = error {
+            props = [
+                resultKey: "error",
+                errorKey: "\(err)"
+            ]
+        } else {
+            props = [
+                resultKey: "success"
+            ]
+        }
+        WPAnalytics.track(event, properties: props, blog: blog)
     }
 }
 
