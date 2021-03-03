@@ -17,7 +17,7 @@ enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
         case .years: return NSLocalizedString("Years", comment: "Title of Years stats filter.")
         }
     }
-    
+
     init?(from string: String) {
         switch string {
         case "day":
@@ -34,7 +34,7 @@ enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
             return nil
         }
     }
-    
+
     static let statsPeriodTypeDefaultsKey = "LastSelectedStatsPeriodType"
 }
 

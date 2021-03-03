@@ -11,7 +11,7 @@ enum StatsRoute {
     case dayCategory
     case annualStats
     case activityLog
-    
+
     var timePeriod: StatsPeriodType? {
         switch self {
         case .daySite:
@@ -136,7 +136,7 @@ extension StatsRoute: NavigationAction {
               let blog = defaultBlog() else {
             return
         }
-        
+
         coordinator.showStats(for: blog, timePeriod: timePeriod)
     }
 }

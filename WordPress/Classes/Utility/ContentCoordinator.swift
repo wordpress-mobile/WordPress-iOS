@@ -58,7 +58,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
         else {
             throw DisplayError.missingParameter
         }
-        
+
         // Stats URLs should be of the form /stats/:time_period/:domain
         if let url = url {
             setTimePeriodForStatsURLIfPossible(url)
@@ -68,7 +68,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
         statsViewController.blog = blog
         controller?.navigationController?.pushViewController(statsViewController, animated: true)
     }
-    
+
     private func setTimePeriodForStatsURLIfPossible(_ url: URL) {
         let matcher = RouteMatcher(routes: UniversalLinkRouter.statsRoutes)
         let matches = matcher.routesMatching(url)
