@@ -196,7 +196,6 @@ class InvitePersonViewController: UITableViewController {
 
         if blog.isWPForTeams() {
             syncInviteLinks()
-            bumpStat(event: .inviteLinksGetStatus, error: nil)
         }
     }
 
@@ -632,10 +631,12 @@ private extension InvitePersonViewController {
         }
         let service = PeopleService(blog: blog, context: context)
         service?.fetchInviteLinks(siteID, success: { [weak self] _ in
+            self?.bumpStat(event: .inviteLinksGetStatus, error: nil)
             self?.updatingInviteLinks = false
             self?.tableView.reloadData()
         }, failure: { [weak self] error in
             // Fail silently.
+            self?.bumpStat(event: .inviteLinksGetStatus, error: error)
             self?.updatingInviteLinks = false
             DDLogError("Error syncing invite links. \(error)")
         })
