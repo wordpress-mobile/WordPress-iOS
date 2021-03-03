@@ -52,4 +52,12 @@ extension CommentsViewController {
         refresh(with: filter.statusFilter, andPredicate: filter.statusPredicate)
     }
 
+    @objc func getSelectedIndex(_ filterTabBar: FilterTabBar) -> Int {
+        return filterTabBar.selectedIndex
+    }
+
+    @objc func setSeletedIndex(_ selectedIndex: Int, filterTabBar: FilterTabBar) {
+        filterTabBar.setSelectedIndex(selectedIndex, animated: false)
+        selectedFilterDidChange(filterTabBar)
+    }
 }
