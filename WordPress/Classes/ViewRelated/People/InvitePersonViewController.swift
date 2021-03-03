@@ -599,8 +599,8 @@ private extension InvitePersonViewController {
         let service = PeopleService(blog: blog, context: context)
         service?.generateInviteLinks(siteID, success: { [weak self] _ in
             self?.tableView.reloadData()
-        }, failure: { error in
-            // TODO: Report an error.
+        }, failure: { [weak self] error in
+            self?.displayNotice(title: NSLocalizedString("Unable to create new invite links.", comment: "An error message shown when there is an issue creating new invite links."))
             DDLogError("Error generating invite links. \(error)")
         })
     }
@@ -638,8 +638,8 @@ private extension InvitePersonViewController {
         let service = PeopleService(blog: blog, context: context)
         service?.disableInviteLinks(siteID, success: { [weak self] in
             self?.tableView.reloadData()
-        }, failure: { error in
-            // TODO: Report an error.
+        }, failure: { [weak self] error in
+            self?.displayNotice(title: NSLocalizedString("Unable to disable invite links.", comment: "An error message shown when there is an issue creating new invite links."))
             DDLogError("Error disabling invite links. \(error)")
         })
     }
