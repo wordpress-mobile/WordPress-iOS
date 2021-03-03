@@ -653,7 +653,8 @@ private extension InvitePersonViewController {
         let service = PeopleService(blog: blog, context: context)
         service?.generateInviteLinks(siteID, success: { [weak self] _ in
             self?.bumpStat(event: .inviteLinksGenerate, error: nil)
-            self?.syncInviteLinks()
+            self?.updatingInviteLinks = false
+            self?.tableView.reloadData()
         }, failure: { [weak self] error in
             self?.bumpStat(event: .inviteLinksGenerate, error: error)
             self?.updatingInviteLinks = false
