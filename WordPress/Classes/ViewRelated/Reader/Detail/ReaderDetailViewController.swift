@@ -355,6 +355,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         tableView.isScrollEnabled = false
         tableView.register(ReaderRelatedPostsCell.defaultNib,
                            forCellReuseIdentifier: ReaderRelatedPostsCell.defaultReuseID)
+        tableView.register(ReaderRelatedPostsSectionHeaderView.defaultNib,
+                           forHeaderFooterViewReuseIdentifier: ReaderRelatedPostsSectionHeaderView.defaultReuseID)
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -516,7 +518,22 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
         return UITableView.automaticDimension
     }
 
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let title = getSectionTitle(for: section),
+              let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReaderRelatedPostsSectionHeaderView.defaultReuseID) as? ReaderRelatedPostsSectionHeaderView else {
+            return UIView(frame: .zero)
+        }
+
+        header.titleLabel.text = title
+
+        return header
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return ReaderRelatedPostsSectionHeaderView.height
+    }
+
+    private func getSectionTitle(for section: Int) -> String? {
         switch RemoteReaderSimplePost.PostType(rawValue: section) {
         case .local:
             guard let blogName = post?.blogNameForDisplay() else {
