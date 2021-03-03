@@ -151,6 +151,11 @@ class InvitePersonViewController: UITableViewController {
         }
     }
 
+    @IBOutlet private var disableLinksCell: UITableViewCell {
+        didSet {
+            setupDisableInviteLinksCell()
+        }
+    }
 
     // MARK: - View Lifecyle Methods
 
@@ -527,6 +532,10 @@ private extension InvitePersonViewController {
 // MARK: - Invite Links related.
 //
 private extension InvitePersonViewController {
+
+    func setupDisableInviteLinksCell() {
+        disableLinksCell.textLabel?.text = NSLocalizedString("Disable invite link", comment: "Title. A call to action to disable invite links.")
+    }
 
     func refreshInviteLinkCell(indexPath: IndexPath) {
         guard let row = InviteLinkRow(rawValue: indexPath.row) else {
