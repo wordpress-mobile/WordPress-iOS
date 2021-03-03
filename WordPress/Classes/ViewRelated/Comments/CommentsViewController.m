@@ -23,7 +23,6 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 @property (nonatomic, strong) Blog                      *blog;
 
 @property (nonatomic) CommentStatusFilter currentStatusFilter;
-@property (nonatomic, strong) NSPredicate *statusPredicate;
 @property (weak, nonatomic) IBOutlet FilterTabBar *filterTabBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTopConstraint;
@@ -350,7 +349,8 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
 
     if ([Feature enabled:FeatureFlagCommentFilters]) {
-        fetchRequest.predicate = self.filteredCommentsPredicate;
+        // CommentService purges Comments that do not belong to the current filter.
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@)", self.blog];
     } else {
         fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, CommentStatusSpam];
     }
@@ -361,17 +361,6 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
     fetchRequest.fetchBatchSize = CommentsFetchBatchSize;
     
     return fetchRequest;
-}
-
-- (NSPredicate *)filteredCommentsPredicate
-{
-    NSMutableArray *subpredicates = [NSMutableArray arrayWithObjects:[NSPredicate predicateWithFormat:@"blog == %@", self.blog], nil];
-
-    if (self.statusPredicate != NULL) {
-        [subpredicates addObject:self.statusPredicate];
-    }
-    
-    return [NSCompoundPredicate andPredicateWithSubpredicates:subpredicates];
 }
 
 - (void)configureCell:(nonnull CommentsTableViewCell *)cell atIndexPath:(nonnull NSIndexPath *)indexPath {
@@ -491,15 +480,14 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 
 - (void)refreshAndSyncIfNeeded
 {
-    if ([CommentService shouldRefreshCacheFor:self.blog]) {
+    if (self.blog && [CommentService shouldRefreshCacheFor:self.blog]) {
         [self.syncHelper syncContent];
     }
 }
 
-- (void)refreshWithStatusFilter:(CommentStatusFilter)statusFilter andPredicate:(NSPredicate *)statusPredicate
+- (void)refreshWithStatusFilter:(CommentStatusFilter)statusFilter
 {
     self.currentStatusFilter = statusFilter;
-    self.statusPredicate = statusPredicate;
     [self refreshAndSyncWithInteraction];
 }
 
