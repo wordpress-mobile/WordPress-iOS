@@ -66,6 +66,32 @@ class InvitePersonViewController: UITableViewController {
         return roles
     }
 
+    private lazy var inviteActivityView: UIActivityIndicatorView = {
+        let activityView = UIActivityIndicatorView(style: .medium)
+        activityView.startAnimating()
+        return activityView
+    }()
+
+    private var updatingInviteLinks = false {
+        didSet {
+            guard updatingInviteLinks != oldValue else {
+                return
+            }
+
+            if updatingInviteLinks == false {
+                generateShareCell.accessoryView = nil
+                disableLinksCell.accessoryView = nil
+                return
+            }
+
+            if blog.inviteLinks?.count == 0 {
+                generateShareCell.accessoryView = inviteActivityView
+            } else {
+                disableLinksCell.accessoryView = inviteActivityView
+            }
+        }
+    }
+
     private var sortedInviteLinks: [InviteLinks] {
         guard
             let links = blog.inviteLinks?.array as? [InviteLinks]
@@ -602,21 +628,28 @@ private extension InvitePersonViewController {
         }
         let service = PeopleService(blog: blog, context: context)
         service?.fetchInviteLinks(siteID, success: { [weak self] _ in
+            self?.updatingInviteLinks = false
             self?.tableView.reloadData()
-        }, failure: { error in
+        }, failure: { [weak self] error in
             // Fail silently.
+            self?.updatingInviteLinks = false
             DDLogError("Error syncing invite links. \(error)")
         })
     }
 
     func generateInviteLinks() {
-        guard let siteID = blog.dotComID?.intValue else {
+        guard
+            updatingInviteLinks == false,
+            let siteID = blog.dotComID?.intValue
+        else {
             return
         }
+        updatingInviteLinks = true
         let service = PeopleService(blog: blog, context: context)
         service?.generateInviteLinks(siteID, success: { [weak self] _ in
             self?.syncInviteLinks()
         }, failure: { [weak self] error in
+            self?.updatingInviteLinks = false
             self?.displayNotice(title: NSLocalizedString("Unable to create new invite links.", comment: "An error message shown when there is an issue creating new invite links."))
             DDLogError("Error generating invite links. \(error)")
         })
@@ -635,6 +668,10 @@ private extension InvitePersonViewController {
     }
 
     func handleDisableTapped() {
+        guard updatingInviteLinks == false else {
+            return
+        }
+
         let title = NSLocalizedString("Disable invite link", comment: "Title. Title of a prompt to disable group invite links.")
         let message = NSLocalizedString("Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?", comment: "Warning message about disabling group invite links.")
         let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -652,10 +689,13 @@ private extension InvitePersonViewController {
         guard let siteID = blog.dotComID?.intValue else {
             return
         }
+        updatingInviteLinks = true
         let service = PeopleService(blog: blog, context: context)
         service?.disableInviteLinks(siteID, success: { [weak self] in
+            self?.updatingInviteLinks = false
             self?.tableView.reloadData()
         }, failure: { [weak self] error in
+            self?.updatingInviteLinks = false
             self?.displayNotice(title: NSLocalizedString("Unable to disable invite links.", comment: "An error message shown when there is an issue creating new invite links."))
             DDLogError("Error disabling invite links. \(error)")
         })
