@@ -52,8 +52,8 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 
     [self configureFilterTabBar:self.filterTabBar];
     [self setTableConstraints];
-
     self.currentStatusFilter = CommentStatusFilterAll;
+
     [self configureNavBar];
     [self configureLoadMoreSpinner];
     [self configureNoResultsView];
@@ -346,13 +346,19 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 
 - (NSFetchRequest *)fetchRequest
 {
-    NSFetchRequest *fetchRequest            = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
-    fetchRequest.predicate                  = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, CommentStatusSpam];
-    
-    NSSortDescriptor *sortDescriptorStatus  = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
-    NSSortDescriptor *sortDescriptorDate    = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
-    fetchRequest.sortDescriptors            = @[sortDescriptorStatus, sortDescriptorDate];
-    fetchRequest.fetchBatchSize             = CommentsFetchBatchSize;
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
+
+    if ([Feature enabled:FeatureFlagCommentFilters]) {
+        // CommentService purges Comments that do not belong to the current filter.
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@)", self.blog];
+    } else {
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, CommentStatusSpam];
+    }
+
+    NSSortDescriptor *sortDescriptorStatus = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
+    NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
+    fetchRequest.sortDescriptors = @[sortDescriptorStatus, sortDescriptorDate];
+    fetchRequest.fetchBatchSize = CommentsFetchBatchSize;
     
     return fetchRequest;
 }
@@ -474,7 +480,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 
 - (void)refreshAndSyncIfNeeded
 {
-    if ([CommentService shouldRefreshCacheFor:self.blog]) {
+    if (self.blog && [CommentService shouldRefreshCacheFor:self.blog]) {
         [self.syncHelper syncContent];
     }
 }

@@ -19,7 +19,7 @@ open class CommentsTableViewCell: WPTableViewCell {
     private var postTitle = String()
     private var content = String()
     private var timestamp: String?
-    private var approved: Bool = false
+    private var pending: Bool = false
     private var gravatarURL: URL?
     private typealias Style = WPStyleGuide.Comments
     private let placeholderImage = Style.gravatarPlaceholderImage
@@ -44,7 +44,7 @@ open class CommentsTableViewCell: WPTableViewCell {
 
     @objc func configureWithComment(_ comment: Comment) {
         author = comment.authorForDisplay() ?? String()
-        approved = (comment.status == CommentStatusApproved)
+        pending = (comment.status == CommentStatusPending)
         postTitle = comment.titleForDisplay() ?? Labels.noTitle
         content = comment.contentPreviewForDisplay() ?? String()
         timestamp = comment.dateCreated.mediumString()
@@ -89,7 +89,7 @@ private extension CommentsTableViewCell {
     // MARK: - Configure UI
 
     func configurePendingIndicator() {
-        pendingIndicator.backgroundColor = approved ? .clear : Style.pendingIndicatorColor
+        pendingIndicator.backgroundColor = pending ? Style.pendingIndicatorColor : .clear
     }
 
     func configureCommentLabels() {
