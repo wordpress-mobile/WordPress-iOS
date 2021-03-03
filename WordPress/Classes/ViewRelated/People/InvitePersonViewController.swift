@@ -614,6 +614,20 @@ private extension InvitePersonViewController {
         controller.shareURL(url: url, fromRect: generateShareCell.frame, inView: view, inViewController: self)
     }
 
+    func handleDisableTapped() {
+        let title = NSLocalizedString("Disable invite link", comment: "Title. Title of a prompt to disable group invite links.")
+        let message = NSLocalizedString("Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?", comment: "Warning message about disabling group invite links.")
+        let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        controller.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Title. Title of a cancel button. Tapping disnisses an alert."))
+        let action = UIAlertAction(title: NSLocalizedString("Disable", comment: "Title. Title of a button that will disable group invite links when tapped."),
+                                   style: .destructive) { [weak self] _ in
+            self?.disableInviteLinks()
+        }
+        controller.addAction(action)
+        controller.preferredAction = action
+        present(controller, animated: true, completion: nil)
+    }
+
     func disableInviteLinks() {
         guard let siteID = blog.dotComID?.intValue else {
             return
@@ -645,7 +659,7 @@ private extension InvitePersonViewController {
             // No op.
             break
         case .disable:
-            disableInviteLinks()
+            handleDisableTapped()
         }
     }
 }
