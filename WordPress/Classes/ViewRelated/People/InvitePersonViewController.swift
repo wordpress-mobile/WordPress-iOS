@@ -238,6 +238,7 @@ class InvitePersonViewController: UITableViewController {
             // There is no valid `super` implementation so do not call it.
             return
         }
+        tableView.deselectRow(at: indexPath, animated: true)
         handleInviteLinkRowTapped(indexPath: indexPath)
     }
 
@@ -602,7 +603,15 @@ private extension InvitePersonViewController {
     }
 
     func shareInviteLink() {
-        print("share")
+        guard
+            let link = currentInviteLink?.link,
+            let url = URL(string: link) as NSURL?
+        else {
+            return
+        }
+
+        let controller = PostSharingController()
+        controller.shareURL(url: url, fromRect: generateShareCell.frame, inView: view, inViewController: self)
     }
 
     func disableInviteLinks() {
