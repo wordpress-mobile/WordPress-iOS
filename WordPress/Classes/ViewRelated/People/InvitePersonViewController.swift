@@ -565,7 +565,10 @@ private extension InvitePersonViewController {
     }
 
     func refreshExpirationCell() {
-        guard let invite = currentInviteLink else {
+        guard
+            let invite = currentInviteLink,
+            invite.expiry > 0
+        else {
             return
         }
         expirationCell.textLabel?.text = NSLocalizedString("Expires on", comment: "Title. Indicates an expiration date.")
