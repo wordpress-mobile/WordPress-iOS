@@ -2,6 +2,7 @@ import Foundation
 import WordPressKit
 
 
+/// A simple, convenient dependency wrapper for LikesListController.
 class LikesListDependency {
 
     private let context: NSManagedObjectContext
