@@ -2,6 +2,7 @@ import UIKit
 
 protocol ReaderDetailView: class {
     func render(_ post: ReaderPost)
+    func renderRelatedPosts(_ posts: [RemoteReaderSimplePost])
     func showLoading()
     func showError()
     func showErrorWithWebAction()
@@ -73,6 +74,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     @objc var post: ReaderPost? {
         return coordinator?.post
     }
+
+    /// The related posts for the post being shown
+    var relatedPosts: [RemoteReaderSimplePost] = []
 
     /// Called if the view controller's post fails to load
     var postLoadFailureBlock: (() -> Void)? {
@@ -200,6 +204,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
     }
 
+    func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) {
+        relatedPosts = posts
+        tableView.reloadData()
+        tableView.invalidateIntrinsicContentSize()
+    }
+
     /// Show ghost cells indicating the content is loading
     func showLoading() {
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
@@ -222,6 +232,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             self.loadingView.stopGhostAnimation()
             self.loadingView.alpha = 1.0
         }
+
+        guard let post = post else {
+            return
+        }
+
+        coordinator?.fetchRelatedPosts(for: post)
     }
 
     /// Shown an error
@@ -339,9 +355,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                            forCellReuseIdentifier: ReaderRelatedPostsCell.defaultReuseID)
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.reloadData()
-
-        tableView.invalidateIntrinsicContentSize()
     }
 
     private func configureToolbar() {
@@ -480,14 +493,15 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        2
+        return relatedPosts.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ReaderRelatedPostsCell.defaultReuseID, for: indexPath) as? ReaderRelatedPostsCell else {
             fatalError("Expected RelatedPostsTableViewCell with identifier: \(ReaderRelatedPostsCell.defaultReuseID)")
         }
-        cell.configure()
+        let post = relatedPosts[indexPath.row]
+        cell.configure(for: post)
         return cell
     }
 

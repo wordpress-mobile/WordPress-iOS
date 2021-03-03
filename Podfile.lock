@@ -405,7 +405,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.28.0-beta.4):
+  - WordPressKit (4.28.0-beta.5):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -503,7 +503,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
   - WordPressAuthenticator (~> 1.35.1)
-  - WordPressKit (~> 4.28-beta)
+  - WordPressKit (from `../WordPressKit-iOS`)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.15.0)
   - WordPressUI (~> 1.9.0)
@@ -553,7 +553,6 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
-    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -654,6 +653,8 @@ EXTERNAL SOURCES:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :submodules: true
     :tag: v1.48.0-alpha1
+  WordPressKit:
+    :path: "../WordPressKit-iOS"
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.48.0-alpha1/third-party-podspecs/Yoga.podspec.json
 
@@ -750,7 +751,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
   WordPressAuthenticator: 73887798e340abe3cf021163644e59ca5388affb
-  WordPressKit: 9f5a58b839ca4ae37b152521d6cee3b5187552b0
+  WordPressKit: 8df14042d3e6f8bef2b45ff92d3a993271123a53
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 2d2b45d8945221b716a0e2f23932dadb750d9a74
   WordPressUI: 3b70cccc4c44cff09024ca3e94ae25a8768b26c1
@@ -766,6 +767,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 3e4e8ed46d30423393f5d7414660e486aa37b3b2
+PODFILE CHECKSUM: 978d1db719b4866b54f053dab15e05b1bd5d7f14
 
 COCOAPODS: 1.10.0

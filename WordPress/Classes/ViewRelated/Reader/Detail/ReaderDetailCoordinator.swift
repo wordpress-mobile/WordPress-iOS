@@ -108,6 +108,16 @@ class ReaderDetailCoordinator {
         }
     }
 
+    /// Fetch related posts for the current post
+    ///
+    func fetchRelatedPosts(for post: ReaderPost) {
+        service.fetchRelatedPosts(for: post) { [weak self] relatedPosts in
+            self?.view?.renderRelatedPosts(relatedPosts)
+        } failure: { error in
+            DDLogError("Error fetching related posts for detail: \(String(describing: error?.localizedDescription))")
+        }
+    }
+
     /// Share the current post
     ///
     func share(fromView anchorView: UIView) {
