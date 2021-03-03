@@ -538,7 +538,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             [self.tableView selectRowAtIndexPath:indexPath
                                         animated:NO
                                   scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-            [self showComments];
+            [self showCommentsFromSource:BlogDetailsNavigationSourceLink];
             break;
         case BlogDetailsSubsectionSharing:
             if ([self.blog supports:BlogFeatureSharing]) {
@@ -546,7 +546,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                 [self.tableView selectRowAtIndexPath:indexPath
                                             animated:NO
                                       scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-                [self showSharing];
+                [self showSharingFromSource:BlogDetailsNavigationSourceLink];
             }
             break;
         case BlogDetailsSubsectionPeople:
@@ -794,7 +794,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 //                                                         identifier:BlogDetailsPlanCellIdentifier
 //                                                              image:[UIImage gridiconOfType:GridiconTypePlans]
 //                                                           callback:^{
-//                                                               [weakSelf showPlans];
+//                                                               [weakSelf showPlansFromSource:BlogDetailsNavigationSourceRow];
 //                                                           }];
 //
 //        plansRow.detail = self.blog.planTitle;
@@ -898,7 +898,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsRow *commentsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
                                                           image:[[UIImage gridiconOfType:GridiconTypeComment] imageFlippedForRightToLeftLayoutDirection]
                                                        callback:^{
-                                                           [weakSelf showComments];
+        [weakSelf showCommentsFromSource:BlogDetailsNavigationSourceRow];
                                                        }];
     [rows addObject:commentsRow];
 
@@ -939,7 +939,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
                                         image:[UIImage gridiconOfType:GridiconTypeShare]
                                      callback:^{
-                                         [weakSelf showSharing];
+            [weakSelf showSharingFromSource:BlogDetailsNavigationSourceRow];
                                      }];
         row.quickStartIdentifier = QuickStartTourElementSharing;
         [rows addObject:row];
@@ -966,7 +966,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                         accessibilityIdentifier:@"Settings Row"
                                                           image:[UIImage gridiconOfType:GridiconTypeCog]
                                                        callback:^{
-                                                           [weakSelf showSettings];
+        [weakSelf showSettingsFromSource:BlogDetailsNavigationSourceRow];
                                                        }];
 
     [rows addObject:row];
@@ -1548,9 +1548,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 }
 
-- (void)showComments
+- (void)showCommentsFromSource:(BlogDetailsNavigationSource)source
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedComments withBlog:self.blog];
+    [self trackEvent:WPAnalyticsStatOpenedComments fromSource:source];
     CommentsViewController *controller = [CommentsViewController controllerWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
@@ -1602,18 +1602,18 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
-- (void)showPlans
+- (void)showPlansFromSource:(BlogDetailsNavigationSource)source
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedPlans withBlog:self.blog];
+    [self trackEvent:WPAnalyticsStatOpenedPlans fromSource:source];
     PlanListViewController *controller = [[PlanListViewController alloc] initWithStyle:UITableViewStyleGrouped];
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementPlans];
 }
 
-- (void)showSettings
+- (void)showSettingsFromSource:(BlogDetailsNavigationSource)source
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedSiteSettings withBlog:self.blog];
+    [self trackEvent:WPAnalyticsStatOpenedSiteSettings fromSource:source];
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
@@ -1626,7 +1626,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self showDetailViewController:controller sender:self];
 }
 
-- (void)showSharing
+- (void)showSharingFromSource:(BlogDetailsNavigationSource)source
 {
     UIViewController *controller;
     if (![self.blog supportsPublicize]) {
@@ -1637,7 +1637,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         controller = [[SharingViewController alloc] initWithBlog:self.blog];
     }
 
-    [WPAppAnalytics track:WPAnalyticsStatOpenedSharingManagement withBlog:self.blog];
+    [self trackEvent:WPAnalyticsStatOpenedSharingManagement fromSource:source];
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementSharing];
