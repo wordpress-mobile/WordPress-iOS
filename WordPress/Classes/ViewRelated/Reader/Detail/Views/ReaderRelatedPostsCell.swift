@@ -12,6 +12,8 @@ class ReaderRelatedPostsCell: UITableViewCell, NibReusable {
     private func applyStyles() {
         featuredImageView.clipsToBounds = true
         featuredImageView.layer.cornerRadius = Constants.cornerRadius
+        featuredImageView.contentMode = .scaleAspectFill
+        featuredImageView.backgroundColor = .placeholderElement
 
         titleLabel.numberOfLines = 0
         titleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
@@ -22,8 +24,34 @@ class ReaderRelatedPostsCell: UITableViewCell, NibReusable {
         excerptLabel.textColor = .text
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        featuredImageView.image = nil
+    }
+
     func configure(for post: RemoteReaderSimplePost) {
-        featuredImageView.backgroundColor = .green // FIXME
+        configureFeaturedImage(for: post)
+        configureLabels(for: post)
+    }
+
+    private func configureFeaturedImage(for post: RemoteReaderSimplePost) {
+        var featuredImageUrlString: String? = nil
+        if let urlString = post.featuredImageUrl, !urlString.isEmpty {
+            featuredImageUrlString = urlString
+        } else if let uriString = post.featuredMedia?.uri, !uriString.isEmpty {
+            featuredImageUrlString = uriString
+        }
+
+        guard let urlString = featuredImageUrlString,
+              let featuredImageUrl = URL(string: urlString) else {
+            featuredImageView.isHidden = true
+            return
+        }
+
+        featuredImageView.downloadImage(from: featuredImageUrl)
+    }
+
+    private func configureLabels(for post: RemoteReaderSimplePost) {
         titleLabel.text = NSAttributedString.attributedStringWithHTML(post.title, attributes: nil).string
         excerptLabel.text = NSAttributedString.attributedStringWithHTML(post.excerpt, attributes: nil).string
     }
