@@ -141,17 +141,19 @@ class InvitePersonViewController: UITableViewController {
 
     @IBOutlet private var currentInviteCell: UITableViewCell! {
         didSet {
+            setupCurrentInviteCell()
             refreshCurrentInviteCell()
         }
     }
 
     @IBOutlet private var expirationCell: UITableViewCell! {
         didSet {
+            setupExpirationCell()
             refreshExpirationCell()
         }
     }
 
-    @IBOutlet private var disableLinksCell: UITableViewCell {
+    @IBOutlet private var disableLinksCell: UITableViewCell! {
         didSet {
             setupDisableInviteLinksCell()
         }
@@ -537,6 +539,14 @@ private extension InvitePersonViewController {
         disableLinksCell.textLabel?.text = NSLocalizedString("Disable invite link", comment: "Title. A call to action to disable invite links.")
     }
 
+    func setupCurrentInviteCell() {
+        currentInviteCell.textLabel?.text = NSLocalizedString("Role", comment: "Title. Indicates the user role an invite link is for.")
+    }
+
+    func setupExpirationCell() {
+        expirationCell.textLabel?.text = NSLocalizedString("Expires on", comment: "Title. Indicates an expiration date.")
+    }
+
     func refreshInviteLinkCell(indexPath: IndexPath) {
         guard let row = InviteLinkRow(rawValue: indexPath.row) else {
             return
@@ -565,7 +575,6 @@ private extension InvitePersonViewController {
         guard selectedInviteLinkIndex < availableRoles.count else {
             return
         }
-        currentInviteCell.textLabel?.text = NSLocalizedString("Role", comment: "Title. Indicates the user role an invite link is for.")
         // sortedInviteLinks and availableRoles should be complimentary. We can cheat a little and
         // get the localized "display name" to use from availableRoles rather than
         // trying to capitalize the role slug from the current invite link.
@@ -580,7 +589,6 @@ private extension InvitePersonViewController {
         else {
             return
         }
-        expirationCell.textLabel?.text = NSLocalizedString("Expires on", comment: "Title. Indicates an expiration date.")
 
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
