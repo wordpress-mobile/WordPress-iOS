@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-18 11:54:11+0000 */
+/* Translation-Revision-Date: 2021-03-02 21:28:45+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -917,7 +917,7 @@
 "Block settings" = "Pengaturan blok";
 
 /* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Block this site";
+"Block this site" = "Blokir situs ini";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Blocked site";
@@ -4364,7 +4364,7 @@
 "Page title. Empty" = "Judul halaman. Kosong";
 
 /* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Page updated";
+"Page updated" = "Halaman diperbarui";
 
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
@@ -4668,10 +4668,10 @@
 "Post title. Empty" = "Judul pos. Kosong";
 
 /* Title of camera permissions screen */
-"Post to WordPress" = "Post to WordPress";
+"Post to WordPress" = "Buat pos ke WordPress";
 
 /* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Post updated";
+"Post updated" = "Pos diperbarui";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Kode Pos";
@@ -7871,7 +7871,7 @@
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Tampaknya Anda telah menginstal plugin seluler dari DudaMobile yang membuat aplikasi tidak dapat tersambung ke blog Anda";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
-"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".";
+"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Sebaiknya jangan abaikan masalah keamanan, kecuali Anda benar-benar yakin ini tidak berbahaya. Jika Anda memilih untuk mengabaikannya, ancaman ini akan tetap ada di situs Anda \"%1$@\".";
 
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "Anda tidak akan dapat mengubah kembali nama pengguna Anda.";

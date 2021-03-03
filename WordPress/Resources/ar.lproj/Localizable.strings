@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-25 02:01:49+0000 */
+/* Translation-Revision-Date: 2021-03-02 21:29:21+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -4364,7 +4364,7 @@
 "Page title. Empty" = "عنوان الصفحة. فارغ";
 
 /* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Page updated";
+"Page updated" = "تم تحديث الصفحة";
 
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
@@ -4437,7 +4437,7 @@
 "Photo Library" = "مكتبة الصور";
 
 /* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Photos";
+"Photos" = "الصور";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "الصور مقدمة من Pexels";
@@ -4668,10 +4668,10 @@
 "Post title. Empty" = "عنوان المقالة. فارغ";
 
 /* Title of camera permissions screen */
-"Post to WordPress" = "Post to WordPress";
+"Post to WordPress" = "نشر على وردبرس";
 
 /* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Post updated";
+"Post updated" = "تم تحديث المقالة";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "الرمز البريدي";
