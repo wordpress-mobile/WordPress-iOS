@@ -123,7 +123,8 @@ import "./ScreenshotFastfile"
   lane :complete_code_freeze do | options |
     ios_completecodefreeze_prechecks(options)
     ios_localize_project()
-    ios_tag_build()
+    version = ios_get_app_version()
+    trigger_release_build(branch_to_build: "release/#{version}")
   end
 
   #####################################################################################
@@ -189,7 +190,8 @@ import "./ScreenshotFastfile"
     ios_update_metadata(options)
     ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta()
-    ios_tag_build()
+    version = ios_get_app_version()
+    trigger_beta_build(branch_to_build: "release/#{version}")
   end
 
   #####################################################################################
@@ -231,14 +233,17 @@ import "./ScreenshotFastfile"
       ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
       ios_bump_version_beta()
     end
-    ios_final_tag(options)
 
     # Wrap up
     version = ios_get_app_version()
+    ios_clear_intermediate_tags(version: version)
     removebranchprotection(repository: GHHELPER_REPO, branch: "release/#{version}")
     setfrozentag(repository: GHHELPER_REPO, milestone: version, freeze: false)
     create_new_milestone(repository: GHHELPER_REPO)
     close_milestone(repository: GHHELPER_REPO, milestone: version)
+
+    # Start the build
+    trigger_release_build(branch_to_build: "release/#{version}")
   end
 
   #####################################################################################
@@ -255,7 +260,8 @@ import "./ScreenshotFastfile"
   desc "Performs the final checks and tags the hotfix in the current branch"
   lane :finalize_hotfix_release do | options |
     ios_finalize_prechecks(options)
-    ios_tag_build()
+    version = ios_get_app_version()
+    trigger_release_build(branch_to_build: "release/#{version}")
   end
 
   #####################################################################################
@@ -617,20 +623,38 @@ import "./ScreenshotFastfile"
     )
   end
 
-  lane :test_beta_build do | options |
+  #####################################################################################
+  # trigger_beta_build
+  # -----------------------------------------------------------------------------------
+  # This lane triggers a beta build on CI
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane trigger_beta_build [branch_to_build:<branch_name>]
+  #
+  #####################################################################################
+  lane :trigger_beta_build do | options |
     circleci_trigger_job(
       circle_ci_token: ENV["CIRCLE_CI_AUTH_TOKEN"], 
       repository: REPOSITORY_NAME, 
-      branch: "feature/trigger-ci-via-api",
+      branch: options[:branch_to_build],
       job_params: {"beta_build" => true}
     )
   end
 
-  lane :test_release_build do | options |
+  #####################################################################################
+  # trigger_release_build
+  # -----------------------------------------------------------------------------------
+  # This lane triggers a stable release build on CI
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane trigger_release_build [branch_to_build:<branch_name>]
+  #
+  #####################################################################################
+  lane :trigger_release_build do | options |
     circleci_trigger_job(
       circle_ci_token: ENV["CIRCLE_CI_AUTH_TOKEN"], 
       repository: REPOSITORY_NAME, 
-      branch: "feature/trigger-ci-via-api",
+      branch: options[:branch_to_build],
       job_params: {"release_build" => true}
     )
   end
