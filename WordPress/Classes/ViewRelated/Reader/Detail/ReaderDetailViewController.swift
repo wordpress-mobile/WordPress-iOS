@@ -353,10 +353,13 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private func configureRelatedPosts() {
         tableView.isScrollEnabled = false
+        tableView.separatorStyle = .none
+
         tableView.register(ReaderRelatedPostsCell.defaultNib,
                            forCellReuseIdentifier: ReaderRelatedPostsCell.defaultReuseID)
         tableView.register(ReaderRelatedPostsSectionHeaderView.defaultNib,
                            forHeaderFooterViewReuseIdentifier: ReaderRelatedPostsSectionHeaderView.defaultReuseID)
+
         tableView.dataSource = self
         tableView.delegate = self
     }

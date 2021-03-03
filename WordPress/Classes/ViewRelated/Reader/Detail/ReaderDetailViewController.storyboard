@@ -28,7 +28,7 @@
                                         <rect key="frame" x="16" y="238.5" width="414" height="0.0"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" priority="750" placeholder="YES" id="tci-Li-Egi"/>
+                                            <constraint firstAttribute="height" placeholder="YES" id="tci-Li-Egi"/>
                                         </constraints>
                                     </tableView>
                                     <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iSu-TI-yew" customClass="ReaderWebView" customModule="WordPress" customModuleProvider="target">

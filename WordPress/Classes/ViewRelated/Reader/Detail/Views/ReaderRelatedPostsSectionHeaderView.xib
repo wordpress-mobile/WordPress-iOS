@@ -19,16 +19,16 @@
                     <color key="backgroundColor" name="Gray0"/>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dXt-RE-kiw">
-                    <rect key="frame" x="8" y="16" width="304" height="16"/>
+                    <rect key="frame" x="0.0" y="16" width="320" height="16"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                    <color key="textColor" name="Gray50"/>
+                    <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="dXt-RE-kiw" secondAttribute="bottom" constant="8" id="FBf-3W-cmq"/>
                 <constraint firstAttribute="trailing" secondItem="7uD-Fr-xJb" secondAttribute="trailing" id="KOL-j8-B5N"/>
-                <constraint firstItem="dXt-RE-kiw" firstAttribute="leading" secondItem="a9P-L3-LHn" secondAttribute="leading" constant="8" id="RuY-uz-bCj"/>
+                <constraint firstItem="dXt-RE-kiw" firstAttribute="leading" secondItem="a9P-L3-LHn" secondAttribute="leading" id="RuY-uz-bCj"/>
                 <constraint firstItem="7uD-Fr-xJb" firstAttribute="top" secondItem="a9P-L3-LHn" secondAttribute="top" id="Zct-7M-Z9D"/>
                 <constraint firstAttribute="bottom" secondItem="7uD-Fr-xJb" secondAttribute="bottom" id="hQv-XG-92D"/>
                 <constraint firstItem="dXt-RE-kiw" firstAttribute="centerX" secondItem="a9P-L3-LHn" secondAttribute="centerX" id="mxe-af-sd6"/>
@@ -45,9 +45,6 @@
     <resources>
         <namedColor name="Gray0">
             <color red="0.96470588235294119" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="Gray50">
-            <color red="0.39215686274509803" green="0.41176470588235292" blue="0.4392156862745098" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
