@@ -68,19 +68,22 @@ class InvitePersonViewController: UITableViewController {
 
     private var sortedInviteLinks: [InviteLinks] {
         guard
-            let links = blog.inviteLinks?.array as? [InviteLinks],
-            let sortedRoles = blog.sortedRoles
+            let links = blog.inviteLinks?.array as? [InviteLinks]
         else {
             return []
         }
-        return sortedRoles.compactMap { role -> InviteLinks? in
+        return availableRoles.compactMap { role -> InviteLinks? in
             return links.first { link -> Bool in
                 link.role == role.slug
             }
         }
     }
 
-    private var selectedInviteLinkIndex = 0
+    private var selectedInviteLinkIndex = 0 {
+        didSet {
+            tableView.reloadData()
+        }
+    }
 
     private var currentInviteLink: InviteLinks? {
         let links = sortedInviteLinks
@@ -252,6 +255,8 @@ class InvitePersonViewController: UITableViewController {
             setupRoleSegue(segue)
         case .Message:
             setupMessageSegue(segue)
+        case .InviteRole:
+            setupInviteRoleSegue(segue)
         }
     }
 
@@ -309,6 +314,18 @@ class InvitePersonViewController: UITableViewController {
         }
     }
 
+    private func setupInviteRoleSegue(_ segue: UIStoryboardSegue) {
+        guard let roleViewController = segue.destination as? RoleViewController else {
+            return
+        }
+
+        roleViewController.roles = availableRoles
+        roleViewController.selectedRole = currentInviteLink?.role
+        roleViewController.onChange = { [unowned self] newRole in
+            self.selectedInviteLinkIndex = self.availableRoles.firstIndex(where: { $0.slug == newRole }) ?? 0
+        }
+    }
+
 
     // MARK: - Private Enums
 
@@ -316,6 +333,7 @@ class InvitePersonViewController: UITableViewController {
         case Username   = "username"
         case Role       = "role"
         case Message    = "message"
+        case InviteRole = "inviteRole"
     }
 
     // The case order matches the custom sections order in People.storyboard.
@@ -534,11 +552,15 @@ private extension InvitePersonViewController {
     }
 
     func refreshCurrentInviteCell() {
-        guard let invite = currentInviteLink else {
+        guard selectedInviteLinkIndex < availableRoles.count else {
             return
         }
         currentInviteCell.textLabel?.text = NSLocalizedString("Role", comment: "Title. Indicates the user role an invite link is for.")
-        currentInviteCell.detailTextLabel?.text = invite.role
+        // sortedInviteLinks and availableRoles should be complimentary. We can cheat a little and
+        // get the localized "display name" to use from availableRoles rather than
+        // trying to capitalize the role slug from the current invite link.
+        let role = availableRoles[selectedInviteLinkIndex]
+        currentInviteCell.detailTextLabel?.text = role.name
     }
 
     func refreshExpirationCell() {
@@ -596,10 +618,6 @@ private extension InvitePersonViewController {
         })
     }
 
-    func selectInviteLink() {
-        print("select")
-    }
-
     func handleInviteLinkRowTapped(indexPath: IndexPath) {
         guard let row = InviteLinkRow(rawValue: indexPath.row) else {
             return
@@ -612,7 +630,8 @@ private extension InvitePersonViewController {
                 shareInviteLink()
             }
         case .role:
-            selectInviteLink()
+            // Handled by segue
+            break
         case .expires:
             // No op.
             break
