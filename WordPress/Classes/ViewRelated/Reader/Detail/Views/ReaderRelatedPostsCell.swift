@@ -24,8 +24,8 @@ class ReaderRelatedPostsCell: UITableViewCell, NibReusable {
 
     func configure(for post: RemoteReaderSimplePost) {
         featuredImageView.backgroundColor = .green // FIXME
-        titleLabel.text = post.title
-        excerptLabel.text = post.excerpt
+        titleLabel.text = NSAttributedString.attributedStringWithHTML(post.title, attributes: nil).string
+        excerptLabel.text = NSAttributedString.attributedStringWithHTML(post.excerpt, attributes: nil).string
     }
 
     private enum Constants {
