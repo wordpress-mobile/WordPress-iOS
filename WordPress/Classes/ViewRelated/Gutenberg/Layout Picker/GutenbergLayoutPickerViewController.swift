@@ -128,11 +128,6 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     }
 }
 
-
-
-
-
-
 extension GutenbergLayoutPickerViewController: NSFetchedResultsControllerDelegate {
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
