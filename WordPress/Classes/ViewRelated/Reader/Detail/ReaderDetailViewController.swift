@@ -1,5 +1,7 @@
 import UIKit
 
+typealias RelatedPostsSection = [Int: [RemoteReaderSimplePost]]
+
 protocol ReaderDetailView: class {
     func render(_ post: ReaderPost)
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost])
@@ -76,7 +78,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     /// The related posts for the post being shown
-    var relatedPosts: [RemoteReaderSimplePost] = []
+    var relatedPosts: RelatedPostsSection = [:]
 
     /// Called if the view controller's post fails to load
     var postLoadFailureBlock: (() -> Void)? {
@@ -205,7 +207,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) {
-        relatedPosts = posts
+        relatedPosts = Dictionary(grouping: posts, by: { $0.postType.rawValue })
         tableView.reloadData()
         tableView.invalidateIntrinsicContentSize()
     }
@@ -489,18 +491,23 @@ extension ReaderDetailViewController: StoryboardLoadable {
 extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        1
+        return relatedPosts.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return relatedPosts.count
+        return relatedPosts[section]?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ReaderRelatedPostsCell.defaultReuseID, for: indexPath) as? ReaderRelatedPostsCell else {
             fatalError("Expected RelatedPostsTableViewCell with identifier: \(ReaderRelatedPostsCell.defaultReuseID)")
         }
-        let post = relatedPosts[indexPath.row]
+
+        let section = relatedPosts[indexPath.section]
+        guard let post = section?[indexPath.row] else {
+            fatalError("Expected post for section: \(indexPath.section), row: \(indexPath.row)")
+        }
+
         cell.configure(for: post)
         return cell
     }
@@ -510,7 +517,17 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Section title"
+        switch RemoteReaderSimplePost.PostType(rawValue: section) {
+        case .local:
+            guard let blogName = post?.blogNameForDisplay() else {
+                return nil
+            }
+            return String(format: Strings.localPostsSectionTitle, blogName)
+        case .global:
+            return Strings.globallPostsSectionTitle
+        default:
+            return nil
+        }
     }
 }
 
@@ -610,12 +627,6 @@ private extension ReaderDetailViewController {
 
 // MARK: - Navigation Bar Configuration
 private extension ReaderDetailViewController {
-    struct Strings {
-        static let backButtonAccessibilityLabel = NSLocalizedString("Back", comment: "Spoken accessibility label")
-        static let safariButtonAccessibilityLabel = NSLocalizedString("Open in Safari", comment: "Spoken accessibility label")
-        static let shareButtonAccessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
-        static let moreButtonAccessibilityLabel = NSLocalizedString("More", comment: "Spoken accessibility label")
-    }
 
     func configureNavigationBar() {
         let rightItems = [
@@ -700,6 +711,19 @@ extension ReaderDetailViewController: UIViewControllerRestoration {
         restorationClass = type(of: self)
 
         return super.awakeAfter(using: aDecoder)
+    }
+}
+
+// MARK: - Strings
+extension ReaderDetailViewController {
+
+    private struct Strings {
+        static let backButtonAccessibilityLabel = NSLocalizedString("Back", comment: "Spoken accessibility label")
+        static let safariButtonAccessibilityLabel = NSLocalizedString("Open in Safari", comment: "Spoken accessibility label")
+        static let shareButtonAccessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+        static let moreButtonAccessibilityLabel = NSLocalizedString("More", comment: "Spoken accessibility label")
+        static let localPostsSectionTitle = NSLocalizedString("More from %1$@", comment: "Section title for local related posts. %1$@ is a placeholder for the blog display name.")
+        static let globallPostsSectionTitle = NSLocalizedString("More on WordPress.com", comment: "Section title for global related posts.")
     }
 }
 
