@@ -8504,7 +8504,6 @@
 			children = (
 				F170D21B255B2BF1004F7414 /* Gesture Recognizer */,
 				8B85AED8259230C500ADBEC9 /* AB Testing */,
-				F10465122554260600655194 /* Gesture Recognizer */,
 				326E2818250AC4610029EBF0 /* Image Dimension Parser */,
 				1A433B1B2254CBC300AE7910 /* Networking */,
 				40247E002120FE2300AE1C3C /* Automated Transfer */,
@@ -11376,14 +11375,6 @@
 			name = Editor;
 			sourceTree = "<group>";
 		};
-		F1B2816E2543526C005EDFAE /* My Site */ = {
-			isa = PBXGroup;
-			children = (
-				F1B2816F2543529E005EDFAE /* MySiteViewController.swift */,
-			);
-			path = "My Site";
-            sourceTree = "<group>";
-        };
 		F198FFB2256D4AB7001266EB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -11394,6 +11385,14 @@
 				F1ACDF4A256D6B2B0005AE9B /* WordPressIntents-Bridging-Header.h */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F1B2816E2543526C005EDFAE /* My Site */ = {
+			isa = PBXGroup;
+			children = (
+				F1B2816F2543529E005EDFAE /* MySiteViewController.swift */,
+			);
+			path = "My Site";
 			sourceTree = "<group>";
 		};
 		F1D690131F828FF000200E30 /* BuildInformation */ = {
