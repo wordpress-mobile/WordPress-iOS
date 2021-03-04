@@ -9,12 +9,14 @@ class ReaderRelatedPostsSectionHeaderView: UITableViewHeaderFooterView, NibReusa
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        applyStyles()    }
+        applyStyles()
+    }
 
     private func applyStyles() {
         titleLabel.numberOfLines = 0
         titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
         titleLabel.textColor = .text
+        titleLabel.textAlignment = .natural
 
         backgroundColorView.backgroundColor = .basicBackground
     }
