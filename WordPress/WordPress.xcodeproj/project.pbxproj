@@ -1604,7 +1604,6 @@
 		AB2211D225ED68E300BF72FC /* CommentServiceRemoteFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB2211D125ED68E300BF72FC /* CommentServiceRemoteFactory.swift */; };
 		AB2211F425ED6E7A00BF72FC /* CommentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB2211F325ED6E7A00BF72FC /* CommentServiceTests.swift */; };
 		AB758D9E25EFDF9C00961C0B /* LikesListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB758D9D25EFDF9C00961C0B /* LikesListController.swift */; };
-		AB758DB225F002E300961C0B /* LikesListDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB758DB125F002E300961C0B /* LikesListDependency.swift */; };
 		ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */; };
 		ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ADF544C1195A0F620092213D /* CustomHighlightButton.m */; };
 		B03B9234250BC593000A40AF /* SuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03B9233250BC593000A40AF /* SuggestionService.swift */; };
@@ -4354,7 +4353,6 @@
 		AB2211F325ED6E7A00BF72FC /* CommentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentServiceTests.swift; sourceTree = "<group>"; };
 		AB390AA9C94F16E78184E9D1 /* Pods_WordPressScreenshotGeneration.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressScreenshotGeneration.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB758D9D25EFDF9C00961C0B /* LikesListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesListController.swift; sourceTree = "<group>"; };
-		AB758DB125F002E300961C0B /* LikesListDependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesListDependency.swift; sourceTree = "<group>"; };
 		AC6024D92F44AE4CB4A8C1B3 /* Pods-WordPressScreenshotGeneration.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressScreenshotGeneration.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressScreenshotGeneration/Pods-WordPressScreenshotGeneration.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		ACBAB5FC0E121C7300F38795 /* PostSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsViewController.h; sourceTree = "<group>"; usesTabs = 0; };
 		ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsViewController.m; sourceTree = "<group>"; usesTabs = 0; };
@@ -9542,7 +9540,6 @@
 			isa = PBXGroup;
 			children = (
 				AB758D9D25EFDF9C00961C0B /* LikesListController.swift */,
-				AB758DB125F002E300961C0B /* LikesListDependency.swift */,
 			);
 			path = Likes;
 			sourceTree = "<group>";
@@ -13499,7 +13496,6 @@
 				40C403F42215D66A00E8C894 /* TopViewedAuthorStatsRecordValue+CoreDataProperties.swift in Sources */,
 				7E4A773920F80417001C706D /* ActivityPluginRange.swift in Sources */,
 				7462BFD02028C49800B552D8 /* ShareNoticeViewModel.swift in Sources */,
-				AB758DB225F002E300961C0B /* LikesListDependency.swift in Sources */,
 				17A4A36920EE51870071C2CA /* Routes+Reader.swift in Sources */,
 				0807CB721CE670A800CDBDAC /* WPContentSearchHelper.swift in Sources */,
 				9A73B7152362FBAE004624A8 /* SiteStatsViewModel+AsyncBlock.swift in Sources */,

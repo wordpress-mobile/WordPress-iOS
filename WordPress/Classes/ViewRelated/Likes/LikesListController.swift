@@ -13,15 +13,15 @@ class LikesListController: NSObject {
 
     private let content: ContentIdentifier
 
-    let siteID: NSNumber
+    private let siteID: NSNumber
 
-    let note: Notification?
+    private let notification: Notification?
 
-    let tableView: UITableView
+    private let tableView: UITableView
 
     private var likingUsers: [RemoteUser] = []
 
-    weak var delegate: LikesListControllerDelegate?
+    private weak var delegate: LikesListControllerDelegate?
 
     private var isLoadingContent: Bool = false {
         didSet {
@@ -42,7 +42,6 @@ class LikesListController: NSObject {
     private lazy var loadingCell: UITableViewCell = {
         let cell = UITableViewCell()
 
-        // add activity indicator
         cell.addSubview(activityIndicator)
         NSLayoutConstraint.activate([
             activityIndicator.safeCenterXAnchor.constraint(equalTo: cell.safeCenterXAnchor),
@@ -55,24 +54,24 @@ class LikesListController: NSObject {
     // MARK: Lifecycle
 
     init?(tableView: UITableView,
-          note: Notification,
+          notification: Notification,
           delegate: LikesListControllerDelegate? = nil,
           dependency: LikesListDependency = LikesListDependency()) {
-        guard let siteID = note.metaSiteID else {
+        guard let siteID = notification.metaSiteID else {
             return nil
         }
 
-        switch note.kind {
+        switch notification.kind {
         case .like:
             // post likes
-            guard let postID = note.metaPostID else {
+            guard let postID = notification.metaPostID else {
                 return nil
             }
             content = .post(id: postID)
 
         case .commentLike:
             // comment likes
-            guard let commentID = note.metaCommentID else {
+            guard let commentID = notification.metaCommentID else {
                 return nil
             }
             content = .comment(id: commentID)
@@ -82,7 +81,7 @@ class LikesListController: NSObject {
             return nil
         }
 
-        self.note = note
+        self.notification = notification
         self.siteID = siteID
         self.tableView = tableView
         self.dependency = dependency
@@ -101,9 +100,7 @@ class LikesListController: NSObject {
         isLoadingContent = true
 
         fetchLikes(success: { [weak self] users in
-            if let someUsers = users {
-                self?.likingUsers = someUsers
-            }
+            self?.likingUsers = users ?? []
             self?.isLoadingContent = false
         }, failure: { [weak self] _ in
             // TODO: Show error state?
@@ -188,12 +185,13 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
 
 // MARK: - Notification Cell Handling
 
-extension LikesListController {
+private extension LikesListController {
 
     func headerCell() -> NoteBlockHeaderTableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NoteBlockHeaderTableViewCell.reuseIdentifier()) as? NoteBlockHeaderTableViewCell,
-              let group = note?.headerAndBodyContentGroups[Constants.headerRowIndex] else {
-            fatalError()
+              let group = notification?.headerAndBodyContentGroups[Constants.headerRowIndex] else {
+            DDLogError("Error: couldn't get a header cell or FormattableContentGroup.")
+            return NoteBlockHeaderTableViewCell()
         }
 
         setupHeaderCell(cell: cell, group: group)
@@ -220,7 +218,8 @@ extension LikesListController {
     func userCell(for indexPath: IndexPath) -> NoteBlockUserTableViewCell {
         guard indexPath.row < likingUsers.count,
               let cell = tableView.dequeueReusableCell(withIdentifier: NoteBlockUserTableViewCell.reuseIdentifier()) as? NoteBlockUserTableViewCell else {
-            fatalError()
+            DDLogError("Error: couldn't get a user cell or requested row is out of boundary")
+            return NoteBlockUserTableViewCell()
         }
 
         let user = likingUsers[indexPath.row]
@@ -242,6 +241,27 @@ extension LikesListController {
         cell.isLastRow = (indexPath.row == likingUsers.count - 1)
 
         return cell
+    }
+
+}
+
+// MARK: - Dependency Definitions
+
+/// A simple, convenient dependency wrapper for LikesListController.
+class LikesListDependency {
+
+    private let context: NSManagedObjectContext
+
+    lazy var postService: PostService = {
+        PostService(managedObjectContext: self.context)
+    }()
+
+    lazy var commentService: CommentService = {
+        CommentService(managedObjectContext: self.context)
+    }()
+
+    init(context: NSManagedObjectContext = ContextManager.shared.mainContext) {
+        self.context = context
     }
 
 }

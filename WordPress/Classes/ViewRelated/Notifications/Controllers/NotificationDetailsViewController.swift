@@ -93,6 +93,7 @@ class NotificationDetailsViewController: UIViewController {
             }
             confettiWasShown = false
             router = makeRouter()
+            setupTableDelegates()
             refreshInterface()
             markAsReadIfNeeded()
         }
@@ -212,7 +213,6 @@ class NotificationDetailsViewController: UIViewController {
 
     fileprivate func refreshInterface() {
         formatter.resetCache()
-        setupTableDelegates()
         tableView.reloadData()
         attachReplyViewIfNeeded()
         attachSuggestionsViewIfNeeded()
@@ -429,7 +429,7 @@ extension NotificationDetailsViewController {
     func setupTableDelegates() {
         // TODO: Add feature control for likes here
         if note.kind == .like || note.kind == .commentLike,
-           let likesListController = LikesListController(tableView: tableView, note: note, delegate: self) {
+           let likesListController = LikesListController(tableView: tableView, notification: note, delegate: self) {
             tableView.delegate = likesListController
             tableView.dataSource = likesListController
             self.likesListController = likesListController
