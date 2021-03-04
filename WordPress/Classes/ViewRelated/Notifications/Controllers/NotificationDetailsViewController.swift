@@ -427,7 +427,10 @@ extension NotificationDetailsViewController {
     /// This method may be called several times, especially upon previous/next button click
     /// since notification kind may change.
     func setupTableDelegates() {
-        // TODO: Add feature control for likes here
+        guard FeatureFlag.newLikeNotifications.enabled else {
+            return
+        }
+
         if note.kind == .like || note.kind == .commentLike,
            let likesListController = LikesListController(tableView: tableView, notification: note, delegate: self) {
             tableView.delegate = likesListController
