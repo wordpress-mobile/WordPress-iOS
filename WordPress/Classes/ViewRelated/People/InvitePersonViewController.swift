@@ -566,14 +566,17 @@ private extension InvitePersonViewController {
 
     func setupDisableInviteLinksCell() {
         disableLinksCell.textLabel?.text = NSLocalizedString("Disable invite link", comment: "Title. A call to action to disable invite links.")
+        disableLinksCell.textLabel?.textColor = .error
     }
 
     func setupCurrentInviteCell() {
         currentInviteCell.textLabel?.text = NSLocalizedString("Role", comment: "Title. Indicates the user role an invite link is for.")
+        currentInviteCell.textLabel?.textColor = .text
     }
 
     func setupExpirationCell() {
         expirationCell.textLabel?.text = NSLocalizedString("Expires on", comment: "Title. Indicates an expiration date.")
+        expirationCell.textLabel?.textColor = .text
     }
 
     func refreshInviteLinkCell(indexPath: IndexPath) {
@@ -598,6 +601,7 @@ private extension InvitePersonViewController {
         } else {
             generateShareCell.textLabel?.text = NSLocalizedString("Share invite link", comment: "Title. A call to action to share an invite link.")
         }
+        generateShareCell.textLabel?.textColor = .primary
     }
 
     func refreshCurrentInviteCell() {
