@@ -17,6 +17,9 @@ BUILD_PRODUCTS_PATH=File.join(PROJECT_ROOT_FOLDER, "Artifacts")
 USER_ENV_FILE_PATH = File.join(Dir.home, '.wpios-env.default')
 PROJECT_ENV_FILE_PATH = File.join(PROJECT_ROOT_FOLDER, '.configure-files', 'project.env')
 
+# Other defines used across multiple lanes
+REPOSITORY_NAME="WordPress-iOS"
+
 ALL_BUNDLE_IDENTIFIERS = [
       "org.wordpress",
       "org.wordpress.WordPressShare",
@@ -69,7 +72,6 @@ ENV["PUBLIC_CONFIG_FILE"]=File.join(PROJECT_ROOT_FOLDER, "config", "Version.Publ
 ENV["INTERNAL_CONFIG_FILE"]=File.join(PROJECT_ROOT_FOLDER, "config", "Version.internal.xcconfig")
 ENV["DOWNLOAD_METADATA"]="./fastlane/download_metadata.swift"
 ENV["PROJECT_ROOT_FOLDER"]=PROJECT_ROOT_FOLDER + "/"
-REPOSITORY_NAME="WordPress-iOS"
 
 
 ########################################################################
