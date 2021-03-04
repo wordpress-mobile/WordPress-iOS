@@ -727,14 +727,12 @@ private extension InvitePersonViewController {
             } else {
                 shareInviteLink()
             }
-        case .role:
-            // Handled by segue
-            break
-        case .expires:
-            // No op.
-            break
         case .disable:
             handleDisableTapped()
+        default:
+            // .role is handled by a segue.
+            // .expires is a no op
+            break
         }
     }
 
