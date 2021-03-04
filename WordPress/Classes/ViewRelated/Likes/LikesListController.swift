@@ -9,8 +9,6 @@ class LikesListController: NSObject {
 
     private let formatter = FormattableContentFormatter()
 
-    private let dependency: LikesListDependency
-
     private let content: ContentIdentifier
 
     private let siteID: NSNumber
@@ -22,6 +20,14 @@ class LikesListController: NSObject {
     private var likingUsers: [RemoteUser] = []
 
     private weak var delegate: LikesListControllerDelegate?
+
+    private var postService: PostService = {
+        PostService(managedObjectContext: ContextManager.shared.mainContext)
+    }()
+
+    private var commentService: CommentService = {
+        CommentService(managedObjectContext: ContextManager.shared.mainContext)
+    }()
 
     private var isLoadingContent: Bool = false {
         didSet {
@@ -80,8 +86,7 @@ class LikesListController: NSObject {
 
     init?(tableView: UITableView,
           notification: Notification,
-          delegate: LikesListControllerDelegate? = nil,
-          dependency: LikesListDependency = LikesListDependency()) {
+          delegate: LikesListControllerDelegate? = nil) {
         guard let siteID = notification.metaSiteID else {
             return nil
         }
@@ -109,7 +114,6 @@ class LikesListController: NSObject {
         self.notification = notification
         self.siteID = siteID
         self.tableView = tableView
-        self.dependency = dependency
         self.delegate = delegate
     }
 
@@ -141,15 +145,15 @@ class LikesListController: NSObject {
     private func fetchLikes(success: @escaping ([RemoteUser]?) -> Void, failure: @escaping (Error?) -> Void) {
         switch content {
         case .post(let postID):
-            dependency.postService.getLikesForPostID(postID,
-                                                     siteID: siteID,
-                                                     success: success,
-                                                     failure: failure)
+            postService.getLikesForPostID(postID,
+                                          siteID: siteID,
+                                          success: success,
+                                          failure: failure)
         case .comment(let commentID):
-            dependency.commentService.getLikesForCommentID(commentID,
-                                                           siteID: siteID,
-                                                           success: success,
-                                                           failure: failure)
+            commentService.getLikesForCommentID(commentID,
+                                                siteID: siteID,
+                                                success: success,
+                                                failure: failure)
         }
     }
 }
@@ -266,7 +270,6 @@ private extension LikesListController {
         cell.accessoryType = .none
         cell.name = user.displayName
 
-        // TODO: Re-enable follow functionality once the information is available.
         cell.isFollowEnabled = false
         cell.isFollowOn = false
 
@@ -281,27 +284,6 @@ private extension LikesListController {
         cell.isLastRow = (indexPath.row == likingUsers.count - 1)
 
         return cell
-    }
-
-}
-
-// MARK: - Dependency Definitions
-
-/// A simple, convenient dependency wrapper for LikesListController.
-class LikesListDependency {
-
-    private let context: NSManagedObjectContext
-
-    lazy var postService: PostService = {
-        PostService(managedObjectContext: self.context)
-    }()
-
-    lazy var commentService: CommentService = {
-        CommentService(managedObjectContext: self.context)
-    }()
-
-    init(context: NSManagedObjectContext = ContextManager.shared.mainContext) {
-        self.context = context
     }
 
 }
