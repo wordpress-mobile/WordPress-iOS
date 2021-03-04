@@ -173,7 +173,7 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
         }
 
         if isShowingError {
-            return 1
+            return Constants.numberOfErrorRows
         }
 
         // users section
@@ -334,6 +334,7 @@ private extension LikesListController {
         static let headerRowIndex = 0
         static let numberOfHeaderRows = 1
         static let numberOfLoadingRows = 1
+        static let numberOfErrorRows = 1
 
         static let errorTitleText = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed because the device wasn't able to establish a network connection.")
         static let errorSubtitleText = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")
