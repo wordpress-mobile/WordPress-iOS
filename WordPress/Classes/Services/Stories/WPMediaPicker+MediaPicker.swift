@@ -51,6 +51,7 @@ class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker
 
         let mediaPickerDelegate = MediaPickerDelegate(kanvasDelegate: delegate, presenter: tabBar)
         let options = WPMediaPickerOptions()
+        options.allowCaptureOfMedia = false
 
         let photoPicker = WPMediaPickerForKanvas(options: options, delegate: mediaPickerDelegate)
         photoPicker.dataSource = WPPHAssetDataSource.sharedInstance()
