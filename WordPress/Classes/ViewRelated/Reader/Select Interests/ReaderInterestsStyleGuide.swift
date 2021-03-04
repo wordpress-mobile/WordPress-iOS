@@ -48,14 +48,8 @@ class ReaderInterestsStyleGuide {
         let disabledBackgroundColor: UIColor
         let titleColor: UIColor
 
-        if #available(iOS 13.0, *) {
-            // System Gray 4 on Dark mode is the same color as tertiarySystemBackground
-            disabledBackgroundColor = UIColor(light: .systemGray4, dark: .systemGray3)
-            titleColor = .textTertiary
-        } else {
-            disabledBackgroundColor = .tertiaryBackground
-            titleColor = .text
-        }
+        disabledBackgroundColor = UIColor(light: .systemGray4, dark: .systemGray3)
+        titleColor = .textTertiary
 
         button.disabledTitleColor = titleColor
         button.disabledBorderColor = disabledBackgroundColor

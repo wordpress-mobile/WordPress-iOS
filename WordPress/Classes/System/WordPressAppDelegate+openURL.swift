@@ -11,6 +11,11 @@ import AutomatticTracks
             return true
         }
 
+        if UniversalLinkRouter.shared.canHandle(url: url) {
+            UniversalLinkRouter.shared.handle(url: url, shouldTrack: true)
+            return true
+        }
+
         guard url.scheme == WPComScheme else {
             return false
         }
@@ -72,11 +77,10 @@ import AutomatticTracks
     }
 
     private func handleViewStats(url: URL) -> Bool {
-        let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         guard let params = url.queryItems,
             let siteId = params.intValue(of: "siteId"),
-            let blog = blogService.blog(byBlogId: NSNumber(value: siteId)) else {
+            let blog = try? Blog.lookup(withID: siteId, in: ContextManager.shared.mainContext) else {
             return false
         }
 
@@ -111,7 +115,7 @@ import AutomatticTracks
         }
 
         if debugKey == ApiCredentials.debuggingKey(), debugType == "force_crash" {
-            CrashLogging.crash()
+            WordPressAppDelegate.crashLogging?.crash()
         }
 
         return true

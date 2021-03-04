@@ -64,6 +64,7 @@ NSString *const WPShareExtensionKeychainTokenKey                    = @"OAuth2To
 NSString *const WPShareExtensionKeychainServiceName                 = @"ShareExtension";
 NSString *const WPShareExtensionUserDefaultsPrimarySiteName         = @"WPShareUserDefaultsPrimarySiteName";
 NSString *const WPShareExtensionUserDefaultsPrimarySiteID           = @"WPShareUserDefaultsPrimarySiteID";
+NSString *const WPStatsHomeWidgetsUserDefaultsLoggedInKey           = @"WordPressHomeWidgetsLoggedIn";
 NSString *const WPShareExtensionUserDefaultsLastUsedSiteName        = @"WPShareUserDefaultsLastUsedSiteName";
 NSString *const WPShareExtensionUserDefaultsLastUsedSiteID          = @"WPShareUserDefaultsLastUsedSiteID";
 NSString *const WPShareExtensionMaximumMediaDimensionKey            = @"WPShareExtensionMaximumMediaDimensionKey";
@@ -80,8 +81,12 @@ NSString *const WPStatsTodayWidgetUserDefaultsSiteUrlKey            = @"WordPres
 NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPressTodayWidgetTimeZone";
 
 /// iOS 14 Widget Constants
-NSString *const WPHomeWidgetTodayKind                               =@"WordPressHomeWidgetToday";
-NSString *const WPHomeWidgetTodayCount                              =@"WordPressHomeWidgetTodayCount";
+NSString *const WPHomeWidgetTodayKind                               = @"WordPressHomeWidgetToday";
+NSString *const WPHomeWidgetAllTimeKind                             = @"WordPressHomeWidgetAllTime";
+NSString *const WPHomeWidgetThisWeekKind                            = @"WordPressHomeWidgetThisWeek";
+NSString *const WPHomeWidgetTodayProperties                         = @"WordPressHomeWidgetTodayProperties";
+NSString *const WPHomeWidgetAllTimeProperties                       = @"WordPressHomeWidgetAllTimeProperties";
+NSString *const WPHomeWidgetThisWeekProperties                      = @"WordPressHomeWidgetThisWeekProperties";
 
 /// Apple ID Constants
 ///

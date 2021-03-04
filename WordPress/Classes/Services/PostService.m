@@ -55,8 +55,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.postFormat = blog.settings.defaultPostFormat;
     post.postType = Post.typeDefaultIdentifier;
 
-    [[ContextManager sharedInstance] obtainPermanentIDForObject:post];
-    
+    [blog.managedObjectContext obtainPermanentIDsForObjects:@[post] error:nil];
+    NSAssert(![post.objectID isTemporaryID], @"The new post for this blog must have a permanent ObjectID");
+
     return post;
 }
 
@@ -73,7 +74,8 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     page.date_created_gmt = [NSDate date];
     page.remoteStatus = AbstractPostRemoteStatusSync;
 
-    [[ContextManager sharedInstance] obtainPermanentIDForObject:page];
+    [blog.managedObjectContext obtainPermanentIDsForObjects:@[page] error:nil];
+    NSAssert(![page.objectID isTemporaryID], @"The new page for this blog must have a permanent ObjectID");
 
     return page;
 }
@@ -260,6 +262,8 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
 
     // Add the post to the uploading queue list
     [self.uploadingList uploading:postObjectID];
+    
+    BOOL isFirstTimePublish = post.isFirstTimePublish;
 
     void (^successBlock)(RemotePost *post) = ^(RemotePost *post) {
         [self.managedObjectContext performBlock:^{
@@ -277,6 +281,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
                     }
                 }
                 
+                postInContext.isFirstTimePublish = isFirstTimePublish;
                 [self updatePost:postInContext withRemotePost:post];
                 postInContext.remoteStatus = AbstractPostRemoteStatusSync;
 

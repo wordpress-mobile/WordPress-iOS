@@ -16,7 +16,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-    pod 'WordPressShared', '~> 1.14.0'
+    pod 'WordPressShared', '~> 1.15.0'
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
@@ -31,7 +31,7 @@ def aztec
     #pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => ''
     #pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => ''
     #pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.19.3'
+    pod 'WordPress-Editor-iOS', '~> 1.19.4'
 end
 
 def wordpress_ui
@@ -43,11 +43,18 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.26-beta'
+    pod 'WordPressKit', '~> 4.28-beta'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     # pod 'WordPressKit', :path => '../WordPressKit-iOS'
+end
+
+def kanvas
+  pod 'Kanvas', '~> 1.2.2'
+  #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
+  #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
+  #pod 'Kanvas', :path => '../Kanvas-iOS'
 end
 
 def shared_with_all_pods
@@ -64,8 +71,7 @@ def shared_with_networking_pods
 end
 
 def shared_test_pods
-    pod 'OHHTTPStubs', '6.1.0'
-    pod 'OHHTTPStubs/Swift', '6.1.0'
+    pod 'OHHTTPStubs/Swift', '~> 9.1.0'
     pod 'OCMock', '3.4.3'
 end
 
@@ -76,7 +82,7 @@ def shared_with_extension_pods
 end
 
 def gutenberg(options)
-    options[:git] = 'http://github.com/wordpress-mobile/gutenberg-mobile/'
+    options[:git] = 'https://github.com/wordpress-mobile/gutenberg-mobile.git'
     options[:submodules] = true
     local_gutenberg = ENV['LOCAL_GUTENBERG']
     if local_gutenberg
@@ -154,7 +160,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.45.0'
+    gutenberg :tag => 'v1.48.0-alpha1'
 
     ## Third party libraries
     ## =====================
@@ -179,10 +185,11 @@ target 'WordPress' do
     ##
     wordpress_kit
     wordpress_shared
+    kanvas
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.7.0'
+    pod 'Automattic-Tracks-iOS', '~> 0.8.2'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
     # Local Development
@@ -198,7 +205,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.1.0'
 
-    pod 'WordPressAuthenticator', '~> 1.34.0'
+    pod 'WordPressAuthenticator', '~> 1.35.1'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''

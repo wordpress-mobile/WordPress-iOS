@@ -6,11 +6,9 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case debugMenu
     case readerCSS
     case unifiedAuth
-    case swiftCoreData
     case homepageSettings
     case gutenbergMentions
     case gutenbergXposts
-    case whatIsNew
     case newNavBarAppearance
     case unifiedPrologueCarousel
     case stories
@@ -20,6 +18,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackBackupAndRestore
     case todayWidget
     case unseenPosts
+    case milestoneNotifications
+    case commentFilters
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -36,33 +36,33 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .unifiedAuth:
             return true
-        case .swiftCoreData:
-            return BuildConfiguration.current == .localDeveloper
         case .homepageSettings:
             return true
         case .gutenbergMentions:
             return true
         case .gutenbergXposts:
             return true
-        case .whatIsNew:
-            return true
         case .newNavBarAppearance:
             return false
         case .unifiedPrologueCarousel:
             return false
         case .stories:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .siteCreationHomePagePicker:
             return true
         case .jetpackScan:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .activityLogFilters:
             return true
         case .jetpackBackupAndRestore:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .todayWidget:
             return true
         case .unseenPosts:
+            return true
+        case .milestoneNotifications:
+            return false
+        case .commentFilters:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
@@ -100,16 +100,12 @@ extension FeatureFlag {
             return "Ignore Reader CSS Cache"
         case .unifiedAuth:
             return "Unified Auth"
-        case .swiftCoreData:
-            return "Migrate Core Data Stack to Swift"
         case .homepageSettings:
             return "Homepage Settings"
         case .gutenbergMentions:
             return "Mentions in Gutenberg"
         case .gutenbergXposts:
             return "Xposts in Gutenberg"
-        case .whatIsNew:
-            return "What's New / Feature Announcement"
         case .newNavBarAppearance:
             return "New Navigation Bar Appearance"
         case .unifiedPrologueCarousel:
@@ -128,14 +124,16 @@ extension FeatureFlag {
             return "iOS 14 Today Widget"
         case .unseenPosts:
             return "Unseen Posts in Reader"
+        case .milestoneNotifications:
+            return "Milestone notifications"
+        case .commentFilters:
+            return "Comment filters"
         }
     }
 
     var canOverride: Bool {
         switch self {
         case .debugMenu:
-            return false
-        case .swiftCoreData:
             return false
         case .newNavBarAppearance:
             return false

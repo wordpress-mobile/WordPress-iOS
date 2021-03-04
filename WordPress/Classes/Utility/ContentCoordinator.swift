@@ -9,6 +9,7 @@ protocol ContentCoordinator {
     func displayFullscreenImage(_ image: UIImage)
     func displayPlugin(withSlug pluginSlug: String, on siteSlug: String) throws
     func displayBackupWithSiteID(_ siteID: NSNumber?) throws
+    func displayScanWithSiteID(_ siteID: NSNumber?) throws
 }
 
 
@@ -51,7 +52,10 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     func displayStatsWithSiteID(_ siteID: NSNumber?) throws {
-        guard let blog = blogWithBlogID(siteID), blog.supports(.stats) else {
+        guard let siteID = siteID,
+              let blog = Blog.lookup(withID: siteID, in: mainContext),
+              blog.supports(.stats)
+        else {
             throw DisplayError.missingParameter
         }
 
@@ -61,21 +65,37 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     func displayBackupWithSiteID(_ siteID: NSNumber?) throws {
-        guard let blog = blogWithBlogID(siteID),
-              let backupListViewController = BackupListViewController(blog: blog) else {
+        guard let siteID = siteID,
+              let blog = Blog.lookup(withID: siteID, in: mainContext),
+              let backupListViewController = BackupListViewController(blog: blog)
+        else {
             throw DisplayError.missingParameter
         }
 
         controller?.navigationController?.pushViewController(backupListViewController, animated: true)
     }
 
-    func displayFollowersWithSiteID(_ siteID: NSNumber?, expirationTime: TimeInterval) throws {
-        guard let blog = blogWithBlogID(siteID) else {
+    func displayScanWithSiteID(_ siteID: NSNumber?) throws {
+        guard Feature.enabled(.jetpackScan),
+              let siteID = siteID,
+              let blog = Blog.lookup(withID: siteID, in: mainContext),
+              blog.isScanAllowed()
+        else {
             throw DisplayError.missingParameter
         }
 
-        let service = BlogService(managedObjectContext: mainContext)
-        SiteStatsInformation.sharedInstance.siteTimeZone = service.timeZone(for: blog)
+        let scanViewController = JetpackScanViewController(blog: blog)
+        controller?.navigationController?.pushViewController(scanViewController, animated: true)
+    }
+
+    func displayFollowersWithSiteID(_ siteID: NSNumber?, expirationTime: TimeInterval) throws {
+        guard let siteID = siteID,
+              let blog = Blog.lookup(withID: siteID, in: mainContext)
+        else {
+            throw DisplayError.missingParameter
+        }
+
+        SiteStatsInformation.sharedInstance.siteTimeZone = blog.timeZone
         SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
         SiteStatsInformation.sharedInstance.siteID = blog.dotComID
 
@@ -126,14 +146,4 @@ struct DefaultContentCoordinator: ContentCoordinator {
         }
         return jetpack
     }
-
-    private func blogWithBlogID(_ blogID: NSNumber?) -> Blog? {
-        guard let blogID = blogID else {
-            return nil
-        }
-
-        let service = BlogService(managedObjectContext: mainContext)
-        return service.blog(byBlogId: blogID)
-    }
-
 }

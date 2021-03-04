@@ -57,19 +57,10 @@ class PostPostViewController: UIViewController {
 
         view.backgroundColor = .primary
 
-        if #available(iOS 13.0, *) {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithTransparentBackground()
-            navBar.standardAppearance = appearance
-        } else {
-            navBar.isTranslucent = true
-            navBar.barTintColor = UIColor.clear
-            navBar.tintColor = UIColor.white
-            let clearImage = UIImage(color: UIColor.clear, havingSize: CGSize(width: 1, height: 1))
-            navBar.shadowImage = clearImage
-            navBar.setBackgroundImage(clearImage, for: .default)
-        }
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
 
+        navBar.standardAppearance = appearance
         navBar.topItem?.rightBarButtonItem?.title = NSLocalizedString("Done", comment: "Label on button to dismiss view presented after publishing a post")
         navBar.topItem?.rightBarButtonItem?.accessibilityIdentifier = "doneButton"
 

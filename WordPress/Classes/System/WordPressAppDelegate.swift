@@ -28,9 +28,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }()
 
     var analytics: WPAppAnalytics?
-    private lazy var crashLoggingProvider: WPCrashLoggingProvider = {
-        return WPCrashLoggingProvider()
-    }()
 
     @objc var internetReachability: Reachability?
     @objc var connectionAvailable: Bool = true
@@ -67,6 +64,18 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return UploadsManager(uploaders: uploaders)
     }()
 
+    private let loggingStack = WPLoggingStack()
+
+    /// Access the crash logging type
+    class var crashLogging: CrashLogging? {
+        shared?.loggingStack.crashLogging
+    }
+
+    /// Access the event logging type
+    class var eventLogging: EventLogging? {
+        shared?.loggingStack.eventLogging
+    }
+
     @objc class var shared: WordPressAppDelegate? {
         return UIApplication.shared.delegate as? WordPressAppDelegate
     }
@@ -75,16 +84,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-
-        if #available(iOS 13.0, *) {
-            // Overrides the current user interface appearance
-            AppAppearance.overrideAppearance()
-        }
+        AppAppearance.overrideAppearance()
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
-        let dataSource = EventLoggingDataProvider.fromDDFileLogger(WPLogger.shared().fileLogger)
-        let eventLogging = EventLogging(dataSource: dataSource, delegate: crashLoggingProvider.loggingUploadDelegate)
-        CrashLogging.start(withDataProvider: crashLoggingProvider, eventLogging: eventLogging)
+        try? loggingStack.start()
 
         // Configure WPCom API overrides
         configureWordPressComApi()
@@ -131,11 +134,15 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         setupComponentsAppearance()
         disableAnimationsForUITests(application)
 
+        // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
+        let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
+        fonts?.forEach({ url in
+            CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
+        })
+
         PushNotificationsManager.shared.deletePendingLocalNotifications()
 
-        if #available(iOS 13, *) {
-            startObservingAppleIDCredentialRevoked()
-        }
+        startObservingAppleIDCredentialRevoked()
 
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
         return true
@@ -182,9 +189,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         DDLogInfo("\(self) \(#function)")
 
         // This is done here so the check is done on app launch and app switching.
-        if #available(iOS 13, *) {
-            checkAppleIDCredentialState()
-        }
+        checkAppleIDCredentialState()
+
         GutenbergSettings().performGutenbergPhase2MigrationIfNeeded()
     }
 
@@ -702,20 +708,14 @@ extension WordPressAppDelegate {
         if notification.object != nil {
             setupShareExtensionToken()
             configureNotificationExtension()
-
-            if #available(iOS 13, *) {
-                startObservingAppleIDCredentialRevoked()
-            }
+            startObservingAppleIDCredentialRevoked()
         } else {
             trackLogoutIfNeeded()
             removeTodayWidgetConfiguration()
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()
             windowManager.showFullscreenSignIn()
-
-            if #available(iOS 13, *) {
-                stopObservingAppleIDCredentialRevoked()
-            }
+            stopObservingAppleIDCredentialRevoked()
         }
 
         toggleExtraDebuggingIfNeeded()
@@ -846,7 +846,6 @@ extension WordPressAppDelegate {
 
 // MARK: - Apple Account Handling
 
-@available(iOS 13.0, *)
 extension WordPressAppDelegate {
 
     func checkAppleIDCredentialState() {

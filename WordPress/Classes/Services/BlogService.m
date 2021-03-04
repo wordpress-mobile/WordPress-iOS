@@ -22,21 +22,12 @@ NSString *const WordPressMinimumVersion = @"4.0";
 NSString *const HttpsPrefix = @"https://";
 NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
-CGFloat const OneHourInSeconds = 60.0 * 60.0;
-
-
 @implementation BlogService
 
 + (instancetype)serviceWithMainContext
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     return [[BlogService alloc] initWithManagedObjectContext:context];
-}
-
-- (Blog *)blogByBlogId:(NSNumber *)blogID
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blogID == %@", blogID];
-    return [self blogWithPredicate:predicate];
 }
 
 - (Blog *)blogByBlogId:(NSNumber *)blogID andUsername:(NSString *)username
@@ -1022,33 +1013,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             }
         }];
     };
-}
-
-- (NSTimeZone *)timeZoneForBlog:(Blog *)blog
-{
-    NSString *timeZoneName = [blog getOptionValue:@"timezone"];
-    NSNumber *gmtOffSet = [blog getOptionValue:@"gmt_offset"];
-    id optionValue = [blog getOptionValue:@"time_zone"];
-    
-    NSTimeZone *timeZone = nil;
-    if (timeZoneName.length > 0) {
-        timeZone = [NSTimeZone timeZoneWithName:timeZoneName];
-    }
-    
-    if (!timeZone && gmtOffSet != nil) {
-        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:(gmtOffSet.floatValue * OneHourInSeconds)];
-    }
-    
-    if (!timeZone && optionValue != nil) {
-        NSInteger timeZoneOffsetSeconds = [optionValue floatValue] * OneHourInSeconds;
-        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:timeZoneOffsetSeconds];
-    }
-    
-    if (!timeZone) {
-        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-    }
-    
-    return timeZone;
 }
 
 - (void)updateSettings:(BlogSettings *)settings withRemoteSettings:(RemoteBlogSettings *)remoteSettings

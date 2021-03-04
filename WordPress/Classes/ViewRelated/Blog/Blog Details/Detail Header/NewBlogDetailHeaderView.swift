@@ -78,6 +78,10 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         toggleSpotlightOnSiteIcon()
     }
 
+    func setTitleLoading(_ isLoading: Bool) {
+        isLoading ? titleButton.startLoading() : titleButton.stopLoading()
+    }
+
     func refreshSiteTitle() {
         let blogName = blog?.settings?.name
         let title = blogName != nil && blogName?.isEmpty == false ? blogName : blog?.displayURL as String?

@@ -80,7 +80,8 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
             return
         }
 
-        ReaderMenuAction(logged: isLoggedIn).execute(post: post, context: context, readerTopic: topic, anchor: sender, vc: origin)
+        ReaderMenuAction(logged: isLoggedIn).execute(post: post, context: context, readerTopic: topic, anchor: sender, vc: origin, source: ReaderPostMenuSource.card)
+        WPAnalytics.trackReader(.postCardMoreTapped)
     }
 
     func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider) {
@@ -101,18 +102,16 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         return imageRequestAuthToken
     }
 
-    fileprivate func toggleFollowingForPost(_ post: ReaderPost) {
-        let siteTitle = post.blogNameForDisplay()
-        let siteID = post.siteID
-        let toFollow = !post.isFollowing
-
-        ReaderFollowAction().execute(with: post, context: context,
-                                     completion: { [weak self] in
-                                        if toFollow {
-                                            self?.origin?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
+    private func toggleFollowingForPost(_ post: ReaderPost) {
+        ReaderFollowAction().execute(with: post,
+                                     context: context,
+                                     completion: {
+                                        if post.isFollowing {
+                                            ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: true)
                                         }
-                                     },
-                                     failure: nil)
+                                     }, failure: { _ in
+                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: false)
+                                     })
     }
 
     func toggleSavedForLater(for post: ReaderPost) {

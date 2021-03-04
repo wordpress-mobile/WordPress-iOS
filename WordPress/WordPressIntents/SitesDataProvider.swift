@@ -71,17 +71,4 @@ class SitesDataProvider {
             return site.identifier == String(defaultSiteID)
         }
     }
-
-    // MARK: - Site Icons
-
-    private func icon(from data: HomeWidgetTodayData) -> INImage {
-        guard let iconURL = data.iconURL,
-              let url = URL(string: iconURL),
-              let image = INImage(url: url) else {
-
-            return INImage(named: "blavatar-default")
-        }
-
-        return image
-    }
 }

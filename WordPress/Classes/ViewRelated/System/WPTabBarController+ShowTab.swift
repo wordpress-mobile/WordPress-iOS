@@ -64,15 +64,27 @@ extension WPTabBarController {
                 StoriesIntroViewController.trackShown()
             })
         } else {
-            //TODO: Show the stories feature
             guard let blog = inBlog ?? self.mainBlog() else { return }
             let blogID = blog.dotComID?.intValue ?? 0 as Any
 
             WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "story"])
 
-            let viewController = UIViewController()
-            viewController.view.backgroundColor = .red
-            present(viewController, animated: true)
+            let controller = StoryEditor.editor(blog: blog, context: ContextManager.shared.mainContext, updated: {_ in }, uploaded: { [weak self] result in
+                switch result {
+                case .success:
+                    ()
+                case .failure(let error):
+                    self?.dismiss(animated: true, completion: nil)
+                    let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)
+                    let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
+                        controller.dismiss(animated: true, completion: nil)
+                    }
+                    controller.addAction(dismiss)
+                    self?.present(controller, animated: true, completion: nil)
+                }
+            })
+
+            present(controller, animated: true, completion: nil)
         }
     }
 }

@@ -150,10 +150,7 @@ class AccountSettingsService {
     }
 
     func primarySiteNameForSettings(_ settings: AccountSettings) -> String? {
-        let service = BlogService(managedObjectContext: context)
-        let blog = service.blog(byBlogId: NSNumber(value: settings.primarySiteID))
-
-        return blog?.settings?.name
+        return try? Blog.lookup(withID: settings.primarySiteID, in: context)?.settings?.name
     }
 
     /// Change the current user's username
