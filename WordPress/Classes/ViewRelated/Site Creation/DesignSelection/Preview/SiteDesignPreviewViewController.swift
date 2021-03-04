@@ -2,6 +2,7 @@ import UIKit
 import WordPressUI
 
 class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPopoverPresentationControllerDelegate {
+    typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice
     let completion: SiteDesignStep.SiteDesignSelection
     let siteDesign: RemoteSiteDesign
     @IBOutlet weak var primaryActionButton: UIButton!
@@ -9,14 +10,14 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var progressBar: UIProgressView!
     private var estimatedProgressObserver: NSKeyValueObservation?
-    private var selectedPreviewDevice: PreviewDeviceSelectionViewController.PreviewDevice {
+    private var selectedPreviewDevice: PreviewDevice {
         didSet {
             if selectedPreviewDevice != oldValue {
                 webView.reload()
             }
         }
     }
-    private var onDismissWithDeviceSelected: ((PreviewDeviceSelectionViewController.PreviewDevice) -> ())?
+    private var onDismissWithDeviceSelected: ((PreviewDevice) -> ())?
 
     lazy var ghostView: GutenGhostView = {
         let ghost = GutenGhostView()
@@ -35,10 +36,10 @@ class SiteDesignPreviewViewController: UIViewController, NoResultsViewHost, UIPo
         }
     }
 
-    init(siteDesign: RemoteSiteDesign, selectedPreviewDevice: PreviewDeviceSelectionViewController.PreviewDevice?, onDismissWithDeviceSelected: ((PreviewDeviceSelectionViewController.PreviewDevice) -> ())?, completion: @escaping SiteDesignStep.SiteDesignSelection) {
+    init(siteDesign: RemoteSiteDesign, selectedPreviewDevice: PreviewDevice?, onDismissWithDeviceSelected: ((PreviewDevice) -> ())?, completion: @escaping SiteDesignStep.SiteDesignSelection) {
         self.completion = completion
         self.siteDesign = siteDesign
-        self.selectedPreviewDevice = selectedPreviewDevice ?? PreviewDeviceSelectionViewController.PreviewDevice.default
+        self.selectedPreviewDevice = selectedPreviewDevice ?? PreviewDevice.default
         self.onDismissWithDeviceSelected = onDismissWithDeviceSelected
         super.init(nibName: "\(SiteDesignPreviewViewController.self)", bundle: .main)
         self.title = NSLocalizedString("Preview", comment: "Title for screen to preview a selected homepage design")
