@@ -544,7 +544,7 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
             }
             return String(format: Strings.localPostsSectionTitle, blogName)
         case .global:
-            return Strings.globallPostsSectionTitle
+            return Strings.globalPostsSectionTitle
         default:
             return nil
         }
@@ -743,7 +743,7 @@ extension ReaderDetailViewController {
         static let shareButtonAccessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
         static let moreButtonAccessibilityLabel = NSLocalizedString("More", comment: "Spoken accessibility label")
         static let localPostsSectionTitle = NSLocalizedString("More from %1$@", comment: "Section title for local related posts. %1$@ is a placeholder for the blog display name.")
-        static let globallPostsSectionTitle = NSLocalizedString("More on WordPress.com", comment: "Section title for global related posts.")
+        static let globalPostsSectionTitle = NSLocalizedString("More on WordPress.com", comment: "Section title for global related posts.")
     }
 }
 
