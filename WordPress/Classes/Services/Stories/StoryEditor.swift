@@ -81,6 +81,7 @@ class StoryEditor: CameraController {
         settings.enabledModes = [.normal]
         settings.defaultMode = .normal
         settings.features.scaleMediaToFill = true
+        settings.features.resizesFonts = false
         settings.animateEditorControls = false
         settings.exportStopMotionPhotoAsVideo = false
         settings.fontSelectorUsesFont = true
