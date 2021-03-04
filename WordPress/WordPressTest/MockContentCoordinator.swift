@@ -21,7 +21,7 @@ class MockContentCoordinator: ContentCoordinator {
         commentSiteID = siteID
     }
 
-    func displayStatsWithSiteID(_ siteID: NSNumber?) throws {
+    func displayStatsWithSiteID(_ siteID: NSNumber?, url: URL? = nil) throws {
 
     }
 
