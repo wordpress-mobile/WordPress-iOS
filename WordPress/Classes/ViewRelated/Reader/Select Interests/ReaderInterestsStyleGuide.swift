@@ -77,7 +77,7 @@ class ReaderSuggestedTopicsStyleGuide {
               backgroundColor: .init(colorName: .green, section: .background),
               borderColor: .init(colorName: .green, section: .border)),
 
-        // Blue
+        // Purple
         .init(textColor: .init(colorName: .purple, section: .text),
               backgroundColor: .init(colorName: .purple, section: .background),
               borderColor: .init(colorName: .purple, section: .border)),
