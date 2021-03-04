@@ -467,8 +467,13 @@ extension InvitePersonViewController {
     }
 
     private func addTapGesture(toView footerView: UIView, inSection section: Int) {
-        guard let footer = footerView as? UITableViewHeaderFooterView,
-           Section(rawValue: section) == .role else {
+        guard let footer = footerView as? UITableViewHeaderFooterView else {
+            return
+        }
+        guard Section(rawValue: section) == .role else {
+            footer.textLabel?.isUserInteractionEnabled = false
+            footer.accessibilityTraits = .staticText
+            footer.gestureRecognizers?.removeAll()
             return
         }
 
