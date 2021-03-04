@@ -2,6 +2,7 @@
 -----
 * [*] Adds helper UI to Choose a Domain screen to provide a hint of what a domain is. [#15962]
 * [**] Site Creation: Adds filterable categories to the site design picker when creating a WordPress.com site, and includes single-page site designs [#15933]
+* [**] The classic editor is now deprecated and scheduled for removal in an upcoming version. Please switch over to the block editor for the best content creating experience.
 
 16.8
 -----
