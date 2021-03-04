@@ -30,6 +30,8 @@ class LikesListController: NSObject {
         }
     }
 
+    private var isShowingError: Bool = false
+
     // MARK: Views
 
     private lazy var activityIndicator: UIActivityIndicatorView = {
@@ -47,6 +49,29 @@ class LikesListController: NSObject {
             activityIndicator.safeCenterXAnchor.constraint(equalTo: cell.safeCenterXAnchor),
             activityIndicator.safeCenterYAnchor.constraint(equalTo: cell.safeCenterYAnchor)
         ])
+
+        return cell
+    }()
+
+    /**
+     TODO: Update this once we get more updates from the design?
+
+     If showing a full-sized, no results page is preferred (e.g. NoResultsViewController),
+     then the LikesListDelegate needs to be extended so the delegate can show the no results
+     page instead.
+
+     Another alternative is to revert back to the locally available data from the Notification
+     object. Although I'm not sure if this would confuse the user since the data would look
+     inconsistent between network states.
+     */
+    private lazy var errorCell: UITableViewCell = {
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+
+        let text = Constants.errorTitleText
+        cell.textLabel?.attributedText = NSAttributedString(string: text, attributes: WPStyleGuide.Notifications.footerRegularStyle)
+
+        let subtitleText = Constants.errorSubtitleText
+        cell.detailTextLabel?.attributedText = NSAttributedString(string: subtitleText, attributes: WPStyleGuide.Notifications.footerRegularStyle)
 
         return cell
     }()
@@ -97,13 +122,14 @@ class LikesListController: NSObject {
         }
 
         // shows the loading cell and prevents double refresh.
+        isShowingError = false
         isLoadingContent = true
 
         fetchLikes(success: { [weak self] users in
             self?.likingUsers = users ?? []
             self?.isLoadingContent = false
         }, failure: { [weak self] _ in
-            // TODO: Show error state?
+            self?.isShowingError = true
             self?.isLoadingContent = false
         })
     }
@@ -142,8 +168,16 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
             return Constants.numberOfHeaderRows
         }
 
+        if isLoadingContent {
+            return Constants.numberOfLoadingRows
+        }
+
+        if isShowingError {
+            return 1
+        }
+
         // users section
-        return isLoadingContent ? Constants.numberOfLoadingRows : likingUsers.count
+        return likingUsers.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -153,6 +187,10 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
 
         if isLoadingContent {
             return loadingCell
+        }
+
+        if isShowingError {
+            return errorCell
         }
 
         return userCell(for: indexPath)
@@ -174,7 +212,9 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
             return
         }
 
-        guard !isLoadingContent, indexPath.row < likingUsers.count else {
+        guard !isLoadingContent,
+              !isShowingError,
+              indexPath.row < likingUsers.count else {
             return
         }
 
@@ -294,6 +334,9 @@ private extension LikesListController {
         static let headerRowIndex = 0
         static let numberOfHeaderRows = 1
         static let numberOfLoadingRows = 1
+
+        static let errorTitleText = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed because the device wasn't able to establish a network connection.")
+        static let errorSubtitleText = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")
     }
 
 }
