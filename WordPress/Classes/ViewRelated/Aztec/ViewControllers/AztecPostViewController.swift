@@ -14,12 +14,12 @@ import AutomatticTracks
 import MediaEditor
 
 
-fileprivate class PaddingLabel: UILabel {
+fileprivate class InsetLabel: UILabel {
 
-    let topInset: CGFloat = 5.0
-    let bottomInset: CGFloat = 5.0
-    let leftInset: CGFloat = 7.0
-    let rightInset: CGFloat = 7.0
+    private let topInset: CGFloat = 5.0
+    private let bottomInset: CGFloat = 5.0
+    private let leftInset: CGFloat = 7.0
+    private let rightInset: CGFloat = 7.0
 
     override func drawText(in rect: CGRect) {
         let insets = UIEdgeInsets(top: topInset, left: leftInset, bottom: bottomInset, right: rightInset)
@@ -133,8 +133,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         case expectedSecondaryAction = 1
     }
 
-    fileprivate lazy var noticeLabel: PaddingLabel = {
-        let label = PaddingLabel()
+    fileprivate lazy var noticeLabel: InsetLabel = {
+        let label = InsetLabel()
         label.setContentHuggingPriority(.required, for: .vertical)
         label.text = NSLocalizedString("The classic editor is deprecated and will be removed in a coming version of the app. Please consider switching over to the block editor now.", comment: "A notice telling users that the classic editor is deprecated and will be removed.")
         label.textColor = .black
@@ -242,55 +242,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
         recognizer.isEnabled = false
     }
-
-    fileprivate lazy var deprecationTitleLabel: UILabel = {
-        let label = UILabel()
-        label.setContentHuggingPriority(.required, for: .vertical)
-        label.text = NSLocalizedString("Deprecation notice", comment: "The title of the notice telling users that the classic editor is deprecated and will be removed.")
-        label.textColor = .black
-        label.font = WPFontManager.notoBoldFont(ofSize: 20.0)
-        label.isUserInteractionEnabled = false
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        label.textAlignment = .natural
-        return label
-    }()
-
-    fileprivate lazy var noticeMessageLabel: PaddingLabel = {
-        let label = PaddingLabel()
-        label.setContentHuggingPriority(.required, for: .vertical)
-        label.text = NSLocalizedString("The classic editor is deprecated and will be removed in a coming version of the app. Please consider switching over to the block editor now.", comment: "A notice telling users that the classic editor is deprecated and will be removed.")
-        label.textColor = .black
-        label.font = Fonts.regular
-        label.isUserInteractionEnabled = false
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        label.textAlignment = .natural
-        label.layer.masksToBounds = true
-        label.layer.cornerRadius = 8.0
-        label.layer.borderColor = UIColor.darkGray.cgColor
-        label.layer.borderWidth = 2.0
-        return label
-    }()
-
-    fileprivate lazy var deprecationButtonsStackView: UIStackView = {
-        let button = UIButton(type: .custom)
-        button.setTitle(NSLocalizedString("Yes, update", comment: "The button to change the user's default editor from classic to block editor"), for: .normal)
-        let stackView = UIStackView(arrangedSubviews: [button])
-        stackView.axis = .horizontal
-        return stackView
-    }()
-
-    fileprivate lazy var deprecationView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        let stackView = UIStackView(arrangedSubviews: [deprecationTitleLabel, noticeMessageLabel, deprecationButtonsStackView])
-        stackView.axis = .vertical
-        view.addSubview(stackView)
-        return view
-    }()
-
-
 
     /// Aztec's Text Placeholder
     ///
@@ -759,7 +710,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
 
         titleHeightConstraint = titleTextField.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
-        titleTopConstraint = titleTextField.topAnchor.constraint(equalTo: noticeLabel.bottomAnchor, constant: -richTextView.contentOffset.y)
+        titleTopConstraint = titleTextField.topAnchor.constraint(equalTo: richTextView.topAnchor, constant: -richTextView.contentOffset.y)
         textPlaceholderTopConstraint = placeholderLabel.topAnchor.constraint(equalTo: richTextView.topAnchor, constant: richTextView.textContainerInset.top + richTextView.contentInset.top)
         updateTitleHeight()
 
@@ -792,7 +743,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         NSLayoutConstraint.activate([
             richTextView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
             richTextView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
-            richTextView.topAnchor.constraint(equalTo: noticeLabel.bottomAnchor, constant: 30),
+            richTextView.topAnchor.constraint(equalTo: noticeLabel.bottomAnchor, constant: 12),
             richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
 
