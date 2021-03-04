@@ -67,9 +67,11 @@ class LikesListController: NSObject {
     private lazy var errorCell: UITableViewCell = {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
 
-        cell.textLabel?.attributedText = NSAttributedString(string: Constants.errorTitleText, attributes: WPStyleGuide.Notifications.footerRegularStyle)
+        cell.textLabel?.attributedText = NSAttributedString(string: Constants.errorTitleText,
+                                                            attributes: WPStyleGuide.Notifications.footerRegularStyle)
 
-        cell.detailTextLabel?.attributedText = NSAttributedString(string: Constants.errorSubtitleText, attributes: WPStyleGuide.Notifications.footerRegularStyle)
+        cell.detailTextLabel?.attributedText = NSAttributedString(string: Constants.errorSubtitleText,
+                                                                  attributes: WPStyleGuide.Notifications.footerRegularStyle)
 
         return cell
     }()
