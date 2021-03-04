@@ -1,3 +1,6 @@
+import UIKit
+import WordPressShared
+
 class ReaderRelatedPostsCell: UITableViewCell, NibReusable {
 
     @IBOutlet weak var featuredImageView: UIImageView!
@@ -52,8 +55,8 @@ class ReaderRelatedPostsCell: UITableViewCell, NibReusable {
     }
 
     private func configureLabels(for post: RemoteReaderSimplePost) {
-        titleLabel.text = NSAttributedString.attributedStringWithHTML(post.title, attributes: nil).string
-        excerptLabel.text = NSAttributedString.attributedStringWithHTML(post.excerpt, attributes: nil).string
+        titleLabel.text = post.title.makePlainText()
+        excerptLabel.text = post.excerpt.makePlainText()
     }
 
     private enum Constants {
