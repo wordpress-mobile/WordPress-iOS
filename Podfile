@@ -43,11 +43,11 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    #pod 'WordPressKit', '~> 4.28-beta'
+    pod 'WordPressKit', '~> 4.28-beta'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'try/site-design-categories'
+    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
-     pod 'WordPressKit', :path => '../WordPressKit-iOS'
+    # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
 def kanvas
@@ -82,7 +82,7 @@ def shared_with_extension_pods
 end
 
 def gutenberg(options)
-    options[:git] = 'http://github.com/wordpress-mobile/gutenberg-mobile/'
+    options[:git] = 'https://github.com/wordpress-mobile/gutenberg-mobile.git'
     options[:submodules] = true
     local_gutenberg = ENV['LOCAL_GUTENBERG']
     if local_gutenberg

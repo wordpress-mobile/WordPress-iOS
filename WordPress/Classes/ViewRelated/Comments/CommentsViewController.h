@@ -6,7 +6,6 @@
 @interface CommentsViewController : UIViewController
 
 + (CommentsViewController *)controllerWithBlog:(Blog *)blog;
-
 - (void)refreshWithStatusFilter:(CommentStatusFilter)statusFilter;
 
 @end
