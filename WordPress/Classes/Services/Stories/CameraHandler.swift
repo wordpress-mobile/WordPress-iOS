@@ -21,10 +21,32 @@ class CameraHandler: CameraControllerDelegate {
         createdMedia(media)
     }
 
+    func showDiscardAlert(on: UIViewController, discard: @escaping () -> Void) {
+        let title = NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
+        let cancelTitle = NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
+        let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
+
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        alertController.view.accessibilityIdentifier = "post-has-changes-alert"
+
+        // Button: Keep editing
+        alertController.addCancelActionWithTitle(cancelTitle)
+
+        alertController.addDestructiveActionWithTitle(discardTitle) { _ in
+            discard()
+        }
+
+        on.present(alertController, animated: true, completion: nil)
+    }
+
     func dismissButtonPressed(_ cameraController: CameraController) {
         if let editor = cameraController as? StoryEditor {
-            editor.cancelEditing()
-            editor.post.managedObjectContext?.delete(editor.post)
+            showDiscardAlert(on: cameraController) {
+                editor.cancelEditing()
+                if cameraController.presentedViewController is GutenbergViewController == false {
+                    editor.post.managedObjectContext?.delete(editor.post)
+                }
+            }
         } else {
             cameraController.dismiss(animated: true, completion: nil)
         }
