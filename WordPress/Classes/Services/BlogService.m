@@ -1046,7 +1046,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     settings.commentsBlacklistKeys = separatedBlacklistKeys;
     settings.commentsCloseAutomatically = [remoteSettings.commentsCloseAutomatically boolValue];
     settings.commentsCloseAutomaticallyAfterDays = remoteSettings.commentsCloseAutomaticallyAfterDays;
-    settings.commentsFromKnownUsersWhitelisted = [remoteSettings.commentsFromKnownUsersWhitelisted boolValue];
+    settings.commentsFromKnownUsersAllowlisted = [remoteSettings.commentsFromKnownUsersAllowlisted boolValue];
     
     settings.commentsMaximumLinks = remoteSettings.commentsMaximumLinks;
     settings.commentsModerationKeys = separatedModerationKeys;
@@ -1116,7 +1116,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     remoteSettings.commentsBlacklistKeys = joinedBlacklistKeys;
     remoteSettings.commentsCloseAutomatically = @(settings.commentsCloseAutomatically);
     remoteSettings.commentsCloseAutomaticallyAfterDays = settings.commentsCloseAutomaticallyAfterDays;
-    remoteSettings.commentsFromKnownUsersWhitelisted = @(settings.commentsFromKnownUsersWhitelisted);
+    remoteSettings.commentsFromKnownUsersAllowlisted = @(settings.commentsFromKnownUsersAllowlisted);
     
     remoteSettings.commentsMaximumLinks = settings.commentsMaximumLinks;
     remoteSettings.commentsModerationKeys = joinedModerationKeys;

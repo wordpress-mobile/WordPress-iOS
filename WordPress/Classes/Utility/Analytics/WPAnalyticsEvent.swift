@@ -96,8 +96,8 @@ import Foundation
     case jetpackManageConnectionViewed
     case jetpackDisconnectTapped
     case jetpackDisconnectRequested
-    case jetpackWhitelistedIpsViewed
-    case jetpackWhitelistedIpsChanged
+    case jetpackAllowlistedIpsViewed
+    case jetpackAllowlistedIpsChanged
     case activitylogFilterbarSelectType
     case activitylogFilterbarResetType
     case activitylogFilterbarTypeButtonTapped
@@ -313,10 +313,10 @@ import Foundation
             return "jetpack_disconnect_tapped"
         case .jetpackDisconnectRequested:
             return "jetpack_disconnect_requested"
-        case .jetpackWhitelistedIpsViewed:
-            return "jetpack_whitelisted_ips_viewed"
-        case .jetpackWhitelistedIpsChanged:
-            return "jetpack_whitelisted_ips_changed"
+        case .jetpackAllowlistedIpsViewed:
+            return "jetpack_allowlisted_ips_viewed"
+        case .jetpackAllowlistedIpsChanged:
+            return "jetpack_allowlisted_ips_changed"
         case .activitylogFilterbarSelectType:
             return "activitylog_filterbar_select_type"
         case .activitylogFilterbarResetType:
