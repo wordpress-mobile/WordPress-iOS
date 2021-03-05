@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-18 12:54:08+0000 */
+/* Translation-Revision-Date: 2021-03-04 15:54:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -164,7 +164,7 @@
 "%d posts" = "%d articles";
 
 /* Message for a notice informing the user their scan completed and %d threats were found */
-"%d potential threats found" = "%d potential threats found";
+"%d potential threats found" = "%d menaces potentielles détectées";
 
 /* Age between dates over one year. */
 "%d years" = "%d ans";
@@ -241,7 +241,7 @@
 "1 post, 1 file not uploaded" = "1 article, 1 fichier non téléversé";
 
 /* Message for a notice informing the user their scan completed and 1 threat was found */
-"1 potential threat found" = "1 potential threat found";
+"1 potential threat found" = "1 menace potentielle détectée";
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
@@ -549,7 +549,7 @@
 "Allow WordPress.com login" = "Autoriser la connexion à WordPress.com";
 
 /* Message on camera permissions screen to explain why the app needs camera and microphone permissions */
-"Allow access so you can start taking photos and videos." = "Allow access so you can start taking photos and videos.";
+"Allow access so you can start taking photos and videos." = "Autorisez l’accès pour commencer à faire des photos et des vidéos.";
 
 /* A short description of the comment like sharing setting. */
 "Allow all comments to be Liked by you and your readers" = "Autoriser tous les commentaires à être aimés par vous et vos lecteurs";
@@ -920,7 +920,7 @@
 "Block this site" = "Block this site";
 
 /* Notice title when blocking a site succeeds. */
-"Blocked site" = "Blocked site";
+"Blocked site" = "Site bloqué";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
@@ -1186,7 +1186,7 @@
 "Choose" = "Choisir";
 
 /* Title for selecting a new homepage */
-"Choose Homepage" = "Choose Homepage";
+"Choose Homepage" = "Sélectionner la page d’accueil";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Choisir les pages";
@@ -2089,13 +2089,13 @@
 "Double tap to move the block up" = "Toucher deux fois pour faire monter le bloc";
 
 /* No comment provided by engineer. */
-"Double tap to open Action Sheet to edit, replace, or clear the image" = "Double tap to open Action Sheet to edit, replace, or clear the image";
+"Double tap to open Action Sheet to edit, replace, or clear the image" = "Appuyer deux fois pour ouvrir la feuille d’action afin de modifier, remplacer ou supprimer l’image";
 
 /* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "Toucher deux fois pour ouvrir la feuille d’actions avec les options disponibles";
 
 /* No comment provided by engineer. */
-"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Double tap to open Bottom Sheet to edit, replace, or clear the image";
+"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Appuyer deux fois pour ouvrir la feuille du bas afin de modifier, remplacer ou supprimer l’image";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet with available options" = "Toucher deux fois pour ouvrir la feuille du bas avec les options disponibles";
@@ -2196,7 +2196,7 @@
 "Edit file" = "Modifier le site";
 
 /* No comment provided by engineer. */
-"Edit focal point" = "Edit focal point";
+"Edit focal point" = "Modifier le point focal";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Modifier les nouveaux articles et pages avec le nouvel éditeur de block.";
@@ -2631,7 +2631,7 @@
 "Follow other sites" = "Suivez d’autres sites";
 
 /* Verb. An option to follow a site. */
-"Follow site" = "Follow site";
+"Follow site" = "S’abonner au site";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "Suivez vos sites préférés et découvrez de nouvelles lectures.";
@@ -4060,7 +4060,7 @@
 "No themes matching your search" = "Aucun thème ne correspond à votre recherche";
 
 /* Message for a notice informing the user their scan completed and no threats were found */
-"No threats found" = "No threats found";
+"No threats found" = "Aucune menace détectée";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -4364,7 +4364,7 @@
 "Page title. Empty" = "Titre de la page. Vide";
 
 /* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Page updated";
+"Page updated" = "Page mise à jour";
 
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
@@ -4668,10 +4668,10 @@
 "Post title. Empty" = "Titre de l’article. Vide";
 
 /* Title of camera permissions screen */
-"Post to WordPress" = "Post to WordPress";
+"Post to WordPress" = "Article vers WordPress";
 
 /* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Post updated";
+"Post updated" = "Article mis à jour";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Code Postal";
@@ -5104,7 +5104,7 @@
 "Reply to post…" = "Répondre à l’article…";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
-"Report this post" = "Report this post";
+"Report this post" = "Signaler cet article";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Exigez l'approbation manuelle pour les commentaires comprenant un nombre de liens plus élevé que celui-ci.";
@@ -5325,7 +5325,7 @@
 "Scan Again" = "Analyser de nouveau";
 
 /* Title for a notice informing the user their scan has completed */
-"Scan Finished" = "Scan Finished";
+"Scan Finished" = "Analyse terminée";
 
 /* Title of the view */
 "Scan History" = "Analyser l’historique";
@@ -6796,7 +6796,7 @@
 "Unable to Sync" = "Synchronisation impossible";
 
 /* Notice title when blocking a site fails. */
-"Unable to block site" = "Unable to block site";
+"Unable to block site" = "Impossible de bloquer le site";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "Impossible de supprimer tous les médias.";

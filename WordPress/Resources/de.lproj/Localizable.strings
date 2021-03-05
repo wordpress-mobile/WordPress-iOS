@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-19 17:24:25+0000 */
+/* Translation-Revision-Date: 2021-03-04 11:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -164,7 +164,7 @@
 "%d posts" = "%d Beiträge";
 
 /* Message for a notice informing the user their scan completed and %d threats were found */
-"%d potential threats found" = "%d potential threats found";
+"%d potential threats found" = "%d potenzielle Bedrohungen gefunden";
 
 /* Age between dates over one year. */
 "%d years" = "%d Jahre";
@@ -241,7 +241,7 @@
 "1 post, 1 file not uploaded" = "1 Beitrag, 1 Datei nicht hochgeladen";
 
 /* Message for a notice informing the user their scan completed and 1 threat was found */
-"1 potential threat found" = "1 potential threat found";
+"1 potential threat found" = "1 potenzielle Bedrohung gefunden";
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
@@ -549,7 +549,7 @@
 "Allow WordPress.com login" = "WordPress.com Anmeldung erlauben";
 
 /* Message on camera permissions screen to explain why the app needs camera and microphone permissions */
-"Allow access so you can start taking photos and videos." = "Allow access so you can start taking photos and videos.";
+"Allow access so you can start taking photos and videos." = "Zugriff erlauben, damit du Fotos und Videos aufnehmen kannst.";
 
 /* A short description of the comment like sharing setting. */
 "Allow all comments to be Liked by you and your readers" = "Zulassen, dass deine Leser und du alle Kommentare mit „Gefällt mir“ kennzeichnen können.";
@@ -920,7 +920,7 @@
 "Block this site" = "Block this site";
 
 /* Notice title when blocking a site succeeds. */
-"Blocked site" = "Blocked site";
+"Blocked site" = "Blockierte Website";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
@@ -1186,7 +1186,7 @@
 "Choose" = "Auswählen";
 
 /* Title for selecting a new homepage */
-"Choose Homepage" = "Choose Homepage";
+"Choose Homepage" = "Startseite auswählen";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Seiten auswählen";
@@ -2089,13 +2089,13 @@
 "Double tap to move the block up" = "Zum Verschieben des Blocks nach oben zweimal tippen";
 
 /* No comment provided by engineer. */
-"Double tap to open Action Sheet to edit, replace, or clear the image" = "Double tap to open Action Sheet to edit, replace, or clear the image";
+"Double tap to open Action Sheet to edit, replace, or clear the image" = "Tippe zweimal, um das Action Sheet zu öffnen und das Bild zu bearbeiten, auszutauschen oder zu löschen";
 
 /* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "Tippe zweimal, um das Action Sheet mit den verfügbaren Optionen zu öffnen";
 
 /* No comment provided by engineer. */
-"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Double tap to open Bottom Sheet to edit, replace, or clear the image";
+"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Tippe zweimal, um das Bottom Sheet zu öffnen und das Bild zu bearbeiten, auszutauschen oder zu löschen";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet with available options" = "Tippe zweimal, um das Bottom Sheet mit den verfügbaren Optionen zu öffnen";
@@ -2196,7 +2196,7 @@
 "Edit file" = "Datei bearbeiten";
 
 /* No comment provided by engineer. */
-"Edit focal point" = "Edit focal point";
+"Edit focal point" = "Fokuspunkt bearbeiten";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Bearbeite neue Beiträge und Seiten mit dem Block-Editor.";
@@ -4060,7 +4060,7 @@
 "No themes matching your search" = "Keine Themes entsprechen deiner Suche";
 
 /* Message for a notice informing the user their scan completed and no threats were found */
-"No threats found" = "No threats found";
+"No threats found" = "Keine Bedrohungen gefunden";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -4364,7 +4364,7 @@
 "Page title. Empty" = "Seitentitel. Leer";
 
 /* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Page updated";
+"Page updated" = "Seite aktualisiert";
 
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
@@ -4437,7 +4437,7 @@
 "Photo Library" = "Foto-Bibliothek";
 
 /* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Photos";
+"Photos" = "Fotos";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Fotos bereitgestellt von Pexels";
@@ -4668,10 +4668,10 @@
 "Post title. Empty" = "Beitragstitel. Leer";
 
 /* Title of camera permissions screen */
-"Post to WordPress" = "Post to WordPress";
+"Post to WordPress" = "Auf WordPress veröffentlichen";
 
 /* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Post updated";
+"Post updated" = "Beitrag aktualisiert";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Postleitzahl";
@@ -5325,7 +5325,7 @@
 "Scan Again" = "Erneut scannen";
 
 /* Title for a notice informing the user their scan has completed */
-"Scan Finished" = "Scan Finished";
+"Scan Finished" = "Scan abgeschlossen";
 
 /* Title of the view */
 "Scan History" = "Scanverlauf";
@@ -6796,7 +6796,7 @@
 "Unable to Sync" = "Synchronisieren nicht möglich";
 
 /* Notice title when blocking a site fails. */
-"Unable to block site" = "Unable to block site";
+"Unable to block site" = "Kann Website nicht blockieren";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "Es konnten nicht alle Medienelemente gelöscht werden.";

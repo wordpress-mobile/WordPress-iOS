@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-18 12:54:08+0000 */
+/* Translation-Revision-Date: 2021-03-04 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -164,7 +164,7 @@
 "%d posts" = "%d개의 글";
 
 /* Message for a notice informing the user their scan completed and %d threats were found */
-"%d potential threats found" = "%d potential threats found";
+"%d potential threats found" = "잠재적 위협 %d개 찾음";
 
 /* Age between dates over one year. */
 "%d years" = "%d 년";
@@ -241,7 +241,7 @@
 "1 post, 1 file not uploaded" = "1개의 글과 1개의 파일이 업로드되지 않음";
 
 /* Message for a notice informing the user their scan completed and 1 threat was found */
-"1 potential threat found" = "1 potential threat found";
+"1 potential threat found" = "잠재적 위협 1개 찾음";
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
@@ -549,7 +549,7 @@
 "Allow WordPress.com login" = "워드프레스닷컴 로그인 허용";
 
 /* Message on camera permissions screen to explain why the app needs camera and microphone permissions */
-"Allow access so you can start taking photos and videos." = "Allow access so you can start taking photos and videos.";
+"Allow access so you can start taking photos and videos." = "사진과 비디오 촬영을 시작할 수 있도록 접근 허용";
 
 /* A short description of the comment like sharing setting. */
 "Allow all comments to be Liked by you and your readers" = "회원님과 독자가 좋아요를 표시한 모든 댓글 허용";
@@ -917,10 +917,10 @@
 "Block settings" = "블록 설정";
 
 /* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Block this site";
+"Block this site" = "이 블로그 차단";
 
 /* Notice title when blocking a site succeeds. */
-"Blocked site" = "Blocked site";
+"Blocked site" = "차단한 사이트";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "블로그";
@@ -1186,7 +1186,7 @@
 "Choose" = "선택하기";
 
 /* Title for selecting a new homepage */
-"Choose Homepage" = "Choose Homepage";
+"Choose Homepage" = "홈페이지 선택";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "페이지 선택";
@@ -2089,13 +2089,13 @@
 "Double tap to move the block up" = "블록을 위로 이동하려면 두 번 탭하세요.";
 
 /* No comment provided by engineer. */
-"Double tap to open Action Sheet to edit, replace, or clear the image" = "Double tap to open Action Sheet to edit, replace, or clear the image";
+"Double tap to open Action Sheet to edit, replace, or clear the image" = "이미지를 편집, 교체 또는 지울 작업 시트를 두 번 눌러 열기";
 
 /* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "사용할 수 있는 옵션이 포함된 작업 시트를 열려면 두 번 누르세요.";
 
 /* No comment provided by engineer. */
-"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Double tap to open Bottom Sheet to edit, replace, or clear the image";
+"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "이미지를 편집, 교체 또는 지울 하단 시트를 두 번 눌러 열기";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet with available options" = "사용할 수 있는 옵션이 포함된 하위 시트를 열려면 두 번 누르세요.";
@@ -2196,7 +2196,7 @@
 "Edit file" = "파일 편집하기";
 
 /* No comment provided by engineer. */
-"Edit focal point" = "Edit focal point";
+"Edit focal point" = "초점 편집하기";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "블록 편집기에서 새 글과 페이지를 편집하세요.";
@@ -4060,7 +4060,7 @@
 "No themes matching your search" = "검색과 일치하는 테마 없음";
 
 /* Message for a notice informing the user their scan completed and no threats were found */
-"No threats found" = "No threats found";
+"No threats found" = "찾은 위협 없음";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -4364,7 +4364,7 @@
 "Page title. Empty" = "페이지 제목입니다. 비었습니다";
 
 /* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Page updated";
+"Page updated" = "페이지가 업데이트됨";
 
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
@@ -4668,10 +4668,10 @@
 "Post title. Empty" = "글 제목. 비어 있음";
 
 /* Title of camera permissions screen */
-"Post to WordPress" = "Post to WordPress";
+"Post to WordPress" = "워드프레스에 게시";
 
 /* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Post updated";
+"Post updated" = "글이 업데이트됨";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "우편번호";
@@ -5325,7 +5325,7 @@
 "Scan Again" = "다시 검사하기";
 
 /* Title for a notice informing the user their scan has completed */
-"Scan Finished" = "Scan Finished";
+"Scan Finished" = "스캔 완료됨";
 
 /* Title of the view */
 "Scan History" = "스캔 기록";
@@ -6796,7 +6796,7 @@
 "Unable to Sync" = "동기화할 수 없음";
 
 /* Notice title when blocking a site fails. */
-"Unable to block site" = "Unable to block site";
+"Unable to block site" = "사이트를 차단할 수 없음";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "모든 미디어 항목을 삭제할 수 없습니다.";
@@ -6932,7 +6932,7 @@
 "Unfollow %@" = "%@(을)를 팔로우 취소하기";
 
 /* Verb. An option to unfollow a site. */
-"Unfollow site" = "Unfollow site";
+"Unfollow site" = "사이트 팔로우 취소";
 
 /* Notice title when unfollowing a site succeeds.
    User unfollowed a site. */
@@ -7871,7 +7871,7 @@
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "DudaMobile에서 설치한 모바일 플러그인으로 인해 앱이 블로그에 연결할 수 없습니다.";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
-"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".";
+"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "안전한 것이 확실하지 않은 한 보안 문제를 무시해서는 안 됩니다. 이 위협 무시를 선택하면 사이트 \"%1$@\"에서 위협이 유지됩니다.";
 
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "사용자명은 다시 바꿀 수 없게 됩니다.";

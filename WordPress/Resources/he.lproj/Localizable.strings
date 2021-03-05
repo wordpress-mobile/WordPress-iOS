@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-18 11:54:11+0000 */
+/* Translation-Revision-Date: 2021-03-04 15:54:56+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -164,7 +164,7 @@
 "%d posts" = "%d פוסטים";
 
 /* Message for a notice informing the user their scan completed and %d threats were found */
-"%d potential threats found" = "%d potential threats found";
+"%d potential threats found" = "נמצאו %d איומים פוטנציאליים";
 
 /* Age between dates over one year. */
 "%d years" = "%d שנים";
@@ -241,7 +241,7 @@
 "1 post, 1 file not uploaded" = "פוסט אחד וקובץ אחד לא הועלו";
 
 /* Message for a notice informing the user their scan completed and 1 threat was found */
-"1 potential threat found" = "1 potential threat found";
+"1 potential threat found" = "נמצא איום פוטנציאלי אחד";
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
@@ -549,7 +549,7 @@
 "Allow WordPress.com login" = "הרשאת התחברות ל-WordPress.com";
 
 /* Message on camera permissions screen to explain why the app needs camera and microphone permissions */
-"Allow access so you can start taking photos and videos." = "Allow access so you can start taking photos and videos.";
+"Allow access so you can start taking photos and videos." = "עליך לאפשר גישה כדי להתחיל לצלם תמונות וסרטונים.";
 
 /* A short description of the comment like sharing setting. */
 "Allow all comments to be Liked by you and your readers" = "קבלת 'לייקים' לכל התגובות ממך ומהקוראים שלך";
@@ -917,10 +917,10 @@
 "Block settings" = "הגדרות הבלוק";
 
 /* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Block this site";
+"Block this site" = "לחסום את האתר הזה";
 
 /* Notice title when blocking a site succeeds. */
-"Blocked site" = "Blocked site";
+"Blocked site" = "אתר חסום";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "אתר";
@@ -1186,7 +1186,7 @@
 "Choose" = "לבחור";
 
 /* Title for selecting a new homepage */
-"Choose Homepage" = "Choose Homepage";
+"Choose Homepage" = "לבחור עמוד בית";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "לבחור עמודים";
@@ -2089,13 +2089,13 @@
 "Double tap to move the block up" = "יש להקיש פעמיים כדי להזיז את הבלוק למעלה";
 
 /* No comment provided by engineer. */
-"Double tap to open Action Sheet to edit, replace, or clear the image" = "Double tap to open Action Sheet to edit, replace, or clear the image";
+"Double tap to open Action Sheet to edit, replace, or clear the image" = "יש להקיש פעמיים כדי לפתוח את גיליון הפעולה ולערוך, להחליף או למחוק את התמונה";
 
 /* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "יש להקיש פעמיים כדי לפתוח את גיליון הפעולות עם האפשרויות הזמינות";
 
 /* No comment provided by engineer. */
-"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Double tap to open Bottom Sheet to edit, replace, or clear the image";
+"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "יש להקיש פעמיים כדי לפתוח את הגיליון התחתון ולערוך, להחליף או למחוק את התמונה";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet with available options" = "יש להקיש פעמיים כדי לפתוח את גיליון הכפתורים עם האפשרויות הזמינות";
@@ -2196,7 +2196,7 @@
 "Edit file" = "לערוך קובץ";
 
 /* No comment provided by engineer. */
-"Edit focal point" = "Edit focal point";
+"Edit focal point" = "לערוך נקודת מוקד";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "לעריכת פוסטים ועמודים חדשים עם עורך הבלוקים.";
@@ -2631,7 +2631,7 @@
 "Follow other sites" = "מעקב אחר אתרים אחרים";
 
 /* Verb. An option to follow a site. */
-"Follow site" = "Follow site";
+"Follow site" = "לעקוב אחרי האתר";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "כדאי לעקוב אחר האתרים המועדפים שלך ולגלות חומרי קריאה חדשים.";
@@ -4060,7 +4060,7 @@
 "No themes matching your search" = "לא נמצאו ערכות עיצוב שמתאימות לחיפוש שלך";
 
 /* Message for a notice informing the user their scan completed and no threats were found */
-"No threats found" = "No threats found";
+"No threats found" = "לא נמצאו איומים";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -4364,7 +4364,7 @@
 "Page title. Empty" = "כותרת העמוד. ריק";
 
 /* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Page updated";
+"Page updated" = "עמוד עודכן";
 
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
@@ -4437,7 +4437,7 @@
 "Photo Library" = "ספריית תמונות";
 
 /* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Photos";
+"Photos" = "תמונות";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "התמונות מובאות בחסות Pexels";
@@ -4668,10 +4668,10 @@
 "Post title. Empty" = "כותרת הפוסט. ריק";
 
 /* Title of camera permissions screen */
-"Post to WordPress" = "Post to WordPress";
+"Post to WordPress" = "פרסום ב-WordPress";
 
 /* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Post updated";
+"Post updated" = "פוסט עודכן";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "מיקוד";
@@ -5104,7 +5104,7 @@
 "Reply to post…" = "מענה לפוסט...";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
-"Report this post" = "Report this post";
+"Report this post" = "דיווח על פוסט זה";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "אישור ידני דרוש לתגובות שכוללות כמות קישורים גבוהה מזה.";
@@ -5325,7 +5325,7 @@
 "Scan Again" = "לסרוק שוב";
 
 /* Title for a notice informing the user their scan has completed */
-"Scan Finished" = "Scan Finished";
+"Scan Finished" = "הסריקה הסתיימה";
 
 /* Title of the view */
 "Scan History" = "היסטוריית סריקות";
@@ -6796,7 +6796,7 @@
 "Unable to Sync" = "אי אפשר לסנכרן";
 
 /* Notice title when blocking a site fails. */
-"Unable to block site" = "Unable to block site";
+"Unable to block site" = "אין אפשרות לחסום את האתר";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "לא ניתן למחוק את כל פריטי המדיה.";
@@ -6932,7 +6932,7 @@
 "Unfollow %@" = "להפסיק את המעקב אחר %@";
 
 /* Verb. An option to unfollow a site. */
-"Unfollow site" = "Unfollow site";
+"Unfollow site" = "לבטל את המעקב אחר האתר";
 
 /* Notice title when unfollowing a site succeeds.
    User unfollowed a site. */
@@ -7871,7 +7871,7 @@
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "נראה שהתקנת תוסף למכשירים ניידים מ-DudaMobile שמונע מהאפליקציה להתחבר לבלוג שלך";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
-"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".";
+"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "לא כדאי להתעלם מבעיות אבטחה אלא אם אין לך ספק שהתוכן בטוח. אם ברצונך להתעלם מהאיום הזה, הוא יישאר באתר \"%1$@\".";
 
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "לא תהיה לך אפשרות לשנות את שם המשתמש בחזרה.";

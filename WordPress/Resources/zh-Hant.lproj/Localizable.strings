@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-19 10:54:08+0000 */
+/* Translation-Revision-Date: 2021-03-04 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -164,7 +164,7 @@
 "%d posts" = "%d 篇文章";
 
 /* Message for a notice informing the user their scan completed and %d threats were found */
-"%d potential threats found" = "%d potential threats found";
+"%d potential threats found" = "發現 %d 個潛在威脅";
 
 /* Age between dates over one year. */
 "%d years" = "%d 年";
@@ -241,7 +241,7 @@
 "1 post, 1 file not uploaded" = "無法上傳 1 篇文章和 1 個檔案";
 
 /* Message for a notice informing the user their scan completed and 1 threat was found */
-"1 potential threat found" = "1 potential threat found";
+"1 potential threat found" = "發現 1 個潛在威脅";
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
@@ -549,7 +549,7 @@
 "Allow WordPress.com login" = "允許 WordPress.com 登入";
 
 /* Message on camera permissions screen to explain why the app needs camera and microphone permissions */
-"Allow access so you can start taking photos and videos." = "Allow access so you can start taking photos and videos.";
+"Allow access so you can start taking photos and videos." = "允許存取，以開始拍攝相片和影片。";
 
 /* A short description of the comment like sharing setting. */
 "Allow all comments to be Liked by you and your readers" = "允許你和你的讀者對所有留言按讚";
@@ -920,7 +920,7 @@
 "Block this site" = "Block this site";
 
 /* Notice title when blocking a site succeeds. */
-"Blocked site" = "Blocked site";
+"Blocked site" = "封鎖的網站";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "網誌";
@@ -1186,7 +1186,7 @@
 "Choose" = "選擇";
 
 /* Title for selecting a new homepage */
-"Choose Homepage" = "Choose Homepage";
+"Choose Homepage" = "選擇首頁";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "選擇頁面";
@@ -2089,13 +2089,13 @@
 "Double tap to move the block up" = "按兩下將區塊向上移";
 
 /* No comment provided by engineer. */
-"Double tap to open Action Sheet to edit, replace, or clear the image" = "Double tap to open Action Sheet to edit, replace, or clear the image";
+"Double tap to open Action Sheet to edit, replace, or clear the image" = "點兩下開啟動作工作表，然後編輯、取代或清除圖片";
 
 /* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "按兩下以開啟含有可用選項的操作工作表";
 
 /* No comment provided by engineer. */
-"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Double tap to open Bottom Sheet to edit, replace, or clear the image";
+"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "點兩下開啟底部工作表，然後編輯、取代或清除圖片";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet with available options" = "按兩下以開啟含有可用選項的底部工作表";
@@ -2196,7 +2196,7 @@
 "Edit file" = "編輯檔案";
 
 /* No comment provided by engineer. */
-"Edit focal point" = "Edit focal point";
+"Edit focal point" = "編輯焦點";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "使用區塊編輯器編輯新文章和頁面。";
@@ -4060,7 +4060,7 @@
 "No themes matching your search" = "沒有符合你搜尋條件的佈景主題";
 
 /* Message for a notice informing the user their scan completed and no threats were found */
-"No threats found" = "No threats found";
+"No threats found" = "沒有找到威脅";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -4364,7 +4364,7 @@
 "Page title. Empty" = "頁面標題。 清空";
 
 /* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Page updated";
+"Page updated" = "頁面已更新";
 
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
@@ -4668,10 +4668,10 @@
 "Post title. Empty" = "文章標題。空白";
 
 /* Title of camera permissions screen */
-"Post to WordPress" = "Post to WordPress";
+"Post to WordPress" = "張貼到 WordPress";
 
 /* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Post updated";
+"Post updated" = "文章已更新";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "郵遞區號";
@@ -5325,7 +5325,7 @@
 "Scan Again" = "重新掃瞄";
 
 /* Title for a notice informing the user their scan has completed */
-"Scan Finished" = "Scan Finished";
+"Scan Finished" = "掃描完成";
 
 /* Title of the view */
 "Scan History" = "掃描記錄";
@@ -6796,7 +6796,7 @@
 "Unable to Sync" = "無法同步";
 
 /* Notice title when blocking a site fails. */
-"Unable to block site" = "Unable to block site";
+"Unable to block site" = "無法封鎖網站";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "無法刪除所有媒體項目。";
@@ -6932,7 +6932,7 @@
 "Unfollow %@" = "取消關注 %@";
 
 /* Verb. An option to unfollow a site. */
-"Unfollow site" = "Unfollow site";
+"Unfollow site" = "停止追蹤網站";
 
 /* Notice title when unfollowing a site succeeds.
    User unfollowed a site. */
@@ -7871,7 +7871,7 @@
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "你似乎安裝了 DudaMobile 的行動版外掛程式，導致應用程式無法連接至你的網誌";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
-"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".";
+"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "除非你十分確定其安全無害，否則不應忽略安全性問題。 若你選擇忽略此威脅，該威脅會繼續存在於你的網站 「%1$@」。";
 
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "一旦變更使用者名稱就無法復原。";
