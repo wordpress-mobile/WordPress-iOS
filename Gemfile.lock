@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/wordpress-mobile/release-toolkit
-  revision: a932bd25320f2b82be0774b66e550c6862cd8765
-  tag: 0.12.0
+  revision: 4efe6cd1585db9bbf8f3f0cd889037ceade8de6e
+  tag: 0.15.0
   specs:
-    fastlane-plugin-wpmreleasetoolkit (0.12.0)
+    fastlane-plugin-wpmreleasetoolkit (0.15.0)
       activesupport (~> 5)
       bigdecimal (~> 1.4)
       chroma (= 0.2.0)
@@ -21,7 +21,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     CFPropertyList (3.0.3)
-    activesupport (5.2.4.4)
+    activesupport (5.2.4.5)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
@@ -96,7 +96,7 @@ GEM
       highline (~> 1.7.2)
     commonmarker (0.21.0)
       ruby-enum (~> 0.5)
-    concurrent-ruby (1.1.7)
+    concurrent-ruby (1.1.8)
     declarative (0.0.20)
     declarative-option (0.1.0)
     diffy (3.4.0)
@@ -117,7 +117,7 @@ GEM
     faraday-cookie_jar (0.0.7)
       faraday (>= 0.8.0)
       http-cookie (~> 1.0.0)
-    faraday-net_http (1.0.0)
+    faraday-net_http (1.0.1)
     faraday_middleware (1.0.0)
       faraday (~> 1.0)
     fastimage (2.2.1)
@@ -204,7 +204,7 @@ GEM
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     httpclient (2.8.3)
-    i18n (1.8.5)
+    i18n (1.8.9)
       concurrent-ruby (~> 1.0)
     jmespath (1.4.0)
     json (2.5.1)
@@ -216,7 +216,7 @@ GEM
     mini_magick (4.11.0)
     mini_mime (1.0.2)
     mini_portile2 (2.5.0)
-    minitest (5.14.2)
+    minitest (5.14.4)
     molinillo (0.6.6)
     multi_json (1.15.0)
     multipart-post (2.0.0)
@@ -227,10 +227,10 @@ GEM
     nokogiri (1.11.1)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
-    octokit (4.19.0)
+    octokit (4.20.0)
       faraday (>= 0.9)
       sawyer (~> 0.8.0, >= 0.5.3)
-    oj (3.11.1)
+    oj (3.11.2)
     optimist (3.0.1)
     options (2.3.2)
     os (1.1.1)
@@ -255,7 +255,7 @@ GEM
     ruby-enum (0.8.0)
       i18n
     ruby-macho (1.4.0)
-    ruby2_keywords (0.0.2)
+    ruby2_keywords (0.0.4)
     rubyzip (2.3.0)
     sawyer (0.8.2)
       addressable (>= 2.3.5)
@@ -283,7 +283,7 @@ GEM
       tty-cursor (~> 0.7)
     typhoeus (1.4.0)
       ethon (>= 0.9.0)
-    tzinfo (1.2.8)
+    tzinfo (1.2.9)
       thread_safe (~> 0.1)
     uber (0.1.0)
     unf (0.1.4)
@@ -321,4 +321,4 @@ DEPENDENCIES
   xcpretty-travis-formatter
 
 BUNDLED WITH
-   2.2.10
+   2.2.11
