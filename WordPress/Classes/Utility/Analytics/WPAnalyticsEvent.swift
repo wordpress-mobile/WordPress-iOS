@@ -82,6 +82,8 @@ import Foundation
     case readerDiscoverContentPresented
     case readerPostMarkSeen
     case readerPostMarkUnseen
+    case readerRelatedPostFromOtherSiteClicked
+    case readerRelatedPostFromSameSiteClicked
 
     // What's New - Feature announcements
     case featureAnnouncementShown
@@ -289,6 +291,10 @@ import Foundation
             return "reader_mark_as_seen"
         case .readerPostMarkUnseen:
             return "reader_mark_as_unseen"
+        case .readerRelatedPostFromOtherSiteClicked:
+            return "reader_related_post_from_other_site_clicked"
+        case .readerRelatedPostFromSameSiteClicked:
+            return "reader_related_post_from_same_site_clicked"
 
         // What's New - Feature announcements
         case .featureAnnouncementShown:

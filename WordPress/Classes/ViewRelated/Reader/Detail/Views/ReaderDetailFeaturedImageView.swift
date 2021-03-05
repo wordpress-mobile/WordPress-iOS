@@ -95,7 +95,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         scrollViewObserver?.invalidate()
         scrollViewObserver = nil
 
-        restoreNavigationBarAppearance()
+        restoreNavigationBarAppearanceIfNeeded()
     }
 
     // MARK: - Public: Configuration
@@ -125,6 +125,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     func configure(for post: ReaderPost, with statusBarUpdater: UpdatableStatusBarStyle) {
         self.post = post
         self.statusBarUpdater = statusBarUpdater
+        isLoaded = false
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -157,7 +158,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         updateUI()
     }
 
-    func restoreNavigationBarAppearance() {
+    func restoreNavigationBarAppearanceIfNeeded() {
         guard
             let navBar = navigationBar,
             let appearance = originalNavBarAppearance
