@@ -39,6 +39,9 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     /// Keeps track of if we've loaded the image before
     var isLoaded: Bool = false
 
+    /// Specifies whether the navigation bar appearance should be restored on viewWillAppear
+    var shouldRestoreNavigationBarAppearance: Bool = true
+
     // MARK: - Private: Properties
 
     /// Image loader for the featured image
@@ -95,7 +98,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         scrollViewObserver?.invalidate()
         scrollViewObserver = nil
 
-        restoreNavigationBarAppearance()
+        restoreNavigationBarAppearanceIfNeeded()
     }
 
     // MARK: - Public: Configuration
@@ -158,10 +161,11 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         updateUI()
     }
 
-    func restoreNavigationBarAppearance() {
+    func restoreNavigationBarAppearanceIfNeeded() {
         guard
             let navBar = navigationBar,
-            let appearance = originalNavBarAppearance
+            let appearance = originalNavBarAppearance,
+            shouldRestoreNavigationBarAppearance
         else {
             return
         }

@@ -332,6 +332,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         featuredImage.delegate = coordinator
 
+        if navigationController?.viewControllers.first is ReaderDetailViewController {
+            featuredImage.shouldRestoreNavigationBarAppearance = false
+        }
+
         view.insertSubview(featuredImage, belowSubview: loadingView)
 
         NSLayoutConstraint.activate([
@@ -547,8 +551,8 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
 
         let controller = ReaderDetailViewController.controllerWithPostURL(url)
 
-        // Related posts should be presented in its own nav stack, so that a user
-        // can return to the original post by dismissing the related posts nav stack.
+        // Related posts should be presented in its own nav stack,
+        // so that a user can return to the original post by dismissing the related posts nav stack.
         if navigationController?.viewControllers.first is ReaderDetailViewController {
             navigationController?.pushViewController(controller, animated: true)
         } else {
