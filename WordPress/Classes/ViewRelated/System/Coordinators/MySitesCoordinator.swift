@@ -60,7 +60,7 @@ class MySitesCoordinator: NSObject {
             // quite complex and contains many nested child view controllers. As we're planning
             // to revamp that section in the not too distant future, I opted for this simpler
             // configuration for now. 2018-07-11 @frosty
-            UserDefaults.standard.set(timePeriod.rawValue, forKey: MySitesCoordinator.statsPeriodTypeDefaultsKey)
+            UserDefaults.standard.set(timePeriod.rawValue, forKey: StatsPeriodType.statsPeriodTypeDefaultsKey)
 
             blogDetailsViewController.showDetailView(for: .stats)
         }
@@ -69,8 +69,6 @@ class MySitesCoordinator: NSObject {
     func showActivityLog(for blog: Blog) {
         showBlogDetails(for: blog, then: .activity)
     }
-
-    private static let statsPeriodTypeDefaultsKey = "LastSelectedStatsPeriodType"
 
     // MARK: - My Sites
 
