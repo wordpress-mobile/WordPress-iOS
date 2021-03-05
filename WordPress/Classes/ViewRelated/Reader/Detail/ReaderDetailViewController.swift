@@ -332,10 +332,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         featuredImage.delegate = coordinator
 
-        if navigationController?.viewControllers.first is ReaderDetailViewController {
-            featuredImage.shouldRestoreNavigationBarAppearance = false
-        }
-
         view.insertSubview(featuredImage, belowSubview: loadingView)
 
         NSLayoutConstraint.activate([
