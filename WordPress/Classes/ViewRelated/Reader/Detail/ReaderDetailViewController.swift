@@ -50,9 +50,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Bottom toolbar
     private let toolbar: ReaderDetailToolbar = .loadFromNib()
 
-    /// Comment view, add action bar
-    private let commentAction: ReaderDetailCommentsView = .loadFromNib()
-
     /// A view that fills the bottom portion outside of the safe area
     @IBOutlet weak var toolbarSafeAreaView: UIView!
 
@@ -118,7 +115,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureNoResultsViewController()
         observeWebViewHeight()
         configureNotifications()
-        configureCommentAction()
 
         coordinator?.start()
 
@@ -147,6 +143,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
+        guard let controller = navigationController, !controller.isBeingDismissed else {
+            return
+        }
 
         featuredImage.viewWillDisappear()
     }
@@ -185,7 +185,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         featuredImage.configure(for: post, with: self)
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
-        commentAction.configure(for: post, in: self)
 
         if let postURLString = post.permaLink,
            let postURL = URL(string: postURLString) {
@@ -371,10 +370,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
     }
 
-    private func configureCommentAction() {
-        actionStackView.insertArrangedSubview(commentAction, at: 0)
-    }
-
     private func configureDiscoverAttribution(_ post: ReaderPost) {
         if post.sourceAttributionStyle() == .none {
             attributionView.isHidden = true
@@ -449,6 +444,24 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         let controller = ReaderDetailViewController.loadFromStoryboard()
         let coordinator = ReaderDetailCoordinator(view: controller)
         coordinator.postURL = url
+        controller.coordinator = coordinator
+
+        return controller
+    }
+
+
+    /// Creates an instance from a Related post / Simple Post
+    /// - Parameter simplePost: The related post object
+    /// - Returns: If the related post URL is not valid
+    class func controllerWithSimplePost(_ simplePost: RemoteReaderSimplePost) -> ReaderDetailViewController? {
+        guard !simplePost.postUrl.isEmpty(), let url = URL(string: simplePost.postUrl) else {
+            return nil
+        }
+
+        let controller = ReaderDetailViewController.loadFromStoryboard()
+        let coordinator = ReaderDetailCoordinator(view: controller)
+        coordinator.postURL = url
+        coordinator.remoteSimplePost = simplePost
         controller.coordinator = coordinator
 
         return controller
@@ -534,6 +547,26 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return ReaderRelatedPostsSectionHeaderView.height
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        let section = relatedPosts[indexPath.section]
+        guard let post = section?[indexPath.row],
+              let controller = ReaderDetailViewController.controllerWithSimplePost(post)
+        else {
+            return
+        }
+
+        // Related posts should be presented in its own nav stack,
+        // so that a user can return to the original post by dismissing the related posts nav stack.
+        if navigationController?.viewControllers.first is ReaderDetailViewController {
+            navigationController?.pushViewController(controller, animated: true)
+        } else {
+            let nav = UINavigationController(rootViewController: controller)
+            self.present(nav, animated: true)
+        }
     }
 
     private func getSectionTitle(for section: Int) -> String? {
@@ -655,7 +688,12 @@ private extension ReaderDetailViewController {
             safariButtonItem()
         ]
 
-        navigationItem.leftBarButtonItem = backButtonItem()
+        if !isModal() {
+            navigationItem.leftBarButtonItem = backButtonItem()
+        } else {
+            navigationItem.leftBarButtonItem = dismissButtonItem()
+        }
+
         navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
     }
 
@@ -668,6 +706,17 @@ private extension ReaderDetailViewController {
 
     @objc func didTapBackButton(_ sender: UIButton) {
         navigationController?.popViewController(animated: true)
+    }
+
+    func dismissButtonItem() -> UIBarButtonItem {
+        let button = barButtonItem(with: .gridicon(.chevronDown), action: #selector(didTapDismissButton(_:)))
+        button.accessibilityLabel = Strings.dismissButtonAccessibilityLabel
+
+        return button
+    }
+
+    @objc func didTapDismissButton(_ sender: UIButton) {
+        dismiss(animated: true)
     }
 
     func safariButtonItem() -> UIBarButtonItem? {
@@ -739,6 +788,7 @@ extension ReaderDetailViewController {
 
     private struct Strings {
         static let backButtonAccessibilityLabel = NSLocalizedString("Back", comment: "Spoken accessibility label")
+        static let dismissButtonAccessibilityLabel = NSLocalizedString("Dismiss", comment: "Spoken accessibility label")
         static let safariButtonAccessibilityLabel = NSLocalizedString("Open in Safari", comment: "Spoken accessibility label")
         static let shareButtonAccessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
         static let moreButtonAccessibilityLabel = NSLocalizedString("More", comment: "Spoken accessibility label")
