@@ -9,6 +9,7 @@ data model as well as any custom migrations.
 
 - `BlogSettings`: renamed `commentsFromKnownUsersWhitelisted` to `commentsFromKnownUsersAllowlisted`
 - `BlogSettings`: renamed `jetpackLoginWhiteListedIPAddresses` to `jetpackLoginAllowListedIPAddresses`
+- `BlogSettings`: renamed `commentsBlacklistKeys` to `commentsBlocklistKeys`
 
 ## WordPress 114
 

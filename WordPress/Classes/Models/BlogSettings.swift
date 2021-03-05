@@ -81,9 +81,9 @@ open class BlogSettings: NSManagedObject {
     ///
     @NSManaged var commentsAllowed: Bool
 
-    /// Contains a list of words, space separated, that would cause a comment to be automatically blacklisted.
+    /// Contains a list of words, space separated, that would cause a comment to be automatically blocklisted.
     ///
-    @NSManaged var commentsBlacklistKeys: Set<String>?
+    @NSManaged var commentsBlocklistKeys: Set<String>?
 
     /// If true, comments will be automatically closed after the number of days, specified by `commentsCloseAutomaticallyAfterDays`.
     ///
