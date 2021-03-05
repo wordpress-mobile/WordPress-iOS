@@ -237,10 +237,10 @@ extension PublishingEditor where Self: UIViewController {
         // End editing to avoid issues with accessibility
         view.endEditing(true)
 
-        let prepublishing = PrepublishingViewController(post: post, identifiers: prepublishingIdentifiers) { result in
+        let prepublishing = PrepublishingViewController(post: post, identifiers: prepublishingIdentifiers) { [weak self] result in
             switch result {
             case .completed(let post):
-                self.post = post
+                self?.post = post
                 publishAction()
             case .dismissed:
                 dismissAction()
