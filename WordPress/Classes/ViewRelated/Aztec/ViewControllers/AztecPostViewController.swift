@@ -564,7 +564,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     func showDeprecationNotice() {
         let okButton: (title: String, handler: FancyAlertViewController.FancyAlertButtonHandler?) =
         (
-            title: NSLocalizedString("Dismiss", comment: ""),
+            title: NSLocalizedString("Dismiss", comment: "The title of a button to close the classic editor deprecation notice alert dialog."),
             handler: { alert, _ in
                 alert.dismiss(animated: true, completion: nil)
             }
