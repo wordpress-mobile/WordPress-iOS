@@ -151,6 +151,10 @@ import Foundation
     case inviteLinksShare
     case inviteLinksDisable
 
+    // Page Layout and Site Design Picker
+    case categoryFilterSelected
+    case categoryFilterDeselected
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -415,6 +419,12 @@ import Foundation
             return "invite_links_share"
         case .inviteLinksDisable:
             return "invite_links_disable"
+
+        // Page Layout and Site Design Picker
+        case .categoryFilterSelected:
+            return "category_filter_selected"
+        case .categoryFilterDeselected:
+            return "category_filter_deselected"
         }
     }
 
