@@ -458,6 +458,24 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         return controller
     }
 
+
+    /// Creates an instance from a Related post / Simple Post
+    /// - Parameter simplePost: The related post object
+    /// - Returns: If the related post URL is not valid
+    class func controllerWithSimplePost(_ simplePost: RemoteReaderSimplePost) -> ReaderDetailViewController? {
+        guard !simplePost.postUrl.isEmpty(), let url = URL(string: simplePost.postUrl) else {
+            return nil
+        }
+
+        let controller = ReaderDetailViewController.loadFromStoryboard()
+        let coordinator = ReaderDetailCoordinator(view: controller)
+        coordinator.postURL = url
+        coordinator.remoteSimplePost = simplePost
+        controller.coordinator = coordinator
+
+        return controller
+    }
+
     /// A View Controller that displays a Post content.
     ///
     /// Use this method to present content for the user.
@@ -545,11 +563,10 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
 
         let section = relatedPosts[indexPath.section]
         guard let post = section?[indexPath.row],
-              let url = URL(string: post.postUrl) else {
+              let controller = ReaderDetailViewController.controllerWithSimplePost(post)
+        else {
             return
         }
-
-        let controller = ReaderDetailViewController.controllerWithPostURL(url)
 
         // Related posts should be presented in its own nav stack,
         // so that a user can return to the original post by dismissing the related posts nav stack.

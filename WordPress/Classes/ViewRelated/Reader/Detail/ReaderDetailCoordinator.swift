@@ -16,6 +16,9 @@ class ReaderDetailCoordinator {
     /// Used to determine if block and report are shown in the options menu.
     var readerTopic: ReaderAbstractTopic?
 
+    /// Used for analytics
+    var remoteSimplePost: RemoteReaderSimplePost?
+
     /// A post URL to be loaded and be displayed
     var postURL: URL?
 
@@ -484,6 +487,21 @@ class ReaderDetailCoordinator {
         var properties = ReaderHelpers.statsPropertiesForPost(readerPost, andValue: nil, forKey: nil)
         properties[DetailAnalyticsConstants.TypeKey] = detailType
         properties[DetailAnalyticsConstants.OfflineKey] = isOfflineView
+
+
+        // Track related post tapped
+        if let simplePost = remoteSimplePost {
+            switch simplePost.postType {
+                case .local:
+                    WPAnalytics.track(.readerRelatedPostFromSameSiteClicked, properties: properties)
+                case .global:
+                    WPAnalytics.track(.readerRelatedPostFromOtherSiteClicked, properties: properties)
+                default:
+                    DDLogError("Unknown related post type: \(String(describing: simplePost.postType))")
+            }
+        }
+
+        // Track open
         WPAppAnalytics.track(.readerArticleOpened, withProperties: properties)
 
         if let railcar = readerPost.railcarDictionary() {
