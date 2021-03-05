@@ -148,6 +148,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
+        guard let controller = navigationController, !controller.isBeingDismissed else {
+            return
+        }
+
         featuredImage.viewWillDisappear()
     }
 
