@@ -24,7 +24,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
     private lazy var selectInterestsViewController: ReaderSelectInterestsViewController = {
         let title = NSLocalizedString("Discover and follow blogs you love", comment: "Reader select interests title label text")
-        let subtitle = NSLocalizedString("Choose your interests", comment: "Reader select interests subtitle label text")
+        let subtitle = NSLocalizedString("Choose your topics", comment: "Reader select interests subtitle label text")
         let buttonTitleEnabled = NSLocalizedString("Done", comment: "Reader select interests next button enabled title text")
         let buttonTitleDisabled = NSLocalizedString("Select a few to continue", comment: "Reader select interests next button disabled title text")
 
