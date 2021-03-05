@@ -682,6 +682,8 @@ private extension ReaderDetailViewController {
 
         if !isModal() {
             navigationItem.leftBarButtonItem = backButtonItem()
+        } else {
+            navigationItem.leftBarButtonItem = dismissButtonItem()
         }
 
         navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
@@ -696,6 +698,17 @@ private extension ReaderDetailViewController {
 
     @objc func didTapBackButton(_ sender: UIButton) {
         navigationController?.popViewController(animated: true)
+    }
+
+    func dismissButtonItem() -> UIBarButtonItem {
+        let button = barButtonItem(with: .gridicon(.chevronDown), action: #selector(didTapDismissButton(_:)))
+        button.accessibilityLabel = Strings.dismissButtonAccessibilityLabel
+
+        return button
+    }
+
+    @objc func didTapDismissButton(_ sender: UIButton) {
+        dismiss(animated: true)
     }
 
     func safariButtonItem() -> UIBarButtonItem? {
@@ -767,6 +780,7 @@ extension ReaderDetailViewController {
 
     private struct Strings {
         static let backButtonAccessibilityLabel = NSLocalizedString("Back", comment: "Spoken accessibility label")
+        static let dismissButtonAccessibilityLabel = NSLocalizedString("Dismiss", comment: "Spoken accessibility label")
         static let safariButtonAccessibilityLabel = NSLocalizedString("Open in Safari", comment: "Spoken accessibility label")
         static let shareButtonAccessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
         static let moreButtonAccessibilityLabel = NSLocalizedString("More", comment: "Spoken accessibility label")
