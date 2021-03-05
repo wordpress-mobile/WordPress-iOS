@@ -5,11 +5,15 @@ import Gutenberg
 class FilterableCategoriesViewController: CollapsableHeaderViewController {
     typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice
     let tableView: UITableView
+    private lazy var debounceSelectionChange: Debouncer = {
+        Debouncer(delay: 0.1) { [weak self] in
+            guard let `self` = self else { return }
+            self.itemSelectionChanged(self.selectedItem != nil)
+        }
+    }()
     internal var selectedItem: IndexPath? = nil {
         didSet {
-            if !(oldValue != nil && selectedItem != nil) {
-                itemSelectionChanged(selectedItem != nil)
-            }
+            debounceSelectionChange.call()
         }
     }
     private let filterBar: CollapsableHeaderFilterBar
