@@ -21,7 +21,7 @@ class CameraHandler: CameraControllerDelegate {
         createdMedia(media)
     }
 
-    func showDiscardAlert(on: UIViewController, discard: @escaping () -> Void) {
+    private func showDiscardAlert(on: UIViewController, discard: @escaping () -> Void) {
         let title = NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
         let cancelTitle = NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
         let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
@@ -39,18 +39,21 @@ class CameraHandler: CameraControllerDelegate {
         on.present(alertController, animated: true, completion: nil)
     }
 
-    func endEditing(editor: StoryEditor) {
-        showDiscardAlert(on: editor) {
+    private func endEditing(editor: StoryEditor, onDismiss: @escaping () -> Void) {
+        showDiscardAlert(on: editor.topmostPresentedViewController) {
             editor.cancelEditing()
             if editor.presentedViewController is GutenbergViewController == false {
                 editor.post.managedObjectContext?.delete(editor.post)
+                onDismiss()
             }
         }
     }
 
     func dismissButtonPressed(_ cameraController: CameraController) {
         if let editor = cameraController as? StoryEditor {
-            endEditing(editor: editor)
+            endEditing(editor: editor) {
+                cameraController.dismiss(animated: true, completion: nil)
+            }
         } else {
             cameraController.dismiss(animated: true, completion: nil)
         }
@@ -62,7 +65,11 @@ class CameraHandler: CameraControllerDelegate {
 
     func editorDismissed(_ cameraController: CameraController) {
         if let editor = cameraController as? StoryEditor {
-            endEditing(editor: editor)
+            endEditing(editor: editor) {
+                cameraController.dismiss(animated: true, completion: {
+                    cameraController.dismiss(animated: false)
+                })
+            }
         }
     }
 
