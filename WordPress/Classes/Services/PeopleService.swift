@@ -313,11 +313,9 @@ extension PeopleService {
     func generateInviteLinks(_ siteID: Int,
                              success: @escaping (([InviteLinks]) -> Void),
                              failure: @escaping ((Error) -> Void)) {
-        remote.generateInviteLinks(siteID) { remoteInvites in
-            merge(remoteInvites: remoteInvites, for: siteID) {
-                let links = inviteLinks(siteID)
-                success(links)
-            }
+        remote.generateInviteLinks(siteID) { _ in
+            // Fetch after generation.
+            fetchInviteLinks(siteID, success: success, failure: failure)
         } failure: { error in
             failure(error)
         }
