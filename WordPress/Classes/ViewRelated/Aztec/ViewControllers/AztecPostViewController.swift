@@ -463,12 +463,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     private var mediaPreviewHelper: MediaPreviewHelper? = nil
 
-    let database: KeyValueDatabase = UserDefaults()
-    enum Key {
+    private let database: KeyValueDatabase = UserDefaults()
+    private enum Key {
         static let classicDeprecationNoticeHasBeenShown = "kClassicDeprecationNoticeHasBeenShown"
     }
 
-    var hasNoticeBeenShown: Bool {
+    private var hasNoticeBeenShown: Bool {
         get {
             database.bool(forKey: Key.classicDeprecationNoticeHasBeenShown)
         }
@@ -555,13 +555,13 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
     }
 
-    func shouldShowDeprecationNotice() -> Bool {
+    private func shouldShowDeprecationNotice() -> Bool {
         return hasNoticeBeenShown == false &&
             (post.postTitle ?? "").isEmpty &&
             (post.content ?? "").isEmpty
     }
 
-    func showDeprecationNotice() {
+    private func showDeprecationNotice() {
         let okButton: (title: String, handler: FancyAlertViewController.FancyAlertButtonHandler?) =
         (
             title: NSLocalizedString("Dismiss", comment: "The title of a button to close the classic editor deprecation notice alert dialog."),
