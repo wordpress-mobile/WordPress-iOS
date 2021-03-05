@@ -27,11 +27,13 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         let subtitle = NSLocalizedString("Choose your topics", comment: "Reader select interests subtitle label text")
         let buttonTitleEnabled = NSLocalizedString("Done", comment: "Reader select interests next button enabled title text")
         let buttonTitleDisabled = NSLocalizedString("Select a few to continue", comment: "Reader select interests next button disabled title text")
+        let loading = NSLocalizedString("Finding blogs and stories you’ll love...", comment: "Label displayed to the user while loading their selected interests")
 
         let configuration = ReaderSelectInterestsConfiguration(
             title: title,
             subtitle: subtitle,
-            buttonTitle: (enabled: buttonTitleEnabled, disabled: buttonTitleDisabled)
+            buttonTitle: (enabled: buttonTitleEnabled, disabled: buttonTitleDisabled),
+            loading: loading
         )
 
         return ReaderSelectInterestsViewController(configuration: configuration)

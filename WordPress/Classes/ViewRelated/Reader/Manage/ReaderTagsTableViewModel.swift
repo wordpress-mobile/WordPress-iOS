@@ -123,7 +123,8 @@ extension ReaderTagsTableViewModel {
         let configuration = ReaderSelectInterestsConfiguration(
             title: NSLocalizedString("Follow topics", comment: "Screen title. Reader select interests title label text."),
             subtitle: nil,
-            buttonTitle: nil
+            buttonTitle: nil,
+            loading: NSLocalizedString("Following new topics...", comment: "Label displayed to the user while loading their selected interests")
         )
 
         let topics = tableViewHandler.resultsController.fetchedObjects as? [ReaderTagTopic] ?? []

@@ -4,6 +4,7 @@ struct ReaderSelectInterestsConfiguration {
     let title: String
     let subtitle: String?
     let buttonTitle: (enabled: String, disabled: String)?
+    let loading: String
 }
 
 class ReaderSelectInterestsViewController: UIViewController {
@@ -19,7 +20,6 @@ class ReaderSelectInterestsViewController: UIViewController {
     }
 
     private struct Strings {
-        static let loading: String = NSLocalizedString("Finding blogs and stories you’ll love...", comment: "Label displayed to the user while loading their selected interests")
         static let tryAgainNoticeTitle = NSLocalizedString("Something went wrong. Please try again.", comment: "Error message shown when the app fails to save user selected interests")
         static let tryAgainButtonTitle = NSLocalizedString("Try Again", comment: "Try to load the list of interests again.")
     }
@@ -193,7 +193,7 @@ class ReaderSelectInterestsViewController: UIViewController {
             nextButton.isHidden = true
         }
 
-        loadingLabel.text = Strings.loading
+        loadingLabel.text = configuration.loading
     }
 
     // MARK: - Private: Data
