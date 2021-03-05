@@ -200,7 +200,7 @@
         <attribute name="ampEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="ampSupported" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsAllowed" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="commentsBlacklistKeys" optional="YES" attributeType="Transformable" valueTransformerName="SetValueTransformer" syncable="YES"/>
+        <attribute name="commentsBlocklistKeys" optional="YES" attributeType="Transformable" valueTransformerName="SetValueTransformer" elementID="commentsBlacklistKeys" syncable="YES"/>
         <attribute name="commentsCloseAutomatically" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsCloseAutomaticallyAfterDays" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsFromKnownUsersAllowlisted" optional="YES" attributeType="Boolean" usesScalarValueType="NO" elementID="commentsFromKnownUsersWhitelisted" syncable="YES"/>
