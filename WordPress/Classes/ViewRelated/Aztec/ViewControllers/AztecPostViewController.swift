@@ -571,7 +571,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         )
 
         let config = FancyAlertViewController.Config(
-            titleText: NSLocalizedString("Try the new and improved Block Editor", comment: "The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app."),
+            titleText: NSLocalizedString("Try the new Block Editor", comment: "The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app."),
             bodyText: NSLocalizedString("We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings.", comment: "The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app."),
             headerImage: nil,
             dividerPosition: .top,
