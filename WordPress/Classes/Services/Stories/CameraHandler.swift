@@ -24,6 +24,7 @@ class CameraHandler: CameraControllerDelegate {
     func dismissButtonPressed(_ cameraController: CameraController) {
         if let editor = cameraController as? StoryEditor {
             editor.cancelEditing()
+            editor.post.managedObjectContext?.delete(editor.post)
         } else {
             cameraController.dismiss(animated: true, completion: nil)
         }
