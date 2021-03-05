@@ -20,6 +20,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case unseenPosts
     case milestoneNotifications
     case commentFilters
+    case newLikeNotifications
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -64,6 +65,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .commentFilters:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .newLikeNotifications:
+            return false
         }
     }
 
@@ -128,6 +131,8 @@ extension FeatureFlag {
             return "Milestone notifications"
         case .commentFilters:
             return "Comment filters"
+        case .newLikeNotifications:
+            return "New Like Notifications"
         }
     }
 
