@@ -93,6 +93,7 @@ class NotificationDetailsViewController: UIViewController {
             }
             confettiWasShown = false
             router = makeRouter()
+            setupTableDelegates()
             refreshInterface()
             markAsReadIfNeeded()
         }
@@ -122,6 +123,7 @@ class NotificationDetailsViewController: UIViewController {
     ///
     var onSelectedNoteChange: ((Notification) -> Void)?
 
+    var likesListController: LikesListController?
 
     deinit {
         // Failsafe: Manually nuke the tableView dataSource and delegate. Make sure not to force a loadView event!
@@ -145,6 +147,7 @@ class NotificationDetailsViewController: UIViewController {
         setupMainView()
         setupTableView()
         setupTableViewCells()
+        setupTableDelegates()
         setupReplyTextView()
         setupSuggestionsView()
         setupKeyboardManager()
@@ -417,6 +420,29 @@ extension NotificationDetailsViewController {
             let nib = UINib(nibName: classname, bundle: Bundle.main)
 
             tableView.register(nib, forCellReuseIdentifier: cellClass.reuseIdentifier())
+        }
+    }
+
+    /// Configure the delegate and data source for the table view based on notification type.
+    /// This method may be called several times, especially upon previous/next button click
+    /// since notification kind may change.
+    func setupTableDelegates() {
+        guard FeatureFlag.newLikeNotifications.enabled else {
+            return
+        }
+
+        if note.kind == .like || note.kind == .commentLike,
+           let likesListController = LikesListController(tableView: tableView, notification: note, delegate: self) {
+            tableView.delegate = likesListController
+            tableView.dataSource = likesListController
+            self.likesListController = likesListController
+
+            // always call refresh to ensure that the controller fetches the data.
+            likesListController.refresh()
+
+        } else {
+            tableView.delegate = self
+            tableView.dataSource = self
         }
     }
 
@@ -1326,6 +1352,19 @@ extension NotificationDetailsViewController {
     }
 }
 
+
+// MARK: - LikesListController Delegate
+//
+extension NotificationDetailsViewController: LikesListControllerDelegate {
+
+    func didSelectHeader() {
+        displayNotificationSource()
+    }
+
+    func didSelectUser(_ user: RemoteUser) {
+        // TODO: display user's home blog when the information is available.
+    }
+}
 
 
 // MARK: - Private Properties
