@@ -1,7 +1,10 @@
 import UIKit
 
+typealias RelatedPostsSection = [Int: [RemoteReaderSimplePost]]
+
 protocol ReaderDetailView: class {
     func render(_ post: ReaderPost)
+    func renderRelatedPosts(_ posts: [RemoteReaderSimplePost])
     func showLoading()
     func showError()
     func showErrorWithWebAction()
@@ -10,6 +13,7 @@ protocol ReaderDetailView: class {
 }
 
 class ReaderDetailViewController: UIViewController, ReaderDetailView {
+
     /// Content scroll view
     @IBOutlet weak var scrollView: UIScrollView!
 
@@ -18,6 +22,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// WebView height constraint
     @IBOutlet weak var webViewHeight: NSLayoutConstraint!
+
+    /// The table view that displays Related Posts
+    @IBOutlet weak var tableView: IntrinsicTableView!
 
     /// Header container
     @IBOutlet weak var headerContainerView: UIView!
@@ -70,6 +77,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         return coordinator?.post
     }
 
+    /// The related posts for the post being shown
+    var relatedPosts: RelatedPostsSection = [:]
+
     /// Called if the view controller's post fails to load
     var postLoadFailureBlock: (() -> Void)? {
         didSet {
@@ -103,6 +113,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureWebView()
         configureFeaturedImage()
         configureHeader()
+        configureRelatedPosts()
         configureToolbar()
         configureNoResultsViewController()
         observeWebViewHeight()
@@ -195,6 +206,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
     }
 
+    func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) {
+        relatedPosts = Dictionary(grouping: posts, by: { $0.postType.rawValue })
+        tableView.reloadData()
+        tableView.invalidateIntrinsicContentSize()
+    }
+
     /// Show ghost cells indicating the content is loading
     func showLoading() {
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
@@ -217,6 +234,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             self.loadingView.stopGhostAnimation()
             self.loadingView.alpha = 1.0
         }
+
+        guard let post = post else {
+            return
+        }
+
+        coordinator?.fetchRelatedPosts(for: post)
     }
 
     /// Shown an error
@@ -326,6 +349,19 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         headerContainerView.pinSubviewToAllEdges(header)
         headerContainerView.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true
         headerContainerView.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    private func configureRelatedPosts() {
+        tableView.isScrollEnabled = false
+        tableView.separatorStyle = .none
+
+        tableView.register(ReaderRelatedPostsCell.defaultNib,
+                           forCellReuseIdentifier: ReaderRelatedPostsCell.defaultReuseID)
+        tableView.register(ReaderRelatedPostsSectionHeaderView.defaultNib,
+                           forHeaderFooterViewReuseIdentifier: ReaderRelatedPostsSectionHeaderView.defaultReuseID)
+
+        tableView.dataSource = self
+        tableView.delegate = self
     }
 
     private func configureToolbar() {
@@ -455,6 +491,66 @@ extension ReaderDetailViewController: StoryboardLoadable {
     }
 }
 
+// MARK: - Related Posts
+
+extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return relatedPosts.count
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return relatedPosts[section]?.count ?? 0
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ReaderRelatedPostsCell.defaultReuseID, for: indexPath) as? ReaderRelatedPostsCell else {
+            fatalError("Expected RelatedPostsTableViewCell with identifier: \(ReaderRelatedPostsCell.defaultReuseID)")
+        }
+
+        let section = relatedPosts[indexPath.section]
+        guard let post = section?[indexPath.row] else {
+            fatalError("Expected post for section: \(indexPath.section), row: \(indexPath.row)")
+        }
+
+        cell.configure(for: post)
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let title = getSectionTitle(for: section),
+              let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReaderRelatedPostsSectionHeaderView.defaultReuseID) as? ReaderRelatedPostsSectionHeaderView else {
+            return UIView(frame: .zero)
+        }
+
+        header.titleLabel.text = title
+
+        return header
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return ReaderRelatedPostsSectionHeaderView.height
+    }
+
+    private func getSectionTitle(for section: Int) -> String? {
+        switch RemoteReaderSimplePost.PostType(rawValue: section) {
+        case .local:
+            guard let blogName = post?.blogNameForDisplay() else {
+                return nil
+            }
+            return String(format: Strings.localPostsSectionTitle, blogName)
+        case .global:
+            return Strings.globalPostsSectionTitle
+        default:
+            return nil
+        }
+    }
+}
+
 // MARK: - UIGestureRecognizerDelegate
 extension ReaderDetailViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -551,12 +647,6 @@ private extension ReaderDetailViewController {
 
 // MARK: - Navigation Bar Configuration
 private extension ReaderDetailViewController {
-    struct Strings {
-        static let backButtonAccessibilityLabel = NSLocalizedString("Back", comment: "Spoken accessibility label")
-        static let safariButtonAccessibilityLabel = NSLocalizedString("Open in Safari", comment: "Spoken accessibility label")
-        static let shareButtonAccessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
-        static let moreButtonAccessibilityLabel = NSLocalizedString("More", comment: "Spoken accessibility label")
-    }
 
     func configureNavigationBar() {
         let rightItems = [
@@ -641,6 +731,19 @@ extension ReaderDetailViewController: UIViewControllerRestoration {
         restorationClass = type(of: self)
 
         return super.awakeAfter(using: aDecoder)
+    }
+}
+
+// MARK: - Strings
+extension ReaderDetailViewController {
+
+    private struct Strings {
+        static let backButtonAccessibilityLabel = NSLocalizedString("Back", comment: "Spoken accessibility label")
+        static let safariButtonAccessibilityLabel = NSLocalizedString("Open in Safari", comment: "Spoken accessibility label")
+        static let shareButtonAccessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+        static let moreButtonAccessibilityLabel = NSLocalizedString("More", comment: "Spoken accessibility label")
+        static let localPostsSectionTitle = NSLocalizedString("More from %1$@", comment: "Section title for local related posts. %1$@ is a placeholder for the blog display name.")
+        static let globalPostsSectionTitle = NSLocalizedString("More on WordPress.com", comment: "Section title for global related posts.")
     }
 }
 
