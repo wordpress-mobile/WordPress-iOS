@@ -558,7 +558,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     func shouldShowDeprecationNotice() -> Bool {
         return hasNoticeBeenShown == false &&
             (post.postTitle ?? "").isEmpty &&
-            (post.postTitle ?? "").isEmpty
+            (post.content ?? "").isEmpty
     }
 
     func showDeprecationNotice() {
