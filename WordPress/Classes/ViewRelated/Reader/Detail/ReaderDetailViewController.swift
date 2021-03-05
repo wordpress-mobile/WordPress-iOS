@@ -559,8 +559,6 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
             let nav = UINavigationController(rootViewController: controller)
             self.present(nav, animated: true)
         }
-
-        scrollView.setContentOffset(CGPoint.zero, animated: false)
     }
 
     private func getSectionTitle(for section: Int) -> String? {
