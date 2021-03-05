@@ -2,6 +2,9 @@
 -----
 * [*] Adds helper UI to Choose a Domain screen to provide a hint of what a domain is. [#15962]
 * [**] Site Creation: Adds filterable categories to the site design picker when creating a WordPress.com site, and includes single-page site designs [#15933]
+* [**] Reader: Added related posts to the bottom of reader posts
+* [*] Reader: We redesigned the recommended topics section of Discover
+* [*] Reader: Added a way to discover new topics from the Manage Topics view
 
 16.8
 -----
