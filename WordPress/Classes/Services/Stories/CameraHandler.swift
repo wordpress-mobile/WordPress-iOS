@@ -39,14 +39,18 @@ class CameraHandler: CameraControllerDelegate {
         on.present(alertController, animated: true, completion: nil)
     }
 
+    func endEditing(editor: StoryEditor) {
+        showDiscardAlert(on: editor) {
+            editor.cancelEditing()
+            if editor.presentedViewController is GutenbergViewController == false {
+                editor.post.managedObjectContext?.delete(editor.post)
+            }
+        }
+    }
+
     func dismissButtonPressed(_ cameraController: CameraController) {
         if let editor = cameraController as? StoryEditor {
-            showDiscardAlert(on: cameraController) {
-                editor.cancelEditing()
-                if cameraController.presentedViewController is GutenbergViewController == false {
-                    editor.post.managedObjectContext?.delete(editor.post)
-                }
-            }
+            endEditing(editor: editor)
         } else {
             cameraController.dismiss(animated: true, completion: nil)
         }
@@ -58,7 +62,7 @@ class CameraHandler: CameraControllerDelegate {
 
     func editorDismissed(_ cameraController: CameraController) {
         if let editor = cameraController as? StoryEditor {
-            editor.cancelEditing()
+            endEditing(editor: editor)
         }
     }
 
