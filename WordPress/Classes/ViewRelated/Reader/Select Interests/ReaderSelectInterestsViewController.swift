@@ -19,6 +19,10 @@ class ReaderSelectInterestsViewController: UIViewController {
     }
 
     private struct Strings {
+        static let title: String = NSLocalizedString("Discover and follow blogs you love", comment: "Reader select interests title label text")
+        static let subtitle: String = NSLocalizedString("Choose your topics", comment: "Reader select interests subtitle label text")
+        static let nextButtonDisabled: String = NSLocalizedString("Select a few to continue", comment: "Reader select interests next button disabled title text")
+        static let nextButtonEnabled: String = NSLocalizedString("Done", comment: "Reader select interests next button enabled title text")
         static let loading: String = NSLocalizedString("Finding blogs and stories you’ll love...", comment: "Label displayed to the user while loading their selected interests")
         static let tryAgainNoticeTitle = NSLocalizedString("Something went wrong. Please try again.", comment: "Error message shown when the app fails to save user selected interests")
         static let tryAgainButtonTitle = NSLocalizedString("Try Again", comment: "Try to load the list of interests again.")

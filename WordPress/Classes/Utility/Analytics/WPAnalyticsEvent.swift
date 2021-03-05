@@ -145,6 +145,12 @@ import Foundation
     case commentEdited
     case commentRepliedTo
 
+    // InviteLinks
+    case inviteLinksGetStatus
+    case inviteLinksGenerate
+    case inviteLinksShare
+    case inviteLinksDisable
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -399,6 +405,16 @@ import Foundation
             return "comment_edited"
         case .commentRepliedTo:
             return "comment_replied_to"
+
+        // Invite Links
+        case .inviteLinksGetStatus:
+            return "invite_links_get_status"
+        case .inviteLinksGenerate:
+            return "invite_links_generate"
+        case .inviteLinksShare:
+            return "invite_links_share"
+        case .inviteLinksDisable:
+            return "invite_links_disable"
         }
     }
 

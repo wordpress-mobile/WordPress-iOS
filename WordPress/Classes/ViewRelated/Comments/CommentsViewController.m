@@ -1,6 +1,5 @@
 #import "CommentsViewController.h"
 #import "CommentViewController.h"
-#import "CommentService.h"
 #import "Comment.h"
 #import "Blog.h"
 #import "WordPress-Swift.h"
@@ -14,8 +13,10 @@ static CGFloat const CommentsActivityFooterHeight               = 50.0;
 static NSInteger const CommentsRefreshRowPadding                = 4;
 static NSInteger const CommentsFetchBatchSize                   = 10;
 
+static NSString *RestorableBlogIdKey = @"restorableBlogIdKey";
+static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
-@interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate>
+@interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration>
 @property (nonatomic, strong) WPTableViewHandler        *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper       *syncHelper;
 @property (nonatomic, strong) NoResultsViewController   *noResultsViewController;
@@ -23,6 +24,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 @property (nonatomic, strong) UIView                    *footerView;
 @property (nonatomic, strong) Blog                      *blog;
 
+@property (nonatomic) CommentStatusFilter currentStatusFilter;
 @property (weak, nonatomic) IBOutlet FilterTabBar *filterTabBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTopConstraint;
@@ -43,6 +45,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CommentsList" bundle:nil];
     CommentsViewController *controller = [storyboard instantiateInitialViewController];
     controller.blog = blog;
+    controller.restorationClass = [controller class];
     return controller;
 }
 
@@ -52,6 +55,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 
     [self configureFilterTabBar:self.filterTabBar];
     [self setTableConstraints];
+    self.currentStatusFilter = CommentStatusFilterAll;
 
     [self configureNavBar];
     [self configureLoadMoreSpinner];
@@ -345,13 +349,19 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 
 - (NSFetchRequest *)fetchRequest
 {
-    NSFetchRequest *fetchRequest            = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
-    fetchRequest.predicate                  = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, CommentStatusSpam];
-    
-    NSSortDescriptor *sortDescriptorStatus  = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
-    NSSortDescriptor *sortDescriptorDate    = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
-    fetchRequest.sortDescriptors            = @[sortDescriptorStatus, sortDescriptorDate];
-    fetchRequest.fetchBatchSize             = CommentsFetchBatchSize;
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
+
+    if ([Feature enabled:FeatureFlagCommentFilters]) {
+        // CommentService purges Comments that do not belong to the current filter.
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@)", self.blog];
+    } else {
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, CommentStatusSpam];
+    }
+
+    NSSortDescriptor *sortDescriptorStatus = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
+    NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
+    fetchRequest.sortDescriptors = @[sortDescriptorStatus, sortDescriptorDate];
+    fetchRequest.fetchBatchSize = CommentsFetchBatchSize;
     
     return fetchRequest;
 }
@@ -394,7 +404,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
         }
 
         [commentService syncCommentsForBlog:blogInContext
-                                 withStatus:commentStatusAll
+                                 withStatus:self.currentStatusFilter
                                     success:^(BOOL hasMore) {
                                         if (success) {
                                             dispatch_async(dispatch_get_main_queue(), ^{
@@ -431,7 +441,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
         }
 
         [commentService loadMoreCommentsForBlog:blogInContext
-                                     withStatus:commentStatusAll
+                                     withStatus:self.currentStatusFilter
                                         success:^(BOOL hasMore) {
                                                     if (success) {
                                                         dispatch_async(dispatch_get_main_queue(), ^{
@@ -473,9 +483,15 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 
 - (void)refreshAndSyncIfNeeded
 {
-    if ([CommentService shouldRefreshCacheFor:self.blog]) {
+    if (self.blog && [CommentService shouldRefreshCacheFor:self.blog]) {
         [self.syncHelper syncContent];
     }
+}
+
+- (void)refreshWithStatusFilter:(CommentStatusFilter)statusFilter
+{
+    self.currentStatusFilter = statusFilter;
+    [self refreshAndSyncWithInteraction];
 }
 
 - (void)refreshInfiniteScroll
@@ -530,6 +546,43 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
     }
     
     [self.noResultsViewController didMoveToParentViewController:self];
+}
+
+#pragma mark - State Restoration
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
+    NSString *blogID = [coder decodeObjectForKey:RestorableBlogIdKey];
+    if (!blogID) {
+        return nil;
+    }
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:blogID]];
+    if (!objectID) {
+        return nil;
+    }
+    
+    NSError *error = nil;
+    Blog *blog = (Blog *)[context existingObjectWithID:objectID error:&error];
+    if (error || !blog) {
+        return nil;
+    }
+
+    return [CommentsViewController controllerWithBlog:blog];
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
+{
+    [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:RestorableBlogIdKey];
+    [coder encodeInteger:[self getSelectedIndex:self.filterTabBar] forKey:RestorableFilterIndexKey];
+    [super encodeRestorableStateWithCoder:coder];
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder
+{
+    [self setSeletedIndex:[coder decodeIntegerForKey:RestorableFilterIndexKey] filterTabBar:self.filterTabBar];
+    [super decodeRestorableStateWithCoder:coder];
 }
 
 @end

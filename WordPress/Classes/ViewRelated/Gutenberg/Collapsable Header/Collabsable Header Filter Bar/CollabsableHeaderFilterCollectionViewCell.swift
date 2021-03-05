@@ -1,10 +1,5 @@
 import UIKit
 
-protocol CollabsableHeaderFilterOption: class {
-    var title: String { get }
-    var emoji: String? { get }
-}
-
 class CollabsableHeaderFilterCollectionViewCell: UICollectionViewCell {
 
     static let cellReuseIdentifier = "\(CollabsableHeaderFilterCollectionViewCell.self)"
@@ -15,7 +10,7 @@ class CollabsableHeaderFilterCollectionViewCell: UICollectionViewCell {
     }
 
     private static let combinedLeftRightMargin: CGFloat = 32
-    static func estimatedWidth(forFilter filter: CollabsableHeaderFilterOption) -> CGFloat {
+    static func estimatedWidth(forFilter filter: CategorySection) -> CGFloat {
         /// The emoji below is used as a placeholder to estimate the size of the title. We don't use the actual emoji provided by the API because this could be nil
         /// and we want to allow space for a checkmark when the cell is selected.
         let size = "👋 \(filter.title)".size(withAttributes: [
@@ -29,7 +24,7 @@ class CollabsableHeaderFilterCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var pillBackgroundView: UIView!
     @IBOutlet weak var checkmark: UIImageView!
 
-    var filter: CollabsableHeaderFilterOption? = nil {
+    var filter: CategorySection? = nil {
         didSet {
             filterLabel.text = filterTitle
             filterLabel.accessibilityLabel = filter?.title

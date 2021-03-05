@@ -412,8 +412,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func showShareForPost(postID: NSNumber, fromView: UIView) {
-        guard let blogId = SiteStatsInformation.sharedInstance.siteID,
-        let blog = blogService.blog(byBlogId: blogId) else {
+        guard let blogId = SiteStatsInformation.sharedInstance.siteID, let blog = Blog.lookup(withID: blogId, in: mainContext) else {
             DDLogInfo("Failed to get blog with id \(String(describing: SiteStatsInformation.sharedInstance.siteID))")
             return
         }

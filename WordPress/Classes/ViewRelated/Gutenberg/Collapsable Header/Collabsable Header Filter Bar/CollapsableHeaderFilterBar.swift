@@ -2,7 +2,7 @@ import UIKit
 
 protocol CollapsableHeaderFilterBarDelegate: class {
     func numberOfFilters() -> Int
-    func filter(forIndex: Int) -> CollabsableHeaderFilterOption
+    func filter(forIndex: Int) -> CategorySection
     func didSelectFilter(withIndex selectedIndex: IndexPath, withSelectedIndexes selectedIndexes: [IndexPath])
     func didDeselectFilter(withIndex index: IndexPath, withSelectedIndexes selectedIndexes: [IndexPath])
 }
