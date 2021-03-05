@@ -50,9 +50,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Bottom toolbar
     private let toolbar: ReaderDetailToolbar = .loadFromNib()
 
-    /// Comment view, add action bar
-    private let commentAction: ReaderDetailCommentsView = .loadFromNib()
-
     /// A view that fills the bottom portion outside of the safe area
     @IBOutlet weak var toolbarSafeAreaView: UIView!
 
@@ -118,7 +115,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureNoResultsViewController()
         observeWebViewHeight()
         configureNotifications()
-        configureCommentAction()
 
         coordinator?.start()
 
@@ -189,7 +185,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         featuredImage.configure(for: post, with: self)
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
-        commentAction.configure(for: post, in: self)
 
         if let postURLString = post.permaLink,
            let postURL = URL(string: postURLString) {
@@ -373,10 +368,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         toolbarContainerView.pinSubviewToAllEdges(toolbar)
         toolbarContainerView.translatesAutoresizingMaskIntoConstraints = false
         toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
-    }
-
-    private func configureCommentAction() {
-        actionStackView.insertArrangedSubview(commentAction, at: 0)
     }
 
     private func configureDiscoverAttribution(_ post: ReaderPost) {
