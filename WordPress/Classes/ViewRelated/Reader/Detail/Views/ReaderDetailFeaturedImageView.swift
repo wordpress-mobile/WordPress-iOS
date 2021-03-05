@@ -125,6 +125,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     func configure(for post: ReaderPost, with statusBarUpdater: UpdatableStatusBarStyle) {
         self.post = post
         self.statusBarUpdater = statusBarUpdater
+        isLoaded = false
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

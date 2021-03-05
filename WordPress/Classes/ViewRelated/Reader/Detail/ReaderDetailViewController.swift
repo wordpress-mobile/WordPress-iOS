@@ -536,6 +536,29 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
         return ReaderRelatedPostsSectionHeaderView.height
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        let section = relatedPosts[indexPath.section]
+        guard let post = section?[indexPath.row],
+              let url = URL(string: post.postUrl) else {
+            return
+        }
+
+        let controller = ReaderDetailViewController.controllerWithPostURL(url)
+
+        // Related posts should be presented in its own nav stack, so that a user
+        // can return to the original post by dismissing the related posts nav stack.
+        if navigationController?.viewControllers.first is ReaderDetailViewController {
+            navigationController?.pushViewController(controller, animated: true)
+        } else {
+            let nav = UINavigationController(rootViewController: controller)
+            self.present(nav, animated: true)
+        }
+
+        scrollView.setContentOffset(CGPoint.zero, animated: false)
+    }
+
     private func getSectionTitle(for section: Int) -> String? {
         switch RemoteReaderSimplePost.PostType(rawValue: section) {
         case .local:
@@ -655,7 +678,10 @@ private extension ReaderDetailViewController {
             safariButtonItem()
         ]
 
-        navigationItem.leftBarButtonItem = backButtonItem()
+        if !isModal() {
+            navigationItem.leftBarButtonItem = backButtonItem()
+        }
+
         navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
     }
 
