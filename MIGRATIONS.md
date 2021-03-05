@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 114
+
+@aerych 2021-02-25
+
+- Changes Blog inviteLinks relation deletion rule to cascade.
+
 ## WordPress 113
 
 @aerych 2021-02-19

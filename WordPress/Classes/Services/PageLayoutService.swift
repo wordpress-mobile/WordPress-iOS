@@ -7,6 +7,7 @@ class PageLayoutService {
     private struct Parameters {
         static let supportedBlocks = "supported_blocks"
         static let previewWidth = "preview_width"
+        static let previewHeight = "preview_height"
         static let scale = "scale"
         static let type = "type"
         static let isBeta = "is_beta"
@@ -54,7 +55,8 @@ class PageLayoutService {
     private static func parameters(_ thumbnailSize: CGSize) -> [String: AnyObject] {
         return [
             Parameters.supportedBlocks: supportedBlocks as AnyObject,
-            Parameters.previewWidth: previewWidth(thumbnailSize) as AnyObject,
+            Parameters.previewWidth: "\(thumbnailSize.width)" as AnyObject,
+            Parameters.previewHeight: "\(thumbnailSize.height)" as AnyObject,
             Parameters.scale: scale as AnyObject,
             Parameters.type: type as AnyObject,
             Parameters.isBeta: isBeta as AnyObject
@@ -65,10 +67,6 @@ class PageLayoutService {
         let isDevMode = BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         return Gutenberg.supportedBlocks(isDev: isDevMode).joined(separator: ",")
     }()
-
-    private static func previewWidth(_ thumbnailSize: CGSize) -> String {
-        return "\(thumbnailSize.width)"
-    }
 
     private static let scale = UIScreen.main.nativeScale
 

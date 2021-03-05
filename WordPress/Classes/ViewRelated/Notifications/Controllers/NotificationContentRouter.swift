@@ -79,7 +79,7 @@ struct NotificationContentRouter {
                 FeatureFlag.jetpackBackupAndRestore.enabled {
                 try coordinator.displayBackupWithSiteID(range.siteID)
             } else {
-                try coordinator.displayStatsWithSiteID(range.siteID)
+                try coordinator.displayStatsWithSiteID(range.siteID, url: url)
             }
         case .follow:
             try coordinator.displayFollowersWithSiteID(range.siteID, expirationTime: expirationFiveMinutes)

@@ -18,7 +18,7 @@ enum UnifiedProloguePageType: CaseIterable {
         case .analytics:
             return NSLocalizedString("Watch your audience grow with in-depth analytics.", comment: "Caption displayed in promotional screens shown during the login flow.")
         case .reader:
-            return NSLocalizedString("Follow your favourite sites and discover new reads.", comment: "Caption displayed in promotional screens shown during the login flow.")
+            return NSLocalizedString("Follow your favorite sites and discover new blogs.", comment: "Caption displayed in promotional screens shown during the login flow.")
         }
     }
 }

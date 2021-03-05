@@ -116,8 +116,8 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
 
 + (NSString *)siteTypeForBlogWithID:(NSNumber *)blogID
 {
-    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    Blog *blog = [service blogByBlogId:blogID];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    Blog *blog = [Blog lookupWithID:blogID in:context];
     return [blog isWPForTeams] ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog;
 }
 

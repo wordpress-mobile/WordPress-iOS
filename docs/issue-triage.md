@@ -40,11 +40,12 @@ Impact is determined by how many users are affected or how many reports we recei
 
 If you aren't sure how to estimate the number of users affected, use the number of user reports you can find as a starting point. The issue can be escalated later if we find a good estimate of users affected or if more user reports are noted on the issue.
 
-### Crashes
+### Special Cases
 
-In addition to the guidelines above, we have specific criteria for prioritizing crashes in a new production or beta release:
+In addition to the guidelines above, we have specific criteria for prioritizing certain types of issues in a new production or beta release:
 
 * A new crash affecting more than 0.2% of users once the rollout of a production release is completed requires a hotfix. Some considerations here:
    * If the crash leaves the user in an unrecoverable situation, that’s a breaking incident. All hands on deck until we push a fix.
    * If the user can recover, we need to find the developer(s) that have the highest chance of success and redirect them to the issue.
 * All new crashes in a beta release should be fixed on the frozen branch (i.e. "Blocking" priority).
+* Issues with Tracks events should be fixed as soon as they are discovered. We rely on Tracks to evaluate whether a project was a success or not, or if we should keep iterating on it, so it’s extremely important that all our events are accurate. When to hotfix or target the frozen branch will be determined on a case by case basis.
