@@ -13,33 +13,6 @@ import MobileCoreServices
 import AutomatticTracks
 import MediaEditor
 
-
-fileprivate class InsetLabel: UILabel {
-
-    private let topInset: CGFloat = 5.0
-    private let bottomInset: CGFloat = 5.0
-    private let leftInset: CGFloat = 7.0
-    private let rightInset: CGFloat = 7.0
-
-    override func drawText(in rect: CGRect) {
-        let insets = UIEdgeInsets(top: topInset, left: leftInset, bottom: bottomInset, right: rightInset)
-        super.drawText(in: rect.inset(by: insets))
-    }
-
-    override var intrinsicContentSize: CGSize {
-        let size = super.intrinsicContentSize
-        return CGSize(width: size.width + leftInset + rightInset,
-                      height: size.height + topInset + bottomInset)
-    }
-
-    override var bounds: CGRect {
-        didSet {
-            preferredMaxLayoutWidth = bounds.width - (leftInset + rightInset)
-        }
-    }
-}
-
-
 // MARK: - Aztec's Native Editor!
 //
 class AztecPostViewController: UIViewController, PostEditor {
@@ -132,25 +105,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     private enum ErrorCode: Int {
         case expectedSecondaryAction = 1
     }
-
-    fileprivate lazy var noticeLabel: InsetLabel = {
-        let label = InsetLabel()
-        label.setContentHuggingPriority(.required, for: .vertical)
-        label.text = NSLocalizedString("The classic editor is deprecated and will be removed in a coming version of the app. Please consider switching over to the block editor now.", comment: "A notice telling users that the classic editor is deprecated and will be removed.")
-        label.textColor = .black
-        label.font = WPFontManager.notoRegularFont(ofSize: 16)
-        label.isUserInteractionEnabled = false
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        label.textAlignment = .natural
-        label.layer.masksToBounds = true
-        label.layer.cornerRadius = 8.0
-        label.layer.borderColor = UIColor.darkGray.cgColor
-        label.layer.borderWidth = 2.0
-
-        return label
-    }()
-
 
     /// The editor view.
     ///
@@ -509,6 +463,20 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     private var mediaPreviewHelper: MediaPreviewHelper? = nil
 
+    let database: KeyValueDatabase = UserDefaults()
+    enum Key {
+        static let classicDeprecationNoticeHasBeenShown = "kClassicDeprecationNoticeHasBeenShown"
+    }
+
+    var hasNoticeBeenShown: Bool {
+        get {
+            database.bool(forKey: Key.classicDeprecationNoticeHasBeenShown)
+        }
+        set {
+            database.set(newValue, forKey: Key.classicDeprecationNoticeHasBeenShown)
+        }
+    }
+
     // MARK: - Initializers
 
     required init(
@@ -580,6 +548,41 @@ class AztecPostViewController: UIViewController, PostEditor {
         if !editorSession.started {
             editorSession.start()
         }
+
+        if shouldShowDeprecationNotice() {
+            showDeprecationNotice()
+            hasNoticeBeenShown = true
+        }
+    }
+
+    func shouldShowDeprecationNotice() -> Bool {
+        return hasNoticeBeenShown == false &&
+            (post.postTitle ?? "").isEmpty &&
+            (post.postTitle ?? "").isEmpty
+    }
+
+    func showDeprecationNotice() {
+        let okButton: (title: String, handler: FancyAlertViewController.FancyAlertButtonHandler?) =
+        (
+            title: NSLocalizedString("Dismiss", comment: ""),
+            handler: { alert, _ in
+                alert.dismiss(animated: true, completion: nil)
+            }
+        )
+
+        let config = FancyAlertViewController.Config(
+            titleText: NSLocalizedString("Try the new and improved Block Editor", comment: "The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app."),
+            bodyText: NSLocalizedString("We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings.", comment: "The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app."),
+            headerImage: nil,
+            dividerPosition: .top,
+            defaultButton: okButton,
+            cancelButton: nil
+        )
+
+        let alert = FancyAlertViewController.controllerWithConfiguration(configuration: config)
+        alert.modalPresentationStyle = .custom
+        alert.transitioningDelegate = self
+        present(alert, animated: true)
     }
 
 
@@ -708,16 +711,12 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func configureConstraints() {
 
-
         titleHeightConstraint = titleTextField.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
-        titleTopConstraint = titleTextField.topAnchor.constraint(equalTo: richTextView.topAnchor, constant: -richTextView.contentOffset.y)
+        titleTopConstraint = titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: -richTextView.contentOffset.y)
         textPlaceholderTopConstraint = placeholderLabel.topAnchor.constraint(equalTo: richTextView.topAnchor, constant: richTextView.textContainerInset.top + richTextView.contentInset.top)
         updateTitleHeight()
 
         NSLayoutConstraint.activate([
-            noticeLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 12),
-            noticeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
-            noticeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
             titleTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
             titleTextField.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
             titleTopConstraint,
@@ -743,7 +742,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         NSLayoutConstraint.activate([
             richTextView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
             richTextView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
-            richTextView.topAnchor.constraint(equalTo: noticeLabel.bottomAnchor, constant: 12),
+            richTextView.topAnchor.constraint(equalTo: view.topAnchor),
             richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
 
@@ -787,7 +786,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func configureSubviews() {
-        view.addSubview(noticeLabel)
         view.addSubview(richTextView)
         view.addSubview(htmlTextView)
         view.addSubview(titleTextField)
