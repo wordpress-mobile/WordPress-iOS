@@ -20,6 +20,7 @@ class ReaderSelectInterestsViewController: UIViewController {
     }
 
     private struct Strings {
+        static let noSearchResultsTitle = NSLocalizedString("No new topics to follow", comment: "Message shown when there are no new topics to follow.")
         static let tryAgainNoticeTitle = NSLocalizedString("Something went wrong. Please try again.", comment: "Error message shown when the app fails to save user selected interests")
         static let tryAgainButtonTitle = NSLocalizedString("Try Again", comment: "Try to load the list of interests again.")
     }
@@ -340,6 +341,8 @@ extension ReaderSelectInterestsViewController: ReaderInterestsDataDelegate {
         if dataSource.count > 0 {
             hideLoadingView()
             reloadData()
+        } else if !topics.isEmpty {
+            displayLoadingViewWithNoSearchResults(title: Strings.noSearchResultsTitle)
         } else {
             displayLoadingViewWithWebAction(title: "")
         }
@@ -354,6 +357,12 @@ extension ReaderSelectInterestsViewController: NoResultsViewControllerDelegate {
 }
 
 extension ReaderSelectInterestsViewController {
+
+    func displayLoadingViewWithNoSearchResults(title: String) {
+        noResultsViewController.configureForNoSearchResults(title: title)
+        showLoadingView()
+    }
+
     func displayLoadingViewWithWebAction(title: String, accessoryView: UIView? = nil) {
         noResultsViewController.configure(title: title,
                                           buttonTitle: Strings.tryAgainButtonTitle,
