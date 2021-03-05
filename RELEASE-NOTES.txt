@@ -2,6 +2,7 @@
 -----
 * [*] Adds helper UI to Choose a Domain screen to provide a hint of what a domain is. [#15962]
 * [**] Site Creation: Adds filterable categories to the site design picker when creating a WordPress.com site, and includes single-page site designs [#15933]
+* [*] P2 users can create and share group invite links via the Invite Person screen under the People Management feature. [#16005]
 
 16.8
 -----
