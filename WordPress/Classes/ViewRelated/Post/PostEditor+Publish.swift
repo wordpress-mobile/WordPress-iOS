@@ -142,7 +142,7 @@ extension PublishingEditor where Self: UIViewController {
 
             if let analyticsStat = analyticsStat {
                 if self is StoryEditor {
-                    postPublishedReceipt = ActionDispatcher.global.subscribe({ action in
+                    postPublishedReceipt = ActionDispatcher.global.subscribe({ [self] action in
                         if let noticeAction = action as? NoticeAction {
                             switch noticeAction {
                             case .post:
