@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-23 19:36:21+0000 */
+/* Translation-Revision-Date: 2021-03-05 12:31:05+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -6796,7 +6796,7 @@
 "Unable to Sync" = "Kan niet synchroniseren";
 
 /* Notice title when blocking a site fails. */
-"Unable to block site" = "Kan de site niet blokkeren";
+"Unable to block site" = "Kan site niet blokkeren";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "Niet mogelijk om alle media te verwijderen.";

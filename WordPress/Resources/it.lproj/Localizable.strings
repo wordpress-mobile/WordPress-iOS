@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-04 11:54:08+0000 */
+/* Translation-Revision-Date: 2021-03-05 15:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -6932,7 +6932,7 @@
 "Unfollow %@" = "Smetti di seguire %@";
 
 /* Verb. An option to unfollow a site. */
-"Unfollow site" = "Unfollow site";
+"Unfollow site" = "Smetti di seguire il sito";
 
 /* Notice title when unfollowing a site succeeds.
    User unfollowed a site. */
