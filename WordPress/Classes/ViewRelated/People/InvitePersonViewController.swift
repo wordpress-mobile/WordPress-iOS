@@ -604,9 +604,31 @@ private extension InvitePersonViewController {
         if blog.inviteLinks?.count == 0 {
             generateShareCell.textLabel?.text = NSLocalizedString("Generate new link", comment: "Title. A call to action to generate a new invite link.")
         } else {
-            generateShareCell.textLabel?.text = NSLocalizedString("Share invite link", comment: "Title. A call to action to share an invite link.")
+            generateShareCell.textLabel?.attributedText = createAttributedShareInviteText()
         }
         generateShareCell.textLabel?.textColor = .primary
+    }
+
+    func createAttributedShareInviteText() -> NSAttributedString {
+        let pStyle = NSMutableParagraphStyle()
+        pStyle.alignment = .center
+        let font = UIFont.systemFont(ofSize: 17)
+        let textAttributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .paragraphStyle: pStyle,
+            .baselineOffset: 2
+        ]
+        let attachmentAttributes: [NSAttributedString.Key: Any] = [
+            .baselineOffset: -4
+        ]
+
+        let image = UIImage.gridicon(.shareiOS)
+        let attachment = NSTextAttachment(image: image)
+        let textStr = NSAttributedString(string: NSLocalizedString("Share invite link", comment: "Title. A call to action to share an invite link."), attributes: textAttributes)
+        let attrStr = NSMutableAttributedString(attachment: attachment, attributes: attachmentAttributes)
+        attrStr.append(NSAttributedString(string: " "))
+        attrStr.append(textStr)
+        return attrStr
     }
 
     func refreshCurrentInviteCell() {
