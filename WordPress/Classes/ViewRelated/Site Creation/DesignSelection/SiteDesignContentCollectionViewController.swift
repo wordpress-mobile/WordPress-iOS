@@ -59,6 +59,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
         self.completion = completion
 
         super.init(
+            analyticsLocation: "site_creation",
             mainTitle: NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site."),
             prompt: NSLocalizedString("Pick your favorite homepage layout. You can edit and customize it later.", comment: "Prompt for the screen to pick a design and homepage for a site."),
             primaryActionTitle: NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design"),

@@ -1,11 +1,1 @@
-Voici les points forts de cette version :
-
-Jetpack Backup est désormais disponible ! Suivant le plan actuel de votre site, vous pouvez désormais restaurer votre site ou télécharger une sauvegarde de ce dernier à partir d’un point spécifique dans le temps. Si vous avez activé Jetpack Scan, vous pouvez analyser votre site pour rechercher des menaces et résoudre ou ignorer ces dernières après leur détection.
-
-Vous aimez suivre vos statistiques ? Nous avons ajouté une assistance pour les nouveaux widgets All Time qui affichent les statistiques All Time de votre site sur l’écran d’accueil de votre appareil iOS 14.
-
-Vous pouvez désormais configurer des ancres dans le bloc En-tête pour créer des accès directs aux pages constituant votre contenu. Nous avons apporté d’autres mises à jour en améliorant notamment les blocs réutilisables, ainsi que les blocs que vous n’insérez qu’une seule fois dans vos articles comme le bloc Lire la suite.
-
-La création de site dans l’application connaît des améliorations constantes. Lors de la création d’une page d’accueil, vous pouvez prévisualiser l’affichage d’un design sur l’écran d’un mobile, d’une tablette ou d’un ordinateur de bureau. Désormais, vous pouvez également choisir un sous-domaine .blog pour votre site.
-
-Enfin, nous continuons d’améliorer l’expérience dans votre Lecteur. Vous pouvez désormais marquer des articles comme étant « lus » de même qu’afficher le nombre total d’articles « non lus ».
+Les dernières mises à jour de l’application WordPress sont disponibles. Publiez des images et des vidéos sous forme de Story, notre nouveau type de publication. Vous pouvez également afficher vos statistiques hebdomadaires sur votre écran d’accueil. Nous avons amélioré la fonctionnalité des pages d’accueil publiées afin que leur modification ne mettre pas votre site hors service. De plus, vous pouvez désormais définir le point focal du bloc de bannière.

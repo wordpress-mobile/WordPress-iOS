@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-09 16:33:43+0000 */
+/* Translation-Revision-Date: 2021-03-05 12:31:05+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -24,11 +24,8 @@
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point to create a downloadable backup." = "%1$@ is het geselecteerde punt om een te downloaden back-up te maken.";
 
-/* 'AUTHOR on POST TITLE' in a comment list */
+/* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@ op %2$@";
-
-/* 'AUTHOR on POST TITLE: COMMENT' in a comment list */
-"%1$@ on %2$@: %3$@" = "%1$@ op %2$@: %3$@";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d van %2$d afgerond";
@@ -166,6 +163,9 @@
 /* Number of posts */
 "%d posts" = "%d berichten";
 
+/* Message for a notice informing the user their scan completed and %d threats were found */
+"%d potential threats found" = "%d potentiële bedreigingen gevonden";
+
 /* Age between dates over one year. */
 "%d years" = "%d jaren";
 
@@ -239,6 +239,9 @@
 
 /* Alert displayed to the user when a single media item attached to a post has failed to upload. */
 "1 post, 1 file not uploaded" = "1 bericht, 1 bestand niet geüpload";
+
+/* Message for a notice informing the user their scan completed and 1 threat was found */
+"1 potential threat found" = "1 potentiële bedreiging gevonden";
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
@@ -341,6 +344,7 @@
 "Activation Error" = "Activatiefout";
 
 /* Describes a status of a plugin
+   Label for active Theme
    Whether a plugin is active on a site */
 "Active" = "Geactiveerd";
 
@@ -543,6 +547,9 @@
 
 /* Jetpack Settings: Allow WordPress.com login */
 "Allow WordPress.com login" = "Sta WordPress.com login toe";
+
+/* Message on camera permissions screen to explain why the app needs camera and microphone permissions */
+"Allow access so you can start taking photos and videos." = "Sta toegang toe zodat je foto's en videos kunt maken.";
 
 /* A short description of the comment like sharing setting. */
 "Allow all comments to be Liked by you and your readers" = "Toestaan dat alle reacties door jezelf en je lezers geliket kunnen worden";
@@ -885,9 +892,6 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Citaat";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block This Site" = "Blokkeer deze site";
-
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Blok gekopieerd";
 
@@ -911,6 +915,12 @@
 
 /* No comment provided by engineer. */
 "Block settings" = "Blok instellingen";
+
+/* The title of a button that triggers blocking a site from the user's reader. */
+"Block this site" = "Blokkeer deze site";
+
+/* Notice title when blocking a site succeeds. */
+"Blocked site" = "Geblokkeerde site";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
@@ -1175,10 +1185,13 @@
 /* Title for the button to progress with the selected site homepage design */
 "Choose" = "Kies";
 
+/* Title for selecting a new homepage */
+"Choose Homepage" = "Kies homepage";
+
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Kies pagina's";
 
-/* Title for selecting a new home page */
+/* Title for selecting a new posts page */
 "Choose Posts Page" = "Kies berichtenpagina";
 
 /* Title for the screen to pick a template for a page */
@@ -2076,7 +2089,13 @@
 "Double tap to move the block up" = "Tik tweemaal om het blok omhoog te verplaatsen";
 
 /* No comment provided by engineer. */
+"Double tap to open Action Sheet to edit, replace, or clear the image" = "Dubbeltikken om het actieblad te openen om de afbeelding te bewerken, vervangen of wissen";
+
+/* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "Dubbeltik om actieblad te openen met beschikbare opties";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Dubbeltikken om onderste blad te openen om de afbeelding te bewerken, vervangen of wissen";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet with available options" = "Dubbeltik om onderste blad te openen met beschikbare opties";
@@ -2176,6 +2195,9 @@
 /* No comment provided by engineer. */
 "Edit file" = "Bestand bewerken";
 
+/* No comment provided by engineer. */
+"Edit focal point" = "Focuspunt bewerken";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Bewerk nieuwe berichten en pagina's met de blok-editor.";
 
@@ -2248,8 +2270,7 @@
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Lege URL";
 
-/* Button title about the enable notifications action
-   Button title for the enable site notifications action. */
+/* Button title for the enable site notifications action. */
 "Enable" = "Inschakelen";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
@@ -2261,8 +2282,7 @@
 /* Title of a Quick Start Tour */
 "Enable post sharing" = "Berichten delen inschakelen";
 
-/* Message informing the user about the enable notifications action
-   Message prompting user to enable site notifications. */
+/* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Site meldingen inschakelen?";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
@@ -2320,9 +2340,6 @@
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "Fout";
-
-/* Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader. */
-"Error Blocking Site" = "Fout bij blokkeren site";
 
 /* Menus error title for a menu that received an error while trying to delete it. */
 "Error Deleting Menu" = "Fout bij verwijderen menu";
@@ -2607,14 +2624,14 @@
    Verb. Button title. Follow a new blog. */
 "Follow" = "Volgen";
 
-/* Verb. An option to follow a site. */
-"Follow Site" = "Site volgen";
-
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "Volg conversatie per e-mail";
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Volg andere sites";
+
+/* Verb. An option to follow a site. */
+"Follow site" = "Volg site";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "Volg je favoriete sites en ontdek nieuwe artikelen.";
@@ -2650,9 +2667,6 @@
 
 /* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
 "Following %1$@" = "Volgt %1$@";
-
-/* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
-"Following %@" = "Volgt %@";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Following conversation by email" = "Conversatie wordt gevolgd per e-mail";
@@ -3566,6 +3580,7 @@
 "Me" = "Ik";
 
 /* Noun. Title. Links to the blog's Media library.
+   Tab bar title for the Media tab in Media Picker
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -4044,6 +4059,9 @@
 /* Text displayed when theme name search has no matches */
 "No themes matching your search" = "Er komen geen thema's overeen met je zoekopdracht";
 
+/* Message for a notice informing the user their scan completed and no threats were found */
+"No threats found" = "Geen bedreigingen gevonden";
+
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
    No comment will be autoapproved
@@ -4147,8 +4165,6 @@
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    OK button to close the informative dialog on Gutenberg editor
    Submit button on prompt for user information.
-   Text for an alert's dismissal button.
-   Text of an OK button to dismiss a prompt.
    Title of a button that dismisses a prompt
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
    Title of primary button on alert prompting verify their accounts while attempting to publish */
@@ -4347,6 +4363,9 @@
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "Paginatitel. Leeg";
 
+/* Title of notification displayed when a page has been successfully updated. */
+"Page updated" = "Pagina bijgewerkt";
+
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
 "Pages" = "Pagina's";
@@ -4390,8 +4409,7 @@
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Plak zonder formattering";
 
-/* Status for Media object that is being processed locally.
-   Status name for a comment that hasn't yet been approved. */
+/* Status for Media object that is being processed locally. */
 "Pending" = "In afwachting";
 
 /* No comment provided by engineer. */
@@ -4417,6 +4435,9 @@
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Fotobibliotheek";
+
+/* Tab bar title for the Photos tab in Media Picker */
+"Photos" = "Foto's";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Foto's aangeboden door Pexels";
@@ -4646,6 +4667,12 @@
 /* translators: accessibility text. empty post title. */
 "Post title. Empty" = "Bericht titel. Leeg";
 
+/* Title of camera permissions screen */
+"Post to WordPress" = "Plaatsen op WordPress";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"Post updated" = "Bericht bijgewerkt";
+
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Postcode";
 
@@ -4756,12 +4783,6 @@
    Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Prive";
-
-/* Title of a prompt */
-"Problem Following Site" = "Problemen bij het volgen van site";
-
-/* Title of a prompt */
-"Problem Unfollowing Site" = "Probleem bij het niet meer volgen van site";
 
 /* No comment provided by engineer. */
 "Problem displaying block" = "Probleem met tonen blok";
@@ -5083,7 +5104,7 @@
 "Reply to post…" = "Reageer op bericht…";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
-"Report This Post" = "Rapporteer dit bericht";
+"Report this post" = "Rapporteer dit bericht";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Vereist handmatige goedkeuring voor reacties die meer dan dit aantal links bevatten.";
@@ -5302,6 +5323,9 @@
 
 /* Button title that triggers a scan */
 "Scan Again" = "Opnieuw scannen";
+
+/* Title for a notice informing the user their scan has completed */
+"Scan Finished" = "Scan voltooid";
 
 /* Title of the view */
 "Scan History" = "Scan geschiedenis";
@@ -6394,9 +6418,6 @@
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Er is een probleem opgetreden met de weergave van dit bericht.";
 
-/* Short notice that there was a problem following a site and instructions on how to notify us of the problem. */
-"There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen." = "Er is een probleem opgetreden bij het volgen van de site. Als het probleem aanhoudt, kun je contact met ons opnemen via het scherm Ik > Help & ondersteuning.";
-
 /* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
 "There was a problem loading the media item." = "Niet gelukt om het media-item te laden.";
 
@@ -6408,9 +6429,6 @@
 
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "Er is een probleem opgetreden bij het opslaan van wijzigingen aan deelbeheer.";
-
-/* Short notice that there was a problem unfollowing a site and instructions on how to notify us of the problem. */
-"There was a problem unfollowing the site. If the problem persists you can contact us via the Me > Help & Support screen." = "Er is een probleem opgetreden bij het niet meer volgen van de site. Als het probleem aanhoudt, kun je contact met ons opnemen via het scherm Ik > Help & ondersteuning.";
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Er is een probleem opgetreden bij het ophalen van je locatie. Probeer het later opnieuw.";
@@ -6571,6 +6589,7 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
+   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "Titel";
@@ -6776,6 +6795,9 @@
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Kan niet synchroniseren";
 
+/* Notice title when blocking a site fails. */
+"Unable to block site" = "Kan site niet blokkeren";
+
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "Niet mogelijk om alle media te verwijderen.";
 
@@ -6910,7 +6932,7 @@
 "Unfollow %@" = "Ontvolg %@";
 
 /* Verb. An option to unfollow a site. */
-"Unfollow Site" = "Site niet meer volgen";
+"Unfollow site" = "Ontvolg site";
 
 /* Notice title when unfollowing a site succeeds.
    User unfollowed a site. */
@@ -7849,7 +7871,7 @@
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Het lijkt erop dat je een mobiele plugin van DudaMobile hebt geïnstalleerd die voorkomt dat de app zich kan verbinden met je blog";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
-"You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Je moet een bedreiging niet negeren, tenzij je zeker weet dat deze niet gevaarlijk is. Als je ervoor kiest om deze bedreiging te negeren, blijft deze aanwezig op je site \"%1$@\".";
+"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Je moet een beveiligings-issue niet negeren, tenzij je zeker weet dat deze niet gevaarlijk is. Als je ervoor kiest om deze bedreiging te negeren, blijft deze aanwezig op je site \"%1$@\".";
 
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "Je kunt je gebruikersnaam niet meer terug veranderen.";
