@@ -72,7 +72,7 @@ ENV["PUBLIC_CONFIG_FILE"]=File.join(PROJECT_ROOT_FOLDER, "config", "Version.Publ
 ENV["INTERNAL_CONFIG_FILE"]=File.join(PROJECT_ROOT_FOLDER, "config", "Version.internal.xcconfig")
 ENV["DOWNLOAD_METADATA"]="./fastlane/download_metadata.swift"
 ENV["PROJECT_ROOT_FOLDER"]=PROJECT_ROOT_FOLDER + "/"
-
+ENV["APP_STORE_STRINGS_FILE_NAME"]="AppStoreStrings.po"
 
 ########################################################################
 # Screenshots
