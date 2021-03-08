@@ -5,7 +5,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackDisconnect
     case debugMenu
     case readerCSS
-    case unifiedAuth
     case homepageSettings
     case gutenbergMentions
     case gutenbergXposts
@@ -35,8 +34,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .readerCSS:
             return false
-        case .unifiedAuth:
-            return true
         case .homepageSettings:
             return true
         case .gutenbergMentions:
@@ -73,8 +70,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     /// This key must match the server-side one for remote feature flagging
     var remoteKey: String? {
         switch self {
-            case .unifiedAuth:
-                return "wordpress_ios_unified_login_and_signup"
             default:
                 return nil
         }
@@ -101,8 +96,6 @@ extension FeatureFlag {
             return "Debug menu"
         case .readerCSS:
             return "Ignore Reader CSS Cache"
-        case .unifiedAuth:
-            return "Unified Auth"
         case .homepageSettings:
             return "Homepage Settings"
         case .gutenbergMentions:
