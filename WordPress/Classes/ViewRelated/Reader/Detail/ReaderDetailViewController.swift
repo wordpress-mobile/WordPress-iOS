@@ -102,6 +102,13 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Tracks whether the webview has called -didFinish:navigation
     var isLoadingWebView = true
 
+    /// Temporary work around until white headers are shipped app-wide,
+    /// allowing Reader Detail to use a blue navbar.
+    var useCompatibilityMode: Bool {
+        // Use compatibility mode if not presented within the Reader
+        return WPTabBarController.sharedInstance()?.readerNavigationController.viewControllers.contains(self) == false
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -174,6 +181,13 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         })
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // Bar items may change if we're moving single pane to split view
+        self.configureNavigationBar()
+    }
+
     override func accessibilityPerformEscape() -> Bool {
         navigationController?.popViewController(animated: true)
         return true
@@ -243,6 +257,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Shown an error
     func showError() {
+        isLoadingWebView = false
+        hideLoading()
+
         displayLoadingView(title: LoadingText.errorLoadingTitle)
     }
 
@@ -329,6 +346,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             return
         }
 
+        featuredImage.useCompatibilityMode = useCompatibilityMode
+
         featuredImage.delegate = coordinator
 
         view.insertSubview(featuredImage, belowSubview: loadingView)
@@ -343,11 +362,13 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureHeader() {
+        header.useCompatibilityMode = useCompatibilityMode
         header.delegate = coordinator
         headerContainerView.addSubview(header)
+        headerContainerView.translatesAutoresizingMaskIntoConstraints = false
+
         headerContainerView.pinSubviewToAllEdges(header)
         headerContainerView.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true
-        headerContainerView.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func configureRelatedPosts() {
@@ -365,8 +386,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private func configureToolbar() {
         toolbarContainerView.addSubview(toolbar)
-        toolbarContainerView.pinSubviewToAllEdges(toolbar)
         toolbarContainerView.translatesAutoresizingMaskIntoConstraints = false
+
+        toolbarContainerView.pinSubviewToAllEdges(toolbar)
         toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
     }
 
@@ -665,6 +687,9 @@ private extension ReaderDetailViewController {
         addChild(noResultsViewController)
         view.addSubview(withFadeAnimation: noResultsViewController.view)
         noResultsViewController.didMove(toParent: self)
+
+        noResultsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToAllEdges(noResultsViewController.view)
     }
 
     func hideLoadingView() {

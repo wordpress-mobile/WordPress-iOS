@@ -4,6 +4,7 @@ import Foundation
 @objc enum WPAnalyticsEvent: Int {
 
     case createSheetShown
+    case createSheetActionTapped
     case createAnnouncementModalShown
 
     // Media Editor
@@ -88,10 +89,13 @@ import Foundation
     // What's New - Feature announcements
     case featureAnnouncementShown
     case featureAnnouncementButtonTapped
+
     // Stories
     case storyIntroShown
     case storyIntroDismissed
     case storyIntroCreateStoryButtonTapped
+    case storyAddedMedia
+    case storyBlockAddMediaTapped
 
     // Jetpack
     case jetpackSettingsViewed
@@ -162,6 +166,8 @@ import Foundation
         switch self {
         case .createSheetShown:
             return "create_sheet_shown"
+        case .createSheetActionTapped:
+            return "create_sheet_action_tapped"
         case .createAnnouncementModalShown:
             return "create_announcement_modal_shown"
         // Media Editor
@@ -313,6 +319,10 @@ import Foundation
             return "story_intro_dismissed"
         case .storyIntroCreateStoryButtonTapped:
             return "story_intro_create_story_button_tapped"
+        case .storyAddedMedia:
+            return "story_added_media"
+        case .storyBlockAddMediaTapped:
+            return "story_block_add_media_tapped"
 
         // Jetpack
         case .jetpackSettingsViewed:
