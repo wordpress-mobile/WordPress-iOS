@@ -13,12 +13,12 @@ class MySitesCoordinator: NSObject {
     init(meScenePresenter: ScenePresenter, onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
         self.meScenePresenter = meScenePresenter
         self.becomeActiveTab = becomeActiveTab
-        
+
         super.init()
     }
-    
+
     // MARK: - VCs
-    
+
     /// The view controller that should be presented by the tab bar controller.
     ///
     @objc
@@ -36,39 +36,39 @@ class MySitesCoordinator: NSObject {
         splitViewController.wpPrimaryColumnWidth = .narrow
         splitViewController.dimsDetailViewControllerAutomatically = true
         splitViewController.tabBarItem = navigationController.tabBarItem
-        
+
         return splitViewController
     }()
-    
+
     @objc
     lazy var navigationController: UINavigationController = {
         let navigationController = UINavigationController(rootViewController: blogListViewController)
-        
+
         navigationController.restorationIdentifier = MySitesCoordinator.navigationControllerRestorationID
         navigationController.navigationBar.isTranslucent = false
-        
+
         let tabBarImage = UIImage(named: "icon-tab-mysites")
         navigationController.tabBarItem.image = tabBarImage
         navigationController.tabBarItem.selectedImage = tabBarImage
         navigationController.tabBarItem.accessibilityLabel = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
         navigationController.tabBarItem.accessibilityIdentifier = "mySitesTabButton"
         navigationController.tabBarItem.title = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
-        
+
         let context = ContextManager.shared.mainContext
         let service = BlogService(managedObjectContext: context)
         if let blogToOpen = service.lastUsedOrFirstBlog() {
             blogListViewController.selectedBlog = blogToOpen
         }
-        
+
         return navigationController
     }()
-    
+
     @objc
     private(set) lazy var blogListViewController: BlogListViewController = {
         BlogListViewController(meScenePresenter: self.meScenePresenter)
     }()
 
-    //MARK: - Navigation
+    // MARK: - Navigation
 
     func showMySites() {
         becomeActiveTab()
@@ -164,7 +164,7 @@ class MySitesCoordinator: NSObject {
               let navigationController = splitViewController.topDetailViewController?.navigationController else {
             return
         }
-        
+
         let query = PluginQuery.all(site: site)
         let listViewController = PluginListViewController(site: site, query: query)
 
