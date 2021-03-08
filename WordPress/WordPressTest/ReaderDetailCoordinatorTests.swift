@@ -319,6 +319,8 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
 
     func updateHeader() { }
 
+    func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) { }
+
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
         didCallPresentWith = viewControllerToPresent
     }

@@ -1,10 +1,18 @@
 16.9
 -----
- 
+* [*] Adds helper UI to Choose a Domain screen to provide a hint of what a domain is. [#15962]
+* [**] Site Creation: Adds filterable categories to the site design picker when creating a WordPress.com site, and includes single-page site designs [#15933]
+* [**] The classic editor will no longer be available for new posts soon, but this won’t affect editing any existing posts or pages. Users should consider switching over to the Block Editor now. [#16008]
+* [**] Reader: Added related posts to the bottom of reader posts
+* [*] Reader: We redesigned the recommended topics section of Discover
+* [*] Reader: Added a way to discover new topics from the Manage Topics view
+* [*] P2 users can create and share group invite links via the Invite Person screen under the People Management feature. [#16005]
+
 16.8
 -----
 * [**] Prevent deleting published homepages which would have the effect of breaking a site. [#15797]
 * [**] Prevent converting published homepage to a draft in the page list and settings which would have the effect of breaking a site. [#15797]
+* [*] Fix app crash when device is offline and user visits Notification or Reader screens [#15916]
 * [*] Under-the-hood improvements to the Reader Stream, People Management, and Sharing Buttons [#15849, #15861, #15862]
 * [*] Block Editor: Fixed block mover title wording for better clarity from 'Move block position' to 'Change block position'. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3049]
 * [**] Block Editor: Add support for setting Cover block focal point. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3028]

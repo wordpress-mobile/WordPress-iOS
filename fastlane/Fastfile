@@ -17,6 +17,9 @@ BUILD_PRODUCTS_PATH=File.join(PROJECT_ROOT_FOLDER, "Artifacts")
 USER_ENV_FILE_PATH = File.join(Dir.home, '.wpios-env.default')
 PROJECT_ENV_FILE_PATH = File.join(PROJECT_ROOT_FOLDER, '.configure-files', 'project.env')
 
+# Other defines used across multiple lanes
+REPOSITORY_NAME="WordPress-iOS"
+
 ALL_BUNDLE_IDENTIFIERS = [
       "org.wordpress",
       "org.wordpress.WordPressShare",
@@ -70,6 +73,7 @@ ENV["INTERNAL_CONFIG_FILE"]=File.join(PROJECT_ROOT_FOLDER, "config", "Version.in
 ENV["DOWNLOAD_METADATA"]="./fastlane/download_metadata.swift"
 ENV["PROJECT_ROOT_FOLDER"]=PROJECT_ROOT_FOLDER + "/"
 
+
 ########################################################################
 # Screenshots
 ########################################################################
@@ -121,7 +125,8 @@ import "./ScreenshotFastfile"
   lane :complete_code_freeze do | options |
     ios_completecodefreeze_prechecks(options)
     ios_localize_project()
-    ios_tag_build()
+    version = ios_get_app_version()
+    trigger_release_build(branch_to_build: "release/#{version}")
   end
 
   #####################################################################################
@@ -187,7 +192,8 @@ import "./ScreenshotFastfile"
     ios_update_metadata(options)
     ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta()
-    ios_tag_build()
+    version = ios_get_app_version()
+    trigger_beta_build(branch_to_build: "release/#{version}")
   end
 
   #####################################################################################
@@ -229,14 +235,17 @@ import "./ScreenshotFastfile"
       ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
       ios_bump_version_beta()
     end
-    ios_final_tag(options)
 
     # Wrap up
     version = ios_get_app_version()
+    ios_clear_intermediate_tags(version: version)
     removebranchprotection(repository: GHHELPER_REPO, branch: "release/#{version}")
     setfrozentag(repository: GHHELPER_REPO, milestone: version, freeze: false)
     create_new_milestone(repository: GHHELPER_REPO)
     close_milestone(repository: GHHELPER_REPO, milestone: version)
+
+    # Start the build
+    trigger_release_build(branch_to_build: "release/#{version}")
   end
 
   #####################################################################################
@@ -253,35 +262,80 @@ import "./ScreenshotFastfile"
   desc "Performs the final checks and tags the hotfix in the current branch"
   lane :finalize_hotfix_release do | options |
     ios_finalize_prechecks(options)
-    ios_tag_build()
+    version = ios_get_app_version()
+    trigger_release_build(branch_to_build: "release/#{version}")
+  end
+
+  #####################################################################################
+  # build_and_upload_beta_release
+  # -----------------------------------------------------------------------------------
+  # This lane builds a beta release of the app and optionally uploads
+  # it for both internal and external distribution
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_beta_release [skip_confirm:<skip confirm>] 
+  #   [create_gh_release:<create release on GH>] 
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_beta_release
+  # bundle exec fastlane build_and_upload_beta_release skip_confirm:true
+  # bundle exec fastlane build_and_upload_beta_release create_gh_release:true
+  #####################################################################################
+  desc "Builds and uploads a beta release for distribution"
+  lane :build_and_upload_beta_release do | options |
+    build_and_upload_release(
+      skip_confirm: options[:skip_confirm], 
+      create_gh_release: options[:create_gh_release],
+      beta_release: true)
+  end
+
+  #####################################################################################
+  # build_and_upload_stable_release
+  # -----------------------------------------------------------------------------------
+  # This lane builds a stable release of the app and optionally uploads
+  # it for distribution
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_stable_release [skip_confirm:<skip confirm>] 
+  #   [create_gh_release:<create release on GH>] 
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_stable_release
+  # bundle exec fastlane build_and_upload_stable_release skip_confirm:true
+  # bundle exec fastlane build_and_upload_stable_release create_gh_release:true
+  #####################################################################################
+  desc "Builds and uploads a stable release for distribution"
+  lane :build_and_upload_stable_release do | options |
+    build_and_upload_release(
+      skip_confirm: options[:skip_confirm], 
+      create_gh_release: options[:create_gh_release],
+      beta_release: false)
   end
 
   #####################################################################################
   # build_and_upload_release
   # -----------------------------------------------------------------------------------
-  # This lane builds the app and upload it for both internal and external distribution
+  # This lane builds the app and uploads it for both internal and external distribution
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane build_and_upload_release [skip_confirm:<skip confirm>] [create_gh_release:<create release on GH>]
+  # bundle exec fastlane build_and_upload_release [skip_confirm:<skip confirm>] 
+  #  [create_gh_release:<create release on GH>] [beta_release:<is a beta release>]
   #
   # Example:
   # bundle exec fastlane build_and_upload_release
   # bundle exec fastlane build_and_upload_release skip_confirm:true
   # bundle exec fastlane build_and_upload_release create_gh_release:true
+  # bundle exec fastlane build_and_upload_release beta_release:true
   #####################################################################################
-  desc "Builds and updates for distribution"
+  desc "Builds and uploads for distribution"
   lane :build_and_upload_release do | options |
-    final_tag = is_ci() && ios_validate_ci_build()
-    create_release = final_tag || options[:create_gh_release]
-
     ios_build_prechecks(skip_confirm: options[:skip_confirm],
-      internal: !final_tag,
+      internal: options[:beta_release],
       external: true)
     ios_build_preflight()
 
-    UI.message("final tag: #{final_tag} Create release: #{create_release}")
-    build_and_upload_internal(skip_prechecks: true, skip_confirm: options[:skip_confirm]) unless final_tag
-    build_and_upload_itc(skip_prechecks: true, skip_confirm: options[:skip_confirm], create_release: create_release)
+    build_and_upload_internal(skip_prechecks: true, skip_confirm: options[:skip_confirm]) if options[:beta_release]
+    build_and_upload_itc(skip_prechecks: true, skip_confirm: options[:skip_confirm], create_release: options[:create_gh_release])
   end
 
   #####################################################################################
@@ -568,6 +622,42 @@ import "./ScreenshotFastfile"
     add_all_devices_to_provisioning_profiles(
       team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
       app_identifier: ALL_BUNDLE_IDENTIFIERS
+    )
+  end
+
+  #####################################################################################
+  # trigger_beta_build
+  # -----------------------------------------------------------------------------------
+  # This lane triggers a beta build on CI
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane trigger_beta_build [branch_to_build:<branch_name>]
+  #
+  #####################################################################################
+  lane :trigger_beta_build do | options |
+    circleci_trigger_job(
+      circle_ci_token: ENV["CIRCLE_CI_AUTH_TOKEN"], 
+      repository: REPOSITORY_NAME, 
+      branch: options[:branch_to_build],
+      job_params: {"beta_build" => true}
+    )
+  end
+
+  #####################################################################################
+  # trigger_release_build
+  # -----------------------------------------------------------------------------------
+  # This lane triggers a stable release build on CI
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane trigger_release_build [branch_to_build:<branch_name>]
+  #
+  #####################################################################################
+  lane :trigger_release_build do | options |
+    circleci_trigger_job(
+      circle_ci_token: ENV["CIRCLE_CI_AUTH_TOKEN"], 
+      repository: REPOSITORY_NAME, 
+      branch: options[:branch_to_build],
+      job_params: {"release_build" => true}
     )
   end
 

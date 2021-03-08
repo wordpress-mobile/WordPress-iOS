@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -24,6 +24,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="446" height="222.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="CpT-U7-bfv" customClass="IntrinsicTableView" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="16" y="238.5" width="414" height="0.0"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" placeholder="YES" id="tci-Li-Egi"/>
+                                        </constraints>
+                                    </tableView>
                                     <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iSu-TI-yew" customClass="ReaderWebView" customModule="WordPress" customModuleProvider="target">
                                         <rect key="frame" x="16" y="238.5" width="414" height="0.0"/>
                                         <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -77,8 +84,9 @@
                                     </stackView>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="CpT-U7-bfv" firstAttribute="bottom" secondItem="O4e-BA-8jp" secondAttribute="top" id="167-j2-IYs"/>
                                     <constraint firstItem="O4e-BA-8jp" firstAttribute="centerX" secondItem="iSu-TI-yew" secondAttribute="centerX" id="5DL-7x-ujm"/>
-                                    <constraint firstItem="O4e-BA-8jp" firstAttribute="top" secondItem="iSu-TI-yew" secondAttribute="bottom" id="7iH-iW-yEQ"/>
+                                    <constraint firstItem="CpT-U7-bfv" firstAttribute="centerX" secondItem="iSu-TI-yew" secondAttribute="centerX" id="6NH-H7-oE8"/>
                                     <constraint firstItem="O4e-BA-8jp" firstAttribute="width" secondItem="iSu-TI-yew" secondAttribute="width" id="8SP-Rw-zUY"/>
                                     <constraint firstItem="iSu-TI-yew" firstAttribute="leading" secondItem="9JA-VQ-zzw" secondAttribute="leading" constant="16" placeholder="YES" id="9Vy-Wt-ZIb"/>
                                     <constraint firstAttribute="trailing" secondItem="iSu-TI-yew" secondAttribute="trailing" constant="16" placeholder="YES" id="FvD-7O-znG"/>
@@ -86,7 +94,9 @@
                                     <constraint firstItem="Xyq-y6-zPR" firstAttribute="top" secondItem="9JA-VQ-zzw" secondAttribute="top" id="JZU-vN-GKO"/>
                                     <constraint firstItem="Xyq-y6-zPR" firstAttribute="centerX" secondItem="iSu-TI-yew" secondAttribute="centerX" id="RTC-cI-v2j"/>
                                     <constraint firstAttribute="bottom" secondItem="O4e-BA-8jp" secondAttribute="bottom" id="eFL-lL-cEF"/>
+                                    <constraint firstItem="CpT-U7-bfv" firstAttribute="top" secondItem="iSu-TI-yew" secondAttribute="bottom" id="kb8-se-lIJ"/>
                                     <constraint firstItem="eXr-4k-Adq" firstAttribute="bottom" secondItem="O4e-BA-8jp" secondAttribute="bottom" constant="509" placeholder="YES" id="pTD-l7-TPF"/>
+                                    <constraint firstItem="CpT-U7-bfv" firstAttribute="width" secondItem="iSu-TI-yew" secondAttribute="width" id="wUK-AO-ZOc"/>
                                     <constraint firstItem="Xyq-y6-zPR" firstAttribute="width" secondItem="iSu-TI-yew" secondAttribute="width" constant="32" id="xfj-7c-Lke"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="QF8-fp-xzq"/>
@@ -297,6 +307,7 @@
                         <outlet property="headerContainerView" destination="Xyq-y6-zPR" id="duy-5z-Fdl"/>
                         <outlet property="loadingView" destination="qnQ-Ld-x9K" id="D1T-sa-IvL"/>
                         <outlet property="scrollView" destination="9JA-VQ-zzw" id="lCO-o1-bLB"/>
+                        <outlet property="tableView" destination="CpT-U7-bfv" id="rQo-rr-Bjb"/>
                         <outlet property="toolbarContainerView" destination="Qzd-gm-oIu" id="Esk-Iq-Wbd"/>
                         <outlet property="toolbarSafeAreaView" destination="ERb-e0-U8L" id="sVN-sI-9e5"/>
                         <outlet property="webView" destination="iSu-TI-yew" id="DQy-Fd-C3y"/>

@@ -103,7 +103,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         scrollViewObserver?.invalidate()
         scrollViewObserver = nil
 
-        restoreNavigationBarAppearance()
+        restoreNavigationBarAppearanceIfNeeded()
     }
 
     // MARK: - Public: Configuration
@@ -133,6 +133,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     func configure(for post: ReaderPost, with statusBarUpdater: UpdatableStatusBarStyle) {
         self.post = post
         self.statusBarUpdater = statusBarUpdater
+        isLoaded = false
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -170,7 +171,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         updateUI()
     }
 
-    func restoreNavigationBarAppearance() {
+    func restoreNavigationBarAppearanceIfNeeded() {
         guard
             let navBar = navigationBar,
             let appearance = originalNavBarAppearance
@@ -273,12 +274,10 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
                                             to: Styles.endTintColor,
                                             with: progress)
 
-        if #available(iOS 13.0, *) {
-            if traitCollection.userInterfaceStyle == .light {
-                currentStatusBarStyle = fullProgress >= 2.5 ? .darkContent : .lightContent
-            } else {
-                currentStatusBarStyle = .lightContent
-            }
+        if traitCollection.userInterfaceStyle == .light {
+            currentStatusBarStyle = fullProgress >= 2.5 ? .darkContent : .lightContent
+        } else {
+            currentStatusBarStyle = .lightContent
         }
 
         navBarTintColor = tintColor
@@ -394,11 +393,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func resetStatusBarStyle() {
-        guard useCompatibilityMode == false else {
-            currentStatusBarStyle = .lightContent
-            return
-        }
-
         let isDark = traitCollection.userInterfaceStyle == .dark
 
         currentStatusBarStyle = isDark ? .lightContent : .darkContent
@@ -461,47 +455,28 @@ struct NavBarAppearance {
         navigationBar.setItemTintColor(tintColor)
         navigationBar.titleTextAttributes = titleTextAttributes ?? nil
 
-        if #available(iOS 13.0, *) {
-            let appearance = navigationBar.standardAppearance
-            appearance.backgroundImage = backgroundImage ?? nil
-            appearance.shadowImage = shadowImage ?? nil
-            appearance.backgroundColor = backgroundColor ?? nil
-        } else {
-            navigationBar.setBackgroundImage(backgroundImage ?? nil, for: .default)
-            navigationBar.shadowImage = shadowImage ?? nil
-            navigationBar.backgroundColor = backgroundColor ?? nil
-        }
+        let appearance = navigationBar.standardAppearance
+        appearance.backgroundImage = backgroundImage ?? nil
+        appearance.shadowImage = shadowImage ?? nil
+        appearance.backgroundColor = backgroundColor ?? nil
     }
 
     static var transparent: NavBarAppearance {
-        var isTranslucent = true
-
-        if #available(iOS 13.0, *) {
-            isTranslucent = false
-        }
-
         return NavBarAppearance(backgroundImage: UIImage(),
                                 shadowImage: UIImage(),
                                 backgroundColor: .clear,
                                 tintColor: .clear,
-                                isTranslucent: isTranslucent,
+                                isTranslucent: false,
                                 titleTextAttributes: nil)
     }
 }
 
 private extension NavBarAppearance {
     init(navigationBar: UINavigationBar) {
-        if #available(iOS 13.0, *) {
-            let appearance = navigationBar.standardAppearance
-            backgroundImage = appearance.backgroundImage
-            shadowImage = appearance.shadowImage
-            backgroundColor = appearance.backgroundColor
-        } else {
-            backgroundImage = navigationBar.backgroundImage(for: .default)
-            shadowImage = navigationBar.shadowImage
-            backgroundColor = navigationBar.backgroundColor
-        }
-
+        let appearance = navigationBar.standardAppearance
+        backgroundImage = appearance.backgroundImage
+        shadowImage = appearance.shadowImage
+        backgroundColor = appearance.backgroundColor
         isTranslucent = navigationBar.isTranslucent
         tintColor = navigationBar.tintColor
         titleTextAttributes = navigationBar.titleTextAttributes

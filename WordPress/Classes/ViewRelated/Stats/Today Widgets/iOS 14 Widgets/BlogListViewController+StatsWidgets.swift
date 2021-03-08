@@ -39,7 +39,7 @@ extension BlogListViewController {
 
             var timeZone = existingSite?.timeZone ?? TimeZone.current
 
-            if let blog = blogService.blog(byBlogId: blogID) {
+            if let blog = Blog.lookup(withID: blogID, in: ContextManager.shared.mainContext) {
                 timeZone = blog.timeZone
             }
 

@@ -70,6 +70,8 @@ extension Tracks {
         case todayWidgetUpdated = "wpios_today_home_extension_widget_updated"
         // User installs an instance of the all time widget
         case allTimeWidgetUpdated = "wpios_alltime_home_extension_widget_updated"
+        // Users installs an instance of the this week widget
+        case thisWeekWidgetUpdated = "wpios_thisweek_home_extension_widget_updated"
 
         case noEvent
 
@@ -79,6 +81,8 @@ extension Tracks {
                 return .todayWidgetUpdated
             case WPHomeWidgetAllTimeProperties:
                 return .allTimeWidgetUpdated
+            case WPHomeWidgetThisWeekProperties:
+                return .thisWeekWidgetUpdated
             default:
                 return .noEvent
             }

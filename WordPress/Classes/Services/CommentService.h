@@ -1,15 +1,25 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
 
+@import WordPressKit;
+
 extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
-extern NSString *commentStatusAll;
 
 @class Blog;
 @class Comment;
 @class ReaderPost;
 @class BasePost;
+@class RemoteUser;
+@class CommentServiceRemoteFactory;
 
 @interface CommentService : LocalCoreDataService
+
+/// Initializes the instance with a custom service remote provider.
+///
+/// @param context The context this instance will use for interacting with CoreData.
+/// @param commentServiceRemoteFactory The factory this instance will use to get service remote instances from.
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
+                 commentServiceRemoteFactory:(CommentServiceRemoteFactory *)remoteFactory NS_DESIGNATED_INITIALIZER;
 
 + (BOOL)isSyncingCommentsForBlog:(Blog *)blog;
 
@@ -30,7 +40,7 @@ extern NSString *commentStatusAll;
                     failure:(void (^)(NSError *error))failure;
 
 - (void)syncCommentsForBlog:(Blog *)blog
-                 withStatus:(NSString *)status
+                 withStatus:(CommentStatusFilter)status
                     success:(void (^)(BOOL hasMore))success
                     failure:(void (^)(NSError *error))failure;
 
@@ -43,7 +53,7 @@ extern NSString *commentStatusAll;
                         failure:(void (^)(NSError *))failure;
 
 - (void)loadMoreCommentsForBlog:(Blog *)blog
-                     withStatus:(NSString *)status
+                     withStatus:(CommentStatusFilter)status
                         success:(void (^)(BOOL hasMore))success
                         failure:(void (^)(NSError *))failure;
     
@@ -163,5 +173,18 @@ extern NSString *commentStatusAll;
                             siteID:(NSNumber *)siteID
                            success:(void (^)(void))success
                            failure:(void (^)(NSError *error))failure;
+
+/**
+ Fetches a list of users that liked the comment with the given ID.
+
+ @param commentID   The ID of the comment to fetch likes for
+ @param siteID      The ID of the site that contains the post
+ @param success     A success block
+ @param failure     A failure block
+ */
+- (void)getLikesForCommentID:(NSNumber *)commentID
+                      siteID:(NSNumber *)siteID
+                     success:(void (^)(NSArray<RemoteUser *> *))success
+                     failure:(void (^)(NSError * _Nullable))failure;
 
 @end

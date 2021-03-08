@@ -13,9 +13,7 @@ extension WPStyleGuide {
         searchBar.barTintColor = WPStyleGuide.barTintColor
         searchBar.layer.borderWidth = 1.0
         searchBar.returnKeyType = .done
-        if #available(iOS 13.0, *) {
-            searchBar.searchTextField.backgroundColor = .basicBackground
-        }
+        searchBar.searchTextField.backgroundColor = .basicBackground
     }
 
     @objc public class func configureSearchBarAppearance() {
