@@ -5,26 +5,29 @@ class MySitesCoordinator: NSObject {
     static let splitViewControllerRestorationID = "MySiteSplitViewControllerRestorationID"
     static let navigationControllerRestorationID = "MySiteNavigationControllerRestorationID"
 
-    let blogListViewController: BlogListViewController
+    private let meScenePresenter: ScenePresenter
+
     let becomeActiveTab: () -> Void
 
     @objc
-    init(
-        blogListViewController: BlogListViewController,
-        onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
-
-        self.blogListViewController = blogListViewController
+    init(meScenePresenter: ScenePresenter, onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
+        self.meScenePresenter = meScenePresenter
         self.becomeActiveTab = becomeActiveTab
         
         super.init()
     }
     
     // MARK: - VCs
+    
+    /// The view controller that should be presented by the tab bar controller.
+    ///
+    @objc
+    var rootViewController: UIViewController {
+        return splitViewController
+    }
 
     @objc
-    lazy var splitViewController: WPSplitViewController = makeSplitViewController()
-    
-    private func makeSplitViewController() -> WPSplitViewController {
+    lazy var splitViewController: WPSplitViewController = {
         let splitViewController = WPSplitViewController()
 
         splitViewController.restorationIdentifier = MySitesCoordinator.splitViewControllerRestorationID
@@ -35,7 +38,7 @@ class MySitesCoordinator: NSObject {
         splitViewController.tabBarItem = navigationController.tabBarItem
         
         return splitViewController
-    }
+    }()
     
     @objc
     lazy var navigationController: UINavigationController = {
@@ -59,6 +62,13 @@ class MySitesCoordinator: NSObject {
         
         return navigationController
     }()
+    
+    @objc
+    private(set) lazy var blogListViewController: BlogListViewController = {
+        BlogListViewController(meScenePresenter: self.meScenePresenter)
+    }()
+
+    //MARK: - Navigation
 
     func showMySites() {
         becomeActiveTab()

@@ -46,7 +46,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 @interface WPTabBarController () <UITabBarControllerDelegate, UIViewControllerRestoration>
 
-@property (nonatomic, strong) BlogListViewController *blogListViewController;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 
 @property (nonatomic, strong) UINavigationController *readerNavigationController;
@@ -101,7 +100,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
         [self setViewControllers:[self tabViewControllers]];
 
-        [self setSelectedViewController:self.blogListSplitViewController];
+        [self setSelectedViewController:self.mySitesCoordinator.rootViewController];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateIconIndicators:)
@@ -166,16 +165,12 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     return [self.mySitesCoordinator navigationController];
 }
 
-#pragma mark - Tab Bar Items
-
 - (BlogListViewController *)blogListViewController
 {
-    if (!_blogListViewController) {
-        _blogListViewController = [[BlogListViewController alloc] initWithMeScenePresenter:self.meScenePresenter];
-    }
-    
-    return _blogListViewController;
+    return [self.mySitesCoordinator blogListViewController];
 }
+
+#pragma mark - Tab Bar Items
 
 - (UINavigationController *)readerNavigationController
 {
@@ -279,9 +274,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (!_mySitesCoordinator) {
         __weak __typeof(self) weakSelf = self;
         
-        _mySitesCoordinator = [[MySitesCoordinator alloc] initWithBlogListViewController:self.blogListViewController
-                                                                        meScenePresenter: self.meScenePresenter
-                                                                       onBecomeActiveTab:^{
+        _mySitesCoordinator = [[MySitesCoordinator alloc] initWithMeScenePresenter: self.meScenePresenter
+                                                                 onBecomeActiveTab:^{
             [weakSelf showMySitesTab];
         }];
     }
@@ -298,7 +292,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (NSArray<UIViewController *> *)tabViewControllers
 {
-    return @[self.blogListSplitViewController,
+    return @[self.mySitesCoordinator.rootViewController,
              self.readerNavigationController,
              self.notificationsSplitViewController];
 }
