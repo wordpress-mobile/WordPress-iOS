@@ -257,10 +257,7 @@ class ReaderDetailCoordinator {
 
         bumpStats()
         bumpPageViewsForPost()
-
-        if FeatureFlag.unseenPosts.enabled {
-            markPostAsSeen()
-        }
+        markPostAsSeen()
     }
 
     private func markPostAsSeen() {

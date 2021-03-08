@@ -17,7 +17,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case activityLogFilters
     case jetpackBackupAndRestore
     case todayWidget
-    case unseenPosts
     case milestoneNotifications
     case commentFilters
     case newLikeNotifications
@@ -58,8 +57,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .jetpackBackupAndRestore:
             return true
         case .todayWidget:
-            return true
-        case .unseenPosts:
             return true
         case .milestoneNotifications:
             return false
@@ -125,8 +122,6 @@ extension FeatureFlag {
             return "Jetpack Backup and Restore"
         case .todayWidget:
             return "iOS 14 Today Widget"
-        case .unseenPosts:
-            return "Unseen Posts in Reader"
         case .milestoneNotifications:
             return "Milestone notifications"
         case .commentFilters:
