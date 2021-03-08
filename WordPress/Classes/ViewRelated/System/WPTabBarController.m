@@ -19,11 +19,9 @@
 
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 
-static NSString * const WPBlogListSplitViewRestorationID = @"WPBlogListSplitViewRestorationID";
 static NSString * const WPReaderSplitViewRestorationID = @"WPReaderSplitViewRestorationID";
 static NSString * const WPNotificationsSplitViewRestorationID = @"WPNotificationsSplitViewRestorationID";
 
-static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 static NSString * const WPMeNavigationRestorationID = @"WPMeNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID  = @"WPNotificationsNavigationID";
@@ -51,7 +49,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 
-@property (nonatomic, strong) UINavigationController *blogListNavigationController;
 @property (nonatomic, strong) UINavigationController *readerNavigationController;
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
 
@@ -164,34 +161,20 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     return [self.mySitesCoordinator splitViewController];
 }
 
-#pragma mark - Tab Bar Items
-
 - (UINavigationController *)blogListNavigationController
 {
-    if (_blogListNavigationController) {
-        return _blogListNavigationController;
-    }
+    return [self.mySitesCoordinator navigationController];
+}
 
-    self.blogListViewController = [[BlogListViewController alloc] initWithMeScenePresenter:self.meScenePresenter];
-    _blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
-    _blogListNavigationController.navigationBar.translucent = NO;
+#pragma mark - Tab Bar Items
 
-    UIImage *mySitesTabBarImage = [UIImage imageNamed:@"icon-tab-mysites"];
-    _blogListNavigationController.tabBarItem.image = mySitesTabBarImage;
-    _blogListNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
-    _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
-    _blogListNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"My Site", @"The accessibility value of the my site tab.");
-    _blogListNavigationController.tabBarItem.accessibilityIdentifier = @"mySitesTabButton";
-    _blogListNavigationController.tabBarItem.title = NSLocalizedString(@"My Site", @"The accessibility value of the my site tab.");
-
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blogToOpen = [blogService lastUsedOrFirstBlog];
-    if (blogToOpen) {
-        _blogListViewController.selectedBlog = blogToOpen;
+- (BlogListViewController *)blogListViewController
+{
+    if (!_blogListViewController) {
+        _blogListViewController = [[BlogListViewController alloc] initWithMeScenePresenter:self.meScenePresenter];
     }
     
-    return _blogListNavigationController;
+    return _blogListViewController;
 }
 
 - (UINavigationController *)readerNavigationController
@@ -272,7 +255,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)reloadSplitViewControllers
 {
-    _blogListNavigationController = nil;
     _readerNavigationController = nil;
     _notificationsNavigationController = nil;
     _notificationsSplitViewController = nil;
@@ -297,10 +279,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (!_mySitesCoordinator) {
         __weak __typeof(self) weakSelf = self;
         
-        _mySitesCoordinator = [[MySitesCoordinator alloc] initWithMySitesNavigationController:self.blogListNavigationController
-                                                       blogListViewController:self.blogListViewController
-                                                             meScenePresenter: self.meScenePresenter
-                                                            onBecomeActiveTab:^{
+        _mySitesCoordinator = [[MySitesCoordinator alloc] initWithBlogListViewController:self.blogListViewController
+                                                                        meScenePresenter: self.meScenePresenter
+                                                                       onBecomeActiveTab:^{
             [weakSelf showMySitesTab];
         }];
     }

@@ -3,18 +3,16 @@ import UIKit
 @objc
 class MySitesCoordinator: NSObject {
     static let splitViewControllerRestorationID = "MySiteSplitViewControllerRestorationID"
+    static let navigationControllerRestorationID = "MySiteNavigationControllerRestorationID"
 
-    let mySitesNavigationController: UINavigationController
     let blogListViewController: BlogListViewController
     let becomeActiveTab: () -> Void
 
     @objc
     init(
-        mySitesNavigationController: UINavigationController,
         blogListViewController: BlogListViewController,
         onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
 
-        self.mySitesNavigationController = mySitesNavigationController
         self.blogListViewController = blogListViewController
         self.becomeActiveTab = becomeActiveTab
         
@@ -31,18 +29,41 @@ class MySitesCoordinator: NSObject {
 
         splitViewController.restorationIdentifier = MySitesCoordinator.splitViewControllerRestorationID
         splitViewController.presentsWithGesture = false
-        splitViewController.setInitialPrimaryViewController(mySitesNavigationController)
+        splitViewController.setInitialPrimaryViewController(navigationController)
         splitViewController.wpPrimaryColumnWidth = .narrow
         splitViewController.dimsDetailViewControllerAutomatically = true
-        splitViewController.tabBarItem = mySitesNavigationController.tabBarItem
+        splitViewController.tabBarItem = navigationController.tabBarItem
         
         return splitViewController
     }
+    
+    @objc
+    lazy var navigationController: UINavigationController = {
+        let navigationController = UINavigationController(rootViewController: blogListViewController)
+        
+        navigationController.restorationIdentifier = MySitesCoordinator.navigationControllerRestorationID
+        navigationController.navigationBar.isTranslucent = false
+        
+        let tabBarImage = UIImage(named: "icon-tab-mysites")
+        navigationController.tabBarItem.image = tabBarImage
+        navigationController.tabBarItem.selectedImage = tabBarImage
+        navigationController.tabBarItem.accessibilityLabel = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
+        navigationController.tabBarItem.accessibilityIdentifier = "mySitesTabButton"
+        navigationController.tabBarItem.title = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
+        
+        let context = ContextManager.shared.mainContext
+        let service = BlogService(managedObjectContext: context)
+        if let blogToOpen = service.lastUsedOrFirstBlog() {
+            blogListViewController.selectedBlog = blogToOpen
+        }
+        
+        return navigationController
+    }()
 
     func showMySites() {
         becomeActiveTab()
 
-        mySitesNavigationController.viewControllers = [blogListViewController]
+        navigationController.viewControllers = [blogListViewController]
     }
 
     @objc
@@ -56,7 +77,7 @@ class MySitesCoordinator: NSObject {
         showBlogDetails(for: blog)
 
         if let subsection = subsection,
-            let blogDetailsViewController = mySitesNavigationController.topViewController as? BlogDetailsViewController {
+            let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
             blogDetailsViewController.showDetailView(for: subsection)
         }
     }
@@ -70,7 +91,7 @@ class MySitesCoordinator: NSObject {
     func showStats(for blog: Blog, timePeriod: StatsPeriodType) {
         showBlogDetails(for: blog)
 
-        if let blogDetailsViewController = mySitesNavigationController.topViewController as? BlogDetailsViewController {
+        if let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
             // Setting this user default is a bit of a hack, but it's by far the easiest way to
             // get the stats view controller displaying the correct period. I spent some time
             // trying to do it differently, but the existing stats view controller setup is
