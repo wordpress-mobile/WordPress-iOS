@@ -2,24 +2,41 @@ import UIKit
 
 @objc
 class MySitesCoordinator: NSObject {
-    let mySitesSplitViewController: WPSplitViewController
+    static let splitViewControllerRestorationID = "MySiteSplitViewControllerRestorationID"
+
     let mySitesNavigationController: UINavigationController
     let blogListViewController: BlogListViewController
     let becomeActiveTab: () -> Void
 
     @objc
     init(
-        mySitesSplitViewController: WPSplitViewController,
         mySitesNavigationController: UINavigationController,
         blogListViewController: BlogListViewController,
         onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
 
-        self.mySitesSplitViewController = mySitesSplitViewController
         self.mySitesNavigationController = mySitesNavigationController
         self.blogListViewController = blogListViewController
         self.becomeActiveTab = becomeActiveTab
-
+        
         super.init()
+    }
+    
+    // MARK: - VCs
+
+    @objc
+    lazy var splitViewController: WPSplitViewController = makeSplitViewController()
+    
+    private func makeSplitViewController() -> WPSplitViewController {
+        let splitViewController = WPSplitViewController()
+
+        splitViewController.restorationIdentifier = MySitesCoordinator.splitViewControllerRestorationID
+        splitViewController.presentsWithGesture = false
+        splitViewController.setInitialPrimaryViewController(mySitesNavigationController)
+        splitViewController.wpPrimaryColumnWidth = .narrow
+        splitViewController.dimsDetailViewControllerAutomatically = true
+        splitViewController.tabBarItem = mySitesNavigationController.tabBarItem
+        
+        return splitViewController
     }
 
     func showMySites() {
@@ -113,10 +130,10 @@ class MySitesCoordinator: NSObject {
         }
 
         guard let site = JetpackSiteRef(blog: blog),
-            let navigationController = mySitesSplitViewController.topDetailViewController?.navigationController else {
+              let navigationController = splitViewController.topDetailViewController?.navigationController else {
             return
         }
-
+        
         let query = PluginQuery.all(site: site)
         let listViewController = PluginListViewController(site: site, query: query)
 

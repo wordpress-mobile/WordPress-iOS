@@ -55,9 +55,10 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) UINavigationController *readerNavigationController;
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
 
-@property (nonatomic, strong) WPSplitViewController *blogListSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *notificationsSplitViewController;
 @property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
+
+@property (nonatomic, strong) MySitesCoordinator *mySitesCoordinator;
 
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
@@ -154,6 +155,15 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [super decodeRestorableStateWithCoder:coder];
 }
 
+#pragma mark - My Site View Controllers
+
+// These getters are temporary while we extract items from here to the MySiteCoordinator.
+
+- (UISplitViewController *)blogListSplitViewController
+{
+    return [self.mySitesCoordinator splitViewController];
+}
+
 #pragma mark - Tab Bar Items
 
 - (UINavigationController *)blogListNavigationController
@@ -237,23 +247,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 #pragma mark - Split View Controllers
 
-- (UISplitViewController *)blogListSplitViewController
-{
-    if (!_blogListSplitViewController) {
-        _blogListSplitViewController = [WPSplitViewController new];
-        _blogListSplitViewController.restorationIdentifier = WPBlogListSplitViewRestorationID;
-        _blogListSplitViewController.presentsWithGesture = NO;
-        [_blogListSplitViewController setInitialPrimaryViewController:self.blogListNavigationController];
-        _blogListSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
-
-        _blogListSplitViewController.dimsDetailViewControllerAutomatically = YES;
-
-        _blogListSplitViewController.tabBarItem = self.blogListNavigationController.tabBarItem;
-    }
-
-    return _blogListSplitViewController;
-}
-
 - (ReaderTabViewModel *)readerTabViewModel
 {
     if (!_readerTabViewModel) {
@@ -280,10 +273,10 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)reloadSplitViewControllers
 {
     _blogListNavigationController = nil;
-    _blogListSplitViewController = nil;
     _readerNavigationController = nil;
     _notificationsNavigationController = nil;
     _notificationsSplitViewController = nil;
+    _mySitesCoordinator = nil;
     
     [self setViewControllers:[self tabViewControllers]];
     
@@ -301,14 +294,18 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (MySitesCoordinator *)mySitesCoordinator
 {
-    __weak __typeof(self) weakSelf = self;
+    if (!_mySitesCoordinator) {
+        __weak __typeof(self) weakSelf = self;
+        
+        _mySitesCoordinator = [[MySitesCoordinator alloc] initWithMySitesNavigationController:self.blogListNavigationController
+                                                       blogListViewController:self.blogListViewController
+                                                             meScenePresenter: self.meScenePresenter
+                                                            onBecomeActiveTab:^{
+            [weakSelf showMySitesTab];
+        }];
+    }
     
-    return [[MySitesCoordinator alloc] initWithMySitesSplitViewController:self.blogListSplitViewController
-                                              mySitesNavigationController:self.blogListNavigationController
-                                                   blogListViewController:self.blogListViewController
-                                                        onBecomeActiveTab:^{
-        [weakSelf showMySitesTab];
-    }];
+    return _mySitesCoordinator;
 }
 
 - (ReaderCoordinator *)readerCoordinator
