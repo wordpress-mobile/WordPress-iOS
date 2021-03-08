@@ -5,15 +5,15 @@ class StoriesIntroViewController: WhatIsNewViewController {
         static let headerTitle = NSLocalizedString("Introducing Story Posts", comment: "Stories intro header title")
         static let continueButtonTitle = NSLocalizedString("Create Story Post", comment: "Stories intro continue button title")
 
-        static let exampleHeaderTitle = NSLocalizedString("You've got early access to story posts and we'd love for you to give it a try.", comment: "Story Intro welcome title")
+        static let exampleHeaderTitle = NSLocalizedString("A new way to create and publish engaging content on your site.", comment: "Story Intro welcome title")
 
-        static let example1Image = UIImage(named: "democover01")
+        static let example1Image = UIImage(named: "stories_intro_cover_1")
         static let example1Description = NSLocalizedString("How to create a story post", comment: "How to create story description")
-        static let example1URL = URL(string: "https://wpstories.wordpress.com/2020/10/12/patagonia-2/")
+        static let example1URL = URL(string: "https://wpstories.wordpress.com/2021/02/09/story-demo-03/")
 
-        static let example2Image = UIImage(named: "democover02")
+        static let example2Image = UIImage(named: "stories_intro_cover_2")
         static let example2Description = NSLocalizedString("Example story title", comment: "Example story title description")
-        static let example2URL = URL(string: "https://wpstories.wordpress.com/2020/10/12/hiking-in-the-southwest/")
+        static let example2URL = URL(string: "https://wpstories.wordpress.com/2020/12/02/story-demo-02/")
 
         static let announcement1Title = NSLocalizedString("Now stories are for everyone", comment: "First story intro item title")
         static let announcement1Description = NSLocalizedString("Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love.", comment: "First story intro item description")

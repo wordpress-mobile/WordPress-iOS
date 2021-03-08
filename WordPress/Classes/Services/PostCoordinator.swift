@@ -93,6 +93,7 @@ class PostCoordinator: NSObject {
     func publish(_ post: AbstractPost) {
         if post.status == .draft {
             post.status = .publish
+            post.isFirstTimePublish = true
         }
 
         if post.status != .scheduled {
@@ -117,7 +118,7 @@ class PostCoordinator: NSObject {
     /// - Parameter then: a block to perform after post is ready to be saved
     ///
     private func prepareToSave(_ post: AbstractPost, automatedRetry: Bool = false,
-                               then completion: @escaping (Result<AbstractPost, Error>) -> ()) {
+                               then completion: @escaping (Result<AbstractPost, SavingError>) -> ()) {
         post.autoUploadAttemptsCount = NSNumber(value: automatedRetry ? post.autoUploadAttemptsCount.intValue + 1 : 0)
 
         guard mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry) else {
@@ -136,58 +137,7 @@ class PostCoordinator: NSObject {
                 return
             }
 
-            let handleSingleMediaFailure = { [weak self] in
-                guard let `self` = self,
-                    self.isObserving(post: post) else {
-                    return
-                }
-
-                // One of the media attached to the post has already failed. We're changing the
-                // status of the post to .failed so we don't need to observe for other failed media
-                // anymore. If we do, we'll receive more notifications and we'll be calling
-                // completion() multiple times.
-                self.removeObserver(for: post)
-
-                self.change(post: post, status: .failed) { savedPost in
-                    completion(.failure(SavingError.mediaFailure(savedPost)))
-                }
-            }
-
-            let uuid = mediaCoordinator.addObserver({ [weak self](media, state) in
-                guard let `self` = self else {
-                    return
-                }
-                switch state {
-                case .ended:
-                    let successHandler = {
-                        self.updateReferences(to: media, in: post)
-                        // Let's check if media uploading is still going, if all finished with success then we can upload the post
-                        if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
-                            self.removeObserver(for: post)
-                            completion(.success(post))
-                        }
-                    }
-                    switch media.mediaType {
-                    case .video:
-                        EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { (result) in
-                            switch result {
-                            case .failure:
-                                handleSingleMediaFailure()
-                            case .success(let value):
-                                media.remoteURL = value.videoURL.absoluteString
-                                successHandler()
-                            }
-                        }
-                    default:
-                        successHandler()
-                    }
-                case .failed:
-                    handleSingleMediaFailure()
-                default:
-                    DDLogInfo("Post Coordinator -> Media state: \(state)")
-                }
-            }, forMediaFor: post)
-
+            let uuid = observeMedia(for: post, completion: completion)
             trackObserver(receipt: uuid, for: post)
 
             return
@@ -204,7 +154,7 @@ class PostCoordinator: NSObject {
         return post.remoteStatus == .pushing
     }
 
-    func posts(for blog: Blog, containsTitle title: String, excludingPostIDs excludedPostIDs: [Int] = [], entityName: String? = nil) -> NSFetchedResultsController<AbstractPost> {
+    func posts(for blog: Blog, containsTitle title: String, excludingPostIDs excludedPostIDs: [Int] = [], entityName: String? = nil, publishedOnly: Bool = false) -> NSFetchedResultsController<AbstractPost> {
         let context = self.mainContext
         let fetchRequest = NSFetchRequest<AbstractPost>(entityName: entityName ?? AbstractPost.entityName())
 
@@ -219,6 +169,9 @@ class PostCoordinator: NSObject {
         }
         if !excludedPostIDs.isEmpty {
             compoundPredicates.append(NSPredicate(format: "NOT (postID IN %@)", excludedPostIDs))
+        }
+        if publishedOnly {
+            compoundPredicates.append(NSPredicate(format: "\(BasePost.statusKeyPath) == '\(PostStatusPublish)'"))
         }
         let resultPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: compoundPredicates)
 
@@ -288,6 +241,88 @@ class PostCoordinator: NSObject {
         })
     }
 
+    func upload(assets: [ExportableAsset], to post: AbstractPost, completion: @escaping (Result<AbstractPost, SavingError>) -> Void) -> [Media?] {
+        guard mediaCoordinator.uploadMedia(for: post) else {
+            change(post: post, status: .failed) { savedPost in
+                completion(.failure(SavingError.mediaFailure(savedPost)))
+            }
+            return []
+        }
+
+        change(post: post, status: .pushing)
+
+        change(post: post, status: .pushingMedia)
+
+        // Only observe if we're not already
+        guard !isObserving(post: post) else {
+            return []
+        }
+
+        let uuid = observeMedia(for: post, completion: completion)
+        trackObserver(receipt: uuid, for: post)
+
+        let media = assets.map { asset in
+            return mediaCoordinator.addMedia(from: asset, to: post)
+        }
+
+        return media
+    }
+
+    private func observeMedia(for post: AbstractPost, completion: @escaping (Result<AbstractPost, SavingError>) -> ()) -> UUID {
+        // Only observe if we're not already
+        let handleSingleMediaFailure = { [weak self] in
+            guard let `self` = self,
+                self.isObserving(post: post) else {
+                return
+            }
+
+            // One of the media attached to the post has already failed. We're changing the
+            // status of the post to .failed so we don't need to observe for other failed media
+            // anymore. If we do, we'll receive more notifications and we'll be calling
+            // completion() multiple times.
+            self.removeObserver(for: post)
+
+            self.change(post: post, status: .failed) { savedPost in
+                completion(.failure(SavingError.mediaFailure(savedPost)))
+            }
+        }
+
+        return mediaCoordinator.addObserver({ [weak self](media, state) in
+            guard let `self` = self else {
+                return
+            }
+            switch state {
+            case .ended:
+                let successHandler = {
+                    self.updateReferences(to: media, in: post)
+                    // Let's check if media uploading is still going, if all finished with success then we can upload the post
+                    if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
+                        self.removeObserver(for: post)
+                        completion(.success(post))
+                    }
+                }
+                switch media.mediaType {
+                case .video:
+                    EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { (result) in
+                        switch result {
+                        case .failure:
+                            handleSingleMediaFailure()
+                        case .success(let value):
+                            media.remoteURL = value.videoURL.absoluteString
+                            successHandler()
+                        }
+                    }
+                default:
+                    successHandler()
+                }
+            case .failed:
+                handleSingleMediaFailure()
+            default:
+                DDLogInfo("Post Coordinator -> Media state: \(state)")
+            }
+        }, forMediaFor: post)
+    }
+
     private func updateReferences(to media: Media, in post: AbstractPost) {
         guard var postContent = post.content,
             let mediaID = media.mediaID?.intValue,
@@ -321,6 +356,9 @@ class PostCoordinator: NSObject {
             let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
             gutenbergProcessors.append(gutenbergCoverPostUploadProcessor)
 
+            let gutenbergMediaFilesUploadProcessor = GutenbergMediaFilesUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+            gutenbergProcessors.append(gutenbergMediaFilesUploadProcessor)
+
         } else if media.mediaType == .video {
             let gutenbergVideoPostUploadProcessor = GutenbergVideoUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
             gutenbergProcessors.append(gutenbergVideoPostUploadProcessor)
@@ -330,6 +368,10 @@ class PostCoordinator: NSObject {
 
             let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
             aztecProcessors.append(videoPostUploadProcessor)
+
+            let gutenbergMediaFilesUploadProcessor = GutenbergMediaFilesUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+            gutenbergProcessors.append(gutenbergMediaFilesUploadProcessor)
+
         } else if media.mediaType == .audio {
             let gutenbergAudioProcessor = GutenbergAudioUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
             gutenbergProcessors.append(gutenbergAudioProcessor)
@@ -338,6 +380,8 @@ class PostCoordinator: NSObject {
             let documentUploadProcessor = DocumentUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, title: documentTitle)
             aztecProcessors.append(documentUploadProcessor)
         }
+
+
 
         // Gutenberg processors need to run first because they are more specific/and target only content inside specific blocks
         postContent = gutenbergProcessors.reduce(postContent) { (content, processor) -> String in

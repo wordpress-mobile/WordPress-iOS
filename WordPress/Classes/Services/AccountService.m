@@ -473,13 +473,13 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         NSString *todayExtensionBlogUrl = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteUrlKey];
 
         Blog *todayExtensionBlog = [blogService blogByBlogId:todayExtensionSiteID];
-        NSTimeZone *timeZone = [blogService timeZoneForBlog:todayExtensionBlog];
+        NSTimeZone *timeZone = [todayExtensionBlog timeZone];
 
         if (todayExtensionSiteID == NULL) {
             todayExtensionSiteID = siteId;
             todayExtensionBlogName = blogName;
             todayExtensionBlogUrl = blogUrl;
-            timeZone = [blogService timeZoneForBlog:defaultBlog];
+            timeZone = [defaultBlog timeZone];
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
