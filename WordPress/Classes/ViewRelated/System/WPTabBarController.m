@@ -489,11 +489,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [self.notificationsViewController showDetailsForNotificationWithID:notificationID];
 }
 
-- (BOOL)isNavigatingMySitesTab
-{
-    return (self.selectedIndex == WPTabMySites && [self.mySitesCoordinator.navigationController.viewControllers count] > 1);
-}
-
 #pragma mark - Zendesk Notifications
 
 - (void)updateIconIndicators:(NSNotification *)notification
