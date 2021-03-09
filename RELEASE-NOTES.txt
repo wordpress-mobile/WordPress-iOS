@@ -1,6 +1,6 @@
 17.0
 -----
-
+* [internal] Updated Zendesk to latest version. Should be no functional changes. [#16051]
 
 16.9
 -----
