@@ -182,6 +182,7 @@ class InvitePersonViewController: UITableViewController {
     @IBOutlet private var disableLinksCell: UITableViewCell! {
         didSet {
             setupDisableInviteLinksCell()
+            refreshDisableLinkCell()
         }
     }
 
@@ -595,8 +596,8 @@ private extension InvitePersonViewController {
             refreshCurrentInviteCell()
         case .expires:
             refreshExpirationCell()
-        default:
-            break
+        case .disable:
+            refreshDisableLinkCell()
         }
     }
 
@@ -606,6 +607,7 @@ private extension InvitePersonViewController {
         } else {
             generateShareCell.textLabel?.attributedText = createAttributedShareInviteText()
         }
+        generateShareCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
         generateShareCell.textLabel?.textColor = .primary
     }
 
@@ -640,6 +642,8 @@ private extension InvitePersonViewController {
         // trying to capitalize the role slug from the current invite link.
         let role = availableRoles[selectedInviteLinkIndex]
         currentInviteCell.detailTextLabel?.text = role.name
+
+        WPStyleGuide.configureTableViewCell(currentInviteCell)
     }
 
     func refreshExpirationCell() {
@@ -654,6 +658,12 @@ private extension InvitePersonViewController {
         formatter.dateStyle = .medium
         let date = Date(timeIntervalSince1970: Double(invite.expiry))
         expirationCell.detailTextLabel?.text = formatter.string(from: date)
+
+        WPStyleGuide.configureTableViewCell(expirationCell)
+    }
+
+    func refreshDisableLinkCell() {
+        WPStyleGuide.configureTableViewCell(disableLinksCell)
     }
 
     func syncInviteLinks() {
