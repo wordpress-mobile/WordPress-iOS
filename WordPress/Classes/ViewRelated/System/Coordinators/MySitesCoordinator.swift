@@ -44,15 +44,25 @@ class MySitesCoordinator: NSObject {
         splitViewController.presentsWithGesture = false
         splitViewController.setInitialPrimaryViewController(navigationController)
         splitViewController.wpPrimaryColumnWidth = .narrow
-        splitViewController.dimsDetailViewControllerAutomatically = true
+        splitViewController.dimsDetailViewControllerAutomatically = !FeatureFlag.newNavBarAppearance.enabled
         splitViewController.tabBarItem = navigationController.tabBarItem
 
+        if Feature.enabled(.newNavBarAppearance) {
+            splitViewController.wpPrimaryColumnWidth = .default
+        } else {
+            splitViewController.wpPrimaryColumnWidth = .narrow
+        }
+        
         return splitViewController
     }()
 
     @objc
     lazy var navigationController: UINavigationController = {
         let navigationController = UINavigationController(rootViewController: rootContentViewController)
+        
+        if Feature.enabled(.newNavBarAppearance) {
+            navigationController.navigationBar.prefersLargeTitles = true
+        }
         
         navigationController.restorationIdentifier = MySitesCoordinator.navigationControllerRestorationID
         navigationController.navigationBar.isTranslucent = false
