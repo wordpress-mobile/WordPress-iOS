@@ -141,6 +141,6 @@ extension PostEditor {
     }
 
     var prepublishingIdentifiers: [PrepublishingIdentifier] {
-        return [.visibility, .schedule, .tags]
+        return [.visibility, .schedule, .tags, .categories]
     }
 }

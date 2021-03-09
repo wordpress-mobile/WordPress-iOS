@@ -30,19 +30,23 @@ class GutenbergMediaFilesUploadProcessor: Processor {
                 return mediaFile
             }
 
-            guard let newURL = StoryPoster.filePath?.appendingPathComponent("\(self.serverMediaID)") else {
+            guard let newURL = StoryPoster.filePath?.appendingPathComponent(String(self.serverMediaID)) else {
                 return mediaFile
             }
 
             do {
-                try FileManager.default.moveItem(at: URL(string: mediaFile.url)!, to: newURL)
+                if let mediaURL = URL(string: mediaFile.url) {
+                    try FileManager.default.moveItem(at: mediaURL, to: newURL)
+                } else {
+                    DDLogError("No Media File URL was present. This is a Stories error and should be investigated")
+                }
             } catch let error {
                 assertionFailure("Failed to move archived file to new location: \(error)")
             }
 
             let file = MediaFile(alt: mediaFile.alt,
                                   caption: mediaFile.caption,
-                                  id: Double(self.serverMediaID),
+                                  id: String(self.serverMediaID),
                                   link: mediaFile.link,
                                   mime: mediaFile.mime,
                                   type: mediaFile.type,

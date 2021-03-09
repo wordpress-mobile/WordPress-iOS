@@ -7,62 +7,6 @@ class MySitesCoordinator: NSObject {
 
     let meScenePresenter: ScenePresenter
 
-    // MARK: - VCs
-
-    /// The view controller that should be presented by the tab bar controller.
-    ///
-    @objc
-    var rootViewController: UIViewController {
-        return splitViewController
-    }
-
-    @objc
-    private(set) lazy var blogListViewController: BlogListViewController = {
-        BlogListViewController(meScenePresenter: self.meScenePresenter)
-    }()
-
-    private lazy var splitViewController: WPSplitViewController = {
-        let splitViewController = WPSplitViewController()
-
-        splitViewController.restorationIdentifier = MySitesCoordinator.splitViewControllerRestorationID
-        splitViewController.presentsWithGesture = false
-        splitViewController.setInitialPrimaryViewController(navigationController)
-        splitViewController.dimsDetailViewControllerAutomatically = true
-        splitViewController.tabBarItem = navigationController.tabBarItem
-
-        if Feature.enabled(.newNavBarAppearance) {
-            splitViewController.wpPrimaryColumnWidth = .default
-        } else {
-            splitViewController.wpPrimaryColumnWidth = .narrow
-        }
-
-        return splitViewController
-    }()
-
-    private lazy var mySiteViewController = {
-        MySiteViewController(meScenePresenter: self.meScenePresenter)
-    }()
-
-    private lazy var navigationController: UINavigationController = {
-        let navigationController = UINavigationController(rootViewController: rootContentViewController())
-
-        if Feature.enabled(.newNavBarAppearance) {
-            navigationController.navigationBar.prefersLargeTitles = true
-        }
-
-        navigationController.restorationIdentifier = MySitesCoordinator.navigationControllerRestorationID
-        navigationController.navigationBar.isTranslucent = false
-
-        let tabBarImage = UIImage(named: "icon-tab-mysites")
-        navigationController.tabBarItem.image = tabBarImage
-        navigationController.tabBarItem.selectedImage = tabBarImage
-        navigationController.tabBarItem.accessibilityLabel = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
-        navigationController.tabBarItem.accessibilityIdentifier = "mySitesTabButton"
-        navigationController.tabBarItem.title = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
-
-        return navigationController
-    }()
-
     // MARK: - Callbacks
 
     let becomeActiveTab: () -> Void
@@ -70,10 +14,7 @@ class MySitesCoordinator: NSObject {
     // MARK: - Initializers
 
     @objc
-    init(
-        meScenePresenter: ScenePresenter,
-        onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
-
+    init(meScenePresenter: ScenePresenter, onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
         self.meScenePresenter = meScenePresenter
         self.becomeActiveTab = becomeActiveTab
 
@@ -94,6 +35,78 @@ class MySitesCoordinator: NSObject {
         becomeActiveTab()
 
         navigationController.popToRootViewController(animated: false)
+    }
+    
+    // MARK: - VCs
+
+    /// The view controller that should be presented by the tab bar controller.
+    ///
+    @objc
+    var rootViewController: UIViewController {
+        return splitViewController
+    }
+
+    @objc
+    lazy var splitViewController: WPSplitViewController = {
+        let splitViewController = WPSplitViewController()
+
+        splitViewController.restorationIdentifier = MySitesCoordinator.splitViewControllerRestorationID
+        splitViewController.presentsWithGesture = false
+        splitViewController.setInitialPrimaryViewController(navigationController)
+        splitViewController.dimsDetailViewControllerAutomatically = true
+        splitViewController.tabBarItem = navigationController.tabBarItem
+
+        if Feature.enabled(.newNavBarAppearance) {
+            splitViewController.wpPrimaryColumnWidth = .default
+        } else {
+            splitViewController.wpPrimaryColumnWidth = .narrow
+        }
+
+        return splitViewController
+    }()
+
+    @objc
+    lazy var navigationController: UINavigationController = {
+        let navigationController = UINavigationController(rootViewController: rootContentViewController())
+
+        if Feature.enabled(.newNavBarAppearance) {
+            navigationController.navigationBar.prefersLargeTitles = true
+        }
+
+        navigationController.restorationIdentifier = MySitesCoordinator.navigationControllerRestorationID
+        navigationController.navigationBar.isTranslucent = false
+
+        let tabBarImage = UIImage(named: "icon-tab-mysites")
+        navigationController.tabBarItem.image = tabBarImage
+        navigationController.tabBarItem.selectedImage = tabBarImage
+        navigationController.tabBarItem.accessibilityLabel = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
+        navigationController.tabBarItem.accessibilityIdentifier = "mySitesTabButton"
+        navigationController.tabBarItem.title = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
+
+        let context = ContextManager.shared.mainContext
+        let service = BlogService(managedObjectContext: context)
+        if let blogToOpen = service.lastUsedOrFirstBlog() {
+            blogListViewController.selectedBlog = blogToOpen
+        }
+
+        return navigationController
+    }()
+
+    @objc
+    private(set) lazy var blogListViewController: BlogListViewController = {
+        BlogListViewController(meScenePresenter: self.meScenePresenter)
+    }()
+    
+    private lazy var mySiteViewController = {
+        MySiteViewController(meScenePresenter: self.meScenePresenter)
+    }()
+
+    // MARK: - Navigation
+
+    func showMySites() {
+        becomeActiveTab()
+
+        navigationController.viewControllers = [blogListViewController]
     }
 
     // MARK: - Sites List
@@ -144,7 +157,7 @@ class MySitesCoordinator: NSObject {
             // quite complex and contains many nested child view controllers. As we're planning
             // to revamp that section in the not too distant future, I opted for this simpler
             // configuration for now. 2018-07-11 @frosty
-            UserDefaults.standard.set(timePeriod.rawValue, forKey: MySitesCoordinator.statsPeriodTypeDefaultsKey)
+            UserDefaults.standard.set(timePeriod.rawValue, forKey: StatsPeriodType.statsPeriodTypeDefaultsKey)
 
             blogDetailsViewController.showDetailView(for: .stats)
         }
@@ -153,8 +166,6 @@ class MySitesCoordinator: NSObject {
     func showActivityLog(for blog: Blog) {
         showBlogDetails(for: blog, then: .activity)
     }
-
-    private static let statsPeriodTypeDefaultsKey = "LastSelectedStatsPeriodType"
 
     // MARK: - Adding a new site
 
@@ -206,12 +217,12 @@ class MySitesCoordinator: NSObject {
         UIView.performWithoutAnimation {
             showBlogDetails(for: blog, then: .plugins)
         }
-
+        
         guard let site = JetpackSiteRef(blog: blog),
-            let navigationController = splitViewController.topDetailViewController?.navigationController else {
+              let navigationController = splitViewController.topDetailViewController?.navigationController else {
             return
         }
-
+        
         let query = PluginQuery.all(site: site)
         let listViewController = PluginListViewController(site: site, query: query)
 

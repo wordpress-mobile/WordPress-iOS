@@ -24,16 +24,18 @@ extension BlogDetailsViewController {
             controller?.showStoryEditor(forBlog: blog)
         }
 
-        var actions: [ActionSheetItem] = [PostAction(handler: newPost), PageAction(handler: newPage)]
+        let source = "my_site"
+
+        var actions: [ActionSheetItem] = [PostAction(handler: newPost, source: source), PageAction(handler: newPage, source: source)]
         if shouldShowNewStory {
-            actions.append(StoryAction(handler: newStory))
+            actions.append(StoryAction(handler: newStory, source: source))
         }
-        let coordinator = CreateButtonCoordinator(self, actions: actions)
+        let coordinator = CreateButtonCoordinator(self, actions: actions, source: source)
         return coordinator
     }
 
     //TODO: Can be removed after stories launches
     private var shouldShowNewStory: Bool {
-        return Feature.enabled(.stories) && blog.supports(.stories)
+        return Feature.enabled(.stories) && blog.supports(.stories) && !UIDevice.isPad()
     }
 }
