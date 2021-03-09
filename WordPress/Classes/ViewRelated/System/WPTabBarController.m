@@ -439,7 +439,10 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (selectedIndex != tabBarController.selectedIndex) {
         switch (selectedIndex) {
             case WPTabMySites: {
-                [self bypassBlogListViewControllerIfNecessary];
+                if (![Feature enabled:FeatureFlagNewNavBarAppearance]) {
+                    // We only need to bypass the blog list if we're using the old presentation style
+                    [self bypassBlogListViewControllerIfNecessary];
+                }
                 break;
             }
             case WPTabReader: {
@@ -473,7 +476,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     UINavigationController *navController = (UINavigationController *)[self.mySitesCoordinator.splitViewController.viewControllers firstObject];
     BlogListViewController *blogListViewController = (BlogListViewController *)[navController.viewControllers firstObject];
 
-    if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
+    if ([blogListViewController isKindOfClass:[BlogListViewController class]] && [blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
         if ([navController.visibleViewController isKindOfClass:[blogListViewController class]]) {
             [blogListViewController bypassBlogListViewController];
         }

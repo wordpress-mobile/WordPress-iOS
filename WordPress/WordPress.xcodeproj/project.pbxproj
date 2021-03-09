@@ -139,6 +139,7 @@
 		1714F8D020E6DA8900226DCB /* RouteMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1714F8CF20E6DA8900226DCB /* RouteMatcher.swift */; };
 		1715179220F4B2EB002C4A38 /* Routes+Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1715179120F4B2EB002C4A38 /* Routes+Stats.swift */; };
 		1715179420F4B5CD002C4A38 /* MySitesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1715179320F4B5CD002C4A38 /* MySitesCoordinator.swift */; };
+		1716AEFC25F2927600CF49EC /* MySiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1716AEFB25F2927600CF49EC /* MySiteViewController.swift */; };
 		171963401D378D5100898E8B /* SearchWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1719633F1D378D5100898E8B /* SearchWrapperView.swift */; };
 		171CC15824FCEBF7008B7180 /* UINavigationBar+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171CC15724FCEBF7008B7180 /* UINavigationBar+Appearance.swift */; };
 		1724DDC81C60F1200099D273 /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */; };
@@ -2779,6 +2780,7 @@
 		1714F8CF20E6DA8900226DCB /* RouteMatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteMatcher.swift; sourceTree = "<group>"; };
 		1715179120F4B2EB002C4A38 /* Routes+Stats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Routes+Stats.swift"; sourceTree = "<group>"; };
 		1715179320F4B5CD002C4A38 /* MySitesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySitesCoordinator.swift; sourceTree = "<group>"; };
+		1716AEFB25F2927600CF49EC /* MySiteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySiteViewController.swift; sourceTree = "<group>"; };
 		1719633F1D378D5100898E8B /* SearchWrapperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchWrapperView.swift; sourceTree = "<group>"; };
 		171CC15724FCEBF7008B7180 /* UINavigationBar+Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Appearance.swift"; sourceTree = "<group>"; };
 		1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanDetailViewController.swift; sourceTree = "<group>"; };
@@ -5838,6 +5840,14 @@
 				08E77F461EE9D72F006F9515 /* MediaThumbnailExporterTests.swift */,
 			);
 			name = Media;
+			sourceTree = "<group>";
+		};
+		1716AEFA25F2926C00CF49EC /* My Site */ = {
+			isa = PBXGroup;
+			children = (
+				1716AEFB25F2927600CF49EC /* MySiteViewController.swift */,
+			);
+			path = "My Site";
 			sourceTree = "<group>";
 		};
 		1719633E1D378D1E00898E8B /* Search */ = {
@@ -9608,6 +9618,7 @@
 		AC34397B0E11443300E5D79B /* Blog */ = {
 			isa = PBXGroup;
 			children = (
+				1716AEFA25F2926C00CF49EC /* My Site */,
 				F1863714253E49B8003D4BEF /* Add Site */,
 				3F43603423F368BF001DEE70 /* Blog Details */,
 				3F43603523F368CA001DEE70 /* Blog List */,
@@ -14213,6 +14224,7 @@
 				7E4123C220F4097B00DF8486 /* FormattableContentFormatter.swift in Sources */,
 				7E21C765202BBF4400837CF5 /* SearchAdsAttribution.swift in Sources */,
 				5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */,
+				1716AEFC25F2927600CF49EC /* MySiteViewController.swift in Sources */,
 				7E3E7A6020E44E490075D159 /* FooterContentGroup.swift in Sources */,
 				59A3CADD1CD2FF0C009BFA1B /* BasePageListCell.m in Sources */,
 				436D56202117312700CEAA33 /* RegisterDomainSuggestionsTableViewController.swift in Sources */,
