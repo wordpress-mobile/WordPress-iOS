@@ -175,7 +175,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         present(addSiteAlert, animated: true)
     }
-    
+
     private func launchSiteCreation() {
         let wizardLauncher = SiteCreationWizardLauncher()
         guard let wizard = wizardLauncher.ui else {
@@ -213,7 +213,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         blogDetailsViewController.view.translatesAutoresizingMaskIntoConstraints = false
         view.pinSubviewToAllEdges(blogDetailsViewController.view)
-        
+
         showInitialDetails()
     }
 
@@ -221,10 +221,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         if splitViewControllerIsHorizontallyCompact {
             return
         }
-        
+
         blogDetailsViewController?.showDetailView(for: .stats)
     }
-    
+
     private func blogDetailsViewController(for blog: Blog) -> BlogDetailsViewController {
         guard let blogDetailsViewController = blogDetailsViewController else {
             let blogDetailsViewController = makeBlogDetailsViewController(for: blog)
@@ -324,12 +324,12 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
 extension MySiteViewController: WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
-        guard let blogDetailsViewController = blogDetailsViewController as? WPSplitViewControllerDetailProvider else  {
+        guard let blogDetailsViewController = blogDetailsViewController as? WPSplitViewControllerDetailProvider else {
             let emptyViewController = UIViewController()
             WPStyleGuide.configureColors(view: emptyViewController.view, tableView: nil)
             return emptyViewController
         }
-        
+
         return blogDetailsViewController.initialDetailViewControllerForSplitView(splitView)
     }
 }

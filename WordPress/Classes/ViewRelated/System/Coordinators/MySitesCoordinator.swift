@@ -16,9 +16,9 @@ class MySitesCoordinator: NSObject {
 
         super.init()
     }
-    
+
     // MARK: - Root View Controller
-    
+
     private var rootContentViewController: UIViewController {
         if Feature.enabled(.newNavBarAppearance) {
             return mySiteViewController
@@ -52,18 +52,18 @@ class MySitesCoordinator: NSObject {
         } else {
             splitViewController.wpPrimaryColumnWidth = .narrow
         }
-        
+
         return splitViewController
     }()
 
     @objc
     lazy var navigationController: UINavigationController = {
         let navigationController = UINavigationController(rootViewController: rootContentViewController)
-        
+
         if Feature.enabled(.newNavBarAppearance) {
             navigationController.navigationBar.prefersLargeTitles = true
         }
-        
+
         navigationController.restorationIdentifier = MySitesCoordinator.navigationControllerRestorationID
         navigationController.navigationBar.isTranslucent = false
 
@@ -87,7 +87,7 @@ class MySitesCoordinator: NSObject {
     private(set) lazy var blogListViewController: BlogListViewController = {
         BlogListViewController(meScenePresenter: self.meScenePresenter)
     }()
-    
+
     private lazy var mySiteViewController: MySiteViewController = {
         MySiteViewController(meScenePresenter: self.meScenePresenter)
     }()
@@ -101,18 +101,18 @@ class MySitesCoordinator: NSObject {
     }
 
     // MARK: - Sites List
-    
+
     private func showSitesList() {
         showRootViewController()
-        
+
         if Feature.enabled(.newNavBarAppearance) {
             blogListViewController.modalPresentationStyle = .pageSheet
             mySiteViewController.present(blogListViewController, animated: true)
         }
     }
-    
+
     // MARK: - Blog Details
-    
+
     @objc
     func showBlogDetails(for blog: Blog) {
         showRootViewController()
@@ -162,7 +162,7 @@ class MySitesCoordinator: NSObject {
     @objc
     func showAddNewSite(from view: UIView) {
         showSitesList()
-        
+
         blogListViewController.presentInterfaceForAddingNewSite(from: view)
     }
 
