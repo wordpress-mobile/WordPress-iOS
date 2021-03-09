@@ -318,7 +318,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     // Ignore taps on the post tab and instead show the modal.
     if ([blogService blogCountForAllAccounts] == 0) {
-        [self switchMySitesTabToAddNewSite];
+        [self.mySitesCoordinator showAddNewSiteFrom:self.tabBar];
     } else {
         [self showPostTabAnimated:true toMedia:false blog:nil afterDismiss:afterDismiss];
     }
@@ -329,7 +329,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     if ([blogService blogCountForAllAccounts] == 0) {
-        [self switchMySitesTabToAddNewSite];
+        [self.mySitesCoordinator showAddNewSiteFrom:self.tabBar];
     } else {
         [self showPostTabAnimated:YES toMedia:NO blog:blog];
     }
@@ -393,41 +393,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)popNotificationsTabToRoot
 {
     [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
-}
-
-- (void)switchMySitesTabToAddNewSite
-{
-    [self setSelectedIndex:WPTabMySites];
-    [self.blogListViewController presentInterfaceForAddingNewSiteFrom:self.tabBar];
-}
-
-- (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog
-{
-    [self.mySitesCoordinator showBlogDetailsFor:blog];
-
-    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
-    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
-        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionStats];
-    }
-}
-
-- (void)switchMySitesTabToMediaForBlog:(Blog *)blog
-{
-    [self switchMySitesTabToBlogDetailsForBlog:blog];
-
-    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
-    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
-        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionMedia];
-    }
-}
- 
-- (void)switchMySitesTabToBlogDetailsForBlog:(Blog *)blog
-{
-    [self setSelectedIndex:WPTabMySites];
-
-    BlogListViewController *blogListVC = self.blogListViewController;
-    self.blogListNavigationController.viewControllers = @[blogListVC];
-    [blogListVC setSelectedBlog:blog animated:NO];
 }
 
 - (void)switchNotificationsTabToNotificationSettings
