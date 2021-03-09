@@ -151,25 +151,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [super decodeRestorableStateWithCoder:coder];
 }
 
-#pragma mark - My Site View Controllers
-
-// These getters are temporary while we extract items from here to the MySiteCoordinator.
-
-- (UISplitViewController *)blogListSplitViewController
-{
-    return [self.mySitesCoordinator splitViewController];
-}
-
-- (UINavigationController *)blogListNavigationController
-{
-    return [self.mySitesCoordinator navigationController];
-}
-
-- (BlogListViewController *)blogListViewController
-{
-    return [self.mySitesCoordinator blogListViewController];
-}
-
 #pragma mark - Tab Bar Items
 
 - (UINavigationController *)readerNavigationController
@@ -429,7 +410,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         return nil;
     }
 
-    BlogDetailsViewController *blogDetailsController = (BlogDetailsViewController *)[[self.blogListNavigationController.viewControllers wp_filter:^BOOL(id obj) {
+    BlogDetailsViewController *blogDetailsController = (BlogDetailsViewController *)[[self.mySitesCoordinator.navigationController.viewControllers wp_filter:^BOOL(id obj) {
         return [obj isKindOfClass:[BlogDetailsViewController class]];
     }] firstObject];
     return blogDetailsController.blog;
@@ -489,7 +470,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     // If the user has one blog then we don't want to present them with the main "My Sites"
     // screen where they can see all their blogs. In the case of only one blog just show
     // the main blog details screen
-    UINavigationController *navController = (UINavigationController *)[self.blogListSplitViewController.viewControllers firstObject];
+    UINavigationController *navController = (UINavigationController *)[self.mySitesCoordinator.splitViewController.viewControllers firstObject];
     BlogListViewController *blogListViewController = (BlogListViewController *)[navController.viewControllers firstObject];
 
     if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
@@ -507,7 +488,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (BOOL)isNavigatingMySitesTab
 {
-    return (self.selectedIndex == WPTabMySites && [self.blogListViewController.navigationController.viewControllers count] > 1);
+    return (self.selectedIndex == WPTabMySites && [self.mySitesCoordinator.navigationController.viewControllers count] > 1);
 }
 
 #pragma mark - Zendesk Notifications

@@ -41,7 +41,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .gutenbergXposts:
             return true
         case .newNavBarAppearance:
-            return BuildConfiguration.current == .localDeveloper
+            return false
         case .unifiedPrologueCarousel:
             return false
         case .stories:
