@@ -586,10 +586,10 @@ private extension InvitePersonViewController {
     func refreshGenerateShareCell() {
         if blog.inviteLinks?.count == 0 {
             generateShareCell.textLabel?.text = NSLocalizedString("Generate new link", comment: "Title. A call to action to generate a new invite link.")
+            generateShareCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
         } else {
             generateShareCell.textLabel?.attributedText = createAttributedShareInviteText()
         }
-        generateShareCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
         generateShareCell.textLabel?.textAlignment = .center
         generateShareCell.textLabel?.textColor = .primary
     }
@@ -597,7 +597,7 @@ private extension InvitePersonViewController {
     func createAttributedShareInviteText() -> NSAttributedString {
         let pStyle = NSMutableParagraphStyle()
         pStyle.alignment = .center
-        let font = UIFont.systemFont(ofSize: 17)
+        let font = WPStyleGuide.tableviewTextFont()
         let textAttributes: [NSAttributedString.Key: Any] = [
             .font: font,
             .paragraphStyle: pStyle,
