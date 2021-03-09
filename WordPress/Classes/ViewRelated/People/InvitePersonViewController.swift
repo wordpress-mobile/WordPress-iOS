@@ -167,21 +167,19 @@ class InvitePersonViewController: UITableViewController {
 
     @IBOutlet private var currentInviteCell: UITableViewCell! {
         didSet {
-            setupCurrentInviteCell()
             refreshCurrentInviteCell()
         }
     }
 
     @IBOutlet private var expirationCell: UITableViewCell! {
         didSet {
-            setupExpirationCell()
             refreshExpirationCell()
         }
     }
 
     @IBOutlet private var disableLinksCell: UITableViewCell! {
         didSet {
-            setupDisableInviteLinksCell()
+            refreshDisableLinkCell()
         }
     }
 
@@ -569,21 +567,6 @@ private extension InvitePersonViewController {
 //
 private extension InvitePersonViewController {
 
-    func setupDisableInviteLinksCell() {
-        disableLinksCell.textLabel?.text = NSLocalizedString("Disable invite link", comment: "Title. A call to action to disable invite links.")
-        disableLinksCell.textLabel?.textColor = .error
-    }
-
-    func setupCurrentInviteCell() {
-        currentInviteCell.textLabel?.text = NSLocalizedString("Role", comment: "Title. Indicates the user role an invite link is for.")
-        currentInviteCell.textLabel?.textColor = .text
-    }
-
-    func setupExpirationCell() {
-        expirationCell.textLabel?.text = NSLocalizedString("Expires on", comment: "Title. Indicates an expiration date.")
-        expirationCell.textLabel?.textColor = .text
-    }
-
     func refreshInviteLinkCell(indexPath: IndexPath) {
         guard let row = InviteLinkRow(rawValue: indexPath.row) else {
             return
@@ -595,8 +578,8 @@ private extension InvitePersonViewController {
             refreshCurrentInviteCell()
         case .expires:
             refreshExpirationCell()
-        default:
-            break
+        case .disable:
+            refreshDisableLinkCell()
         }
     }
 
@@ -606,6 +589,8 @@ private extension InvitePersonViewController {
         } else {
             generateShareCell.textLabel?.text = NSLocalizedString("Share invite link", comment: "Title. A call to action to share an invite link.")
         }
+        generateShareCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
+        generateShareCell.textLabel?.textAlignment = .center
         generateShareCell.textLabel?.textColor = .primary
     }
 
@@ -613,11 +598,17 @@ private extension InvitePersonViewController {
         guard selectedInviteLinkIndex < availableRoles.count else {
             return
         }
+
+        currentInviteCell.textLabel?.text = NSLocalizedString("Role", comment: "Title. Indicates the user role an invite link is for.")
+        currentInviteCell.textLabel?.textColor = .text
+
         // sortedInviteLinks and availableRoles should be complimentary. We can cheat a little and
         // get the localized "display name" to use from availableRoles rather than
         // trying to capitalize the role slug from the current invite link.
         let role = availableRoles[selectedInviteLinkIndex]
         currentInviteCell.detailTextLabel?.text = role.name
+
+        WPStyleGuide.configureTableViewCell(currentInviteCell)
     }
 
     func refreshExpirationCell() {
@@ -628,10 +619,22 @@ private extension InvitePersonViewController {
             return
         }
 
+        expirationCell.textLabel?.text = NSLocalizedString("Expires on", comment: "Title. Indicates an expiration date.")
+        expirationCell.textLabel?.textColor = .text
+
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         let date = Date(timeIntervalSince1970: Double(invite.expiry))
         expirationCell.detailTextLabel?.text = formatter.string(from: date)
+
+        WPStyleGuide.configureTableViewCell(expirationCell)
+    }
+
+    func refreshDisableLinkCell() {
+        disableLinksCell.textLabel?.text = NSLocalizedString("Disable invite link", comment: "Title. A call to action to disable invite links.")
+        disableLinksCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
+        disableLinksCell.textLabel?.textColor = .error
+        disableLinksCell.textLabel?.textAlignment = .center
     }
 
     func syncInviteLinks() {
