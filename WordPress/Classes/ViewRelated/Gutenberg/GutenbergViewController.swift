@@ -704,7 +704,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func showEditor(files: [MediaFile], blockID: String) throws {
         storyEditor = try StoryEditor.editor(post: post, mediaFiles: files, publishOnCompletion: false, updated: { [weak self] result in
             switch result {
-            case .success:
+            case .success(let content):
+                self?.gutenberg.replace(blockID: blockID, content: content)
                 self?.dismiss(animated: true, completion: nil)
             case .failure(let error):
                 self?.dismiss(animated: true, completion: nil)
@@ -717,8 +718,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             }
         }, uploaded: { [weak self] result in
             switch result {
-            case .success(let content):
-                self?.gutenberg.replace(blockID: blockID, content: content)
+            case .success:
+                break // Posts will be updated when the MediaFilesProcessor receives upload events
             case .failure(let error):
                 let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)
                 let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
