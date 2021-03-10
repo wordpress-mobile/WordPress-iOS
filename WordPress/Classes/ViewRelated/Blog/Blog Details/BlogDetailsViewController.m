@@ -1120,7 +1120,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.headerView.blog = blog;
     self.blog = blog;
     
+    [self showInitialDetailsForBlog];
     [self.tableView reloadData];
+}
+
+- (void)showInitialDetailsForBlog
+{
+    if ([self splitViewControllerIsHorizontallyCompact]) {
+        return;
+    }
+    
+    [self showDetailViewForSubsection:BlogDetailsSubsectionStats];
 }
 
 #pragma mark Site Icon Update Management

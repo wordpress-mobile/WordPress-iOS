@@ -214,15 +214,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         blogDetailsViewController.view.translatesAutoresizingMaskIntoConstraints = false
         view.pinSubviewToAllEdges(blogDetailsViewController.view)
 
-        showInitialDetails()
-    }
-
-    private func showInitialDetails() {
-        if splitViewControllerIsHorizontallyCompact {
-            return
-        }
-
-        blogDetailsViewController?.showDetailView(for: .stats)
+        blogDetailsViewController.showInitialDetailsForBlog()
     }
 
     private func blogDetailsViewController(for blog: Blog) -> BlogDetailsViewController {
