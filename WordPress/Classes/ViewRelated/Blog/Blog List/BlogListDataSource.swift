@@ -81,7 +81,7 @@ class BlogListDataSource: NSObject {
     // MARK: - Configuration
 
     @objc let recentSitesMinCount = 11
-    
+
     /// If this is set to `false`, the rows will never show the disclosure indicator.
     ///
     @objc var shouldShowDisclosureIndicator = true
