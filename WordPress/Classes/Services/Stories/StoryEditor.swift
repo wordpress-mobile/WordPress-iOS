@@ -93,7 +93,7 @@ class StoryEditor: CameraController {
         case unsupportedDevice
     }
 
-    typealias Results = Result<AbstractPost, PostCoordinator.SavingError>
+    typealias Results = Result<String, PostCoordinator.SavingError>
 
     static func editor(blog: Blog,
                        context: NSManagedObjectContext,
@@ -184,30 +184,12 @@ class StoryEditor: CameraController {
             guard let self = self else { return }
 
             let uploads: (String, [Media])? = try? self.poster?.upload(mediaItems: postMedia, post: post, completion: { post in
-                uploaded(post)
+                uploaded(.success(""))
             })
 
-            if let firstMediaFile = mediaFiles?.first {
-                let processor = GutenbergBlockProcessor(for: "wp:jetpack/story", replacer: { block in
-                    let mediaFiles = block.attributes["mediaFiles"] as? [[String: Any]]
-                    if let mediaFile = mediaFiles?.first, mediaFile["url"] as? String == firstMediaFile.url {
-                        return uploads?.0
-                    } else {
-                        return nil
-                    }
-                })
-                post.content = processor.process(post.content ?? "")
-            } else {
-                post.content = uploads?.0
-            }
+            let content = uploads?.0 ?? ""
 
-            do {
-                try post.managedObjectContext?.save()
-            } catch let error {
-                assertionFailure("Failed to save post during story upload: \(error)")
-            }
-
-            updated(.success(post))
+            updated(.success(content))
 
             if publishOnCompletion {
                 self.publishPost(action: .publish, dismissWhenDone: true, analyticsStat:

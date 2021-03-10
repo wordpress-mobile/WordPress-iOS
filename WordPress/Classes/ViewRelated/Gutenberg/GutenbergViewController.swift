@@ -676,7 +676,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
 
         do {
-            try showEditor(files: files)
+            try showEditor(files: files, blockID: blockId)
         } catch let error {
             switch error {
             case StoryEditor.EditorCreationError.unsupportedDevice:
@@ -701,7 +701,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func showEditor(files: [MediaFile]) throws {
+    func showEditor(files: [MediaFile], blockID: String) throws {
         storyEditor = try StoryEditor.editor(post: post, mediaFiles: files, publishOnCompletion: false, updated: { [weak self] result in
             switch result {
             case .success:
@@ -717,8 +717,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             }
         }, uploaded: { [weak self] result in
             switch result {
-            case .success(let post):
-                self?.setHTML(post.content ?? "")
+            case .success(let content):
+                self?.gutenberg.replace(blockID: blockID, content: content)
             case .failure(let error):
                 let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)
                 let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
