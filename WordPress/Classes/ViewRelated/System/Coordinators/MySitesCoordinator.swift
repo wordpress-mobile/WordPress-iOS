@@ -118,6 +118,14 @@ class MySitesCoordinator: NSObject {
         showBlogDetails(for: blog, then: .activity)
     }
 
+    // MARK: - Adding a new site
+    @objc
+    func showAddNewSite(from view: UIView) {
+        showMySites()
+
+        blogListViewController.presentInterfaceForAddingNewSite(from: view)
+    }
+
     // MARK: - My Sites
 
     func showPages(for blog: Blog) {

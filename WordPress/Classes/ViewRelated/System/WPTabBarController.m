@@ -151,25 +151,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [super decodeRestorableStateWithCoder:coder];
 }
 
-#pragma mark - My Site View Controllers
-
-// These getters are temporary while we extract items from here to the MySiteCoordinator.
-
-- (UISplitViewController *)blogListSplitViewController
-{
-    return [self.mySitesCoordinator splitViewController];
-}
-
-- (UINavigationController *)blogListNavigationController
-{
-    return [self.mySitesCoordinator navigationController];
-}
-
-- (BlogListViewController *)blogListViewController
-{
-    return [self.mySitesCoordinator blogListViewController];
-}
-
 #pragma mark - Tab Bar Items
 
 - (UINavigationController *)readerNavigationController
@@ -318,7 +299,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     // Ignore taps on the post tab and instead show the modal.
     if ([blogService blogCountForAllAccounts] == 0) {
-        [self switchMySitesTabToAddNewSite];
+        [self.mySitesCoordinator showAddNewSiteFrom:self.tabBar];
     } else {
         [self showPostTabAnimated:true toMedia:false blog:nil afterDismiss:afterDismiss];
     }
@@ -329,7 +310,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     if ([blogService blogCountForAllAccounts] == 0) {
-        [self switchMySitesTabToAddNewSite];
+        [self.mySitesCoordinator showAddNewSiteFrom:self.tabBar];
     } else {
         [self showPostTabAnimated:YES toMedia:NO blog:blog];
     }
@@ -395,41 +376,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
 }
 
-- (void)switchMySitesTabToAddNewSite
-{
-    [self setSelectedIndex:WPTabMySites];
-    [self.blogListViewController presentInterfaceForAddingNewSiteFrom:self.tabBar];
-}
-
-- (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog
-{
-    [self.mySitesCoordinator showBlogDetailsFor:blog];
-
-    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
-    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
-        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionStats];
-    }
-}
-
-- (void)switchMySitesTabToMediaForBlog:(Blog *)blog
-{
-    [self switchMySitesTabToBlogDetailsForBlog:blog];
-
-    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
-    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
-        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionMedia];
-    }
-}
- 
-- (void)switchMySitesTabToBlogDetailsForBlog:(Blog *)blog
-{
-    [self setSelectedIndex:WPTabMySites];
-
-    BlogListViewController *blogListVC = self.blogListViewController;
-    self.blogListNavigationController.viewControllers = @[blogListVC];
-    [blogListVC setSelectedBlog:blog animated:NO];
-}
-
 - (void)switchNotificationsTabToNotificationSettings
 {
     [self showNotificationsTab];
@@ -464,7 +410,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         return nil;
     }
 
-    BlogDetailsViewController *blogDetailsController = (BlogDetailsViewController *)[[self.blogListNavigationController.viewControllers wp_filter:^BOOL(id obj) {
+    BlogDetailsViewController *blogDetailsController = (BlogDetailsViewController *)[[self.mySitesCoordinator.navigationController.viewControllers wp_filter:^BOOL(id obj) {
         return [obj isKindOfClass:[BlogDetailsViewController class]];
     }] firstObject];
     return blogDetailsController.blog;
@@ -524,7 +470,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     // If the user has one blog then we don't want to present them with the main "My Sites"
     // screen where they can see all their blogs. In the case of only one blog just show
     // the main blog details screen
-    UINavigationController *navController = (UINavigationController *)[self.blogListSplitViewController.viewControllers firstObject];
+    UINavigationController *navController = (UINavigationController *)[self.mySitesCoordinator.splitViewController.viewControllers firstObject];
     BlogListViewController *blogListViewController = (BlogListViewController *)[navController.viewControllers firstObject];
 
     if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
@@ -542,7 +488,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (BOOL)isNavigatingMySitesTab
 {
-    return (self.selectedIndex == WPTabMySites && [self.blogListViewController.navigationController.viewControllers count] > 1);
+    return (self.selectedIndex == WPTabMySites && [self.mySitesCoordinator.navigationController.viewControllers count] > 1);
 }
 
 #pragma mark - Zendesk Notifications
