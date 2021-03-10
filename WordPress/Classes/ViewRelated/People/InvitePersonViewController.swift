@@ -600,17 +600,17 @@ private extension InvitePersonViewController {
         let font = WPStyleGuide.tableviewTextFont()
         let textAttributes: [NSAttributedString.Key: Any] = [
             .font: font,
-            .paragraphStyle: pStyle,
-            .baselineOffset: 2
-        ]
-        let attachmentAttributes: [NSAttributedString.Key: Any] = [
-            .baselineOffset: -4
+            .paragraphStyle: pStyle
         ]
 
         let image = UIImage.gridicon(.shareiOS)
         let attachment = NSTextAttachment(image: image)
+        attachment.bounds = CGRect(x: 0,
+                                   y: (font.capHeight - image.size.height)/2,
+                                   width: image.size.width,
+                                   height: image.size.height)
         let textStr = NSAttributedString(string: NSLocalizedString("Share invite link", comment: "Title. A call to action to share an invite link."), attributes: textAttributes)
-        let attrStr = NSMutableAttributedString(attachment: attachment, attributes: attachmentAttributes)
+        let attrStr = NSMutableAttributedString(attachment: attachment)
         attrStr.append(NSAttributedString(string: " "))
         attrStr.append(textStr)
         return attrStr
