@@ -88,7 +88,7 @@ def gutenberg(options)
     if local_gutenberg
       options = { :path => local_gutenberg.include?('/') ? local_gutenberg : '../gutenberg-mobile' }
     end
-    pod 'Gutenberg', :git => 'https://github.com/wordpress-mobile/gutenberg-mobile.git', :commit => 'bc814d9'
+    pod 'Gutenberg', options
     pod 'RNTAztecView', options
 
     gutenberg_dependencies options
@@ -160,7 +160,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.47.0'
+    gutenberg :commit => 'd603ee81b15b52078a018e936989d7b57f365242'
 
     ## Third party libraries
     ## =====================
