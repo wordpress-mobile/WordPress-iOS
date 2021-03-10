@@ -37,6 +37,10 @@ static NSInteger HideSearchMinSites = 3;
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        return nil;
+    }
+
     return [WPTabBarController sharedInstance].mySitesCoordinator.blogListViewController;
 }
 
