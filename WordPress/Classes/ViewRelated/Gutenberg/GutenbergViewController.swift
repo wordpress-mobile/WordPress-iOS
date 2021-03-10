@@ -709,24 +709,14 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 self?.dismiss(animated: true, completion: nil)
             case .failure(let error):
                 self?.dismiss(animated: true, completion: nil)
-                let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)
-                let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
-                    controller.dismiss(animated: true, completion: nil)
-                }
-                controller.addAction(dismiss)
-                self?.present(controller, animated: true, completion: nil)
+                DDLogError("Failed to update story: \(error)")
             }
-        }, uploaded: { [weak self] result in
+        }, uploaded: { result in
             switch result {
             case .success:
                 break // Posts will be updated when the MediaFilesProcessor receives upload events
             case .failure(let error):
-                let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)
-                let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
-                    controller.dismiss(animated: true, completion: nil)
-                }
-                controller.addAction(dismiss)
-                self?.present(controller, animated: true, completion: nil)
+                DDLogError("Failed to upload story: \(error)")
             }
         })
 
