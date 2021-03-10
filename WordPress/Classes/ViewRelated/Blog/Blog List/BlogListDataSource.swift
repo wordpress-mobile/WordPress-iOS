@@ -2,6 +2,7 @@ import CoreData
 import Foundation
 import UIKit
 import WordPressShared
+import Combine
 
 private protocol BlogListDataSourceMapper {
     func map(_ data: [Blog]) -> [[Blog]]
@@ -69,6 +70,8 @@ private struct LoggedInDataSourceMapper: BlogListDataSourceMapper {
 }
 
 class BlogListDataSource: NSObject {
+    private var cancellables = Set<AnyCancellable>()
+
     override init() {
         super.init()
         // We can't decide if we're using recent sites until the results controller
@@ -303,12 +306,36 @@ extension BlogListDataSource: NSFetchedResultsControllerDelegate {
 // MARK: - UITableView Data Source
 
 extension BlogListDataSource: UITableViewDataSource {
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sections[section].count
+    }
+
+    @objc func getHighlights() {
+        let visibleBlogs = allBlogs.filter { $0.visible }
+        visibleBlogs.forEach { blog in
+
+            let service = BlogHighlightsService(blog: blog)
+
+            service.getTotalFollowerCount()
+                .subscribe(on: DispatchQueue.main)
+                .sink { (count) in
+                    print("===== site: \(blog.displayURL ?? "?"), follower count: \(count)")
+                }
+                .store(in: &cancellables)
+
+            service.getDraftCount()
+                .subscribe(on: DispatchQueue.main)
+                .sink { (count) in
+                    print("===== site: \(blog.displayURL ?? "?"), draft count: \(count)")
+                }
+                .store(in: &cancellables)
+        }
+
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

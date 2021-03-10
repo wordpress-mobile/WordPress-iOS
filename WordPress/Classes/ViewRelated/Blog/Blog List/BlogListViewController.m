@@ -74,6 +74,8 @@ static NSInteger HideSearchMinSites = 3;
             [weakSelf dataChanged];
         }
     };
+    
+    [self.dataSource getHighlights];
 }
 
 - (void)configureNavigationBar
