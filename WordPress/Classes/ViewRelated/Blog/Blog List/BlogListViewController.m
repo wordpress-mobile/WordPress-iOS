@@ -467,6 +467,11 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)bypassBlogListViewController
 {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        // We should never bypass the list when we're using the new navigation bar
+        return;
+    }
+
     if ([self shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
         // We do a delay of 0.0 so that way this doesn't kick off until the next run loop.
         [self performSelector:@selector(selectFirstSite) withObject:nil afterDelay:0.0];
@@ -792,6 +797,19 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated
 {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        if (self.blogSelected != nil) {
+            self.blogSelected(self, selectedBlog);
+        } else {
+            // The site picker without a site-selection callback makes no sense.  We'll dismiss the VC to keep
+            // the app running, but the user won't be able to switch sites.
+            DDLogError(@"There's no site-selection callback assigned to the site picker.");
+            [self dismissViewControllerAnimated:animated completion:nil];
+        }
+        
+        return;
+    }
+    
     if (selectedBlog != _selectedBlog || !_blogDetailsViewController) {
         _selectedBlog = selectedBlog;
         self.blogDetailsViewController = [self makeBlogDetailsViewController];
