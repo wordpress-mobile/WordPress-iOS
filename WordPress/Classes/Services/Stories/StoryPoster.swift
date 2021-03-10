@@ -35,9 +35,16 @@ struct MediaFile: Codable {
     }
 
     init(dictionary: [String: Any]) throws {
+        // We must handle both possible types because the Gutenberg `replaceBlock` method seems to be changing the type of this field.
+        let id: String
+        do {
+            id = try dictionary.value(key: CodingKeys.id.stringValue, type: NSNumber.self).stringValue
+        } catch {
+            id = try dictionary.value(key: CodingKeys.id.stringValue, type: String.self)
+        }
         self.init(alt: try dictionary.value(key: CodingKeys.alt.stringValue, type: String.self),
             caption: try dictionary.value(key: CodingKeys.caption.stringValue, type: String.self),
-            id: try dictionary.value(key: CodingKeys.id.stringValue, type: String.self),
+            id: id,
             link: try dictionary.value(key: CodingKeys.link.stringValue, type: String.self),
             mime: try dictionary.value(key: CodingKeys.mime.stringValue, type: String.self),
             type: try dictionary.value(key: CodingKeys.type.stringValue, type: String.self),
