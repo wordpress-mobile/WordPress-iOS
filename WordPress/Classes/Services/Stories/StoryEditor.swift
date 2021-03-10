@@ -93,12 +93,13 @@ class StoryEditor: CameraController {
         case unsupportedDevice
     }
 
-    typealias Results = Result<String, PostCoordinator.SavingError>
+    typealias UpdateResult = Result<String, PostCoordinator.SavingError>
+    typealias UploadResult = Result<Void, PostCoordinator.SavingError>
 
     static func editor(blog: Blog,
                        context: NSManagedObjectContext,
-                       updated: @escaping (Results) -> Void,
-                       uploaded: @escaping (Results) -> Void) throws -> StoryEditor {
+                       updated: @escaping (UpdateResult) -> Void,
+                       uploaded: @escaping (UploadResult) -> Void) throws -> StoryEditor {
         let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
         return try editor(post: post, mediaFiles: nil, publishOnCompletion: true, updated: updated, uploaded: uploaded)
     }
@@ -106,8 +107,8 @@ class StoryEditor: CameraController {
     static func editor(post: AbstractPost,
                        mediaFiles: [MediaFile]?,
                        publishOnCompletion: Bool = false,
-                       updated: @escaping (Results) -> Void,
-                       uploaded: @escaping (Results) -> Void) throws -> StoryEditor {
+                       updated: @escaping (UpdateResult) -> Void,
+                       uploaded: @escaping (UploadResult) -> Void) throws -> StoryEditor {
 
         guard !UIDevice.isPad() else {
             throw EditorCreationError.unsupportedDevice
@@ -138,8 +139,8 @@ class StoryEditor: CameraController {
                      tagCollection: UIView?,
                      mediaFiles: [MediaFile]?,
                      publishOnCompletion: Bool,
-                     updated: @escaping (Results) -> Void,
-                     uploaded: @escaping (Results) -> Void
+                     updated: @escaping (UpdateResult) -> Void,
+                     uploaded: @escaping (UploadResult) -> Void
                     ) {
         self.post = post
         self.onClose = onClose
@@ -184,7 +185,7 @@ class StoryEditor: CameraController {
             guard let self = self else { return }
 
             let uploads: (String, [Media])? = try? self.poster?.upload(mediaItems: postMedia, post: post, completion: { post in
-                uploaded(.success(""))
+                uploaded(.success(()))
             })
 
             let content = uploads?.0 ?? ""
