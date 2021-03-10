@@ -1099,6 +1099,30 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self showSiteTitleSettings];
 }
 
+- (void)siteSwitcherTapped
+{
+    BlogListViewController* blogListViewController = [[BlogListViewController alloc] initWithMeScenePresenter:self.meScenePresenter];
+    __weak __typeof(self) weakSelf = self;
+    blogListViewController.blogSelected = ^(BlogListViewController* blogListViewController, Blog *blog) {
+        [weakSelf switchToBlog:blog];
+        [blogListViewController dismissViewControllerAnimated:true completion:nil];
+    };
+    
+    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navigationController animated:true completion:nil];
+}
+
+#pragma mark Site Switching
+
+- (void)switchToBlog:(Blog*)blog
+{
+    self.headerView.blog = blog;
+    self.blog = blog;
+    
+    [self.tableView reloadData];
+}
+
 #pragma mark Site Icon Update Management
 
 - (void)showUpdateSiteIconAlert
