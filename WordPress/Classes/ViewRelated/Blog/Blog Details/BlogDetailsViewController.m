@@ -1586,6 +1586,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [self trackEvent:WPAnalyticsStatOpenedComments fromSource:source];
     CommentsViewController *controller = [CommentsViewController controllerWithBlog:self.blog];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
@@ -1595,6 +1596,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [self trackEvent:WPAnalyticsStatOpenedPosts fromSource:source];
     PostListViewController *controller = [PostListViewController controllerWithBlog:self.blog];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
@@ -1604,6 +1606,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [self trackEvent:WPAnalyticsStatOpenedPages fromSource:source];
     PageListViewController *controller = [PageListViewController controllerWithBlog:self.blog];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementPages];
@@ -1613,6 +1616,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [self trackEvent:WPAnalyticsStatOpenedMediaLibrary fromSource:source];
     MediaLibraryViewController *controller = [[MediaLibraryViewController alloc] initWithBlog:self.blog];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
@@ -1622,6 +1626,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPeople withBlog:self.blog];
     PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
@@ -1631,6 +1636,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPluginDirectory withBlog:self.blog];
     PluginDirectoryViewController *controller = [[PluginDirectoryViewController alloc] initWithBlog:self.blog];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
@@ -1640,6 +1646,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [self trackEvent:WPAnalyticsStatOpenedPlans fromSource:source];
     PlanListViewController *controller = [[PlanListViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementPlans];
@@ -1649,6 +1656,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [self trackEvent:WPAnalyticsStatOpenedSiteSettings fromSource:source];
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
@@ -1657,6 +1665,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 -(void)showJetpackSettings
 {
     JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 }
 
@@ -1672,6 +1681,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     [self trackEvent:WPAnalyticsStatOpenedSharingManagement fromSource:source];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementSharing];
@@ -1682,6 +1692,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self trackEvent:WPAnalyticsStatStatsAccessed fromSource:source];
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = self.blog;
+    statsView.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
 
     // Calling `showDetailViewController:sender:` should do this automatically for us,
     // but when showing stats from our 3D Touch shortcut iOS sometimes incorrectly
@@ -1700,6 +1711,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showActivity
 {
     JetpackActivityLogViewController *controller = [[JetpackActivityLogViewController alloc] initWithBlog:self.blog];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
@@ -1708,7 +1720,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showScan
 {
     JetpackScanViewController *controller = [[JetpackScanViewController alloc] initWithBlog:self.blog];
-
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
@@ -1717,6 +1729,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showBackup
 {
     BackupListViewController *controller = [[BackupListViewController alloc] initWithBlog:self.blog];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 }
 
@@ -1727,6 +1740,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     viewController.onWebkitViewControllerClose = ^(void) {
         [self startAlertTimer];
     };
+    viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:viewController sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementThemes];
@@ -1736,6 +1750,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [WPAppAnalytics track:WPAnalyticsStatMenusAccessed withBlog:self.blog];
     MenusViewController *viewController = [MenusViewController controllerWithBlog:self.blog];
+    viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:viewController sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
