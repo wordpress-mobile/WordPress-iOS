@@ -65,6 +65,11 @@ static NSInteger HideSearchMinSites = 3;
 - (void)configureDataSource
 {
     self.dataSource = [BlogListDataSource new];
+    
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        self.dataSource.shouldShowDisclosureIndicator = NO;
+    }
+    
     __weak __typeof(self) weakSelf = self;
     self.dataSource.visibilityChanged = ^(Blog *blog, BOOL visible) {
         [weakSelf setVisible:visible forBlog:blog];
