@@ -192,6 +192,15 @@ class StoryEditor: CameraController {
             updated(.success(content))
 
             if publishOnCompletion {
+                // Replace the contents if we are publishing a new post
+                post.content = content
+
+                do {
+                    try post.managedObjectContext?.save()
+                } catch let error {
+                    assertionFailure("Failed to save post during story update: \(error)")
+                }
+
                 self.publishPost(action: .publish, dismissWhenDone: true, analyticsStat:
                                     .editorPublishedPost)
             } else {
