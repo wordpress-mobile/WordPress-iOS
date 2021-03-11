@@ -1,5 +1,10 @@
 16.9
 -----
+
+16.8.1
+-----
+
+* [**] Stories: Fixed an issue which could remove content from a post when a new Story block was edited. [#16059]
  
 16.8
 -----
