@@ -22,4 +22,11 @@ enum BlogHighlight: Equatable {
             return UIImage.gridicon(.posts)
         }
     }
+
+    var iconColor: UIColor {
+        switch self {
+        case .followers, .drafts:
+            return UIColor.text
+        }
+    }
 }

@@ -13,6 +13,7 @@ class BlogHighlightCollectionViewCell: UICollectionViewCell, NibReusable {
 
     func configure(with highlight: BlogHighlight) {
         imageView.image = highlight.icon
+        imageView.tintColor = highlight.iconColor
         label.text = highlight.title
     }
 
