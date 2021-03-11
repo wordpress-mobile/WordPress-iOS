@@ -55,7 +55,7 @@
     </entity>
     <entity name="AccountSettings" representedClassName=".ManagedAccountSettings" syncable="YES">
         <attribute name="aboutMe" attributeType="String" syncable="YES"/>
-        <attribute name="blockEmailNotifications" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="blockEmailNotifications" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="displayName" attributeType="String" syncable="YES"/>
         <attribute name="email" attributeType="String" syncable="YES"/>
         <attribute name="emailPendingAddress" optional="YES" attributeType="String" syncable="YES"/>
