@@ -2,6 +2,8 @@ import WordPressAuthenticator
 
 class MySiteViewController: UIViewController, NoResultsViewHost {
 
+    private let meScenePresenter: ScenePresenter
+
     // MARK: - Initializers
 
     init(meScenePresenter: ScenePresenter) {
@@ -308,10 +310,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         self.blog = blog
     }
-
-    // MARK: - Me Bar Button
-
-    private let meScenePresenter: ScenePresenter
 }
 
 extension MySiteViewController: WPSplitViewControllerDetailProvider {
