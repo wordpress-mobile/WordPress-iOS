@@ -326,8 +326,6 @@ fileprivate extension NewBlogDetailHeaderView {
 
         private func constraintsForTitleStackView() -> [NSLayoutConstraint] {
             [
-                titleStackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
-                titleStackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
                 titleStackView.leadingAnchor.constraint(equalTo: siteIconView.trailingAnchor, constant: LayoutSpacing.betweenSiteIconAndTitle),
                 titleStackView.centerYAnchor.constraint(equalTo: siteIconView.centerYAnchor),
             ]

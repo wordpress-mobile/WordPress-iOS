@@ -1059,6 +1059,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.headerView = headerView;
 
     self.tableView.tableHeaderView = headerView.asView;
+    
+    if ([self.headerView isKindOfClass:[NewBlogDetailHeaderView class]]) {
+        [self.headerView.asView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [NSLayoutConstraint activateConstraints:@[
+            [self.headerView.asView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+            [self.headerView.asView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
+        ]];
+    }
 }
 
 #pragma mark BlogDetailHeaderViewDelegate
