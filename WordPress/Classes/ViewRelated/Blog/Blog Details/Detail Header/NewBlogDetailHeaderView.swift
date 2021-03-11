@@ -229,7 +229,7 @@ fileprivate extension NewBlogDetailHeaderView {
 
         let titleButton: SpotlightableButton = {
             let button = SpotlightableButton(type: .custom)
-            button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
+            button.titleLabel?.font = WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .semibold)
             button.titleLabel?.adjustsFontForContentSizeCategory = true
             button.titleLabel?.lineBreakMode = .byTruncatingTail
             button.titleLabel?.numberOfLines = 1
