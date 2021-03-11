@@ -982,8 +982,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsRow *viewSiteRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"View Site", @"Action title. Opens the user's site in an in-app browser")
                                                                   image:[UIImage gridiconOfType:GridiconTypeHouse]
                                                                callback:^{
-                                                                   [weakSelf showViewSite];
-                                                               }];
+        [weakSelf showViewSiteFromSource:BlogDetailsNavigationSourceRow];
+    }];
     viewSiteRow.quickStartIdentifier = QuickStartTourElementViewSite;
     viewSiteRow.showsSelectionState = NO;
     [rows addObject:viewSiteRow];
@@ -1123,6 +1123,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)visitSiteTapped
 {
+    [self showViewSiteFromSource:BlogDetailsNavigationSourceButton];
 }
 
 #pragma mark Site Switching
@@ -1768,9 +1769,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
-- (void)showViewSite
+- (void)showViewSiteFromSource:(BlogDetailsNavigationSource)source
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedViewSite withBlog:self.blog];
+    [self trackEvent:WPAnalyticsStatOpenedViewSite fromSource:source];
+    
     NSURL *targetURL = [NSURL URLWithString:self.blog.homeURL];
 
     UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog withDeviceModes:true];
