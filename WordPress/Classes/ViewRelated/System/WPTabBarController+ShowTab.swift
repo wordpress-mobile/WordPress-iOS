@@ -76,12 +76,7 @@ extension WPTabBarController {
                         break
                     case .failure(let error):
                         self?.dismiss(animated: true, completion: nil)
-                        let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)
-                        let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
-                            controller.dismiss(animated: true, completion: nil)
-                        }
-                        controller.addAction(dismiss)
-                        self?.present(controller, animated: true, completion: nil)
+                        DDLogError("Failed to create story: \(error)")
                     }
                 })
 
