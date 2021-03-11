@@ -340,6 +340,25 @@ extension BlogListDataSource: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let blog = self.blog(at: indexPath)
+
+        if blog.visible {
+
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: BlogHighlightTableViewCell.defaultReuseID) as? BlogHighlightTableViewCell else {
+                fatalError("Failed to get BlogHighlightTableViewCell")
+            }
+
+            cell.configure(blog: blog)
+
+            let service = BlogHighlightsService(blog: blog)
+            cell.cancellable = service.getTotalFollowerCount()
+                .subscribe(on: DispatchQueue.main)
+                .sink(receiveValue: { (followerCount) in
+                    cell.highlights = ["\(followerCount) followers"]
+                })
+
+            return cell
+        }
+
         guard let cell = tableView.dequeueReusableCell(withIdentifier: WPBlogTableViewCell.reuseIdentifier()) as? WPBlogTableViewCell else {
             fatalError("Failed to get a blog cell")
         }

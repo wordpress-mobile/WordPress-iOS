@@ -518,6 +518,7 @@ static NSInteger HideSearchMinSites = 3;
     self.tableView.delegate = self;
     self.tableView.dataSource = self.dataSource;
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:[WPBlogTableViewCell reuseIdentifier]];
+    [self.tableView registerNib:[BlogHighlightTableViewCell defaultNib] forCellReuseIdentifier:[BlogHighlightTableViewCell defaultReuseID]];
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.accessibilityIdentifier = @"Blogs";
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
