@@ -172,6 +172,11 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
         delegate?.siteTitleTapped()
     }
+    
+    @objc
+    private func subtitleButtonTapped() {
+        delegate?.visitSiteTapped()
+    }
 }
 
 fileprivate extension NewBlogDetailHeaderView {
@@ -188,7 +193,7 @@ fileprivate extension NewBlogDetailHeaderView {
             static let betweenSiteIconAndTitle: CGFloat = 16
             static let betweenTitleAndSiteSwitcher: CGFloat = 16
             static let betweenSiteSwitcherAndRightPadding: CGFloat = 4
-            static let betweenSubtitleAndExternalIcon: CGFloat = 4
+            static let subtitleButtonImageInsets: UIEdgeInsets = UIEdgeInsets(top: 1, left: 4, bottom: 0, right: 0)
         }
 
         // MARK: - Child Views
@@ -199,15 +204,27 @@ fileprivate extension NewBlogDetailHeaderView {
             return siteIconView
         }()
 
-        let subtitleLabel: UILabel = {
-            let label = UILabel()
+        let subtitleButton: UIButton = {
+            let button = UIButton()
 
-            label.font = WPStyleGuide.fontForTextStyle(.footnote)
-            label.textColor = WPStyleGuide.darkBlue()
-            label.adjustsFontForContentSizeCategory = true
-            label.translatesAutoresizingMaskIntoConstraints = false
+            button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
+            button.titleLabel?.adjustsFontForContentSizeCategory = true
+            button.titleLabel?.lineBreakMode = .byTruncatingTail
+        
+            button.setTitleColor(WPStyleGuide.darkBlue(), for: .normal)
 
-            return label
+            if let pointSize = button.titleLabel?.font.pointSize {
+                button.setImage(UIImage.gridicon(.external, size: CGSize(width: pointSize, height: pointSize)), for: .normal)
+            }
+            
+            // Align the image to the right
+            button.semanticContentAttribute = (UIApplication.shared.userInterfaceLayoutDirection == .leftToRight) ? .forceRightToLeft : .forceLeftToRight
+            button.imageEdgeInsets = LayoutSpacing.subtitleButtonImageInsets
+            
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.addTarget(self, action: #selector(subtitleButtonTapped), for: .touchUpInside)
+            
+            return button
         }()
 
         let titleButton: SpotlightableButton = {
@@ -235,20 +252,10 @@ fileprivate extension NewBlogDetailHeaderView {
             return button
         }()
 
-        private(set) lazy var externalLinkImage: UIImageView = {
-            let image = UIImage.gridicon(.external, size: CGSize(width: subtitleLabel.font.pointSize, height: subtitleLabel.font.pointSize))
-            let imageView = UIImageView(image: image)
-
-            imageView.contentMode = .scaleAspectFit
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-
-            return imageView
-        }()
-
         private(set) lazy var titleStackView: UIStackView = {
             let stackView = UIStackView(arrangedSubviews: [
                 titleButton,
-                subtitleLabel
+                subtitleButton
             ])
 
             stackView.alignment = .leading
@@ -274,7 +281,7 @@ fileprivate extension NewBlogDetailHeaderView {
         // MARK: - Configuration
 
         func set(url: String) {
-            subtitleLabel.text = url
+            subtitleButton.setTitle(url, for: .normal)
         }
 
         // MARK: - Child View Setup
@@ -283,7 +290,6 @@ fileprivate extension NewBlogDetailHeaderView {
             addSubview(siteIconView)
             addSubview(titleStackView)
             addSubview(siteSwitcherButton)
-            addSubview(externalLinkImage)
 
             setupConstraintsForChildViews()
         }
@@ -294,17 +300,8 @@ fileprivate extension NewBlogDetailHeaderView {
             let siteIconConstraints = constraintsForSiteIcon()
             let titleStackViewConstraints = constraintsForTitleStackView()
             let siteSwitcherButtonConstraints = constraintsForSiteSwitcherButton()
-            let externalIconConstraints = constraintsForExternalImage()
 
-            NSLayoutConstraint.activate(siteIconConstraints + titleStackViewConstraints + siteSwitcherButtonConstraints + externalIconConstraints)
-        }
-
-        private func constraintsForExternalImage() -> [NSLayoutConstraint] {
-            [
-                externalLinkImage.heightAnchor.constraint(equalTo: subtitleLabel.heightAnchor),
-                externalLinkImage.bottomAnchor.constraint(equalTo: subtitleLabel.bottomAnchor),
-                externalLinkImage.leadingAnchor.constraint(equalTo: subtitleLabel.trailingAnchor, constant: LayoutSpacing.betweenSubtitleAndExternalIcon),
-            ]
+            NSLayoutConstraint.activate(siteIconConstraints + titleStackViewConstraints + siteSwitcherButtonConstraints)
         }
 
         private func constraintsForSiteIcon() -> [NSLayoutConstraint] {

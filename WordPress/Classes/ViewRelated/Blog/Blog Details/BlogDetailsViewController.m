@@ -1113,6 +1113,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self presentViewController:navigationController animated:true completion:nil];
 }
 
+- (void)visitSiteTapped
+{
+}
+
 #pragma mark Site Switching
 
 - (void)switchToBlog:(Blog*)blog

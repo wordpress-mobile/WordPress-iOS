@@ -4,6 +4,7 @@
     func siteIconShouldAllowDroppedImages() -> Bool
     func siteTitleTapped()
     func siteSwitcherTapped()
+    func visitSiteTapped()
 }
 
 class BlogDetailHeaderView: UIView, BlogDetailHeader {
