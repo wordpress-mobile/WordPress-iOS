@@ -2416,6 +2416,9 @@
 		FA370A4E25F889FD00D95745 /* BlogHighlightTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA370A4C25F889FD00D95745 /* BlogHighlightTableViewCell.xib */; };
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
+		FA4B8F3125F9B3F500E92C84 /* BlogHighlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B8F3025F9B3F500E92C84 /* BlogHighlight.swift */; };
+		FA4B8F4425F9B6E300E92C84 /* BlogHighlightCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B8F4225F9B6E300E92C84 /* BlogHighlightCollectionViewCell.swift */; };
+		FA4B8F4525F9B6E300E92C84 /* BlogHighlightCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4B8F4325F9B6E300E92C84 /* BlogHighlightCollectionViewCell.xib */; };
 		FA4F65A72594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */; };
 		FA4F660525946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F660425946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift */; };
 		FA4F661425946B8500EAA9F5 /* JetpackRestoreHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4F661325946B8500EAA9F5 /* JetpackRestoreHeaderView.xib */; };
@@ -5339,6 +5342,9 @@
 		FA370A4C25F889FD00D95745 /* BlogHighlightTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlogHighlightTableViewCell.xib; sourceTree = "<group>"; };
 		FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementService.swift; sourceTree = "<group>"; };
 		FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementServiceTests.swift; sourceTree = "<group>"; };
+		FA4B8F3025F9B3F500E92C84 /* BlogHighlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogHighlight.swift; sourceTree = "<group>"; };
+		FA4B8F4225F9B6E300E92C84 /* BlogHighlightCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogHighlightCollectionViewCell.swift; sourceTree = "<group>"; };
+		FA4B8F4325F9B6E300E92C84 /* BlogHighlightCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlogHighlightCollectionViewCell.xib; sourceTree = "<group>"; };
 		FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreOptionsViewController.swift; sourceTree = "<group>"; };
 		FA4F660425946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreHeaderView.swift; sourceTree = "<group>"; };
 		FA4F661325946B8500EAA9F5 /* JetpackRestoreHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackRestoreHeaderView.xib; sourceTree = "<group>"; };
@@ -6749,6 +6755,9 @@
 				FA37066625F71DB000D95745 /* BlogHighlightsService.swift */,
 				FA370A4B25F889FD00D95745 /* BlogHighlightTableViewCell.swift */,
 				FA370A4C25F889FD00D95745 /* BlogHighlightTableViewCell.xib */,
+				FA4B8F3025F9B3F500E92C84 /* BlogHighlight.swift */,
+				FA4B8F4225F9B6E300E92C84 /* BlogHighlightCollectionViewCell.swift */,
+				FA4B8F4325F9B6E300E92C84 /* BlogHighlightCollectionViewCell.xib */,
 			);
 			path = "Blog List";
 			sourceTree = "<group>";
@@ -12491,6 +12500,7 @@
 				17DC4C5322C5E6D60059CA11 /* open_source_icon_60pt@3x.png in Resources */,
 				9A4E216221F87AF300EFF212 /* QuickStartChecklistHeader.xib in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
+				FA4B8F4525F9B6E300E92C84 /* BlogHighlightCollectionViewCell.xib in Resources */,
 				17E363A022C41DBA000E0C79 /* hot_pink_icon_60pt@2x.png in Resources */,
 				E1B912811BB00EFD003C25B9 /* People.storyboard in Resources */,
 				17DC4C4E22C5E6D60059CA11 /* open_source_icon_20pt.png in Resources */,
@@ -14076,6 +14086,7 @@
 				738B9A4F21B85CF20005062B /* SiteCreator.swift in Sources */,
 				F5660D09235D1CDD00020B1E /* CalendarMonthView.swift in Sources */,
 				FA1CEAC225CA9C2A005E7038 /* RestoreStatusFailedView.swift in Sources */,
+				FA4B8F3125F9B3F500E92C84 /* BlogHighlight.swift in Sources */,
 				FFB7B8201A0012E80032E723 /* ApiCredentials.m in Sources */,
 				9848DF8121B8BB5700B99DA4 /* PostingActivityLegend.swift in Sources */,
 				B5DB8AF41C949DC20059196A /* WPImmuTableRows.swift in Sources */,
@@ -14467,6 +14478,7 @@
 				E61084C11B9B47BA008050C5 /* ReaderSiteTopic.swift in Sources */,
 				FAB8004925AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift in Sources */,
 				9A8ECE0C2254A3260043C8DA /* JetpackLoginViewController.swift in Sources */,
+				FA4B8F4425F9B6E300E92C84 /* BlogHighlightCollectionViewCell.swift in Sources */,
 				5DAE40AD19EC70930011A0AE /* ReaderPostHeaderView.m in Sources */,
 				4054F4622214F50300D261AB /* StreakStatsRecordValue+CoreDataProperties.swift in Sources */,
 				B50C0C641EF42B3A00372C65 /* Header+WordPress.swift in Sources */,
