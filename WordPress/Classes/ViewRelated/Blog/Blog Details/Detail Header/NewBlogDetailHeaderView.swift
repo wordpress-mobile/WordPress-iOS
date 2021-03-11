@@ -17,24 +17,6 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         return self
     }
 
-    private let titleButton: SpotlightableButton = {
-        let button = SpotlightableButton(type: .custom)
-        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.titleLabel?.lineBreakMode = .byTruncatingTail
-        button.setTitleColor(.text, for: .normal)
-        button.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
-        return button
-    }()
-
-    private let subtitleLabel: UILabel = {
-        let label = UILabel()
-        label.font = WPStyleGuide.fontForTextStyle(.subheadline)
-        label.textColor = UIColor.textSubtle
-        label.adjustsFontForContentSizeCategory = true
-        return label
-    }()
-
     @objc var updatingIcon: Bool = false {
         didSet {
             if updatingIcon {
@@ -142,9 +124,6 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
             self?.delegate?.siteIconReceivedDroppedImage(images.first)
         }
 
-        //titleView.axis = .vertical
-        //titleView.alignment = .center
-        //titleView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         titleView.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(titleView)
