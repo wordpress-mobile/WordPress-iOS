@@ -1,11 +1,1 @@
-İşte bu sürümdeki önemli noktalar:
-
-Jetpack Backup'ı artık kullanabilirsiniz. Sitenizde kullanılan mevcut pakete bağlı olarak, artık sitenizi geri yükleyebilir veya sitenizin belirli bir tarihteki yedeğini indirebilirsiniz. Jetpack Scan'i etkinleştirdiyseniz artık sitenizi tehditlere karşı tarayabilir ve bunları dilediğiniz gibi düzeltebilir veya yok sayabilirsiniz.
-
-İstatistiklerinizi takip etmeyi seviyor musunuz? Sitenizin Tüm Zamanlar istatistiklerini iOS 14 cihazınızın Ana Ekranında görüntüleyen yeni Tüm Zamanlar İçin Bileşeni için destek ekledik.
-
-Artık içeriğinizde sayfa atlamaları oluşturmak için Başlık bloğunda bağlayıcılar ayarlayabilirsiniz. Yeniden kullanılabilir bloklarda ve Daha Fazla bloğu gibi yazılarınıza yalnızca bir kez eklediğiniz bloklarda iyileştirmeler gibi başka güncellemeler de yaptık.
-
-Uygulamada site oluşturmak daha da iyi hale geliyor. Bir ana sayfa oluştururken, bir tasarımın mobil, tablet veya masaüstü ekranında nasıl göründüğünü ön izleyebilirsiniz. Artık siteniz için bir .blog alt alan adı da seçebilirsiniz.
-
-Son olarak; Okuyucu'daki deneyimi iyileştirmeye devam ediyoruz, artık yazıları "görüldü" olarak işaretleyebilir ve "görülmemiş" yazılarınızın toplam sayısını görüntüleyebilirsiniz.
+WordPress uygulamasının en son güncellemeleri burada. Yeni bir Hikaye yazı tipi, görselleri ve videoları kolaylıkla göndermenize yardımcı olur ve Bu Hafta İstatistikleri artık ana ekranınızda görüntülenebilir. Yayınlanan ana sayfaların işlevselliğini iyileştirerek bunlarda yapılan değişikliklerin sitenizi bozmamasını sağladık. Ayrıca, Manşet bloğu odak noktasını ayarlamak için destek ekledik.

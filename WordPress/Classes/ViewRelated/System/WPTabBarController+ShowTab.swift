@@ -67,24 +67,28 @@ extension WPTabBarController {
             guard let blog = inBlog ?? self.currentOrLastBlog() else { return }
             let blogID = blog.dotComID?.intValue ?? 0 as Any
 
-            WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "story"])
+            WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyEditorSource: "stories", WPAppAnalyticsKeyPostType: "post"])
 
-            let controller = StoryEditor.editor(blog: blog, context: ContextManager.shared.mainContext, updated: {_ in }, uploaded: { [weak self] result in
-                switch result {
-                case .success:
-                    ()
-                case .failure(let error):
-                    self?.dismiss(animated: true, completion: nil)
-                    let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)
-                    let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
-                        controller.dismiss(animated: true, completion: nil)
+            do {
+                let controller = try StoryEditor.editor(blog: blog, context: ContextManager.shared.mainContext, updated: {_ in }, uploaded: { [weak self] result in
+                    switch result {
+                    case .success:
+                        break
+                    case .failure(let error):
+                        self?.dismiss(animated: true, completion: nil)
+                        let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)
+                        let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
+                            controller.dismiss(animated: true, completion: nil)
+                        }
+                        controller.addAction(dismiss)
+                        self?.present(controller, animated: true, completion: nil)
                     }
-                    controller.addAction(dismiss)
-                    self?.present(controller, animated: true, completion: nil)
-                }
-            })
+                })
 
-            present(controller, animated: true, completion: nil)
+                present(controller, animated: true, completion: nil)
+            } catch let error {
+                assertionFailure("Story editor should not fail since this button is hidden on iPads.")
+            }
         }
     }
 }

@@ -6,11 +6,29 @@ class StoryEditor: CameraController {
 
     var post: AbstractPost = AbstractPost()
 
+    private static let directoryName = "Stories"
+
+    /// A directory to temporarily hold imported media.
+    /// - Throws: Any errors resulting from URL or directory creation.
+    /// - Returns: A URL with the media cache directory.
+    static func mediaCacheDirectory() throws -> URL {
+        let storiesURL = try MediaFileManager.cache.directoryURL().appendingPathComponent(directoryName, isDirectory: true)
+        try FileManager.default.createDirectory(at: storiesURL, withIntermediateDirectories: true, attributes: nil)
+        return storiesURL
+    }
+
+    /// A directory to temporarily hold saved archives.
+    /// - Throws: Any errors resulting from URL or directory creation.
+    /// - Returns: A URL with the save directory.
+    static func saveDirectory() throws -> URL {
+        let saveDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(directoryName, isDirectory: true)
+        try FileManager.default.createDirectory(at: saveDirectory, withIntermediateDirectories: true, attributes: nil)
+        return saveDirectory
+    }
+
     var onClose: ((Bool, Bool) -> Void)? = nil
 
-    lazy var editorSession: PostEditorAnalyticsSession = {
-        PostEditorAnalyticsSession(editor: .stories, post: post)
-    }()
+    var editorSession: PostEditorAnalyticsSession
 
     let navigationBarManager: PostEditorNavigationBarManager? = nil
 
@@ -25,7 +43,7 @@ class StoryEditor: CameraController {
     var verificationPromptHelper: VerificationPromptHelper? = nil
 
     var analyticsEditorSource: String {
-        return "wp_stories_creator"
+        return "stories"
     }
 
     private var cameraHandler: CameraHandler?
@@ -63,6 +81,7 @@ class StoryEditor: CameraController {
         settings.enabledModes = [.normal]
         settings.defaultMode = .normal
         settings.features.scaleMediaToFill = true
+        settings.features.resizesFonts = false
         settings.animateEditorControls = false
         settings.exportStopMotionPhotoAsVideo = false
         settings.fontSelectorUsesFont = true
@@ -70,21 +89,30 @@ class StoryEditor: CameraController {
         return settings
     }
 
+    enum EditorCreationError: Error {
+        case unsupportedDevice
+    }
+
     typealias Results = Result<AbstractPost, PostCoordinator.SavingError>
 
     static func editor(blog: Blog,
                        context: NSManagedObjectContext,
                        updated: @escaping (Results) -> Void,
-                       uploaded: @escaping (Results) -> Void) -> StoryEditor {
+                       uploaded: @escaping (Results) -> Void) throws -> StoryEditor {
         let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
-        return editor(post: post, mediaFiles: nil, publishOnCompletion: true, updated: updated, uploaded: uploaded)
+        return try editor(post: post, mediaFiles: nil, publishOnCompletion: true, updated: updated, uploaded: uploaded)
     }
 
     static func editor(post: AbstractPost,
                        mediaFiles: [MediaFile]?,
                        publishOnCompletion: Bool = false,
                        updated: @escaping (Results) -> Void,
-                       uploaded: @escaping (Results) -> Void) -> StoryEditor {
+                       uploaded: @escaping (Results) -> Void) throws -> StoryEditor {
+
+        guard !UIDevice.isPad() else {
+            throw EditorCreationError.unsupportedDevice
+        }
+
         let controller = StoryEditor(post: post,
                                      onClose: nil,
                                      settings: cameraSettings,
@@ -115,14 +143,7 @@ class StoryEditor: CameraController {
                     ) {
         self.post = post
         self.onClose = onClose
-
-        let saveDirectory: URL?
-        do {
-            saveDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-        } catch let error {
-            assertionFailure("Should be able to create a save directory in documents \(error)")
-            saveDirectory = nil
-        }
+        self.editorSession = PostEditorAnalyticsSession(editor: .stories, post: post)
 
         Kanvas.KanvasColors.shared = KanvasCustomUI.shared.cameraColors()
         Kanvas.KanvasFonts.shared = KanvasCustomUI.shared.cameraFonts()
@@ -131,6 +152,14 @@ class StoryEditor: CameraController {
             cameraPermissionsTitleLabel: NSLocalizedString("Post to WordPress", comment: "Title of camera permissions screen"),
             cameraPermissionsDescriptionLabel: NSLocalizedString("Allow access so you can start taking photos and videos.", comment: "Message on camera permissions screen to explain why the app needs camera and microphone permissions")
         )
+
+        let saveDirectory: URL?
+        do {
+            saveDirectory = try Self.saveDirectory()
+        } catch let error {
+            assertionFailure("Should be able to create a save directory in Documents \(error)")
+            saveDirectory = nil
+        }
 
         super.init(settings: settings,
                  mediaPicker: WPMediaPickerForKanvas.self,
@@ -190,19 +219,24 @@ class StoryEditor: CameraController {
         self.delegate = cameraHandler
     }
 
-    func populate(with files: [MediaFile], completion: @escaping (Result<Void, Error>) -> Void) {
+    func present(on: UIViewController, with files: [MediaFile]) {
         storyLoader.download(files: files, for: post) { [weak self] output in
+            guard let self = self else { return }
             DispatchQueue.main.async {
-                self?.show(media: output)
-                completion(.success(()))
+                self.show(media: output)
+                on.present(self, animated: true, completion: {})
             }
         }
+    }
+
+    func trackOpen() {
+        editorSession.start()
     }
 }
 
 extension StoryEditor: PublishingEditor {
     var prepublishingIdentifiers: [PrepublishingIdentifier] {
-        return  [.title, .visibility, .schedule, .tags]
+        return  [.title, .visibility, .schedule, .tags, .categories]
     }
 
     var prepublishingSourceView: UIView? {

@@ -49,6 +49,8 @@ protocol PublishingEditor where Self: UIViewController {
     var prepublishingIdentifiers: [PrepublishingIdentifier] { get }
 }
 
+var postPublishedReceipt: Receipt?
+
 extension PublishingEditor where Self: UIViewController {
 
     func publishingDismissed() {
@@ -139,7 +141,21 @@ extension PublishingEditor where Self: UIViewController {
             self.post.shouldAttemptAutoUpload = true
 
             if let analyticsStat = analyticsStat {
-                self.trackPostSave(stat: analyticsStat)
+                if self is StoryEditor {
+                    postPublishedReceipt = ActionDispatcher.global.subscribe({ [self] action in
+                        if let noticeAction = action as? NoticeAction {
+                            switch noticeAction {
+                            case .post:
+                                self.trackPostSave(stat: analyticsStat)
+                            default:
+                                break
+                            }
+                            postPublishedReceipt = nil
+                        }
+                    })
+                } else {
+                    self.trackPostSave(stat: analyticsStat)
+                }
             }
 
             if self.post.isFirstTimePublish {
@@ -221,10 +237,10 @@ extension PublishingEditor where Self: UIViewController {
         // End editing to avoid issues with accessibility
         view.endEditing(true)
 
-        let prepublishing = PrepublishingViewController(post: post, identifiers: prepublishingIdentifiers) { result in
+        let prepublishing = PrepublishingViewController(post: post, identifiers: prepublishingIdentifiers) { [weak self] result in
             switch result {
             case .completed(let post):
-                self.post = post
+                self?.post = post
                 publishAction()
             case .dismissed:
                 dismissAction()

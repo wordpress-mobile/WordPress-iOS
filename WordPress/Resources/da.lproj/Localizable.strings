@@ -24,11 +24,8 @@
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point to create a downloadable backup." = "%1$@ is the selected point to create a downloadable backup.";
 
-/* 'AUTHOR on POST TITLE' in a comment list */
+/* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@ on %2$@";
-
-/* 'AUTHOR on POST TITLE: COMMENT' in a comment list */
-"%1$@ on %2$@: %3$@" = "%1$@ on %2$@: %3$@";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d of %2$d completed";
@@ -166,6 +163,9 @@
 /* Number of posts */
 "%d posts" = "%d posts";
 
+/* Message for a notice informing the user their scan completed and %d threats were found */
+"%d potential threats found" = "%d potential threats found";
+
 /* Age between dates over one year. */
 "%d years" = "%d år";
 
@@ -239,6 +239,9 @@
 
 /* Alert displayed to the user when a single media item attached to a post has failed to upload. */
 "1 post, 1 file not uploaded" = "1 post, 1 file not uploaded";
+
+/* Message for a notice informing the user their scan completed and 1 threat was found */
+"1 potential threat found" = "1 potential threat found";
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
@@ -341,6 +344,7 @@
 "Activation Error" = "Activation Error";
 
 /* Describes a status of a plugin
+   Label for active Theme
    Whether a plugin is active on a site */
 "Active" = "Active";
 
@@ -543,6 +547,9 @@
 
 /* Jetpack Settings: Allow WordPress.com login */
 "Allow WordPress.com login" = "Allow WordPress.com login";
+
+/* Message on camera permissions screen to explain why the app needs camera and microphone permissions */
+"Allow access so you can start taking photos and videos." = "Allow access so you can start taking photos and videos.";
 
 /* A short description of the comment like sharing setting. */
 "Allow all comments to be Liked by you and your readers" = "Allow all comments to be Liked by you and your readers";
@@ -885,9 +892,6 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Block Quote";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block This Site" = "Bloker dette websted";
-
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Block copied";
 
@@ -911,6 +915,12 @@
 
 /* No comment provided by engineer. */
 "Block settings" = "Block settings";
+
+/* The title of a button that triggers blocking a site from the user's reader. */
+"Block this site" = "Block this site";
+
+/* Notice title when blocking a site succeeds. */
+"Blocked site" = "Blocked site";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
@@ -1175,10 +1185,13 @@
 /* Title for the button to progress with the selected site homepage design */
 "Choose" = "Choose";
 
+/* Title for selecting a new homepage */
+"Choose Homepage" = "Choose Homepage";
+
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Choose Pages";
 
-/* Title for selecting a new home page */
+/* Title for selecting a new posts page */
 "Choose Posts Page" = "Choose Posts Page";
 
 /* Title for the screen to pick a template for a page */
@@ -2076,7 +2089,13 @@
 "Double tap to move the block up" = "Double tap to move the block up";
 
 /* No comment provided by engineer. */
+"Double tap to open Action Sheet to edit, replace, or clear the image" = "Double tap to open Action Sheet to edit, replace, or clear the image";
+
+/* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "Double tap to open Action Sheet with available options";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Double tap to open Bottom Sheet to edit, replace, or clear the image";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet with available options" = "Double tap to open Bottom Sheet with available options";
@@ -2176,6 +2195,9 @@
 /* No comment provided by engineer. */
 "Edit file" = "Edit file";
 
+/* No comment provided by engineer. */
+"Edit focal point" = "Edit focal point";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Edit new posts and pages with the block editor.";
 
@@ -2248,8 +2270,7 @@
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Tom URL";
 
-/* Button title about the enable notifications action
-   Button title for the enable site notifications action. */
+/* Button title for the enable site notifications action. */
 "Enable" = "Enable";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
@@ -2261,8 +2282,7 @@
 /* Title of a Quick Start Tour */
 "Enable post sharing" = "Enable post sharing";
 
-/* Message informing the user about the enable notifications action
-   Message prompting user to enable site notifications. */
+/* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Enable site notifications?";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
@@ -2320,9 +2340,6 @@
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "Fejl";
-
-/* Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader. */
-"Error Blocking Site" = "Error Blocking Site";
 
 /* Menus error title for a menu that received an error while trying to delete it. */
 "Error Deleting Menu" = "Error Deleting Menu";
@@ -2607,14 +2624,14 @@
    Verb. Button title. Follow a new blog. */
 "Follow" = "Følg";
 
-/* Verb. An option to follow a site. */
-"Follow Site" = "Follow Site";
-
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "Follow conversation by email";
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Follow other sites";
+
+/* Verb. An option to follow a site. */
+"Follow site" = "Follow site";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "Follow your favorite sites and discover new reads.";
@@ -2650,9 +2667,6 @@
 
 /* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
 "Following %1$@" = "Following %1$@";
-
-/* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
-"Following %@" = "Following %@";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Following conversation by email" = "Following conversation by email";
@@ -3566,6 +3580,7 @@
 "Me" = "Mig";
 
 /* Noun. Title. Links to the blog's Media library.
+   Tab bar title for the Media tab in Media Picker
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -4044,6 +4059,9 @@
 /* Text displayed when theme name search has no matches */
 "No themes matching your search" = "No themes matching your search";
 
+/* Message for a notice informing the user their scan completed and no threats were found */
+"No threats found" = "No threats found";
+
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
    No comment will be autoapproved
@@ -4147,8 +4165,6 @@
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    OK button to close the informative dialog on Gutenberg editor
    Submit button on prompt for user information.
-   Text for an alert's dismissal button.
-   Text of an OK button to dismiss a prompt.
    Title of a button that dismisses a prompt
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
    Title of primary button on alert prompting verify their accounts while attempting to publish */
@@ -4347,6 +4363,9 @@
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "Page title. Empty";
 
+/* Title of notification displayed when a page has been successfully updated. */
+"Page updated" = "Page updated";
+
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
 "Pages" = "Sider";
@@ -4390,8 +4409,7 @@
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Paste without Formatting";
 
-/* Status for Media object that is being processed locally.
-   Status name for a comment that hasn't yet been approved. */
+/* Status for Media object that is being processed locally. */
 "Pending" = "Afventer godkendelse";
 
 /* No comment provided by engineer. */
@@ -4417,6 +4435,9 @@
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Photo Library";
+
+/* Tab bar title for the Photos tab in Media Picker */
+"Photos" = "Photos";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Photos provided by Pexels";
@@ -4646,6 +4667,12 @@
 /* translators: accessibility text. empty post title. */
 "Post title. Empty" = "Post title. Empty";
 
+/* Title of camera permissions screen */
+"Post to WordPress" = "Post to WordPress";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"Post updated" = "Post updated";
+
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Postal Code";
 
@@ -4756,12 +4783,6 @@
    Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Privat";
-
-/* Title of a prompt */
-"Problem Following Site" = "Problem Following Site";
-
-/* Title of a prompt */
-"Problem Unfollowing Site" = "Problem Unfollowing Site";
 
 /* No comment provided by engineer. */
 "Problem displaying block" = "Problem displaying block";
@@ -5083,7 +5104,7 @@
 "Reply to post…" = "Besvar indlæg...";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
-"Report This Post" = "Report This Post";
+"Report this post" = "Report this post";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Require manual approval for comments that include more than this number of links.";
@@ -5302,6 +5323,9 @@
 
 /* Button title that triggers a scan */
 "Scan Again" = "Scan Again";
+
+/* Title for a notice informing the user their scan has completed */
+"Scan Finished" = "Scan Finished";
 
 /* Title of the view */
 "Scan History" = "Scan History";
@@ -6394,9 +6418,6 @@
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "There was a problem displaying this post.";
 
-/* Short notice that there was a problem following a site and instructions on how to notify us of the problem. */
-"There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen." = "There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen.";
-
 /* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
 "There was a problem loading the media item." = "There was a problem loading the media item.";
 
@@ -6408,9 +6429,6 @@
 
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "There was a problem saving changes to sharing management.";
-
-/* Short notice that there was a problem unfollowing a site and instructions on how to notify us of the problem. */
-"There was a problem unfollowing the site. If the problem persists you can contact us via the Me > Help & Support screen." = "There was a problem unfollowing the site. If the problem persists you can contact us via the Me > Help & Support screen.";
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "There was a problem when trying to access your location. Please try again later.";
@@ -6571,6 +6589,7 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
+   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "Titel";
@@ -6776,6 +6795,9 @@
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Kunne ikke synkronisere";
 
+/* Notice title when blocking a site fails. */
+"Unable to block site" = "Unable to block site";
+
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "Unable to delete all media items.";
 
@@ -6910,7 +6932,7 @@
 "Unfollow %@" = "Unfollow %@";
 
 /* Verb. An option to unfollow a site. */
-"Unfollow Site" = "Unfollow Site";
+"Unfollow site" = "Unfollow site";
 
 /* Notice title when unfollowing a site succeeds.
    User unfollowed a site. */
@@ -7849,7 +7871,7 @@
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
-"You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".";
+"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".";
 
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "You will not be able to change your username back.";

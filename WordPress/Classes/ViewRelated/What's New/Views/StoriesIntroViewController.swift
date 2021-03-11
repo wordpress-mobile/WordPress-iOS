@@ -5,7 +5,7 @@ class StoriesIntroViewController: WhatIsNewViewController {
         static let headerTitle = NSLocalizedString("Introducing Story Posts", comment: "Stories intro header title")
         static let continueButtonTitle = NSLocalizedString("Create Story Post", comment: "Stories intro continue button title")
 
-        static let exampleHeaderTitle = NSLocalizedString("You've got early access to story posts and we'd love for you to give it a try.", comment: "Story Intro welcome title")
+        static let exampleHeaderTitle = NSLocalizedString("A new way to create and publish engaging content on your site.", comment: "Story Intro welcome title")
 
         static let example1Image = UIImage(named: "stories_intro_cover_1")
         static let example1Description = NSLocalizedString("How to create a story post", comment: "How to create story description")

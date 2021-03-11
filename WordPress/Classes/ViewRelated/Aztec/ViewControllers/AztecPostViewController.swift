@@ -463,6 +463,20 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     private var mediaPreviewHelper: MediaPreviewHelper? = nil
 
+    private let database: KeyValueDatabase = UserDefaults()
+    private enum Key {
+        static let classicDeprecationNoticeHasBeenShown = "kClassicDeprecationNoticeHasBeenShown"
+    }
+
+    private var hasNoticeBeenShown: Bool {
+        get {
+            database.bool(forKey: Key.classicDeprecationNoticeHasBeenShown)
+        }
+        set {
+            database.set(newValue, forKey: Key.classicDeprecationNoticeHasBeenShown)
+        }
+    }
+
     // MARK: - Initializers
 
     required init(
@@ -534,6 +548,41 @@ class AztecPostViewController: UIViewController, PostEditor {
         if !editorSession.started {
             editorSession.start()
         }
+
+        if shouldShowDeprecationNotice() {
+            showDeprecationNotice()
+            hasNoticeBeenShown = true
+        }
+    }
+
+    private func shouldShowDeprecationNotice() -> Bool {
+        return hasNoticeBeenShown == false &&
+            (post.postTitle ?? "").isEmpty &&
+            (post.content ?? "").isEmpty
+    }
+
+    private func showDeprecationNotice() {
+        let okButton: (title: String, handler: FancyAlertViewController.FancyAlertButtonHandler?) =
+        (
+            title: NSLocalizedString("Dismiss", comment: "The title of a button to close the classic editor deprecation notice alert dialog."),
+            handler: { alert, _ in
+                alert.dismiss(animated: true, completion: nil)
+            }
+        )
+
+        let config = FancyAlertViewController.Config(
+            titleText: NSLocalizedString("Try the new Block Editor", comment: "The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app."),
+            bodyText: NSLocalizedString("We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings.", comment: "The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app."),
+            headerImage: nil,
+            dividerPosition: .top,
+            defaultButton: okButton,
+            cancelButton: nil
+        )
+
+        let alert = FancyAlertViewController.controllerWithConfiguration(configuration: config)
+        alert.modalPresentationStyle = .custom
+        alert.transitioningDelegate = self
+        present(alert, animated: true)
     }
 
 
