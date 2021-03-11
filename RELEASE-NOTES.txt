@@ -2,6 +2,7 @@
 -----
 * [internal] Updated Zendesk to latest version. Should be no functional changes. [#16051]
 * [*] Reader: fixed an issue that caused unfollowing external sites to fail. [#16060]
+* [*] Stats: fixed an issue where an error was displayed for Latest Post Summary if the site had no posts. [#16074]
 
 16.9
 -----
