@@ -36,7 +36,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 + (instancetype)sharedInstance;
 
 - (NSString *)currentlySelectedScreen;
-- (BOOL)isNavigatingMySitesTab;
 
 - (void)showMySitesTab;
 - (void)showReaderTab;

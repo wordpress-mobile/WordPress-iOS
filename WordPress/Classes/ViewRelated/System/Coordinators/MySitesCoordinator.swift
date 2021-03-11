@@ -17,6 +17,16 @@ class MySitesCoordinator: NSObject {
         super.init()
     }
 
+    // MARK: - Root View Controller
+
+    private var rootContentViewController: UIViewController {
+        if Feature.enabled(.newNavBarAppearance) {
+            return mySiteViewController
+        } else {
+            return blogListViewController
+        }
+    }
+
     // MARK: - VCs
 
     /// The view controller that should be presented by the tab bar controller.
@@ -33,16 +43,25 @@ class MySitesCoordinator: NSObject {
         splitViewController.restorationIdentifier = MySitesCoordinator.splitViewControllerRestorationID
         splitViewController.presentsWithGesture = false
         splitViewController.setInitialPrimaryViewController(navigationController)
-        splitViewController.wpPrimaryColumnWidth = .narrow
-        splitViewController.dimsDetailViewControllerAutomatically = true
+        splitViewController.dimsDetailViewControllerAutomatically = !FeatureFlag.newNavBarAppearance.enabled
         splitViewController.tabBarItem = navigationController.tabBarItem
+
+        if Feature.enabled(.newNavBarAppearance) {
+            splitViewController.wpPrimaryColumnWidth = .default
+        } else {
+            splitViewController.wpPrimaryColumnWidth = .narrow
+        }
 
         return splitViewController
     }()
 
     @objc
     lazy var navigationController: UINavigationController = {
-        let navigationController = UINavigationController(rootViewController: blogListViewController)
+        let navigationController = UINavigationController(rootViewController: rootContentViewController)
+
+        if Feature.enabled(.newNavBarAppearance) {
+            navigationController.navigationBar.prefersLargeTitles = true
+        }
 
         navigationController.restorationIdentifier = MySitesCoordinator.navigationControllerRestorationID
         navigationController.navigationBar.isTranslucent = false
@@ -68,26 +87,46 @@ class MySitesCoordinator: NSObject {
         BlogListViewController(meScenePresenter: self.meScenePresenter)
     }()
 
+    private lazy var mySiteViewController: MySiteViewController = {
+        MySiteViewController(meScenePresenter: self.meScenePresenter)
+    }()
+
     // MARK: - Navigation
 
-    func showMySites() {
+    func showRootViewController() {
         becomeActiveTab()
 
-        navigationController.viewControllers = [blogListViewController]
+        navigationController.viewControllers = [rootContentViewController]
     }
+
+    // MARK: - Sites List
+
+    private func showSitesList() {
+        showRootViewController()
+
+        if Feature.enabled(.newNavBarAppearance) {
+            blogListViewController.modalPresentationStyle = .pageSheet
+            mySiteViewController.present(blogListViewController, animated: true)
+        }
+    }
+
+    // MARK: - Blog Details
 
     @objc
     func showBlogDetails(for blog: Blog) {
-        showMySites()
+        showRootViewController()
 
-        blogListViewController.setSelectedBlog(blog, animated: false)
+        if Feature.enabled(.newNavBarAppearance) {
+            mySiteViewController.blog = blog
+        } else {
+            blogListViewController.setSelectedBlog(blog, animated: false)
+        }
     }
 
-    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection? = nil) {
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection) {
         showBlogDetails(for: blog)
 
-        if let subsection = subsection,
-            let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
+        if let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
             blogDetailsViewController.showDetailView(for: subsection)
         }
     }
@@ -121,7 +160,7 @@ class MySitesCoordinator: NSObject {
     // MARK: - Adding a new site
     @objc
     func showAddNewSite(from view: UIView) {
-        showMySites()
+        showSitesList()
 
         blogListViewController.presentInterfaceForAddingNewSite(from: view)
     }
