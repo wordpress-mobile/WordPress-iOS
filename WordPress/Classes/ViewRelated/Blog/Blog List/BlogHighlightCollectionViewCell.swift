@@ -7,26 +7,37 @@ class BlogHighlightCollectionViewCell: UICollectionViewCell, NibReusable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        applyStyles()
+        applyAccessibility()
+    }
 
+    func configure(with highlight: BlogHighlight) {
+        imageView.image = highlight.icon
+        label.text = highlight.title
+    }
+
+    private func applyStyles() {
+        layer.backgroundColor = UIColor.listBackground.cgColor
+
+        label.font = WPStyleGuide.fontForTextStyle(.footnote)
+        label.textColor = .text
+    }
+
+    private func applyAccessibility() {
         guard let label = self.label else {
             return
         }
 
+        label.accessibilityTraits = .staticText
         label.isAccessibilityElement = true
         accessibilityElements = [label]
-
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            contentView.leftAnchor.constraint(equalTo: leftAnchor),
-            contentView.rightAnchor.constraint(equalTo: rightAnchor),
-            contentView.topAnchor.constraint(equalTo: topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        guard layer.cornerRadius == 0 else {
+            return
+        }
         layer.cornerRadius = bounds.height / 2
     }
 

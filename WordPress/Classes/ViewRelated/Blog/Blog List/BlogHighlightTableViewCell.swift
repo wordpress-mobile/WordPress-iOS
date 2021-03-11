@@ -3,12 +3,12 @@ import Combine
 
 @objc class BlogHighlightTableViewCell: UITableViewCell {
 
-    var cancellable: Cancellable?
-
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
+
+    var cancellable: Cancellable?
 
     var highlights: [BlogHighlight] = [] {
         didSet {
@@ -23,15 +23,7 @@ import Combine
     override func awakeFromNib() {
         super.awakeFromNib()
         applyStyles()
-
-        // Configure collection view
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.register(BlogHighlightCollectionViewCell.defaultNib,
-                                forCellWithReuseIdentifier: BlogHighlightCollectionViewCell.defaultReuseID)
-
-        if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        }
+        configureCollectionView()
     }
 
     func configure(blog: Blog) {
@@ -55,6 +47,16 @@ import Combine
         subtitleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
 
         collectionView.backgroundColor = .listForeground
+    }
+
+    private func configureCollectionView() {
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.register(BlogHighlightCollectionViewCell.defaultNib,
+                                forCellWithReuseIdentifier: BlogHighlightCollectionViewCell.defaultReuseID)
+
+        let layout = LeftAlignedCollectionViewFlowLayout()
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        collectionView.collectionViewLayout = layout
     }
 
     private struct Constants {
@@ -89,19 +91,11 @@ extension BlogHighlightTableViewCell: UICollectionViewDelegate, UICollectionView
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.reuseIdentifier,
                                                             for: indexPath) as? BlogHighlightCollectionViewCell else {
-            fatalError("Expected a ReaderInterestsCollectionViewCell for identifier: \(Constants.reuseIdentifier)")
+            fatalError("Expected a BlogHighlightCollectionViewCell for identifier: \(Constants.reuseIdentifier)")
         }
 
-        let icon = highlights[indexPath.row].icon
-        cell.imageView.image = icon
-
-        let title = highlights[indexPath.row].title
-        cell.label.text = title
-        cell.label.accessibilityTraits = .button
-
-        cell.label.font = WPStyleGuide.fontForTextStyle(.footnote)
-        cell.label.textColor = .text
-        cell.layer.backgroundColor = UIColor.listBackground.cgColor
+        let highlight = highlights[indexPath.row]
+        cell.configure(with: highlight)
 
         return cell
     }
@@ -120,5 +114,28 @@ extension BlogHighlightTableViewCell: UICollectionViewDelegate, UICollectionView
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return highlights.count
+    }
+}
+
+
+// MARK: - Left Aligned Flow Layout
+
+class LeftAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        let attributes = super.layoutAttributesForElements(in: rect)
+
+        var leftMargin = sectionInset.left
+        var maxY: CGFloat = -1.0
+        attributes?.forEach { layoutAttribute in
+            if layoutAttribute.representedElementCategory == .cell {
+                if layoutAttribute.frame.origin.y >= maxY {
+                    leftMargin = sectionInset.left
+                }
+                layoutAttribute.frame.origin.x = leftMargin
+                leftMargin += layoutAttribute.frame.width + minimumInteritemSpacing
+                maxY = max(layoutAttribute.frame.maxY, maxY)
+            }
+        }
+        return attributes
     }
 }

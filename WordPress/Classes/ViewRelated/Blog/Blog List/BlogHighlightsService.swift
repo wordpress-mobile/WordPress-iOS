@@ -31,14 +31,21 @@ class BlogHighlightsService: LocalCoreDataService {
 
     // MARK: - Get highlights
 
-    func getHighlights() -> AnyPublisher<(Int, Int), Never> {
+    func getHighlights() -> AnyPublisher<[BlogHighlight], Never> {
         return Publishers.Zip(getTotalFollowerCount(), getDraftCount())
+            .map { (followerCount, draftCount) -> [BlogHighlight] in
+                var highlights: [BlogHighlight] = [.followers(followerCount)]
+                if draftCount > 0 {
+                    highlights.append(.drafts(draftCount))
+                }
+                return highlights
+            }
             .eraseToAnyPublisher()
     }
 
     // MARK: - Get draft count
 
-    func getDraftCount() -> AnyPublisher<Int, Never> {
+    private func getDraftCount() -> AnyPublisher<Int, Never> {
         return Future { [weak self] promise in
             guard let self = self else { return }
             self.postService?.getPostsOfType("post", success: { (posts) in
@@ -52,7 +59,7 @@ class BlogHighlightsService: LocalCoreDataService {
 
     // MARK: - Get follower count
 
-    func getTotalFollowerCount() -> AnyPublisher<Int, Never> {
+    private func getTotalFollowerCount() -> AnyPublisher<Int, Never> {
         return Publishers.Merge3(getWpComFollowerCount(), getEmailFollowerCount(), getPublicizeFollowerCount())
             .collect()
             .map { $0.reduce(0, +) }

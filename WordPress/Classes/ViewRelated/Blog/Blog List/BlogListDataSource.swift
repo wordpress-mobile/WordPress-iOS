@@ -328,10 +328,8 @@ extension BlogListDataSource: UITableViewDataSource {
 
             cell.cancellable = service.getHighlights()
                 .subscribe(on: DispatchQueue.main)
-                .sink(receiveValue: { (zipped) in
-                    let followers = BlogHighlight.followers(zipped.0)
-                    let drafts = BlogHighlight.drafts(zipped.1)
-                    cell.highlights = [followers, drafts]
+                .sink(receiveValue: { (highlights) in
+                    cell.highlights = highlights
                 })
 
             return cell
