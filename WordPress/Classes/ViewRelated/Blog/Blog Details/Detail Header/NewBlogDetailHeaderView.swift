@@ -80,7 +80,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
     private enum LayoutSpacing {
         static let atSides: CGFloat = 16
-        static let top: CGFloat = 24
+        static let top: CGFloat = 16
         static let belowActionRow: CGFloat = 16
         static let betweenTitleViewAndActionRow: CGFloat = 32
 
@@ -168,7 +168,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
     @objc
     private func titleButtonTapped() {
         QuickStartTourGuide.shared.visited(.siteTitle)
-        titleButton.shouldShowSpotlight = false
+        titleView.titleButton.shouldShowSpotlight = false
 
         delegate?.siteTitleTapped()
     }
@@ -232,6 +232,12 @@ fileprivate extension NewBlogDetailHeaderView {
             button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
             button.titleLabel?.adjustsFontForContentSizeCategory = true
             button.titleLabel?.lineBreakMode = .byTruncatingTail
+            button.titleLabel?.numberOfLines = 1
+
+            // I don't understand why this is needed, but without it the button has additional
+            // vertical padding, so it's more difficult to get the spacing we want.
+            button.setImage(UIImage(), for: .normal)
+
             button.setTitleColor(.text, for: .normal)
             button.translatesAutoresizingMaskIntoConstraints = false
             button.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
@@ -261,6 +267,7 @@ fileprivate extension NewBlogDetailHeaderView {
             stackView.alignment = .leading
             stackView.distribution = .equalSpacing
             stackView.axis = .vertical
+            stackView.spacing = 8
             stackView.translatesAutoresizingMaskIntoConstraints = false
 
             return stackView
