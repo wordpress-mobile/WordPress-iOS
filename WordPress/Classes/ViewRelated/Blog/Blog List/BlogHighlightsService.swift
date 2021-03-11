@@ -6,7 +6,6 @@ class BlogHighlightsService: LocalCoreDataService {
     // MARK: - Properties
 
     private let blog: Blog
-    private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Properties (Services)
 
@@ -30,9 +29,16 @@ class BlogHighlightsService: LocalCoreDataService {
         super.init()
     }
 
+    // MARK: - Get highlights
+
+    func getHighlights() -> AnyPublisher<(Int, Int), Never> {
+        return Publishers.Zip(getTotalFollowerCount(), getDraftCount())
+            .eraseToAnyPublisher()
+    }
+
     // MARK: - Get draft count
 
-    func getDraftCount() -> Future<Int, Never> {
+    func getDraftCount() -> AnyPublisher<Int, Never> {
         return Future { [weak self] promise in
             guard let self = self else { return }
             self.postService?.getPostsOfType("post", success: { (posts) in
@@ -41,7 +47,7 @@ class BlogHighlightsService: LocalCoreDataService {
             }, failure: { (error) in
                 DDLogError("Error fetching drafts: \(String(describing: error?.localizedDescription))")
             })
-        }
+        }.eraseToAnyPublisher()
     }
 
     // MARK: - Get follower count

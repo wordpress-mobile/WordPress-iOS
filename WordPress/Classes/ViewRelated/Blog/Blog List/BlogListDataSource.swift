@@ -70,7 +70,6 @@ private struct LoggedInDataSourceMapper: BlogListDataSourceMapper {
 }
 
 class BlogListDataSource: NSObject {
-    private var cancellables = Set<AnyCancellable>()
 
     override init() {
         super.init()
@@ -315,34 +314,10 @@ extension BlogListDataSource: UITableViewDataSource {
         return sections[section].count
     }
 
-    @objc func getHighlights() {
-        let visibleBlogs = allBlogs.filter { $0.visible }
-        visibleBlogs.forEach { blog in
-
-            let service = BlogHighlightsService(blog: blog)
-
-            service.getTotalFollowerCount()
-                .subscribe(on: DispatchQueue.main)
-                .sink { (count) in
-                    print("===== site: \(blog.displayURL ?? "?"), follower count: \(count)")
-                }
-                .store(in: &cancellables)
-
-            service.getDraftCount()
-                .subscribe(on: DispatchQueue.main)
-                .sink { (count) in
-                    print("===== site: \(blog.displayURL ?? "?"), draft count: \(count)")
-                }
-                .store(in: &cancellables)
-        }
-
-    }
-
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let blog = self.blog(at: indexPath)
 
         if blog.visible {
-
             guard let cell = tableView.dequeueReusableCell(withIdentifier: BlogHighlightTableViewCell.defaultReuseID) as? BlogHighlightTableViewCell else {
                 fatalError("Failed to get BlogHighlightTableViewCell")
             }
@@ -350,10 +325,11 @@ extension BlogListDataSource: UITableViewDataSource {
             cell.configure(blog: blog)
 
             let service = BlogHighlightsService(blog: blog)
-            cell.cancellable = service.getTotalFollowerCount()
+
+            cell.cancellable = service.getHighlights()
                 .subscribe(on: DispatchQueue.main)
-                .sink(receiveValue: { (followerCount) in
-                    cell.highlights = ["\(followerCount) followers"]
+                .sink(receiveValue: { (zipped) in
+                    cell.highlights = ["\(zipped.0) followers", "\(zipped.1) drafts"]
                 })
 
             return cell
