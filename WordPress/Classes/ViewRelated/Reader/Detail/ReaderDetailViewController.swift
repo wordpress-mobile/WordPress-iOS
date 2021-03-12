@@ -221,7 +221,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) {
         let groupedPosts = Dictionary(grouping: posts, by: { $0.postType })
-        relatedPosts = groupedPosts.map { RelatedPostsSection(postType: $0.key, posts: $0.value) }
+        let sections = groupedPosts.map { RelatedPostsSection(postType: $0.key, posts: $0.value) }
+        relatedPosts = sections.sorted { $0.postType.rawValue < $1.postType.rawValue }
         tableView.reloadData()
         tableView.invalidateIntrinsicContentSize()
     }
