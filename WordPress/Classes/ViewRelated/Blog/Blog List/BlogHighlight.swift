@@ -4,6 +4,7 @@ enum BlogHighlight: Equatable {
 
     case followers(Int)
     case drafts(Int)
+    case views(Int)
 
     var title: String {
         switch self {
@@ -11,6 +12,8 @@ enum BlogHighlight: Equatable {
             return "\(count) followers"
         case .drafts(let count):
             return "\(count) drafts"
+        case .views(let delta):
+            return "Views \(abs(delta))%"
         }
     }
 
@@ -20,6 +23,8 @@ enum BlogHighlight: Equatable {
             return UIImage.gridicon(.user)
         case .drafts:
             return UIImage.gridicon(.posts)
+        case .views(let delta):
+            return delta >= 0 ? UIImage.gridicon(.arrowUp) : UIImage.gridicon(.arrowDown)
         }
     }
 
@@ -27,6 +32,8 @@ enum BlogHighlight: Equatable {
         switch self {
         case .followers, .drafts:
             return UIColor.text
+        case .views(let delta):
+            return delta >= 0 ? UIColor.success : UIColor.error
         }
     }
 }

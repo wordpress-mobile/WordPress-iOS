@@ -32,15 +32,55 @@ class BlogHighlightsService: LocalCoreDataService {
     // MARK: - Get highlights
 
     func getHighlights() -> AnyPublisher<[BlogHighlight], Never> {
-        return Publishers.Zip(getTotalFollowerCount(), getDraftCount())
-            .map { (followerCount, draftCount) -> [BlogHighlight] in
+        return Publishers.Zip3(getTotalFollowerCount(), getDraftCount(), getViewCountDelta(for: .day))
+            .map { (followerCount, draftCount, viewCountDelta) -> [BlogHighlight] in
                 var highlights: [BlogHighlight] = [.followers(followerCount)]
+
+                if let viewCountDelta = viewCountDelta, viewCountDelta != 0 {
+                    highlights.append(.views(viewCountDelta))
+                }
+
                 if draftCount > 0 {
                     highlights.append(.drafts(draftCount))
                 }
+
                 return highlights
             }
             .eraseToAnyPublisher()
+    }
+
+    // MARK: - Get view count delta
+
+    func getViewCountDelta(for interval: StatsPeriodUnit) -> AnyPublisher<Int?, Never> {
+        return getSummaryIntervalData(for: interval)
+            .map { (intervalData) -> Int? in
+                guard let summaryData = intervalData?.summaryData else {
+                    return nil
+                }
+
+                let currentPeriodViewCount = summaryData[1].viewsCount
+                let previousPeriodViewCount = summaryData[0].viewsCount
+
+                let delta = currentPeriodViewCount - previousPeriodViewCount
+                var roundedPercentage = 0
+
+                if previousPeriodViewCount > 0 {
+                    let percentage = (Float(delta) / Float(previousPeriodViewCount)) * 100
+                    roundedPercentage = Int(round(percentage))
+                }
+
+                return roundedPercentage
+            }
+            .eraseToAnyPublisher()
+    }
+
+    private func getSummaryIntervalData(for interval: StatsPeriodUnit) -> Future<StatsSummaryTimeIntervalData?, Never> {
+        let now = Date()
+        return Future { [weak self] promise in
+            self?.statsService?.getData(for: interval, endingOn: now, limit: 2, completion: { (data: StatsSummaryTimeIntervalData?, error) in
+                promise(.success(data))
+            })
+        }
     }
 
     // MARK: - Get draft count
