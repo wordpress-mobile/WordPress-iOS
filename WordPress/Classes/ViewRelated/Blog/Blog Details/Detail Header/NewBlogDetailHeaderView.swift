@@ -61,7 +61,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
     }
 
     func setTitleLoading(_ isLoading: Bool) {
-        isLoading ? titleButton.startLoading() : titleButton.stopLoading()
+        isLoading ? titleView.titleButton.startLoading() : titleView.titleButton.stopLoading()
     }
 
     func refreshSiteTitle() {
@@ -71,7 +71,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
     }
 
     @objc func toggleSpotlightOnSiteTitle() {
-        titleButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.siteTitle)
+        titleView.titleButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.siteTitle)
     }
 
     @objc func toggleSpotlightOnSiteIcon() {
