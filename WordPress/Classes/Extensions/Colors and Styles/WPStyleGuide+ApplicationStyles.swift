@@ -59,6 +59,10 @@ extension WPStyleGuide {
         appearance.backgroundColor = .appBarBackground
         appearance.titleTextAttributes = textAttributes
 
+        if FeatureFlag.newNavBarAppearance.enabled {
+            appearance.shadowColor = .clear
+        }
+
         navigationAppearance.standardAppearance = appearance
         navigationAppearance.scrollEdgeAppearance = navigationAppearance.standardAppearance
 
@@ -132,12 +136,14 @@ extension WPStyleGuide {
         configureTableViewColors(view: view)
         configureTableViewColors(tableView: tableView)
     }
+
     class func configureTableViewColors(view: UIView?) {
         guard let view = view else {
             return
         }
         view.backgroundColor = .basicBackground
     }
+
     class func configureTableViewColors(tableView: UITableView?) {
         guard let tableView = tableView else {
             return

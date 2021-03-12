@@ -43,7 +43,9 @@ open class WP3DTouchShortcutHandler: NSObject {
                 WPAnalytics.track(.shortcutStats)
                 clearCurrentViewController()
                 let blogService: BlogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-                tabBarController.switchMySitesTabToStatsView(for: blogService.lastUsedOrFirstBlog())
+                if let mainBlog = blogService.lastUsedOrFirstBlog() {
+                    tabBarController.mySitesCoordinator.showStats(for: mainBlog)
+                }
                 return true
             case ShortcutIdentifier.Notifications.type:
                 WPAnalytics.track(.shortcutNotifications)
