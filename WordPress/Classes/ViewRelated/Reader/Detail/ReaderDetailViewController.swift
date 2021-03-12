@@ -1,6 +1,6 @@
 import UIKit
 
-typealias RelatedPostsSection = [Int: [RemoteReaderSimplePost]]
+typealias RelatedPostsSection = (postType: RemoteReaderSimplePost.PostType, posts: [RemoteReaderSimplePost])
 
 protocol ReaderDetailView: class {
     func render(_ post: ReaderPost)
@@ -75,7 +75,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     /// The related posts for the post being shown
-    var relatedPosts: RelatedPostsSection = [:]
+    var relatedPosts: [RelatedPostsSection] = []
 
     /// Called if the view controller's post fails to load
     var postLoadFailureBlock: (() -> Void)? {
@@ -220,7 +220,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) {
-        relatedPosts = Dictionary(grouping: posts, by: { $0.postType.rawValue })
+        let groupedPosts = Dictionary(grouping: posts, by: { $0.postType })
+        relatedPosts = groupedPosts.map { RelatedPostsSection(postType: $0.key, posts: $0.value) }
         tableView.reloadData()
         tableView.invalidateIntrinsicContentSize()
     }
@@ -535,7 +536,7 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return relatedPosts[section]?.count ?? 0
+        return relatedPosts[section].posts.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -543,11 +544,7 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
             fatalError("Expected RelatedPostsTableViewCell with identifier: \(ReaderRelatedPostsCell.defaultReuseID)")
         }
 
-        let section = relatedPosts[indexPath.section]
-        guard let post = section?[indexPath.row] else {
-            fatalError("Expected post for section: \(indexPath.section), row: \(indexPath.row)")
-        }
-
+        let post = relatedPosts[indexPath.section].posts[indexPath.row]
         cell.configure(for: post)
         return cell
     }
@@ -557,7 +554,7 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let title = getSectionTitle(for: section),
+        guard let title = getSectionTitle(for: relatedPosts[section].postType),
               let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReaderRelatedPostsSectionHeaderView.defaultReuseID) as? ReaderRelatedPostsSectionHeaderView else {
             return UIView(frame: .zero)
         }
@@ -574,10 +571,9 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        let section = relatedPosts[indexPath.section]
-        guard let post = section?[indexPath.row],
-              let controller = ReaderDetailViewController.controllerWithSimplePost(post)
-        else {
+        let post = relatedPosts[indexPath.section].posts[indexPath.row]
+
+        guard let controller = ReaderDetailViewController.controllerWithSimplePost(post) else {
             return
         }
 
@@ -591,8 +587,8 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
         }
     }
 
-    private func getSectionTitle(for section: Int) -> String? {
-        switch RemoteReaderSimplePost.PostType(rawValue: section) {
+    private func getSectionTitle(for postType: RemoteReaderSimplePost.PostType) -> String? {
+        switch postType {
         case .local:
             guard let blogName = post?.blogNameForDisplay() else {
                 return nil
