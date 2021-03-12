@@ -383,9 +383,9 @@ PODS:
   - RNTAztecView (1.48.1):
     - React-Core
     - WordPress-Aztec-iOS (~> 1.19.4)
-  - Sentry (6.2.0):
-    - Sentry/Core (= 6.2.0)
-  - Sentry/Core (6.2.0)
+  - Sentry (6.2.1):
+    - Sentry/Core (= 6.2.1)
+  - Sentry/Core (6.2.1)
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -503,7 +503,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
   - WordPressAuthenticator (~> 1.35.2)
-  - WordPressKit (~> 4.28.0)
+  - WordPressKit (~> 4.28.1)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.15.0)
   - WordPressUI (~> 1.9.0)
@@ -742,14 +742,14 @@ SPEC CHECKSUMS:
   RNScreens: 6833ac5c29cf2f03eed12103140530bbd75b6aea
   RNSVG: 68a534a5db06dcbdaebfd5079349191598caef7b
   RNTAztecView: 51bf82dc0335e141a95c1ecf8ec9562c854f779e
-  Sentry: 972bd51ddb2aa3430f2c81fadb975fe27f47c2f4
+  Sentry: 9b922b396b0e0bca8516a10e36b0ea3ebea5faf7
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: f4bf3b343581a1beacdbf5fb1a8825bd5f05a4a4
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
-  WordPressAuthenticator: 7b7555d43273231e968f1f890166fc3aac72b2a3
+  WordPressAuthenticator: 73887798e340abe3cf021163644e59ca5388affb
   WordPressKit: a6d8cf247eddcddf78720ff17585688986750efa
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 2d2b45d8945221b716a0e2f23932dadb750d9a74
@@ -766,6 +766,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 6e906763e218e246dc856412aa83481226735b0e
+PODFILE CHECKSUM: 3330690f53d6fb37708730f725677a20e8a85ee7
 
 COCOAPODS: 1.10.0
