@@ -1,1 +1,9 @@
-The latest updates to the WordPress app are here. A new Story post type helps you post images and videos with ease, and This Week Stats can now be displayed on your home screen. We improved the functionality of published homepages, ensuring changes to them won’t break your site. Plus, we added support for setting the Cover block focal point.
+What’s new in version 16.9?
+
+The classic editor will soon be unavailable for creating new posts. You will still be able to edit your existing posts and pages in the classic editor, but we recommend that you switch to the block editor if you haven’t already.
+
+When creating a site, you can now select categories to help you better search for and identify designs you may like. You can also choose single-page site designs.
+
+In the Reader, we’ve made updates to improve the content discovery experience. You will now see related content in your feed and a redesigned recommended topics section in your Discover tab. There’s also a new way to discover topics under the Manage setting.
+
+We’ve made other minor changes that improve your overall experience in the app!
