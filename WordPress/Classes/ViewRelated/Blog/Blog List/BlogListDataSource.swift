@@ -2,6 +2,7 @@ import CoreData
 import Foundation
 import UIKit
 import WordPressShared
+import Combine
 
 private protocol BlogListDataSourceMapper {
     func map(_ data: [Blog]) -> [[Blog]]
@@ -69,6 +70,7 @@ private struct LoggedInDataSourceMapper: BlogListDataSourceMapper {
 }
 
 class BlogListDataSource: NSObject {
+
     override init() {
         super.init()
         // We can't decide if we're using recent sites until the results controller
@@ -307,6 +309,7 @@ extension BlogListDataSource: NSFetchedResultsControllerDelegate {
 // MARK: - UITableView Data Source
 
 extension BlogListDataSource: UITableViewDataSource {
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
@@ -317,6 +320,25 @@ extension BlogListDataSource: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let blog = self.blog(at: indexPath)
+
+        if blog.visible {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: BlogHighlightTableViewCell.defaultReuseID) as? BlogHighlightTableViewCell else {
+                fatalError("Failed to get BlogHighlightTableViewCell")
+            }
+
+            cell.configure(blog: blog)
+
+            let service = BlogHighlightsService(blog: blog)
+
+            cell.cancellable = service.getHighlights()
+                .subscribe(on: DispatchQueue.main)
+                .sink(receiveValue: { (highlights) in
+                    cell.highlights = highlights
+                })
+
+            return cell
+        }
+
         guard let cell = tableView.dequeueReusableCell(withIdentifier: WPBlogTableViewCell.reuseIdentifier()) as? WPBlogTableViewCell else {
             fatalError("Failed to get a blog cell")
         }
