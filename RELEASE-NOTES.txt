@@ -13,7 +13,7 @@
 * [*] Reader: We redesigned the recommended topics section of Discover
 * [*] Reader: Added a way to discover new topics from the Manage Topics view
 * [*] P2 users can create and share group invite links via the Invite Person screen under the People Management feature. [#16005]
-
+* [*] Fixed an issue that prevented searching for plugins and the Popular Plugins section from appearing: [#16070]
 
 16.8.1
 -----

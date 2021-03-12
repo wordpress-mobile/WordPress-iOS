@@ -43,6 +43,10 @@ struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
 
     var buildType: String = BuildConfiguration.current.rawValue
 
+    var shouldEnableAutomaticSessionTracking: Bool {
+        return !UserSettings.userHasOptedOutOfCrashLogging
+    }
+
     var currentUser: TracksUser? {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
