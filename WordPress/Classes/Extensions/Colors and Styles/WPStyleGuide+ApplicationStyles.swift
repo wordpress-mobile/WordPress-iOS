@@ -47,7 +47,7 @@ extension WPStyleGuide {
 
         var textAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.appBarText]
         let largeTitleTextAttributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.navigationBarLargeFont]
-        
+
         if FeatureFlag.newNavBarAppearance.enabled {
             textAttributes[.font] = WPStyleGuide.navigationBarStandardFont
         }

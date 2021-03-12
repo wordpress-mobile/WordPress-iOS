@@ -172,7 +172,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
         delegate?.siteTitleTapped()
     }
-    
+
     @objc
     private func subtitleButtonTapped() {
         delegate?.visitSiteTapped()
@@ -211,20 +211,20 @@ fileprivate extension NewBlogDetailHeaderView {
             button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
             button.titleLabel?.adjustsFontForContentSizeCategory = true
             button.titleLabel?.lineBreakMode = .byTruncatingTail
-        
+
             button.setTitleColor(WPStyleGuide.darkBlue(), for: .normal)
 
             if let pointSize = button.titleLabel?.font.pointSize {
                 button.setImage(UIImage.gridicon(.external, size: CGSize(width: pointSize, height: pointSize)), for: .normal)
             }
-            
+
             // Align the image to the right
             button.semanticContentAttribute = (UIApplication.shared.userInterfaceLayoutDirection == .leftToRight) ? .forceRightToLeft : .forceLeftToRight
             button.imageEdgeInsets = LayoutSpacing.subtitleButtonImageInsets
-            
+
             button.translatesAutoresizingMaskIntoConstraints = false
             button.addTarget(self, action: #selector(subtitleButtonTapped), for: .touchUpInside)
-            
+
             return button
         }()
 
