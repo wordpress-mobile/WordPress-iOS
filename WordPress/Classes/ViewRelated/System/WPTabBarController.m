@@ -158,6 +158,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (!_readerNavigationController) {
         _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.makeReaderTabViewController];
         _readerNavigationController.navigationBar.translucent = NO;
+        _readerNavigationController.view.backgroundColor = [UIColor murielBasicBackground];
 
         UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
         _readerNavigationController.tabBarItem.image = readerTabBarImage;
