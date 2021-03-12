@@ -190,6 +190,7 @@ fileprivate extension NewBlogDetailHeaderView {
         }
 
         private enum LayoutSpacing {
+            static let betweenTitleAndSubtitleButtons: CGFloat = 8
             static let betweenSiteIconAndTitle: CGFloat = 16
             static let betweenTitleAndSiteSwitcher: CGFloat = 16
             static let betweenSiteSwitcherAndRightPadding: CGFloat = 4
@@ -267,7 +268,7 @@ fileprivate extension NewBlogDetailHeaderView {
             stackView.alignment = .leading
             stackView.distribution = .equalSpacing
             stackView.axis = .vertical
-            stackView.spacing = 8
+            stackView.spacing = LayoutSpacing.betweenTitleAndSubtitleButtons
             stackView.translatesAutoresizingMaskIntoConstraints = false
 
             return stackView
