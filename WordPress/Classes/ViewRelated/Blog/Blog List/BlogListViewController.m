@@ -37,6 +37,10 @@ static NSInteger HideSearchMinSites = 3;
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        return nil;
+    }
+
     return [WPTabBarController sharedInstance].mySitesCoordinator.blogListViewController;
 }
 
@@ -65,6 +69,11 @@ static NSInteger HideSearchMinSites = 3;
 - (void)configureDataSource
 {
     self.dataSource = [BlogListDataSource new];
+    
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        self.dataSource.shouldShowDisclosureIndicator = NO;
+    }
+    
     __weak __typeof(self) weakSelf = self;
     self.dataSource.visibilityChanged = ^(Blog *blog, BOOL visible) {
         [weakSelf setVisible:visible forBlog:blog];
@@ -462,6 +471,11 @@ static NSInteger HideSearchMinSites = 3;
 
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
 {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        // We should never bypass the list when we're using the new navigation bar
+        return false;
+    }
+
     return self.dataSource.displayedBlogsCount == 1;
 }
 
@@ -792,6 +806,19 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated
 {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        if (self.blogSelected != nil) {
+            self.blogSelected(self, selectedBlog);
+        } else {
+            // The site picker without a site-selection callback makes no sense.  We'll dismiss the VC to keep
+            // the app running, but the user won't be able to switch sites.
+            DDLogError(@"There's no site-selection callback assigned to the site picker.");
+            [self dismissViewControllerAnimated:animated completion:nil];
+        }
+        
+        return;
+    }
+    
     if (selectedBlog != _selectedBlog || !_blogDetailsViewController) {
         _selectedBlog = selectedBlog;
         self.blogDetailsViewController = [self makeBlogDetailsViewController];
