@@ -471,16 +471,16 @@ static NSInteger HideSearchMinSites = 3;
 
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
 {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        // We should never bypass the list when we're using the new navigation bar
+        return false;
+    }
+
     return self.dataSource.displayedBlogsCount == 1;
 }
 
 - (void)bypassBlogListViewController
 {
-    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
-        // We should never bypass the list when we're using the new navigation bar
-        return;
-    }
-
     if ([self shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
         // We do a delay of 0.0 so that way this doesn't kick off until the next run loop.
         [self performSelector:@selector(selectFirstSite) withObject:nil afterDelay:0.0];
