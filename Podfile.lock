@@ -405,12 +405,12 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.28.0):
+  - WordPressKit (4.29.0-beta.2):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
     - UIDeviceIdentifier (~> 1.4)
-    - WordPressShared (~> 1.15.0)
+    - WordPressShared (~> 1.15-beta)
     - wpxmlrpc (~> 0.9)
   - WordPressMocks (0.0.9)
   - WordPressShared (1.15.0):
@@ -421,18 +421,18 @@ PODS:
   - wpxmlrpc (0.9.0)
   - Yoga (1.14.0)
   - ZendeskCommonUISDK (6.1.0)
-  - ZendeskCoreSDK (2.4.1)
+  - ZendeskCoreSDK (2.5.0)
   - ZendeskMessagingAPISDK (3.8.1):
     - ZendeskSDKConfigurationsSDK (~> 1.1.7)
   - ZendeskMessagingSDK (3.8.1):
     - ZendeskCommonUISDK (~> 6.1.0)
     - ZendeskMessagingAPISDK (~> 3.8.1)
   - ZendeskSDKConfigurationsSDK (1.1.7)
-  - ZendeskSupportProvidersSDK (5.1.1):
-    - ZendeskCoreSDK (~> 2.4.1)
-  - ZendeskSupportSDK (5.1.1):
-    - ZendeskMessagingSDK (~> 3.8.0)
-    - ZendeskSupportProvidersSDK (~> 5.1.1)
+  - ZendeskSupportProvidersSDK (5.2.0):
+    - ZendeskCoreSDK (~> 2.5.0)
+  - ZendeskSupportSDK (5.2.0):
+    - ZendeskMessagingSDK (~> 3.8.1)
+    - ZendeskSupportProvidersSDK (~> 5.2.0)
   - ZIPFoundation (0.9.12)
 
 DEPENDENCIES:
@@ -503,13 +503,13 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
   - WordPressAuthenticator (~> 1.35.1)
-  - WordPressKit (~> 4.28.0)
+  - WordPressKit (~> 4.29.0-beta)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.15.0)
   - WordPressUI (~> 1.9.0)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.48.1/third-party-podspecs/Yoga.podspec.json`)
-  - ZendeskSupportSDK (= 5.1.1)
+  - ZendeskSupportSDK (= 5.2.0)
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
@@ -750,7 +750,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
   WordPressAuthenticator: 7b7555d43273231e968f1f890166fc3aac72b2a3
-  WordPressKit: 9a6715eafca2f868e08956f2049305b13fae4585
+  WordPressKit: 52d481d9c946616e4662fc30c22a089aa0fa728f
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 2d2b45d8945221b716a0e2f23932dadb750d9a74
   WordPressUI: 3b70cccc4c44cff09024ca3e94ae25a8768b26c1
@@ -758,14 +758,14 @@ SPEC CHECKSUMS:
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
   ZendeskCommonUISDK: 92ca6b16956430a2cb61c89aeaa6ca123d1f81fd
-  ZendeskCoreSDK: 2dc9457ae01d024ca02f60f6134ad1ad90136c29
+  ZendeskCoreSDK: f3d5dcd6a18186dcecbecd56f66296c40fb2fcb4
   ZendeskMessagingAPISDK: 986919a8f6f11a7019660d1ff798f1efb42fa572
   ZendeskMessagingSDK: bf9a06f0cbb219617d9cf60a46aba1b68c8f3b30
   ZendeskSDKConfigurationsSDK: 45fa87ec8418697f7fce5e56bec472052f0aedb5
-  ZendeskSupportProvidersSDK: 51c9d4a826f7bd87e3109e5c801c602a6b62c762
-  ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
+  ZendeskSupportProvidersSDK: 5221df6ca45e0b6f12470a5e8e65ccf3ccca17fa
+  ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 5c57583186c65a1537da8cc74f35ba65bdd1cd1b
+PODFILE CHECKSUM: 95067ef6af4f1e49f57d35eb0bb60c2cf46880f0
 
 COCOAPODS: 1.10.0

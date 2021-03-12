@@ -218,16 +218,16 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectSelectedRowWithAnimation:YES];
+    
     // Failsafe: Make sure that the Comment (still) exists
     NSArray *sections = self.tableViewHandler.resultsController.sections;
     if (indexPath.section >= sections.count) {
-        [tableView deselectSelectedRowWithAnimation:YES];
         return;
     }
     
     id<NSFetchedResultsSectionInfo> sectionInfo = sections[indexPath.section];
     if (indexPath.row >= sectionInfo.numberOfObjects) {
-        [tableView deselectSelectedRowWithAnimation:YES];
         return;
     }
     

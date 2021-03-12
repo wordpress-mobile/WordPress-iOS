@@ -586,12 +586,35 @@ private extension InvitePersonViewController {
     func refreshGenerateShareCell() {
         if blog.inviteLinks?.count == 0 {
             generateShareCell.textLabel?.text = NSLocalizedString("Generate new link", comment: "Title. A call to action to generate a new invite link.")
+            generateShareCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
         } else {
-            generateShareCell.textLabel?.text = NSLocalizedString("Share invite link", comment: "Title. A call to action to share an invite link.")
+            generateShareCell.textLabel?.attributedText = createAttributedShareInviteText()
         }
         generateShareCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
         generateShareCell.textLabel?.textAlignment = .center
         generateShareCell.textLabel?.textColor = .primary
+    }
+
+    func createAttributedShareInviteText() -> NSAttributedString {
+        let pStyle = NSMutableParagraphStyle()
+        pStyle.alignment = .center
+        let font = WPStyleGuide.tableviewTextFont()
+        let textAttributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .paragraphStyle: pStyle
+        ]
+
+        let image = UIImage.gridicon(.shareiOS)
+        let attachment = NSTextAttachment(image: image)
+        attachment.bounds = CGRect(x: 0,
+                                   y: (font.capHeight - image.size.height)/2,
+                                   width: image.size.width,
+                                   height: image.size.height)
+        let textStr = NSAttributedString(string: NSLocalizedString("Share invite link", comment: "Title. A call to action to share an invite link."), attributes: textAttributes)
+        let attrStr = NSMutableAttributedString(attachment: attachment)
+        attrStr.append(NSAttributedString(string: " "))
+        attrStr.append(textStr)
+        return attrStr
     }
 
     func refreshCurrentInviteCell() {
