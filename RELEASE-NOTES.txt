@@ -13,6 +13,12 @@
 * [*] Reader: Added a way to discover new topics from the Manage Topics view
 * [*] P2 users can create and share group invite links via the Invite Person screen under the People Management feature. [#16005]
 
+
+16.8.1
+-----
+
+* [**] Stories: Fixed an issue which could remove content from a post when a new Story block was edited. [#16059]
+ 
 16.8
 -----
 * [**] Prevent deleting published homepages which would have the effect of breaking a site. [#15797]

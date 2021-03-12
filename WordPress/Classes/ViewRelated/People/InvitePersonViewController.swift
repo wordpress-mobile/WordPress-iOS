@@ -590,6 +590,7 @@ private extension InvitePersonViewController {
         } else {
             generateShareCell.textLabel?.attributedText = createAttributedShareInviteText()
         }
+        generateShareCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
         generateShareCell.textLabel?.textAlignment = .center
         generateShareCell.textLabel?.textColor = .primary
     }
