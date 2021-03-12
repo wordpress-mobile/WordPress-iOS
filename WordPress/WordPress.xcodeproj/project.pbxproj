@@ -13803,6 +13803,7 @@
 				8B37EBC025FAC1090088E853 /* [CP] Embed Pods Frameworks */,
 				8B37EBC125FAC1090088E853 /* [CP] Copy Pods Resources */,
 				8B37EBC225FAC1090088E853 /* Copy Gutenberg JS */,
+				8B94540125FBA965001C5122 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -15511,6 +15512,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Print commands before executing them (useful for troubleshooting)\nset -x\nDEST=$CONFIGURATION_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\n\nif [[ \"$CONFIGURATION\" = *Debug* && ! \"$PLATFORM_NAME\" == *simulator ]]; then\nIP=$(ipconfig getifaddr en0)\nif [ -z \"$IP\" ]; then\nIP=$(ifconfig | grep 'inet ' | grep -v ' 127.' | cut -d\\   -f2  | awk 'NR==1{print $1}')\nfi\n\necho \"$IP\" > \"$DEST/ip.txt\"\nfi\n\nBUNDLE_FILE=\"$DEST/main.jsbundle\"\ncp ${PODS_ROOT}/Gutenberg/bundle/ios/App.js \"${BUNDLE_FILE}\"\n";
+		};
+		8B94540125FBA965001C5122 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\n\nbuildID=${PRODUCT_BUNDLE_IDENTIFIER}\nextId=\"notification-service\"\n\n/usr/libexec/PlistBuddy -c \"Set :CFBundleIdentifier $buildID.$extId\" \"${SRCROOT}/$\n";
 		};
 		920B9A6DAD47189622A86A9C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -21186,7 +21204,7 @@
 					"-l\"z\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "WPiOS Development Profile";
@@ -21252,7 +21270,7 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress";
@@ -21319,7 +21337,7 @@
 					"-l\"z\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D INTERNAL_BUILD -D APPCENTER_ENABLED";
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.internal;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.internal;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal";
@@ -21386,7 +21404,7 @@
 					"-l\"z\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D ALPHA_BUILD -D INTERNAL_BUILD";
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.alpha;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.alpha;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha";
