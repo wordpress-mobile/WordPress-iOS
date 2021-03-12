@@ -191,7 +191,9 @@ class InvitePersonViewController: UITableViewController {
         setupDefaultRole()
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
-
+        // Use the system separator color rather than the one defined by WPStyleGuide
+        // so cell separators stand out in darkmode.
+        tableView.separatorColor = .separator
         if blog.isWPForTeams() {
             syncInviteLinks()
         }

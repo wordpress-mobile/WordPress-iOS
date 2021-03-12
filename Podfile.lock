@@ -393,7 +393,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.4)
   - WordPress-Editor-iOS (1.19.4):
     - WordPress-Aztec-iOS (= 1.19.4)
-  - WordPressAuthenticator (1.35.1):
+  - WordPressAuthenticator (1.35.2):
     - 1PasswordExtension (~> 1.8.6)
     - Alamofire (~> 4.8)
     - CocoaLumberjack (~> 3.5)
@@ -502,8 +502,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
-  - WordPressAuthenticator (~> 1.35.1)
-  - WordPressKit (~> 4.28.1)
+  - WordPressAuthenticator (~> 1.35.2)
+  - WordPressKit (~> 4.28.0)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.15.0)
   - WordPressUI (~> 1.9.0)
