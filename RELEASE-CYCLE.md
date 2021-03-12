@@ -33,4 +33,4 @@ Sometimes there is a bug or crash that can’t wait two weeks to be fixed. This 
 - Create a PR against that branch.
 - Get approvals, test very very very well, merge.
 - Submit to the store.
-- Merge back into `develop` and into `master`.
+- Merge back into `develop` and into `master`.   
