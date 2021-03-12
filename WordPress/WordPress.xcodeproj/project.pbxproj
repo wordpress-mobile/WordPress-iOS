@@ -6752,12 +6752,7 @@
 				3F43603223F36515001DEE70 /* BlogListViewController+BlogDetailsFactory.swift */,
 				D8EB1FD021900810002AE1C4 /* BlogListViewController+SiteCreation.swift */,
 				E11E77591E72932F0072AD40 /* BlogListDataSource.swift */,
-				FA37066625F71DB000D95745 /* BlogHighlightsService.swift */,
-				FA370A4B25F889FD00D95745 /* BlogHighlightTableViewCell.swift */,
-				FA370A4C25F889FD00D95745 /* BlogHighlightTableViewCell.xib */,
-				FA4B8F3025F9B3F500E92C84 /* BlogHighlight.swift */,
-				FA4B8F4225F9B6E300E92C84 /* BlogHighlightCollectionViewCell.swift */,
-				FA4B8F4325F9B6E300E92C84 /* BlogHighlightCollectionViewCell.xib */,
+				FAA2500625FB658D0052A13E /* Blog Highlights */,
 			);
 			path = "Blog List";
 			sourceTree = "<group>";
@@ -8881,6 +8876,7 @@
 				E1FD45DF1C030B3800750F4C /* AccountSettingsService.swift */,
 				F12FA5D82428FA8F0054DA21 /* AuthenticationService.swift */,
 				F1ADCAF6241FEF0C00F150D2 /* AtomicAuthenticationService.swift */,
+				FA37066625F71DB000D95745 /* BlogHighlightsService.swift */,
 				822D60B81F4CCC7A0016C46D /* BlogJetpackSettingsService.swift */,
 				93C1148318EDF6E100DAC95C /* BlogService.h */,
 				8B749E7125AF522900023F03 /* JetpackCapabilitiesService.swift */,
@@ -11649,6 +11645,18 @@
 				FAD95D2625B91BCF00F011B5 /* JetpackRestoreStatusFailedViewController.swift */,
 			);
 			path = "Restore Status Failed";
+			sourceTree = "<group>";
+		};
+		FAA2500625FB658D0052A13E /* Blog Highlights */ = {
+			isa = PBXGroup;
+			children = (
+				FA4B8F3025F9B3F500E92C84 /* BlogHighlight.swift */,
+				FA370A4B25F889FD00D95745 /* BlogHighlightTableViewCell.swift */,
+				FA370A4C25F889FD00D95745 /* BlogHighlightTableViewCell.xib */,
+				FA4B8F4225F9B6E300E92C84 /* BlogHighlightCollectionViewCell.swift */,
+				FA4B8F4325F9B6E300E92C84 /* BlogHighlightCollectionViewCell.xib */,
+			);
+			path = "Blog Highlights";
 			sourceTree = "<group>";
 		};
 		FAB8007625AEDDCE00D5D54A /* Restore Complete */ = {
