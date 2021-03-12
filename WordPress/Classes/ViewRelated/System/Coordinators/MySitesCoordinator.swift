@@ -73,10 +73,12 @@ class MySitesCoordinator: NSObject {
         navigationController.tabBarItem.accessibilityIdentifier = "mySitesTabButton"
         navigationController.tabBarItem.title = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
 
-        let context = ContextManager.shared.mainContext
-        let service = BlogService(managedObjectContext: context)
-        if let blogToOpen = service.lastUsedOrFirstBlog() {
-            blogListViewController.selectedBlog = blogToOpen
+        if !FeatureFlag.newNavBarAppearance.enabled {
+            let context = ContextManager.shared.mainContext
+            let service = BlogService(managedObjectContext: context)
+            if let blogToOpen = service.lastUsedOrFirstBlog() {
+                blogListViewController.selectedBlog = blogToOpen
+            }
         }
 
         return navigationController
