@@ -659,7 +659,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)sectionNum {
     BlogDetailsSection *section = self.tableSections[sectionNum];
-    if (section.showQuickStartMenu == true) {
+    if (section.showQuickStartMenu == true || [Feature enabled:FeatureFlagNewNavBarAppearance]) {
         return BlogDetailQuickStartSectionHeight;
     } else if (([section.title isEmpty] || section.title == nil) && sectionNum == 0) {
         // because tableView:viewForHeaderInSection: is implemented, this must explicitly be 0
@@ -982,8 +982,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsRow *viewSiteRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"View Site", @"Action title. Opens the user's site in an in-app browser")
                                                                   image:[UIImage gridiconOfType:GridiconTypeHouse]
                                                                callback:^{
-                                                                   [weakSelf showViewSite];
-                                                               }];
+        [weakSelf showViewSiteFromSource:BlogDetailsNavigationSourceRow];
+    }];
     viewSiteRow.quickStartIdentifier = QuickStartTourElementViewSite;
     viewSiteRow.showsSelectionState = NO;
     [rows addObject:viewSiteRow];
@@ -1059,6 +1059,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.headerView = headerView;
 
     self.tableView.tableHeaderView = headerView.asView;
+    
+    if ([self.headerView isKindOfClass:[NewBlogDetailHeaderView class]]) {
+        [self.headerView.asView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [NSLayoutConstraint activateConstraints:@[
+            [self.headerView.asView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+            [self.headerView.asView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
+        ]];
+    }
 }
 
 #pragma mark BlogDetailHeaderViewDelegate
@@ -1111,6 +1119,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:true completion:nil];
+}
+
+- (void)visitSiteTapped
+{
+    [self showViewSiteFromSource:BlogDetailsNavigationSourceButton];
 }
 
 #pragma mark Site Switching
@@ -1756,9 +1769,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
-- (void)showViewSite
+- (void)showViewSiteFromSource:(BlogDetailsNavigationSource)source
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedViewSite withBlog:self.blog];
+    [self trackEvent:WPAnalyticsStatOpenedViewSite fromSource:source];
+    
     NSURL *targetURL = [NSURL URLWithString:self.blog.homeURL];
 
     UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog withDeviceModes:true];
