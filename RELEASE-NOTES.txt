@@ -1,8 +1,25 @@
+17.0
+-----
+* [internal] Updated Zendesk to latest version. Should be no functional changes. [#16051]
+* [*] Reader: fixed an issue that caused unfollowing external sites to fail. [#16060]
+* [*] Stats: fixed an issue where an error was displayed for Latest Post Summary if the site had no posts. [#16074]
+
 16.9
 -----
 * [*] Adds helper UI to Choose a Domain screen to provide a hint of what a domain is. [#15962]
 * [**] Site Creation: Adds filterable categories to the site design picker when creating a WordPress.com site, and includes single-page site designs [#15933]
+* [**] The classic editor will no longer be available for new posts soon, but this won’t affect editing any existing posts or pages. Users should consider switching over to the Block Editor now. [#16008]
+* [**] Reader: Added related posts to the bottom of reader posts
+* [*] Reader: We redesigned the recommended topics section of Discover
+* [*] Reader: Added a way to discover new topics from the Manage Topics view
+* [*] P2 users can create and share group invite links via the Invite Person screen under the People Management feature. [#16005]
+* [*] Fixed an issue that prevented searching for plugins and the Popular Plugins section from appearing: [#16070]
 
+16.8.1
+-----
+
+* [**] Stories: Fixed an issue which could remove content from a post when a new Story block was edited. [#16059]
+ 
 16.8
 -----
 * [**] Prevent deleting published homepages which would have the effect of breaking a site. [#15797]

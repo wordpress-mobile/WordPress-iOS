@@ -3,13 +3,23 @@ import Gridicons
 import Gutenberg
 
 class FilterableCategoriesViewController: CollapsableHeaderViewController {
+    private enum CategoryFilterAnalyticsKeys {
+        static let modifiedFilter = "filter"
+        static let selectedFilters = "selected_filters"
+        static let location = "location"
+    }
+
     typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice
     let tableView: UITableView
+    private lazy var debounceSelectionChange: Debouncer = {
+        Debouncer(delay: 0.1) { [weak self] in
+            guard let `self` = self else { return }
+            self.itemSelectionChanged(self.selectedItem != nil)
+        }
+    }()
     internal var selectedItem: IndexPath? = nil {
         didSet {
-            if !(oldValue != nil && selectedItem != nil) {
-                itemSelectionChanged(selectedItem != nil)
-            }
+            debounceSelectionChange.call()
         }
     }
     private let filterBar: CollapsableHeaderFilterBar
@@ -40,13 +50,16 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
         }
     }
 
+    let analyticsLocation: String
     init(
+        analyticsLocation: String,
         mainTitle: String,
         prompt: String,
         primaryActionTitle: String,
         secondaryActionTitle: String? = nil,
         defaultActionTitle: String? = nil
     ) {
+        self.analyticsLocation = analyticsLocation
         tableView = UITableView(frame: .zero, style: .plain)
         tableView.separatorStyle = .singleLine
         tableView.separatorInset = .zero
@@ -172,6 +185,7 @@ extension FilterableCategoriesViewController: CollapsableHeaderFilterBarDelegate
     }
 
     func didSelectFilter(withIndex selectedIndex: IndexPath, withSelectedIndexes selectedIndexes: [IndexPath]) {
+        trackFiltersChangedEvent(isSelectionEvent: true, changedIndex: selectedIndex, selectedIndexes: selectedIndexes)
         guard filteredSections == nil else {
             insertFilterRow(withIndex: selectedIndex, withSelectedIndexes: selectedIndexes)
             return
@@ -204,6 +218,7 @@ extension FilterableCategoriesViewController: CollapsableHeaderFilterBarDelegate
     }
 
     func didDeselectFilter(withIndex index: IndexPath, withSelectedIndexes selectedIndexes: [IndexPath]) {
+        trackFiltersChangedEvent(isSelectionEvent: false, changedIndex: index, selectedIndexes: selectedIndexes)
         guard selectedIndexes.count == 0 else {
             removeFilterRow(withIndex: index)
             return
@@ -214,6 +229,18 @@ extension FilterableCategoriesViewController: CollapsableHeaderFilterBarDelegate
             contentSizeWillChange()
             tableView.reloadSections([0], with: .fade)
         })
+    }
+
+    func trackFiltersChangedEvent(isSelectionEvent: Bool, changedIndex: IndexPath, selectedIndexes: [IndexPath]) {
+        let event: WPAnalyticsEvent = isSelectionEvent ? .categoryFilterSelected : .categoryFilterDeselected
+        let filter = categorySections[changedIndex.item].categorySlug
+        let selectedFilters = selectedIndexes.map({ categorySections[$0.item].categorySlug }).joined(separator: ", ")
+
+        WPAnalytics.track(event, properties: [
+            CategoryFilterAnalyticsKeys.location: analyticsLocation,
+            CategoryFilterAnalyticsKeys.modifiedFilter: filter,
+            CategoryFilterAnalyticsKeys.selectedFilters: selectedFilters
+        ])
     }
 
     func removeFilterRow(withIndex index: IndexPath) {

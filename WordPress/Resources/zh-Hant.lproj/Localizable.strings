@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-19 10:54:08+0000 */
+/* Translation-Revision-Date: 2021-03-04 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -24,11 +24,8 @@
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point to create a downloadable backup." = "%1$@ 是選定建立可下載備份的時間點。";
 
-/* 'AUTHOR on POST TITLE' in a comment list */
+/* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%2$@ 上的 %1$@";
-
-/* 'AUTHOR on POST TITLE: COMMENT' in a comment list */
-"%1$@ on %2$@: %3$@" = "%2$@ 上的 %1$@：%3$@";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "已完成 %2$d 個，共 %1$d 個";
@@ -166,6 +163,9 @@
 /* Number of posts */
 "%d posts" = "%d 篇文章";
 
+/* Message for a notice informing the user their scan completed and %d threats were found */
+"%d potential threats found" = "發現 %d 個潛在威脅";
+
 /* Age between dates over one year. */
 "%d years" = "%d 年";
 
@@ -239,6 +239,9 @@
 
 /* Alert displayed to the user when a single media item attached to a post has failed to upload. */
 "1 post, 1 file not uploaded" = "無法上傳 1 篇文章和 1 個檔案";
+
+/* Message for a notice informing the user their scan completed and 1 threat was found */
+"1 potential threat found" = "發現 1 個潛在威脅";
 
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
@@ -341,6 +344,7 @@
 "Activation Error" = "啟用錯誤";
 
 /* Describes a status of a plugin
+   Label for active Theme
    Whether a plugin is active on a site */
 "Active" = "已啟用";
 
@@ -543,6 +547,9 @@
 
 /* Jetpack Settings: Allow WordPress.com login */
 "Allow WordPress.com login" = "允許 WordPress.com 登入";
+
+/* Message on camera permissions screen to explain why the app needs camera and microphone permissions */
+"Allow access so you can start taking photos and videos." = "允許存取，以開始拍攝相片和影片。";
 
 /* A short description of the comment like sharing setting. */
 "Allow all comments to be Liked by you and your readers" = "允許你和你的讀者對所有留言按讚";
@@ -885,9 +892,6 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "封鎖引文";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block This Site" = "封鎖此網站";
-
 /* translators: displayed right after the block is copied. */
 "Block copied" = "已複製區塊";
 
@@ -911,6 +915,12 @@
 
 /* No comment provided by engineer. */
 "Block settings" = "區塊設定";
+
+/* The title of a button that triggers blocking a site from the user's reader. */
+"Block this site" = "Block this site";
+
+/* Notice title when blocking a site succeeds. */
+"Blocked site" = "封鎖的網站";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "網誌";
@@ -1175,10 +1185,13 @@
 /* Title for the button to progress with the selected site homepage design */
 "Choose" = "選擇";
 
+/* Title for selecting a new homepage */
+"Choose Homepage" = "選擇首頁";
+
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "選擇頁面";
 
-/* Title for selecting a new home page */
+/* Title for selecting a new posts page */
 "Choose Posts Page" = "選擇文章頁面";
 
 /* Title for the screen to pick a template for a page */
@@ -2076,7 +2089,13 @@
 "Double tap to move the block up" = "按兩下將區塊向上移";
 
 /* No comment provided by engineer. */
+"Double tap to open Action Sheet to edit, replace, or clear the image" = "點兩下開啟動作工作表，然後編輯、取代或清除圖片";
+
+/* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "按兩下以開啟含有可用選項的操作工作表";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "點兩下開啟底部工作表，然後編輯、取代或清除圖片";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet with available options" = "按兩下以開啟含有可用選項的底部工作表";
@@ -2176,6 +2195,9 @@
 /* No comment provided by engineer. */
 "Edit file" = "編輯檔案";
 
+/* No comment provided by engineer. */
+"Edit focal point" = "編輯焦點";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "使用區塊編輯器編輯新文章和頁面。";
 
@@ -2248,8 +2270,7 @@
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "空的網址";
 
-/* Button title about the enable notifications action
-   Button title for the enable site notifications action. */
+/* Button title for the enable site notifications action. */
 "Enable" = "啓用";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
@@ -2261,8 +2282,7 @@
 /* Title of a Quick Start Tour */
 "Enable post sharing" = "啟用文章分享功能";
 
-/* Message informing the user about the enable notifications action
-   Message prompting user to enable site notifications. */
+/* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "是否要啟用網站通知？";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
@@ -2320,9 +2340,6 @@
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "錯誤";
-
-/* Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader. */
-"Error Blocking Site" = "封鎖網站時發生錯誤";
 
 /* Menus error title for a menu that received an error while trying to delete it. */
 "Error Deleting Menu" = "刪除選單時發生錯誤";
@@ -2607,14 +2624,14 @@
    Verb. Button title. Follow a new blog. */
 "Follow" = "關注";
 
-/* Verb. An option to follow a site. */
-"Follow Site" = "關注網站";
-
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "透過電子郵件追蹤對話";
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "關注其他網站";
+
+/* Verb. An option to follow a site. */
+"Follow site" = "Follow site";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "關注你喜歡的網站並發掘新讀物。";
@@ -2650,9 +2667,6 @@
 
 /* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
 "Following %1$@" = "正在追蹤 %1$@";
-
-/* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
-"Following %@" = "正在關注 %@";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Following conversation by email" = "透過電子郵件追蹤對話";
@@ -3566,6 +3580,7 @@
 "Me" = "我";
 
 /* Noun. Title. Links to the blog's Media library.
+   Tab bar title for the Media tab in Media Picker
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -4044,6 +4059,9 @@
 /* Text displayed when theme name search has no matches */
 "No themes matching your search" = "沒有符合你搜尋條件的佈景主題";
 
+/* Message for a notice informing the user their scan completed and no threats were found */
+"No threats found" = "沒有找到威脅";
+
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
    No comment will be autoapproved
@@ -4147,8 +4165,6 @@
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    OK button to close the informative dialog on Gutenberg editor
    Submit button on prompt for user information.
-   Text for an alert's dismissal button.
-   Text of an OK button to dismiss a prompt.
    Title of a button that dismisses a prompt
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
    Title of primary button on alert prompting verify their accounts while attempting to publish */
@@ -4347,6 +4363,9 @@
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "頁面標題。 清空";
 
+/* Title of notification displayed when a page has been successfully updated. */
+"Page updated" = "頁面已更新";
+
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
 "Pages" = "分頁";
@@ -4390,8 +4409,7 @@
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "貼上並且不設定格式";
 
-/* Status for Media object that is being processed locally.
-   Status name for a comment that hasn't yet been approved. */
+/* Status for Media object that is being processed locally. */
 "Pending" = "待審核";
 
 /* No comment provided by engineer. */
@@ -4417,6 +4435,9 @@
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "圖庫";
+
+/* Tab bar title for the Photos tab in Media Picker */
+"Photos" = "Photos";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "由 Pexels 提供的相片";
@@ -4646,6 +4667,12 @@
 /* translators: accessibility text. empty post title. */
 "Post title. Empty" = "文章標題。空白";
 
+/* Title of camera permissions screen */
+"Post to WordPress" = "張貼到 WordPress";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"Post updated" = "文章已更新";
+
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "郵遞區號";
 
@@ -4756,12 +4783,6 @@
    Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "私密";
-
-/* Title of a prompt */
-"Problem Following Site" = "關注網站時發生問題";
-
-/* Title of a prompt */
-"Problem Unfollowing Site" = "取消關注網站時發生問題";
 
 /* No comment provided by engineer. */
 "Problem displaying block" = "顯示區塊時發生問題";
@@ -5083,7 +5104,7 @@
 "Reply to post…" = "回覆文章...";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
-"Report This Post" = "檢舉這篇文章";
+"Report this post" = "Report this post";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "如果留言包含的連結超過此數量，需要進行人工審核。";
@@ -5302,6 +5323,9 @@
 
 /* Button title that triggers a scan */
 "Scan Again" = "重新掃瞄";
+
+/* Title for a notice informing the user their scan has completed */
+"Scan Finished" = "掃描完成";
 
 /* Title of the view */
 "Scan History" = "掃描記錄";
@@ -6394,9 +6418,6 @@
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "顯示此文章時發生問題。";
 
-/* Short notice that there was a problem following a site and instructions on how to notify us of the problem. */
-"There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen." = "關注網站時發生問題。如果問題持續發生，請透過畫面上的「我 > 說明&客戶服務」與我們聯絡。";
-
 /* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
 "There was a problem loading the media item." = "載入媒體項目時發生問題。";
 
@@ -6408,9 +6429,6 @@
 
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "儲存分享管理的變更時發生問題。";
-
-/* Short notice that there was a problem unfollowing a site and instructions on how to notify us of the problem. */
-"There was a problem unfollowing the site. If the problem persists you can contact us via the Me > Help & Support screen." = "取消關注網站時發生問題。如果問題持續發生，請透過畫面上的「我 > 說明&客戶服務」與我們聯絡。";
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "嘗試存取你的位置時發生問題。請稍後再試一次。";
@@ -6571,6 +6589,7 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
+   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "標題";
@@ -6776,6 +6795,9 @@
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "無法同步";
 
+/* Notice title when blocking a site fails. */
+"Unable to block site" = "無法封鎖網站";
+
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "無法刪除所有媒體項目。";
 
@@ -6910,7 +6932,7 @@
 "Unfollow %@" = "取消關注 %@";
 
 /* Verb. An option to unfollow a site. */
-"Unfollow Site" = "取消關注網站";
+"Unfollow site" = "停止追蹤網站";
 
 /* Notice title when unfollowing a site succeeds.
    User unfollowed a site. */
@@ -7849,7 +7871,7 @@
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "你似乎安裝了 DudaMobile 的行動版外掛程式，導致應用程式無法連接至你的網誌";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
-"You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "除非徹底確認安全無害，否則請不要忽視安全性問題。 如果選擇忽視，這個威脅就會繼續存在你的網站「%1$@」中。";
+"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "除非你十分確定其安全無害，否則不應忽略安全性問題。 若你選擇忽略此威脅，該威脅會繼續存在於你的網站 「%1$@」。";
 
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "一旦變更使用者名稱就無法復原。";

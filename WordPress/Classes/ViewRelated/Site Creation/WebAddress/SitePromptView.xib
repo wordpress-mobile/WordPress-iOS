@@ -39,7 +39,7 @@
                             <viewLayoutGuide key="safeArea" id="6Hk-Pf-o7e"/>
                         </stackView>
                     </subviews>
-                    <color key="backgroundColor" systemColor="systemGray6Color"/>
+                    <color key="backgroundColor" systemColor="quaternarySystemFillColor"/>
                     <constraints>
                         <constraint firstItem="Woc-4J-ACa" firstAttribute="top" secondItem="v8V-S8-GVv" secondAttribute="top" constant="5" id="0Yh-f1-AIe"/>
                         <constraint firstAttribute="height" constant="28" id="4Sk-ZB-b26"/>
@@ -54,7 +54,7 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ypS-iN-cUK">
                     <rect key="frame" x="10" y="90" width="100" height="25"/>
-                    <color key="backgroundColor" systemColor="systemGray6Color"/>
+                    <color key="backgroundColor" systemColor="quaternarySystemFillColor"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="25" id="NAY-by-Nl2"/>
                         <constraint firstAttribute="width" constant="100" id="WtL-dE-Yxh"/>
@@ -67,7 +67,7 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kzX-Rf-Pzt">
                     <rect key="frame" x="354" y="90" width="50" height="25"/>
-                    <color key="backgroundColor" systemColor="systemGray6Color"/>
+                    <color key="backgroundColor" systemColor="quaternarySystemFillColor"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="50" id="cug-9C-DoG"/>
                     </constraints>
@@ -79,7 +79,7 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="puR-dc-cIz">
                     <rect key="frame" x="10" y="123" width="394" height="763"/>
-                    <color key="backgroundColor" systemColor="systemGray6Color"/>
+                    <color key="backgroundColor" systemColor="quaternarySystemFillColor"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                             <integer key="value" value="8"/>
@@ -110,11 +110,11 @@
     </objects>
     <resources>
         <image name="lock.fill" catalog="system" width="128" height="128"/>
+        <systemColor name="quaternarySystemFillColor">
+            <color red="0.45490196078431372" green="0.45490196078431372" blue="0.50196078431372548" alpha="0.080000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

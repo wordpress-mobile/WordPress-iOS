@@ -28,7 +28,7 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
     }
 
     func placeholder(in context: Context) -> StatsWidgetEntry {
-        StatsWidgetEntry.siteSelected(placeholderContent)
+        StatsWidgetEntry.siteSelected(placeholderContent, context)
     }
 
     func getSnapshot(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (StatsWidgetEntry) -> Void) {
@@ -38,14 +38,14 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
               let widgetData = widgetData(for: siteIdentifier) else {
 
             if let siteID = defaultSiteID, let content = T.read()?[siteID] {
-                completion(.siteSelected(content))
+                completion(.siteSelected(content, context))
             } else {
-                completion(.siteSelected(placeholderContent))
+                completion(.siteSelected(placeholderContent, context))
             }
             return
         }
 
-        completion(.siteSelected(widgetData))
+        completion(.siteSelected(widgetData, context))
     }
 
     func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<StatsWidgetEntry>) -> Void) {
@@ -56,7 +56,7 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
 
             /// - TODO: TODAYWIDGET - This is here because configuration is not updated when the site list changes. It might be a WidgetKit bug. More to come on a separate issue.
             if let siteID = defaultSiteID, let content = T.read()?[siteID] {
-                completion(Timeline(entries: [.siteSelected(content)], policy: .never))
+                completion(Timeline(entries: [.siteSelected(content, context)], policy: .never))
             } else {
                 if let loggedIn = UserDefaults(suiteName: WPAppGroupName)?.bool(forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey), loggedIn == false {
                     completion(Timeline(entries: [.loggedOut(widgetKind)], policy: .never))
@@ -79,7 +79,7 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
         // if cached data are "too old", refresh them from the backend, otherwise keep them
         guard elapsedTime > minElapsedTimeToRefresh else {
 
-            privateCompletion(.siteSelected(widgetData))
+            privateCompletion(.siteSelected(widgetData, context))
             return
         }
 
@@ -89,11 +89,11 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
             case .failure(let error):
                 DDLogError("StatsWidgets: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
 
-                privateCompletion(.siteSelected(widgetData))
+                privateCompletion(.siteSelected(widgetData, context))
 
             case .success(let newWidgetData):
 
-                privateCompletion(.siteSelected(newWidgetData))
+                privateCompletion(.siteSelected(newWidgetData, context))
             }
         }
     }
