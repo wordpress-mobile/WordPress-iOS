@@ -181,7 +181,7 @@ class GutenbergSettings {
         let blog = post.blog
 
         if post.isContentEmpty() {
-            let isSimpleWPComSite = blog.isAtomic() || !blog.isHostedAtWPcom
+            let isSimpleWPComSite = !blog.isAtomic() && blog.isHostedAtWPcom
             return isSimpleWPComSite || blog.isGutenbergEnabled
         } else {
             // It's an existing post
