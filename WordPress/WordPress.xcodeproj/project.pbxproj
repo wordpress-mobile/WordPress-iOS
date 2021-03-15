@@ -3759,6 +3759,7 @@
 		74FA4BE41FBFA0660031EAAD /* Extensions.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Extensions.xcdatamodel; sourceTree = "<group>"; };
 		75305C06D345590B757E3890 /* Pods-WordPress.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress/Pods-WordPress.debug.xcconfig"; sourceTree = "<group>"; };
 		7D21280C251CF0850086DD2C /* EditPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPageViewController.swift; sourceTree = "<group>"; };
+		7D4D980C25FFE7E600C282E6 /* WordPress 116.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 116.xcdatamodel"; sourceTree = "<group>"; };
 		7DFD69454E24EC0A1A0BACCD /* Pods-WordPressThisWeekWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressThisWeekWidget.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressThisWeekWidget/Pods-WordPressThisWeekWidget.release.xcconfig"; sourceTree = "<group>"; };
 		7E14635620B3BEAB00B95F41 /* WPStyleGuide+Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Loader.swift"; sourceTree = "<group>"; };
 		7E21C760202BBC8D00837CF5 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -19251,6 +19252,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				7D4D980C25FFE7E600C282E6 /* WordPress 116.xcdatamodel */,
 				CE907AFD25F97D2A007E7654 /* WordPress 115.xcdatamodel */,
 				E62D4A2425E7FE6600B99550 /* WordPress 114.xcdatamodel */,
 				E690F6EC25E04EAA0015A777 /* WordPress 113.xcdatamodel */,
