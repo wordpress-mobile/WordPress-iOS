@@ -13,6 +13,12 @@ parameters:
   translation_review_lang_id:
     type: string
     default: all-lang
+  beta_build:
+    type: boolean
+    default: false 
+  release_build:
+    type: boolean 
+    default: false
 
 xcode_version: &xcode_version
   xcode-version: "12.1.0"
@@ -168,6 +174,31 @@ jobs:
       - store_artifacts:
           path: Artifacts
           destination: Artifacts
+  Beta Build:
+    executor:
+      name: ios/default
+      <<: *xcode_version
+    steps:
+      - when:
+          condition: << pipeline.parameters.beta_build >>
+          steps:
+            - run:
+                name: Beta Build Test
+                command: |
+                  echo "export SLACK_SUCCESS_MESSAGE=':tada: A new Beta build has been triggered via API!'" >> $BASH_ENV 
+      - when:
+          condition: << pipeline.parameters.release_build >>
+          steps:
+            - run:
+                name: Release Build Test
+                command: |
+                  echo "export SLACK_SUCCESS_MESSAGE=':tada: A new Release build has been triggered via API!'" >> $BASH_ENV
+      - slack/status:
+          include_job_number_field: false
+          include_project_field: false
+          include_visit_job_action: true
+          webhook: '${SLACK_BUILD_WEBHOOK}'
+          success_message: '${SLACK_SUCCESS_MESSAGE}'
   Release Build:
     executor:
       name: ios/default
@@ -194,14 +225,28 @@ jobs:
             brew install imagemagick
             brew install ghostscript
             curl -sL https://sentry.io/get-cli/ | bash
-      - run:
-          name: Build
+      - run: 
+          name: Setup notifications
           command: |
             APP_VERSION=$(cat config/Version.Public.xcconfig | grep "^VERSION_LONG" | cut -d "=" -f2)
             echo "export SLACK_FAILURE_MESSAGE=':red_circle: Build for WordPress iOS $APP_VERSION failed!'" >> $BASH_ENV
             echo "export SLACK_SUCCESS_MESSAGE=':tada: WordPress iOS $APP_VERSION has been deployed!'" >> $BASH_ENV 
-            bundle exec fastlane build_and_upload_release skip_confirm:true
-          no_output_timeout: 60m
+      - when: 
+          condition: << pipeline.parameters.beta_build >>
+          steps:
+            - run:
+                name: Build
+                command: |
+                  bundle exec fastlane build_and_upload_beta_release skip_confirm:true create_gh_release:true
+                no_output_timeout: 60m
+      - when: 
+          condition: << pipeline.parameters.release_build >>
+          steps:
+            - run:
+                name: Build
+                command: | 
+                  bundle exec fastlane build_and_upload_stable_release skip_confirm:true create_gh_release:true
+                no_output_timeout: 60m
       - slack/status:
           include_job_number_field: false
           include_project_field: false
@@ -248,7 +293,11 @@ jobs:
 
 workflows:
   wordpress_ios:
-    unless: << pipeline.parameters.translation_review_build >>
+    when:
+      and:
+        - not: << pipeline.parameters.translation_review_build >> 
+        - not: << pipeline.parameters.beta_build >>
+        - not: << pipeline.parameters.release_build >>
     jobs:
       - Build Tests:
           <<: *iphone_test_device
@@ -294,7 +343,11 @@ workflows:
           <<: *ipad_test_device
           requires: [ "Optional Tests" ]
   Installable Build:
-    unless: << pipeline.parameters.translation_review_build >>
+    when:
+      and:
+        - not: << pipeline.parameters.translation_review_build >> 
+        - not: << pipeline.parameters.beta_build >>
+        - not: << pipeline.parameters.release_build >>
     jobs:
       - Hold:
           type: approval
@@ -307,15 +360,11 @@ workflows:
             branches:
               ignore: /pull\/[0-9]+/
   Release Build:
-    unless: << pipeline.parameters.translation_review_build >>
+    when: 
+      or: [ << pipeline.parameters.beta_build >>, << pipeline.parameters.release_build >> ]
     jobs:
-      - Release Build: 
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^\d.\d?(.\d)?(.\d)?(.\d{1,4})$/
+      - Release Build
   Translation Review Build:
-    when: << pipeline.parameters.translation_review_build >>
+    when: << pipeline.parameters.translation_review_build >> 
     jobs:
       - translation-review-build

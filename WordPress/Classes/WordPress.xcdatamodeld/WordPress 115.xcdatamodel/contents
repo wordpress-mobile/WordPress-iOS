@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D74" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D80" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="autosaveContent" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="autosaveExcerpt" optional="YES" attributeType="String" syncable="YES"/>
@@ -55,6 +55,7 @@
     </entity>
     <entity name="AccountSettings" representedClassName=".ManagedAccountSettings" syncable="YES">
         <attribute name="aboutMe" attributeType="String" syncable="YES"/>
+        <attribute name="blockEmailNotifications" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="displayName" attributeType="String" syncable="YES"/>
         <attribute name="email" attributeType="String" syncable="YES"/>
         <attribute name="emailPendingAddress" optional="YES" attributeType="String" syncable="YES"/>
@@ -200,10 +201,10 @@
         <attribute name="ampEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="ampSupported" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsAllowed" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="commentsBlocklistKeys" optional="YES" attributeType="Transformable" valueTransformerName="SetValueTransformer" elementID="commentsBlacklistKeys" syncable="YES"/>
+        <attribute name="commentsBlacklistKeys" optional="YES" attributeType="Transformable" valueTransformerName="SetValueTransformer" syncable="YES"/>
         <attribute name="commentsCloseAutomatically" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsCloseAutomaticallyAfterDays" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="commentsFromKnownUsersAllowlisted" optional="YES" attributeType="Boolean" usesScalarValueType="NO" elementID="commentsFromKnownUsersWhitelisted" syncable="YES"/>
+        <attribute name="commentsFromKnownUsersWhitelisted" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsMaximumLinks" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsModerationKeys" optional="YES" attributeType="Transformable" valueTransformerName="SetValueTransformer" syncable="YES"/>
         <attribute name="commentsPageSize" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
@@ -222,7 +223,7 @@
         <attribute name="iconMediaID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="jetpackBlockMaliciousLoginAttempts" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="jetpackLazyLoadImages" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="jetpackLoginAllowListedIPAddresses" optional="YES" attributeType="Transformable" valueTransformerName="SetValueTransformer" elementID="jetpackLoginWhiteListedIPAddresses" syncable="YES"/>
+        <attribute name="jetpackLoginWhiteListedIPAddresses" optional="YES" attributeType="Transformable" valueTransformerName="SetValueTransformer" syncable="YES"/>
         <attribute name="jetpackMonitorEmailNotifications" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="jetpackMonitorEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="jetpackMonitorPushNotifications" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
@@ -920,13 +921,13 @@
     <elements>
         <element name="AbstractPost" positionX="-867.89453125" positionY="-2.7890625" width="128" height="313"/>
         <element name="Account" positionX="-152.04296875" positionY="-313.31640625" width="128" height="223"/>
-        <element name="AccountSettings" positionX="-146.67578125" positionY="-608.9609375" width="128" height="255"/>
+        <element name="AccountSettings" positionX="-146.67578125" positionY="-608.9609375" width="128" height="254"/>
         <element name="AllTimeStatsRecordValue" positionX="323.8671875" positionY="1792.16015625" width="128" height="118"/>
         <element name="AnnualAndMostPopularTimeStatsRecordValue" positionX="5.7890625" positionY="1972.53515625" width="128" height="253"/>
         <element name="BasePost" positionX="-1100.31640625" positionY="-317.4140625" width="128" height="285"/>
         <element name="Blog" positionX="315.19921875" positionY="-178.44921875" width="188.421875" height="853"/>
         <element name="BlogAuthor" positionX="564.83203125" positionY="-385.12109375" width="128" height="165"/>
-        <element name="BlogSettings" positionX="1056.86328125" positionY="236.3984375" width="128" height="839"/>
+        <element name="BlogSettings" positionX="1056.86328125" positionY="236.3984375" width="128" height="853"/>
         <element name="Category" positionX="-472.19921875" positionY="-178.47265625" width="128" height="118"/>
         <element name="ClicksStatsRecordValue" positionX="493.99609375" positionY="1741.6171875" width="128" height="133"/>
         <element name="Comment" positionX="-897.9921875" positionY="-561.09375" width="128" height="343"/>

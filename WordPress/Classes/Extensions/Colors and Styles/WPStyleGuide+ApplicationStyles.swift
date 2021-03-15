@@ -44,20 +44,27 @@ extension WPStyleGuide {
         navigationAppearance.isTranslucent = false
         navigationAppearance.tintColor = .appBarTint
         navigationAppearance.barTintColor = .appBarBackground
-        navigationAppearance.titleTextAttributes = [.foregroundColor: UIColor.appBarText]
 
         var textAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.appBarText]
+        let largeTitleTextAttributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.navigationBarLargeFont]
+
         if FeatureFlag.newNavBarAppearance.enabled {
             textAttributes[.font] = WPStyleGuide.navigationBarStandardFont
         }
 
         navigationAppearance.titleTextAttributes = textAttributes
+        navigationAppearance.largeTitleTextAttributes = largeTitleTextAttributes
 
         // Required to fix detail navigation controller appearance due to https://stackoverflow.com/q/56615513
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .appBarBackground
         appearance.titleTextAttributes = textAttributes
+        appearance.largeTitleTextAttributes = largeTitleTextAttributes
+
+        if FeatureFlag.newNavBarAppearance.enabled {
+            appearance.shadowColor = .clear
+        }
 
         navigationAppearance.standardAppearance = appearance
         navigationAppearance.scrollEdgeAppearance = navigationAppearance.standardAppearance
@@ -132,12 +139,14 @@ extension WPStyleGuide {
         configureTableViewColors(view: view)
         configureTableViewColors(tableView: tableView)
     }
+
     class func configureTableViewColors(view: UIView?) {
         guard let view = view else {
             return
         }
         view.backgroundColor = .basicBackground
     }
+
     class func configureTableViewColors(tableView: UITableView?) {
         guard let tableView = tableView else {
             return
