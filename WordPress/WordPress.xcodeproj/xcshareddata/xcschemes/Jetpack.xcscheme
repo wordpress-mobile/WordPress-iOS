@@ -10,7 +10,8 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "#!/bin/bash&#10;&#10;buildID=${PRODUCT_BUNDLE_IDENTIFIER}&#10;extensionID=&quot;WordPressDraftActionExtension&quot;&#10;&#10;/usr/libexec/PlistBuddy -c &quot;Set :CFBundleIdentifier $buildID.$extensionID&quot; &quot;${SRCROOT}/${extensionID}/Info.plist&quot;&#10;">
+               scriptText = "buildID=${PRODUCT_BUNDLE_IDENTIFIER}&#10;&#10;draftExtensionID=&quot;WordPressDraftActionExtension&quot;&#10;notificationContentExtensionID=&quot;WordPressNotificationContentExtension&quot;&#10;notificationServiceExtensionID=&quot;WordPressNotificationServiceExtension&quot;&#10;&#10;# WordPressDraftActionExtension&#10;/usr/libexec/PlistBuddy -c &quot;Set :CFBundleIdentifier $buildID.$draftExtensionID&quot; &quot;${SRCROOT}/${draftExtensionID}/Info.plist&quot;&#10;&#10;# WordPressNotificationContentExtension&#10;/usr/libexec/PlistBuddy -c &quot;Set :CFBundleIdentifier $buildID.$notificationContentExtensionID&quot; &quot;${SRCROOT}/${notificationContentExtensionID}/Info.plist&quot;&#10;&#10;# WordPressNotificationServiceExtension&#10;/usr/libexec/PlistBuddy -c &quot;Set :CFBundleIdentifier $buildID.$notificationServiceExtensionID&quot; &quot;${SRCROOT}/${notificationServiceExtensionID}/Info.plist&quot;&#10;"
+               shellToInvoke = "/bin/bash">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
