@@ -204,7 +204,7 @@
         <attribute name="commentsBlacklistKeys" optional="YES" attributeType="Transformable" valueTransformerName="SetValueTransformer" syncable="YES"/>
         <attribute name="commentsCloseAutomatically" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsCloseAutomaticallyAfterDays" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="commentsFromKnownUsersWhitelisted" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="commentsFromKnownUsersAllowlisted" optional="YES" attributeType="Boolean" usesScalarValueType="NO" elementID="commentsFromKnownUsersWhitelisted" syncable="YES"/>
         <attribute name="commentsMaximumLinks" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsModerationKeys" optional="YES" attributeType="Transformable" valueTransformerName="SetValueTransformer" syncable="YES"/>
         <attribute name="commentsPageSize" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
@@ -223,7 +223,7 @@
         <attribute name="iconMediaID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="jetpackBlockMaliciousLoginAttempts" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="jetpackLazyLoadImages" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="jetpackLoginWhiteListedIPAddresses" optional="YES" attributeType="Transformable" valueTransformerName="SetValueTransformer" syncable="YES"/>
+        <attribute name="jetpackLoginAllowListedIPAddresses" optional="YES" attributeType="Transformable" valueTransformerName="SetValueTransformer" elementID="jetpackLoginWhiteListedIPAddresses" syncable="YES"/>
         <attribute name="jetpackMonitorEmailNotifications" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="jetpackMonitorEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="jetpackMonitorPushNotifications" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
