@@ -7189,9 +7189,9 @@
 		FA7AA4A625BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackScanThreatDetailsViewController.xib; sourceTree = "<group>"; };
 		FA7F92B725E61C7E00502D2A /* ReaderTagsFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTagsFooter.swift; sourceTree = "<group>"; };
 		FA7F92C925E61C9300502D2A /* ReaderTagsFooter.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderTagsFooter.xib; sourceTree = "<group>"; };
-		FA8DF18F25FF1DAF00B82948 /* Jetpack-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Jetpack-Info.plist"; sourceTree = "<group>"; };
-		FA8DF19125FF1DD000B82948 /* Jetpack-Alpha-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Jetpack-Alpha-Info.plist"; sourceTree = "<group>"; };
-		FA8DF19225FF1DD000B82948 /* Jetpack-Internal-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Jetpack-Internal-Info.plist"; sourceTree = "<group>"; };
+		FA8DF18F25FF1DAF00B82948 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA8DF19125FF1DD000B82948 /* Info-Alpha.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Alpha.plist"; sourceTree = "<group>"; };
+		FA8DF19225FF1DD000B82948 /* Info-Internal.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Internal.plist"; sourceTree = "<group>"; };
 		FA8E1F7625EEFA7300063673 /* ReaderPostService+RelatedPosts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderPostService+RelatedPosts.swift"; sourceTree = "<group>"; };
 		FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCommentsServiceTests.swift; sourceTree = "<group>"; };
 		FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupCompleteViewController.swift; sourceTree = "<group>"; };
@@ -8018,6 +8018,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				45C73C23113C36F50024D0D2 /* Resources-iPad */,
 				E125F1E21E8E594C00320B67 /* Shared */,
+				FA44CF3225FF47CD00A97DFC /* Jetpack */,
 				74576673202B558C00F42E40 /* WordPressDraftActionExtension */,
 				733F36072126197800988727 /* WordPressNotificationContentExtension */,
 				7358E6B9210BD318002323EB /* WordPressNotificationServiceExtension */,
@@ -8038,9 +8039,6 @@
 				FF37F90822385C9F00AFA3DB /* RELEASE-NOTES.txt */,
 				B565D41C3DB27630CD503F9A /* Pods */,
 				F5E156B425DDD53A00EEEDFB /* Recovered References */,
-				FA8DF18F25FF1DAF00B82948 /* Jetpack-Info.plist */,
-				FA8DF19125FF1DD000B82948 /* Jetpack-Alpha-Info.plist */,
-				FA8DF19225FF1DD000B82948 /* Jetpack-Internal-Info.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -13515,6 +13513,24 @@
 				FA1CEAD325CA9C40005E7038 /* RestoreStatusFailedView.xib */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		FA44CF3225FF47CD00A97DFC /* Jetpack */ = {
+			isa = PBXGroup;
+			children = (
+				FA44CF3325FF483200A97DFC /* Supporting Files */,
+			);
+			path = Jetpack;
+			sourceTree = "<group>";
+		};
+		FA44CF3325FF483200A97DFC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FA8DF18F25FF1DAF00B82948 /* Info.plist */,
+				FA8DF19225FF1DD000B82948 /* Info-Internal.plist */,
+				FA8DF19125FF1DD000B82948 /* Info-Alpha.plist */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		FA4F65B52594589C00EAA9F5 /* Jetpack Restore */ = {
@@ -21250,7 +21266,7 @@
 					"$(inherited)",
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = "Jetpack-Info.plist";
+				INFOPLIST_FILE = Jetpack/Info.plist;
 				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -21318,7 +21334,7 @@
 					"$(inherited)",
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = "Jetpack-Info.plist";
+				INFOPLIST_FILE = Jetpack/Info.plist;
 				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -21384,7 +21400,7 @@
 					"$(inherited)",
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = "Jetpack-Internal-Info.plist";
+				INFOPLIST_FILE = "Jetpack/Info-Internal.plist";
 				INFOPLIST_PREFIX_HEADER = "InfoPlist-internal.h";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -21451,7 +21467,7 @@
 					"$(inherited)",
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = "Jetpack-Alpha-Info.plist";
+				INFOPLIST_FILE = "Jetpack/Info-Alpha.plist";
 				INFOPLIST_PREFIX_HEADER = "InfoPlist-alpha.h";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
