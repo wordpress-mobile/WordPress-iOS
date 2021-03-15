@@ -11822,9 +11822,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1D6058900D05DD3D006BFB54 /* WordPress */ = {
+		1D6058900D05DD3D006BFB54 /* Jetpack */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "WordPress" */;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Jetpack" */;
 			buildPhases = (
 				E00F6488DE2D86BDC84FBB0B /* [CP] Check Pods Manifest.lock */,
 				E1756E61169493AD00D9EC00 /* Generate API credentials */,
@@ -11853,7 +11853,7 @@
 				3F526C5B2538CF2B0069706C /* PBXTargetDependency */,
 				F1F163D525658B4D003DC13B /* PBXTargetDependency */,
 			);
-			name = WordPress;
+			name = Jetpack;
 			packageProductDependencies = (
 				24CE2EB0258D687A0000C297 /* WordPressFlux */,
 			);
@@ -12279,7 +12279,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1D6058900D05DD3D006BFB54 /* WordPress */,
+				1D6058900D05DD3D006BFB54 /* Jetpack */,
 				932225A61C7CE50300443B02 /* WordPressShareExtension */,
 				74576671202B558C00F42E40 /* WordPressDraftActionExtension */,
 				93E5283919A7741A003A1A9C /* WordPressTodayWidget */,
@@ -15628,7 +15628,7 @@
 		};
 		8511CFBC1C607A7000B7CEED /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
+			target = 1D6058900D05DD3D006BFB54 /* Jetpack */;
 			targetProxy = 8511CFBB1C607A7000B7CEED /* PBXContainerItemProxy */;
 		};
 		932225B01C7CE50300443B02 /* PBXTargetDependency */ = {
@@ -15658,7 +15658,7 @@
 		};
 		E16AB93F14D978520047A2E5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
+			target = 1D6058900D05DD3D006BFB54 /* Jetpack */;
 			targetProxy = E16AB93E14D978520047A2E5 /* PBXContainerItemProxy */;
 		};
 		F1F163D525658B4D003DC13B /* PBXTargetDependency */ = {
@@ -15668,7 +15668,7 @@
 		};
 		FF2716951CAAC87B0006E2D4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
+			target = 1D6058900D05DD3D006BFB54 /* Jetpack */;
 			targetProxy = FF2716941CAAC87B0006E2D4 /* PBXContainerItemProxy */;
 		};
 		FFC3F6FC1B0DBF7200EFC359 /* PBXTargetDependency */ = {
@@ -16000,7 +16000,7 @@
 					"$(inherited)",
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = Jetpack/Info.plist;
 				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -16067,7 +16067,7 @@
 					"$(inherited)",
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = Jetpack/Info.plist;
 				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -17203,7 +17203,7 @@
 					"$(inherited)",
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = "WordPress-Alpha-Info.plist";
+				INFOPLIST_FILE = "Jetpack/Alpha-Info.plist";
 				INFOPLIST_PREFIX_HEADER = "InfoPlist-alpha.h";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -17707,7 +17707,7 @@
 					"$(inherited)",
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = "WordPress-Internal-Info.plist";
+				INFOPLIST_FILE = "Jetpack/Internal-Info.plist";
 				INFOPLIST_PREFIX_HEADER = "InfoPlist-internal.h";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -19039,7 +19039,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "WordPress" */ = {
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Jetpack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
