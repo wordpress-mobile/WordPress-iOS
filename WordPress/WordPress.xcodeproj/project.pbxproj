@@ -4095,6 +4095,9 @@
 		FA1CEAC225CA9C2A005E7038 /* RestoreStatusFailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1CEAC125CA9C2A005E7038 /* RestoreStatusFailedView.swift */; };
 		FA1CEAD425CA9C40005E7038 /* RestoreStatusFailedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1CEAD325CA9C40005E7038 /* RestoreStatusFailedView.xib */; };
 		FA3536F525B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */; };
+		FA44CE5425FF352B00A97DFC /* WordPressAllTimeWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 98D31B8E2396ED7E009CFF43 /* WordPressAllTimeWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FA44CE6825FF353100A97DFC /* WordPressThisWeekWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 98A3C2EF239997DA0048D38D /* WordPressThisWeekWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FA44CE6B25FF353400A97DFC /* WordPressTodayWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 93E5283A19A7741A003A1A9C /* WordPressTodayWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
 		FA4F65A72594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */; };
@@ -4355,6 +4358,27 @@
 			remoteGlobalIDString = F1F163BD25658B4D003DC13B;
 			remoteInfo = WordPressIntents;
 		};
+		FA44CE5525FF352B00A97DFC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 98D31B8D2396ED7E009CFF43;
+			remoteInfo = WordPressAllTimeWidget;
+		};
+		FA44CE6925FF353100A97DFC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 98A3C2EE239997DA0048D38D;
+			remoteInfo = WordPressThisWeekWidget;
+		};
+		FA44CE6C25FF353400A97DFC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 93E5283919A7741A003A1A9C;
+			remoteInfo = WordPressTodayWidget;
+		};
 		FA8DF1FE25FF241500B82948 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -4413,6 +4437,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				FA44CE6825FF353100A97DFC /* WordPressThisWeekWidget.appex in Embed App Extensions */,
+				FA44CE5425FF352B00A97DFC /* WordPressAllTimeWidget.appex in Embed App Extensions */,
+				FA44CE6B25FF353400A97DFC /* WordPressTodayWidget.appex in Embed App Extensions */,
 				FA8DF30F25FF303800B82948 /* WordPressNotificationServiceExtension.appex in Embed App Extensions */,
 				FA8DF1FD25FF241500B82948 /* WordPressDraftActionExtension.appex in Embed App Extensions */,
 				FA8DF33725FF314500B82948 /* WordPressShareExtension.appex in Embed App Extensions */,
@@ -13842,6 +13869,9 @@
 				FA8DF31125FF303900B82948 /* PBXTargetDependency */,
 				FA8DF32525FF312D00B82948 /* PBXTargetDependency */,
 				FA8DF33925FF314500B82948 /* PBXTargetDependency */,
+				FA44CE5625FF352B00A97DFC /* PBXTargetDependency */,
+				FA44CE6A25FF353100A97DFC /* PBXTargetDependency */,
+				FA44CE6D25FF353400A97DFC /* PBXTargetDependency */,
 			);
 			name = Jetpack;
 			packageProductDependencies = (
@@ -19467,6 +19497,21 @@
 			isa = PBXTargetDependency;
 			target = F1F163BD25658B4D003DC13B /* WordPressIntents */;
 			targetProxy = F1F163D425658B4D003DC13B /* PBXContainerItemProxy */;
+		};
+		FA44CE5625FF352B00A97DFC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 98D31B8D2396ED7E009CFF43 /* WordPressAllTimeWidget */;
+			targetProxy = FA44CE5525FF352B00A97DFC /* PBXContainerItemProxy */;
+		};
+		FA44CE6A25FF353100A97DFC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 98A3C2EE239997DA0048D38D /* WordPressThisWeekWidget */;
+			targetProxy = FA44CE6925FF353100A97DFC /* PBXContainerItemProxy */;
+		};
+		FA44CE6D25FF353400A97DFC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 93E5283919A7741A003A1A9C /* WordPressTodayWidget */;
+			targetProxy = FA44CE6C25FF353400A97DFC /* PBXContainerItemProxy */;
 		};
 		FA8DF1FF25FF241500B82948 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
