@@ -175,6 +175,10 @@ static NSInteger HideSearchMinSites = 3;
 {
     [super viewDidAppear:animated];
     [self createUserActivity];
+
+    #if JETPACK
+    [self displayNoticeWithTitle:@"Welcome to the Jetpack app!" message:nil];
+    #endif
 }
 
 - (void)viewWillDisappear:(BOOL)animated
