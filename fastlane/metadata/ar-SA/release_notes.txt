@@ -1,1 +1,0 @@
-The latest updates to the WordPress app are here. A new Story post type helps you post images and videos with ease, and This Week Stats can now be displayed on your home screen. We improved the functionality of published homepages, ensuring changes to them won’t break your site. Plus, we added support for setting the Cover block focal point.

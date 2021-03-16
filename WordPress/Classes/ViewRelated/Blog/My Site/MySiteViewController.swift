@@ -2,6 +2,8 @@ import WordPressAuthenticator
 
 class MySiteViewController: UIViewController, NoResultsViewHost {
 
+    private let meScenePresenter: ScenePresenter
+
     // MARK: - Initializers
 
     init(meScenePresenter: ScenePresenter) {
@@ -57,9 +59,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if Feature.enabled(.newNavBarAppearance) {
-            workaroundLargeTitleCollapseBug()
-        }
+        workaroundLargeTitleCollapseBug()
     }
 
     // MARK: - Navigation Item
@@ -206,6 +206,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         blogDetailsViewController.view.translatesAutoresizingMaskIntoConstraints = false
         view.pinSubviewToAllEdges(blogDetailsViewController.view)
+
+        blogDetailsViewController.showInitialDetailsForBlog()
     }
 
     private func blogDetailsViewController(for blog: Blog) -> BlogDetailsViewController {
@@ -227,10 +229,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     // MARK: - Model Changes
-
-    private func subscribeToNotifications() {
-        subscribeToModelChanges()
-    }
 
     private func subscribeToModelChanges() {
         NotificationCenter.default.addObserver(
@@ -303,8 +301,16 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         self.blog = blog
     }
+}
 
-    // MARK: - Me Bar Button
+extension MySiteViewController: WPSplitViewControllerDetailProvider {
+    func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
+        guard let blogDetailsViewController = blogDetailsViewController as? WPSplitViewControllerDetailProvider else {
+            let emptyViewController = UIViewController()
+            WPStyleGuide.configureColors(view: emptyViewController.view, tableView: nil)
+            return emptyViewController
+        }
 
-    private let meScenePresenter: ScenePresenter
+        return blogDetailsViewController.initialDetailViewControllerForSplitView(splitView)
+    }
 }

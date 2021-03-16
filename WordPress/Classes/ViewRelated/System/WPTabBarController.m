@@ -175,6 +175,7 @@ static WPTabBarController *shared = nil;
     if (!_readerNavigationController) {
         _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.makeReaderTabViewController];
         _readerNavigationController.navigationBar.translucent = NO;
+        _readerNavigationController.view.backgroundColor = [UIColor murielBasicBackground];
 
         UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
         _readerNavigationController.tabBarItem.image = readerTabBarImage;
@@ -424,11 +425,13 @@ static WPTabBarController *shared = nil;
     // If we're selecting a new tab...
     if (selectedIndex != tabBarController.selectedIndex) {
         switch (selectedIndex) {
-            case WPTabMySites:
-                if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
-                    self.mySitesCoordinator.blogListViewController.canBypassBlogList = true;
+            case WPTabMySites: {
+                if (![Feature enabled:FeatureFlagNewNavBarAppearance]) {
+                    // We only need to bypass the blog list if we're using the old presentation style
+                    [self bypassBlogListViewControllerIfNecessary];
                 }
                 break;
+            }
             case WPTabReader: {
                 [self alertQuickStartThatReaderWasTapped];
                 break;
@@ -450,6 +453,21 @@ static WPTabBarController *shared = nil;
     }
 
     return YES;
+}
+
+- (void)bypassBlogListViewControllerIfNecessary
+{
+    // If the user has one blog then we don't want to present them with the main "My Sites"
+    // screen where they can see all their blogs. In the case of only one blog just show
+    // the main blog details screen
+    UINavigationController *navController = (UINavigationController *)[self.mySitesCoordinator.splitViewController.viewControllers firstObject];
+    BlogListViewController *blogListViewController = (BlogListViewController *)[navController.viewControllers firstObject];
+
+    if ([blogListViewController isKindOfClass:[BlogListViewController class]] && [blogListViewController shouldBypassBlogListViewController]) {
+        if ([navController.visibleViewController isKindOfClass:[blogListViewController class]]) {
+            [blogListViewController bypassBlogListViewController];
+        }
+    }
 }
 
 - (void)showNotificationsTabForNoteWithID:(NSString *)notificationID

@@ -23,7 +23,7 @@ class MySitesCoordinator: NSObject {
 
     // MARK: - Root View Controller
 
-    private func rootContentViewController() -> UIViewController {
+    private var rootContentViewController: UIViewController {
         if Feature.enabled(.newNavBarAppearance) {
             return mySiteViewController
         } else {
@@ -31,12 +31,6 @@ class MySitesCoordinator: NSObject {
         }
     }
 
-    func showRootViewController() {
-        becomeActiveTab()
-
-        navigationController.popToRootViewController(animated: false)
-    }
-    
     // MARK: - VCs
 
     /// The view controller that should be presented by the tab bar controller.
@@ -53,7 +47,7 @@ class MySitesCoordinator: NSObject {
         splitViewController.restorationIdentifier = MySitesCoordinator.splitViewControllerRestorationID
         splitViewController.presentsWithGesture = false
         splitViewController.setInitialPrimaryViewController(navigationController)
-        splitViewController.dimsDetailViewControllerAutomatically = true
+        splitViewController.dimsDetailViewControllerAutomatically = !FeatureFlag.newNavBarAppearance.enabled
         splitViewController.tabBarItem = navigationController.tabBarItem
 
         if Feature.enabled(.newNavBarAppearance) {
@@ -67,7 +61,7 @@ class MySitesCoordinator: NSObject {
 
     @objc
     lazy var navigationController: UINavigationController = {
-        let navigationController = UINavigationController(rootViewController: rootContentViewController())
+        let navigationController = UINavigationController(rootViewController: rootContentViewController)
 
         if Feature.enabled(.newNavBarAppearance) {
             navigationController.navigationBar.prefersLargeTitles = true
@@ -83,10 +77,12 @@ class MySitesCoordinator: NSObject {
         navigationController.tabBarItem.accessibilityIdentifier = "mySitesTabButton"
         navigationController.tabBarItem.title = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
 
-        let context = ContextManager.shared.mainContext
-        let service = BlogService(managedObjectContext: context)
-        if let blogToOpen = service.lastUsedOrFirstBlog() {
-            blogListViewController.selectedBlog = blogToOpen
+        if !FeatureFlag.newNavBarAppearance.enabled {
+            let context = ContextManager.shared.mainContext
+            let service = BlogService(managedObjectContext: context)
+            if let blogToOpen = service.lastUsedOrFirstBlog() {
+                blogListViewController.selectedBlog = blogToOpen
+            }
         }
 
         return navigationController
@@ -97,26 +93,26 @@ class MySitesCoordinator: NSObject {
         BlogListViewController(meScenePresenter: self.meScenePresenter)
     }()
     
-    private lazy var mySiteViewController = {
+    private lazy var mySiteViewController: MySiteViewController = {
         MySiteViewController(meScenePresenter: self.meScenePresenter)
     }()
 
     // MARK: - Navigation
 
-    func showMySites() {
+    func showRootViewController() {
         becomeActiveTab()
 
-        navigationController.viewControllers = [blogListViewController]
+        navigationController.viewControllers = [rootContentViewController]
     }
 
     // MARK: - Sites List
 
-    func showSitesList() {
+    private func showSitesList() {
         showRootViewController()
 
         if Feature.enabled(.newNavBarAppearance) {
             blogListViewController.modalPresentationStyle = .pageSheet
-            mySiteViewController.present(blogListViewController, animated: false, completion: nil)
+            mySiteViewController.present(blogListViewController, animated: true)
         }
     }
 

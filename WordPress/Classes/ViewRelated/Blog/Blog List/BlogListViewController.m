@@ -37,6 +37,10 @@ static NSInteger HideSearchMinSites = 3;
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        return nil;
+    }
+
     return [WPTabBarController sharedInstance].mySitesCoordinator.blogListViewController;
 }
 
@@ -68,10 +72,15 @@ static NSInteger HideSearchMinSites = 3;
 - (void)configureDataSource
 {
     self.dataSource = [BlogListDataSource new];
+    
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        self.dataSource.shouldShowDisclosureIndicator = NO;
+    }
+    
     __weak __typeof(self) weakSelf = self;
     
     if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
-        self.dataSource.showsDisclosureIndicator = NO;
+        self.dataSource.shouldShowDisclosureIndicator = NO;
     }
     
     self.dataSource.visibilityChanged = ^(Blog *blog, BOOL visible) {
@@ -483,6 +492,11 @@ static NSInteger HideSearchMinSites = 3;
 
 - (BOOL)shouldBypassBlogListViewController
 {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        // We should never bypass the list when we're using the new navigation bar
+        return false;
+    }
+
     return self.dataSource.displayedBlogsCount == 1;
 }
 

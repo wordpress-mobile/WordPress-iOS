@@ -84,7 +84,7 @@ class BlogListDataSource: NSObject {
 
     /// If this is set to `false`, the rows will never show the disclosure indicator.
     ///
-    @objc var showsDisclosureIndicator = true
+    @objc var shouldShowDisclosureIndicator = true
 
     // MARK: - Inputs
 
@@ -342,7 +342,7 @@ extension BlogListDataSource: UITableViewDataSource {
             case .loggedIn:
                 cell.accessoryType = .none
             default:
-                cell.accessoryType = showsDisclosureIndicator ? .none : .disclosureIndicator
+                cell.accessoryType = shouldShowDisclosureIndicator ? .disclosureIndicator : .none
             }
         }
 

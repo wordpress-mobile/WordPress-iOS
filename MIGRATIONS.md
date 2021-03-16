@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 115
+
+@mindgraffiti 2021-03-10
+
+- Added `blockEmailNotifications` is attribute to `AccountSettings` entity.
+
 ## WordPress 114
 
 @aerych 2021-02-25
