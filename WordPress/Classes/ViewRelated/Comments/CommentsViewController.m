@@ -571,6 +571,9 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self configureNoResults:self.noConnectionViewController forNoConnection:TRUE];
     self.noConnectionViewController.delegate = self;
 
+    // Because the table shows cached results from the last successful filter,
+    // some comments can appear below the No Connection view.
+    // So hide the table when showing No Connection.
     [self.tableView setHidden:TRUE];
     [self addChildViewController:self.noConnectionViewController];
     [self.view insertSubview:self.noConnectionViewController.view belowSubview:self.filterTabBar];
