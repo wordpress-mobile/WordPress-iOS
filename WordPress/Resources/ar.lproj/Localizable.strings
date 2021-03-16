@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-04 15:54:08+0000 */
+/* Translation-Revision-Date: 2021-03-02 21:29:21+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -9,23 +9,23 @@
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nللتأكيد، يرجى إعادة إدخال عنوان موقعك قبل عملية حذفه.\n";
 
+/* No comment provided by engineer. */
+" audio file" = "ملف صوت";
+
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "صور \"بطيئة التحميل\"";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "زر \"المزيد\"";
 
-/* No comment provided by engineer. */
+/* Description for the restore action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point for your restore." = "%1$@ هي النقطة المُحدَّدة لاستعادة موقعك.";
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point to create a downloadable backup." = "تمثِّل ⁦%1$@⁩ النقطة المُحدَّدة لإنشاء نسخة احتياطية قابلة للتنزيل.";
 
-/* 'AUTHOR on POST TITLE' in a comment list */
+/* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@ في %2$@";
-
-/* 'AUTHOR on POST TITLE: COMMENT' in a comment list */
-"%1$@ on %2$@: %3$@" = "%1$@ في %2$@: %3$@";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "تم استكمال %1$d من %2$d";
@@ -163,6 +163,9 @@
 /* Number of posts */
 "%d posts" = "%d مقالات";
 
+/* Message for a notice informing the user their scan completed and %d threats were found */
+"%d potential threats found" = "%d potential threats found";
+
 /* Age between dates over one year. */
 "%d years" = "%d من السنوات";
 
@@ -237,6 +240,9 @@
 /* Alert displayed to the user when a single media item attached to a post has failed to upload. */
 "1 post, 1 file not uploaded" = "لم يتم رفع مقالة واحدة وملف واحد";
 
+/* Message for a notice informing the user their scan completed and 1 threat was found */
+"1 potential threat found" = "1 potential threat found";
+
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
 
@@ -284,6 +290,9 @@
 
 /* Label for active Theme browser cell */
 "ACTIVE" = "مفعّل";
+
+/* No comment provided by engineer. */
+"ADD AUDIO" = "أضف ملف صوتي";
 
 /* No comment provided by engineer. */
 "ADD BLOCK HERE" = "إضافة مكوّن هنا";
@@ -335,6 +344,7 @@
 "Activation Error" = "خطأ في التفعيل";
 
 /* Describes a status of a plugin
+   Label for active Theme
    Whether a plugin is active on a site */
 "Active" = "نشط";
 
@@ -507,6 +517,7 @@
 
 /* Autoapprove every comment
    Browse all themes selection title
+   Displays all of the historical threats
    Displays all of the Notifications, unfiltered */
 "All" = "الكل";
 
@@ -536,6 +547,9 @@
 
 /* Jetpack Settings: Allow WordPress.com login */
 "Allow WordPress.com login" = "السماح بتسجيل الدخول إلى WordPress.com";
+
+/* Message on camera permissions screen to explain why the app needs camera and microphone permissions */
+"Allow access so you can start taking photos and videos." = "Allow access so you can start taking photos and videos.";
 
 /* A short description of the comment like sharing setting. */
 "Allow all comments to be Liked by you and your readers" = "إتاحة الإعجاب بكل التعليقات بواسطتك أنت والقراء.";
@@ -567,6 +581,9 @@
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "يلزم وجود اتصال بالإنترنت نشط";
 
+/* Error message shown when trying to view the scan status and there is no internet connection. */
+"An active internet connection is required to view Jetpack Scan" = "هناك حاجة إلى وجود اتصال نشط بالإنترنت لعرض فحص Jetpack";
+
 /* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
 "An active internet connection is required to view activities" = "هناك حاجة إلى وجود اتصال نشط بالإنترنت لعرض الأنشطة";
 
@@ -579,6 +596,9 @@
 
 /* Error message shown when trying to view Stats and there is no internet connection. */
 "An active internet connection is required to view stats" = "يلزم وجود اتصال بالإنترنت نشط لتتمكن من عرض الإحصاءات";
+
+/* Error message shown when trying to view the Scan History feature and there is no internet connection. */
+"An active internet connection is required to view the history" = "هناك حاجة إلى وجود اتصال نشط بالإنترنت لعرض السجلّ";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "حدث خطأ أثناء إنشاء القائمة.";
@@ -702,7 +722,7 @@
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "هل تريد بالتأكيد استعادة موقعك مرة أخرى إلى %1$@؟ سيؤدي هذا الإجراء إلى حذف كل المحتوى والخيارات التي تم إنشاؤها أو تم تغييرها من ذلك الحين.";
 
 /* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
-"Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "هل أنت متأكد من رغبتك في استرجاع موقعك مرة أخرى إلى %@؟\nسيؤدي هذا الإجراء إلى حذف كل المحتوى والخيارات التي تم إنشاؤها أو تغييرها من ذلك الحين.";
+"Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost." = "هل تريد بالتأكيد استعادة موقعك مرة أخرى حتى %@؟\nسيتم فقدان أي شيء قمت بتغييره من ذلك الحين.";
 
 /* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
 "Are you sure you want to save as draft?" = "هل تريد بالتأكيد الحفظ كمسودة؟";
@@ -730,6 +750,15 @@
 
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "إرفاق ملف كرابط";
+
+/* No comment provided by engineer. */
+"Audio Player" = "مشغل الصوت";
+
+/* translators: accessibility text. %s: Audio caption. */
+"Audio caption. %s" = "تسمية الملف الصوتي. %s";
+
+/* translators: accessibility text. Empty Audio caption. */
+"Audio caption. Empty" = "تسمية الملف الصوتي. فارغة";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "الصوت، %@";
@@ -804,14 +833,19 @@
    Spoken accessibility label */
 "Back" = "رجوع";
 
+/* Title of the cell displaying status of a backup in progress */
+"Backing up site" = "نسخ الموقع احتياطيًا";
+
 /* Noun. Links to a blog's Jetpack Backups screen.
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
-   Title for the Jetpack's backup list */
+   Title for Jetpack Backup Update Status Failed screen
+   Title for the Jetpack's backup list
+   Title of section showing backup status */
 "Backup" = "النسخ الاحتياطي";
 
 /* Title for error displayed when preparing a backup fails. */
-"Backup failed." = "فشل النسخ الاحتياطي.";
+"Backup failed" = "فشل النسخ الاحتياطي";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "رسم بياني شريطي يوضح التعليقات للفترة المحددة.";
@@ -858,9 +892,6 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "حظر الاقتباس";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block This Site" = "حظر هذا الموقع";
-
 /* translators: displayed right after the block is copied. */
 "Block copied" = "المكوِّن الذي تم نسخه";
 
@@ -884,6 +915,12 @@
 
 /* No comment provided by engineer. */
 "Block settings" = "إعدادات المكوِّن";
+
+/* The title of a button that triggers blocking a site from the user's reader. */
+"Block this site" = "حظر هذا الموقع";
+
+/* Notice title when blocking a site succeeds. */
+"Blocked site" = "Blocked site";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "مدونة";
@@ -983,6 +1020,7 @@
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
+   Cancel button for alert
    Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
@@ -1082,6 +1120,9 @@
 /* Button title to edit visibility of sites. */
 "Change Visibility" = "تغيير إمكانية الرؤية";
 
+/* No comment provided by engineer. */
+"Change block position" = "تغيير موضع المكوّن";
+
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "فشل التغيير";
 
@@ -1144,10 +1185,13 @@
 /* Title for the button to progress with the selected site homepage design */
 "Choose" = "اختيار";
 
+/* Title for selecting a new homepage */
+"Choose Homepage" = "Choose Homepage";
+
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "اختيار الصفحات";
 
-/* Title for selecting a new home page */
+/* Title for selecting a new posts page */
 "Choose Posts Page" = "اختيار صفحة المقالات";
 
 /* Title for the screen to pick a template for a page */
@@ -1167,6 +1211,9 @@
 
 /* Label for Publish time picker */
 "Choose a time" = "اختيار وقت";
+
+/* No comment provided by engineer. */
+"Choose audio" = "اختيار الصوت";
 
 /* Title to choose date range in a calendar */
 "Choose date range" = "تحديد نطاق التاريخ";
@@ -1383,14 +1430,12 @@
 "Configure" = "إعدادات";
 
 /* Confirm
+   Confirm Rewind button title
    Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "تأكيد";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "تأكيد حذف الموقع";
-
-/* Confirm Rewind button title */
-"Confirm Rewind" = "تأكيد الإرجاع";
 
 /* Instructional text about the Sharing feature. */
 "Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "قم بتأكيد أن هذا هو الحساب الذي ترغب في اعتماده. لاحظ أن مقالاتك ستتم مشاركتها مع هذا الحساب تلقائيًا.";
@@ -1508,10 +1553,6 @@
 /* Button title. Tapping begins log in using Google. */
 "Continue with Google" = "المتابعة باستخدام Google";
 
-/* Button title. Takes the user to the login by email flow.
-   Button title. Tapping begins our normal log in process. */
-"Continue with WordPress.com" = "المتابعة باستخدام WordPress.com";
-
 /* Title of a Quick Start Tour */
 "Continue with site setup" = "الاستمرار في إعداد الموقع";
 
@@ -1566,8 +1607,11 @@
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "تعذر تبديل المتابعة: سمة عنوان URL للمدونة مفقودة";
 
-/* An error description explaining that Seen could not be toggled due to a missing feedItemID attribute. */
-"Could not toggle Seen: missing feedItemID attribute." = "يتعذر التبديل إلى تم الاطلاع عليها: سمة feedItemID مفقودة.";
+/* An error description explaining that Seen could not be toggled due to a missing feedItemID. */
+"Could not toggle Seen: missing feedItemID." = "يتعذر التبديل إلى تم الاطلاع عليها: سمة feedItemID مفقودة.";
+
+/* An error description explaining that Seen could not be toggled due to a missing postID. */
+"Could not toggle Seen: missing postID." = "يتعذر تبديل الحالة المرئية: معرِّف المقالة مفقود.";
 
 /* Title of a prompt. */
 "Could not unfollow site" = "تعذر إلغاء متابعة الموقع";
@@ -1702,6 +1746,9 @@
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Creating dashboard" = "إنشاء لوحة التحكم";
 
+/* Description of the cell displaying status of a backup in progress */
+"Creating downloadable backup" = "جاري إنشاء نسخة احتياطية قابلة للتنزيل";
+
 /* No comment provided by engineer. */
 "Current" = "الحالي";
 
@@ -1803,8 +1850,7 @@
 "December 17, 2017" = "17 ديسمبر، 2017";
 
 /* Description of the default paragraph formatting style in the editor.
-   Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.
-   Title for the default web preview */
+   Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "الافتراضي";
 
 /* Label for selecting the default category of a post
@@ -1887,6 +1933,9 @@
    Theme Details action title */
 "Details" = "تفاصيل";
 
+/* Instructions after a Magic Link was sent, but email is incorrect. */
+"Didn't mean to create a new account? Go back to re-enter your email address." = "ألم تقصد إنشاء حساب جديد؟ العودة للخلف لإعادة إدخال عنوان بريدك الإلكتروني.";
+
 /* Label for the dimensions in pixels for a media asset (image / video) */
 "Dimensions" = "الأبعاد";
 
@@ -1923,9 +1972,6 @@
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "يعني قطع اتصال هذا الحساب أنه لن تتم مشاركة المقالات المنشورة تلقائيًا على %@";
 
-/* Discover tab name */
-"Discover" = "اكتشاف";
-
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "اكتشاف المواقع";
 
@@ -1941,6 +1987,7 @@
    Action to show on alert when view asset fails.
    Customize Insights button title
    Dismiss a view. Verb
+   Dismiss button title
    Dismiss button title.
    Dismiss the AlertView
    Share extension error dialog cancel button label.
@@ -2000,6 +2047,7 @@
    Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
+   Title for button that will dismiss this view
    Title for the button that will dismiss this view.
    Title of the Done button on the me page */
 "Done" = "تمّ";
@@ -2026,6 +2074,9 @@
 "Double tap to go to color settings" = "الضغط ضغطًا مزدوجًا للانتقال إلى إعدادات الألوان";
 
 /* No comment provided by engineer. */
+"Double tap to listen the audio file" = "أنقر نقرًا مزدوجًا للاستماع إلى ملف الصوت";
+
+/* No comment provided by engineer. */
 "Double tap to move the block down" = "الضغط المزدوج لنقل المكوِّن إلى أسفل";
 
 /* No comment provided by engineer. */
@@ -2038,7 +2089,13 @@
 "Double tap to move the block up" = "الضغط المزدوج لنقل المكوِّن إلى أعلى";
 
 /* No comment provided by engineer. */
+"Double tap to open Action Sheet to edit, replace, or clear the image" = "Double tap to open Action Sheet to edit, replace, or clear the image";
+
+/* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "النقر المزدوج لفتح ورقة الإجراءات التي تحتوي على خيارات متوافرة";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Double tap to open Bottom Sheet to edit, replace, or clear the image";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet with available options" = "النقر المزدوج لفتح الورقة السفلية التي تحتوي على خيارات متوافرة";
@@ -2053,6 +2110,9 @@
 "Double tap to select a video" = "الضغط المزدوج لتحديد مقطع الفيديو";
 
 /* No comment provided by engineer. */
+"Double tap to select an audio file" = "الضغط المزدوج لتحديد ملف صوت";
+
+/* No comment provided by engineer. */
 "Double tap to select an image" = "الضغط المزدوج لتحديد صورة";
 
 /* translators: accessibility text (hint for selecting option) */
@@ -2064,10 +2124,14 @@
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "الضغط المزدوج للتراجع عن آخر تغيير";
 
+/* Download button title */
+"Download" = "تنزيل";
+
 /* Title for the Jetpack Download Backup Site Screen */
 "Download Backup" = "تنزيل النسخة الاحتياطية";
 
-/* Title displayed for download backup action. */
+/* Title displayed for download backup action.
+   Title for button allowing user to backup their Jetpack site */
 "Download backup" = "تنزيل النسخة الاحتياطية";
 
 /* Title for the button that will download the backup file. */
@@ -2130,6 +2194,9 @@
 
 /* No comment provided by engineer. */
 "Edit file" = "تحرير الملف";
+
+/* No comment provided by engineer. */
+"Edit focal point" = "Edit focal point";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "تحرير المقالات والصفحات الجديدة باستخدام مُحرّر المكوّنات.";
@@ -2203,7 +2270,7 @@
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "عنوان URL فارغ";
 
-/* Button title about the enable notifications action */
+/* Button title for the enable site notifications action. */
 "Enable" = "تفعيل";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
@@ -2215,7 +2282,7 @@
 /* Title of a Quick Start Tour */
 "Enable post sharing" = "تمكين مشاركة المقالة";
 
-/* Message informing the user about the enable notifications action */
+/* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "هل ترغب في تمكين التنبيهات في الموقع؟";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
@@ -2274,9 +2341,6 @@
    Generic popup title for any type of error. */
 "Error" = "خطأ";
 
-/* Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader. */
-"Error Blocking Site" = "خطأ في حظر الموقع";
-
 /* Menus error title for a menu that received an error while trying to delete it. */
 "Error Deleting Menu" = "حدث خطأ أثناء حذف القائمة";
 
@@ -2304,6 +2368,12 @@
 
 /* There was an error enabling autoupdates for a plugin, placeholder is the plugin name */
 "Error enabling autoupdates for %@." = "حدث خطأ أثناء تمكين التحديثات التلقائية لـ %@.";
+
+/* Error displayed when fixing a threat fails. */
+"Error fixing threat. Please contact our support." = "خطأ في معالجة التهديد. يرجى الاتصال بالدعم الفني الخاص بنا.";
+
+/* Error displayed when ignoring a threat fails. */
+"Error ignoring threat. Please contact our support." = "Error ignoring threat. يُرجى الاتصال بالدعم الخاص بنا.";
 
 /* Notice displayed after attempt to install a plugin fails. */
 "Error installing %@." = "خطأ في تثبيت %@.";
@@ -2431,6 +2501,9 @@
    The action failed */
 "Failed" = "فشل";
 
+/* No comment provided by engineer. */
+"Failed to insert audio file. Please tap for options." = "فشل إدراج الملف الصوتي. يرجى النقر على الخيارات.";
+
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "فشل في إدراج وسائط.\nيرجى الضغط على الخيارات.";
 
@@ -2538,18 +2611,27 @@
 /* Button title, confirm fixing all threats */
 "Fix all threats" = "معالجة كل التهديدات";
 
+/* Title for button that will fix the threat */
+"Fix threat" = "معالجة التهديد";
+
+/* Displays the fixed threats */
+"Fixed" = "تمت المعالجة";
+
+/* Subtitle displayed while the server is fixing threats */
+"Fixing Threats" = "جاري معالجة التهديدات";
+
 /* Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "تابع";
-
-/* Verb. An option to follow a site. */
-"Follow Site" = "متابعة الموقع";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "تابع المحادثة عبر البريد الإلكتروني";
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "متابعة مواقع أخرى";
+
+/* Verb. An option to follow a site. */
+"Follow site" = "متابعة الموقع";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "تابع مواقعك المفضَّلة واكتشف مواضيع جديدة.";
@@ -2583,8 +2665,8 @@
    Verb. Button title. The user is following a blog. */
 "Following" = "المتابعة";
 
-/* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
-"Following %@" = "متابعة %@";
+/* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
+"Following %1$@" = "متابعة %1$@";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Following conversation by email" = "متابعة المحادثة عبر البريد الإلكتروني";
@@ -2828,8 +2910,15 @@
 "Hide keyboard" = "إخفاء لوحة المفاتيح";
 
 /* Displays the History screen from the editor's alert sheet
+   Title of a navigation button that opens the scan history view
    Title of the post history screen */
 "History" = "السّجل";
+
+/* Message title displayed when we fail to fetch the status of the backup in progress. */
+"Hmm, we couldn’t find your backup status" = "ممم، يتعذر علينا العثور على حالة النسخة الاحتياطية الخاصة بك";
+
+/* Message title displayed when we fail to fetch the status of the restore in progress. */
+"Hmm, we couldn’t find your restore status" = "ممم، يتعذر علينا العثور على حالة الاستعادة الخاصة بك";
 
 /* Moderation Keys Title
    Settings: Comments Moderation */
@@ -2851,8 +2940,14 @@
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "مرحى!\nعلى وشك الانتهاء";
 
+/* Title for the fix section in Threat Details: Threat is fixed */
+"How did Jetpack fix it?" = "كيف أصلح Jetpack هذا الأمر؟";
+
 /* How to create story description */
 "How to create a story post" = "كيفية إنشاء مقالة قصة";
+
+/* Title for the fix section in Threat Details */
+"How will we fix it?" = "كيف سنقوم بإصلاحه؟";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "يعجبني هذا";
@@ -2886,6 +2981,12 @@
 
 /* Ignore action. Verb */
 "Ignore" = "تجاهل";
+
+/* Title for button that will ignore the threat */
+"Ignore threat" = "تجاهل التهديد";
+
+/* Displays the ignored threats */
+"Ignored" = "تم التجاهل";
 
 /* Hint for image alt on image settings. */
 "Image Alt" = "بديل الصورة";
@@ -3074,14 +3175,15 @@
 /* Description that explains that we are unable to auto fix the threat */
 "Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site." = "لا يمكن لـ Jetpack Scan معالجة هذا التهديد تلقائيًا. نقترح عليك إصلاحه يدويًا: تأكد من تحديث ووردبريس، والقالب المستخدم، وجميع الإضافات الخاصة بك، وقم بإزالة الكود أو القالب أو الإضافة المزعجة من موقعك.";
 
-/* Description for a label when the scan has failed */
+/* Description for a label when the scan has failed
+   Error message shown when the scan start has failed. */
 "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "يتعذر على \"فحص Jetpack\" إكمال فحص موقعك. يرجى التحقُّق لمعرفة ما إذا كان موقعك معطَّلاً أم لا، وإذا لم يكن كذلك، فحاول مرة أخرى. إذا كان الأمر كذلك، أو إذا كان \"فحص Jetpack\" لا يزال يواجه مشكلات، فاتصل بفريق الدعم لدينا.";
 
 /* Description for a label when there are threats on the site, displays the number of threats, and the site's title */
-"Jetpack Scan found %1$d potential threats on %2$@. Please review each threat and take action." = "عثر Jetpack Scan على ⁦%1$d⁩ من التهديدات المحتملة في %2$@. يرجى مراجعة كل التهديدات واتخاذ الإجراءات.";
+"Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "عثر Jetpack Scan على ⁦%1$d⁩ من التهديدات المحتملة من خلال %2$@. يرجى مراجعتها أدناه واتخاذ الإجراءات أو الضغط على زر إصلاح الكل. نحن هنا لتقديم المساعدة إذا كنت بحاجة إلينا.";
 
 /* Description for a label when there is a single threat on the site, displays the site's title */
-"Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action." = "عثر Jetpack Scan على تهديد محتمل واحد في %1$@. يرجى مراجعة كل التهديدات واتخاذ الإجراءات.";
+"Jetpack Scan found 1 potential threat with %1$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "عثر Jetpack Scan على تهديد محتمل واحد من خلال %1$@. يرجى مراجعته أدناه واتخاذ الإجراءات أو الضغط على زر إصلاح الكل. نحن هنا لتقديم المساعدة إذا كنت بحاجة إلينا.";
 
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will delete the affected file or directory." = "سيحذف \"فحص Jetpack\" الملف أو الدليل المتضرر.";
@@ -3176,7 +3278,7 @@
 "Learn more about date and time formatting." = "اعرف المزيد عن تنسيق التاريخ والوقت.";
 
 /* Footer text for Invite People role field. */
-"Learn more about roles" = "تعلم المزيد عن الأدوار";
+"Learn more about roles" = "معرفة المزيد عن الأدوار (الرُتب)";
 
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "اعرف المزيد...";
@@ -3186,6 +3288,9 @@
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "دعنا نساعدك";
+
+/* Title for the button that will dismiss this view. */
+"Let me know when finished!" = "أخبرني عند الانتهاء!";
 
 /* Title for the app appearance setting for light mode */
 "Light" = "فاتح";
@@ -3291,6 +3396,12 @@
 /* Text displayed while loading plugins for a site */
 "Loading Plugins..." = "جاري تحميل الإضافات...";
 
+/* Text displayed while loading the scan history for a site */
+"Loading Scan History..." = "جاري تحميل سجلّ الفحص...";
+
+/* Text displayed while loading the scan section for a site */
+"Loading Scan..." = "جاري تحميل الفحص...";
+
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "تحميل النطاقات";
 
@@ -3338,6 +3449,9 @@
 "Location unknown" = "الموقع غير معروف";
 
 /* No comment provided by engineer. */
+"Lock icon" = "أيقونة القفل";
+
+/* No comment provided by engineer. */
 "Log Files By Created Date" = "تسجيل الملفات حسب تاريخ إنشائها";
 
 /* Button title.  Tapping takes the user to the login form.
@@ -3356,6 +3470,10 @@
 
 /* A generic error message for a failed log in. */
 "Log in failed. Please try again." = "فشل تسجيل الدخول. يُرجى المحاولة مرة أخرى.";
+
+/* Button title. Takes the user to the login by email flow.
+   Button title. Tapping begins our normal log in process. */
+"Log in or sign up with WordPress.com" = "تسجيل الدخول أو إنشاء حساب على WordPress.com";
 
 /* Instruction text on the login's email address screen. */
 "Log in to the WordPress.com account you used to connect Jetpack." = "سجّل الدخول إلى حساب WordPress.com الذي تستخدمه للاتصال بـ Jetpack.";
@@ -3440,6 +3558,12 @@
 /* An option to mark a post as unseen. */
 "Mark as unseen" = "وضع علامة لم تتم المشاهدة";
 
+/* Notice title when updating a post's seen status succeeds. */
+"Marked post as seen" = "تم وضع علامة على المقالة بوصفها تم الاطلاع عليها";
+
+/* Notice title when updating a post's unseen status succeeds. */
+"Marked post as unseen" = "تم وضع علامة على المقالة بوصفها لم يتم الاطلاع عليها";
+
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "مطابقة الحسابات باستخدام البريد الإلكتروني";
 
@@ -3456,6 +3580,7 @@
 "Me" = "أنا";
 
 /* Noun. Title. Links to the blog's Media library.
+   Tab bar title for the Media tab in Media Picker
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -3584,9 +3709,6 @@
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "نقل المكوِّن إلى اليسار من الموضع %1$s إلى الموضع %2$s";
-
-/* No comment provided by engineer. */
-"Move block position" = "تحريك موضع المكوّن";
 
 /* No comment provided by engineer. */
 "Move block right" = "نقل المكوِّن إلى اليمين";
@@ -3787,6 +3909,9 @@
 "No activity yet" = "لا يوجد نشاط حتى الآن";
 
 /* No comment provided by engineer. */
+"No application can handle this request." = "لا يوجد تطبيق يمكنه معالجة هذا الطلب.";
+
+/* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "لا يتوفر تطبيق لمعالجة هذا الطلب. يرجى تثبيت متصفح ويب.";
 
 /* A short message that informs the user no WordPress.com sites could be found. */
@@ -3820,14 +3945,21 @@
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "لا توجد بيانات حتى الآن";
 
+/* Title for the view when there aren't any fixed threats to display */
+"No fixed threats" = "لا توجد تهديدات معالجة";
+
 /* Title for the no followed sites result screen */
 "No followed sites" = "لا توجد مواقع تمت متابعتها";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "ليس هناك متابعون حتى الآن";
 
-/* Displayed when a call is made to load the revisions but there's no result or an error. */
+/* Displayed when a call is made to load the revisions but there's no result or an error.
+   Title for the view when there aren't any history items to display */
 "No history yet" = "لا توجد محفوظات حتى الآن";
+
+/* Title for the view when there aren't any ignored threats to display */
+"No ignored threats" = "لا توجد تهديدات تم تجاهلها";
 
 /* Title displayed when the user has removed all Insights from display. */
 "No insights added yet" = "لم تتم إضافة أي رؤى بعد";
@@ -3867,7 +3999,7 @@
 "No menus available" = "لا توجد قوائم متاحة";
 
 /* A hint to users about creating a downloadable backup of their site. */
-"No need to wait around. We'll notify you when your backup is ready." = "لا داعي للانتظار هنا. سنُخطرك عندما تكون نسختك الاحتياطية جاهزة.";
+"No need to wait around. We'll notify you when your backup is ready." = "لا داعي للانتظار هنا. سنقوم بإعلامك عندما تكون نسختك الاحتياطية جاهزة.";
 
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "لا داعي للانتظار هنا. سنخطرك عندما تتم استعادة موقعك بالكامل.";
@@ -3926,6 +4058,9 @@
 
 /* Text displayed when theme name search has no matches */
 "No themes matching your search" = "لا توجد قوالب مطابقة لبحثك";
+
+/* Message for a notice informing the user their scan completed and no threats were found */
+"No threats found" = "No threats found";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -4024,20 +4159,19 @@
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    OK
+   OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    OK button to close the informative dialog on Gutenberg editor
    Submit button on prompt for user information.
-   Text for an alert's dismissal button.
-   Text of an OK button to dismiss a prompt.
    Title of a button that dismisses a prompt
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
    Title of primary button on alert prompting verify their accounts while attempting to publish */
 "OK" = "موافق";
 
-/* Title for the button that will dismiss this view. */
-"OK, notify me!" = "حسنًا، أبلغني!";
+/* No comment provided by engineer. */
+"OPEN" = "فتح";
 
 /* Disabled */
 "Off" = "مطفأ";
@@ -4071,6 +4205,7 @@
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
    Title for the view when there's an error loading time zones */
@@ -4228,6 +4363,9 @@
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "عنوان الصفحة. فارغ";
 
+/* Title of notification displayed when a page has been successfully updated. */
+"Page updated" = "تم تحديث الصفحة";
+
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
 "Pages" = "صفحات";
@@ -4240,6 +4378,9 @@
 /* Placeholder to set a parent category for a new category.
    Title for selecting parent category of a category */
 "Parent Category" = "التصنيف الأب";
+
+/* Message informing the user that their pages parent has been set successfully */
+"Parent page successfully updated." = "تم تحديث الصفحة الأب بنجاح.";
 
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
@@ -4268,8 +4409,7 @@
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "اللصق من دون تنسيق";
 
-/* Status for Media object that is being processed locally.
-   Status name for a comment that hasn't yet been approved. */
+/* Status for Media object that is being processed locally. */
 "Pending" = "انتظار";
 
 /* No comment provided by engineer. */
@@ -4295,6 +4435,9 @@
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "مكتبة الصور";
+
+/* Tab bar title for the Photos tab in Media Picker */
+"Photos" = "الصور";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "الصور مقدمة من Pexels";
@@ -4398,6 +4541,9 @@
 
 /* Used on an error alert to prompt the user to try again */
 "Please try again later" = "يرجى المحاولة مجددًا في وقت لاحق";
+
+/* Description for the Jetpack Restore Failed message. */
+"Please try again later or contact support." = "يُرجى المحاولة مرة أخرى لاحقًا أو الاتصال بالدعم.";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "يرجى المحاولة لاحقًا.";
@@ -4521,6 +4667,12 @@
 /* translators: accessibility text. empty post title. */
 "Post title. Empty" = "عنوان المقالة. فارغ";
 
+/* Title of camera permissions screen */
+"Post to WordPress" = "نشر على وردبرس";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"Post updated" = "تم تحديث المقالة";
+
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "الرمز البريدي";
 
@@ -4632,12 +4784,6 @@
    Title of the Private Badge */
 "Private" = "خاص";
 
-/* Title of a prompt */
-"Problem Following Site" = "حدثت مشكلة أثناء متابعة الموقع";
-
-/* Title of a prompt */
-"Problem Unfollowing Site" = "حدثت مشكلة أثناء إلغاء متابعة الموقع";
-
 /* No comment provided by engineer. */
 "Problem displaying block" = "ثمَّة مشكلة أثناء عرض المكوِّن";
 
@@ -4646,6 +4792,9 @@
 
 /* Error message title informing the user that a stream could not be loaded. */
 "Problem loading stream" = "حدثت مشكلة أثناء تحميل التدفق";
+
+/* No comment provided by engineer. */
+"Problem opening the audio" = "ثمَّة مشكلة أثناء فتح ملف الصوت";
 
 /* No comment provided by engineer. */
 "Problem opening the video" = "ثمَّة مشكلة أثناء فتح مقطع الفيديو";
@@ -4903,7 +5052,7 @@
 "Remove video" = "إزالة الفيديو";
 
 /* Label indicating a post has been removed from Saved For Later */
-"Removed" = "تم الحذف";
+"Removed" = "تمت إزالته";
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "يقوم بإزالة بيانات تعرييف الموقع من الصور قبل رفعها على موقعك.";
@@ -4916,6 +5065,12 @@
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "استبدال المكوِّن الحالي";
+
+/* No comment provided by engineer. */
+"Replace audio" = "استبدال الصوت";
+
+/* No comment provided by engineer. */
+"Replace file" = "استبدال الملف";
 
 /* No comment provided by engineer. */
 "Replace image or video" = "استبدال صورة أو فيديو";
@@ -4949,7 +5104,7 @@
 "Reply to post…" = "الرد على المقالة…";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
-"Report This Post" = "الإبلاغ عن هذه المقالة";
+"Report this post" = "الإبلاغ عن هذه المقالة";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "يتطلب موافقة يدوية للتعليقات التي تتضمن أكثر من هذا العدد من الروابط.";
@@ -4996,20 +5151,36 @@
 /* The largest resolution allowed for uploading */
 "Resolution" = "الدقة";
 
+/* Title for the fix section in Threat Details: Threat is not fixable */
+"Resolving the threat" = "إصلاح التهديد";
+
 /* Title displayed for restore action.
+   Title for button allowing user to restore their Jetpack site
    Title for Jetpack Restore Complete screen
+   Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen */
+   Title for the Jetpack Restore Site Screen
+   Title of section showing restore status */
 "Restore" = "استعادة";
 
+/* Title for Jetpack Restore Failed screen */
+"Restore Failed" = "فشلت الاستعادة";
+
 /* Title for error displayed when restoring a site fails. */
-"Restore failed." = "فشلت الاستعادة.";
+"Restore failed" = "فشلت الاستعادة";
 
 /* Label that describes the restore site action */
 "Restore site" = "استعادة الموقع";
 
 /* Button title for restore site action */
 "Restore to this point" = "استعادة إلى هذه النقطة";
+
+/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
+"Restored to %@" = "تمت الاستعادة إلى %@";
+
+/* Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date.
+   Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
+"Restoring to %@" = "جاري الاستعادة إلى %@";
 
 /* A prompt to attempt the failed network request again
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
@@ -5046,6 +5217,12 @@
 /* Share extension error dialog cancel button text */
 "Return to post" = "العودة إلى المقالة";
 
+/* No comment provided by engineer. */
+"Reusable blocks aren't editable on WordPress for Android" = "تُعد المكوِّنات القابلة لإعادة الاستخدام غير قابلة للتحرير على ووردبريس بالنسبة إلى نظام تشغيل Android";
+
+/* No comment provided by engineer. */
+"Reusable blocks aren't editable on WordPress for iOS" = "تُعد المكوِّنات القابلة لإعادة الاستخدام غير قابلة للتحرير على ووردبريس بالنسبة إلى نظام تشغيل iOS";
+
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "إرجاع التغيير المعلق";
 
@@ -5055,20 +5232,15 @@
 /* Title of the screen that shows the revisions. */
 "Revision" = "مراجعة";
 
-/* Title displayed when user swipes on a rewind cell
-   Title for button allowing user to rewind their Jetpack site
+/* Title for button allowing user to rewind their Jetpack site
    Title of section showing rewind status */
 "Rewind" = "إرجاع";
 
-/* Title displayed in the Rewind Site alert, should match Calypso */
+/* Title displayed in the Restore Site alert, should match Calypso */
 "Rewind Site" = "إرجاع الموقع";
 
-/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date.
-   Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
+/* Text showing the point in time the site is being currently rewinded to. %@' is a placeholder that will expand to a date. */
 "Rewinding to %@" = "الإرجاع إلى %@";
-
-/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
-"Rewound to %@" = "تم الإرجاع إلى %@";
 
 /* Post Rich content */
 "Rich Content" = "المحتوى المنسق";
@@ -5145,11 +5317,18 @@
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "جاري الحفظ...";
 
-/* Noun. Links to a blog's Jetpack Scan screen. */
+/* Noun. Links to a blog's Jetpack Scan screen.
+   Title of the view */
 "Scan" = "فحص";
 
 /* Button title that triggers a scan */
 "Scan Again" = "إعادة الفحص مرة أخرى";
+
+/* Title for a notice informing the user their scan has completed */
+"Scan Finished" = "Scan Finished";
+
+/* Title of the view */
+"Scan History" = "سجلّ الفحص";
 
 /* Button title that triggers a scan */
 "Scan Now" = "الفحص الآن";
@@ -5653,13 +5832,20 @@
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "الاسم اللطيف";
 
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"So far, there are no fixed threats on your site." = "إلى الآن لم نسجل أي تهديدات تمت معالجتها على موقعك.";
+
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"So far, there are no ignored threats on your site." = "إلى الآن لم نسجل أي تهديدات تم تجاهلها على موقعك.";
+
 /* Follower Totals label for social media followers */
 "Social" = "اجتماعي";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "فشلت بعض عمليات رفع الوسائط. سيؤدي هذا الإجراء إلى إزالة كل الوسائط الفاشلة من المقالة.\nهل تريد الحفظ على أي حال؟";
 
-/* Title for a label that appears when the scan failed */
+/* Title for a label that appears when the scan failed
+   Title for the error view when the scan start has failed */
 "Something went wrong" = "حدث خطأ ما";
 
 /* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
@@ -5921,6 +6107,9 @@
 /* Accessibility of stats table. Placeholders will be populated with names of data shown in table. */
 "Table showing %@ and %@" = "جدول يعرض %1$@ و %2$@";
 
+/* Title for the tablet web preview */
+"Tablet" = "الجهاز اللوحي";
+
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
 "Tag" = "العلامة";
@@ -6104,11 +6293,11 @@
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "اللغة التي كُتب بها هذا الموقع في الأساس.";
 
-/* Description that informs for label when there are no threats on a users site */
-"The last Jetpack scan completed and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "انتهى Jetpack scan الأخير، وكل شيء على ما يُرام.\n\nقم بتشغيل فحص يدوي الآن، وانتظر Jetpack حتى يقوم بفحص موقعك لاحقًا اليوم.";
+/* Description for label when there are no threats on a users site and how long ago the scan ran. */
+"The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "تم تشغيل Jetpack scan آخر مرة في %1$@، ولم يتم العثور على أي مخاطر.\n\nلمراجعة مواقعك مرة أخرى، قم بتشغيل فحص يدوي أوانتظر Jetpack حتى يقوم بفحص موقعك لاحقًا اليوم.";
 
-/* Description for label when there are no threats on a users site and how long ago the scan ran */
-"The last Jetpack scan ran %1$@ and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "تم تشغيل Jetpack scan آخر مرة في %1$@، وكل شيء على ما يُرام.\n\nقم بتشغيل فحص يدوي الآن، وانتظر Jetpack حتى يقوم بفحص موقعك لاحقًا اليوم.";
+/* Description that informs for label when there are no threats on a users site */
+"The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "لم يعثر jetpack scan الأخير على أي مخاطر.\n\nلمراجعة مواقعك مرة أخرى، قم بتشغيل فحص يدوي أوانتظر Jetpack حتى يقوم بفحص موقعك لاحقًا اليوم.";
 
 /* WordPress.com Push Authentication Expired message */
 "The login request has expired. Log in to WordPress.com to try again." = "انتهت صلاحية طلب تسجيل الدخول. سجِّل الدخول إلى WordPress.com للمحاولة مرة أخرى.";
@@ -6154,6 +6343,12 @@
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "لم يتم العثور على المستخدم المحدد. الرجاء التحقق مما إذا كان مكتوبًا بشكل صحيح.";
+
+/* Title for the technical details section in Threat Details */
+"The technical details" = "التفاصيل الفنية";
+
+/* Message displayed when a threat is fixed successfully. */
+"The threat was successfully fixed." = "تم إصلاح التهديد بنجاح.";
 
 /* People: Invitation Error */
 "The user already has the specified role. Please, try assigning a different role." = "المستخدم يقوم بالدور المحدد بالفعل. الرجاء محاولة تعيين دور مختلف.";
@@ -6223,9 +6418,6 @@
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "حدثت مشكلة أثناء عرض هذه المقالة.";
 
-/* Short notice that there was a problem following a site and instructions on how to notify us of the problem. */
-"There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen." = "حدثت مشكلة أثناء متابعة الموقع. إذا استمرت المشكلة، يمكنك الاتصال بنا من خلال شاشة \"أنا\" > \"المساعدة والدعم\".";
-
 /* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
 "There was a problem loading the media item." = "حدثت مشكلة أثناء تحميل عنصر الوسائط.";
 
@@ -6237,9 +6429,6 @@
 
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "حدثت مشكلة أثناء حفظ التغييرات إلى إدارة المشاركة.";
-
-/* Short notice that there was a problem unfollowing a site and instructions on how to notify us of the problem. */
-"There was a problem unfollowing the site. If the problem persists you can contact us via the Me > Help & Support screen." = "حدثت مشكلة أثناء إلغاء متابعة الموقع. إذا استمرت المشكلة، يمكنك الاتصال بنا من خلال شاشة \"أنا\" > \"المساعدة والدعم\".";
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "حدثت مشكلة عند محاولة الوصول إلى موقعك. يُرجى المحاولة مرة أخرى لاحقاً.";
@@ -6266,6 +6455,12 @@
 /* Text displayed when there is a failure loading the plan details */
 "There was an error loading the plan" = "حدث خطأ أثناء رفع الخطة";
 
+/* Text displayed when there is a failure loading the history feed */
+"There was an error loading the scan history" = "حدث خطأ أثناء تحميل سجلّ الفحص";
+
+/* Text displayed when there is a failure loading the status */
+"There was an error loading the scan status" = "حدث خطأ في أثناء حالة الفحص.";
+
 /* Text displayed when there is a failure loading the plugin */
 "There was an error loading this plugin" = "حدث خطأ عند تحميل هذه الإضافة";
 
@@ -6278,8 +6473,14 @@
 /* Updating Role failed error message */
 "There was an error updating @%@" = "حدث خطا أثناء تحديث @%@";
 
+/* Text displayed when user tries to create a downloadable backup when there is already one being prepared */
+"There's a backup currently being prepared, please wait before starting the next one" = "هناك نسخة احتياطية قيد التجهيز حاليًا، يرجى الانتظار قبل بدء النسخة التالية";
+
 /* Text displayed when user tries to start a restore when there is already one running */
 "There's a restore currently in progress, please wait before starting next one" = "ثمَّة عملية استعادة قيد التقدّم حاليًا، يرجى الانتظار قبل بدء عملية الاستعادة التالية";
+
+/* Text displayed when user tries to start a restore when there is already one running */
+"There's a restore currently in progress, please wait before starting the next one" = "ثمَّة عملية استعادة قيد التقدّم حاليًا، يرجى الانتظار قبل بدء عملية الاستعادة التالية";
 
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "تُنشر المقالة كمقالة جديدة على موقعك حتى لا يفوِّت جمهورك أي شيء.";
@@ -6352,8 +6553,17 @@
 /* Title for a threat */
 "Threat Found" = "تم العثور على تهديد";
 
+/* Title for the Jetpack Scan Threat Details screen */
+"Threat details" = "تفاصيل التهديد";
+
 /* Summary description for a threat that includes the threat signature */
 "Threat found %1$@" = "تم العثور على تهديد %1$@";
+
+/* Description for threat file */
+"Threat found in file:" = "تم العثور على تهديد في الملف:";
+
+/* Message displayed when a threat is ignored successfully. */
+"Threat ignored." = "تم تجاهل التهديد.";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "صورة مصغرة";
@@ -6379,6 +6589,7 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
+   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "العنوان";
@@ -6523,6 +6734,8 @@
 "Try adjusting your date range or activity type filters" = "حاول ضبط مدى التاريخ أو مرشحات نوع النشاط";
 
 /* Button label for trying to retrieve the activities type again
+   Button label for trying to retrieve the history again
+   Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
@@ -6542,6 +6755,12 @@
 
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "تشغيل التنبيهات في الموقع";
+
+/* Notice title when turning site notifications off succeeds. */
+"Turned off site notifications" = "تم إيقاف تشغيل إشعارات الموقع";
+
+/* Notice title when turning site notifications on succeeds. */
+"Turned on site notifications" = "تم تشغيل إشعارات الموقع";
 
 /* Launches the Twitter App */
 "Twitter" = "تويتر";
@@ -6576,11 +6795,20 @@
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "تتعذر المزامنة";
 
+/* Notice title when blocking a site fails. */
+"Unable to block site" = "Unable to block site";
+
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "يتعذر حذف جميع عناصر الوسائط.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "يتعذر حذف عنصر الوسائط.";
+
+/* Message displayed when opening the link to the downloadable backup fails. */
+"Unable to download file" = "تعذّر تنزيل الملف";
+
+/* Notice title when following a site fails. */
+"Unable to follow site" = "غير قادر على متابعة الموقع";
 
 /* Error message displayed when we were unable to copy the URL for an item in the user's media library. */
 "Unable to get URL for media item." = "يتعذر الحصول على عنوان URL لعنصر الوسائط.";
@@ -6601,10 +6829,10 @@
 /* Error shown when the app fails to load a video from the user's media library. */
 "Unable to load video." = "يتعذر رفع مقطع الفيديو.";
 
-/* Alert displayed to the user when updating a post's seen status failed. */
+/* Notice title when updating a post's seen status failed. */
 "Unable to mark post seen" = "يتعذر وضع علامة على المقالة بوصفها تم الاطلاع عليها";
 
-/* Alert displayed to the user when updating a post's unseen status failed. */
+/* Notice title when updating a post's unseen status failed. */
 "Unable to mark post unseen" = "يتعذر وضع علامة على المقالة بوصفها لم يتم الاطلاع عليها";
 
 /* Dialog box title for when the user is canceling an upload. */
@@ -6616,17 +6844,32 @@
 /* Alert title when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
 "Unable to register domain" = "غير قادر على تسجيل النطاق";
 
+/* Title for the Jetpack Restore Failed message. */
+"Unable to restore your site" = "غير قادر على استعادة موقعك";
+
 /* Text displayed when a site restore fails. */
 "Unable to restore your site, please try again later or contact support." = "تتعذر استعادة موقعك، يُرجى المحاولة مرة أخرى لاحقًا أو الاتصال بالدعم.";
 
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "يتعذر حفظ عنصر الوسائط.";
 
+/* Message displayed when sharing a link to the downloadable backup fails. */
+"Unable to share link" = "تعذرت مشاركة الرابط";
+
 /* Message that appears when a user tries to trash a page while their device is offline. */
 "Unable to trash pages while offline. Please try again later." = "غير قادر على نقل الصفحات إلى سلة المُهملات في وضع عدم الاتصال. يرجى المحاولة مرة أخرى لاحقًا.";
 
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "غير قادر على نقل المقالات إلى سلة المُهملات في وضع عدم الاتصال. يرجى المحاولة مرة أخرى لاحقًا.";
+
+/* Notice title when turning site notifications off fails. */
+"Unable to turn off site notifications" = "تعذر إيقاف تشغيل إشعارات الموقع";
+
+/* Notice title when turning site notifications on fails. */
+"Unable to turn on site notifications" = "تعذر تشغيل إشعارات الموقع";
+
+/* Notice title when unfollowing a site fails. */
+"Unable to unfollow site" = "غير قادر على إلغاء متابعة الموقع";
 
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "يتعذر تحديث إعدادات الصفحة الرئيسية";
@@ -6654,6 +6897,9 @@
 
 /* Error message displayed when an error occurred checking for email availability. */
 "Unable to verify the email address. Please try again later." = "تعذر التحقق من عنوان البريد الإلكتروني. يُرجى إعادة المحاولة لاحقًا.";
+
+/* Message displayed when visiting a site fails. */
+"Unable to visit site" = "غير قادر على زيارة الموقع";
 
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "تتعذر إضافة صورة إلى الملف";
@@ -6686,9 +6932,10 @@
 "Unfollow %@" = "إلغاء متابعة %@";
 
 /* Verb. An option to unfollow a site. */
-"Unfollow Site" = "إلغاء متابعة الموقع";
+"Unfollow site" = "إلغاء متابعة الموقع";
 
-/* User unfollowed a site. */
+/* Notice title when unfollowing a site succeeds.
+   User unfollowed a site. */
 "Unfollowed site" = "موقع لا تتم متابعته";
 
 /* Spoken hint describing action for selected following buttons. */
@@ -6841,6 +7088,9 @@
 
 /* Label to show while uploading media to server */
 "Uploading..." = "جاري الرفع...";
+
+/* No comment provided by engineer. */
+"Uploading…" = "جاري الرفع…";
 
 /* Title for alert when trying to save post with failed media items */
 "Uploads failed" = "فشلت عمليات الرفع";
@@ -7157,6 +7407,12 @@
 /* Text displayed if a media couldnt be uploaded. */
 "We couldn't upload this media." = "لم نتمكن من رفع هذه الوسائط.";
 
+/* Hint displayed when we fail to fetch the status of the backup in progress. */
+"We couldn’t find the status to say how long your backup will take." = "لم نتمكن من العثور على الحالة لتحديد المدة التي ستستغرقها النسخة الاحتياطية.";
+
+/* Hint displayed when we fail to fetch the status of the restore in progress. */
+"We couldn’t find the status to say how long your restore will take." = "لم نتمكن من العثور على الحالة لتحديد المدة التي ستستغرقها عملية الاستعادة.";
+
 /* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
 "We had trouble loading connections for %@" = "لقد واجهنا مشكلة أثناء تحميل الاتصالات لـ %@";
 
@@ -7168,6 +7424,9 @@
 
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "أجرينا تحسينات هائلة بمحرِّر المكوّنات، ونعتقد أنها تستحق التجربة!\n\nقمنا بتمكينها في المقالات والصفحات الجديدة، ولكن إذا رغبتَ في التغيير إلى المحرِّر التقليدي فانتقل إلى \"موقعي\" > \"إعدادات الموقع\".";
+
+/* Message displayed when a backup has finished */
+"We successfully created a backup of your site as of %@" = "لقد نجحنا في إنشاء نسخة احتياطية لموقعك اعتبارًا من %@";
 
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
 "We successfully created a backup of your site from %1$@." = "أنشأنا نسخة احتياطية من موقعك بنجاح من %1$@.";
@@ -7245,6 +7504,9 @@
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "نقوم بالإعداد النهائي — انتهينا تقريبًا…";
 
+/* Detail text display informing the user that we're fixing threats */
+"We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "نعمل بجد على إصلاح هذه التهديدات الموجودة في الخلفية. في هذه الأثناء لا تتردد في الاستمرار في استخدام موقعك كالمعتاد، ويمكنك التحقُّق مجددًا من التقدُّم في أي وقت.";
+
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "لا يمكننا الاتصال بموقع Jetpack على عنوان URL هذا. اتصل بنا لطلب المساعدة.";
 
@@ -7290,6 +7552,16 @@
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "نحن نرسل دومًا رسائل بريد إلكتروني مهمة بخصوص حسابك، ومع ذلك يمكنك الحصول على بعض الإضافات المفيدة أيضًا.";
 
+/* Hint displayed when we fail to fetch the status of the backup in progress.
+   Hint displayed when we fail to fetch the status of the restore in progress. */
+"We’ll notify you when its done." = "سنقوم بإعلامك عند الانتهاء.";
+
+/* Hint displayed when we fail to fetch the status of the backup in progress. */
+"We’ll still attempt to backup your site." = "سنستمر في محاولة عمل نسخة احتياطية من موقعك.";
+
+/* Hint displayed when we fail to fetch the status of the restore in progress. */
+"We’ll still attempt to restore your site." = "سنستمر في محاولة استعادة موقعك.";
+
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "سنرشدك إلى أساسيات بناء موقعك وتنميته";
 
@@ -7304,6 +7576,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "ما الذي ترغب في فعله بهذا الملف: هل ترغب في رفعه وإضافة رابط للملف إلى مقالتك، أو إضافة محتويات الملف مباشرة إلى المقالة؟";
+
+/* Title for the problem section in the Threat Details */
+"What was the problem?" = "ما المشكلة؟";
 
 /* Title of section that contains plugins' change log */
 "What's New" = "ما الجديد؟";
@@ -7595,6 +7870,9 @@
 /* No comment provided by engineer. */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "يبدو أنك قمت بتثبيت مكون إضافي للمحمول من DudaMobile الذي يمنع هذا التطبيق من الاتصال بالمدونة الخاصة بك";
 
+/* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
+"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "لا ينبغي أن تتجاهل مشكلة أمنية إلا إذا كنت متأكدًا تمامًا من أنها غير ضارة. إذا اخترت تجاهل هذا التهديد، فسيبقى على موقعك \"%1$@\".";
+
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "لن تتمكن من تغيير اسم المستخدم الخاص بك مرة أخرى.";
 
@@ -7627,6 +7905,9 @@
 
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "أصبحت نسختك الاحتياطية متاحة الآن للتنزيل";
+
+/* Text displayed when a site backup takes too long. */
+"Your backup is taking longer than usual, please check again in a few minutes." = "استغرقت نسختك الاحتياطية أكثر من المعتاد، يُرجى التحقق مرة أخرى بعد دقائق قليلة.";
 
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "اسم المستخدم الحالي هو %1$@. مع بعض الاستثناءات، لن يرى الآخرون سوى اسم العرض %2$@.";
@@ -7664,8 +7945,8 @@
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "تمت استعادة موقعك بنجاح";
 
-/* Title of a message displayed when user starts a rewind operation */
-"Your site is being restored" = "تجري استعادة موقعك";
+/* Title of a message displayed when user starts a restore operation */
+"Your site is being restored" = "جاري الآن استعادة موقعك";
 
 /* Hint for users when private privacy setting is set */
 "Your site is only visible to you and users you approve." = "سيكون موقعك مرئيًا لك وللمستخدمين الذين توافق عليهم فقط.";

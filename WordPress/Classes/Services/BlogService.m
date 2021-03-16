@@ -22,21 +22,12 @@ NSString *const WordPressMinimumVersion = @"4.0";
 NSString *const HttpsPrefix = @"https://";
 NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
-CGFloat const OneHourInSeconds = 60.0 * 60.0;
-
-
 @implementation BlogService
 
 + (instancetype)serviceWithMainContext
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     return [[BlogService alloc] initWithManagedObjectContext:context];
-}
-
-- (Blog *)blogByBlogId:(NSNumber *)blogID
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blogID == %@", blogID];
-    return [self blogWithPredicate:predicate];
 }
 
 - (Blog *)blogByBlogId:(NSNumber *)blogID andUsername:(NSString *)username
@@ -1024,40 +1015,13 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     };
 }
 
-- (NSTimeZone *)timeZoneForBlog:(Blog *)blog
-{
-    NSString *timeZoneName = [blog getOptionValue:@"timezone"];
-    NSNumber *gmtOffSet = [blog getOptionValue:@"gmt_offset"];
-    id optionValue = [blog getOptionValue:@"time_zone"];
-    
-    NSTimeZone *timeZone = nil;
-    if (timeZoneName.length > 0) {
-        timeZone = [NSTimeZone timeZoneWithName:timeZoneName];
-    }
-    
-    if (!timeZone && gmtOffSet != nil) {
-        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:(gmtOffSet.floatValue * OneHourInSeconds)];
-    }
-    
-    if (!timeZone && optionValue != nil) {
-        NSInteger timeZoneOffsetSeconds = [optionValue floatValue] * OneHourInSeconds;
-        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:timeZoneOffsetSeconds];
-    }
-    
-    if (!timeZone) {
-        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-    }
-    
-    return timeZone;
-}
-
 - (void)updateSettings:(BlogSettings *)settings withRemoteSettings:(RemoteBlogSettings *)remoteSettings
 {
     NSParameterAssert(settings);
     NSParameterAssert(remoteSettings);
     
     // Transformables
-    NSSet *separatedBlacklistKeys = [remoteSettings.commentsBlacklistKeys uniqueStringComponentsSeparatedByNewline];
+    NSSet *separatedBlocklistKeys = [remoteSettings.commentsBlocklistKeys uniqueStringComponentsSeparatedByNewline];
     NSSet *separatedModerationKeys = [remoteSettings.commentsModerationKeys uniqueStringComponentsSeparatedByNewline];
     
     // General
@@ -1079,10 +1043,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
     // Discussion
     settings.commentsAllowed = [remoteSettings.commentsAllowed boolValue];
-    settings.commentsBlacklistKeys = separatedBlacklistKeys;
+    settings.commentsBlocklistKeys = separatedBlocklistKeys;
     settings.commentsCloseAutomatically = [remoteSettings.commentsCloseAutomatically boolValue];
     settings.commentsCloseAutomaticallyAfterDays = remoteSettings.commentsCloseAutomaticallyAfterDays;
-    settings.commentsFromKnownUsersWhitelisted = [remoteSettings.commentsFromKnownUsersWhitelisted boolValue];
+    settings.commentsFromKnownUsersAllowlisted = [remoteSettings.commentsFromKnownUsersAllowlisted boolValue];
     
     settings.commentsMaximumLinks = remoteSettings.commentsMaximumLinks;
     settings.commentsModerationKeys = separatedModerationKeys;
@@ -1127,7 +1091,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     RemoteBlogSettings *remoteSettings = [RemoteBlogSettings new];
 
     // Transformables
-    NSString *joinedBlacklistKeys = [[settings.commentsBlacklistKeys allObjects] componentsJoinedByString:@"\n"];
+    NSString *joinedBlocklistKeys = [[settings.commentsBlocklistKeys allObjects] componentsJoinedByString:@"\n"];
     NSString *joinedModerationKeys = [[settings.commentsModerationKeys allObjects] componentsJoinedByString:@"\n"];
     
     // General
@@ -1149,10 +1113,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
     // Discussion
     remoteSettings.commentsAllowed = @(settings.commentsAllowed);
-    remoteSettings.commentsBlacklistKeys = joinedBlacklistKeys;
+    remoteSettings.commentsBlocklistKeys = joinedBlocklistKeys;
     remoteSettings.commentsCloseAutomatically = @(settings.commentsCloseAutomatically);
     remoteSettings.commentsCloseAutomaticallyAfterDays = settings.commentsCloseAutomaticallyAfterDays;
-    remoteSettings.commentsFromKnownUsersWhitelisted = @(settings.commentsFromKnownUsersWhitelisted);
+    remoteSettings.commentsFromKnownUsersAllowlisted = @(settings.commentsFromKnownUsersAllowlisted);
     
     remoteSettings.commentsMaximumLinks = settings.commentsMaximumLinks;
     remoteSettings.commentsModerationKeys = joinedModerationKeys;

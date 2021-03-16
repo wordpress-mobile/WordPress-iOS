@@ -34,4 +34,24 @@ class DomainCreditEligibilityTests: XCTestCase {
         let canRedeemDomainCredit = DomainCreditEligibilityChecker.canRedeemDomainCredit(blog: blog)
         XCTAssertTrue(canRedeemDomainCredit)
     }
+
+    func testDomainCreditEligibilityOnAtomicBlog() {
+        let blog = BlogBuilder(mainContext)
+            .with(atomic: true)
+            .build()
+        blog.hasDomainCredit = false
+        blog.isHostedAtWPcom = false
+        let canRedeemDomainCredit = DomainCreditEligibilityChecker.canRedeemDomainCredit(blog: blog)
+        XCTAssertFalse(canRedeemDomainCredit)
+    }
+
+    func testDomainCreditEligibilityOnEligibleAtomicBlog() {
+        let blog = BlogBuilder(mainContext)
+            .with(atomic: true)
+            .build()
+        blog.hasDomainCredit = true
+        blog.isHostedAtWPcom = false
+        let canRedeemDomainCredit = DomainCreditEligibilityChecker.canRedeemDomainCredit(blog: blog)
+        XCTAssertTrue(canRedeemDomainCredit)
+    }
 }

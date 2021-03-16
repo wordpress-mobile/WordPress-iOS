@@ -1,9 +1,9 @@
-About this release:
+What’s new in version 16.9?
 
-Note: This is the last version of the app that will support iOS 12. Starting version 16.7, your app will require iOS 13 or higher.
+The classic editor will soon be unavailable for creating new posts. You will still be able to edit your existing posts and pages in the classic editor, but we recommend that you switch to the block editor if you haven’t already.
 
-See stats on your Home Screen: Display your WordPress site stats for the day on your iOS 14 device’s Home Screen with new Today Widgets.
+When creating a site, you can now select categories to help you better search for and identify designs you may like. You can also choose single-page site designs.
 
-Track your site activity: Filter and view items in your Activity Log — like backups, plugin updates, and published posts and pages — by date range and activity type.
+In the Reader, we’ve made updates to improve the content discovery experience. You will now see related content in your feed and a redesigned recommended topics section in your Discover tab. There’s also a new way to discover topics under the Manage setting.
 
-Get to know your app: Learn the features in your app with an improved Quick Start tour, which guides you through steps like reviewing site pages and editing your homepage.
+We’ve made other minor changes that improve your overall experience in the app!

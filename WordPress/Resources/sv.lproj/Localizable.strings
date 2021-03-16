@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-01-28 02:27:51+0000 */
+/* Translation-Revision-Date: 2021-02-27 08:50:56+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -9,23 +9,23 @@
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nBekräfta genom att skriva in din webbplatsadress en gång till innan vi raderar den.\n\n";
 
+/* No comment provided by engineer. */
+" audio file" = " ljudfil";
+
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Ladda bilder efterhand (”Lazy-load”)";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "”Mer”-knapp";
 
-/* No comment provided by engineer. */
+/* Description for the restore action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point for your restore." = "%1$@ är den valda tidpunkten för tillbakaspolningen av din webbplats.";
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point to create a downloadable backup." = "%1$@ är den valda punkten för att skapa en nedladdningsbar säkerhetskopia.";
 
-/* 'AUTHOR on POST TITLE' in a comment list */
+/* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@ på %2$@";
-
-/* 'AUTHOR on POST TITLE: COMMENT' in a comment list */
-"%1$@ on %2$@: %3$@" = "%1$@ på %2$@: %3$@";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d av %2$d är klara";
@@ -163,6 +163,9 @@
 /* Number of posts */
 "%d posts" = "%d inlägg";
 
+/* Message for a notice informing the user their scan completed and %d threats were found */
+"%d potential threats found" = "%d potentiella hot hittades";
+
 /* Age between dates over one year. */
 "%d years" = "%d år";
 
@@ -237,6 +240,9 @@
 /* Alert displayed to the user when a single media item attached to a post has failed to upload. */
 "1 post, 1 file not uploaded" = "1 inlägg, 1 fil har inte laddats upp";
 
+/* Message for a notice informing the user their scan completed and 1 threat was found */
+"1 potential threat found" = "1 potentiellt hot hittat";
+
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
 
@@ -284,6 +290,9 @@
 
 /* Label for active Theme browser cell */
 "ACTIVE" = "AKTIV";
+
+/* No comment provided by engineer. */
+"ADD AUDIO" = "LÄGG TILL LJUD";
 
 /* No comment provided by engineer. */
 "ADD BLOCK HERE" = "LÄGG TILL BLOCK HÄR";
@@ -335,6 +344,7 @@
 "Activation Error" = "Aktiveringsfel";
 
 /* Describes a status of a plugin
+   Label for active Theme
    Whether a plugin is active on a site */
 "Active" = "Aktivt";
 
@@ -507,6 +517,7 @@
 
 /* Autoapprove every comment
    Browse all themes selection title
+   Displays all of the historical threats
    Displays all of the Notifications, unfiltered */
 "All" = "Alla";
 
@@ -536,6 +547,9 @@
 
 /* Jetpack Settings: Allow WordPress.com login */
 "Allow WordPress.com login" = "Tillåt WordPress.com-inloggning";
+
+/* Message on camera permissions screen to explain why the app needs camera and microphone permissions */
+"Allow access so you can start taking photos and videos." = "Tillåt åtkomst så du kan börja ta foton och videoklipp.";
 
 /* A short description of the comment like sharing setting. */
 "Allow all comments to be Liked by you and your readers" = "Tillåt alla kommentarer att bli gillade av dig och dina läsare";
@@ -567,6 +581,9 @@
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "Man behöver ha en fungerande internetanslutning";
 
+/* Error message shown when trying to view the scan status and there is no internet connection. */
+"An active internet connection is required to view Jetpack Scan" = "En aktiv internetanslutning krävs för att kunna visa Jetpack Scan";
+
 /* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
 "An active internet connection is required to view activities" = "För att kunna se aktiviteter krävs en aktiv internetanslutning";
 
@@ -579,6 +596,9 @@
 
 /* Error message shown when trying to view Stats and there is no internet connection. */
 "An active internet connection is required to view stats" = "Internet-anslutning krävs för att kunna visa statistik";
+
+/* Error message shown when trying to view the Scan History feature and there is no internet connection. */
+"An active internet connection is required to view the history" = "Internet-anslutning krävs för att kunna visa historiken";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "Ett fel uppstod vid skapandet av menyn.";
@@ -702,7 +722,7 @@
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Är du säker på att du vill återställa din webbplats till  %1$@? Detta kommer att ta bort innehåll och inställningar som skapats eller ändrats sedan dess.";
 
 /* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
-"Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "Är du säker på att du vill återställa din webbplats till %@?\nDetta kommer att avlägsna allt innehåll och alla inställningar som ändrats sedan dess.";
+"Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost." = "Är du säker på att du vill återställa din webbplats till läget från %@?\nAllt du ändrat sedan dess kommer att försvinna.";
 
 /* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
 "Are you sure you want to save as draft?" = "Är du säker på att du vill spara som utkast?";
@@ -730,6 +750,15 @@
 
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Bifoga filen som en länk";
+
+/* No comment provided by engineer. */
+"Audio Player" = "Ljudspelare";
+
+/* translators: accessibility text. %s: Audio caption. */
+"Audio caption. %s" = "Beskrivning för ljudfil. %s";
+
+/* translators: accessibility text. Empty Audio caption. */
+"Audio caption. Empty" = "Beskrivning för ljudfil. Tom";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "Ljudfil, %@";
@@ -804,14 +833,19 @@
    Spoken accessibility label */
 "Back" = "Tillbaka";
 
+/* Title of the cell displaying status of a backup in progress */
+"Backing up site" = "Säkerhetskopierar webbplatsen";
+
 /* Noun. Links to a blog's Jetpack Backups screen.
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
-   Title for the Jetpack's backup list */
+   Title for Jetpack Backup Update Status Failed screen
+   Title for the Jetpack's backup list
+   Title of section showing backup status */
 "Backup" = "Säkerhetskopia";
 
 /* Title for error displayed when preparing a backup fails. */
-"Backup failed." = "Säkerhetskopieringen misslyckades.";
+"Backup failed" = "Säkerhetskopieringen misslyckades";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "Stapeldiagram som visar antalet kommentarer för vald period.";
@@ -858,9 +892,6 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Citatblock";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block This Site" = "Blockera den här webbplatsen";
-
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Blocket kopierat";
 
@@ -884,6 +915,12 @@
 
 /* No comment provided by engineer. */
 "Block settings" = "Blockinställningar";
+
+/* The title of a button that triggers blocking a site from the user's reader. */
+"Block this site" = "Blockera denna webbplats";
+
+/* Notice title when blocking a site succeeds. */
+"Blocked site" = "Blockerad webbplats";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blogg";
@@ -983,6 +1020,7 @@
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
+   Cancel button for alert
    Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
@@ -1082,6 +1120,9 @@
 /* Button title to edit visibility of sites. */
 "Change Visibility" = "Ändra synlighet";
 
+/* No comment provided by engineer. */
+"Change block position" = "Ändra blockets position";
+
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Förändringen misslyckades";
 
@@ -1144,10 +1185,13 @@
 /* Title for the button to progress with the selected site homepage design */
 "Choose" = "Välj";
 
+/* Title for selecting a new homepage */
+"Choose Homepage" = "Välj startsida";
+
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Välj sidor";
 
-/* Title for selecting a new home page */
+/* Title for selecting a new posts page */
 "Choose Posts Page" = "Välj inläggssida";
 
 /* Title for the screen to pick a template for a page */
@@ -1167,6 +1211,9 @@
 
 /* Label for Publish time picker */
 "Choose a time" = "Välj en tid";
+
+/* No comment provided by engineer. */
+"Choose audio" = "Välj ljud";
 
 /* Title to choose date range in a calendar */
 "Choose date range" = "Välj datumintervall";
@@ -1383,14 +1430,12 @@
 "Configure" = "Ställ in";
 
 /* Confirm
+   Confirm Rewind button title
    Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Bekräfta";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Bekräfta radering av webbplats";
-
-/* Confirm Rewind button title */
-"Confirm Rewind" = "Bekräfta återställning";
 
 /* Instructional text about the Sharing feature. */
 "Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "Bekräfta att det är detta konto som du vill auktorisera. Observera att inläggen automatiskt delas med detta konto.";
@@ -1508,10 +1553,6 @@
 /* Button title. Tapping begins log in using Google. */
 "Continue with Google" = "Fortsätt med Google";
 
-/* Button title. Takes the user to the login by email flow.
-   Button title. Tapping begins our normal log in process. */
-"Continue with WordPress.com" = "Fortsätt med WordPress.com";
-
 /* Title of a Quick Start Tour */
 "Continue with site setup" = "Fortsätt att konfigurera webbplatsen";
 
@@ -1566,8 +1607,11 @@
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Går inte att växla mellan följ\/sluta följ: blogURL-attribut fattas";
 
-/* An error description explaining that Seen could not be toggled due to a missing feedItemID attribute. */
-"Could not toggle Seen: missing feedItemID attribute." = "Det gick inte att ändra visningsmarkeringen: attributet saknas för feedItemID.";
+/* An error description explaining that Seen could not be toggled due to a missing feedItemID. */
+"Could not toggle Seen: missing feedItemID." = "Det gick inte att ändra statusläget: feedItemID saknas.";
+
+/* An error description explaining that Seen could not be toggled due to a missing postID. */
+"Could not toggle Seen: missing postID." = "Det gick inte att ändra visningsläget: postID saknas.";
 
 /* Title of a prompt. */
 "Could not unfollow site" = "Det gick inte att sluta följa webbplatsen";
@@ -1702,6 +1746,9 @@
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Creating dashboard" = "Skapar adminpanel";
 
+/* Description of the cell displaying status of a backup in progress */
+"Creating downloadable backup" = "Skapar nedladdningsbar säkerhetskopia";
+
 /* No comment provided by engineer. */
 "Current" = "Nuvarande";
 
@@ -1803,8 +1850,7 @@
 "December 17, 2017" = "December 17, 2017";
 
 /* Description of the default paragraph formatting style in the editor.
-   Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.
-   Title for the default web preview */
+   Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "Standard";
 
 /* Label for selecting the default category of a post
@@ -1887,6 +1933,9 @@
    Theme Details action title */
 "Details" = "Detaljer";
 
+/* Instructions after a Magic Link was sent, but email is incorrect. */
+"Didn't mean to create a new account? Go back to re-enter your email address." = "Vill du inte registrera ett nytt konto? Gå tillbaka för att mata in e-postadressen igen.";
+
 /* Label for the dimensions in pixels for a media asset (image / video) */
 "Dimensions" = "Storlekar";
 
@@ -1923,9 +1972,6 @@
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Frånkoppling av detta konto innebär att publicerade inlägg inte längre automatiskt kommer att delas till %@";
 
-/* Discover tab name */
-"Discover" = "Upptäck";
-
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Upptäck webbplatser";
 
@@ -1941,6 +1987,7 @@
    Action to show on alert when view asset fails.
    Customize Insights button title
    Dismiss a view. Verb
+   Dismiss button title
    Dismiss button title.
    Dismiss the AlertView
    Share extension error dialog cancel button label.
@@ -2000,6 +2047,7 @@
    Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
+   Title for button that will dismiss this view
    Title for the button that will dismiss this view.
    Title of the Done button on the me page */
 "Done" = "Klar";
@@ -2026,6 +2074,9 @@
 "Double tap to go to color settings" = "Dubbeltryck för att gå till färginställningarna";
 
 /* No comment provided by engineer. */
+"Double tap to listen the audio file" = "Dubbeltryck för att lyssna på ljudfilen";
+
+/* No comment provided by engineer. */
 "Double tap to move the block down" = "Dubbeltryck för att flytta blocket nedåt";
 
 /* No comment provided by engineer. */
@@ -2038,7 +2089,13 @@
 "Double tap to move the block up" = "Dubbeltryck för att flytta blocket uppåt";
 
 /* No comment provided by engineer. */
+"Double tap to open Action Sheet to edit, replace, or clear the image" = "Dubbeltryck för att öppna åtgärdsbladet där du kan redigera, ersätta eller ta bort bilden";
+
+/* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "Dubbeltryck för att öppna åtgärdsbladet med tillgängliga alternativ";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Dubbeltryck för att öppna nedre bladet där du kan redigera, ersätta eller ta bort bilden";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet with available options" = "Dubbeltryck för att öppna det nedre arket med tillgänliga alternativ";
@@ -2053,6 +2110,9 @@
 "Double tap to select a video" = "Dubbeltryck för att välja ett videoklipp";
 
 /* No comment provided by engineer. */
+"Double tap to select an audio file" = "Dubbeltryck för att välja en ljudfil";
+
+/* No comment provided by engineer. */
 "Double tap to select an image" = "Dubbeltryck för att välja en bild";
 
 /* translators: accessibility text (hint for selecting option) */
@@ -2064,10 +2124,14 @@
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "Dubbeltryck för att ångra senaste ändring";
 
+/* Download button title */
+"Download" = "Ladda ner";
+
 /* Title for the Jetpack Download Backup Site Screen */
 "Download Backup" = "Ladda ned säkerhetskopia";
 
-/* Title displayed for download backup action. */
+/* Title displayed for download backup action.
+   Title for button allowing user to backup their Jetpack site */
 "Download backup" = "Ladda ned säkerhetskopia";
 
 /* Title for the button that will download the backup file. */
@@ -2130,6 +2194,9 @@
 
 /* No comment provided by engineer. */
 "Edit file" = "Redigera fil";
+
+/* No comment provided by engineer. */
+"Edit focal point" = "Ändra plats i fokus";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Redigera nya inlägg och sidor med blockredigeraren.";
@@ -2203,7 +2270,7 @@
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "URL ej angiven";
 
-/* Button title about the enable notifications action */
+/* Button title for the enable site notifications action. */
 "Enable" = "Aktivera";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
@@ -2215,7 +2282,7 @@
 /* Title of a Quick Start Tour */
 "Enable post sharing" = "Aktivera delning av inlägg";
 
-/* Message informing the user about the enable notifications action */
+/* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Aktivera notiser från webbplats?";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
@@ -2274,9 +2341,6 @@
    Generic popup title for any type of error. */
 "Error" = "Fel";
 
-/* Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader. */
-"Error Blocking Site" = "Fel när webbplats skulle blockeras";
-
 /* Menus error title for a menu that received an error while trying to delete it. */
 "Error Deleting Menu" = "Fel vid radering av meny";
 
@@ -2304,6 +2368,12 @@
 
 /* There was an error enabling autoupdates for a plugin, placeholder is the plugin name */
 "Error enabling autoupdates for %@." = "Ett fel inträffade när automatiska uppdateringar skulle aktiveras för %@.";
+
+/* Error displayed when fixing a threat fails. */
+"Error fixing threat. Please contact our support." = "Ett fel inträffade när hotet skulle åtgärdas. Kontakta vår support.";
+
+/* Error displayed when ignoring a threat fails. */
+"Error ignoring threat. Please contact our support." = "Ett fel inträffade när hotet skulle ignoreras. Kontakta vår support.";
 
 /* Notice displayed after attempt to install a plugin fails. */
 "Error installing %@." = "Fel vid installation av %@.";
@@ -2431,6 +2501,9 @@
    The action failed */
 "Failed" = "Misslyckades";
 
+/* No comment provided by engineer. */
+"Failed to insert audio file. Please tap for options." = "Kunde inte lägga in ljudfil. Tryck för att visa alternativ.";
+
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Det gick inte att placera in media.\nKnacka här för alternativ.";
 
@@ -2538,18 +2611,27 @@
 /* Button title, confirm fixing all threats */
 "Fix all threats" = "Åtgärda alla hot";
 
+/* Title for button that will fix the threat */
+"Fix threat" = "Åtgärda hot";
+
+/* Displays the fixed threats */
+"Fixed" = "Åtgärdat";
+
+/* Subtitle displayed while the server is fixing threats */
+"Fixing Threats" = "Åtgärdar hot";
+
 /* Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Följ";
-
-/* Verb. An option to follow a site. */
-"Follow Site" = "Följ webbplats";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "Följ konversationen via e-post";
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "Följ andra webbplatser";
+
+/* Verb. An option to follow a site. */
+"Follow site" = "Följ webbplats";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "Följ dina favoritwebbplatser och hitta nya saker att läsa.";
@@ -2583,8 +2665,8 @@
    Verb. Button title. The user is following a blog. */
 "Following" = "Följer";
 
-/* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
-"Following %@" = "Följer %@";
+/* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
+"Following %1$@" = "Följer %1$@";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Following conversation by email" = "Följer konversationen via e-post";
@@ -2828,8 +2910,15 @@
 "Hide keyboard" = "Göm tangentbord";
 
 /* Displays the History screen from the editor's alert sheet
+   Title of a navigation button that opens the scan history view
    Title of the post history screen */
 "History" = "Historik";
+
+/* Message title displayed when we fail to fetch the status of the backup in progress. */
+"Hmm, we couldn’t find your backup status" = "Ajdå. Vi hittar ingen status för din säkerhetskopiering";
+
+/* Message title displayed when we fail to fetch the status of the restore in progress. */
+"Hmm, we couldn’t find your restore status" = "Ajdå. Vi hittar ingen status för din återställning";
 
 /* Moderation Keys Title
    Settings: Comments Moderation */
@@ -2851,8 +2940,14 @@
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hurra!\nNästan klart nu";
 
+/* Title for the fix section in Threat Details: Threat is fixed */
+"How did Jetpack fix it?" = "Hur åtgärdade Jetpack det?";
+
 /* How to create story description */
 "How to create a story post" = "Så skapar du ett berättelseinlägg";
+
+/* Title for the fix section in Threat Details */
+"How will we fix it?" = "Hur åtgärdar vi det?";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "Jag gillar den";
@@ -2886,6 +2981,12 @@
 
 /* Ignore action. Verb */
 "Ignore" = "Ignorera";
+
+/* Title for button that will ignore the threat */
+"Ignore threat" = "Ignorera hot";
+
+/* Displays the ignored threats */
+"Ignored" = "Ignorerad";
 
 /* Hint for image alt on image settings. */
 "Image Alt" = "Alt-text för bild";
@@ -3074,14 +3175,15 @@
 /* Description that explains that we are unable to auto fix the threat */
 "Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site." = "Jetpack Scan kan inte åtgärda detta hot automatiskt. Vi föreslår att du löser hotet manuellt: se till att WordPress, ditt tema och alla dina tillägg är uppdaterade och ta bort den kränkande koden, temat eller tillägget från din webbplats.";
 
-/* Description for a label when the scan has failed */
+/* Description for a label when the scan has failed
+   Error message shown when the scan start has failed. */
 "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Jetpack Scan kunde inte slutföra en genomsökning av din webbplats. Kontrollera om din webbplats ligger nere – om den inte gör det, försök igen. Om den gör det, eller om Jetpack Scan fortfarande har problem, kontakta vårt supportteam.";
 
 /* Description for a label when there are threats on the site, displays the number of threats, and the site's title */
-"Jetpack Scan found %1$d potential threats on %2$@. Please review each threat and take action." = "Jetpack Scan hittade %1$d potentiella hot den %2$@. Granska varje hot och avhjälp dem.";
+"Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Jetpack-genomsökningen hittade %1$d potentiella hot hos %2$@. Granska dem nedan och vidta åtgärder eller tryck på knappen ”Åtgärda allt”. Vi finns här om du behöver vår hjälp.";
 
 /* Description for a label when there is a single threat on the site, displays the site's title */
-"Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action." = "Jetpack Scan hittade 1 potentiellt hot den %1$@. Granska varje hot och avhjälp.";
+"Jetpack Scan found 1 potential threat with %1$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Jetpack-genomsökningen hittade ett potentiellt hot hos %1$@. Granska det nedan och vidta åtgärder eller tryck på knappen ”Åtgärda allt”. Vi finns här om du behöver vår hjälp.";
 
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will delete the affected file or directory." = "Jetpack Scan kommer att ta bort den berörda filen eller katalogen.";
@@ -3187,6 +3289,9 @@
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Låt oss hjälpa till";
 
+/* Title for the button that will dismiss this view. */
+"Let me know when finished!" = "Berätta för mig när det är klart!";
+
 /* Title for the app appearance setting for light mode */
 "Light" = "Ljus";
 
@@ -3291,6 +3396,12 @@
 /* Text displayed while loading plugins for a site */
 "Loading Plugins..." = "Läser in tillägg…";
 
+/* Text displayed while loading the scan history for a site */
+"Loading Scan History..." = "Laddar in genomsökningshistoriken ...";
+
+/* Text displayed while loading the scan section for a site */
+"Loading Scan..." = "Laddar in genomsökningen …";
+
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "Laddar in domäner";
 
@@ -3338,6 +3449,9 @@
 "Location unknown" = "Geografisk plats okänd";
 
 /* No comment provided by engineer. */
+"Lock icon" = "Låsikon";
+
+/* No comment provided by engineer. */
 "Log Files By Created Date" = "Loggfiler sorterade på datum";
 
 /* Button title.  Tapping takes the user to the login form.
@@ -3356,6 +3470,10 @@
 
 /* A generic error message for a failed log in. */
 "Log in failed. Please try again." = "Kunde inte logga in. Var vänlig försök igen.";
+
+/* Button title. Takes the user to the login by email flow.
+   Button title. Tapping begins our normal log in process. */
+"Log in or sign up with WordPress.com" = "Logga in eller registrera dig hos WordPress.com";
 
 /* Instruction text on the login's email address screen. */
 "Log in to the WordPress.com account you used to connect Jetpack." = "Logga in till det WordPress.com-konto du använde när du anslöt Jetpack.";
@@ -3440,6 +3558,12 @@
 /* An option to mark a post as unseen. */
 "Mark as unseen" = "Markera som ej visat";
 
+/* Notice title when updating a post's seen status succeeds. */
+"Marked post as seen" = "Inlägget markerat som visat";
+
+/* Notice title when updating a post's unseen status succeeds. */
+"Marked post as unseen" = "Inlägget markerat som ej visat";
+
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "Matchar användarkonton med hjälp av e-postadresser";
 
@@ -3456,6 +3580,7 @@
 "Me" = "Jag";
 
 /* Noun. Title. Links to the blog's Media library.
+   Tab bar title for the Media tab in Media Picker
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -3584,9 +3709,6 @@
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "Flytta blocket åt vänster från position %1$s till position %2$s";
-
-/* No comment provided by engineer. */
-"Move block position" = "Ändra blockets position";
 
 /* No comment provided by engineer. */
 "Move block right" = "Flytta blocket åt höger";
@@ -3787,6 +3909,9 @@
 "No activity yet" = "Inga åtgärder än";
 
 /* No comment provided by engineer. */
+"No application can handle this request." = "Det finns ingen applikation som kan hantera denna begäran.";
+
+/* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "Det finns inget program som kan hantera denna begäran. Installera ett webbläsarprogram.";
 
 /* A short message that informs the user no WordPress.com sites could be found. */
@@ -3820,14 +3945,21 @@
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "Inga uppgifter än";
 
+/* Title for the view when there aren't any fixed threats to display */
+"No fixed threats" = "Inga åtgärdade hot";
+
 /* Title for the no followed sites result screen */
 "No followed sites" = "Inga följda webbplatser";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "Inga följare än";
 
-/* Displayed when a call is made to load the revisions but there's no result or an error. */
+/* Displayed when a call is made to load the revisions but there's no result or an error.
+   Title for the view when there aren't any history items to display */
 "No history yet" = "Ingen historik än";
+
+/* Title for the view when there aren't any ignored threats to display */
+"No ignored threats" = "Inga ignorerade hot";
 
 /* Title displayed when the user has removed all Insights from display. */
 "No insights added yet" = "Inga insikter har lagts till än";
@@ -3927,6 +4059,9 @@
 /* Text displayed when theme name search has no matches */
 "No themes matching your search" = "Inga teman motsvarar din sökning";
 
+/* Message for a notice informing the user their scan completed and no threats were found */
+"No threats found" = "Inga hot hittades";
+
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
    No comment will be autoapproved
@@ -4024,20 +4159,19 @@
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    OK
+   OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    OK button to close the informative dialog on Gutenberg editor
    Submit button on prompt for user information.
-   Text for an alert's dismissal button.
-   Text of an OK button to dismiss a prompt.
    Title of a button that dismisses a prompt
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
    Title of primary button on alert prompting verify their accounts while attempting to publish */
 "OK" = "Fortsätt";
 
-/* Title for the button that will dismiss this view. */
-"OK, notify me!" = "Ok, avisera mig!";
+/* No comment provided by engineer. */
+"OPEN" = "ÖPPNA";
 
 /* Disabled */
 "Off" = "Av";
@@ -4071,6 +4205,7 @@
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
    Title for the view when there's an error loading time zones */
@@ -4228,6 +4363,9 @@
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "Sidrubrik. Tom";
 
+/* Title of notification displayed when a page has been successfully updated. */
+"Page updated" = "Sida uppdaterad";
+
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
 "Pages" = "Sidor";
@@ -4240,6 +4378,9 @@
 /* Placeholder to set a parent category for a new category.
    Title for selecting parent category of a category */
 "Parent Category" = "Förälder";
+
+/* Message informing the user that their pages parent has been set successfully */
+"Parent page successfully updated." = "Överordnad sida uppdaterades.";
 
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
@@ -4268,8 +4409,7 @@
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Klistra in utan formatering";
 
-/* Status for Media object that is being processed locally.
-   Status name for a comment that hasn't yet been approved. */
+/* Status for Media object that is being processed locally. */
 "Pending" = "Inväntar granskning";
 
 /* No comment provided by engineer. */
@@ -4295,6 +4435,9 @@
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Fotobibliotek";
+
+/* Tab bar title for the Photos tab in Media Picker */
+"Photos" = "Foton";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Foton från Pexels";
@@ -4398,6 +4541,9 @@
 
 /* Used on an error alert to prompt the user to try again */
 "Please try again later" = "Försök igen senare";
+
+/* Description for the Jetpack Restore Failed message. */
+"Please try again later or contact support." = "Försök igen senare eller kontakta supporten.";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "Försök igen senare.";
@@ -4521,6 +4667,12 @@
 /* translators: accessibility text. empty post title. */
 "Post title. Empty" = "Inläggsrubrik. Tom";
 
+/* Title of camera permissions screen */
+"Post to WordPress" = "Publicera på WordPress";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"Post updated" = "Inlägg uppdaterat";
+
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Postnummer";
 
@@ -4632,12 +4784,6 @@
    Title of the Private Badge */
 "Private" = "Privat";
 
-/* Title of a prompt */
-"Problem Following Site" = "Problem när webbplats ska följas";
-
-/* Title of a prompt */
-"Problem Unfollowing Site" = "Problem när webbplats ska sluta följas";
-
 /* No comment provided by engineer. */
 "Problem displaying block" = "Problem med att visa block";
 
@@ -4646,6 +4792,9 @@
 
 /* Error message title informing the user that a stream could not be loaded. */
 "Problem loading stream" = "Problem vid laddning av ström";
+
+/* No comment provided by engineer. */
+"Problem opening the audio" = "Svårigheter att öppna ljudfilen";
 
 /* No comment provided by engineer. */
 "Problem opening the video" = "Svårigheter att öppna videoklippet";
@@ -4918,6 +5067,12 @@
 "Replace Current Block" = "Ersätt aktuellt block";
 
 /* No comment provided by engineer. */
+"Replace audio" = "Ersätt ljudfilen";
+
+/* No comment provided by engineer. */
+"Replace file" = "Ersätt filen";
+
+/* No comment provided by engineer. */
 "Replace image or video" = "Ersätt en bild eller ett videoklipp";
 
 /* No comment provided by engineer. */
@@ -4949,7 +5104,7 @@
 "Reply to post…" = "Svara på inlägg …";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
-"Report This Post" = "Rapportera detta inlägg";
+"Report this post" = "Rapportera detta inlägg";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Kräv manuellt godkännande för kommentarer som innehåller fler än detta antal länkar.";
@@ -4996,20 +5151,36 @@
 /* The largest resolution allowed for uploading */
 "Resolution" = "Upplösning";
 
+/* Title for the fix section in Threat Details: Threat is not fixable */
+"Resolving the threat" = "Åtgärdar hotet";
+
 /* Title displayed for restore action.
+   Title for button allowing user to restore their Jetpack site
    Title for Jetpack Restore Complete screen
+   Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen */
+   Title for the Jetpack Restore Site Screen
+   Title of section showing restore status */
 "Restore" = "Återställ";
 
+/* Title for Jetpack Restore Failed screen */
+"Restore Failed" = "Återställningen misslyckades";
+
 /* Title for error displayed when restoring a site fails. */
-"Restore failed." = "Återställningen misslyckades.";
+"Restore failed" = "Återställning misslyckades";
 
 /* Label that describes the restore site action */
 "Restore site" = "Återställ webbplats";
 
 /* Button title for restore site action */
 "Restore to this point" = "Återställ till denna punkt";
+
+/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
+"Restored to %@" = "Återställd till %@";
+
+/* Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date.
+   Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
+"Restoring to %@" = "Återställer till %@";
 
 /* A prompt to attempt the failed network request again
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
@@ -5046,6 +5217,12 @@
 /* Share extension error dialog cancel button text */
 "Return to post" = "Återgå till inlägget";
 
+/* No comment provided by engineer. */
+"Reusable blocks aren't editable on WordPress for Android" = "Återanvändbara block kan inte redigeras i WordPress för Android";
+
+/* No comment provided by engineer. */
+"Reusable blocks aren't editable on WordPress for iOS" = "Återanvändbara block kan inte redigeras i WordPress för iOS";
+
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Återställ väntande ändring";
 
@@ -5055,20 +5232,15 @@
 /* Title of the screen that shows the revisions. */
 "Revision" = "Version";
 
-/* Title displayed when user swipes on a rewind cell
-   Title for button allowing user to rewind their Jetpack site
+/* Title for button allowing user to rewind their Jetpack site
    Title of section showing rewind status */
 "Rewind" = "Spola tillbaka";
 
-/* Title displayed in the Rewind Site alert, should match Calypso */
+/* Title displayed in the Restore Site alert, should match Calypso */
 "Rewind Site" = "Återställ webbplats till tidigare status";
 
-/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date.
-   Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
+/* Text showing the point in time the site is being currently rewinded to. %@' is a placeholder that will expand to a date. */
 "Rewinding to %@" = "Rullar tillbaka till %@";
-
-/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
-"Rewound to %@" = "Rullat tillbaka till %@";
 
 /* Post Rich content */
 "Rich Content" = "Formaterat innehåll";
@@ -5145,11 +5317,18 @@
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Sparar...";
 
-/* Noun. Links to a blog's Jetpack Scan screen. */
+/* Noun. Links to a blog's Jetpack Scan screen.
+   Title of the view */
 "Scan" = "Skanna";
 
 /* Button title that triggers a scan */
 "Scan Again" = "Skanna igen";
+
+/* Title for a notice informing the user their scan has completed */
+"Scan Finished" = "Genomsökningen klar";
+
+/* Title of the view */
+"Scan History" = "Genomsökningshistorik";
 
 /* Button title that triggers a scan */
 "Scan Now" = "Skanna nu";
@@ -5653,13 +5832,20 @@
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Permalänk";
 
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"So far, there are no fixed threats on your site." = "Hittills finns det inga åtgärdade hot på din webbplats.";
+
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"So far, there are no ignored threats on your site." = "Hittills finns det inga ignorerade hot på din webbplats.";
+
 /* Follower Totals label for social media followers */
 "Social" = "Sociala nät";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Uppladdning av vissa mediefiler misslyckades. Om du fortsätter med den här åtgärden kommer de mediefiler som inte laddats upp inte med i inlägget.\nSpara ändå?";
 
-/* Title for a label that appears when the scan failed */
+/* Title for a label that appears when the scan failed
+   Title for the error view when the scan start has failed */
 "Something went wrong" = "Något gick fel";
 
 /* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
@@ -5921,6 +6107,9 @@
 /* Accessibility of stats table. Placeholders will be populated with names of data shown in table. */
 "Table showing %@ and %@" = "Tabell för %1$@ och %2$@";
 
+/* Title for the tablet web preview */
+"Tablet" = "Surfplatta";
+
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
 "Tag" = "Tagga";
@@ -6104,11 +6293,11 @@
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "Det språk på vilket denna webbplats i första hand är skrivet.";
 
-/* Description that informs for label when there are no threats on a users site */
-"The last Jetpack scan completed and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "Den senaste Jetpack-genomsökningen är klar och allt ser bra ut.\n\nKör en manuell genomsökning nu eller vänta och låt Jetpack söka igenom din webbplats senare idag.";
+/* Description for label when there are no threats on a users site and how long ago the scan ran. */
+"The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "Den senaste Jetpack-genomsökningen kördes %1$@ och hittade inga risker.\n\nFör att kontrollera din webbplats igen kan du starta en genomsökning manuellt eller vänta tills Jetpack automatiskt söker igenom webbplatsen senare idag.";
 
-/* Description for label when there are no threats on a users site and how long ago the scan ran */
-"The last Jetpack scan ran %1$@ and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "Den senaste Jetpack-genomsökningen kördes %1$@ och allt såg bra ut.\n\nKör en manuell genomsökning nu eller vänta och låt Jetpack söka igenom din webbplats senare idag.";
+/* Description that informs for label when there are no threats on a users site */
+"The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "Den senaste Jetpack-genomsökningen hittade inga risker.\n\nFör att kontrollera din webbplats igen kan du starta en genomsökning manuellt eller vänta tills Jetpack automatiskt söker igenom webbplatsen senare idag.";
 
 /* WordPress.com Push Authentication Expired message */
 "The login request has expired. Log in to WordPress.com to try again." = "Inloggningsbegäran har löpt ut. Logga in på WordPress.com för att försöka igen.";
@@ -6154,6 +6343,12 @@
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "Den angivna användaren kan inte hittas. Kontrollera stavningen.";
+
+/* Title for the technical details section in Threat Details */
+"The technical details" = "De tekniska detaljerna";
+
+/* Message displayed when a threat is fixed successfully. */
+"The threat was successfully fixed." = "Hotet åtgärdades utan problem.";
 
 /* People: Invitation Error */
 "The user already has the specified role. Please, try assigning a different role." = "Användaren har redan den angivna rollen. Prova med att tilldela en annan roll.";
@@ -6223,9 +6418,6 @@
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Kunde inte visa detta inlägg.";
 
-/* Short notice that there was a problem following a site and instructions on how to notify us of the problem. */
-"There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen." = "Det uppstod ett problem när webbplatsen skulle följas. Om problemet kvarstår kan du kontakta oss via Jag > Hjälp & supportsidan.";
-
 /* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
 "There was a problem loading the media item." = "Det gick inte att läsa in mediaobjektet.";
 
@@ -6237,9 +6429,6 @@
 
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "Det uppstod ett problem när ändringarna i delningshanteringen skulle sparas.";
-
-/* Short notice that there was a problem unfollowing a site and instructions on how to notify us of the problem. */
-"There was a problem unfollowing the site. If the problem persists you can contact us via the Me > Help & Support screen." = "Det uppstod ett problem när webbplatsen skulle sluta följas. Om problemet kvarstår kan du kontakta oss via Jag > Hjälp & supportsidan.";
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Ett problem uppstod med åtkomsten till din plats. Försök igen senare.";
@@ -6266,6 +6455,12 @@
 /* Text displayed when there is a failure loading the plan details */
 "There was an error loading the plan" = "Det uppstod ett fel när paketet laddades.";
 
+/* Text displayed when there is a failure loading the history feed */
+"There was an error loading the scan history" = "Ett fel inträffade när genomsökningshistoriken skulle laddas in";
+
+/* Text displayed when there is a failure loading the status */
+"There was an error loading the scan status" = "Ett fel inträffade när genomsökningens status skulle laddas in";
+
 /* Text displayed when there is a failure loading the plugin */
 "There was an error loading this plugin" = "Ett fel inträffade när detta tillägg laddades";
 
@@ -6278,8 +6473,14 @@
 /* Updating Role failed error message */
 "There was an error updating @%@" = "Ett fel inträffade vid uppdatering av @%@";
 
+/* Text displayed when user tries to create a downloadable backup when there is already one being prepared */
+"There's a backup currently being prepared, please wait before starting the next one" = "En säkerhetskopiering pågår just nu, vänta innan du startar nästa";
+
 /* Text displayed when user tries to start a restore when there is already one running */
 "There's a restore currently in progress, please wait before starting next one" = "En återställning pågår just nu, vänta lite innan du startar en ny";
+
+/* Text displayed when user tries to start a restore when there is already one running */
+"There's a restore currently in progress, please wait before starting the next one" = "En återställning pågår just nu, vänta lite innan du startar en ny";
 
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "De publiceras som ett nytt blogginlägg på din webbplats för att dina läsare aldrig ska missa något.";
@@ -6352,8 +6553,17 @@
 /* Title for a threat */
 "Threat Found" = "Hot upptäckt";
 
+/* Title for the Jetpack Scan Threat Details screen */
+"Threat details" = "Uppgifter om hot";
+
 /* Summary description for a threat that includes the threat signature */
 "Threat found %1$@" = "Hot hittat %1$@";
+
+/* Description for threat file */
+"Threat found in file:" = "Hot hittades i fil:";
+
+/* Message displayed when a threat is ignored successfully. */
+"Threat ignored." = "Hotet ignorerades.";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Miniatyr";
@@ -6379,6 +6589,7 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
+   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "Rubrik";
@@ -6523,6 +6734,8 @@
 "Try adjusting your date range or activity type filters" = "Försök att justera ditt datumintervall eller filtreringen av aktivitetstyp";
 
 /* Button label for trying to retrieve the activities type again
+   Button label for trying to retrieve the history again
+   Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
@@ -6542,6 +6755,12 @@
 
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "Slå på webbplatsnotiser";
+
+/* Notice title when turning site notifications off succeeds. */
+"Turned off site notifications" = "Webbplatsaviseringar har stängts av";
+
+/* Notice title when turning site notifications on succeeds. */
+"Turned on site notifications" = "Webbplatsaviseringar har slagits på";
 
 /* Launches the Twitter App */
 "Twitter" = "Twitter";
@@ -6576,11 +6795,20 @@
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Det gick inte att synkronisera";
 
+/* Notice title when blocking a site fails. */
+"Unable to block site" = "Kan inte blockera webbplats";
+
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "Kan inte radera alla medieobjekt.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Kan inte radera medieobjekt.";
+
+/* Message displayed when opening the link to the downloadable backup fails. */
+"Unable to download file" = "Det gick inte att ladda ned filen";
+
+/* Notice title when following a site fails. */
+"Unable to follow site" = "Kunde inte följa webbplatsen";
 
 /* Error message displayed when we were unable to copy the URL for an item in the user's media library. */
 "Unable to get URL for media item." = "Det går inte att få fram mediaobjektets URL.";
@@ -6601,10 +6829,10 @@
 /* Error shown when the app fails to load a video from the user's media library. */
 "Unable to load video." = "Det går inte att ladda in videoklippet.";
 
-/* Alert displayed to the user when updating a post's seen status failed. */
+/* Notice title when updating a post's seen status failed. */
 "Unable to mark post seen" = "Det gick inte att markera inlägget som visat";
 
-/* Alert displayed to the user when updating a post's unseen status failed. */
+/* Notice title when updating a post's unseen status failed. */
 "Unable to mark post unseen" = "Det gick inte att markera inlägget som ej visat";
 
 /* Dialog box title for when the user is canceling an upload. */
@@ -6616,17 +6844,32 @@
 /* Alert title when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
 "Unable to register domain" = "Det går inte att registrera domänen";
 
+/* Title for the Jetpack Restore Failed message. */
+"Unable to restore your site" = "Kan inte återställa din webbplats";
+
 /* Text displayed when a site restore fails. */
 "Unable to restore your site, please try again later or contact support." = "Det går inte att återställa din webbplats. Försök igen senare eller kontakta din support.";
 
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "Kan inte spara medieobjket.";
 
+/* Message displayed when sharing a link to the downloadable backup fails. */
+"Unable to share link" = "Kan inte dela länken";
+
 /* Message that appears when a user tries to trash a page while their device is offline. */
 "Unable to trash pages while offline. Please try again later." = "Det går inte att lägga sidor i papperskorgen när du saknar internetanslutning. Försök igen senare.";
 
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "Det går inte att kasta inlägg i papperskorgen utan internet-anslutning. Försök igen senare.";
+
+/* Notice title when turning site notifications off fails. */
+"Unable to turn off site notifications" = "Kan inte stänga av webbplatsaviseringar";
+
+/* Notice title when turning site notifications on fails. */
+"Unable to turn on site notifications" = "Kan inte slå på webbplatsaviseringar";
+
+/* Notice title when unfollowing a site fails. */
+"Unable to unfollow site" = "Kan inte ta sluta följa webbplatsen";
 
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "Kan inte uppdatera inställningar för startsida";
@@ -6654,6 +6897,9 @@
 
 /* Error message displayed when an error occurred checking for email availability. */
 "Unable to verify the email address. Please try again later." = "Kunde inte verifiera e-postadressen. Försök igen senare.";
+
+/* Message displayed when visiting a site fails. */
+"Unable to visit site" = "Kan inte besöka webbplatsen";
 
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "Kan inte skriva bild till fil";
@@ -6686,9 +6932,10 @@
 "Unfollow %@" = "Sluta att följa %@";
 
 /* Verb. An option to unfollow a site. */
-"Unfollow Site" = "Sluta följa webbplats";
+"Unfollow site" = "Sluta följa webbplats";
 
-/* User unfollowed a site. */
+/* Notice title when unfollowing a site succeeds.
+   User unfollowed a site. */
 "Unfollowed site" = "Webbplats som slutat följas";
 
 /* Spoken hint describing action for selected following buttons. */
@@ -6841,6 +7088,9 @@
 
 /* Label to show while uploading media to server */
 "Uploading..." = "Laddar upp ...";
+
+/* No comment provided by engineer. */
+"Uploading…" = "Laddar upp ...";
 
 /* Title for alert when trying to save post with failed media items */
 "Uploads failed" = "Filer kunde inte laddas upp";
@@ -7157,6 +7407,12 @@
 /* Text displayed if a media couldnt be uploaded. */
 "We couldn't upload this media." = "Mediafilen kunde inte laddas upp.";
 
+/* Hint displayed when we fail to fetch the status of the backup in progress. */
+"We couldn’t find the status to say how long your backup will take." = "Vi lyckades inte hitta statusläget för att kunna säga hur lång tid säkerhetskopieringen kommer att ta.";
+
+/* Hint displayed when we fail to fetch the status of the restore in progress. */
+"We couldn’t find the status to say how long your restore will take." = "Vi lyckades inte hitta statusläget för att kunna säga hur lång tid återställningen kommer att ta.";
+
 /* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
 "We had trouble loading connections for %@" = "Vi hade problem med att läsa in anslutningar för %@";
 
@@ -7168,6 +7424,9 @@
 
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "Vi har gjort stora förbättringar i blockredigeraren, ta och prova den!\n\nDen är aktiverad för nya inlägg och nya sidor. Om du vill ändra till den klassiska redigeraren kan du göra detta under ”Min webbplats” > ”Inställningar”.";
+
+/* Message displayed when a backup has finished */
+"We successfully created a backup of your site as of %@" = "Vi har skapat en säkerhetskopia av din webbplats per %1$@.";
 
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
 "We successfully created a backup of your site from %1$@." = "Vi har skapat en säkerhetskopia av din webbplats för %1$@.";
@@ -7245,6 +7504,9 @@
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "Vi konfigurerar det sista – nästan klart nu...";
 
+/* Detail text display informing the user that we're fixing threats */
+"We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Vi arbetar intensivt med att rätta dessa hot i bakgrunden. Under tiden kan du fortsätta att använda din webbplats som vanligt. Du kan när som helst kolla hur arbetet fortskrider.";
+
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Vi kan inte ansluta till Jetpack-webbplatsen på denna URL. Kontakta oss och be om hjälp.";
 
@@ -7290,6 +7552,16 @@
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Vi skickar dig alltid viktiga e-postmeddelanden om ditt konto, men du kan även få värdefullt extramaterial.";
 
+/* Hint displayed when we fail to fetch the status of the backup in progress.
+   Hint displayed when we fail to fetch the status of the restore in progress. */
+"We’ll notify you when its done." = "Vi aviserar dig när det är klart.";
+
+/* Hint displayed when we fail to fetch the status of the backup in progress. */
+"We’ll still attempt to backup your site." = "Vi kommer ändå att försöka säkerhetskopiera din webbplats.";
+
+/* Hint displayed when we fail to fetch the status of the restore in progress. */
+"We’ll still attempt to restore your site." = "Vi kommer ändå att försöka återställa din webbplats.";
+
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "Vi hjälper dig genom grunderna i att bygga din webbplats och hitta fler läsare";
 
@@ -7304,6 +7576,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Vad vill du göra med denna fil: ladda upp den till webbplatsen och länka till filen i ditt inlägg eller lägga till filens innehåll direkt i inlägget?";
+
+/* Title for the problem section in the Threat Details */
+"What was the problem?" = "Vad var problemet?";
 
 /* Title of section that contains plugins' change log */
 "What's New" = "Vad är nytt?";
@@ -7595,6 +7870,9 @@
 /* No comment provided by engineer. */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Det verkar som att du har installerat ett mobiltillägg från DudaMobile som förhindrar att appen ansluter till din blogg";
 
+/* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
+"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Du bör inte ignorera ett säkerhetshot om du inte är helt säker på att det är ofarligt. Om du väljer att ignorera detta hot kommer det att finnas kvar på din webbplats ”%1$@”.";
+
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "Du kommer inte att kunna ändra till ditt tidigare användarnamn.";
 
@@ -7627,6 +7905,9 @@
 
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "Din säkerhetskopia är nu tillgänglig för nedladdning";
+
+/* Text displayed when a site backup takes too long. */
+"Your backup is taking longer than usual, please check again in a few minutes." = "Din säkerhetskopiering tar längre tid än normalt. Kolla igen om några minuter.";
 
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Ditt aktuella användarnamn är %1$@. För det allra mesta kommer andra personer bara att se ditt visningsnamn, %2$@.";
@@ -7664,7 +7945,7 @@
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Din webbplats har återställts utan problem";
 
-/* Title of a message displayed when user starts a rewind operation */
+/* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Din webbplats återställs";
 
 /* Hint for users when private privacy setting is set */

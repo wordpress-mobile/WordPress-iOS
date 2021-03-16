@@ -66,6 +66,59 @@ class InvitePersonViewController: UITableViewController {
         return roles
     }
 
+    private lazy var inviteActivityView: UIActivityIndicatorView = {
+        let activityView = UIActivityIndicatorView(style: .medium)
+        activityView.startAnimating()
+        return activityView
+    }()
+
+    private var updatingInviteLinks = false {
+        didSet {
+            guard updatingInviteLinks != oldValue else {
+                return
+            }
+
+            if updatingInviteLinks == false {
+                generateShareCell.accessoryView = nil
+                disableLinksCell.accessoryView = nil
+                return
+            }
+
+            if blog.inviteLinks?.count == 0 {
+                generateShareCell.accessoryView = inviteActivityView
+            } else {
+                disableLinksCell.accessoryView = inviteActivityView
+            }
+        }
+    }
+
+    private var sortedInviteLinks: [InviteLinks] {
+        guard
+            let links = blog.inviteLinks?.array as? [InviteLinks]
+        else {
+            return []
+        }
+        return availableRoles.compactMap { role -> InviteLinks? in
+            return links.first { link -> Bool in
+                link.role == role.slug
+            }
+        }
+    }
+
+    private var selectedInviteLinkIndex = 0 {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+
+    private var currentInviteLink: InviteLinks? {
+        let links = sortedInviteLinks
+        guard links.count > 0 && selectedInviteLinkIndex < links.count else {
+            return nil
+        }
+        return links[selectedInviteLinkIndex]
+    }
+
     private let rolesDefinitionUrl = "https://wordpress.com/support/user-roles/"
     private let messageCharacterLimit = 500
 
@@ -106,7 +159,29 @@ class InvitePersonViewController: UITableViewController {
         }
     }
 
+    @IBOutlet private var generateShareCell: UITableViewCell! {
+        didSet {
+            refreshGenerateShareCell()
+        }
+    }
 
+    @IBOutlet private var currentInviteCell: UITableViewCell! {
+        didSet {
+            refreshCurrentInviteCell()
+        }
+    }
+
+    @IBOutlet private var expirationCell: UITableViewCell! {
+        didSet {
+            refreshExpirationCell()
+        }
+    }
+
+    @IBOutlet private var disableLinksCell: UITableViewCell! {
+        didSet {
+            refreshDisableLinkCell()
+        }
+    }
 
     // MARK: - View Lifecyle Methods
 
@@ -116,6 +191,12 @@ class InvitePersonViewController: UITableViewController {
         setupDefaultRole()
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+        // Use the system separator color rather than the one defined by WPStyleGuide
+        // so cell separators stand out in darkmode.
+        tableView.separatorColor = .separator
+        if blog.isWPForTeams() {
+            syncInviteLinks()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -125,6 +206,31 @@ class InvitePersonViewController: UITableViewController {
 
 
     // MARK: - UITableView Methods
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // Hide the last section if the site is not a p2.
+        let count = super.numberOfSections(in: tableView)
+        return blog.isWPForTeams() ? count : count - 1
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard
+            blog.isWPForTeams(),
+            section == numberOfSections(in: tableView) - 1
+        else {
+            // If not a P2 or not the last section, just call super.
+            return super.tableView(tableView, numberOfRowsInSection: section)
+        }
+        // One cell for no cached inviteLinks. Otherwise 4.
+        return blog.inviteLinks?.count == 0 ? 1 : 4
+    }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard Section.inviteLink == Section(rawValue: section) else {
+            return nil
+        }
+        return NSLocalizedString("Invite Link", comment: "Title for the Invite Link section of the Invite Person screen.")
+    }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         let sectionType = Section(rawValue: section)
@@ -146,13 +252,31 @@ class InvitePersonViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Workaround for UIKit issue where labels text are set to nil
         // when user changes system font size in static tables (dynamic type)
-        setupRoleCell()
-        refreshRoleCell()
-        refreshUsernameCell()
-        refreshMessageTextView()
+        switch Section(rawValue: indexPath.section) {
+        case .username:
+            refreshUsernameCell()
+        case .role:
+            setupRoleCell()
+            refreshRoleCell()
+        case .message:
+            refreshMessageTextView()
+        case .inviteLink:
+            refreshInviteLinkCell(indexPath: indexPath)
+        case .none:
+            break
+        }
+
         return super.tableView(tableView, cellForRowAt: indexPath)
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.section == Section.inviteLink.rawValue else {
+            // There is no valid `super` implementation so do not call it.
+            return
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
+        handleInviteLinkRowTapped(indexPath: indexPath)
+    }
 
     // MARK: - Storyboard Methods
 
@@ -168,6 +292,8 @@ class InvitePersonViewController: UITableViewController {
             setupRoleSegue(segue)
         case .Message:
             setupMessageSegue(segue)
+        case .InviteRole:
+            setupInviteRoleSegue(segue)
         }
     }
 
@@ -225,6 +351,18 @@ class InvitePersonViewController: UITableViewController {
         }
     }
 
+    private func setupInviteRoleSegue(_ segue: UIStoryboardSegue) {
+        guard let roleViewController = segue.destination as? RoleViewController else {
+            return
+        }
+
+        roleViewController.roles = availableRoles
+        roleViewController.selectedRole = currentInviteLink?.role
+        roleViewController.onChange = { [unowned self] newRole in
+            self.selectedInviteLinkIndex = self.availableRoles.firstIndex(where: { $0.slug == newRole }) ?? 0
+        }
+    }
+
 
     // MARK: - Private Enums
 
@@ -232,6 +370,7 @@ class InvitePersonViewController: UITableViewController {
         case Username   = "username"
         case Role       = "role"
         case Message    = "message"
+        case InviteRole = "inviteRole"
     }
 
     // The case order matches the custom sections order in People.storyboard.
@@ -239,6 +378,7 @@ class InvitePersonViewController: UITableViewController {
         case username
         case role
         case message
+        case inviteLink
 
         var footerText: String? {
             switch self {
@@ -247,10 +387,20 @@ class InvitePersonViewController: UITableViewController {
             case .message:
                 // messageCharacterLimit cannot be accessed here, so the caller will insert it in the string.
                 return NSLocalizedString("Optional: Enter a custom message up to %1$d characters to be sent with your invitation.", comment: "Footer text for Invite People message field. %1$d is the maximum number of characters allowed.")
+            case .inviteLink:
+                return NSLocalizedString("Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted people.", comment: "Footer text for Invite Links section of the Invite People screen.")
             default:
                 return nil
             }
         }
+    }
+
+    // These represent the rows of the invite links section, in the order the rows appear.
+    private enum InviteLinkRow: Int {
+        case generateShare
+        case role
+        case expires
+        case disable
     }
 
 }
@@ -317,8 +467,13 @@ extension InvitePersonViewController {
     }
 
     private func addTapGesture(toView footerView: UIView, inSection section: Int) {
-        guard let footer = footerView as? UITableViewHeaderFooterView,
-           Section(rawValue: section) == .role else {
+        guard let footer = footerView as? UITableViewHeaderFooterView else {
+            return
+        }
+        guard Section(rawValue: section) == .role else {
+            footer.textLabel?.isUserInteractionEnabled = false
+            footer.accessibilityTraits = .staticText
+            footer.gestureRecognizers?.removeAll()
             return
         }
 
@@ -410,6 +565,227 @@ private extension InvitePersonViewController {
     }
 }
 
+// MARK: - Invite Links related.
+//
+private extension InvitePersonViewController {
+
+    func refreshInviteLinkCell(indexPath: IndexPath) {
+        guard let row = InviteLinkRow(rawValue: indexPath.row) else {
+            return
+        }
+        switch row {
+        case .generateShare:
+            refreshGenerateShareCell()
+        case .role:
+            refreshCurrentInviteCell()
+        case .expires:
+            refreshExpirationCell()
+        case .disable:
+            refreshDisableLinkCell()
+        }
+    }
+
+    func refreshGenerateShareCell() {
+        if blog.inviteLinks?.count == 0 {
+            generateShareCell.textLabel?.text = NSLocalizedString("Generate new link", comment: "Title. A call to action to generate a new invite link.")
+            generateShareCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
+        } else {
+            generateShareCell.textLabel?.attributedText = createAttributedShareInviteText()
+        }
+        generateShareCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
+        generateShareCell.textLabel?.textAlignment = .center
+        generateShareCell.textLabel?.textColor = .primary
+    }
+
+    func createAttributedShareInviteText() -> NSAttributedString {
+        let pStyle = NSMutableParagraphStyle()
+        pStyle.alignment = .center
+        let font = WPStyleGuide.tableviewTextFont()
+        let textAttributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .paragraphStyle: pStyle
+        ]
+
+        let image = UIImage.gridicon(.shareiOS)
+        let attachment = NSTextAttachment(image: image)
+        attachment.bounds = CGRect(x: 0,
+                                   y: (font.capHeight - image.size.height)/2,
+                                   width: image.size.width,
+                                   height: image.size.height)
+        let textStr = NSAttributedString(string: NSLocalizedString("Share invite link", comment: "Title. A call to action to share an invite link."), attributes: textAttributes)
+        let attrStr = NSMutableAttributedString(attachment: attachment)
+        attrStr.append(NSAttributedString(string: " "))
+        attrStr.append(textStr)
+        return attrStr
+    }
+
+    func refreshCurrentInviteCell() {
+        guard selectedInviteLinkIndex < availableRoles.count else {
+            return
+        }
+
+        currentInviteCell.textLabel?.text = NSLocalizedString("Role", comment: "Title. Indicates the user role an invite link is for.")
+        currentInviteCell.textLabel?.textColor = .text
+
+        // sortedInviteLinks and availableRoles should be complimentary. We can cheat a little and
+        // get the localized "display name" to use from availableRoles rather than
+        // trying to capitalize the role slug from the current invite link.
+        let role = availableRoles[selectedInviteLinkIndex]
+        currentInviteCell.detailTextLabel?.text = role.name
+
+        WPStyleGuide.configureTableViewCell(currentInviteCell)
+    }
+
+    func refreshExpirationCell() {
+        guard
+            let invite = currentInviteLink,
+            invite.expiry > 0
+        else {
+            return
+        }
+
+        expirationCell.textLabel?.text = NSLocalizedString("Expires on", comment: "Title. Indicates an expiration date.")
+        expirationCell.textLabel?.textColor = .text
+
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        let date = Date(timeIntervalSince1970: Double(invite.expiry))
+        expirationCell.detailTextLabel?.text = formatter.string(from: date)
+
+        WPStyleGuide.configureTableViewCell(expirationCell)
+    }
+
+    func refreshDisableLinkCell() {
+        disableLinksCell.textLabel?.text = NSLocalizedString("Disable invite link", comment: "Title. A call to action to disable invite links.")
+        disableLinksCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
+        disableLinksCell.textLabel?.textColor = .error
+        disableLinksCell.textLabel?.textAlignment = .center
+    }
+
+    func syncInviteLinks() {
+        guard let siteID = blog.dotComID?.intValue else {
+            return
+        }
+        let service = PeopleService(blog: blog, context: context)
+        service?.fetchInviteLinks(siteID, success: { [weak self] _ in
+            self?.bumpStat(event: .inviteLinksGetStatus, error: nil)
+            self?.updatingInviteLinks = false
+            self?.tableView.reloadData()
+        }, failure: { [weak self] error in
+            // Fail silently.
+            self?.bumpStat(event: .inviteLinksGetStatus, error: error)
+            self?.updatingInviteLinks = false
+            DDLogError("Error syncing invite links. \(error)")
+        })
+    }
+
+    func generateInviteLinks() {
+        guard
+            updatingInviteLinks == false,
+            let siteID = blog.dotComID?.intValue
+        else {
+            return
+        }
+        updatingInviteLinks = true
+        let service = PeopleService(blog: blog, context: context)
+        service?.generateInviteLinks(siteID, success: { [weak self] _ in
+            self?.bumpStat(event: .inviteLinksGenerate, error: nil)
+            self?.updatingInviteLinks = false
+            self?.tableView.reloadData()
+        }, failure: { [weak self] error in
+            self?.bumpStat(event: .inviteLinksGenerate, error: error)
+            self?.updatingInviteLinks = false
+            self?.displayNotice(title: NSLocalizedString("Unable to create new invite links.", comment: "An error message shown when there is an issue creating new invite links."))
+            DDLogError("Error generating invite links. \(error)")
+        })
+    }
+
+    func shareInviteLink() {
+        guard
+            let link = currentInviteLink?.link,
+            let url = URL(string: link) as NSURL?
+        else {
+            return
+        }
+
+        let controller = PostSharingController()
+        controller.shareURL(url: url, fromRect: generateShareCell.frame, inView: view, inViewController: self)
+        bumpStat(event: .inviteLinksShare, error: nil)
+    }
+
+    func handleDisableTapped() {
+        guard updatingInviteLinks == false else {
+            return
+        }
+
+        let title = NSLocalizedString("Disable invite link", comment: "Title. Title of a prompt to disable group invite links.")
+        let message = NSLocalizedString("Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?", comment: "Warning message about disabling group invite links.")
+        let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        controller.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Title. Title of a cancel button. Tapping disnisses an alert."))
+        let action = UIAlertAction(title: NSLocalizedString("Disable", comment: "Title. Title of a button that will disable group invite links when tapped."),
+                                   style: .destructive) { [weak self] _ in
+            self?.disableInviteLinks()
+        }
+        controller.addAction(action)
+        controller.preferredAction = action
+        present(controller, animated: true, completion: nil)
+    }
+
+    func disableInviteLinks() {
+        guard let siteID = blog.dotComID?.intValue else {
+            return
+        }
+        updatingInviteLinks = true
+        let service = PeopleService(blog: blog, context: context)
+        service?.disableInviteLinks(siteID, success: { [weak self] in
+            self?.bumpStat(event: .inviteLinksDisable, error: nil)
+            self?.updatingInviteLinks = false
+            self?.tableView.reloadData()
+        }, failure: { [weak self] error in
+            self?.bumpStat(event: .inviteLinksDisable, error: error)
+            self?.updatingInviteLinks = false
+            self?.displayNotice(title: NSLocalizedString("Unable to disable invite links.", comment: "An error message shown when there is an issue creating new invite links."))
+            DDLogError("Error disabling invite links. \(error)")
+        })
+    }
+
+    func handleInviteLinkRowTapped(indexPath: IndexPath) {
+        guard let row = InviteLinkRow(rawValue: indexPath.row) else {
+            return
+        }
+        switch row {
+        case .generateShare:
+            if blog.inviteLinks?.count == 0 {
+                generateInviteLinks()
+            } else {
+                shareInviteLink()
+            }
+        case .disable:
+            handleDisableTapped()
+        default:
+            // .role is handled by a segue.
+            // .expires is a no op
+            break
+        }
+    }
+
+    func bumpStat(event: WPAnalyticsEvent, error: Error?) {
+        let resultKey = "invite_links_action_result"
+        let errorKey = "invite_links_action_error_message"
+        var props = [AnyHashable: Any]()
+        if let err = error {
+            props = [
+                resultKey: "error",
+                errorKey: "\(err)"
+            ]
+        } else {
+            props = [
+                resultKey: "success"
+            ]
+        }
+        WPAnalytics.track(event, properties: props, blog: blog)
+    }
+}
 
 // MARK: - Private Helpers: Initializing Interface
 //

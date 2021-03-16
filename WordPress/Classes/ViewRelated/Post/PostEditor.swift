@@ -19,15 +19,11 @@ typealias EditorViewController = UIViewController & PostEditor
 
 /// Common interface to all editors
 ///
-protocol PostEditor: class, UIViewControllerTransitioningDelegate {
+protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
 
     /// The post being edited.
     ///
     var post: AbstractPost { get set }
-
-    /// Closure to be executed when the editor gets closed.
-    ///
-    var onClose: ((_ changesSaved: Bool, _ shouldShowPostPost: Bool) -> Void)? { get set }
 
     /// Whether the editor should open directly to the media picker.
     ///
@@ -63,8 +59,6 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
 
     var isUploadingMedia: Bool { get }
 
-    func removeFailedMedia()
-
     /// Verification prompt helper
     var verificationPromptHelper: VerificationPromptHelper? { get }
 
@@ -95,9 +89,6 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
     /// Returns the media attachment removed version of html
     func contentByStrippingMediaAttachments() -> String
 
-    /// Debouncer used to save the post locally with a delay
-    var debouncer: Debouncer { get }
-
     /// Navigation bar manager for this post editor
     var navigationBarManager: PostEditorNavigationBarManager { get }
 
@@ -111,9 +102,6 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
     var autosaver: Autosaver { get set }
     /// true if the post is the result of a reblog
     var postIsReblogged: Bool { get set }
-
-    /// Returns the word counts of the content in the editor.
-    var wordCount: UInt { get }
 }
 
 extension PostEditor {
@@ -144,11 +132,15 @@ extension PostEditor {
         return currentBlogCount <= 1 || post.hasRemote()
     }
 
-    var uploadFailureNoticeTag: Notice.Tag {
-        return "PostEditor.UploadFailed"
+    var alertBarButtonItem: UIBarButtonItem? {
+        return navigationBarManager.closeBarButtonItem
     }
 
-    func uploadFailureNotice(action: PostEditorAction) -> Notice {
-        return Notice(title: action.publishingErrorLabel, tag: uploadFailureNoticeTag)
+    var prepublishingSourceView: UIView? {
+        return navigationBarManager.publishButton
+    }
+
+    var prepublishingIdentifiers: [PrepublishingIdentifier] {
+        return [.visibility, .schedule, .tags, .categories]
     }
 }

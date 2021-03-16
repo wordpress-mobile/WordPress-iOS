@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-04 14:54:08+0000 */
+/* Translation-Revision-Date: 2021-03-04 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -9,23 +9,23 @@
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nTo confirm, please re-enter your site's address before deleting.\n\n";
 
+/* No comment provided by engineer. */
+" audio file" = "音訊檔案";
+
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "「延遲載入」圖片";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "「更多」按鈕";
 
-/* No comment provided by engineer. */
+/* Description for the restore action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point for your restore." = "%1$@ 是選定還原資料的時間點。";
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point to create a downloadable backup." = "%1$@ 是選定建立可下載備份的時間點。";
 
-/* 'AUTHOR on POST TITLE' in a comment list */
+/* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%2$@ 上的 %1$@";
-
-/* 'AUTHOR on POST TITLE: COMMENT' in a comment list */
-"%1$@ on %2$@: %3$@" = "%2$@ 上的 %1$@：%3$@";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "已完成 %2$d 個，共 %1$d 個";
@@ -163,6 +163,9 @@
 /* Number of posts */
 "%d posts" = "%d 篇文章";
 
+/* Message for a notice informing the user their scan completed and %d threats were found */
+"%d potential threats found" = "發現 %d 個潛在威脅";
+
 /* Age between dates over one year. */
 "%d years" = "%d 年";
 
@@ -237,6 +240,9 @@
 /* Alert displayed to the user when a single media item attached to a post has failed to upload. */
 "1 post, 1 file not uploaded" = "無法上傳 1 篇文章和 1 個檔案";
 
+/* Message for a notice informing the user their scan completed and 1 threat was found */
+"1 potential threat found" = "發現 1 個潛在威脅";
+
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
 
@@ -284,6 +290,9 @@
 
 /* Label for active Theme browser cell */
 "ACTIVE" = "使用中";
+
+/* No comment provided by engineer. */
+"ADD AUDIO" = "新增音訊";
 
 /* No comment provided by engineer. */
 "ADD BLOCK HERE" = "在此新增區塊";
@@ -335,6 +344,7 @@
 "Activation Error" = "啟用錯誤";
 
 /* Describes a status of a plugin
+   Label for active Theme
    Whether a plugin is active on a site */
 "Active" = "已啟用";
 
@@ -507,6 +517,7 @@
 
 /* Autoapprove every comment
    Browse all themes selection title
+   Displays all of the historical threats
    Displays all of the Notifications, unfiltered */
 "All" = "全部";
 
@@ -536,6 +547,9 @@
 
 /* Jetpack Settings: Allow WordPress.com login */
 "Allow WordPress.com login" = "允許 WordPress.com 登入";
+
+/* Message on camera permissions screen to explain why the app needs camera and microphone permissions */
+"Allow access so you can start taking photos and videos." = "允許存取，以開始拍攝相片和影片。";
 
 /* A short description of the comment like sharing setting. */
 "Allow all comments to be Liked by you and your readers" = "允許你和你的讀者對所有留言按讚";
@@ -567,6 +581,9 @@
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "需要有效的網際網路連線";
 
+/* Error message shown when trying to view the scan status and there is no internet connection. */
+"An active internet connection is required to view Jetpack Scan" = "需要有效的網際網路連線才能檢視 Jetpack Scan";
+
 /* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
 "An active internet connection is required to view activities" = "需要有效的網際網路連線才能檢視活動";
 
@@ -579,6 +596,9 @@
 
 /* Error message shown when trying to view Stats and there is no internet connection. */
 "An active internet connection is required to view stats" = "需要有效的網際網路連線才能檢視統計";
+
+/* Error message shown when trying to view the Scan History feature and there is no internet connection. */
+"An active internet connection is required to view the history" = "需要有效的網際網路連線才能檢視歷史記錄";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "建立「選單」時發生錯誤。";
@@ -702,7 +722,7 @@
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "是否確定要將網站還原至 %1$@？ 這將移除在此後建立或變更的內容和選項。";
 
 /* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
-"Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then." = "Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then.";
+"Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost." = "確定要將你的網站還原至 %@？\n你在那之後所做的任何變更都會遺失。";
 
 /* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
 "Are you sure you want to save as draft?" = "是否確定要儲存為草稿？";
@@ -730,6 +750,15 @@
 
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "附加檔案連結";
+
+/* No comment provided by engineer. */
+"Audio Player" = "音樂播放器";
+
+/* translators: accessibility text. %s: Audio caption. */
+"Audio caption. %s" = "音訊字幕。 %s";
+
+/* translators: accessibility text. Empty Audio caption. */
+"Audio caption. Empty" = "音訊字幕。 清空";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "音訊，%@";
@@ -804,14 +833,19 @@
    Spoken accessibility label */
 "Back" = "上一頁";
 
+/* Title of the cell displaying status of a backup in progress */
+"Backing up site" = "正在備份網站";
+
 /* Noun. Links to a blog's Jetpack Backups screen.
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
-   Title for the Jetpack's backup list */
+   Title for Jetpack Backup Update Status Failed screen
+   Title for the Jetpack's backup list
+   Title of section showing backup status */
 "Backup" = "備份";
 
 /* Title for error displayed when preparing a backup fails. */
-"Backup failed." = "備份失敗。";
+"Backup failed" = "備份失敗";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "顯示所選期間留言情況的長條圖。";
@@ -858,9 +892,6 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "封鎖引文";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block This Site" = "封鎖此網站";
-
 /* translators: displayed right after the block is copied. */
 "Block copied" = "已複製區塊";
 
@@ -884,6 +915,12 @@
 
 /* No comment provided by engineer. */
 "Block settings" = "區塊設定";
+
+/* The title of a button that triggers blocking a site from the user's reader. */
+"Block this site" = "Block this site";
+
+/* Notice title when blocking a site succeeds. */
+"Blocked site" = "封鎖的網站";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "網誌";
@@ -983,6 +1020,7 @@
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
+   Cancel button for alert
    Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
@@ -1082,6 +1120,9 @@
 /* Button title to edit visibility of sites. */
 "Change Visibility" = "變更隱私設定";
 
+/* No comment provided by engineer. */
+"Change block position" = "變更區塊位置";
+
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "變更失敗";
 
@@ -1144,10 +1185,13 @@
 /* Title for the button to progress with the selected site homepage design */
 "Choose" = "選擇";
 
+/* Title for selecting a new homepage */
+"Choose Homepage" = "選擇首頁";
+
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "選擇頁面";
 
-/* Title for selecting a new home page */
+/* Title for selecting a new posts page */
 "Choose Posts Page" = "選擇文章頁面";
 
 /* Title for the screen to pick a template for a page */
@@ -1167,6 +1211,9 @@
 
 /* Label for Publish time picker */
 "Choose a time" = "選擇時間";
+
+/* No comment provided by engineer. */
+"Choose audio" = "選擇音樂";
 
 /* Title to choose date range in a calendar */
 "Choose date range" = "選擇日期範圍";
@@ -1383,14 +1430,12 @@
 "Configure" = "設定";
 
 /* Confirm
+   Confirm Rewind button title
    Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "確定";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "確認刪除網站";
-
-/* Confirm Rewind button title */
-"Confirm Rewind" = "確認還原";
 
 /* Instructional text about the Sharing feature. */
 "Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "請確認這是你要授權的帳號。請注意，你的文章將自動分享至此帳號。";
@@ -1508,10 +1553,6 @@
 /* Button title. Tapping begins log in using Google. */
 "Continue with Google" = "Continue with Google";
 
-/* Button title. Takes the user to the login by email flow.
-   Button title. Tapping begins our normal log in process. */
-"Continue with WordPress.com" = "繼續使用 WordPress.com";
-
 /* Title of a Quick Start Tour */
 "Continue with site setup" = "繼續網站設定作業";
 
@@ -1566,8 +1607,11 @@
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "無法切換關注：遺失 blogURL 屬性";
 
-/* An error description explaining that Seen could not be toggled due to a missing feedItemID attribute. */
-"Could not toggle Seen: missing feedItemID attribute." = "無法切換已讀：缺少 feedItemID 屬性。";
+/* An error description explaining that Seen could not be toggled due to a missing feedItemID. */
+"Could not toggle Seen: missing feedItemID." = "無法切換已讀：缺少 feedItemID。";
+
+/* An error description explaining that Seen could not be toggled due to a missing postID. */
+"Could not toggle Seen: missing postID." = "無法切換已讀：缺少 postID。";
 
 /* Title of a prompt. */
 "Could not unfollow site" = "無法取消關注網站";
@@ -1702,6 +1746,9 @@
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Creating dashboard" = "建立儀表板";
 
+/* Description of the cell displaying status of a backup in progress */
+"Creating downloadable backup" = "正在建立可下載的備份";
+
 /* No comment provided by engineer. */
 "Current" = "目前記錄";
 
@@ -1803,8 +1850,7 @@
 "December 17, 2017" = "2017 年 12 月 17 日";
 
 /* Description of the default paragraph formatting style in the editor.
-   Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.
-   Title for the default web preview */
+   Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "預設";
 
 /* Label for selecting the default category of a post
@@ -1887,6 +1933,9 @@
    Theme Details action title */
 "Details" = "詳細資料";
 
+/* Instructions after a Magic Link was sent, but email is incorrect. */
+"Didn't mean to create a new account? Go back to re-enter your email address." = "並不是想要建立新帳號嗎？ 返回並重新輸入電子郵件地址。";
+
 /* Label for the dimensions in pixels for a media asset (image / video) */
 "Dimensions" = "尺寸";
 
@@ -1923,9 +1972,6 @@
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "一旦取消此帳號的連結，發表的文章將不再自動分享至 %@";
 
-/* Discover tab name */
-"Discover" = "探索";
-
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "發掘網站";
 
@@ -1941,6 +1987,7 @@
    Action to show on alert when view asset fails.
    Customize Insights button title
    Dismiss a view. Verb
+   Dismiss button title
    Dismiss button title.
    Dismiss the AlertView
    Share extension error dialog cancel button label.
@@ -2000,6 +2047,7 @@
    Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
+   Title for button that will dismiss this view
    Title for the button that will dismiss this view.
    Title of the Done button on the me page */
 "Done" = "完成";
@@ -2026,6 +2074,9 @@
 "Double tap to go to color settings" = "點選兩次即可前往顏色設定";
 
 /* No comment provided by engineer. */
+"Double tap to listen the audio file" = "按兩下以聆聽音訊檔案";
+
+/* No comment provided by engineer. */
 "Double tap to move the block down" = "按兩下將區塊向下移";
 
 /* No comment provided by engineer. */
@@ -2038,7 +2089,13 @@
 "Double tap to move the block up" = "按兩下將區塊向上移";
 
 /* No comment provided by engineer. */
+"Double tap to open Action Sheet to edit, replace, or clear the image" = "點兩下開啟動作工作表，然後編輯、取代或清除圖片";
+
+/* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "按兩下以開啟含有可用選項的操作工作表";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "點兩下開啟底部工作表，然後編輯、取代或清除圖片";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet with available options" = "按兩下以開啟含有可用選項的底部工作表";
@@ -2053,6 +2110,9 @@
 "Double tap to select a video" = "按兩下以選擇視訊";
 
 /* No comment provided by engineer. */
+"Double tap to select an audio file" = "按兩下以選擇音訊檔案";
+
+/* No comment provided by engineer. */
 "Double tap to select an image" = "按兩下以選擇圖片";
 
 /* translators: accessibility text (hint for selecting option) */
@@ -2064,10 +2124,14 @@
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "按兩次即可復原上次變更";
 
+/* Download button title */
+"Download" = "下載";
+
 /* Title for the Jetpack Download Backup Site Screen */
 "Download Backup" = "下載備份";
 
-/* Title displayed for download backup action. */
+/* Title displayed for download backup action.
+   Title for button allowing user to backup their Jetpack site */
 "Download backup" = "下載備份";
 
 /* Title for the button that will download the backup file. */
@@ -2130,6 +2194,9 @@
 
 /* No comment provided by engineer. */
 "Edit file" = "編輯檔案";
+
+/* No comment provided by engineer. */
+"Edit focal point" = "編輯焦點";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "使用區塊編輯器編輯新文章和頁面。";
@@ -2203,7 +2270,7 @@
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "空的網址";
 
-/* Button title about the enable notifications action */
+/* Button title for the enable site notifications action. */
 "Enable" = "啓用";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
@@ -2215,7 +2282,7 @@
 /* Title of a Quick Start Tour */
 "Enable post sharing" = "啟用文章分享功能";
 
-/* Message informing the user about the enable notifications action */
+/* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "是否要啟用網站通知？";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
@@ -2274,9 +2341,6 @@
    Generic popup title for any type of error. */
 "Error" = "錯誤";
 
-/* Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader. */
-"Error Blocking Site" = "封鎖網站時發生錯誤";
-
 /* Menus error title for a menu that received an error while trying to delete it. */
 "Error Deleting Menu" = "刪除選單時發生錯誤";
 
@@ -2304,6 +2368,12 @@
 
 /* There was an error enabling autoupdates for a plugin, placeholder is the plugin name */
 "Error enabling autoupdates for %@." = "為 %@ 啟用自動更新時發生錯誤。";
+
+/* Error displayed when fixing a threat fails. */
+"Error fixing threat. Please contact our support." = "修正威脅時發生錯誤。 請聯絡我們的支援團隊。";
+
+/* Error displayed when ignoring a threat fails. */
+"Error ignoring threat. Please contact our support." = "忽略威脅時發生錯誤。 請聯絡我們的支援團隊。";
 
 /* Notice displayed after attempt to install a plugin fails. */
 "Error installing %@." = "安裝 %@ 時發生錯誤。";
@@ -2431,6 +2501,9 @@
    The action failed */
 "Failed" = "失敗";
 
+/* No comment provided by engineer. */
+"Failed to insert audio file. Please tap for options." = "無法插入音訊檔案。 請點選以顯示選項。";
+
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "未能添加媒體\n請輕觸螢幕查看其他選項。";
 
@@ -2538,18 +2611,27 @@
 /* Button title, confirm fixing all threats */
 "Fix all threats" = "修復所有威脅";
 
+/* Title for button that will fix the threat */
+"Fix threat" = "威脅處理";
+
+/* Displays the fixed threats */
+"Fixed" = "固定";
+
+/* Subtitle displayed while the server is fixing threats */
+"Fixing Threats" = "正在修正威脅";
+
 /* Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "關注";
-
-/* Verb. An option to follow a site. */
-"Follow Site" = "關注網站";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "透過電子郵件追蹤對話";
 
 /* Title of a Quick Start Tour */
 "Follow other sites" = "關注其他網站";
+
+/* Verb. An option to follow a site. */
+"Follow site" = "Follow site";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "關注你喜歡的網站並發掘新讀物。";
@@ -2583,8 +2665,8 @@
    Verb. Button title. The user is following a blog. */
 "Following" = "關注中";
 
-/* Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site. */
-"Following %@" = "正在關注 %@";
+/* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
+"Following %1$@" = "正在追蹤 %1$@";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Following conversation by email" = "透過電子郵件追蹤對話";
@@ -2828,8 +2910,15 @@
 "Hide keyboard" = "隱藏鍵盤";
 
 /* Displays the History screen from the editor's alert sheet
+   Title of a navigation button that opens the scan history view
    Title of the post history screen */
 "History" = "記錄";
+
+/* Message title displayed when we fail to fetch the status of the backup in progress. */
+"Hmm, we couldn’t find your backup status" = "看來，我們擷取不到你的備份狀態";
+
+/* Message title displayed when we fail to fetch the status of the restore in progress. */
+"Hmm, we couldn’t find your restore status" = "看來，我們擷取不到你的還原狀態";
 
 /* Moderation Keys Title
    Settings: Comments Moderation */
@@ -2851,8 +2940,14 @@
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hooray!\nAlmost done";
 
+/* Title for the fix section in Threat Details: Threat is fixed */
+"How did Jetpack fix it?" = "Jetpack 如何修復問題？";
+
 /* How to create story description */
 "How to create a story post" = "如何建立限時動態文章";
+
+/* Title for the fix section in Threat Details */
+"How will we fix it?" = "如何修復？";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "我喜歡";
@@ -2886,6 +2981,12 @@
 
 /* Ignore action. Verb */
 "Ignore" = "忽略";
+
+/* Title for button that will ignore the threat */
+"Ignore threat" = "忽略威脅";
+
+/* Displays the ignored threats */
+"Ignored" = "已忽略";
 
 /* Hint for image alt on image settings. */
 "Image Alt" = "圖片替代文字";
@@ -3074,14 +3175,15 @@
 /* Description that explains that we are unable to auto fix the threat */
 "Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site." = "Jetpack Scan 無法自動修正此威脅。 建議你手動處理威脅：確認 WordPress、你使用的佈景主題與所有外掛程式都是最新版本，並將可能違規的程式碼、佈景主題或外掛程式自網站上移除。";
 
-/* Description for a label when the scan has failed */
+/* Description for a label when the scan has failed
+   Error message shown when the scan start has failed. */
 "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Jetpack Scan 無法完成網站掃瞄作業。 請檢查你的網站是否已經關閉。若否，請再試一次。 如果網站已關閉，或 Jetpack Scan 仍無法順利掃瞄，請與我們的支援團隊聯絡。";
 
 /* Description for a label when there are threats on the site, displays the number of threats, and the site's title */
-"Jetpack Scan found %1$d potential threats on %2$@. Please review each threat and take action." = "Jetpack Scan 已在 %2$@ 上找到 %1$d 個潛在威脅。 請檢閱各威脅並採取行動。";
+"Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Jetpack Scan 已透過 %2$@ 找到 %1$d 個潛在威脅。 請檢閱以下威脅並採取行動，或點選「全部修正」按鈕。 如果你有需要，我們隨時為你提供協助。";
 
 /* Description for a label when there is a single threat on the site, displays the site's title */
-"Jetpack Scan found 1 potential threat on %1$@. Please review each threat and take action." = "Jetpack Scan 已在 %1$@ 上找到 1 個潛在威脅。 請檢閱各威脅並採取行動。";
+"Jetpack Scan found 1 potential threat with %1$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Jetpack Scan 已透過 %1$@ 找到 1 個潛在威脅。 請檢閱以下威脅並採取行動，或點選「全部修正」按鈕。 如果你有需要，我們隨時為你提供協助。";
 
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will delete the affected file or directory." = "Jetpack Scan 會刪除受影響的檔案或目錄。";
@@ -3187,6 +3289,9 @@
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "我們樂意協助";
 
+/* Title for the button that will dismiss this view. */
+"Let me know when finished!" = "完成時通知我！";
+
 /* Title for the app appearance setting for light mode */
 "Light" = "淡色系";
 
@@ -3291,6 +3396,12 @@
 /* Text displayed while loading plugins for a site */
 "Loading Plugins..." = "正在載入外掛程式...";
 
+/* Text displayed while loading the scan history for a site */
+"Loading Scan History..." = "正在載入掃瞄記錄…";
+
+/* Text displayed while loading the scan section for a site */
+"Loading Scan..." = "正在載入掃瞄…";
+
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "正在載入網域";
 
@@ -3338,6 +3449,9 @@
 "Location unknown" = "未知的位置";
 
 /* No comment provided by engineer. */
+"Lock icon" = "鎖定圖示";
+
+/* No comment provided by engineer. */
 "Log Files By Created Date" = "依建立日期排列記錄檔案";
 
 /* Button title.  Tapping takes the user to the login form.
@@ -3356,6 +3470,10 @@
 
 /* A generic error message for a failed log in. */
 "Log in failed. Please try again." = "登入失敗，請再試一次。";
+
+/* Button title. Takes the user to the login by email flow.
+   Button title. Tapping begins our normal log in process. */
+"Log in or sign up with WordPress.com" = "登入或註冊 WordPress.com";
 
 /* Instruction text on the login's email address screen. */
 "Log in to the WordPress.com account you used to connect Jetpack." = "請登入你用來連結 Jetpack 的 WordPress.com 帳號。";
@@ -3440,6 +3558,12 @@
 /* An option to mark a post as unseen. */
 "Mark as unseen" = "標示為未讀。";
 
+/* Notice title when updating a post's seen status succeeds. */
+"Marked post as seen" = "已將文章標示為已讀";
+
+/* Notice title when updating a post's unseen status succeeds. */
+"Marked post as unseen" = "已將文章標示為未讀";
+
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "以電子郵件尋配對帳戶";
 
@@ -3456,6 +3580,7 @@
 "Me" = "我";
 
 /* Noun. Title. Links to the blog's Media library.
+   Tab bar title for the Media tab in Media Picker
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -3584,9 +3709,6 @@
 
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block left from position %1$s to position %2$s" = "將區塊向左移動，從位置 %1$s 移動到位置 %2$s";
-
-/* No comment provided by engineer. */
-"Move block position" = "移動區塊位置";
 
 /* No comment provided by engineer. */
 "Move block right" = "向右移動區塊";
@@ -3787,6 +3909,9 @@
 "No activity yet" = "尚未有活動";
 
 /* No comment provided by engineer. */
+"No application can handle this request." = "沒有應用程式可以處理這項要求。";
+
+/* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "沒有應用程式可以處理這項要求。請安裝網路瀏覽器。";
 
 /* A short message that informs the user no WordPress.com sites could be found. */
@@ -3820,14 +3945,21 @@
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "尚無日期";
 
+/* Title for the view when there aren't any fixed threats to display */
+"No fixed threats" = "沒有已修正的威脅";
+
 /* Title for the no followed sites result screen */
 "No followed sites" = "尚未有關注的網站";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "尚未有關注者";
 
-/* Displayed when a call is made to load the revisions but there's no result or an error. */
+/* Displayed when a call is made to load the revisions but there's no result or an error.
+   Title for the view when there aren't any history items to display */
 "No history yet" = "尚未有記錄";
+
+/* Title for the view when there aren't any ignored threats to display */
+"No ignored threats" = "沒有已忽略的威脅";
 
 /* Title displayed when the user has removed all Insights from display. */
 "No insights added yet" = "尚未新增任何洞察報告";
@@ -3927,6 +4059,9 @@
 /* Text displayed when theme name search has no matches */
 "No themes matching your search" = "沒有符合你搜尋條件的佈景主題";
 
+/* Message for a notice informing the user their scan completed and no threats were found */
+"No threats found" = "沒有找到威脅";
+
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
    No comment will be autoapproved
@@ -4024,20 +4159,19 @@
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    OK
+   OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    OK button to close the informative dialog on Gutenberg editor
    Submit button on prompt for user information.
-   Text for an alert's dismissal button.
-   Text of an OK button to dismiss a prompt.
    Title of a button that dismisses a prompt
    Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
    Title of primary button on alert prompting verify their accounts while attempting to publish */
 "OK" = "OK";
 
-/* Title for the button that will dismiss this view. */
-"OK, notify me!" = "好，通知我！";
+/* No comment provided by engineer. */
+"OPEN" = "開啟";
 
 /* Disabled */
 "Off" = "開";
@@ -4071,6 +4205,7 @@
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
    Title for the view when there's an error loading time zones */
@@ -4228,6 +4363,9 @@
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "頁面標題。 清空";
 
+/* Title of notification displayed when a page has been successfully updated. */
+"Page updated" = "頁面已更新";
+
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
 "Pages" = "分頁";
@@ -4240,6 +4378,9 @@
 /* Placeholder to set a parent category for a new category.
    Title for selecting parent category of a category */
 "Parent Category" = "上層分類";
+
+/* Message informing the user that their pages parent has been set successfully */
+"Parent page successfully updated." = "上層頁面已成功更新。";
 
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
@@ -4268,8 +4409,7 @@
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "貼上並且不設定格式";
 
-/* Status for Media object that is being processed locally.
-   Status name for a comment that hasn't yet been approved. */
+/* Status for Media object that is being processed locally. */
 "Pending" = "待審核";
 
 /* No comment provided by engineer. */
@@ -4295,6 +4435,9 @@
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "圖庫";
+
+/* Tab bar title for the Photos tab in Media Picker */
+"Photos" = "Photos";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "由 Pexels 提供的相片";
@@ -4398,6 +4541,9 @@
 
 /* Used on an error alert to prompt the user to try again */
 "Please try again later" = "請稍後再試一次";
+
+/* Description for the Jetpack Restore Failed message. */
+"Please try again later or contact support." = "請稍後再試一次，或聯絡支援團隊。";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "請稍後再試一次。";
@@ -4521,6 +4667,12 @@
 /* translators: accessibility text. empty post title. */
 "Post title. Empty" = "文章標題。空白";
 
+/* Title of camera permissions screen */
+"Post to WordPress" = "張貼到 WordPress";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"Post updated" = "文章已更新";
+
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "郵遞區號";
 
@@ -4632,12 +4784,6 @@
    Title of the Private Badge */
 "Private" = "私密";
 
-/* Title of a prompt */
-"Problem Following Site" = "關注網站時發生問題";
-
-/* Title of a prompt */
-"Problem Unfollowing Site" = "取消關注網站時發生問題";
-
 /* No comment provided by engineer. */
 "Problem displaying block" = "顯示區塊時發生問題";
 
@@ -4646,6 +4792,9 @@
 
 /* Error message title informing the user that a stream could not be loaded. */
 "Problem loading stream" = "載入串流時發生問題";
+
+/* No comment provided by engineer. */
+"Problem opening the audio" = "開啟音訊時發生問題";
 
 /* No comment provided by engineer. */
 "Problem opening the video" = "開啟視訊時發生問題";
@@ -4918,6 +5067,12 @@
 "Replace Current Block" = "取代目前區塊";
 
 /* No comment provided by engineer. */
+"Replace audio" = "替換音訊";
+
+/* No comment provided by engineer. */
+"Replace file" = "取代檔案";
+
+/* No comment provided by engineer. */
 "Replace image or video" = "替換圖片或視訊";
 
 /* No comment provided by engineer. */
@@ -4949,7 +5104,7 @@
 "Reply to post…" = "回覆文章...";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
-"Report This Post" = "檢舉這篇文章";
+"Report this post" = "Report this post";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "如果留言包含的連結超過此數量，需要進行人工審核。";
@@ -4996,20 +5151,36 @@
 /* The largest resolution allowed for uploading */
 "Resolution" = "解析度";
 
+/* Title for the fix section in Threat Details: Threat is not fixable */
+"Resolving the threat" = "正在解決威脅";
+
 /* Title displayed for restore action.
+   Title for button allowing user to restore their Jetpack site
    Title for Jetpack Restore Complete screen
+   Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen */
+   Title for the Jetpack Restore Site Screen
+   Title of section showing restore status */
 "Restore" = "還原";
 
+/* Title for Jetpack Restore Failed screen */
+"Restore Failed" = "還原失敗";
+
 /* Title for error displayed when restoring a site fails. */
-"Restore failed." = "還原失敗。";
+"Restore failed" = "還原失敗";
 
 /* Label that describes the restore site action */
 "Restore site" = "還原網站";
 
 /* Button title for restore site action */
 "Restore to this point" = "還原至此時間點";
+
+/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
+"Restored to %@" = "已還原至 %@";
+
+/* Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date.
+   Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
+"Restoring to %@" = "正在還原至 %@";
 
 /* A prompt to attempt the failed network request again
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
@@ -5046,6 +5217,12 @@
 /* Share extension error dialog cancel button text */
 "Return to post" = "返回文章";
 
+/* No comment provided by engineer. */
+"Reusable blocks aren't editable on WordPress for Android" = "可重複使用區塊無法在 Android 版 WordPress 中編輯";
+
+/* No comment provided by engineer. */
+"Reusable blocks aren't editable on WordPress for iOS" = "可重複使用區塊無法在 iOS 版 WordPress 中編輯";
+
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "回復待確認的變更";
 
@@ -5055,20 +5232,15 @@
 /* Title of the screen that shows the revisions. */
 "Revision" = "版本";
 
-/* Title displayed when user swipes on a rewind cell
-   Title for button allowing user to rewind their Jetpack site
+/* Title for button allowing user to rewind their Jetpack site
    Title of section showing rewind status */
 "Rewind" = "還原";
 
-/* Title displayed in the Rewind Site alert, should match Calypso */
+/* Title displayed in the Restore Site alert, should match Calypso */
 "Rewind Site" = "還原網站";
 
-/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date.
-   Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
+/* Text showing the point in time the site is being currently rewinded to. %@' is a placeholder that will expand to a date. */
 "Rewinding to %@" = "正在還原至 %@";
-
-/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
-"Rewound to %@" = "已還原至 %@";
 
 /* Post Rich content */
 "Rich Content" = "豐富內容";
@@ -5145,11 +5317,18 @@
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "儲存中...";
 
-/* Noun. Links to a blog's Jetpack Scan screen. */
+/* Noun. Links to a blog's Jetpack Scan screen.
+   Title of the view */
 "Scan" = "掃瞄";
 
 /* Button title that triggers a scan */
 "Scan Again" = "重新掃瞄";
+
+/* Title for a notice informing the user their scan has completed */
+"Scan Finished" = "掃描完成";
+
+/* Title of the view */
+"Scan History" = "掃描記錄";
 
 /* Button title that triggers a scan */
 "Scan Now" = "立即掃瞄";
@@ -5653,13 +5832,20 @@
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "代稱";
 
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"So far, there are no fixed threats on your site." = "目前你的網站沒有任何資安威脅修復記錄。";
+
+/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
+"So far, there are no ignored threats on your site." = "目前你的網站沒有任何資安威脅忽略的記錄。";
+
 /* Follower Totals label for social media followers */
 "Social" = "社交";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "部分媒體上傳失敗。此動作將移除文章中所有上傳失敗的媒體。\n是否仍要儲存？";
 
-/* Title for a label that appears when the scan failed */
+/* Title for a label that appears when the scan failed
+   Title for the error view when the scan start has failed */
 "Something went wrong" = "發生錯誤";
 
 /* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
@@ -5921,6 +6107,9 @@
 /* Accessibility of stats table. Placeholders will be populated with names of data shown in table. */
 "Table showing %@ and %@" = "顯示 %1$@ 和 %2$@ 的表格";
 
+/* Title for the tablet web preview */
+"Tablet" = "平板電腦";
+
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
 "Tag" = "標籤";
@@ -6104,11 +6293,11 @@
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "此網站主要使用的語言。";
 
-/* Description that informs for label when there are no threats on a users site */
-"The last Jetpack scan completed and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "Jetpack 上次掃瞄已完成，沒有發現任何問題。\n\n立即執行手動掃瞄，或等待 Jetpack 於今日稍晚掃瞄你的網站。";
+/* Description for label when there are no threats on a users site and how long ago the scan ran. */
+"The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "最近一次 Jetpack 掃描已執行 %1$@，且未找到任何風險。\n\n如要再次檢查網站，請執行手動掃瞄，或等待 Jetpack 於今日稍晚掃瞄你的網站。";
 
-/* Description for label when there are no threats on a users site and how long ago the scan ran */
-"The last Jetpack scan ran %1$@ and everything looked great.\n\nRun a manual scan now or wait for Jetpack to scan your site later today." = "Jetpack 上次已掃瞄 %1$@，沒有發現任何問題。\n\n立即執行手動掃瞄，或等待 Jetpack 於今日稍晚掃瞄你的網站。";
+/* Description that informs for label when there are no threats on a users site */
+"The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today." = "最近一次 Jetpack 掃描並未找到任何風險。\n\n如要再次檢查網站，請執行手動掃瞄，或等待 Jetpack 於今日稍晚掃瞄你的網站。";
 
 /* WordPress.com Push Authentication Expired message */
 "The login request has expired. Log in to WordPress.com to try again." = "登入要求已到期。登入 WordPress.com 再試一次。";
@@ -6154,6 +6343,12 @@
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "找不到指定的使用者。請確認拼字是否正確。";
+
+/* Title for the technical details section in Threat Details */
+"The technical details" = "技術詳細資訊";
+
+/* Message displayed when a threat is fixed successfully. */
+"The threat was successfully fixed." = "威脅已成功修正。";
 
 /* People: Invitation Error */
 "The user already has the specified role. Please, try assigning a different role." = "使用者已有指定角色。請嘗指定其他角色。";
@@ -6223,9 +6418,6 @@
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "顯示此文章時發生問題。";
 
-/* Short notice that there was a problem following a site and instructions on how to notify us of the problem. */
-"There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen." = "關注網站時發生問題。如果問題持續發生，請透過畫面上的「我 > 說明&客戶服務」與我們聯絡。";
-
 /* Error message displayed when the Media Library is unable to load a full sized preview of an item. */
 "There was a problem loading the media item." = "載入媒體項目時發生問題。";
 
@@ -6237,9 +6429,6 @@
 
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "儲存分享管理的變更時發生問題。";
-
-/* Short notice that there was a problem unfollowing a site and instructions on how to notify us of the problem. */
-"There was a problem unfollowing the site. If the problem persists you can contact us via the Me > Help & Support screen." = "取消關注網站時發生問題。如果問題持續發生，請透過畫面上的「我 > 說明&客戶服務」與我們聯絡。";
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "嘗試存取你的位置時發生問題。請稍後再試一次。";
@@ -6266,6 +6455,12 @@
 /* Text displayed when there is a failure loading the plan details */
 "There was an error loading the plan" = "載入此方案時發生錯誤";
 
+/* Text displayed when there is a failure loading the history feed */
+"There was an error loading the scan history" = "載入掃瞄記錄時發生錯誤";
+
+/* Text displayed when there is a failure loading the status */
+"There was an error loading the scan status" = "載入記錄時發生錯誤";
+
 /* Text displayed when there is a failure loading the plugin */
 "There was an error loading this plugin" = "載入此外掛程式時發生錯誤";
 
@@ -6278,8 +6473,14 @@
 /* Updating Role failed error message */
 "There was an error updating @%@" = "更新 @%@ 時發生錯誤";
 
+/* Text displayed when user tries to create a downloadable backup when there is already one being prepared */
+"There's a backup currently being prepared, please wait before starting the next one" = "正在準備建立備份，請稍後再開始建立其他備份";
+
 /* Text displayed when user tries to start a restore when there is already one running */
 "There's a restore currently in progress, please wait before starting next one" = "正在進行還原作業，請稍後再開始其他還原作業";
+
+/* Text displayed when user tries to start a restore when there is already one running */
+"There's a restore currently in progress, please wait before starting the next one" = "正在進行還原作業，請稍後再開始其他還原作業";
 
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "它們會以新網誌文章的形式發佈在你的網站上，這樣你的讀者群永遠不會錯過任何精彩內容。";
@@ -6352,8 +6553,17 @@
 /* Title for a threat */
 "Threat Found" = "找到威脅";
 
+/* Title for the Jetpack Scan Threat Details screen */
+"Threat details" = "威脅詳細資訊";
+
 /* Summary description for a threat that includes the threat signature */
 "Threat found %1$@" = "發現威脅 %1$@";
+
+/* Description for threat file */
+"Threat found in file:" = "檔案中發現的威脅：";
+
+/* Message displayed when a threat is ignored successfully. */
+"Threat ignored." = "已忽略威脅。";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "縮圖";
@@ -6379,6 +6589,7 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
+   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "標題";
@@ -6523,6 +6734,8 @@
 "Try adjusting your date range or activity type filters" = "請嘗試調整你的日期範圍或活動類型篩選條件";
 
 /* Button label for trying to retrieve the activities type again
+   Button label for trying to retrieve the history again
+   Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails.
    Share extension error dialog retry button label. */
@@ -6542,6 +6755,12 @@
 
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "開啟網站通知";
+
+/* Notice title when turning site notifications off succeeds. */
+"Turned off site notifications" = "已關閉網站通知";
+
+/* Notice title when turning site notifications on succeeds. */
+"Turned on site notifications" = "已開啟網站通知";
 
 /* Launches the Twitter App */
 "Twitter" = "Twitter";
@@ -6576,11 +6795,20 @@
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "無法同步";
 
+/* Notice title when blocking a site fails. */
+"Unable to block site" = "無法封鎖網站";
+
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "無法刪除所有媒體項目。";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "無法刪除媒體項目。";
+
+/* Message displayed when opening the link to the downloadable backup fails. */
+"Unable to download file" = "無法下載檔案";
+
+/* Notice title when following a site fails. */
+"Unable to follow site" = "無法追蹤網站";
 
 /* Error message displayed when we were unable to copy the URL for an item in the user's media library. */
 "Unable to get URL for media item." = "無法取得媒體項目的 URL。";
@@ -6601,10 +6829,10 @@
 /* Error shown when the app fails to load a video from the user's media library. */
 "Unable to load video." = "無法載入影片。";
 
-/* Alert displayed to the user when updating a post's seen status failed. */
+/* Notice title when updating a post's seen status failed. */
 "Unable to mark post seen" = "無法將文章標示已讀";
 
-/* Alert displayed to the user when updating a post's unseen status failed. */
+/* Notice title when updating a post's unseen status failed. */
 "Unable to mark post unseen" = "無法將文章標示未讀";
 
 /* Dialog box title for when the user is canceling an upload. */
@@ -6616,17 +6844,32 @@
 /* Alert title when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
 "Unable to register domain" = "無法註冊網域";
 
+/* Title for the Jetpack Restore Failed message. */
+"Unable to restore your site" = "無法還原網站";
+
 /* Text displayed when a site restore fails. */
 "Unable to restore your site, please try again later or contact support." = "無法還原你的網站，請稍後再試一次，或者聯絡支援團隊。";
 
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "無法儲存媒體項目。";
 
+/* Message displayed when sharing a link to the downloadable backup fails. */
+"Unable to share link" = "無法分享連結";
+
 /* Message that appears when a user tries to trash a page while their device is offline. */
 "Unable to trash pages while offline. Please try again later." = "離線時無法清除頁面。 請稍後再試一次。";
 
 /* Message that appears when a user tries to trash a post while their device is offline. */
 "Unable to trash posts while offline. Please try again later." = "離線時無法刪除文章。請稍後再試。";
+
+/* Notice title when turning site notifications off fails. */
+"Unable to turn off site notifications" = "無法關閉網站通知";
+
+/* Notice title when turning site notifications on fails. */
+"Unable to turn on site notifications" = "無法開啟網站通知";
+
+/* Notice title when unfollowing a site fails. */
+"Unable to unfollow site" = "無法停止追蹤此網站";
 
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "無法更新首頁設定";
@@ -6654,6 +6897,9 @@
 
 /* Error message displayed when an error occurred checking for email availability. */
 "Unable to verify the email address. Please try again later." = "無法驗證電子郵件地址。請稍後再試一次。";
+
+/* Message displayed when visiting a site fails. */
+"Unable to visit site" = "無法造訪網站";
 
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "無法將圖片寫進檔案";
@@ -6686,9 +6932,10 @@
 "Unfollow %@" = "取消關注 %@";
 
 /* Verb. An option to unfollow a site. */
-"Unfollow Site" = "取消關注網站";
+"Unfollow site" = "停止追蹤網站";
 
-/* User unfollowed a site. */
+/* Notice title when unfollowing a site succeeds.
+   User unfollowed a site. */
 "Unfollowed site" = "已取消關注網站";
 
 /* Spoken hint describing action for selected following buttons. */
@@ -6841,6 +7088,9 @@
 
 /* Label to show while uploading media to server */
 "Uploading..." = "上傳中…";
+
+/* No comment provided by engineer. */
+"Uploading…" = "上傳中…";
 
 /* Title for alert when trying to save post with failed media items */
 "Uploads failed" = "上傳失敗";
@@ -7157,6 +7407,12 @@
 /* Text displayed if a media couldnt be uploaded. */
 "We couldn't upload this media." = "我們無法上傳這個媒體。";
 
+/* Hint displayed when we fail to fetch the status of the backup in progress. */
+"We couldn’t find the status to say how long your backup will take." = "我們擷取不到狀態，無法判斷備份程序需要花多久時間。";
+
+/* Hint displayed when we fail to fetch the status of the restore in progress. */
+"We couldn’t find the status to say how long your restore will take." = "我們擷取不到狀態，無法判斷還原程序需要花多久時間。";
+
 /* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
 "We had trouble loading connections for %@" = "載入 %@ 的連結時遇到問題";
 
@@ -7168,6 +7424,9 @@
 
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'.";
+
+/* Message displayed when a backup has finished */
+"We successfully created a backup of your site as of %@" = "我們已成功建立截至 %@ 為止的網站備份";
 
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
 "We successfully created a backup of your site from %1$@." = "我們已透過 %1$@ 順利建立你的網站備份。";
@@ -7245,6 +7504,9 @@
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "我們正在進行最終設定，就快完成了…";
 
+/* Detail text display informing the user that we're fixing threats */
+"We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "我們正努力在背景修正此威脅。 這段時間你可以照常使用網站，也可以隨時回來檢視掃瞄進度。";
+
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "我們無法用此 URL 連上 Jetpack 網站。如需協助，請與我們聯絡。";
 
@@ -7290,6 +7552,16 @@
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "我們會隨時傳送與帳號資訊相關的重要電子郵件，除此之外，你也能獲得實用的額外內容。";
 
+/* Hint displayed when we fail to fetch the status of the backup in progress.
+   Hint displayed when we fail to fetch the status of the restore in progress. */
+"We’ll notify you when its done." = "我們會在完成時通知你。";
+
+/* Hint displayed when we fail to fetch the status of the backup in progress. */
+"We’ll still attempt to backup your site." = "我們仍會嘗試備份你的網站。";
+
+/* Hint displayed when we fail to fetch the status of the restore in progress. */
+"We’ll still attempt to restore your site." = "我們仍會嘗試還原你的網站。";
+
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "我們會逐步說明建立及長久經營網站的基本事項";
 
@@ -7304,6 +7576,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "你想要對這個檔案執行什麼動作：上傳檔案，並將該檔案的連結加入你的文章之中；或是將檔案內容直接新增至你的文章之中？";
+
+/* Title for the problem section in the Threat Details */
+"What was the problem?" = "問題為何？";
 
 /* Title of section that contains plugins' change log */
 "What's New" = "有什麼新玩意？";
@@ -7595,6 +7870,9 @@
 /* No comment provided by engineer. */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "你似乎安裝了 DudaMobile 的行動版外掛程式，導致應用程式無法連接至你的網誌";
 
+/* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
+"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "除非你十分確定其安全無害，否則不應忽略安全性問題。 若你選擇忽略此威脅，該威脅會繼續存在於你的網站 「%1$@」。";
+
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "一旦變更使用者名稱就無法復原。";
 
@@ -7627,6 +7905,9 @@
 
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "你的備份現在已可下載";
+
+/* Text displayed when a site backup takes too long. */
+"Your backup is taking longer than usual, please check again in a few minutes." = "備份的時間比平常更長，請在數分鐘後再返回查看。";
 
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "你目前的使用者名稱為 %1$@。除少數例外情況外，其他人只會看到你的顯示名稱 %2$@。";
@@ -7664,7 +7945,7 @@
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "已成功還原你的網站";
 
-/* Title of a message displayed when user starts a rewind operation */
+/* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "正在還原網站";
 
 /* Hint for users when private privacy setting is set */

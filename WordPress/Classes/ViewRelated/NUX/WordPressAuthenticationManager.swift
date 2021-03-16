@@ -43,8 +43,11 @@ class WordPressAuthenticationManager: NSObject {
                                                                 showLoginOptions: true,
                                                                 enableSignInWithApple: enableSignInWithApple,
                                                                 enableSignupWithGoogle: true,
-                                                                enableUnifiedAuth: FeatureFlag.unifiedAuth.enabled,
+                                                                enableUnifiedAuth: true,
                                                                 enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled)
+
+        let prologueVC: UIViewController? =  FeatureFlag.unifiedPrologueCarousel.enabled ? UnifiedPrologueViewController() : nil
+        let statusBarStyle: UIStatusBarStyle = FeatureFlag.unifiedPrologueCarousel.enabled ? .default : .lightContent
 
         let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
                                                 primaryNormalBorderColor: nil,
@@ -72,7 +75,9 @@ class WordPressAuthenticationManager: NSObject {
                                                 navBarBadgeColor: .accent(.shade20),
                                                 navBarBackgroundColor: UIColor(light: .brand, dark: .gray(.shade100)),  // NEWBARS - This is temporary while we support old style nav bars in some of the auth flows
                                                 prologueBackgroundColor: .primary,
-                                                prologueTitleColor: .textInverted)
+                                                prologueTitleColor: .textInverted,
+                                                prologueTopContainerChildViewController: prologueVC,
+                                                statusBarStyle: statusBarStyle)
 
         let unifiedStyle = WordPressAuthenticatorUnifiedStyle(borderColor: .divider,
                                                               errorColor: .error,

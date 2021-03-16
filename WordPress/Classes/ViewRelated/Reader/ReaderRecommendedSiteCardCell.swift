@@ -81,10 +81,8 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         configureFollowButtonVisibility()
 
-        if #available(iOS 13.0, *) {
-            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-                WPStyleGuide.applyReaderFollowButtonStyle(iPadFollowButton)
-            }
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            WPStyleGuide.applyReaderFollowButtonStyle(iPadFollowButton)
         }
     }
 

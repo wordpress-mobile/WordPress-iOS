@@ -6,6 +6,7 @@ import CocoaLumberjack
 ///
 public enum ThemeAction {
     case activate
+    case active
     case customize
     case details
     case support
@@ -36,6 +37,8 @@ public enum ThemeAction {
         switch self {
         case .activate:
             return NSLocalizedString("Activate", comment: "Theme Activate action title")
+        case .active:
+            return NSLocalizedString("Active", comment: "Label for active Theme")
         case .customize:
             return NSLocalizedString("Customize", comment: "Theme Customize action title")
         case .details:
@@ -53,7 +56,7 @@ public enum ThemeAction {
         switch self {
         case .activate:
             presenter.activateTheme(theme)
-        case .customize:
+        case .customize, .active:
             presenter.presentCustomizeForTheme(theme)
         case .details:
             presenter.presentDetailsForTheme(theme)

@@ -34,3 +34,11 @@
 /* Description of all time widget in the preview */
 "widget.alltime.preview.description" = "Stay up to date with all time activity on your WordPress site.";
 
+/*Title of the unconfigured view in all time widget */
+"widget.alltime.unconfigured.view.title" = "Log in to WordPress to see all time stats.";
+
+/* Title of this week widget */
+"widget.thisweek.title" = "This Week";
+
+/* Title of the unconfigured view in this week widget */
+"widget.thisweek.unconfigured.view.title" = "Log in to WordPress to see this week's stats.";

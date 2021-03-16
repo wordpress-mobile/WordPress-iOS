@@ -3,6 +3,7 @@ import WPMediaPicker
 import Gutenberg
 import Aztec
 import WordPressFlux
+import Kanvas
 
 class GutenbergViewController: UIViewController, PostEditor {
 
@@ -33,6 +34,8 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     let ghostView = GutenGhostView()
 
+    private var storyEditor: StoryEditor?
+
     private lazy var service: BlogJetpackSettingsService? = {
         guard
             let settings = post.blog.settings,
@@ -45,7 +48,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - Aztec
 
-    internal let replaceEditor: (EditorViewController, EditorViewController) -> ()
+    var replaceEditor: (EditorViewController, EditorViewController) -> ()
 
     // MARK: - PostEditor
 
@@ -92,10 +95,6 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     var isUploadingMedia: Bool {
         return mediaInserterHelper.isUploadingMedia()
-    }
-
-    func removeFailedMedia() {
-        // TODO: we can only implement this when GB bridge allows removal of blocks
     }
 
     var hasFailedMedia: Bool {
@@ -222,7 +221,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     /// If true, apply autosave content when the editor creates a revision.
     ///
-    private let loadAutosaveRevision: Bool
+    var loadAutosaveRevision: Bool
 
     let navigationBarManager = PostEditorNavigationBarManager()
 
@@ -356,6 +355,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // Handles refreshing controls with state context after options screen is dismissed
+        storyEditor = nil
         editorContentWasUpdated()
     }
 
@@ -647,6 +647,83 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         mediaInserterHelper.cancelUploadOf(media: media)
     }
 
+    struct AnyEncodable: Encodable {
+
+        let value: Encodable
+        init(value: Encodable) {
+            self.value = value
+        }
+
+        func encode(to encoder: Encoder) throws {
+            try value.encode(to: encoder)
+        }
+
+    }
+
+    func gutenbergDidRequestMediaFilesEditorLoad(_ mediaFiles: [[String: Any]], blockId: String) {
+
+        if mediaFiles.isEmpty {
+            WPAnalytics.track(.storyBlockAddMediaTapped)
+        }
+
+        let files = mediaFiles.compactMap({ content -> MediaFile? in
+            return MediaFile.file(from: content)
+        })
+
+        // If the story editor is already shown, ignore this new load request
+        guard presentedViewController is StoryEditor == false else {
+            return
+        }
+
+        do {
+            try showEditor(files: files, blockID: blockId)
+        } catch let error {
+            switch error {
+            case StoryEditor.EditorCreationError.unsupportedDevice:
+                let title = NSLocalizedString("Unsupported Device", comment: "Title for stories unsupported device error.")
+                let message = NSLocalizedString("The Stories editor is not currently available for your iPad. Please try Stories on your iPhone.", comment: "Message for stories unsupported device error.")
+                let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
+                    controller.dismiss(animated: true, completion: nil)
+                }
+                controller.addAction(dismiss)
+                present(controller, animated: true, completion: nil)
+            default:
+                let title = NSLocalizedString("Unable to Create Stories Editor", comment: "Title for stories unknown error.")
+                let message = NSLocalizedString("There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Message for stories unknown error.")
+                let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
+                    controller.dismiss(animated: true, completion: nil)
+                }
+                controller.addAction(dismiss)
+                present(controller, animated: true, completion: nil)
+            }
+        }
+    }
+
+    func showEditor(files: [MediaFile], blockID: String) throws {
+        storyEditor = try StoryEditor.editor(post: post, mediaFiles: files, publishOnCompletion: false, updated: { [weak self] result in
+            switch result {
+            case .success(let content):
+                self?.gutenberg.replace(blockID: blockID, content: content)
+                self?.dismiss(animated: true, completion: nil)
+            case .failure(let error):
+                self?.dismiss(animated: true, completion: nil)
+                DDLogError("Failed to update story: \(error)")
+            }
+        }, uploaded: { result in
+            switch result {
+            case .success:
+                break // Posts will be updated when the MediaFilesProcessor receives upload events
+            case .failure(let error):
+                DDLogError("Failed to upload story: \(error)")
+            }
+        })
+
+        storyEditor?.trackOpen()
+        storyEditor?.present(on: self, with: files)
+    }
+
     func gutenbergDidRequestMediaUploadActionDialog(for mediaID: Int32) {
 
         guard let media = mediaInserterHelper.mediaFor(uploadID: mediaID) else {
@@ -860,6 +937,14 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         })
     }
 
+    func gutenbergDidRequestFocalPointPickerTooltipShown() -> Bool {
+        return gutenbergSettings.focalPointPickerTooltipShown
+    }
+
+    func gutenbergDidRequestSetFocalPointPickerTooltipShown(_ tooltipShown: Bool) {
+        gutenbergSettings.focalPointPickerTooltipShown = tooltipShown
+    }
+
     func gutenbergDidSendButtonPressedAction(_ buttonType: Gutenberg.ActionButtonType) {
         switch buttonType {
             case .missingBlockAlertActionButton:
@@ -904,7 +989,7 @@ extension GutenbergViewController {
             }
 
             var didSelectSuggestion = false
-            if case .success(_) = result {
+            if case .success = result {
                 didSelectSuggestion = true
             }
 
@@ -975,11 +1060,14 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     }
 
     func gutenbergCapabilities() -> [Capabilities: Bool] {
+        let isFreeWPCom = post.blog.isHostedAtWPcom && !post.blog.hasPaidPlan
         return [
             .mentions: FeatureFlag.gutenbergMentions.enabled && SuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .xposts: FeatureFlag.gutenbergXposts.enabled && SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
+            .audioBlock: !isFreeWPCom, // Disable audio block until it's usable on free sites via "Insert from URL" capability
+            .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories) && !UIDevice.isPad()
         ]
     }
 

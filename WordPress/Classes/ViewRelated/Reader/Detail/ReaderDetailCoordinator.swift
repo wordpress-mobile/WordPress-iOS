@@ -16,6 +16,9 @@ class ReaderDetailCoordinator {
     /// Used to determine if block and report are shown in the options menu.
     var readerTopic: ReaderAbstractTopic?
 
+    /// Used for analytics
+    var remoteSimplePost: RemoteReaderSimplePost?
+
     /// A post URL to be loaded and be displayed
     var postURL: URL?
 
@@ -105,6 +108,16 @@ class ReaderDetailCoordinator {
             fetch(postID: postID, siteID: siteID, isFeed: isFeed)
         } else if let postURL = postURL {
             fetch(postURL)
+        }
+    }
+
+    /// Fetch related posts for the current post
+    ///
+    func fetchRelatedPosts(for post: ReaderPost) {
+        service.fetchRelatedPosts(for: post) { [weak self] relatedPosts in
+            self?.view?.renderRelatedPosts(relatedPosts)
+        } failure: { error in
+            DDLogError("Error fetching related posts for detail: \(String(describing: error?.localizedDescription))")
         }
     }
 
@@ -244,10 +257,7 @@ class ReaderDetailCoordinator {
 
         bumpStats()
         bumpPageViewsForPost()
-
-        if FeatureFlag.unseenPosts.enabled {
-            markPostAsSeen()
-        }
+        markPostAsSeen()
     }
 
     private func markPostAsSeen() {
@@ -306,7 +316,10 @@ class ReaderDetailCoordinator {
                                                                      context: context,
                                                                      readerTopic: readerTopic,
                                                                      anchor: anchorView,
-                                                                     vc: viewController)
+                                                                     vc: viewController,
+                                                                     source: ReaderPostMenuSource.details)
+
+        WPAnalytics.trackReader(.readerArticleDetailMoreTapped)
     }
 
     private func showTopic(_ topic: String) {
@@ -396,9 +409,11 @@ class ReaderDetailCoordinator {
         ReaderFollowAction().execute(with: post,
                                      context: coreDataStack.mainContext,
                                      completion: { [weak self] in
+                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: true)
                                          self?.view?.updateHeader()
                                      },
                                      failure: { [weak self] _ in
+                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: false)
                                          self?.view?.updateHeader()
                                      })
     }
@@ -471,6 +486,21 @@ class ReaderDetailCoordinator {
         var properties = ReaderHelpers.statsPropertiesForPost(readerPost, andValue: nil, forKey: nil)
         properties[DetailAnalyticsConstants.TypeKey] = detailType
         properties[DetailAnalyticsConstants.OfflineKey] = isOfflineView
+
+
+        // Track related post tapped
+        if let simplePost = remoteSimplePost {
+            switch simplePost.postType {
+                case .local:
+                    WPAnalytics.track(.readerRelatedPostFromSameSiteClicked, properties: properties)
+                case .global:
+                    WPAnalytics.track(.readerRelatedPostFromOtherSiteClicked, properties: properties)
+                default:
+                    DDLogError("Unknown related post type: \(String(describing: simplePost.postType))")
+            }
+        }
+
+        // Track open
         WPAppAnalytics.track(.readerArticleOpened, withProperties: properties)
 
         if let railcar = readerPost.railcarDictionary() {
