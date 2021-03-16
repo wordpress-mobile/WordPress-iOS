@@ -53,7 +53,7 @@ end
 def kanvas
   #pod 'Kanvas', '~> 1.2.4'
   #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
-  pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => '443c5f6'
+  pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => '6c2abc'
   #pod 'Kanvas', :path => '../Kanvas-iOS'
 end
 
