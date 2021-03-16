@@ -81,6 +81,142 @@ def shared_with_extension_pods
     pod 'Down', '~> 0.6.6'
 end
 
+def shared_with_app_target_pods
+  shared_with_all_pods
+  shared_with_networking_pods
+  shared_with_extension_pods
+
+  ## Gutenberg (React Native)
+  ## =====================
+  ##
+  gutenberg :tag => 'v1.48.1'
+
+  ## Third party libraries
+  ## =====================
+  ##
+  pod 'Charts', '~> 3.2.2'
+  pod 'Gifu', '3.2.0'
+  pod 'AppCenter', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
+  pod 'AppCenter/Distribute', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
+  pod 'MRProgress', '0.8.3'
+  pod 'Starscream', '3.0.6'
+  pod 'SVProgressHUD', '2.2.5'
+  pod 'ZendeskSupportSDK', '5.2.0'
+  pod 'AlamofireImage', '3.5.2'
+  pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
+  pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
+  pod 'JTAppleCalendar', '~> 8.0.2'
+  pod 'AMScrollingNavbar', '5.6.0'
+  pod 'CropViewController', '2.5.3'
+
+  ## Automattic libraries
+  ## ====================
+  ##
+  wordpress_kit
+  wordpress_shared
+  kanvas
+
+  # Production
+
+  pod 'Automattic-Tracks-iOS', '~> 0.8.2'
+  # While in PR
+  # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
+  # Local Development
+  #pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
+
+  pod 'NSURL+IDN', '~> 0.4'
+
+  pod 'WPMediaPicker', '~> 1.7.2'
+  #pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
+  ## while PR is in review:
+  # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
+  # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
+
+  pod 'Gridicons', '~> 1.1.0'
+
+  pod 'WordPressAuthenticator', '~> 1.35.2'
+  # While in PR
+  # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+  # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
+  # pod 'WordPressAuthenticator', :path => '../../WordPressAuthenticator-iOS'
+
+  pod 'MediaEditor', '~> 1.2.1'
+  # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
+  # pod 'MediaEditor', :path => '../MediaEditor-iOS'
+
+  aztec
+  wordpress_ui
+end
+
+def app_post_install_action
+  post_install do |installer|
+      project_root = File.dirname(__FILE__)
+
+      puts 'Patching RCTShadowView to fix nested group block - it could be removed after upgrade to 0.62'
+      %x(patch "#{project_root}/Pods/React-Core/React/Views/RCTShadowView.m" < "#{project_root}/patches/RN-RCTShadowView.patch")
+      puts 'Patching RCTActionSheet to add possibility to disable action sheet buttons -
+      it could be removed once PR with that functionality will be merged into RN'
+      %x(patch "#{project_root}/Pods/React-RCTActionSheet/RCTActionSheetManager.m" < "#{project_root}/patches/RN-RCTActionSheetManager.patch")
+      puts 'Patching RCTUIImageViewAnimated to fix a problem where images will not load when built using the iOS 14 SDK (Xcode 12) -
+      it can be removed once we upgrade Gutenberg to use RN 0.63 or later'
+      %x(patch "#{project_root}/Pods/React-RCTImage/RCTUIImageViewAnimated.m" < "#{project_root}/patches/RN-RCTUIImageViewAnimated.patch")
+
+      ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
+      require 'commonmarker'
+
+      acknowledgements = 'Acknowledgments'
+      markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown")
+      rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
+      styled_html = "<head>
+                       <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+                       <style>
+                         body {
+                           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                           font-size: 16px;
+                           color: #1a1a1a;
+                           margin: 20px;
+                         }
+                        @media (prefers-color-scheme: dark) {
+                         body {
+                          background: #1a1a1a;
+                          color: white;
+                         }
+                        }
+                         pre {
+                          white-space: pre-wrap;
+                         }
+                       </style>
+                       <title>
+                         #{acknowledgements}
+                       </title>
+                     </head>
+                     <body>
+                       #{rendered_html}
+                     </body>"
+
+        ## Remove the <h1>, since we've promoted it to <title>
+        styled_html = styled_html.sub("<h1>Acknowledgements</h1>", '')
+
+        ## The glog library's license contains a URL that does not wrap in the web view,
+        ## leading to a large right-hand whitespace gutter.  Work around this by explicitly
+        ## inserting a <br> in the HTML.  Use gsub juuust in case another one sneaks in later.
+        styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
+
+      File.write("#{project_root}/Pods/Target Support Files/Pods-WordPress/acknowledgements.html", styled_html)
+
+      # Let Pods targets inherit deployment target from the app
+      # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/4859
+      # =====================================
+      #
+      installer.pods_project.targets.each do |target|
+          target.build_configurations.each do |configuration|
+             pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
+             configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
+          end
+      end
+  end
+end
+
 def gutenberg(options)
     options[:git] = 'https://github.com/wordpress-mobile/gutenberg-mobile.git'
     options[:submodules] = true
@@ -147,76 +283,13 @@ def gutenberg_dependencies(options)
     end
 end
 
-## WordPress iOS
+## WordPress App iOS
 ## =============
 ##
 target 'WordPress' do
     project 'WordPress/WordPress.xcodeproj'
 
-    shared_with_all_pods
-    shared_with_networking_pods
-    shared_with_extension_pods
-
-    ## Gutenberg (React Native)
-    ## =====================
-    ##
-    gutenberg :tag => 'v1.48.1'
-
-    ## Third party libraries
-    ## =====================
-    ##
-    pod 'Charts', '~> 3.2.2'
-    pod 'Gifu', '3.2.0'
-    pod 'AppCenter', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'AppCenter/Distribute', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'MRProgress', '0.8.3'
-    pod 'Starscream', '3.0.6'
-    pod 'SVProgressHUD', '2.2.5'
-    pod 'ZendeskSupportSDK', '5.2.0'
-    pod 'AlamofireImage', '3.5.2'
-    pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
-    pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
-    pod 'JTAppleCalendar', '~> 8.0.2'
-    pod 'AMScrollingNavbar', '5.6.0'
-    pod 'CropViewController', '2.5.3'
-
-    ## Automattic libraries
-    ## ====================
-    ##
-    wordpress_kit
-    wordpress_shared
-    kanvas
-
-    # Production
-
-    pod 'Automattic-Tracks-iOS', '~> 0.8.2'
-    # While in PR
-    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
-    # Local Development
-    #pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
-
-    pod 'NSURL+IDN', '~> 0.4'
-
-    pod 'WPMediaPicker', '~> 1.7.2'
-    #pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
-    ## while PR is in review:
-    # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
-    # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
-
-    pod 'Gridicons', '~> 1.1.0'
-
-    pod 'WordPressAuthenticator', '~> 1.35.2'
-    # While in PR
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
-    # pod 'WordPressAuthenticator', :path => '../../WordPressAuthenticator-iOS'
-
-    pod 'MediaEditor', '~> 1.2.1'
-    # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
-    # pod 'MediaEditor', :path => '../MediaEditor-iOS'
-
-    aztec
-    wordpress_ui
+    shared_with_app_target_pods
 
     target 'WordPressTest' do
         inherit! :search_paths
@@ -225,73 +298,18 @@ target 'WordPress' do
         pod 'Nimble', '~> 7.3.1'
     end
 
+    app_post_install_action
+end
 
-    post_install do |installer|
-        project_root = File.dirname(__FILE__)
+## Jetpack App iOS
+## =============
+##
+target 'Jetpack' do
+    project 'WordPress/WordPress.xcodeproj'
 
-        puts 'Patching RCTShadowView to fix nested group block - it could be removed after upgrade to 0.62'
-        %x(patch "#{project_root}/Pods/React-Core/React/Views/RCTShadowView.m" < "#{project_root}/patches/RN-RCTShadowView.patch")
-        puts 'Patching RCTActionSheet to add possibility to disable action sheet buttons -
-        it could be removed once PR with that functionality will be merged into RN'
-        %x(patch "#{project_root}/Pods/React-RCTActionSheet/RCTActionSheetManager.m" < "#{project_root}/patches/RN-RCTActionSheetManager.patch")
-        puts 'Patching RCTUIImageViewAnimated to fix a problem where images will not load when built using the iOS 14 SDK (Xcode 12) -
-        it can be removed once we upgrade Gutenberg to use RN 0.63 or later'
-        %x(patch "#{project_root}/Pods/React-RCTImage/RCTUIImageViewAnimated.m" < "#{project_root}/patches/RN-RCTUIImageViewAnimated.patch")
+    shared_with_app_target_pods
 
-        ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
-        require 'commonmarker'
-
-        acknowledgements = 'Acknowledgments'
-        markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown")
-        rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
-        styled_html = "<head>
-                         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
-                         <style>
-                           body {
-                             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-                             font-size: 16px;
-                             color: #1a1a1a;
-                             margin: 20px;
-                           }
-                          @media (prefers-color-scheme: dark) {
-                           body {
-                            background: #1a1a1a;
-                            color: white;
-                           }
-                          }
-                           pre {
-                            white-space: pre-wrap;
-                           }
-                         </style>
-                         <title>
-                           #{acknowledgements}
-                         </title>
-                       </head>
-                       <body>
-                         #{rendered_html}
-                       </body>"
-
-          ## Remove the <h1>, since we've promoted it to <title>
-          styled_html = styled_html.sub("<h1>Acknowledgements</h1>", '')
-
-          ## The glog library's license contains a URL that does not wrap in the web view,
-          ## leading to a large right-hand whitespace gutter.  Work around this by explicitly
-          ## inserting a <br> in the HTML.  Use gsub juuust in case another one sneaks in later.
-          styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
-
-        File.write("#{project_root}/Pods/Target Support Files/Pods-WordPress/acknowledgements.html", styled_html)
-
-        # Let Pods targets inherit deployment target from the app
-        # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/4859
-        # =====================================
-        #
-        installer.pods_project.targets.each do |target|
-            target.build_configurations.each do |configuration|
-               pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
-               configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
-            end
-        end
-    end
+    app_post_install_action
 end
 
 
