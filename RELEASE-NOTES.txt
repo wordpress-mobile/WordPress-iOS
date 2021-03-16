@@ -1,3 +1,7 @@
+17.0
+-----
+* [*] Fixes an issue where the signup confirmation page had the incorrect background color on the header and footer cells.
+
 16.8
 -----
  
