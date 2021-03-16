@@ -1,3 +1,6 @@
+# For security reasons, please always keep the wordpress-mobile source first and the CDN second.
+install! 'cocoapods', warn_for_multiple_pod_sources: false
+source 'https://github.com/wordpress-mobile/cocoapods-specs.git'
 source 'https://cdn.cocoapods.org/'
 
 unless ['BUNDLE_BIN_PATH', 'BUNDLE_GEMFILE'].any? { |k| ENV.key?(k) }

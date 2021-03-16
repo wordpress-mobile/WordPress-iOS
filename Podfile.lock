@@ -513,6 +513,11 @@ DEPENDENCIES:
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
+  https://github.com/wordpress-mobile/cocoapods-specs.git:
+    - WordPressAuthenticator
+    - WordPressKit
+    - WordPressShared
+    - WordPressUI
   trunk:
     - 1PasswordExtension
     - Alamofire
@@ -552,11 +557,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressAuthenticator
-    - WordPressKit
     - WordPressMocks
-    - WordPressShared
-    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -749,11 +750,11 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: f4bf3b343581a1beacdbf5fb1a8825bd5f05a4a4
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
-  WordPressAuthenticator: 73887798e340abe3cf021163644e59ca5388affb
-  WordPressKit: b25fb76abc3c318a7a3f06617232c7842861e8d3
+  WordPressAuthenticator: 3874fe13eccc6bcbacf37f8cf47690032eabe9c9
+  WordPressKit: 0a00eb724ff476b3a45d27660b5adc2dfe47420f
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
-  WordPressShared: 2d2b45d8945221b716a0e2f23932dadb750d9a74
-  WordPressUI: 3b70cccc4c44cff09024ca3e94ae25a8768b26c1
+  WordPressShared: e1915cf3b4ac33f41c47610693b9ca30c0cdab45
+  WordPressUI: b395e7f4b012b9ef3f57cdee8fedb6faa371ff5f
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
@@ -766,6 +767,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 90de334cd38c2082212f808e69ca27aad34496ea
+PODFILE CHECKSUM: bd8181a518e8e400decf7725975273928184195d
 
 COCOAPODS: 1.10.0
