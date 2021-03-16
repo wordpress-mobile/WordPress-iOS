@@ -4255,13 +4255,6 @@
 			remoteGlobalIDString = 93E5283919A7741A003A1A9C;
 			remoteInfo = WordPressTodayWidget;
 		};
-		8B37E50B25FAC1090088E853 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 93E5283919A7741A003A1A9C;
-			remoteInfo = WordPressTodayWidget;
-		};
 		8B37E50D25FAC1090088E853 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -4360,27 +4353,6 @@
 			remoteGlobalIDString = F1F163BD25658B4D003DC13B;
 			remoteInfo = WordPressIntents;
 		};
-		FA44CE5525FF352B00A97DFC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 98D31B8D2396ED7E009CFF43;
-			remoteInfo = WordPressAllTimeWidget;
-		};
-		FA44CE6925FF353100A97DFC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 98A3C2EE239997DA0048D38D;
-			remoteInfo = WordPressThisWeekWidget;
-		};
-		FA44CE6C25FF353400A97DFC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 93E5283919A7741A003A1A9C;
-			remoteInfo = WordPressTodayWidget;
-		};
 		FA44CF6825FF549D00A97DFC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -4394,41 +4366,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 3F526C4B2538CF2A0069706C;
 			remoteInfo = WordPressStatsWidgets;
-		};
-		FA8DF1FE25FF241500B82948 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 74576671202B558C00F42E40;
-			remoteInfo = WordPressDraftActionExtension;
-		};
-		FA8DF30D25FF303800B82948 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 733F36022126197800988727;
-			remoteInfo = WordPressNotificationContentExtension;
-		};
-		FA8DF31025FF303900B82948 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7358E6B7210BD318002323EB;
-			remoteInfo = WordPressNotificationServiceExtension;
-		};
-		FA8DF32425FF312D00B82948 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F1F163BD25658B4D003DC13B;
-			remoteInfo = WordPressIntents;
-		};
-		FA8DF33825FF314500B82948 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 932225A61C7CE50300443B02;
-			remoteInfo = WordPressShareExtension;
 		};
 		FF2716941CAAC87B0006E2D4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -13890,7 +13827,6 @@
 			dependencies = (
 				8B37E50625FAC1090088E853 /* PBXTargetDependency */,
 				8B37E50825FAC1090088E853 /* PBXTargetDependency */,
-				8B37E50A25FAC1090088E853 /* PBXTargetDependency */,
 				8B37E50C25FAC1090088E853 /* PBXTargetDependency */,
 				8B37E50E25FAC1090088E853 /* PBXTargetDependency */,
 				8B37E51025FAC1090088E853 /* PBXTargetDependency */,
@@ -13898,14 +13834,6 @@
 				8B37E51425FAC1090088E853 /* PBXTargetDependency */,
 				8B37E51625FAC1090088E853 /* PBXTargetDependency */,
 				8B37E51825FAC1090088E853 /* PBXTargetDependency */,
-				FA8DF1FF25FF241500B82948 /* PBXTargetDependency */,
-				FA8DF30E25FF303800B82948 /* PBXTargetDependency */,
-				FA8DF31125FF303900B82948 /* PBXTargetDependency */,
-				FA8DF32525FF312D00B82948 /* PBXTargetDependency */,
-				FA8DF33925FF314500B82948 /* PBXTargetDependency */,
-				FA44CE5625FF352B00A97DFC /* PBXTargetDependency */,
-				FA44CE6A25FF353100A97DFC /* PBXTargetDependency */,
-				FA44CE6D25FF353400A97DFC /* PBXTargetDependency */,
 				FA44CF6925FF549D00A97DFC /* PBXTargetDependency */,
 				FA44CF7D25FF581F00A97DFC /* PBXTargetDependency */,
 			);
@@ -19459,11 +19387,6 @@
 			target = 93E5283919A7741A003A1A9C /* WordPressTodayWidget */;
 			targetProxy = 8B37E50925FAC1090088E853 /* PBXContainerItemProxy */;
 		};
-		8B37E50A25FAC1090088E853 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 93E5283919A7741A003A1A9C /* WordPressTodayWidget */;
-			targetProxy = 8B37E50B25FAC1090088E853 /* PBXContainerItemProxy */;
-		};
 		8B37E50C25FAC1090088E853 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 932225A61C7CE50300443B02 /* WordPressShareExtension */;
@@ -19534,21 +19457,6 @@
 			target = F1F163BD25658B4D003DC13B /* WordPressIntents */;
 			targetProxy = F1F163D425658B4D003DC13B /* PBXContainerItemProxy */;
 		};
-		FA44CE5625FF352B00A97DFC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 98D31B8D2396ED7E009CFF43 /* WordPressAllTimeWidget */;
-			targetProxy = FA44CE5525FF352B00A97DFC /* PBXContainerItemProxy */;
-		};
-		FA44CE6A25FF353100A97DFC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 98A3C2EE239997DA0048D38D /* WordPressThisWeekWidget */;
-			targetProxy = FA44CE6925FF353100A97DFC /* PBXContainerItemProxy */;
-		};
-		FA44CE6D25FF353400A97DFC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 93E5283919A7741A003A1A9C /* WordPressTodayWidget */;
-			targetProxy = FA44CE6C25FF353400A97DFC /* PBXContainerItemProxy */;
-		};
 		FA44CF6925FF549D00A97DFC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F1F163BD25658B4D003DC13B /* WordPressIntents */;
@@ -19558,31 +19466,6 @@
 			isa = PBXTargetDependency;
 			target = 3F526C4B2538CF2A0069706C /* WordPressStatsWidgets */;
 			targetProxy = FA44CF7C25FF581F00A97DFC /* PBXContainerItemProxy */;
-		};
-		FA8DF1FF25FF241500B82948 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 74576671202B558C00F42E40 /* WordPressDraftActionExtension */;
-			targetProxy = FA8DF1FE25FF241500B82948 /* PBXContainerItemProxy */;
-		};
-		FA8DF30E25FF303800B82948 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 733F36022126197800988727 /* WordPressNotificationContentExtension */;
-			targetProxy = FA8DF30D25FF303800B82948 /* PBXContainerItemProxy */;
-		};
-		FA8DF31125FF303900B82948 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 7358E6B7210BD318002323EB /* WordPressNotificationServiceExtension */;
-			targetProxy = FA8DF31025FF303900B82948 /* PBXContainerItemProxy */;
-		};
-		FA8DF32525FF312D00B82948 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = F1F163BD25658B4D003DC13B /* WordPressIntents */;
-			targetProxy = FA8DF32425FF312D00B82948 /* PBXContainerItemProxy */;
-		};
-		FA8DF33925FF314500B82948 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 932225A61C7CE50300443B02 /* WordPressShareExtension */;
-			targetProxy = FA8DF33825FF314500B82948 /* PBXContainerItemProxy */;
 		};
 		FF2716951CAAC87B0006E2D4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
