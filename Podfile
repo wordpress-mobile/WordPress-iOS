@@ -306,130 +306,6 @@ post_install do |installer|
     end
 end
 
-## Share Extension
-## ===============
-##
-target 'WordPressShareExtension' do
-    project 'WordPress/WordPress.xcodeproj'
-    project 'WordPress/Jetpack.xcodeproj'
-
-    shared_with_extension_pods
-
-    aztec
-    shared_with_all_pods
-    shared_with_networking_pods
-    wordpress_ui
-end
-
-
-## DraftAction Extension
-## =====================
-##
-target 'WordPressDraftActionExtension' do
-    project 'WordPress/WordPress.xcodeproj'
-    project 'WordPress/Jetpack.xcodeproj'
-
-    shared_with_extension_pods
-
-    aztec
-    shared_with_all_pods
-    shared_with_networking_pods
-    wordpress_ui
-end
-
-
-## Today Widget
-## ============
-##
-target 'WordPressTodayWidget' do
-    project 'WordPress/WordPress.xcodeproj'
-    project 'WordPress/Jetpack.xcodeproj'
-
-    shared_with_all_pods
-    shared_with_networking_pods
-
-    wordpress_ui
-end
-
-## All Time Widget
-## ============
-##
-target 'WordPressAllTimeWidget' do
-    project 'WordPress/WordPress.xcodeproj'
-    project 'WordPress/Jetpack.xcodeproj'
-
-    shared_with_all_pods
-    shared_with_networking_pods
-
-    wordpress_ui
-end
-
-## This Week Widget
-## ============
-##
-target 'WordPressThisWeekWidget' do
-    project 'WordPress/WordPress.xcodeproj'
-    project 'WordPress/Jetpack.xcodeproj'
-
-    shared_with_all_pods
-    shared_with_networking_pods
-
-    wordpress_ui
-end
-
-## iOS 14 Today Widget
-## ============
-##
-target 'WordPressStatsWidgets' do
-    project 'WordPress/WordPress.xcodeproj'
-    project 'WordPress/Jetpack.xcodeproj'
-
-    shared_with_all_pods
-    shared_with_networking_pods
-
-    wordpress_ui
-end
-
-## Intents
-## ============
-##
-target 'WordPressIntents' do
-    project 'WordPress/WordPress.xcodeproj'
-    project 'WordPress/Jetpack.xcodeproj'
-
-    shared_with_all_pods
-    shared_with_networking_pods
-
-    wordpress_ui
-end
-
-## Notification Content Extension
-## ==============================
-##
-target 'WordPressNotificationContentExtension' do
-    project 'WordPress/WordPress.xcodeproj'
-    project 'WordPress/Jetpack.xcodeproj'
-
-    wordpress_kit
-    wordpress_shared
-    wordpress_ui
-end
-
-
-
-## Notification Service Extension
-## ==============================
-##
-target 'WordPressNotificationServiceExtension' do
-    project 'WordPress/WordPress.xcodeproj'
-    project 'WordPress/Jetpack.xcodeproj'
-
-    wordpress_kit
-    wordpress_shared
-    wordpress_ui
-end
-
-
 ## Mocks
 ## ===================
 ##
@@ -440,26 +316,139 @@ def wordpress_mocks
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end
 
+['WordPress/WordPress.xcodeproj', 'WordPress/Jetpack.xcodeproj'].each { |project_name|
+  ## Share Extension
+  ## ===============
+  ##
+  target 'WordPressShareExtension' do
+      project project_name
 
-## Screenshot Generation
-## ===================
-##
-target 'WordPressScreenshotGeneration' do
-    project 'WordPress/WordPress.xcodeproj'
-    project 'WordPress/Jetpack.xcodeproj'
+      shared_with_extension_pods
 
-    wordpress_mocks
-end
+      aztec
+      shared_with_all_pods
+      shared_with_networking_pods
+      wordpress_ui
+  end
 
-## UI Tests
-## ===================
-##
-target 'WordPressUITests' do
-    project 'WordPress/WordPress.xcodeproj'
-    project 'WordPress/Jetpack.xcodeproj'
 
-    wordpress_mocks
-end
+  ## DraftAction Extension
+  ## =====================
+  ##
+  target 'WordPressDraftActionExtension' do
+      project project_name
+
+      shared_with_extension_pods
+
+      aztec
+      shared_with_all_pods
+      shared_with_networking_pods
+      wordpress_ui
+  end
+
+
+  ## Today Widget
+  ## ============
+  ##
+  target 'WordPressTodayWidget' do
+      project project_name
+
+      shared_with_all_pods
+      shared_with_networking_pods
+
+      wordpress_ui
+  end
+
+  ## All Time Widget
+  ## ============
+  ##
+  target 'WordPressAllTimeWidget' do
+      project project_name
+
+      shared_with_all_pods
+      shared_with_networking_pods
+
+      wordpress_ui
+  end
+
+  ## This Week Widget
+  ## ============
+  ##
+  target 'WordPressThisWeekWidget' do
+      project project_name
+
+      shared_with_all_pods
+      shared_with_networking_pods
+
+      wordpress_ui
+  end
+
+  ## iOS 14 Today Widget
+  ## ============
+  ##
+  target 'WordPressStatsWidgets' do
+      project project_name
+
+      shared_with_all_pods
+      shared_with_networking_pods
+
+      wordpress_ui
+  end
+
+  ## Intents
+  ## ============
+  ##
+  target 'WordPressIntents' do
+      project project_name
+
+      shared_with_all_pods
+      shared_with_networking_pods
+
+      wordpress_ui
+  end
+
+  ## Notification Content Extension
+  ## ==============================
+  ##
+  target 'WordPressNotificationContentExtension' do
+      project project_name
+
+      wordpress_kit
+      wordpress_shared
+      wordpress_ui
+  end
+
+
+
+  ## Notification Service Extension
+  ## ==============================
+  ##
+  target 'WordPressNotificationServiceExtension' do
+      project project_name
+
+      wordpress_kit
+      wordpress_shared
+      wordpress_ui
+  end
+
+  ## Screenshot Generation
+  ## ===================
+  ##
+  target 'WordPressScreenshotGeneration' do
+      project project_name
+
+      wordpress_mocks
+  end
+
+  ## UI Tests
+  ## ===================
+  ##
+  target 'WordPressUITests' do
+      project project_name
+
+      wordpress_mocks
+  end
+}
 
 # Static Frameworks:
 # ============
