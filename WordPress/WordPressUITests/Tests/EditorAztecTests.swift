@@ -27,6 +27,7 @@ class EditorAztecTests: XCTestCase {
         let title = getRandomPhrase()
         let content = getRandomContent()
         editorScreen
+            .dismissNotificationAlertIfNeeded(.accept)
             .enterTextInTitle(text: title)
             .enterText(text: content)
             .publish()
