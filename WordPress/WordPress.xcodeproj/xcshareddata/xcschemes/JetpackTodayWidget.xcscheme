@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FA44F11A2601D67F00A97DFC"
-               BuildableName = "WordPressTodayWidget copy.appex"
-               BlueprintName = "WordPressTodayWidget copy"
+               BuildableName = "JetpackTodayWidget.appex"
+               BlueprintName = "JetpackTodayWidget"
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -54,8 +54,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FA44F11A2601D67F00A97DFC"
-            BuildableName = "WordPressTodayWidget copy.appex"
-            BlueprintName = "WordPressTodayWidget copy"
+            BuildableName = "JetpackTodayWidget.appex"
+            BlueprintName = "JetpackTodayWidget"
             ReferencedContainer = "container:WordPress.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

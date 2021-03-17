@@ -24254,7 +24254,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.WordPressAllTimeWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress All Time Widget Development";
 				SKIP_INSTALL = YES;
@@ -24307,7 +24307,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.WordPressAllTimeWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressAllTimeWidget";
 				SKIP_INSTALL = YES;
@@ -24359,7 +24359,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.internal.WordPressAllTimeWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.internal.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal.WordPressAllTimeWidget";
 				SKIP_INSTALL = YES;
@@ -24411,7 +24411,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.alpha.WordPressAllTimeWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.alpha.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressAllTimeWidget";
 				SKIP_INSTALL = YES;
@@ -24463,7 +24463,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.WordPressThisWeekWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress This Week Widget Development";
 				SKIP_INSTALL = YES;
@@ -24516,7 +24516,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.WordPressThisWeekWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressThisWeekWidget";
 				SKIP_INSTALL = YES;
@@ -24568,7 +24568,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.internal.WordPressThisWeekWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.internal.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal.WordPressThisWeekWidget";
 				SKIP_INSTALL = YES;
@@ -24620,7 +24620,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.WordPressThisWeekWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.alpha.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressThisWeekWidget";
 				SKIP_INSTALL = YES;
@@ -24672,7 +24672,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.WordPressStatsWidgets;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Stats Widgets Development";
 				SKIP_INSTALL = YES;
@@ -24726,7 +24726,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.WordPressStatsWidgets;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressStatsWidgets";
 				SKIP_INSTALL = YES;
@@ -24779,7 +24779,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.internal.WordPressStatsWidgets;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.internal.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal.WordPressStatsWidgets";
 				SKIP_INSTALL = YES;
@@ -24832,7 +24832,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.alpha.WordPressStatsWidgets;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.alpha.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressStatsWidgets";
 				SKIP_INSTALL = YES;
@@ -25270,7 +25270,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.WordPressIntents;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.$(PRODUCT_NAME:rfc1034identifier)s";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Intents Extension Development";
 				SKIP_INSTALL = YES;
@@ -25322,7 +25322,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.WordPressIntents;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressIntents";
 				SKIP_INSTALL = YES;
@@ -25373,7 +25373,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.internal.WordPressIntents;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.internal.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal.WordPressIntents";
 				SKIP_INSTALL = YES;
@@ -25424,7 +25424,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.alpha.WordPressIntents;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.alpha.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressIntents";
 				SKIP_INSTALL = YES;
