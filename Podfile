@@ -271,7 +271,7 @@ target 'WordPressDraftActionExtension' do
 end
 
 
-## Today Widget
+## WordPress Today Widget
 ## ============
 ##
 target 'WordPressTodayWidget' do
@@ -283,7 +283,19 @@ target 'WordPressTodayWidget' do
     wordpress_ui
 end
 
-## All Time Widget
+## Jetpack Today Widget
+## ============
+##
+target 'JetpackTodayWidget' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    wordpress_ui
+end
+
+## WordPress All Time Widget
 ## ============
 ##
 target 'WordPressAllTimeWidget' do
@@ -295,7 +307,19 @@ target 'WordPressAllTimeWidget' do
     wordpress_ui
 end
 
-## This Week Widget
+## Jetpack All Time Widget
+## ============
+##
+target 'JetpackAllTimeWidget' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    wordpress_ui
+end
+
+## WordPress This Week Widget
 ## ============
 ##
 target 'WordPressThisWeekWidget' do
@@ -307,7 +331,19 @@ target 'WordPressThisWeekWidget' do
     wordpress_ui
 end
 
-## iOS 14 Today Widget
+## Jetpack This Week Widget
+## ============
+##
+target 'JetpackThisWeekWidget' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    wordpress_ui
+end
+
+## WordPress iOS 14 Today Widget
 ## ============
 ##
 target 'WordPressStatsWidgets' do
@@ -319,7 +355,19 @@ target 'WordPressStatsWidgets' do
     wordpress_ui
 end
 
-## Intents
+## Jetpack iOS 14 Today Widget
+## ============
+##
+target 'JetpackStatsWidgets' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    wordpress_ui
+end
+
+## WordPress Intents
 ## ============
 ##
 target 'WordPressIntents' do
@@ -331,7 +379,19 @@ target 'WordPressIntents' do
     wordpress_ui
 end
 
-## Notification Content Extension
+## Jetpack Intents
+## ============
+##
+target 'JetpackIntents' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    wordpress_ui
+end
+
+## WordPress Notification Content Extension
 ## ==============================
 ##
 target 'WordPressNotificationContentExtension' do
@@ -342,12 +402,32 @@ target 'WordPressNotificationContentExtension' do
     wordpress_ui
 end
 
+## Jetpack Notification Content Extension
+## ==============================
+##
+target 'JetpackNotificationContentExtension' do
+    project 'WordPress/WordPress.xcodeproj'
 
+    wordpress_kit
+    wordpress_shared
+    wordpress_ui
+end
 
-## Notification Service Extension
+## WordPress Notification Service Extension
 ## ==============================
 ##
 target 'WordPressNotificationServiceExtension' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    wordpress_kit
+    wordpress_shared
+    wordpress_ui
+end
+
+## Jetpack Notification Service Extension
+## ==============================
+##
+target 'JetpackNotificationServiceExtension' do
     project 'WordPress/WordPress.xcodeproj'
 
     wordpress_kit
