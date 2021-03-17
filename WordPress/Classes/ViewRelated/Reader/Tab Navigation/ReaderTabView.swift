@@ -3,6 +3,7 @@ import UIKit
 
 class ReaderTabView: UIView {
 
+    private let mainScrollView: UIScrollView
     private let mainStackView: UIStackView
     private let buttonsStackView: UIStackView
     private let tabBar: FilterTabBar
@@ -26,6 +27,7 @@ class ReaderTabView: UIView {
     }
 
     init(viewModel: ReaderTabViewModel) {
+        mainScrollView = UIScrollView()
         mainStackView = UIStackView()
         buttonsStackView = UIStackView()
         tabBar = FilterTabBar()
@@ -74,6 +76,7 @@ extension ReaderTabView {
 
     private func setupViewElements() {
         backgroundColor = .filterBarBackground
+        setupMainScrollView()
         setupMainStackView()
         setupTabBar()
         setupButtonsView()
@@ -83,10 +86,16 @@ extension ReaderTabView {
         activateConstraints()
     }
 
+    private func setupMainScrollView() {
+        mainScrollView.translatesAutoresizingMaskIntoConstraints = false
+        mainScrollView.addSubview(mainStackView)
+        addSubview(mainScrollView)
+    }
+
     private func setupMainStackView() {
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         mainStackView.axis = .vertical
-        addSubview(mainStackView)
+
         mainStackView.addArrangedSubview(tabBar)
         mainStackView.addArrangedSubview(buttonsStackView)
         mainStackView.addArrangedSubview(horizontalDivider)
@@ -166,12 +175,16 @@ extension ReaderTabView {
     }
 
     private func activateConstraints() {
-        pinSubviewToAllEdges(mainStackView)
+        pinSubviewToAllEdges(mainScrollView)
+        mainScrollView.pinSubviewToAllEdges(mainStackView)
         NSLayoutConstraint.activate([
             buttonsStackView.heightAnchor.constraint(equalToConstant: Appearance.barHeight),
             resetFilterButton.widthAnchor.constraint(equalToConstant: Appearance.resetButtonWidth),
             horizontalDivider.heightAnchor.constraint(equalToConstant: Appearance.dividerWidth),
-            horizontalDivider.widthAnchor.constraint(equalTo: mainStackView.widthAnchor)
+            horizontalDivider.widthAnchor.constraint(equalTo: mainStackView.widthAnchor),
+            NSLayoutConstraint(item: mainStackView, attribute: .centerX, relatedBy: .equal, toItem: mainScrollView, attribute: .centerX, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: mainStackView, attribute: .centerY, relatedBy: .equal, toItem: mainScrollView, attribute: .centerY, multiplier: 1, constant: 0),
+            mainStackView.widthAnchor.constraint(equalTo: mainScrollView.widthAnchor)
         ])
     }
 }
