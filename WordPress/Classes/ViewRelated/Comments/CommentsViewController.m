@@ -524,7 +524,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)refreshNoResultsView
 {
     if (![self contentIsEmpty]) {
-        [self.tableView setHidden:FALSE];
+        [self.tableView setHidden:NO];
         [self.noResultsViewController removeFromView];
         return;
     }
@@ -547,7 +547,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)refreshNoConnectionView
 {
     if (ReachabilityUtils.isInternetReachable) {
-        [self.tableView setHidden:FALSE];
+        [self.tableView setHidden:NO];
         [self.noConnectionViewController removeFromView];
         [self refreshAndSyncIfNeeded];
         
@@ -556,7 +556,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     
     // Show cached results instead of No Connection view.
     if (self.cachedStatusFilter == self.currentStatusFilter) {
-        [self.tableView setHidden:FALSE];
+        [self.tableView setHidden:NO];
         [self.noConnectionViewController removeFromView];
         
         return;
@@ -574,7 +574,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     // Because the table shows cached results from the last successful filter,
     // some comments can appear below the No Connection view.
     // So hide the table when showing No Connection.
-    [self.tableView setHidden:TRUE];
+    [self.tableView setHidden:YES];
     [self addChildViewController:self.noConnectionViewController];
     [self.view insertSubview:self.noConnectionViewController.view belowSubview:self.filterTabBar];
     self.noConnectionViewController.view.frame = self.tableView.frame;
