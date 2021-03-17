@@ -12,6 +12,8 @@
 * [*] Reader: Added a way to discover new topics from the Manage Topics view
 * [*] P2 users can create and share group invite links via the Invite Person screen under the People Management feature. [#16005]
 * [*] Fixed an issue that prevented searching for plugins and the Popular Plugins section from appearing: [#16070]
+* [**] Stories: Fixed a video playback issue when recording on iPhone 7, 8, and SE devices. [#16109]
+* [*] Stories: Fixed a video playback issue when selecting an exported Story video from a site's library. [#16109]
 
 16.8.1
 -----
