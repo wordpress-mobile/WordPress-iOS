@@ -1,4 +1,5 @@
 # For security reasons, please always keep the wordpress-mobile source first and the CDN second.
+# For more info, see https://github.com/wordpress-mobile/cocoapods-specs#source-order-and-security-considerations
 install! 'cocoapods', warn_for_multiple_pod_sources: false
 source 'https://github.com/wordpress-mobile/cocoapods-specs.git'
 source 'https://cdn.cocoapods.org/'
