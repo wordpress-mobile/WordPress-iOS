@@ -33,7 +33,7 @@ Note: You can only log in with the WordPress.com account that you used to create
 
 ## Configuration Details
 
-The steps above will help you configure the WordPress app to run and compile.  But you may sometimes need to update or re-run specific parts of the initial setup (like updating the dependencies.)  To see how to do that, please check out the steps below.
+The steps above will help you configure the WordasdfasdfasdfPress app to run and compile.  But you may sometimes need to update or re-run specific parts of the initial setup (like updating the dependencies.)  To see how to do that, please check out the steps below.
 
 ### Third party tools
 
