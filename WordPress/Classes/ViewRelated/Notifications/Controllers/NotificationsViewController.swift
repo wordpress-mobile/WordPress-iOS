@@ -443,6 +443,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }
 
     fileprivate func configureDetailsViewController(_ detailsViewController: NotificationDetailsViewController, withNote note: Notification) {
+        detailsViewController.navigationItem.largeTitleDisplayMode = .never
         detailsViewController.dataSource = self
         detailsViewController.note = note
         detailsViewController.onDeletionRequestCallback = { request in
@@ -461,6 +462,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 private extension NotificationsViewController {
     func setupNavigationBar() {
         // Don't show 'Notifications' in the next-view back button
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
         navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
         navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
     }
@@ -667,6 +670,7 @@ extension NotificationsViewController {
         //
         if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .matcher || note.kind == .newPost {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
+            readerViewController.navigationItem.largeTitleDisplayMode = .never
             showDetailViewController(readerViewController, sender: nil)
 
             return
@@ -1014,7 +1018,9 @@ extension NotificationsViewController {
         // (i.e. don't add an empty detail VC if the primary is full width)
         if let splitViewController = splitViewController as? WPSplitViewController,
             splitViewController.wpPrimaryColumnWidth != WPSplitViewControllerPrimaryColumnWidth.full {
-            showDetailViewController(UIViewController(), sender: nil)
+            let controller = UIViewController()
+            controller.navigationItem.largeTitleDisplayMode = .never
+            showDetailViewController(controller, sender: nil)
         }
     }
 
