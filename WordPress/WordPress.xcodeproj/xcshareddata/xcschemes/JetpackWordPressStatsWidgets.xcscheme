@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FA44F33C2601DBDF00A97DFC"
-               BuildableName = "JetpackStatsWidget.appex"
-               BlueprintName = "JetpackStatsWidget"
+               BuildableName = "JetpackStatsWidgets.appex"
+               BlueprintName = "JetpackStatsWidgets"
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -71,8 +71,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FA44F33C2601DBDF00A97DFC"
-            BuildableName = "JetpackStatsWidget.appex"
-            BlueprintName = "JetpackStatsWidget"
+            BuildableName = "JetpackStatsWidgets.appex"
+            BlueprintName = "JetpackStatsWidgets"
             ReferencedContainer = "container:WordPress.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
