@@ -422,9 +422,10 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     __typeof(self) __weak weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
+    NSManagedObjectID *blogObjectID = self.blog.objectID;
     
     [context performBlock:^{
-        Blog *blogInContext = (Blog *)[context existingObjectWithID:self.blog.objectID error:nil];
+        Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
         if (!blogInContext) {
             return;
         }
