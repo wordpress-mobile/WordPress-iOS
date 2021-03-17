@@ -54,9 +54,8 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [super viewDidLoad];
 
     [self configureFilterTabBar:self.filterTabBar];
+    [self getSelectedFilterFromUserDefaults];
     [self setTableConstraints];
-    self.currentStatusFilter = CommentStatusFilterAll;
-
     [self configureNavBar];
     [self configureLoadMoreSpinner];
     [self configureNoResultsView];
@@ -490,6 +489,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)refreshWithStatusFilter:(CommentStatusFilter)statusFilter
 {
+    [self saveSelectedFilterToUserDefaults];
     self.currentStatusFilter = statusFilter;
     [self refreshAndSyncWithInteraction];
 }
@@ -583,6 +583,19 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 {
     [self setSeletedIndex:[coder decodeIntegerForKey:RestorableFilterIndexKey] filterTabBar:self.filterTabBar];
     [super decodeRestorableStateWithCoder:coder];
+}
+
+#pragma mark - User Defaults
+
+- (void)saveSelectedFilterToUserDefaults
+{
+    [NSUserDefaults.standardUserDefaults setInteger:[self getSelectedIndex:self.filterTabBar] forKey:RestorableFilterIndexKey];
+}
+
+- (void)getSelectedFilterFromUserDefaults
+{
+    NSInteger filterIndex = [NSUserDefaults.standardUserDefaults integerForKey:RestorableFilterIndexKey] ?: 0;
+    [self setSeletedIndex:filterIndex filterTabBar:self.filterTabBar];
 }
 
 @end

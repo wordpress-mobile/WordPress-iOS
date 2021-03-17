@@ -15,9 +15,9 @@ parameters:
     default: all-lang
   beta_build:
     type: boolean
-    default: false 
+    default: false
   release_build:
-    type: boolean 
+    type: boolean
     default: false
 
 xcode_version: &xcode_version
@@ -174,31 +174,6 @@ jobs:
       - store_artifacts:
           path: Artifacts
           destination: Artifacts
-  Beta Build:
-    executor:
-      name: ios/default
-      <<: *xcode_version
-    steps:
-      - when:
-          condition: << pipeline.parameters.beta_build >>
-          steps:
-            - run:
-                name: Beta Build Test
-                command: |
-                  echo "export SLACK_SUCCESS_MESSAGE=':tada: A new Beta build has been triggered via API!'" >> $BASH_ENV 
-      - when:
-          condition: << pipeline.parameters.release_build >>
-          steps:
-            - run:
-                name: Release Build Test
-                command: |
-                  echo "export SLACK_SUCCESS_MESSAGE=':tada: A new Release build has been triggered via API!'" >> $BASH_ENV
-      - slack/status:
-          include_job_number_field: false
-          include_project_field: false
-          include_visit_job_action: true
-          webhook: '${SLACK_BUILD_WEBHOOK}'
-          success_message: '${SLACK_SUCCESS_MESSAGE}'
   Release Build:
     executor:
       name: ios/default
@@ -216,22 +191,22 @@ jobs:
             bundle-install: true
             pod-install: true
             cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
-      - run: 
+      - run:
           name: Copy Secrets
           command: bundle exec fastlane run configure_apply
-      - run: 
+      - run:
           name: Install other tools
           command: |
             brew install imagemagick
             brew install ghostscript
             curl -sL https://sentry.io/get-cli/ | bash
-      - run: 
+      - run:
           name: Setup notifications
           command: |
             APP_VERSION=$(cat config/Version.Public.xcconfig | grep "^VERSION_LONG" | cut -d "=" -f2)
             echo "export SLACK_FAILURE_MESSAGE=':red_circle: Build for WordPress iOS $APP_VERSION failed!'" >> $BASH_ENV
-            echo "export SLACK_SUCCESS_MESSAGE=':tada: WordPress iOS $APP_VERSION has been deployed!'" >> $BASH_ENV 
-      - when: 
+            echo "export SLACK_SUCCESS_MESSAGE=':tada: WordPress iOS $APP_VERSION has been deployed!'" >> $BASH_ENV
+      - when:
           condition: << pipeline.parameters.beta_build >>
           steps:
             - run:
@@ -239,12 +214,12 @@ jobs:
                 command: |
                   bundle exec fastlane build_and_upload_beta_release skip_confirm:true create_gh_release:true
                 no_output_timeout: 60m
-      - when: 
+      - when:
           condition: << pipeline.parameters.release_build >>
           steps:
             - run:
                 name: Build
-                command: | 
+                command: |
                   bundle exec fastlane build_and_upload_stable_release skip_confirm:true create_gh_release:true
                 no_output_timeout: 60m
       - slack/status:
@@ -255,7 +230,7 @@ jobs:
           failure_message: '${SLACK_FAILURE_MESSAGE}'
           success_message: '${SLACK_SUCCESS_MESSAGE}'
   translation-review-build:
-    executor: 
+    executor:
       name: ios/default
       <<: *xcode_version
     environment:
@@ -267,10 +242,10 @@ jobs:
             bundle-install: true
             pod-install: true
             cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
-      - run: 
+      - run:
           name: Copy Secrets
           command: bundle exec fastlane run configure_apply
-      - run: 
+      - run:
           name: Install other tools
           command: |
             brew install imagemagick
@@ -278,7 +253,7 @@ jobs:
             curl -sL https://sentry.io/get-cli/ | bash
       - run:
           name: Build
-          command: | 
+          command: |
             orig_version=`cat config/Version.internal.xcconfig | grep VERSION_SHORT | cut -d'=' -f2`
             sed -i '' "$(awk '/^VERSION_SHORT/{ print NR; exit }' "config/Version.internal.xcconfig")s/=.*/="${orig_version}"-`date +"%Y%d%m"`-"${CIRCLE_BUILD_NUM}"/" "config/Version.internal.xcconfig"
 
@@ -295,7 +270,7 @@ workflows:
   wordpress_ios:
     when:
       and:
-        - not: << pipeline.parameters.translation_review_build >> 
+        - not: << pipeline.parameters.translation_review_build >>
         - not: << pipeline.parameters.beta_build >>
         - not: << pipeline.parameters.release_build >>
     jobs:
@@ -345,7 +320,7 @@ workflows:
   Installable Build:
     when:
       and:
-        - not: << pipeline.parameters.translation_review_build >> 
+        - not: << pipeline.parameters.translation_review_build >>
         - not: << pipeline.parameters.beta_build >>
         - not: << pipeline.parameters.release_build >>
     jobs:
@@ -355,16 +330,16 @@ workflows:
             branches:
               ignore: /pull\/[0-9]+/
       - Installable Build:
-          requires: [Hold]  
+          requires: [Hold]
           filters:
             branches:
               ignore: /pull\/[0-9]+/
   Release Build:
-    when: 
+    when:
       or: [ << pipeline.parameters.beta_build >>, << pipeline.parameters.release_build >> ]
     jobs:
       - Release Build
   Translation Review Build:
-    when: << pipeline.parameters.translation_review_build >> 
+    when: << pipeline.parameters.translation_review_build >>
     jobs:
       - translation-review-build

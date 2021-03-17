@@ -150,6 +150,7 @@ import Foundation
     case commentEditorOpened
     case commentEdited
     case commentRepliedTo
+    case commentFilterChanged
 
     // InviteLinks
     case inviteLinksGetStatus
@@ -425,6 +426,8 @@ import Foundation
             return "comment_edited"
         case .commentRepliedTo:
             return "comment_replied_to"
+        case .commentFilterChanged:
+            return "comment_filter_changed"
 
         // Invite Links
         case .inviteLinksGetStatus:
