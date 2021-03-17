@@ -39,6 +39,7 @@ extension CommentsViewController {
             return
         }
 
+        WPAnalytics.track(.commentFilterChanged, properties: ["selected_filter": filter.title])
         refresh(with: filter.statusFilter)
     }
 
