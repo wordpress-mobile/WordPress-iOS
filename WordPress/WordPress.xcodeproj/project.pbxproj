@@ -4156,6 +4156,35 @@
 		FA44F2202601D88B00A97DFC /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98DE9A9E239835C800A88D01 /* MainInterface.storyboard */; };
 		FA44F2212601D88B00A97DFC /* WidgetUrlCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 988F073423D0CE8800AC67A6 /* WidgetUrlCell.xib */; };
 		FA44F2902601D9D600A97DFC /* JetpackAllTimeWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FA44F2282601D88B00A97DFC /* JetpackAllTimeWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FA44F2A92601DA1C00A97DFC /* FeatureFlagOverrideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A09B98238FE13B0022AE0D /* FeatureFlagOverrideStore.swift */; };
+		FA44F2AA2601DA1C00A97DFC /* Double+Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981C82B52193A7B900A06E84 /* Double+Stats.swift */; };
+		FA44F2AB2601DA1C00A97DFC /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		FA44F2AC2601DA1C00A97DFC /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
+		FA44F2AD2601DA1C00A97DFC /* CocoaLumberjack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938CF3DB1EF1BE6800AF838E /* CocoaLumberjack.swift */; };
+		FA44F2AE2601DA1C00A97DFC /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
+		FA44F2AF2601DA1C00A97DFC /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
+		FA44F2B02601DA1C00A97DFC /* WidgetUnconfiguredCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989064FB237CC1DE00218CD2 /* WidgetUnconfiguredCell.swift */; };
+		FA44F2B12601DA1C00A97DFC /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690141F828FF000200E30 /* BuildConfiguration.swift */; };
+		FA44F2B22601DA1C00A97DFC /* WidgetStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985ED0E323C6950600B8D06A /* WidgetStyles.swift */; };
+		FA44F2B32601DA1C00A97DFC /* WidgetUrlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988F073323D0CE8800AC67A6 /* WidgetUrlCell.swift */; };
+		FA44F2B42601DA1C00A97DFC /* Tracks+ThisWeekWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E419DD2399B5A700D8C822 /* Tracks+ThisWeekWidget.swift */; };
+		FA44F2B52601DA1C00A97DFC /* WidgetNoConnectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98712D1923DA1C7E00555316 /* WidgetNoConnectionCell.swift */; };
+		FA44F2B62601DA1C00A97DFC /* ThisWeekViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A3C3042399A2370048D38D /* ThisWeekViewController.swift */; };
+		FA44F2B72601DA1C00A97DFC /* KeyValueDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */; };
+		FA44F2B82601DA1C00A97DFC /* MurielColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4326191422FCB9DC003C7642 /* MurielColor.swift */; };
+		FA44F2B92601DA1C00A97DFC /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
+		FA44F2BA2601DA1C00A97DFC /* WidgetDifferenceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989643EA23A0437B0070720A /* WidgetDifferenceCell.swift */; };
+		FA44F2BB2601DA1C00A97DFC /* ThisWeekWidgetStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F93181239AF64800E4E96E /* ThisWeekWidgetStats.swift */; };
+		FA44F2BD2601DA1C00A97DFC /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E5283B19A7741A003A1A9C /* NotificationCenter.framework */; };
+		FA44F2BE2601DA1C00A97DFC /* Pods_WordPressThisWeekWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979B445A45E13F3289F2E99E /* Pods_WordPressThisWeekWidget.framework */; };
+		FA44F2C02601DA1C00A97DFC /* WidgetDifferenceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 989643EB23A0437B0070720A /* WidgetDifferenceCell.xib */; };
+		FA44F2C12601DA1C00A97DFC /* ColorPalette.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 435B76292297484200511813 /* ColorPalette.xcassets */; };
+		FA44F2C22601DA1C00A97DFC /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98A3C3002399A1850048D38D /* MainInterface.storyboard */; };
+		FA44F2C32601DA1C00A97DFC /* WidgetNoConnectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98712D1A23DA1C7E00555316 /* WidgetNoConnectionCell.xib */; };
+		FA44F2C42601DA1C00A97DFC /* WidgetUnconfiguredCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 989064FC237CC1DE00218CD2 /* WidgetUnconfiguredCell.xib */; };
+		FA44F2C52601DA1C00A97DFC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 983AE84F2399B19200E5B7F6 /* Localizable.strings */; };
+		FA44F2C62601DA1C00A97DFC /* WidgetUrlCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 988F073423D0CE8800AC67A6 /* WidgetUrlCell.xib */; };
+		FA44F3242601DB2F00A97DFC /* JetpackThisWeekWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FA44F2CD2601DA1C00A97DFC /* JetpackThisWeekWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
 		FA4F65A72594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */; };
@@ -4363,6 +4392,13 @@
 			remoteGlobalIDString = FA44F2012601D88B00A97DFC;
 			remoteInfo = JetpackAllTimeWidget;
 		};
+		FA44F3252601DB2F00A97DFC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FA44F2A62601DA1C00A97DFC;
+			remoteInfo = JetpackThisWeekWidget;
+		};
 		FF2716941CAAC87B0006E2D4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -4386,6 +4422,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				FA44F3242601DB2F00A97DFC /* JetpackThisWeekWidget.appex in Embed App Extensions */,
 				FA44F2902601D9D600A97DFC /* JetpackAllTimeWidget.appex in Embed App Extensions */,
 				FA44F1C82601D78B00A97DFC /* JetpackTodayWidget.appex in Embed App Extensions */,
 			);
@@ -7134,6 +7171,10 @@
 		FA44F28C2601D97F00A97DFC /* Info-Alpha.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Alpha.plist"; sourceTree = "<group>"; };
 		FA44F28D2601D97F00A97DFC /* Info-Internal.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Internal.plist"; sourceTree = "<group>"; };
 		FA44F28E2601D97F00A97DFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA44F2CD2601DA1C00A97DFC /* JetpackThisWeekWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = JetpackThisWeekWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA44F3202601DAE400A97DFC /* Info-Internal.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Internal.plist"; sourceTree = "<group>"; };
+		FA44F3212601DAE400A97DFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA44F3222601DAE400A97DFC /* Info-Alpha.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Alpha.plist"; sourceTree = "<group>"; };
 		FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementService.swift; sourceTree = "<group>"; };
 		FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementServiceTests.swift; sourceTree = "<group>"; };
 		FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreOptionsViewController.swift; sourceTree = "<group>"; };
@@ -7468,6 +7509,15 @@
 			files = (
 				FA44F2182601D88B00A97DFC /* NotificationCenter.framework in Frameworks */,
 				FA44F2192601D88B00A97DFC /* Pods_WordPressAllTimeWidget.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA44F2BC2601DA1C00A97DFC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA44F2BD2601DA1C00A97DFC /* NotificationCenter.framework in Frameworks */,
+				FA44F2BE2601DA1C00A97DFC /* Pods_WordPressThisWeekWidget.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7955,6 +8005,7 @@
 				8B37EBC825FAC1090088E853 /* Jetpack.app */,
 				FA44F1422601D67F00A97DFC /* JetpackTodayWidget.appex */,
 				FA44F2282601D88B00A97DFC /* JetpackAllTimeWidget.appex */,
+				FA44F2CD2601DA1C00A97DFC /* JetpackThisWeekWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -8001,6 +8052,7 @@
 				FA44CF3225FF47CD00A97DFC /* Jetpack */,
 				FA44F17B2601D68900A97DFC /* JetpackTodayWidget */,
 				FA44F28B2601D94A00A97DFC /* JetpackAllTimeWidget */,
+				FA44F31F2601DA9600A97DFC /* JetpackThisWeekWidget */,
 				74576673202B558C00F42E40 /* WordPressDraftActionExtension */,
 				733F36072126197800988727 /* WordPressNotificationContentExtension */,
 				7358E6B9210BD318002323EB /* WordPressNotificationServiceExtension */,
@@ -13566,6 +13618,24 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		FA44F31F2601DA9600A97DFC /* JetpackThisWeekWidget */ = {
+			isa = PBXGroup;
+			children = (
+				FA44F3232601DAF000A97DFC /* Supporting Files */,
+			);
+			path = JetpackThisWeekWidget;
+			sourceTree = "<group>";
+		};
+		FA44F3232601DAF000A97DFC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FA44F3212601DAE400A97DFC /* Info.plist */,
+				FA44F3202601DAE400A97DFC /* Info-Internal.plist */,
+				FA44F3222601DAE400A97DFC /* Info-Alpha.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		FA4F65B52594589C00EAA9F5 /* Jetpack Restore */ = {
 			isa = PBXGroup;
 			children = (
@@ -13906,6 +13976,7 @@
 				8B37E50625FAC1090088E853 /* PBXTargetDependency */,
 				FA44F1CA2601D78B00A97DFC /* PBXTargetDependency */,
 				FA44F2922601D9D600A97DFC /* PBXTargetDependency */,
+				FA44F3262601DB2F00A97DFC /* PBXTargetDependency */,
 			);
 			name = Jetpack;
 			packageProductDependencies = (
@@ -14065,6 +14136,25 @@
 			name = JetpackAllTimeWidget;
 			productName = WordPressAllTimeWidget;
 			productReference = FA44F2282601D88B00A97DFC /* JetpackAllTimeWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		FA44F2A62601DA1C00A97DFC /* JetpackThisWeekWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA44F2C82601DA1C00A97DFC /* Build configuration list for PBXNativeTarget "JetpackThisWeekWidget" */;
+			buildPhases = (
+				FA44F2A72601DA1C00A97DFC /* [CP] Check Pods Manifest.lock */,
+				FA44F2A82601DA1C00A97DFC /* Sources */,
+				FA44F2BC2601DA1C00A97DFC /* Frameworks */,
+				FA44F2BF2601DA1C00A97DFC /* Resources */,
+				FA44F2C72601DA1C00A97DFC /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JetpackThisWeekWidget;
+			productName = WordPressThisWeekWidget;
+			productReference = FA44F2CD2601DA1C00A97DFC /* JetpackThisWeekWidget.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		FF27168E1CAAC87A0006E2D4 /* WordPressUITests */ = {
@@ -14295,6 +14385,7 @@
 				8B37E50525FAC1090088E853 /* Jetpack */,
 				FA44F11A2601D67F00A97DFC /* JetpackTodayWidget */,
 				FA44F2012601D88B00A97DFC /* JetpackAllTimeWidget */,
+				FA44F2A62601DA1C00A97DFC /* JetpackThisWeekWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -15096,6 +15187,20 @@
 				FA44F21F2601D88B00A97DFC /* WidgetUnconfiguredCell.xib in Resources */,
 				FA44F2202601D88B00A97DFC /* MainInterface.storyboard in Resources */,
 				FA44F2212601D88B00A97DFC /* WidgetUrlCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA44F2BF2601DA1C00A97DFC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA44F2C02601DA1C00A97DFC /* WidgetDifferenceCell.xib in Resources */,
+				FA44F2C12601DA1C00A97DFC /* ColorPalette.xcassets in Resources */,
+				FA44F2C22601DA1C00A97DFC /* MainInterface.storyboard in Resources */,
+				FA44F2C32601DA1C00A97DFC /* WidgetNoConnectionCell.xib in Resources */,
+				FA44F2C42601DA1C00A97DFC /* WidgetUnconfiguredCell.xib in Resources */,
+				FA44F2C52601DA1C00A97DFC /* Localizable.strings in Resources */,
+				FA44F2C62601DA1C00A97DFC /* WidgetUrlCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -16039,6 +16144,50 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressAllTimeWidget/Pods-WordPressAllTimeWidget-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FA44F2A72601DA1C00A97DFC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WordPressThisWeekWidget-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FA44F2C72601DA1C00A97DFC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WordPressThisWeekWidget/Pods-WordPressThisWeekWidget-resources.sh",
+				"${PODS_ROOT}/FormatterKit/FormatterKit/FormatterKit.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/WordPressShared/WordPressShared.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/WordPressUI/WordPressUIResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FormatterKit.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPressShared.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPressUIResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressThisWeekWidget/Pods-WordPressThisWeekWidget-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FF1C536C9FA7489B5AAA0FC2 /* [CP] Check Pods Manifest.lock */ = {
@@ -19567,6 +19716,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FA44F2A82601DA1C00A97DFC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA44F2A92601DA1C00A97DFC /* FeatureFlagOverrideStore.swift in Sources */,
+				FA44F2AA2601DA1C00A97DFC /* Double+Stats.swift in Sources */,
+				FA44F2AB2601DA1C00A97DFC /* SFHFKeychainUtils.m in Sources */,
+				FA44F2AC2601DA1C00A97DFC /* FeatureFlag.swift in Sources */,
+				FA44F2AD2601DA1C00A97DFC /* CocoaLumberjack.swift in Sources */,
+				FA44F2AE2601DA1C00A97DFC /* Tracks.swift in Sources */,
+				FA44F2AF2601DA1C00A97DFC /* UIColor+MurielColors.swift in Sources */,
+				FA44F2B02601DA1C00A97DFC /* WidgetUnconfiguredCell.swift in Sources */,
+				FA44F2B12601DA1C00A97DFC /* BuildConfiguration.swift in Sources */,
+				FA44F2B22601DA1C00A97DFC /* WidgetStyles.swift in Sources */,
+				FA44F2B32601DA1C00A97DFC /* WidgetUrlCell.swift in Sources */,
+				FA44F2B42601DA1C00A97DFC /* Tracks+ThisWeekWidget.swift in Sources */,
+				FA44F2B52601DA1C00A97DFC /* WidgetNoConnectionCell.swift in Sources */,
+				FA44F2B62601DA1C00A97DFC /* ThisWeekViewController.swift in Sources */,
+				FA44F2B72601DA1C00A97DFC /* KeyValueDatabase.swift in Sources */,
+				FA44F2B82601DA1C00A97DFC /* MurielColor.swift in Sources */,
+				FA44F2B92601DA1C00A97DFC /* Constants.m in Sources */,
+				FA44F2BA2601DA1C00A97DFC /* WidgetDifferenceCell.swift in Sources */,
+				FA44F2BB2601DA1C00A97DFC /* ThisWeekWidgetStats.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FF27168B1CAAC87A0006E2D4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -19702,6 +19877,11 @@
 			isa = PBXTargetDependency;
 			target = FA44F2012601D88B00A97DFC /* JetpackAllTimeWidget */;
 			targetProxy = FA44F2912601D9D600A97DFC /* PBXContainerItemProxy */;
+		};
+		FA44F3262601DB2F00A97DFC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FA44F2A62601DA1C00A97DFC /* JetpackThisWeekWidget */;
+			targetProxy = FA44F3252601DB2F00A97DFC /* PBXContainerItemProxy */;
 		};
 		FF2716951CAAC87B0006E2D4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -23526,6 +23706,215 @@
 			};
 			name = "Release-Alpha";
 		};
+		FA44F2C92601DA1C00A97DFC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D1216A69ECC61E7772AB8C41 /* Pods-WordPressThisWeekWidget.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = WordPressThisWeekWidget/WordPressThisWeekWidget.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = PZYM8XX95Q;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPressThisWeekWidget/ThisWeekWidgetPrefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = JetpackThisWeekWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.WordPressThisWeekWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "WordPress This Week Widget Development";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressThisWeekWidget/WordPressThisWeekWidget-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WPCOM_SCHEME = wpdebug;
+			};
+			name = Debug;
+		};
+		FA44F2CA2601DA1C00A97DFC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7DFD69454E24EC0A1A0BACCD /* Pods-WordPressThisWeekWidget.release.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = WordPressThisWeekWidget/WordPressThisWeekWidget.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Distribution: Automattic, Inc. (PZYM8XX95Q)";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = PZYM8XX95Q;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPressThisWeekWidget/ThisWeekWidgetPrefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = JetpackThisWeekWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.WordPressThisWeekWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressThisWeekWidget";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressThisWeekWidget/WordPressThisWeekWidget-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WPCOM_SCHEME = wordpress;
+			};
+			name = Release;
+		};
+		FA44F2CB2601DA1C00A97DFC /* Release-Internal */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8E65034AFB7DC85D70CCC064 /* Pods-WordPressThisWeekWidget.release-internal.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "WordPressThisWeekWidget/WordPressThisWeekWidget-Internal.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 99KV9Z6BKV;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPressThisWeekWidget/ThisWeekWidgetPrefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
+					INTERNAL_BUILD,
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "JetpackThisWeekWidget/Info-Internal.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.internal.WordPressThisWeekWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal.WordPressThisWeekWidget";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressThisWeekWidget/WordPressThisWeekWidget-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WPCOM_SCHEME = wpinternal;
+			};
+			name = "Release-Internal";
+		};
+		FA44F2CC2601DA1C00A97DFC /* Release-Alpha */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 40F031E19B32BAF8654838C0 /* Pods-WordPressThisWeekWidget.release-alpha.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "WordPressThisWeekWidget/WordPressThisWeekWidget-Alpha.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 99KV9Z6BKV;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPressThisWeekWidget/ThisWeekWidgetPrefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
+					INTERNAL_BUILD,
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "JetpackThisWeekWidget/Info-Alpha.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.WordPressThisWeekWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressThisWeekWidget";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressThisWeekWidget/WordPressThisWeekWidget-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WPCOM_SCHEME = wpalpha;
+			};
+			name = "Release-Alpha";
+		};
 		FF2716961CAAC87B0006E2D4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 27AE66536E0C5378203F9312 /* Pods-WordPressUITests.debug.xcconfig */;
@@ -23969,6 +24358,17 @@
 				FA44F2252601D88B00A97DFC /* Release */,
 				FA44F2262601D88B00A97DFC /* Release-Internal */,
 				FA44F2272601D88B00A97DFC /* Release-Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FA44F2C82601DA1C00A97DFC /* Build configuration list for PBXNativeTarget "JetpackThisWeekWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA44F2C92601DA1C00A97DFC /* Debug */,
+				FA44F2CA2601DA1C00A97DFC /* Release */,
+				FA44F2CB2601DA1C00A97DFC /* Release-Internal */,
+				FA44F2CC2601DA1C00A97DFC /* Release-Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
