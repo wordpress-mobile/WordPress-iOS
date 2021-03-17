@@ -461,10 +461,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 //
 private extension NotificationsViewController {
     func setupNavigationBar() {
-        // Don't show 'Notifications' in the next-view back button
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
+        // Don't show 'Notifications' in the next-view back button
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
         navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
     }
 
