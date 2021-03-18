@@ -27,17 +27,9 @@ extension BlogDetailsViewController {
         let source = "my_site"
 
         var actions: [ActionSheetItem] = [PostAction(handler: newPost, source: source), PageAction(handler: newPage, source: source)]
-
         if shouldShowNewStory {
-            switch ABTest.storyFirst.variation {
-            case .control:
-                actions.append(StoryAction(handler: newStory, source: source))
-            case .treatment(_):
-                actions.insert(StoryAction(handler: newStory, source: source), at: 0)
-            }
-
+            actions.append(StoryAction(handler: newStory, source: source))
         }
-
         let coordinator = CreateButtonCoordinator(self, actions: actions, source: source)
         return coordinator
     }
