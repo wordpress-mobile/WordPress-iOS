@@ -88,6 +88,7 @@ extension ReaderTabView {
 
     private func setupMainScrollView() {
         mainScrollView.translatesAutoresizingMaskIntoConstraints = false
+        mainScrollView.isScrollEnabled = true
         mainScrollView.addSubview(mainStackView)
         addSubview(mainScrollView)
     }
@@ -176,15 +177,15 @@ extension ReaderTabView {
 
     private func activateConstraints() {
         pinSubviewToAllEdges(mainScrollView)
-        mainScrollView.pinSubviewToAllEdges(mainStackView)
         NSLayoutConstraint.activate([
             buttonsStackView.heightAnchor.constraint(equalToConstant: Appearance.barHeight),
             resetFilterButton.widthAnchor.constraint(equalToConstant: Appearance.resetButtonWidth),
             horizontalDivider.heightAnchor.constraint(equalToConstant: Appearance.dividerWidth),
             horizontalDivider.widthAnchor.constraint(equalTo: mainStackView.widthAnchor),
-            NSLayoutConstraint(item: mainStackView, attribute: .centerX, relatedBy: .equal, toItem: mainScrollView, attribute: .centerX, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: mainStackView, attribute: .centerY, relatedBy: .equal, toItem: mainScrollView, attribute: .centerY, multiplier: 1, constant: 0),
-            mainStackView.widthAnchor.constraint(equalTo: mainScrollView.widthAnchor)
+            mainStackView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
+            mainStackView.topAnchor.constraint(equalTo: mainScrollView.topAnchor),
+            mainStackView.widthAnchor.constraint(equalTo: mainScrollView.widthAnchor),
+            mainStackView.heightAnchor.constraint(equalTo: mainScrollView.heightAnchor)
         ])
     }
 }
