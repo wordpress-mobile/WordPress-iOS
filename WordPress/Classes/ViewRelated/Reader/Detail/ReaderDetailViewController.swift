@@ -716,7 +716,6 @@ private extension ReaderDetailViewController {
             navigationItem.leftBarButtonItem = dismissButtonItem()
         }
         navigationItem.largeTitleDisplayMode = .never
-        //navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
     }
 
