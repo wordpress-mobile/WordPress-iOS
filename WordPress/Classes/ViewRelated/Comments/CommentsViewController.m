@@ -60,7 +60,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self setTableConstraints];
     [self configureNavBar];
     [self configureLoadMoreSpinner];
-    [self initNoResultsViews];
+    [self initializeNoResultsViews];
     [self configureRefreshControl];
     [self configureSyncHelper];
     [self configureTableView];
@@ -516,7 +516,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 #pragma mark - No Results Views
 
-- (void)initNoResultsViews
+- (void)initializeNoResultsViews
 {
     self.noResultsViewController = [NoResultsViewController controller];
     self.noConnectionViewController = [NoResultsViewController controller];
@@ -531,7 +531,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     }
     
     [self.noResultsViewController removeFromView];
-    [self configureNoResults:self.noResultsViewController forNoConnection:FALSE];
+    [self configureNoResults:self.noResultsViewController forNoConnection:NO];
     
     [self addChildViewController:self.noResultsViewController];
     [self.tableView addSubviewWithFadeAnimation:self.noResultsViewController.view];
@@ -569,7 +569,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     }
 
     [self.noConnectionViewController removeFromView];
-    [self configureNoResults:self.noConnectionViewController forNoConnection:TRUE];
+    [self configureNoResults:self.noConnectionViewController forNoConnection:YES];
     self.noConnectionViewController.delegate = self;
 
     // Because the table shows cached results from the last successful filter,
