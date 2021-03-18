@@ -194,7 +194,7 @@ extension BlogSettings {
         get {
             if commentsRequireManualModeration {
                 return .disabled
-            } else if commentsFromKnownUsersWhitelisted {
+            } else if commentsFromKnownUsersAllowlisted {
                 return .fromKnownUsers
             }
 
@@ -202,7 +202,7 @@ extension BlogSettings {
         }
         set {
             commentsRequireManualModeration     = newValue == .disabled
-            commentsFromKnownUsersWhitelisted   = newValue == .fromKnownUsers
+            commentsFromKnownUsersAllowlisted   = newValue == .fromKnownUsers
         }
     }
 

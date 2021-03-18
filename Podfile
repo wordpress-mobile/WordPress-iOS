@@ -1,3 +1,7 @@
+# For security reasons, please always keep the wordpress-mobile source first and the CDN second.
+# For more info, see https://github.com/wordpress-mobile/cocoapods-specs#source-order-and-security-considerations
+install! 'cocoapods', warn_for_multiple_pod_sources: false
+source 'https://github.com/wordpress-mobile/cocoapods-specs.git'
 source 'https://cdn.cocoapods.org/'
 
 unless ['BUNDLE_BIN_PATH', 'BUNDLE_GEMFILE'].any? { |k| ENV.key?(k) }
@@ -43,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.29.0-beta'
+    pod 'WordPressKit', '~> 4.29.0-beta.5'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''

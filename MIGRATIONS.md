@@ -3,6 +3,14 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 116
+
+@ceyhun 2021-03-15
+
+- `BlogSettings`: renamed `commentsFromKnownUsersWhitelisted` to `commentsFromKnownUsersAllowlisted`
+- `BlogSettings`: renamed `jetpackLoginWhiteListedIPAddresses` to `jetpackLoginAllowListedIPAddresses`
+- `BlogSettings`: renamed `commentsBlacklistKeys` to `commentsBlocklistKeys`
+
 ## WordPress 115
 
 @mindgraffiti 2021-03-10
