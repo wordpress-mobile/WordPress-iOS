@@ -355,9 +355,16 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
         fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, CommentStatusSpam];
     }
 
-    NSSortDescriptor *sortDescriptorStatus = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
+
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
-    fetchRequest.sortDescriptors = @[sortDescriptorStatus, sortDescriptorDate];
+    
+    if ([Feature enabled:FeatureFlagCommentFilters]) {
+        fetchRequest.sortDescriptors = @[sortDescriptorDate];
+    } else {
+        NSSortDescriptor *sortDescriptorStatus = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
+        fetchRequest.sortDescriptors = @[sortDescriptorStatus, sortDescriptorDate];
+    }
+    
     fetchRequest.fetchBatchSize = CommentsFetchBatchSize;
     
     return fetchRequest;
