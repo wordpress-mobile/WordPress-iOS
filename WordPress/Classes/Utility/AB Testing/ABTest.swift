@@ -20,4 +20,12 @@ extension ABTest {
 
         ExPlat.shared?.refresh()
     }
+
+    static func refreshIfNeeded() {
+        guard ABTest.allCases.count > 1 else {
+            return
+        }
+
+        ExPlat.shared?.refreshIfNeeded()
+    }
 }
