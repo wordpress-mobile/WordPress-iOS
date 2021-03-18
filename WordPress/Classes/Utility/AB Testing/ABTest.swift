@@ -2,6 +2,7 @@ import AutomatticTracks
 
 enum ABTest: String, CaseIterable {
     case unknown = "unknown"
+    case storyFirst = "wpios_create_menu_story_first"
 
     /// Returns a variation for the given experiment
     var variation: Variation {
