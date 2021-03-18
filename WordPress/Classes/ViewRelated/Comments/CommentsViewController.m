@@ -231,6 +231,14 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    
+    // When FeatureFlagCommentFilters is removed, this whole method can be removed
+    // and just let WPTableViewHandler provide the height.
+
+    if ([Feature enabled:FeatureFlagCommentFilters]) {
+        return UITableViewAutomaticDimension;
+    }
+    
     // Override WPTableViewHandler's default of UITableViewAutomaticDimension,
     // which results in 30pt tall headers on iOS 11
     return 0;
@@ -375,6 +383,14 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self.navigationController popToViewController:self animated:YES];
 }
 
+- (NSString *)sectionNameKeyPath
+{
+    if ([Feature enabled:FeatureFlagCommentFilters]) {
+        return @"sectionIdentifier";
+    }
+    
+    return nil;
+}
 
 #pragma mark - WPContentSyncHelper Methods
 
