@@ -45,12 +45,6 @@ class ReaderTabViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-//        navigationItem.largeTitleDisplayMode = .always
-//        navigationController?.navigationBar.prefersLargeTitles = true
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
