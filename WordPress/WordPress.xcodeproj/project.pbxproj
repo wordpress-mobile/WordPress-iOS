@@ -6143,6 +6143,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				45C73C23113C36F50024D0D2 /* Resources-iPad */,
 				E125F1E21E8E594C00320B67 /* Shared */,
+				FABB1F8E2602FC0100C8785C /* Jetpack */,
 				74576673202B558C00F42E40 /* WordPressDraftActionExtension */,
 				733F36072126197800988727 /* WordPressNotificationContentExtension */,
 				7358E6B9210BD318002323EB /* WordPressNotificationServiceExtension */,
@@ -11695,6 +11696,13 @@
 				FAB8FD4F25AEB0F500D5D54A /* JetpackBackupStatusCoordinator.swift */,
 			);
 			path = Coordinators;
+			sourceTree = "<group>";
+		};
+		FABB1F8E2602FC0100C8785C /* Jetpack */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Jetpack;
 			sourceTree = "<group>";
 		};
 		FAD947A125B56A1E00F011B5 /* Coordinators */ = {
