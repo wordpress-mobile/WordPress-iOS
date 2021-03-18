@@ -97,6 +97,14 @@ NSString * const CommentStatusDraft = @"draft";
     return date;
 }
 
+- (NSString *)sectionIdentifier
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateStyle = NSDateFormatterLongStyle;
+    formatter.timeStyle = NSDateFormatterNoStyle;
+    return [formatter stringFromDate:self.dateCreated];
+}
+
 
 #pragma mark - PostContentProvider protocol
 
