@@ -46,6 +46,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
         self.completion = completion
 
         super.init(
+            analyticsLocation: "page_picker",
             mainTitle: NSLocalizedString("Choose a Layout", comment: "Title for the screen to pick a template for a page"),
             prompt: NSLocalizedString("Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page.", comment: "Prompt for the screen to pick a template for a page"),
             primaryActionTitle: NSLocalizedString("Create Page", comment: "Title for button to make a page with the contents of the selected layout"),

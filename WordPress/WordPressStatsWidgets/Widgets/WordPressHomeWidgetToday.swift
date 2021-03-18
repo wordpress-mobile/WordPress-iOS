@@ -19,12 +19,15 @@ struct WordPressHomeWidgetToday: Widget {
         IntentConfiguration(
             kind: WPHomeWidgetTodayKind,
             intent: SelectSiteIntent.self,
-            provider: SiteListProvider<HomeWidgetTodayData>(service: StatsWidgetsService(), placeholderContent: placeholderContent, widgetKind: .today)
+            provider: SiteListProvider<HomeWidgetTodayData>(service: StatsWidgetsService(),
+                                                            placeholderContent: placeholderContent,
+                                                            widgetKind: .today)
         ) { (entry: StatsWidgetEntry) -> StatsWidgetsView in
 
             defer {
-                tracks.trackWidgetUpdated(widgetKind: WPHomeWidgetTodayKind,
-                                          widgetCountKey: WPHomeWidgetTodayProperties)
+                tracks.trackWidgetUpdatedIfNeeded(entry: entry,
+                                                  widgetKind: WPHomeWidgetTodayKind,
+                                                  widgetCountKey: WPHomeWidgetTodayProperties)
             }
 
             return StatsWidgetsView(timelineEntry: entry)

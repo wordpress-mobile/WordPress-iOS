@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H524" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D80" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="autosaveContent" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="autosaveExcerpt" optional="YES" attributeType="String" syncable="YES"/>
@@ -55,6 +55,7 @@
     </entity>
     <entity name="AccountSettings" representedClassName=".ManagedAccountSettings" syncable="YES">
         <attribute name="aboutMe" attributeType="String" syncable="YES"/>
+        <attribute name="blockEmailNotifications" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="displayName" attributeType="String" syncable="YES"/>
         <attribute name="email" attributeType="String" syncable="YES"/>
         <attribute name="emailPendingAddress" optional="YES" attributeType="String" syncable="YES"/>
@@ -455,10 +456,7 @@
     </entity>
     <entity name="PageTemplateLayout" representedClassName="PageTemplateLayout" syncable="YES">
         <attribute name="content" attributeType="String" syncable="YES"/>
-        <attribute name="demoUrl" attributeType="String" syncable="YES"/>
         <attribute name="preview" attributeType="String" syncable="YES"/>
-        <attribute name="previewMobile" attributeType="String" syncable="YES"/>
-        <attribute name="previewTablet" attributeType="String" syncable="YES"/>
         <attribute name="slug" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PageTemplateCategory" inverseName="layouts" inverseEntity="PageTemplateCategory" syncable="YES"/>
@@ -923,7 +921,7 @@
     <elements>
         <element name="AbstractPost" positionX="-867.89453125" positionY="-2.7890625" width="128" height="313"/>
         <element name="Account" positionX="-152.04296875" positionY="-313.31640625" width="128" height="223"/>
-        <element name="AccountSettings" positionX="-146.67578125" positionY="-608.9609375" width="128" height="255"/>
+        <element name="AccountSettings" positionX="-146.67578125" positionY="-608.9609375" width="128" height="254"/>
         <element name="AllTimeStatsRecordValue" positionX="323.8671875" positionY="1792.16015625" width="128" height="118"/>
         <element name="AnnualAndMostPopularTimeStatsRecordValue" positionX="5.7890625" positionY="1972.53515625" width="128" height="253"/>
         <element name="BasePost" positionX="-1100.31640625" positionY="-317.4140625" width="128" height="285"/>
@@ -951,7 +949,7 @@
         <element name="OtherAndTotalViewsCountStatsRecordValue" positionX="6.0859375" positionY="1399.26953125" width="128" height="75"/>
         <element name="Page" positionX="-854.90625" positionY="-144.5234375" width="128" height="60"/>
         <element name="PageTemplateCategory" positionX="-1638" positionY="-459" width="128" height="133"/>
-        <element name="PageTemplateLayout" positionX="-1629" positionY="-450" width="128" height="163"/>
+        <element name="PageTemplateLayout" positionX="-1629" positionY="-450" width="128" height="118"/>
         <element name="Person" positionX="-1825.45703125" positionY="-16.94140625" width="128" height="225"/>
         <element name="Plan" positionX="-1802.80859375" positionY="-272.67578125" width="128" height="223"/>
         <element name="PlanFeature" positionX="-1656.703125" positionY="-166.43359375" width="128" height="90"/>

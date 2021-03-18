@@ -94,30 +94,28 @@ final class ReaderShowMenuAction {
         }
 
         // Seen
-        if FeatureFlag.unseenPosts.enabled {
-            if post.isSeenSupported {
-                alertController.addActionWithTitle(post.isSeen ? ReaderPostMenuButtonTitles.markUnseen : ReaderPostMenuButtonTitles.markSeen,
-                                                   style: .default,
-                                                   handler: { (action: UIAlertAction) in
+        if post.isSeenSupported {
+            alertController.addActionWithTitle(post.isSeen ? ReaderPostMenuButtonTitles.markUnseen : ReaderPostMenuButtonTitles.markSeen,
+                                               style: .default,
+                                               handler: { (action: UIAlertAction) in
 
-                                                    let event: WPAnalyticsEvent = post.isSeen ? .readerPostMarkUnseen : .readerPostMarkSeen
-                                                    WPAnalytics.track(event, properties: ["source": source.description])
+                                                let event: WPAnalyticsEvent = post.isSeen ? .readerPostMarkUnseen : .readerPostMarkSeen
+                                                WPAnalytics.track(event, properties: ["source": source.description])
 
-                                                    if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                        ReaderSeenAction().execute(with: post, context: context, completion: {
-                                                            ReaderHelpers.dispatchToggleSeenMessage(post: post, success: true)
+                                                if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
+                                                    ReaderSeenAction().execute(with: post, context: context, completion: {
+                                                        ReaderHelpers.dispatchToggleSeenMessage(post: post, success: true)
 
-                                                            // Notify Reader Stream so the post card is updated.
-                                                            NotificationCenter.default.post(name: .ReaderPostSeenToggled,
-                                                                                            object: nil,
-                                                                                            userInfo: [ReaderNotificationKeys.post: post])
-                                                        },
-                                                        failure: { _ in
-                                                            ReaderHelpers.dispatchToggleSeenMessage(post: post, success: false)
-                                                        })
-                                                    }
-                                                   })
-            }
+                                                        // Notify Reader Stream so the post card is updated.
+                                                        NotificationCenter.default.post(name: .ReaderPostSeenToggled,
+                                                                                        object: nil,
+                                                                                        userInfo: [ReaderNotificationKeys.post: post])
+                                                    },
+                                                    failure: { _ in
+                                                        ReaderHelpers.dispatchToggleSeenMessage(post: post, success: false)
+                                                    })
+                                                }
+                                               })
         }
 
         // Visit

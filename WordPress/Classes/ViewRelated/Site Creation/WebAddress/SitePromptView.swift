@@ -6,6 +6,7 @@ class SitePromptView: UIView {
     private struct Parameters {
         static let cornerRadius = CGFloat(8)
         static let borderWidth = CGFloat(1)
+        static let borderColor = UIColor.primaryButtonBorder
     }
 
     @IBOutlet weak var sitePrompt: UILabel! {
@@ -19,6 +20,7 @@ class SitePromptView: UIView {
             lockIcon.image = UIImage.gridicon(.lock)
         }
     }
+    var contentView: UIView!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,15 +32,22 @@ class SitePromptView: UIView {
         commonInit()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            contentView.layer.borderColor = Parameters.borderColor.cgColor
+        }
+    }
+
     private func commonInit() {
         let bundle = Bundle(for: SitePromptView.self)
         guard
             let nibViews = bundle.loadNibNamed("SitePromptView", owner: self, options: nil),
-            let contentView = nibViews.first as? UIView
+            let loadedView = nibViews.first as? UIView
         else {
             return
         }
 
+        contentView = loadedView
         addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -46,7 +55,7 @@ class SitePromptView: UIView {
             contentView.constrainToSuperViewEdges()
         )
         contentView.layer.cornerRadius = Parameters.cornerRadius
-        contentView.layer.borderColor = UIColor.primaryButtonBorder.cgColor
+        contentView.layer.borderColor = Parameters.borderColor.cgColor
         contentView.layer.borderWidth = Parameters.borderWidth
     }
 }

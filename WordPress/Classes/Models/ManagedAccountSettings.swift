@@ -27,6 +27,7 @@ class ManagedAccountSettings: NSManagedObject {
         webAddress = accountSettings.webAddress
         language = accountSettings.language
         tracksOptOut = accountSettings.tracksOptOut
+        blockEmailNotifications = accountSettings.blockEmailNotifications
     }
 
     /// Applies a change to the account settings
@@ -107,7 +108,8 @@ extension AccountSettings {
                   primarySiteID: managed.primarySiteID.intValue,
                   webAddress: managed.webAddress,
                   language: managed.language,
-                  tracksOptOut: managed.tracksOptOut)
+                  tracksOptOut: managed.tracksOptOut,
+                  blockEmailNotifications: managed.blockEmailNotifications)
     }
 
     var emailForDisplay: String {

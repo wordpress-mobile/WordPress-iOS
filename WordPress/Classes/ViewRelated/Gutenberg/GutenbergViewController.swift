@@ -34,6 +34,8 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     let ghostView = GutenGhostView()
 
+    private var storyEditor: StoryEditor?
+
     private lazy var service: BlogJetpackSettingsService? = {
         guard
             let settings = post.blog.settings,
@@ -353,6 +355,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // Handles refreshing controls with state context after options screen is dismissed
+        storyEditor = nil
         editorContentWasUpdated()
     }
 
@@ -659,45 +662,66 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidRequestMediaFilesEditorLoad(_ mediaFiles: [[String: Any]], blockId: String) {
 
+        if mediaFiles.isEmpty {
+            WPAnalytics.track(.storyBlockAddMediaTapped)
+        }
+
         let files = mediaFiles.compactMap({ content -> MediaFile? in
             return MediaFile.file(from: content)
         })
 
-        let controller = StoryEditor.editor(post: post, mediaFiles: files, publishOnCompletion: false, updated: { [weak self] result in
+        // If the story editor is already shown, ignore this new load request
+        guard presentedViewController is StoryEditor == false else {
+            return
+        }
+
+        do {
+            try showEditor(files: files, blockID: blockId)
+        } catch let error {
+            switch error {
+            case StoryEditor.EditorCreationError.unsupportedDevice:
+                let title = NSLocalizedString("Unsupported Device", comment: "Title for stories unsupported device error.")
+                let message = NSLocalizedString("The Stories editor is not currently available for your iPad. Please try Stories on your iPhone.", comment: "Message for stories unsupported device error.")
+                let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
+                    controller.dismiss(animated: true, completion: nil)
+                }
+                controller.addAction(dismiss)
+                present(controller, animated: true, completion: nil)
+            default:
+                let title = NSLocalizedString("Unable to Create Stories Editor", comment: "Title for stories unknown error.")
+                let message = NSLocalizedString("There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Message for stories unknown error.")
+                let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
+                    controller.dismiss(animated: true, completion: nil)
+                }
+                controller.addAction(dismiss)
+                present(controller, animated: true, completion: nil)
+            }
+        }
+    }
+
+    func showEditor(files: [MediaFile], blockID: String) throws {
+        storyEditor = try StoryEditor.editor(post: post, mediaFiles: files, publishOnCompletion: false, updated: { [weak self] result in
+            switch result {
+            case .success(let content):
+                self?.gutenberg.replace(blockID: blockID, content: content)
+                self?.dismiss(animated: true, completion: nil)
+            case .failure(let error):
+                self?.dismiss(animated: true, completion: nil)
+                DDLogError("Failed to update story: \(error)")
+            }
+        }, uploaded: { result in
             switch result {
             case .success:
-                self?.dismiss(animated: true, completion: nil)
+                break // Posts will be updated when the MediaFilesProcessor receives upload events
             case .failure(let error):
-                self?.dismiss(animated: true, completion: nil)
-                let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)
-                let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
-                    controller.dismiss(animated: true, completion: nil)
-                }
-                controller.addAction(dismiss)
-                self?.present(controller, animated: true, completion: nil)
-            }
-        }, uploaded: { [weak self] result in
-            switch result {
-            case .success(let post):
-                self?.setHTML(post.content ?? "")
-            case .failure(let error):
-                let controller = UIAlertController(title: "Failed to create story", message: "Error: \(error)", preferredStyle: .alert)
-                let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
-                    controller.dismiss(animated: true, completion: nil)
-                }
-                controller.addAction(dismiss)
-                self?.present(controller, animated: true, completion: nil)
+                DDLogError("Failed to upload story: \(error)")
             }
         })
 
-        controller.populate(with: files, completion: { [weak self] result in
-            switch result {
-            case .success:
-                self?.present(controller, animated: true, completion: {})
-            case .failure(let error):
-                os_log(.error, "Failed to populate Kanvas controller %@", error.localizedDescription)
-            }
-        })
+        storyEditor?.trackOpen()
+        storyEditor?.present(on: self, with: files)
     }
 
     func gutenbergDidRequestMediaUploadActionDialog(for mediaID: Int32) {
@@ -1042,7 +1066,8 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .xposts: FeatureFlag.gutenbergXposts.enabled && SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
-            .audioBlock: !isFreeWPCom // Disable audio block until it's usable on free sites via "Insert from URL" capability
+            .audioBlock: !isFreeWPCom, // Disable audio block until it's usable on free sites via "Insert from URL" capability
+            .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories) && !UIDevice.isPad()
         ]
     }
 

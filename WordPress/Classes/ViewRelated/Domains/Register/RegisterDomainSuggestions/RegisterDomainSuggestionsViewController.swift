@@ -92,7 +92,7 @@ class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestio
             vc.siteName = siteName
 
             if BlogService.blog(with: site)?.hasBloggerPlan == true {
-                vc.domainSuggestionType = .whitelistedTopLevelDomains(["blog"])
+                vc.domainSuggestionType = .allowlistedTopLevelDomains(["blog"])
             }
 
             domainsTableViewController = vc

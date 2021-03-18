@@ -466,7 +466,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             })
             return
         }
-
+        guard hasSelectedItem == selectedStateButtonsContainer.isHidden else { return }
         defaultActionButton.isHidden = false
         selectedStateButtonsContainer.isHidden = false
 

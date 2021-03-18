@@ -4,6 +4,7 @@ import Foundation
 @objc enum WPAnalyticsEvent: Int {
 
     case createSheetShown
+    case createSheetActionTapped
     case createAnnouncementModalShown
 
     // Media Editor
@@ -82,22 +83,27 @@ import Foundation
     case readerDiscoverContentPresented
     case readerPostMarkSeen
     case readerPostMarkUnseen
+    case readerRelatedPostFromOtherSiteClicked
+    case readerRelatedPostFromSameSiteClicked
 
     // What's New - Feature announcements
     case featureAnnouncementShown
     case featureAnnouncementButtonTapped
+
     // Stories
     case storyIntroShown
     case storyIntroDismissed
     case storyIntroCreateStoryButtonTapped
+    case storyAddedMedia
+    case storyBlockAddMediaTapped
 
     // Jetpack
     case jetpackSettingsViewed
     case jetpackManageConnectionViewed
     case jetpackDisconnectTapped
     case jetpackDisconnectRequested
-    case jetpackWhitelistedIpsViewed
-    case jetpackWhitelistedIpsChanged
+    case jetpackAllowlistedIpsViewed
+    case jetpackAllowlistedIpsChanged
     case activitylogFilterbarSelectType
     case activitylogFilterbarResetType
     case activitylogFilterbarTypeButtonTapped
@@ -151,11 +157,17 @@ import Foundation
     case inviteLinksShare
     case inviteLinksDisable
 
+    // Page Layout and Site Design Picker
+    case categoryFilterSelected
+    case categoryFilterDeselected
+
     /// A String that represents the event
     var value: String {
         switch self {
         case .createSheetShown:
             return "create_sheet_shown"
+        case .createSheetActionTapped:
+            return "create_sheet_action_tapped"
         case .createAnnouncementModalShown:
             return "create_announcement_modal_shown"
         // Media Editor
@@ -289,6 +301,10 @@ import Foundation
             return "reader_mark_as_seen"
         case .readerPostMarkUnseen:
             return "reader_mark_as_unseen"
+        case .readerRelatedPostFromOtherSiteClicked:
+            return "reader_related_post_from_other_site_clicked"
+        case .readerRelatedPostFromSameSiteClicked:
+            return "reader_related_post_from_same_site_clicked"
 
         // What's New - Feature announcements
         case .featureAnnouncementShown:
@@ -303,6 +319,10 @@ import Foundation
             return "story_intro_dismissed"
         case .storyIntroCreateStoryButtonTapped:
             return "story_intro_create_story_button_tapped"
+        case .storyAddedMedia:
+            return "story_added_media"
+        case .storyBlockAddMediaTapped:
+            return "story_block_add_media_tapped"
 
         // Jetpack
         case .jetpackSettingsViewed:
@@ -313,10 +333,10 @@ import Foundation
             return "jetpack_disconnect_tapped"
         case .jetpackDisconnectRequested:
             return "jetpack_disconnect_requested"
-        case .jetpackWhitelistedIpsViewed:
-            return "jetpack_whitelisted_ips_viewed"
-        case .jetpackWhitelistedIpsChanged:
-            return "jetpack_whitelisted_ips_changed"
+        case .jetpackAllowlistedIpsViewed:
+            return "jetpack_allowlisted_ips_viewed"
+        case .jetpackAllowlistedIpsChanged:
+            return "jetpack_allowlisted_ips_changed"
         case .activitylogFilterbarSelectType:
             return "activitylog_filterbar_select_type"
         case .activitylogFilterbarResetType:
@@ -415,6 +435,12 @@ import Foundation
             return "invite_links_share"
         case .inviteLinksDisable:
             return "invite_links_disable"
+
+        // Page Layout and Site Design Picker
+        case .categoryFilterSelected:
+            return "category_filter_selected"
+        case .categoryFilterDeselected:
+            return "category_filter_deselected"
         }
     }
 

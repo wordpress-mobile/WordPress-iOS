@@ -43,7 +43,7 @@ class WordPressAuthenticationManager: NSObject {
                                                                 showLoginOptions: true,
                                                                 enableSignInWithApple: enableSignInWithApple,
                                                                 enableSignupWithGoogle: true,
-                                                                enableUnifiedAuth: FeatureFlag.unifiedAuth.enabled,
+                                                                enableUnifiedAuth: true,
                                                                 enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled)
 
         let prologueVC: UIViewController? =  FeatureFlag.unifiedPrologueCarousel.enabled ? UnifiedPrologueViewController() : nil

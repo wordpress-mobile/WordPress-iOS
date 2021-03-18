@@ -81,9 +81,9 @@ open class BlogSettings: NSManagedObject {
     ///
     @NSManaged var commentsAllowed: Bool
 
-    /// Contains a list of words, space separated, that would cause a comment to be automatically blacklisted.
+    /// Contains a list of words, space separated, that would cause a comment to be automatically blocklisted.
     ///
-    @NSManaged var commentsBlacklistKeys: Set<String>?
+    @NSManaged var commentsBlocklistKeys: Set<String>?
 
     /// If true, comments will be automatically closed after the number of days, specified by `commentsCloseAutomaticallyAfterDays`.
     ///
@@ -94,9 +94,9 @@ open class BlogSettings: NSManagedObject {
     ///
     @NSManaged var commentsCloseAutomaticallyAfterDays: NSNumber?
 
-    /// When enabled, comments from known users will be whitelisted.
+    /// When enabled, comments from known users will be allowlisted.
     ///
-    @NSManaged var commentsFromKnownUsersWhitelisted: Bool
+    @NSManaged var commentsFromKnownUsersAllowlisted: Bool
 
     /// Indicates the maximum number of links allowed per comment. When a new comment exceeds this number,
     /// it'll be held in queue for moderation.
@@ -231,7 +231,7 @@ open class BlogSettings: NSManagedObject {
 
     /// List of IP addresses that will never be blocked for logins by Jetpack
     ///
-    @NSManaged var jetpackLoginWhiteListedIPAddresses: Set<String>?
+    @NSManaged var jetpackLoginAllowListedIPAddresses: Set<String>?
 
     /// Indicates whether WordPress.com SSO is enabled for the Jetpack site
     ///

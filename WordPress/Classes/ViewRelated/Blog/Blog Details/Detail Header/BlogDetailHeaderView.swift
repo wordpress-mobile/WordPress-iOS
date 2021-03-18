@@ -3,11 +3,15 @@
     func siteIconReceivedDroppedImage(_ image: UIImage?)
     func siteIconShouldAllowDroppedImages() -> Bool
     func siteTitleTapped()
+    func siteSwitcherTapped()
+    func visitSiteTapped()
 }
 
 class BlogDetailHeaderView: UIView, BlogDetailHeader {
 
     @objc weak var delegate: BlogDetailHeaderViewDelegate?
+
+    private static let siteIconInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
 
     // Temporary method for migrating to NewBlogDetailHeaderView
     @objc
@@ -34,7 +38,7 @@ class BlogDetailHeaderView: UIView, BlogDetailHeader {
     }()
 
     private let siteIconView: SiteIconView = {
-        let view = SiteIconView(frame: .zero)
+        let view = SiteIconView(frame: .zero, insets: BlogDetailHeaderView.siteIconInsets)
         return view
     }()
 

@@ -38,12 +38,15 @@ struct WordPressHomeWidgetThisWeek: Widget {
         IntentConfiguration(
             kind: WPHomeWidgetThisWeekKind,
             intent: SelectSiteIntent.self,
-            provider: SiteListProvider<HomeWidgetThisWeekData>(service: StatsWidgetsService(), placeholderContent: placeholderContent, widgetKind: .thisWeek)
+            provider: SiteListProvider<HomeWidgetThisWeekData>(service: StatsWidgetsService(),
+                                                               placeholderContent: placeholderContent,
+                                                               widgetKind: .thisWeek)
         ) { (entry: StatsWidgetEntry) -> StatsWidgetsView in
 
             defer {
-                tracks.trackWidgetUpdated(widgetKind: WPHomeWidgetThisWeekKind,
-                                          widgetCountKey: WPHomeWidgetThisWeekProperties)
+                tracks.trackWidgetUpdatedIfNeeded(entry: entry,
+                                                  widgetKind: WPHomeWidgetThisWeekKind,
+                                                  widgetCountKey: WPHomeWidgetThisWeekProperties)
             }
 
             return StatsWidgetsView(timelineEntry: entry)
