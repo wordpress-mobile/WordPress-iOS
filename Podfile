@@ -195,9 +195,9 @@ target 'WordPress' do
 
     #pod 'Automattic-Tracks-iOS', '~> 0.8.2'
     # While in PR
-    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
+    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'task/revert_platform_and_fix_issue'
     # Local Development
-    pod 'Automattic-Tracks-iOS', :path => '../../Automattic-Tracks-iOS'
+    #pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
 
     pod 'NSURL+IDN', '~> 0.4'
 
