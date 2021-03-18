@@ -2,7 +2,6 @@ import AutomatticTracks
 
 enum ABTest: String, CaseIterable {
     case unknown = "unknown"
-    case biasTest = "explat_test_aa_weekly_wpios_2021_week_06"
 
     /// Returns a variation for the given experiment
     var variation: Variation {
