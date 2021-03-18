@@ -177,7 +177,7 @@ static NSInteger HideSearchMinSites = 3;
     [self createUserActivity];
 
     #if JETPACK
-        [self displayNoticeWithTitle:@"Welcome to the Jetpack app!" message:nil];
+    printf("Welcome to the Jetpack app!");
     #endif
 }
 
