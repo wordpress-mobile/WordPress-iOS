@@ -303,6 +303,8 @@ import WordPressFlux
         // pull to refresh animation.
         view.isUserInteractionEnabled = readerTopic != nil
 
+        navigationItem.largeTitleDisplayMode = .never
+
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
 
         NotificationCenter.default.addObserver(self, selector: #selector(postSeenToggled(_:)), name: .ReaderPostSeenToggled, object: nil)
