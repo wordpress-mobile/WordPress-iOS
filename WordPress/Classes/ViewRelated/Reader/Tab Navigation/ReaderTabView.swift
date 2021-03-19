@@ -3,7 +3,6 @@ import UIKit
 
 class ReaderTabView: UIView {
 
-    private let mainScrollView: UIScrollView
     private let mainStackView: UIStackView
     private let buttonsStackView: UIStackView
     private let tabBar: FilterTabBar
@@ -27,7 +26,6 @@ class ReaderTabView: UIView {
     }
 
     init(viewModel: ReaderTabViewModel) {
-        mainScrollView = UIScrollView()
         mainStackView = UIStackView()
         buttonsStackView = UIStackView()
         tabBar = FilterTabBar()
@@ -76,7 +74,6 @@ extension ReaderTabView {
 
     private func setupViewElements() {
         backgroundColor = .filterBarBackground
-        setupMainScrollView()
         setupMainStackView()
         setupTabBar()
         setupButtonsView()
@@ -86,17 +83,10 @@ extension ReaderTabView {
         activateConstraints()
     }
 
-    private func setupMainScrollView() {
-        mainScrollView.translatesAutoresizingMaskIntoConstraints = false
-        mainScrollView.isScrollEnabled = true
-        mainScrollView.addSubview(mainStackView)
-        addSubview(mainScrollView)
-    }
-
     private func setupMainStackView() {
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         mainStackView.axis = .vertical
-
+        addSubview(mainStackView)
         mainStackView.addArrangedSubview(tabBar)
         mainStackView.addArrangedSubview(buttonsStackView)
         mainStackView.addArrangedSubview(horizontalDivider)
@@ -176,16 +166,12 @@ extension ReaderTabView {
     }
 
     private func activateConstraints() {
-        pinSubviewToAllEdges(mainScrollView)
+        pinSubviewToAllEdges(mainStackView)
         NSLayoutConstraint.activate([
             buttonsStackView.heightAnchor.constraint(equalToConstant: Appearance.barHeight),
             resetFilterButton.widthAnchor.constraint(equalToConstant: Appearance.resetButtonWidth),
             horizontalDivider.heightAnchor.constraint(equalToConstant: Appearance.dividerWidth),
-            horizontalDivider.widthAnchor.constraint(equalTo: mainStackView.widthAnchor),
-            mainStackView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
-            mainStackView.topAnchor.constraint(equalTo: mainScrollView.topAnchor),
-            mainStackView.widthAnchor.constraint(equalTo: mainScrollView.widthAnchor),
-            mainStackView.heightAnchor.constraint(equalTo: mainScrollView.heightAnchor)
+            horizontalDivider.widthAnchor.constraint(equalTo: mainStackView.widthAnchor)
         ])
     }
 }
