@@ -557,7 +557,6 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressKit
-    - WordPressMocks
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -773,6 +772,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: acfde13e60a82b0d939b8442c223584b7c87c0ce
+PODFILE CHECKSUM: eb7398493d78cec1215c540e3b50c3927d036587
 
 COCOAPODS: 1.10.0
