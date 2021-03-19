@@ -129,13 +129,24 @@ import WordPressFlux
         } else {
             let actionSheetVC = actionSheetController(with: viewController.traitCollection)
             viewController.present(actionSheetVC, animated: true, completion: { [weak self] in
-                WPAnalytics.track(.createSheetShown, properties: ["source": self?.source ?? ""])
+                let isShowingStoryOption = self?.isShowingStoryOption() ?? false
+                WPAnalytics.track(.createSheetShown,
+                                  properties: [
+                                    "source": self?.source ?? "",
+                                    "is_showing_stories": isShowingStoryOption,
+                                    "is_showing_stories_first": isShowingStoryOption && ABTest.storyFirst.variation != .control
+                                  ]
+                )
 
                 if let element = self?.currentTourElement {
                     QuickStartTourGuide.shared.visited(element)
                 }
             })
         }
+    }
+
+    private func isShowingStoryOption() -> Bool {
+        actions.contains(where: { $0 is StoryAction })
     }
 
     private func actionSheetController(with traitCollection: UITraitCollection) -> UIViewController {
