@@ -11,6 +11,7 @@ class EditorAztecTests: XCTestCase {
             .toggleBlockEditor(to: .off)
             .goBackToMySite()
             .tabBar.gotoAztecEditorScreen()
+            .dismissNotificationAlertIfNeeded(.accept)
     }
 
     override func tearDown() {
@@ -41,7 +42,6 @@ class EditorAztecTests: XCTestCase {
         let category = getCategory()
         let tag = getTag()
         editorScreen
-            .dismissNotificationAlertIfNeeded(.accept)
             .enterTextInTitle(text: title)
             .enterText(text: content)
             .addImageByOrder(id: 0)

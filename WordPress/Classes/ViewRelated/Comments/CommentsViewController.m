@@ -16,15 +16,17 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 static NSString *RestorableBlogIdKey = @"restorableBlogIdKey";
 static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
-@interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration>
+@interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration, NoResultsViewControllerDelegate>
 @property (nonatomic, strong) WPTableViewHandler        *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper       *syncHelper;
 @property (nonatomic, strong) NoResultsViewController   *noResultsViewController;
+@property (nonatomic, strong) NoResultsViewController   *noConnectionViewController;
 @property (nonatomic, strong) UIActivityIndicatorView   *footerActivityIndicator;
 @property (nonatomic, strong) UIView                    *footerView;
 @property (nonatomic, strong) Blog                      *blog;
 
 @property (nonatomic) CommentStatusFilter currentStatusFilter;
+@property (nonatomic) CommentStatusFilter cachedStatusFilter;
 @property (weak, nonatomic) IBOutlet FilterTabBar *filterTabBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTopConstraint;
@@ -58,7 +60,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self setTableConstraints];
     [self configureNavBar];
     [self configureLoadMoreSpinner];
-    [self configureNoResultsView];
+    [self initializeNoResultsViews];
     [self configureRefreshControl];
     [self configureSyncHelper];
     [self configureTableView];
@@ -91,7 +93,6 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self dismissConnectionErrorNotice];
 }
 
 
@@ -122,17 +123,6 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     // Keep References
     self.footerActivityIndicator            = indicator;
     self.footerView                         = footerView;
-}
-
-- (void)configureNoResultsView
-{
-    self.noResultsViewController = [NoResultsViewController controller];
-}
-
-- (NSString *)noResultsViewTitle
-{
-    NSString *noCommentsMessage = NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
-    return [ReachabilityUtils isInternetReachable] ? noCommentsMessage : [self noConnectionMessage];
 }
 
 - (void)configureRefreshControl
@@ -241,6 +231,14 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    
+    // When FeatureFlagCommentFilters is removed, this whole method can be removed
+    // and just let WPTableViewHandler provide the height.
+
+    if ([Feature enabled:FeatureFlagCommentFilters]) {
+        return UITableViewAutomaticDimension;
+    }
+    
     // Override WPTableViewHandler's default of UITableViewAutomaticDimension,
     // which results in 30pt tall headers on iOS 11
     return 0;
@@ -357,9 +355,16 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
         fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, CommentStatusSpam];
     }
 
-    NSSortDescriptor *sortDescriptorStatus = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
+
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
-    fetchRequest.sortDescriptors = @[sortDescriptorStatus, sortDescriptorDate];
+    
+    if ([Feature enabled:FeatureFlagCommentFilters]) {
+        fetchRequest.sortDescriptors = @[sortDescriptorDate];
+    } else {
+        NSSortDescriptor *sortDescriptorStatus = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
+        fetchRequest.sortDescriptors = @[sortDescriptorStatus, sortDescriptorDate];
+    }
+    
     fetchRequest.fetchBatchSize = CommentsFetchBatchSize;
     
     return fetchRequest;
@@ -385,16 +390,23 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self.navigationController popToViewController:self animated:YES];
 }
 
+- (NSString *)sectionNameKeyPath
+{
+    if ([Feature enabled:FeatureFlagCommentFilters]) {
+        return @"sectionIdentifier";
+    }
+    
+    return nil;
+}
 
 #pragma mark - WPContentSyncHelper Methods
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
+    __typeof(self) __weak weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
     NSManagedObjectID *blogObjectID = self.blog.objectID;
-
-    __typeof(self) __weak weakSelf = self;
 
     [context performBlock:^{
         Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
@@ -405,36 +417,37 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
         [commentService syncCommentsForBlog:blogInContext
                                  withStatus:self.currentStatusFilter
                                     success:^(BOOL hasMore) {
-                                        if (success) {
-                                            dispatch_async(dispatch_get_main_queue(), ^{
-                                                success(hasMore);
-                                            });
-                                        }
-                                    }
+            if (success) {
+                weakSelf.cachedStatusFilter = weakSelf.currentStatusFilter;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    success(hasMore);
+                });
+            }
+        }
                                     failure:^(NSError *error) {
-                                        if (failure) {
-                                            dispatch_async(dispatch_get_main_queue(), ^{
-                                                failure(error);
-                                            });
-                                        }
-
-                                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                            [weakSelf refreshPullToRefresh];
-                                        });
-                                        
-                                        dispatch_async(dispatch_get_main_queue(), ^{
-                                            [weakSelf handleConnectionError];
-                                        });
-                                    }];
+            if (failure) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failure(error);
+                });
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.footerActivityIndicator stopAnimating];
+                [weakSelf refreshNoConnectionView];
+            });
+        }];
     }];
 }
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
+    __typeof(self) __weak weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
+    NSManagedObjectID *blogObjectID = self.blog.objectID;
+    
     [context performBlock:^{
-        Blog *blogInContext = (Blog *)[context existingObjectWithID:self.blog.objectID error:nil];
+        Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
         if (!blogInContext) {
             return;
         }
@@ -442,19 +455,23 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
         [commentService loadMoreCommentsForBlog:blogInContext
                                      withStatus:self.currentStatusFilter
                                         success:^(BOOL hasMore) {
-                                                    if (success) {
-                                                        dispatch_async(dispatch_get_main_queue(), ^{
-                                                            success(hasMore);
-                                                        });
-                                                    }
-                                        }
+            if (success) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    success(hasMore);
+                });
+            }
+        }
                                         failure:^(NSError *error) {
-                                                if (failure) {
-                                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                                        failure(error);
-                                                    });
-                                                }
-                                        }];
+            if (failure) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failure(error);
+                });
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.footerActivityIndicator stopAnimating];
+            });
+        }];
     }];
     
     [self refreshInfiniteScroll];
@@ -477,12 +494,18 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)refreshAndSyncWithInteraction
 {
+    if (!ReachabilityUtils.isInternetReachable) {
+        [self refreshPullToRefresh];
+        [self refreshNoConnectionView];
+        return;
+    }
+
     [self.syncHelper syncContentWithUserInteraction];
 }
 
 - (void)refreshAndSyncIfNeeded
 {
-    if (self.blog && [CommentService shouldRefreshCacheFor:self.blog]) {
+    if (self.blog) {
         [self.syncHelper syncContent];
     }
 }
@@ -514,38 +537,105 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     }
 }
 
+#pragma mark - No Results Views
+
+- (void)initializeNoResultsViews
+{
+    self.noResultsViewController = [NoResultsViewController controller];
+    self.noConnectionViewController = [NoResultsViewController controller];
+}
+
 - (void)refreshNoResultsView
 {
-    [self.noResultsViewController removeFromView];
-    
     if (![self contentIsEmpty]) {
+        [self.tableView setHidden:NO];
+        [self.noResultsViewController removeFromView];
         return;
     }
-
-    [self.noResultsViewController configureWithTitle:self.noResultsViewTitle
-                                     attributedTitle:nil
-                                   noConnectionTitle:nil
-                                         buttonTitle:nil
-                                            subtitle:nil
-                                noConnectionSubtitle:nil
-                                  attributedSubtitle:nil
-                     attributedSubtitleConfiguration:nil
-                                               image:nil
-                                       subtitleImage:nil
-                                       accessoryView:nil];
+    
+    [self.noResultsViewController removeFromView];
+    [self configureNoResults:self.noResultsViewController forNoConnection:NO];
     
     [self addChildViewController:self.noResultsViewController];
     [self.tableView addSubviewWithFadeAnimation:self.noResultsViewController.view];
     self.noResultsViewController.view.frame = self.tableView.frame;
 
-    // Adjust the NRV placement based on the tableHeader to accommodate for the refreshControl.
-    if (!self.tableView.tableHeaderView) {
-        CGRect noResultsFrame = self.noResultsViewController.view.frame;
-        noResultsFrame.origin.y -= self.tableView.refreshControl.frame.size.height;
-        self.noResultsViewController.view.frame = noResultsFrame;
-    }
+    // Adjust the NRV placement to accommodate for the filterTabBar.
+    CGRect noResultsFrame = self.noResultsViewController.view.frame;
+    noResultsFrame.origin.y -= self.filterTabBar.frame.size.height;
+    self.noResultsViewController.view.frame = noResultsFrame;
     
     [self.noResultsViewController didMoveToParentViewController:self];
+}
+
+- (void)refreshNoConnectionView
+{
+    if (ReachabilityUtils.isInternetReachable) {
+        [self.tableView setHidden:NO];
+        [self.noConnectionViewController removeFromView];
+        [self refreshAndSyncIfNeeded];
+        
+        return;
+    }
+    
+    // Show cached results instead of No Connection view.
+    if (self.cachedStatusFilter == self.currentStatusFilter) {
+        [self.tableView setHidden:NO];
+        [self.noConnectionViewController removeFromView];
+        
+        return;
+    }
+    
+    // No Connection is already being shown.
+    if (self.noConnectionViewController.parentViewController) {
+        return;
+    }
+
+    [self.noConnectionViewController removeFromView];
+    [self configureNoResults:self.noConnectionViewController forNoConnection:YES];
+    self.noConnectionViewController.delegate = self;
+
+    // Because the table shows cached results from the last successful filter,
+    // some comments can appear below the No Connection view.
+    // So hide the table when showing No Connection.
+    [self.tableView setHidden:YES];
+    [self addChildViewController:self.noConnectionViewController];
+    [self.view insertSubview:self.noConnectionViewController.view belowSubview:self.filterTabBar];
+    self.noConnectionViewController.view.frame = self.tableView.frame;
+    [self.noConnectionViewController didMoveToParentViewController:self];
+}
+
+- (void)configureNoResults:(NoResultsViewController *)viewController forNoConnection:(BOOL)forNoConnection {
+    [viewController configureWithTitle:self.noResultsTitle
+                       attributedTitle:nil
+                     noConnectionTitle:nil
+                           buttonTitle:forNoConnection ? self.retryButtonTitle : nil
+                              subtitle:nil
+                  noConnectionSubtitle:nil
+                    attributedSubtitle:nil
+       attributedSubtitleConfiguration:nil
+                                 image:@"wp-illustration-empty-results"
+                         subtitleImage:nil
+                         accessoryView:nil];
+    
+    viewController.delegate = self;
+}
+
+- (NSString *)noResultsTitle
+{
+    return NSLocalizedString(@"No comments yet", @"Displayed when there are no comments in the Comments views.");
+}
+
+- (NSString *)retryButtonTitle
+{
+    return NSLocalizedString(@"Retry", comment: "A prompt to attempt the failed network request again.");
+}
+
+#pragma mark - NoResultsViewControllerDelegate
+
+- (void)actionButtonPressed {
+    // The action button is only shown on the No Connection view.
+    [self refreshNoConnectionView];
 }
 
 #pragma mark - State Restoration
