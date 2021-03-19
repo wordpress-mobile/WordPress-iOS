@@ -27,12 +27,8 @@ extension GutenbergViewController {
             }
         }
 
-        // Only add the action if the site is not a Simple WP.com site
-        let isSimpleWPComSite = !post.blog.isAtomic() && post.blog.isHostedAtWPcom
-        if !isSimpleWPComSite {
-            alert.addDefaultActionWithTitle(MoreSheetAlert.classicTitle) { [unowned self] _ in
-                self.savePostEditsAndSwitchToAztec()
-            }
+        alert.addDefaultActionWithTitle(MoreSheetAlert.classicTitle) { [unowned self] _ in
+            self.savePostEditsAndSwitchToAztec()
         }
 
         let toggleModeTitle: String = {
