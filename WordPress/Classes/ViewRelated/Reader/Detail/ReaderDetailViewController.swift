@@ -250,13 +250,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             self.loadingView.alpha = 1.0
         }
 
-        guard let post = post else {
+        guard
+            let post = post,
+            post.organizationID.intValue == SiteOrganizationType.none.rawValue // Skip related posts for p2s.
+        else {
             return
         }
 
-        if post.organizationID.intValue != SiteOrganizationType.p2.rawValue {
-            coordinator?.fetchRelatedPosts(for: post)
-        }
+        coordinator?.fetchRelatedPosts(for: post)
     }
 
     /// Shown an error
