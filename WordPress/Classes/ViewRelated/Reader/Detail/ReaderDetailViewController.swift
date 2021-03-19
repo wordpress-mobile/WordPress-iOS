@@ -254,7 +254,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             return
         }
 
-        coordinator?.fetchRelatedPosts(for: post)
+        if post.organizationID.intValue != SiteOrganizationType.p2.rawValue {
+            coordinator?.fetchRelatedPosts(for: post)
+        }
     }
 
     /// Shown an error
