@@ -130,6 +130,8 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         addSubview(titleView)
         addSubview(actionRow)
 
+        addBottomBorder(withColor: .separator)
+
         setupConstraintsForChildViews()
     }
 
