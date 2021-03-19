@@ -220,7 +220,7 @@ fileprivate extension NewBlogDetailHeaderView {
             button.titleLabel?.adjustsFontForContentSizeCategory = true
             button.titleLabel?.lineBreakMode = .byTruncatingTail
 
-            button.setTitleColor(WPStyleGuide.darkBlue(), for: .normal)
+            button.setTitleColor(.primary, for: .normal)
 
             if let pointSize = button.titleLabel?.font.pointSize {
                 button.setImage(UIImage.gridicon(.external, size: CGSize(width: pointSize, height: pointSize)), for: .normal)
