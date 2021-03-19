@@ -63,12 +63,17 @@ extension WPStyleGuide {
         appearance.largeTitleTextAttributes = largeTitleTextAttributes
 
         if FeatureFlag.newNavBarAppearance.enabled {
-            appearance.shadowColor = .clear
+            appearance.shadowColor = .separator
+
+            let scrollEdgeAppearance = appearance.copy()
+            scrollEdgeAppearance.shadowColor = .clear
+            navigationAppearance.scrollEdgeAppearance = scrollEdgeAppearance
+        } else {
+            navigationAppearance.scrollEdgeAppearance = appearance
         }
 
         navigationAppearance.standardAppearance = appearance
-        navigationAppearance.scrollEdgeAppearance = navigationAppearance.standardAppearance
-
+        navigationAppearance.compactAppearance = appearance
 
         // Makes bar buttons visible in "Other Apps" media source picker.
         // Setting title text attributes makes bar button items not go blank when switching between the tabs of the picker.
