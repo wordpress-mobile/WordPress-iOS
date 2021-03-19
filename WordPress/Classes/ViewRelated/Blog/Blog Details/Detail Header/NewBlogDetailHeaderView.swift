@@ -90,6 +90,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         static let interSectionSpacing: CGFloat = 32
         static let buttonsBottomPadding: CGFloat = 40
         static let buttonsSidePadding: CGFloat = 40
+        static let maxButtonWidth: CGFloat = 390
         static let siteIconSize = CGSize(width: 48, height: 48)
     }
 
@@ -142,19 +143,24 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
     }
 
     private func constraintsForActionRow() -> [NSLayoutConstraint] {
-        [
+        let widthConstraint = actionRow.widthAnchor.constraint(equalToConstant: LayoutSpacing.maxButtonWidth)
+        widthConstraint.priority = .defaultHigh
+
+        return [
             actionRow.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: LayoutSpacing.betweenTitleViewAndActionRow),
             actionRow.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -LayoutSpacing.belowActionRow),
-            actionRow.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutSpacing.atSides),
-            actionRow.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutSpacing.atSides)
+            actionRow.leadingAnchor.constraint(greaterThanOrEqualTo: titleView.leadingAnchor),
+            actionRow.trailingAnchor.constraint(lessThanOrEqualTo: titleView.trailingAnchor),
+            actionRow.centerXAnchor.constraint(equalTo: centerXAnchor),
+            widthConstraint
         ]
     }
 
     private func constraintsForTitleView() -> [NSLayoutConstraint] {
         [
             titleView.topAnchor.constraint(equalTo: topAnchor, constant: LayoutSpacing.top),
-            titleView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutSpacing.atSides),
-            titleView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutSpacing.atSides)
+            titleView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: LayoutSpacing.atSides),
+            titleView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -LayoutSpacing.atSides)
         ]
     }
 
