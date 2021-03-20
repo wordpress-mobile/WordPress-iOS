@@ -98,7 +98,16 @@ static NSInteger HideSearchMinSites = 3;
                                                                        target:self
                                                                        action:@selector(addSite)];
 
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
+    }
+
     self.navigationItem.title = NSLocalizedString(@"My Sites", @"");
+}
+
+- (void)cancelTapped
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (NSString *)modelIdentifierForElementAtIndexPath:(NSIndexPath *)indexPath inView:(UIView *)view
@@ -205,9 +214,12 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)updateEditButton
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    if ([blogService blogCountForWPComAccounts] > 0) {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        [self updateBarButtons];
+        return;
+    }
+
+    if ([self shouldShowEditButton]){
         self.navigationItem.leftBarButtonItem = self.editButtonItem;
     } else {
         self.navigationItem.leftBarButtonItem = nil;
@@ -908,6 +920,35 @@ static NSInteger HideSearchMinSites = 3;
     }
 }
 
+- (BOOL)shouldShowAddSiteButton
+{
+    return self.dataSource.allBlogsCount > 0;
+}
+
+- (BOOL)shouldShowEditButton
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    return [blogService blogCountForWPComAccounts] > 0;
+}
+
+- (void)updateBarButtons
+{
+    BOOL showAddSiteButton = [self shouldShowAddSiteButton];
+    BOOL showEditButton = [self shouldShowEditButton];
+
+    if (!showAddSiteButton) {
+        [self addMeButtonToNavigationBarWithEmail:[[self defaultWordPressComAccount] email] meScenePresenter:self.meScenePresenter];
+        return;
+    }
+
+    if (showEditButton) {
+        self.navigationItem.rightBarButtonItems = @[ self.addSiteButton, self.editButtonItem ];
+    } else {
+        self.navigationItem.rightBarButtonItem = self.addSiteButton;
+    }
+}
+
 - (void)toggleAddSiteButton:(BOOL)enabled
 {
     self.addSiteButton.enabled = enabled;
@@ -915,12 +956,17 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)setAddSiteBarButtonItem
 {
-    if (self.dataSource.allBlogsCount == 0) {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        [self updateBarButtons];
+        return;
+    }
+
+    if (![self shouldShowAddSiteButton]) {
         [self addMeButtonToNavigationBarWithEmail:[[self defaultWordPressComAccount] email] meScenePresenter:self.meScenePresenter];
+        return;
     }
-    else {
-        self.navigationItem.rightBarButtonItem = self.addSiteButton;
-    }
+
+    self.navigationItem.rightBarButtonItem = self.addSiteButton;
 }
 
 - (void)addSite
