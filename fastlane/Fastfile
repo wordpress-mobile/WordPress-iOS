@@ -238,7 +238,7 @@ import "./ScreenshotFastfile"
 
     # Wrap up
     version = ios_get_app_version()
-    ios_clear_intermediate_tags(version: version)
+    #ios_clear_intermediate_tags(version: version)
     removebranchprotection(repository: GHHELPER_REPO, branch: "release/#{version}")
     setfrozentag(repository: GHHELPER_REPO, milestone: version, freeze: false)
     create_new_milestone(repository: GHHELPER_REPO)
