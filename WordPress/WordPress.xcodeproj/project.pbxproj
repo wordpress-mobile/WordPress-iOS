@@ -711,7 +711,7 @@
 		4631359124AD013F0017E65C /* PageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4631359024AD013F0017E65C /* PageCoordinator.swift */; };
 		4631359624AD068B0017E65C /* GutenbergLayoutPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4631359524AD068B0017E65C /* GutenbergLayoutPickerViewController.swift */; };
 		464688D8255C71D200ECA61C /* SiteDesignPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464688D6255C71D200ECA61C /* SiteDesignPreviewViewController.swift */; };
-		464688D9255C71D200ECA61C /* SiteDesignPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 464688D7255C71D200ECA61C /* SiteDesignPreviewViewController.xib */; };
+		464688D9255C71D200ECA61C /* TemplatePreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 464688D7255C71D200ECA61C /* TemplatePreviewViewController.xib */; };
 		465B097A24C877E500336B6C /* GutenbergLightNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465B097924C877E500336B6C /* GutenbergLightNavigationController.swift */; };
 		46638DF6244904A3006E8439 /* GutenbergBlockProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46638DF5244904A3006E8439 /* GutenbergBlockProcessor.swift */; };
 		4666534A2501552A00165DD4 /* LayoutPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466653492501552A00165DD4 /* LayoutPreviewViewController.swift */; };
@@ -1831,6 +1831,7 @@
 		C8567498243F41CA001A995E /* MockTenorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8567497243F41CA001A995E /* MockTenorService.swift */; };
 		C856749A243F4292001A995E /* TenorMockDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8567499243F4292001A995E /* TenorMockDataHelper.swift */; };
 		C94C0B1B25DCFA0100F2F69B /* FilterableCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94C0B1A25DCFA0100F2F69B /* FilterableCategoriesViewController.swift */; };
+		C99B08FC26081AD600CA71EB /* TemplatePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99B08FB26081AD600CA71EB /* TemplatePreviewViewController.swift */; };
 		CC19BE06223FECAC00CAB3E1 /* EditorPostSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC19BE05223FECAC00CAB3E1 /* EditorPostSettings.swift */; };
 		CC2BB0CA2289CC3B0034F9AB /* BlockEditorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0C92289CC3B0034F9AB /* BlockEditorScreen.swift */; };
 		CC2BB0D0228ACF710034F9AB /* EditorGutenbergTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0CF228ACF710034F9AB /* EditorGutenbergTests.swift */; };
@@ -3363,7 +3364,7 @@
 		4631359024AD013F0017E65C /* PageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCoordinator.swift; sourceTree = "<group>"; };
 		4631359524AD068B0017E65C /* GutenbergLayoutPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergLayoutPickerViewController.swift; sourceTree = "<group>"; };
 		464688D6255C71D200ECA61C /* SiteDesignPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteDesignPreviewViewController.swift; sourceTree = "<group>"; };
-		464688D7255C71D200ECA61C /* SiteDesignPreviewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SiteDesignPreviewViewController.xib; sourceTree = "<group>"; };
+		464688D7255C71D200ECA61C /* TemplatePreviewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TemplatePreviewViewController.xib; sourceTree = "<group>"; };
 		465B097924C877E500336B6C /* GutenbergLightNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GutenbergLightNavigationController.swift; sourceTree = "<group>"; };
 		46638DF5244904A3006E8439 /* GutenbergBlockProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergBlockProcessor.swift; sourceTree = "<group>"; };
 		466653492501552A00165DD4 /* LayoutPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutPreviewViewController.swift; sourceTree = "<group>"; };
@@ -4629,6 +4630,7 @@
 		C9264D275F6288F66C33D2CE /* Pods-WordPressTest.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release-internal.xcconfig"; sourceTree = "<group>"; };
 		C94C0B1A25DCFA0100F2F69B /* FilterableCategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterableCategoriesViewController.swift; sourceTree = "<group>"; };
 		C99B039B2602F3CB00CA71EB /* WordPress 117.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 117.xcdatamodel"; sourceTree = "<group>"; };
+		C99B08FB26081AD600CA71EB /* TemplatePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplatePreviewViewController.swift; sourceTree = "<group>"; };
 		C9BDC428A69177C2CBF0C247 /* Pods-WordPressShareExtension.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.release-internal.xcconfig"; sourceTree = "<group>"; };
 		CC19BE05223FECAC00CAB3E1 /* EditorPostSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorPostSettings.swift; sourceTree = "<group>"; };
 		CC24E5F01577DBC300A6D5B5 /* AddressBook.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -7312,7 +7314,8 @@
 			isa = PBXGroup;
 			children = (
 				464688D6255C71D200ECA61C /* SiteDesignPreviewViewController.swift */,
-				464688D7255C71D200ECA61C /* SiteDesignPreviewViewController.xib */,
+				464688D7255C71D200ECA61C /* TemplatePreviewViewController.xib */,
+				C99B08FB26081AD600CA71EB /* TemplatePreviewViewController.swift */,
 			);
 			path = Preview;
 			sourceTree = "<group>";
@@ -12441,7 +12444,7 @@
 				9A8ECE1E2254AE4E0043C8DA /* JetpackRemoteInstallStateView.xib in Resources */,
 				17E3634022C417F0000E0C79 /* jetpack_green_icon_29pt.png in Resources */,
 				17DC4C2F22C5E6910059CA11 /* open_source_dark_icon_40pt@3x.png in Resources */,
-				464688D9255C71D200ECA61C /* SiteDesignPreviewViewController.xib in Resources */,
+				464688D9255C71D200ECA61C /* TemplatePreviewViewController.xib in Resources */,
 				17E363DE22C4280A000E0C79 /* pride_icon_20pt.png in Resources */,
 				98B33C88202283860071E1E2 /* NoResults.storyboard in Resources */,
 				B50421E71B680839008EEA82 /* NoteUndoOverlayView.xib in Resources */,
@@ -14358,6 +14361,7 @@
 				820ADD721F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift in Sources */,
 				82B85DF91EDDB807004FD510 /* SiteIconPickerPresenter.swift in Sources */,
 				B50421E91B68170F008EEA82 /* NoteUndoOverlayView.swift in Sources */,
+				C99B08FC26081AD600CA71EB /* TemplatePreviewViewController.swift in Sources */,
 				B5D889411BEBE30A007C4684 /* BlogSettings.swift in Sources */,
 				F12E500323C7C5330068CB5E /* WKWebView+UserAgent.swift in Sources */,
 				8B749E7225AF522900023F03 /* JetpackCapabilitiesService.swift in Sources */,
