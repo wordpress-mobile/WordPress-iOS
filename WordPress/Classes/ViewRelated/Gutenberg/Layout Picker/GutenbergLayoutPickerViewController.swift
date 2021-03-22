@@ -40,7 +40,6 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     let blog: Blog
     var previewDeviceButtonItem: UIBarButtonItem?
 
-
     init(blog: Blog, completion: @escaping PageCoordinator.TemplateSelectionCompletion) {
         self.blog = blog
         self.completion = completion
@@ -89,10 +88,13 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
         popoverContentController.popoverPresentationController?.delegate = self
         self.present(popoverContentController, animated: true, completion: nil)
     }
+
     private func presentPreview() {
         guard let sectionIndex = selectedItem?.section, let position = selectedItem?.item else { return }
         let layout = sections[sectionIndex].layouts[position]
-        let destination = LayoutPreviewViewController(layout: layout, completion: completion)
+        let destination = LayoutPreviewViewController(layout: layout, selectedPreviewDevice: selectedPreviewDevice, onDismissWithDeviceSelected: { [weak self] device in
+            self?.selectedPreviewDevice = device
+        }, completion: completion)
         LayoutPickerAnalyticsEvent.templatePreview(slug: layout.slug)
         navigationController?.pushViewController(destination, animated: true)
     }
