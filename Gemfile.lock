@@ -34,7 +34,7 @@ GEM
     artifactory (3.0.15)
     atomos (0.1.3)
     aws-eventstream (1.1.1)
-    aws-partitions (1.432.0)
+    aws-partitions (1.434.0)
     aws-sdk-core (3.113.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.239.0)
@@ -43,7 +43,7 @@ GEM
     aws-sdk-kms (1.43.0)
       aws-sdk-core (~> 3, >= 3.112.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.91.0)
+    aws-sdk-s3 (1.92.0)
       aws-sdk-core (~> 3, >= 3.112.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.1)
@@ -161,8 +161,8 @@ GEM
       xcpretty (~> 0.3.0)
       xcpretty-travis-formatter (>= 0.0.3)
     fastlane-plugin-appcenter (1.11.0)
-    fastlane-plugin-sentry (1.8.0)
-    fastlane-plugin-test_center (3.15.2)
+    fastlane-plugin-sentry (1.8.1)
+    fastlane-plugin-test_center (3.15.3)
       colorize
       json
       plist
@@ -341,4 +341,4 @@ DEPENDENCIES
   xcpretty-travis-formatter
 
 BUNDLED WITH
-   2.2.10
+   2.2.14
