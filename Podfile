@@ -85,73 +85,6 @@ def shared_with_extension_pods
     pod 'Down', '~> 0.6.6'
 end
 
-def shared_with_app_target_pods
-  shared_with_all_pods
-  shared_with_networking_pods
-  shared_with_extension_pods
-
-  ## Gutenberg (React Native)
-  ## =====================
-  ##
-  gutenberg :tag => 'v1.48.1'
-
-  ## Third party libraries
-  ## =====================
-  ##
-  pod 'Charts', '~> 3.2.2'
-  pod 'Gifu', '3.2.0'
-  pod 'AppCenter', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
-  pod 'AppCenter/Distribute', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
-  pod 'MRProgress', '0.8.3'
-  pod 'Starscream', '3.0.6'
-  pod 'SVProgressHUD', '2.2.5'
-  pod 'ZendeskSupportSDK', '5.2.0'
-  pod 'AlamofireImage', '3.5.2'
-  pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
-  pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
-  pod 'JTAppleCalendar', '~> 8.0.2'
-  pod 'AMScrollingNavbar', '5.6.0'
-  pod 'CropViewController', '2.5.3'
-
-  ## Automattic libraries
-  ## ====================
-  ##
-  wordpress_kit
-  wordpress_shared
-  kanvas
-
-  # Production
-
-  pod 'Automattic-Tracks-iOS', '~> 0.8.2'
-  # While in PR
-  # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
-  # Local Development
-  #pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
-
-  pod 'NSURL+IDN', '~> 0.4'
-
-  pod 'WPMediaPicker', '~> 1.7.2'
-  #pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
-  ## while PR is in review:
-  # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
-  # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
-
-  pod 'Gridicons', '~> 1.1.0'
-
-  pod 'WordPressAuthenticator', '~> 1.35.2'
-  # While in PR
-  # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
-  # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
-  # pod 'WordPressAuthenticator', :path => '../../WordPressAuthenticator-iOS'
-
-  pod 'MediaEditor', '~> 1.2.1'
-  # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
-  # pod 'MediaEditor', :path => '../MediaEditor-iOS'
-
-  aztec
-  wordpress_ui
-end
-
 def gutenberg(options)
     options[:git] = 'https://github.com/wordpress-mobile/gutenberg-mobile.git'
     options[:submodules] = true
@@ -218,29 +151,91 @@ def gutenberg_dependencies(options)
     end
 end
 
-## WordPress App iOS
-## =================
-##
-target 'WordPress' do
+abstract_target 'Apps' do
     project 'WordPress/WordPress.xcodeproj'
 
-    shared_with_app_target_pods
+    shared_with_all_pods
+    shared_with_networking_pods
+    shared_with_extension_pods
 
-    target 'WordPressTest' do
-        inherit! :search_paths
+    ## Gutenberg (React Native)
+    ## =====================
+    ##
+    gutenberg :tag => 'v1.48.1'
 
-        shared_test_pods
-        pod 'Nimble', '~> 7.3.1'
+    ## Third party libraries
+    ## =====================
+    ##
+    pod 'Charts', '~> 3.2.2'
+    pod 'Gifu', '3.2.0'
+    pod 'AppCenter', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
+    pod 'AppCenter/Distribute', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
+    pod 'MRProgress', '0.8.3'
+    pod 'Starscream', '3.0.6'
+    pod 'SVProgressHUD', '2.2.5'
+    pod 'ZendeskSupportSDK', '5.2.0'
+    pod 'AlamofireImage', '3.5.2'
+    pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
+    pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
+    pod 'JTAppleCalendar', '~> 8.0.2'
+    pod 'AMScrollingNavbar', '5.6.0'
+    pod 'CropViewController', '2.5.3'
+
+    ## Automattic libraries
+    ## ====================
+    ##
+    wordpress_kit
+    wordpress_shared
+    kanvas
+
+    # Production
+
+    pod 'Automattic-Tracks-iOS', '~> 0.8.2'
+    # While in PR
+    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
+    # Local Development
+    #pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
+
+    pod 'NSURL+IDN', '~> 0.4'
+
+    pod 'WPMediaPicker', '~> 1.7.2'
+    #pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
+    ## while PR is in review:
+    # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
+    # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
+
+    pod 'Gridicons', '~> 1.1.0'
+
+    pod 'WordPressAuthenticator', '~> 1.35.2'
+    # While in PR
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
+    # pod 'WordPressAuthenticator', :path => '../../WordPressAuthenticator-iOS'
+
+    pod 'MediaEditor', '~> 1.2.1'
+    # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
+    # pod 'MediaEditor', :path => '../MediaEditor-iOS'
+
+    aztec
+    wordpress_ui
+
+    ## WordPress App iOS
+    ## =================
+    ##
+    target 'WordPress' do
+        target 'WordPressTest' do
+            inherit! :search_paths
+
+            shared_test_pods
+            pod 'Nimble', '~> 7.3.1'
+        end
     end
-end
 
-## Jetpack App iOS
-## ===============
-##
-target 'Jetpack' do
-    project 'WordPress/WordPress.xcodeproj'
-
-    shared_with_app_target_pods
+    ## Jetpack App iOS
+    ## ===============
+    ##
+    target 'Jetpack' do
+    end
 end
 
 ## Share Extension
@@ -434,7 +429,7 @@ post_install do |installer|
     require 'commonmarker'
 
     acknowledgements = 'Acknowledgments'
-    markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown")
+    markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-acknowledgements.markdown")
     rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
     styled_html = "<head>
                      <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
@@ -471,7 +466,7 @@ post_install do |installer|
       ## inserting a <br> in the HTML.  Use gsub juuust in case another one sneaks in later.
       styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
 
-    File.write("#{project_root}/Pods/Target Support Files/Pods-WordPress/acknowledgements.html", styled_html)
+    File.write("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/acknowledgements.html", styled_html)
 
     # Let Pods targets inherit deployment target from the app
     # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/4859
