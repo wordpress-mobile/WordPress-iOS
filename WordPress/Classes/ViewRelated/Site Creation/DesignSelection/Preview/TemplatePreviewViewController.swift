@@ -1,6 +1,17 @@
 
 import Foundation
 
+protocol TemplatePreviewViewDelegate {
+    typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice
+    func deviceButtonTapped(_ previewDevice: PreviewDevice)
+    func deviceModeChanged(_ previewDevice: PreviewDevice)
+    func previewError(_ error: Error)
+    func previewViewed()
+    func previewLoading()
+    func previewLoaded()
+    func templatePicked()
+}
+
 class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopoverPresentationControllerDelegate {
     typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice
 
@@ -9,6 +20,7 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var progressBar: UIProgressView!
 
+    internal var delegate: TemplatePreviewViewDelegate?
     private let demoURL: String
     private var estimatedProgressObserver: NSKeyValueObservation?
     internal var selectedPreviewDevice: PreviewDevice {
@@ -59,7 +71,7 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
         webView.scrollView.contentInset.bottom = footerView.frame.height
         webView.navigationDelegate = self
         webView.backgroundColor = .basicBackground
-        templatePreviewViewed()
+        delegate?.previewViewed()
         observeProgressEstimations()
         configurePreviewDeviceButton()
     }
@@ -71,7 +83,7 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
 
     @IBAction func actionButtonSelected(_ sender: Any) {
         dismiss(animated: true)
-        templatePicked()
+        delegate?.templatePicked()
     }
 
     private func configureWebView() {
@@ -103,12 +115,12 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
     }
 
     @objc private func previewDeviceButtonTapped() {
-        templatePreviewDeviceButtonTapped(selectedPreviewDevice)
+        delegate?.deviceButtonTapped(selectedPreviewDevice)
         let popoverContentController = PreviewDeviceSelectionViewController()
         popoverContentController.selectedOption = selectedPreviewDevice
         popoverContentController.onDeviceChange = { [weak self] device in
             guard let self = self else { return }
-            self.templatePreviewDeviceModeChanged(device)
+            self.delegate?.deviceModeChanged(device)
             self.selectedPreviewDevice = device
         }
 
@@ -123,37 +135,11 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
     }
 
     private func handleError(_ error: Error) {
-        templatePreviewError(error)
+        delegate?.previewError(error)
         configureAndDisplayNoResults(on: webView,
                                      title: NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed because the device wasn't able to establish a network connection."))
         progressBar.animatableSetIsHidden(true)
         removeProgressObserver()
-    }
-
-    internal func templatePreviewDeviceButtonTapped(_ previewDevice: PreviewDevice) {
-    }
-
-    internal func templatePreviewDeviceModeChanged(_ previewDevice: PreviewDevice) {
-    }
-
-    internal func templatePreviewError(_ error: Error) {
-        // subclasses should override this
-    }
-
-    internal func templatePreviewViewed() {
-        // subclasses should override this
-    }
-
-    internal func templatePreviewLoading() {
-        // subclasses should override this
-    }
-
-    internal func templatePreviewLoaded() {
-        // subclasses should override this
-    }
-
-    internal func templatePicked() {
-        // subclasses should override this
     }
 }
 
@@ -161,7 +147,7 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
 extension TemplatePreviewViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        templatePreviewLoading()
+        delegate?.previewLoading()
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
@@ -175,7 +161,7 @@ extension TemplatePreviewViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webView.evaluateJavaScript(selectedPreviewDevice.viewportScript, completionHandler: { [weak self] (_, _) in
             guard let self = self else { return }
-            self.templatePreviewLoaded()
+            self.delegate?.previewLoaded()
         })
 
         progressBar.animatableSetIsHidden(true)

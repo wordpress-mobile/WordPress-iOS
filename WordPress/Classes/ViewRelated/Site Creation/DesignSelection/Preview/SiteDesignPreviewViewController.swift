@@ -8,6 +8,7 @@ class SiteDesignPreviewViewController: TemplatePreviewViewController {
         self.completion = completion
         self.siteDesign = siteDesign
         super.init(demoURL: siteDesign.demoURL, selectedPreviewDevice: selectedPreviewDevice, onDismissWithDeviceSelected: onDismissWithDeviceSelected)
+        delegate = self
         title = NSLocalizedString("Preview", comment: "Title for screen to preview a selected homepage design")
     }
 
@@ -19,34 +20,35 @@ class SiteDesignPreviewViewController: TemplatePreviewViewController {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
     }
+}
 
-    override func templatePreviewError(_ error: Error) {
+extension SiteDesignPreviewViewController: TemplatePreviewViewDelegate {
+    func deviceButtonTapped(_ device: PreviewDevice) {
+        SiteCreationAnalyticsHelper.trackSiteDesignPreviewModeButtonTapped(device)
+    }
+    
+    func deviceModeChanged(_ device: PreviewDevice) {
+        SiteCreationAnalyticsHelper.trackSiteDesignPreviewModeChanged(device)
+    }
+    
+    func previewError(_ error: Error) {
         SiteCreationAnalyticsHelper.trackError(error)
     }
-
-    override func templatePreviewViewed() {
+    
+    func previewViewed() {
         SiteCreationAnalyticsHelper.trackSiteDesignPreviewViewed(siteDesign: siteDesign, previewMode: selectedPreviewDevice)
     }
-
-    override func templatePreviewLoading() {
+    
+    func previewLoading() {
         SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoading(siteDesign: siteDesign, previewMode: selectedPreviewDevice)
     }
-
-    override func templatePreviewLoaded() {
+    
+    func previewLoaded() {
         SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoaded(siteDesign: siteDesign, previewMode: selectedPreviewDevice)
     }
 
-    override func templatePicked() {
+    func templatePicked() {
         SiteCreationAnalyticsHelper.trackSiteDesignSelected(siteDesign)
         completion(siteDesign)
     }
-
-    override func templatePreviewDeviceButtonTapped(_ device: PreviewDevice) {
-        SiteCreationAnalyticsHelper.trackSiteDesignPreviewModeButtonTapped(device)
-    }
-
-    override func templatePreviewDeviceModeChanged(_ device: PreviewDevice) {
-        SiteCreationAnalyticsHelper.trackSiteDesignPreviewModeChanged(device)
-    }
-
 }

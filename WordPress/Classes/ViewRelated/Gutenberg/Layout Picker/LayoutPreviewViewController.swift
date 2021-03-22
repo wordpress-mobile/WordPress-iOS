@@ -8,6 +8,7 @@ class LayoutPreviewViewController: TemplatePreviewViewController {
         self.layout = layout
         self.completion = completion
         super.init(demoURL: layout.demoUrl, selectedPreviewDevice: selectedPreviewDevice, onDismissWithDeviceSelected: onDismissWithDeviceSelected)
+        delegate = self
         title = NSLocalizedString("Preview", comment: "Title for screen to preview a static content.")
     }
 
@@ -19,20 +20,28 @@ class LayoutPreviewViewController: TemplatePreviewViewController {
         super.viewDidLoad()
         primaryActionButton.setTitle(NSLocalizedString("Create Page", comment: "Button for selecting the current page template."), for: .normal)
     }
+}
 
-    override func templatePreviewViewed() {
-//        SiteCreationAnalyticsHelper.trackSiteDesignPreviewViewed(siteDesign: siteDesign, previewMode: selectedPreviewDevice)
+extension LayoutPreviewViewController: TemplatePreviewViewDelegate {
+    func deviceButtonTapped(_ previewDevice: PreviewDevice) {
+    }
+    
+    func deviceModeChanged(_ previewDevice: PreviewDevice) {
+    }
+    
+    func previewError(_ error: Error) {
+    }
+    
+    func previewViewed() {
+    }
+    
+    func previewLoading() {
+    }
+    
+    func previewLoaded() {
     }
 
-    override func templatePreviewLoading() {
-//        SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoading(siteDesign: siteDesign, previewMode: selectedPreviewDevice)
-    }
-
-    override func templatePreviewLoaded() {
-//        SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoaded(siteDesign: siteDesign, previewMode: selectedPreviewDevice)
-    }
-
-    override func templatePicked() {
+    func templatePicked() {
         LayoutPickerAnalyticsEvent.templateApplied(slug: layout.slug)
         completion(layout)
     }
