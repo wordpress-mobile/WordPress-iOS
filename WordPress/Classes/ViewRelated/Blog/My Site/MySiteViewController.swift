@@ -144,6 +144,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private func showNoSites() {
+        guard AccountHelper.isLoggedIn else {
+            WordPressAppDelegate.shared?.windowManager.showFullscreenSignIn()
+            return
+        }
+
         hideBlogDetails()
 
         addMeButtonToNavigationBar(email: defaultAccount()?.email, meScenePresenter: meScenePresenter)

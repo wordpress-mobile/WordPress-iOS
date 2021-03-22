@@ -60,8 +60,7 @@ class LoginFlow {
                 if meScreen.isLoggedInToWpcom() {
                     _ = meScreen.logoutToPrologue()
                 } else {
-                    TabNavComponent().gotoMySiteScreen()
-                        .removeSelfHostedSite()
+                    meScreen.dismiss().removeSelfHostedSite()
                 }
                 return
             }
