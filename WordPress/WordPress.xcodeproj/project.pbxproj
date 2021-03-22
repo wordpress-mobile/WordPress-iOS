@@ -22513,7 +22513,7 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG -D JETPACK";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -22581,6 +22581,7 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D JETPACK";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -22648,7 +22649,7 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D INTERNAL_BUILD -D APPCENTER_ENABLED";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D INTERNAL_BUILD -D APPCENTER_ENABLED -D JETPACK";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.internal;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -22716,7 +22717,7 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D ALPHA_BUILD -D INTERNAL_BUILD";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D ALPHA_BUILD -D INTERNAL_BUILD -D JETPACK";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.alpha;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
