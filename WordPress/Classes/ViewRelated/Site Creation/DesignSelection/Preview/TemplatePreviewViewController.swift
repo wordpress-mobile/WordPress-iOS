@@ -175,7 +175,7 @@ extension TemplatePreviewViewController: WKNavigationDelegate {
 }
 
 // MARK: UIPopoverPresentationDelegate
-extension SiteDesignPreviewViewController {
+extension TemplatePreviewViewController {
 
     func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
         guard popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
