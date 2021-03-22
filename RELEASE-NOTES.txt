@@ -6,7 +6,6 @@
 * [*] Fixed an issue where password text on Post Settings was showing as black in dark mode. [#15768]
 * [*] Added a thumbnail device mode selector in the page layout, and use a default setting based on the current device. [#16019]
 * [**] Comments can now be filtered by status (All, Pending, Approved, Trashed, or Spam). [#15955, #16110]
-* [*] Notification: Enabled the new view milestone notifications [#16144]
 
 16.9
 -----
