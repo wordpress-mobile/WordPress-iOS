@@ -1021,7 +1021,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     NSParameterAssert(remoteSettings);
     
     // Transformables
-    NSSet *separatedBlacklistKeys = [remoteSettings.commentsBlacklistKeys uniqueStringComponentsSeparatedByNewline];
+    NSSet *separatedBlocklistKeys = [remoteSettings.commentsBlocklistKeys uniqueStringComponentsSeparatedByNewline];
     NSSet *separatedModerationKeys = [remoteSettings.commentsModerationKeys uniqueStringComponentsSeparatedByNewline];
     
     // General
@@ -1043,10 +1043,10 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
     // Discussion
     settings.commentsAllowed = [remoteSettings.commentsAllowed boolValue];
-    settings.commentsBlacklistKeys = separatedBlacklistKeys;
+    settings.commentsBlocklistKeys = separatedBlocklistKeys;
     settings.commentsCloseAutomatically = [remoteSettings.commentsCloseAutomatically boolValue];
     settings.commentsCloseAutomaticallyAfterDays = remoteSettings.commentsCloseAutomaticallyAfterDays;
-    settings.commentsFromKnownUsersWhitelisted = [remoteSettings.commentsFromKnownUsersWhitelisted boolValue];
+    settings.commentsFromKnownUsersAllowlisted = [remoteSettings.commentsFromKnownUsersAllowlisted boolValue];
     
     settings.commentsMaximumLinks = remoteSettings.commentsMaximumLinks;
     settings.commentsModerationKeys = separatedModerationKeys;
@@ -1091,7 +1091,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     RemoteBlogSettings *remoteSettings = [RemoteBlogSettings new];
 
     // Transformables
-    NSString *joinedBlacklistKeys = [[settings.commentsBlacklistKeys allObjects] componentsJoinedByString:@"\n"];
+    NSString *joinedBlocklistKeys = [[settings.commentsBlocklistKeys allObjects] componentsJoinedByString:@"\n"];
     NSString *joinedModerationKeys = [[settings.commentsModerationKeys allObjects] componentsJoinedByString:@"\n"];
     
     // General
@@ -1113,10 +1113,10 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
     // Discussion
     remoteSettings.commentsAllowed = @(settings.commentsAllowed);
-    remoteSettings.commentsBlacklistKeys = joinedBlacklistKeys;
+    remoteSettings.commentsBlocklistKeys = joinedBlocklistKeys;
     remoteSettings.commentsCloseAutomatically = @(settings.commentsCloseAutomatically);
     remoteSettings.commentsCloseAutomaticallyAfterDays = settings.commentsCloseAutomaticallyAfterDays;
-    remoteSettings.commentsFromKnownUsersWhitelisted = @(settings.commentsFromKnownUsersWhitelisted);
+    remoteSettings.commentsFromKnownUsersAllowlisted = @(settings.commentsFromKnownUsersAllowlisted);
     
     remoteSettings.commentsMaximumLinks = settings.commentsMaximumLinks;
     remoteSettings.commentsModerationKeys = joinedModerationKeys;
