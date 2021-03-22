@@ -89,6 +89,7 @@
                 <outlet property="pendingIndicatorWidthConstraint" destination="WeL-cC-lqa" id="NGZ-2z-ehN"/>
                 <outlet property="timestampImageView" destination="rcg-tb-060" id="cp9-u0-P57"/>
                 <outlet property="timestampLabel" destination="bDl-id-9M7" id="sk9-hl-b6r"/>
+                <outlet property="timestampStackView" destination="dIK-tl-nW4" id="3n0-tf-xMe"/>
                 <outlet property="titleLabel" destination="Wrp-Wr-ZBq" id="lVi-a7-Ppp"/>
             </connections>
             <point key="canvasLocation" x="33.600000000000001" y="70.614692653673174"/>

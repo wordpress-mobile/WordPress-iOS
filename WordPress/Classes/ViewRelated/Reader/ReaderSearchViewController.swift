@@ -99,6 +99,7 @@ import Gridicons
         super.viewDidLoad()
 
         navigationItem.title = NSLocalizedString("Search", comment: "Title of the Reader's search feature")
+        navigationItem.largeTitleDisplayMode = .never
 
         WPStyleGuide.configureColors(view: view, tableView: nil)
         setupSearchBar()
