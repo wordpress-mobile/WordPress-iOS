@@ -45,6 +45,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     override func viewDidLoad() {
         setupNavigationItem()
+        subscribeToPostSignupNotifications()
         subscribeToModelChanges()
     }
 
@@ -60,6 +61,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         super.viewDidAppear(animated)
 
         workaroundLargeTitleCollapseBug()
+    }
+
+    private func subscribeToPostSignupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(launchSiteCreation), name: .createSite, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
     }
 
     // MARK: - Navigation Item
@@ -178,6 +184,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         present(addSiteAlert, animated: true)
     }
 
+    @objc
     private func launchSiteCreation() {
         let wizardLauncher = SiteCreationWizardLauncher()
         guard let wizard = wizardLauncher.ui else {
@@ -185,6 +192,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
         present(wizard, animated: true)
         WPAnalytics.track(.enhancedSiteCreationAccessed)
+    }
+
+    @objc
+    private func showAddSelfHostedSite() {
+        WordPressAuthenticator.showLoginForSelfHostedSite(self)
     }
 
     // MARK: - Blog Details UI Logic
@@ -226,7 +238,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return blogDetailsViewController
         }
 
-        blogDetailsViewController.blog = blog
+        blogDetailsViewController.switch(to: blog)
         return blogDetailsViewController
     }
 
