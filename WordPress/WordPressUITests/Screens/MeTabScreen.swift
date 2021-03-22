@@ -59,7 +59,7 @@ class MeTabScreen: BaseScreen {
 
     func goToLoginFlow() -> PrologueScreen {
         app.cells["Log In"].tap()
-        
+
         return PrologueScreen()
     }
 
