@@ -11,12 +11,12 @@ class LayoutPickerAnalyticsEvent {
         WPAnalytics.track(.layoutPickerPreviewErrorShown, withProperties: commonProperties(template, error))
     }
 
-    static func previewLoaded(_ template: PageTemplateLayout) {
-        WPAnalytics.track(.layoutPickerPreviewLoaded, withProperties: commonProperties(template))
+    static func previewLoaded(_ device: PreviewDevice, _ template: PageTemplateLayout) {
+        WPAnalytics.track(.layoutPickerPreviewLoaded, withProperties: commonProperties(device, template))
     }
 
-    static func previewLoading(_ template: PageTemplateLayout) {
-        WPAnalytics.track(.layoutPickerPreviewLoading, withProperties: commonProperties(template))
+    static func previewLoading(_ device: PreviewDevice, _ template: PageTemplateLayout) {
+        WPAnalytics.track(.layoutPickerPreviewLoading, withProperties: commonProperties(device, template))
     }
 
     static func previewModeButtonTapped(_ device: PreviewDevice, _ template: PageTemplateLayout) {
@@ -27,8 +27,8 @@ class LayoutPickerAnalyticsEvent {
         WPAnalytics.track(.layoutPickerPreviewModeChanged, withProperties: commonProperties(device, template))
     }
 
-    static func previewViewed(_ template: PageTemplateLayout) {
-        WPAnalytics.track(.layoutPickerPreviewViewed, withProperties: commonProperties(template))
+    static func previewViewed(_ device: PreviewDevice, _ template: PageTemplateLayout) {
+        WPAnalytics.track(.layoutPickerPreviewViewed, withProperties: commonProperties(device, template))
     }
 
     static func thumbnailModeButtonTapped(_ device: PreviewDevice) {

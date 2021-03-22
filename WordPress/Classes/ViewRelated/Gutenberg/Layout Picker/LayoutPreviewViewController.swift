@@ -36,15 +36,15 @@ extension LayoutPreviewViewController: TemplatePreviewViewDelegate {
     }
 
     func previewViewed() {
-        LayoutPickerAnalyticsEvent.previewViewed(layout)
+        LayoutPickerAnalyticsEvent.previewViewed(selectedPreviewDevice, layout)
     }
 
     func previewLoading() {
-        LayoutPickerAnalyticsEvent.previewLoading(layout)
+        LayoutPickerAnalyticsEvent.previewLoading(selectedPreviewDevice, layout)
     }
 
     func previewLoaded() {
-        LayoutPickerAnalyticsEvent.previewLoaded(layout)
+        LayoutPickerAnalyticsEvent.previewLoaded(selectedPreviewDevice, layout)
     }
 
     func templatePicked() {
