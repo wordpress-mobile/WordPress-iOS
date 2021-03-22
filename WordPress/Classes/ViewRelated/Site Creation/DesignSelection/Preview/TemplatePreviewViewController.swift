@@ -62,7 +62,6 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
         templatePreviewViewed()
         observeProgressEstimations()
         configurePreviewDeviceButton()
-        navigationItem.leftBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -104,12 +103,12 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
     }
 
     @objc private func previewDeviceButtonTapped() {
-        SiteCreationAnalyticsHelper.trackSiteDesignPreviewModeButtonTapped(selectedPreviewDevice)
+        templatePreviewDeviceButtonTapped(selectedPreviewDevice)
         let popoverContentController = PreviewDeviceSelectionViewController()
         popoverContentController.selectedOption = selectedPreviewDevice
         popoverContentController.onDeviceChange = { [weak self] device in
             guard let self = self else { return }
-            SiteCreationAnalyticsHelper.trackSiteDesignPreviewModeChanged(device)
+            self.templatePreviewDeviceModeChanged(device)
             self.selectedPreviewDevice = device
         }
 
@@ -124,11 +123,21 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
     }
 
     private func handleError(_ error: Error) {
-        SiteCreationAnalyticsHelper.trackError(error)
+        templatePreviewError(error)
         configureAndDisplayNoResults(on: webView,
                                      title: NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed because the device wasn't able to establish a network connection."))
         progressBar.animatableSetIsHidden(true)
         removeProgressObserver()
+    }
+
+    internal func templatePreviewDeviceButtonTapped(_ previewDevice: PreviewDevice) {
+    }
+
+    internal func templatePreviewDeviceModeChanged(_ previewDevice: PreviewDevice) {
+    }
+
+    internal func templatePreviewError(_ error: Error) {
+        // subclasses should override this
     }
 
     internal func templatePreviewViewed() {

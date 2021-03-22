@@ -1,5 +1,4 @@
 import UIKit
-import WordPressUI
 
 class SiteDesignPreviewViewController: TemplatePreviewViewController {
     let completion: SiteDesignStep.SiteDesignSelection
@@ -9,11 +8,20 @@ class SiteDesignPreviewViewController: TemplatePreviewViewController {
         self.completion = completion
         self.siteDesign = siteDesign
         super.init(demoURL: siteDesign.demoURL, selectedPreviewDevice: selectedPreviewDevice, onDismissWithDeviceSelected: onDismissWithDeviceSelected)
-        self.title = NSLocalizedString("Preview", comment: "Title for screen to preview a selected homepage design")
+        title = NSLocalizedString("Preview", comment: "Title for screen to preview a selected homepage design")
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.leftBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
+    }
+
+    override func templatePreviewError(_ error: Error) {
+        SiteCreationAnalyticsHelper.trackError(error)
     }
 
     override func templatePreviewViewed() {
@@ -32,4 +40,13 @@ class SiteDesignPreviewViewController: TemplatePreviewViewController {
         SiteCreationAnalyticsHelper.trackSiteDesignSelected(siteDesign)
         completion(siteDesign)
     }
+
+    override func templatePreviewDeviceButtonTapped(_ device: PreviewDevice) {
+        SiteCreationAnalyticsHelper.trackSiteDesignPreviewModeButtonTapped(device)
+    }
+
+    override func templatePreviewDeviceModeChanged(_ device: PreviewDevice) {
+        SiteCreationAnalyticsHelper.trackSiteDesignPreviewModeChanged(device)
+    }
+
 }
