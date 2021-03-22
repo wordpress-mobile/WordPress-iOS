@@ -1,3 +1,8 @@
+Unreleased
+-----
+
+* [*] Added preview device mode selector in the page layout previews [#16141]
+
 17.0
 -----
 * [internal] Updated Zendesk to latest version. Should be no functional changes. [#16051]
