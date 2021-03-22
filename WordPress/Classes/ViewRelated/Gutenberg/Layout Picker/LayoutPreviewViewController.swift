@@ -24,25 +24,31 @@ class LayoutPreviewViewController: TemplatePreviewViewController {
 
 extension LayoutPreviewViewController: TemplatePreviewViewDelegate {
     func deviceButtonTapped(_ previewDevice: PreviewDevice) {
+        LayoutPickerAnalyticsEvent.previewModeButtonTapped(previewDevice, layout)
     }
-    
+
     func deviceModeChanged(_ previewDevice: PreviewDevice) {
+        LayoutPickerAnalyticsEvent.previewModeChanged(previewDevice, layout)
     }
-    
+
     func previewError(_ error: Error) {
+        LayoutPickerAnalyticsEvent.previewErrorShown(layout, error)
     }
-    
+
     func previewViewed() {
+        LayoutPickerAnalyticsEvent.previewViewed(layout)
     }
-    
+
     func previewLoading() {
+        LayoutPickerAnalyticsEvent.previewLoading(layout)
     }
-    
+
     func previewLoaded() {
+        LayoutPickerAnalyticsEvent.previewLoaded(layout)
     }
 
     func templatePicked() {
-        LayoutPickerAnalyticsEvent.templateApplied(slug: layout.slug)
+        LayoutPickerAnalyticsEvent.templateApplied(layout)
         completion(layout)
     }
 }

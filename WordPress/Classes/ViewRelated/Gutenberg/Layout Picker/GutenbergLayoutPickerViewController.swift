@@ -77,10 +77,12 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     }
 
     @objc private func previewDeviceButtonTapped() {
+        LayoutPickerAnalyticsEvent.thumbnailModeButtonTapped(selectedPreviewDevice)
         let popoverContentController = PreviewDeviceSelectionViewController()
         popoverContentController.selectedOption = selectedPreviewDevice
         popoverContentController.onDeviceChange = { [weak self] device in
             guard let self = self else { return }
+            LayoutPickerAnalyticsEvent.previewModeChanged(device)
             self.selectedPreviewDevice = device
         }
 
@@ -95,7 +97,6 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
         let destination = LayoutPreviewViewController(layout: layout, selectedPreviewDevice: selectedPreviewDevice, onDismissWithDeviceSelected: { [weak self] device in
             self?.selectedPreviewDevice = device
         }, completion: completion)
-        LayoutPickerAnalyticsEvent.templatePreview(slug: layout.slug)
         navigationController?.pushViewController(destination, animated: true)
     }
 
@@ -147,7 +148,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
         }
 
         let layout = sections[sectionIndex].layouts[position]
-        LayoutPickerAnalyticsEvent.templateApplied(slug: layout.slug)
+        LayoutPickerAnalyticsEvent.templateApplied(layout)
         createPage(layout: layout)
     }
 
