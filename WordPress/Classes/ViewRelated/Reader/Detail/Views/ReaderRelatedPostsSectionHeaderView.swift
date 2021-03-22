@@ -5,7 +5,7 @@ class ReaderRelatedPostsSectionHeaderView: UITableViewHeaderFooterView, NibReusa
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var backgroundColorView: UIView!
 
-    static let height: CGFloat = 40
+    static let height: CGFloat = 50
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -14,7 +14,7 @@ class ReaderRelatedPostsSectionHeaderView: UITableViewHeaderFooterView, NibReusa
 
     private func applyStyles() {
         titleLabel.numberOfLines = 0
-        titleLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
+        titleLabel.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
         titleLabel.textColor = .text
         titleLabel.textAlignment = .natural
 
