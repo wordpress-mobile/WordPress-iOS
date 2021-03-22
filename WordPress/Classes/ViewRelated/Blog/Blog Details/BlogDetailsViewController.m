@@ -425,7 +425,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self scrollToElement:QuickStartTourElementViewSite];
         self.shouldScrollToViewSite = NO;
     }
-    [WPTabBarController.sharedInstance presentWhatIsNewOn:self];
 }
 
 - (CreateButtonCoordinator *)createButtonCoordinator
