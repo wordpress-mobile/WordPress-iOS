@@ -401,7 +401,7 @@ extension WordPressAppDelegate {
 
     @objc func configureAppCenterSDK() {
         #if APPCENTER_ENABLED
-        MSAppCenter.start(ApiCredentials.appCenterAppId(), withServices: [MSDistribute.self])
+        AppCenter.start(withAppSecret: ApiCredentials.appCenterAppId(), services: [Distribute.self])
         #endif
     }
 
