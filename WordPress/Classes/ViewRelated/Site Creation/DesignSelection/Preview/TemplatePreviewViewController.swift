@@ -55,7 +55,7 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
         self.onDismissWithDeviceSelected = onDismissWithDeviceSelected
         super.init(nibName: "\(TemplatePreviewViewController.self)", bundle: .main)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

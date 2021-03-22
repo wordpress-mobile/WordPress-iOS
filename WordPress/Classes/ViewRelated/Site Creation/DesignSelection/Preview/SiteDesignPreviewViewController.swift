@@ -26,23 +26,23 @@ extension SiteDesignPreviewViewController: TemplatePreviewViewDelegate {
     func deviceButtonTapped(_ device: PreviewDevice) {
         SiteCreationAnalyticsHelper.trackSiteDesignPreviewModeButtonTapped(device)
     }
-    
+
     func deviceModeChanged(_ device: PreviewDevice) {
         SiteCreationAnalyticsHelper.trackSiteDesignPreviewModeChanged(device)
     }
-    
+
     func previewError(_ error: Error) {
         SiteCreationAnalyticsHelper.trackError(error)
     }
-    
+
     func previewViewed() {
         SiteCreationAnalyticsHelper.trackSiteDesignPreviewViewed(siteDesign: siteDesign, previewMode: selectedPreviewDevice)
     }
-    
+
     func previewLoading() {
         SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoading(siteDesign: siteDesign, previewMode: selectedPreviewDevice)
     }
-    
+
     func previewLoaded() {
         SiteCreationAnalyticsHelper.trackSiteDesignPreviewLoaded(siteDesign: siteDesign, previewMode: selectedPreviewDevice)
     }

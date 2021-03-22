@@ -20,7 +20,7 @@ class LayoutPickerAnalyticsEvent {
     }
 
     static func previewModeButtonTapped(_ device: PreviewDevice, _ template: PageTemplateLayout) {
-        WPAnalytics.track(.layoutPickerPreviewModeButtonTapped, withProperties:         commonProperties(device, template))
+        WPAnalytics.track(.layoutPickerPreviewModeButtonTapped, withProperties: commonProperties(device, template))
     }
 
     static func previewModeChanged(_ device: PreviewDevice, _ template: PageTemplateLayout? = nil) {
