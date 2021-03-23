@@ -83,6 +83,8 @@ import Foundation
     case readerDiscoverContentPresented
     case readerPostMarkSeen
     case readerPostMarkUnseen
+    case readerRelatedPostFromOtherSiteClicked
+    case readerRelatedPostFromSameSiteClicked
 
     // What's New - Feature announcements
     case featureAnnouncementShown
@@ -148,6 +150,16 @@ import Foundation
     case commentEditorOpened
     case commentEdited
     case commentRepliedTo
+
+    // InviteLinks
+    case inviteLinksGetStatus
+    case inviteLinksGenerate
+    case inviteLinksShare
+    case inviteLinksDisable
+
+    // Page Layout and Site Design Picker
+    case categoryFilterSelected
+    case categoryFilterDeselected
 
     /// A String that represents the event
     var value: String {
@@ -289,6 +301,10 @@ import Foundation
             return "reader_mark_as_seen"
         case .readerPostMarkUnseen:
             return "reader_mark_as_unseen"
+        case .readerRelatedPostFromOtherSiteClicked:
+            return "reader_related_post_from_other_site_clicked"
+        case .readerRelatedPostFromSameSiteClicked:
+            return "reader_related_post_from_same_site_clicked"
 
         // What's New - Feature announcements
         case .featureAnnouncementShown:
@@ -409,6 +425,22 @@ import Foundation
             return "comment_edited"
         case .commentRepliedTo:
             return "comment_replied_to"
+
+        // Invite Links
+        case .inviteLinksGetStatus:
+            return "invite_links_get_status"
+        case .inviteLinksGenerate:
+            return "invite_links_generate"
+        case .inviteLinksShare:
+            return "invite_links_share"
+        case .inviteLinksDisable:
+            return "invite_links_disable"
+
+        // Page Layout and Site Design Picker
+        case .categoryFilterSelected:
+            return "category_filter_selected"
+        case .categoryFilterDeselected:
+            return "category_filter_deselected"
         }
     }
 

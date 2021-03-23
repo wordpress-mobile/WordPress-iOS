@@ -263,9 +263,202 @@ struct PeopleService {
     }
 }
 
+// MARK: - Invite Links Related
 
-/// Encapsulates all of the PeopleService Private Methods.
-///
+extension PeopleService {
+
+    /// Convenience method for retrieving invite links from core data.
+    ///
+    /// - Parameters:
+    ///   - siteID: The ID of the site.
+    ///   - success: A success block.
+    ///   - failure: A failure block
+    ///
+    func inviteLinks(_ siteID: Int) -> [InviteLinks] {
+        let request = InviteLinks.fetchRequest() as NSFetchRequest<InviteLinks>
+        request.predicate = NSPredicate(format: "blog.blogID = %@", NSNumber(value: siteID))
+        if let invites = try? context.fetch(request) {
+            return invites
+        }
+        return [InviteLinks]()
+    }
+
+    /// Fetch any existing Invite Links
+    ///
+    /// - Parameters:
+    ///   - siteID: The ID of the site.
+    ///   - success: A success block.
+    ///   - failure: A failure block
+    ///
+    func fetchInviteLinks(_ siteID: Int,
+                          success: @escaping (([InviteLinks]) -> Void),
+                          failure: @escaping ((Error) -> Void)) {
+        remote.fetchInvites(siteID) { remoteInvites in
+            merge(remoteInvites: remoteInvites, for: siteID) {
+                let links = inviteLinks(siteID)
+                success(links)
+            }
+        } failure: { error in
+            failure(error)
+        }
+    }
+
+    /// Generate new Invite Links
+    ///
+    /// - Parameters:
+    ///   - siteID: The ID of the site.
+    ///   - success: A success block.
+    ///   - failure: A failure block
+    ///
+    func generateInviteLinks(_ siteID: Int,
+                             success: @escaping (([InviteLinks]) -> Void),
+                             failure: @escaping ((Error) -> Void)) {
+        remote.generateInviteLinks(siteID) { _ in
+            // Fetch after generation.
+            fetchInviteLinks(siteID, success: success, failure: failure)
+        } failure: { error in
+            failure(error)
+        }
+    }
+
+    /// Disable existing Invite Links
+    ///
+    /// - Parameters:
+    ///   - siteID: The ID of the site.
+    ///   - success: A success block.
+    ///   - failure: A failure block
+    ///
+    func disableInviteLinks(_ siteID: Int,
+                            success: @escaping (() -> Void),
+                            failure: @escaping ((Error) -> Void)) {
+        remote.disableInviteLinks(siteID) { deletedKeys in
+            deleteInviteLinks(keys: deletedKeys, for: siteID) {
+                success()
+            }
+        } failure: { (error) in
+            failure(error)
+        }
+    }
+
+    /// Merges an array of RemoteInviteLinks with any existing InviteLinks. InviteLinks
+    /// missing from the array of RemoteInviteLinks are deleted.
+    ///
+    /// - Parameters:
+    ///   - remoteInvites: An array of RemoteInviteLinks
+    ///   - siteID: The ID of the site to which the InviteLinks belong.
+    ///   - onComplete: A completion block that is called after changes are saved to core data.
+    ///
+    func merge(remoteInvites: [RemoteInviteLink], for siteID: Int, onComplete: @escaping (() -> Void)) {
+        let context = ContextManager.shared.newDerivedContext()
+        context.perform {
+            guard let blog = try? Blog.lookup(withID: siteID, in: context) else {
+                DispatchQueue.main.async {
+                    onComplete()
+                }
+                return
+            }
+
+            // Delete Stale Items
+            let inviteKeys = remoteInvites.map { invite -> String in
+                return invite.inviteKey
+            }
+            deleteMissingInviteLinks(keys: inviteKeys, for: siteID, from: context)
+
+            // Create or Update items
+            for remoteInvite in remoteInvites {
+                createOrUpdateInviteLink(remoteInvite: remoteInvite, blog: blog, context: context)
+            }
+
+            ContextManager.shared.save(context) {
+                DispatchQueue.main.async {
+                    onComplete()
+                }
+            }
+        }
+    }
+
+    /// Deletes InviteLinks whose inviteKeys belong to the supplied array of keys.
+    ///
+    /// - Parameters:
+    ///   - keys: An array of inviteKeys representing InviteLinks to delete.
+    ///   - siteID: The ID of the site to which the InviteLinks belong.
+    ///   - onComplete: A completion block that is called after changes are saved to core data.
+    ///
+    func deleteInviteLinks(keys: [String], for siteID: Int, onComplete: @escaping (() -> Void)) {
+        let context = ContextManager.shared.newDerivedContext()
+        context.perform {
+
+            let request = InviteLinks.fetchRequest() as NSFetchRequest<InviteLinks>
+            request.predicate = NSPredicate(format: "inviteKey IN %@ AND blog.blogID = %@", keys, NSNumber(value: siteID))
+
+            do {
+                let staleInvites = try context.fetch(request)
+                for staleInvite in staleInvites {
+                    context.delete(staleInvite)
+                }
+            } catch {
+                DDLogError("Error fetching stale invite links: \(error)")
+            }
+
+            ContextManager.shared.save(context) {
+                DispatchQueue.main.async {
+                    onComplete()
+                }
+            }
+        }
+    }
+
+    /// Markes for deletion InviteLinks whose inviteKeys are not included in the supplied array of keys.
+    /// This method does not save changes to the persistent store.
+    ///
+    /// - Parameters:
+    ///   - keys: An array of inviteKeys representing InviteLinks to keep.
+    ///   - siteID: The ID of the site to which the InviteLinks belong.
+    ///   - context: The NSManagedObjectContext to operate on. It is assumed this is a background write context.
+    ///
+    func deleteMissingInviteLinks(keys: [String], for siteID: Int, from context: NSManagedObjectContext) {
+        let request = InviteLinks.fetchRequest() as NSFetchRequest<InviteLinks>
+        request.predicate = NSPredicate(format: "NOT (inviteKey IN %@) AND blog.blogID = %@", keys, NSNumber(value: siteID))
+
+        do {
+            let staleInvites = try context.fetch(request)
+            for staleInvite in staleInvites {
+                context.delete(staleInvite)
+            }
+        } catch {
+            DDLogError("Error fetching stale invite links: \(error)")
+        }
+    }
+
+    /// Updates an existing InviteLinks record, or inserts a new record into the specified NSManagedObjectContext.
+    /// This method does not save changes to the persistent store.
+    ///
+    /// - Parameters:
+    ///   - remoteInvite: The RemoteInviteLink that needs to be stored.
+    ///   - blog: The blog instance to which the InviteLinks belong.
+    ///   - context: The NSManagedObjectContext to operate on. It is assumed this is a background write context.
+    ///
+    func createOrUpdateInviteLink(remoteInvite: RemoteInviteLink, blog: Blog, context: NSManagedObjectContext) {
+        let request = InviteLinks.fetchRequest() as NSFetchRequest<InviteLinks>
+        request.predicate = NSPredicate(format: "inviteKey = %@ AND blog = %@", remoteInvite.inviteKey, blog)
+
+        if let invite = try? context.fetch(request).first ?? InviteLinks(context: context) {
+            invite.blog = blog
+            invite.expiry = remoteInvite.expiry
+            invite.groupInvite = remoteInvite.groupInvite
+            invite.inviteDate = remoteInvite.inviteDate
+            invite.inviteKey = remoteInvite.inviteKey
+            invite.isPending = remoteInvite.isPending
+            invite.link = remoteInvite.link
+            invite.role = remoteInvite.role
+        }
+    }
+
+}
+
+
+// MARK: - Private Methods
+
 private extension PeopleService {
     /// Updates the Core Data collection of users, to match with the array of People received.
     ///

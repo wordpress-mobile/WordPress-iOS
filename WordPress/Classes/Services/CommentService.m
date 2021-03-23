@@ -9,14 +9,35 @@
 #import "AbstractPost.h"
 #import "WordPress-Swift.h"
 
-@import WordPressKit;
 
 NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 NSInteger const  WPNumberOfCommentsToSync = 100;
 static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minutes
-NSString *commentStatusAll = @"all";
+
+@interface CommentService ()
+
+@property (nonnull, strong, nonatomic) CommentServiceRemoteFactory *remoteFactory;
+
+@end
 
 @implementation CommentService
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
+{
+    return [self initWithManagedObjectContext:context
+                  commentServiceRemoteFactory:[CommentServiceRemoteFactory new]];
+}
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
+                 commentServiceRemoteFactory:(CommentServiceRemoteFactory *)remoteFactory
+{
+    self = [super initWithManagedObjectContext:context];
+    if (self) {
+        self.remoteFactory = remoteFactory;
+    }
+
+    return self;
+}
 
 + (NSMutableSet *)syncingCommentsLocks
 {
@@ -123,11 +144,11 @@ NSString *commentStatusAll = @"all";
                     success:(void (^)(BOOL hasMore))success
                     failure:(void (^)(NSError *error))failure
 {
-    [self syncCommentsForBlog:blog withStatus:commentStatusAll success:success failure:failure];
+    [self syncCommentsForBlog:blog withStatus:CommentStatusFilterAll success:success failure:failure];
 }
 
 - (void)syncCommentsForBlog:(Blog *)blog
-                 withStatus:(NSString *)status
+                 withStatus:(CommentStatusFilter)status
                     success:(void (^)(BOOL hasMore))success
                     failure:(void (^)(NSError *error))failure
 {
@@ -141,7 +162,8 @@ NSString *commentStatusAll = @"all";
     }
     
     // If the comment status is not specified, default to all.
-    NSDictionary *options = @{ @"status": status ?: commentStatusAll };
+    CommentStatusFilter commentStatus = status ?: CommentStatusFilterAll;
+    NSDictionary *options = @{ @"status": [NSNumber numberWithInt:commentStatus] };
 
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
     
@@ -199,11 +221,11 @@ NSString *commentStatusAll = @"all";
                         success:(void (^)(BOOL hasMore))success
                         failure:(void (^)(NSError *))failure
 {
-    [self loadMoreCommentsForBlog:blog withStatus:commentStatusAll success:success failure:failure];
+    [self loadMoreCommentsForBlog:blog withStatus:CommentStatusFilterAll success:success failure:failure];
 }
 
 - (void)loadMoreCommentsForBlog:(Blog *)blog
-                     withStatus:(NSString *)status
+                     withStatus:(CommentStatusFilter)status
                         success:(void (^)(BOOL hasMore))success
                         failure:(void (^)(NSError *))failure
 {
@@ -216,8 +238,10 @@ NSString *commentStatusAll = @"all";
     }
 
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
+    
     // If the comment status is not specified, default to all.
-    options[@"status"] = status ?: commentStatusAll;
+    CommentStatusFilter commentStatus = status ?: CommentStatusFilterAll;
+    options[@"status"] = [NSNumber numberWithInt:commentStatus];
 
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
     
@@ -682,6 +706,18 @@ NSString *commentStatusAll = @"all";
     }
 }
 
+- (void)getLikesForCommentID:(NSNumber *)commentID
+                      siteID:(NSNumber *)siteID
+                     success:(void (^)(NSArray<RemoteUser *> *))success
+                     failure:(void (^)(NSError * _Nullable))failure
+{
+    NSParameterAssert(commentID);
+    NSParameterAssert(siteID);
+
+    CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
+    [remote getLikesForCommentID:commentID success:success failure:failure];
+}
+
 
 #pragma mark - Private methods
 
@@ -1086,21 +1122,12 @@ NSString *commentStatusAll = @"all";
 
 - (id<CommentServiceRemote>)remoteForBlog:(Blog *)blog
 {
-    id<CommentServiceRemote>remote;
-    // TODO: refactor API creation so it's not part of the model
-    if ([blog supports:BlogFeatureWPComRESTAPI]) {
-        if (blog.wordPressComRestApi) {
-            remote = [[CommentServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
-        }
-    } else if (blog.xmlrpcApi) {
-        remote = [[CommentServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
-    }
-    return remote;
+    return [self.remoteFactory remoteWithBlog:blog];
 }
 
 - (CommentServiceRemoteREST *)restRemoteForSite:(NSNumber *)siteID
 {
-    return [[CommentServiceRemoteREST alloc] initWithWordPressComRestApi:[self apiForRESTRequest] siteID:siteID];
+    return [self.remoteFactory restRemoteWithSiteID:siteID api:[self apiForRESTRequest]];
 }
 
 /**

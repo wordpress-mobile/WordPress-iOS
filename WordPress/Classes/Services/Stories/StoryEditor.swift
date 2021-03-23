@@ -52,7 +52,7 @@ class StoryEditor: CameraController {
         return StoryMediaLoader()
     }()
 
-    private static let useMetal = true
+    private static let useMetal = false
 
     static var cameraSettings: CameraSettings {
         let settings = CameraSettings()
@@ -93,12 +93,13 @@ class StoryEditor: CameraController {
         case unsupportedDevice
     }
 
-    typealias Results = Result<AbstractPost, PostCoordinator.SavingError>
+    typealias UpdateResult = Result<String, PostCoordinator.SavingError>
+    typealias UploadResult = Result<Void, PostCoordinator.SavingError>
 
     static func editor(blog: Blog,
                        context: NSManagedObjectContext,
-                       updated: @escaping (Results) -> Void,
-                       uploaded: @escaping (Results) -> Void) throws -> StoryEditor {
+                       updated: @escaping (UpdateResult) -> Void,
+                       uploaded: @escaping (UploadResult) -> Void) throws -> StoryEditor {
         let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
         return try editor(post: post, mediaFiles: nil, publishOnCompletion: true, updated: updated, uploaded: uploaded)
     }
@@ -106,8 +107,8 @@ class StoryEditor: CameraController {
     static func editor(post: AbstractPost,
                        mediaFiles: [MediaFile]?,
                        publishOnCompletion: Bool = false,
-                       updated: @escaping (Results) -> Void,
-                       uploaded: @escaping (Results) -> Void) throws -> StoryEditor {
+                       updated: @escaping (UpdateResult) -> Void,
+                       uploaded: @escaping (UploadResult) -> Void) throws -> StoryEditor {
 
         guard !UIDevice.isPad() else {
             throw EditorCreationError.unsupportedDevice
@@ -138,8 +139,8 @@ class StoryEditor: CameraController {
                      tagCollection: UIView?,
                      mediaFiles: [MediaFile]?,
                      publishOnCompletion: Bool,
-                     updated: @escaping (Results) -> Void,
-                     uploaded: @escaping (Results) -> Void
+                     updated: @escaping (UpdateResult) -> Void,
+                     uploaded: @escaping (UploadResult) -> Void
                     ) {
         self.post = post
         self.onClose = onClose
@@ -184,32 +185,23 @@ class StoryEditor: CameraController {
             guard let self = self else { return }
 
             let uploads: (String, [Media])? = try? self.poster?.upload(mediaItems: postMedia, post: post, completion: { post in
-                uploaded(post)
+                uploaded(.success(()))
             })
 
-            if let firstMediaFile = mediaFiles?.first {
-                let processor = GutenbergBlockProcessor(for: "wp:jetpack/story", replacer: { block in
-                    let mediaFiles = block.attributes["mediaFiles"] as? [[String: Any]]
-                    if let mediaFile = mediaFiles?.first, mediaFile["url"] as? String == firstMediaFile.url {
-                        return uploads?.0
-                    } else {
-                        return nil
-                    }
-                })
-                post.content = processor.process(post.content ?? "")
-            } else {
-                post.content = uploads?.0
-            }
+            let content = uploads?.0 ?? ""
 
-            do {
-                try post.managedObjectContext?.save()
-            } catch let error {
-                assertionFailure("Failed to save post during story upload: \(error)")
-            }
-
-            updated(.success(post))
+            updated(.success(content))
 
             if publishOnCompletion {
+                // Replace the contents if we are publishing a new post
+                post.content = content
+
+                do {
+                    try post.managedObjectContext?.save()
+                } catch let error {
+                    assertionFailure("Failed to save post during story update: \(error)")
+                }
+
                 self.publishPost(action: .publish, dismissWhenDone: true, analyticsStat:
                                     .editorPublishedPost)
             } else {

@@ -41,11 +41,11 @@ class CameraHandler: CameraControllerDelegate {
 
     private func endEditing(editor: StoryEditor, onDismiss: @escaping () -> Void) {
         showDiscardAlert(on: editor.topmostPresentedViewController) {
-            editor.cancelEditing()
-            if editor.presentedViewController is GutenbergViewController == false {
+            if editor.presentingViewController is AztecNavigationController == false {
+                editor.cancelEditing()
                 editor.post.managedObjectContext?.delete(editor.post)
-                onDismiss()
             }
+            onDismiss()
         }
     }
 

@@ -1,1 +1,9 @@
-WordPress uygulamasının en son güncellemeleri burada. Yeni bir Hikaye yazı tipi, görselleri ve videoları kolaylıkla göndermenize yardımcı olur ve Bu Hafta İstatistikleri artık ana ekranınızda görüntülenebilir. Yayınlanan ana sayfaların işlevselliğini iyileştirerek bunlarda yapılan değişikliklerin sitenizi bozmamasını sağladık. Ayrıca, Manşet bloğu odak noktasını ayarlamak için destek ekledik.
+16.9 sürümündeki yenilikler neler?
+
+Yakında, yeni yayınlar oluşturmak için artık klasik düzenleyici kullanamayacaksınız. Klasik düzenleyicide mevcut yayınlarınızı ve sayfalarınızı yine de düzenleyebilirsiniz, ancak henüz yapmadıysanız blok düzenleyiciye geçmenizi öneririz. 
+ 
+ Bir site oluştururken, artık beğenebileceğiniz tasarımları daha iyi aramanıza ve belirlemenize yardımcı olacak kategorileri seçebilirsiniz. Tek sayfalık site tasarımları da seçebilirsiniz. 
+ 
+ Okuyucu'da, içerik bulma ile ilgili deneyimi iyileştirmek için güncellemeler yaptık. Artık beslemenizde ilgili içeriği, Keşfet sekmenizde de yeniden tasarlanmış önerilen konular bölümünü göreceksiniz. Ayrıca Yönet ayarı altında, konuları keşfetmenizi sağlayacak yeni bir yol sunuyoruz. 
+ 
+ Uygulamadaki genel deneyiminizi iyileştiren başka küçük değişiklikler de yaptık. 

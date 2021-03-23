@@ -72,7 +72,7 @@ class EditorMediaUtility {
         default:
             icon = .gridicon(.attachment, size: size)
         }
-        if #available(iOS 13.0, *), let color = tintColor {
+        if let color = tintColor {
             icon = icon.withTintColor(color)
         }
         icon.addAccessibilityForAttachment(attachment)
