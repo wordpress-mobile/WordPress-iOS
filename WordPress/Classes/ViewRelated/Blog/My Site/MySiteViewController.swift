@@ -61,7 +61,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         super.viewDidAppear(animated)
 
         workaroundLargeTitleCollapseBug()
-        guard self.children.contains(where: {$0 is BlogDetailsViewController}) else {
+
+        guard FeatureFlag.newNavBarAppearance.enabled else {
             return
         }
         WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
