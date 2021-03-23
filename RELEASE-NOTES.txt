@@ -5,6 +5,7 @@ Unreleased
 -----
 
 * [*] Added preview device mode selector in the page layout previews [#16141]
+* [**] Block Editor: Added Contact Info block to sites on WPcom or with Jetpack version >= 8.5.
 
 17.0
 -----
@@ -18,11 +19,6 @@ Unreleased
 * [***] We updated the app's design, with fresh new headers throughout and a new site switcher in My Site. [#15750] 
 
 16.9
-16.7
------
-* [**] Block Editor: Added Contact Info block to sites on WPcom or with Jetpack version >= 8.5.
-
-16.5
 -----
 * [*] Adds helper UI to Choose a Domain screen to provide a hint of what a domain is. [#15962]
 * [**] Site Creation: Adds filterable categories to the site design picker when creating a WordPress.com site, and includes single-page site designs [#15933]
