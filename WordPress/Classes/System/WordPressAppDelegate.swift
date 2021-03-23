@@ -77,6 +77,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     @objc class var shared: WordPressAppDelegate? {
+        assert(Thread.isMainThread, "WordPressAppDelegate.shared can only be accessed from the main thread")
         return UIApplication.shared.delegate as? WordPressAppDelegate
     }
 
