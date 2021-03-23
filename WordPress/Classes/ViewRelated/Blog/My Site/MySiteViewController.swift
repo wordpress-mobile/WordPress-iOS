@@ -61,6 +61,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         super.viewDidAppear(animated)
 
         workaroundLargeTitleCollapseBug()
+
+        guard FeatureFlag.newNavBarAppearance.enabled else {
+            return
+        }
+        WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
     }
 
     private func subscribeToPostSignupNotifications() {
