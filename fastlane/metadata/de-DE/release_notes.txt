@@ -1,0 +1,9 @@
+What’s new in version 16,9?
+
+Der klassische Editor wird schon bald nicht mehr zum Erstellen neuer Beiträge verfügbar sein. Du kannst deine bestehenden Beiträge und Seiten weiterhin im klassischen Editor bearbeiten, doch wir würden dir empfehlen, jetzt zum neuen Block-Editor zu wechseln, falls du das noch nicht getan hast. 
+ 
+ Wenn du eine Website erstellst, kannst du jetzt Kategorien auswählen, die dir beim Suchen und Finden des perfekten Designs helfen. Du kannst auch ein Design für eine Website mit nur einer Seite wählen. 
+ 
+ Im Reader haben wir Aktualisierungen vorgenommen, um das Auffinden von Inhalten zu erleichtern. Ab sofort siehst du ähnliche Inhalte in deinem Feed sowie einen neu entworfenen Bereich für empfohlene Themen im Tab „Entdecken“.  Außerdem gibt es unter den Einstellungen „Verwalten“ eine neue Möglichkeit, Themen zu entdecken. 
+ 
+ Weitere kleine Änderungen und Fehlerkorrekturen verbessern die allgemeine Erfahrung in der App! 

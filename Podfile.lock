@@ -79,7 +79,7 @@ PODS:
     - React-RCTImage (= 0.61.5)
     - RNTAztecView
   - JTAppleCalendar (8.0.3)
-  - Kanvas (1.2.4)
+  - Kanvas (1.2.5)
   - lottie-ios (3.1.9)
   - MediaEditor (1.2.1):
     - CropViewController (~> 2.5.3)
@@ -413,7 +413,7 @@ PODS:
     - WordPressShared (~> 1.15-beta)
     - wpxmlrpc (~> 0.9)
   - WordPressMocks (0.0.9)
-  - WordPressShared (1.15.0):
+  - WordPressShared (1.16.0-beta.1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (~> 1.8)
   - WordPressUI (1.9.0)
@@ -456,7 +456,7 @@ DEPENDENCIES:
   - Gridicons (~> 1.1.0)
   - Gutenberg (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.49.0`)
   - JTAppleCalendar (~> 8.0.2)
-  - Kanvas (~> 1.2.4)
+  - Kanvas (~> 1.2.5)
   - MediaEditor (~> 1.2.1)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.3.1)
@@ -505,7 +505,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.35.2)
   - WordPressKit (~> 4.29.0-beta)
   - WordPressMocks (~> 0.0.9)
-  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `add/layout-picker-analytics`)
+  - WordPressShared (~> 1.16.0-beta)
   - WordPressUI (~> 1.9.0)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.49.0/third-party-podspecs/Yoga.podspec.json`)
@@ -513,9 +513,6 @@ DEPENDENCIES:
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
-  https://github.com/wordpress-mobile/cocoapods-specs.git:
-    - WordPressAuthenticator
-    - WordPressUI
   trunk:
     - 1PasswordExtension
     - Alamofire
@@ -555,8 +552,11 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
+    - WordPressShared
+    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -654,9 +654,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.49.0
-  WordPressShared:
-    :branch: add/layout-picker-analytics
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.49.0/third-party-podspecs/Yoga.podspec.json
 
@@ -672,9 +669,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.49.0
-  WordPressShared:
-    :commit: 09b2c4f304981437993c06abcb0e93ec1d1de3ba
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -704,7 +698,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Gutenberg: da9afcadef9372a25c45531ebcdac47e0ee375bd
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
-  Kanvas: 0e1acb8c10e15eea3365f16c086de2443c7703a8
+  Kanvas: 824801b0756bd0748d1de479d77249d0af8529e8
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
@@ -755,11 +749,11 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: f4bf3b343581a1beacdbf5fb1a8825bd5f05a4a4
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
-  WordPressAuthenticator: 3874fe13eccc6bcbacf37f8cf47690032eabe9c9
+  WordPressAuthenticator: 73887798e340abe3cf021163644e59ca5388affb
   WordPressKit: 8551a2963c6ba1cf7f00fd8ac8c08f7b049f1c33
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
-  WordPressShared: 2d2b45d8945221b716a0e2f23932dadb750d9a74
-  WordPressUI: b395e7f4b012b9ef3f57cdee8fedb6faa371ff5f
+  WordPressShared: 3ee19d177a4a12c78e9fc20e1161b8e61969635e
+  WordPressUI: 3b70cccc4c44cff09024ca3e94ae25a8768b26c1
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
@@ -772,6 +766,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 3379f0911ceaa3ec2b29a09be8d57aaf3aab4230
+PODFILE CHECKSUM: 551d79b192539a6982e9fea35dd577b700242f15
 
 COCOAPODS: 1.10.0

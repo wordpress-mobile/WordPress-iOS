@@ -1,0 +1,9 @@
+¿Qué novedades hay la versión 16.9?
+
+El editor clásico pronto dejará de estar disponible para crear nuevas entradas. Seguirás pudiendo editar tus entradas y páginas existentes en el editor clásico, pero te recomendamos que cambies al editor de bloques, si aún no lo has hecho.
+
+Al crear un sitio, ahora puedes seleccionar categorías para ayudarte a buscar e identificar mejor los diseños que te pueden gustar. También puedes elegir diseños de sitios de una sola página.
+
+En el Lector, hemos hecho actualizaciones para mejorar la experiencia para descubrir contenidos. Ahora verás contenido relacionado en tu feed y una sección rediseñada de temáticas recomendadas en tu pestaña "Descubrir". También hay un nuevo modo de descubrir temáticas en los ajustes de gestión.
+
+¡Hemos hecho otros cambios menores que mejoran tu experiencia general en la aplicación!
