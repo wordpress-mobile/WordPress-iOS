@@ -4,6 +4,14 @@ class UnifiedPrologueIntroContentView: UIView {
     init() {
         super.init(frame: .zero)
 
+        configureStackViews()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func configureStackViews() {
         let topStackView = UIStackView()
         topStackView.translatesAutoresizingMaskIntoConstraints = false
         topStackView.axis = .horizontal
@@ -26,10 +34,6 @@ class UnifiedPrologueIntroContentView: UIView {
         outerStackView.addArrangedSubviews([topStackView, bottomStackView])
         addSubview(outerStackView)
         pinSubviewToAllEdges(outerStackView)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     private func makeImageViews(for assets: [String]) -> [UIImageView] {
