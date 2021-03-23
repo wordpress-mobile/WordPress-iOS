@@ -35,13 +35,6 @@ struct PostEditorAnalyticsSession {
         WPAnalytics.track(.editorSessionTemplateApply, withProperties: commonProperties)
     }
 
-    func preview(template: String) {
-        let properties = commonProperties.merging([ Property.template: template], uniquingKeysWith: { $1 })
-
-        // TODO: remove unused parts of Gutenberg editor preview mode
-//        WPAnalytics.track(.editorSessionTemplatePreview, withProperties: properties)
-    }
-
     private func startEventProperties(with unsupportedBlocks: [String]) -> [String: Any] {
         // On Android, we are tracking this in milliseconds, which seems like a good enough time scale
         // Let's make sure to round the value and send an integer for consistency

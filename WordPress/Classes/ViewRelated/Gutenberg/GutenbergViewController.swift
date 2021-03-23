@@ -852,8 +852,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         switch event {
         case .editorSessionTemplateApply(let template):
             editorSession.apply(template: template)
-        case .editorSessionTemplatePreview(let template):
-            editorSession.preview(template: template)
         }
     }
 
