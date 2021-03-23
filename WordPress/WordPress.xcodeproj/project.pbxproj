@@ -128,6 +128,7 @@
 		1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */; };
 		1702BBE01CF3034E00766A33 /* DomainsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDF1CF3034E00766A33 /* DomainsService.swift */; };
 		1703D04C20ECD93800D292E9 /* Routes+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1703D04B20ECD93800D292E9 /* Routes+Post.swift */; };
+		1705CEE8260A580300F23763 /* UnifiedPrologueIntroContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1705CEE7260A580300F23763 /* UnifiedPrologueIntroContentView.swift */; };
 		1707CE421F3121750020B7FE /* UICollectionViewCell+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1707CE411F3121750020B7FE /* UICollectionViewCell+Tint.swift */; };
 		170BEC872391530D0017AEC1 /* FeatureFlagOverrideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A09B98238FE13B0022AE0D /* FeatureFlagOverrideStore.swift */; };
 		170BEC88239153110017AEC1 /* FeatureFlagOverrideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A09B98238FE13B0022AE0D /* FeatureFlagOverrideStore.swift */; };
@@ -2774,6 +2775,7 @@
 		1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeLabel.swift; sourceTree = "<group>"; };
 		1702BBDF1CF3034E00766A33 /* DomainsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsService.swift; sourceTree = "<group>"; };
 		1703D04B20ECD93800D292E9 /* Routes+Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Routes+Post.swift"; sourceTree = "<group>"; };
+		1705CEE7260A580300F23763 /* UnifiedPrologueIntroContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedPrologueIntroContentView.swift; sourceTree = "<group>"; };
 		1707CE411F3121750020B7FE /* UICollectionViewCell+Tint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Tint.swift"; sourceTree = "<group>"; };
 		170CE73F2064478600A48191 /* PostNoticeNavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNoticeNavigationCoordinator.swift; sourceTree = "<group>"; };
 		1714F8CF20E6DA8900226DCB /* RouteMatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteMatcher.swift; sourceTree = "<group>"; };
@@ -5877,6 +5879,14 @@
 			name = Media;
 			sourceTree = "<group>";
 		};
+		1705CEE6260A57F900F23763 /* ContentViews */ = {
+			isa = PBXGroup;
+			children = (
+				1705CEE7260A580300F23763 /* UnifiedPrologueIntroContentView.swift */,
+			);
+			path = ContentViews;
+			sourceTree = "<group>";
+		};
 		1716AEFA25F2926C00CF49EC /* My Site */ = {
 			isa = PBXGroup;
 			children = (
@@ -5920,6 +5930,7 @@
 		176E194525C465E00058F1C5 /* Prologue */ = {
 			isa = PBXGroup;
 			children = (
+				1705CEE6260A57F900F23763 /* ContentViews */,
 				176E194625C465F70058F1C5 /* UnifiedPrologueViewController.swift */,
 				17C2FF0825D4852400CDB712 /* UnifiedProloguePages.swift */,
 			);
@@ -13585,6 +13596,7 @@
 				17F0E1DA20EBDC0A001E9514 /* Routes+Me.swift in Sources */,
 				D83CA3AB20842E5F0060E310 /* StockPhotosResultsPage.swift in Sources */,
 				4348C88321002FBD00735DC0 /* QuickStartTourGuide.swift in Sources */,
+				1705CEE8260A580300F23763 /* UnifiedPrologueIntroContentView.swift in Sources */,
 				8BA77BCF2483415400E1EBBF /* ReaderDetailToolbar.swift in Sources */,
 				E102B7901E714F24007928E8 /* RecentSitesService.swift in Sources */,
 				E1D7FF381C74EB0E00E7E5E5 /* PlanService.swift in Sources */,
