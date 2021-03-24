@@ -5,6 +5,7 @@ Unreleased
 -----
 
 * [*] Added preview device mode selector in the page layout previews [#16141]
+* [**] Removed Site Switcher in the Editor
 
 17.0
 -----
