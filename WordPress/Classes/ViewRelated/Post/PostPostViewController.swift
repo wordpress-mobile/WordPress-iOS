@@ -60,6 +60,7 @@ class PostPostViewController: UIViewController {
 
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneTapped))
         doneButton.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.barButtonItemTitle], for: .normal)
+        doneButton.accessibilityIdentifier = "doneButton"
         navBar.topItem?.rightBarButtonItem = doneButton
     }
 

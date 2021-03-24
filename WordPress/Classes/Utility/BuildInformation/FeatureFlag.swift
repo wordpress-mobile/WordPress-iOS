@@ -40,7 +40,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .gutenbergXposts:
             return true
         case .newNavBarAppearance:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .unifiedPrologueCarousel:
             return false
         case .stories:
@@ -56,7 +56,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .todayWidget:
             return true
         case .milestoneNotifications:
-            return false
+            return true
         case .commentFilters:
             return true
         case .newLikeNotifications:
