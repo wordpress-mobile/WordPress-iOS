@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-23 19:44:35+0000 */
+/* Translation-Revision-Date: 2021-03-15 14:11:36+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: hr */
@@ -2196,7 +2196,7 @@
 "Edit file" = "Edit file";
 
 /* No comment provided by engineer. */
-"Edit focal point" = "Edit focal point";
+"Edit focal point" = "ažuriraj žarišno mjesto";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Edit new posts and pages with the block editor.";
@@ -4060,7 +4060,7 @@
 "No themes matching your search" = "No themes matching your search";
 
 /* Message for a notice informing the user their scan completed and no threats were found */
-"No threats found" = "No threats found";
+"No threats found" = "Nisu pronađene prijetnje";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -4364,7 +4364,7 @@
 "Page title. Empty" = "Page title. Empty";
 
 /* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Page updated";
+"Page updated" = "Stranica ažurirana";
 
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
@@ -4668,10 +4668,10 @@
 "Post title. Empty" = "Post title. Empty";
 
 /* Title of camera permissions screen */
-"Post to WordPress" = "Post to WordPress";
+"Post to WordPress" = "Objavi na wordPress";
 
 /* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Post updated";
+"Post updated" = "Objava je ažurirana";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Postal Code";
@@ -5325,7 +5325,7 @@
 "Scan Again" = "Scan Again";
 
 /* Title for a notice informing the user their scan has completed */
-"Scan Finished" = "Scan Finished";
+"Scan Finished" = "Skeniranje završeno";
 
 /* Title of the view */
 "Scan History" = "Scan History";
@@ -6796,7 +6796,7 @@
 "Unable to Sync" = "Unable to Sync";
 
 /* Notice title when blocking a site fails. */
-"Unable to block site" = "Unable to block site";
+"Unable to block site" = "Nije moguće blokirati ovu web-stranicu";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "Unable to delete all media items.";

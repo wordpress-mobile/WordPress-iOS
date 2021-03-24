@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-05 15:54:07+0000 */
+/* Translation-Revision-Date: 2021-03-24 18:54:34+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -917,10 +917,10 @@
 "Block settings" = "Impostazioni del blocco";
 
 /* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Block this site";
+"Block this site" = "Blocca questo sito";
 
 /* Notice title when blocking a site succeeds. */
-"Blocked site" = "Blocked site";
+"Blocked site" = "Sito bloccato";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
@@ -2631,7 +2631,7 @@
 "Follow other sites" = "Segui altri siti";
 
 /* Verb. An option to follow a site. */
-"Follow site" = "Follow site";
+"Follow site" = "Segui sito";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "Segui i tuoi siti preferiti e scopri nuove letture.";
@@ -4060,7 +4060,7 @@
 "No themes matching your search" = "Nessun tema trovato con la tua ricerca";
 
 /* Message for a notice informing the user their scan completed and no threats were found */
-"No threats found" = "No threats found";
+"No threats found" = "Nessuna minaccia rilevata";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -4364,7 +4364,7 @@
 "Page title. Empty" = "Titolo della pagina. Svuota";
 
 /* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Page updated";
+"Page updated" = "Pagina aggiornata";
 
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
@@ -4437,7 +4437,7 @@
 "Photo Library" = "Libreria Foto";
 
 /* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Photos";
+"Photos" = "Foto";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Foto fornite da Pexels";
@@ -4668,10 +4668,10 @@
 "Post title. Empty" = "Titolo dell'articolo. Vuota";
 
 /* Title of camera permissions screen */
-"Post to WordPress" = "Post to WordPress";
+"Post to WordPress" = "Pubblica su WordPress";
 
 /* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Post updated";
+"Post updated" = "Articolo aggiornato";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Codice postale";
@@ -5104,7 +5104,7 @@
 "Reply to post…" = "Replica ad un articolo...";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
-"Report this post" = "Report this post";
+"Report this post" = "Segnala questo articolo";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Richiede l'approvazione manuale per i commenti che contengono più di questo numero di link.";
@@ -5325,7 +5325,7 @@
 "Scan Again" = "Esegui di nuovo la scansione";
 
 /* Title for a notice informing the user their scan has completed */
-"Scan Finished" = "Scan Finished";
+"Scan Finished" = "Scansione completata";
 
 /* Title of the view */
 "Scan History" = "Cronologia di scansione";
@@ -5830,7 +5830,7 @@
 "Skip Quick Start" = "Salta il tour iniziale";
 
 /* Label for the slug field. Should be the same as WP core. */
-"Slug" = "Abbreviazione";
+"Slug" = "Slug";
 
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no fixed threats on your site." = "Al momento, non ci sono minacce risolte sul tuo sito.";
@@ -6339,7 +6339,7 @@
 "The sites in this list have not posted anything recently." = "I siti di questo elenco non hanno pubblicato nulla di recente.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
-"The slug is the URL-friendly version of the post title." = "L'abbreviazione è la versione URL friendly del titolo dell'articolo.";
+"The slug is the URL-friendly version of the post title." = "Lo slug è la versione URL friendly del titolo dell'articolo.";
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "L'utente specificato non è stato trovato. Verifica di aver digitato il nome correttamente.";

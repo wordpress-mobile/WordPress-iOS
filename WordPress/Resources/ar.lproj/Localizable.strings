@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-02 21:29:21+0000 */
+/* Translation-Revision-Date: 2021-03-23 18:55:59+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -5052,7 +5052,7 @@
 "Remove video" = "إزالة الفيديو";
 
 /* Label indicating a post has been removed from Saved For Later */
-"Removed" = "تمت إزالته";
+"Removed" = "تمت الإزالة";
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "يقوم بإزالة بيانات تعرييف الموقع من الصور قبل رفعها على موقعك.";
