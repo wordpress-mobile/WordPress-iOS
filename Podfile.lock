@@ -513,6 +513,8 @@ DEPENDENCIES:
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
+  https://github.com/wordpress-mobile/cocoapods-specs.git:
+    - WordPressAuthenticator
   trunk:
     - 1PasswordExtension
     - Alamofire
@@ -552,7 +554,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
     - WordPressShared
@@ -749,7 +750,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: f4bf3b343581a1beacdbf5fb1a8825bd5f05a4a4
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
-  WordPressAuthenticator: 73887798e340abe3cf021163644e59ca5388affb
+  WordPressAuthenticator: 3874fe13eccc6bcbacf37f8cf47690032eabe9c9
   WordPressKit: 0cbe45b12c188b8f13c94460fa38556c255d9e79
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 3ee19d177a4a12c78e9fc20e1161b8e61969635e
@@ -766,6 +767,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 78ead72b1634a9a4d84eef89e12a98446788e376
+PODFILE CHECKSUM: 574b0d646c8135c1756f576ca2338aebadb6ec6c
 
 COCOAPODS: 1.10.0
