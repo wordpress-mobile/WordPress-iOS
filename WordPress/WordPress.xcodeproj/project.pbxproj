@@ -2432,6 +2432,18 @@
 		FA7F92B825E61C7E00502D2A /* ReaderTagsFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7F92B725E61C7E00502D2A /* ReaderTagsFooter.swift */; };
 		FA7F92CA25E61C9300502D2A /* ReaderTagsFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7F92C925E61C9300502D2A /* ReaderTagsFooter.xib */; };
 		FA88EAD6260AE69C001D232B /* TemplatePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99B08FB26081AD600CA71EB /* TemplatePreviewViewController.swift */; };
+		FA88EBC5260B2410001D232B /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
+		FA88EBD7260B2411001D232B /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
+		FA88EBD8260B2411001D232B /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
+		FA88EBD9260B2412001D232B /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
+		FA88EBEB260B2413001D232B /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
+		FA88EBFD260B242D001D232B /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
+		FA88EC0F260B245B001D232B /* TargetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F7F5260985370005E08F /* TargetConfiguration.swift */; };
+		FA88EC21260B245C001D232B /* TargetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F7F5260985370005E08F /* TargetConfiguration.swift */; };
+		FA88EC22260B245C001D232B /* TargetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F7F5260985370005E08F /* TargetConfiguration.swift */; };
+		FA88EC23260B245D001D232B /* TargetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F7F5260985370005E08F /* TargetConfiguration.swift */; };
+		FA88EC24260B245E001D232B /* TargetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F7F5260985370005E08F /* TargetConfiguration.swift */; };
+		FA88EC25260B245F001D232B /* TargetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F7F5260985370005E08F /* TargetConfiguration.swift */; };
 		FA8E1F7725EEFA7300063673 /* ReaderPostService+RelatedPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E1F7625EEFA7300063673 /* ReaderPostService+RelatedPosts.swift */; };
 		FAB4F32724EDE12A00F259BA /* FollowCommentsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */; };
 		FAB8004925AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */; };
@@ -17293,7 +17305,9 @@
 				73B05D2921374F1E0073ECAA /* Constants.m in Sources */,
 				736584EB2137533A0029C9A4 /* NotificationContentView.swift in Sources */,
 				73D5AC63212622B200ADDDD2 /* NotificationViewController.swift in Sources */,
+				FA88EC25260B245F001D232B /* TargetConfiguration.swift in Sources */,
 				436110DE22C41B02000773AD /* BuildConfiguration.swift in Sources */,
+				FA88EBFD260B242D001D232B /* AppConfiguration.swift in Sources */,
 				73F6DD44212C714F00CE447D /* RichNotificationViewModel.swift in Sources */,
 				736584E6213752730029C9A4 /* SFHFKeychainUtils.m in Sources */,
 				73B05D2621374B960073ECAA /* Tracks.swift in Sources */,
@@ -17354,6 +17368,7 @@
 				74021A1C202E158F006CC39F /* ShareExtensionService.swift in Sources */,
 				747F88C2203778E000523C7C /* ShareTagsPickerViewController.swift in Sources */,
 				7414A142203CD066005A7D9B /* ShareCategoriesPickerViewController.swift in Sources */,
+				FA88EBD7260B2411001D232B /* AppConfiguration.swift in Sources */,
 				74021A1D202E15AF006CC39F /* Constants.m in Sources */,
 				740219FE202E12F4006CC39F /* UploadOperation.swift in Sources */,
 				4352211722B1B68F00D45849 /* WPStyleGuide+ApplicationStyles.swift in Sources */,
@@ -17377,6 +17392,7 @@
 				74448F552044BC7600BD4CDA /* CategoryTree.swift in Sources */,
 				74021A09202E1323006CC39F /* ShareSegueHandler.swift in Sources */,
 				74021A01202E12F4006CC39F /* SharedCoreDataStack.swift in Sources */,
+				FA88EC21260B245C001D232B /* TargetConfiguration.swift in Sources */,
 				170BEC88239153110017AEC1 /* FeatureFlagOverrideStore.swift in Sources */,
 				74021A14202E1393006CC39F /* ShareExtensionEditorViewController.swift in Sources */,
 				CE39E17320CB117B00CABA05 /* RemoteBlog+Capabilities.swift in Sources */,
@@ -17474,6 +17490,7 @@
 				B50248AF1C96FF6200AFBDED /* WPStyleGuide+Share.swift in Sources */,
 				E1CE41661E8D1026000CF5A4 /* ShareExtractor.swift in Sources */,
 				930F09191C7E1C1E00995926 /* ShareExtensionService.swift in Sources */,
+				FA88EBC5260B2410001D232B /* AppConfiguration.swift in Sources */,
 				747F88C1203778E000523C7C /* ShareTagsPickerViewController.swift in Sources */,
 				7414A141203CBAE0005A7D9B /* ShareCategoriesPickerViewController.swift in Sources */,
 				4352211622B1B68E00D45849 /* WPStyleGuide+ApplicationStyles.swift in Sources */,
@@ -17497,6 +17514,7 @@
 				74D06FE91FE0782000AF1788 /* String+RegEx.swift in Sources */,
 				938CF3DD1EF1BE7F00AF838E /* CocoaLumberjack.swift in Sources */,
 				746D6B251FBF701F003C45BE /* SharedCoreDataStack.swift in Sources */,
+				FA88EC0F260B245B001D232B /* TargetConfiguration.swift in Sources */,
 				745EAF472003FDAA0066F415 /* ShareExtensionAbstractViewController.swift in Sources */,
 				170BEC872391530D0017AEC1 /* FeatureFlagOverrideStore.swift in Sources */,
 				74448F542044BC7600BD4CDA /* CategoryTree.swift in Sources */,
@@ -17541,11 +17559,13 @@
 				98712D1D23DA1D0800555316 /* WidgetNoConnectionCell.swift in Sources */,
 				98C0CE9C23C559C800D0F27C /* Double+Stats.swift in Sources */,
 				93C2075A1CC7FF9C00C94D04 /* Tracks.swift in Sources */,
+				FA88EC22260B245C001D232B /* TargetConfiguration.swift in Sources */,
 				436110DA22C3ED44000773AD /* FeatureFlag.swift in Sources */,
 				436110DB22C3ED4C000773AD /* BuildConfiguration.swift in Sources */,
 				98906503237CC1DF00218CD2 /* WidgetUnconfiguredCell.swift in Sources */,
 				93C2075D1CC7FFC800C94D04 /* Tracks+TodayWidget.swift in Sources */,
 				98E58A302360D23400E5534B /* TodayWidgetStats.swift in Sources */,
+				FA88EBD8260B2411001D232B /* AppConfiguration.swift in Sources */,
 				4326191722FCB9F9003C7642 /* MurielColor.swift in Sources */,
 				436110D922C3ED18000773AD /* UIColor+MurielColors.swift in Sources */,
 				988F073A23D0D16700AC67A6 /* WidgetUrlCell.swift in Sources */,
@@ -17567,11 +17587,13 @@
 				17A4B69C24F91022002DFB8E /* FeatureFlag.swift in Sources */,
 				98F93184239AF76900E4E96E /* CocoaLumberjack.swift in Sources */,
 				98E419DF2399B62A00D8C822 /* Tracks.swift in Sources */,
+				FA88EBEB260B2413001D232B /* AppConfiguration.swift in Sources */,
 				989643E423A02F4E0070720A /* UIColor+MurielColors.swift in Sources */,
 				989643E223A02F080070720A /* WidgetUnconfiguredCell.swift in Sources */,
 				17A4B69F24F91050002DFB8E /* BuildConfiguration.swift in Sources */,
 				980D3B1B23C925F40060A890 /* WidgetStyles.swift in Sources */,
 				988F073C23D0D16800AC67A6 /* WidgetUrlCell.swift in Sources */,
+				FA88EC24260B245E001D232B /* TargetConfiguration.swift in Sources */,
 				98E419DE2399B5A700D8C822 /* Tracks+ThisWeekWidget.swift in Sources */,
 				98712D1F23DA1D0A00555316 /* WidgetNoConnectionCell.swift in Sources */,
 				98A3C3052399A2370048D38D /* ThisWeekViewController.swift in Sources */,
@@ -17593,11 +17615,13 @@
 				17A4B69D24F91023002DFB8E /* FeatureFlag.swift in Sources */,
 				98BFF57C2398406A008A1DCB /* CocoaLumberjack.swift in Sources */,
 				98BFF57F23984345008A1DCB /* AllTimeWidgetStats.swift in Sources */,
+				FA88EBD9260B2412001D232B /* AppConfiguration.swift in Sources */,
 				98A6B992239881630031AEBD /* UIColor+MurielColors.swift in Sources */,
 				98A6B9902398808B0031AEBD /* WidgetUnconfiguredCell.swift in Sources */,
 				17A4B69E24F9104F002DFB8E /* BuildConfiguration.swift in Sources */,
 				98D31BAC23970078009CFF43 /* Tracks+AllTimeWidget.swift in Sources */,
 				988F073B23D0D16800AC67A6 /* WidgetUrlCell.swift in Sources */,
+				FA88EC23260B245D001D232B /* TargetConfiguration.swift in Sources */,
 				98D31BA72396F7E2009CFF43 /* AllTimeViewController.swift in Sources */,
 				98712D1E23DA1D0900555316 /* WidgetNoConnectionCell.swift in Sources */,
 				98A6B993239881860031AEBD /* MurielColor.swift in Sources */,
