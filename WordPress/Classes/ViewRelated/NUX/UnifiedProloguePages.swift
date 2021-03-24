@@ -77,6 +77,8 @@ class UnifiedProloguePageViewController: UIViewController {
 
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Metrics.titleToContentSpacing),
+            contentView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: Metrics.heightRatio),
+            contentView.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: Metrics.heightRatio),
             contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
     }
@@ -85,6 +87,8 @@ class UnifiedProloguePageViewController: UIViewController {
         switch pageType {
         case .intro:
             return UnifiedPrologueIntroContentView()
+        case .editor:
+            return UnifiedPrologueEditorContentView()
         default:
             return UIView()
         }
@@ -94,5 +98,6 @@ class UnifiedProloguePageViewController: UIViewController {
         static let topInset: CGFloat = 96.0
         static let horizontalInset: CGFloat = 24.0
         static let titleToContentSpacing: CGFloat = 48.0
+        static let heightRatio: CGFloat = WPDeviceIdentification.isiPad() ? 0.6 : 0.5
     }
 }
