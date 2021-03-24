@@ -118,7 +118,7 @@ class PostEditorNavigationBarManager {
     ///
     private lazy var blogPickerBarButtonItem: UIBarButtonItem = {
         let pickerItem = UIBarButtonItem(customView: self.blogPickerButton)
-        pickerItem.accessibilityLabel = NSLocalizedString("Switch Blog", comment: "Action button to switch the blog to which you'll be posting")
+        pickerItem.accessibilityTraits = .notEnabled
         return pickerItem
     }()
 
