@@ -58,17 +58,17 @@ struct MurielColor {
     }
 
     // MARK: - Muriel's semantic colors
-    static let accent = MurielColor(name: .pink)
-    static let brand = MurielColor(name: .wordPressBlue)
-    static let divider = MurielColor(name: .gray, shade: .shade10)
-    static let error = MurielColor(name: .red)
-    static let gray = MurielColor(name: .gray)
-    static let primary = MurielColor(name: .blue)
-    static let success = MurielColor(name: .green)
-    static let text = MurielColor(name: .gray, shade: .shade80)
-    static let textSubtle = MurielColor(name: .gray, shade: .shade50)
-    static let warning = MurielColor(name: .yellow)
-    static let jetpackGreen = MurielColor(name: .jetpackGreen)
+    static let accent = AppConfiguration.accent
+    static let brand = AppConfiguration.brand
+    static let divider = AppConfiguration.divider
+    static let error = AppConfiguration.error
+    static let gray = AppConfiguration.gray
+    static let primary = AppConfiguration.primary
+    static let success = AppConfiguration.success
+    static let text = AppConfiguration.text
+    static let textSubtle = AppConfiguration.textSubtle
+    static let warning = AppConfiguration.warning
+    static let jetpackGreen = AppConfiguration.jetpackGreen
 
     /// The full name of the color, with required shade value
     func assetName() -> String {
