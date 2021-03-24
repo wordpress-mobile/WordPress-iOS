@@ -2412,6 +2412,10 @@
 		FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */; };
 		FA1CEAC225CA9C2A005E7038 /* RestoreStatusFailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1CEAC125CA9C2A005E7038 /* RestoreStatusFailedView.swift */; };
 		FA1CEAD425CA9C40005E7038 /* RestoreStatusFailedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1CEAD325CA9C40005E7038 /* RestoreStatusFailedView.xib */; };
+		FA25F7F6260985370005E08F /* TargetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F7F5260985370005E08F /* TargetConfiguration.swift */; };
+		FA25F8082609855D0005E08F /* TargetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F7F5260985370005E08F /* TargetConfiguration.swift */; };
+		FA25FA212609AA9C0005E08F /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
+		FA25FA342609AAAA0005E08F /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25FA332609AAAA0005E08F /* AppConfiguration.swift */; };
 		FA3536F525B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */; };
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
@@ -7078,6 +7082,9 @@
 		FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Themes.swift"; sourceTree = "<group>"; };
 		FA1CEAC125CA9C2A005E7038 /* RestoreStatusFailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreStatusFailedView.swift; sourceTree = "<group>"; };
 		FA1CEAD325CA9C40005E7038 /* RestoreStatusFailedView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RestoreStatusFailedView.xib; sourceTree = "<group>"; };
+		FA25F7F5260985370005E08F /* TargetConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetConfiguration.swift; sourceTree = "<group>"; };
+		FA25F9FD2609AA830005E08F /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
+		FA25FA332609AAAA0005E08F /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		FA2D12891BCED0AD006F2A15 /* WordPress 40.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 40.xcdatamodel"; sourceTree = "<group>"; };
 		FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreCompleteViewController.swift; sourceTree = "<group>"; };
 		FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementService.swift; sourceTree = "<group>"; };
@@ -10315,6 +10322,7 @@
 			isa = PBXGroup;
 			children = (
 				8B85AED8259230C500ADBEC9 /* AB Testing */,
+				FA25FB242609B98E0005E08F /* App Configuration */,
 				F10465122554260600655194 /* Gesture Recognizer */,
 				326E2818250AC4610029EBF0 /* Image Dimension Parser */,
 				1A433B1B2254CBC300AE7910 /* Networking */,
@@ -13425,6 +13433,31 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		FA25FB242609B98E0005E08F /* App Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				FA25FB472609B9A50005E08F /* Protocol */,
+				FA25F9FD2609AA830005E08F /* AppConfiguration.swift */,
+			);
+			path = "App Configuration";
+			sourceTree = "<group>";
+		};
+		FA25FB472609B9A50005E08F /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				FA25F7F5260985370005E08F /* TargetConfiguration.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		FA25FB8C2609B9CB0005E08F /* App Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				FA25FA332609AAAA0005E08F /* AppConfiguration.swift */,
+			);
+			name = "App Configuration";
+			sourceTree = "<group>";
+		};
 		FA4F65B52594589C00EAA9F5 /* Jetpack Restore */ = {
 			isa = PBXGroup;
 			children = (
@@ -13488,6 +13521,7 @@
 			children = (
 				FABB28482603068B00C8785C /* Resources */,
 				FABB268A2602FCD400C8785C /* Supporting Files */,
+				FA25FB8C2609B9CB0005E08F /* App Configuration */,
 			);
 			path = Jetpack;
 			sourceTree = "<group>";
@@ -16224,6 +16258,7 @@
 				B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */,
 				D8A3A5AA2069E53900992576 /* AztecMediaPickingCoordinator.swift in Sources */,
 				B06378C0253F639D00FD45D2 /* SiteSuggestion+CoreDataClass.swift in Sources */,
+				FA25FA212609AA9C0005E08F /* AppConfiguration.swift in Sources */,
 				436D55DB210F862A00CEAA33 /* NibReusable.swift in Sources */,
 				98563DDD21BF30C40006F5E9 /* TabbedTotalsCell.swift in Sources */,
 				82FC61241FA8ADAD00A1757E /* ActivityTableViewCell.swift in Sources */,
@@ -17170,6 +17205,7 @@
 				436D562E2117347C00CEAA33 /* RegisterDomainDetailsViewModel+RowDefinitions.swift in Sources */,
 				E6FACB1E1EC675E300284AC7 /* GravatarProfile.swift in Sources */,
 				D8212CB720AA7703008E8AE8 /* ReaderShareAction.swift in Sources */,
+				FA25F7F6260985370005E08F /* TargetConfiguration.swift in Sources */,
 				9826AE8A21B5CC7300C851FA /* PostingActivityMonth.swift in Sources */,
 				4054F4612214F50300D261AB /* StreakStatsRecordValue+CoreDataClass.swift in Sources */,
 				3F09CCAE24292EFD00D00A8C /* ReaderTabItem.swift in Sources */,
@@ -18066,6 +18102,7 @@
 				FABB21862602FC2C00C8785C /* CountriesCell.swift in Sources */,
 				FABB21872602FC2C00C8785C /* NavBarTitleDropdownButton.m in Sources */,
 				FABB21882602FC2C00C8785C /* ReaderTopicsCardCell.swift in Sources */,
+				FA25FA342609AAAA0005E08F /* AppConfiguration.swift in Sources */,
 				FABB21892602FC2C00C8785C /* PostService+RefreshStatus.swift in Sources */,
 				FABB218A2602FC2C00C8785C /* ImageDimensionParser.swift in Sources */,
 				FABB218B2602FC2C00C8785C /* FollowersCountStatsRecordValue+CoreDataClass.swift in Sources */,
@@ -18265,6 +18302,7 @@
 				FABB224D2602FC2C00C8785C /* NotificationSettingDetailsViewController.swift in Sources */,
 				FABB224E2602FC2C00C8785C /* AztecMediaPickingCoordinator.swift in Sources */,
 				FABB224F2602FC2C00C8785C /* SiteSuggestion+CoreDataClass.swift in Sources */,
+				FA25F8082609855D0005E08F /* TargetConfiguration.swift in Sources */,
 				FABB22502602FC2C00C8785C /* NibReusable.swift in Sources */,
 				FABB22512602FC2C00C8785C /* TabbedTotalsCell.swift in Sources */,
 				FABB22522602FC2C00C8785C /* ActivityTableViewCell.swift in Sources */,
