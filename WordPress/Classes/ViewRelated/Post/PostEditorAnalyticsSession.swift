@@ -38,7 +38,8 @@ struct PostEditorAnalyticsSession {
     func preview(template: String) {
         let properties = commonProperties.merging([ Property.template: template], uniquingKeysWith: { $1 })
 
-        WPAnalytics.track(.editorSessionTemplatePreview, withProperties: properties)
+        // TODO: remove unused parts of Gutenberg editor preview mode
+//        WPAnalytics.track(.editorSessionTemplatePreview, withProperties: properties)
     }
 
     private func startEventProperties(with unsupportedBlocks: [String]) -> [String: Any] {

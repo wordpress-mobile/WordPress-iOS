@@ -68,7 +68,10 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
         switch card.type {
         case .post:
-            return cell(for: card.post!, at: indexPath)
+            guard let post = card.post else {
+                return UITableViewCell()
+            }
+            return cell(for: post, at: indexPath)
         case .topics:
             return cell(for: card.topicsArray)
         case .sites:

@@ -120,6 +120,9 @@ class MySitesCoordinator: NSObject {
 
         if Feature.enabled(.newNavBarAppearance) {
             mySiteViewController.blog = blog
+            if mySiteViewController.presentedViewController != nil {
+                mySiteViewController.dismiss(animated: true, completion: nil)
+            }
         } else {
             blogListViewController.setSelectedBlog(blog, animated: false)
         }
