@@ -221,6 +221,7 @@ fileprivate extension NewBlogDetailHeaderView {
             button.titleLabel?.lineBreakMode = .byTruncatingTail
 
             button.setTitleColor(.primary, for: .normal)
+            button.accessibilityHint = NSLocalizedString("Tap to view your site", comment: "Accessibility hint for button used to view the user's site")
 
             if let pointSize = button.titleLabel?.font.pointSize {
                 button.setImage(UIImage.gridicon(.external, size: CGSize(width: pointSize, height: pointSize)), for: .normal)
@@ -243,6 +244,8 @@ fileprivate extension NewBlogDetailHeaderView {
             button.titleLabel?.lineBreakMode = .byTruncatingTail
             button.titleLabel?.numberOfLines = 1
 
+            button.accessibilityHint = NSLocalizedString("Tap to change the site's title", comment: "Accessibility hint for button used to change site title")
+
             // I don't understand why this is needed, but without it the button has additional
             // vertical padding, so it's more difficult to get the spacing we want.
             button.setImage(UIImage(), for: .normal)
@@ -261,6 +264,9 @@ fileprivate extension NewBlogDetailHeaderView {
             button.contentMode = .center
             button.translatesAutoresizingMaskIntoConstraints = false
             button.tintColor = .gray
+            button.accessibilityLabel = NSLocalizedString("Switch Site", comment: "Button used to switch site")
+            button.accessibilityHint = NSLocalizedString("Tap to switch to another site, or add a new site", comment: "Accessibility hint for button used to switch site")
+            button.accessibilityIdentifier = "SwitchSiteButton"
 
             button.addTarget(self, action: #selector(siteSwitcherTapped), for: .touchUpInside)
 

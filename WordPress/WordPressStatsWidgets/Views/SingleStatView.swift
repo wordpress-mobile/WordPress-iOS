@@ -11,7 +11,7 @@ struct SingleStatView: View {
                 FlexibleCard(axis: .vertical, title: viewData.widgetTitle, value: .description(viewData.siteName), lineLimit: 2)
 
                 Spacer()
-                VerticalCard(title: viewData.widgetTitle, value: viewData.upperLeftValue, largeText: true)
+                VerticalCard(title: viewData.upperLeftTitle, value: viewData.upperLeftValue, largeText: true)
             }
             Spacer()
         }
