@@ -911,7 +911,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             pickerTitle = blogName
         }
 
-        navigationBarManager.reloadBlogPickerButton(with: pickerTitle, enabled: !isSingleSiteMode)
+        navigationBarManager.reloadBlogPickerButton(with: pickerTitle, enabled: false)
     }
 
     func reloadPublishButton() {

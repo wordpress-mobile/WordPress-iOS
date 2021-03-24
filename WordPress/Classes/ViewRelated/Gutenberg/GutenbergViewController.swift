@@ -425,7 +425,7 @@ class GutenbergViewController: UIViewController, PostEditor {
             pickerTitle = blogName
         }
 
-        navigationBarManager.reloadBlogPickerButton(with: pickerTitle, enabled: !isSingleSiteMode)
+        navigationBarManager.reloadBlogPickerButton(with: pickerTitle, enabled: false)
     }
 
     private func reloadEditorContents() {
