@@ -49,7 +49,10 @@ open class CommentsTableViewCell: WPTableViewCell {
         pending = (comment.status == CommentStatusPending)
         postTitle = comment.titleForDisplay() ?? Labels.noTitle
         content = comment.contentPreviewForDisplay() ?? String()
-        timestamp = comment.dateCreated.mediumString()
+
+        if let dateCreated = comment.dateCreated {
+            timestamp = dateCreated.mediumString()
+        }
 
         if let avatarURLForDisplay = comment.avatarURLForDisplay() {
             downloadGravatarWithURL(avatarURLForDisplay)
