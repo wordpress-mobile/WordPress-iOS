@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 @objc class AppConfiguration: NSObject, TargetConfiguration {
     @objc static let isJetpack: Bool = false
