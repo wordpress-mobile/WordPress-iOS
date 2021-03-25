@@ -13,10 +13,9 @@ struct UnifiedPrologueEditorContentView: View {
                         .font(Appearance.largeTextFont)
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.leading)
-                        .padding(.all, Appearance.editorTitlePadding)
                     Spacer()
                 }
-
+                .padding()
             }
             .fixedSize(horizontal: false, vertical: true)
 
@@ -98,7 +97,7 @@ private extension UnifiedPrologueEditorContentView {
         // Icons
         static let plusIconSize: CGFloat = 52.0
         static let plusIconXOffset = plusIconSize * 2 / 3
-        static let plusIconYOffset = -plusIconSize / 2
+        static let plusIconYOffset = -plusIconSize * 2 / 3
 
         static let alignImageLeftIconSize: CGFloat = 40.0
         static let alignImageLeftIconXOffset = -alignImageLeftIconSize * 3 / 4
