@@ -5,7 +5,7 @@ import Foundation
 }
 
 extension AppConfiguration: TargetColorConfiguration {
-    static let accent = MurielColor(name: .pink)
+    static let accent = MurielColor(name: .jetpackGreen, shade: .shade40)
     static let brand = MurielColor(name: .jetpackGreen, shade: .shade40)
     static let divider = MurielColor(name: .gray, shade: .shade10)
     static let error = MurielColor(name: .red)
