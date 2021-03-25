@@ -88,7 +88,7 @@ class UnifiedProloguePageViewController: UIViewController {
         case .intro:
             return UnifiedPrologueIntroContentView()
         case .editor:
-            return UnifiedPrologueEditorContentView()
+            return UnifiedPrologueEditorContainerView()
         default:
             return UIView()
         }
