@@ -2,7 +2,7 @@ import CoreData
 
 public extension WPAccount {
 
-    //MARK: - Relationship Lookups
+    // MARK: - Relationship Lookups
 
     /// Is this `WPAccount` object the default WordPress.com account?
     ///
@@ -22,7 +22,7 @@ public extension WPAccount {
         return !blogs.isEmpty
     }
 
-    //MARK: - Object Lookups
+    // MARK: - Object Lookups
 
     /// Returns the default WordPress.com account, if one exists
     ///
@@ -82,7 +82,7 @@ public extension WPAccount {
         return try context.count(for: fetchRequest)
     }
 
-    //MARK: - Objective-C Compatibility Wrappers
+    // MARK: - Objective-C Compatibility Wrappers
 
     /// An Objective-C wrapper around the `lookupDefaultWordPressComAccount` method.
     ///
