@@ -25,7 +25,7 @@ class UserSettings {
     static var userHasForcedCrashLoggingEnabled: Bool
 
     @objc
-    @EraseableUserDefault(Keys.defaultDotComUUIDKey)
+    @NullableUserDefault(Keys.defaultDotComUUIDKey)
     static var defaultDotComUUID: String?
 }
 
@@ -52,7 +52,7 @@ struct UserDefault<T> {
 
 /// A property wrapper for optional UserDefaults that return `nil` by default
 @propertyWrapper
-struct EraseableUserDefault<T> {
+struct NullableUserDefault<T> {
     let key: String
 
     init(_ key: String) {
