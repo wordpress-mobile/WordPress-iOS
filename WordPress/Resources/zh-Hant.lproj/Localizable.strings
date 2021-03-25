@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-17 09:54:07+0000 */
+/* Translation-Revision-Date: 2021-03-04 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -444,7 +444,7 @@
 "Add any topic" = "新增任何主題";
 
 /* Accessibility hint text for adding an image to a new user account. */
-"Add image, or avatar, to represent this new account." = "新增圖片或大頭貼來代表這個新帳號。";
+"Add image, or avatar, to represent this new account." = "Add image, or avatar, to represent this new account.";
 
 /* No comment provided by engineer. */
 "Add menu item above" = "新增上方的選單項目";
@@ -1578,7 +1578,7 @@
 "Could Be Better" = "可以再好一點";
 
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
-"Could Not Follow Topic" = "無法追蹤主題";
+"Could Not Follow Topic" = "Could Not Follow Topic";
 
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Remove Topic" = "無法移除主題";

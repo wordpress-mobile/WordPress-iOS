@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-10 10:32:55+0000 */
+/* Translation-Revision-Date: 2018-03-04 08:55:46+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: da_DK */
@@ -372,7 +372,7 @@
 "Activity Type (%1$d)" = "Activity Type (%1$d)";
 
 /* Remove asset from media picker list */
-"Add" = "Tilføj";
+"Add" = "Add";
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
 "Add %@" = "Add %@";
@@ -920,7 +920,7 @@
 "Block this site" = "Block this site";
 
 /* Notice title when blocking a site succeeds. */
-"Blocked site" = "Bloker websted";
+"Blocked site" = "Blocked site";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
@@ -1186,7 +1186,7 @@
 "Choose" = "Choose";
 
 /* Title for selecting a new homepage */
-"Choose Homepage" = "Vælg websted";
+"Choose Homepage" = "Choose Homepage";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Choose Pages";
@@ -1222,7 +1222,7 @@
 "Choose domain" = "Choose domain";
 
 /* No comment provided by engineer. */
-"Choose file" = "Vælg fil";
+"Choose file" = "Choose file";
 
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Choose from My Device";
@@ -1913,7 +1913,7 @@
 "Deleting site…" = "Deleting site…";
 
 /* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "Sletter...";
+"Deleting..." = "Deleting...";
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Deny";
@@ -2757,7 +2757,7 @@
 "Get your site up and running" = "Get your site up and running";
 
 /* Alerts the user that wpcom account information is being retrieved. */
-"Getting account information" = "Henter kontooplysninger";
+"Getting account information" = "Getting account information";
 
 /* Cancel */
 "Give Up" = "Give Up";
@@ -2986,7 +2986,7 @@
 "Ignore threat" = "Ignore threat";
 
 /* Displays the ignored threats */
-"Ignored" = "Ignoreret";
+"Ignored" = "Ignored";
 
 /* Hint for image alt on image settings. */
 "Image Alt" = "Image Alt";
@@ -3207,7 +3207,7 @@
 "Jetpack Scan will update to a newer version." = "Jetpack Scan will update to a newer version.";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Jetpack Settings" = "Jetpack indstillinger";
+"Jetpack Settings" = "Jetpack Settings";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack could not be installed at this time.";
@@ -3761,7 +3761,7 @@
    Header for a single site, shown after logging in
    The accessibility value of the my site tab.
    Title of My Site tab */
-"My Site" = "Mit websted";
+"My Site" = "My Site";
 
 /* Header for list of multiple sites, shown after logging in
    Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
@@ -3966,7 +3966,7 @@
 
 /* No comment (test)
    This primary error message is displayed if a user encounters an issue with network reachability. */
-"No internet connection" = "Ingen internet forbindelse";
+"No internet connection" = "No internet connection";
 
 /* Error message shown when the user is browsing Site Comments without an internet connection. */
 "No internet connection. Some comments may be unavailable while offline." = "No internet connection. Some comments may be unavailable while offline.";
@@ -4060,7 +4060,7 @@
 "No themes matching your search" = "No themes matching your search";
 
 /* Message for a notice informing the user their scan completed and no threats were found */
-"No threats found" = "Ingen trusler fundet";
+"No threats found" = "No threats found";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -4364,7 +4364,7 @@
 "Page title. Empty" = "Page title. Empty";
 
 /* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Side opdateret";
+"Page updated" = "Page updated";
 
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
@@ -4549,7 +4549,7 @@
 "Please try again later." = "Please try again later.";
 
 /* No comment provided by engineer. */
-"Please try entering your login details again." = "Prøv at taste dine login oplysninger igen.";
+"Please try entering your login details again." = "Please try entering your login details again.";
 
 /* Asks the usre to wait until the currently running fetch request completes. */
 "Please wait til the current fetch completes." = "Please wait til the current fetch completes.";
@@ -4668,10 +4668,10 @@
 "Post title. Empty" = "Post title. Empty";
 
 /* Title of camera permissions screen */
-"Post to WordPress" = "Udgiv på WordPress";
+"Post to WordPress" = "Post to WordPress";
 
 /* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Indlæg opdateret";
+"Post updated" = "Post updated";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Postal Code";
@@ -5176,11 +5176,11 @@
 "Restore to this point" = "Restore to this point";
 
 /* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
-"Restored to %@" = "Gendannet til %@";
+"Restored to %@" = "Restored to %@";
 
 /* Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date.
    Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
-"Restoring to %@" = "Gendanner til %@";
+"Restoring to %@" = "Restoring to %@";
 
 /* A prompt to attempt the failed network request again
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
@@ -5560,7 +5560,7 @@
 "Service" = "Service";
 
 /* No comment provided by engineer. */
-"Set Featured Image" = "Vælg udvalgt billede";
+"Set Featured Image" = "Set Featured Image";
 
 /* Label for cell that allow users to set the location of a post */
 "Set Location" = "Sæt placering";
@@ -5731,7 +5731,7 @@
 "Sign up" = "Tilmeld dig";
 
 /* Button title. Tapping begins the process of creating a WordPress.com account. */
-"Sign up for WordPress.com" = "Registrer dig på WordPress.com";
+"Sign up for WordPress.com" = "Sign up for WordPress.com";
 
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Sign up with Email";
@@ -5773,7 +5773,7 @@
 "Site Title" = "Webstedets titel";
 
 /* The accessibility label for the followed sites search field */
-"Site URL" = "Websteds URL";
+"Site URL" = "Site URL";
 
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "Site achievements";
@@ -6716,7 +6716,7 @@
 "Trashed" = "Trashed";
 
 /* Connect when the SSL certificate is invalid */
-"Trust" = "Tillid";
+"Trust" = "Trust";
 
 /* Theme Try & Customize action title */
 "Try & Customize" = "Try & Customize";
@@ -7078,7 +7078,7 @@
 "Uploading media" = "Uploading media";
 
 /* Message displayed on a post's card while the post is uploading media */
-"Uploading media..." = "Uploader medie...";
+"Uploading media..." = "Uploading media...";
 
 /* Title for alert when trying to preview a post before the uploading process is complete. */
 "Uploading post" = "Uploading post";
@@ -7090,7 +7090,7 @@
 "Uploading..." = "Uploader...";
 
 /* No comment provided by engineer. */
-"Uploading…" = "Overfører...";
+"Uploading…" = "Uploading…";
 
 /* Title for alert when trying to save post with failed media items */
 "Uploads failed" = "Uploads failed";
@@ -7709,7 +7709,7 @@
 "WordPress.com Themes" = "WordPress.com Themes";
 
 /* WordPress.com Notification Settings Title */
-"WordPress.com Updates" = "WordPress.com opdateringer";
+"WordPress.com Updates" = "WordPress.com Updates";
 
 /* Jetpack Settings: WordPress.com Login settings */
 "WordPress.com login" = "WordPress.com login";

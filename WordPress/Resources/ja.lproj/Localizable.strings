@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-24 00:24:43+0000 */
+/* Translation-Revision-Date: 2021-03-05 09:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -917,7 +917,7 @@
 "Block settings" = "ブロックの設定";
 
 /* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "このサイトをブロック";
+"Block this site" = "Block this site";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "サイトがブロックされました";
@@ -1578,7 +1578,7 @@
 "Could Be Better" = "不満がある";
 
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
-"Could Not Follow Topic" = "トピックをフォローできませんでした";
+"Could Not Follow Topic" = "Could Not Follow Topic";
 
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Remove Topic" = "トピックを削除できませんでした";
@@ -2631,7 +2631,7 @@
 "Follow other sites" = "他のサイトをフォロー";
 
 /* Verb. An option to follow a site. */
-"Follow site" = "サイトをフォロー";
+"Follow site" = "Follow site";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "お気に入りのサイトをフォローして新しい読み物を発見しましょう。";
@@ -4437,7 +4437,7 @@
 "Photo Library" = "フォトライブラリ";
 
 /* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "写真";
+"Photos" = "Photos";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "写真提供元: Pexels";
@@ -5104,7 +5104,7 @@
 "Reply to post…" = "投稿に返信…";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
-"Report this post" = "この投稿を報告";
+"Report this post" = "Report this post";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "この数より多くのリンクがコメントに含まれる場合、手動での承認が必要です。";
@@ -6513,7 +6513,7 @@
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "この情報は、製品を改善し、マーケティングをより関連性の高いものとし、WordPress.com の利用をパーソナライズするのに役立ちます。さらに詳しくは、個人情報保護方針をご覧ください。";
 
 /* Select domain name. Subtitle */
-"This is where people will find you on the internet." = "ドメインとは、インターネット上の住所です。";
+"This is where people will find you on the internet." = "This is where people will find you on the internet.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "このメディアファイルは削除されています。";
@@ -6932,7 +6932,7 @@
 "Unfollow %@" = "%@ のフォロー解除";
 
 /* Verb. An option to unfollow a site. */
-"Unfollow site" = "サイトをフォロー解除";
+"Unfollow site" = "Unfollow site";
 
 /* Notice title when unfollowing a site succeeds.
    User unfollowed a site. */
@@ -7243,7 +7243,7 @@
 "Visit %@ for more" = "詳細は %@ を参照";
 
 /* Title for the button that will open a link to this site. */
-"Visit site" = "サイトを表示";
+"Visit site" = "Visit site";
 
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "「ヘルプセンター」では、よくある質問の回答を確認できます。さらにサポートが必要な場合にも、こちらからお問い合わせいただけます。";
@@ -7934,7 +7934,7 @@
 "Your restore is taking longer than usual, please check again in a few minutes." = "復元に通常よりも時間がかかっています。数分後にもう一度ご確認ください。";
 
 /* Body text of alert helping users understand their site address */
-"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Safari でサイトにアクセスすると、画面の上部にあるバーにサイトアドレスが表示されます。";
+"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Your site address appears in the bar at the top of the screen when you visit your site in Safari.";
 
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "サイトが巻き戻されました !";

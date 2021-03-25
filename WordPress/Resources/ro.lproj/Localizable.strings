@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-24 08:54:07+0000 */
+/* Translation-Revision-Date: 2021-02-24 10:28:41+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -791,7 +791,7 @@
 
 /* Discussion Settings Title
    Settings: Comments Approval settings */
-"Automatically Approve" = "Aprobă automat";
+"Automatically Approve" = "Aprobare automată";
 
 /* Discussion Settings */
 "Automatically Close" = "Închidere automată";
@@ -5013,7 +5013,7 @@
 "Remove @%@" = "Înlătură @%@";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
-"Remove Featured Image" = "Înlătură imaginea reprezentativă";
+"Remove Featured Image" = "Șterge imaginea reprezentativă";
 
 /* Label action for removing a link from the editor */
 "Remove Link" = "Înlătură legătura";
