@@ -16,17 +16,24 @@ class UserSettings {
         static let defaultDotComUUIDKey = "AccountDefaultDotcomUUID"
     }
 
-    @objc
     @UserDefault(Keys.crashLoggingOptOutKey, defaultValue: false)
     static var userHasOptedOutOfCrashLogging: Bool
 
-    @objc
     @UserDefault(Keys.forceCrashLoggingKey, defaultValue: false)
     static var userHasForcedCrashLoggingEnabled: Bool
 
-    @objc
     @NullableUserDefault(Keys.defaultDotComUUIDKey)
     static var defaultDotComUUID: String?
+}
+
+/// Objective-C Wrapper for UserSettings
+@objc(UserSettings)
+class ObjcCUserSettings: NSObject {
+    @objc
+    static var defaultDotComUUID: String? {
+        get { UserSettings.defaultDotComUUID }
+        set { UserSettings.defaultDotComUUID = newValue }
+    }
 }
 
 /// A property wrapper for UserDefaults access

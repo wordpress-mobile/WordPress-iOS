@@ -9,7 +9,6 @@
 @import WordPressShared;
 #import "WordPress-Swift.h"
 
-static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDotcomUUID";
 static NSString * const DefaultDotcomAccountPasswordRemovedKey = @"DefaultDotcomAccountPasswordRemovedKey";
 
 static NSString * const WordPressDotcomXMLRPCKey = @"https://wordpress.com/xmlrpc.php";
@@ -33,7 +32,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
  */
 - (WPAccount *)defaultWordPressComAccount
 {
-    NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:DefaultDotcomAccountUUIDDefaultsKey];
+    NSString *uuid = [UserSettings defaultDotComUUID];
     if (uuid.length > 0) {
         WPAccount *account = [self accountWithUUID:uuid];
         if (account) {
@@ -42,7 +41,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     }
 
     // No account, or no default account set. Clear the defaults key.
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
+    [UserSettings setDefaultDotComUUID:nil];
     return nil;
 }
 
@@ -62,7 +61,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         return;
     }
 
-    [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
+    [UserSettings setDefaultDotComUUID:account.uuid];
 
     NSManagedObjectID *accountID = account.objectID;
     void (^notifyAccountChange)(void) = ^{
@@ -114,15 +113,15 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 
-    // Remove defaults
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
-    
+    // Remove Default DotCom UUID
+    [UserSettings setDefaultDotComUUID:nil];
+
     [WPAnalytics refreshMetadata];
     [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
 
 - (BOOL)isDefaultWordPressComAccount:(WPAccount *)account {
-    NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:DefaultDotcomAccountUUIDDefaultsKey];
+    NSString *uuid = [UserSettings defaultDotComUUID];
     if (uuid.length == 0) {
         return false;
     }
@@ -304,7 +303,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         // Assume we have a good candidate account and make it the default account in the app.
         // Note that this should be the account with the most blogs.
         // Updates user defaults here vs the setter method to avoid potential side-effects from dispatched notifications.
-        [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
+        [UserSettings setDefaultDotComUUID: account.uuid];
     }
 }
 

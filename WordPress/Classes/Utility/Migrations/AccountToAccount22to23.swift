@@ -11,7 +11,6 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
 
     fileprivate let defaultDotcomUsernameKey    = "AccountDefaultUsername"
     fileprivate let defaultDotcomKey            = "AccountDefaultDotcom"
-    fileprivate let defaultDotcomUUIDKey        = "AccountDefaultDotcomUUID"
 
     override func begin(_ mapping: NSEntityMapping, with manager: NSMigrationManager) throws {
         // Note:
@@ -78,7 +77,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
 
         if defaultAccount != nil {
             let uuid = defaultAccount!.value(forKey: "uuid") as! String
-            userDefaults.set(uuid, forKey: defaultDotcomUUIDKey)
+            UserSettings.defaultDotComUUID = uuid
         }
 
         userDefaults.removeObject(forKey: defaultDotcomKey)
@@ -115,13 +114,13 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
     }
 
     fileprivate func defaultWordPressAccount(_ context: NSManagedObjectContext) -> NSManagedObject? {
-        let objectUUID = UserDefaults.standard.string(forKey: defaultDotcomUUIDKey)
-        if objectUUID == nil {
+
+        guard let objectUUID = UserSettings.defaultDotComUUID else {
             return nil
         }
 
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Account")
-        request.predicate = NSPredicate(format: "uuid == %@", objectUUID!)
+        request.predicate = NSPredicate(format: "uuid == %@", objectUUID)
 
         var accounts: [NSManagedObject]
 
@@ -142,8 +141,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
             return
         }
 
-        let defaults = UserDefaults.standard
-        defaults.set(uuid, forKey: defaultDotcomUUIDKey)
+        UserSettings.defaultDotComUUID = uuid
     }
 
 

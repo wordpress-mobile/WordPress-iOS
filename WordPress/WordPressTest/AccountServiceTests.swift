@@ -43,7 +43,7 @@ class AccountServiceTests: XCTestCase {
 
         accountService.setDefaultWordPressComAccount(account)
 
-        let uuid = UserDefaults.standard.string(forKey: "AccountDefaultDotcomUUID")
+        let uuid = UserSettings.defaultDotComUUID
         XCTAssertNotNil(uuid, "Default UUID should be set")
         XCTAssertEqual(uuid!, account.uuid, "UUID should be set as default")
     }
@@ -121,7 +121,7 @@ class AccountServiceTests: XCTestCase {
         let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
         XCTAssertTrue(account.isDefaultWordPressComAccount)
 
-        UserDefaults.standard.removeObject(forKey: "AccountDefaultDotcomUUID")
+        UserSettings.defaultDotComUUID = nil
 
         accountService.restoreDisassociatedAccountIfNecessary()
         XCTAssertTrue(account.isDefaultWordPressComAccount)
@@ -143,7 +143,7 @@ class AccountServiceTests: XCTestCase {
         blog.account = jetpackAccount
         contextManager.save(context)
 
-        UserDefaults.standard.removeObject(forKey: "AccountDefaultDotcomUUID")
+        UserSettings.defaultDotComUUID = nil
         accountService.restoreDisassociatedAccountIfNecessary()
         XCTAssertTrue(account.isDefaultWordPressComAccount)
 
