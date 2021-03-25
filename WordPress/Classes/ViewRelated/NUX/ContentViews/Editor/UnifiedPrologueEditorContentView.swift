@@ -91,7 +91,6 @@ private extension UnifiedPrologueEditorContentView {
         // Spacing
         static let internalSpacerMinHeight: CGFloat = 8.0
         static let imageGalleryPadding: CGFloat = 8.0
-        static let editorTitlePadding: CGFloat = 8.0
         static let topSpacing: CGFloat = 60.0
 
         // Icons
