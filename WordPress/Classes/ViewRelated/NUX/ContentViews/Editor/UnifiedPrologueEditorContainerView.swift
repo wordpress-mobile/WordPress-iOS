@@ -1,7 +1,8 @@
 import UIKit
 import SwiftUI
 
-class UnifiedPrologueEditorContentView: UIView {
+
+class UnifiedPrologueEditorContainerView: UIView {
 
     init() {
         super.init(frame: .zero)
@@ -24,31 +25,26 @@ struct UnifiedPrologueEditorView: View {
 
         VStack {
             Spacer()
-            ZStack {
-                RoundedRectangle(cornerRadius: 4, style: .continuous)
-                    .foregroundColor(Appearance.textBackgroundColor)
+            RoundRectangleView {
                 Text(Appearance.topElementTitle)
                     .font(Appearance.largeTextFont)
             }
+
             .fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 16)
                 .fixedSize(horizontal: false, vertical: true)
-            ZStack {
-                RoundedRectangle(cornerRadius: 4, style: .continuous)
-                    .foregroundColor(Appearance.textBackgroundColor)
+            RoundRectangleView {
                 (Text(Appearance.middleElementTitle)
                     + Text(Appearance.middleElementTerminator)
-                        .foregroundColor(.blue))
+                    .foregroundColor(.blue))
                     .lineLimit(.none)
                     .padding()
-
             }
+
             .fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 16)
                 .fixedSize(horizontal: false, vertical: true)
-            ZStack {
-                RoundedRectangle(cornerRadius: 4, style: .continuous)
-                    .foregroundColor(Appearance.textBackgroundColor)
+            RoundRectangleView {
                 HStack {
                     Image("page2Img1Sea")
                         .resizable()
@@ -62,6 +58,7 @@ struct UnifiedPrologueEditorView: View {
                 }
                 .padding(.all, 8)
             }
+
             .fixedSize(horizontal: false, vertical: true)
             Spacer()
         }
@@ -74,7 +71,6 @@ private extension UnifiedPrologueEditorView {
         static let topElementTitle: LocalizedStringKey = "Getting Inspired"
         static let middleElementShortTitle: LocalizedStringKey = "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my"
         static let middleElementTerminator = "|"
-        static let textBackgroundColor = Color(UIColor(light: .white, dark: .gray(.shade90)))
         static let largeTextFont = Font(WPStyleGuide.serifFontForTextStyle(.title1))
         static let normalTextFont = Font.subheadline
         /// - TODO: This needs to be updated with actual text
