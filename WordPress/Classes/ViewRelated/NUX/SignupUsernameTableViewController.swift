@@ -213,11 +213,14 @@ extension SignupUsernameTableViewController {
         isSearching = true
 
         let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        guard let account = accountService.defaultWordPressComAccount(),
-            let api = account.wordPressComRestApi else {
-                return
+
+        guard
+            let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
+            let api = account.wordPressComRestApi
+        else {
+            return
         }
+
         SVProgressHUD.show(withStatus: NSLocalizedString("Loading usernames", comment: "Shown while the app waits for the username suggestions web service to return during the site creation process."))
 
         let service = AccountSettingsService(userID: account.userID.intValue, api: api)
