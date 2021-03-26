@@ -151,7 +151,7 @@ class MediaRequestAuthenticator {
                 return
         }
 
-        guard let account = AccountService(managedObjectContext: ContextManager.shared.mainContext).defaultWordPressComAccount() else {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext) else {
             provide(URLRequest(url: url))
             return
         }
