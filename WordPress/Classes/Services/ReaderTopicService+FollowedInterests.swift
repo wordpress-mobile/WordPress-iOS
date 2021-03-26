@@ -82,8 +82,7 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
     }
 
     private func apiRequest() -> WordPressComRestApi {
-        let accountService = AccountService(managedObjectContext: managedObjectContext)
-        let defaultAccount = accountService.defaultWordPressComAccount()
+        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext)
         let token: String? = defaultAccount?.authToken
 
         return WordPressComRestApi.defaultApi(oAuthToken: token,
