@@ -157,7 +157,8 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
 
 - (void)accountSettingsDidChange:(NSNotification*)notification
 {
-    WPAccount *defaultAccount = [self.accountService defaultWordPressComAccount];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
     if (!defaultAccount.settings) {
         return;
     }
