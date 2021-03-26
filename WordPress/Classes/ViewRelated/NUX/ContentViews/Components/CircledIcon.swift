@@ -13,6 +13,9 @@ struct CircledIcon: View {
     private let backgroundColor: Color
     private let iconColor: Color
 
+    private let shadowRadius: CGFloat = 4
+    private let shadowColor = Color.gray.opacity(0.4)
+
     init(size: CGFloat,
          xOffset: CGFloat,
          yOffset: CGFloat,
@@ -33,9 +36,10 @@ struct CircledIcon: View {
         ZStack {
             Circle()
                 .foregroundColor(backgroundColor)
+                .shadow(color: shadowColor, radius: shadowRadius)
                 .frame(width: size, height: size)
 
-            Image(uiImage: UIImage.gridicon(iconType))
+            Image(uiImage: UIImage.gridicon(iconType, size: CGSize(width: size / 2, height: size / 2)))
                 .foregroundColor(iconColor)
         }
         .fixedSize()
