@@ -23,7 +23,7 @@ extension NSNotification.Name {
 
     // MARK: - Public Properties
 
-    static var sharedInstance: ZendeskUtils = ZendeskUtils()
+    static var sharedInstance: ZendeskUtils = ZendeskUtils(contextManager: ContextManager.shared)
     static var zendeskEnabled = false
     @objc static var unreadNotificationsCount = 0
 
@@ -38,7 +38,6 @@ extension NSNotification.Name {
 
     // MARK: - Private Properties
 
-    private override init() {}
     private var sourceTag: WordPressSupportSourceTag?
 
     private var userName: String?
@@ -63,7 +62,13 @@ extension NSNotification.Name {
         return Locale.preferredLanguages[0]
     }
 
+    private let contextManager: CoreDataStack
+
     // MARK: - Public Methods
+
+    init(contextManager: CoreDataStack) {
+        self.contextManager = contextManager
+    }
 
     @objc static func setup() {
         guard getZendeskCredentials() else {
@@ -106,7 +111,7 @@ extension NSNotification.Name {
     func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
 
         presentInController = controller
-        let haveUserIdentity = ZendeskUtils.sharedInstance.haveUserIdentity && ZendeskUtils.sharedInstance.userNameConfirmed
+        let haveUserIdentity = self.haveUserIdentity && self.userNameConfirmed
 
         // Since user information is not needed to display the Help Center,
         // if a user identity has not been created, create an empty identity.
@@ -197,14 +202,12 @@ extension NSNotification.Name {
         }
     }
 
-    func cacheUnlocalizedSitePlans(accountService: AccountService? = nil, planService: PlanService? = nil) {
-        let context = ContextManager.shared.mainContext
-
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
+    func cacheUnlocalizedSitePlans(planService: PlanService? = nil) {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext) else {
             return
         }
 
-        let planService = planService ?? PlanService(managedObjectContext: context)
+        let planService = planService ?? PlanService(managedObjectContext: contextManager.mainContext)
         planService.getAllSitesNonLocalizedPlanDescriptionsForAccount(account, success: { plans in
             self.sitePlansCache = plans
         }, failure: { error in })
@@ -227,7 +230,7 @@ extension NSNotification.Name {
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.currentSite, value: ZendeskUtils.getCurrentSiteDescription()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.appLanguage, value: ZendeskUtils.appLanguage))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.plan, value: ZendeskUtils.getHighestPriorityPlan(planService: planService)))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.plan, value: getHighestPriorityPlan(planService: planService)))
         requestConfig.customFields = ticketFields
 
         // Set tags
@@ -690,7 +693,7 @@ private extension ZendeskUtils {
         }
 
         // If there is a WP account, add wpcom tag.
-        if (try? WPAccount.lookupHasDefaultWordPressComAccount(in: context)) ?? false {
+        if let _ = try? WPAccount.lookupDefaultWordPressComAccount(in: context) {
             tags.append(Constants.wpComTag)
         }
 
@@ -962,7 +965,7 @@ private extension ZendeskUtils {
 
     /// Retrieves the highest priority plan, if it exists
     /// - Returns: the highest priority plan found, or an empty string if none was foundq
-    static func getHighestPriorityPlan(planService: PlanService? = nil) -> String {
+    private func getHighestPriorityPlan(planService: PlanService? = nil) -> String {
 
         let availablePlans = getAvailablePlansWithPriority(planService: planService)
         if !ZendeskUtils.sharedInstance.sitePlansCache.isEmpty {
@@ -976,7 +979,7 @@ private extension ZendeskUtils {
         } else {
             // fail safe: if the plan cache call fails for any reason, at least let's use the cached blogs
             // and compare the localized names
-            let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+            let blogService = BlogService(managedObjectContext: contextManager.mainContext)
             let plans = Set(blogService.blogsForAllAccounts().compactMap { $0.planTitle })
 
             for availablePlan in availablePlans {
@@ -989,7 +992,7 @@ private extension ZendeskUtils {
     }
 
     /// Obtains the available plans, sorted by priority
-    static func getAvailablePlansWithPriority(planService: PlanService? = nil) -> [SupportPlan] {
+    private func getAvailablePlansWithPriority(planService: PlanService? = nil) -> [SupportPlan] {
         let planService = planService ?? PlanService(managedObjectContext: ContextManager.shared.mainContext)
         return planService.allPlans().map {
             SupportPlan(priority: $0.supportPriority,
