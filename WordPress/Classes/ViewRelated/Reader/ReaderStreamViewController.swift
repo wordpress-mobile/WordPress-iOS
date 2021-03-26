@@ -645,8 +645,8 @@ import WordPressFlux
 
     /// Fetch and cache the current defaultAccount authtoken, if available.
     private func refreshImageRequestAuthToken() {
-        let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        postCellActions?.imageRequestAuthToken = acctServ.defaultWordPressComAccount()?.authToken
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
+        postCellActions?.imageRequestAuthToken = account?.authToken
     }
 
 
