@@ -82,7 +82,7 @@ extension PageLayoutService {
     static func resultsController(forBlog blog: Blog, delegate: NSFetchedResultsControllerDelegate? = nil) -> NSFetchedResultsController<PageTemplateCategory> {
         let context = ContextManager.shared.mainContext
         let request: NSFetchRequest<PageTemplateCategory> = PageTemplateCategory.fetchRequest(forBlog: blog)
-        let sort = NSSortDescriptor(key: "ordinal", ascending: true)
+        let sort = NSSortDescriptor(key: #keyPath(PageTemplateCategory.ordinal), ascending: true)
         request.sortDescriptors = [sort]
 
         let resultsController = NSFetchedResultsController<PageTemplateCategory>(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
