@@ -217,8 +217,8 @@ class AccountSettingsService {
     }
 
     fileprivate func createAccountSettings(_ userID: Int, settings: AccountSettings) {
-        let accountService = AccountService(managedObjectContext: context)
-        guard let account = accountService.findAccount(withUserID: NSNumber(value: userID)) else {
+
+        guard let account = try? WPAccount.lookup(withUserID: Int64(userID), in: context) else {
             DDLogError("Tried to create settings for a missing account (ID: \(userID)): \(settings)")
             return
         }
