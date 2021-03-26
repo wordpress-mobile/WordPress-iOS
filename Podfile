@@ -161,8 +161,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.50.0'
-
+    gutenberg :commit => 'edf3b96fb4e4a2b55883c4908390d4d7a02898a6'
 
     ## Third party libraries
     ## =====================
@@ -191,7 +190,7 @@ abstract_target 'Apps' do
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.8.4'
+    pod 'Automattic-Tracks-iOS', '~> 0.8.3'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
     # Local Development
@@ -207,11 +206,11 @@ abstract_target 'Apps' do
 
     pod 'Gridicons', '~> 1.1.0'
 
-    pod 'WordPressAuthenticator', '~> 1.36.0-beta.4'
+    pod 'WordPressAuthenticator', '~> 1.35.2'
     # While in PR
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/nux-button-shadows'
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
-    # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
+    # pod 'WordPressAuthenticator', :path => '../../WordPressAuthenticator-iOS'
 
     pod 'MediaEditor', '~> 1.2.1'
     # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
@@ -474,9 +473,11 @@ post_install do |installer|
     # =====================================
     #
     installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |configuration|
-        pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
-        configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
+      if target.name == "WordPress" || target.name == "Jetpack"
+        target.build_configurations.each do |configuration|
+           pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
+           configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
+        end
       end
     end
 end
