@@ -189,11 +189,12 @@ private class AccountSettingsController: SettingsController {
 
     func refreshAccountDetails(finished: @escaping () -> Void) {
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        guard let account = service.defaultWordPressComAccount() else {
+
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
             return
         }
-        service.updateUserDetails(for: account, success: { () in
+
+        AccountService(managedObjectContext: context).updateUserDetails(for: account, success: { () in
             finished()
         }, failure: { _ in
             finished()
