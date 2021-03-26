@@ -15,7 +15,7 @@ class LoadingStatusView: UIView {
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = .appBarText
         label.font = WPFontManager.systemBoldFont(ofSize: 14.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.sizeToFit()
