@@ -16,17 +16,6 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
 ///------------------------------------
 
 /**
- Returns the default WordPress.com account
- 
- The default WordPress.com account is the one used for Reader and Notifications
- 
- @return the default WordPress.com account
- @see setDefaultWordPressComAccount:
- @see removeDefaultWordPressComAccount
- */
-- (nullable WPAccount *)defaultWordPressComAccount;
-
-/**
  Sets the default WordPress.com account
  
  @param account the account to set as default for WordPress.com
@@ -42,11 +31,6 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
  @see setDefaultWordPressComAccount:
  */
 - (void)removeDefaultWordPressComAccount;
-
-/**
- Returns if the given account is the default WordPress.com account.
- */
-- (BOOL)isDefaultWordPressComAccount:(WPAccount *)account;
 
 /**
  Query to check if an email address is paired to a wpcom account. Used in the 
@@ -106,22 +90,6 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
  @return An array of WPAccounts.
  */
 - (NSArray<WPAccount *> *)allAccounts;
-
-/**
- Returns a WordPress.com account with the specified username, if it exists
-
- @param username the account's username
- @return a `WPAccount` object if there's one for the specified username. Otherwise it returns nil
- */
-- (nullable WPAccount *)findAccountWithUsername:(NSString *)username;
-
-/**
- Returns a WordPress.com account with the specified user ID, if it exists
-
- @param userID the account's user ID
- @return a `WPAccount` object if there's one for the specified username. Otherwise it returns nil
- */
-- (nullable WPAccount *)findAccountWithUserID:(NSNumber *)userID;
 
 /**
  Updates user details including username, email, userID, avatarURL, and default blog.
