@@ -14,7 +14,8 @@ class ChangeUsernameViewModel {
         return settings?.displayName ?? ""
     }
     var formattedCreatedDate: String? {
-        return accountService.defaultWordPressComAccount()?.dateCreated.mediumString()
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: accountService.managedObjectContext)
+        return account?.dateCreated.mediumString()
     }
     var isReachable: Bool {
         return reachability?.isReachable() ?? false
