@@ -55,6 +55,14 @@ class PostEditorNavigationBarManager {
         return button
     }()
 
+    /// Blog TitleView Label
+    lazy var blogTitleViewLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .appBarText
+        label.font = Fonts.blogTitle
+        return label
+    }()
+
     /// Publish Button
     private(set) lazy var publishButton: UIButton = {
         let button = UIButton(type: .system)
@@ -111,15 +119,6 @@ class PostEditorNavigationBarManager {
         cancelItem.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close edior and cancel changes or insertion of post")
         cancelItem.accessibilityIdentifier = "Close"
         return cancelItem
-    }()
-
-
-    /// NavigationBar's Blog Picker Button
-    ///
-    private lazy var blogPickerBarButtonItem: UIBarButtonItem = {
-        let pickerItem = UIBarButtonItem(customView: self.blogPickerButton)
-        pickerItem.accessibilityTraits = .notEnabled
-        return pickerItem
     }()
 
     /// Media Uploading Status Button
@@ -185,7 +184,7 @@ class PostEditorNavigationBarManager {
     // MARK: - Public
 
     var leftBarButtonItems: [UIBarButtonItem] {
-        return [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
+        return [separatorButtonItem, closeBarButtonItem]
     }
 
     var uploadingMediaLeftBarButtonItems: [UIBarButtonItem] {
@@ -210,13 +209,8 @@ class PostEditorNavigationBarManager {
         publishButton.isEnabled = delegate?.isPublishButtonEnabled ?? true
     }
 
-    func reloadBlogPickerButton(with title: String, enabled: Bool) {
-
-        let titleText = NSAttributedString(string: title, attributes: [.font: Fonts.blogPicker])
-
-        blogPickerButton.setAttributedTitle(titleText, for: .normal)
-        blogPickerButton.buttonMode = enabled ? .multipleSite : .singleSite
-        blogPickerButton.isEnabled = enabled
+    func reloadBlogTitleView(text: String) {
+        blogTitleViewLabel.text = text
     }
 
     func reloadLeftBarButtonItems(_ items: [UIBarButtonItem]) {
@@ -231,7 +225,7 @@ extension PostEditorNavigationBarManager {
 
     private enum Fonts {
         static let semiBold = WPFontManager.systemSemiBoldFont(ofSize: 16)
-        static var blogPicker: UIFont {
+        static var blogTitle: UIFont {
             if FeatureFlag.newNavBarAppearance.enabled {
                 return WPStyleGuide.navigationBarStandardFont
             } else {

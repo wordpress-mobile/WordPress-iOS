@@ -417,15 +417,16 @@ class GutenbergViewController: UIViewController, PostEditor {
         navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
         navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
+        navigationItem.titleView = navigationBarManager.blogTitleViewLabel
     }
 
-    private func reloadBlogPickerButton() {
+    private func reloadBlogTitleView() {
         var pickerTitle = post.blog.url ?? String()
         if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
             pickerTitle = blogName
         }
 
-        navigationBarManager.reloadBlogPickerButton(with: pickerTitle, enabled: false)
+        navigationBarManager.reloadBlogTitleView(text: pickerTitle)
     }
 
     private func reloadEditorContents() {
@@ -440,7 +441,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     private func refreshInterface() {
-        reloadBlogPickerButton()
+        reloadBlogTitleView()
         reloadEditorContents()
         reloadPublishButton()
     }

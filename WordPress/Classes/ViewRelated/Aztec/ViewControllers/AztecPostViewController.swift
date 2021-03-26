@@ -773,6 +773,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         navigationController?.navigationBar.accessibilityIdentifier = "Azctec Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
         navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
+        navigationItem.titleView = navigationBarManager.blogTitleViewLabel
     }
 
     func configureDismissButton() {
@@ -851,7 +852,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func refreshInterface() {
-        reloadBlogPickerButton()
+        reloadBlogTitleView()
         reloadEditorContents()
         reloadPublishButton()
         refreshNavigationBar()
@@ -905,13 +906,13 @@ class AztecPostViewController: UIViewController, PostEditor {
         setHTML(content)
     }
 
-    func reloadBlogPickerButton() {
+    func reloadBlogTitleView() {
         var pickerTitle = post.blog.url ?? String()
         if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
             pickerTitle = blogName
         }
 
-        navigationBarManager.reloadBlogPickerButton(with: pickerTitle, enabled: false)
+        navigationBarManager.reloadBlogTitleView(text: pickerTitle)
     }
 
     func reloadPublishButton() {
