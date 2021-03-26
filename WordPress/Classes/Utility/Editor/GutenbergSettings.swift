@@ -66,7 +66,7 @@ class GutenbergSettings {
     func performGutenbergPhase2MigrationIfNeeded() {
         guard
             ReachabilityUtils.isInternetReachable(),
-            let account = AccountService(managedObjectContext: context).defaultWordPressComAccount()
+            let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
         else {
             return
         }
