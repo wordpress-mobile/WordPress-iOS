@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 
 enum UnifiedProloguePageType: CaseIterable {
@@ -83,12 +84,19 @@ class UnifiedProloguePageViewController: UIViewController {
         ])
     }
 
+    private func embedSwiftUIView<Content: View>(_ view: Content) -> UIView {
+        let controller = UIHostingController(rootView: view)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.backgroundColor = .clear
+        return controller.view
+    }
+
     private func makeContentView() -> UIView {
         switch pageType {
         case .intro:
             return UnifiedPrologueIntroContentView()
         case .editor:
-            return UnifiedPrologueEditorContainerView()
+            return embedSwiftUIView(UnifiedPrologueEditorContentView())
         default:
             return UIView()
         }
