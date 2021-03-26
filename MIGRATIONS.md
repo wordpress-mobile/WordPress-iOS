@@ -111,6 +111,22 @@ data model as well as any custom migrations.
 - Add a new `SiteSuggestion` entity to support Gutenberg's xpost implementation
 - Add a one-to-many relationship between `Blog` and `SiteSuggestion`
 
+## WordPress 102
+
+@chipsnyder 2020-10-20
+
+- Added one-to-many relationship between `Blog` and `PageTemplateCategory`
+  - `Blog`
+    - `pageTemplateCategories` (optional, to-many, cascade on delete)
+  - `PageTemplateCategory`
+    - `blog` (required, to-one, nullify on delete)
+
+- Updated the many-to-many relationship between `PageTemplateLayout` and `PageTemplateCategory`
+  - `PageTemplateLayout`
+    - `categories` (optional, to-many, nullify on delete)
+  - `PageTemplateCategory`
+  - `layouts` (optional, to-many, ***cascade*** on delete)
+
 ## WordPress 101
 
 @emilylaguna 2020-10-09
@@ -122,6 +138,27 @@ data model as well as any custom migrations.
 
 - Add a new `UserSuggestion` entity
 - Add a one-to-many relationship between `Blog` and `UserSuggestion`
+
+## WordPress 99
+
+@chipsnyder 2020-10-05
+
+- Created a new entity `PageTemplateCategory` with:
+  - `desc` (optional, `String`) short for "description"
+  - `emoji` (optional, `String`)
+  - `slug` (required, no default, `String`)
+  - `title` ( required, no default, `String`)
+- Created a new entity `PageTemplateLayout` with:
+  - `content` (required, no default, `String`)
+  - `preview` (required, no default, `String`)
+  - `slug` (required, no default, `String`)
+  - `title` ( required, no default, `String`)
+
+- Created many-to-many relationship between `PageTemplateLayout` and `PageTemplateCategory`
+  - `PageTemplateLayout`
+    - `categories` (optional, to-many, nullify on delete)
+  - `PageTemplateCategory`
+    - `layouts` (optional, to-many, nullify on delete)
 
 ## WordPress 98
 
@@ -143,6 +180,12 @@ data model as well as any custom migrations.
 @Gio2018 2020-06-12
 
 - Add fields `supportPriority`, `supportName` and `nonLocalizedShortname` to the `Plan` entity for Zendesk integration.
+
+## WordPress 95
+
+@aerych 2020-03-21
+
+- `ReaderPost` added the property `isBlogAtomic` (optional, `Boolean`).
 
 ## WordPress 94
 
