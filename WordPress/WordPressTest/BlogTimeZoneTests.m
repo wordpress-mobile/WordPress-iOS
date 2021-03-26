@@ -102,10 +102,7 @@
 
 - (void)cleanUpNSUserDefaultValues
 {
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
-    if ([service defaultWordPressComAccount]) {
-        [service removeDefaultWordPressComAccount];
-    }
+    [UserSettings setDefaultDotComUUID:nil];
 }
 
 @end
