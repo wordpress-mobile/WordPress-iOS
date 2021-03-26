@@ -4,71 +4,80 @@ import SwiftUI
 struct UnifiedPrologueEditorContentView: View {
 
     var body: some View {
-
-        VStack {
-            Spacer(minLength: Appearance.topSpacing)
-            RoundRectangleView {
-                HStack {
-                    Text(Appearance.topElementTitle)
-                        .font(Appearance.largeTextFont)
-                        .fontWeight(.semibold)
-                        .multilineTextAlignment(.leading)
-                    Spacer()
+        GeometryReader { content in
+            VStack {
+                Spacer(minLength: content.size.height * 0.18)
+                RoundRectangleView {
+                    HStack {
+                        Text(Appearance.topElementTitle)
+                            .font(Font.system(size: content.size.height * 0.08,
+                                              weight: .semibold,
+                                              design: .serif))
+                        Spacer()
+                    }
+                    .padding(.all, content.size.height * 0.06)
                 }
-                .padding()
-            }
-            .fixedSize(horizontal: false, vertical: true)
-
-            Spacer(minLength: Appearance.internalSpacerMinHeight)
                 .fixedSize(horizontal: false, vertical: true)
-            RoundRectangleView(alignment: .top) {
-                (Text(Appearance.middleElementTitle)
-                    + Text(Appearance.middleElementTerminator)
-                    .foregroundColor(.blue))
-                    .lineLimit(.none)
-                    .padding()
-                HStack {
-                    CircledIcon(size: Appearance.alignImageLeftIconSize,
-                                xOffset: Appearance.alignImageLeftIconXOffset,
-                                yOffset: Appearance.alignImageLeftIconYOffset,
-                                iconType: .alignImageLeft,
-                                backgroundColor: Color(UIColor.muriel(name: .purple, .shade50)))
-                    Spacer()
-                    CircledIcon(size: Appearance.plusIconSize,
-                                xOffset: Appearance.plusIconXOffset,
-                                yOffset: Appearance.plusIconYOffset,
-                                iconType: .plus,
-                                backgroundColor: Color(UIColor.muriel(name: .blue, .shade50)))
+
+                Spacer(minLength: content.size.height * 0.03)
+                    .fixedSize(horizontal: false, vertical: true)
+                RoundRectangleView(alignment: .top) {
+                    (Text(Appearance.middleElementTitle)
+                        + Text(Appearance.middleElementTerminator)
+                        .foregroundColor(.blue))
+                        .font(Font.system(size: content.size.height * 0.06,
+                                          weight: .regular,
+                                          design: .default))
+                        .fixedSize(horizontal: false, vertical: true)
+                        .lineLimit(.none)
+                        .padding(.all, content.size.height * 0.06)
+                    HStack {
+                        let alignImageLeftIconSize = content.size.height * 0.15
+                        CircledIcon(size: alignImageLeftIconSize,
+                                    xOffset: -alignImageLeftIconSize * 3 / 4,
+                                    yOffset: alignImageLeftIconSize  * 3 / 4,
+                                    iconType: .alignImageLeft,
+                                    backgroundColor: Color(UIColor.muriel(name: .purple, .shade50)))
+                        Spacer()
+                        let plusIconSize = content.size.height * 0.2
+                        CircledIcon(size: plusIconSize,
+                                    xOffset: plusIconSize * 2 / 3,
+                                    yOffset: -plusIconSize * 2 / 3,
+                                    iconType: .plus,
+                                    backgroundColor: Color(UIColor.muriel(name: .blue, .shade50)))
+                    }
                 }
-            }
 
-            .fixedSize(horizontal: false, vertical: true)
-            Spacer(minLength: Appearance.internalSpacerMinHeight)
                 .fixedSize(horizontal: false, vertical: true)
-            RoundRectangleView {
-                HStack {
-                    Image("page2Img1Sea")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                    ZStack(alignment: .bottomLeading) {
-                        Image("page2Img2Trees")
+                Spacer(minLength: content.size.height * 0.03)
+                    .fixedSize(horizontal: false, vertical: true)
+                RoundRectangleView {
+                    HStack {
+                        Image("page2Img1Sea")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                        CircledIcon(size: Appearance.imageMultipleIconSize,
-                                    xOffset: Appearance.imageMultipleIconXOffset,
-                                    yOffset: Appearance.imageMultipleIconYOffset,
-                                    iconType: .imageMultiple,
-                                    backgroundColor: Color(UIColor.muriel(name: .pink, .shade40)))
+                        ZStack(alignment: .bottomLeading) {
+                            Image("page2Img2Trees")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                            let imageMultipleIconSize = content.size.height * 0.18
+                            CircledIcon(size: imageMultipleIconSize,
+                                        xOffset: -imageMultipleIconSize / 2,
+                                        yOffset: imageMultipleIconSize / 2,
+                                        iconType: .imageMultiple,
+                                        backgroundColor: Color(UIColor.muriel(name: .pink, .shade40)))
+                        }
+                        Image("page2Img3Food")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
                     }
-                    Image("page2Img3Food")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
+                    .padding(.all, content.size.height * 0.03)
                 }
-                .padding(.all, Appearance.imageGalleryPadding)
-            }
 
-            .fixedSize(horizontal: false, vertical: true)
-            Spacer(minLength: Appearance.imageMultipleIconYOffset)
+                .fixedSize(horizontal: false, vertical: true)
+                // avoid bottom overlapping due to the icon offset
+                Spacer(minLength: content.size.height * 0.1)
+            }
         }
     }
 }
@@ -77,15 +86,17 @@ private extension UnifiedPrologueEditorContentView {
 
     enum Appearance {
         static let topElementTitle: LocalizedStringKey = "Getting Inspired"
-        static let middleElementShortTitle: LocalizedStringKey = "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my"
+        static let middleElementShortTitle: LocalizedStringKey = "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next"
         static let middleElementTerminator = "|"
-        static let largeTextFont = Font(WPStyleGuide.serifFontForTextStyle(.title2))
-        static let normalTextFont = Font.subheadline
+        static let largeTextFont = Font.system(size: 32, weight: .semibold, design: .serif)
+        static let normalTextFont = Font.system(size: 15, weight: .regular, design: .default)
         /// - TODO: This needs to be updated with actual text
         static let middleElementLongTitle: LocalizedStringKey = "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my"
 
         static var middleElementTitle: LocalizedStringKey {
-            WPDeviceIdentification.isiPad() ? middleElementLongTitle : middleElementShortTitle
+            //            WPDeviceIdentification.isiPad() ?
+            //                middleElementLongTitle :
+            middleElementShortTitle
         }
 
         // Spacing
