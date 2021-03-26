@@ -456,10 +456,10 @@
     </entity>
     <entity name="PageTemplateLayout" representedClassName="PageTemplateLayout" syncable="YES">
         <attribute name="content" attributeType="String" syncable="YES"/>
-        <attribute name="demoUrl" attributeType="String" syncable="YES"/>
+        <attribute name="demoUrl" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="preview" attributeType="String" syncable="YES"/>
-        <attribute name="previewMobile" attributeType="String" syncable="YES"/>
-        <attribute name="previewTablet" attributeType="String" syncable="YES"/>
+        <attribute name="previewMobile" attributeType="String" defaultValueString="" syncable="YES"/>
+        <attribute name="previewTablet" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="slug" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PageTemplateCategory" inverseName="layouts" inverseEntity="PageTemplateCategory" syncable="YES"/>
