@@ -461,7 +461,6 @@
 		3F751D462491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */; };
 		3F758FD524F6FB4900BBA2FC /* AnnouncementsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */; };
 		3F82310F24564A870086E9B8 /* ReaderTabViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F82310E24564A870086E9B8 /* ReaderTabViewTests.swift */; };
-		3F8513CB260BAB6300A4B938 /* UnifiedPrologueEditorContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8513CA260BAB6300A4B938 /* UnifiedPrologueEditorContainerView.swift */; };
 		3F8513DF260D091500A4B938 /* RoundRectangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8513DE260D091500A4B938 /* RoundRectangleView.swift */; };
 		3F851415260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F851414260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift */; };
 		3F851428260D1EA300A4B938 /* CircledIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F851427260D1EA300A4B938 /* CircledIcon.swift */; };
@@ -4856,7 +4855,6 @@
 		3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnouncementsStore.swift; sourceTree = "<group>"; };
 		3F7646F625AE1C5200FBA98C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3F82310E24564A870086E9B8 /* ReaderTabViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewTests.swift; sourceTree = "<group>"; };
-		3F8513CA260BAB6300A4B938 /* UnifiedPrologueEditorContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedPrologueEditorContainerView.swift; sourceTree = "<group>"; };
 		3F8513DE260D091500A4B938 /* RoundRectangleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundRectangleView.swift; sourceTree = "<group>"; };
 		3F851414260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedPrologueEditorContentView.swift; sourceTree = "<group>"; };
 		3F851427260D1EA300A4B938 /* CircledIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircledIcon.swift; sourceTree = "<group>"; };
@@ -8734,7 +8732,6 @@
 		3F851413260D0A1D00A4B938 /* Editor */ = {
 			isa = PBXGroup;
 			children = (
-				3F8513CA260BAB6300A4B938 /* UnifiedPrologueEditorContainerView.swift */,
 				3F851414260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift */,
 			);
 			path = Editor;
@@ -16813,7 +16810,6 @@
 				436D562B2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.swift in Sources */,
 				7E729C28209A087300F76599 /* ImageLoader.swift in Sources */,
 				73C8F06821BF1A5E00DDDF7E /* SiteAssemblyContentView.swift in Sources */,
-				3F8513CB260BAB6300A4B938 /* UnifiedPrologueEditorContainerView.swift in Sources */,
 				5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */,
 				57276E71239BDFD200515BE2 /* NotificationCenter+ObserveMultiple.swift in Sources */,
 				D817799020ABF26800330998 /* ReaderCellConfiguration.swift in Sources */,
