@@ -25,8 +25,7 @@ extension ReaderTopicService: ReaderInterestsService {
 
     /// Creates a new WP.com API instances that allows us to specify the LocaleKeyV2
     private func apiRequest() -> WordPressComRestApi {
-        let accountService = AccountService(managedObjectContext: managedObjectContext)
-        let defaultAccount = accountService.defaultWordPressComAccount()
+        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext)
         let token: String? = defaultAccount?.authToken
 
         return WordPressComRestApi.defaultApi(oAuthToken: token,
