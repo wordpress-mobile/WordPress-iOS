@@ -52,7 +52,7 @@ struct UnifiedPrologueEditorContentView: View {
                 Spacer(minLength: content.size.height * 0.03)
                     .fixedSize(horizontal: false, vertical: true)
                 RoundRectangleView {
-                    HStack {
+                    HStack(spacing: content.size.height * 0.03) {
                         Image("page2Img1Sea")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
