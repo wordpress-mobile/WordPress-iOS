@@ -47,8 +47,7 @@ import Foundation
 
         var api: WordPressComRestApi? = nil
 
-        let accountService = AccountService(managedObjectContext: managedObjectContext)
-        if let unwrappedRestApi = accountService.defaultWordPressComAccount()?.wordPressComRestApi {
+        if let unwrappedRestApi = (try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext))?.wordPressComRestApi {
             if unwrappedRestApi.hasCredentials() {
                 api = unwrappedRestApi
             }
