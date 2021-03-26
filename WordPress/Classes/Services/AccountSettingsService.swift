@@ -251,20 +251,3 @@ class AccountSettingsService {
         }
     }
 }
-
-struct AccountSettingsHelper {
-    let accountService: AccountService
-
-    init(accountService: AccountService) {
-        self.accountService = accountService
-    }
-
-    func updateTracksOptOutSetting(_ optOut: Bool) {
-        guard let account = accountService.defaultWordPressComAccount() else {
-            return
-        }
-
-        let change = AccountSettingsChange.tracksOptOut(optOut)
-        AccountSettingsService(userID: account.userID.intValue, api: account.wordPressComRestApi).saveChange(change)
-    }
-}
