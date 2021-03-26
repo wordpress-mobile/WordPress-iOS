@@ -55,9 +55,8 @@ class NotificationSyncMediator {
     ///
     convenience init?() {
         let manager = ContextManager.sharedInstance()
-        let service = AccountService(managedObjectContext: manager.mainContext)
 
-        guard let dotcomAPI = service.defaultWordPressComAccount()?.wordPressComRestApi else {
+        guard let dotcomAPI = try? WPAccount.lookupDefaultWordPressComAccount(in: manager.mainContext)?.wordPressComRestApi else {
             return nil
         }
 
