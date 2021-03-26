@@ -17,26 +17,26 @@ class AztecVerificationPromptHelper: NSObject, VerificationPromptHelper {
 
     private let accountService: AccountService
     private let wpComAccount: WPAccount
+    private let managedObjectContext: NSManagedObjectContext
 
     private weak var displayedAlert: FancyAlertViewController?
     private var completionBlock: VerificationPromptCompletion?
 
     @objc init?(account: WPAccount?) {
-        guard let passedAccount = account,
-              let managedObjectContext = account?.managedObjectContext else {
-                return nil
+        guard
+            let passedAccount = account,
+            let managedObjectContext = account?.managedObjectContext,
+            passedAccount.isDefaultWordPressComAccount,
+            passedAccount.needsEmailVerification
+        else {
+            // if the post the user is trying to compose isn't on a WP.com account,
+            // or they're already verified, then the verification prompt is irrelevant.
+            return nil
         }
 
-        accountService = AccountService(managedObjectContext: managedObjectContext)
-
-        guard accountService.isDefaultWordPressComAccount(passedAccount),
-              passedAccount.needsEmailVerification else {
-                // if the post the user is trying to compose isn't on a WP.com account,
-                // or they're already verified, then the verification prompt is irrelevant.
-                return nil
-        }
-
-        wpComAccount = passedAccount
+        self.wpComAccount = passedAccount
+        self.managedObjectContext = managedObjectContext
+        self.accountService = AccountService(managedObjectContext: managedObjectContext)
 
         super.init()
 
@@ -84,10 +84,13 @@ class AztecVerificationPromptHelper: NSObject, VerificationPromptHelper {
 
                                             // Let's make sure the alert is still on the screen and
                                             // the verification status has changed, before we call the callback.
-                                            guard let displayedAlert = self?.displayedAlert,
-                                                  let updatedAccount = self?.accountService.defaultWordPressComAccount(),
-                                                  !updatedAccount.needsEmailVerification else {
-                                                        return
+                                            guard
+                                                let displayedAlert = self?.displayedAlert,
+                                                let managedObjectContext = self?.managedObjectContext,
+                                                let updatedAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext),
+                                                !updatedAccount.needsEmailVerification
+                                            else {
+                                                return
                                             }
 
                                             displayedAlert.dismiss(animated: true)
