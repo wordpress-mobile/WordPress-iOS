@@ -73,6 +73,9 @@ class LoginEpilogueViewController: UIViewController {
         setTableViewMargins(forWidth: view.frame.width)
         refreshInterface(with: credentials)
         WordPressAuthenticator.track(.loginEpilogueViewed)
+
+        // If the user just signed in, refresh the A/B assignments
+        ABTest.start()
     }
 
     override func viewWillAppear(_ animated: Bool) {
