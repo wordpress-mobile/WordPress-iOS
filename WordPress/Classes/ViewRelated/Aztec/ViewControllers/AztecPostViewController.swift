@@ -907,12 +907,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func reloadBlogTitleView() {
-        var pickerTitle = post.blog.url ?? String()
+        var blogTitle = post.blog.url ?? String()
         if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
-            pickerTitle = blogName
+            blogTitle = blogName
         }
 
-        navigationBarManager.reloadBlogTitleView(text: pickerTitle)
+        navigationBarManager.reloadBlogTitleView(text: blogTitle)
     }
 
     func reloadPublishButton() {
