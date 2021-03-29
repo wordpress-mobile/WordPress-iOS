@@ -10,16 +10,16 @@ struct UnifiedPrologueReaderContentView: View {
             let notificationIconSize = content.size.height * 0.2
             let smallIconSize = content.size.height * 0.15
             let largerIconSize = content.size.height * 0.2
-            let fontSize = content.size.height * 0.055
+            let fontSize = content.size.height * 0.05
             let notificationFont = Font.system(size: fontSize,
                                                weight: .regular,
                                                design: .default)
             let feedFont = Font.system(size: fontSize,
-                                               weight: .regular,
-                                               design: .default)
+                                       weight: .regular,
+                                       design: .default)
 
             VStack {
-                Spacer(minLength: content.size.height * 0.18)
+                Spacer(minLength: content.size.height * 0.1)
 
                 RoundRectangleView {
                     HStack {
@@ -57,21 +57,42 @@ struct UnifiedPrologueReaderContentView: View {
 //                    }
                 }
                 .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, spacingUnit / 2)
+                .padding(.horizontal, spacingUnit)
 
                 Spacer(minLength: spacingUnit / 2)
                     .fixedSize(horizontal: false, vertical: true)
 
                 RoundRectangleView {
-                    HStack {
-                        NotificationIcon(image: Appearance.feedMiddleImage, size: notificationIconSize)
-                        Text(htmlString: Appearance.feedMiddleTitle)
-                            .font(notificationFont)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .lineLimit(.none)
-                        Spacer()
+                    ScrollView(.horizontal) {
+                        VStack(alignment: .leading) {
+                            HStack {
+                                ForEach(["Art", "Cooking", "Football"], id: \.self) { item in
+                                    Text(item)
+                                        .font(notificationFont)
+                                        .lineLimit(1)
+                                        .truncationMode(.tail)
+                                        .padding(.horizontal, spacingUnit)
+                                        .padding(.vertical, spacingUnit * 0.4)
+                                        .background(Color(UIColor.muriel(name: .gray, .shade0)))
+                                        .clipShape(Capsule())
+                                }
+                            }
+                            HStack {
+                                ForEach(["Gardening", "Music", "Politics"], id: \.self) { item in
+                                    Text(item)
+                                        .font(notificationFont)
+                                        .lineLimit(1)
+                                        .truncationMode(.tail)
+                                        .padding(.horizontal, spacingUnit)
+                                        .padding(.vertical, spacingUnit * 0.4)
+                                        .background(Color(UIColor.muriel(name: .gray, .shade0)))
+                                        .clipShape(Capsule())
+                                }
+                            }
+                        }
+                        .padding(spacingUnit / 2)
                     }
-                    .padding(spacingUnit / 2)
+                    .disabled(true)
                 }
                 .fixedSize(horizontal: false, vertical: true)
 
@@ -79,15 +100,40 @@ struct UnifiedPrologueReaderContentView: View {
                     .fixedSize(horizontal: false, vertical: true)
 
                 RoundRectangleView {
-                    HStack {
-                        NotificationIcon(image: Appearance.feedBottomImage, size: notificationIconSize)
-                        Text(htmlString: Appearance.feedBottomTitle)
-                            .font(notificationFont)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .lineLimit(.none)
-                        Spacer()
+                    ScrollView(.horizontal) {
+                        HStack {
+                            VStack {
+                                Image("page5Img1Coffee")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                Text("My Top Ten Cafes")
+                                    .lineLimit(2)
+                                    .font(notificationFont)
+                            }
+                            .frame(width: content.size.width * 0.3)
+                            VStack {
+                                Image("page5Img2Stadium")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                Text("The World's Best Fans")
+                                    .lineLimit(2)
+                                    .font(notificationFont)
+                            }
+                            .frame(width: content.size.width * 0.3)
+                            VStack {
+                                Image("page5Img3Museum")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                Text("Museums to See In London")
+                                    .lineLimit(2)
+                                    .font(notificationFont)
+                            }
+                            .frame(width: content.size.width * 0.3)
+                        }
+                        .padding(spacingUnit / 2)
+
                     }
-                    .padding(spacingUnit / 2)
+                    .disabled(true)
 
 //                    HStack {
 //                        Spacer()
@@ -100,10 +146,10 @@ struct UnifiedPrologueReaderContentView: View {
 //                    }
                 }
                 .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, spacingUnit / 2)
+                .padding(.horizontal, spacingUnit)
 
                 // avoid bottom overlapping due to the icon offset
-                Spacer(minLength: content.size.height * 0.1)
+                Spacer(minLength: content.size.height * 0.18)
             }
         }
     }
@@ -128,18 +174,6 @@ private struct Feed: View {
                 .bold()
             Spacer()
         }
-    }
-}
-
-private struct NotificationIcon: View {
-    let image: String
-    let size: CGFloat
-
-    var body: some View {
-        Image(image)
-            .resizable()
-            .frame(width: size, height: size)
-            .clipShape(Circle())
     }
 }
 
