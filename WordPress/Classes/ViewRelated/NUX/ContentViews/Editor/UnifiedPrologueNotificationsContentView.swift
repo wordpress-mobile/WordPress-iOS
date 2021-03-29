@@ -5,22 +5,43 @@ struct UnifiedPrologueNotificationsContentView: View {
     var body: some View {
         GeometryReader { content in
             let spacingUnit = content.size.height * 0.06
+            let notificationIconSize = content.size.height * 0.2
+            let smallIconSize = content.size.height * 0.15
+            let largerIconSize = content.size.height * 0.2
+            let fontSize = content.size.height * 0.055
+            let notificationFont = Font.system(size: fontSize,
+                                               weight: .regular,
+                                               design: .default)
 
             VStack {
                 Spacer(minLength: content.size.height * 0.18)
 
                 RoundRectangleView {
                     HStack {
-                        NotificationIcon(image: Appearance.topImage, size: content.size.height * 0.2)
+                        NotificationIcon(image: Appearance.topImage, size: notificationIconSize)
                         Text(Appearance.topElementTitle)
-                            .font(Font.system(size: content.size.height * 0.05,
-                                              weight: .regular,
-                                              design: .default))
+                            .font(notificationFont)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(.none)
                         Spacer()
                     }
                     .padding(spacingUnit / 2)
+
+                    HStack {
+                        CircledIcon(size: smallIconSize,
+                                    xOffset: -smallIconSize * 0.75,
+                                    yOffset: smallIconSize  * 0.75,
+                                    iconType: .reply,
+                                    backgroundColor: Color(UIColor.muriel(name: .celadon, .shade30)))
+
+                        Spacer()
+
+                        CircledIcon(size: smallIconSize,
+                                    xOffset: smallIconSize * 0.25,
+                                    yOffset: -smallIconSize  * 0.75,
+                                    iconType: .star,
+                                    backgroundColor: Color(UIColor.muriel(name: .yellow, .shade20)))
+                    }
                 }
                 .fixedSize(horizontal: false, vertical: true)
 
@@ -29,11 +50,9 @@ struct UnifiedPrologueNotificationsContentView: View {
 
                 RoundRectangleView {
                     HStack {
-                        NotificationIcon(image: Appearance.middleImage, size: content.size.height * 0.2)
+                        NotificationIcon(image: Appearance.middleImage, size: notificationIconSize)
                         Text(Appearance.middleElementTitle)
-                            .font(Font.system(size: content.size.height * 0.05,
-                                              weight: .regular,
-                                              design: .default))
+                            .font(notificationFont)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(.none)
                         Spacer()
@@ -41,23 +60,31 @@ struct UnifiedPrologueNotificationsContentView: View {
                     .padding(spacingUnit / 2)
                 }
                 .fixedSize(horizontal: false, vertical: true)
-                .offset(x: content.size.width * 0.06)
+                .offset(x: spacingUnit)
 
                 Spacer(minLength: spacingUnit / 2)
                     .fixedSize(horizontal: false, vertical: true)
 
                 RoundRectangleView {
                     HStack {
-                        NotificationIcon(image: Appearance.bottomImage, size: content.size.height * 0.2)
+                        NotificationIcon(image: Appearance.bottomImage, size: notificationIconSize)
                         Text(Appearance.bottomElementTitle)
-                            .font(Font.system(size: content.size.height * 0.05,
-                                              weight: .regular,
-                                              design: .default))
+                            .font(notificationFont)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(.none)
                         Spacer()
                     }
                     .padding(spacingUnit / 2)
+
+                    HStack {
+                        Spacer()
+
+                        CircledIcon(size: largerIconSize,
+                                    xOffset: largerIconSize * 0.6,
+                                    yOffset: largerIconSize  * 0.3,
+                                    iconType: .comment,
+                                    backgroundColor: Color(UIColor.muriel(name: .blue, .shade50)))
+                    }
                 }
                 .fixedSize(horizontal: false, vertical: true)
 
