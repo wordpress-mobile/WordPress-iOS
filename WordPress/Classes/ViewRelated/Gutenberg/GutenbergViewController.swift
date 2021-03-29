@@ -14,7 +14,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         case close
         case more
         case switchToAztec
-        case switchBlog
         case autoSave
     }
 
@@ -813,8 +812,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             case .switchToAztec:
                 editorSession.switch(editor: .classic)
                 EditorFactory().switchToAztec(from: self)
-            case .switchBlog:
-                blogPickerWasPressed()
             case .autoSave:
                 break
             }
@@ -1153,10 +1150,6 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
         requestHTML(for: .more)
-    }
-
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, blogPickerWasPressed sender: UIButton) {
-        requestHTML(for: .switchBlog)
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
