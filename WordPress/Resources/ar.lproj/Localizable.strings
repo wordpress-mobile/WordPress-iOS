@@ -1108,9 +1108,6 @@
    Main title */
 "Change Password" = "تغيير كلمة المرور";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "تغيير الموقع";
-
 /* Change site icon button */
 "Change Site Icon" = "تغيير رمز الموقع";
 

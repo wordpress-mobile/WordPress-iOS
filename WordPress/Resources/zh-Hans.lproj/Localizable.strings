@@ -1108,9 +1108,6 @@
    Main title */
 "Change Password" = "修改密码";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "更改站点";
-
 /* Change site icon button */
 "Change Site Icon" = "更改站点图标";
 

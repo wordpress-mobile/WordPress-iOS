@@ -1108,9 +1108,6 @@
    Main title */
 "Change Password" = "Change Password";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Skift websted";
-
 /* Change site icon button */
 "Change Site Icon" = "Change Site Icon";
 

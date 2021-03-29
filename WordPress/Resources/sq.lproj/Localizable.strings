@@ -1108,9 +1108,6 @@
    Main title */
 "Change Password" = "Ndryshoni Fjalëkalimin";
 
-/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
-"Change Site" = "Ndryshoni Sajt";
-
 /* Change site icon button */
 "Change Site Icon" = "Ndryshoni Ikonë Sajti";
 
