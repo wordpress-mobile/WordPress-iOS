@@ -14,7 +14,7 @@ extension ABTest {
     /// Start the AB Testing platform if any experiment exists
     ///
     static func start() {
-        guard ABTest.allCases.count > 1 else {
+        guard ABTest.allCases.count > 1, AccountHelper.isLoggedIn else {
             return
         }
 
@@ -22,7 +22,7 @@ extension ABTest {
     }
 
     static func refreshIfNeeded() {
-        guard ABTest.allCases.count > 1 else {
+        guard ABTest.allCases.count > 1, AccountHelper.isLoggedIn else {
             return
         }
 

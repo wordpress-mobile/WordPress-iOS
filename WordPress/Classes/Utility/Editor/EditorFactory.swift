@@ -34,11 +34,6 @@ class EditorFactory {
         return gutenbergVC
     }
 
-    func switchToAztec(from source: EditorViewController) {
-        let replacement = AztecPostViewController(post: source.post, replaceEditor: source.replaceEditor, editorSession: source.editorSession)
-        source.replaceEditor(source, replacement)
-    }
-
     func switchToGutenberg(from source: EditorViewController) {
         let replacement = GutenbergViewController(post: source.post, replaceEditor: source.replaceEditor, editorSession: source.editorSession)
         source.replaceEditor(source, replacement)

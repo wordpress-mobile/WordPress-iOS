@@ -13,7 +13,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         case publish
         case close
         case more
-        case switchToAztec
         case switchBlog
         case autoSave
     }
@@ -501,12 +500,6 @@ class GutenbergViewController: UIViewController, PostEditor {
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return presentationController(forPresented: presented, presenting: presenting)
     }
-
-    // MARK: - Switch to Aztec
-
-    func savePostEditsAndSwitchToAztec() {
-        requestHTML(for: .switchToAztec)
-    }
 }
 
 // MARK: - Views setup
@@ -809,9 +802,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 cancelEditing()
             case .more:
                 displayMoreSheet()
-            case .switchToAztec:
-                editorSession.switch(editor: .classic)
-                EditorFactory().switchToAztec(from: self)
             case .switchBlog:
                 blogPickerWasPressed()
             case .autoSave:
