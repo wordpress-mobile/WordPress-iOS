@@ -4139,6 +4139,10 @@
 		FAD2539026116A1600EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
 		FAD2539126116A1600EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
 		FAD2544226116CEA00EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2544126116CEA00EDAF88 /* AppStyleGuide.swift */; };
+		FAD2566C2611AEC300EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
+		FAD2566D2611AEC500EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
+		FAD2566E2611AEC600EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
+		FAD2566F2611AEC700EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
 		FAD9457E25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD9457D25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift */; };
 		FAD9458E25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD9458D25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift */; };
 		FAD951A425B6CB3600F011B5 /* JetpackRestoreFailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD951A325B6CB3600F011B5 /* JetpackRestoreFailedViewController.swift */; };
@@ -17328,6 +17332,7 @@
 				736584E6213752730029C9A4 /* SFHFKeychainUtils.m in Sources */,
 				73B05D2621374B960073ECAA /* Tracks.swift in Sources */,
 				1752D4FC238D703A002B79E7 /* KeyValueDatabase.swift in Sources */,
+				FAD2566F2611AEC700EDAF88 /* AppStyleGuide.swift in Sources */,
 				736584EC2137533A0029C9A4 /* Tracks+ContentExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -17573,6 +17578,7 @@
 				98906507237CC1DF00218CD2 /* WidgetTwoColumnCell.swift in Sources */,
 				433ADC1C223B2A7E00ED9DE1 /* TextBundleWrapper.m in Sources */,
 				93E5284119A7741A003A1A9C /* TodayViewController.swift in Sources */,
+				FAD2566C2611AEC300EDAF88 /* AppStyleGuide.swift in Sources */,
 				938CF3DE1EF1BE8000AF838E /* CocoaLumberjack.swift in Sources */,
 				98712D1D23DA1D0800555316 /* WidgetNoConnectionCell.swift in Sources */,
 				98C0CE9C23C559C800D0F27C /* Double+Stats.swift in Sources */,
@@ -17615,6 +17621,7 @@
 				989643E523A02F640070720A /* MurielColor.swift in Sources */,
 				983AE84D2399AC6B00E5B7F6 /* Constants.m in Sources */,
 				989643ED23A0437B0070720A /* WidgetDifferenceCell.swift in Sources */,
+				FAD2566E2611AEC600EDAF88 /* AppStyleGuide.swift in Sources */,
 				98F93183239AF64800E4E96E /* ThisWeekWidgetStats.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -17641,6 +17648,7 @@
 				98D31BC223972A79009CFF43 /* SFHFKeychainUtils.m in Sources */,
 				98D31BAE239708FB009CFF43 /* Constants.m in Sources */,
 				98C0CE9B23C559C800D0F27C /* Double+Stats.swift in Sources */,
+				FAD2566D2611AEC500EDAF88 /* AppStyleGuide.swift in Sources */,
 				985ED0E823C6964600B8D06A /* WidgetStyles.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
