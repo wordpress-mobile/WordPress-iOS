@@ -1134,6 +1134,9 @@
    Main title */
 "Change Password" = "비밀번호 변경";
 
+/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
+"Change Site" = "사이트 변경";
+
 /* Change site icon button */
 "Change Site Icon" = "사이트 아이콘 변경";
 

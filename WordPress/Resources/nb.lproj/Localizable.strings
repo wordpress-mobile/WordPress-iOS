@@ -1134,6 +1134,9 @@
    Main title */
 "Change Password" = "Endre passord";
 
+/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
+"Change Site" = "Bytte nettsted";
+
 /* Change site icon button */
 "Change Site Icon" = "Endre sideikon";
 

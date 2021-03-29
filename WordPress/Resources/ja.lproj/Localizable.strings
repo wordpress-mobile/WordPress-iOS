@@ -1134,6 +1134,9 @@
    Main title */
 "Change Password" = "パスワードの変更";
 
+/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
+"Change Site" = "サイトを変更";
+
 /* Change site icon button */
 "Change Site Icon" = "サイトアイコンを変更";
 

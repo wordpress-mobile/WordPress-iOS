@@ -1134,6 +1134,9 @@
    Main title */
 "Change Password" = "Schimbă parola";
 
+/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
+"Change Site" = "Schimbă situl";
+
 /* Change site icon button */
 "Change Site Icon" = "Schimbă icon sit";
 

@@ -1134,6 +1134,9 @@
    Main title */
 "Change Password" = "Cambiar contraseña";
 
+/* Title of an alert prompting the user that they are about to change the blog they are posting to. */
+"Change Site" = "Cambiar sitio";
+
 /* Change site icon button */
 "Change Site Icon" = "Cambiar icono del sitio";
 
