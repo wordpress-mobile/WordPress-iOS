@@ -6,7 +6,7 @@ To test:
 1. Potential unintended areas of impact
 
 
-2. What I did to test those/ what existing automated tests I relied on
+2. What I did to test those areas of impact (or what existing automated tests I relied on)
 
 
 3. What automated tests I added or what prevented me from doing so
