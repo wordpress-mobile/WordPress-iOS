@@ -222,9 +222,6 @@ extension UIColor {
         return .secondaryLabel
     }
 
-    /// Note: these values are intended to match the iOS defaults
-    static var tabUnselected: UIColor =  UIColor(light: UIColor(hexString: "999999"), dark: UIColor(hexString: "757575"))
-
     static var barButtonItemTitle: UIColor {
         return UIColor(light: UIColor.primary(.shade50), dark: UIColor.primary(.shade30))
     }

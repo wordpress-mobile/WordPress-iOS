@@ -39,4 +39,11 @@ extension UIColor {
     static var filterBarSelectedText: UIColor {
         return .text
     }
+
+    static var tabSelected: UIColor {
+        return .text
+    }
+
+    /// Note: these values are intended to match the iOS defaults
+    static var tabUnselected: UIColor =  UIColor(light: UIColor(hexString: "999999"), dark: UIColor(hexString: "757575"))
 }
