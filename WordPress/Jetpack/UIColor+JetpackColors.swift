@@ -14,7 +14,7 @@ extension UIColor {
 
     static var appBarTint: UIColor {
         if FeatureFlag.newNavBarAppearance.enabled {
-            return .primary
+            return .text
         }
 
         return .white
