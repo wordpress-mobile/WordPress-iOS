@@ -4138,11 +4138,7 @@
 		FAD2538F26116A1600EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
 		FAD2539026116A1600EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
 		FAD2539126116A1600EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
-		FAD253A426116AA600EDAF88 /* TargetStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD253A326116AA600EDAF88 /* TargetStyleGuide.swift */; };
-		FAD253A526116AA600EDAF88 /* TargetStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD253A326116AA600EDAF88 /* TargetStyleGuide.swift */; };
-		FAD253A626116AA600EDAF88 /* TargetStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD253A326116AA600EDAF88 /* TargetStyleGuide.swift */; };
 		FAD2544226116CEA00EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2544126116CEA00EDAF88 /* AppStyleGuide.swift */; };
-		FAD2545426116D2700EDAF88 /* TargetStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD253A326116AA600EDAF88 /* TargetStyleGuide.swift */; };
 		FAD9457E25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD9457D25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift */; };
 		FAD9458E25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD9458D25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift */; };
 		FAD951A425B6CB3600F011B5 /* JetpackRestoreFailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD951A325B6CB3600F011B5 /* JetpackRestoreFailedViewController.swift */; };
@@ -7138,7 +7134,6 @@
 		FAC086D625EDFB1E00B94F2A /* ReaderRelatedPostsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderRelatedPostsCell.xib; sourceTree = "<group>"; };
 		FACB36F01C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeWebNavigationDelegate.swift; sourceTree = "<group>"; };
 		FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyleGuide.swift; sourceTree = "<group>"; };
-		FAD253A326116AA600EDAF88 /* TargetStyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetStyleGuide.swift; sourceTree = "<group>"; };
 		FAD2544126116CEA00EDAF88 /* AppStyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyleGuide.swift; sourceTree = "<group>"; };
 		FAD9457D25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupOptionsCoordinator.swift; sourceTree = "<group>"; };
 		FAD9458D25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreWarningCoordinator.swift; sourceTree = "<group>"; };
@@ -13474,7 +13469,6 @@
 			isa = PBXGroup;
 			children = (
 				FA25F7F5260985370005E08F /* TargetConfiguration.swift */,
-				FAD253A326116AA600EDAF88 /* TargetStyleGuide.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -17187,7 +17181,6 @@
 				5D1181E71B4D6DEB003F3084 /* WPStyleGuide+Reader.swift in Sources */,
 				3250490724F988220036B47F /* Interpolation.swift in Sources */,
 				E17FEAD8221490F7006E1D2D /* PostEditorAnalyticsSession.swift in Sources */,
-				FAD253A426116AA600EDAF88 /* TargetStyleGuide.swift in Sources */,
 				738B9A5221B85CF20005062B /* SiteCreationWizardLauncher.swift in Sources */,
 				3234B8E7252FA0930068DA40 /* ReaderSitesCardCell.swift in Sources */,
 				D865722E2186F96D0023A99C /* SiteSegmentsWizardContent.swift in Sources */,
@@ -17385,7 +17378,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FAD253A626116AA600EDAF88 /* TargetStyleGuide.swift in Sources */,
 				74021A21202E173F006CC39F /* TextList+WordPress.swift in Sources */,
 				433ADC19223B2A0200ED9DE1 /* TextBundleWrapper.m in Sources */,
 				74021A07202E1307006CC39F /* UINavigationController+Extensions.swift in Sources */,
@@ -17509,7 +17501,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FAD253A526116AA600EDAF88 /* TargetStyleGuide.swift in Sources */,
 				741E224B1FC0E5C0007967AB /* UploadOperation.swift in Sources */,
 				43EE90EF223B1029006A33E9 /* TextBundleWrapper.m in Sources */,
 				74EA3B89202A0462004F802D /* ShareNoticeConstants.swift in Sources */,
@@ -19241,7 +19232,6 @@
 				FABB25CC2602FC2C00C8785C /* WPStyleGuide+Themes.swift in Sources */,
 				FABB25CD2602FC2C00C8785C /* WPStyleGuide+Reader.swift in Sources */,
 				FABB25CE2602FC2C00C8785C /* Interpolation.swift in Sources */,
-				FAD2545426116D2700EDAF88 /* TargetStyleGuide.swift in Sources */,
 				FABB25CF2602FC2C00C8785C /* PostEditorAnalyticsSession.swift in Sources */,
 				FABB25D02602FC2C00C8785C /* SiteCreationWizardLauncher.swift in Sources */,
 				FABB25D12602FC2C00C8785C /* ReaderSitesCardCell.swift in Sources */,
