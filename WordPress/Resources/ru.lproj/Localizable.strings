@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-23 19:23:44+0000 */
+/* Translation-Revision-Date: 2021-03-25 13:03:39+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ru */
@@ -267,8 +267,26 @@
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Файл содержит элемент вредоносного кода";
 
+/* No comment provided by engineer. */
+"A link to a URL." = "Ссылка на URL.";
+
+/* No comment provided by engineer. */
+"A link to a category." = "Ссылка на рубрику.";
+
+/* No comment provided by engineer. */
+"A link to a page." = "Ссылка на страницу.";
+
+/* No comment provided by engineer. */
+"A link to a post." = "Ссылка на запись.";
+
+/* No comment provided by engineer. */
+"A link to a tag." = "Ссылка на метку.";
+
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "Список сайтов на этой учётной записи.";
+
+/* Story Intro welcome title */
+"A new way to create and publish engaging content on your site." = "Новый способ создавать и публиковать захватывающее содержимое на вашем сайте.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "Последовательность шагов демонстрирующая добавление темы, значка сайта и немного больше.";
@@ -386,9 +404,6 @@
 /* No comment provided by engineer. */
 "Add Block Before" = "Добавить блок перед";
 
-/* Accessibility label for add comment button */
-"Add Comment" = "Добавить комментарий";
-
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Добавить содержимое к записи";
 
@@ -419,9 +434,6 @@
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Добавьте URL пользовательской CSS для загрузки в Чтиве. Если вы используете локальную установку Calypso, то он может выглядеть примерно так: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
-/* No comment provided by engineer. */
-"Add a description" = "Добавить описание";
-
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Добавить автономный веб-сайт";
 
@@ -437,11 +449,11 @@
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Добавить изображение учетной записи";
 
-/* No comment provided by engineer. */
-"Add annotation" = "Добавить аннотацию";
-
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Добавьте любую тему";
+
+/* No comment provided by engineer. */
+"Add button text" = "Добавить текст кнопки";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Добавьте изображение (или аватар) для представления этой новой учетной записи.";
@@ -518,7 +530,8 @@
 /* Autoapprove every comment
    Browse all themes selection title
    Displays all of the historical threats
-   Displays all of the Notifications, unfiltered */
+   Displays all of the Notifications, unfiltered
+   Title of all Comments filter. */
 "All" = "Все";
 
 /* Information about redeeming domain credit on site dashboard. */
@@ -564,6 +577,12 @@
 
 /* No comment provided by engineer. */
 "Allow this connection to be used by all admins and users of your site." = "Разрешить всем администраторам и посетителям вашего сайта использовать это подключение.";
+
+/* Allowlisted IP Addresses Title */
+"Allowlisted IP Addresses" = "Белый список IP";
+
+/* Jetpack Settings: Allowlisted IP addresses */
+"Allowlisted IP addresses" = "Белый список IP";
 
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Почти готово! Введите проверочный код из приложения Authenticator.";
@@ -633,9 +652,6 @@
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "Произошла неизвестная ошибка. Повторите попытку.";
 
-/* No comment provided by engineer. */
-"Annotations Sidebar" = "Боковая панель аннотаций";
-
 /* Insights 'This Year' details view header */
 "Annual Site Stats" = "Статистика сайта за год";
 
@@ -665,6 +681,9 @@
    Approves a Comment
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Одобрить";
+
+/* Title of approved Comments filter. */
+"Approved" = "Одобрен";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
 "Approves the Comment." = "Одобрить комментарий.";
@@ -881,10 +900,6 @@
 /* Text for related post cell preview */
 "Big iPhone\/iPad Update Now Available" = "Доступно большое обновление для iPhone\/iPad";
 
-/* Blacklist Title
-   Settings: Comments Blacklist */
-"Blacklist" = "Чёрный список";
-
 /* Notice that a page without content has been created */
 "Blank page created" = "Создана пустая страница";
 
@@ -921,6 +936,10 @@
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Сайт заблокирован";
+
+/* Blocklist Title
+   Settings: Comments Blocklist */
+"Blocklist" = "Чёрный список";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Блог";
@@ -962,6 +981,9 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "Стиль кнопки";
+
+/* No comment provided by engineer. */
+"ButtonGroup" = "Группа кнопок";
 
 /* Label for the post author in the post detail. */
 "By " = "Автор:";
@@ -1048,6 +1070,7 @@
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
@@ -1094,6 +1117,9 @@
 /* Category menu item in share extension.
    Menu item label for linking a specific category. */
 "Category" = "Рубрика";
+
+/* No comment provided by engineer. */
+"Category Link" = "Ссылка на рубрику";
 
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "Отсутствует название рубрики.";
@@ -1252,7 +1278,7 @@
 "Choose video" = "Выбор видео";
 
 /* Reader select interests subtitle label text */
-"Choose your interests" = "Выберите ваши интересы";
+"Choose your topics" = "Выберите ваши интересы";
 
 /* Register Domain - Address information field City */
 "City" = "Город";
@@ -1342,8 +1368,7 @@
 /* Displayed when a Comment is spammed */
 "Comment has been marked as Spam" = "Комментарий помечен как спам.";
 
-/* Accessibility label for comments button with no comments
-   Filters Comments Notifications
+/* Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
@@ -1524,9 +1549,6 @@
 
 /* Displays the number of blocks, words and characters in text */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Структура содержимого\nБлоки: %1$li, Слова: %2$li, Символы: %3$li";
-
-/* No comment provided by engineer. */
-"Content…" = "Содержимое...";
 
 /* Action title to dismiss domain credit redemption success screen
    Apply changes localy to single block edition in the web block editor
@@ -1933,6 +1955,13 @@
 /* Label for the dimensions in pixels for a media asset (image / video) */
 "Dimensions" = "Размеры";
 
+/* Title. Title of a button that will disable group invite links when tapped. */
+"Disable" = "Отключить";
+
+/* Title. A call to action to disable invite links.
+   Title. Title of a prompt to disable group invite links. */
+"Disable invite link" = "Отключить пригласительную ссылку";
+
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "Отключено";
 
@@ -1972,6 +2001,9 @@
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Откройте для себя и подпишитесь на блоги, которые полюбите";
 
+/* Button title. Tapping shows the Follow Topics screen. */
+"Discover more topics" = "Найти больше интересных тем";
+
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "Обсуждение";
@@ -1985,6 +2017,8 @@
    Dismiss button title.
    Dismiss the AlertView
    Share extension error dialog cancel button label.
+   Spoken accessibility label
+   The title of a button to close the classic editor deprecation notice alert dialog.
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
@@ -2036,7 +2070,6 @@
    Label for confirm location of a post
    Label for Done button
    Label on button to dismiss revisions view
-   Label on button to dismiss view presented after publishing a post
    Menu button title for finishing editing the Menu name.
    Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
@@ -2169,8 +2202,8 @@
 /* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
 "Edit %@ block" = "Редактировать блок %@";
 
-/* Blacklist Keyword Edition Title */
-"Edit Blacklist Word" = "Редактировать маркер включения в чёрный список";
+/* Blocklist Keyword Edition Title */
+"Edit Blocklist Word" = "Редактировать слова чёрного списка";
 
 /* No comment provided by engineer. */
 "Edit Comment" = "Изменить комментарий";
@@ -2330,6 +2363,9 @@
    Title of a button. */
 "Enter your password instead." = "Введите пароль.";
 
+/* Error message displayed when restoring a site fails due to credentials not being configured. */
+"Enter your server credentials to enable one click site restores from backups." = "Введите учетные данные сервера, чтобы включить восстановление из резервных копий в одно нажатие.";
+
 /* Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
@@ -2466,6 +2502,9 @@
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "Разверните для выбора другой области меню";
 
+/* Title. Indicates an expiration date. */
+"Expires on" = "Истекает";
+
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Объясните, о чём этот сайт.";
 
@@ -2495,6 +2534,9 @@
    The action failed */
 "Failed" = "Произошла ошибка";
 
+/* Error title when picked media cannot be imported into stories. */
+"Failed Media Export" = "Экспорт медиа неудачен";
+
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Невозможно вставить аудиозапись. Нажмите для выбора вариантов.";
 
@@ -2509,6 +2551,9 @@
 
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Не удалось сериализировать запрос в API-интерфейс REST.";
+
+/* The app failed to unsubscribe from the comments for the post */
+"Failed to unfollow conversation" = "Не удаётся отписаться от комментариев к записи";
 
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "Невозможно загрузить файлы.\nНажмите для выбора вариантов.";
@@ -2627,6 +2672,12 @@
 /* Verb. An option to follow a site. */
 "Follow site" = "Подписаться на сайт";
 
+/* Screen title. Reader select interests title label text. */
+"Follow topics" = "Подписаться на темы";
+
+/* Caption displayed in promotional screens shown during the login flow. */
+"Follow your favorite sites and discover new blogs." = "Подписывайтесь на избранные сайты и находите новые блоги.";
+
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "Подписывайтесь на избранные сайты и находите новое чтиво.";
 
@@ -2664,6 +2715,9 @@
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Following conversation by email" = "Вы подписаны на беседу по email";
+
+/* Label displayed to the user while loading their selected interests */
+"Following new topics..." = "Подписка на новые темы...";
 
 /* Filters Follows Notifications */
 "Follows" = "Читатели";
@@ -2719,6 +2773,9 @@
 /* Add New Stats Card category title
    Title for the general section in site settings screen */
 "General" = "Общие";
+
+/* Title. A call to action to generate a new invite link. */
+"Generate new link" = "Сгенерировать новую ссылку";
 
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Создание предварительного просмотра...";
@@ -2880,9 +2937,6 @@
 /* No comment provided by engineer. */
 "Help icon" = "Значок справки";
 
-/* No comment provided by engineer. */
-"Here is the panel content!" = "Это содержимое панели!";
-
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Тут информация о том как поживает ваша запись.";
 
@@ -3031,9 +3085,6 @@
 "Included with Site" = "Предоставляется вместе с сайтом";
 
 /* Downloadable/Restorable items: general section footer text */
-"Includes wp-config php and any non WordPress files" = "Включает wp-config.php и все файлы не принадлежащие WordPress";
-
-/* Downloadable/Restorable items: general section footer text */
 "Includes wp-config.php and any non WordPress files" = "Включает wp-config.php и все файлы не принадлежащие WordPress";
 
 /* An error message shown when a user signed in with incorrect credentials. */
@@ -3135,6 +3186,9 @@
 
 /* Send Person Invite */
 "Invite" = "Пригласить";
+
+/* Title for the Invite Link section of the Invite Person screen. */
+"Invite Link" = "Пригласительная ссылка";
 
 /* Invite People Title */
 "Invite People" = "Пригласить людей";
@@ -3683,6 +3737,12 @@
 /* Label for the posting activity legend. */
 "More Posts" = "Больше записей";
 
+/* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
+"More from %1$@" = "Ещё больше с %1$@";
+
+/* Section title for global related posts. */
+"More on WordPress.com" = "Подробнее на WordPress.com";
+
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Самое популярное время";
 
@@ -3744,9 +3804,6 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "Отправить комментарий в «Корзину».";
 
-/* No comment provided by engineer. */
-"My Document Setting Panel" = "Панель настроек моего документа";
-
 /* Link to My Profile section
    My Profile view title */
 "My Profile" = "Мой профиль";
@@ -3766,15 +3823,6 @@
 
 /* Option in Support view to access previous help tickets. */
 "My Tickets" = "Мои обращения в поддержку";
-
-/* No comment provided by engineer. */
-"My post publish panel" = "Панель публикации моей записи";
-
-/* No comment provided by engineer. */
-"My post status info" = "Информация о состоянии моей записи";
-
-/* No comment provided by engineer. */
-"My pre publish panel" = "Моя панель перед публикацией";
 
 /* Accessibility label for the Email text field.
    Name text field placeholder */
@@ -3811,8 +3859,8 @@
    New button badge on Stories Post button */
 "New" = "Новые";
 
-/* Blacklist Keyword Insertion Title */
-"New Blacklist Word" = "Новое слово из черного списка";
+/* Blocklist Keyword Insertion Title */
+"New Blocklist Word" = "Новое слово из черного списка";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "Создать IP-адрес или диапазон IP-адресов";
@@ -3921,7 +3969,7 @@
 "No comments" = "Нет комментариев";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
-   Displayed when the user pulls up the comments view and they have no comments */
+   Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Комментариев пока нет";
 
 /* An error message title shown when there is no internet connection.
@@ -3962,9 +4010,6 @@
    This primary error message is displayed if a user encounters an issue with network reachability. */
 "No internet connection" = "Нет подключения к интернету.";
 
-/* Error message shown when the user is browsing Site Comments without an internet connection. */
-"No internet connection. Some comments may be unavailable while offline." = "Нет подключения к сети. Некоторые комментарии могут быть недоступны.";
-
 /* Error message shown when the user is browsing Notifications without an internet connection.
    Error message shown when the user is browsing Reader without an internet connection. */
 "No internet connection. Some content may be unavailable while offline." = "Нет подключения к сети. Некоторое содержимое может быть недоступно.";
@@ -4000,6 +4045,9 @@
 
 /* Displayed in the Stats widgets when there is no network */
 "No network available" = "Сеть недоступна";
+
+/* Message shown when there are no new topics to follow. */
+"No new topics to follow" = "Нет новых тем для подписки";
 
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Уведомлений пока нет";
@@ -4185,6 +4233,9 @@
 /* Sort Order */
 "Oldest first" = "Сначала старые";
 
+/* Warning message about disabling group invite links. */
+"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Если эта ссылка для приглашения будет отключена, никто не сможет использовать её для присоединения к вашей команде. Вы уверены в этом?";
+
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "После создания сайта на WordPress.com вы сможете сделать перепубликацию понравившегося содержимого на своем сайте.";
 
@@ -4314,6 +4365,9 @@
    Noun. Type of content being selected is a blog page */
 "Page" = "Страница";
 
+/* No comment provided by engineer. */
+"Page Link" = "Ссылка на страницу";
+
 /* Prompts the user that a restored page was moved to the drafts list. */
 "Page Restored to Drafts" = "Страница восстановлена в списке \"Черновики\"";
 
@@ -4403,7 +4457,8 @@
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Вставить без форматирования";
 
-/* Status for Media object that is being processed locally. */
+/* Status for Media object that is being processed locally.
+   Title of pending Comments filter. */
 "Pending" = "Ожидает проверки";
 
 /* No comment provided by engineer. */
@@ -4605,6 +4660,9 @@
 /* For setting the format of a post.
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Формат записи";
+
+/* No comment provided by engineer. */
+"Post Link" = "Ссылка записи";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "Запись восстановлена и перемещена в черновики";
@@ -5027,9 +5085,6 @@
 /* Remove site icon button */
 "Remove Site Icon" = "Удалить значок сайта";
 
-/* No comment provided by engineer. */
-"Remove annotations" = "Удалить аннотации";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "Удалить с экрана тенденций";
 
@@ -5127,9 +5182,6 @@
 /* Accessibility label for the reset activity type button */
 "Reset Activity Type filter" = "Сброс фильтра типа активности";
 
-/* No comment provided by engineer. */
-"Reset Block" = "Сбросить блок";
-
 /* Accessibility label for the reset date range button */
 "Reset Date Range filter" = "Сброс фильтра диапазона дат";
 
@@ -5177,6 +5229,7 @@
 "Restoring to %@" = "Восстановление на %@";
 
 /* A prompt to attempt the failed network request again
+   A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
@@ -5242,7 +5295,8 @@
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Справа";
 
-/* User Roles Title
+/* Title. Indicates the user role an invite link is for.
+   User Roles Title
    User's Role */
 "Role" = "Роль";
 
@@ -5361,11 +5415,11 @@
    Title of the Reader's search feature */
 "Search" = "Поиск";
 
-/* Site creation. Seelect a domain, search field placeholder */
-"Search Domains" = "Поиск доменов";
-
 /* Prompt in the location search bar. */
 "Search Locations" = "Поиск местоположений";
+
+/* No comment provided by engineer. */
+"Search Settings" = "Настройки поиска";
 
 /* Label for list of search term */
 "Search Term" = "Поиск";
@@ -5409,7 +5463,8 @@
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "Посмотреть все";
 
-/* Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow.
+   Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "Следите в реальном времени за комментариями и уведомлениями.";
 
 /* Select action on the app extension category picker screen. Saves the selected categories for the post. */
@@ -5613,6 +5668,9 @@
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Поделиться информацией с нашей аналитикой по использованию сервисов при входе в вашу учетную запись WordPress.";
 
+/* Title. A call to action to share an invite link. */
+"Share invite link" = "Поделиться ссылкой приглашения";
+
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Поделиться ссылкой";
 
@@ -5714,9 +5772,6 @@
 
 /* Accessibility hint for the site name and URL button on Reader's Post Details. */
 "Shows the site's posts." = "Показывает записи сайта";
-
-/* No comment provided by engineer. */
-"Sidebar title plugin" = "Плагин заголовка боковой панели";
 
 /* View title during the sign up process. */
 "Sign Up" = "Регистрация";
@@ -5930,7 +5985,8 @@
 "Space used" = "Использованное место";
 
 /* Marks comment as spam.
-   Spam */
+   Spam
+   Title of spam Comments filter. */
 "Spam" = "Спам";
 
 /* Option to select the Spark email app when logging in with magic links */
@@ -6017,20 +6073,17 @@
 /* Text displayed in HUD while a post is being submitted for review. */
 "Submitting for Review..." = "Отправка на рассмотрение...";
 
-/* No comment provided by engineer. */
-"Success Message" = "Сообщение об успехе";
-
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "Индекс Spotlight очищен";
+
+/* The app successfully subscribed to the comments for the post */
+"Successfully followed conversation" = "Вы подписались на комментарии к записи";
 
 /* Notice displayed after installing a plug-in. */
 "Successfully installed %@." = "Успешно установлен %@.";
 
-/* The app successfully subscribed to the comments for the post */
-"Successfully subscribed to the comments" = "Вы подписались на комментарии";
-
 /* The app successfully unsubscribed from the comments for the post */
-"Successfully unsubscribed from the comments" = "Вы отписались от комментариев";
+"Successfully unfollowed conversation" = "Вы отписались от комментариев этой записи";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -6038,6 +6091,9 @@
 
 /* Announced by VoiceOver when new domains suggestions are shown in Site Creation. */
 "Suggestions updated" = "Предложения обновлены";
+
+/* No comment provided by engineer. */
+"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Завершите вашу запись списком заголовков, добавьте HTML-якоря к блокам заголовков, чтобы создать ссылки на них здесь.";
 
 /* User role badge */
 "Super Admin" = "Главный администратор";
@@ -6050,7 +6106,7 @@
 /* Action button to switch the blog to which you'll be posting */
 "Switch Blog" = "Сменить блог";
 
-/* No comment provided by engineer. */
+/* Button used to switch site */
 "Switch Site" = "Сменить сайт";
 
 /* Switches the Editor to HTML Mode */
@@ -6095,6 +6151,9 @@
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "Системные параметры по умолчанию";
 
+/* No comment provided by engineer. */
+"Table of Contents" = "Содержание";
+
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "Таблица с показом %@";
 
@@ -6107,6 +6166,9 @@
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
 "Tag" = "Метка";
+
+/* No comment provided by engineer. */
+"Tag Link" = "Ссылка на метку";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "Метка уже существует";
@@ -6156,6 +6218,9 @@
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Нажмите, чтобы отменить загрузку.";
 
+/* Accessibility hint for button used to change site title */
+"Tap to change the site's title" = "Нажмите для смены названия сайта";
+
 /* Accessibility hint to inform the user what action the hide button performs */
 "Tap to collapse the post tags" = "Нажмите, чтобы свернуть метки записи";
 
@@ -6183,8 +6248,14 @@
 /* This is the blog picker in the editor */
 "Tap to select which blog to post to" = "Выберите касанием блог, в котором следует сделать запись.";
 
+/* Accessibility hint for button used to switch site */
+"Tap to switch to another site, or add a new site" = "Нажмите для переключения на другой сайт или для добавления нового сайта";
+
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Нажмите, чтобы посмотреть записи с этой меткой";
+
+/* Accessibility hint for button used to view the user's site */
+"Tap to view your site" = "Нажмите для просмотра сайта";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Таксономия";
@@ -6255,6 +6326,9 @@
 
 /* Description of the purpose of a site's title. */
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Название сайта отображается в заголовке браузера и отображается большинством тем в заголовке сайта.";
+
+/* Message for stories unsupported device error. */
+"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "Редактор историй на настоящий момент не работает с iPad. Попробуйте истории с iPhone.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "В URL-адресе отсутствует допустимый хост.";
@@ -6430,6 +6504,9 @@
 /* Explaining to the user there was an generic error accesing media. */
 "There was a problem when trying to access your media. Please try again later." = "При доступе к медиафайлам произошла ошибка. Повторите попытку позже.";
 
+/* Message for stories unknown error. */
+"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Возникла проблема с редактором историй. Если проблема сохранится, вы можете обратиться в поддержку через \"Мой профиль - Помощь и поддержка\".";
+
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
 "There was an error changing the password" = "Возникла ошибка при смене пароля";
@@ -6591,9 +6668,6 @@
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Название рубрики обязательно.";
 
-/* No comment provided by engineer. */
-"Title:" = "Заголовок:";
-
 /* NSPhotoLibraryAddUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library.
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "Для размещения фотографий и видео в ваших записях.";
@@ -6706,6 +6780,7 @@
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
+   Title of trashed Comments filter.
    Trashed */
 "Trashed" = "В корзине";
 
@@ -6738,6 +6813,9 @@
 /* Customize Insights button title */
 "Try it now" = "Попробуйте прямо сейчас!";
 
+/* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
+"Try the new Block Editor" = "Попробуйте редактор блоков";
+
 /* When social login fails, this button offers to let the user try again with a differen email address */
 "Try with another email" = "Попробуйте с другим email";
 
@@ -6768,6 +6846,9 @@
 /* A placeholder for the sharing label. */
 "Type a label" = "Введите текст подписи";
 
+/* Site creation. Seelect a domain, search field placeholder */
+"Type a name for your site" = "Выберите название для вашего сайта";
+
 /* Register domain - Search field placeholder for the Suggested Domain screen */
 "Type to get more suggestions" = "Пишите для получения еще предложений";
 
@@ -6783,6 +6864,9 @@
 /* An error message. */
 "Unable to Connect" = "Невозможно установить соединение";
 
+/* Title for stories unknown error. */
+"Unable to Create Stories Editor" = "Невозможно использовать редактор историй";
+
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Не удалось загрузить записи";
 
@@ -6792,14 +6876,23 @@
 /* Notice title when blocking a site fails. */
 "Unable to block site" = "Не удалось заблокировать этот сайт";
 
+/* An error message shown when there is an issue creating new invite links. */
+"Unable to create new invite links." = "Нельзя создать новые пригласительные ссылки.";
+
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "Невозможно удалить все медиафайлы.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Невозможно удалить медиафайл.";
 
+/* An error message shown when there is an issue creating new invite links. */
+"Unable to disable invite links." = "Нельзя отключить пригласительные ссылки.";
+
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "Невозможно скачать файл";
+
+/* The app failed to subscribe to the comments for the post */
+"Unable to follow conversation" = "Нельзя подписаться на комментарии записи";
 
 /* Notice title when following a site fails. */
 "Unable to follow site" = "Не удалось подписаться на этот сайт";
@@ -6892,6 +6985,9 @@
 /* Error message displayed when an error occurred checking for email availability. */
 "Unable to verify the email address. Please try again later." = "Невозможно проверить ваш электронный адрес. Попробуйте позже еще раз.";
 
+/* Message displayed when visiting the Jetpack settings page fails. */
+"Unable to visit Jetpack settings for site" = "Не удается посетить настройки Jetpack для сайта";
+
 /* Message displayed when visiting a site fails. */
 "Unable to visit site" = "Не удаётся перейти на сайт";
 
@@ -6981,6 +7077,9 @@
 
 /* No comment provided by engineer. */
 "Unsupported" = "Не поддерживается";
+
+/* Title for stories unsupported device error. */
+"Unsupported Device" = "Устройство не поддерживается";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Без названия";
@@ -7097,6 +7196,9 @@
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Использовать редактор блоков";
+
+/* Footer text for Invite Links section of the Invite People screen. */
+"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Используйте эту ссылку, чтобы подключить членов вашей команды, не приглашая их по одному. Любой, кто посетит этот URL-адрес, сможет зарегистрироваться в вашей организации, даже если он получил ссылку от кого-то другого, поэтому убедитесь, что вы делитесь ею с доверенными людьми.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Использовать этот сайт";
@@ -7291,13 +7393,11 @@
    Title for Jetpack Restore Warning screen */
 "Warning" = "Предупреждение";
 
-/* No comment provided by engineer. */
-"Warning Message" = "Предупреждающее сообщение";
-
 /* shown in promotional screens during first launch */
 "Watch readers from around the world read and interact with your site — in real time." = "Наблюдайте, как пользователи со всего света читают ваш сайт и взаимодействуют с ним в реальном времени.";
 
-/* Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow.
+   Shown in the prologue carousel (promotional screens) during first launch. */
 "Watch your audience grow with in-depth analytics." = "Следите за ростом вашей аудитории с глубокой аналитикой.";
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
@@ -7537,6 +7637,9 @@
 /* A message title */
 "Welcome to the Reader" = "Добро пожаловать в раздел «Чтиво».";
 
+/* Caption displayed in promotional screens shown during the login flow. */
+"Welcome to the world's most popular website builder." = "Добро пожаловать в самый популярный в мире конструктор сайтов.";
+
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "Добро пожаловать в самый популярный в мире конструктор сайтов.";
 
@@ -7545,6 +7648,9 @@
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Важные письма, касающиеся вашей учётной записи, мы отправляем всегда, но можно также включить и другие полезные уведомления.";
+
+/* The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
+"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "Мы скоро отключим классический редактор для новых записей, это не затронет имеющиеся записи и страницы. Включите редактор блоков в настройках сайта сейчас.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress.
    Hint displayed when we fail to fetch the status of the restore in progress. */
@@ -7590,7 +7696,7 @@
 /* Text rendered at the bottom of the Discussion Moderation Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\"." = "Комментарии, содержащие любые из этих слов в тексте, имени автора, URL-адресе, адресе электронной почты или IP-адресе, будут помещены в очередь на модерацию. Можно вводить фрагменты слов, то есть по слову «press» будет найдено «WordPress».";
 
-/* Text rendered at the bottom of the Discussion Blacklist Keys editor */
+/* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Комментарии, содержащие любые из этих слов в тексте, имени автора, URL-адресе, адресе электронной почты или IP-адресе, будут помечены как спам. Можно вводить фрагменты слов, то есть по слову «press» будет найдено «WordPress».";
 
 /* Subtitle for the no followed sites result screen */
@@ -7604,12 +7710,6 @@
 
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "Какой вариант вы хотите отредактировать?";
-
-/* Whitelisted IP Addresses Title */
-"Whitelisted IP Addresses" = "Разрешённые IP-адреса";
-
-/* Jetpack Settings: Whitelisted IP addresses */
-"Whitelisted IP addresses" = "Разрешённые IP-адреса";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Произошла ошибка: не удалось выполнить вход. Повторите попытку.";
@@ -7626,7 +7726,8 @@
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Не будет опубликован.";
 
-/* Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow.
+   Shown in the prologue carousel (promotional screens) during first launch. */
 "With this powerful editor you can post on the go." = "С настолько мощным редактором вы можете создавать публикации на ходу.";
 
 /* Siri Suggestion to open App Settings */
@@ -7842,8 +7943,11 @@
 /* Latest post summary text when there are no posts. */
 "You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "Вы еще не опубликовали ни одной записи. Как только вы начнете делать это, основные данные по вашей последней записи будут здесь.";
 
-/* Text rendered at the bottom of the Whitelisted IP Addresses editor, should match Calypso. */
-"You may whitelist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Вы можете добавить один или несколько IP-адресов в список разрешённых, чтобы плагин Jetpack их никогда не блокировал. Можно указывать адреса IPv4 и IPv6. Чтобы указать диапазон, введите минимальное и максимальное значения, разделённые тире. Пример: 12.12.12.1-12.12.12.100.";
+/* Title for a view milestone push notification */
+"You hit a milestone 🚀" = "Вы достигли важной вехи 🚀";
+
+/* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
+"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Вы можете добавить один или несколько IP-адресов в белый список, чтобы плагин Jetpack их никогда не блокировал. Можно указывать адреса IPv4 и IPv6. Чтобы указать диапазон, введите минимальное и максимальное значения, разделённые тире. Пример: 12.12.12.1-12.12.12.100.";
 
 /* A suggestion of topics the user might like */
 "You might like" = "Вам может понравиться";
@@ -7872,9 +7976,6 @@
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Вы уже в курсе всего!";
-
-/* Story Intro welcome title */
-"You've got early access to story posts and we'd love for you to give it a try." = "Вам предоставлен ранний доступ к Историям, и мы хотим чтобы вы их попробовали.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Вы внесли, но не сохранили изменения в эту запись";
@@ -7911,6 +8012,9 @@
 
 /* Title for the view when there aren't any Backups to display */
 "Your first backup will be ready soon" = "Ваша первая резервная копия скоро будет готова";
+
+/* Error message when picked media cannot be imported into stories. */
+"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Медиафайл не может быть экспортирован. Если проблема сохранится, вы можете обратиться в поддержку через \"Мой профиль - Помощь и поддержка\".";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Ваши уведомления путешествуют с вами — смотрите комментарии и отметки \"нравится\" в реальном времени.";
@@ -7999,6 +8103,9 @@
 /* The menu item to select during a guided tour. */
 "connections" = "подключения";
 
+/* No comment provided by engineer. */
+"document outline" = "структура документа";
+
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "не правда ли, хорошо выбирать вещи из списка?";
 
@@ -8009,6 +8116,7 @@
 "eg. 44" = "напр. 44";
 
 /* Placeholder for the site url textfield.
+   Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
 
@@ -8044,6 +8152,9 @@
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "номер телефона";
+
+/* No comment provided by engineer. */
+"summary" = "итог";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "эти элементы будут удалены:";

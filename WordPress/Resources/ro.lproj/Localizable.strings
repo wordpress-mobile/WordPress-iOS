@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-24 10:28:41+0000 */
+/* Translation-Revision-Date: 2021-03-25 13:30:51+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -267,8 +267,26 @@
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Un fișier conține un model de cod care poate crea vulnerabilități";
 
+/* No comment provided by engineer. */
+"A link to a URL." = "O legătură la un URL.";
+
+/* No comment provided by engineer. */
+"A link to a category." = "O legătură la o categorie.";
+
+/* No comment provided by engineer. */
+"A link to a page." = "O legătură la o pagină.";
+
+/* No comment provided by engineer. */
+"A link to a post." = "O legătură la un articol.";
+
+/* No comment provided by engineer. */
+"A link to a tag." = "O legătură la o etichetă.";
+
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "O listă de situri asociate cu acest cont.";
+
+/* Story Intro welcome title */
+"A new way to create and publish engaging content on your site." = "Un mod nou de a crea și publica conținut captivant pe situl tău.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "O serie de pași care îți arată cum să adaugi o temă, un icon de sit și altele.";
@@ -386,9 +404,6 @@
 /* No comment provided by engineer. */
 "Add Block Before" = "Adaugă bloc înainte";
 
-/* Accessibility label for add comment button */
-"Add Comment" = "Adaugă un comentariu";
-
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Adaugă conținut în articol";
 
@@ -419,9 +434,6 @@
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Adaugă aici URL-ul pentru CSS-ul personalizat care să fie încărcat în Cititor. Dacă rulezi Calypso local, ar trebuie să fi ceva de genul: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
-/* No comment provided by engineer. */
-"Add a description" = "Adaugă o descriere";
-
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Adaugă un sit auto-găzduit";
 
@@ -437,11 +449,11 @@
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Adaugă o imagine pentru cont.";
 
-/* No comment provided by engineer. */
-"Add annotation" = "Adaugă o adnotare";
-
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Adaugă orice subiect";
+
+/* No comment provided by engineer. */
+"Add button text" = "Adaugă text în buton";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Adaugă o imagine sau un avatar care să reprezinte acest cont nou.";
@@ -518,7 +530,8 @@
 /* Autoapprove every comment
    Browse all themes selection title
    Displays all of the historical threats
-   Displays all of the Notifications, unfiltered */
+   Displays all of the Notifications, unfiltered
+   Title of all Comments filter. */
 "All" = "Toate";
 
 /* Information about redeeming domain credit on site dashboard. */
@@ -564,6 +577,12 @@
 
 /* No comment provided by engineer. */
 "Allow this connection to be used by all admins and users of your site." = "Permite ca această conexiune să fie folosită de toți administratorii și utilizatorii sitului tău.";
+
+/* Allowlisted IP Addresses Title */
+"Allowlisted IP Addresses" = "Adrese IP permise în lista";
+
+/* Jetpack Settings: Allowlisted IP addresses */
+"Allowlisted IP addresses" = "Adrese IP permise în lista";
 
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Aproape gata! Te rog introdu codul de verificare din aplicația ta Authenticator.";
@@ -633,9 +652,6 @@
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "A apărut o eroare necunoscută. Te rog încearcă din nou.";
 
-/* No comment provided by engineer. */
-"Annotations Sidebar" = "Bară laterală adnotări";
-
 /* Insights 'This Year' details view header */
 "Annual Site Stats" = "Statistici sit anuale";
 
@@ -665,6 +681,9 @@
    Approves a Comment
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Aprobă";
+
+/* Title of approved Comments filter. */
+"Approved" = "Aprobat";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
 "Approves the Comment." = "Aprobă comentariul.";
@@ -791,7 +810,7 @@
 
 /* Discussion Settings Title
    Settings: Comments Approval settings */
-"Automatically Approve" = "Aprobare automată";
+"Automatically Approve" = "Aprobă automat";
 
 /* Discussion Settings */
 "Automatically Close" = "Închidere automată";
@@ -881,10 +900,6 @@
 /* Text for related post cell preview */
 "Big iPhone\/iPad Update Now Available" = "O actualizare mare pentru  iPhone\/iPad este acum disponibilă";
 
-/* Blacklist Title
-   Settings: Comments Blacklist */
-"Blacklist" = "Lista neagră (Blacklist)";
-
 /* Notice that a page without content has been created */
 "Blank page created" = "A fost creată o pagină goală";
 
@@ -921,6 +936,10 @@
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Sit blocat";
+
+/* Blocklist Title
+   Settings: Comments Blocklist */
+"Blocklist" = "Listă blocări";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
@@ -962,6 +981,9 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "Stil buton";
+
+/* No comment provided by engineer. */
+"ButtonGroup" = "ButtonGroup";
 
 /* Label for the post author in the post detail. */
 "By " = "De";
@@ -1048,6 +1070,7 @@
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
@@ -1094,6 +1117,9 @@
 /* Category menu item in share extension.
    Menu item label for linking a specific category. */
 "Category" = "Categorie";
+
+/* No comment provided by engineer. */
+"Category Link" = "Legătură la categorie";
 
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "Lipsește titlul categoriei";
@@ -1252,7 +1278,7 @@
 "Choose video" = "Alege un video";
 
 /* Reader select interests subtitle label text */
-"Choose your interests" = "Alege ce te interesează";
+"Choose your topics" = "Alege subiecte";
 
 /* Register Domain - Address information field City */
 "City" = "Oraș";
@@ -1342,8 +1368,7 @@
 /* Displayed when a Comment is spammed */
 "Comment has been marked as Spam" = "Comentariul a fost marcat ca spam";
 
-/* Accessibility label for comments button with no comments
-   Filters Comments Notifications
+/* Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
@@ -1524,9 +1549,6 @@
 
 /* Displays the number of blocks, words and characters in text */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Structură conținut\nBlocuri: %1$li; cuvinte: %2$li; caractere: %3$li";
-
-/* No comment provided by engineer. */
-"Content…" = "Conținut...";
 
 /* Action title to dismiss domain credit redemption success screen
    Apply changes localy to single block edition in the web block editor
@@ -1933,6 +1955,13 @@
 /* Label for the dimensions in pixels for a media asset (image / video) */
 "Dimensions" = "Dimensiuni";
 
+/* Title. Title of a button that will disable group invite links when tapped. */
+"Disable" = "Dezactivează";
+
+/* Title. A call to action to disable invite links.
+   Title. Title of a prompt to disable group invite links. */
+"Disable invite link" = "Dezactivează legătura la invitație";
+
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "Dezactivat";
 
@@ -1972,6 +2001,9 @@
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Descoperă și urmărește blogurile care îți plac";
 
+/* Button title. Tapping shows the Follow Topics screen. */
+"Discover more topics" = "Găsește mai multe subiecte";
+
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "Discuție";
@@ -1985,6 +2017,8 @@
    Dismiss button title.
    Dismiss the AlertView
    Share extension error dialog cancel button label.
+   Spoken accessibility label
+   The title of a button to close the classic editor deprecation notice alert dialog.
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
@@ -2036,7 +2070,6 @@
    Label for confirm location of a post
    Label for Done button
    Label on button to dismiss revisions view
-   Label on button to dismiss view presented after publishing a post
    Menu button title for finishing editing the Menu name.
    Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
@@ -2169,8 +2202,8 @@
 /* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
 "Edit %@ block" = "Editează blocul %@";
 
-/* Blacklist Keyword Edition Title */
-"Edit Blacklist Word" = "Editare cuvânt listă neagră (Blacklist)";
+/* Blocklist Keyword Edition Title */
+"Edit Blocklist Word" = "Editează un cuvânt din Lista blocări";
 
 /* No comment provided by engineer. */
 "Edit Comment" = "Editare comentariu";
@@ -2333,6 +2366,9 @@
    Title of a button. */
 "Enter your password instead." = "În schimb, introdu parola.";
 
+/* Error message displayed when restoring a site fails due to credentials not being configured. */
+"Enter your server credentials to enable one click site restores from backups." = "Introdu datele de conectare la server pentru a activa pe sit restaurările cu un singur clic din copiile tale de siguranță.";
+
 /* Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
@@ -2469,6 +2505,9 @@
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "Se extinde pentru a selecta o altă zonă din meniu";
 
+/* Title. Indicates an expiration date. */
+"Expires on" = "Expiră pe";
+
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Explică despre ce vorba în acest sit.";
 
@@ -2498,6 +2537,9 @@
    The action failed */
 "Failed" = "Eșuat";
 
+/* Error title when picked media cannot be imported into stories. */
+"Failed Media Export" = "Exportul media a eșuat";
+
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Inserarea fișierului audio a eșuat. Te rog atinge pentru opțiuni.";
 
@@ -2512,6 +2554,9 @@
 
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Serializarea cererii către REST API a eșuat.";
+
+/* The app failed to unsubscribe from the comments for the post */
+"Failed to unfollow conversation" = "Anularea urmăririi conversației a eșuat";
 
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "Încărcarea fișierelor a eșuat.\nTe rog atinge pentru opțiuni.";
@@ -2630,6 +2675,12 @@
 /* Verb. An option to follow a site. */
 "Follow site" = "Urmărește situl";
 
+/* Screen title. Reader select interests title label text. */
+"Follow topics" = "Urmărește subiecte";
+
+/* Caption displayed in promotional screens shown during the login flow. */
+"Follow your favorite sites and discover new blogs." = "Urmărește-ți siturile preferate și descoperi bloguri noi.";
+
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "Urmărește-ți siturile preferate și descoperi lecturi noi.";
 
@@ -2667,6 +2718,9 @@
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Following conversation by email" = "Urmăresc conversația prin email";
+
+/* Label displayed to the user while loading their selected interests */
+"Following new topics..." = "Urmăresc subiecte noi...";
 
 /* Filters Follows Notifications */
 "Follows" = "Urmăriri";
@@ -2722,6 +2776,9 @@
 /* Add New Stats Card category title
    Title for the general section in site settings screen */
 "General" = "General";
+
+/* Title. A call to action to generate a new invite link. */
+"Generate new link" = "Generează o legătură nouă";
 
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Generez previzualizarea";
@@ -2883,9 +2940,6 @@
 /* No comment provided by engineer. */
 "Help icon" = "Icon pentru ajutor";
 
-/* No comment provided by engineer. */
-"Here is the panel content!" = "Iată conținutul panoului!";
-
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Iată ce a realizat articolul până acum.";
 
@@ -3034,9 +3088,6 @@
 "Included with Site" = "Inclus cu situl";
 
 /* Downloadable/Restorable items: general section footer text */
-"Includes wp-config php and any non WordPress files" = "Include wp-config php și toate fișierele care nu sunt din WordPress";
-
-/* Downloadable/Restorable items: general section footer text */
 "Includes wp-config.php and any non WordPress files" = "Include wp-config.php și toate fișierele care nu sunt din WordPress";
 
 /* An error message shown when a user signed in with incorrect credentials. */
@@ -3138,6 +3189,9 @@
 
 /* Send Person Invite */
 "Invite" = "Invită";
+
+/* Title for the Invite Link section of the Invite Person screen. */
+"Invite Link" = "Legătură la invitație";
 
 /* Invite People Title */
 "Invite People" = "Invită persoane";
@@ -3686,6 +3740,12 @@
 /* Label for the posting activity legend. */
 "More Posts" = "Mai multe articole";
 
+/* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
+"More from %1$@" = "Mai multe de la %1$@";
+
+/* Section title for global related posts. */
+"More on WordPress.com" = "Mai multe pe WordPress.com";
+
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Cea mai populară oră";
 
@@ -3747,9 +3807,6 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "Mută comentariul la gunoi.";
 
-/* No comment provided by engineer. */
-"My Document Setting Panel" = "Panoul meu pentru setări documente";
-
 /* Link to My Profile section
    My Profile view title */
 "My Profile" = "Profilul meu";
@@ -3769,15 +3826,6 @@
 
 /* Option in Support view to access previous help tickets. */
 "My Tickets" = "Tichetele mele";
-
-/* No comment provided by engineer. */
-"My post publish panel" = "Panoul meu pentru publicare articole";
-
-/* No comment provided by engineer. */
-"My post status info" = "Informații despre starea articolelor mele";
-
-/* No comment provided by engineer. */
-"My pre publish panel" = "Panoul meu pentru pre-publicare";
 
 /* Accessibility label for the Email text field.
    Name text field placeholder */
@@ -3814,8 +3862,8 @@
    New button badge on Stories Post button */
 "New" = "Noi";
 
-/* Blacklist Keyword Insertion Title */
-"New Blacklist Word" = "Nou cuvânt de Blacklist";
+/* Blocklist Keyword Insertion Title */
+"New Blocklist Word" = "Cuvânt nou în Lista blocări";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "IP nou sau interval nou de IP-uri";
@@ -3924,7 +3972,7 @@
 "No comments" = "Niciun comentariu";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
-   Displayed when the user pulls up the comments view and they have no comments */
+   Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Niciun comentariu până acum";
 
 /* An error message title shown when there is no internet connection.
@@ -3965,9 +4013,6 @@
    This primary error message is displayed if a user encounters an issue with network reachability. */
 "No internet connection" = "Nu există conexiune la internet";
 
-/* Error message shown when the user is browsing Site Comments without an internet connection. */
-"No internet connection. Some comments may be unavailable while offline." = "Nu ai conexiune la internet. Unele comentarii pot fi indisponibile cât timp ești offline.";
-
 /* Error message shown when the user is browsing Notifications without an internet connection.
    Error message shown when the user is browsing Reader without an internet connection. */
 "No internet connection. Some content may be unavailable while offline." = "Nu ai conexiune la internet. O parte din conținut poate fi indisponibilă cât timp ești offline.";
@@ -4003,6 +4048,9 @@
 
 /* Displayed in the Stats widgets when there is no network */
 "No network available" = "Nu este disponibilă nicio rețea";
+
+/* Message shown when there are no new topics to follow. */
+"No new topics to follow" = "Nu sunt subiecte noi de urmărit";
 
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Nicio notificare până acum";
@@ -4188,6 +4236,9 @@
 /* Sort Order */
 "Oldest first" = "Cele mai vechi la început";
 
+/* Warning message about disabling group invite links. */
+"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "După ce această legătură la invitație este dezactivată, nimeni nu o va putea folosi pentru a se alătura echipei. Sigur?";
+
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "După ce ai creat un sit WordPress.com, poți republica un conținut care îți place pe propriul sit.";
 
@@ -4317,6 +4368,9 @@
    Noun. Type of content being selected is a blog page */
 "Page" = "Pagină";
 
+/* No comment provided by engineer. */
+"Page Link" = "Legătură la pagină";
+
 /* Prompts the user that a restored page was moved to the drafts list. */
 "Page Restored to Drafts" = "Pagină restaurată la ciorne";
 
@@ -4406,7 +4460,8 @@
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Plasează fără formatare";
 
-/* Status for Media object that is being processed locally. */
+/* Status for Media object that is being processed locally.
+   Title of pending Comments filter. */
 "Pending" = "În așteptare";
 
 /* No comment provided by engineer. */
@@ -4608,6 +4663,9 @@
 /* For setting the format of a post.
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Format articol";
+
+/* No comment provided by engineer. */
+"Post Link" = "Legătură la articol";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "Articol restaurat la schiță";
@@ -5007,7 +5065,7 @@
 "Remove @%@" = "Înlătură @%@";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
-"Remove Featured Image" = "Șterge imaginea reprezentativă";
+"Remove Featured Image" = "Înlătură imaginea reprezentativă";
 
 /* Label action for removing a link from the editor */
 "Remove Link" = "Înlătură legătura";
@@ -5029,9 +5087,6 @@
 
 /* Remove site icon button */
 "Remove Site Icon" = "Înlătură icon sit";
-
-/* No comment provided by engineer. */
-"Remove annotations" = "Înlătură adnotările";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Înlătură din perspective";
@@ -5130,9 +5185,6 @@
 /* Accessibility label for the reset activity type button */
 "Reset Activity Type filter" = "Resetează filtrul pentru tip de activitate";
 
-/* No comment provided by engineer. */
-"Reset Block" = "Resetează blocul";
-
 /* Accessibility label for the reset date range button */
 "Reset Date Range filter" = "Resetează filtrul pentru interval de timp";
 
@@ -5180,6 +5232,7 @@
 "Restoring to %@" = "Restaurez la %@";
 
 /* A prompt to attempt the failed network request again
+   A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
@@ -5245,7 +5298,8 @@
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Dreapta";
 
-/* User Roles Title
+/* Title. Indicates the user role an invite link is for.
+   User Roles Title
    User's Role */
 "Role" = "Rol";
 
@@ -5364,11 +5418,11 @@
    Title of the Reader's search feature */
 "Search" = "Caută";
 
-/* Site creation. Seelect a domain, search field placeholder */
-"Search Domains" = "Caută domenii";
-
 /* Prompt in the location search bar. */
 "Search Locations" = "Caută locații";
+
+/* No comment provided by engineer. */
+"Search Settings" = "Setări căutare";
 
 /* Label for list of search term */
 "Search Term" = "Termen de căutare";
@@ -5412,7 +5466,8 @@
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "Vezi toate modulele";
 
-/* Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow.
+   Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "Vezi comentariile și notificările în timp real.";
 
 /* Select action on the app extension category picker screen. Saves the selected categories for the post. */
@@ -5616,6 +5671,9 @@
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Partajează informații cu instrumentul nostru de analitice despre utilizarea serviciilor în timp ce ești autentificat în contul tău WordPress.com.";
 
+/* Title. A call to action to share an invite link. */
+"Share invite link" = "Partajează legătura la invitație";
+
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Partajează legătura";
 
@@ -5717,9 +5775,6 @@
 
 /* Accessibility hint for the site name and URL button on Reader's Post Details. */
 "Shows the site's posts." = "Arată articolele site-ului.";
-
-/* No comment provided by engineer. */
-"Sidebar title plugin" = "Conectare titlu bară laterală";
 
 /* View title during the sign up process. */
 "Sign Up" = "Înregistrare";
@@ -5933,7 +5988,8 @@
 "Space used" = "Spațiu folosit";
 
 /* Marks comment as spam.
-   Spam */
+   Spam
+   Title of spam Comments filter. */
 "Spam" = "Spam";
 
 /* Option to select the Spark email app when logging in with magic links */
@@ -6020,20 +6076,17 @@
 /* Text displayed in HUD while a post is being submitted for review. */
 "Submitting for Review..." = "Trimit pentru recenzie...";
 
-/* No comment provided by engineer. */
-"Success Message" = "Mesaj de succes";
-
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "Indexul spotlight șters cu succes";
+
+/* The app successfully subscribed to the comments for the post */
+"Successfully followed conversation" = "Succes! Urmărești conversația";
 
 /* Notice displayed after installing a plug-in. */
 "Successfully installed %@." = "%@ instalat cu succes.";
 
-/* The app successfully subscribed to the comments for the post */
-"Successfully subscribed to the comments" = "Te-ai abonat cu succes la comentarii";
-
 /* The app successfully unsubscribed from the comments for the post */
-"Successfully unsubscribed from the comments" = "Te-ai dezabonat cu succes de la comentarii";
+"Successfully unfollowed conversation" = "Succes! Ai anulat urmărirea conversației";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -6041,6 +6094,9 @@
 
 /* Announced by VoiceOver when new domains suggestions are shown in Site Creation. */
 "Suggestions updated" = "Sugestiile au fost actualizate";
+
+/* No comment provided by engineer. */
+"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Face un rezumat al articolului folosind o listă de subtitluri. Adaugă ancore HTML la blocurile Subtitlu pentru a le lega aici.";
 
 /* User role badge */
 "Super Admin" = "Super-administrator";
@@ -6053,7 +6109,7 @@
 /* Action button to switch the blog to which you'll be posting */
 "Switch Blog" = "Comută blog";
 
-/* No comment provided by engineer. */
+/* Button used to switch site */
 "Switch Site" = "Comutare sit";
 
 /* Switches the Editor to HTML Mode */
@@ -6098,6 +6154,9 @@
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "Defecțiune în sistem";
 
+/* No comment provided by engineer. */
+"Table of Contents" = "Cuprins";
+
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "Tabel arătând %@";
 
@@ -6110,6 +6169,9 @@
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
 "Tag" = "Etichetă";
+
+/* No comment provided by engineer. */
+"Tag Link" = "Legătură la etichetă";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "Eticheta există deja";
@@ -6159,6 +6221,9 @@
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Atinge pentru anularea încărcării.";
 
+/* Accessibility hint for button used to change site title */
+"Tap to change the site's title" = "Atinge pentru a modifica titlul sitului";
+
 /* Accessibility hint to inform the user what action the hide button performs */
 "Tap to collapse the post tags" = "Atinge pentru a restrânge etichetele articolului";
 
@@ -6186,8 +6251,14 @@
 /* This is the blog picker in the editor */
 "Tap to select which blog to post to" = "Atinge pentru a selecta pe ce blog să se facă publicarea";
 
+/* Accessibility hint for button used to switch site */
+"Tap to switch to another site, or add a new site" = "Atinge pentru a comuta la un alt sit sau pentru a adăuga unul nou";
+
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Atinge pentru a vedea articolele cu această etichetă";
+
+/* Accessibility hint for button used to view the user's site */
+"Tap to view your site" = "Atinge pentru a-ți vedea situl";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomie";
@@ -6258,6 +6329,9 @@
 
 /* Description of the purpose of a site's title. */
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Titlul sitului este afișat în bara de titluri a unui navigator web și, pentru majoritatea temelor, este afișat în antet.";
+
+/* Message for stories unsupported device error. */
+"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "Momentan editorul de narațiuni nu este disponibil pentru iPad. Te rog încearcă-l pe iPhone.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL-ului îi lipsește o gazdă validă.";
@@ -6433,6 +6507,9 @@
 /* Explaining to the user there was an generic error accesing media. */
 "There was a problem when trying to access your media. Please try again later." = "A apărut o problemă când am încercat să accesăm media ta. Te rog încearcă din nou mai târziu.";
 
+/* Message for stories unknown error. */
+"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "A fost o problemă la editorul de narațiuni. Dacă problema persistă poți să ne contactezi folosind ecranul Eu > Ajutor și suport.";
+
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
 "There was an error changing the password" = "A fost o eroare la schimbarea parolei";
@@ -6594,9 +6671,6 @@
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Titlu pentru o categorie este obligatoriu.";
 
-/* No comment provided by engineer. */
-"Title:" = "Titlu:";
-
 /* NSPhotoLibraryAddUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library.
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "Să adaugi poze sau videouri în articolele tale.";
@@ -6709,6 +6783,7 @@
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
+   Title of trashed Comments filter.
    Trashed */
 "Trashed" = "Aruncat la gunoi";
 
@@ -6741,6 +6816,9 @@
 /* Customize Insights button title */
 "Try it now" = "Încearcă-l acum";
 
+/* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
+"Try the new Block Editor" = "Încearcă noul Editor de blocuri";
+
 /* When social login fails, this button offers to let the user try again with a differen email address */
 "Try with another email" = "Încearcă cu un alt email";
 
@@ -6771,6 +6849,9 @@
 /* A placeholder for the sharing label. */
 "Type a label" = "Scrie o etichetă";
 
+/* Site creation. Seelect a domain, search field placeholder */
+"Type a name for your site" = "Scrie un nume pentru situl tău";
+
 /* Register domain - Search field placeholder for the Suggested Domain screen */
 "Type to get more suggestions" = "Tastează pentru a primi mai multe sugestii";
 
@@ -6786,6 +6867,9 @@
 /* An error message. */
 "Unable to Connect" = "Nu mă pot conecta";
 
+/* Title for stories unknown error. */
+"Unable to Create Stories Editor" = "Nu pot să creez cu editorul de narațiuni";
+
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Nu pot încărca articole";
 
@@ -6795,14 +6879,23 @@
 /* Notice title when blocking a site fails. */
 "Unable to block site" = "Nu pot bloca situl";
 
+/* An error message shown when there is an issue creating new invite links. */
+"Unable to create new invite links." = "Nu pot să creez legături noi la invitații.";
+
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "Nu pot șterge toate elementele media.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Nu pot șterge elementul media.";
 
+/* An error message shown when there is an issue creating new invite links. */
+"Unable to disable invite links." = "Nu pot să dezactivez legăturile la invitații.";
+
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "Nu pot să descarc fișierul";
+
+/* The app failed to subscribe to the comments for the post */
+"Unable to follow conversation" = "Nu pot să urmăresc conversația";
 
 /* Notice title when following a site fails. */
 "Unable to follow site" = "Nu pot să urmăresc situl";
@@ -6895,6 +6988,9 @@
 /* Error message displayed when an error occurred checking for email availability. */
 "Unable to verify the email address. Please try again later." = "Nu pot verifica adresa de email. Te rog reîncearcă mai târziu.";
 
+/* Message displayed when visiting the Jetpack settings page fails. */
+"Unable to visit Jetpack settings for site" = "Nu pot să vizitez setările Jetpack pentru sit";
+
 /* Message displayed when visiting a site fails. */
 "Unable to visit site" = "Nu pot să vizitez situl";
 
@@ -6984,6 +7080,9 @@
 
 /* No comment provided by engineer. */
 "Unsupported" = "Neacceptat";
+
+/* Title for stories unsupported device error. */
+"Unsupported Device" = "Dispozitiv neacceptat";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Fără titlu";
@@ -7100,6 +7199,9 @@
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Folosește editorul de blocuri";
+
+/* Footer text for Invite Links section of the Invite People screen. */
+"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Folosește această legătură pentru a mării numărul de membri din echipa ta fără a fi nevoie să-i inviți individual. Oricine vizitează acest URL va putea să se înscrie în organizația ta, chiar dacă a primit o invitație de la altcineva, deci asigură-te că partajezi legătura cu persoane de încredere.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Folosește acest sit";
@@ -7294,13 +7396,11 @@
    Title for Jetpack Restore Warning screen */
 "Warning" = "Avertizare";
 
-/* No comment provided by engineer. */
-"Warning Message" = "Mesaj de avertizare";
-
 /* shown in promotional screens during first launch */
 "Watch readers from around the world read and interact with your site — in real time." = "Urmărești cititorii din întreaga lume care îți citesc situl și interacționează cu el — în timp real.";
 
-/* Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow.
+   Shown in the prologue carousel (promotional screens) during first launch. */
 "Watch your audience grow with in-depth analytics." = "Urmărești cum îți crește audiența cu analitice detaliate.";
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
@@ -7540,6 +7640,9 @@
 /* A message title */
 "Welcome to the Reader" = "Bine ai venit în cititor";
 
+/* Caption displayed in promotional screens shown during the login flow. */
+"Welcome to the world's most popular website builder." = "Bine ai venit la cel mai popular constructor de situri web din lume.";
+
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "Bine ai venit la cel mai popular constructor de situri web din lume.";
 
@@ -7548,6 +7651,9 @@
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Vom trimite întotdeauna emailuri importante cu privire la contul tău, dar poți de asemenea să primești unele extra utile.";
+
+/* The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
+"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "În curând vom înlătura editorul clasic pentru articole noi, dar asta nu va afecta editarea articolelor sau paginilor existente. Reîncepe acum prin activarea Editorului de blocuri în setările sitului.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress.
    Hint displayed when we fail to fetch the status of the restore in progress. */
@@ -7593,7 +7699,7 @@
 /* Text rendered at the bottom of the Discussion Moderation Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\"." = "Când un comentariu cunține oricare dintre cuvintele astea în conținutul lui, în nume, URL, email sau IP, el va fi reținut în coada de moderare. Poți introduce fragmente de cuvinte, așa încât \"press\" va fi potrivit și pentru \"WprdPress\".";
 
-/* Text rendered at the bottom of the Discussion Blacklist Keys editor */
+/* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Când un comentariu conține oricare dintre cuvintele astea în conținutul lui, în nume, URL, email sau IP, el va fi marcat ca spam. Poți introduce fragmente de cuvinte, așa încât \"press\" va fi potrivit și pentru \"WordPress\".";
 
 /* Subtitle for the no followed sites result screen */
@@ -7607,12 +7713,6 @@
 
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "Care versiune vrei s-o editezi?";
-
-/* Whitelisted IP Addresses Title */
-"Whitelisted IP Addresses" = "Adrese IP din lista albă";
-
-/* Jetpack Settings: Whitelisted IP addresses */
-"Whitelisted IP addresses" = "Adrese IP din lista albă";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Hopa, ceva a mers prost și nu te-am putut autentifica. Te rog reîncearcă!";
@@ -7629,7 +7729,8 @@
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Nu vor fi afișate public.";
 
-/* Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow.
+   Shown in the prologue carousel (promotional screens) during first launch. */
 "With this powerful editor you can post on the go." = "Cu acest editor puternic poți publica din mers.";
 
 /* Siri Suggestion to open App Settings */
@@ -7845,8 +7946,11 @@
 /* Latest post summary text when there are no posts. */
 "You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "Nu ai publicat niciun articol până acum. După ce începi să publici, rezumatul ultimului tău articol va apărea aici.";
 
-/* Text rendered at the bottom of the Whitelisted IP Addresses editor, should match Calypso. */
-"You may whitelist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Poți înscrie în lista albă o adresă IP sau o serie de adrese împiedicându-le să fie blocate vreodată de Jetpack. IPv4 și IPv6 sunt acceptate. Pentru a specifica un interval, introdu valoarea cea mai mică și valoarea cea mai mare separate printr-o linie. Exemplu: 12.12.12.1-12.12.12.100.";
+/* Title for a view milestone push notification */
+"You hit a milestone 🚀" = "Ai ajuns la un moment de cotitură 🚀";
+
+/* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
+"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Poți permite și înscrie în listă o adresă IP sau o serie de adrese împiedicându-le să fie blocate vreodată de Jetpack. IPv4 și IPv6 sunt acceptate. Pentru a specifica un interval, introdu valoarea cea mai mică și valoarea cea mai mare, separate printr-o liniuță. Exemplu: 12.12.12.1-12.12.12.100.";
 
 /* A suggestion of topics the user might like */
 "You might like" = "S-ar putea să-ți placă";
@@ -7875,9 +7979,6 @@
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Ești cu toate la zi!";
-
-/* Story Intro welcome title */
-"You've got early access to story posts and we'd love for you to give it a try." = "Acum ai acces la Articole narațiune și ne-ar plăcea să le încerci.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Ai modificări nesalvate la acest articol";
@@ -7914,6 +8015,9 @@
 
 /* Title for the view when there aren't any Backups to display */
 "Your first backup will be ready soon" = "Prima copie de siguranță va fi gata în curând";
+
+/* Error message when picked media cannot be imported into stories. */
+"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Elementul media nu a putut fi exportat. Dacă problema persistă poți să ne contactezi folosind ecranul Eu > Ajutor și suport.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Notificările tale călătoresc împreună cu tine — vezi comentariile și aprecierile imediat ce apar.";
@@ -8002,6 +8106,9 @@
 /* The menu item to select during a guided tour. */
 "connections" = "conexiuni";
 
+/* No comment provided by engineer. */
+"document outline" = "schiță document";
+
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "nu te simți bine când bifezi lucrurile dintr-o listă?";
 
@@ -8012,6 +8119,7 @@
 "eg. 44" = "de exemplu, 44";
 
 /* Placeholder for the site url textfield.
+   Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "exemplu.com";
 
@@ -8047,6 +8155,9 @@
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "număr de telefon";
+
+/* No comment provided by engineer. */
+"summary" = "rezumat";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "aceste elemente vor fi șterse:";

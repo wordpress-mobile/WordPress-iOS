@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-27 08:50:56+0000 */
+/* Translation-Revision-Date: 2021-03-25 21:52:34+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -267,8 +267,26 @@
 /* Title for a threat */
 "A file contains a malicious code pattern" = "En fil innehåller ett skadligt kodmönster";
 
+/* No comment provided by engineer. */
+"A link to a URL." = "En länk till en URL.";
+
+/* No comment provided by engineer. */
+"A link to a category." = "En länk till en kategori.";
+
+/* No comment provided by engineer. */
+"A link to a page." = "En länk till en sida.";
+
+/* No comment provided by engineer. */
+"A link to a post." = "En länk till ett inlägg.";
+
+/* No comment provided by engineer. */
+"A link to a tag." = "En länk till en etikett.";
+
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "En lista med webbplatser på detta konto.";
+
+/* Story Intro welcome title */
+"A new way to create and publish engaging content on your site." = "Ett nytt sätt att skapa och publicera engagerande innehåll på din webbplats.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "En serie steg som visar hur du lägger till ett tema, en webbplatsikon och mycket mer.";
@@ -386,9 +404,6 @@
 /* No comment provided by engineer. */
 "Add Block Before" = "Lägg till block före";
 
-/* Accessibility label for add comment button */
-"Add Comment" = "Lägg till kommentar";
-
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Lägg till innehållet i inlägget";
 
@@ -419,9 +434,6 @@
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Lägg till en anpassad CSS-URL här som ska hämtas i läsaren. Om du kör Calypso lokalt kan länken se ut ungefär så här: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
-/* No comment provided by engineer. */
-"Add a description" = "Lägg till en beskrivning";
-
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Lägg till en webbplats på webbhotell\/egen server";
 
@@ -437,11 +449,11 @@
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Lägg till bild för kontot.";
 
-/* No comment provided by engineer. */
-"Add annotation" = "Lägg till bildtext\/beskrivning";
-
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Lägg till något ämne";
+
+/* No comment provided by engineer. */
+"Add button text" = "Lägg till knapptext";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Lägg till en bild eller profilbild för att representera detta nya konto.";
@@ -518,7 +530,8 @@
 /* Autoapprove every comment
    Browse all themes selection title
    Displays all of the historical threats
-   Displays all of the Notifications, unfiltered */
+   Displays all of the Notifications, unfiltered
+   Title of all Comments filter. */
 "All" = "Alla";
 
 /* Information about redeeming domain credit on site dashboard. */
@@ -564,6 +577,12 @@
 
 /* No comment provided by engineer. */
 "Allow this connection to be used by all admins and users of your site." = "Tillåta att denna anslutning används av alla administratörer och användare av din webbplats.";
+
+/* Allowlisted IP Addresses Title */
+"Allowlisted IP Addresses" = "Tillåtna IP-adresser";
+
+/* Jetpack Settings: Allowlisted IP addresses */
+"Allowlisted IP addresses" = "Tillåtna IP-adresser";
 
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Nästan klart! Skriv in verifieringskoden från din autentiserings-app.";
@@ -633,9 +652,6 @@
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "Ett okänt fel har inträffatt. Försök igen.";
 
-/* No comment provided by engineer. */
-"Annotations Sidebar" = "Sidopanel för bildtexter\/beskrivninger";
-
 /* Insights 'This Year' details view header */
 "Annual Site Stats" = "Årstatistik för webbplatsen";
 
@@ -665,6 +681,9 @@
    Approves a Comment
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Godkänn";
+
+/* Title of approved Comments filter. */
+"Approved" = "Godkänd";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
 "Approves the Comment." = "Godkänner kommentaren.";
@@ -881,10 +900,6 @@
 /* Text for related post cell preview */
 "Big iPhone\/iPad Update Now Available" = "Stor iPhone\/iPad-uppdatering nu tillgänglig";
 
-/* Blacklist Title
-   Settings: Comments Blacklist */
-"Blacklist" = "Svartlista";
-
 /* Notice that a page without content has been created */
 "Blank page created" = "En blank sida har skapats";
 
@@ -921,6 +936,10 @@
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Blockerad webbplats";
+
+/* Blocklist Title
+   Settings: Comments Blocklist */
+"Blocklist" = "Blockeringslista";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blogg";
@@ -962,6 +981,9 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "Knappstil";
+
+/* No comment provided by engineer. */
+"ButtonGroup" = "Knappgrupp";
 
 /* Label for the post author in the post detail. */
 "By " = "av";
@@ -1048,6 +1070,7 @@
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
    Verb. Button title. Tapping cancels an action.
@@ -1094,6 +1117,9 @@
 /* Category menu item in share extension.
    Menu item label for linking a specific category. */
 "Category" = "Kategori";
+
+/* No comment provided by engineer. */
+"Category Link" = "Kategorilänk";
 
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "Kategorititel saknas.";
@@ -1252,7 +1278,7 @@
 "Choose video" = "Välj video";
 
 /* Reader select interests subtitle label text */
-"Choose your interests" = "Välj dina intressen";
+"Choose your topics" = "Välj dina ämnen";
 
 /* Register Domain - Address information field City */
 "City" = "Ort";
@@ -1342,8 +1368,7 @@
 /* Displayed when a Comment is spammed */
 "Comment has been marked as Spam" = "Kommentar har markerats som skräppost";
 
-/* Accessibility label for comments button with no comments
-   Filters Comments Notifications
+/* Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
@@ -1524,9 +1549,6 @@
 
 /* Displays the number of blocks, words and characters in text */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Innehållsstruktur\nBlock: %1$li, Ord: %2$li, Tecken: %3$li";
-
-/* No comment provided by engineer. */
-"Content…" = "Innehåll…";
 
 /* Action title to dismiss domain credit redemption success screen
    Apply changes localy to single block edition in the web block editor
@@ -1933,6 +1955,13 @@
 /* Label for the dimensions in pixels for a media asset (image / video) */
 "Dimensions" = "Storlekar";
 
+/* Title. Title of a button that will disable group invite links when tapped. */
+"Disable" = "Inaktivera";
+
+/* Title. A call to action to disable invite links.
+   Title. Title of a prompt to disable group invite links. */
+"Disable invite link" = "Inaktivera inbjudningslänk";
+
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "Inaktiverad (originalstorlek)";
 
@@ -1972,6 +2001,9 @@
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Upptäck och följ bloggar du gillar";
 
+/* Button title. Tapping shows the Follow Topics screen. */
+"Discover more topics" = "Upptäck fler ämnen";
+
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "Diskussion";
@@ -1985,6 +2017,8 @@
    Dismiss button title.
    Dismiss the AlertView
    Share extension error dialog cancel button label.
+   Spoken accessibility label
+   The title of a button to close the classic editor deprecation notice alert dialog.
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
@@ -2036,7 +2070,6 @@
    Label for confirm location of a post
    Label for Done button
    Label on button to dismiss revisions view
-   Label on button to dismiss view presented after publishing a post
    Menu button title for finishing editing the Menu name.
    Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
@@ -2169,8 +2202,8 @@
 /* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
 "Edit %@ block" = "Redigera %@-blocket";
 
-/* Blacklist Keyword Edition Title */
-"Edit Blacklist Word" = "Ändra svartlistenyckel";
+/* Blocklist Keyword Edition Title */
+"Edit Blocklist Word" = "Redigera ord i blockeringslistan";
 
 /* No comment provided by engineer. */
 "Edit Comment" = "Redigera kommentar";
@@ -2330,6 +2363,9 @@
    Title of a button. */
 "Enter your password instead." = "Skriv in ditt lösenord istället.";
 
+/* Error message displayed when restoring a site fails due to credentials not being configured. */
+"Enter your server credentials to enable one click site restores from backups." = "Ange dina serverautentiseringsuppgifter för att möjliggöra återställning av din webbplats med ett klick från säkerhetskopior.";
+
 /* Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
@@ -2466,6 +2502,9 @@
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "Öppnas för att man ska kunna välja ett annat menyområde";
 
+/* Title. Indicates an expiration date. */
+"Expires on" = "Löper ut den";
+
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Förklara vad webbplatsen handlar om.";
 
@@ -2495,6 +2534,9 @@
    The action failed */
 "Failed" = "Misslyckades";
 
+/* Error title when picked media cannot be imported into stories. */
+"Failed Media Export" = "Export av mediafil misslyckades";
+
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Kunde inte lägga in ljudfil. Tryck för att visa alternativ.";
 
@@ -2509,6 +2551,9 @@
 
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Det gick inte att serialisera förfrågan till REST API.";
+
+/* The app failed to unsubscribe from the comments for the post */
+"Failed to unfollow conversation" = "Det gick inte att avbryta prenumerationen på denna konversation";
 
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "Kunde inte ladda upp filerna.\nTryck för att visa alternativ.";
@@ -2627,6 +2672,12 @@
 /* Verb. An option to follow a site. */
 "Follow site" = "Följ webbplats";
 
+/* Screen title. Reader select interests title label text. */
+"Follow topics" = "Följ ämnen";
+
+/* Caption displayed in promotional screens shown during the login flow. */
+"Follow your favorite sites and discover new blogs." = "Följ dina favoritwebbplatser och hitta nya bloggar att läsa.";
+
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "Följ dina favoritwebbplatser och hitta nya saker att läsa.";
 
@@ -2664,6 +2715,9 @@
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Following conversation by email" = "Följer konversationen via e-post";
+
+/* Label displayed to the user while loading their selected interests */
+"Following new topics..." = "Följer nya ämnen …";
 
 /* Filters Follows Notifications */
 "Follows" = "Följer";
@@ -2719,6 +2773,9 @@
 /* Add New Stats Card category title
    Title for the general section in site settings screen */
 "General" = "Allmänt";
+
+/* Title. A call to action to generate a new invite link. */
+"Generate new link" = "Generera ny länk";
 
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Genererar förhandsgranskning";
@@ -2880,9 +2937,6 @@
 /* No comment provided by engineer. */
 "Help icon" = "Hjälpikon";
 
-/* No comment provided by engineer. */
-"Here is the panel content!" = "Här är panelen innehåll!";
-
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Så här har ditt inlägg lyckats hittills.";
 
@@ -3031,9 +3085,6 @@
 "Included with Site" = "Ingår i webbplatsen";
 
 /* Downloadable/Restorable items: general section footer text */
-"Includes wp-config php and any non WordPress files" = "Innehåller wp-config.php och eventuella filer som inte hör till WordPress";
-
-/* Downloadable/Restorable items: general section footer text */
 "Includes wp-config.php and any non WordPress files" = "Innehåller wp-config.php och eventuella filer som inte hör till WordPress";
 
 /* An error message shown when a user signed in with incorrect credentials. */
@@ -3135,6 +3186,9 @@
 
 /* Send Person Invite */
 "Invite" = "Bjud in";
+
+/* Title for the Invite Link section of the Invite Person screen. */
+"Invite Link" = "Inbjudningslänk";
 
 /* Invite People Title */
 "Invite People" = "Bjud in personer";
@@ -3683,6 +3737,12 @@
 /* Label for the posting activity legend. */
 "More Posts" = "Fler inlägg";
 
+/* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
+"More from %1$@" = "Mer från %1$@";
+
+/* Section title for global related posts. */
+"More on WordPress.com" = "Mer på WordPress.com";
+
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Populäraste tidpunkten";
 
@@ -3744,9 +3804,6 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "Flyttar kommentaren till papperskorgen.";
 
-/* No comment provided by engineer. */
-"My Document Setting Panel" = "Min panel för dokumentinställningar";
-
 /* Link to My Profile section
    My Profile view title */
 "My Profile" = "Min profil";
@@ -3766,15 +3823,6 @@
 
 /* Option in Support view to access previous help tickets. */
 "My Tickets" = "Mina ärenden";
-
-/* No comment provided by engineer. */
-"My post publish panel" = "Min panel för publicering av inlägg";
-
-/* No comment provided by engineer. */
-"My post status info" = "Min statusinformation om inlägg";
-
-/* No comment provided by engineer. */
-"My pre publish panel" = "Min granskningspanel före publicering";
 
 /* Accessibility label for the Email text field.
    Name text field placeholder */
@@ -3811,8 +3859,8 @@
    New button badge on Stories Post button */
 "New" = "Nya";
 
-/* Blacklist Keyword Insertion Title */
-"New Blacklist Word" = "Nytt svartlisteord";
+/* Blocklist Keyword Insertion Title */
+"New Blocklist Word" = "Nytt ord i blockeringslistan";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "Ny IP-adress eller IP-adressintervall";
@@ -3921,7 +3969,7 @@
 "No comments" = "Inga kommentarer";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
-   Displayed when the user pulls up the comments view and they have no comments */
+   Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Inga kommentarer än";
 
 /* An error message title shown when there is no internet connection.
@@ -3962,9 +4010,6 @@
    This primary error message is displayed if a user encounters an issue with network reachability. */
 "No internet connection" = "Ingen internetanslutning";
 
-/* Error message shown when the user is browsing Site Comments without an internet connection. */
-"No internet connection. Some comments may be unavailable while offline." = "Internet-anslutning saknas. Vissa kommentarer kan vara oåtkomliga när du inte är uppkopplad.";
-
 /* Error message shown when the user is browsing Notifications without an internet connection.
    Error message shown when the user is browsing Reader without an internet connection. */
 "No internet connection. Some content may be unavailable while offline." = "Internet-anslutning saknas. Visst innehåll kan vara oåtkomligt när du inte är uppkopplad.";
@@ -4000,6 +4045,9 @@
 
 /* Displayed in the Stats widgets when there is no network */
 "No network available" = "Inget nätverk tillgängligt";
+
+/* Message shown when there are no new topics to follow. */
+"No new topics to follow" = "Inga nya ämnen att följa";
 
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Inga notiser än";
@@ -4185,6 +4233,9 @@
 /* Sort Order */
 "Oldest first" = "Äldst först";
 
+/* Warning message about disabling group invite links. */
+"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "När denna inbjudningslänk har inaktiverats kan ingen använda den för att ansluta sig till ditt team. Är du säker?";
+
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "När du har skapat en webbplats på WordPress.com kan du reblogga innehåll du tycker om till din egen webbplats.";
 
@@ -4314,6 +4365,9 @@
    Noun. Type of content being selected is a blog page */
 "Page" = "Sida";
 
+/* No comment provided by engineer. */
+"Page Link" = "Sidlänk";
+
 /* Prompts the user that a restored page was moved to the drafts list. */
 "Page Restored to Drafts" = "Sidan återställd till Utkast";
 
@@ -4403,7 +4457,8 @@
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Klistra in utan formatering";
 
-/* Status for Media object that is being processed locally. */
+/* Status for Media object that is being processed locally.
+   Title of pending Comments filter. */
 "Pending" = "Inväntar granskning";
 
 /* No comment provided by engineer. */
@@ -4605,6 +4660,9 @@
 /* For setting the format of a post.
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Format";
+
+/* No comment provided by engineer. */
+"Post Link" = "Inläggslänk";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "Inlägg återställt till Utkast";
@@ -5027,9 +5085,6 @@
 /* Remove site icon button */
 "Remove Site Icon" = "Avlägsna webbplatsikonen";
 
-/* No comment provided by engineer. */
-"Remove annotations" = "Ta bort bildtexter\/förklaringar";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "Ta bort från insikterna";
 
@@ -5127,9 +5182,6 @@
 /* Accessibility label for the reset activity type button */
 "Reset Activity Type filter" = "Återställ aktivitetstypsfilter";
 
-/* No comment provided by engineer. */
-"Reset Block" = "Återställ block";
-
 /* Accessibility label for the reset date range button */
 "Reset Date Range filter" = "Återställ filtret för datumintervall";
 
@@ -5177,6 +5229,7 @@
 "Restoring to %@" = "Återställer till %@";
 
 /* A prompt to attempt the failed network request again
+   A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
    Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
@@ -5242,7 +5295,8 @@
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Höger";
 
-/* User Roles Title
+/* Title. Indicates the user role an invite link is for.
+   User Roles Title
    User's Role */
 "Role" = "Roll";
 
@@ -5361,11 +5415,11 @@
    Title of the Reader's search feature */
 "Search" = "Sök";
 
-/* Site creation. Seelect a domain, search field placeholder */
-"Search Domains" = "Sök domäner";
-
 /* Prompt in the location search bar. */
 "Search Locations" = "Sök platser";
+
+/* No comment provided by engineer. */
+"Search Settings" = "Sökinställningar";
 
 /* Label for list of search term */
 "Search Term" = "Sökargument";
@@ -5409,7 +5463,8 @@
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "Se alla";
 
-/* Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow.
+   Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "Se kommentarer och aviseringar i realtid.";
 
 /* Select action on the app extension category picker screen. Saves the selected categories for the post. */
@@ -5613,6 +5668,9 @@
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Dela information med vårt analysverktyg om din användning av olika tjänster medan du är inloggad till ditt konto på WordPress.com.";
 
+/* Title. A call to action to share an invite link. */
+"Share invite link" = "Dela inbjudningslänk";
+
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Dela länken";
 
@@ -5714,9 +5772,6 @@
 
 /* Accessibility hint for the site name and URL button on Reader's Post Details. */
 "Shows the site's posts." = "Visar webbplatsens inlägg.";
-
-/* No comment provided by engineer. */
-"Sidebar title plugin" = "Tillägg för sidopanelrubrik";
 
 /* View title during the sign up process. */
 "Sign Up" = "Skapa konto";
@@ -5930,7 +5985,8 @@
 "Space used" = "Utnyttjat utrymme";
 
 /* Marks comment as spam.
-   Spam */
+   Spam
+   Title of spam Comments filter. */
 "Spam" = "Skräp";
 
 /* Option to select the Spark email app when logging in with magic links */
@@ -6017,20 +6073,17 @@
 /* Text displayed in HUD while a post is being submitted for review. */
 "Submitting for Review..." = "Skickar till granskning...";
 
-/* No comment provided by engineer. */
-"Success Message" = "Framgångsmeddelande";
-
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "Spotlight-indexet har tömts";
+
+/* The app successfully subscribed to the comments for the post */
+"Successfully followed conversation" = "Prenumeration har lagts till för denna konversation";
 
 /* Notice displayed after installing a plug-in. */
 "Successfully installed %@." = "Installation av %@ är klar.";
 
-/* The app successfully subscribed to the comments for the post */
-"Successfully subscribed to the comments" = "Prenumeration på kommentarer har startats";
-
 /* The app successfully unsubscribed from the comments for the post */
-"Successfully unsubscribed from the comments" = "Prenumeration på kommentarer har avslutats";
+"Successfully unfollowed conversation" = "Prenumerationen har tagits bort för denna konversation";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -6038,6 +6091,9 @@
 
 /* Announced by VoiceOver when new domains suggestions are shown in Site Creation. */
 "Suggestions updated" = "Förslagen har uppdaterats";
+
+/* No comment provided by engineer. */
+"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Sammanfatta ditt inlägg med en rubriklista. Lägg in HTML-länkmål till rubrikblock för att länka till dem härifrån.";
 
 /* User role badge */
 "Super Admin" = "Superadmin";
@@ -6050,7 +6106,7 @@
 /* Action button to switch the blog to which you'll be posting */
 "Switch Blog" = "Byt blogg";
 
-/* No comment provided by engineer. */
+/* Button used to switch site */
 "Switch Site" = "Byt webbplats";
 
 /* Switches the Editor to HTML Mode */
@@ -6095,6 +6151,9 @@
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "Systemstandard";
 
+/* No comment provided by engineer. */
+"Table of Contents" = "Innehållsförteckning";
+
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "Tabell för %@";
 
@@ -6107,6 +6166,9 @@
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
 "Tag" = "Tagga";
+
+/* No comment provided by engineer. */
+"Tag Link" = "Etikettlänk";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "Etiketten finns redan";
@@ -6156,6 +6218,9 @@
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Tryck här om du vill avbryta uppladdningen.";
 
+/* Accessibility hint for button used to change site title */
+"Tap to change the site's title" = "Tryck för att ändra webbplatsens rubrik";
+
 /* Accessibility hint to inform the user what action the hide button performs */
 "Tap to collapse the post tags" = "Tryck här för att minimera inläggets etiketter";
 
@@ -6183,8 +6248,14 @@
 /* This is the blog picker in the editor */
 "Tap to select which blog to post to" = "Tryck för att välja vilken blogg du vill publicera till";
 
+/* Accessibility hint for button used to switch site */
+"Tap to switch to another site, or add a new site" = "Tryck för att växla till någon annan webbplats eller lägga till en ny.";
+
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Tryck här för att visa inlägg med denna etikett";
+
+/* Accessibility hint for button used to view the user's site */
+"Tap to view your site" = "Tryck för att visa din webbplats";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomi";
@@ -6255,6 +6326,9 @@
 
 /* Description of the purpose of a site's title. */
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Webbplatsrubriken syns webbläsarens titelrad och de flesta teman visar den också i sidhuvudet.";
+
+/* Message for stories unsupported device error. */
+"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "Berättelseredigeraren är för närvarande inte tillgänglig för din iPad. Försök att använda berättelser på din iPhone i stället.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "Det finns ingen gilitg värd för webbadressen.";
@@ -6430,6 +6504,9 @@
 /* Explaining to the user there was an generic error accesing media. */
 "There was a problem when trying to access your media. Please try again later." = "Ett problem uppstod när du försökte få åtkomst till din media. Försök igen senare.";
 
+/* Message for stories unknown error. */
+"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Ett problem inträffade med berättelseredigeraren. Om problemet kvarstår kan du kontakta oss via skärmen Jag  > Hjälp och support.";
+
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
 "There was an error changing the password" = "Ett fel inträffade när lösenordet skulle ändras";
@@ -6591,9 +6668,6 @@
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Vänligen fyll i en kategorititel.";
 
-/* No comment provided by engineer. */
-"Title:" = "Ange rubrik här";
-
 /* NSPhotoLibraryAddUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library.
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "För att lägga till bilder eller videoklipp i dina inlägg.";
@@ -6706,6 +6780,7 @@
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
+   Title of trashed Comments filter.
    Trashed */
 "Trashed" = "Borttagen";
 
@@ -6738,6 +6813,9 @@
 /* Customize Insights button title */
 "Try it now" = "Prova nu";
 
+/* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
+"Try the new Block Editor" = "Prova den nya blockredigeraren";
+
 /* When social login fails, this button offers to let the user try again with a differen email address */
 "Try with another email" = "Prova med en annan e-postadress";
 
@@ -6768,6 +6846,9 @@
 /* A placeholder for the sharing label. */
 "Type a label" = "Skriv en etikett";
 
+/* Site creation. Seelect a domain, search field placeholder */
+"Type a name for your site" = "Skriv ett namn för din webbplats";
+
 /* Register domain - Search field placeholder for the Suggested Domain screen */
 "Type to get more suggestions" = "Fortsätt skriva för att få fler förslag.";
 
@@ -6783,6 +6864,9 @@
 /* An error message. */
 "Unable to Connect" = "Det gick inte att ansluta";
 
+/* Title for stories unknown error. */
+"Unable to Create Stories Editor" = "Det gick inte att skapa en berättelseredigerare";
+
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Kunde inte ladda inlägg";
 
@@ -6792,14 +6876,23 @@
 /* Notice title when blocking a site fails. */
 "Unable to block site" = "Kan inte blockera webbplats";
 
+/* An error message shown when there is an issue creating new invite links. */
+"Unable to create new invite links." = "Det gick inte att skapa nya inbjudningslänkar.";
+
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "Kan inte radera alla medieobjekt.";
 
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Kan inte radera medieobjekt.";
 
+/* An error message shown when there is an issue creating new invite links. */
+"Unable to disable invite links." = "Det gick inte att inaktivera inbjudningslänken.";
+
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "Det gick inte att ladda ned filen";
+
+/* The app failed to subscribe to the comments for the post */
+"Unable to follow conversation" = "Det gick inte att följa konversationen";
 
 /* Notice title when following a site fails. */
 "Unable to follow site" = "Kunde inte följa webbplatsen";
@@ -6892,6 +6985,9 @@
 /* Error message displayed when an error occurred checking for email availability. */
 "Unable to verify the email address. Please try again later." = "Kunde inte verifiera e-postadressen. Försök igen senare.";
 
+/* Message displayed when visiting the Jetpack settings page fails. */
+"Unable to visit Jetpack settings for site" = "Det gick inte att besöka Jetpack-inställningar för webbplatsen";
+
 /* Message displayed when visiting a site fails. */
 "Unable to visit site" = "Kan inte besöka webbplatsen";
 
@@ -6981,6 +7077,9 @@
 
 /* No comment provided by engineer. */
 "Unsupported" = "Stöds ej";
+
+/* Title for stories unsupported device error. */
+"Unsupported Device" = "Enheten stöds inte";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Utan titel";
@@ -7097,6 +7196,9 @@
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Använd blockredigeraren";
+
+/* Footer text for Invite Links section of the Invite People screen. */
+"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Använd denna länk för att lägga till gruppmedlemmar utan att behöva bjuda in dem en i taget. Vem som helst som besöker denna URL kommer att kunna registrera sig i er organisation, även om de fått länken från någon annan. Se därför till att bara ge länken till personer du litar på.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Använd den här webbplatsen";
@@ -7291,13 +7393,11 @@
    Title for Jetpack Restore Warning screen */
 "Warning" = "Varning";
 
-/* No comment provided by engineer. */
-"Warning Message" = "Varningsmeddelande";
-
 /* shown in promotional screens during first launch */
 "Watch readers from around the world read and interact with your site — in real time." = "Ha koll på hur läsare från hela världen läser och interagerar med din webbplats – i realtid.";
 
-/* Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow.
+   Shown in the prologue carousel (promotional screens) during first launch. */
 "Watch your audience grow with in-depth analytics." = "Se hur din publik växer med hjälp av detaljerad statistik.";
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
@@ -7537,6 +7637,9 @@
 /* A message title */
 "Welcome to the Reader" = "Välkommen till Läsaren";
 
+/* Caption displayed in promotional screens shown during the login flow. */
+"Welcome to the world's most popular website builder." = "Välkommen till världens populäraste webbplatsbyggare.";
+
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "Välkommen till världens populäraste webbplatsbyggare.";
 
@@ -7545,6 +7648,9 @@
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Vi skickar dig alltid viktiga e-postmeddelanden om ditt konto, men du kan även få värdefullt extramaterial.";
+
+/* The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
+"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "Vi kommer snart att ta bort den klassiska redigeraren för nya inlägg. Men detta påverkar inte dina möjligheter att redigera befintliga inlägg och sidor. Du kan gå händelserna i förväg genom att aktivera blockredigeraren redan nu i inställningarna för webbplatsen.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress.
    Hint displayed when we fail to fetch the status of the restore in progress. */
@@ -7590,7 +7696,7 @@
 /* Text rendered at the bottom of the Discussion Moderation Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\"." = "När en kommentar innehåller något av dessa ord i innehåll, namn, URL, e-postadress eller IP stannar den i granskningskön Du kan ange delar av ord, så \"press\" kommer att matcha \"Wordpress\".";
 
-/* Text rendered at the bottom of the Discussion Blacklist Keys editor */
+/* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "När en kommentar innehåller något av dessa ord i innehåll, namn, URL, e-postadress eller IP markeras den som skräp. Du kan ange delar av ord, så \"press\" kommer att matcha \"Wordpress\".";
 
 /* Subtitle for the no followed sites result screen */
@@ -7604,12 +7710,6 @@
 
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "Vilken version vill du redigera?";
-
-/* Whitelisted IP Addresses Title */
-"Whitelisted IP Addresses" = "Vitlistade IP-adresser";
-
-/* Jetpack Settings: Whitelisted IP addresses */
-"Whitelisted IP addresses" = "Vitlistade IP-adresser";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Ojdå. Något blev fel. Vi lyckades inte logga in dig. Försök igen!";
@@ -7626,7 +7726,8 @@
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Visas ej offentligt.";
 
-/* Shown in the prologue carousel (promotional screens) during first launch. */
+/* Caption displayed in promotional screens shown during the login flow.
+   Shown in the prologue carousel (promotional screens) during first launch. */
 "With this powerful editor you can post on the go." = "Med denna kraftfulla redigeringsmiljö kan du skapa inlägg på rörlig fot.";
 
 /* Siri Suggestion to open App Settings */
@@ -7842,8 +7943,11 @@
 /* Latest post summary text when there are no posts. */
 "You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "Du har inte publicerat några inlägg än. När du väl börjar publicera kommer dina senaste inlägg att visas här.";
 
-/* Text rendered at the bottom of the Whitelisted IP Addresses editor, should match Calypso. */
-"You may whitelist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Du kan vitlista en IP-adress eller en rad adresser så att de aldrig någonsin blockeras av Jetpack. Både IPv4- IPv6-adresser accepteras. Ange ett intervall genom att mata in den lägsta och den högsta adressen med bindestreck mellan. Exampel: 12.12.12.1-12.12.12.100.";
+/* Title for a view milestone push notification */
+"You hit a milestone 🚀" = "Ett nytt steg på vägen 🚀";
+
+/* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
+"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Du kan vitlista en IP-adress eller en rad adresser så att de aldrig någonsin blockeras av Jetpack. Både IPv4- IPv6-adresser accepteras. Ange ett intervall genom att mata in den lägsta och den högsta adressen med bindestreck mellan. Exempel: 12.12.12.1-12.12.12.100.";
 
 /* A suggestion of topics the user might like */
 "You might like" = "Du kanske gillar";
@@ -7872,9 +7976,6 @@
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Du har sett allt!";
-
-/* Story Intro welcome title */
-"You've got early access to story posts and we'd love for you to give it a try." = "Du har fått förhandsåtkomst till berättelseinlägg och det vore härligt om du kunde testa det.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Du har gjort ändringar i detta inlägg som inte är sparade";
@@ -7911,6 +8012,9 @@
 
 /* Title for the view when there aren't any Backups to display */
 "Your first backup will be ready soon" = "Din första säkerhetskopia är snart klar";
+
+/* Error message when picked media cannot be imported into stories. */
+"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Dina mediafiler kunde inte exporteras. Om problemet kvarstår kan du kontakta oss via skärmen Jag  > Hjälp och support.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Dina notifikationer följer med dig – du får veta direkt om någon kommenterar eller gillar.";
@@ -7999,6 +8103,9 @@
 /* The menu item to select during a guided tour. */
 "connections" = "anslutningar";
 
+/* No comment provided by engineer. */
+"document outline" = "dokumentöversikt";
+
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "Visst är det skönt att stryka utförda punkter i en lista?";
 
@@ -8009,6 +8116,7 @@
 "eg. 44" = "till exempel 44";
 
 /* Placeholder for the site url textfield.
+   Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
 
@@ -8044,6 +8152,9 @@
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "telefonnummer";
+
+/* No comment provided by engineer. */
+"summary" = "sammanfattning";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Dessa saker kommer att raderas:";
