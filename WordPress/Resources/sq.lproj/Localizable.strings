@@ -1254,9 +1254,6 @@
 /* Reader select interests subtitle label text */
 "Choose your interests" = "Zgjidhni ç’ju intereson";
 
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Zgjedhja e një sajti tjetër do të sjellë humbjen e përpunimeve te lëndë specifike e sajtit, të tilla si media dhe kategori. Jeni i sigurt?";
-
 /* Register Domain - Address information field City */
 "City" = "Qytet";
 

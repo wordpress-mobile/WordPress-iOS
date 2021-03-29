@@ -1254,9 +1254,6 @@
 /* Reader select interests subtitle label text */
 "Choose your interests" = "選擇你的興趣";
 
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "選擇不同網站會遺失對網站特定內容 (例如媒體和類別) 所做的編輯。確定要執行？";
-
 /* Register Domain - Address information field City */
 "City" = "城市";
 

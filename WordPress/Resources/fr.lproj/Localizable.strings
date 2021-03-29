@@ -1254,9 +1254,6 @@
 /* Reader select interests subtitle label text */
 "Choose your interests" = "Choisissez vos centres d’intérêts";
 
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Choisir un site différent vous fera perdre vos modifications propres à un site, tels que les médias et les catégories. Êtes-vous sûr(e) de vouloir cela ?";
-
 /* Register Domain - Address information field City */
 "City" = "Ville";
 

@@ -1254,9 +1254,6 @@
 /* Reader select interests subtitle label text */
 "Choose your interests" = "관심사항을 선택하세요";
 
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "다른 사이트로 변경하면 미디어와 카테고리 같은 특정 사이트 콘텐츠의 수정 사항을 잃게 됩니다. 계속할까요?";
-
 /* Register Domain - Address information field City */
 "City" = "도시";
 

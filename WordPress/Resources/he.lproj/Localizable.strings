@@ -1254,9 +1254,6 @@
 /* Reader select interests subtitle label text */
 "Choose your interests" = "לבחור את תחומי העניין שלך";
 
-/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
-"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "בבחירת אתרים שונים תאבד את היכולת לערוך תכנים\/מדיה\/קטגוריות מאתר ספציפי. האם אתה בטוח?";
-
 /* Register Domain - Address information field City */
 "City" = "עיר";
 
