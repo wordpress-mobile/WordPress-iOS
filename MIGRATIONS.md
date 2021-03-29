@@ -3,6 +3,24 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 118
+
+@chipsnyder 2021-03-26
+
+- `PageTemplateLayout`: set default values on:
+    - `demoUrl` to Empty String
+    - `previewTablet` to Empty String
+    - `previewMobile` to Empty String
+
+## WordPress 117
+
+@mkevins 2021-03-17
+
+- `PageTemplateLayout`: added the entities
+    - `demoUrl` as string
+    - `previewTablet` as string
+    - `previewMobile` as string
+
 ## WordPress 116
 
 @ceyhun 2021-03-15
@@ -34,7 +52,7 @@ data model as well as any custom migrations.
 @scoutharris 2021-01-29
 
 - `ReaderPost`: added  `isSeenSupported` attribute.
-- `ReaderPost`: changed default value of  `isSeen` to `true`. 
+- `ReaderPost`: changed default value of  `isSeen` to `true`.
 
 ## WordPress 111
 
