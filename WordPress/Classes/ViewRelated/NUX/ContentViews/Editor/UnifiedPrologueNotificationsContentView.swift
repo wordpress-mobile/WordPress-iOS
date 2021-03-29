@@ -118,4 +118,3 @@ private extension UnifiedPrologueNotificationsContentView {
         static let bottomElementTitle: String = NSLocalizedString("<strong>Johann Brandt</strong> responded to your post", comment: "Example Comment notification displayed in the prologue carousel of the app. Username should be in <strong> tags and will be displayed as bold text.")
     }
 }
-
