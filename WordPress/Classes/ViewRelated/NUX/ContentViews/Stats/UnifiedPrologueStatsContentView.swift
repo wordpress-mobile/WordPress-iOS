@@ -6,6 +6,9 @@ struct UnifiedPrologueStatsContentView: View {
     var body: some View {
 
         GeometryReader { content in
+            let globeIconSize = content.size.height * 0.22
+            let alignImageLeftIconSize = content.size.height * 0.16
+            let plusIconSize = content.size.height * 0.18
 
             VStack {
                 Spacer(minLength: content.size.height * 0.18)
@@ -18,12 +21,12 @@ struct UnifiedPrologueStatsContentView: View {
                                             leading: content.size.height * 0.03,
                                             bottom: content.size.height * 0.01,
                                             trailing: content.size.height * 0.03))
-                    let globeIconSize = content.size.height * 0.22
+
                     HStack {
                         Spacer()
                         CircledIcon(size: globeIconSize,
-                                    xOffset: globeIconSize * 3 / 4,
-                                    yOffset: -globeIconSize * 1 / 8,
+                                    xOffset: globeIconSize * 0.75,
+                                    yOffset: -globeIconSize * 0.125,
                                     iconType: .globe,
                                     backgroundColor: Color(UIColor.muriel(name: .celadon, .shade30)))
 
@@ -42,19 +45,18 @@ struct UnifiedPrologueStatsContentView: View {
                         .aspectRatio(contentMode: .fit)
                         .padding(.all, content.size.height * 0.05)
                     HStack {
-                        let alignImageLeftIconSize = content.size.height * 0.16
+
                         CircledIcon(size: alignImageLeftIconSize,
-                                    xOffset: -alignImageLeftIconSize * 3 / 4,
-                                    yOffset: -alignImageLeftIconSize * 3 / 2,
+                                    xOffset: -alignImageLeftIconSize * 0.75,
+                                    yOffset: -alignImageLeftIconSize * 1.5,
                                     iconType: .status,
                                     backgroundColor: Color(UIColor.muriel(name: .purple, .shade50)))
 
                         Spacer()
 
-                        let plusIconSize = content.size.height * 0.18
                         CircledIcon(size: plusIconSize,
-                                    xOffset: plusIconSize * 1 / 3,
-                                    yOffset: plusIconSize * 7 / 8,
+                                    xOffset: plusIconSize * 0.33,
+                                    yOffset: plusIconSize * 0.875,
                                     iconType: .multipleUsers,
                                     backgroundColor: Color(UIColor.muriel(name: .blue, .shade50)))
                     }
@@ -64,7 +66,6 @@ struct UnifiedPrologueStatsContentView: View {
 
                 // avoid bottom overlapping due to the icon offset
                 Spacer(minLength: content.size.height * 0.1)
-                    .fixedSize(horizontal: false, vertical: true)
             }
         }
     }
