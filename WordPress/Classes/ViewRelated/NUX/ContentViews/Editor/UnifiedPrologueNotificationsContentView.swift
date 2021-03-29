@@ -19,7 +19,7 @@ struct UnifiedPrologueNotificationsContentView: View {
                 RoundRectangleView {
                     HStack {
                         NotificationIcon(image: Appearance.topImage, size: notificationIconSize)
-                        Text(Appearance.topElementTitle)
+                        Text(htmlString: Appearance.topElementTitle)
                             .font(notificationFont)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(.none)
@@ -51,7 +51,7 @@ struct UnifiedPrologueNotificationsContentView: View {
                 RoundRectangleView {
                     HStack {
                         NotificationIcon(image: Appearance.middleImage, size: notificationIconSize)
-                        Text(Appearance.middleElementTitle)
+                        Text(htmlString: Appearance.middleElementTitle)
                             .font(notificationFont)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(.none)
@@ -68,7 +68,7 @@ struct UnifiedPrologueNotificationsContentView: View {
                 RoundRectangleView {
                     HStack {
                         NotificationIcon(image: Appearance.bottomImage, size: notificationIconSize)
-                        Text(Appearance.bottomElementTitle)
+                        Text(htmlString: Appearance.bottomElementTitle)
                             .font(notificationFont)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(.none)
@@ -108,14 +108,14 @@ private struct NotificationIcon: View {
 }
 
 private extension UnifiedPrologueNotificationsContentView {
-
     enum Appearance {
         static let topImage = "page3Avatar1"
         static let middleImage = "page3Avatar2"
         static let bottomImage = "page3Avatar3"
 
-        static let topElementTitle: LocalizedStringKey = "Madison Ruiz liked your post"
-        static let middleElementTitle: LocalizedStringKey = "You received 50 likes on your site today"
-        static let bottomElementTitle: LocalizedStringKey = "Johann Brandt responded to your post"
+        static let topElementTitle: String = NSLocalizedString("<strong>Madison Ruiz</strong> liked your post", comment: "Example Like notification displayed in the prologue carousel of the app. Username should be in <strong> tags and will be displayed as bold text.")
+        static let middleElementTitle: String = NSLocalizedString("You received <strong>50 likes</strong> on your site today", comment: "Example Likes notification displayed in the prologue carousel of the app. Number of likes should be in <strong> tags and will be displayed as bold text.")
+        static let bottomElementTitle: String = NSLocalizedString("<strong>Johann Brandt</strong> responded to your post", comment: "Example Comment notification displayed in the prologue carousel of the app. Username should be in <strong> tags and will be displayed as bold text.")
     }
 }
+
