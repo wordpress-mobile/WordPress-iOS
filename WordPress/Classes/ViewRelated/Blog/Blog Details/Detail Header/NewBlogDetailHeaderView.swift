@@ -239,7 +239,7 @@ fileprivate extension NewBlogDetailHeaderView {
 
         let titleButton: SpotlightableButton = {
             let button = SpotlightableButton(type: .custom)
-            button.titleLabel?.font = AppConfiguration.blogDetailHeaderTitleFont
+            button.titleLabel?.font = AppStyleGuide.blogDetailHeaderTitleFont
             button.titleLabel?.adjustsFontForContentSizeCategory = true
             button.titleLabel?.lineBreakMode = .byTruncatingTail
             button.titleLabel?.numberOfLines = 1
