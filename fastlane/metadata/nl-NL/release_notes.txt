@@ -1,9 +1,0 @@
-Wat is er nieuw in versie 16.9?
-
-De klassieke editor zal binnenkort niet meer beschikbaar zijn om nieuwe berichten aan te maken. Je kunt je bestaande berichten nog steeds in de klassieke editor bewerken, maar we raden aan dat je overstapt naar de blokeditor als je dit nog niet hebt gedaan. 
- 
- Wanneer je een site maakt kun je categorieën selecteren om het makkelijker te maken een passend ontwerp te vinden. Je kunt ook kiezen voor ontwerpen voor sites bestaande uit één pagina. 
- 
- In de Reader hebben we updates doorgevoerd ten behoeve van de ervaring van het ontdekken van content. Je ziet nu gerelateerde content op je tijdlijn en een herzien gedeelte met aanbevolen onderwerpen in het tabblad Ontdekken. Er is ook een nieuwe manier om onderwerpen te ontdekken vanuit de instelling Beheren. 
- 
- Verder zijn er andere kleine wijzigingen doorgevoerd om jouw ervaring in de app te verbeteren! 
