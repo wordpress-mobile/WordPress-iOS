@@ -1283,6 +1283,9 @@
 /* Reader select interests subtitle label text */
 "Choose your topics" = "选择您的兴趣";
 
+/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
+"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "选择另一个站点会丢失当前站点的定制内容，例如媒体和目录，你确定吗？";
+
 /* Register Domain - Address information field City */
 "City" = "城市";
 

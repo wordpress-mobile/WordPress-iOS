@@ -1283,6 +1283,9 @@
 /* Reader select interests subtitle label text */
 "Choose your topics" = "Choose your topics";
 
+/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
+"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "С избор на друг сайт ще изгубите настройките на категории и файлове от този сайт. Сигурни ли сте?";
+
 /* Register Domain - Address information field City */
 "City" = "City";
 
