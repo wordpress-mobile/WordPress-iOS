@@ -11,7 +11,6 @@ struct UnifiedPrologueStatsContentView: View {
             let plusIconSize = content.size.height * 0.18
 
             VStack {
-                Spacer(minLength: content.size.height * 0.18)
 
                 RoundRectangleView {
                     Image("page4Map")
@@ -33,6 +32,7 @@ struct UnifiedPrologueStatsContentView: View {
                     }
 
                 }
+                .frame(idealHeight: content.size.height * 0.57)
                 .fixedSize(horizontal: false, vertical: true)
                 .offset(x: -content.size.height * 0.03, y: 0)
 
@@ -61,11 +61,10 @@ struct UnifiedPrologueStatsContentView: View {
                                     backgroundColor: Color(UIColor.muriel(name: .blue, .shade50)))
                     }
                 }
+                .frame(idealHeight: content.size.height * 0.4)
                 .fixedSize(horizontal: false, vertical: true)
                 .offset(x: content.size.height * 0.03, y: 0)
 
-                // avoid bottom overlapping due to the icon offset
-                Spacer(minLength: content.size.height * 0.1)
             }
         }
     }
