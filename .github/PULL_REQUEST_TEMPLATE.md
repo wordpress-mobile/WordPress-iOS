@@ -14,6 +14,6 @@ To test:
 PR submission checklist:
 
 - [ ] I have completed the Regression Notes.
-- [ ] I have considered adding unit tests for my changes
+- [ ] I have considered adding unit tests for my changes.
 - [ ] I have considered adding accessibility improvements for my changes.
 - [ ] I have considered if this change warrants user-facing release notes and have added them to `RELEASE-NOTES.txt` if necessary.
