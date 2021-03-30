@@ -193,7 +193,8 @@ private struct TagItem: ViewModifier {
             .truncationMode(.tail)
             .padding(.horizontal, horizontalPadding)
             .padding(.vertical, verticalPadding)
-            .background(Color(UIColor.muriel(name: .gray, .shade0)))
+            .background(Color(UIColor(light: UIColor.muriel(color: MurielColor(name: .gray, shade: .shade0)),
+                                      dark: UIColor.muriel(color: MurielColor(name: .gray, shade: .shade70)))))
             .clipShape(Capsule())
     }
 }
