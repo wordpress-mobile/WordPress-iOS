@@ -75,9 +75,14 @@ class UnifiedProloguePageViewController: UIViewController {
     private func configureContentView() {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(contentView)
-
+        let contentViewHeight: CGFloat
+        if let windowHeight = UIApplication.shared.mainWindow?.frame.height {
+            contentViewHeight = windowHeight * 0.1
+        } else {
+            contentViewHeight = Metrics.titleToContentSpacing
+        }
         NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Metrics.titleToContentSpacing),
+            contentView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: contentViewHeight),
             contentView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: Metrics.heightRatio),
             contentView.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: Metrics.heightRatio),
             contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
