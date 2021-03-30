@@ -152,6 +152,15 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                     success:(void (^)(BOOL hasMore))success
                     failure:(void (^)(NSError *error))failure
 {
+    [self syncCommentsForBlog:blog withStatus:status filterUnreplied:NO success:success failure:failure];
+}
+
+- (void)syncCommentsForBlog:(Blog *)blog
+                 withStatus:(CommentStatusFilter)status
+            filterUnreplied:(BOOL)filterUnreplied
+                    success:(void (^)(BOOL hasMore))success
+                    failure:(void (^)(NSError *error))failure
+{
     NSManagedObjectID *blogID = blog.objectID;
     if (![[self class] startSyncingCommentsForBlog:blogID]){
         // We assume success because a sync is already running and it will change the comments
@@ -176,8 +185,12 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             if (!blogInContext) {
                 return;
             }
+            NSArray *fetchedComments = comments;
+            if (filterUnreplied) {
+                fetchedComments = [self filterUnrepliedComments:comments];
+            }
             
-            [self mergeComments:comments
+            [self mergeComments:fetchedComments
                         forBlog:blog
                   purgeExisting:YES
               completionHandler:^{
@@ -205,6 +218,10 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             }];
         }
     }];
+}
+
+- (NSArray *)filterUnrepliedComments:(NSArray *)comments {
+    return comments;
 }
 
 - (Comment *)oldestCommentForBlog:(Blog *)blog {

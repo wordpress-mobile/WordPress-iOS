@@ -54,4 +54,11 @@ extension CommentsViewController {
         filterTabBar.setSelectedIndex(selectedIndex, animated: false)
         selectedFilterDidChange(filterTabBar)
     }
+
+    @objc func isUnrepliedFilterSelected(_ filterTabBar: FilterTabBar) -> Bool {
+        guard let item = filterTabBar.currentlySelectedItem as? CommentFilter else {
+            return false
+        }
+        return item == CommentFilter.unreplied
+    }
 }

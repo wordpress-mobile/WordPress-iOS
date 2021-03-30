@@ -408,6 +408,8 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
     NSManagedObjectID *blogObjectID = self.blog.objectID;
 
+    BOOL filterUnreplied = [self isUnrepliedFilterSelected:self.filterTabBar];
+
     [context performBlock:^{
         Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
         if (!blogInContext) {
@@ -416,6 +418,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
         [commentService syncCommentsForBlog:blogInContext
                                  withStatus:self.currentStatusFilter
+                            filterUnreplied:filterUnreplied
                                     success:^(BOOL hasMore) {
             if (success) {
                 weakSelf.cachedStatusFilter = weakSelf.currentStatusFilter;
