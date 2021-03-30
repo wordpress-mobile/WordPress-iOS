@@ -13,12 +13,12 @@ extension WPStyleGuide {
 
     @objc
     public class var navigationBarStandardFont: UIFont {
-        return WPStyleGuide.fixedSerifFontForTextStyle(.headline, fontWeight: .semibold)
+        return AppStyleGuide.navigationBarStandardFont
     }
 
     @objc
     public class var navigationBarLargeFont: UIFont {
-        return WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold)
+        return AppStyleGuide.navigationBarLargeFont
     }
 
     // MARK: - styles used before Muriel colors are enabled
