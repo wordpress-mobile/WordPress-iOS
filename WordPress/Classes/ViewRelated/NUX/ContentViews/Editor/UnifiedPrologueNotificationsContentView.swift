@@ -6,7 +6,7 @@ struct UnifiedPrologueNotificationsContentView: View {
         GeometryReader { content in
             let spacingUnit = content.size.height * 0.06
             let notificationIconSize = content.size.height * 0.2
-            let smallIconSize = content.size.height * 0.15
+            let smallIconSize = content.size.height * 0.175
             let largerIconSize = content.size.height * 0.2
             let fontSize = content.size.height * 0.055
             let notificationFont = Font.system(size: fontSize,
@@ -29,8 +29,8 @@ struct UnifiedPrologueNotificationsContentView: View {
 
                     HStack {
                         CircledIcon(size: smallIconSize,
-                                    xOffset: -smallIconSize * 0.75,
-                                    yOffset: smallIconSize  * 0.75,
+                                    xOffset: -smallIconSize * 0.7,
+                                    yOffset: smallIconSize  * 0.7,
                                     iconType: .reply,
                                     backgroundColor: Color(UIColor.muriel(name: .celadon, .shade30)))
 
@@ -38,7 +38,7 @@ struct UnifiedPrologueNotificationsContentView: View {
 
                         CircledIcon(size: smallIconSize,
                                     xOffset: smallIconSize * 0.25,
-                                    yOffset: -smallIconSize  * 0.75,
+                                    yOffset: -smallIconSize  * 0.7,
                                     iconType: .star,
                                     backgroundColor: Color(UIColor.muriel(name: .yellow, .shade20)))
                     }
