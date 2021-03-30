@@ -1,9 +1,0 @@
-Nouveautés de la version 16.9
-
-L’éditeur classique ne sera bientôt plus disponible pour créer de nouveaux articles. Vous pourrez toujours modifier vos articles et pages existants dans l’éditeur classique, mais nous vous recommandons de passer à l’éditeur de blocs si vous ne l’avez pas déjà fait. 
- 
- Lorsque vous créez un site, vous pouvez désormais sélectionner des catégories pour vous aider à mieux rechercher et identifier les designs que vous pourriez aimer. Vous pouvez également choisir des designs de site à page unique. 
- 
- Dans le Lecteur, nous avons effectué des mises à jour pour améliorer l’expérience de découverte du contenu. Vous verrez désormais du contenu connexe dans votre flux et une section de sujets recommandés repensée dans l’onglet Découvrir. Il existe également une nouvelle façon de découvrir des sujets sous le paramètre Gérer. 
- 
- Nous avons apporté d’autres modifications mineures qui améliorent votre expérience globale dans l’application ! 

@@ -474,7 +474,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         Blog *todayExtensionBlog = [Blog lookupWithID:todayExtensionSiteID in:self.managedObjectContext];
         NSTimeZone *timeZone = [todayExtensionBlog timeZone];
 
-        if (todayExtensionSiteID == NULL) {
+        if (todayExtensionSiteID == NULL || todayExtensionBlog == nil) {
             todayExtensionSiteID = siteId;
             todayExtensionBlogName = blogName;
             todayExtensionBlogUrl = blogUrl;

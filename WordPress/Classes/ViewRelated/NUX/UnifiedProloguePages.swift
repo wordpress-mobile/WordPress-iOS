@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 
 enum UnifiedProloguePageType: CaseIterable {
@@ -26,8 +27,12 @@ enum UnifiedProloguePageType: CaseIterable {
 /// Simple container for each page of the login prologue.
 ///
 class UnifiedProloguePageViewController: UIViewController {
-    private let stackView = UIStackView()
+
     private let titleLabel = UILabel()
+
+    lazy private var contentView: UIView = {
+        makeContentView()
+    }()
 
     private var pageType: UnifiedProloguePageType!
 
@@ -45,22 +50,13 @@ class UnifiedProloguePageViewController: UIViewController {
         view = UIView()
         view.backgroundColor = .clear
 
-        configureStackView()
         configureTitle()
-    }
-
-    private func configureStackView() {
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(stackView)
-
-        view.pinSubviewToAllEdges(stackView, insets: UIEdgeInsets(top: Metrics.verticalInset,
-                                                                  left: Metrics.horizontalInset,
-                                                                  bottom: Metrics.verticalInset, right: Metrics.horizontalInset))
+        configureContentView()
     }
 
     private func configureTitle() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        stackView.addArrangedSubview(titleLabel)
+        view.addSubview(titleLabel)
 
         titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title1)
         titleLabel.textColor = .text
@@ -68,10 +64,48 @@ class UnifiedProloguePageViewController: UIViewController {
         titleLabel.numberOfLines = 0
 
         titleLabel.text = pageType.title
+
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.topInset),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.horizontalInset),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.horizontalInset)
+        ])
+    }
+
+    private func configureContentView() {
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(contentView)
+
+        NSLayoutConstraint.activate([
+            contentView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Metrics.titleToContentSpacing),
+            contentView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: Metrics.heightRatio),
+            contentView.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: Metrics.heightRatio),
+            contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        ])
+    }
+
+    private func embedSwiftUIView<Content: View>(_ view: Content) -> UIView {
+        let controller = UIHostingController(rootView: view)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.backgroundColor = .clear
+        return controller.view
+    }
+
+    private func makeContentView() -> UIView {
+        switch pageType {
+        case .intro:
+            return UnifiedPrologueIntroContentView()
+        case .editor:
+            return embedSwiftUIView(UnifiedPrologueEditorContentView())
+        default:
+            return UIView()
+        }
     }
 
     enum Metrics {
-        static let verticalInset: CGFloat = 96
-        static let horizontalInset: CGFloat = 24
+        static let topInset: CGFloat = 96.0
+        static let horizontalInset: CGFloat = 24.0
+        static let titleToContentSpacing: CGFloat = 48.0
+        static let heightRatio: CGFloat = WPDeviceIdentification.isiPad() ? 0.5 : 0.4
     }
 }

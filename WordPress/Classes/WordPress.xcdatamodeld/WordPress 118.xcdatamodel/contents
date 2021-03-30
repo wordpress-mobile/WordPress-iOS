@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H524" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H114" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="autosaveContent" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="autosaveExcerpt" optional="YES" attributeType="String" syncable="YES"/>
@@ -449,7 +449,6 @@
     <entity name="PageTemplateCategory" representedClassName="PageTemplateCategory" syncable="YES">
         <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="emoji" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="ordinal" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="slug" attributeType="String" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
         <relationship name="blog" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="pageTemplateCategories" inverseEntity="Blog" syncable="YES"/>
@@ -457,10 +456,10 @@
     </entity>
     <entity name="PageTemplateLayout" representedClassName="PageTemplateLayout" syncable="YES">
         <attribute name="content" attributeType="String" syncable="YES"/>
-        <attribute name="demoUrl" attributeType="String" syncable="YES"/>
+        <attribute name="demoUrl" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="preview" attributeType="String" syncable="YES"/>
-        <attribute name="previewMobile" attributeType="String" syncable="YES"/>
-        <attribute name="previewTablet" attributeType="String" syncable="YES"/>
+        <attribute name="previewMobile" attributeType="String" defaultValueString="" syncable="YES"/>
+        <attribute name="previewTablet" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="slug" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PageTemplateCategory" inverseName="layouts" inverseEntity="PageTemplateCategory" syncable="YES"/>
@@ -952,7 +951,7 @@
         <element name="Notification" positionX="-1667.6015625" positionY="241.66796875" width="128" height="240"/>
         <element name="OtherAndTotalViewsCountStatsRecordValue" positionX="6.0859375" positionY="1399.26953125" width="128" height="75"/>
         <element name="Page" positionX="-854.90625" positionY="-144.5234375" width="128" height="60"/>
-        <element name="PageTemplateCategory" positionX="-1638" positionY="-459" width="128" height="148"/>
+        <element name="PageTemplateCategory" positionX="-1638" positionY="-459" width="128" height="133"/>
         <element name="PageTemplateLayout" positionX="-1629" positionY="-450" width="128" height="163"/>
         <element name="Person" positionX="-1825.45703125" positionY="-16.94140625" width="128" height="225"/>
         <element name="Plan" positionX="-1802.80859375" positionY="-272.67578125" width="128" height="223"/>

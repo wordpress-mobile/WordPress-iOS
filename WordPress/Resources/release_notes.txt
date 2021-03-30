@@ -1,9 +1,1 @@
-What’s new in version 16.9?
-
-The classic editor will soon be unavailable for creating new posts. You will still be able to edit your existing posts and pages in the classic editor, but we recommend that you switch to the block editor if you haven’t already.
-
-When creating a site, you can now select categories to help you better search for and identify designs you may like. You can also choose single-page site designs.
-
-In the Reader, we’ve made updates to improve the content discovery experience. You will now see related content in your feed and a redesigned recommended topics section in your Discover tab. There’s also a new way to discover topics under the Manage setting.
-
-We’ve made other minor changes that improve your overall experience in the app!
+In the spirit of spring cleaning, we’re excited to announce fresh changes to WPiOS. We’ve spruced up the app’s design with new headers and a new site switcher, accessed via My Site. You can now filter comments by status—All, Pending, Approved, Trashed, Spammed—and enable notifications about viewing milestones. Take the newly polished app for a spin!
