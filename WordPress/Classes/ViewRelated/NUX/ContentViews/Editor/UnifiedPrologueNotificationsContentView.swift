@@ -19,7 +19,7 @@ struct UnifiedPrologueNotificationsContentView: View {
                 RoundRectangleView {
                     HStack {
                         NotificationIcon(image: Appearance.topImage, size: notificationIconSize)
-                        Text(htmlString: Appearance.topElementTitle)
+                        Text(string: Appearance.topElementTitle)
                             .font(notificationFont)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(.none)
@@ -51,7 +51,7 @@ struct UnifiedPrologueNotificationsContentView: View {
                 RoundRectangleView {
                     HStack {
                         NotificationIcon(image: Appearance.middleImage, size: notificationIconSize)
-                        Text(htmlString: Appearance.middleElementTitle)
+                        Text(string: Appearance.middleElementTitle)
                             .font(notificationFont)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(.none)
@@ -68,7 +68,7 @@ struct UnifiedPrologueNotificationsContentView: View {
                 RoundRectangleView {
                     HStack {
                         NotificationIcon(image: Appearance.bottomImage, size: notificationIconSize)
-                        Text(htmlString: Appearance.bottomElementTitle)
+                        Text(string: Appearance.bottomElementTitle)
                             .font(notificationFont)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(.none)
@@ -113,8 +113,8 @@ private extension UnifiedPrologueNotificationsContentView {
         static let middleImage = "page3Avatar2"
         static let bottomImage = "page3Avatar3"
 
-        static let topElementTitle: String = NSLocalizedString("<strong>Madison Ruiz</strong> liked your post", comment: "Example Like notification displayed in the prologue carousel of the app. Username should be in <strong> tags and will be displayed as bold text.")
-        static let middleElementTitle: String = NSLocalizedString("You received <strong>50 likes</strong> on your site today", comment: "Example Likes notification displayed in the prologue carousel of the app. Number of likes should be in <strong> tags and will be displayed as bold text.")
-        static let bottomElementTitle: String = NSLocalizedString("<strong>Johann Brandt</strong> responded to your post", comment: "Example Comment notification displayed in the prologue carousel of the app. Username should be in <strong> tags and will be displayed as bold text.")
+        static let topElementTitle: String = NSLocalizedString("*Madison Ruiz* liked your post", comment: "Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
+        static let middleElementTitle: String = NSLocalizedString("You received *50 likes* on your site today", comment: "Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text.")
+        static let bottomElementTitle: String = NSLocalizedString("*Johann Brandt* responded to your post", comment: "Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text.")
     }
 }
