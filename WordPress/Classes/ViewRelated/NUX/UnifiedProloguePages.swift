@@ -99,6 +99,10 @@ class UnifiedProloguePageViewController: UIViewController {
             return embedSwiftUIView(UnifiedPrologueEditorContentView())
         case .analytics:
             return embedSwiftUIView(UnifiedPrologueStatsContentView())
+        case .notifications:
+            return embedSwiftUIView(UnifiedPrologueNotificationsContentView())
+        case .reader:
+            return embedSwiftUIView(UnifiedPrologueReaderContentView())
         default:
             return UIView()
         }
