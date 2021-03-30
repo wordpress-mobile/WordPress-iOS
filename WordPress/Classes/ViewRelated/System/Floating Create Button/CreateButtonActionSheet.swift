@@ -14,9 +14,10 @@ class CreateButtonActionSheet: ActionSheetViewController {
 
         /// A/B test: display story first
         var actions = actions
-        if !actions.filter({ $0 is StoryAction }).isEmpty
-            && ABTest.storyFirst.variation == .treatment(nil) {
-            actions.swapAt(0, 2)
+        if let storyAction = actions.first(where: { $0 is StoryAction }),
+           ABTest.storyFirst.variation == .treatment(nil) {
+            let actionsWithoutStory = actions.filter { !($0 is StoryAction) }
+            actions = [storyAction] + actionsWithoutStory
         }
 
         let buttons = actions.map { $0.makeButton() }

@@ -38,8 +38,8 @@ struct UnifiedPrologueEditorContentView: View {
                     HStack {
                         let alignImageLeftIconSize = content.size.height * 0.15
                         CircledIcon(size: alignImageLeftIconSize,
-                                    xOffset: -alignImageLeftIconSize * 3 / 4,
-                                    yOffset: alignImageLeftIconSize  * 3 / 4,
+                                    xOffset: -alignImageLeftIconSize * 0.75,
+                                    yOffset: alignImageLeftIconSize  * 0.75,
                                     iconType: .alignImageLeft,
                                     backgroundColor: Color(UIColor.muriel(name: .purple, .shade50)))
 
@@ -47,8 +47,8 @@ struct UnifiedPrologueEditorContentView: View {
 
                         let plusIconSize = content.size.height * 0.2
                         CircledIcon(size: plusIconSize,
-                                    xOffset: plusIconSize * 2 / 3,
-                                    yOffset: -plusIconSize * 2 / 3,
+                                    xOffset: plusIconSize * 0.66,
+                                    yOffset: -plusIconSize * 0.66,
                                     iconType: .plus,
                                     backgroundColor: Color(UIColor.muriel(name: .blue, .shade50)))
                     }
