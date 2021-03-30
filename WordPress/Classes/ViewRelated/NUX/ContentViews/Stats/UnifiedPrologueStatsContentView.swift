@@ -7,8 +7,8 @@ struct UnifiedPrologueStatsContentView: View {
 
         GeometryReader { content in
             let globeIconSize = content.size.height * 0.22
-            let alignImageLeftIconSize = content.size.height * 0.16
-            let plusIconSize = content.size.height * 0.18
+            let statusIconSize = content.size.height * 0.165
+            let usersIconSize = content.size.height * 0.185
 
             VStack {
 
@@ -24,7 +24,7 @@ struct UnifiedPrologueStatsContentView: View {
                     HStack {
                         Spacer()
                         CircledIcon(size: globeIconSize,
-                                    xOffset: globeIconSize * 0.75,
+                                    xOffset: globeIconSize * 0.62,
                                     yOffset: -globeIconSize * 0.125,
                                     iconType: .globe,
                                     backgroundColor: Color(UIColor.muriel(name: .celadon, .shade30)))
@@ -32,7 +32,7 @@ struct UnifiedPrologueStatsContentView: View {
                     }
 
                 }
-                .frame(idealHeight: content.size.height * 0.57)
+                .frame(idealHeight: content.size.height * 0.52)
                 .fixedSize(horizontal: false, vertical: true)
                 .offset(x: -content.size.height * 0.03, y: 0)
 
@@ -46,22 +46,22 @@ struct UnifiedPrologueStatsContentView: View {
                         .padding(.all, content.size.height * 0.05)
                     HStack {
 
-                        CircledIcon(size: alignImageLeftIconSize,
-                                    xOffset: -alignImageLeftIconSize * 0.75,
-                                    yOffset: -alignImageLeftIconSize * 1.5,
+                        CircledIcon(size: statusIconSize,
+                                    xOffset: -statusIconSize * 0.75,
+                                    yOffset: -statusIconSize * 1.25,
                                     iconType: .status,
                                     backgroundColor: Color(UIColor.muriel(name: .purple, .shade50)))
 
                         Spacer()
 
-                        CircledIcon(size: plusIconSize,
-                                    xOffset: plusIconSize * 0.33,
-                                    yOffset: plusIconSize * 0.875,
+                        CircledIcon(size: usersIconSize,
+                                    xOffset: usersIconSize * 0.25,
+                                    yOffset: usersIconSize * 0.875,
                                     iconType: .multipleUsers,
                                     backgroundColor: Color(UIColor.muriel(name: .blue, .shade50)))
                     }
                 }
-                .frame(idealHeight: content.size.height * 0.4)
+                .frame(idealHeight: content.size.height * 0.45)
                 .fixedSize(horizontal: false, vertical: true)
                 .offset(x: content.size.height * 0.03, y: 0)
 
