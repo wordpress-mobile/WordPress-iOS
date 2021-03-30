@@ -340,3 +340,11 @@ extension MySiteViewController: WPSplitViewControllerDetailProvider {
         return blogDetailsViewController.initialDetailViewControllerForSplitView(splitView)
     }
 }
+
+// MARK: - My site detail views
+extension MySiteViewController {
+
+    func showDetailView(for section: BlogDetailsSubsection) {
+        blogDetailsViewController?.showDetailView(for: section)
+    }
+}
