@@ -239,6 +239,8 @@ fileprivate extension NewBlogDetailHeaderView {
 
         let titleButton: SpotlightableButton = {
             let button = SpotlightableButton(type: .custom)
+            button.contentHorizontalAlignment = .leading
+
             button.titleLabel?.font = WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .semibold)
             button.titleLabel?.adjustsFontForContentSizeCategory = true
             button.titleLabel?.lineBreakMode = .byTruncatingTail
@@ -350,6 +352,7 @@ fileprivate extension NewBlogDetailHeaderView {
             [
                 titleStackView.leadingAnchor.constraint(equalTo: siteIconView.trailingAnchor, constant: LayoutSpacing.betweenSiteIconAndTitle),
                 titleStackView.centerYAnchor.constraint(equalTo: siteIconView.centerYAnchor),
+                titleButton.trailingAnchor.constraint(equalTo: siteSwitcherButton.leadingAnchor, constant: -LayoutSpacing.betweenTitleAndSiteSwitcher),
             ]
         }
     }
