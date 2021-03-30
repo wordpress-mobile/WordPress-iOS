@@ -100,7 +100,7 @@ extension WPStyleGuide {
 
     /// Style the tab bar using Muriel colors
     class func configureTabBarAppearance() {
-        UITabBar.appearance().tintColor = .primary
+        UITabBar.appearance().tintColor = .tabSelected
         UITabBar.appearance().unselectedItemTintColor = .tabUnselected
     }
 
