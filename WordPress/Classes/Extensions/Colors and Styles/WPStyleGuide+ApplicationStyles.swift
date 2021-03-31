@@ -21,19 +21,6 @@ extension WPStyleGuide {
         return AppStyleGuide.navigationBarLargeFont
     }
 
-    // MARK: - styles used before Muriel colors are enabled
-    public class func navigationBarBackgroundImage() -> UIImage {
-        return UIImage(color: WPStyleGuide.wordPressBlue())
-    }
-
-    public class func navigationBarBarStyle() -> UIBarStyle {
-        return .black
-    }
-
-    public class func navigationBarShadowImage() -> UIImage {
-        return UIImage(color: UIColor(fromHex: 0x007eb1))
-    }
-
     class func configureDefaultTint() {
         UIWindow.appearance().tintColor = .primary
     }
