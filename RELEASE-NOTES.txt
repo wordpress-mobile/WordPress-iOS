@@ -3,6 +3,7 @@
 
 * [*] Reordered categories in page layout picker [#16156]
 * [*] Added preview device mode selector in the page layout previews [#16141]
+* [**] Block Editor: Added Contact Info block to sites on WPcom or with Jetpack version >= 8.5.
 
 17.0
 -----
