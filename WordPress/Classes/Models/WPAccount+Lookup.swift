@@ -29,7 +29,7 @@ public extension WPAccount {
     /// The default WordPress.com account is the one used for Reader and Notifications.
     ///
     static func lookupDefaultWordPressComAccount(in context: NSManagedObjectContext) throws -> WPAccount? {
-        guard let uuid = UserSettings.defaultDotComUUID, uuid.count > 0 else {
+        guard let uuid = UserSettings.defaultDotComUUID, !uuid.isEmpty else {
             // No account, or no default account set. Clear the defaults key.
             UserSettings.defaultDotComUUID = nil
             return nil
