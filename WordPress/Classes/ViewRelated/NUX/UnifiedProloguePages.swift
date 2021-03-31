@@ -80,8 +80,21 @@ class UnifiedProloguePageViewController: UIViewController {
 
     override func viewDidLoad() {
 
-        contentViewWidthConstraint = NSLayoutConstraint(item: contentView, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.7, constant: 0)
-        contentViewHeightConstraint = NSLayoutConstraint(item: contentView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.5, constant: 0)
+        contentViewWidthConstraint = NSLayoutConstraint(item: contentView,
+                                                        attribute: .width,
+                                                        relatedBy: .equal,
+                                                        toItem: view,
+                                                        attribute: .width,
+                                                        multiplier: 0.7,
+                                                        constant: 0)
+
+        contentViewHeightConstraint = NSLayoutConstraint(item: contentView,
+                                                         attribute: .height,
+                                                         relatedBy: .equal,
+                                                         toItem: view,
+                                                         attribute: .height,
+                                                         multiplier: 0.5,
+                                                         constant: 0)
 
         let centeredContentViewConstraint = NSLayoutConstraint(item: contentView,
                                                                attribute: .centerY,
