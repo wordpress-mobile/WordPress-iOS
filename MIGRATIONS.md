@@ -3,6 +3,13 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 119
+
+@mkevins 2021-03-31
+
+- `PageTemplateCategory`: added the attribute
+    - `ordinal` as Int64 (non-optional)
+
 ## WordPress 118
 
 @chipsnyder 2021-03-26
@@ -16,7 +23,7 @@ data model as well as any custom migrations.
 
 @mkevins 2021-03-17
 
-- `PageTemplateLayout`: added the entities
+- `PageTemplateLayout`: added the attributes
     - `demoUrl` as string
     - `previewTablet` as string
     - `previewMobile` as string
