@@ -190,14 +190,14 @@ extension ConfettiView {
 
         let red = UIColor(light: .muriel(name: .red, .shade10), dark: .muriel(name: .red, .shade30))
 
-        let wpBlue = UIColor(light: .muriel(name: .wordPressBlue, .shade30), dark: .muriel(name: .wordPressBlue, .shade50))
+        let blue = UIColor(light: .muriel(name: .blue, .shade30), dark: .muriel(name: .blue, .shade50))
 
         let yellow = UIColor(light: .muriel(name: .yellow, .shade10), dark: .muriel(name: .yellow, .shade30))
 
 
-        let starParticles = [purple, orange, green, wpBlue].map { Particle(image: star, tintColor: $0) }
+        let starParticles = [purple, orange, green, blue].map { Particle(image: star, tintColor: $0) }
         let circleParticles = [celadon, pink, red, yellow].map { Particle(image: circle, tintColor: $0) }
-        let hotdogParticles = [orange, pink, wpBlue, red].map { Particle(image: hotdog, tintColor: $0) }
+        let hotdogParticles = [orange, pink, blue, red].map { Particle(image: hotdog, tintColor: $0) }
 
         let particles = starParticles + circleParticles + hotdogParticles
 

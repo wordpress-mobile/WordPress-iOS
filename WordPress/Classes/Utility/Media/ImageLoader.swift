@@ -50,7 +50,7 @@ import AutomatticTracks
     @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
         self.imageView = imageView
         imageView.gifStrategy = gifStrategy
-        loadingIndicator = CircularProgressView(style: .wordPressBlue)
+        loadingIndicator = CircularProgressView(style: .primary)
 
         super.init()
 

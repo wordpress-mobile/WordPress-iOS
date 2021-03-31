@@ -110,7 +110,7 @@ extension WPStyleGuide {
         appearance.shadowColor = separatorColor
         navigationBarAppearanceProxy.standardAppearance = appearance
 
-        let tintColor = UIColor(light: .brand, dark: .white)
+        let tintColor = UIColor.lightAppBarTint
 
         let buttonBarAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [LightNavigationController.self])
         buttonBarAppearance.tintColor = tintColor
