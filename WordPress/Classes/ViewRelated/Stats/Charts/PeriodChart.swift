@@ -170,19 +170,19 @@ private final class PeriodChartDataTransformer {
     }
 
     static func primaryBarColor(forCount count: Int) -> UIColor {
-        return count > 0 ? UIColor(light: .primaryLight, dark: .primary(.shade80)) : .neutral(.shade0)
+        return count > 0 ? .statsPrimaryBar : .neutral(.shade0)
     }
 
     static func secondaryBarColor(forCount count: Int) -> UIColor {
-        return count > 0 ? UIColor(light: .primary(.shade60), dark: .primary) : .neutral(.shade0)
+        return count > 0 ? .statsSecondaryBar : .neutral(.shade0)
     }
 
     static func primaryHighlightColor(forCount count: Int) -> UIColor? {
-        return count > 0 ? UIColor(light: .accent(.shade30), dark: .accent(.shade60)) : nil
+        return count > 0 ? .statsPrimaryHighlight : nil
     }
 
     static func secondaryHighlightColor(forCount count: Int) -> UIColor? {
-        return count > 0 ? UIColor(light: .accent(.shade60), dark: .accent(.shade30)) : nil
+        return count > 0 ? .statsSecondaryHighlight : nil
     }
 
 }

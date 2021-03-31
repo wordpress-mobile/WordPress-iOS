@@ -46,4 +46,20 @@ extension UIColor {
 
     /// Note: these values are intended to match the iOS defaults
     static var tabUnselected: UIColor =  UIColor(light: UIColor(hexString: "999999"), dark: UIColor(hexString: "757575"))
+
+    static var statsPrimaryBar: UIColor {
+        return UIColor(light: .primaryLight, dark: .primary(.shade80))
+    }
+
+    static var statsSecondaryBar: UIColor {
+        return UIColor(light: .primary(.shade60), dark: .primary)
+    }
+
+    static var statsPrimaryHighlight: UIColor {
+        return  UIColor(light: .accent(.shade30), dark: .accent(.shade60))
+    }
+
+    static var statsSecondaryHighlight: UIColor {
+        return UIColor(light: .accent(.shade60), dark: .accent(.shade30))
+    }
 }
