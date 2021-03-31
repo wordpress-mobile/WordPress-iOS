@@ -96,6 +96,8 @@ open class RewindStatusTableViewCell: ActivityTableViewCell {
         iconImageView.isHidden = false
         actionButtonContainer.isHidden = true
 
+        progressView.trackTintColor = .primary(.shade5)
+        progressView.progressTintColor = .primary
         progressView.setProgress(progress, animated: true)
     }
 }
