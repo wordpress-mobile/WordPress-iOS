@@ -126,6 +126,7 @@ public extension WPAccount {
     /// An Objective-C wrapper around the `lookupDefaultWordPressComAccount` method.
     ///
     /// Prefer using `lookupDefaultWordPressComAccount` directly
+    @available(swift, obsoleted: 1.0)
     @objc(lookupDefaultWordPressComAccountInContext:)
     static func objc_lookupDefaultWordPressComAccount(in context: NSManagedObjectContext) -> WPAccount? {
         return try? lookupDefaultWordPressComAccount(in: context)
@@ -134,6 +135,7 @@ public extension WPAccount {
     /// An Objective-C wrapper around the `lookupHasDefaultWordPressComAccount` method.
     ///
     /// Prefer using `lookupHasDefaultWordPressComAccount` directly
+    @available(swift, obsoleted: 1.0)
     @objc(lookupHasDefaultWordPressComAccountInContext:)
     static func objc_lookupHasDefaultWordPressComAccount(in context: NSManagedObjectContext) -> Bool {
         return (try? lookupHasDefaultWordPressComAccount(in: context)) ?? false
@@ -142,6 +144,7 @@ public extension WPAccount {
     /// An Objective-C wrapper around the `lookupDefaultWordPressComAccount` method.
     ///
     /// Prefer using `lookupDefaultWordPressComAccount` directly
+    @available(swift, obsoleted: 1.0)
     @objc(lookupNumberOfAccountsInContext:)
     static func objc_lookupNumberOfAccounts(in context: NSManagedObjectContext) -> Int {
         return (try? lookupNumberOfAccounts(in: context)) ?? 0
@@ -150,6 +153,7 @@ public extension WPAccount {
     /// An Objective-C wrapper around the `lookup(withUsername:context:)` method.
     ///
     /// Prefer using `lookup(withUsername:context:)` directly
+    @available(swift, obsoleted: 1.0)
     @objc(lookupWithUsername:context:)
     static func objc_lookupWithUsername(username: String, context: NSManagedObjectContext) -> WPAccount? {
         return try? lookup(withUsername: username, in: context)
