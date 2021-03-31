@@ -302,7 +302,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
-        self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .gutenberg, post: post)
+        self.editorSession = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -845,15 +845,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             DDLogWarn(message)
         case .error, .fatal:
             DDLogError(message)
-        }
-    }
-
-    func gutenbergDidLogUserEvent(_ event: GutenbergUserEvent) {
-        switch event {
-        case .editorSessionTemplateApply(let template):
-            editorSession.apply(template: template)
-        case .editorSessionTemplatePreview(let template):
-            editorSession.preview(template: template)
         }
     }
 
