@@ -90,6 +90,16 @@ class UnifiedProloguePageViewController: UIViewController {
         }
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        // change the scale of the view in regular horizontal size class (iPad) depending on the orientation
+        guard contentViewHeightConstraint?.isActive == true else {
+            return
+        }
+        contentViewHeightConstraint?.isActive = false
+        setContentViewHeightConstraint()
+        contentViewHeightConstraint?.isActive = true
+    }
+
     private func configureMainStackView() {
         mainStackView.axis = .vertical
         mainStackView.alignment = .center
@@ -119,21 +129,8 @@ class UnifiedProloguePageViewController: UIViewController {
     private func activateConstraints() {
         view.pinSubviewToAllEdges(mainStackView)
 
-        contentViewWidthConstraint = NSLayoutConstraint(item: contentView,
-                                                        attribute: .width,
-                                                        relatedBy: .equal,
-                                                        toItem: view,
-                                                        attribute: .width,
-                                                        multiplier: 0.7,
-                                                        constant: 0)
-
-        contentViewHeightConstraint = NSLayoutConstraint(item: contentView,
-                                                         attribute: .height,
-                                                         relatedBy: .equal,
-                                                         toItem: view,
-                                                         attribute: .height,
-                                                         multiplier: 0.5,
-                                                         constant: 0)
+        setContentViewWidthConstraint()
+        setContentViewHeightConstraint()
 
         let centeredContentViewConstraint = NSLayoutConstraint(item: contentView,
                                                                attribute: .centerY,
@@ -157,6 +154,31 @@ class UnifiedProloguePageViewController: UIViewController {
 
             NSLayoutConstraint.activate([contentViewHeightConstraint ?? NSLayoutConstraint()])
         }
+    }
+
+    private func setContentViewHeightConstraint() {
+        contentViewHeightConstraint = NSLayoutConstraint(item: contentView,
+                                                         attribute: .height,
+                                                         relatedBy: .equal,
+                                                         toItem: view,
+                                                         attribute: .height,
+                                                         multiplier: iPadHeightMultiplier,
+                                                         constant: 0)
+    }
+
+    private func setContentViewWidthConstraint() {
+        contentViewWidthConstraint = NSLayoutConstraint(item: contentView,
+                                                        attribute: .width,
+                                                        relatedBy: .equal,
+                                                        toItem: view,
+                                                        attribute: .width,
+                                                        multiplier: 0.7,
+                                                        constant: 0)
+    }
+
+    /// scale factor for the content view on iPad, depending on the orientation
+    private var iPadHeightMultiplier: CGFloat {
+        UIDevice.current.orientation.isPortrait ? 0.4 : 0.5
     }
 
     private func embedSwiftUIView<Content: View>(_ view: Content) -> UIView {
