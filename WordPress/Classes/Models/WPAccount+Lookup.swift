@@ -8,7 +8,7 @@ public extension WPAccount {
     ///
     @objc
     var isDefaultWordPressComAccount: Bool {
-        guard let uuid = UserSettings.defaultDotComUUID, uuid.count > 0 else {
+        guard let uuid = UserSettings.defaultDotComUUID else {
             return false
         }
 
