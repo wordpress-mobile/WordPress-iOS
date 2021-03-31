@@ -53,18 +53,6 @@ final class WPAccountLookupTests: XCTestCase {
         XCTAssertNil(UserSettings.defaultDotComUUID)
     }
 
-    func testLookupHasDefaultWordPressComAccountIsFalseWhereNoneExists() throws {
-        let _ = AccountBuilder(contextManager).build()
-        try XCTAssertFalse(WPAccount.lookupHasDefaultWordPressComAccount(in: contextManager.mainContext))
-    }
-
-    func testLookupHasDefaultWordPressComAccountIsTrueWhenAccountIsSet() throws {
-        let account = AccountBuilder(contextManager).build()
-        UserSettings.defaultDotComUUID = account.uuid
-
-        try XCTAssertTrue(WPAccount.lookupHasDefaultWordPressComAccount(in: contextManager.mainContext))
-    }
-
     func testLookupAccountByUUIDReturnsNilForInvalidAccount() throws {
         AccountBuilder(contextManager).build()
         try XCTAssertNil(WPAccount.lookup(withUUIDString: "", in: contextManager.mainContext))

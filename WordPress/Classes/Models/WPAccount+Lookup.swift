@@ -38,14 +38,6 @@ public extension WPAccount {
         return try lookup(withUUIDString: uuid, in: context)
     }
 
-    /// Does a default WordPress.com account exist?
-    ///
-    /// The default WordPress.com account is the one used for Reader and Notifications.
-    ///
-    static func lookupHasDefaultWordPressComAccount(in context: NSManagedObjectContext) throws -> Bool {
-        return try lookupDefaultWordPressComAccount(in: context) != nil
-    }
-
     /// Lookup a WPAccount by its local uuid
     ///
     /// - Parameters:
@@ -130,15 +122,6 @@ public extension WPAccount {
     @objc(lookupDefaultWordPressComAccountInContext:)
     static func objc_lookupDefaultWordPressComAccount(in context: NSManagedObjectContext) -> WPAccount? {
         return try? lookupDefaultWordPressComAccount(in: context)
-    }
-
-    /// An Objective-C wrapper around the `lookupHasDefaultWordPressComAccount` method.
-    ///
-    /// Prefer using `lookupHasDefaultWordPressComAccount` directly
-    @available(swift, obsoleted: 1.0)
-    @objc(lookupHasDefaultWordPressComAccountInContext:)
-    static func objc_lookupHasDefaultWordPressComAccount(in context: NSManagedObjectContext) -> Bool {
-        return (try? lookupHasDefaultWordPressComAccount(in: context)) ?? false
     }
 
     /// An Objective-C wrapper around the `lookupDefaultWordPressComAccount` method.
