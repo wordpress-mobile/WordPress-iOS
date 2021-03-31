@@ -36,6 +36,7 @@ class UnifiedProloguePageViewController: UIViewController {
 
     private var pageType: UnifiedProloguePageType!
 
+    let mainStackView = UIStackView()
     let titleTopSpacer = UIView()
     let titleContentSpacer = UIView()
     let contentBottomSpacer = UIView()
@@ -57,28 +58,66 @@ class UnifiedProloguePageViewController: UIViewController {
         view = UIView()
         view.backgroundColor = .clear
 
-        let mainStackView = UIStackView()
+        titleTopSpacer.translatesAutoresizingMaskIntoConstraints = false
+        titleContentSpacer.translatesAutoresizingMaskIntoConstraints = false
+        contentBottomSpacer.translatesAutoresizingMaskIntoConstraints = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+
+        configureMainStackView()
+
+        configureTitle()
+    }
+
+    override func viewDidLoad() {
+        activateConstraints()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+
+        guard let previousTraitCollection = previousTraitCollection,
+              traitCollection.horizontalSizeClass != previousTraitCollection.horizontalSizeClass else {
+
+            return
+        }
+
+        if traitCollection.horizontalSizeClass == .compact {
+
+            NSLayoutConstraint.deactivate([contentViewHeightConstraint ?? NSLayoutConstraint()])
+            NSLayoutConstraint.activate([contentViewWidthConstraint ?? NSLayoutConstraint()])
+        } else {
+            NSLayoutConstraint.deactivate([contentViewWidthConstraint ?? NSLayoutConstraint()])
+            NSLayoutConstraint.activate([contentViewHeightConstraint ?? NSLayoutConstraint()])
+        }
+    }
+
+    private func configureMainStackView() {
         mainStackView.axis = .vertical
         mainStackView.alignment = .center
         mainStackView.distribution = .fill
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
-        titleTopSpacer.translatesAutoresizingMaskIntoConstraints = false
 
-        titleContentSpacer.translatesAutoresizingMaskIntoConstraints = false
-
-        contentBottomSpacer.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(mainStackView)
-
-        configureTitle()
         mainStackView.addArrangedSubview(titleTopSpacer)
         mainStackView.addArrangedSubview(titleLabel)
         mainStackView.addArrangedSubview(titleContentSpacer)
         mainStackView.addArrangedSubview(contentView)
         mainStackView.addArrangedSubview(contentBottomSpacer)
-        view.pinSubviewToAllEdges(mainStackView)
+
+        view.addSubview(mainStackView)
     }
 
-    override func viewDidLoad() {
+    private func configureTitle() {
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title1)
+        titleLabel.textColor = .text
+        titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 0
+
+        titleLabel.text = pageType.title
+    }
+
+    private func activateConstraints() {
+        view.pinSubviewToAllEdges(mainStackView)
 
         contentViewWidthConstraint = NSLayoutConstraint(item: contentView,
                                                         attribute: .width,
@@ -118,46 +157,6 @@ class UnifiedProloguePageViewController: UIViewController {
 
             NSLayoutConstraint.activate([contentViewHeightConstraint ?? NSLayoutConstraint()])
         }
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-
-        guard let previousTraitCollection = previousTraitCollection,
-              traitCollection.horizontalSizeClass != previousTraitCollection.horizontalSizeClass else {
-            return
-        }
-
-        if traitCollection.horizontalSizeClass == .compact {
-
-            NSLayoutConstraint.deactivate([contentViewHeightConstraint ?? NSLayoutConstraint()])
-            NSLayoutConstraint.activate([contentViewWidthConstraint ?? NSLayoutConstraint()])
-        } else {
-            NSLayoutConstraint.deactivate([contentViewWidthConstraint ?? NSLayoutConstraint()])
-            NSLayoutConstraint.activate([contentViewHeightConstraint ?? NSLayoutConstraint()])
-        }
-    }
-
-    private func configureTitle() {
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title1)
-        titleLabel.textColor = .text
-        titleLabel.textAlignment = .center
-        titleLabel.numberOfLines = 0
-
-        titleLabel.text = pageType.title
-    }
-
-    private func configureContentView() {
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(contentView)
-
-        NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Metrics.titleToContentSpacing),
-            contentView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: Metrics.heightRatio),
-            contentView.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: Metrics.heightRatio),
-            contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        ])
     }
 
     private func embedSwiftUIView<Content: View>(_ view: Content) -> UIView {
