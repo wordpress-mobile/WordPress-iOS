@@ -93,7 +93,11 @@
 {
     SharingAuthorizationWebViewController *webViewController = [[SharingAuthorizationWebViewController alloc] initWith:self.publicizeService url:connectionURL for:self.blog delegate:self];
 
-    self.navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        self.navController = [[LightNavigationController alloc] initWithRootViewController:webViewController];
+    } else {
+        self.navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    }
     self.navController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.viewController presentViewController:self.navController animated:YES completion:nil];
 }
