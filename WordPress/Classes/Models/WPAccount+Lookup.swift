@@ -71,7 +71,6 @@ public extension WPAccount {
     static func lookup(withUsername username: String, in context: NSManagedObjectContext) throws -> WPAccount? {
         let fetchRequest = NSFetchRequest<Self>(entityName: WPAccount.entityName())
         fetchRequest.predicate = NSPredicate(format: "username = [c] %@ || email = [c] %@", username, username)
-        fetchRequest.includesPendingChanges = true // TODO: this shouldn't be necessary, it was copied from the `AccountService`
 
         guard let account = try context.fetch(fetchRequest).first else {
             return nil
@@ -90,7 +89,6 @@ public extension WPAccount {
     static func lookup(withUserID userID: Int64, in context: NSManagedObjectContext) throws -> WPAccount? {
         let fetchRequest = NSFetchRequest<Self>(entityName: WPAccount.entityName())
         fetchRequest.predicate = NSPredicate(format: "userID = %ld", userID)
-        fetchRequest.includesPendingChanges = true // TODO: this shouldn't be necessary, it was copied from the `AccountService`
 
         guard let account = try context.fetch(fetchRequest).first else {
             return nil
