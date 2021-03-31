@@ -106,11 +106,11 @@ class UnifiedProloguePageViewController: UIViewController {
         mainStackView.distribution = .fill
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
 
-        mainStackView.addArrangedSubview(titleTopSpacer)
-        mainStackView.addArrangedSubview(titleLabel)
-        mainStackView.addArrangedSubview(titleContentSpacer)
-        mainStackView.addArrangedSubview(contentView)
-        mainStackView.addArrangedSubview(contentBottomSpacer)
+        mainStackView.addArrangedSubviews([titleTopSpacer,
+                                           titleLabel,
+                                           titleContentSpacer,
+                                           contentView,
+                                           contentBottomSpacer])
 
         view.addSubview(mainStackView)
     }
