@@ -19,7 +19,7 @@ struct UnifiedPrologueNotificationsContentView: View {
                 RoundRectangleView {
                     HStack {
                         NotificationIcon(image: Appearance.topImage, size: notificationIconSize)
-                        Text(string: Appearance.topElementTitle)
+                        Text(Appearance.topElementTitle)
                             .font(notificationFont)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(.none)
@@ -51,7 +51,7 @@ struct UnifiedPrologueNotificationsContentView: View {
                 RoundRectangleView {
                     HStack {
                         NotificationIcon(image: Appearance.middleImage, size: notificationIconSize)
-                        Text(string: Appearance.middleElementTitle)
+                        Text(Appearance.middleElementTitle)
                             .font(notificationFont)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(.none)
@@ -68,7 +68,7 @@ struct UnifiedPrologueNotificationsContentView: View {
                 RoundRectangleView {
                     HStack {
                         NotificationIcon(image: Appearance.bottomImage, size: notificationIconSize)
-                        Text(string: Appearance.bottomElementTitle)
+                        Text(Appearance.bottomElementTitle)
                             .font(notificationFont)
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(.none)
