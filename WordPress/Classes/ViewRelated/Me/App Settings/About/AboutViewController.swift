@@ -46,7 +46,7 @@ open class AboutViewController: UITableViewController {
     fileprivate func setupTableView() {
         // Load and Tint the Logo
         let color                   = UIColor.primary
-        let tintedImage             = UIImage(named: "icon-wp")?.withRenderingMode(.alwaysTemplate)
+        let tintedImage             = AppStyleGuide.aboutAppIcon?.withRenderingMode(.alwaysTemplate)
         let imageView               = UIImageView(image: tintedImage)
         imageView.tintColor = color
         imageView.autoresizingMask  = [.flexibleLeftMargin, .flexibleRightMargin]
