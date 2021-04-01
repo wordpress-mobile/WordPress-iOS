@@ -302,7 +302,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
-        self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .gutenberg, post: post)
+        self.editorSession = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -844,15 +844,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func gutenbergDidLogUserEvent(_ event: GutenbergUserEvent) {
-        switch event {
-        case .editorSessionTemplateApply(let template):
-            editorSession.apply(template: template)
-        case .editorSessionTemplatePreview(let template):
-            editorSession.preview(template: template)
-        }
-    }
-
     func gutenbergDidRequestImagePreview(with fullSizeUrl: URL, thumbUrl: URL?) {
         navigationController?.definesPresentationContext = true
 
@@ -1050,6 +1041,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return [
             .mentions: FeatureFlag.gutenbergMentions.enabled && SuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .xposts: FeatureFlag.gutenbergXposts.enabled && SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
+            .contactInfoBlock: post.blog.supports(.contactInfo) && FeatureFlag.contactInfo.enabled,
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .audioBlock: !isFreeWPCom, // Disable audio block until it's usable on free sites via "Insert from URL" capability
