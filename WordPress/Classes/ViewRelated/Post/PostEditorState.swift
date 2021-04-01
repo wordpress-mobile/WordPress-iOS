@@ -195,6 +195,8 @@ public class PostEditorStateContext {
         }
     }
 
+    fileprivate(set) var isGeneratingPreview = false
+
     convenience init(post: AbstractPost,
                      delegate: PostEditorStateContextDelegate) {
         var originalPostStatus: BasePost.Status? = nil
@@ -328,6 +330,12 @@ public class PostEditorStateContext {
     ///
     func update(isUploadingMedia: Bool) {
         self.isUploadingMedia = isUploadingMedia
+    }
+
+    /// Call whenever a Preview Generation OP is started / stopped
+    ///
+    func update(isGeneratingPreview: Bool) {
+        self.isGeneratingPreview = isGeneratingPreview
     }
 
     /// Should the publish button be enabled given the current state
