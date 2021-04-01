@@ -202,8 +202,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                         if (success) {
                             // Note:
                             // We'll assume that if the requested page size couldn't be filled, there are no
-                            // more comments left to retrieve.
-                            BOOL hasMore = comments.count >= WPNumberOfCommentsToSync;
+                            // more comments left to retrieve.  However, for unreplied comments, we only fetch the first page (for now).
+                            BOOL hasMore = comments.count >= WPNumberOfCommentsToSync && !filterUnreplied;
                             success(hasMore);
                         }
                     }];
