@@ -221,7 +221,55 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 }
 
 - (NSArray *)filterUnrepliedComments:(NSArray *)comments {
-    return comments;
+    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *account = [service defaultWordPressComAccount];
+    NSMutableArray *marr = [comments mutableCopy];
+
+    NSMutableArray *foundIDs = [NSMutableArray array];
+    NSMutableArray *discardables = [NSMutableArray array];
+
+    // get ids of comments that user has replied to.
+    for (RemoteComment *comment in marr) {
+        if (![comment.authorEmail isEqualToString:account.email] || !comment.parentID) {
+            continue;
+        }
+        [foundIDs addObject:comment.parentID];
+        [discardables addObject:comment];
+    }
+    // Discard the replies, they aren't needed.
+    [marr removeObjectsInArray:discardables];
+    [discardables removeAllObjects];
+
+    // Get the parents, grandparents etc. and discard those too.
+    while ([foundIDs count] > 0) {
+        NSArray *needles = [foundIDs copy];
+        [foundIDs removeAllObjects];
+        for (RemoteComment *comment in marr) {
+            if ([needles containsObject:comment.commentID]) {
+                if (comment.parentID) {
+                    [foundIDs addObject:comment.parentID];
+                }
+                [discardables addObject:comment];
+            }
+        }
+        // Discard the matches, and keep looking if items were found.
+        [marr removeObjectsInArray:discardables];
+        [discardables removeAllObjects];
+    }
+
+    // remove any remaining child comments.
+    // remove any remaining root comments made by the user.
+    for (RemoteComment *comment in marr) {
+        if (comment.parentID != 0) {
+            [discardables addObject:comment];
+        } else if ([comment.authorEmail isEqualToString:account.email]) {
+            [discardables addObject:comment];
+        }
+    }
+    [marr removeObjectsInArray:discardables];
+
+    // these are the most recent unreplied comments from other users.
+    return [NSArray arrayWithArray:marr];
 }
 
 - (Comment *)oldestCommentForBlog:(Blog *)blog {
