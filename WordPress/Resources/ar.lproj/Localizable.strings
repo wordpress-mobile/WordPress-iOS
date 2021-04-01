@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-23 18:55:59+0000 */
+/* Translation-Revision-Date: 2021-03-30 09:51:21+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -268,25 +268,25 @@
 "A file contains a malicious code pattern" = "يحتوي أحد الملفات على نمط أكواد برمجية ضارة";
 
 /* No comment provided by engineer. */
-"A link to a URL." = "A link to a URL.";
+"A link to a URL." = "ارتباط إلى رابط URL.";
 
 /* No comment provided by engineer. */
-"A link to a category." = "A link to a category.";
+"A link to a category." = "رابط إلى تصنيف.";
 
 /* No comment provided by engineer. */
-"A link to a page." = "A link to a page.";
+"A link to a page." = "رابط إلى صفحة.";
 
 /* No comment provided by engineer. */
-"A link to a post." = "A link to a post.";
+"A link to a post." = "رابط إلى مقالة.";
 
 /* No comment provided by engineer. */
-"A link to a tag." = "A link to a tag.";
+"A link to a tag." = "رابط إلى وسم.";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "قائمة المواقع الموجودة على هذا الحساب.";
 
 /* Story Intro welcome title */
-"A new way to create and publish engaging content on your site." = "A new way to create and publish engaging content on your site.";
+"A new way to create and publish engaging content on your site." = "طريقة جديدة لإنشاء ونشر محتوى جذّاب على موقعك.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "سلسلة من الخطوات توضح لك كيفية إضافة قالب، وأيقونة موقع والمزيد.";
@@ -453,7 +453,7 @@
 "Add any topic" = "إضافة أي موضوع";
 
 /* No comment provided by engineer. */
-"Add button text" = "Add button text";
+"Add button text" = "إضافة نصّ للزر";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "أضف صورة أو أفاتار لتمثيل هذا الحساب الجديد.";
@@ -579,10 +579,10 @@
 "Allow this connection to be used by all admins and users of your site." = "السماح لجميع مسؤولي الموقع ومستخدميه باستخدام هذا الاتصال.";
 
 /* Allowlisted IP Addresses Title */
-"Allowlisted IP Addresses" = "Allowlisted IP Addresses";
+"Allowlisted IP Addresses" = "قائمة عناوين IP المسموح بها";
 
 /* Jetpack Settings: Allowlisted IP addresses */
-"Allowlisted IP addresses" = "Allowlisted IP addresses";
+"Allowlisted IP addresses" = "قائمة عناوين IP المسموح بها";
 
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "تقريبًا هناك! يرجى إدخال رمز التحقق من تطبيق الموثق الخاص بك.";
@@ -939,7 +939,7 @@
 
 /* Blocklist Title
    Settings: Comments Blocklist */
-"Blocklist" = "Blocklist";
+"Blocklist" = "قائمة الحظر";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "مدونة";
@@ -983,7 +983,7 @@
 "Button Style" = "نمط الزر";
 
 /* No comment provided by engineer. */
-"ButtonGroup" = "ButtonGroup";
+"ButtonGroup" = "مجموعة أزرار";
 
 /* Label for the post author in the post detail. */
 "By " = "بواسطة ";
@@ -1119,7 +1119,7 @@
 "Category" = "التصنيف";
 
 /* No comment provided by engineer. */
-"Category Link" = "Category Link";
+"Category Link" = "رابط التصنيف";
 
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "عنوان التصنيف مفقود.";
@@ -1281,7 +1281,7 @@
 "Choose video" = "اختيار فيديو";
 
 /* Reader select interests subtitle label text */
-"Choose your topics" = "Choose your topics";
+"Choose your topics" = "اختر مواضيعك";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "سيؤدي اختيار موقع مختلف إلى فقد التعديلات التي تمت على محتوى موقع معين مثل الوسائط والتصنيفات. هل أنت متأكد من ذلك؟";
@@ -1962,11 +1962,11 @@
 "Dimensions" = "الأبعاد";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
-"Disable" = "Disable";
+"Disable" = "تعطيل";
 
 /* Title. A call to action to disable invite links.
    Title. Title of a prompt to disable group invite links. */
-"Disable invite link" = "Disable invite link";
+"Disable invite link" = "تعطيل رابط الدعوة";
 
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "معطّل";
@@ -2008,7 +2008,7 @@
 "Discover and follow blogs you love" = "اكتشف وتابع المدوَّنات التي تحبها";
 
 /* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Discover more topics";
+"Discover more topics" = "اكتشاف المزيد من المواضيع";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2209,7 +2209,7 @@
 "Edit %@ block" = "تحرير مكوّن %@";
 
 /* Blocklist Keyword Edition Title */
-"Edit Blocklist Word" = "Edit Blocklist Word";
+"Edit Blocklist Word" = "تحرير كلمة قائمة الحظر";
 
 /* No comment provided by engineer. */
 "Edit Comment" = "تحرير التعليق";
@@ -2370,7 +2370,7 @@
 "Enter your password instead." = "بدلاً من ذلك، أدخل كلمة المرور.";
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
-"Enter your server credentials to enable one click site restores from backups." = "Enter your server credentials to enable one click site restores from backups.";
+"Enter your server credentials to enable one click site restores from backups." = "أدخل بيانات اعتماد الخادم الخاص بك لتمكين استعادة الموقع بنقرة واحدة من النُسخ الاحتياطية.";
 
 /* Generic error alert title
    Generic error.
@@ -2509,7 +2509,7 @@
 "Expands to select a different menu area" = "التوسيع لتحديد منطقة قائمة مختلفة";
 
 /* Title. Indicates an expiration date. */
-"Expires on" = "Expires on";
+"Expires on" = "تنتهي الصلاحية في";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "اكتب نبذة قصيرة عن الموقع.";
@@ -2541,7 +2541,7 @@
 "Failed" = "فشل";
 
 /* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "Failed Media Export";
+"Failed Media Export" = "فشل تصدير الوسائط";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "فشل إدراج الملف الصوتي. يرجى النقر على الخيارات.";
@@ -2559,7 +2559,7 @@
 "Failed to serialize request to the REST API." = "فشل في تسلسل الطلب إلى REST API.";
 
 /* The app failed to unsubscribe from the comments for the post */
-"Failed to unfollow conversation" = "Failed to unfollow conversation";
+"Failed to unfollow conversation" = "فشل إلغاء متابعة المحادثة";
 
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "فشل رفع الملفات.\nيرجى النقر على الخيارات.";
@@ -2679,10 +2679,10 @@
 "Follow site" = "متابعة الموقع";
 
 /* Screen title. Reader select interests title label text. */
-"Follow topics" = "Follow topics";
+"Follow topics" = "متابعة المواضيع";
 
 /* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "Follow your favorite sites and discover new blogs.";
+"Follow your favorite sites and discover new blogs." = "تابع مواقعك المفضَّلة واكتشف مدوّنات جديدة.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "تابع مواقعك المفضَّلة واكتشف مواضيع جديدة.";
@@ -2723,7 +2723,7 @@
 "Following conversation by email" = "متابعة المحادثة عبر البريد الإلكتروني";
 
 /* Label displayed to the user while loading their selected interests */
-"Following new topics..." = "Following new topics...";
+"Following new topics..." = "جاري متابعة مواضيع جديدة...";
 
 /* Filters Follows Notifications */
 "Follows" = "متابعات";
@@ -2781,7 +2781,7 @@
 "General" = "عام";
 
 /* Title. A call to action to generate a new invite link. */
-"Generate new link" = "Generate new link";
+"Generate new link" = "إنشاء رابط جديد";
 
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "تجهيز المعاينة";
@@ -3194,7 +3194,7 @@
 "Invite" = "دعوة";
 
 /* Title for the Invite Link section of the Invite Person screen. */
-"Invite Link" = "Invite Link";
+"Invite Link" = "رابط الدعوة";
 
 /* Invite People Title */
 "Invite People" = "دعوة أشخاص";
@@ -3744,10 +3744,10 @@
 "More Posts" = "مقالات أكثر";
 
 /* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
-"More from %1$@" = "More from %1$@";
+"More from %1$@" = "المزيد من %1$@";
 
 /* Section title for global related posts. */
-"More on WordPress.com" = "More on WordPress.com";
+"More on WordPress.com" = "المزيد على WordPress.com";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "الوقت الأكثر شعبية";
@@ -3866,7 +3866,7 @@
 "New" = "جديد";
 
 /* Blocklist Keyword Insertion Title */
-"New Blocklist Word" = "New Blocklist Word";
+"New Blocklist Word" = "كلمة جديدة بقائمة الحظر";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "عنوان IP أو نطاق عنوان IP جديد";
@@ -4053,7 +4053,7 @@
 "No network available" = "لا تتوفر شبكة";
 
 /* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "No new topics to follow";
+"No new topics to follow" = "لا توجد مواضيع جديدة لمتابعتها";
 
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "لا توجد إشعارات حتى الآن";
@@ -4240,7 +4240,7 @@
 "Oldest first" = "الأقدم أولاً";
 
 /* Warning message about disabling group invite links. */
-"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?";
+"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "بمجرد تعطيل رابط الدعوة هذا، لن يتمكن أي شخص من استخدامه للانضمام إلى فريقك. هل أنتَ متأكد؟";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "بمجرد إنشاء موقع WordPress.com، يمكنك إعادة تدوين المحتوى الذي أعجبك على موقعك الخاص.";
@@ -4372,7 +4372,7 @@
 "Page" = "الصفحة";
 
 /* No comment provided by engineer. */
-"Page Link" = "Page Link";
+"Page Link" = "رابط الصفحة";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
 "Page Restored to Drafts" = "تمت استعادة الصفحة إلى مسودات";
@@ -4668,7 +4668,7 @@
 "Post Format" = "تنسيق المقالة";
 
 /* No comment provided by engineer. */
-"Post Link" = "Post Link";
+"Post Link" = "رابط المقالة";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "تم استعادة المقالة إلى المسودات";
@@ -5425,7 +5425,7 @@
 "Search Locations" = "البحث عن المواقع";
 
 /* No comment provided by engineer. */
-"Search Settings" = "Search Settings";
+"Search Settings" = "إعدادات البحث";
 
 /* Label for list of search term */
 "Search Term" = "مصطلح البحث";
@@ -5675,7 +5675,7 @@
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "شارك المعلومات مع أداة التحليلات لدينا حول استخدامك الخدمات أثناء تسجيل الدخول إلى حساب WordPress.com الخاص بك.";
 
 /* Title. A call to action to share an invite link. */
-"Share invite link" = "Share invite link";
+"Share invite link" = "مشاركة رابط الدعوة";
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "رابط المشاركة";
@@ -6083,13 +6083,13 @@
 "Successfully cleared spotlight index" = "تم مسح فهرس spotlight بنجاح";
 
 /* The app successfully subscribed to the comments for the post */
-"Successfully followed conversation" = "Successfully followed conversation";
+"Successfully followed conversation" = "تمت متابعة المحادثة بنجاح";
 
 /* Notice displayed after installing a plug-in. */
 "Successfully installed %@." = "تم تثبيت %@ بنجاح.";
 
 /* The app successfully unsubscribed from the comments for the post */
-"Successfully unfollowed conversation" = "Successfully unfollowed conversation";
+"Successfully unfollowed conversation" = "تم إلغاء متابعة المحادثة بنجاح";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -6099,7 +6099,7 @@
 "Suggestions updated" = "تم تحديث الاقتراحات";
 
 /* No comment provided by engineer. */
-"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here.";
+"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "تلخيص مقالتك بقائمة من العناوين. أضف روابط القفز HTML إلى مكوّنات العناوين لربطها هنا.";
 
 /* User role badge */
 "Super Admin" = "مسؤول فائق";
@@ -6158,7 +6158,7 @@
 "System default" = "النظام الافتراضي";
 
 /* No comment provided by engineer. */
-"Table of Contents" = "Table of Contents";
+"Table of Contents" = "جدول المحتويات";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "جدول يعرض %@";
@@ -6174,7 +6174,7 @@
 "Tag" = "العلامة";
 
 /* No comment provided by engineer. */
-"Tag Link" = "Tag Link";
+"Tag Link" = "رابط الوسم";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "يوجد وسم بالفعل";
@@ -6225,7 +6225,7 @@
 "Tap to cancel uploading." = "انقر لإلغاء الرفع.";
 
 /* Accessibility hint for button used to change site title */
-"Tap to change the site's title" = "Tap to change the site's title";
+"Tap to change the site's title" = "أنقر لتغيير عنوان الموقع";
 
 /* Accessibility hint to inform the user what action the hide button performs */
 "Tap to collapse the post tags" = "أنقر لطي وسوم المقالة";
@@ -6255,13 +6255,13 @@
 "Tap to select which blog to post to" = "انقر لتحديد المدونة التي ستنشر عليها";
 
 /* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "Tap to switch to another site, or add a new site";
+"Tap to switch to another site, or add a new site" = "أنقر للتبديل إلى موقع آخر، أو إضافة موقع جديد";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "أنقر لعرض مقالات هذا الوسم";
 
 /* Accessibility hint for button used to view the user's site */
-"Tap to view your site" = "Tap to view your site";
+"Tap to view your site" = "أنقر لعرض موقعك";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "الفئة";
@@ -6334,7 +6334,7 @@
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "يُعرض عنوان الموقع في شريط العناوين في متصفح الويب ويُعرض في رأس الصفحة في معظم القوالب.";
 
 /* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "The Stories editor is not currently available for your iPad. Please try Stories on your iPhone.";
+"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "محرر القصص غير متوفر حاليًا لجهاز iPad. يرجى تجربة ميزة القصص على جهاز iPhone الخاص بك.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "يفتقد عنوان URL إلى مضيف صالح.";
@@ -6511,7 +6511,7 @@
 "There was a problem when trying to access your media. Please try again later." = "حدثت مشكلة أثناء محاولة الوصول إلى الوسائط الخاصة بك. يُرجى المحاولة مرة أخرى لاحقاً.";
 
 /* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen.";
+"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "حدثت مشكلة في محرر القصص. إذا استمرت المشكلة، يمكنك الاتصال بنا من خلال شاشة \"أنا\" > \"المساعدة والدعم\".";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -6820,7 +6820,7 @@
 "Try it now" = "جرّبه الآن";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"Try the new Block Editor" = "Try the new Block Editor";
+"Try the new Block Editor" = "تجربة محرر المكوِّنات الجديد";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */
 "Try with another email" = "حاول ببريد إلكتروني آخر";
@@ -6853,7 +6853,7 @@
 "Type a label" = "اكتب تسمية";
 
 /* Site creation. Seelect a domain, search field placeholder */
-"Type a name for your site" = "Type a name for your site";
+"Type a name for your site" = "اكتب اسمًا لموقعك (اسم للنطاق)";
 
 /* Register domain - Search field placeholder for the Suggested Domain screen */
 "Type to get more suggestions" = "اكتب للحصول على مزيد من الاقتراحات";
@@ -6871,7 +6871,7 @@
 "Unable to Connect" = "يتعذر الاتصال";
 
 /* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "Unable to Create Stories Editor";
+"Unable to Create Stories Editor" = "تعذر إنشاء محرر القصص";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "يتعذر تحميل المقالات";
@@ -6883,7 +6883,7 @@
 "Unable to block site" = "Unable to block site";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to create new invite links." = "Unable to create new invite links.";
+"Unable to create new invite links." = "تعذر إنشاء روابط دعوة جديدة.";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "يتعذر حذف جميع عناصر الوسائط.";
@@ -6892,13 +6892,13 @@
 "Unable to delete media item." = "يتعذر حذف عنصر الوسائط.";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to disable invite links." = "Unable to disable invite links.";
+"Unable to disable invite links." = "تعذر تعطيل روابط الدعوة.";
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "تعذّر تنزيل الملف";
 
 /* The app failed to subscribe to the comments for the post */
-"Unable to follow conversation" = "Unable to follow conversation";
+"Unable to follow conversation" = "غير قادر على متابعة المحادثة";
 
 /* Notice title when following a site fails. */
 "Unable to follow site" = "غير قادر على متابعة الموقع";
@@ -6992,7 +6992,7 @@
 "Unable to verify the email address. Please try again later." = "تعذر التحقق من عنوان البريد الإلكتروني. يُرجى إعادة المحاولة لاحقًا.";
 
 /* Message displayed when visiting the Jetpack settings page fails. */
-"Unable to visit Jetpack settings for site" = "Unable to visit Jetpack settings for site";
+"Unable to visit Jetpack settings for site" = "غير قادر على زيارة إعدادات Jetpack للموقع";
 
 /* Message displayed when visiting a site fails. */
 "Unable to visit site" = "غير قادر على زيارة الموقع";
@@ -7085,7 +7085,7 @@
 "Unsupported" = "غير مدعوم";
 
 /* Title for stories unsupported device error. */
-"Unsupported Device" = "Unsupported Device";
+"Unsupported Device" = "جهاز غير مدعوم";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "بدون عنوان";
@@ -7204,7 +7204,7 @@
 "Use block editor" = "استخدام مُحرر المكوّنات";
 
 /* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo";
+"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "استخدم هذا الرابط لضمّ أعضاء فريقك دون الحاجة إلى دعوتهم واحدًا تلو الآخر. سيتمكن أي شخص يزور عنوان الموقع هذا من الاشتراك في مؤسستك، حتى إذا تلقى الرابط من شخص آخر، لذا تأكد من مشاركته مع أشخاص موثوق بهم.";
 
 /* No comment provided by engineer. */
 "Use this site" = "استخدام هذا الموقع";
@@ -7644,7 +7644,7 @@
 "Welcome to the Reader" = "أهلاً بك في القارئ";
 
 /* Caption displayed in promotional screens shown during the login flow. */
-"Welcome to the world's most popular website builder." = "Welcome to the world's most popular website builder.";
+"Welcome to the world's most popular website builder." = "مرحبًا بك في أداة إنشاء مواقع الويب الأكثر رواجًا في العالم.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "مرحبًا بك في أداة إنشاء مواقع الويب الأكثر رواجًا في العالم.";
@@ -7656,7 +7656,7 @@
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "نحن نرسل دومًا رسائل بريد إلكتروني مهمة بخصوص حسابك، ومع ذلك يمكنك الحصول على بعض الإضافات المفيدة أيضًا.";
 
 /* The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings.";
+"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "سنقوم بإزالة المحرر التقليدي (Classic Editor) للمقالات الجديدة قريباً، لكن هذا لن يؤثر في تحرير أي من مقالاتك أو صفحاتك الحالية. امضي قدماً بتجربتك من خلال تفعيل محرر المكوّنات الآن في إعدادات الموقع.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress.
    Hint displayed when we fail to fetch the status of the restore in progress. */
@@ -7950,10 +7950,10 @@
 "You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "لم تنشر أي مقالات بعد. بعد أن تبدأ في النشر، سيظهر آخر ملخص للمقالة هنا.";
 
 /* Title for a view milestone push notification */
-"You hit a milestone 🚀" = "";
+"You hit a milestone 🚀" = "لقد حققت إنجازًا 🚀";
 
 /* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
-"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100.";
+"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "يمكنك إدراج عنوان IP أو سلسلة عناوين في قائمة السماح، الأمر الذي يعمل على منعهم من الحظر بواسطة Jetpack. IPv4 وIPv6 مقبولان. لتحديد نطاق، أدخل القيمة المنخفضة والقيمة المرتفعة مفصولاً بينهما بشرطة. على سبيل المثال: ‎12.12.12.1-12.12.12.100.";
 
 /* A suggestion of topics the user might like */
 "You might like" = "قد ترغب في";
@@ -8020,7 +8020,7 @@
 "Your first backup will be ready soon" = "ستكون نسختك الاحتياطية الأولى جاهزة قريبًا";
 
 /* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.";
+"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "لا يمكن تصدير ملفات الوسائط الخاصة بك. إذا استمرت المشكلة، يمكنك الاتصال بنا من خلال شاشة \"أنا\" > \"المساعدة والدعم\".";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "تنتقل الإشعارات معك — راجع التعليقات والإعجابات عندما تحدث.";
@@ -8110,7 +8110,7 @@
 "connections" = "الاتصالات";
 
 /* No comment provided by engineer. */
-"document outline" = "document outline";
+"document outline" = "ملخص عناوين المستند";
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "أليس من الأفضل حذف أشياء من القائمة؟";
@@ -8160,7 +8160,7 @@
 "phone number" = "رقم الهاتف";
 
 /* No comment provided by engineer. */
-"summary" = "summary";
+"summary" = "ملخّص (موجز)";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "سيتم حذف هذه العناصر:";

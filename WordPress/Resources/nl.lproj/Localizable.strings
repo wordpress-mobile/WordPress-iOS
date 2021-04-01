@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-25 21:31:01+0000 */
+/* Translation-Revision-Date: 2021-03-30 20:12:06+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -6089,7 +6089,7 @@
 "Successfully installed %@." = "%@ succesvol geïnstalleerd.";
 
 /* The app successfully unsubscribed from the comments for the post */
-"Successfully unfollowed conversation" = "Successfully unfollowed conversation";
+"Successfully unfollowed conversation" = "Gesprek wordt niet meer gevolgd";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -6099,7 +6099,7 @@
 "Suggestions updated" = "Suggesties bijgewerkt";
 
 /* No comment provided by engineer. */
-"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here.";
+"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Vat je bericht samen met een lijst met koppen. Voeg HTML-ankers toe aan heading blokken om ze hier te linken.";
 
 /* User role badge */
 "Super Admin" = "Superbeheerder";
@@ -6174,7 +6174,7 @@
 "Tag" = "Tag";
 
 /* No comment provided by engineer. */
-"Tag Link" = "Tag Link";
+"Tag Link" = "Tag link";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "Tag bestaat al";
@@ -6334,7 +6334,7 @@
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "De site titel wordt getoont in de titelbalk van een web browser en wordt getoont in de header van de meeste thema's.";
 
 /* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "The Stories editor is not currently available for your iPad. Please try Stories on your iPhone.";
+"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "De verhaal-editor is op dit moment niet beschikbaar voor je iPad. Probeer verhalen op je iPhone.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "De URL heeft geen geldige host.";
@@ -6871,7 +6871,7 @@
 "Unable to Connect" = "Kan geen verbinding maken";
 
 /* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "Unable to Create Stories Editor";
+"Unable to Create Stories Editor" = "Kan geen verhalen-editor maken";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Kan berichten niet laden";
@@ -6883,7 +6883,7 @@
 "Unable to block site" = "Kan site niet blokkeren";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to create new invite links." = "Unable to create new invite links.";
+"Unable to create new invite links." = "Het is niet mogelijk om nieuwe uitnodigingslinks te maken.";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "Niet mogelijk om alle media te verwijderen.";
@@ -6892,13 +6892,13 @@
 "Unable to delete media item." = "Niet mogelijk om media te verwijderen.";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to disable invite links." = "Unable to disable invite links.";
+"Unable to disable invite links." = "Kan uitnodigingslinks niet uitschakelen.";
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "Kan bestand niet downloaden";
 
 /* The app failed to subscribe to the comments for the post */
-"Unable to follow conversation" = "Unable to follow conversation";
+"Unable to follow conversation" = "Kan gesprek niet volgen";
 
 /* Notice title when following a site fails. */
 "Unable to follow site" = "Kan de site niet volgen";
@@ -6992,7 +6992,7 @@
 "Unable to verify the email address. Please try again later." = "Niet mogelijk om e-mailadres te verifiëren. Probeer het later opnieuw.";
 
 /* Message displayed when visiting the Jetpack settings page fails. */
-"Unable to visit Jetpack settings for site" = "Unable to visit Jetpack settings for site";
+"Unable to visit Jetpack settings for site" = "Kan Jetpack-instellingen voor site niet bezoeken";
 
 /* Message displayed when visiting a site fails. */
 "Unable to visit site" = "Kan de site niet bezoeken";
@@ -7204,7 +7204,7 @@
 "Use block editor" = "Gebruik blok-editor";
 
 /* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo";
+"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Gebruik deze link om je teamleden aan boord te krijgen zonder ze een voor een uit te nodigen. Iedereen die deze URL bezoekt, kan zich aanmelden bij je organisatie, zelfs als ze de link van iemand anders hebben ontvangen, dus zorg ervoor dat je deze deelt met vertrouwde mensen.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Gebruik deze site";
@@ -7656,7 +7656,7 @@
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "We sturen altijd belangrijke e-mails met betrekking tot je account, maar je kunt ook aanvullende nuttige berichten ontvangen.";
 
 /* The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings.";
+"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "We zullen binnenkort de klassieke editor voor nieuwe berichten verwijderen, maar dit heeft geen invloed op het bewerken van je bestaande berichten of pagina's. Krijg een voorsprong door de blok-editor nu in de site-instellingen in te schakelen.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress.
    Hint displayed when we fail to fetch the status of the restore in progress. */
@@ -8020,7 +8020,7 @@
 "Your first backup will be ready soon" = "Je eerste back-up is binnenkort klaar";
 
 /* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.";
+"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Je media kunnen niet worden geëxporteerd. Als het probleem aanhoudt, kun je contact met ons opnemen via het scherm Ik> Help & Ondersteuning.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Je meldingen reizen met je mee. Bekijk reacties en likes wanneer ze binnenkomen.";
