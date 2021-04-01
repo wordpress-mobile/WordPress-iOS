@@ -1,11 +1,10 @@
 17.1
 -----
 
-Unreleased
------
-
+* [*] Reordered categories in page layout picker [#16156]
 * [*] Added preview device mode selector in the page layout previews [#16141]
 * [**] Removed Site Switcher in the Editor
+* [**] Block Editor: Added Contact Info block to sites on WPcom or with Jetpack version >= 8.5.
 
 17.0
 -----
