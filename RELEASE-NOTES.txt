@@ -4,6 +4,7 @@
 * [*] Reordered categories in page layout picker [#16156]
 * [*] Added preview device mode selector in the page layout previews [#16141]
 * [**] Block Editor: Added Contact Info block to sites on WPcom or with Jetpack version >= 8.5.
+* [*] Comments can be filtered to show the most recent unreplied comments from other users.
 
 17.0
 -----
