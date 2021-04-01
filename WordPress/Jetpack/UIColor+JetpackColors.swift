@@ -56,10 +56,14 @@ extension UIColor {
     }
 
     static var statsPrimaryHighlight: UIColor {
-        return  UIColor(light: muriel(color: MurielColor(name: .pink, shade: .shade5)), dark: muriel(color: MurielColor(name: .pink, shade: .shade80)))
+        return UIColor(light: .statsAccent(.shade30), dark: .statsAccent(.shade60))
     }
 
     static var statsSecondaryHighlight: UIColor {
-        return UIColor(light: muriel(color: MurielColor(name: .pink, shade: .shade60)), dark: muriel(color: MurielColor(name: .pink, shade: .shade30)))
+        return UIColor(light: .statsAccent(.shade60), dark: .statsAccent(.shade30))
+    }
+
+    static func statsAccent(_ shade: MurielColorShade) -> UIColor {
+        return muriel(color: MurielColor(name: .pink), shade)
     }
 }
