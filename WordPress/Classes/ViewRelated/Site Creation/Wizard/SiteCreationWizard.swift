@@ -11,9 +11,9 @@ final class SiteCreationWizard: Wizard {
         return WizardNavigation(steps: self.steps)
     }()
 
-    lazy var content: UIViewController? = {
-        return navigation?.content
-    }()
+    var content: UIViewController? {
+        return navigation
+    }
 
     // The sequence of steps to complete the wizard.
     let steps: [WizardStep]

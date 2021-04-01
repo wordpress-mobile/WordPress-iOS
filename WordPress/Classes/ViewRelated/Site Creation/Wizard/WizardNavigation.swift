@@ -52,10 +52,6 @@ final class WizardNavigation: GutenbergLightNavigationController {
             step.delegate = self
         }
     }
-
-   var content: UIViewController? {
-        return self
-    }
 }
 
 extension WizardNavigation: WizardDelegate {
