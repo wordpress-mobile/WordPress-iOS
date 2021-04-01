@@ -461,8 +461,11 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 //
 private extension NotificationsViewController {
     func setupNavigationBar() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .always
+        if FeatureFlag.newNavBarAppearance.enabled {
+            navigationController?.navigationBar.prefersLargeTitles = true
+            navigationItem.largeTitleDisplayMode = .always
+        }
+
         // Don't show 'Notifications' in the next-view back button
         // we are using a space character because we need a non-empty string to ensure a smooth
         // transition back, with large titles enabled.

@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 
 enum UnifiedProloguePageType: CaseIterable {
@@ -77,14 +78,31 @@ class UnifiedProloguePageViewController: UIViewController {
 
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Metrics.titleToContentSpacing),
+            contentView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: Metrics.heightRatio),
+            contentView.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: Metrics.heightRatio),
             contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
+    }
+
+    private func embedSwiftUIView<Content: View>(_ view: Content) -> UIView {
+        let controller = UIHostingController(rootView: view)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.backgroundColor = .clear
+        return controller.view
     }
 
     private func makeContentView() -> UIView {
         switch pageType {
         case .intro:
             return UnifiedPrologueIntroContentView()
+        case .editor:
+            return embedSwiftUIView(UnifiedPrologueEditorContentView())
+        case .analytics:
+            return embedSwiftUIView(UnifiedPrologueStatsContentView())
+        case .notifications:
+            return embedSwiftUIView(UnifiedPrologueNotificationsContentView())
+        case .reader:
+            return embedSwiftUIView(UnifiedPrologueReaderContentView())
         default:
             return UIView()
         }
@@ -94,5 +112,6 @@ class UnifiedProloguePageViewController: UIViewController {
         static let topInset: CGFloat = 96.0
         static let horizontalInset: CGFloat = 24.0
         static let titleToContentSpacing: CGFloat = 48.0
+        static let heightRatio: CGFloat = WPDeviceIdentification.isiPad() ? 0.5 : 0.4
     }
 }
