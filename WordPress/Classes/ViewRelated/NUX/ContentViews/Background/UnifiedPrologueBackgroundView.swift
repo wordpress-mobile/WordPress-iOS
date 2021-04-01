@@ -7,6 +7,11 @@ struct UnifiedPrologueBackgroundView: View {
             let width = content.size.width
             let radius = min(height, width) * 0.16
 
+            let purpleCircleColor = Color(UIColor(light: .muriel(name: .purple, .shade10), dark: .muriel(name: .purple, .shade70)))
+            let greenCircleColor = Color(UIColor(light: .muriel(name: .celadon, .shade5), dark: .muriel(name: .celadon, .shade70)))
+            let blueCircleColor = Color(UIColor(light: .muriel(name: .blue, .shade20), dark: .muriel(name: .blue, .shade80)))
+            let circleOpacity: Double = 0.8
+
             VStack {
                 // This is a bit of a hack, but without this disabled ScrollView,
                 // the position of circles would change depending on some traits changes.
@@ -16,24 +21,27 @@ struct UnifiedPrologueBackgroundView: View {
                                     startAngle: 335,
                                     endAngle: 180,
                                     clockWise: false,
-                                    color: Color(UIColor.muriel(name: .purple, .shade10)),
+                                    color: purpleCircleColor,
                                     lineWidth: 3.0)
+                        .opacity(circleOpacity)
 
                     CircledPathView(center: CGPoint(x: width + radius / 4, y: height - radius * 1.5),
                                     radius: radius,
                                     startAngle: 90,
                                     endAngle: 270,
                                     clockWise: false,
-                                    color: Color(UIColor.muriel(name: .green, .shade10)),
+                                    color: greenCircleColor,
                                     lineWidth: 3.0)
+                        .opacity(circleOpacity)
 
                     CircledPathView(center: CGPoint(x: 0, y: height - radius * 2),
                                     radius: radius,
                                     startAngle: 270,
                                     endAngle: 90,
                                     clockWise: false,
-                                    color: Color(UIColor.muriel(name: .blue, .shade20)),
+                                    color: blueCircleColor,
                                     lineWidth: 3.0)
+                        .opacity(circleOpacity)
                 }
                 .disabled(true)
             }
@@ -60,21 +68,5 @@ struct CircledPathView: View {
         }
         .stroke(color, lineWidth: lineWidth)
 
-    }
-}
-
-
-struct Arc: Shape {
-    let center: CGPoint
-    let radius: CGFloat
-    let startAngle: Double
-    let endAngle: Double
-    let clockwise: Bool
-
-    func path(in rect: CGRect) -> Path {
-        var p = Path()
-
-        p.addArc(center: CGPoint(x: rect.origin.x + radius, y: rect.origin.y + radius), radius: radius, startAngle: .degrees(startAngle), endAngle: .degrees(endAngle), clockwise: clockwise)
-        return p
     }
 }
