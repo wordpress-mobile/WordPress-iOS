@@ -227,8 +227,8 @@ extension UIColor {
     }
 
 // MARK: - WP Fancy Buttons
-    static var primaryButtonBackground = accent
-    static var primaryButtonDownBackground = muriel(color: .accent, .shade80)
+    static var primaryButtonBackground = primary
+    static var primaryButtonDownBackground = muriel(color: .primary, .shade80)
 
     static var secondaryButtonBackground: UIColor {
         return UIColor(light: .white, dark: .systemGray5)
