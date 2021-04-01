@@ -43,6 +43,12 @@ open class WP3DTouchShortcutCreator: NSObject {
     }
 
     @objc open func createShortcutsIf3DTouchAvailable(_ loggedIn: Bool) {
+
+        // Don't create shortcuts for the Jetpack app
+        guard !AppConfiguration.isJetpack else {
+            return
+        }
+
         guard shortcutsProvider.is3DTouchAvailable else {
             return
         }
@@ -59,6 +65,12 @@ open class WP3DTouchShortcutCreator: NSObject {
     }
 
     fileprivate func registerForNotifications() {
+
+        // Don't register for logged in notifications for the Jetpack app
+        guard !AppConfiguration.isJetpack else {
+            return
+        }
+
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: NSNotification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
         notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: .WPRecentSitesChanged, object: nil)
@@ -110,6 +122,7 @@ open class WP3DTouchShortcutCreator: NSObject {
     }
 
     @objc fileprivate func createLoggedInShortcuts() {
+
         DispatchQueue.main.async {[weak self]() in
             guard let strongSelf = self else {
                 return
