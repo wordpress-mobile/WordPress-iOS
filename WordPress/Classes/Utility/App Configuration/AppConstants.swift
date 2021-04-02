@@ -5,3 +5,12 @@ struct AppConstants {
     static let productTwitterURL = "https://twitter.com/WordPressiOS"
     static let productBlogURL = "https://blog.wordpress.com"
 }
+
+// MARK: - Localized Strings
+extension AppConstants {
+
+    struct AppSettings {
+        static let aboutTitle = NSLocalizedString("About WordPress for iOS", comment: "Link to About screen for WordPress for iOS")
+    }
+
+}

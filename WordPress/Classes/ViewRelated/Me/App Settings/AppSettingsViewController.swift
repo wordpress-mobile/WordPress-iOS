@@ -464,15 +464,8 @@ private extension AppSettingsViewController {
             action: openApplicationSettings()
         )
 
-        let title: String
-        if AppConfiguration.isJetpack {
-            title = NSLocalizedString("About Jetpack for iOS", comment: "Link to About screen for Jetpack for iOS")
-        } else {
-            title = NSLocalizedString("About WordPress for iOS", comment: "Link to About screen for WordPress for iOS")
-        }
-
         let aboutRow = NavigationItemRow(
-            title: title,
+            title: AppConstants.AppSettings.aboutTitle,
             action: pushAbout()
         )
 
