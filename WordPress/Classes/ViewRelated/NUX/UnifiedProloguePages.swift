@@ -80,6 +80,8 @@ class UnifiedProloguePageViewController: UIViewController {
             return
         }
 
+        configureTitleFont()
+
         if traitCollection.horizontalSizeClass == .compact {
 
             NSLayoutConstraint.deactivate([contentViewHeightConstraint ?? NSLayoutConstraint()])
@@ -118,12 +120,21 @@ class UnifiedProloguePageViewController: UIViewController {
     private func configureTitle() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title1)
+        configureTitleFont()
         titleLabel.textColor = .text
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
 
         titleLabel.text = pageType.title
+    }
+
+    private func configureTitleFont() {
+
+        guard let fontDescriptor = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .regular).fontDescriptor.withDesign(.serif) else {
+            return
+        }
+        let size: CGFloat = traitCollection.horizontalSizeClass == .compact ? 0.0 : 48.0
+        titleLabel.font = UIFontMetrics.default.scaledFont(for: UIFont(descriptor: fontDescriptor, size: size))
     }
 
     private func activateConstraints() {
@@ -142,7 +153,7 @@ class UnifiedProloguePageViewController: UIViewController {
         centeredContentViewConstraint.priority = .init(999)
 
         NSLayoutConstraint.activate([contentView.heightAnchor.constraint(equalTo: contentView.widthAnchor),
-                                     titleTopSpacer.heightAnchor.constraint(greaterThanOrEqualTo: contentView.heightAnchor, multiplier: 0.18),
+                                     titleTopSpacer.heightAnchor.constraint(greaterThanOrEqualTo: contentView.heightAnchor, multiplier: 0.1),
                                      titleContentSpacer.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.2),
                                      centeredContentViewConstraint,
                                      contentBottomSpacer.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor, multiplier: 0.1)])
