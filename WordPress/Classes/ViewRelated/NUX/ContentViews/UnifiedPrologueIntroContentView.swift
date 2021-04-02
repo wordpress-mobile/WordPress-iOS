@@ -1,64 +1,76 @@
-import UIKit
+import SwiftUI
 
-class UnifiedPrologueIntroContentView: UIView {
-    init() {
-        super.init(frame: .zero)
+/// Prologue intro view
+struct UnifiedPrologueIntroContentView: View {
 
-        configureStackViews()
+    var body: some View {
+        GeometryReader { content in
+            HStack(spacing: content.size.width * 0.067) {
+
+                VStack(alignment: .trailing, spacing: content.size.height * 0.03) {
+                    PrologueIntroImage(imageName: "introWebsite1", idealHeight: content.size.height * 0.6)
+
+                    ZStack(alignment: .bottomLeading) {
+                        PrologueIntroImage(imageName: "introWebsite4", idealHeight: content.size.height * 0.38)
+                        CircledIcon(size: content.size.width * 0.15,
+                                    xOffset: -content.size.width * 0.125,
+                                    yOffset: content.size.height * 0.04,
+                                    iconType: .pages,
+                                    backgroundColor: Color(UIColor.muriel(name: .celadon, .shade30)))
+                    }
+                }
+
+                VStack {
+                    ZStack(alignment: .bottomLeading) {
+                        PrologueIntroImage(imageName: "introWebsite2", idealHeight: content.size.height * 0.5)
+                        CircledIcon(size: content.size.width * 0.18,
+                                    xOffset: -content.size.width * 0.115,
+                                    yOffset: -content.size.height * 0.07,
+                                    iconType: .customize,
+                                    backgroundColor: Color(UIColor.muriel(name: .orange, .shade30)))
+                    }
+                    .offset(x: 0, y: -content.size.height * 0.04)
+
+                    HStack(alignment: .top, spacing: content.size.width * 0.067) {
+                        PrologueIntroImage(imageName: "introWebsite5", idealHeight: content.size.height * 0.28)
+
+                        PrologueIntroImage(imageName: "introWebsite6", idealHeight: content.size.height * 0.28)
+                            .offset(x: 0, y: content.size.height * 0.067)
+                    }
+                }
+
+                VStack(alignment: .trailing) {
+                    PrologueIntroImage(imageName: "introWebsite3", idealHeight: content.size.height * 0.6)
+
+                    ZStack(alignment: .topTrailing) {
+                        PrologueIntroImage(imageName: "introWebsite7", idealHeight: content.size.height * 0.43)
+                        CircledIcon(size: content.size.width * 0.22,
+                                    xOffset: content.size.width * 0.06,
+                                    yOffset: -content.size.height * 0.19,
+                                    iconType: .create,
+                                    backgroundColor: Color(UIColor.muriel(name: .pink, .shade40)))
+                    }
+                    .offset(x: 0, y: content.size.height * 0.03)
+                }
+            }
+        }
     }
+}
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
-    private func configureStackViews() {
-        let topStackView = UIStackView()
-        topStackView.translatesAutoresizingMaskIntoConstraints = false
-        topStackView.axis = .horizontal
-        topStackView.spacing = Metrics.innerStackSpacing
-        topStackView.alignment = .center
-        topStackView.addArrangedSubviews(makeImageViews(for: ["introWebsite1", "introWebsite2", "introWebsite3"]))
+struct PrologueIntroImage: View {
 
-        let bottomStackView = UIStackView()
-        bottomStackView.translatesAutoresizingMaskIntoConstraints = false
-        bottomStackView.axis = .horizontal
-        bottomStackView.spacing = Metrics.innerStackSpacing
-        bottomStackView.alignment = .top
-        bottomStackView.addArrangedSubviews(makeImageViews(for: ["introWebsite4", "introWebsite5", "introWebsite6", "introWebsite7"]))
+    let imageName: String
+    let idealHeight: CGFloat
+    private let shadowRadius: CGFloat = 4
+    private let shadowColor = Color.gray.opacity(0.4)
 
-        let outerStackView = UIStackView()
-        outerStackView.translatesAutoresizingMaskIntoConstraints = false
-        outerStackView.axis = .vertical
-        outerStackView.spacing = Metrics.outerStackSpacing
-
-        outerStackView.addArrangedSubviews([topStackView, bottomStackView])
-        addSubview(outerStackView)
-        pinSubviewToAllEdges(outerStackView)
-    }
-
-    private func makeImageViews(for assets: [String]) -> [UIImageView] {
-        let images = assets.map({ UIImage(named: $0) })
-        let imageViews = images.map({ UIImageView(image: $0) })
-
-        imageViews.forEach({ imageView in
-                            imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-            imageView.layer.shadowColor = Appearance.shadowColor.cgColor
-            imageView.layer.shadowOpacity = Appearance.shadowOpacity
-            imageView.layer.shadowRadius = Appearance.shadowRadius
-            imageView.layer.shadowOffset = .zero
-        })
-
-        return imageViews
-    }
-
-    enum Metrics {
-        static let innerStackSpacing: CGFloat = 16.0
-        static let outerStackSpacing: CGFloat = 8.0
-    }
-
-    enum Appearance {
-        static let shadowColor: UIColor = .black
-        static let shadowOpacity: Float = 0.20
-        static let shadowRadius: CGFloat = 4.0
+    var body: some View {
+        Image(imageName)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(idealHeight: idealHeight)
+            .fixedSize(horizontal: false, vertical: true)
+            .shadow(color: shadowColor, radius: shadowRadius)
     }
 }

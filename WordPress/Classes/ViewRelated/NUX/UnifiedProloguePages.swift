@@ -191,7 +191,7 @@ class UnifiedProloguePageViewController: UIViewController {
     private func makeContentView() -> UIView {
         switch pageType {
         case .intro:
-            return embedSwiftUIView(UnifiedPrologueIntroView())
+            return embedSwiftUIView(UnifiedPrologueIntroContentView())
         case .editor:
             return embedSwiftUIView(UnifiedPrologueEditorContentView())
         case .analytics:
