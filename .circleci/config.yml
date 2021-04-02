@@ -48,6 +48,9 @@ commands:
             chruby ruby-2.6.6
             gem install bundler
 
+            # Prevent fastlane from checking for updates, also removing the verbose fastlane changelog at the end of each invocation.
+            echo "export FASTLANE_SKIP_UPDATE_CHECK=1" >> $BASH_ENV
+
 jobs:
   Build Tests:
     parameters:

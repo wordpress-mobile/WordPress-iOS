@@ -11,6 +11,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case newNavBarAppearance
     case unifiedPrologueCarousel
     case stories
+    case contactInfo
     case siteCreationHomePagePicker
     case jetpackScan
     case activityLogFilters
@@ -40,11 +41,13 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .gutenbergXposts:
             return true
         case .newNavBarAppearance:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .unifiedPrologueCarousel:
-            return false
+            return BuildConfiguration.current == .localDeveloper
         case .stories:
             return true
+        case .contactInfo:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .siteCreationHomePagePicker:
             return true
         case .jetpackScan:
@@ -56,7 +59,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .todayWidget:
             return true
         case .milestoneNotifications:
-            return false
+            return true
         case .commentFilters:
             return true
         case .newLikeNotifications:
@@ -105,6 +108,8 @@ extension FeatureFlag {
             return "Unified Prologue Carousel"
         case .stories:
             return "Stories"
+        case .contactInfo:
+            return "Contact Info"
         case .siteCreationHomePagePicker:
             return "Site Creation: Home Page Picker"
         case .jetpackScan:

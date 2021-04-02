@@ -13,12 +13,12 @@ extension WPStyleGuide {
 
     @objc
     public class var navigationBarStandardFont: UIFont {
-        return WPStyleGuide.fixedSerifFontForTextStyle(.headline, fontWeight: .semibold)
+        return AppStyleGuide.navigationBarStandardFont
     }
 
     @objc
     public class var navigationBarLargeFont: UIFont {
-        return WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold)
+        return AppStyleGuide.navigationBarLargeFont
     }
 
     // MARK: - styles used before Muriel colors are enabled
@@ -63,12 +63,17 @@ extension WPStyleGuide {
         appearance.largeTitleTextAttributes = largeTitleTextAttributes
 
         if FeatureFlag.newNavBarAppearance.enabled {
-            appearance.shadowColor = .clear
+            appearance.shadowColor = .separator
+
+            let scrollEdgeAppearance = appearance.copy()
+            scrollEdgeAppearance.shadowColor = .clear
+            navigationAppearance.scrollEdgeAppearance = scrollEdgeAppearance
+        } else {
+            navigationAppearance.scrollEdgeAppearance = appearance
         }
 
         navigationAppearance.standardAppearance = appearance
-        navigationAppearance.scrollEdgeAppearance = navigationAppearance.standardAppearance
-
+        navigationAppearance.compactAppearance = appearance
 
         // Makes bar buttons visible in "Other Apps" media source picker.
         // Setting title text attributes makes bar button items not go blank when switching between the tabs of the picker.
@@ -95,7 +100,7 @@ extension WPStyleGuide {
 
     /// Style the tab bar using Muriel colors
     class func configureTabBarAppearance() {
-        UITabBar.appearance().tintColor = .primary
+        UITabBar.appearance().tintColor = .tabSelected
         UITabBar.appearance().unselectedItemTintColor = .tabUnselected
     }
 

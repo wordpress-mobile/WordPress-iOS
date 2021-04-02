@@ -72,7 +72,10 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         guard let post = provider as? ReaderPost else {
             return
         }
-        toggleLikeForPost(post)
+
+        ReaderLikeAction().execute(with: post, context: context, completion: {
+            cell.refreshLikeButton()
+        })
     }
 
     func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
@@ -147,11 +150,6 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
             return
         }
         ReaderShowAttributionAction().execute(with: post, context: context, origin: origin)
-    }
-
-
-    fileprivate func toggleLikeForPost(_ post: ReaderPost) {
-        ReaderLikeAction().execute(with: post, context: context)
     }
 
     fileprivate func sharePost(_ post: ReaderPost, fromView anchorView: UIView) {
