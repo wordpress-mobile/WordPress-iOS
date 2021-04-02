@@ -470,6 +470,8 @@
 		3F73BE5F24EB3B4400BE99FF /* WhatIsNewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F73BE5E24EB3B4400BE99FF /* WhatIsNewView.swift */; };
 		3F751D462491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */; };
 		3F758FD524F6FB4900BBA2FC /* AnnouncementsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */; };
+		3F810A5A2616870C00ADDCC2 /* UnifiedPrologueIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F810A592616870C00ADDCC2 /* UnifiedPrologueIntroView.swift */; };
+		3F810A5B2616870C00ADDCC2 /* UnifiedPrologueIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F810A592616870C00ADDCC2 /* UnifiedPrologueIntroView.swift */; };
 		3F82310F24564A870086E9B8 /* ReaderTabViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F82310E24564A870086E9B8 /* ReaderTabViewTests.swift */; };
 		3F8513DF260D091500A4B938 /* RoundRectangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8513DE260D091500A4B938 /* RoundRectangleView.swift */; };
 		3F851415260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F851414260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift */; };
@@ -4902,6 +4904,7 @@
 		3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZendeskUtilsTests+Plans.swift"; sourceTree = "<group>"; };
 		3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnouncementsStore.swift; sourceTree = "<group>"; };
 		3F7646F625AE1C5200FBA98C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		3F810A592616870C00ADDCC2 /* UnifiedPrologueIntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedPrologueIntroView.swift; sourceTree = "<group>"; };
 		3F82310E24564A870086E9B8 /* ReaderTabViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewTests.swift; sourceTree = "<group>"; };
 		3F8513DE260D091500A4B938 /* RoundRectangleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundRectangleView.swift; sourceTree = "<group>"; };
 		3F851414260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedPrologueEditorContentView.swift; sourceTree = "<group>"; };
@@ -7701,6 +7704,7 @@
 				3F851413260D0A1D00A4B938 /* Editor */,
 				3F8513DD260D090000A4B938 /* Components */,
 				1705CEE7260A580300F23763 /* UnifiedPrologueIntroContentView.swift */,
+				3F810A592616870C00ADDCC2 /* UnifiedPrologueIntroView.swift */,
 			);
 			path = ContentViews;
 			sourceTree = "<group>";
@@ -16483,6 +16487,7 @@
 				74EFB5C8208674250070BD4E /* BlogListViewController+Activity.swift in Sources */,
 				738B9A5721B85CF20005062B /* TableDataCoordinator.swift in Sources */,
 				B541276B1C0F7D610015CA80 /* SettingsMultiTextViewController.m in Sources */,
+				3F810A5A2616870C00ADDCC2 /* UnifiedPrologueIntroView.swift in Sources */,
 				F5E6312B243BC83E0088229D /* FilterSheetViewController.swift in Sources */,
 				E6F2788021BC1A4A008B4DB5 /* Plan.swift in Sources */,
 				B5AC00681BE3C4E100F8E7C3 /* DiscussionSettingsViewController.swift in Sources */,
@@ -18558,6 +18563,7 @@
 				FABB22A52602FC2C00C8785C /* SignupEpilogueViewController.swift in Sources */,
 				FABB22A62602FC2C00C8785C /* TenorPicker.swift in Sources */,
 				FABB22A72602FC2C00C8785C /* BlogListViewController+Activity.swift in Sources */,
+				3F810A5B2616870C00ADDCC2 /* UnifiedPrologueIntroView.swift in Sources */,
 				FABB22A82602FC2C00C8785C /* TableDataCoordinator.swift in Sources */,
 				FABB22A92602FC2C00C8785C /* SettingsMultiTextViewController.m in Sources */,
 				FABB22AA2602FC2C00C8785C /* FilterSheetViewController.swift in Sources */,
