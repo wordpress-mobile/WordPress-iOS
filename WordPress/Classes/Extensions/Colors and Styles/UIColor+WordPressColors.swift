@@ -9,7 +9,7 @@ extension UIColor {
             return .secondarySystemGroupedBackground
         }
 
-        return UIColor(light: .brand, dark: .gray(.shade100))
+        return UIColor(light: .primary, dark: .gray(.shade100))
     }
 
     static var appBarTint: UIColor {
@@ -18,6 +18,10 @@ extension UIColor {
         }
 
         return .white
+    }
+
+    static var lightAppBarTint: UIColor {
+        return UIColor(light: .primary, dark: .white)
     }
 
     static var appBarText: UIColor {
