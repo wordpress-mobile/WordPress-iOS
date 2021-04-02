@@ -170,6 +170,10 @@ class GutenbergSettings {
 
     // MARK: - Gutenberg Choice Logic
 
+    func isSimpleWPComSite(_ blog: Blog) -> Bool {
+        return !blog.isAtomic() && blog.isHostedAtWPcom
+    }
+
     /// Call this method to know if Gutenberg must be used for the specified post.
     ///
     /// - Parameters:
@@ -179,9 +183,8 @@ class GutenbergSettings {
     ///
     func mustUseGutenberg(for post: AbstractPost) -> Bool {
         let blog = post.blog
-
         if post.isContentEmpty() {
-            return blog.isGutenbergEnabled
+            return isSimpleWPComSite(post.blog) || blog.isGutenbergEnabled
         } else {
             // It's an existing post
             return post.containsGutenbergBlocks()
@@ -204,6 +207,11 @@ class GutenbergSettingsBridge: NSObject {
     @objc(postSettingsToRemoteForBlog:)
     static func postSettingsToRemote(for blog: Blog) {
         GutenbergSettings().postSettingsToRemote(for: blog)
+    }
+
+    @objc(isSimpleWPComSite:)
+    static func isSimpleWPComSite(_ blog: Blog) -> Bool {
+        return GutenbergSettings().isSimpleWPComSite(blog)
     }
 }
 
