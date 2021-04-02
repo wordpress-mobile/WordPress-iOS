@@ -7,7 +7,6 @@ struct UnifiedPrologueEditorContentView: View {
         GeometryReader { content in
 
             VStack {
-                Spacer(minLength: content.size.height * 0.18)
 
                 RoundRectangleView {
                     HStack {
@@ -19,6 +18,7 @@ struct UnifiedPrologueEditorContentView: View {
                     }
                     .padding(.all, content.size.height * 0.06)
                 }
+                .frame(idealHeight: content.size.height * 0.2)
                 .fixedSize(horizontal: false, vertical: true)
 
                 Spacer(minLength: content.size.height * 0.03)
@@ -53,6 +53,7 @@ struct UnifiedPrologueEditorContentView: View {
                                     backgroundColor: Color(UIColor.muriel(name: .blue, .shade50)))
                     }
                 }
+                .frame(idealHeight: content.size.height * 0.41)
                 .fixedSize(horizontal: false, vertical: true)
 
                 Spacer(minLength: content.size.height * 0.03)
@@ -83,10 +84,8 @@ struct UnifiedPrologueEditorContentView: View {
                     }
                     .padding(.all, content.size.height * 0.03)
                 }
+                .frame(idealHeight: content.size.height * 0.33)
                 .fixedSize(horizontal: false, vertical: true)
-
-                // avoid bottom overlapping due to the icon offset
-                Spacer(minLength: content.size.height * 0.1)
             }
         }
     }

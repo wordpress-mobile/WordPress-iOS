@@ -36,6 +36,14 @@ class UnifiedProloguePageViewController: UIViewController {
 
     private var pageType: UnifiedProloguePageType!
 
+    let mainStackView = UIStackView()
+    let titleTopSpacer = UIView()
+    let titleContentSpacer = UIView()
+    let contentBottomSpacer = UIView()
+
+    var contentViewHeightConstraint: NSLayoutConstraint?
+    var contentViewWidthConstraint: NSLayoutConstraint?
+
     init(pageType: UnifiedProloguePageType) {
         self.pageType = pageType
 
@@ -50,13 +58,65 @@ class UnifiedProloguePageViewController: UIViewController {
         view = UIView()
         view.backgroundColor = .clear
 
+        titleTopSpacer.translatesAutoresizingMaskIntoConstraints = false
+        titleContentSpacer.translatesAutoresizingMaskIntoConstraints = false
+        contentBottomSpacer.translatesAutoresizingMaskIntoConstraints = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+
+        configureMainStackView()
+
         configureTitle()
-        configureContentView()
+    }
+
+    override func viewDidLoad() {
+        activateConstraints()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+
+        guard let previousTraitCollection = previousTraitCollection,
+              traitCollection.horizontalSizeClass != previousTraitCollection.horizontalSizeClass else {
+
+            return
+        }
+
+        if traitCollection.horizontalSizeClass == .compact {
+
+            NSLayoutConstraint.deactivate([contentViewHeightConstraint ?? NSLayoutConstraint()])
+            NSLayoutConstraint.activate([contentViewWidthConstraint ?? NSLayoutConstraint()])
+        } else {
+            NSLayoutConstraint.deactivate([contentViewWidthConstraint ?? NSLayoutConstraint()])
+            NSLayoutConstraint.activate([contentViewHeightConstraint ?? NSLayoutConstraint()])
+        }
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        // change the scale of the view in regular horizontal size class (iPad) depending on the orientation
+        guard contentViewHeightConstraint?.isActive == true else {
+            return
+        }
+        contentViewHeightConstraint?.isActive = false
+        setContentViewHeightConstraint()
+        contentViewHeightConstraint?.isActive = true
+    }
+
+    private func configureMainStackView() {
+        mainStackView.axis = .vertical
+        mainStackView.alignment = .center
+        mainStackView.distribution = .fill
+        mainStackView.translatesAutoresizingMaskIntoConstraints = false
+
+        mainStackView.addArrangedSubviews([titleTopSpacer,
+                                           titleLabel,
+                                           titleContentSpacer,
+                                           contentView,
+                                           contentBottomSpacer])
+
+        view.addSubview(mainStackView)
     }
 
     private func configureTitle() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(titleLabel)
 
         titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title1)
         titleLabel.textColor = .text
@@ -64,24 +124,61 @@ class UnifiedProloguePageViewController: UIViewController {
         titleLabel.numberOfLines = 0
 
         titleLabel.text = pageType.title
-
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.topInset),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.horizontalInset),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.horizontalInset)
-        ])
     }
 
-    private func configureContentView() {
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(contentView)
+    private func activateConstraints() {
+        view.pinSubviewToAllEdges(mainStackView)
 
-        NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Metrics.titleToContentSpacing),
-            contentView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: Metrics.heightRatio),
-            contentView.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: Metrics.heightRatio),
-            contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        ])
+        setContentViewWidthConstraint()
+        setContentViewHeightConstraint()
+
+        let centeredContentViewConstraint = NSLayoutConstraint(item: contentView,
+                                                               attribute: .centerY,
+                                                               relatedBy: .equal,
+                                                               toItem: view,
+                                                               attribute: .centerY,
+                                                               multiplier: 1.15,
+                                                               constant: 0)
+        centeredContentViewConstraint.priority = .init(999)
+
+        NSLayoutConstraint.activate([contentView.heightAnchor.constraint(equalTo: contentView.widthAnchor),
+                                     titleTopSpacer.heightAnchor.constraint(greaterThanOrEqualTo: contentView.heightAnchor, multiplier: 0.18),
+                                     titleContentSpacer.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.2),
+                                     centeredContentViewConstraint,
+                                     contentBottomSpacer.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor, multiplier: 0.1)])
+
+        if traitCollection.horizontalSizeClass == .compact {
+
+            NSLayoutConstraint.activate([contentViewWidthConstraint ?? NSLayoutConstraint()])
+        } else {
+
+            NSLayoutConstraint.activate([contentViewHeightConstraint ?? NSLayoutConstraint()])
+        }
+    }
+
+    private func setContentViewHeightConstraint() {
+        contentViewHeightConstraint = NSLayoutConstraint(item: contentView,
+                                                         attribute: .height,
+                                                         relatedBy: .equal,
+                                                         toItem: view,
+                                                         attribute: .height,
+                                                         multiplier: iPadHeightMultiplier,
+                                                         constant: 0)
+    }
+
+    private func setContentViewWidthConstraint() {
+        contentViewWidthConstraint = NSLayoutConstraint(item: contentView,
+                                                        attribute: .width,
+                                                        relatedBy: .equal,
+                                                        toItem: view,
+                                                        attribute: .width,
+                                                        multiplier: 0.7,
+                                                        constant: 0)
+    }
+
+    /// scale factor for the content view on iPad, depending on the orientation
+    private var iPadHeightMultiplier: CGFloat {
+        UIDevice.current.orientation.isPortrait ? 0.4 : 0.5
     }
 
     private func embedSwiftUIView<Content: View>(_ view: Content) -> UIView {
@@ -97,6 +194,8 @@ class UnifiedProloguePageViewController: UIViewController {
             return UnifiedPrologueIntroContentView()
         case .editor:
             return embedSwiftUIView(UnifiedPrologueEditorContentView())
+        case .analytics:
+            return embedSwiftUIView(UnifiedPrologueStatsContentView())
         case .notifications:
             return embedSwiftUIView(UnifiedPrologueNotificationsContentView())
         case .reader:

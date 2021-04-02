@@ -14,8 +14,7 @@ struct UnifiedPrologueNotificationsContentView: View {
                                                design: .default)
 
             VStack {
-                Spacer(minLength: content.size.height * 0.18)
-
+                Spacer()
                 RoundRectangleView {
                     HStack {
                         NotificationIcon(image: Appearance.topImage, size: notificationIconSize)
@@ -87,9 +86,7 @@ struct UnifiedPrologueNotificationsContentView: View {
                     }
                 }
                 .fixedSize(horizontal: false, vertical: true)
-
-                // avoid bottom overlapping due to the icon offset
-                Spacer(minLength: content.size.height * 0.1)
+                Spacer()
             }
         }
     }
