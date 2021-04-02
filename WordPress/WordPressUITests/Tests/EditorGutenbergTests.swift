@@ -8,7 +8,7 @@ class EditorGutenbergTests: XCTestCase {
 
         _ = LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
         editorScreen = EditorFlow
-            .goToMySiteScreen()
+            .gotoMySiteScreen()
             .tabBar.gotoBlockEditorScreen()
     }
 

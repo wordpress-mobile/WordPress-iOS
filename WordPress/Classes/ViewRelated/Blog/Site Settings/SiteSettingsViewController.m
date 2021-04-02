@@ -195,7 +195,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     }
 
     // Only add the editor section if the site is not a Simple WP.com site
-    if (self.blog.isAtomic || !self.blog.isHostedAtWPcom) {
+    if (![GutenbergSettings isSimpleWPComSite:self.blog]) {
         [sections addObject:@(SiteSettingsSectionEditor)];
     }
 

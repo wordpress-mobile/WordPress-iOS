@@ -7,7 +7,7 @@ class EditorFlow {
         }
     }
 
-    static func goToMySiteScreen() -> MySiteScreen {
+    static func gotoMySiteScreen() -> MySiteScreen {
         return TabNavComponent().gotoMySiteScreen()
     }
 
