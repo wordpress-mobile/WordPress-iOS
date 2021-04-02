@@ -41,9 +41,10 @@ class UnifiedProloguePageViewController: UIViewController {
     let titleContentSpacer = UIView()
     let contentBottomSpacer = UIView()
 
-    var contentViewHeightConstraint: NSLayoutConstraint?
-    var contentViewWidthConstraint: NSLayoutConstraint?
-    var titleWidthConstraint: NSLayoutConstraint?
+    var mainStackViewLeadingConstraint: NSLayoutConstraint?
+    var mainStackViewTrailingConstraint: NSLayoutConstraint?
+    var mainStackViewAspectConstraint: NSLayoutConstraint?
+    var mainStackViewCenterAnchor: NSLayoutConstraint?
 
     init(pageType: UnifiedProloguePageType) {
         self.pageType = pageType
@@ -84,23 +85,29 @@ class UnifiedProloguePageViewController: UIViewController {
         configureTitleFont()
 
         if traitCollection.horizontalSizeClass == .compact {
+            deactivateRegularWidthConstraints()
+            activateCompactWidthConstraints()
 
-            NSLayoutConstraint.deactivate([contentViewHeightConstraint ?? NSLayoutConstraint(), titleWidthConstraint ?? NSLayoutConstraint()])
-            NSLayoutConstraint.activate([contentViewWidthConstraint ?? NSLayoutConstraint()])
         } else {
-            NSLayoutConstraint.deactivate([contentViewWidthConstraint ?? NSLayoutConstraint()])
-            NSLayoutConstraint.activate([contentViewHeightConstraint ?? NSLayoutConstraint(), titleWidthConstraint ?? NSLayoutConstraint()])
+            deactivateCompactWidthConstraints()
+            activateRegularWidthConstraints()
         }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        // change the scale of the view in regular horizontal size class (iPad) depending on the orientation
-        guard contentViewHeightConstraint?.isActive == true else {
+        // change the aspect ratio of the content in regular horizontal size class (iPad) depending on the orientation
+        guard mainStackViewAspectConstraint?.isActive == true else {
             return
         }
-        contentViewHeightConstraint?.isActive = false
-        setContentViewHeightConstraint()
-        contentViewHeightConstraint?.isActive = true
+        mainStackViewAspectConstraint?.isActive = false
+        mainStackViewAspectConstraint = NSLayoutConstraint(item: mainStackView,
+                                                           attribute: .height,
+                                                           relatedBy: .equal,
+                                                           toItem: mainStackView,
+                                                           attribute: .width,
+                                                           multiplier: iPadAspectRatio,
+                                                           constant: 0)
+        mainStackViewAspectConstraint?.isActive = true
     }
 
     private func configureMainStackView() {
@@ -124,6 +131,7 @@ class UnifiedProloguePageViewController: UIViewController {
         titleLabel.textColor = .text
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
+        titleLabel.adjustsFontSizeToFitWidth = true
 
         titleLabel.text = pageType.title
     }
@@ -138,11 +146,8 @@ class UnifiedProloguePageViewController: UIViewController {
     }
 
     private func activateConstraints() {
-        view.pinSubviewToAllEdges(mainStackView)
 
-        setContentViewWidthConstraint()
-        setContentViewHeightConstraint()
-        setTitleWidthConstraint()
+        setMainStackViewConstraints()
 
         let centeredContentViewConstraint = NSLayoutConstraint(item: contentView,
                                                                attribute: .centerY,
@@ -154,54 +159,94 @@ class UnifiedProloguePageViewController: UIViewController {
         centeredContentViewConstraint.priority = .init(999)
 
         NSLayoutConstraint.activate([contentView.heightAnchor.constraint(equalTo: contentView.widthAnchor),
+                                     mainStackView.topAnchor.constraint(equalTo: view.topAnchor),
+                                     mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                                     contentView.widthAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: 0.7),
                                      titleTopSpacer.heightAnchor.constraint(greaterThanOrEqualTo: contentView.heightAnchor, multiplier: 0.1),
                                      titleContentSpacer.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.2),
                                      centeredContentViewConstraint,
+                                     titleLabel.widthAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: 0.95),
                                      contentBottomSpacer.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor, multiplier: 0.1)])
 
         if traitCollection.horizontalSizeClass == .compact {
 
-            NSLayoutConstraint.activate([contentViewWidthConstraint ?? NSLayoutConstraint()])
+            activateCompactWidthConstraints()
         } else {
 
-            NSLayoutConstraint.activate([contentViewHeightConstraint ?? NSLayoutConstraint(), titleWidthConstraint ?? NSLayoutConstraint()])
+            activateRegularWidthConstraints()
         }
     }
 
-    private func setContentViewHeightConstraint() {
-        contentViewHeightConstraint = NSLayoutConstraint(item: contentView,
-                                                         attribute: .height,
-                                                         relatedBy: .equal,
-                                                         toItem: view,
-                                                         attribute: .height,
-                                                         multiplier: iPadHeightMultiplier,
-                                                         constant: 0)
+    private func activateRegularWidthConstraints() {
+        guard let stackViewAspect = mainStackViewAspectConstraint,
+              let stackViewCenter = mainStackViewCenterAnchor else {
+            return
+        }
+
+        NSLayoutConstraint.activate([stackViewAspect, stackViewCenter])
     }
 
-    private func setContentViewWidthConstraint() {
-        contentViewWidthConstraint = NSLayoutConstraint(item: contentView,
-                                                        attribute: .width,
-                                                        relatedBy: .equal,
-                                                        toItem: view,
-                                                        attribute: .width,
-                                                        multiplier: 0.7,
-                                                        constant: 0)
+    private func activateCompactWidthConstraints() {
+        guard let stackViewLeading = mainStackViewLeadingConstraint,
+              let stackViewTrailing = mainStackViewTrailingConstraint else {
+            return
+        }
+        NSLayoutConstraint.activate([stackViewLeading, stackViewTrailing])
     }
 
-    private func setTitleWidthConstraint() {
-        titleWidthConstraint = NSLayoutConstraint(item: titleLabel,
-                                                  attribute: .width,
-                                                  relatedBy: .equal,
-                                                  toItem: contentView,
-                                                  attribute: .width,
-                                                  multiplier: 1.6,
-                                                  constant: 0)
-        titleWidthConstraint?.priority = .init(999)
+    private func deactivateRegularWidthConstraints() {
+        guard let stackViewAspect = mainStackViewAspectConstraint,
+              let stackViewCenter = mainStackViewCenterAnchor else {
+            return
+        }
+        NSLayoutConstraint.deactivate([stackViewAspect, stackViewCenter])
     }
 
-    /// scale factor for the content view on iPad, depending on the orientation
-    private var iPadHeightMultiplier: CGFloat {
-        UIDevice.current.orientation.isPortrait ? 0.4 : 0.5
+    private func deactivateCompactWidthConstraints() {
+        guard let stackViewLeading = mainStackViewLeadingConstraint,
+              let stackViewTrailing = mainStackViewTrailingConstraint else {
+            return
+        }
+        NSLayoutConstraint.deactivate([stackViewLeading, stackViewTrailing])
+    }
+
+    private func setMainStackViewConstraints() {
+        mainStackViewLeadingConstraint = NSLayoutConstraint(item: mainStackView,
+                                                            attribute: .leading,
+                                                            relatedBy: .equal,
+                                                            toItem: view,
+                                                            attribute: .leading,
+                                                            multiplier: 1,
+                                                            constant: 0)
+
+        mainStackViewTrailingConstraint = NSLayoutConstraint(item: mainStackView,
+                                                             attribute: .trailing,
+                                                             relatedBy: .equal,
+                                                             toItem: view,
+                                                             attribute: .trailing,
+                                                             multiplier: 1,
+                                                             constant: 0)
+
+        mainStackViewAspectConstraint = NSLayoutConstraint(item: mainStackView,
+                                                           attribute: .height,
+                                                           relatedBy: .equal,
+                                                           toItem: mainStackView,
+                                                           attribute: .width,
+                                                           multiplier: iPadAspectRatio,
+                                                           constant: 0)
+
+        mainStackViewCenterAnchor = NSLayoutConstraint(item: mainStackView,
+                                                       attribute: .centerX,
+                                                       relatedBy: .equal,
+                                                       toItem: view,
+                                                       attribute: .centerX,
+                                                       multiplier: 1,
+                                                       constant: 0)
+    }
+
+    // use different aspect ratios on iPad depending on the orientation
+    private var iPadAspectRatio: CGFloat {
+        UIDevice.current.orientation.isPortrait ? 1.78 : 1.4
     }
 
     private func embedSwiftUIView<Content: View>(_ view: Content) -> UIView {
