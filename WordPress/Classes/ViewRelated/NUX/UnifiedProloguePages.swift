@@ -100,13 +100,7 @@ class UnifiedProloguePageViewController: UIViewController {
             return
         }
         mainStackViewAspectConstraint?.isActive = false
-        mainStackViewAspectConstraint = NSLayoutConstraint(item: mainStackView,
-                                                           attribute: .height,
-                                                           relatedBy: .equal,
-                                                           toItem: mainStackView,
-                                                           attribute: .width,
-                                                           multiplier: iPadAspectRatio,
-                                                           constant: 0)
+        mainStackViewAspectConstraint = mainStackView.heightAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: iPadAspectRatio)
         mainStackViewAspectConstraint?.isActive = true
     }
 
@@ -211,37 +205,11 @@ class UnifiedProloguePageViewController: UIViewController {
     }
 
     private func setMainStackViewConstraints() {
-        mainStackViewLeadingConstraint = NSLayoutConstraint(item: mainStackView,
-                                                            attribute: .leading,
-                                                            relatedBy: .equal,
-                                                            toItem: view,
-                                                            attribute: .leading,
-                                                            multiplier: 1,
-                                                            constant: 0)
 
-        mainStackViewTrailingConstraint = NSLayoutConstraint(item: mainStackView,
-                                                             attribute: .trailing,
-                                                             relatedBy: .equal,
-                                                             toItem: view,
-                                                             attribute: .trailing,
-                                                             multiplier: 1,
-                                                             constant: 0)
-
-        mainStackViewAspectConstraint = NSLayoutConstraint(item: mainStackView,
-                                                           attribute: .height,
-                                                           relatedBy: .equal,
-                                                           toItem: mainStackView,
-                                                           attribute: .width,
-                                                           multiplier: iPadAspectRatio,
-                                                           constant: 0)
-
-        mainStackViewCenterAnchor = NSLayoutConstraint(item: mainStackView,
-                                                       attribute: .centerX,
-                                                       relatedBy: .equal,
-                                                       toItem: view,
-                                                       attribute: .centerX,
-                                                       multiplier: 1,
-                                                       constant: 0)
+        mainStackViewLeadingConstraint = mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        mainStackViewTrailingConstraint = mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        mainStackViewAspectConstraint = mainStackView.heightAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: iPadAspectRatio)
+        mainStackViewCenterAnchor = mainStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
     }
 
     // use different aspect ratios on iPad depending on the orientation
