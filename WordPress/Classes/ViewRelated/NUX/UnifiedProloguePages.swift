@@ -43,6 +43,7 @@ class UnifiedProloguePageViewController: UIViewController {
 
     var contentViewHeightConstraint: NSLayoutConstraint?
     var contentViewWidthConstraint: NSLayoutConstraint?
+    var titleWidthConstraint: NSLayoutConstraint?
 
     init(pageType: UnifiedProloguePageType) {
         self.pageType = pageType
@@ -84,11 +85,11 @@ class UnifiedProloguePageViewController: UIViewController {
 
         if traitCollection.horizontalSizeClass == .compact {
 
-            NSLayoutConstraint.deactivate([contentViewHeightConstraint ?? NSLayoutConstraint()])
+            NSLayoutConstraint.deactivate([contentViewHeightConstraint ?? NSLayoutConstraint(), titleWidthConstraint ?? NSLayoutConstraint()])
             NSLayoutConstraint.activate([contentViewWidthConstraint ?? NSLayoutConstraint()])
         } else {
             NSLayoutConstraint.deactivate([contentViewWidthConstraint ?? NSLayoutConstraint()])
-            NSLayoutConstraint.activate([contentViewHeightConstraint ?? NSLayoutConstraint()])
+            NSLayoutConstraint.activate([contentViewHeightConstraint ?? NSLayoutConstraint(), titleWidthConstraint ?? NSLayoutConstraint()])
         }
     }
 
@@ -105,7 +106,6 @@ class UnifiedProloguePageViewController: UIViewController {
     private func configureMainStackView() {
         mainStackView.axis = .vertical
         mainStackView.alignment = .center
-        mainStackView.distribution = .fill
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
 
         mainStackView.addArrangedSubviews([titleTopSpacer,
@@ -133,7 +133,7 @@ class UnifiedProloguePageViewController: UIViewController {
         guard let fontDescriptor = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .regular).fontDescriptor.withDesign(.serif) else {
             return
         }
-        let size: CGFloat = traitCollection.horizontalSizeClass == .compact ? 0.0 : 48.0
+        let size: CGFloat = traitCollection.horizontalSizeClass == .compact ? 0.0 : 40.0
         titleLabel.font = UIFontMetrics.default.scaledFont(for: UIFont(descriptor: fontDescriptor, size: size))
     }
 
@@ -142,6 +142,7 @@ class UnifiedProloguePageViewController: UIViewController {
 
         setContentViewWidthConstraint()
         setContentViewHeightConstraint()
+        setTitleWidthConstraint()
 
         let centeredContentViewConstraint = NSLayoutConstraint(item: contentView,
                                                                attribute: .centerY,
@@ -163,7 +164,7 @@ class UnifiedProloguePageViewController: UIViewController {
             NSLayoutConstraint.activate([contentViewWidthConstraint ?? NSLayoutConstraint()])
         } else {
 
-            NSLayoutConstraint.activate([contentViewHeightConstraint ?? NSLayoutConstraint()])
+            NSLayoutConstraint.activate([contentViewHeightConstraint ?? NSLayoutConstraint(), titleWidthConstraint ?? NSLayoutConstraint()])
         }
     }
 
@@ -185,6 +186,17 @@ class UnifiedProloguePageViewController: UIViewController {
                                                         attribute: .width,
                                                         multiplier: 0.7,
                                                         constant: 0)
+    }
+
+    private func setTitleWidthConstraint() {
+        titleWidthConstraint = NSLayoutConstraint(item: titleLabel,
+                                                  attribute: .width,
+                                                  relatedBy: .equal,
+                                                  toItem: contentView,
+                                                  attribute: .width,
+                                                  multiplier: 1.6,
+                                                  constant: 0)
+        titleWidthConstraint?.priority = .init(999)
     }
 
     /// scale factor for the content view on iPad, depending on the orientation
