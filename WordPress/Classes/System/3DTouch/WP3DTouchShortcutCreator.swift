@@ -43,12 +43,6 @@ open class WP3DTouchShortcutCreator: NSObject {
     }
 
     @objc open func createShortcutsIf3DTouchAvailable(_ loggedIn: Bool) {
-
-        // Don't create shortcuts for the Jetpack app
-        guard !AppConfiguration.isJetpack else {
-            return
-        }
-
         guard shortcutsProvider.is3DTouchAvailable else {
             return
         }
@@ -65,12 +59,6 @@ open class WP3DTouchShortcutCreator: NSObject {
     }
 
     fileprivate func registerForNotifications() {
-
-        // Don't register for logged in notifications for the Jetpack app
-        guard !AppConfiguration.isJetpack else {
-            return
-        }
-
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: NSNotification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
         notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: .WPRecentSitesChanged, object: nil)
@@ -138,8 +126,10 @@ open class WP3DTouchShortcutCreator: NSObject {
                 visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.stats.rawValue])
             }
 
-            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPhotoPost.rawValue])
-            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPost.rawValue])
+            if AppConfiguration.allowsNewPostShortcut {
+                visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPhotoPost.rawValue])
+                visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPost.rawValue])
+            }
 
             strongSelf.shortcutsProvider.shortcutItems = visibleShortcutArray
         }
