@@ -1225,8 +1225,6 @@
 		8B36256625A60CCA00D7CCE3 /* BackupListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B36256525A60CCA00D7CCE3 /* BackupListViewController.swift */; };
 		8B3626F925A665E500D7CCE3 /* UIApplication+mainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3626F825A665E500D7CCE3 /* UIApplication+mainWindow.swift */; };
 		8B3DECAB2388506400A459C2 /* SentryStartupEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3DECAA2388506400A459C2 /* SentryStartupEvent.swift */; };
-		8B47CA7226165E3800E76E82 /* AppBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B47CA7126165E3800E76E82 /* AppBehavior.swift */; };
-		8B47CA8526165E9900E76E82 /* AppBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B47CA8426165E9900E76E82 /* AppBehavior.swift */; };
 		8B51844525893F140085488D /* FilterBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B51844425893F140085488D /* FilterBarView.swift */; };
 		8B55F9B82614D819007D618E /* UnifiedPrologueEditorContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F851414260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift */; };
 		8B55F9CA2614D8BC007D618E /* RoundRectangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8513DE260D091500A4B938 /* RoundRectangleView.swift */; };
@@ -5740,8 +5738,6 @@
 		8B36256525A60CCA00D7CCE3 /* BackupListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupListViewController.swift; sourceTree = "<group>"; };
 		8B3626F825A665E500D7CCE3 /* UIApplication+mainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+mainWindow.swift"; sourceTree = "<group>"; };
 		8B3DECAA2388506400A459C2 /* SentryStartupEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentryStartupEvent.swift; sourceTree = "<group>"; };
-		8B47CA7126165E3800E76E82 /* AppBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBehavior.swift; sourceTree = "<group>"; };
-		8B47CA8426165E9900E76E82 /* AppBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBehavior.swift; sourceTree = "<group>"; };
 		8B51844425893F140085488D /* FilterBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterBarView.swift; sourceTree = "<group>"; };
 		8B64B4B1247EC3A2009A1229 /* reader.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = reader.css; sourceTree = "<group>"; };
 		8B69F0E3255C2C3F006B1CEF /* ActivityListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityListViewModelTests.swift; sourceTree = "<group>"; };
@@ -13540,7 +13536,6 @@
 				FA25FB472609B9A50005E08F /* Protocol */,
 				FA25F9FD2609AA830005E08F /* AppConfiguration.swift */,
 				FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */,
-				8B47CA7126165E3800E76E82 /* AppBehavior.swift */,
 			);
 			path = "App Configuration";
 			sourceTree = "<group>";
@@ -13558,7 +13553,6 @@
 			children = (
 				FA25FA332609AAAA0005E08F /* AppConfiguration.swift */,
 				FAD2544126116CEA00EDAF88 /* AppStyleGuide.swift */,
-				8B47CA8426165E9900E76E82 /* AppBehavior.swift */,
 			);
 			name = "App Configuration";
 			sourceTree = "<group>";
@@ -17322,7 +17316,6 @@
 				8B260D7E2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift in Sources */,
 				B5416D011C17693B00006DD8 /* UIApplication+Helpers.m in Sources */,
 				731E88CA21C9A10B0055C014 /* ErrorStateView.swift in Sources */,
-				8B47CA7226165E3800E76E82 /* AppBehavior.swift in Sources */,
 				08D345501CD7F50900358E8C /* MenusSelectionDetailView.m in Sources */,
 				8B0732F0242BF7E800E7FBD3 /* Blog+Title.swift in Sources */,
 				C94C0B1B25DCFA0100F2F69B /* FilterableCategoriesViewController.swift in Sources */,
@@ -19394,7 +19387,6 @@
 				FABB25EF2602FC2C00C8785C /* ReaderWebView.swift in Sources */,
 				FABB25F02602FC2C00C8785C /* PostVisibilitySelectorViewController.swift in Sources */,
 				FABB25F12602FC2C00C8785C /* UIApplication+Helpers.m in Sources */,
-				8B47CA8526165E9900E76E82 /* AppBehavior.swift in Sources */,
 				FABB25F22602FC2C00C8785C /* ErrorStateView.swift in Sources */,
 				FABB25F32602FC2C00C8785C /* MenusSelectionDetailView.m in Sources */,
 				FABB25F42602FC2C00C8785C /* Blog+Title.swift in Sources */,
