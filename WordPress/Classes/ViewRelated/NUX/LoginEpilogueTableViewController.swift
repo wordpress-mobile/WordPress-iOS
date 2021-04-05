@@ -30,6 +30,10 @@ class LoginEpilogueTableViewController: UITableViewController {
     /// Flag indicating if the Connect Site option should be displayed.
     ///
     private var showConnectSite: Bool {
+        guard AppConfiguration.allowsConnectSite else {
+            return false
+        }
+
         guard let wpcom = credentials?.wpcom else {
             return true
         }
