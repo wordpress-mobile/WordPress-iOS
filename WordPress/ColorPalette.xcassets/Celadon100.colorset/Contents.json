@@ -1,7 +1,7 @@
 {
   "info": {
     "author": "blog.color-studio",
-    "version": "2.0.0-rc.4"
+    "version": "2.5.0"
   },
   "colors": [
     {
@@ -10,7 +10,7 @@
         "components": {
           "red": "0",
           "green": "28",
-          "blue": "23",
+          "blue": "21",
           "alpha": 1
         },
         "color-space": "srgb"

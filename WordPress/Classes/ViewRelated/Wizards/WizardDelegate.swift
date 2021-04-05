@@ -1,3 +1,3 @@
-protocol WizardDelegate {
+protocol WizardDelegate: class {
     func nextStep()
 }

@@ -172,31 +172,6 @@ extension UIColor {
         return UIColor(light: .systemGray6, dark: .systemGray5)
     }
 
-    /// Muriel/iOS navigation color
-    static var appBarBackground: UIColor {
-        if FeatureFlag.newNavBarAppearance.enabled {
-            return .secondarySystemGroupedBackground
-        }
-
-        return UIColor(light: .brand, dark: .gray(.shade100))
-    }
-
-    static var appBarTint: UIColor {
-        if FeatureFlag.newNavBarAppearance.enabled {
-            return .primary
-        }
-
-        return .white
-    }
-
-    static var appBarText: UIColor {
-        if FeatureFlag.newNavBarAppearance.enabled {
-            return .text
-        }
-
-        return .white
-    }
-
     // MARK: - Table Views
 
     static var divider: UIColor {
@@ -242,29 +217,18 @@ extension UIColor {
         return .systemGray2
     }
 
-    static var filterBarBackground: UIColor {
-        return UIColor(light: white, dark: .gray(.shade100))
-    }
-
-    static var filterBarSelected: UIColor {
-        return UIColor(light: .primary, dark: .label)
-    }
-
     /// For icons that are present in a toolbar or similar view
     static var toolbarInactive: UIColor {
         return .secondaryLabel
     }
-
-    /// Note: these values are intended to match the iOS defaults
-    static var tabUnselected: UIColor =  UIColor(light: UIColor(hexString: "999999"), dark: UIColor(hexString: "757575"))
 
     static var barButtonItemTitle: UIColor {
         return UIColor(light: UIColor.primary(.shade50), dark: UIColor.primary(.shade30))
     }
 
 // MARK: - WP Fancy Buttons
-    static var primaryButtonBackground = accent
-    static var primaryButtonDownBackground = muriel(color: .accent, .shade80)
+    static var primaryButtonBackground = primary
+    static var primaryButtonDownBackground = muriel(color: .primary, .shade80)
 
     static var secondaryButtonBackground: UIColor {
         return UIColor(light: .white, dark: .systemGray5)
@@ -301,8 +265,10 @@ extension UIColor {
     }
 }
 
+@objc
 extension UIColor {
     // A way to create dynamic colors that's compatible with iOS 11 & 12
+    @objc
     convenience init(light: UIColor, dark: UIColor) {
         self.init { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {

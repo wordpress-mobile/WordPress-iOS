@@ -13,25 +13,12 @@ extension WPStyleGuide {
 
     @objc
     public class var navigationBarStandardFont: UIFont {
-        return WPStyleGuide.fixedSerifFontForTextStyle(.headline, fontWeight: .semibold)
+        return AppStyleGuide.navigationBarStandardFont
     }
 
     @objc
     public class var navigationBarLargeFont: UIFont {
-        return WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold)
-    }
-
-    // MARK: - styles used before Muriel colors are enabled
-    public class func navigationBarBackgroundImage() -> UIImage {
-        return UIImage(color: WPStyleGuide.wordPressBlue())
-    }
-
-    public class func navigationBarBarStyle() -> UIBarStyle {
-        return .black
-    }
-
-    public class func navigationBarShadowImage() -> UIImage {
-        return UIImage(color: UIColor(fromHex: 0x007eb1))
+        return AppStyleGuide.navigationBarLargeFont
     }
 
     class func configureDefaultTint() {
@@ -100,7 +87,7 @@ extension WPStyleGuide {
 
     /// Style the tab bar using Muriel colors
     class func configureTabBarAppearance() {
-        UITabBar.appearance().tintColor = .primary
+        UITabBar.appearance().tintColor = .tabSelected
         UITabBar.appearance().unselectedItemTintColor = .tabUnselected
     }
 
@@ -123,7 +110,7 @@ extension WPStyleGuide {
         appearance.shadowColor = separatorColor
         navigationBarAppearanceProxy.standardAppearance = appearance
 
-        let tintColor = UIColor(light: .brand, dark: .white)
+        let tintColor = UIColor.lightAppBarTint
 
         let buttonBarAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [LightNavigationController.self])
         buttonBarAppearance.tintColor = tintColor

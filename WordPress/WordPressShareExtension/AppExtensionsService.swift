@@ -95,7 +95,13 @@ extension AppExtensionsService {
     ///
     func fetchSites(onSuccess: @escaping ([RemoteBlog]?) -> (), onFailure: @escaping FailureBlock) {
         let remote = AccountServiceRemoteREST(wordPressComRestApi: simpleRestAPI)
-        remote.getBlogsWithSuccess({ blogs in
+
+        var filterJetpackSites = false
+        #if JETPACK
+        filterJetpackSites = true
+        #endif
+
+        remote.getBlogs(filterJetpackSites, success: { blogs in
             guard let blogs = blogs as? [RemoteBlog] else {
                 DDLogError("Error parsing returned sites.")
                 onFailure()

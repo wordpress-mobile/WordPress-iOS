@@ -40,7 +40,6 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     let blog: Blog
     var previewDeviceButtonItem: UIBarButtonItem?
 
-
     init(blog: Blog, completion: @escaping PageCoordinator.TemplateSelectionCompletion) {
         self.blog = blog
         self.completion = completion
@@ -78,10 +77,12 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     }
 
     @objc private func previewDeviceButtonTapped() {
+        LayoutPickerAnalyticsEvent.thumbnailModeButtonTapped(selectedPreviewDevice)
         let popoverContentController = PreviewDeviceSelectionViewController()
         popoverContentController.selectedOption = selectedPreviewDevice
         popoverContentController.onDeviceChange = { [weak self] device in
             guard let self = self else { return }
+            LayoutPickerAnalyticsEvent.previewModeChanged(device)
             self.selectedPreviewDevice = device
         }
 
@@ -89,11 +90,13 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
         popoverContentController.popoverPresentationController?.delegate = self
         self.present(popoverContentController, animated: true, completion: nil)
     }
+
     private func presentPreview() {
         guard let sectionIndex = selectedItem?.section, let position = selectedItem?.item else { return }
         let layout = sections[sectionIndex].layouts[position]
-        let destination = LayoutPreviewViewController(layout: layout, completion: completion)
-        LayoutPickerAnalyticsEvent.templatePreview(slug: layout.slug)
+        let destination = LayoutPreviewViewController(layout: layout, selectedPreviewDevice: selectedPreviewDevice, onDismissWithDeviceSelected: { [weak self] device in
+            self?.selectedPreviewDevice = device
+        }, completion: completion)
         navigationController?.pushViewController(destination, animated: true)
     }
 
@@ -145,7 +148,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
         }
 
         let layout = sections[sectionIndex].layouts[position]
-        LayoutPickerAnalyticsEvent.templateApplied(slug: layout.slug)
+        LayoutPickerAnalyticsEvent.templateApplied(layout)
         createPage(layout: layout)
     }
 

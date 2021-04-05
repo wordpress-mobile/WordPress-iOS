@@ -11,7 +11,7 @@
 + (void)applyRestorePageLabelStyle:(UILabel *)label
 {
     label.font = [WPStyleGuide regularFont];
-    label.textColor = [self grey];
+    label.textColor = [UIColor murielTextSubtle];
 }
 
 + (void)applyRestorePageButtonStyle:(UIButton *)button
@@ -19,14 +19,13 @@
     [WPStyleGuide configureLabel:button.titleLabel
                        textStyle:UIFontTextStyleCallout
                       fontWeight:UIFontWeightSemibold];
-    [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-    [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor murielPrimary] forState:UIControlStateNormal];
 }
 
 + (void)applyRestoreSavedPostLabelStyle:(UILabel *)label
 {
     [WPStyleGuide configureLabel:label textStyle:UIFontTextStyleCallout];
-    label.textColor = [self greyDarken10];
+    label.textColor = [UIColor murielTextSubtle];
 }
 
 + (void)applyRestoreSavedPostTitleLabelStyle:(UILabel *)label
@@ -39,7 +38,7 @@
     UIFontDescriptorSymbolicTraits traits = [descriptor symbolicTraits];
     descriptor = [descriptor fontDescriptorWithSymbolicTraits:traits | UIFontDescriptorTraitItalic];
     label.font = [UIFont fontWithDescriptor:descriptor size:label.font.pointSize];
-    label.textColor = [self greyDarken10];
+    label.textColor = [UIColor murielTextSubtle];
 }
 
 + (void)applyRestoreSavedPostButtonStyle:(UIButton *)button
@@ -47,8 +46,7 @@
     [WPStyleGuide configureLabel:button.titleLabel
                        textStyle:UIFontTextStyleCallout
                       fontWeight:UIFontWeightSemibold];
-    [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-    [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor murielPrimary] forState:UIControlStateNormal];
 }
 
 + (UIFont *)regularFont {
