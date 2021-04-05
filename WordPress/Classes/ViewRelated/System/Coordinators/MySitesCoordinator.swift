@@ -131,9 +131,15 @@ class MySitesCoordinator: NSObject {
     func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection) {
         showBlogDetails(for: blog)
 
-        if let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
-            blogDetailsViewController.showDetailView(for: subsection)
+        let blogDetailsViewController: BlogDetailsViewController?
+
+        if Feature.enabled(.newNavBarAppearance) {
+            blogDetailsViewController = navigationController.topViewController?.children.first as? BlogDetailsViewController
+        } else {
+            blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController
         }
+
+        blogDetailsViewController?.showDetailView(for: subsection)
     }
 
     // MARK: - Stats
