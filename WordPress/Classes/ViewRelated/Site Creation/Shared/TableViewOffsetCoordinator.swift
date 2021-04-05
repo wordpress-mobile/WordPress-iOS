@@ -28,6 +28,7 @@ final class TableViewOffsetCoordinator {
     /// Tracks the content offset introduced by the keyboard being presented
     private var keyboardContentOffset = CGFloat(0)
     
+    /// Track scroll position of tableview for reloads
     private var scrollPosition = CGPoint(x: 0, y: 0)
 
     /// To avoid wasted animations, we track whether or not we have already adjusted the table view
@@ -50,8 +51,6 @@ final class TableViewOffsetCoordinator {
         self.footerControlContainer = footerControlContainer
         self.footerControl = footerControl
         self.toolbarBottomConstraint = toolbarBottomConstraint
-        
-        print("init")
     }
 
     // MARK: Internal behavior
@@ -60,56 +59,21 @@ final class TableViewOffsetCoordinator {
     ///
     func adjustTableOffsetIfNeeded() {
         guard let tableView = tableView, keyboardContentOffset > 0, tableViewHasBeenAdjusted == false else {
-            print("stopped at guard")
             return
         }
-        
-        print("adjust offset")
         
         // if table is taller than screen, apply an inset to make the search field at the bottom visible
         if UIScreen.main.bounds.height < tableView.bounds.height {
             // no change
         } else {
             tableView.contentInset.bottom = keyboardContentOffset*1.5
-            print(keyboardContentOffset*1.5)
         }
         
         tableViewHasBeenAdjusted = true
         scrollPosition = tableView.contentOffset
         
-        /*let topInset: CGFloat
-        if WPDeviceIdentification.isiPhone(), let header = tableView.tableHeaderView as? TitleSubtitleTextfieldHeader {
-            let textfieldFrame = header.textField.frame
-            topInset = textfieldFrame.origin.y - Constants.topMargin
-        } else {
-            topInset = 0
-        }
-        
-        let bottomInset: CGFloat
-        if WPDeviceIdentification.isiPad() && UIDevice.current.orientation.isPortrait {
-            bottomInset = 0
-        } else {
-            bottomInset = keyboardContentOffset
-        }
-        
-        
-        let targetInsets = UIEdgeInsets(top: -topInset, left: 0, bottom: bottomInset, right: 0)
-
-        UIView.animate(withDuration: Constants.headerAnimationDuration, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
-            guard let self = self, let tableView = self.tableView else {
-                return
-            }
-            
-            
-            tableView.contentInset = targetInsets
-            tableView.scrollIndicatorInsets = targetInsets
-            if WPDeviceIdentification.isiPhone(), let header = tableView.tableHeaderView as? TitleSubtitleTextfieldHeader {
-                header.titleSubtitle.alpha = 0.0
-                tableView.headerView(forSection: Constants.domainHeaderSection)?.isHidden = true
-            }
-        }, completion: { [weak self] _ in
-            self?.tableViewHasBeenAdjusted = true
-        })*/
+        // removed insets that had been here, as they made content disappear with large text sizes
+        // replaced with contentoffset and scroll of tableview
     }
 
     /// This method resets the table view header and the content offset to the default state.
@@ -120,8 +84,6 @@ final class TableViewOffsetCoordinator {
         }
         
         var offset = false
-        
-        print("reset table offset")
     
         UIView.animate(withDuration: Constants.headerAnimationDuration, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
             guard let self = self, let tableView = self.tableView else {
@@ -134,31 +96,6 @@ final class TableViewOffsetCoordinator {
             } else {
                 offset = true
             }
-            
-            //tableView.contentOffset.y = self.keyboardContentOffset*1.5
-            
-            /*tableView.contentInset.bottom = 0
-            
-             if UIScreen.main.bounds.height < tableView.bounds.height {
-                // no change
-             } else {
-                tableView.contentInset.bottom = self.keyboardContentOffset*1.5
-             }
-            
-            print(tableView.contentInset.bottom)
-            
-    
-            let finalOffset: UIEdgeInsets
-            if let footerControl = self.footerControl, self.toolbarHasBeenAdjusted == true {
-                let toolbarHeight = footerControl.frame.size.height
-                finalOffset = UIEdgeInsets(top: -1 * toolbarHeight,
-                    left: 0, bottom: toolbarHeight, right: 0)
-            } else {
-                finalOffset = .zero
-            }*/
-           
-            //tableView.contentInset = finalOffset
-            //tableView.scrollIndicatorInsets = finalOffset
             
             if WPDeviceIdentification.isiPhone(), let header = tableView.tableHeaderView as? TitleSubtitleTextfieldHeader {
                 header.titleSubtitle.alpha = 1.0
@@ -180,8 +117,6 @@ final class TableViewOffsetCoordinator {
             return
         }
         
-        print("keyboard show")
-
         let keyboardScreenFrame = payload.frameEnd
         keyboardContentOffset = keyboardScreenFrame.height
 
@@ -194,8 +129,6 @@ final class TableViewOffsetCoordinator {
         keyboardContentOffset = 0
         toolbarHasBeenAdjusted = false
         toolbarBottomConstraint?.constant = 0
-        
-        print("keyboard hide")
     }
 
     private func adjustToolbarOffsetIfNeeded() {
@@ -203,7 +136,6 @@ final class TableViewOffsetCoordinator {
             return
         }
 
-        print("toolbar offset")
         var constraintConstant = keyboardContentOffset
 
         let bottomInset = footerControlContainer.safeAreaInsets.bottom
