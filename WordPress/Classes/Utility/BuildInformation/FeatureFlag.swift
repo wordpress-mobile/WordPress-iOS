@@ -43,7 +43,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .newNavBarAppearance:
             return true
         case .unifiedPrologueCarousel:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .stories:
             return true
         case .contactInfo:
