@@ -456,7 +456,7 @@ DEPENDENCIES:
   - Gridicons (~> 1.1.0)
   - Gutenberg (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.50.0`)
   - JTAppleCalendar (~> 8.0.2)
-  - Kanvas (from `https://github.com/tumblr/Kanvas-iOS.git`, commit `6c2abc`)
+  - Kanvas (from `https://github.com/tumblr/Kanvas-iOS.git`, commit `aecba1`)
   - MediaEditor (~> 1.2.1)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.3.1)
@@ -585,7 +585,7 @@ EXTERNAL SOURCES:
     :submodules: true
     :tag: v1.50.0
   Kanvas:
-    :commit: 6c2abc
+    :commit: aecba1
     :git: https://github.com/tumblr/Kanvas-iOS.git
   RCTRequired:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.50.0/third-party-podspecs/RCTRequired.podspec.json
@@ -669,7 +669,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.50.0
   Kanvas:
-    :commit: 6c2abc
+    :commit: aecba1
     :git: https://github.com/tumblr/Kanvas-iOS.git
   RNTAztecView:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
@@ -772,6 +772,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: e84ffa54394adcb3d990fa376fc09046664b3e27
+PODFILE CHECKSUM: 3b6d52d18c90ea182e05f877cecae05d3b8cdaa7
 
 COCOAPODS: 1.10.0
