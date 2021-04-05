@@ -312,6 +312,7 @@ workflows:
               ignore:
                 - develop
                 - /^release.*/
+                - /^gutenberg\/integrate_release_.*/
       - UI Tests:
           name: UI Tests (iPhone 11)
           <<: *iphone_test_device
