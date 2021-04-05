@@ -474,11 +474,9 @@ post_install do |installer|
     # =====================================
     #
     installer.pods_project.targets.each do |target|
-      if target.name == "WordPress" || target.name == "Jetpack"
-        target.build_configurations.each do |configuration|
-           pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
-           configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
-        end
+      target.build_configurations.each do |configuration|
+        pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
+        configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
       end
     end
 end
