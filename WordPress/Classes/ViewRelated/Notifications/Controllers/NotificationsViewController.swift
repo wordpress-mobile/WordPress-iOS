@@ -1266,18 +1266,25 @@ private extension NotificationsViewController {
         addChild(noResultsViewController)
         tableView.insertSubview(noResultsViewController.view, belowSubview: tableHeaderView)
         noResultsViewController.view.frame = tableView.frame
-        adjustNoResultsViewSize()
+        setupNoResultsViewConstraints()
         noResultsViewController.didMove(toParent: self)
     }
 
-    func adjustNoResultsViewSize() {
-        noResultsViewController.view.frame.origin.y = tableHeaderView.frame.size.height
-
-        if inlinePromptView.alpha == WPAlphaFull {
-            noResultsViewController.view.frame.size.height -= tableHeaderView.frame.size.height
-        } else {
-            noResultsViewController.view.frame.size.height = tableView.frame.size.height - tableHeaderView.frame.size.height
+    func setupNoResultsViewConstraints() {
+        guard let nrv = noResultsViewController.view else {
+            return
         }
+
+        tableHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        nrv.translatesAutoresizingMaskIntoConstraints = false
+        nrv.setContentHuggingPriority(.defaultLow, for: .horizontal)
+
+        NSLayoutConstraint.activate([
+            nrv.widthAnchor.constraint(equalTo: view.widthAnchor),
+            nrv.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nrv.topAnchor.constraint(equalTo: tableHeaderView.bottomAnchor),
+            nrv.bottomAnchor.constraint(equalTo: view.safeBottomAnchor)
+        ])
     }
 
     func updateSplitViewAppearanceForNoResultsView() {
