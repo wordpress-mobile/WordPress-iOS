@@ -1205,18 +1205,18 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
 //
 private extension NotificationsViewController {
     func showFiltersSegmentedControlIfApplicable() {
-        guard tableHeaderView.alpha == WPAlphaZero && shouldDisplayFilters == true else {
+        guard filterTabBar.isHidden == true && shouldDisplayFilters == true else {
             return
         }
 
         UIView.animate(withDuration: WPAnimationDurationDefault, animations: {
-            self.tableHeaderView.alpha = WPAlphaFull
+            self.filterTabBar.isHidden = false
         })
     }
 
     func hideFiltersSegmentedControlIfApplicable() {
-        if tableHeaderView.alpha == WPAlphaFull && shouldDisplayFilters == false {
-            tableHeaderView.alpha = WPAlphaZero
+        if filterTabBar.isHidden == false && shouldDisplayFilters == false {
+            self.filterTabBar.isHidden = true
         }
     }
 
