@@ -9,7 +9,7 @@ struct AppConstants {
 // MARK: - Localized Strings
 extension AppConstants {
 
-    struct AppSettings {
+    struct Settings {
         static let aboutTitle = NSLocalizedString("About Jetpack for iOS", comment: "Link to About screen for Jetpack for iOS")
     }
 

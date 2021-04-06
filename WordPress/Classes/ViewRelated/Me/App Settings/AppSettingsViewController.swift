@@ -465,7 +465,7 @@ private extension AppSettingsViewController {
         )
 
         let aboutRow = NavigationItemRow(
-            title: AppConstants.AppSettings.aboutTitle,
+            title: AppConstants.Settings.aboutTitle,
             action: pushAbout()
         )
 

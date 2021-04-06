@@ -9,7 +9,7 @@ struct AppConstants {
 // MARK: - Localized Strings
 extension AppConstants {
 
-    struct AppSettings {
+    struct Settings {
         static let aboutTitle = NSLocalizedString("About WordPress for iOS", comment: "Link to About screen for WordPress for iOS")
     }
 
