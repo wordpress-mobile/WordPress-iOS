@@ -5,8 +5,6 @@ protocol PostEditorNavigationBarManagerDelegate: class {
     var isPublishButtonEnabled: Bool { get }
     var uploadingButtonSize: CGSize { get }
     var savingDraftButtonSize: CGSize { get }
-    var blogTitleText: String { get }
-    var isBlogTitleHidden: Bool { get }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton)
@@ -211,9 +209,8 @@ class PostEditorNavigationBarManager {
         publishButton.isEnabled = delegate?.isPublishButtonEnabled ?? true
     }
 
-    func reloadBlogTitleView() {
-        blogTitleViewLabel.text = delegate?.blogTitleText
-        blogTitleViewLabel.isHidden = delegate?.isBlogTitleHidden ?? false
+    func reloadBlogTitleView(text: String) {
+        blogTitleViewLabel.text = text
     }
 
     func reloadLeftBarButtonItems(_ items: [UIBarButtonItem]) {

@@ -907,7 +907,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func reloadBlogTitleView() {
-        navigationBarManager.reloadBlogTitleView()
+        var blogTitle = post.blog.url ?? String()
+        if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
+            blogTitle = blogName
+        }
+
+        navigationBarManager.reloadBlogTitleView(text: blogTitle)
     }
 
     func reloadPublishButton() {
@@ -3519,19 +3524,6 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
 
     var savingDraftButtonSize: CGSize {
         return Constants.savingDraftButtonSize
-    }
-
-    var blogTitleText: String {
-        var blogTitle = post.blog.url ?? String()
-        if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
-            blogTitle = blogName
-        }
-
-        return blogTitle
-    }
-
-    var isBlogTitleHidden: Bool {
-        postEditorStateContext.isGeneratingPreview || postEditorStateContext.isUploadingMedia
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
