@@ -1501,7 +1501,10 @@ private extension NotificationsViewController {
 extension NotificationsViewController: WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
         guard let note = selectedNotification ?? fetchFirstNotification() else {
-            return nil
+            let controller = UIViewController()
+            controller.view.backgroundColor = .basicBackground
+            return controller
+
         }
 
         selectedNotification = note
