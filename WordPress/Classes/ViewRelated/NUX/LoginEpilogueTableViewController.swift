@@ -211,8 +211,9 @@ extension LoginEpilogueTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.section != Sections.userInfoSection,
-            indexPath.row == lastRowInSection(indexPath.section) else {
+        guard showConnectSite,
+              indexPath.section != Sections.userInfoSection,
+              indexPath.row == lastRowInSection(indexPath.section) else {
             return
         }
 
