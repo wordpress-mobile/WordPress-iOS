@@ -226,11 +226,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     ///         - subsection: The specific subsection to show.
     ///
     func showBlogDetailsSubsection(_ subsection: BlogDetailsSubsection) {
-        guard let blogDetailsViewController = blogDetailsViewController else {
-            return
-        }
-
-        blogDetailsViewController.showDetailView(for: subsection)
+        blogDetailsViewController?.showDetailView(for: subsection)
     }
 
     /// Shows a `BlogDetailsViewController` for the specified `Blog`.  If the VC doesn't exist, this method also takes care
