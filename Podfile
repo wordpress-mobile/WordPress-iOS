@@ -191,7 +191,7 @@ abstract_target 'Apps' do
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.8.3'
+    pod 'Automattic-Tracks-iOS', '~> 0.8.4'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
     # Local Development
@@ -474,11 +474,9 @@ post_install do |installer|
     # =====================================
     #
     installer.pods_project.targets.each do |target|
-      if target.name == "WordPress" || target.name == "Jetpack"
-        target.build_configurations.each do |configuration|
-           pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
-           configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
-        end
+      target.build_configurations.each do |configuration|
+        pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
+        configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
       end
     end
 end
