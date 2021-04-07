@@ -465,7 +465,7 @@ private extension AppSettingsViewController {
         )
 
         let aboutRow = NavigationItemRow(
-            title: NSLocalizedString("About WordPress for iOS", comment: "Link to About screen for WordPress for iOS"),
+            title: AppConstants.Settings.aboutTitle,
             action: pushAbout()
         )
 
