@@ -89,7 +89,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     private var onClose: (() -> Void)?
 
     private var useLightStyle: Bool {
-        navigationController is LightNavigationController
+        navigationController is LightNavigationController || FeatureFlag.newNavBarAppearance.enabled
     }
 
     private var barButtonTintColor: UIColor {
@@ -279,6 +279,9 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
         if !useLightStyle {
             navigationBar.titleTextAttributes = [.foregroundColor: UIColor.neutral(.shade70)]
+        } else {
+            // Remove serif title bar formatting
+            navigationBar.standardAppearance.titleTextAttributes = [:]
         }
 
         navigationBar.shadowImage = UIImage(color: WPStyleGuide.webViewModalNavigationBarShadow())
