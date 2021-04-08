@@ -1149,8 +1149,8 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadLeftNavigationItems items: [UIBarButtonItem]) {
-        navigationItem.leftBarButtonItems = items
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadTitleView view: UIView) {
+        navigationItem.titleView = view
     }
 }
 

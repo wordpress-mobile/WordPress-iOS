@@ -855,14 +855,12 @@ class AztecPostViewController: UIViewController, PostEditor {
         reloadBlogTitleView()
         reloadEditorContents()
         reloadPublishButton()
-        refreshNavigationBar()
+        refreshTitleViewForMediaUploadIfNeeded()
     }
 
-    func refreshNavigationBar() {
+    func refreshTitleViewForMediaUploadIfNeeded() {
         if postEditorStateContext.isUploadingMedia {
-            navigationItem.leftBarButtonItems = navigationBarManager.uploadingMediaLeftBarButtonItems
-        } else {
-            navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
+            navigationItem.titleView = navigationBarManager.uploadingMediaTitleView
         }
     }
 
@@ -2435,7 +2433,7 @@ extension AztecPostViewController {
         mediaProgressView.isHidden = !mediaCoordinator.isUploadingMedia(for: post)
         mediaProgressView.progress = Float(mediaCoordinator.totalProgress(for: post))
         postEditorStateContext.update(isUploadingMedia: mediaCoordinator.isUploadingMedia(for: post))
-        refreshNavigationBar()
+        refreshTitleViewForMediaUploadIfNeeded()
     }
 
     fileprivate func insert(exportableAsset: ExportableAsset, source: MediaSource, attachment: MediaAttachment? = nil) {
@@ -3546,8 +3544,8 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
         displayCancelMediaUploads()
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadLeftNavigationItems items: [UIBarButtonItem]) {
-        navigationItem.leftBarButtonItems = items
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadTitleView view: UIView) {
+        navigationItem.titleView = view
     }
 }
 
