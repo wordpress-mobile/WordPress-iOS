@@ -21,7 +21,7 @@
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ZWJ-8F-a7O" userLabel="Cell Stack View">
                         <rect key="frame" x="20" y="12" width="395" height="62"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pe3-Qf-lcv" userLabel="Gravatar Image View" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pe3-Qf-lcv" userLabel="Gravatar Image View" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="8" width="46" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="pe3-Qf-lcv" secondAttribute="height" multiplier="1:1" id="MlL-OM-UpJ"/>
