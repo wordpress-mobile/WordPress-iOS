@@ -20,6 +20,10 @@ extension UIColor {
         return .white
     }
 
+    static var lightAppBarTint: UIColor {
+        return UIColor(light: .brand, dark: .white)
+    }
+
     static var appBarText: UIColor {
         if FeatureFlag.newNavBarAppearance.enabled {
             return .text

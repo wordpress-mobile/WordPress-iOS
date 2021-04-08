@@ -419,7 +419,12 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     private func reloadBlogTitleView() {
-        navigationBarManager.reloadBlogTitleView()
+        var blogTitle = post.blog.url ?? String()
+        if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
+            blogTitle = blogName
+        }
+
+        navigationBarManager.reloadBlogTitleView(text: blogTitle)
     }
 
     private func reloadEditorContents() {
@@ -1121,19 +1126,6 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
         return AztecPostViewController.Constants.savingDraftButtonSize
     }
 
-    var blogTitleText: String {
-        var blogTitle = post.blog.url ?? String()
-        if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
-            blogTitle = blogName
-        }
-
-        return blogTitle
-    }
-
-    var isBlogTitleHidden: Bool {
-        postEditorStateContext.isGeneratingPreview
-    }
-
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
         requestHTML(for: .close)
     }
@@ -1150,8 +1142,8 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadLeftNavigationItems items: [UIBarButtonItem]) {
-        navigationItem.leftBarButtonItems = items
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadTitleView view: UIView) {
+        navigationItem.titleView = view
     }
 }
 

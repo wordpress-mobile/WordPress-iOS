@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-04 11:54:08+0000 */
+/* Translation-Revision-Date: 2021-04-01 09:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -268,25 +268,25 @@
 "A file contains a malicious code pattern" = "Eine Datei enthält ein bösartiges Codemuster";
 
 /* No comment provided by engineer. */
-"A link to a URL." = "A link to a URL.";
+"A link to a URL." = "Ein Link zu einer URL.";
 
 /* No comment provided by engineer. */
-"A link to a category." = "A link to a category.";
+"A link to a category." = "Ein Link zu einer Kategorie.";
 
 /* No comment provided by engineer. */
-"A link to a page." = "A link to a page.";
+"A link to a page." = "Ein Link zu einer Seite.";
 
 /* No comment provided by engineer. */
-"A link to a post." = "A link to a post.";
+"A link to a post." = "Ein Link zu einem Beitrag.";
 
 /* No comment provided by engineer. */
-"A link to a tag." = "A link to a tag.";
+"A link to a tag." = "Ein Link zu einem Schlagwort.";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "Eine Liste der Websites in diesem Konto.";
 
 /* Story Intro welcome title */
-"A new way to create and publish engaging content on your site." = "A new way to create and publish engaging content on your site.";
+"A new way to create and publish engaging content on your site." = "Eine neue Möglichkeit zum Erstellen und Veröffentlichen ansprechender Inhalte auf deiner Website.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "Eine Reihe von Schritten, die dir zeigen, wie du ein Theme, ein Website-Icon und mehr hinzufügen kannst.";
@@ -453,7 +453,7 @@
 "Add any topic" = "Beliebiges Thema hinzufügen";
 
 /* No comment provided by engineer. */
-"Add button text" = "Add button text";
+"Add button text" = "Button-Text hinzufügen.";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Füge ein Bild oder einen Avatar hinzu, der dieses neue Konto repräsentiert.";
@@ -579,10 +579,10 @@
 "Allow this connection to be used by all admins and users of your site." = "Zulassen, dass alle Administratoren und Benutzer deiner Website diese Verbindung nutzen.";
 
 /* Allowlisted IP Addresses Title */
-"Allowlisted IP Addresses" = "Allowlisted IP Addresses";
+"Allowlisted IP Addresses" = "IP-Adressen als zulässig gespeichert";
 
 /* Jetpack Settings: Allowlisted IP addresses */
-"Allowlisted IP addresses" = "Allowlisted IP addresses";
+"Allowlisted IP addresses" = "IP-Adressen als zulässig gespeichert";
 
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Fast geschafft! Gib bitte den Verifizierungscode aus deiner Authenticator-App ein.";
@@ -983,7 +983,7 @@
 "Button Style" = "Buttonstil";
 
 /* No comment provided by engineer. */
-"ButtonGroup" = "ButtonGroup";
+"ButtonGroup" = "Schaltflächengruppe";
 
 /* Label for the post author in the post detail. */
 "By " = "Von";
@@ -1119,7 +1119,7 @@
 "Category" = "Kategorie";
 
 /* No comment provided by engineer. */
-"Category Link" = "Category Link";
+"Category Link" = "Kategorielink";
 
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "Kategorietitel fehlt.";
@@ -1281,7 +1281,7 @@
 "Choose video" = "Video auswählen";
 
 /* Reader select interests subtitle label text */
-"Choose your topics" = "Choose your topics";
+"Choose your topics" = "Wähle deine Themen";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Beim Wechseln auf eine andere Website gehen alle Seiten-spezifischen Änderungen, wie Kategorien und Medien, verloren. Trotzdem weitermachen?";
@@ -1962,11 +1962,11 @@
 "Dimensions" = "Abmessungen";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
-"Disable" = "Disable";
+"Disable" = "Deaktivieren";
 
 /* Title. A call to action to disable invite links.
    Title. Title of a prompt to disable group invite links. */
-"Disable invite link" = "Disable invite link";
+"Disable invite link" = "Einladungslink deaktivieren";
 
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "Deaktiviert";
@@ -2008,7 +2008,7 @@
 "Discover and follow blogs you love" = "Entdecke Beiträge, die dir gefallen, und folge ihnen";
 
 /* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Discover more topics";
+"Discover more topics" = "Weitere Themen entdecken";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2209,7 +2209,7 @@
 "Edit %@ block" = "%@-Block bearbeiten";
 
 /* Blocklist Keyword Edition Title */
-"Edit Blocklist Word" = "Edit Blocklist Word";
+"Edit Blocklist Word" = "Wort für Sperrliste bearbeiten";
 
 /* No comment provided by engineer. */
 "Edit Comment" = "Kommentar bearbeiten";
@@ -2370,7 +2370,7 @@
 "Enter your password instead." = "Gib stattdessen dein Passwort ein.";
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
-"Enter your server credentials to enable one click site restores from backups." = "Enter your server credentials to enable one click site restores from backups.";
+"Enter your server credentials to enable one click site restores from backups." = "Gib deine Serveranmeldedaten ein, um Ein-Klick-Website-Wiederherstellungen von Backups zu aktivieren.";
 
 /* Generic error alert title
    Generic error.
@@ -2509,7 +2509,7 @@
 "Expands to select a different menu area" = "Klappt auf, um einen anderen Menübereich auszuwählen";
 
 /* Title. Indicates an expiration date. */
-"Expires on" = "Expires on";
+"Expires on" = "Läuft ab am";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Erkläre worum es auf dieser Website geht.";
@@ -2541,7 +2541,7 @@
 "Failed" = "Fehlgeschlagen";
 
 /* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "Failed Media Export";
+"Failed Media Export" = "Medienexport fehlgeschlagen";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Audiodatei kann nicht eingefügt werden. Für Optionen hier tippen.";
@@ -2559,7 +2559,7 @@
 "Failed to serialize request to the REST API." = "Fehler beim Serialisieren der Anforderung an die REST-API.";
 
 /* The app failed to unsubscribe from the comments for the post */
-"Failed to unfollow conversation" = "Failed to unfollow conversation";
+"Failed to unfollow conversation" = "„Unterhaltung nicht mehr folgen“ fehlgeschlagen";
 
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "Das Hochladen der Dateien ist fehlgeschlagen.\nBitte tippe hier für Optionen.";
@@ -2679,10 +2679,10 @@
 "Follow site" = "Follow site";
 
 /* Screen title. Reader select interests title label text. */
-"Follow topics" = "Follow topics";
+"Follow topics" = "Themen folgen";
 
 /* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "Follow your favorite sites and discover new blogs.";
+"Follow your favorite sites and discover new blogs." = "Folge deinen Lieblingswebsites und entdecke neue Blogs.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "Folge deinen Lieblingswebsites und entdecke neuen Lesestoff.";
@@ -2723,7 +2723,7 @@
 "Following conversation by email" = "Du folgst der Unterhaltung per E-Mail";
 
 /* Label displayed to the user while loading their selected interests */
-"Following new topics..." = "Following new topics...";
+"Following new topics..." = "Du folgst neuen Themen …";
 
 /* Filters Follows Notifications */
 "Follows" = "Follows";
@@ -2781,7 +2781,7 @@
 "General" = "Allgemein";
 
 /* Title. A call to action to generate a new invite link. */
-"Generate new link" = "Generate new link";
+"Generate new link" = "Neuen Link generieren";
 
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Vorschau erstellen";
@@ -3194,7 +3194,7 @@
 "Invite" = "Einladung";
 
 /* Title for the Invite Link section of the Invite Person screen. */
-"Invite Link" = "Invite Link";
+"Invite Link" = "Einladungslink";
 
 /* Invite People Title */
 "Invite People" = "Personen einladen";
@@ -3744,10 +3744,10 @@
 "More Posts" = "Weitere Beiträge";
 
 /* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
-"More from %1$@" = "More from %1$@";
+"More from %1$@" = "Mehr von %1$@";
 
 /* Section title for global related posts. */
-"More on WordPress.com" = "More on WordPress.com";
+"More on WordPress.com" = "Mehr auf WordPress.com";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Beliebteste Zeit";
@@ -4053,7 +4053,7 @@
 "No network available" = "Kein Netzwerk verfügbar";
 
 /* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "No new topics to follow";
+"No new topics to follow" = "Keine neuen Themen, denen du folgen könntest";
 
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Es gibt noch keine Benachrichtigungen";
@@ -4240,7 +4240,7 @@
 "Oldest first" = "Ältester zuerst";
 
 /* Warning message about disabling group invite links. */
-"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?";
+"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Wenn dieser Einladungslink deaktiviert ist, kann ihn niemand verwenden, um deinem Team beizutreten. Bist du dir sicher?";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Sobald du eine Website bei WordPress.com erstellt hast, kannst du Inhalte, die dir gefallen, auf deiner eigenen Website rebloggen.";
@@ -4372,7 +4372,7 @@
 "Page" = "Seite";
 
 /* No comment provided by engineer. */
-"Page Link" = "Page Link";
+"Page Link" = "Seitenlink";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
 "Page Restored to Drafts" = "Seite unter „Entwürfe“ wiederhergestellt";
@@ -4668,7 +4668,7 @@
 "Post Format" = "Artikel-Formatvorlage";
 
 /* No comment provided by engineer. */
-"Post Link" = "Post Link";
+"Post Link" = "Beitragslink";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "Beitrag als Entwurf wiederhergestellt";
@@ -5425,7 +5425,7 @@
 "Search Locations" = "Standortsuche";
 
 /* No comment provided by engineer. */
-"Search Settings" = "Search Settings";
+"Search Settings" = "Sucheinstellungen";
 
 /* Label for list of search term */
 "Search Term" = "Begriff suchen";
@@ -5675,7 +5675,7 @@
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Teile Informationen über deine Nutzung von Diensten mit unserem Analysewerkzeug, während du in deinem WordPress.com-Konto angemeldet bist.";
 
 /* Title. A call to action to share an invite link. */
-"Share invite link" = "Share invite link";
+"Share invite link" = "Einladungs-Link teilen";
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Link teilen";
@@ -6083,13 +6083,13 @@
 "Successfully cleared spotlight index" = "Spotlight-Index erfolgreich gelöscht";
 
 /* The app successfully subscribed to the comments for the post */
-"Successfully followed conversation" = "Successfully followed conversation";
+"Successfully followed conversation" = "Der Unterhaltung wird jetzt gefolgt";
 
 /* Notice displayed after installing a plug-in. */
 "Successfully installed %@." = "%@ wurde erfolgreich installiert.";
 
 /* The app successfully unsubscribed from the comments for the post */
-"Successfully unfollowed conversation" = "Successfully unfollowed conversation";
+"Successfully unfollowed conversation" = "Der Unterhaltung wird nicht mehr gefolgt";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -6099,7 +6099,7 @@
 "Suggestions updated" = "Vorschläge aktualisiert";
 
 /* No comment provided by engineer. */
-"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here.";
+"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Fasse deinen Beitrag mit einer Liste an Überschriften zusammen. Füge HTML-Anker zu Überschriftenblöcken hinzu, um sie hier zu verknüpfen.";
 
 /* User role badge */
 "Super Admin" = "Super-Admin";
@@ -6158,7 +6158,7 @@
 "System default" = "Systemstandard";
 
 /* No comment provided by engineer. */
-"Table of Contents" = "Table of Contents";
+"Table of Contents" = "Inhaltsverzeichnis";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "Tabelle zeigt %@ an";
@@ -6174,7 +6174,7 @@
 "Tag" = "Schlagwort";
 
 /* No comment provided by engineer. */
-"Tag Link" = "Tag Link";
+"Tag Link" = "Schlagwort-Link";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "Das Schlagwort existiert bereits";
@@ -6225,7 +6225,7 @@
 "Tap to cancel uploading." = "Tippe, um das Hochladen abzubrechen.";
 
 /* Accessibility hint for button used to change site title */
-"Tap to change the site's title" = "Tap to change the site's title";
+"Tap to change the site's title" = "Tippen, um den Website-Titel zu ändern";
 
 /* Accessibility hint to inform the user what action the hide button performs */
 "Tap to collapse the post tags" = "Tippe, um die Beitragsschlagwörter einzuklappen";
@@ -6255,13 +6255,13 @@
 "Tap to select which blog to post to" = "Tippe auf den Blog auf dem veröffentlicht werden soll";
 
 /* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "Tap to switch to another site, or add a new site";
+"Tap to switch to another site, or add a new site" = "Tippen, um zu einer anderen Website zu wechseln oder eine neue Website hinzuzufügen";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Tippe, um Beiträge für dieses Schlagwort anzuzeigen";
 
 /* Accessibility hint for button used to view the user's site */
-"Tap to view your site" = "Tap to view your site";
+"Tap to view your site" = "Tippen, um deine Website anzusehen";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomie";
@@ -6334,7 +6334,7 @@
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Der Website-Titel wird in der Titelleiste eines Webbrowsers angezeigt und wird bei den meisten Themes im Header angezeigt.";
 
 /* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "The Stories editor is not currently available for your iPad. Please try Stories on your iPhone.";
+"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "Für dein iPad ist der Story-Editor zurzeit nicht verfügbar. Probiere Storys auf deinem iPhone aus.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "Diese URL hat keinen gültigen Host.";
@@ -6511,7 +6511,7 @@
 "There was a problem when trying to access your media. Please try again later." = "Beim Versuch, auf deine Medien zuzugreifen, ist ein Problem aufgetreten. Versuche es später erneut.";
 
 /* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen.";
+"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Es ist ein Problem mit dem Story-Editor aufgetreten.  Wenn das Problem weiterhin auftritt, kannst du uns über „Ich > Hilfe & Support“ kontaktieren.";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -6820,7 +6820,7 @@
 "Try it now" = "Jetzt versuchen";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"Try the new Block Editor" = "Try the new Block Editor";
+"Try the new Block Editor" = "Probiere den neuen Block-Editor aus";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */
 "Try with another email" = "Mit einer anderen E-Mail-Adresse versuchen";
@@ -6853,7 +6853,7 @@
 "Type a label" = "Gib eine Beschriftung ein.";
 
 /* Site creation. Seelect a domain, search field placeholder */
-"Type a name for your site" = "Type a name for your site";
+"Type a name for your site" = "Gib einen Namen für deine Website ein";
 
 /* Register domain - Search field placeholder for the Suggested Domain screen */
 "Type to get more suggestions" = "Tippe, um weitere Vorschläge zu erhalten";
@@ -6871,7 +6871,7 @@
 "Unable to Connect" = "Keine Verbindung möglich";
 
 /* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "Unable to Create Stories Editor";
+"Unable to Create Stories Editor" = "Editor zum Erstellen von Storys kann nicht geöffnet werden";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Beiträge können nicht geladen werden";
@@ -6883,7 +6883,7 @@
 "Unable to block site" = "Kann Website nicht blockieren";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to create new invite links." = "Unable to create new invite links.";
+"Unable to create new invite links." = "Neue Einladungslinks können nicht erstellt werden.";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "Es konnten nicht alle Medienelemente gelöscht werden.";
@@ -6892,13 +6892,13 @@
 "Unable to delete media item." = "Medienelement kann nicht gelöscht werden.";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to disable invite links." = "Unable to disable invite links.";
+"Unable to disable invite links." = "Einladungslinks können nicht deaktiviert werden";
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "Datei kann nicht heruntergeladen werden";
 
 /* The app failed to subscribe to the comments for the post */
-"Unable to follow conversation" = "Unable to follow conversation";
+"Unable to follow conversation" = "Der Unterhaltung kann nicht gefolgt werden";
 
 /* Notice title when following a site fails. */
 "Unable to follow site" = "Der Website kann nicht gefolgt werden";
@@ -6992,7 +6992,7 @@
 "Unable to verify the email address. Please try again later." = "Die E-Mail-Adresse konnte nicht überprüft werden. Versuche es später erneut.";
 
 /* Message displayed when visiting the Jetpack settings page fails. */
-"Unable to visit Jetpack settings for site" = "Unable to visit Jetpack settings for site";
+"Unable to visit Jetpack settings for site" = "Jetpack-Einstellungen der Website können nicht aufgerufen werden";
 
 /* Message displayed when visiting a site fails. */
 "Unable to visit site" = "Website kann nicht besucht werden";
@@ -7085,7 +7085,7 @@
 "Unsupported" = "Nicht unterstützt";
 
 /* Title for stories unsupported device error. */
-"Unsupported Device" = "Unsupported Device";
+"Unsupported Device" = "Nicht unterstütztes Gerät";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Ohne Titel";
@@ -7204,7 +7204,7 @@
 "Use block editor" = "Block-Editor benutzen";
 
 /* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo";
+"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Verwende diesen Link, um deine Teammitglieder einzuladen. Jeder, der diese URL besucht, kann sich bei deiner Organisation registrieren, auch wenn er oder sie den Link von jemand anderem erhalten hat. Teile ihn also nur mit vertrauenswürdigen Personen.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Diese Website verwenden";
@@ -7644,7 +7644,7 @@
 "Welcome to the Reader" = "Willkommen zum Reader";
 
 /* Caption displayed in promotional screens shown during the login flow. */
-"Welcome to the world's most popular website builder." = "Welcome to the world's most popular website builder.";
+"Welcome to the world's most popular website builder." = "Willkommen beim beliebtesten Website-Baukasten der Welt.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "Willkommen beim beliebtesten Website-Baukasten der Welt.";
@@ -7656,7 +7656,7 @@
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Wichtige E-Mails zu deinem Konto senden wir dir auf jeden Fall, aber du kannst auch ein paar nützliche Extras dazubekommen.";
 
 /* The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings.";
+"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "Für neue Beiträge wird der klassische Editor bald nicht mehr verfügbar sein. Das betrifft jedoch nicht die Bearbeitung bestehender Beiträge oder Seiten. Du kannst den Block-Editor bereits jetzt in den Website-Einstellungen aktivieren.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress.
    Hint displayed when we fail to fetch the status of the restore in progress. */
@@ -7950,10 +7950,10 @@
 "You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "Du hast noch keine Beiträge veröffentlicht. Sobald du Beiträge veröffentlichst, wird hier deine neueste Übersicht angezeigt.";
 
 /* Title for a view milestone push notification */
-"You hit a milestone 🚀" = "";
+"You hit a milestone 🚀" = "Du hast einen Meilenstein erreicht 🚀 ";
 
 /* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
-"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100.";
+"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Du kannst eine IP-Adresse oder eine Reihe von IP-Adressen auf die Liste zulässiger IP-Adressen setzen und so dafür sorgen, dass diese niemals von Jetpack blockiert werden. IPv4 und IPv6 sind zulässig. Gib für einen Bereich den unteren und oberen Wert ein (getrennt durch einen Bindestrich). Beispiel: 12.12.12.1-12.12.12.100.";
 
 /* A suggestion of topics the user might like */
 "You might like" = "Das gefällt dir vielleicht";
@@ -8020,7 +8020,7 @@
 "Your first backup will be ready soon" = "Dein erstes Backup ist bald fertig";
 
 /* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.";
+"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Deine Medien konnten nicht exportiert werden. If the problem persists you can contact us via the Me > Hilfe & Support.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Deine Benachrichtigungen hast du immer dabei – schaue Kommentare und Likes in Echtzeit an.";
@@ -8110,7 +8110,7 @@
 "connections" = "Verbindungen";
 
 /* No comment provided by engineer. */
-"document outline" = "document outline";
+"document outline" = "Gliederung des Dokuments";
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "Fühlt es sich nicht gut an, Dinge von einer Liste abzuhaken?";
@@ -8160,7 +8160,7 @@
 "phone number" = "Telefonnummer";
 
 /* No comment provided by engineer. */
-"summary" = "summary";
+"summary" = "Zusammenfassung";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Diese Auswahl wird gelöscht:";

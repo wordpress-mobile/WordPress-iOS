@@ -1,15 +1,15 @@
 {
   "info": {
     "author": "blog.color-studio",
-    "version": "2.0.0-rc.4"
+    "version": "2.5.0"
   },
   "colors": [
     {
       "idiom": "universal",
       "color": {
         "components": {
-          "red": "92",
-          "green": "75",
+          "red": "103",
+          "green": "70",
           "blue": "0",
           "alpha": 1
         },

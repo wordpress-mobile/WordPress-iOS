@@ -30,6 +30,10 @@ class LoginEpilogueTableViewController: UITableViewController {
     /// Flag indicating if the Connect Site option should be displayed.
     ///
     private var showConnectSite: Bool {
+        guard AppConfiguration.allowsConnectSite else {
+            return false
+        }
+
         guard let wpcom = credentials?.wpcom else {
             return true
         }
@@ -207,8 +211,9 @@ extension LoginEpilogueTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.section != Sections.userInfoSection,
-            indexPath.row == lastRowInSection(indexPath.section) else {
+        guard showConnectSite,
+              indexPath.section != Sections.userInfoSection,
+              indexPath.row == lastRowInSection(indexPath.section) else {
             return
         }
 

@@ -32,9 +32,7 @@ extension PostEditor where Self: UIViewController {
             return
         }
 
-        postEditorStateContext.update(isGeneratingPreview: true)
-        navigationBarManager.reloadLeftBarButtonItems(navigationBarManager.generatingPreviewLeftBarButtonItems)
-        navigationBarManager.reloadBlogTitleView()
+        navigationBarManager.reloadTitleView(navigationBarManager.generatingPreviewTitleView)
 
         postService.autoSave(post, success: { [weak self] savedPost, previewURL in
 
@@ -83,9 +81,7 @@ extension PostEditor where Self: UIViewController {
             }
 
             let navigationBarManager = self.navigationBarManager
-            self.postEditorStateContext.update(isGeneratingPreview: false)
-            navigationBarManager.reloadLeftBarButtonItems(navigationBarManager.leftBarButtonItems)
-            navigationBarManager.reloadBlogTitleView()
+            navigationBarManager.reloadTitleView(navigationBarManager.blogTitleViewLabel)
 
             if error != nil {
                 let title = NSLocalizedString("Preview Unavailable", comment: "Title on display preview error" )

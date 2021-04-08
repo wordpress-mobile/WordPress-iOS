@@ -855,14 +855,12 @@ class AztecPostViewController: UIViewController, PostEditor {
         reloadBlogTitleView()
         reloadEditorContents()
         reloadPublishButton()
-        refreshNavigationBar()
+        refreshTitleViewForMediaUploadIfNeeded()
     }
 
-    func refreshNavigationBar() {
+    func refreshTitleViewForMediaUploadIfNeeded() {
         if postEditorStateContext.isUploadingMedia {
-            navigationItem.leftBarButtonItems = navigationBarManager.uploadingMediaLeftBarButtonItems
-        } else {
-            navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
+            navigationItem.titleView = navigationBarManager.uploadingMediaTitleView
         }
     }
 
@@ -907,7 +905,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func reloadBlogTitleView() {
-        navigationBarManager.reloadBlogTitleView()
+        var blogTitle = post.blog.url ?? String()
+        if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
+            blogTitle = blogName
+        }
+
+        navigationBarManager.reloadBlogTitleView(text: blogTitle)
     }
 
     func reloadPublishButton() {
@@ -2430,7 +2433,7 @@ extension AztecPostViewController {
         mediaProgressView.isHidden = !mediaCoordinator.isUploadingMedia(for: post)
         mediaProgressView.progress = Float(mediaCoordinator.totalProgress(for: post))
         postEditorStateContext.update(isUploadingMedia: mediaCoordinator.isUploadingMedia(for: post))
-        refreshNavigationBar()
+        refreshTitleViewForMediaUploadIfNeeded()
     }
 
     fileprivate func insert(exportableAsset: ExportableAsset, source: MediaSource, attachment: MediaAttachment? = nil) {
@@ -3521,19 +3524,6 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
         return Constants.savingDraftButtonSize
     }
 
-    var blogTitleText: String {
-        var blogTitle = post.blog.url ?? String()
-        if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
-            blogTitle = blogName
-        }
-
-        return blogTitle
-    }
-
-    var isBlogTitleHidden: Bool {
-        postEditorStateContext.isGeneratingPreview || postEditorStateContext.isUploadingMedia
-    }
-
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
         closeWasPressed()
     }
@@ -3550,8 +3540,8 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
         displayCancelMediaUploads()
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadLeftNavigationItems items: [UIBarButtonItem]) {
-        navigationItem.leftBarButtonItems = items
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadTitleView view: UIView) {
+        navigationItem.titleView = view
     }
 }
 

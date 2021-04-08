@@ -82,7 +82,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     cell.textLabel.text = NSLocalizedString(@"Reconnect", @"Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog.");
     [WPStyleGuide configureTableViewActionCell:cell];
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
-    cell.textLabel.textColor = [UIColor murielAccent];
+    cell.textLabel.textColor = [UIColor murielPrimary];
 }
 
 - (void)configureLearnMoreCell: (UITableViewCell *)cell

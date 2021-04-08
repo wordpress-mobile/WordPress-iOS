@@ -339,7 +339,7 @@ extension WPStyleGuide {
 
         button.backgroundColor = .clear
 
-        let tintedFollowIcon = followIcon.imageWithTintColor(.accent(.shade40))
+        let tintedFollowIcon = followIcon.imageWithTintColor(.primary(.shade40))
         let tintedFollowingIcon = followingIcon.imageWithTintColor(.gray(.shade40))
 
         button.setImage(tintedFollowIcon, for: .normal)
