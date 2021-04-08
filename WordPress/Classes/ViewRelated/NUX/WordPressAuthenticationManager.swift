@@ -28,7 +28,7 @@ class WordPressAuthenticationManager: NSObject {
 
         // SIWA can not be enabled for internal builds
         // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
-        let enableSignInWithApple = !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
+        let enableSignInWithApple = AppConfiguration.allowSignUp && !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
 
         let configuration = WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client(),
                                                                 wpcomSecret: ApiCredentials.secret(),
@@ -41,8 +41,9 @@ class WordPressAuthenticationManager: NSObject {
                                                                 googleLoginScheme: ApiCredentials.googleLoginSchemeId(),
                                                                 userAgent: WPUserAgent.wordPress(),
                                                                 showLoginOptions: true,
+                                                                enableSignUp: AppConfiguration.allowSignUp,
                                                                 enableSignInWithApple: enableSignInWithApple,
-                                                                enableSignupWithGoogle: true,
+                                                                enableSignupWithGoogle: AppConfiguration.allowSignUp,
                                                                 enableUnifiedAuth: true,
                                                                 enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled)
 
@@ -240,13 +241,22 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///     - onCompletion: Closure to be executed on completion.
     ///
     func shouldPresentUsernamePasswordController(for siteInfo: WordPressComSiteInfo?, onCompletion: @escaping (WordPressAuthenticatorResult) -> Void) {
-        let result: WordPressAuthenticatorResult = .presentPasswordController(value: true)
-        onCompletion(result)
+        guard AppConfiguration.jetpackLogin else {
+            let result: WordPressAuthenticatorResult = .presentPasswordController(value: true)
+            onCompletion(result)
+            return
+        }
+
+        JetpackAuthenticationManager.shouldPresentUsernamePasswordController(for: siteInfo, onCompletion: onCompletion)
     }
 
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) {
+        if AppConfiguration.jetpackLogin, JetpackAuthenticationManager.presentLoginEpilogue(in: navigationController, for: credentials, onDismiss: onDismiss) {
+            return
+        }
+
         if PostSignUpInterstitialViewController.shouldDisplay() {
             self.presentPostSignUpInterstitial(in: navigationController, onDismiss: onDismiss)
             return
