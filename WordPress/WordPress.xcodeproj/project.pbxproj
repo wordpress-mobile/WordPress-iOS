@@ -1831,6 +1831,13 @@
 		C789952525816F96001B7B43 /* JetpackScanCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C789952425816F96001B7B43 /* JetpackScanCoordinator.swift */; };
 		C7F79369260D14C100CE547F /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
 		C7F7936A260D14C200CE547F /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
+		C7F7ABD6261CED7A00CE547F /* JetpackAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F7ABD5261CED7A00CE547F /* JetpackAuthenticationManager.swift */; };
+		C7F7AC75261CF1F300CE547F /* JetpackLoginErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F7AC73261CF1F300CE547F /* JetpackLoginErrorViewController.swift */; };
+		C7F7AC76261CF1F300CE547F /* JetpackLoginErrorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7F7AC74261CF1F300CE547F /* JetpackLoginErrorViewController.xib */; };
+		C7F7AC99261E466C00CE547F /* JetpackLoginErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F7AC73261CF1F300CE547F /* JetpackLoginErrorViewController.swift */; };
+		C7F7ACAB261E4A1300CE547F /* JetpackAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F7ABD5261CED7A00CE547F /* JetpackAuthenticationManager.swift */; };
+		C7F7ACBE261E4F0600CE547F /* JetpackErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F7ACBD261E4F0600CE547F /* JetpackErrorViewModel.swift */; };
+		C7F7ACD0261E4FF600CE547F /* JetpackErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F7ACBD261E4F0600CE547F /* JetpackErrorViewModel.swift */; };
 		C80512FE243FFD4B00B6B04D /* TenorDataSouceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C856749B243F462F001A995E /* TenorDataSouceTests.swift */; };
 		C81CCD63243AECA100A83E27 /* TenorClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD5E243AECA000A83E27 /* TenorClient.swift */; };
 		C81CCD64243AECA100A83E27 /* TenorMediaObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81CCD5F243AECA000A83E27 /* TenorMediaObject.swift */; };
@@ -6398,6 +6405,10 @@
 		C78543D125B889CC006CEAFB /* JetpackScanThreatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatViewModel.swift; sourceTree = "<group>"; };
 		C789952425816F96001B7B43 /* JetpackScanCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanCoordinator.swift; sourceTree = "<group>"; };
 		C7F1EB4425A4B845009D1AA2 /* WordPress 110.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 110.xcdatamodel"; sourceTree = "<group>"; };
+		C7F7ABD5261CED7A00CE547F /* JetpackAuthenticationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackAuthenticationManager.swift; sourceTree = "<group>"; };
+		C7F7AC73261CF1F300CE547F /* JetpackLoginErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackLoginErrorViewController.swift; sourceTree = "<group>"; };
+		C7F7AC74261CF1F300CE547F /* JetpackLoginErrorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackLoginErrorViewController.xib; sourceTree = "<group>"; };
+		C7F7ACBD261E4F0600CE547F /* JetpackErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackErrorViewModel.swift; sourceTree = "<group>"; };
 		C81CCD5E243AECA000A83E27 /* TenorClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TenorClient.swift; sourceTree = "<group>"; };
 		C81CCD5F243AECA000A83E27 /* TenorMediaObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TenorMediaObject.swift; sourceTree = "<group>"; };
 		C81CCD60243AECA100A83E27 /* TenorGIF.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TenorGIF.swift; sourceTree = "<group>"; };
@@ -12458,6 +12469,25 @@
 			path = "View Models";
 			sourceTree = "<group>";
 		};
+		C7F7AC71261CF1BD00CE547F /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				C7F7ABD5261CED7A00CE547F /* JetpackAuthenticationManager.swift */,
+				C7F7AC72261CF1C900CE547F /* ViewRelated */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		C7F7AC72261CF1C900CE547F /* ViewRelated */ = {
+			isa = PBXGroup;
+			children = (
+				C7F7ACBD261E4F0600CE547F /* JetpackErrorViewModel.swift */,
+				C7F7AC73261CF1F300CE547F /* JetpackLoginErrorViewController.swift */,
+				C7F7AC74261CF1F300CE547F /* JetpackLoginErrorViewController.xib */,
+			);
+			path = ViewRelated;
+			sourceTree = "<group>";
+		};
 		C81CCD5D243AEC8200A83E27 /* TenorAPI */ = {
 			isa = PBXGroup;
 			children = (
@@ -13629,6 +13659,7 @@
 		FABB1F8E2602FC0100C8785C /* Jetpack */ = {
 			isa = PBXGroup;
 			children = (
+				C7F7AC71261CF1BD00CE547F /* Classes */,
 				FABB28482603068B00C8785C /* Resources */,
 				FABB268A2602FCD400C8785C /* Supporting Files */,
 				FA25FB8C2609B9CB0005E08F /* App Configuration */,
@@ -14882,6 +14913,7 @@
 				FABB20012602FC2C00C8785C /* wordpress_dark_icon_20pt@2x.png in Resources */,
 				FABB20022602FC2C00C8785C /* StatsTableFooter.xib in Resources */,
 				FABB20032602FC2C00C8785C /* NotificationSettingsViewController.xib in Resources */,
+				C7F7AC76261CF1F300CE547F /* JetpackLoginErrorViewController.xib in Resources */,
 				FABB20042602FC2C00C8785C /* wordpress_dark_icon_60pt@2x.png in Resources */,
 				FABB20052602FC2C00C8785C /* ThemeBrowserSectionHeaderView.xib in Resources */,
 				FABB20062602FC2C00C8785C /* jetpack_green_icon_40pt@2x.png in Resources */,
@@ -16034,6 +16066,7 @@
 				D83CA3AB20842E5F0060E310 /* StockPhotosResultsPage.swift in Sources */,
 				4348C88321002FBD00735DC0 /* QuickStartTourGuide.swift in Sources */,
 				8BA77BCF2483415400E1EBBF /* ReaderDetailToolbar.swift in Sources */,
+				C7F7AC99261E466C00CE547F /* JetpackLoginErrorViewController.swift in Sources */,
 				E102B7901E714F24007928E8 /* RecentSitesService.swift in Sources */,
 				E1D7FF381C74EB0E00E7E5E5 /* PlanService.swift in Sources */,
 				F1655B4822A6C2FA00227BFB /* Routes+Mbar.swift in Sources */,
@@ -16753,6 +16786,7 @@
 				BE13B3E71B2B58D800A4211D /* BlogListViewController.m in Sources */,
 				C768B5B425828A5D00556E75 /* JetpackScanStatusCell.swift in Sources */,
 				B532D4E9199D4357006E4DF6 /* NoteBlockCommentTableViewCell.swift in Sources */,
+				C7F7ACD0261E4FF600CE547F /* JetpackErrorViewModel.swift in Sources */,
 				73BFDA8A211D054800907245 /* Notifiable.swift in Sources */,
 				404B35D322E9BA0800AD0B37 /* RegisterDomainDetailsViewModel+CountryDialCodes.swift in Sources */,
 				D8EB1FD121900810002AE1C4 /* BlogListViewController+SiteCreation.swift in Sources */,
@@ -17226,6 +17260,7 @@
 				7E92A1FB233CB1B7006D281B /* Autosaver.swift in Sources */,
 				9A341E5621997A340036662E /* BlogAuthor.swift in Sources */,
 				9A341E5721997A340036662E /* Blog+BlogAuthors.swift in Sources */,
+				C7F7ACAB261E4A1300CE547F /* JetpackAuthenticationManager.swift in Sources */,
 				7E3AB3DB20F52654001F33B6 /* ActivityContentStyles.swift in Sources */,
 				469CE06D24BCED75003BDC8B /* CategorySectionTableViewCell.swift in Sources */,
 				9A034CEB237DB8660047B41B /* StatsForegroundObservable.swift in Sources */,
@@ -18353,6 +18388,7 @@
 				FABB21DF2602FC2C00C8785C /* PostingActivityCell.swift in Sources */,
 				FABB21E02602FC2C00C8785C /* SupportTableViewController.swift in Sources */,
 				FABB21E12602FC2C00C8785C /* DetailDataCell.swift in Sources */,
+				C7F7AC75261CF1F300CE547F /* JetpackLoginErrorViewController.swift in Sources */,
 				FABB21E22602FC2C00C8785C /* PluginViewModel.swift in Sources */,
 				FABB21E32602FC2C00C8785C /* NSCalendar+Helpers.swift in Sources */,
 				FABB21E42602FC2C00C8785C /* GutenbergCoverUploadProcessor.swift in Sources */,
@@ -18826,6 +18862,7 @@
 				FABB23B42602FC2C00C8785C /* BlogListViewController.m in Sources */,
 				FABB23B52602FC2C00C8785C /* JetpackScanStatusCell.swift in Sources */,
 				FABB23B62602FC2C00C8785C /* NoteBlockCommentTableViewCell.swift in Sources */,
+				C7F7ACBE261E4F0600CE547F /* JetpackErrorViewModel.swift in Sources */,
 				FABB23B72602FC2C00C8785C /* Notifiable.swift in Sources */,
 				FABB23B82602FC2C00C8785C /* RegisterDomainDetailsViewModel+CountryDialCodes.swift in Sources */,
 				FABB23B92602FC2C00C8785C /* BlogListViewController+SiteCreation.swift in Sources */,
@@ -18919,6 +18956,7 @@
 				FABB24102602FC2C00C8785C /* ThemeService.m in Sources */,
 				FABB24112602FC2C00C8785C /* NSAttributedString+RichTextView.swift in Sources */,
 				FABB24122602FC2C00C8785C /* NoteBlockButtonTableViewCell.swift in Sources */,
+				C7F7ABD6261CED7A00CE547F /* JetpackAuthenticationManager.swift in Sources */,
 				FABB24132602FC2C00C8785C /* QuickStartCongratulationsCell.swift in Sources */,
 				FABB24142602FC2C00C8785C /* ThemeBrowserSectionHeaderView.swift in Sources */,
 				FABB24152602FC2C00C8785C /* SiteIconPickerPresenter.swift in Sources */,
