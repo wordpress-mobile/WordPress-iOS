@@ -62,14 +62,29 @@ open class AppIconViewController: UITableViewController {
             imageView.layer.borderWidth = borderedIcons.contains(icon) ? Constants.iconBorderWidth : 0
         }
 
-        let isDefaultIconInUse = UIApplication.shared.alternateIconName == nil
-        if (isDefaultIconInUse && indexPath.row == 0) || UIApplication.shared.alternateIconName == icon {
-            cell.accessoryType = .checkmark
-        } else {
-            cell.accessoryType = .none
-        }
+        cell.accessoryType = iconIsSelected(for: indexPath) ? .checkmark : .none
 
         return cell
+    }
+
+    private func iconIsSelected(for indexPath: IndexPath) -> Bool {
+        let currentIconName = UIApplication.shared.alternateIconName
+
+        // If there's no custom icon in use and we're checking the top (default) row
+        let isDefaultIconInUse = currentIconName == nil
+        if isDefaultIconInUse && indexPath.row == 0 {
+            return true
+        }
+
+        // If the current custom icon is a legacy icon and it matches this row
+        let icon = icons[indexPath.row]
+        if let currentIconName = currentIconName,
+           let legacyName = legacyMappings[currentIconName],
+           legacyName == icon {
+            return true
+        }
+
+        return currentIconName == icon
     }
 
     private func previewImageName(for icon: String) -> String {
@@ -145,4 +160,13 @@ open class AppIconViewController: UITableViewController {
             return true
         }
     }
+
+    private let legacyMappings: [String: String] = [
+        "WordPress Dark": "Black",
+        "Jetpack Green": "Celadon",
+        "Hot Pink": "Pink",
+        "Open Source": "Black Classic",
+        "Open Source Dark": "Black",
+        "Pride": "Spectrum"
+    ]
 }
