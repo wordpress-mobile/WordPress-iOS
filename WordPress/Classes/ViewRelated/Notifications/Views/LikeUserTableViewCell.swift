@@ -47,6 +47,7 @@ private extension LikeUserTableViewCell {
 
     func downloadGravatarWithURL(_ url: String?) {
         // Always reset gravatar
+        gravatarImageView.cancelImageDownload()
         gravatarImageView.image = .gravatarPlaceholderImage
 
         guard let url = url,
