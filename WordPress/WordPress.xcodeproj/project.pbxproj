@@ -1510,6 +1510,10 @@
 		98B3FA8421C05BDC00148DD4 /* ViewMoreRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B3FA8321C05BDC00148DD4 /* ViewMoreRow.swift */; };
 		98B3FA8621C05BF000148DD4 /* ViewMoreRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98B3FA8521C05BF000148DD4 /* ViewMoreRow.xib */; };
 		98B52AE121F7AF4A006FF6B4 /* StatsDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B52AE021F7AF4A006FF6B4 /* StatsDataHelper.swift */; };
+		98B88452261E4E09007ED7F8 /* LikeUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B88451261E4E09007ED7F8 /* LikeUserTableViewCell.swift */; };
+		98B88453261E4E09007ED7F8 /* LikeUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B88451261E4E09007ED7F8 /* LikeUserTableViewCell.swift */; };
+		98B88466261E4E4E007ED7F8 /* LikeUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98B88465261E4E4E007ED7F8 /* LikeUserTableViewCell.xib */; };
+		98B88467261E4E4E007ED7F8 /* LikeUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98B88465261E4E4E007ED7F8 /* LikeUserTableViewCell.xib */; };
 		98BDFF6B20D0732900C72C58 /* SupportTableViewController+Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BDFF6A20D0732900C72C58 /* SupportTableViewController+Activity.swift */; };
 		98BFF57C2398406A008A1DCB /* CocoaLumberjack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938CF3DB1EF1BE6800AF838E /* CocoaLumberjack.swift */; };
 		98BFF57E23984345008A1DCB /* AllTimeWidgetStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BFF57D23984344008A1DCB /* AllTimeWidgetStats.swift */; };
@@ -6030,6 +6034,8 @@
 		98B3FA8321C05BDC00148DD4 /* ViewMoreRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreRow.swift; sourceTree = "<group>"; };
 		98B3FA8521C05BF000148DD4 /* ViewMoreRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewMoreRow.xib; sourceTree = "<group>"; };
 		98B52AE021F7AF4A006FF6B4 /* StatsDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsDataHelper.swift; sourceTree = "<group>"; };
+		98B88451261E4E09007ED7F8 /* LikeUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeUserTableViewCell.swift; sourceTree = "<group>"; };
+		98B88465261E4E4E007ED7F8 /* LikeUserTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LikeUserTableViewCell.xib; sourceTree = "<group>"; };
 		98BBB642258047DD0084FF72 /* WordPress 107.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 107.xcdatamodel"; sourceTree = "<group>"; };
 		98BDFF6A20D0732900C72C58 /* SupportTableViewController+Activity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SupportTableViewController+Activity.swift"; sourceTree = "<group>"; };
 		98BFF57D23984344008A1DCB /* AllTimeWidgetStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllTimeWidgetStats.swift; sourceTree = "<group>"; };
@@ -12186,28 +12192,30 @@
 		B5FD4523199D0F1100286FBB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				98B88451261E4E09007ED7F8 /* LikeUserTableViewCell.swift */,
+				98B88465261E4E4E007ED7F8 /* LikeUserTableViewCell.xib */,
 				2FA37B19215724E900C80377 /* LongPressGestureLabel.swift */,
+				B57AF5F91ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift */,
+				B5C66B731ACF071F00F68370 /* NoteBlockActionsTableViewCell.xib */,
+				176CF39925E0005F00E1E598 /* NoteBlockButtonTableViewCell.swift */,
+				176CF3AB25E0079600E1E598 /* NoteBlockButtonTableViewCell.xib */,
+				B532D4E5199D4357006E4DF6 /* NoteBlockCommentTableViewCell.swift */,
+				B5C66B751ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib */,
+				B532D4E6199D4357006E4DF6 /* NoteBlockHeaderTableViewCell.swift */,
+				B5C66B6F1ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib */,
+				B532D4ED199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift */,
+				B5C66B771ACF073900F68370 /* NoteBlockImageTableViewCell.xib */,
+				B532D4E7199D4357006E4DF6 /* NoteBlockTableViewCell.swift */,
+				B532D4E8199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift */,
+				B5C66B711ACF071000F68370 /* NoteBlockTextTableViewCell.xib */,
+				B52C4C7C199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift */,
+				B5C66B791ACF074600F68370 /* NoteBlockUserTableViewCell.xib */,
 				B57B99D419A2C20200506504 /* NoteTableHeaderView.swift */,
 				B5683DB71B6C03810043447C /* NoteTableHeaderView.xib */,
 				B52C4C7E199D74AE009FD823 /* NoteTableViewCell.swift */,
 				B5E23BDE19AD0D00000D6879 /* NoteTableViewCell.xib */,
 				B50421E81B68170F008EEA82 /* NoteUndoOverlayView.swift */,
 				B50421E61B680839008EEA82 /* NoteUndoOverlayView.xib */,
-				B532D4E7199D4357006E4DF6 /* NoteBlockTableViewCell.swift */,
-				176CF39925E0005F00E1E598 /* NoteBlockButtonTableViewCell.swift */,
-				176CF3AB25E0079600E1E598 /* NoteBlockButtonTableViewCell.xib */,
-				B532D4E6199D4357006E4DF6 /* NoteBlockHeaderTableViewCell.swift */,
-				B5C66B6F1ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib */,
-				B532D4E8199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift */,
-				B5C66B711ACF071000F68370 /* NoteBlockTextTableViewCell.xib */,
-				B57AF5F91ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift */,
-				B5C66B731ACF071F00F68370 /* NoteBlockActionsTableViewCell.xib */,
-				B532D4E5199D4357006E4DF6 /* NoteBlockCommentTableViewCell.swift */,
-				B5C66B751ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib */,
-				B532D4ED199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift */,
-				B5C66B771ACF073900F68370 /* NoteBlockImageTableViewCell.xib */,
-				B52C4C7C199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift */,
-				B5C66B791ACF074600F68370 /* NoteBlockUserTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -14377,6 +14385,7 @@
 				17E363E422C4280A000E0C79 /* pride_icon_29pt@3x.png in Resources */,
 				E66E2A6A1FE432BC00788F22 /* TitleBadgeDisclosureCell.xib in Resources */,
 				40640046200ED30300106789 /* TextWithAccessoryButtonCell.xib in Resources */,
+				98B88466261E4E4E007ED7F8 /* LikeUserTableViewCell.xib in Resources */,
 				98467A43221CD75200DF51AE /* SiteStatsDetailTableViewController.storyboard in Resources */,
 				17DC4C3022C5E6910059CA11 /* open_source_dark_icon_20pt.png in Resources */,
 				17E3634222C417F0000E0C79 /* jetpack_green_icon_83.5@2x.png in Resources */,
@@ -14897,6 +14906,7 @@
 				FABB200A2602FC2C00C8785C /* Noticons.ttf in Resources */,
 				FABB200B2602FC2C00C8785C /* LoginEpilogue.storyboard in Resources */,
 				FABB200C2602FC2C00C8785C /* AddressCell.xib in Resources */,
+				98B88467261E4E4E007ED7F8 /* LikeUserTableViewCell.xib in Resources */,
 				FABB200D2602FC2C00C8785C /* open_source_icon_29pt@2x.png in Resources */,
 				FABB200E2602FC2C00C8785C /* wordpress_dark_icon_40pt@3x.png in Resources */,
 				FABB200F2602FC2C00C8785C /* TopTotalsCell.xib in Resources */,
@@ -16523,6 +16533,7 @@
 				C81CCD81243BF7A600A83E27 /* TenorService.swift in Sources */,
 				8B51844525893F140085488D /* FilterBarView.swift in Sources */,
 				E105205B1F2B1CF400A948F6 /* BlogToBlogMigration_61_62.swift in Sources */,
+				98B88452261E4E09007ED7F8 /* LikeUserTableViewCell.swift in Sources */,
 				E16FB7E31F8B61040004DD9F /* WebKitViewController.swift in Sources */,
 				3F8CBE0B24EEB0EA00F71234 /* AnnouncementsDataSource.swift in Sources */,
 				7305138321C031FC006BD0A1 /* AssembledSiteView.swift in Sources */,
@@ -18597,6 +18608,7 @@
 				FABB22C92602FC2C00C8785C /* NSAttributedString+Helpers.swift in Sources */,
 				FABB22CA2602FC2C00C8785C /* TenorService.swift in Sources */,
 				FABB22CB2602FC2C00C8785C /* FilterBarView.swift in Sources */,
+				98B88453261E4E09007ED7F8 /* LikeUserTableViewCell.swift in Sources */,
 				FABB22CC2602FC2C00C8785C /* BlogToBlogMigration_61_62.swift in Sources */,
 				FABB22CD2602FC2C00C8785C /* WebKitViewController.swift in Sources */,
 				FABB22CE2602FC2C00C8785C /* AnnouncementsDataSource.swift in Sources */,
