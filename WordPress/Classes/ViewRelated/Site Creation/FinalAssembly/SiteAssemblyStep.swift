@@ -16,7 +16,7 @@ final class SiteAssemblyStep: WizardStep {
 
     let content: UIViewController
 
-    var delegate: WizardDelegate? = nil
+    weak var delegate: WizardDelegate? = nil
 
     // MARK: SiteAssemblyStep
 

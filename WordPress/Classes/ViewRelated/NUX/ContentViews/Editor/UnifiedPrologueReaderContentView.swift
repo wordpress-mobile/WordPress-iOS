@@ -18,8 +18,6 @@ struct UnifiedPrologueReaderContentView: View {
                                        design: .default)
 
             VStack {
-                Spacer(minLength: content.size.height * 0.1)
-
                 RoundRectangleView {
                     HStack {
                         VStack {
@@ -116,9 +114,6 @@ struct UnifiedPrologueReaderContentView: View {
                 }
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal, spacingUnit)
-
-                // avoid bottom overlapping due to the icon offset
-                Spacer(minLength: content.size.height * 0.18)
             }
         }
     }

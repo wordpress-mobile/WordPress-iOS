@@ -177,7 +177,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         followButton.isSelected = post?.isFollowing() ?? false
         iPadFollowButton.isSelected = post?.isFollowing() ?? false
 
-        followButton.setImage(UIImage.gridicon(.readerFollow, size: CGSize(width: 24, height: 24)).imageWithTintColor(.accent), for: .normal)
+        followButton.setImage(UIImage.gridicon(.readerFollow, size: CGSize(width: 24, height: 24)).imageWithTintColor(.primary), for: .normal)
         followButton.setImage(UIImage.gridicon(.readerFollowing, size: CGSize(width: 24, height: 24)).imageWithTintColor(.gray(.shade20)), for: .selected)
         WPStyleGuide.applyReaderFollowButtonStyle(iPadFollowButton)
 

@@ -533,7 +533,7 @@ extension WordPressAppDelegate {
 
         appearance.actionFont = WPStyleGuide.fontForTextStyle(.headline)
         appearance.infoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
-        appearance.infoTintColor = WPStyleGuide.wordPressBlue()
+        appearance.infoTintColor = .primary
 
         appearance.topDividerColor = .neutral(.shade5)
         appearance.bottomDividerColor = .neutral(.shade0)
@@ -800,7 +800,7 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
     func customizeAppearance() {
         window?.backgroundColor = .black
-        window?.tintColor = WPStyleGuide.wordPressBlue()
+        window?.tintColor = .primary
 
         // iOS 14 started rendering backgrounds for stack views, when previous versions
         // of iOS didn't show them. This is a little hacky, but ensures things keep

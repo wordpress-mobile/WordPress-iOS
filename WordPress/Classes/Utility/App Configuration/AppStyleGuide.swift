@@ -21,3 +21,9 @@ extension AppStyleGuide {
     static let warning = MurielColor(name: .yellow)
     static let jetpackGreen = MurielColor(name: .jetpackGreen)
 }
+
+// MARK: - Images
+extension AppStyleGuide {
+    static let mySiteTabIcon = UIImage(named: "icon-tab-mysites")
+    static let aboutAppIcon = UIImage(named: "icon-wp")
+}

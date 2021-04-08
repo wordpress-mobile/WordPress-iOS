@@ -73,7 +73,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 buttonViewBackgroundColor: .authButtonViewBackground,
                                                 navBarImage: .gridicon(.mySites),
                                                 navBarBadgeColor: .accent(.shade20),
-                                                navBarBackgroundColor: UIColor(light: .brand, dark: .gray(.shade100)),  // NEWBARS - This is temporary while we support old style nav bars in some of the auth flows
+                                                navBarBackgroundColor: FeatureFlag.newNavBarAppearance.enabled ? .appBarBackground : UIColor(light: .primary, dark: .gray(.shade100)),
                                                 prologueBackgroundColor: .primary,
                                                 prologueTitleColor: .textInverted,
                                                 prologueTopContainerChildViewController: prologueVC,
@@ -86,9 +86,9 @@ class WordPressAuthenticationManager: NSObject {
                                                               textButtonColor: .primary,
                                                               textButtonHighlightColor: .primaryDark,
                                                               viewControllerBackgroundColor: .basicBackground,
-                                                              navBarBackgroundColor: .basicBackground,  // TODO: NEWBARS -  Replace with .appBarBackground once new nav bar styles are merged
-                                                              navButtonTextColor: .brand,   // TODO: NEWBARS - Replace with .appBarTint
-                                                              navTitleTextColor: .text)     // TODO: NEWBARS - Replace with .appBarText
+                                                              navBarBackgroundColor: FeatureFlag.newNavBarAppearance.enabled ? .appBarBackground : .basicBackground,
+                                                              navButtonTextColor: FeatureFlag.newNavBarAppearance.enabled ? .appBarTint : .primary,
+                                                              navTitleTextColor: FeatureFlag.newNavBarAppearance.enabled ? .appBarText : .text)
 
         WordPressAuthenticator.initialize(configuration: configuration,
                                           style: style,

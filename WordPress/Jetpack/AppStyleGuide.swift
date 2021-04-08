@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import Gridicons
 
 struct AppStyleGuide {
     static let navigationBarStandardFont: UIFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
@@ -20,4 +21,10 @@ extension AppStyleGuide {
     static let textSubtle = MurielColor(name: .gray, shade: .shade50)
     static let warning = MurielColor(name: .yellow)
     static let jetpackGreen = MurielColor(name: .jetpackGreen)
+}
+
+// MARK: - Images
+extension AppStyleGuide {
+    static let mySiteTabIcon = UIImage.gridicon(.house)
+    static let aboutAppIcon = UIImage(named: "jetpack-install-logo")
 }
