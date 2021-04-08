@@ -262,7 +262,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         titleView.titleLabel.text = NSLocalizedString("Loading...", comment: "Loading. Verb")
 
         titleView.titleLabel.textColor = navBarTitleColor
-        titleView.subtitleLabel.textColor = .neutral(.shade30)
+        titleView.subtitleLabel.textColor = useLightStyle ? .neutral(.shade30) : .neutral(.shade5)
 
         if let title = customTitle {
             self.title = title
