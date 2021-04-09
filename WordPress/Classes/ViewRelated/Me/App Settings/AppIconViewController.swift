@@ -64,7 +64,7 @@ open class AppIconViewController: UITableViewController {
             imageView.layer.cornerRadius = Constants.cornerRadius
             imageView.layer.masksToBounds = true
             imageView.layer.borderColor = Constants.iconBorderColor?.cgColor
-            imageView.layer.borderWidth = icon.isBordered ? Constants.iconBorderWidth : 0
+            imageView.layer.borderWidth = icon.isBordered ? .hairlineBorderWidth : 0
             imageView.layer.cornerCurve = .continuous
         }
 
@@ -153,7 +153,6 @@ open class AppIconViewController: UITableViewController {
         static let rowHeight: CGFloat = 76.0
         static let cornerRadius: CGFloat = 13.0
         static let iconBorderColor: UIColor? = UITableView().separatorColor
-        static let iconBorderWidth: CGFloat = 0.5
 
         static let cellIdentifier = "IconCell"
 
