@@ -17,7 +17,7 @@ class FloatingActionButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        layer.backgroundColor = UIColor.accent.cgColor
+        layer.backgroundColor = UIColor.primary.cgColor
         tintColor = .white
         refreshShadow()
     }

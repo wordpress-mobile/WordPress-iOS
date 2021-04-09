@@ -306,7 +306,8 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
         let group = contentGroup(for: indexPath)
         let reuseIdentifier = reuseIdentifierForGroup(group)
         guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? NoteBlockTableViewCell else {
-            fatalError()
+            DDLogError("Failed dequeueing NoteBlockTableViewCell.")
+            return UITableViewCell()
         }
 
         setup(cell, withContentGroupAt: indexPath)
@@ -420,6 +421,11 @@ extension NotificationDetailsViewController {
             let nib = UINib(nibName: classname, bundle: Bundle.main)
 
             tableView.register(nib, forCellReuseIdentifier: cellClass.reuseIdentifier())
+        }
+
+        if FeatureFlag.newLikeNotifications.enabled {
+            tableView.register(LikeUserTableViewCell.defaultNib,
+                               forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
         }
     }
 
@@ -1362,7 +1368,7 @@ extension NotificationDetailsViewController: LikesListControllerDelegate {
     }
 
     func didSelectUser(_ user: RemoteUser) {
-        // TODO: display user's home blog when the information is available.
+        // TODO: display user profile bottom sheet
     }
 }
 

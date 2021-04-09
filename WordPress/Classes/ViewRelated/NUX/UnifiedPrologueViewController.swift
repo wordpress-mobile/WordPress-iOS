@@ -1,5 +1,6 @@
 import UIKit
 import WordPressAuthenticator
+import SwiftUI
 
 class UnifiedPrologueViewController: UIPageViewController {
 
@@ -32,6 +33,16 @@ class UnifiedPrologueViewController: UIPageViewController {
         view.backgroundColor = .prologueBackground
 
         addPageControl()
+        let backgroundView = embedSwiftUIView(UnifiedPrologueBackgroundView())
+        view.insertSubview(backgroundView, at: 0)
+        view.pinSubviewToAllEdges(backgroundView)
+    }
+
+    private func embedSwiftUIView<Content: View>(_ view: Content) -> UIView {
+        let controller = UIHostingController(rootView: view)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.backgroundColor = .clear
+        return controller.view
     }
 
     private func addPageControl() {

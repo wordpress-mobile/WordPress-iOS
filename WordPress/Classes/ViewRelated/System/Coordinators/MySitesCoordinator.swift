@@ -66,7 +66,7 @@ class MySitesCoordinator: NSObject {
         navigationController.restorationIdentifier = MySitesCoordinator.navigationControllerRestorationID
         navigationController.navigationBar.isTranslucent = false
 
-        let tabBarImage = UIImage(named: "icon-tab-mysites")
+        let tabBarImage = AppStyleGuide.mySiteTabIcon
         navigationController.tabBarItem.image = tabBarImage
         navigationController.tabBarItem.selectedImage = tabBarImage
         navigationController.tabBarItem.accessibilityLabel = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
@@ -145,7 +145,12 @@ class MySitesCoordinator: NSObject {
     func showStats(for blog: Blog, timePeriod: StatsPeriodType) {
         showBlogDetails(for: blog)
 
-        if let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
+        if FeatureFlag.newNavBarAppearance.enabled {
+
+            UserDefaults.standard.set(timePeriod.rawValue, forKey: StatsPeriodType.statsPeriodTypeDefaultsKey)
+            mySiteViewController.showDetailView(for: .stats)
+
+        } else if let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
             // Setting this user default is a bit of a hack, but it's by far the easiest way to
             // get the stats view controller displaying the correct period. I spent some time
             // trying to do it differently, but the existing stats view controller setup is

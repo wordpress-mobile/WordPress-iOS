@@ -1,0 +1,1 @@
+In the spirit of spring cleaning, we’re excited to announce fresh changes to WPiOS. We’ve spruced up the app’s design with new headers and a new site switcher, accessed via My Site. You can now filter comments by status—All, Pending, Approved, Trashed, Spammed—and enable notifications about viewing milestones. Take the newly polished app for a spin!

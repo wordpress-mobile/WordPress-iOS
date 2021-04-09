@@ -316,17 +316,17 @@ extension DateCell {
             dateLabel.backgroundColor = .clear
         case .left:
             textColor = .white
-            dateLabel.backgroundColor = WPStyleGuide.wordPressBlue()
+            dateLabel.backgroundColor = .primary
             rightPlaceholder.backgroundColor = Constants.selectedColor
         case .right:
             textColor = .white
-            dateLabel.backgroundColor = WPStyleGuide.wordPressBlue()
+            dateLabel.backgroundColor = .primary
             leftPlaceholder.backgroundColor = Constants.selectedColor
         case .full:
             textColor = .textInverted
             leftPlaceholder.backgroundColor = .clear
             rightPlaceholder.backgroundColor = .clear
-            dateLabel.backgroundColor = WPStyleGuide.wordPressBlue()
+            dateLabel.backgroundColor = .primary
         case .none:
             leftPlaceholder.backgroundColor = .clear
             rightPlaceholder.backgroundColor = .clear

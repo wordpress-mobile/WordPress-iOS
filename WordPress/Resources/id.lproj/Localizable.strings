@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-02 21:28:45+0000 */
+/* Translation-Revision-Date: 2021-04-01 09:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -268,25 +268,25 @@
 "A file contains a malicious code pattern" = "Sebuah file mengandung pola kode berbahaya";
 
 /* No comment provided by engineer. */
-"A link to a URL." = "A link to a URL.";
+"A link to a URL." = "Tautan ke URL.";
 
 /* No comment provided by engineer. */
-"A link to a category." = "A link to a category.";
+"A link to a category." = "Tautan ke kategori.";
 
 /* No comment provided by engineer. */
-"A link to a page." = "A link to a page.";
+"A link to a page." = "Tautan ke halaman.";
 
 /* No comment provided by engineer. */
-"A link to a post." = "A link to a post.";
+"A link to a post." = "Tautan ke pos.";
 
 /* No comment provided by engineer. */
-"A link to a tag." = "A link to a tag.";
+"A link to a tag." = "Tautan ke tag.";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "Daftar situs di akun ini.";
 
 /* Story Intro welcome title */
-"A new way to create and publish engaging content on your site." = "A new way to create and publish engaging content on your site.";
+"A new way to create and publish engaging content on your site." = "Cara baru untuk membuat dan memposkan konten menarik di situs Anda.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "Serangkaian langkah yang menunjukkan cara menambahkan tema, ikon situs, dan masih banyak lagi.";
@@ -453,7 +453,7 @@
 "Add any topic" = "Tambahkan topik yang mana saja";
 
 /* No comment provided by engineer. */
-"Add button text" = "Add button text";
+"Add button text" = "Tambahkan teks tombol";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Tambahkan gambar, atau avatar, untuk mewakili akun baru ini.";
@@ -579,10 +579,10 @@
 "Allow this connection to be used by all admins and users of your site." = "Izinkan koneksi ini untuk digunakan oleh semua admin dan pengguna situs Anda.";
 
 /* Allowlisted IP Addresses Title */
-"Allowlisted IP Addresses" = "Allowlisted IP Addresses";
+"Allowlisted IP Addresses" = "Alamat IP yang Diizinkan";
 
 /* Jetpack Settings: Allowlisted IP addresses */
-"Allowlisted IP addresses" = "Allowlisted IP addresses";
+"Allowlisted IP addresses" = "Alamat IP yang diizinkan";
 
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Hampir selesai! Masukkan kode verifikasi dari aplikasi pengautentikasi.";
@@ -939,7 +939,7 @@
 
 /* Blocklist Title
    Settings: Comments Blocklist */
-"Blocklist" = "Blocklist";
+"Blocklist" = "Daftar blokir";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
@@ -1119,7 +1119,7 @@
 "Category" = "Kategori";
 
 /* No comment provided by engineer. */
-"Category Link" = "Category Link";
+"Category Link" = "Tautan Kategori";
 
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "Belum ada judul kategori.";
@@ -1281,7 +1281,7 @@
 "Choose video" = "Pilih video";
 
 /* Reader select interests subtitle label text */
-"Choose your topics" = "Choose your topics";
+"Choose your topics" = "Pilih topik Anda";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Suntingan per situs, seperti suntingan media dan kategori, akan hilang jika Anda pindah ke situs yang lain. Apakah Anda yakin?";
@@ -1962,11 +1962,11 @@
 "Dimensions" = "Dimensi";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
-"Disable" = "Disable";
+"Disable" = "Nonaktifkan";
 
 /* Title. A call to action to disable invite links.
    Title. Title of a prompt to disable group invite links. */
-"Disable invite link" = "Disable invite link";
+"Disable invite link" = "Nonaktifkan tautan undangan";
 
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "Non-aktif";
@@ -2008,7 +2008,7 @@
 "Discover and follow blogs you love" = "Temukan dan ikuti blog yang Anda suka";
 
 /* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Discover more topics";
+"Discover more topics" = "Jelajahi topik-topik lainnya";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2209,7 +2209,7 @@
 "Edit %@ block" = "Edit blok %@";
 
 /* Blocklist Keyword Edition Title */
-"Edit Blocklist Word" = "Edit Blocklist Word";
+"Edit Blocklist Word" = "Edit Daftar Blokir Kata";
 
 /* No comment provided by engineer. */
 "Edit Comment" = "Sunting Komentar";
@@ -2370,7 +2370,7 @@
 "Enter your password instead." = "Masukkan kata sandi saja.";
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
-"Enter your server credentials to enable one click site restores from backups." = "Enter your server credentials to enable one click site restores from backups.";
+"Enter your server credentials to enable one click site restores from backups." = "Masukkan kredensial server Anda untuk mengaktifkan pemulihan situs sekali klik dari pencadangan.";
 
 /* Generic error alert title
    Generic error.
@@ -2509,7 +2509,7 @@
 "Expands to select a different menu area" = "Perluas untuk memilih area menu yang berbeda";
 
 /* Title. Indicates an expiration date. */
-"Expires on" = "Expires on";
+"Expires on" = "Kedaluwarsa pada";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Jelaskan tentang apa situs ini.";
@@ -2541,7 +2541,7 @@
 "Failed" = "Gagal";
 
 /* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "Failed Media Export";
+"Failed Media Export" = "Ekspor Media Gagal";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Gagal memasukkan file audio. Ketuk untuk melihat pilihan.";
@@ -2559,7 +2559,7 @@
 "Failed to serialize request to the REST API." = "Gagal menyambungkan permintaan ke REST API.";
 
 /* The app failed to unsubscribe from the comments for the post */
-"Failed to unfollow conversation" = "Failed to unfollow conversation";
+"Failed to unfollow conversation" = "Gagal untuk berhenti mengikuti percakapan";
 
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "Gagal mengunggah file.\nKetuk untuk melihat pilihan.";
@@ -2679,10 +2679,10 @@
 "Follow site" = "Follow site";
 
 /* Screen title. Reader select interests title label text. */
-"Follow topics" = "Follow topics";
+"Follow topics" = "Ikuti topik";
 
 /* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "Follow your favorite sites and discover new blogs.";
+"Follow your favorite sites and discover new blogs." = "Ikuti situs favorit Anda dan temukan blog-blog baru.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "Ikuti situs favorit Anda dan temukan bacaan-bacaan baru.";
@@ -2723,7 +2723,7 @@
 "Following conversation by email" = "Mengikuti percakapan melalui email";
 
 /* Label displayed to the user while loading their selected interests */
-"Following new topics..." = "Following new topics...";
+"Following new topics..." = "Mengikuti topik baru...";
 
 /* Filters Follows Notifications */
 "Follows" = "Mengikuti";
@@ -2781,7 +2781,7 @@
 "General" = "Umum";
 
 /* Title. A call to action to generate a new invite link. */
-"Generate new link" = "Generate new link";
+"Generate new link" = "Hasilkan tautan baru";
 
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Membuat Pratinjau";
@@ -3194,7 +3194,7 @@
 "Invite" = "Undang";
 
 /* Title for the Invite Link section of the Invite Person screen. */
-"Invite Link" = "Invite Link";
+"Invite Link" = "Tautan Undangan";
 
 /* Invite People Title */
 "Invite People" = "Undang Orang-orang";
@@ -3744,10 +3744,10 @@
 "More Posts" = "Pos Lebih Banyak";
 
 /* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
-"More from %1$@" = "More from %1$@";
+"More from %1$@" = "Lainnya dari %1$@";
 
 /* Section title for global related posts. */
-"More on WordPress.com" = "More on WordPress.com";
+"More on WordPress.com" = "Lainnya di WordPress.com";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Waktu yang Paling Disukai";
@@ -3866,7 +3866,7 @@
 "New" = "Baru";
 
 /* Blocklist Keyword Insertion Title */
-"New Blocklist Word" = "New Blocklist Word";
+"New Blocklist Word" = "Daftar Blokir Kata Baru";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "IP atau Rentang IP baru";
@@ -4053,7 +4053,7 @@
 "No network available" = "Tidak ada jaringan";
 
 /* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "No new topics to follow";
+"No new topics to follow" = "Tidak ada topik baru untuk diikuti";
 
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Belum ada notifikasi.";
@@ -4240,7 +4240,7 @@
 "Oldest first" = "Paling lama dulu";
 
 /* Warning message about disabling group invite links. */
-"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?";
+"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Setelah tautan undangan ini dinonaktifkan, tidak ada yang dapat menggunakannya lagi untuk bergabung dengan tim Anda. Apakah Anda yakin?";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Setelah membuat situs WordPress.com, Anda dapat me-reblog konten yang disukai ke situs Anda sendiri.";
@@ -4372,7 +4372,7 @@
 "Page" = "Halaman";
 
 /* No comment provided by engineer. */
-"Page Link" = "Page Link";
+"Page Link" = "Tautan Halaman";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
 "Page Restored to Drafts" = "Halaman Dipulihkan ke Draf";
@@ -4668,7 +4668,7 @@
 "Post Format" = "Format Tulisan";
 
 /* No comment provided by engineer. */
-"Post Link" = "Post Link";
+"Post Link" = "Tautan Pos";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "Pos Dipulihkan ke Draf";
@@ -5425,7 +5425,7 @@
 "Search Locations" = "Cari Lokasi";
 
 /* No comment provided by engineer. */
-"Search Settings" = "Search Settings";
+"Search Settings" = "Pengaturan Pencarian";
 
 /* Label for list of search term */
 "Search Term" = "Istilah Pencarian";
@@ -5675,7 +5675,7 @@
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Berbagi informasi dengan alat analitik kami tentang penggunaan layanan Anda saat sudah login ke akun WordPress.com Anda.";
 
 /* Title. A call to action to share an invite link. */
-"Share invite link" = "Share invite link";
+"Share invite link" = "Bagikan tautan undangan";
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Bagikan tautan";
@@ -6083,13 +6083,13 @@
 "Successfully cleared spotlight index" = "Berhasil menghapus indeks spotlight";
 
 /* The app successfully subscribed to the comments for the post */
-"Successfully followed conversation" = "Successfully followed conversation";
+"Successfully followed conversation" = "Berhasil mengikuti percakapan";
 
 /* Notice displayed after installing a plug-in. */
 "Successfully installed %@." = "Berhasil menginstal %@.";
 
 /* The app successfully unsubscribed from the comments for the post */
-"Successfully unfollowed conversation" = "Successfully unfollowed conversation";
+"Successfully unfollowed conversation" = "Berhasil berhenti mengikuti percakapan";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -6099,7 +6099,7 @@
 "Suggestions updated" = "Saran diperbarui";
 
 /* No comment provided by engineer. */
-"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here.";
+"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Rangkum pos Anda dengan daftar heading. Tambahkan anchor HTML ke blok Heading untuk menautkannya ke sini.";
 
 /* User role badge */
 "Super Admin" = "Super Admin";
@@ -6158,7 +6158,7 @@
 "System default" = "Default sistem";
 
 /* No comment provided by engineer. */
-"Table of Contents" = "Table of Contents";
+"Table of Contents" = "Daftar Isi";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "Tabel menunjukkan %@";
@@ -6174,7 +6174,7 @@
 "Tag" = "Tag";
 
 /* No comment provided by engineer. */
-"Tag Link" = "Tag Link";
+"Tag Link" = "Tautan Tag";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "Tag sudah ada";
@@ -6225,7 +6225,7 @@
 "Tap to cancel uploading." = "Ketuk untuk membatalkan unggahan.";
 
 /* Accessibility hint for button used to change site title */
-"Tap to change the site's title" = "Tap to change the site's title";
+"Tap to change the site's title" = "Ketuk untuk mengganti judul situs";
 
 /* Accessibility hint to inform the user what action the hide button performs */
 "Tap to collapse the post tags" = "Ketuk untuk menciutkan tag pos";
@@ -6255,13 +6255,13 @@
 "Tap to select which blog to post to" = "Tekan untuk memilih blog yang akan diposting";
 
 /* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "Tap to switch to another site, or add a new site";
+"Tap to switch to another site, or add a new site" = "Ketuk untuk beralih ke situs lain, atau menambahkan situs baru";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Ketuk untuk melihat pos untuk tag ini";
 
 /* Accessibility hint for button used to view the user's site */
-"Tap to view your site" = "Tap to view your site";
+"Tap to view your site" = "Ketuk untuk melihat situs Anda";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taksonomi";
@@ -6334,7 +6334,7 @@
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Judul Situs ditampilkan di bilah judul perambah web dan ditampilkan pada header sebagian besar tema.";
 
 /* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "The Stories editor is not currently available for your iPad. Please try Stories on your iPhone.";
+"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "Editor Cerita belum tersedia untuk iPad Anda. Silakan coba Cerita di iPhone Anda.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL tidak menemukan host yang valid.";
@@ -6511,7 +6511,7 @@
 "There was a problem when trying to access your media. Please try again later." = "Ada masalah saat mencoba mengakses media Anda. Harap coba lagi nanti.";
 
 /* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen.";
+"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Terjadi masalah dengan editor Cerita.  Jika masalah berlanjut, Anda dapat menghubungi kami melalui layar Saya > Bantuan & Dukungan.";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -6820,7 +6820,7 @@
 "Try it now" = "Coba sekarang";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"Try the new Block Editor" = "Try the new Block Editor";
+"Try the new Block Editor" = "Coba Editor Blok yang baru";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */
 "Try with another email" = "Coba dengan email lain";
@@ -6853,7 +6853,7 @@
 "Type a label" = "Ketikkan label";
 
 /* Site creation. Seelect a domain, search field placeholder */
-"Type a name for your site" = "Type a name for your site";
+"Type a name for your site" = "Ketik nama untuk situs Anda";
 
 /* Register domain - Search field placeholder for the Suggested Domain screen */
 "Type to get more suggestions" = "Ketik untuk mendapatkan lebih banyak saran";
@@ -6871,7 +6871,7 @@
 "Unable to Connect" = "Tidak Dapat Terhubung";
 
 /* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "Unable to Create Stories Editor";
+"Unable to Create Stories Editor" = "Tidak dapat Membuat Editor Cerita";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Tidak Dapat Memuat Pos.";
@@ -6883,7 +6883,7 @@
 "Unable to block site" = "Unable to block site";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to create new invite links." = "Unable to create new invite links.";
+"Unable to create new invite links." = "Tidak dapat membuat tautan undangan baru.";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "Tidak dapat menghapus semua item media.";
@@ -6892,13 +6892,13 @@
 "Unable to delete media item." = "Tidak dapat menghapus item media.";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to disable invite links." = "Unable to disable invite links.";
+"Unable to disable invite links." = "Tidak dapat menonaktifkan tautan undangan.";
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "Tidak dapat mengunduh berkas";
 
 /* The app failed to subscribe to the comments for the post */
-"Unable to follow conversation" = "Unable to follow conversation";
+"Unable to follow conversation" = "Tidak dapat mengikuti percakapan";
 
 /* Notice title when following a site fails. */
 "Unable to follow site" = "Tidak dapat mengikuti situs";
@@ -6992,7 +6992,7 @@
 "Unable to verify the email address. Please try again later." = "Tidak dapat memverifikasi alamat email. Silakan coba lagi nanti.";
 
 /* Message displayed when visiting the Jetpack settings page fails. */
-"Unable to visit Jetpack settings for site" = "Unable to visit Jetpack settings for site";
+"Unable to visit Jetpack settings for site" = "Tidak dapat membuka pengaturan Jetpack situs";
 
 /* Message displayed when visiting a site fails. */
 "Unable to visit site" = "Tidak dapat mengunjungi situs";
@@ -7085,7 +7085,7 @@
 "Unsupported" = "Tidak didukung";
 
 /* Title for stories unsupported device error. */
-"Unsupported Device" = "Unsupported Device";
+"Unsupported Device" = "Perangkat Tidak Didukung";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Tak Berjudul";
@@ -7204,7 +7204,7 @@
 "Use block editor" = "Gunakan penyunting blok";
 
 /* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo";
+"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Gunakan tautan ini untuk mendaftarkan anggota tim Anda tanpa harus mengundang mereka satu per satu. Siapa pun yang mengunjungi URL berikut akan dapat mendaftar ke organisasi Anda meskipun mereka menerima tautan dari orang lain, jadi pastikan Anda membagikannya dengan orang tepercaya.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Gunakan situs ini";
@@ -7644,7 +7644,7 @@
 "Welcome to the Reader" = "Selamat Datang di Pembaca";
 
 /* Caption displayed in promotional screens shown during the login flow. */
-"Welcome to the world's most popular website builder." = "Welcome to the world's most popular website builder.";
+"Welcome to the world's most popular website builder." = "Selamat datang di pembuat situs web terpopuler di dunia.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "Selamat datang di pembuat situs web terpopuler di dunia.";
@@ -7656,7 +7656,7 @@
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Kami akan selalu mengirim email penting terkait akun Anda, namun Anda juga dapat memperoleh beberapa tambahan yang bermanfaat.";
 
 /* The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings.";
+"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "Kami akan segera menghapus editor klasik untuk pos baru tetapi hal ini tidak akan memengaruhi proses pengeditan pos atau halaman yang sudah ada. Mulailah dengan mengaktifkan Editor Blok sekarang di pengaturan situs.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress.
    Hint displayed when we fail to fetch the status of the restore in progress. */
@@ -7950,10 +7950,10 @@
 "You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "Anda belum memublikasikan satu pos pun. Setelah mulai memublikasikan, ringkasan pos terbaru Anda akan muncul di sini.";
 
 /* Title for a view milestone push notification */
-"You hit a milestone 🚀" = "";
+"You hit a milestone 🚀" = "Anda mendapatkan pencapaian 🚀 ";
 
 /* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
-"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100.";
+"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Anda dapat membuat daftar izin alamat IP atau rangkaian alamat IP untuk mencegah alamat tersebut diblok oleh Jetpack. IPv4 dan IPv6 diterima. Untuk menentukan rentang, masukkan nilai rendah dan nilai tinggi yang dipisahkan oleh tanda hubung. Misalnya: 12.12.12.1-12.12.12.100.";
 
 /* A suggestion of topics the user might like */
 "You might like" = "Anda mungkin suka";
@@ -8020,7 +8020,7 @@
 "Your first backup will be ready soon" = "Pencadangan pertama Anda akan segera tersedia";
 
 /* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.";
+"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Media Anda tidak dapat diekspor. If the problem persists you can contact us via the Me > layar Bantuan & Dukungan.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Bawa pemberitahuan ke mana pun Anda pergi — lihat komentar dan suka seketika.";
@@ -8110,7 +8110,7 @@
 "connections" = "sambungan";
 
 /* No comment provided by engineer. */
-"document outline" = "document outline";
+"document outline" = "outline dokumen";
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "bukankah menyenangkan rasanya saat mencoret satu hal dari daftar?";
@@ -8160,7 +8160,7 @@
 "phone number" = "nomor telepon";
 
 /* No comment provided by engineer. */
-"summary" = "summary";
+"summary" = "ringkasan";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "item berikut akan dihapus:";

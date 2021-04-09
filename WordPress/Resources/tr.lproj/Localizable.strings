@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-28 17:08:26+0000 */
+/* Translation-Revision-Date: 2021-03-30 11:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -268,25 +268,25 @@
 "A file contains a malicious code pattern" = "Bir dosya kötü amaçlı bir kod modeli içeriyor";
 
 /* No comment provided by engineer. */
-"A link to a URL." = "A link to a URL.";
+"A link to a URL." = "Bir URL bağlantısı.";
 
 /* No comment provided by engineer. */
-"A link to a category." = "A link to a category.";
+"A link to a category." = "Bir kategori bağlantısı.";
 
 /* No comment provided by engineer. */
-"A link to a page." = "A link to a page.";
+"A link to a page." = "Bir sayfa bağlantısı.";
 
 /* No comment provided by engineer. */
-"A link to a post." = "A link to a post.";
+"A link to a post." = "Bir gönderi bağlantısı.";
 
 /* No comment provided by engineer. */
-"A link to a tag." = "A link to a tag.";
+"A link to a tag." = "Bir etiket bağlantısı.";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "Bu hesaptaki sitelerin listesi.";
 
 /* Story Intro welcome title */
-"A new way to create and publish engaging content on your site." = "A new way to create and publish engaging content on your site.";
+"A new way to create and publish engaging content on your site." = "Sitenizde ilgi çekici içerik oluşturmanın ve yayınlamanın yeni bir yolu.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "Tema, site simgesi ve daha fazlasını nasıl ekleyeceğinizi gösteren bir dizi adım.";
@@ -453,7 +453,7 @@
 "Add any topic" = "Herhangi bir konu ekle";
 
 /* No comment provided by engineer. */
-"Add button text" = "Add button text";
+"Add button text" = "Düğme metni ekle";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Bu yeni hesabı temsil edecek görsel veya avatar ekleyin.";
@@ -579,10 +579,10 @@
 "Allow this connection to be used by all admins and users of your site." = "Bu bağlantının sitenizin tüm yöneticileri ve kullanıcıları tarafından kullanılmasına izin verin.";
 
 /* Allowlisted IP Addresses Title */
-"Allowlisted IP Addresses" = "Allowlisted IP Addresses";
+"Allowlisted IP Addresses" = "İzinli IP Adresleri";
 
 /* Jetpack Settings: Allowlisted IP addresses */
-"Allowlisted IP addresses" = "Allowlisted IP addresses";
+"Allowlisted IP addresses" = "İzinli IP adresleri";
 
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Neredeyse bitiyor! Lütfen doğrulama uygulamanızdan edindiğiniz doğrulama kodunu girin.";
@@ -939,7 +939,7 @@
 
 /* Blocklist Title
    Settings: Comments Blocklist */
-"Blocklist" = "Blocklist";
+"Blocklist" = "Kara Liste";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
@@ -1119,7 +1119,7 @@
 "Category" = "Kategori";
 
 /* No comment provided by engineer. */
-"Category Link" = "Category Link";
+"Category Link" = "Kategori Bağlantısı";
 
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "Kategori başlığı eksik.";
@@ -1281,7 +1281,7 @@
 "Choose video" = "Video seç";
 
 /* Reader select interests subtitle label text */
-"Choose your topics" = "Choose your topics";
+"Choose your topics" = "Konularınızı seçin";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Farklı bir site seçerseniz ortam ve kategoriler gibi sitete özel içerik düzenlemelerini kaybedersiniz. Emin misiniz?";
@@ -1962,11 +1962,11 @@
 "Dimensions" = "Ölçüler";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
-"Disable" = "Disable";
+"Disable" = "Etkisizleştir";
 
 /* Title. A call to action to disable invite links.
    Title. Title of a prompt to disable group invite links. */
-"Disable invite link" = "Disable invite link";
+"Disable invite link" = "Davet bağlantısını etkisizleştir";
 
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "Etkin değil";
@@ -2008,7 +2008,7 @@
 "Discover and follow blogs you love" = "Sevdiğiniz blogları keşfedin ve takip edin";
 
 /* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Discover more topics";
+"Discover more topics" = "Daha fazla konu keşfet";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2209,7 +2209,7 @@
 "Edit %@ block" = "%@ bloğunu düzenle";
 
 /* Blocklist Keyword Edition Title */
-"Edit Blocklist Word" = "Edit Blocklist Word";
+"Edit Blocklist Word" = "Kara Liste Sözcüğünü Düzenle";
 
 /* No comment provided by engineer. */
 "Edit Comment" = "Yorumu düzenle";
@@ -2370,7 +2370,7 @@
 "Enter your password instead." = "Bunun yerine parolanızı girin.";
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
-"Enter your server credentials to enable one click site restores from backups." = "Enter your server credentials to enable one click site restores from backups.";
+"Enter your server credentials to enable one click site restores from backups." = "Yedeklemelerinizden tek tıkla geri yüklemeyi etkinleştirmek için sunucu kimlik bilgilerinizi girin.";
 
 /* Generic error alert title
    Generic error.
@@ -2509,7 +2509,7 @@
 "Expands to select a different menu area" = "Farklı bir menü alanı seçmek için genişler";
 
 /* Title. Indicates an expiration date. */
-"Expires on" = "Expires on";
+"Expires on" = "Sona erme tarihi:";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Bu sitenin ne hakkında olduğunu açıklayın.";
@@ -2541,7 +2541,7 @@
 "Failed" = "Başarısız";
 
 /* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "Failed Media Export";
+"Failed Media Export" = "Medya Dışa Aktarılamadı";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Ses dosyası eklenemedi. Seçenekler için lütfen dokunun.";
@@ -2559,7 +2559,7 @@
 "Failed to serialize request to the REST API." = "REST API isteği serileştirmesi başarısız oldu.";
 
 /* The app failed to unsubscribe from the comments for the post */
-"Failed to unfollow conversation" = "Failed to unfollow conversation";
+"Failed to unfollow conversation" = "Sohbet takip edilemedi";
 
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "Dosyalar yüklenemedi.\nSeçenekler için lütfen dokunun.";
@@ -2679,10 +2679,10 @@
 "Follow site" = "Siteyi takip et";
 
 /* Screen title. Reader select interests title label text. */
-"Follow topics" = "Follow topics";
+"Follow topics" = "Takip edilen konular";
 
 /* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "Follow your favorite sites and discover new blogs.";
+"Follow your favorite sites and discover new blogs." = "Favori sitelerinizi takip edin ve yeni bloglar keşfedin.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "Favori sitelerinizi takip edin ve yeni yazılar keşfedin.";
@@ -2723,7 +2723,7 @@
 "Following conversation by email" = "Sohbet e-postayla takip ediliyor";
 
 /* Label displayed to the user while loading their selected interests */
-"Following new topics..." = "Following new topics...";
+"Following new topics..." = "Yeni konular takip ediliyor...";
 
 /* Filters Follows Notifications */
 "Follows" = "Takip edilenler";
@@ -2781,7 +2781,7 @@
 "General" = "Genel";
 
 /* Title. A call to action to generate a new invite link. */
-"Generate new link" = "Generate new link";
+"Generate new link" = "Yeni bağlantı oluştur";
 
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Önizleme oluşturuluyor";
@@ -3194,7 +3194,7 @@
 "Invite" = "Davet et";
 
 /* Title for the Invite Link section of the Invite Person screen. */
-"Invite Link" = "Invite Link";
+"Invite Link" = "Davet bağlantısı";
 
 /* Invite People Title */
 "Invite People" = "İnsanları davet et";
@@ -3744,10 +3744,10 @@
 "More Posts" = "Daha fazla yazı";
 
 /* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
-"More from %1$@" = "More from %1$@";
+"More from %1$@" = "%1$@ kaynağından daha fazla";
 
 /* Section title for global related posts. */
-"More on WordPress.com" = "More on WordPress.com";
+"More on WordPress.com" = "WordPress.com üzerinden daha fazlası";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "En Popüler Zaman";
@@ -3866,7 +3866,7 @@
 "New" = "Yeni";
 
 /* Blocklist Keyword Insertion Title */
-"New Blocklist Word" = "New Blocklist Word";
+"New Blocklist Word" = "Yeni Kara Liste Sözcüğü";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "Yeni IP veya IP aralığı";
@@ -4053,7 +4053,7 @@
 "No network available" = "Kullanılabilir ağ yok";
 
 /* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "No new topics to follow";
+"No new topics to follow" = "Takip edilecek yeni konu yok";
 
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Henüz bildirim yok";
@@ -4240,7 +4240,7 @@
 "Oldest first" = "İlk en eski";
 
 /* Warning message about disabling group invite links. */
-"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?";
+"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Davet bağlantısı dışı bırakıldığında hiç kimse onu kullanarak ekibinize katılamaz. Emin misiniz?";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Bir WordPress.com sitesi oluşturduktan sonra, beğendiğiniz içeriği kendi sitenize yeniden bloglayabilirsiniz.";
@@ -4372,7 +4372,7 @@
 "Page" = "Sayfa";
 
 /* No comment provided by engineer. */
-"Page Link" = "Page Link";
+"Page Link" = "Sayfa Bağlantısı";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
 "Page Restored to Drafts" = "Sayfa taslaklara kaydedildi";
@@ -4668,7 +4668,7 @@
 "Post Format" = "Yazı biçimi";
 
 /* No comment provided by engineer. */
-"Post Link" = "Post Link";
+"Post Link" = "Gönderi Bağlantısı";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "Yazı taslaklara geri yüklendi";
@@ -5425,7 +5425,7 @@
 "Search Locations" = "Arama konumları";
 
 /* No comment provided by engineer. */
-"Search Settings" = "Search Settings";
+"Search Settings" = "Arama Ayarları";
 
 /* Label for list of search term */
 "Search Term" = "Arama terimi";
@@ -5675,7 +5675,7 @@
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "WordPress.com hesabınızda oturum açmış durumdayken hizmetlerini kullanımınız hakkında bilgileri analiz aracımızla paylaşın.";
 
 /* Title. A call to action to share an invite link. */
-"Share invite link" = "Share invite link";
+"Share invite link" = "Davet bağlantısını paylaş";
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Bağlantıyı paylaş";
@@ -6083,13 +6083,13 @@
 "Successfully cleared spotlight index" = "Gündem dizini başarıyla temizlendi";
 
 /* The app successfully subscribed to the comments for the post */
-"Successfully followed conversation" = "Successfully followed conversation";
+"Successfully followed conversation" = "Sohbet başarıyla takip edildi.";
 
 /* Notice displayed after installing a plug-in. */
 "Successfully installed %@." = "%@ başarıyla kuruldu.";
 
 /* The app successfully unsubscribed from the comments for the post */
-"Successfully unfollowed conversation" = "Successfully unfollowed conversation";
+"Successfully unfollowed conversation" = "Sohbet başarıyla takipten çıkarıldı";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -6099,7 +6099,7 @@
 "Suggestions updated" = "Öneriler güncelleştirildi";
 
 /* No comment provided by engineer. */
-"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here.";
+"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Gönderinizi bir başlık listesiyle özetleyin. HTML bağlantılarını buraya bağlamak için Başlık bloklarına ekleyin.";
 
 /* User role badge */
 "Super Admin" = "Süper yönetici";
@@ -6158,7 +6158,7 @@
 "System default" = "Sistem varsayılanı";
 
 /* No comment provided by engineer. */
-"Table of Contents" = "Table of Contents";
+"Table of Contents" = "İçerik tablosu";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "%@ gösteren tablo ";
@@ -6174,7 +6174,7 @@
 "Tag" = "Etiket";
 
 /* No comment provided by engineer. */
-"Tag Link" = "Tag Link";
+"Tag Link" = "Etiket Bağlantısı";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "Etiket zaten var";
@@ -6225,7 +6225,7 @@
 "Tap to cancel uploading." = "Yüklemeyi iptal etmek için dokunun.";
 
 /* Accessibility hint for button used to change site title */
-"Tap to change the site's title" = "Tap to change the site's title";
+"Tap to change the site's title" = "Sitenin başlığını değiştirmek için dokunun";
 
 /* Accessibility hint to inform the user what action the hide button performs */
 "Tap to collapse the post tags" = "Yazı etiketlerini daraltmak için dokunun";
@@ -6255,13 +6255,13 @@
 "Tap to select which blog to post to" = "Yazıyı hangi bloga göndereceğinizi seçiniz";
 
 /* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "Tap to switch to another site, or add a new site";
+"Tap to switch to another site, or add a new site" = "Başka bir siteye geçmek için dokunun veya yeni bir site ekleyin";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Bu etiketle ilgili yazıları görüntülemek için dokunun";
 
 /* Accessibility hint for button used to view the user's site */
-"Tap to view your site" = "Tap to view your site";
+"Tap to view your site" = "Sitenizi görüntülemek için dokunun";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Kategorilendirme";
@@ -6334,7 +6334,7 @@
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Site Başlığı, web tarayıcısının başlık çubuğunda görüntülenir ve çoğu temada üst bilgide gösterilir.";
 
 /* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "The Stories editor is not currently available for your iPad. Please try Stories on your iPhone.";
+"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "Öyküler düzenleyicisi şu anda iPad'inizde kullanılamıyor. Lütfen Öyküler'i iPhone'unuzda deneyin.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL'de geçerli ana bilgisayar yok.";
@@ -6511,7 +6511,7 @@
 "There was a problem when trying to access your media. Please try again later." = "Ortam dosyasına erişmeye çalışılırken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.";
 
 /* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen.";
+"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Öyküler düzenleyicisinde bir sorun oluştu.  Sorun tekrar ederse lütfen Ben > Yardım ve Destek ekranından bizimle iletişim kurun.";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -6820,7 +6820,7 @@
 "Try it now" = "Şimdi deneyin";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"Try the new Block Editor" = "Try the new Block Editor";
+"Try the new Block Editor" = "Yeni Blok Düzenleyici'yi deneyin";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */
 "Try with another email" = "Başka bir e-posta ile deneyin";
@@ -6853,7 +6853,7 @@
 "Type a label" = "Bir etiket yazın";
 
 /* Site creation. Seelect a domain, search field placeholder */
-"Type a name for your site" = "Type a name for your site";
+"Type a name for your site" = "Siteniz için bir ad yazın";
 
 /* Register domain - Search field placeholder for the Suggested Domain screen */
 "Type to get more suggestions" = "Daha fazla tavsiye için yazın";
@@ -6871,7 +6871,7 @@
 "Unable to Connect" = "Bağlanamıyor";
 
 /* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "Unable to Create Stories Editor";
+"Unable to Create Stories Editor" = "Öyküler Düzenleyicisi Oluşturulamıyor";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Yazılar yüklenemedi";
@@ -6883,7 +6883,7 @@
 "Unable to block site" = "Site engellenemiyor";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to create new invite links." = "Unable to create new invite links.";
+"Unable to create new invite links." = "Yeni davet bağlantıları oluşturulamıyor.";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "Tüm ortam dosyaları silinemiyor.";
@@ -6892,13 +6892,13 @@
 "Unable to delete media item." = "Ortam dosyası silinemiyor.";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to disable invite links." = "Unable to disable invite links.";
+"Unable to disable invite links." = "Davet bağlantıları devre dışı bırakılamıyor.";
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "Dosya indirilemiyor";
 
 /* The app failed to subscribe to the comments for the post */
-"Unable to follow conversation" = "Unable to follow conversation";
+"Unable to follow conversation" = "Sohbet takip edilemiyor";
 
 /* Notice title when following a site fails. */
 "Unable to follow site" = "Site takip edilemiyor";
@@ -6992,7 +6992,7 @@
 "Unable to verify the email address. Please try again later." = "E-posta adresi doğrulanamıyor. Lütfen daha sonra tekrar deneyin.";
 
 /* Message displayed when visiting the Jetpack settings page fails. */
-"Unable to visit Jetpack settings for site" = "Unable to visit Jetpack settings for site";
+"Unable to visit Jetpack settings for site" = "Sitenin Jetpack ayarları ziyaret edilemiyor";
 
 /* Message displayed when visiting a site fails. */
 "Unable to visit site" = "Site ziyaret edilemiyor";
@@ -7085,7 +7085,7 @@
 "Unsupported" = "Desteklenmeyen";
 
 /* Title for stories unsupported device error. */
-"Unsupported Device" = "Unsupported Device";
+"Unsupported Device" = "Desteklenmeyen Cihaz";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Başlıksız";
@@ -7204,7 +7204,7 @@
 "Use block editor" = "Blok düzenleyici kullan";
 
 /* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo";
+"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Ekip üyelerinizi tek tek davet etmenize gerek kalmadan, bu bağlantıyla hepsini getirebilirsiniz. Ekibinizin üyelerini tek tek davet etmek zorunda kalmadan dahil etmek için bu bağlantıyı kullanın. Bu bağlantıya tıklayan herkes, başkasından bile almış olsa, kurumunuza dahil olabilir. O nedenle, sadece güvendiğiniz kişilerle paylaşmaya dikkat edin.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Bu siteyi kullan";
@@ -7644,7 +7644,7 @@
 "Welcome to the Reader" = "Okuyucuya hoşgeldiniz";
 
 /* Caption displayed in promotional screens shown during the login flow. */
-"Welcome to the world's most popular website builder." = "Welcome to the world's most popular website builder.";
+"Welcome to the world's most popular website builder." = "Dünyanın en popüler web sitesi oluşturucusuna hoş geldiniz.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "Dünyanın en popüler web sitesi oluşturucusuna hoş geldiniz.";
@@ -7656,7 +7656,7 @@
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Hesabınızla ilgili önemli e-postaları her zaman göndereceğiz, ayrıca bazı yardımcı içerikler de alabilirsiniz.";
 
 /* The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings.";
+"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "Yakında yeni gönderiler için klasik düzenleyiciyi kaldıracağız, ancak bu mevcut gönderilerinizin veya sayfalarınızın hiçbirinde düzenleme özelliğini etkilemeyecektir. Hemen site ayarlarından Blok Düzenleyiciyi etkinleştirerek bir adım önde başlayın.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress.
    Hint displayed when we fail to fetch the status of the restore in progress. */
@@ -7950,10 +7950,10 @@
 "You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "Henüz hiçbir yazı yayımlamadınız. Yayımlamaya başladıktan sonra en son yazınızın özeti burada görüntülenir.";
 
 /* Title for a view milestone push notification */
-"You hit a milestone 🚀" = "";
+"You hit a milestone 🚀" = "Bir dönüm noktasına ulaştınız🚀 ";
 
 /* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
-"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100.";
+"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Bir IP adresine veya bir adres dizisine izin verebilir, böylece Jetpack tarafından engellenmelerini önleyebilirsiniz. IPv4 ve IPv6 kabul edilebilir niteliktedir. Bir aralık belirtmek için aralarına tire ekleyerek düşük ve yüksek değerleri girin. Örnek: 12.12.12.1-12.12.12.100.";
 
 /* A suggestion of topics the user might like */
 "You might like" = "Şunları beğenebilirsin";
@@ -8020,7 +8020,7 @@
 "Your first backup will be ready soon" = "İlk yedeğiniz az sonra hazır olacak";
 
 /* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.";
+"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Medyanız dışa aktarılamadı. If the problem persists you can contact us via the Me > Yardım ve Destek ekranı.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Bildirimleriniz sizinle birlikte geziyor; yorumları ve beğenileri gerçekleştikleri sırada görün.";
@@ -8110,7 +8110,7 @@
 "connections" = "bağlantılar";
 
 /* No comment provided by engineer. */
-"document outline" = "document outline";
+"document outline" = "belge taslağı";
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "listedeki bazı işleri tamamlamak iyi hissettirmiyor mu?";
@@ -8160,7 +8160,7 @@
 "phone number" = "telefon numarası";
 
 /* No comment provided by engineer. */
-"summary" = "summary";
+"summary" = "özet";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "bu ögeler silinecekler:";

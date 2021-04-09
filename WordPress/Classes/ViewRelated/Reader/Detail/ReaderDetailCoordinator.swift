@@ -184,10 +184,17 @@ class ReaderDetailCoordinator {
     /// Open the postURL in a separated view controller
     ///
     func openInBrowser() {
-        guard
-            let permaLink = post?.permaLink,
-            let postURL = URL(string: permaLink)
-        else {
+
+        let url: URL? = {
+            // For Reader posts, use post link.
+            if let permaLink = post?.permaLink {
+                return URL(string: permaLink)
+            }
+            // For Related posts, use postURL.
+            return postURL
+        }()
+
+        guard let postURL = url else {
             return
         }
 
