@@ -470,7 +470,7 @@ private extension AppSettingsViewController {
         )
 
         var rows: [ImmuTableRow] = [settingsRow, aboutRow]
-        if !AppConfiguration.isJetpack && UIApplication.shared.supportsAlternateIcons {
+        if AppConfiguration.allowsCustomAppIcons && UIApplication.shared.supportsAlternateIcons {
             // We don't show custom icons for Jetpack
             rows.insert(iconRow, at: 0)
         }
