@@ -110,6 +110,7 @@ open class WP3DTouchShortcutCreator: NSObject {
     }
 
     @objc fileprivate func createLoggedInShortcuts() {
+
         DispatchQueue.main.async {[weak self]() in
             guard let strongSelf = self else {
                 return
@@ -125,8 +126,10 @@ open class WP3DTouchShortcutCreator: NSObject {
                 visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.stats.rawValue])
             }
 
-            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPhotoPost.rawValue])
-            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPost.rawValue])
+            if AppConfiguration.allowsNewPostShortcut {
+                visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPhotoPost.rawValue])
+                visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPost.rawValue])
+            }
 
             strongSelf.shortcutsProvider.shortcutItems = visibleShortcutArray
         }
