@@ -5,7 +5,7 @@ open class AppIconViewController: UITableViewController {
 
     private enum Constants {
         static let rowHeight: CGFloat = 76.0
-        static let cornerRadius: CGFloat = 4.0
+        static let cornerRadius: CGFloat = 13.0
         static let iconBorderColor: UIColor? = UITableView().separatorColor
         static let iconBorderWidth: CGFloat = 0.5
 
@@ -60,6 +60,7 @@ open class AppIconViewController: UITableViewController {
             imageView.layer.masksToBounds = true
             imageView.layer.borderColor = Constants.iconBorderColor?.cgColor
             imageView.layer.borderWidth = borderedIcons.contains(icon) ? Constants.iconBorderWidth : 0
+            imageView.layer.cornerCurve = .continuous
         }
 
         cell.accessoryType = iconIsSelected(for: indexPath) ? .checkmark : .none
