@@ -77,9 +77,9 @@
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>pink-icon-app-60x60</string>
-					<string>pink-icon-app-76x76</string>
-					<string>pink-icon-app-83.5x83.5</string>
+					<string>hot-pink-icon-app-60x60</string>
+					<string>hot-pink-icon-app-76x76</string>
+					<string>hot-pink-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -90,9 +90,9 @@
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>celadon-icon-app-60x60</string>
-					<string>celadon-icon-app-76x76</string>
-					<string>celadon-icon-app-83.5x83.5</string>
+					<string>jetpack-green-icon-app-60x60</string>
+					<string>jetpack-green-icon-app-76x76</string>
+					<string>jetpack-green-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -103,9 +103,9 @@
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>black-classic-icon-app-60x60</string>
-					<string>black-classic-icon-app-76x76</string>
-					<string>black-classic-icon-app-83.5x83.5</string>
+					<string>open-source-icon-app-60x60</string>
+					<string>open-source-icon-app-76x76</string>
+					<string>open-source-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -118,9 +118,9 @@
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>black-icon-app-60x60</string>
-					<string>black-icon-app-76x76</string>
-					<string>black-icon-app-83.5x83.5</string>
+					<string>open-source-dark-icon-app-60x60</string>
+					<string>open-source-dark-icon-app-76x76</string>
+					<string>open-source-dark-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -155,9 +155,9 @@
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>pride_icon_60pt</string>
-					<string>pride_icon_76pt</string>
-					<string>pride_icon_83.5</string>
+					<string>pride-icon-app-60x60</string>
+					<string>pride-icon-app-76x76</string>
+					<string>pride-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -192,9 +192,9 @@
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>black-icon-app-60x60</string>
-					<string>black-icon-app-76x76</string>
-					<string>black-icon-app-83.5x83.5</string>
+					<string>wordpress-dark-icon-app-60x60</string>
+					<string>wordpress-dark-icon-app-76x76</string>
+					<string>wordpress-dark-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -281,9 +281,9 @@
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>pink-icon-app-60x60</string>
-					<string>pink-icon-app-76x76</string>
-					<string>pink-icon-app-83.5x83.5</string>
+					<string>hot-pink-icon-app-60x60</string>
+					<string>hot-pink-icon-app-76x76</string>
+					<string>hot-pink-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -294,9 +294,9 @@
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>celadon-icon-app-60x60</string>
-					<string>celadon-icon-app-76x76</string>
-					<string>celadon-icon-app-83.5x83.5</string>
+					<string>jetpack-green-icon-app-60x60</string>
+					<string>jetpack-green-icon-app-76x76</string>
+					<string>jetpack-green-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -307,9 +307,9 @@
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>black-classic-icon-app-60x60</string>
-					<string>black-classic-icon-app-76x76</string>
-					<string>black-classic-icon-app-83.5x83.5</string>
+					<string>open-source-icon-app-60x60</string>
+					<string>open-source-icon-app-76x76</string>
+					<string>open-source-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -322,9 +322,9 @@
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>black-icon-app-60x60</string>
-					<string>black-icon-app-76x76</string>
-					<string>black-icon-app-83.5x83.5</string>
+					<string>open-source-dark-icon-app-60x60</string>
+					<string>open-source-dark-icon-app-76x76</string>
+					<string>open-source-dark-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -359,9 +359,9 @@
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>pride_icon_60pt</string>
-					<string>pride_icon_76pt</string>
-					<string>pride_icon_83.5</string>
+					<string>pride-icon-app-60x60</string>
+					<string>pride-icon-app-76x76</string>
+					<string>pride-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -396,9 +396,9 @@
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>black-icon-app-60x60</string>
-					<string>black-icon-app-76x76</string>
-					<string>black-icon-app-83.5x83.5</string>
+					<string>wordpress-dark-icon-app-60x60</string>
+					<string>wordpress-dark-icon-app-76x76</string>
+					<string>wordpress-dark-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>

@@ -213,11 +213,36 @@
 		1759F1721FE017F20003EC81 /* QueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F1711FE017F20003EC81 /* QueueTests.swift */; };
 		1759F1801FE1460C0003EC81 /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F17F1FE1460C0003EC81 /* NoticeView.swift */; };
 		175A650C20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175A650B20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift */; };
-		1761EFBD261F7949000815EF /* pride_icon_60pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761EFB8261F7949000815EF /* pride_icon_60pt@2x.png */; };
-		1761EFBE261F794A000815EF /* pride_icon_83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761EFB9261F7949000815EF /* pride_icon_83.5@2x.png */; };
-		1761EFBF261F794A000815EF /* pride_icon_60pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761EFBA261F7949000815EF /* pride_icon_60pt@3x.png */; };
-		1761EFC0261F794A000815EF /* pride_icon_76pt.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761EFBB261F7949000815EF /* pride_icon_76pt.png */; };
-		1761EFC1261F794A000815EF /* pride_icon_76pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761EFBC261F7949000815EF /* pride_icon_76pt@2x.png */; };
+		1761F17126209AEE000815EF /* open-source-dark-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F14E26209AEC000815EF /* open-source-dark-icon-app-83.5x83.5@2x.png */; };
+		1761F17226209AEE000815EF /* open-source-dark-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F14F26209AEC000815EF /* open-source-dark-icon-app-60x60@3x.png */; };
+		1761F17326209AEE000815EF /* open-source-dark-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F15026209AEC000815EF /* open-source-dark-icon-app-60x60@2x.png */; };
+		1761F17426209AEE000815EF /* open-source-dark-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F15126209AEC000815EF /* open-source-dark-icon-app-76x76.png */; };
+		1761F17526209AEE000815EF /* open-source-dark-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F15226209AEC000815EF /* open-source-dark-icon-app-76x76@2x.png */; };
+		1761F17626209AEE000815EF /* wordpress-dark-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F15426209AEC000815EF /* wordpress-dark-icon-app-76x76@2x.png */; };
+		1761F17726209AEE000815EF /* wordpress-dark-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F15526209AEC000815EF /* wordpress-dark-icon-app-76x76.png */; };
+		1761F17826209AEE000815EF /* wordpress-dark-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F15626209AEC000815EF /* wordpress-dark-icon-app-83.5x83.5@2x.png */; };
+		1761F17926209AEE000815EF /* wordpress-dark-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F15726209AEC000815EF /* wordpress-dark-icon-app-60x60@2x.png */; };
+		1761F17A26209AEE000815EF /* wordpress-dark-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F15826209AEC000815EF /* wordpress-dark-icon-app-60x60@3x.png */; };
+		1761F17B26209AEE000815EF /* open-source-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F15A26209AED000815EF /* open-source-icon-app-60x60@2x.png */; };
+		1761F17C26209AEE000815EF /* open-source-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F15B26209AED000815EF /* open-source-icon-app-60x60@3x.png */; };
+		1761F17D26209AEE000815EF /* open-source-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F15C26209AED000815EF /* open-source-icon-app-83.5x83.5@2x.png */; };
+		1761F17E26209AEE000815EF /* open-source-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F15D26209AED000815EF /* open-source-icon-app-76x76.png */; };
+		1761F17F26209AEE000815EF /* open-source-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F15E26209AED000815EF /* open-source-icon-app-76x76@2x.png */; };
+		1761F18026209AEE000815EF /* jetpack-green-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F16026209AED000815EF /* jetpack-green-icon-app-76x76.png */; };
+		1761F18126209AEE000815EF /* jetpack-green-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F16126209AED000815EF /* jetpack-green-icon-app-60x60@2x.png */; };
+		1761F18226209AEE000815EF /* jetpack-green-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F16226209AED000815EF /* jetpack-green-icon-app-60x60@3x.png */; };
+		1761F18326209AEE000815EF /* jetpack-green-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F16326209AED000815EF /* jetpack-green-icon-app-83.5x83.5@2x.png */; };
+		1761F18426209AEE000815EF /* jetpack-green-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F16426209AED000815EF /* jetpack-green-icon-app-76x76@2x.png */; };
+		1761F18526209AEE000815EF /* pride-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F16626209AED000815EF /* pride-icon-app-60x60@3x.png */; };
+		1761F18626209AEE000815EF /* pride-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F16726209AED000815EF /* pride-icon-app-60x60@2x.png */; };
+		1761F18726209AEE000815EF /* pride-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F16826209AED000815EF /* pride-icon-app-83.5x83.5@2x.png */; };
+		1761F18826209AEE000815EF /* pride-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F16926209AED000815EF /* pride-icon-app-76x76.png */; };
+		1761F18926209AEE000815EF /* pride-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F16A26209AED000815EF /* pride-icon-app-76x76@2x.png */; };
+		1761F18A26209AEE000815EF /* hot-pink-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F16C26209AEE000815EF /* hot-pink-icon-app-60x60@2x.png */; };
+		1761F18B26209AEE000815EF /* hot-pink-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F16D26209AEE000815EF /* hot-pink-icon-app-83.5x83.5@2x.png */; };
+		1761F18C26209AEE000815EF /* hot-pink-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F16E26209AEE000815EF /* hot-pink-icon-app-60x60@3x.png */; };
+		1761F18D26209AEE000815EF /* hot-pink-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F16F26209AEE000815EF /* hot-pink-icon-app-76x76.png */; };
+		1761F18E26209AEE000815EF /* hot-pink-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F17026209AEE000815EF /* hot-pink-icon-app-76x76@2x.png */; };
 		1767494E1D3633A000B8D1D1 /* ThemeBrowserSearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1767494D1D3633A000B8D1D1 /* ThemeBrowserSearchHeaderView.swift */; };
 		176BB87F20D0068500751DCE /* FancyAlertViewController+SavedPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176BB87E20D0068500751DCE /* FancyAlertViewController+SavedPosts.swift */; };
 		176CF39A25E0005F00E1E598 /* NoteBlockButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176CF39925E0005F00E1E598 /* NoteBlockButtonTableViewCell.swift */; };
@@ -4476,11 +4501,36 @@
 		1759F1711FE017F20003EC81 /* QueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueTests.swift; sourceTree = "<group>"; };
 		1759F17F1FE1460C0003EC81 /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
 		175A650B20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderSaveForLater+Analytics.swift"; sourceTree = "<group>"; };
-		1761EFB8261F7949000815EF /* pride_icon_60pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride_icon_60pt@2x.png"; sourceTree = "<group>"; };
-		1761EFB9261F7949000815EF /* pride_icon_83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride_icon_83.5@2x.png"; sourceTree = "<group>"; };
-		1761EFBA261F7949000815EF /* pride_icon_60pt@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride_icon_60pt@3x.png"; sourceTree = "<group>"; };
-		1761EFBB261F7949000815EF /* pride_icon_76pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pride_icon_76pt.png; sourceTree = "<group>"; };
-		1761EFBC261F7949000815EF /* pride_icon_76pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride_icon_76pt@2x.png"; sourceTree = "<group>"; };
+		1761F14E26209AEC000815EF /* open-source-dark-icon-app-83.5x83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-source-dark-icon-app-83.5x83.5@2x.png"; sourceTree = "<group>"; };
+		1761F14F26209AEC000815EF /* open-source-dark-icon-app-60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-source-dark-icon-app-60x60@3x.png"; sourceTree = "<group>"; };
+		1761F15026209AEC000815EF /* open-source-dark-icon-app-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-source-dark-icon-app-60x60@2x.png"; sourceTree = "<group>"; };
+		1761F15126209AEC000815EF /* open-source-dark-icon-app-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-source-dark-icon-app-76x76.png"; sourceTree = "<group>"; };
+		1761F15226209AEC000815EF /* open-source-dark-icon-app-76x76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-source-dark-icon-app-76x76@2x.png"; sourceTree = "<group>"; };
+		1761F15426209AEC000815EF /* wordpress-dark-icon-app-76x76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wordpress-dark-icon-app-76x76@2x.png"; sourceTree = "<group>"; };
+		1761F15526209AEC000815EF /* wordpress-dark-icon-app-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wordpress-dark-icon-app-76x76.png"; sourceTree = "<group>"; };
+		1761F15626209AEC000815EF /* wordpress-dark-icon-app-83.5x83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wordpress-dark-icon-app-83.5x83.5@2x.png"; sourceTree = "<group>"; };
+		1761F15726209AEC000815EF /* wordpress-dark-icon-app-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wordpress-dark-icon-app-60x60@2x.png"; sourceTree = "<group>"; };
+		1761F15826209AEC000815EF /* wordpress-dark-icon-app-60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wordpress-dark-icon-app-60x60@3x.png"; sourceTree = "<group>"; };
+		1761F15A26209AED000815EF /* open-source-icon-app-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-source-icon-app-60x60@2x.png"; sourceTree = "<group>"; };
+		1761F15B26209AED000815EF /* open-source-icon-app-60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-source-icon-app-60x60@3x.png"; sourceTree = "<group>"; };
+		1761F15C26209AED000815EF /* open-source-icon-app-83.5x83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-source-icon-app-83.5x83.5@2x.png"; sourceTree = "<group>"; };
+		1761F15D26209AED000815EF /* open-source-icon-app-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-source-icon-app-76x76.png"; sourceTree = "<group>"; };
+		1761F15E26209AED000815EF /* open-source-icon-app-76x76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-source-icon-app-76x76@2x.png"; sourceTree = "<group>"; };
+		1761F16026209AED000815EF /* jetpack-green-icon-app-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jetpack-green-icon-app-76x76.png"; sourceTree = "<group>"; };
+		1761F16126209AED000815EF /* jetpack-green-icon-app-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jetpack-green-icon-app-60x60@2x.png"; sourceTree = "<group>"; };
+		1761F16226209AED000815EF /* jetpack-green-icon-app-60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jetpack-green-icon-app-60x60@3x.png"; sourceTree = "<group>"; };
+		1761F16326209AED000815EF /* jetpack-green-icon-app-83.5x83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jetpack-green-icon-app-83.5x83.5@2x.png"; sourceTree = "<group>"; };
+		1761F16426209AED000815EF /* jetpack-green-icon-app-76x76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jetpack-green-icon-app-76x76@2x.png"; sourceTree = "<group>"; };
+		1761F16626209AED000815EF /* pride-icon-app-60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride-icon-app-60x60@3x.png"; sourceTree = "<group>"; };
+		1761F16726209AED000815EF /* pride-icon-app-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride-icon-app-60x60@2x.png"; sourceTree = "<group>"; };
+		1761F16826209AED000815EF /* pride-icon-app-83.5x83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride-icon-app-83.5x83.5@2x.png"; sourceTree = "<group>"; };
+		1761F16926209AED000815EF /* pride-icon-app-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride-icon-app-76x76.png"; sourceTree = "<group>"; };
+		1761F16A26209AED000815EF /* pride-icon-app-76x76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride-icon-app-76x76@2x.png"; sourceTree = "<group>"; };
+		1761F16C26209AEE000815EF /* hot-pink-icon-app-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hot-pink-icon-app-60x60@2x.png"; sourceTree = "<group>"; };
+		1761F16D26209AEE000815EF /* hot-pink-icon-app-83.5x83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hot-pink-icon-app-83.5x83.5@2x.png"; sourceTree = "<group>"; };
+		1761F16E26209AEE000815EF /* hot-pink-icon-app-60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hot-pink-icon-app-60x60@3x.png"; sourceTree = "<group>"; };
+		1761F16F26209AEE000815EF /* hot-pink-icon-app-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hot-pink-icon-app-76x76.png"; sourceTree = "<group>"; };
+		1761F17026209AEE000815EF /* hot-pink-icon-app-76x76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hot-pink-icon-app-76x76@2x.png"; sourceTree = "<group>"; };
 		1767494D1D3633A000B8D1D1 /* ThemeBrowserSearchHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserSearchHeaderView.swift; sourceTree = "<group>"; };
 		176BB87E20D0068500751DCE /* FancyAlertViewController+SavedPosts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FancyAlertViewController+SavedPosts.swift"; sourceTree = "<group>"; };
 		176CF39925E0005F00E1E598 /* NoteBlockButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteBlockButtonTableViewCell.swift; sourceTree = "<group>"; };
@@ -7708,17 +7758,83 @@
 			path = Notices;
 			sourceTree = "<group>";
 		};
-		1761EFB7261F7949000815EF /* Pride */ = {
+		1761F14D26209AEC000815EF /* open-source-dark */ = {
 			isa = PBXGroup;
 			children = (
-				1761EFB8261F7949000815EF /* pride_icon_60pt@2x.png */,
-				1761EFB9261F7949000815EF /* pride_icon_83.5@2x.png */,
-				1761EFBA261F7949000815EF /* pride_icon_60pt@3x.png */,
-				1761EFBB261F7949000815EF /* pride_icon_76pt.png */,
-				1761EFBC261F7949000815EF /* pride_icon_76pt@2x.png */,
+				1761F14E26209AEC000815EF /* open-source-dark-icon-app-83.5x83.5@2x.png */,
+				1761F14F26209AEC000815EF /* open-source-dark-icon-app-60x60@3x.png */,
+				1761F15026209AEC000815EF /* open-source-dark-icon-app-60x60@2x.png */,
+				1761F15126209AEC000815EF /* open-source-dark-icon-app-76x76.png */,
+				1761F15226209AEC000815EF /* open-source-dark-icon-app-76x76@2x.png */,
 			);
-			path = Pride;
-			sourceTree = "<group>";
+			name = "open-source-dark";
+			path = "Resources/Icons/open-source-dark";
+			sourceTree = SOURCE_ROOT;
+		};
+		1761F15326209AEC000815EF /* wordpress-dark */ = {
+			isa = PBXGroup;
+			children = (
+				1761F15426209AEC000815EF /* wordpress-dark-icon-app-76x76@2x.png */,
+				1761F15526209AEC000815EF /* wordpress-dark-icon-app-76x76.png */,
+				1761F15626209AEC000815EF /* wordpress-dark-icon-app-83.5x83.5@2x.png */,
+				1761F15726209AEC000815EF /* wordpress-dark-icon-app-60x60@2x.png */,
+				1761F15826209AEC000815EF /* wordpress-dark-icon-app-60x60@3x.png */,
+			);
+			name = "wordpress-dark";
+			path = "Resources/Icons/wordpress-dark";
+			sourceTree = SOURCE_ROOT;
+		};
+		1761F15926209AED000815EF /* open-source */ = {
+			isa = PBXGroup;
+			children = (
+				1761F15A26209AED000815EF /* open-source-icon-app-60x60@2x.png */,
+				1761F15B26209AED000815EF /* open-source-icon-app-60x60@3x.png */,
+				1761F15C26209AED000815EF /* open-source-icon-app-83.5x83.5@2x.png */,
+				1761F15D26209AED000815EF /* open-source-icon-app-76x76.png */,
+				1761F15E26209AED000815EF /* open-source-icon-app-76x76@2x.png */,
+			);
+			name = "open-source";
+			path = "Resources/Icons/open-source";
+			sourceTree = SOURCE_ROOT;
+		};
+		1761F15F26209AED000815EF /* jetpack-green */ = {
+			isa = PBXGroup;
+			children = (
+				1761F16026209AED000815EF /* jetpack-green-icon-app-76x76.png */,
+				1761F16126209AED000815EF /* jetpack-green-icon-app-60x60@2x.png */,
+				1761F16226209AED000815EF /* jetpack-green-icon-app-60x60@3x.png */,
+				1761F16326209AED000815EF /* jetpack-green-icon-app-83.5x83.5@2x.png */,
+				1761F16426209AED000815EF /* jetpack-green-icon-app-76x76@2x.png */,
+			);
+			name = "jetpack-green";
+			path = "Resources/Icons/jetpack-green";
+			sourceTree = SOURCE_ROOT;
+		};
+		1761F16526209AED000815EF /* pride */ = {
+			isa = PBXGroup;
+			children = (
+				1761F16626209AED000815EF /* pride-icon-app-60x60@3x.png */,
+				1761F16726209AED000815EF /* pride-icon-app-60x60@2x.png */,
+				1761F16826209AED000815EF /* pride-icon-app-83.5x83.5@2x.png */,
+				1761F16926209AED000815EF /* pride-icon-app-76x76.png */,
+				1761F16A26209AED000815EF /* pride-icon-app-76x76@2x.png */,
+			);
+			name = pride;
+			path = Resources/Icons/pride;
+			sourceTree = SOURCE_ROOT;
+		};
+		1761F16B26209AEE000815EF /* hot-pink */ = {
+			isa = PBXGroup;
+			children = (
+				1761F16C26209AEE000815EF /* hot-pink-icon-app-60x60@2x.png */,
+				1761F16D26209AEE000815EF /* hot-pink-icon-app-83.5x83.5@2x.png */,
+				1761F16E26209AEE000815EF /* hot-pink-icon-app-60x60@3x.png */,
+				1761F16F26209AEE000815EF /* hot-pink-icon-app-76x76.png */,
+				1761F17026209AEE000815EF /* hot-pink-icon-app-76x76@2x.png */,
+			);
+			name = "hot-pink";
+			path = "Resources/Icons/hot-pink";
+			sourceTree = SOURCE_ROOT;
 		};
 		176E194525C465E00058F1C5 /* Prologue */ = {
 			isa = PBXGroup;
@@ -7772,7 +7888,12 @@
 				17222D68261DDDF60047B163 /* pink-classic */,
 				17222D6E261DDDF70047B163 /* spectrum */,
 				17222D7A261DDDF80047B163 /* spectrum-classic */,
-				1761EFB7261F7949000815EF /* Pride */,
+				1761F16B26209AEE000815EF /* hot-pink */,
+				1761F15F26209AED000815EF /* jetpack-green */,
+				1761F15926209AED000815EF /* open-source */,
+				1761F14D26209AEC000815EF /* open-source-dark */,
+				1761F16526209AED000815EF /* pride */,
+				1761F15326209AEC000815EF /* wordpress-dark */,
 			);
 			name = Icons;
 			path = Resources/Icons;
@@ -14163,7 +14284,9 @@
 				B5C66B741ACF071F00F68370 /* NoteBlockActionsTableViewCell.xib in Resources */,
 				F5A34D1125DF2F7F00C9654B /* Pacifico-Regular.ttf in Resources */,
 				FA1CEAD425CA9C40005E7038 /* RestoreStatusFailedView.xib in Resources */,
+				1761F17B26209AEE000815EF /* open-source-icon-app-60x60@2x.png in Resources */,
 				B5C66B701ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib in Resources */,
+				1761F18126209AEE000815EF /* jetpack-green-icon-app-60x60@2x.png in Resources */,
 				17222DA2261DDDF90047B163 /* pink-classic-icon-app-60x60@3x.png in Resources */,
 				469CE07224BCFB04003BDC8B /* CollapsableHeaderCollectionViewCell.xib in Resources */,
 				17222D9B261DDDF90047B163 /* black-icon-app-76x76.png in Resources */,
@@ -14179,16 +14302,19 @@
 				8B64B4B2247EC3A2009A1229 /* reader.css in Resources */,
 				17222DA1261DDDF90047B163 /* pink-classic-icon-app-76x76.png in Resources */,
 				B57273621B66CCEF000D1C4F /* AlertView.xib in Resources */,
-				1761EFBF261F794A000815EF /* pride_icon_60pt@3x.png in Resources */,
+				1761F17726209AEE000815EF /* wordpress-dark-icon-app-76x76.png in Resources */,
 				98F537A922496D0D00B334F9 /* SiteStatsTableHeaderView.xib in Resources */,
 				5DBFC8A91A9BE07B00E00DE4 /* Posts.storyboard in Resources */,
+				1761F18426209AEE000815EF /* jetpack-green-icon-app-76x76@2x.png in Resources */,
 				98B11B8B2216536C00B7F2D7 /* StatsChildRowsView.xib in Resources */,
 				2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */,
 				FA1A55FF25A6F07F0033967D /* RestoreStatusView.xib in Resources */,
 				4058F41A1FF40EE1000D5559 /* PluginDetailViewHeaderCell.xib in Resources */,
+				1761F17226209AEE000815EF /* open-source-dark-icon-app-60x60@3x.png in Resources */,
 				406A0EF0224D39C50016AD6A /* Flags.xcassets in Resources */,
 				9A9E3FB0230EA7A300909BC4 /* StatsGhostTopCell.xib in Resources */,
 				985793C922F23D7000643DBF /* CustomizeInsightsCell.xib in Resources */,
+				1761F17926209AEE000815EF /* wordpress-dark-icon-app-60x60@2x.png in Resources */,
 				98906508237CC1DF00218CD2 /* WidgetTwoColumnCell.xib in Resources */,
 				F5A34D0F25DF2F7F00C9654B /* oswald_upper.ttf in Resources */,
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
@@ -14208,15 +14334,20 @@
 				17222D81261DDDF90047B163 /* celadon-classic-icon-app-76x76@2x.png in Resources */,
 				931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */,
 				D88106F820C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib in Resources */,
+				1761F18826209AEE000815EF /* pride-icon-app-76x76.png in Resources */,
 				17222D8A261DDDF90047B163 /* black-classic-icon-app-76x76@2x.png in Resources */,
 				5D5A6E941B613CA400DAF819 /* ReaderPostCardCell.xib in Resources */,
+				1761F17F26209AEE000815EF /* open-source-icon-app-76x76@2x.png in Resources */,
 				17222DA7261DDDF90047B163 /* spectrum-icon-app-60x60@2x.png in Resources */,
+				1761F18C26209AEE000815EF /* hot-pink-icon-app-60x60@3x.png in Resources */,
 				4349B0B0218A477F0034118A /* RevisionsTableViewCell.xib in Resources */,
 				17222D97261DDDF90047B163 /* pink-icon-app-60x60@2x.png in Resources */,
+				1761F17E26209AEE000815EF /* open-source-icon-app-76x76.png in Resources */,
 				17222DAE261DDDF90047B163 /* spectrum-classic-icon-app-76x76.png in Resources */,
 				17222D9F261DDDF90047B163 /* pink-classic-icon-app-76x76@2x.png in Resources */,
 				439F4F38219B636500F8D0C7 /* Revisions.storyboard in Resources */,
 				4019B27120885AB900A0C7EB /* ActivityDetailViewController.storyboard in Resources */,
+				1761F17826209AEE000815EF /* wordpress-dark-icon-app-83.5x83.5@2x.png in Resources */,
 				8B0CE7D32481CFF8004C4799 /* ReaderDetailHeaderView.xib in Resources */,
 				FA7F92CA25E61C9300502D2A /* ReaderTagsFooter.xib in Resources */,
 				9848DF8321B8BB6900B99DA4 /* PostingActivityLegend.xib in Resources */,
@@ -14235,9 +14366,11 @@
 				9895B6E021ED49160053D370 /* TopTotalsCell.xib in Resources */,
 				430693741DD25F31009398A2 /* PostPost.storyboard in Resources */,
 				17222DA3261DDDF90047B163 /* spectrum-icon-app-76x76@2x.png in Resources */,
+				1761F18726209AEE000815EF /* pride-icon-app-83.5x83.5@2x.png in Resources */,
 				F5A34D0E25DF2F7F00C9654B /* SpaceMono-Bold.ttf in Resources */,
 				9835F16E25E492EE002EFF23 /* CommentsList.storyboard in Resources */,
 				17222D80261DDDF90047B163 /* celadon-classic-icon-app-76x76.png in Resources */,
+				1761F17A26209AEE000815EF /* wordpress-dark-icon-app-60x60@3x.png in Resources */,
 				98563DDE21BF30C40006F5E9 /* TabbedTotalsCell.xib in Resources */,
 				5DFA7EC81AF814E40072023B /* PageListTableViewCell.xib in Resources */,
 				B5C66B781ACF073900F68370 /* NoteBlockImageTableViewCell.xib in Resources */,
@@ -14247,6 +14380,7 @@
 				8BA77BCD248340CE00E1EBBF /* ReaderDetailToolbar.xib in Resources */,
 				4070D75C20E5F55A007CEBDA /* RewindStatusTableViewCell.xib in Resources */,
 				5D13FA571AF99C2100F06492 /* PageListSectionHeaderView.xib in Resources */,
+				1761F18D26209AEE000815EF /* hot-pink-icon-app-76x76.png in Resources */,
 				FA7AA4A725BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib in Resources */,
 				469EB16624D8B12700C764CB /* CollabsableHeaderFilterCollectionViewCell.xib in Resources */,
 				B54E1DF21A0A7BAA00807537 /* ReplyTextView.xib in Resources */,
@@ -14258,11 +14392,13 @@
 				4625B6342538B53700C04AAD /* CollapsableHeaderViewController.xib in Resources */,
 				FA6FAB4725EF7C6A00666CED /* ReaderRelatedPostsSectionHeaderView.xib in Resources */,
 				17222DA5261DDDF90047B163 /* spectrum-icon-app-60x60@3x.png in Resources */,
+				1761F18926209AEE000815EF /* pride-icon-app-76x76@2x.png in Resources */,
 				9826AE8C21B5CC8D00C851FA /* PostingActivityMonth.xib in Resources */,
 				08D499671CDD20450004809A /* Menus.storyboard in Resources */,
 				9A3BDA1022944F4D00FBF510 /* CountriesMapView.xib in Resources */,
 				98797DBD222F434500128C21 /* OverviewCell.xib in Resources */,
 				9A8ECE1E2254AE4E0043C8DA /* JetpackRemoteInstallStateView.xib in Resources */,
+				1761F18626209AEE000815EF /* pride-icon-app-60x60@2x.png in Resources */,
 				464688D9255C71D200ECA61C /* TemplatePreviewViewController.xib in Resources */,
 				98B33C88202283860071E1E2 /* NoResults.storyboard in Resources */,
 				B50421E71B680839008EEA82 /* NoteUndoOverlayView.xib in Resources */,
@@ -14278,6 +14414,8 @@
 				5D1D04751B7A50B100CDE646 /* Reader.storyboard in Resources */,
 				FA1A544025A6E3080033967D /* RestoreWarningView.xib in Resources */,
 				17222DAF261DDDF90047B163 /* spectrum-classic-icon-app-60x60@3x.png in Resources */,
+				1761F17D26209AEE000815EF /* open-source-icon-app-83.5x83.5@2x.png in Resources */,
+				1761F17126209AEE000815EF /* open-source-dark-icon-app-83.5x83.5@2x.png in Resources */,
 				9A8ECE0D2254A3260043C8DA /* JetpackLoginViewController.xib in Resources */,
 				98458CBA21A39D7A0025D232 /* StatsNoDataRow.xib in Resources */,
 				17222D82261DDDF90047B163 /* celadon-classic-icon-app-83.5x83.5@2x.png in Resources */,
@@ -14297,7 +14435,6 @@
 				3223393E24FEC2A700BDD4BF /* ReaderDetailFeaturedImageView.xib in Resources */,
 				E18165FD14E4428B006CE885 /* loader.html in Resources */,
 				FA4F661425946B8500EAA9F5 /* JetpackRestoreHeaderView.xib in Resources */,
-				1761EFBE261F794A000815EF /* pride_icon_83.5@2x.png in Resources */,
 				E1DD4CCD1CAE41C800C3863E /* PagedViewController.xib in Resources */,
 				9AC3C69B231543C2007933CD /* StatsGhostChartCell.xib in Resources */,
 				17222D8B261DDDF90047B163 /* black-classic-icon-app-60x60@3x.png in Resources */,
@@ -14305,13 +14442,17 @@
 				5DB767411588F64D00EBE36C /* postPreview.html in Resources */,
 				989643EE23A0437B0070720A /* WidgetDifferenceCell.xib in Resources */,
 				17222D9E261DDDF90047B163 /* pink-classic-icon-app-83.5x83.5@2x.png in Resources */,
+				1761F17326209AEE000815EF /* open-source-dark-icon-app-60x60@2x.png in Resources */,
+				1761F18B26209AEE000815EF /* hot-pink-icon-app-83.5x83.5@2x.png in Resources */,
 				17222DA6261DDDF90047B163 /* spectrum-icon-app-76x76.png in Resources */,
 				E149771A1C0DCB6F0057CD60 /* MediaSizeSliderCell.xib in Resources */,
 				17222D98261DDDF90047B163 /* pink-icon-app-83.5x83.5@2x.png in Resources */,
 				17222DB1261DDDF90047B163 /* spectrum-classic-icon-app-60x60@2x.png in Resources */,
 				E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */,
 				9A4E215A21F7565A00EFF212 /* QuickStartChecklistCell.xib in Resources */,
+				1761F17426209AEE000815EF /* open-source-dark-icon-app-76x76.png in Resources */,
 				D8C31CC72188490000A33B35 /* SiteSegmentsCell.xib in Resources */,
+				1761F18326209AEE000815EF /* jetpack-green-icon-app-83.5x83.5@2x.png in Resources */,
 				E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */,
 				C7192ECF25E8432D00C3020D /* ReaderTopicsCardCell.xib in Resources */,
 				17222D8E261DDDF90047B163 /* black-classic-icon-app-76x76.png in Resources */,
@@ -14347,17 +14488,20 @@
 				40A2778120191B5E00D078D5 /* PluginDirectoryCollectionViewCell.xib in Resources */,
 				8BD8201924BCCE8600FF25FD /* ReaderWelcomeBanner.xib in Resources */,
 				173BCE751CEB369900AE8817 /* Domains.storyboard in Resources */,
+				1761F17526209AEE000815EF /* open-source-dark-icon-app-76x76@2x.png in Resources */,
+				1761F18A26209AEE000815EF /* hot-pink-icon-app-60x60@2x.png in Resources */,
 				9A9E3FB4230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib in Resources */,
 				435B762A2297484200511813 /* ColorPalette.xcassets in Resources */,
 				FAB800C225AEE3D200D5D54A /* RestoreCompleteView.xib in Resources */,
+				1761F18526209AEE000815EF /* pride-icon-app-60x60@3x.png in Resources */,
 				402FFB1C218C27C100FF4A0B /* RegisterDomain.storyboard in Resources */,
 				5D732F991AE84E5400CD89E7 /* PostListFooterView.xib in Resources */,
-				1761EFBD261F7949000815EF /* pride_icon_60pt@2x.png in Resources */,
 				17222DB0261DDDF90047B163 /* spectrum-classic-icon-app-83.5x83.5@2x.png in Resources */,
 				4D520D4F22972BC9002F5924 /* acknowledgements.html in Resources */,
 				17222D91261DDDF90047B163 /* blue-classic-icon-app-76x76@2x.png in Resources */,
 				8BDA5A70247C36C100AB124C /* ReaderDetailViewController.storyboard in Resources */,
 				17222DA0261DDDF90047B163 /* pink-classic-icon-app-60x60@2x.png in Resources */,
+				1761F17C26209AEE000815EF /* open-source-icon-app-60x60@3x.png in Resources */,
 				5D6C4AFF1B603CE9005E3C43 /* EditCommentViewController.xib in Resources */,
 				1E5D00142493E8C90004B708 /* GutenGhostView.xib in Resources */,
 				B51535D41BBB16AA0029B84B /* Launch Screen.storyboard in Resources */,
@@ -14371,18 +14515,19 @@
 				9A09F91C230C49FD00F42AB7 /* StatsStackViewCell.xib in Resources */,
 				436D562D2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.xib in Resources */,
 				5DFA7EC31AF7CB910072023B /* Pages.storyboard in Resources */,
-				1761EFC0261F794A000815EF /* pride_icon_76pt.png in Resources */,
 				F5A34D1025DF2F7F00C9654B /* Shrikhand-Regular.ttf in Resources */,
 				9A73CB082350DE4C002EF20C /* StatsGhostSingleRowCell.xib in Resources */,
+				1761F18E26209AEE000815EF /* hot-pink-icon-app-76x76@2x.png in Resources */,
 				596C03601B84F24000899EEB /* ThemeBrowser.storyboard in Resources */,
 				17222DA4261DDDF90047B163 /* spectrum-icon-app-83.5x83.5@2x.png in Resources */,
 				9A9E3FB2230EB74300909BC4 /* StatsGhostTabbedCell.xib in Resources */,
 				469CE06E24BCED75003BDC8B /* CategorySectionTableViewCell.xib in Resources */,
 				4034FDEE2007D4F700153B87 /* ExpandableCell.xib in Resources */,
-				1761EFC1261F794A000815EF /* pride_icon_76pt@2x.png in Resources */,
+				1761F18026209AEE000815EF /* jetpack-green-icon-app-76x76.png in Resources */,
 				988F073623D0CE8800AC67A6 /* WidgetUrlCell.xib in Resources */,
 				E61507E42220A13B00213D33 /* richEmbedScript.js in Resources */,
 				17222D96261DDDF90047B163 /* pink-icon-app-60x60@3x.png in Resources */,
+				1761F18226209AEE000815EF /* jetpack-green-icon-app-60x60@3x.png in Resources */,
 				98F0297D2405C9E500FFD862 /* LoginEpilogueConnectSiteCell.xib in Resources */,
 				401A3D022027DBD80099A127 /* PluginListCell.xib in Resources */,
 				17222D83261DDDF90047B163 /* celadon-classic-icon-app-60x60@2x.png in Resources */,
@@ -14394,6 +14539,7 @@
 				98B3FA8621C05BF000148DD4 /* ViewMoreRow.xib in Resources */,
 				D865722F2186F96D0023A99C /* SiteSegmentsWizardContent.xib in Resources */,
 				987535642282682D001661B4 /* DetailDataCell.xib in Resources */,
+				1761F17626209AEE000815EF /* wordpress-dark-icon-app-76x76@2x.png in Resources */,
 				9A9E3FAE230E9DD000909BC4 /* StatsGhostTwoColumnCell.xib in Resources */,
 				17222D95261DDDF90047B163 /* pink-icon-app-76x76.png in Resources */,
 			);
