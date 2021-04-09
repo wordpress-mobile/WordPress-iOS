@@ -14,7 +14,7 @@ open class AppIconViewController: UITableViewController {
             case .current:
                 return nil
             case .legacy:
-                return NSLocalizedString("Legacy Icons", comment: "")
+                return NSLocalizedString("Legacy Icons", comment: "Title displayed for selection of custom app icons that may be removed in a future release of the app.")
             }
         }
     }
