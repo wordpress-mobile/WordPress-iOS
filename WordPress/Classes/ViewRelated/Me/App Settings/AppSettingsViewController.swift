@@ -470,9 +470,9 @@ private extension AppSettingsViewController {
         )
 
         var rows: [ImmuTableRow] = [settingsRow, aboutRow]
-        if #available(iOS 10.3, *),
-            UIApplication.shared.supportsAlternateIcons {
-                rows.insert(iconRow, at: 0)
+        if !AppConfiguration.isJetpack && UIApplication.shared.supportsAlternateIcons {
+            // We don't show custom icons for Jetpack
+            rows.insert(iconRow, at: 0)
         }
 
         if FeatureFlag.debugMenu.enabled {
