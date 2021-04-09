@@ -38,7 +38,7 @@ private extension UserProfileUserInfoCell {
 
     func configureCell() {
         nameLabel.textColor = .text
-        nameLabel.font = WPStyleGuide.serifFontForTextStyle(.title3, fontWeight: .medium)
+        nameLabel.font = WPStyleGuide.serifFontForTextStyle(.title3, fontWeight: .semibold)
         usernameLabel.textColor = .textSubtle
         userBioLabel.textColor = .text
     }
