@@ -32,10 +32,9 @@ extension UserProfileSheetViewController: DrawerPresentable {
     var collapsedHeight: DrawerHeight {
         if traitCollection.verticalSizeClass == .compact {
             return .maxHeight
-        } else {
-            return .contentHeight(300)
-
         }
+
+        return .contentHeight(300)
     }
 
 }
