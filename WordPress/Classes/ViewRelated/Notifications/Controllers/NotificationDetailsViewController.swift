@@ -965,6 +965,7 @@ extension NotificationDetailsViewController {
 // MARK: - Resources
 //
 private extension NotificationDetailsViewController {
+
     func displayURL(_ url: URL?) {
         guard let url = url else {
             tableView.deselectSelectedRowWithAnimation(true)
@@ -980,8 +981,16 @@ private extension NotificationDetailsViewController {
             tableView.deselectSelectedRowWithAnimation(true)
         }
     }
-}
 
+    func displayUserProfile(_ user: RemoteUser) {
+        let userProfileVC = UserProfileSheetViewController(user: user)
+        let bottomSheet = BottomSheetViewController(childViewController: userProfileVC)
+
+        // TODO: add sourceView for iPad
+        bottomSheet.show(from: self)
+    }
+
+}
 
 
 // MARK: - Helpers
@@ -1368,8 +1377,9 @@ extension NotificationDetailsViewController: LikesListControllerDelegate {
     }
 
     func didSelectUser(_ user: RemoteUser) {
-        // TODO: display user profile bottom sheet
+        displayUserProfile(user)
     }
+
 }
 
 
