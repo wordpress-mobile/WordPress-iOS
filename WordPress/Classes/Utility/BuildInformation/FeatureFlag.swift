@@ -14,7 +14,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case contactInfo
     case siteCreationHomePagePicker
     case jetpackScan
-    case jetpackBackupAndRestore
     case todayWidget
     case milestoneNotifications
     case commentFilters
@@ -50,8 +49,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .siteCreationHomePagePicker:
             return true
         case .jetpackScan:
-            return true
-        case .jetpackBackupAndRestore:
             return true
         case .todayWidget:
             return true
@@ -111,8 +108,6 @@ extension FeatureFlag {
             return "Site Creation: Home Page Picker"
         case .jetpackScan:
             return "Jetpack Scan"
-        case .jetpackBackupAndRestore:
-            return "Jetpack Backup and Restore"
         case .todayWidget:
             return "iOS 14 Today Widget"
         case .milestoneNotifications:
