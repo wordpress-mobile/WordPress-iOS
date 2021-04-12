@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-24 00:24:43+0000 */
+/* Translation-Revision-Date: 2021-03-31 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -268,25 +268,25 @@
 "A file contains a malicious code pattern" = "ファイルには、悪意のあるコードが含まれています";
 
 /* No comment provided by engineer. */
-"A link to a URL." = "A link to a URL.";
+"A link to a URL." = "URL へのリンク。";
 
 /* No comment provided by engineer. */
-"A link to a category." = "A link to a category.";
+"A link to a category." = "カテゴリーへのリンク";
 
 /* No comment provided by engineer. */
-"A link to a page." = "A link to a page.";
+"A link to a page." = "ページへのリンク。";
 
 /* No comment provided by engineer. */
-"A link to a post." = "A link to a post.";
+"A link to a post." = "投稿へのリンク。";
 
 /* No comment provided by engineer. */
-"A link to a tag." = "A link to a tag.";
+"A link to a tag." = "タグへのリンク。";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "このアカウントのサイトのリストです。";
 
 /* Story Intro welcome title */
-"A new way to create and publish engaging content on your site." = "A new way to create and publish engaging content on your site.";
+"A new way to create and publish engaging content on your site." = "心をつかむコンテンツを作り、サイトで公開する新しい方法。";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "テーマやサイトアイコンなどを追加する方法の手順。";
@@ -453,7 +453,7 @@
 "Add any topic" = "任意のトピックを追加";
 
 /* No comment provided by engineer. */
-"Add button text" = "Add button text";
+"Add button text" = "ボタンのテキストを追加";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "この新規アカウントを表す画像またはアバターを追加します。";
@@ -579,10 +579,10 @@
 "Allow this connection to be used by all admins and users of your site." = "この連携に対するサイトの全管理者およびユーザーの利用を許可する。";
 
 /* Allowlisted IP Addresses Title */
-"Allowlisted IP Addresses" = "Allowlisted IP Addresses";
+"Allowlisted IP Addresses" = "許可リストに登録された IP アドレス";
 
 /* Jetpack Settings: Allowlisted IP addresses */
-"Allowlisted IP addresses" = "Allowlisted IP addresses";
+"Allowlisted IP addresses" = "許可リストに登録された IP アドレス";
 
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "もう少しで完了です。認証アプリから認証コードを入力してください。";
@@ -939,7 +939,7 @@
 
 /* Blocklist Title
    Settings: Comments Blocklist */
-"Blocklist" = "Blocklist";
+"Blocklist" = "ブロックリスト";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "ブログ";
@@ -1119,7 +1119,7 @@
 "Category" = "カテゴリー";
 
 /* No comment provided by engineer. */
-"Category Link" = "Category Link";
+"Category Link" = "カテゴリーリンク";
 
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "カテゴリー名を入力してください。";
@@ -1281,7 +1281,7 @@
 "Choose video" = "動画を選択";
 
 /* Reader select interests subtitle label text */
-"Choose your topics" = "Choose your topics";
+"Choose your topics" = "トピックを選択";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "別のサイトを選択するとサイト特定のコンテンツ (メディア、カテゴリーなど) に関する編集が失われます。変更しますか ?";
@@ -1962,11 +1962,11 @@
 "Dimensions" = "サイズ";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
-"Disable" = "Disable";
+"Disable" = "無効化";
 
 /* Title. A call to action to disable invite links.
    Title. Title of a prompt to disable group invite links. */
-"Disable invite link" = "Disable invite link";
+"Disable invite link" = "招待リンクを無効化";
 
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "無効";
@@ -2008,7 +2008,7 @@
 "Discover and follow blogs you love" = "お気に入りのブログを探してフォロー";
 
 /* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Discover more topics";
+"Discover more topics" = "さらにトピックを見つける";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2209,7 +2209,7 @@
 "Edit %@ block" = "%@ ブロックを編集";
 
 /* Blocklist Keyword Edition Title */
-"Edit Blocklist Word" = "Edit Blocklist Word";
+"Edit Blocklist Word" = "ブロックリストの単語を編集";
 
 /* No comment provided by engineer. */
 "Edit Comment" = "コメントを編集";
@@ -2370,7 +2370,7 @@
 "Enter your password instead." = "代わりにパスワードを入力することもできます。";
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
-"Enter your server credentials to enable one click site restores from backups." = "Enter your server credentials to enable one click site restores from backups.";
+"Enter your server credentials to enable one click site restores from backups." = "サーバーのログイン情報を入力すると、1クリックでバックアップからサイトを復元できるようになります。";
 
 /* Generic error alert title
    Generic error.
@@ -2509,7 +2509,7 @@
 "Expands to select a different menu area" = "拡大して別のメニューエリアを選択";
 
 /* Title. Indicates an expiration date. */
-"Expires on" = "Expires on";
+"Expires on" = "有効期限日";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "このサイトの簡単な説明。";
@@ -2541,7 +2541,7 @@
 "Failed" = "失敗しました";
 
 /* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "Failed Media Export";
+"Failed Media Export" = "メディアのエクスポートに失敗しました";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "音声ファイルの挿入に失敗しました。 タップすると、オプションが表示されます。";
@@ -2559,7 +2559,7 @@
 "Failed to serialize request to the REST API." = "REST API へのリクエストをシリアライズできませんでした。";
 
 /* The app failed to unsubscribe from the comments for the post */
-"Failed to unfollow conversation" = "Failed to unfollow conversation";
+"Failed to unfollow conversation" = "会話のフォロー解除に失敗しました";
 
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "ファイルのアップロードに失敗しました。\nタップすると、オプションが表示されます。";
@@ -2679,10 +2679,10 @@
 "Follow site" = "サイトをフォロー";
 
 /* Screen title. Reader select interests title label text. */
-"Follow topics" = "Follow topics";
+"Follow topics" = "トピックをフォロー";
 
 /* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "Follow your favorite sites and discover new blogs.";
+"Follow your favorite sites and discover new blogs." = "お気に入りのサイトをフォローして新しいブログを発見しましょう。";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "お気に入りのサイトをフォローして新しい読み物を発見しましょう。";
@@ -2723,7 +2723,7 @@
 "Following conversation by email" = "会話をメールでフォローしています";
 
 /* Label displayed to the user while loading their selected interests */
-"Following new topics..." = "Following new topics...";
+"Following new topics..." = "新しいトピックをフォローしています...";
 
 /* Filters Follows Notifications */
 "Follows" = "フォロー";
@@ -2781,7 +2781,7 @@
 "General" = "一般";
 
 /* Title. A call to action to generate a new invite link. */
-"Generate new link" = "Generate new link";
+"Generate new link" = "新規リンクを作成";
 
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "プレビューを生成中";
@@ -3194,7 +3194,7 @@
 "Invite" = "招待";
 
 /* Title for the Invite Link section of the Invite Person screen. */
-"Invite Link" = "Invite Link";
+"Invite Link" = "招待リンク";
 
 /* Invite People Title */
 "Invite People" = "他の人を招待";
@@ -3744,10 +3744,10 @@
 "More Posts" = "投稿が多い";
 
 /* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
-"More from %1$@" = "More from %1$@";
+"More from %1$@" = "%1$@ からの詳細情報";
 
 /* Section title for global related posts. */
-"More on WordPress.com" = "More on WordPress.com";
+"More on WordPress.com" = "WordPress.com の詳細";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "最も人気のある時間";
@@ -4053,7 +4053,7 @@
 "No network available" = "利用可能なネットワークがありません";
 
 /* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "No new topics to follow";
+"No new topics to follow" = "フォローする新規トピックがありません";
 
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "まだ通知はありません";
@@ -4240,7 +4240,7 @@
 "Oldest first" = "古いものから表示";
 
 /* Warning message about disabling group invite links. */
-"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?";
+"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "招待リンクを無効化すると、このリンクを使用してチームに参加できなくなります。 本当に実行しますか ?";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "WordPress.com サイトの作成後は、お気に入りのコンテンツを自分のサイトにリブログできます。";
@@ -4372,7 +4372,7 @@
 "Page" = "ページ";
 
 /* No comment provided by engineer. */
-"Page Link" = "Page Link";
+"Page Link" = "ページのリンク";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
 "Page Restored to Drafts" = "ページが下書きに復元されました";
@@ -4668,7 +4668,7 @@
 "Post Format" = "投稿フォーマット";
 
 /* No comment provided by engineer. */
-"Post Link" = "Post Link";
+"Post Link" = "投稿リンク";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "投稿を下書きとして復元しました。";
@@ -5425,7 +5425,7 @@
 "Search Locations" = "位置情報を検索";
 
 /* No comment provided by engineer. */
-"Search Settings" = "Search Settings";
+"Search Settings" = "検索設定";
 
 /* Label for list of search term */
 "Search Term" = "検索キーワード";
@@ -5675,7 +5675,7 @@
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "WordPress.com アカウントへのログイン中のサービス利用の情報を分析ツールと共有してください。";
 
 /* Title. A call to action to share an invite link. */
-"Share invite link" = "Share invite link";
+"Share invite link" = "招待リンクを共有";
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "リンクを共有";
@@ -6083,13 +6083,13 @@
 "Successfully cleared spotlight index" = "スポットライトインデックスのクリアに成功しました。";
 
 /* The app successfully subscribed to the comments for the post */
-"Successfully followed conversation" = "Successfully followed conversation";
+"Successfully followed conversation" = "会話のフォローが完了しました";
 
 /* Notice displayed after installing a plug-in. */
 "Successfully installed %@." = "%@ をインストールしました。";
 
 /* The app successfully unsubscribed from the comments for the post */
-"Successfully unfollowed conversation" = "Successfully unfollowed conversation";
+"Successfully unfollowed conversation" = "会話のフォロー解除が完了しました";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -6099,7 +6099,7 @@
 "Suggestions updated" = "提案が更新されました";
 
 /* No comment provided by engineer. */
-"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here.";
+"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "見出しのリストを使用して投稿を要約します。 見出しブロックに HTML アンカーを追加してここにリンクします。";
 
 /* User role badge */
 "Super Admin" = "特権管理者";
@@ -6158,7 +6158,7 @@
 "System default" = "システムの初期設定";
 
 /* No comment provided by engineer. */
-"Table of Contents" = "Table of Contents";
+"Table of Contents" = "目次";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "Table showing %@";
@@ -6174,7 +6174,7 @@
 "Tag" = "タグ";
 
 /* No comment provided by engineer. */
-"Tag Link" = "Tag Link";
+"Tag Link" = "タグリンク";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "タグはすでに存在します";
@@ -6225,7 +6225,7 @@
 "Tap to cancel uploading." = "アップロードをキャンセルするにはタップしてください。";
 
 /* Accessibility hint for button used to change site title */
-"Tap to change the site's title" = "Tap to change the site's title";
+"Tap to change the site's title" = "タップしてサイトのタイトルを変更";
 
 /* Accessibility hint to inform the user what action the hide button performs */
 "Tap to collapse the post tags" = "タップして投稿のタグを折りたたむ";
@@ -6255,13 +6255,13 @@
 "Tap to select which blog to post to" = "投稿先のブログを選択";
 
 /* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "Tap to switch to another site, or add a new site";
+"Tap to switch to another site, or add a new site" = "タップして別のサイトに切り替え、または新しいサイトを追加";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "タップしてこのフラグが付いた投稿を表示";
 
 /* Accessibility hint for button used to view the user's site */
-"Tap to view your site" = "Tap to view your site";
+"Tap to view your site" = "タップしてサイトを表示";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "投稿カテゴリー・タグ";
@@ -6334,7 +6334,7 @@
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "サイトのタイトルは、Web ブラウザーのタイトルバーに表示され、ほとんどのテーマのヘッダーに表示されます。";
 
 /* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "The Stories editor is not currently available for your iPad. Please try Stories on your iPhone.";
+"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "ストーリーエディターは現在 iPad ではご利用いただけません。 iPhone でストーリーをお試しください。";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "この URL には有効なホストがありません。";
@@ -6511,7 +6511,7 @@
 "There was a problem when trying to access your media. Please try again later." = "メディアにアクセスしようとした際に問題が発生しました。後ほどもう一度お試しください。";
 
 /* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen.";
+"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "ストーリーエディターに問題が生じました。  問題が解決しない場合は、「ME」>「ヘルプとサポート」画面からお問い合わせください。";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -6820,7 +6820,7 @@
 "Try it now" = "今すぐ試す";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"Try the new Block Editor" = "Try the new Block Editor";
+"Try the new Block Editor" = "新しいブロックエディターを試す";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */
 "Try with another email" = "別のメールで試す";
@@ -6853,7 +6853,7 @@
 "Type a label" = "ラベルを入力";
 
 /* Site creation. Seelect a domain, search field placeholder */
-"Type a name for your site" = "Type a name for your site";
+"Type a name for your site" = "サイトの名前を入力してください";
 
 /* Register domain - Search field placeholder for the Suggested Domain screen */
 "Type to get more suggestions" = "入力してさらに候補を表示";
@@ -6871,7 +6871,7 @@
 "Unable to Connect" = "連携できません";
 
 /* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "Unable to Create Stories Editor";
+"Unable to Create Stories Editor" = "ストーリーエディターを作成できません";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "投稿を読み込めません";
@@ -6883,7 +6883,7 @@
 "Unable to block site" = "サイトをブロックできませんでした";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to create new invite links." = "Unable to create new invite links.";
+"Unable to create new invite links." = "新規招待リストを作成できません。";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "すべてのメディアファイルを削除できません。";
@@ -6892,13 +6892,13 @@
 "Unable to delete media item." = "メディアファイルを削除できません。";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to disable invite links." = "Unable to disable invite links.";
+"Unable to disable invite links." = "招待リンクを無効にできません。";
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "ファイルをダウンロードできません";
 
 /* The app failed to subscribe to the comments for the post */
-"Unable to follow conversation" = "Unable to follow conversation";
+"Unable to follow conversation" = "会話をフォローできません";
 
 /* Notice title when following a site fails. */
 "Unable to follow site" = "サイトをフォローできません";
@@ -6992,7 +6992,7 @@
 "Unable to verify the email address. Please try again later." = "メールアドレスを検証できません。後ほど、もう一度お試しください。";
 
 /* Message displayed when visiting the Jetpack settings page fails. */
-"Unable to visit Jetpack settings for site" = "Unable to visit Jetpack settings for site";
+"Unable to visit Jetpack settings for site" = "サイトの Jetpack 設定にアクセスできません";
 
 /* Message displayed when visiting a site fails. */
 "Unable to visit site" = "サイトにアクセスできません";
@@ -7085,7 +7085,7 @@
 "Unsupported" = "非サポート";
 
 /* Title for stories unsupported device error. */
-"Unsupported Device" = "Unsupported Device";
+"Unsupported Device" = "サポートされていないデバイス";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "無題";
@@ -7204,7 +7204,7 @@
 "Use block editor" = "ブロックエディターを使用";
 
 /* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo";
+"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "このリンクを使用すると、チームメンバーを1人ずつではなく一括で招待できます。 この URL にアクセスすると、だれでも組織に登録されます。リンクをだれから受け取ったかは関係ないため、信頼できる人と共有するようにしてください。";
 
 /* No comment provided by engineer. */
 "Use this site" = "このサイトを使用";
@@ -7644,7 +7644,7 @@
 "Welcome to the Reader" = "Reader へようこそ";
 
 /* Caption displayed in promotional screens shown during the login flow. */
-"Welcome to the world's most popular website builder." = "Welcome to the world's most popular website builder.";
+"Welcome to the world's most popular website builder." = "世界で最も人気のサイト構築サービスへようこそ。";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "世界で最も人気のサイト構築サービスへようこそ。";
@@ -7656,7 +7656,7 @@
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "アカウントに関する重要なお知らせは常にメールでお送りしますが、役に立つ追加情報を受け取ることもできます。";
 
 /* The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings.";
+"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "新規投稿のクラシックエディターはまもなく削除されますが、既存の投稿やページの編集に影響はありません。 サイト設定でブロックエディターを有効にして一足早くはじめましょう。";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress.
    Hint displayed when we fail to fetch the status of the restore in progress. */
@@ -7950,10 +7950,10 @@
 "You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "公開した投稿はまだありません公開を開始すると、最新の投稿のサマリーがここに表示されます。";
 
 /* Title for a view milestone push notification */
-"You hit a milestone 🚀" = "";
+"You hit a milestone 🚀" = "マイルストーンに到達しました 🚀 ";
 
 /* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
-"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100.";
+"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Jetpack によるブロックを回避するため、IP アドレスなどを許可リストに登録できます。 IPv4と IPv6を使用できます。 範囲を指定するには、下限値と上限値をダッシュで区切って入力します。 例:12.12.12.1-12.12.12.100";
 
 /* A suggestion of topics the user might like */
 "You might like" = "おすすめ";
@@ -8020,7 +8020,7 @@
 "Your first backup will be ready soon" = "初回のバックアップは間もなく完了します";
 
 /* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.";
+"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "メディアをエクスポートできません. If the problem persists you can contact us via the Me >「ヘルプとサポート」画面。";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "モバイルでも通知を受信し、コメントやいいねをリアルタイムで確認できます。";
@@ -8110,7 +8110,7 @@
 "connections" = "連携";
 
 /* No comment provided by engineer. */
-"document outline" = "document outline";
+"document outline" = "文書の概要";
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "リストから消したいものがありますか ?";
@@ -8160,7 +8160,7 @@
 "phone number" = "電話番号";
 
 /* No comment provided by engineer. */
-"summary" = "summary";
+"summary" = "要約";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "次の項目が削除されます。";

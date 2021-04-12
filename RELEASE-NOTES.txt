@@ -1,3 +1,7 @@
+17.2
+-----
+
+
 17.1
 -----
 
@@ -9,6 +13,7 @@
 * [**] We updated the login prologue with brand new content and graphics. [#16159, #16177, #16185, #16187, #16200, #16217, #16219, #16221, #16222]
 * [**] We updated the app's color scheme with a brighter new blue used throughout. [#16213, #16207] 
 * [**] Updated the app icon to match the new color scheme within the app. [#16220]
+* [*] Fixed an issue where some webview navigation bar controls weren't visible. [#16257]
 
 17.0
 -----

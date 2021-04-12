@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-04 15:54:56+0000 */
+/* Translation-Revision-Date: 2021-04-01 13:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -268,25 +268,25 @@
 "A file contains a malicious code pattern" = "קובץ שמכיל תבנית של קוד זדוני";
 
 /* No comment provided by engineer. */
-"A link to a URL." = "A link to a URL.";
+"A link to a URL." = "קישור לכתובת URL.";
 
 /* No comment provided by engineer. */
-"A link to a category." = "A link to a category.";
+"A link to a category." = "קישור לקטגוריה מסוימת.";
 
 /* No comment provided by engineer. */
-"A link to a page." = "A link to a page.";
+"A link to a page." = "קישור לעמוד מסוים.";
 
 /* No comment provided by engineer. */
-"A link to a post." = "A link to a post.";
+"A link to a post." = "קישור לפוסט מסוים.";
 
 /* No comment provided by engineer. */
-"A link to a tag." = "A link to a tag.";
+"A link to a tag." = "קישור לתגית מסוימת.";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "רשימה של אתרים בחשבון זה.";
 
 /* Story Intro welcome title */
-"A new way to create and publish engaging content on your site." = "A new way to create and publish engaging content on your site.";
+"A new way to create and publish engaging content on your site." = "דרך חדשה ליצור ולפרסם תוכן מעניין באתר שלך.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "סדרת צעדים שתראה לך כיצד להוסיף ערכת עיצוב, סמל לאתר ועוד.";
@@ -453,7 +453,7 @@
 "Add any topic" = "להוסיף נושא כלשהו";
 
 /* No comment provided by engineer. */
-"Add button text" = "Add button text";
+"Add button text" = "להוסיף טקסט לכפתור";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "להוסיף תמונה או תמונת פרופיל שתייצג את החשבון חדש.";
@@ -939,7 +939,7 @@
 
 /* Blocklist Title
    Settings: Comments Blocklist */
-"Blocklist" = "Blocklist";
+"Blocklist" = "רשימת החסימות";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "אתר";
@@ -1119,7 +1119,7 @@
 "Category" = "קטגוריה";
 
 /* No comment provided by engineer. */
-"Category Link" = "Category Link";
+"Category Link" = "קישור לקטגוריה";
 
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "חסרה כותרת לקטגוריה";
@@ -1281,7 +1281,7 @@
 "Choose video" = "לבחור וידאו";
 
 /* Reader select interests subtitle label text */
-"Choose your topics" = "Choose your topics";
+"Choose your topics" = "לבחור את הנושאים שמעניינים אותך";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "בבחירת אתרים שונים תאבד את היכולת לערוך תכנים\/מדיה\/קטגוריות מאתר ספציפי. האם אתה בטוח?";
@@ -1962,11 +1962,11 @@
 "Dimensions" = "מידות";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
-"Disable" = "Disable";
+"Disable" = "להשבית";
 
 /* Title. A call to action to disable invite links.
    Title. Title of a prompt to disable group invite links. */
-"Disable invite link" = "Disable invite link";
+"Disable invite link" = "להשבית את הקישור להזמנה";
 
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "לא פעיל";
@@ -2008,7 +2008,7 @@
 "Discover and follow blogs you love" = "לגלות בלוגים שימצאו חן בעינייך ולעקוב אחריהם";
 
 /* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Discover more topics";
+"Discover more topics" = "לגלות נושאים נוספים";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2209,7 +2209,7 @@
 "Edit %@ block" = "לערוך את הבלוק '%@'";
 
 /* Blocklist Keyword Edition Title */
-"Edit Blocklist Word" = "Edit Blocklist Word";
+"Edit Blocklist Word" = "לערוך את המילה ברשימת החסימות";
 
 /* No comment provided by engineer. */
 "Edit Comment" = "ערוך תגובה";
@@ -2370,7 +2370,7 @@
 "Enter your password instead." = "במקום זאת יש להזין סיסמה.";
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
-"Enter your server credentials to enable one click site restores from backups." = "Enter your server credentials to enable one click site restores from backups.";
+"Enter your server credentials to enable one click site restores from backups." = "יש להזין את פרטי הכניסה של השרת כדי להפעיל שחזורים בלחיצה אחת מגיבויים.";
 
 /* Generic error alert title
    Generic error.
@@ -2509,7 +2509,7 @@
 "Expands to select a different menu area" = "הפעולה מרחיבה כדי לאפשר בחירה באזור תפריט אחר";
 
 /* Title. Indicates an expiration date. */
-"Expires on" = "Expires on";
+"Expires on" = "התוקף פג בתאריך";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "מה מהות האתר.";
@@ -2541,7 +2541,7 @@
 "Failed" = "נכשל";
 
 /* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "Failed Media Export";
+"Failed Media Export" = "ייצוא המדיה נכשל";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "נכשלה ההוספה של קובץ האודיו. יש להקיש לאפשרויות.";
@@ -2559,7 +2559,7 @@
 "Failed to serialize request to the REST API." = "לא הצלחנו לערוך בסדרה בקשה אל REST API.";
 
 /* The app failed to unsubscribe from the comments for the post */
-"Failed to unfollow conversation" = "Failed to unfollow conversation";
+"Failed to unfollow conversation" = "ביטול המעקב אחר השיחה נכשל";
 
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "העלאת קבצים נכשלה.\nיש להקיש לאפשרויות.";
@@ -2679,10 +2679,10 @@
 "Follow site" = "לעקוב אחרי האתר";
 
 /* Screen title. Reader select interests title label text. */
-"Follow topics" = "Follow topics";
+"Follow topics" = "לעקוב אחר נושאים";
 
 /* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "Follow your favorite sites and discover new blogs.";
+"Follow your favorite sites and discover new blogs." = "כדאי לעקוב אחר האתרים המועדפים שלך ולגלות בלוגים חדשים לקריאה.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new reads." = "כדאי לעקוב אחר האתרים המועדפים שלך ולגלות חומרי קריאה חדשים.";
@@ -2723,7 +2723,7 @@
 "Following conversation by email" = "הופעל מעקב אחר השיחה באמצעות האימייל";
 
 /* Label displayed to the user while loading their selected interests */
-"Following new topics..." = "Following new topics...";
+"Following new topics..." = "מתחיל מעקב אחר נושאים חדשים...";
 
 /* Filters Follows Notifications */
 "Follows" = "עוקב";
@@ -2781,7 +2781,7 @@
 "General" = "כללי";
 
 /* Title. A call to action to generate a new invite link. */
-"Generate new link" = "Generate new link";
+"Generate new link" = "ליצור קישור חדש";
 
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "יוצר תצוגה מקדימה";
@@ -3194,7 +3194,7 @@
 "Invite" = "שליחת הזמנה";
 
 /* Title for the Invite Link section of the Invite Person screen. */
-"Invite Link" = "Invite Link";
+"Invite Link" = "קישור להזמנה";
 
 /* Invite People Title */
 "Invite People" = "להזמין אנשים";
@@ -3744,10 +3744,10 @@
 "More Posts" = "פוסטים נוספים";
 
 /* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
-"More from %1$@" = "More from %1$@";
+"More from %1$@" = "תוכן נוסף של %1$@";
 
 /* Section title for global related posts. */
-"More on WordPress.com" = "More on WordPress.com";
+"More on WordPress.com" = "עוד מ-WordPress.com";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "המועד הפופולרי ביותר";
@@ -3866,7 +3866,7 @@
 "New" = "חדש";
 
 /* Blocklist Keyword Insertion Title */
-"New Blocklist Word" = "New Blocklist Word";
+"New Blocklist Word" = "מילה חדשה לרשימת החסימות";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "כתובת IP או טווח IP חדשים";
@@ -4053,7 +4053,7 @@
 "No network available" = "אין רשת זמינה";
 
 /* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "No new topics to follow";
+"No new topics to follow" = "אין נושאים חדשים למעקב";
 
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "אין עדיין התראות";
@@ -4240,7 +4240,7 @@
 "Oldest first" = "הישן ביותר תחילה";
 
 /* Warning message about disabling group invite links. */
-"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?";
+"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "לאחר שהקישור להזמנה יושבת, לא תהיה עוד לאף אחד אפשרות להשתמש בו כדי להצטרף לצוות שלך. האם ההחלטה סופית?";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "לאחר יצירת אתר ב-WordPress.com, אפשר לפרסם מחדש בבלוג את התוכן שברצונך להציג באתר שלך.";
@@ -4372,7 +4372,7 @@
 "Page" = "עמוד";
 
 /* No comment provided by engineer. */
-"Page Link" = "Page Link";
+"Page Link" = "קישור לעמוד";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
 "Page Restored to Drafts" = "עמוד שוחזר למצב 'טיוטה'";
@@ -4668,7 +4668,7 @@
 "Post Format" = "פורמט";
 
 /* No comment provided by engineer. */
-"Post Link" = "Post Link";
+"Post Link" = "קישור לפוסט";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "פוסט שוחזר למצב \"טיוטה\"";
@@ -5425,7 +5425,7 @@
 "Search Locations" = "חיפוש מיקומים";
 
 /* No comment provided by engineer. */
-"Search Settings" = "Search Settings";
+"Search Settings" = "הגדרות חיפוש";
 
 /* Label for list of search term */
 "Search Term" = "מונח חיפוש";
@@ -5675,7 +5675,7 @@
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "שיתוף של פרטי השימוש שלך בשירותים השונים עם כלי הניתוח שלנו לאחר ההתחברות לחשבון שלך ב-WordPress.com.";
 
 /* Title. A call to action to share an invite link. */
-"Share invite link" = "Share invite link";
+"Share invite link" = "לשתף קישור הזמנה";
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "שיתוף הקישור";
@@ -6083,13 +6083,13 @@
 "Successfully cleared spotlight index" = "האינדקס של Spotlight נוקה בהצלחה";
 
 /* The app successfully subscribed to the comments for the post */
-"Successfully followed conversation" = "Successfully followed conversation";
+"Successfully followed conversation" = "התחלת לעקוב אחר השיחה בהצלחה";
 
 /* Notice displayed after installing a plug-in. */
 "Successfully installed %@." = "%@ הותקן בהצלחה.";
 
 /* The app successfully unsubscribed from the comments for the post */
-"Successfully unfollowed conversation" = "Successfully unfollowed conversation";
+"Successfully unfollowed conversation" = "הפסקת לעקוב אחר השיחה בהצלחה";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -6099,7 +6099,7 @@
 "Suggestions updated" = "ההצעות עודכנו";
 
 /* No comment provided by engineer. */
-"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here.";
+"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "לסכם את הפוסט עם רשימה של כותרות. להוסיף עוגנים של HTML לבלוקים של כותרת כדי לקשר אותם כאן.";
 
 /* User role badge */
 "Super Admin" = "מנהל מערכת בכיר";
@@ -6158,7 +6158,7 @@
 "System default" = "ברירת המחדל לפי המערכת";
 
 /* No comment provided by engineer. */
-"Table of Contents" = "Table of Contents";
+"Table of Contents" = "תוכן עניינים";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "הטבלה מציגה את %@";
@@ -6174,7 +6174,7 @@
 "Tag" = "תגית";
 
 /* No comment provided by engineer. */
-"Tag Link" = "Tag Link";
+"Tag Link" = "קישור לתגית";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "התגית כבר קיימת";
@@ -6225,7 +6225,7 @@
 "Tap to cancel uploading." = "יש להקיש כדי לבטל את ההעלאה.";
 
 /* Accessibility hint for button used to change site title */
-"Tap to change the site's title" = "Tap to change the site's title";
+"Tap to change the site's title" = "יש להקיש כדי לשנות את כותרת האתר";
 
 /* Accessibility hint to inform the user what action the hide button performs */
 "Tap to collapse the post tags" = "יש להקיש כדי לכווץ את התגיות של הפוסט";
@@ -6255,13 +6255,13 @@
 "Tap to select which blog to post to" = "הקש כדי לבחור את האתר לפרסם בו";
 
 /* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "Tap to switch to another site, or add a new site";
+"Tap to switch to another site, or add a new site" = "יש להקיש כדי להחליף לאתר אחר או להוסיף אתר חדש";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "יש להקיש כדי להציג את הפוסטים בתגית זו";
 
 /* Accessibility hint for button used to view the user's site */
-"Tap to view your site" = "Tap to view your site";
+"Tap to view your site" = "יש להקיש כדי להציג את האתר שלך";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "טקסונומיה";
@@ -6334,7 +6334,7 @@
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "שם האתר מוצג בסרגל הכותרת של הדפדפן ובתור הכותרת עליונה ברוב ערכות העיצוב.";
 
 /* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "The Stories editor is not currently available for your iPad. Please try Stories on your iPhone.";
+"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "עורך הסטוריז לא זמין כרגע ב-iPad שלך. אפשר לנסות ליצור סטוריז במכשיר ה-iPhone.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "בכתובת האינטרנט חסר מארח חוקי.";
@@ -6511,7 +6511,7 @@
 "There was a problem when trying to access your media. Please try again later." = "אירעה בעיה בניסיון לגשת למדיה שלך. כדאי לנסות שוב מאוחר יותר.";
 
 /* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen.";
+"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "אירעה בעיה בעורך הסטוריז.  אם הבעיה נמשכת, אפשר ליצור איתנו קשר באמצעות המסך 'עזרה ותמיכה' תחת 'אני'.";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -6820,7 +6820,7 @@
 "Try it now" = "כדאי לנסות עכשיו";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"Try the new Block Editor" = "Try the new Block Editor";
+"Try the new Block Editor" = "כדאי לנסות את עורך הבלוקים החדש";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */
 "Try with another email" = "ניתן לנסות באמצעות כתובת אימייל שונה";
@@ -6853,7 +6853,7 @@
 "Type a label" = "הזנת תווית";
 
 /* Site creation. Seelect a domain, search field placeholder */
-"Type a name for your site" = "Type a name for your site";
+"Type a name for your site" = "יש להקליד שם לאתר שלך";
 
 /* Register domain - Search field placeholder for the Suggested Domain screen */
 "Type to get more suggestions" = "יש להקליד כדי לקבל הצעות נוספות";
@@ -6871,7 +6871,7 @@
 "Unable to Connect" = "אי אפשר להתחבר";
 
 /* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "Unable to Create Stories Editor";
+"Unable to Create Stories Editor" = "לא ניתן ליצור את עורך הסטוריז";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "לא ניתן לטעון את הפוסטים";
@@ -6883,7 +6883,7 @@
 "Unable to block site" = "אין אפשרות לחסום את האתר";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to create new invite links." = "Unable to create new invite links.";
+"Unable to create new invite links." = "לא ניתן ליצור קישורי הזמנה חדשים.";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "לא ניתן למחוק את כל פריטי המדיה.";
@@ -6892,13 +6892,13 @@
 "Unable to delete media item." = "לא ניתן למחוק פריט מדיה.";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to disable invite links." = "Unable to disable invite links.";
+"Unable to disable invite links." = "לא ניתן להשבית את קישורי ההזמנה.";
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "לא ניתן להוריד את הקובץ";
 
 /* The app failed to subscribe to the comments for the post */
-"Unable to follow conversation" = "Unable to follow conversation";
+"Unable to follow conversation" = "לא ניתן לעקוב אחר השיחה";
 
 /* Notice title when following a site fails. */
 "Unable to follow site" = "לא ניתן לעקוב אחרי האתר";
@@ -6992,7 +6992,7 @@
 "Unable to verify the email address. Please try again later." = "אין אפשרות לאמת את כתובת האימייל. יש לנסות שוב מאוחר יותר.";
 
 /* Message displayed when visiting the Jetpack settings page fails. */
-"Unable to visit Jetpack settings for site" = "Unable to visit Jetpack settings for site";
+"Unable to visit Jetpack settings for site" = "לא ניתן לבקר בהגדרות של Jetpack לאתר";
 
 /* Message displayed when visiting a site fails. */
 "Unable to visit site" = "לא ניתן לבקר באתר";
@@ -7085,7 +7085,7 @@
 "Unsupported" = "לא נתמך";
 
 /* Title for stories unsupported device error. */
-"Unsupported Device" = "Unsupported Device";
+"Unsupported Device" = "מכשיר לא נתמך";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "ללא כותרת";
@@ -7204,7 +7204,7 @@
 "Use block editor" = "להשתמש בעורך הבלוקים";
 
 /* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo";
+"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "ניתן להשתמש בקישור זה כדי להזמין את כל חברי הצוות שלך במקביל, במקום לשלוח הזמנות אישיות. לכל אדם שמבקר בכתובת ה-URL הזאת תהיה אפשרות להירשם לארגון שלך, גם אם הוא מקבל את הקישור מאדם אחר ולכן, חשוב לוודא שהקישור נשלח לאנשים מהימנים בלבד.";
 
 /* No comment provided by engineer. */
 "Use this site" = "שימוש באתר זה";
@@ -7644,7 +7644,7 @@
 "Welcome to the Reader" = "ברוכים הבאים ל-Reader";
 
 /* Caption displayed in promotional screens shown during the login flow. */
-"Welcome to the world's most popular website builder." = "Welcome to the world's most popular website builder.";
+"Welcome to the world's most popular website builder." = "ברוך בואך לבונה האתרים הפופולרי ביותר בעולם.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "ברוך בואך לכלי הפופולרי ביותר בעולם לבניית אתרי אינטרנט.";
@@ -7656,7 +7656,7 @@
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "תמיד נשלח הודעות אימייל חשובות לגבי החשבון שלך, אבל אפשר לקבל גם כמה תוספות מועילות.";
 
 /* The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings.";
+"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "בקרוב נסיר את העורך הקלאסי ליצירת פוסטים חדשים אבל המהלך לא ישפיע על העריכה של פוסטים ועמודים שכבר קיימים באתר שלך. אפשר להקדים את המעבר ולהפעיל את עורך הבלוקים בהגדרות האתר.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress.
    Hint displayed when we fail to fetch the status of the restore in progress. */
@@ -7950,10 +7950,10 @@
 "You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "עדיין לא פרסמת אף פוסט. לאחר פרסום של תוכן, סיכום הפוסטים האחרונים שלך יופיע כאן.";
 
 /* Title for a view milestone push notification */
-"You hit a milestone 🚀" = "";
+"You hit a milestone 🚀" = "הגעת לשיא חדש 🚀 ";
 
 /* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
-"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100.";
+"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "באפשרותך להכניס כתובת IP או סדרת כתובות לרשימת ההיתרים ובכך למנוע לחלוטין את חסימתם על ידי Jetpack. יש תמיכה ב-IPv4 ו-IPv6. כדי לציין טווח, יש להזין את הערך הנמוך והערך הגבוה כשהם מופרדים באמצעות מקף. לדוגמה: 12.12.12.1-12.12.12.100.";
 
 /* A suggestion of topics the user might like */
 "You might like" = "אולי יעניין אותך";
@@ -8020,7 +8020,7 @@
 "Your first backup will be ready soon" = "הגיבוי הראשון שלך יהיה מוכן בקרוב";
 
 /* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.";
+"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "לא ניתן היה לייצא את המדיה שלך. If the problem persists you can contact us via the Me > מסך 'עזרה ותמיכה'.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "ההודעות שלך אתך בכל מקום - אפשר לראות תגובות ולייקים בזמן אמת.";
@@ -8110,7 +8110,7 @@
 "connections" = "חשבונות מקושרים";
 
 /* No comment provided by engineer. */
-"document outline" = "document outline";
+"document outline" = "חלוקת המסמך לרמות";
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "שמחים שהשלמת את המטרה שהצבת לעצמך!";
@@ -8160,7 +8160,7 @@
 "phone number" = "מספר טלפון";
 
 /* No comment provided by engineer. */
-"summary" = "summary";
+"summary" = "סיכום";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "פריטים אלה יימחקו:";

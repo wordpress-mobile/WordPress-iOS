@@ -26,4 +26,5 @@ extension AppStyleGuide {
 // MARK: - Images
 extension AppStyleGuide {
     static let mySiteTabIcon = UIImage.gridicon(.house)
+    static let aboutAppIcon = UIImage(named: "jetpack-install-logo")
 }
