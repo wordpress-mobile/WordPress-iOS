@@ -13,7 +13,7 @@
         return nil;
     }
     self.frame = frame;
-    self.titleLabel.textColor = [UIColor whiteColor];
+    [self setTitleColor: [UIColor murielAppBarText] forState: UIControlStateNormal];
     self.titleLabel.font = [WPFontManager systemRegularFontOfSize:14.0];
     self.backgroundColor = [UIColor clearColor];
     self.titleLabel.adjustsFontSizeToFitWidth = NO;
