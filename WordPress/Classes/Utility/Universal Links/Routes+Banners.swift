@@ -18,7 +18,7 @@ struct AppBannerRoute: Route {
 }
 
 extension AppBannerRoute: NavigationAction {
-    func perform(_ values: [String: String], source: UIViewController? = nil) {
+    func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
         guard let fragmentValue = values[MatchedRouteURLComponentKey.fragment.rawValue],
             let fragment = fragmentValue.removingPercentEncoding else {
                 return
@@ -34,7 +34,7 @@ extension AppBannerRoute: NavigationAction {
         if let url = components.url {
             // We disable tracking when passing the URL back through the router,
             // otherwise we'd be posting two stats events.
-            UniversalLinkRouter.shared.handle(url: url, shouldTrack: false)
+            router.handle(url: url, shouldTrack: false, source: source)
         }
     }
 }

@@ -12,9 +12,13 @@ import Foundation
 ///     will be opened and then the default browser will be opened... but other than that, it is
 ///     a safe procedure.
 ///
+///     Many mbar links will consist of an initial redirect_to value of wp-login.php, which in turn
+///     has its own redirect_to parameter containing our final destination. For these links, we'll
+///     keep following the redirects until we find the end point.
+///
 ///   * /mbar/?redirect_to=https%3A%2F%2Fwordpress.com%2Fpost%2Fsomesite.wordpress.com
 ///
-struct MbarRoute: Route {
+public struct MbarRoute: Route {
     static let redirectURLParameter = "redirect_to"
     let path = "/mbar"
 
@@ -40,7 +44,7 @@ struct MbarRoute: Route {
 }
 
 extension MbarRoute: NavigationAction {
-    func perform(_ values: [String: String], source: UIViewController? = nil) {
+    func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
 
         guard let url = values[MatchedRouteURLComponentKey.url.rawValue],
             let redirectUrl = redirectURL(from: url) else {
@@ -48,6 +52,6 @@ extension MbarRoute: NavigationAction {
                 return
         }
 
-        UniversalLinkRouter.shared.handle(url: redirectUrl, shouldTrack: false, source: source)
+        router.handle(url: redirectUrl, shouldTrack: false, source: source)
     }
 }
