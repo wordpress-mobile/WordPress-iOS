@@ -6,9 +6,7 @@ class LoadingStatusView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .clear
         autoresizingMask = .flexibleWidth
-        accessibilityHint = NSLocalizedString("Tap to cancel uploading.", comment: "This is a status indicator on the editor")
-        let localizedString = NSLocalizedString("%@", comment: "\"Uploading\" Status text")
-        titleLabel.text = String.localizedStringWithFormat(localizedString, title)
+        titleLabel.text = title
         activityIndicator.startAnimating()
         configureLayout()
     }
