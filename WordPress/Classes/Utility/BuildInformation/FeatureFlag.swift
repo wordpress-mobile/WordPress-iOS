@@ -14,7 +14,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case contactInfo
     case siteCreationHomePagePicker
     case jetpackScan
-    case activityLogFilters
     case jetpackBackupAndRestore
     case todayWidget
     case milestoneNotifications
@@ -51,8 +50,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .siteCreationHomePagePicker:
             return true
         case .jetpackScan:
-            return true
-        case .activityLogFilters:
             return true
         case .jetpackBackupAndRestore:
             return true
@@ -114,8 +111,6 @@ extension FeatureFlag {
             return "Site Creation: Home Page Picker"
         case .jetpackScan:
             return "Jetpack Scan"
-        case .activityLogFilters:
-            return "Jetpack's Activity Log Filters"
         case .jetpackBackupAndRestore:
             return "Jetpack Backup and Restore"
         case .todayWidget:
