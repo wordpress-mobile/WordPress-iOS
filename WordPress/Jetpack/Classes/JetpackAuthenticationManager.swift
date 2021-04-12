@@ -41,7 +41,7 @@ struct JetpackAuthenticationManager {
     }
 
     static func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) -> Bool {
-        guard Self.hasJetpackSites() == false else {
+        if Self.hasJetpackSites() {
             return false
         }
 
