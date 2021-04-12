@@ -861,6 +861,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     func refreshTitleViewForMediaUploadIfNeeded() {
         if postEditorStateContext.isUploadingMedia {
             navigationItem.titleView = navigationBarManager.uploadingMediaTitleView
+        } else {
+            navigationItem.titleView = navigationBarManager.blogTitleViewLabel
         }
     }
 
