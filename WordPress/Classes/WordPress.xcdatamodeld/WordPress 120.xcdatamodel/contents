@@ -115,14 +115,14 @@
         </fetchIndex>
         <userInfo/>
     </entity>
-    <entity name="BlockEditorSettingElement" representedClassName="BlockEditorSettingElement" syncable="YES" codeGenerationType="class">
+    <entity name="BlockEditorSettingElement" representedClassName="BlockEditorSettingElement" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="slug" attributeType="String" syncable="YES"/>
         <attribute name="type" attributeType="String" syncable="YES"/>
         <attribute name="value" attributeType="String" syncable="YES"/>
         <relationship name="settings" maxCount="1" deletionRule="Nullify" destinationEntity="BlockEditorSettings" inverseName="elements" inverseEntity="BlockEditorSettings" syncable="YES"/>
     </entity>
-    <entity name="BlockEditorSettings" representedClassName="BlockEditorSettings" syncable="YES" codeGenerationType="class">
+    <entity name="BlockEditorSettings" representedClassName="BlockEditorSettings" syncable="YES">
         <attribute name="isFSETheme" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="lastUpdated" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="blog" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="blockEditorSettings" inverseEntity="Blog" syncable="YES"/>

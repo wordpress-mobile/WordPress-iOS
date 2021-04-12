@@ -746,6 +746,16 @@
 		46C984682527863E00988BB9 /* LayoutPickerAnalyticsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C984672527863E00988BB9 /* LayoutPickerAnalyticsEvent.swift */; };
 		46D6114F2555DAED00B0B7BB /* SiteCreationAnalyticsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D6114E2555DAED00B0B7BB /* SiteCreationAnalyticsHelper.swift */; };
 		46E327D124E705C7000944B3 /* PageLayoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E327D024E705C7000944B3 /* PageLayoutService.swift */; };
+		46F583A92624CE790010A723 /* BlockEditorSettings+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F583A52624CE790010A723 /* BlockEditorSettings+CoreDataClass.swift */; };
+		46F583AA2624CE790010A723 /* BlockEditorSettings+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F583A52624CE790010A723 /* BlockEditorSettings+CoreDataClass.swift */; };
+		46F583AB2624CE790010A723 /* BlockEditorSettings+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F583A62624CE790010A723 /* BlockEditorSettings+CoreDataProperties.swift */; };
+		46F583AC2624CE790010A723 /* BlockEditorSettings+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F583A62624CE790010A723 /* BlockEditorSettings+CoreDataProperties.swift */; };
+		46F583AD2624CE790010A723 /* BlockEditorSettingElement+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F583A72624CE790010A723 /* BlockEditorSettingElement+CoreDataClass.swift */; };
+		46F583AE2624CE790010A723 /* BlockEditorSettingElement+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F583A72624CE790010A723 /* BlockEditorSettingElement+CoreDataClass.swift */; };
+		46F583AF2624CE790010A723 /* BlockEditorSettingElement+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F583A82624CE790010A723 /* BlockEditorSettingElement+CoreDataProperties.swift */; };
+		46F583B02624CE790010A723 /* BlockEditorSettingElement+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F583A82624CE790010A723 /* BlockEditorSettingElement+CoreDataProperties.swift */; };
+		46F583D42624D0BC0010A723 /* Blog+BlockEditorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F583D32624D0BC0010A723 /* Blog+BlockEditorSettings.swift */; };
+		46F583D52624D0BC0010A723 /* Blog+BlockEditorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F583D32624D0BC0010A723 /* Blog+BlockEditorSettings.swift */; };
 		4B2DD0F29CD6AC353C056D41 /* Pods_WordPressUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DCE7542239FBC709B90EA85 /* Pods_WordPressUITests.framework */; };
 		4C8A715EBCE7E73AEE216293 /* Pods_WordPressShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F47DB4A8EC2E6844E213A3FA /* Pods_WordPressShareExtension.framework */; };
 		4D520D4F22972BC9002F5924 /* acknowledgements.html in Resources */ = {isa = PBXBuildFile; fileRef = 4D520D4E22972BC9002F5924 /* acknowledgements.html */; };
@@ -5196,6 +5206,11 @@
 		46D6114E2555DAED00B0B7BB /* SiteCreationAnalyticsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationAnalyticsHelper.swift; sourceTree = "<group>"; };
 		46E327D024E705C7000944B3 /* PageLayoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageLayoutService.swift; sourceTree = "<group>"; };
 		46F583A42624C8FA0010A723 /* WordPress 120.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 120.xcdatamodel"; sourceTree = "<group>"; };
+		46F583A52624CE790010A723 /* BlockEditorSettings+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlockEditorSettings+CoreDataClass.swift"; sourceTree = "<group>"; };
+		46F583A62624CE790010A723 /* BlockEditorSettings+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlockEditorSettings+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		46F583A72624CE790010A723 /* BlockEditorSettingElement+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlockEditorSettingElement+CoreDataClass.swift"; sourceTree = "<group>"; };
+		46F583A82624CE790010A723 /* BlockEditorSettingElement+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlockEditorSettingElement+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		46F583D32624D0BC0010A723 /* Blog+BlockEditorSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+BlockEditorSettings.swift"; sourceTree = "<group>"; };
 		46F84612185A8B7E009D0DA5 /* PostContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostContentProvider.h; sourceTree = "<group>"; };
 		48690E659987FD4472EEDE5F /* Pods-WordPressNotificationContentExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressNotificationContentExtension.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressNotificationContentExtension/Pods-WordPressNotificationContentExtension.release.xcconfig"; sourceTree = "<group>"; };
 		4D520D4E22972BC9002F5924 /* acknowledgements.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = acknowledgements.html; path = "../Pods/Target Support Files/Pods-Apps-WordPress/acknowledgements.html"; sourceTree = "<group>"; };
@@ -9249,6 +9264,10 @@
 		46963F5724649509000D356D /* Gutenberg */ = {
 			isa = PBXGroup;
 			children = (
+				46F583A52624CE790010A723 /* BlockEditorSettings+CoreDataClass.swift */,
+				46F583A62624CE790010A723 /* BlockEditorSettings+CoreDataProperties.swift */,
+				46F583A72624CE790010A723 /* BlockEditorSettingElement+CoreDataClass.swift */,
+				46F583A82624CE790010A723 /* BlockEditorSettingElement+CoreDataProperties.swift */,
 				46963F5824649542000D356D /* EditorTheme.swift */,
 				46183D1D251BD6A0004F9AFD /* PageTemplateCategory+CoreDataClass.swift */,
 				46183D1E251BD6A0004F9AFD /* PageTemplateCategory+CoreDataProperties.swift */,
@@ -11652,6 +11671,7 @@
 				CEBD3EA90FF1BA3B00C1396E /* Blog.h */,
 				CEBD3EAA0FF1BA3B00C1396E /* Blog.m */,
 				E17FEAD9221494B2006E1D2D /* Blog+Analytics.swift */,
+				46F583D32624D0BC0010A723 /* Blog+BlockEditorSettings.swift */,
 				9A341E5521997A330036662E /* Blog+BlogAuthors.swift */,
 				9A341E5421997A330036662E /* BlogAuthor.swift */,
 				B518E1641CCAA19200ADFE75 /* Blog+Capabilities.swift */,
@@ -17033,6 +17053,7 @@
 				FAB8004925AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift in Sources */,
 				9A8ECE0C2254A3260043C8DA /* JetpackLoginViewController.swift in Sources */,
 				5DAE40AD19EC70930011A0AE /* ReaderPostHeaderView.m in Sources */,
+				46F583A92624CE790010A723 /* BlockEditorSettings+CoreDataClass.swift in Sources */,
 				4054F4622214F50300D261AB /* StreakStatsRecordValue+CoreDataProperties.swift in Sources */,
 				B50C0C641EF42B3A00372C65 /* Header+WordPress.swift in Sources */,
 				F504D2B125D60C5900A2764C /* StoryMediaLoader.swift in Sources */,
@@ -17049,6 +17070,7 @@
 				F53FF3AA23EA725C001AD596 /* SiteIconView.swift in Sources */,
 				FA3536F525B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift in Sources */,
 				7E7947AD210BAC7B005BB851 /* FormattableNoticonRange.swift in Sources */,
+				46F583AB2624CE790010A723 /* BlockEditorSettings+CoreDataProperties.swift in Sources */,
 				B55086211CC15CCB004EADB4 /* PromptViewController.swift in Sources */,
 				40C403EC2215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataProperties.swift in Sources */,
 				82FC612C1FA8B7FC00A1757E /* ActivityListRow.swift in Sources */,
@@ -17106,6 +17128,7 @@
 				9A4E939F2268D9B400E14823 /* UIViewController+NoResults.swift in Sources */,
 				E1CB6DA3200F376400945457 /* TimeZoneStore.swift in Sources */,
 				B0B68A9C252FA91E0001B28C /* UserSuggestion+CoreDataClass.swift in Sources */,
+				46F583D42624D0BC0010A723 /* Blog+BlockEditorSettings.swift in Sources */,
 				D80BC7A4207487F200614A59 /* MediaLibraryPicker.swift in Sources */,
 				E663D1901C65383E0017F109 /* SharingAccountViewController.swift in Sources */,
 				93DEB88219E5BF7100F9546D /* TodayExtensionService.m in Sources */,
@@ -17261,6 +17284,7 @@
 				D86572172186C3600023A99C /* WizardDelegate.swift in Sources */,
 				73713583208EA4B900CCDFC8 /* Blog+Files.swift in Sources */,
 				439F4F3C219B78B500F8D0C7 /* RevisionDiffsBrowserViewController.swift in Sources */,
+				46F583AD2624CE790010A723 /* BlockEditorSettingElement+CoreDataClass.swift in Sources */,
 				FAD256932611B01700EDAF88 /* UIColor+WordPressColors.swift in Sources */,
 				E174F6E6172A73960004F23A /* WPAccount.m in Sources */,
 				FF619DD51C75246900903B65 /* CLPlacemark+Formatting.swift in Sources */,
@@ -17348,6 +17372,7 @@
 				3250490724F988220036B47F /* Interpolation.swift in Sources */,
 				E17FEAD8221490F7006E1D2D /* PostEditorAnalyticsSession.swift in Sources */,
 				738B9A5221B85CF20005062B /* SiteCreationWizardLauncher.swift in Sources */,
+				46F583AF2624CE790010A723 /* BlockEditorSettingElement+CoreDataProperties.swift in Sources */,
 				3234B8E7252FA0930068DA40 /* ReaderSitesCardCell.swift in Sources */,
 				D865722E2186F96D0023A99C /* SiteSegmentsWizardContent.swift in Sources */,
 				E66969E01B9E648100EC9C00 /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
@@ -19111,6 +19136,7 @@
 				FABB24972602FC2C00C8785C /* JetpackLoginViewController.swift in Sources */,
 				FABB24982602FC2C00C8785C /* ReaderPostHeaderView.m in Sources */,
 				FABB24992602FC2C00C8785C /* StreakStatsRecordValue+CoreDataProperties.swift in Sources */,
+				46F583AA2624CE790010A723 /* BlockEditorSettings+CoreDataClass.swift in Sources */,
 				FABB249A2602FC2C00C8785C /* Header+WordPress.swift in Sources */,
 				FABB249B2602FC2C00C8785C /* StoryMediaLoader.swift in Sources */,
 				FABB249C2602FC2C00C8785C /* EditorSettingsService.swift in Sources */,
@@ -19127,6 +19153,7 @@
 				FABB24A62602FC2C00C8785C /* JetpackRestoreCompleteViewController.swift in Sources */,
 				FABB24A72602FC2C00C8785C /* FormattableNoticonRange.swift in Sources */,
 				FABB24A82602FC2C00C8785C /* PromptViewController.swift in Sources */,
+				46F583AC2624CE790010A723 /* BlockEditorSettings+CoreDataProperties.swift in Sources */,
 				FABB24A92602FC2C00C8785C /* SearchResultsStatsRecordValue+CoreDataProperties.swift in Sources */,
 				FABB24AA2602FC2C00C8785C /* ActivityListRow.swift in Sources */,
 				FABB24AB2602FC2C00C8785C /* UIColor+MurielColorsObjC.swift in Sources */,
@@ -19184,6 +19211,7 @@
 				FABB24DF2602FC2C00C8785C /* TimeZoneStore.swift in Sources */,
 				FABB24E02602FC2C00C8785C /* UserSuggestion+CoreDataClass.swift in Sources */,
 				FABB24E12602FC2C00C8785C /* MediaLibraryPicker.swift in Sources */,
+				46F583D52624D0BC0010A723 /* Blog+BlockEditorSettings.swift in Sources */,
 				FABB24E22602FC2C00C8785C /* SharingAccountViewController.swift in Sources */,
 				FABB24E32602FC2C00C8785C /* TodayExtensionService.m in Sources */,
 				FABB24E42602FC2C00C8785C /* UIApplication+mainWindow.swift in Sources */,
@@ -19339,6 +19367,7 @@
 				FABB25782602FC2C00C8785C /* WizardDelegate.swift in Sources */,
 				FABB25792602FC2C00C8785C /* Blog+Files.swift in Sources */,
 				FABB257A2602FC2C00C8785C /* RevisionDiffsBrowserViewController.swift in Sources */,
+				46F583AE2624CE790010A723 /* BlockEditorSettingElement+CoreDataClass.swift in Sources */,
 				FABB257B2602FC2C00C8785C /* WPAccount.m in Sources */,
 				FABB257C2602FC2C00C8785C /* CLPlacemark+Formatting.swift in Sources */,
 				FABB257D2602FC2C00C8785C /* SiteStatsDetailTableViewController.swift in Sources */,
@@ -19426,6 +19455,7 @@
 				FABB25CF2602FC2C00C8785C /* PostEditorAnalyticsSession.swift in Sources */,
 				FABB25D02602FC2C00C8785C /* SiteCreationWizardLauncher.swift in Sources */,
 				FABB25D12602FC2C00C8785C /* ReaderSitesCardCell.swift in Sources */,
+				46F583B02624CE790010A723 /* BlockEditorSettingElement+CoreDataProperties.swift in Sources */,
 				FABB25D22602FC2C00C8785C /* SiteSegmentsWizardContent.swift in Sources */,
 				FABB25D32602FC2C00C8785C /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
 				FABB25D42602FC2C00C8785C /* UploadsManager.swift in Sources */,
