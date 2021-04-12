@@ -71,4 +71,24 @@ class MBarRouteTests: XCTestCase {
 
         waitForExpectations(timeout: 1.0)
     }
+
+    func testMultiLevelWPLoginRedirect() throws {
+        let url = URL(string: "https://public-api.wordpress.com/mbar/?stat=groovemails-events&bin=wpcom_email_click&redirect_to=https://wordpress.com/wp-login.php?action=immediate-login%26timestamp=1617470831%26login_reason=user_first_flow%26user_id=123456789%26token=abcdef%26login_email=test%40example.com%26login_locale=en%26redirect_to=https%3A%2F%2Fwordpress.com%2Fstart%26sr=1%26signature=abcdef%26user=123456")!
+
+        let success = expectation(description: "Correct redirect URL found")
+
+        router.completion = { url in
+            if url.lastPathComponent == "start" {
+                success.fulfill()
+            }
+        }
+
+        if let match = matcher.routesMatching(url).first {
+            match.action.perform(match.values,
+                                 source: nil,
+                                 router: router)
+        }
+
+        waitForExpectations(timeout: 1.0)
+    }
 }

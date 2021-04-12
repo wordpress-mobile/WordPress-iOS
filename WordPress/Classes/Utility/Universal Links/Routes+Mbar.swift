@@ -20,6 +20,8 @@ import Foundation
 ///
 public struct MbarRoute: Route {
     static let redirectURLParameter = "redirect_to"
+    static let loginURLPath = "wp-login.php"
+
     let path = "/mbar"
 
     var action: NavigationAction {
@@ -39,7 +41,14 @@ public struct MbarRoute: Route {
             return nil
         }
 
-        return URL(string: redirectURL)
+        let url = URL(string: redirectURL)
+
+        // If this is a wp-login link, handle _its_ redirect_to parameter
+        if url?.lastPathComponent == MbarRoute.loginURLPath {
+            return self.redirectURL(from: redirectURL)
+        }
+
+        return url
     }
 }
 
