@@ -154,6 +154,8 @@
 		1746D7771D2165AE00B11D77 /* ForcePopoverPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1746D7761D2165AE00B11D77 /* ForcePopoverPresenter.swift */; };
 		1749965F2271BF08007021BD /* WordPressAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1749965E2271BF08007021BD /* WordPressAppDelegate.swift */; };
 		174C116F2624603400346EC6 /* MBarRouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C116E2624603400346EC6 /* MBarRouteTests.swift */; };
+		174C11932624C78900346EC6 /* Routes+Start.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C11922624C78900346EC6 /* Routes+Start.swift */; };
+		174C11942624C78900346EC6 /* Routes+Start.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C11922624C78900346EC6 /* Routes+Start.swift */; };
 		174C9697205A846E00CEEF6E /* PostNoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C9696205A846E00CEEF6E /* PostNoticeViewModel.swift */; };
 		1750BD6D201144DB0050F13A /* MediaNoticeNavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1750BD6C201144DB0050F13A /* MediaNoticeNavigationCoordinator.swift */; };
 		1751E5911CE0E552000CA08D /* KeyValueDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */; };
@@ -4558,6 +4560,7 @@
 		1746D7761D2165AE00B11D77 /* ForcePopoverPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForcePopoverPresenter.swift; sourceTree = "<group>"; };
 		1749965E2271BF08007021BD /* WordPressAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressAppDelegate.swift; sourceTree = "<group>"; };
 		174C116E2624603400346EC6 /* MBarRouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBarRouteTests.swift; sourceTree = "<group>"; };
+		174C11922624C78900346EC6 /* Routes+Start.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Routes+Start.swift"; sourceTree = "<group>"; };
 		174C9696205A846E00CEEF6E /* PostNoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNoticeViewModel.swift; sourceTree = "<group>"; };
 		1750BD6C201144DB0050F13A /* MediaNoticeNavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaNoticeNavigationCoordinator.swift; sourceTree = "<group>"; };
 		1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyValueDatabase.swift; sourceTree = "<group>"; };
@@ -7795,6 +7798,7 @@
 			children = (
 				17B7C89F20EC1D6A0042E260 /* Route.swift */,
 				17BD4A0720F76A4700975AC3 /* Routes+Banners.swift */,
+				174C11922624C78900346EC6 /* Routes+Start.swift */,
 				F1655B4722A6C2FA00227BFB /* Routes+Mbar.swift */,
 				17F0E1D920EBDC0A001E9514 /* Routes+Me.swift */,
 				17E24F5320FCF1D900BD70A3 /* Routes+MySites.swift */,
@@ -16964,6 +16968,7 @@
 				E1B23B081BFB3B370006559B /* MyProfileViewController.swift in Sources */,
 				F532AE1C253E55D40013B42E /* CreateButtonActionSheet.swift in Sources */,
 				8BCB83D124C21063001581BD /* ReaderStreamViewController+Ghost.swift in Sources */,
+				174C11932624C78900346EC6 /* Routes+Start.swift in Sources */,
 				B5CC05F61962150600975CAC /* Constants.m in Sources */,
 				4326191522FCB9DC003C7642 /* MurielColor.swift in Sources */,
 				436D562B2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.swift in Sources */,
@@ -19043,6 +19048,7 @@
 				FABB24482602FC2C00C8785C /* MyProfileViewController.swift in Sources */,
 				FABB24492602FC2C00C8785C /* CreateButtonActionSheet.swift in Sources */,
 				FABB244A2602FC2C00C8785C /* ReaderStreamViewController+Ghost.swift in Sources */,
+				174C11942624C78900346EC6 /* Routes+Start.swift in Sources */,
 				FABB244B2602FC2C00C8785C /* Constants.m in Sources */,
 				FABB244C2602FC2C00C8785C /* MurielColor.swift in Sources */,
 				FABB244D2602FC2C00C8785C /* RegisterDomainDetailsErrorSectionFooter.swift in Sources */,

@@ -195,7 +195,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     @objc
-    private func launchSiteCreation() {
+    func launchSiteCreation() {
         let wizardLauncher = SiteCreationWizardLauncher()
         guard let wizard = wizardLauncher.ui else {
             return

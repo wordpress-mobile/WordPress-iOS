@@ -107,8 +107,9 @@ class MySitesCoordinator: NSObject {
         showRootViewController()
 
         if Feature.enabled(.newNavBarAppearance) {
-            blogListViewController.modalPresentationStyle = .pageSheet
-            mySiteViewController.present(blogListViewController, animated: true)
+            let navigationController = UINavigationController(rootViewController: blogListViewController)
+            navigationController.modalPresentationStyle = .formSheet;
+            mySiteViewController.present(navigationController, animated: true)
         }
     }
 
@@ -171,6 +172,12 @@ class MySitesCoordinator: NSObject {
     }
 
     // MARK: - Adding a new site
+
+    func showSiteCreation() {
+        showRootViewController()
+        mySiteViewController.launchSiteCreation()
+    }
+
     @objc
     func showAddNewSite(from view: UIView) {
         showSitesList()

@@ -1,4 +1,5 @@
 import XCTest
+import OHHTTPStubs
 @testable import WordPress
 
 struct MockRouter: LinkRouter {
@@ -16,8 +17,6 @@ struct MockRouter: LinkRouter {
     func handle(url: URL, shouldTrack track: Bool, source: UIViewController?) {
         completion?(url)
     }
-
-
 }
 
 class MBarRouteTests: XCTestCase {
@@ -29,13 +28,24 @@ class MBarRouteTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
+        let requestExpectation = expectation(description: "Request made to original URL")
+
         router = MockRouter(routes: [])
         route = MbarRoute()
         matcher = RouteMatcher(routes: [route])
+
+        HTTPStubs.stubRequests(passingTest: isHost("public-api.wordpress.com")) { _ in
+            defer {
+                HTTPStubs.removeAllStubs()
+                requestExpectation.fulfill()
+            }
+
+            return HTTPStubsResponse(data: Data(), statusCode: 200, headers: nil)
+        }
     }
 
     func testSingleLevelPostRedirect() throws {
-        let url = URL(string: "https://wordpress.com/mbar?redirect_to=/post")!
+        let url = URL(string: "https://public-api.wordpress.com/mbar?redirect_to=/post")!
         let success = expectation(description: "Correct redirect URL found")
 
         router.completion = { url in
@@ -54,7 +64,7 @@ class MBarRouteTests: XCTestCase {
     }
 
     func testSingleLevelStartRedirectWithOtherParameters() throws {
-        let url = URL(string: "https://wordpress.com/mbar?redirect_to=/start&stat=groovemails-events&bin=wpcom_email_click")!
+        let url = URL(string: "https://public-api.wordpress.com/mbar?redirect_to=/start&stat=groovemails-events&bin=wpcom_email_click")!
         let success = expectation(description: "Correct redirect URL found")
 
         router.completion = { url in
