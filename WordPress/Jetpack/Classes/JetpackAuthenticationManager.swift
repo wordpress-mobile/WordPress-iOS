@@ -1,11 +1,11 @@
 import WordPressAuthenticator
 
-struct JetpackAuthenticationManager {
-    static func shouldPresentUsernamePasswordController(for siteInfo: WordPressComSiteInfo?, onCompletion: @escaping (WordPressAuthenticatorResult) -> Void) {
+struct JetpackAuthenticationManager: AuthenticationHandler {
+    func shouldPresentUsernamePasswordController(for siteInfo: WordPressComSiteInfo?, onCompletion: @escaping (WordPressAuthenticatorResult) -> Void) {
         /// Jetpack is required. Present an error if we don't detect a valid installation.
-        guard let site = siteInfo, Self.isValidJetpack(for: site) else {
+        guard let site = siteInfo, isValidJetpack(for: site) else {
             let viewModel = JetpackErrorViewModel(title: "Jetpack Not Found")
-            let controller = Self.errorViewController(with: viewModel)
+            let controller = errorViewController(with: viewModel)
 
             let authenticationResult: WordPressAuthenticatorResult = .injectViewController(value: controller)
             onCompletion(authenticationResult)
@@ -16,7 +16,7 @@ struct JetpackAuthenticationManager {
         /// WordPress must be present.
         guard site.isWP else {
             let viewModel = JetpackErrorViewModel(title: "WordPress Not Installed")
-            let controller = Self.errorViewController(with: viewModel)
+            let controller = errorViewController(with: viewModel)
 
             let authenticationResult: WordPressAuthenticatorResult = .injectViewController(value: controller)
             onCompletion(authenticationResult)
@@ -40,33 +40,33 @@ struct JetpackAuthenticationManager {
         onCompletion(authenticationResult)
     }
 
-    static func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) -> Bool {
-        if Self.hasJetpackSites() {
+    func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) -> Bool {
+        if hasJetpackSites() {
             return false
         }
 
         let viewModel = JetpackErrorViewModel(title: "No Jetpack Sites")
-        let controller = Self.errorViewController(with: viewModel)
+        let controller = errorViewController(with: viewModel)
         navigationController.pushViewController(controller, animated: true)
 
         return true
     }
 
     // MARK: - Private: Helpers
-    private static func isValidJetpack(for site: WordPressComSiteInfo) -> Bool {
+    private func isValidJetpack(for site: WordPressComSiteInfo) -> Bool {
         return site.hasJetpack &&
-               site.isJetpackConnected &&
-               site.isJetpackActive
+            site.isJetpackConnected &&
+            site.isJetpackActive
     }
 
-    private static func hasJetpackSites() -> Bool {
+    private func hasJetpackSites() -> Bool {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
 
         return blogService.blogCountForAllAccounts() > 0
     }
 
-    private static func errorViewController(with model: JetpackErrorViewModel) -> JetpackLoginErrorViewController {
+    private func errorViewController(with model: JetpackErrorViewModel) -> JetpackLoginErrorViewController {
         return JetpackLoginErrorViewController(viewModel: model)
     }
 }

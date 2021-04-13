@@ -10,8 +10,11 @@ class WordPressAuthenticationManager: NSObject {
     static var isPresentingSignIn = false
     private let windowManager: WindowManager
 
-    init(windowManager: WindowManager) {
+    private let authenticationHandler: AuthenticationHandler?
+
+    init(windowManager: WindowManager, authenticationHandler: AuthenticationHandler? = nil) {
         self.windowManager = windowManager
+        self.authenticationHandler = authenticationHandler
     }
 
     /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
@@ -241,19 +244,21 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///     - onCompletion: Closure to be executed on completion.
     ///
     func shouldPresentUsernamePasswordController(for siteInfo: WordPressComSiteInfo?, onCompletion: @escaping (WordPressAuthenticatorResult) -> Void) {
-        guard AppConfiguration.jetpackLogin else {
-            let result: WordPressAuthenticatorResult = .presentPasswordController(value: true)
-            onCompletion(result)
+        if let authenticationHandler = authenticationHandler {
+            authenticationHandler.shouldPresentUsernamePasswordController(for: siteInfo, onCompletion: onCompletion)
             return
         }
 
-        JetpackAuthenticationManager.shouldPresentUsernamePasswordController(for: siteInfo, onCompletion: onCompletion)
+        let result: WordPressAuthenticatorResult = .presentPasswordController(value: true)
+        onCompletion(result)
+        return
     }
 
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) {
-        if AppConfiguration.jetpackLogin, JetpackAuthenticationManager.presentLoginEpilogue(in: navigationController, for: credentials, onDismiss: onDismiss) {
+        if let authenticationHandler = authenticationHandler,
+           authenticationHandler.presentLoginEpilogue(in: navigationController, for: credentials, onDismiss: onDismiss) {
             return
         }
 
@@ -412,16 +417,16 @@ private extension WordPressAuthenticationManager {
             let completion: (() -> Void)?
 
             switch dismissAction {
-            case .none:
-                completion = nil
-            case .addSelfHosted:
-                completion = {
-                    NotificationCenter.default.post(name: .addSelfHosted, object: nil)
-                }
-            case .createSite:
-                completion = {
-                    NotificationCenter.default.post(name: .createSite, object: nil)
-                }
+                case .none:
+                    completion = nil
+                case .addSelfHosted:
+                    completion = {
+                        NotificationCenter.default.post(name: .addSelfHosted, object: nil)
+                    }
+                case .createSite:
+                    completion = {
+                        NotificationCenter.default.post(name: .createSite, object: nil)
+                    }
             }
 
             if windowManager.isShowingFullscreenSignIn {
