@@ -417,16 +417,16 @@ private extension WordPressAuthenticationManager {
             let completion: (() -> Void)?
 
             switch dismissAction {
-                case .none:
-                    completion = nil
-                case .addSelfHosted:
-                    completion = {
-                        NotificationCenter.default.post(name: .addSelfHosted, object: nil)
-                    }
-                case .createSite:
-                    completion = {
-                        NotificationCenter.default.post(name: .createSite, object: nil)
-                    }
+            case .none:
+                completion = nil
+            case .addSelfHosted:
+                completion = {
+                    NotificationCenter.default.post(name: .addSelfHosted, object: nil)
+                }
+            case .createSite:
+                completion = {
+                    NotificationCenter.default.post(name: .createSite, object: nil)
+                }
             }
 
             if windowManager.isShowingFullscreenSignIn {
