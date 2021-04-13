@@ -85,6 +85,7 @@ class StoryEditor: CameraController {
         settings.animateEditorControls = false
         settings.exportStopMotionPhotoAsVideo = false
         settings.fontSelectorUsesFont = true
+        settings.aspectRatio = 9/16
 
         return settings
     }
