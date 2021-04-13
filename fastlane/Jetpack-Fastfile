@@ -61,6 +61,17 @@
     )
   end
 
+  desc "Build for Testing"
+  lane :build_jetpack_for_testing do | options |
+    run_tests(
+      workspace: WORKSPACE_PATH,
+      scheme: "Jetpack",
+      derived_data_path: DERIVED_DATA_PATH,
+      build_for_testing: true,
+      deployment_target_version: options[:ios_version],
+    )
+  end
+
 ########################################################################
 # Jetpack Fastlane match code signing
 ########################################################################
