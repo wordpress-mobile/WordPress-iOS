@@ -1,6 +1,7 @@
 17.2
 -----
 
+* [***] Updated custom app icons. [#16261]
 
 17.1
 -----

@@ -209,10 +209,7 @@ class DateCell: JTACDayCell {
         static let labelSize: CGFloat = 28
         static let reuseIdentifier = "dateCell"
         static var selectedColor: UIColor {
-            UIColor(
-                light: UIColor(red: 0.91, green: 0.94, blue: 0.96, alpha: 1.00),
-                dark: UIColor(red: 0.02, green: 0.22, blue: 0.35, alpha: 1.00)
-            )
+            UIColor(light: .primary(.shade5), dark: .primary(.shade90))
         }
     }
 

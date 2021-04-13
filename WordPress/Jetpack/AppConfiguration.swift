@@ -5,4 +5,5 @@ import Foundation
     @objc static let allowsNewPostShortcut: Bool = false
     @objc static let allowsConnectSite: Bool = false
     @objc static let allowSiteCreation: Bool = false
+    @objc static let allowsCustomAppIcons: Bool = false
 }
