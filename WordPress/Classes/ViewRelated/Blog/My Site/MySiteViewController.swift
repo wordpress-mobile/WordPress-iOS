@@ -169,14 +169,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             image: "mysites-nosites") { noResultsViewController in
 
             noResultsViewController.actionButtonHandler = { [weak self] in
-                self?.showAddSiteAlert()
+                self?.presentInterfaceForAddingNewSite()
             }
         }
     }
 
     // MARK: - Add Site Alert
 
-    private func showAddSiteAlert() {
+    @objc
+    func presentInterfaceForAddingNewSite() {
         let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(canCreateWPComSite: defaultAccount() != nil) { [weak self] in
             self?.launchSiteCreation()
         } addSelfHostedSite: {
