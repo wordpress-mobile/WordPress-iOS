@@ -108,7 +108,7 @@ class MySitesCoordinator: NSObject {
 
         if Feature.enabled(.newNavBarAppearance) {
             let navigationController = UINavigationController(rootViewController: blogListViewController)
-            navigationController.modalPresentationStyle = .formSheet;
+            navigationController.modalPresentationStyle = .formSheet
             mySiteViewController.present(navigationController, animated: true)
         }
     }

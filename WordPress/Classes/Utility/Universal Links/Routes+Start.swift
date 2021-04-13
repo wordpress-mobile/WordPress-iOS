@@ -7,7 +7,7 @@ struct StartRoute: Route, NavigationAction {
         return self
     }
 
-    func perform(_ values: [String : String], source: UIViewController?, router: LinkRouter) {
+    func perform(_ values: [String: String], source: UIViewController?, router: LinkRouter) {
         guard AccountHelper.isDotcomAvailable(),
               let coordinator = WPTabBarController.sharedInstance().mySitesCoordinator else {
             return
