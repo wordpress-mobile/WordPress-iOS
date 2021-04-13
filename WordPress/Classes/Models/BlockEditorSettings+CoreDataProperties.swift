@@ -7,12 +7,16 @@ extension BlockEditorSettings {
         return NSFetchRequest<BlockEditorSettings>(entityName: "BlockEditorSettings")
     }
 
+    /// Stores a n MD5 checksum representing the stored data. Used for a comparison to decide if the data has changed.
+    ///
+    @NSManaged public var checksum: String
+
     /// Stores a Bool indicating if the theme supports Full Site Editing (FSE) or not. `true` means the theme is an FSE theme.
     /// Default is `false`
     ///
     @NSManaged public var isFSETheme: Bool
 
-    /// Stores a date indicating the last time stamp that the settings were modified. Set using `Date().timeIntervalSince1970`
+    /// Stores a date indicating the last time stamp that the settings were modified. 
     ///
     @NSManaged public var lastUpdated: Date
 

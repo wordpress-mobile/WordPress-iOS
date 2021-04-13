@@ -123,6 +123,7 @@
         <relationship name="settings" maxCount="1" deletionRule="Nullify" destinationEntity="BlockEditorSettings" inverseName="elements" inverseEntity="BlockEditorSettings" syncable="YES"/>
     </entity>
     <entity name="BlockEditorSettings" representedClassName="BlockEditorSettings" syncable="YES">
+        <attribute name="checksum" attributeType="String" syncable="YES"/>
         <attribute name="isFSETheme" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="lastUpdated" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="blog" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="blockEditorSettings" inverseEntity="Blog" syncable="YES"/>
@@ -1015,7 +1016,7 @@
         <element name="TopViewedVideoStatsRecordValue" positionX="-638.37890625" positionY="1936.55859375" width="128" height="103"/>
         <element name="UserSuggestion" positionX="160" positionY="192" width="128" height="103"/>
         <element name="VisitsSummaryStatsRecordValue" positionX="-325.91015625" positionY="1975.75390625" width="128" height="118"/>
-        <element name="BlockEditorSettings" positionX="-1629" positionY="-441" width="128" height="89"/>
+        <element name="BlockEditorSettings" positionX="-1629" positionY="-441" width="128" height="104"/>
         <element name="BlockEditorSettingElement" positionX="-1620" positionY="-432" width="128" height="104"/>
     </elements>
 </model>
