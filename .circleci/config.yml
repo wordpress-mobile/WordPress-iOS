@@ -67,9 +67,9 @@ jobs:
       - fix-image
       - git/shallow-checkout
       - ios/install-dependencies:
-            bundle-install: true
-            pod-install: true
-            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
+          bundle-install: true
+          pod-install: true
+          cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
       - run:
           name: Install Dependencies
           command: rake dependencies
@@ -160,9 +160,9 @@ jobs:
       - fix-image
       - git/shallow-checkout
       - ios/install-dependencies:
-            bundle-install: true
-            pod-install: true
-            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
+          bundle-install: true
+          pod-install: true
+          cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
       - run:
           name: Copy Secrets
           command: bundle exec fastlane run configure_apply
@@ -191,9 +191,9 @@ jobs:
             echo "export SLACK_FAILURE_MESSAGE=':red_circle: Build for WordPress iOS failed!'" >> $BASH_ENV
       - git/shallow-checkout
       - ios/install-dependencies:
-            bundle-install: true
-            pod-install: true
-            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
+          bundle-install: true
+          pod-install: true
+          cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
       - run:
           name: Copy Secrets
           command: bundle exec fastlane run configure_apply
@@ -242,9 +242,9 @@ jobs:
       - fix-image
       - git/shallow-checkout
       - ios/install-dependencies:
-            bundle-install: true
-            pod-install: true
-            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
+          bundle-install: true
+          pod-install: true
+          cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
       - run:
           name: Copy Secrets
           command: bundle exec fastlane run configure_apply
@@ -268,7 +268,17 @@ jobs:
       - store_artifacts:
           path: Artifacts
           destination: Artifacts
-
+  lint-translations:
+    machine:
+      image: ubuntu-2004:202010-01
+    steps:
+      - git/shallow-checkout
+      - run:
+          name: "Install Linter"
+          command: apt-get install gettext-lint
+      - run:
+          name: "Lint Localizations"
+          command: ls
 workflows:
   wordpress_ios:
     when:
@@ -320,6 +330,7 @@ workflows:
           name: UI Tests (iPad Air 4th generation)
           <<: *ipad_test_device
           requires: [ "Optional Tests" ]
+      -  lint-translations
   Installable Build:
     when:
       and:
