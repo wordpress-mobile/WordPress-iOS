@@ -1367,6 +1367,10 @@
 		981C986E21B9D71400A7C0C8 /* PostingActivityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981C986C21B9D71400A7C0C8 /* PostingActivityCollectionViewCell.swift */; };
 		981D092A211259840014ECAF /* NoResultsViewController+MediaLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981D0929211259840014ECAF /* NoResultsViewController+MediaLibrary.swift */; };
 		981D464825B0D4E7000AA65C /* ReaderSeenAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981D464725B0D4E7000AA65C /* ReaderSeenAction.swift */; };
+		9822A8412624CFB900FD8A03 /* UserProfileSiteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9822A8402624CFB900FD8A03 /* UserProfileSiteCell.swift */; };
+		9822A8422624CFB900FD8A03 /* UserProfileSiteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9822A8402624CFB900FD8A03 /* UserProfileSiteCell.swift */; };
+		9822A8552624D01800FD8A03 /* UserProfileSiteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9822A8542624D01800FD8A03 /* UserProfileSiteCell.xib */; };
+		9822A8562624D01800FD8A03 /* UserProfileSiteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9822A8542624D01800FD8A03 /* UserProfileSiteCell.xib */; };
 		9822D8DD214194EB0092CBD1 /* NoResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982A4C3420227D6700B5518E /* NoResultsViewController.swift */; };
 		9822D8DE214194EB0092CBD1 /* NoResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982A4C3420227D6700B5518E /* NoResultsViewController.swift */; };
 		9826AE8221B5C6A700C851FA /* LatestPostSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9826AE8021B5C6A700C851FA /* LatestPostSummaryCell.swift */; };
@@ -5837,6 +5841,8 @@
 		981C986C21B9D71400A7C0C8 /* PostingActivityCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingActivityCollectionViewCell.swift; sourceTree = "<group>"; };
 		981D0929211259840014ECAF /* NoResultsViewController+MediaLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NoResultsViewController+MediaLibrary.swift"; sourceTree = "<group>"; };
 		981D464725B0D4E7000AA65C /* ReaderSeenAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSeenAction.swift; sourceTree = "<group>"; };
+		9822A8402624CFB900FD8A03 /* UserProfileSiteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileSiteCell.swift; sourceTree = "<group>"; };
+		9822A8542624D01800FD8A03 /* UserProfileSiteCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileSiteCell.xib; sourceTree = "<group>"; };
 		9826AE8021B5C6A700C851FA /* LatestPostSummaryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LatestPostSummaryCell.swift; sourceTree = "<group>"; };
 		9826AE8121B5C6A700C851FA /* LatestPostSummaryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LatestPostSummaryCell.xib; sourceTree = "<group>"; };
 		9826AE8521B5C72300C851FA /* PostingActivityDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingActivityDay.swift; sourceTree = "<group>"; };
@@ -11049,6 +11055,8 @@
 				9856A3E3261FD27A008D6354 /* UserProfileSectionHeader.swift */,
 				98E5D4912620C2B40074A56A /* UserProfileSectionHeader.xib */,
 				987E79CA261F8857000192B7 /* UserProfileSheetViewController.swift */,
+				9822A8402624CFB900FD8A03 /* UserProfileSiteCell.swift */,
+				9822A8542624D01800FD8A03 /* UserProfileSiteCell.xib */,
 				9856A39C261FC21E008D6354 /* UserProfileUserInfoCell.swift */,
 				9856A388261FC206008D6354 /* UserProfileUserInfoCell.xib */,
 			);
@@ -14359,6 +14367,7 @@
 				17222D8C261DDDF90047B163 /* black-classic-icon-app-83.5x83.5@2x.png in Resources */,
 				FAC086D825EDFB1E00B94F2A /* ReaderRelatedPostsCell.xib in Resources */,
 				9A2B28F72192121F00458F2A /* RevisionOperation.xib in Resources */,
+				9822A8552624D01800FD8A03 /* UserProfileSiteCell.xib in Resources */,
 				E66E2A6A1FE432BC00788F22 /* TitleBadgeDisclosureCell.xib in Resources */,
 				17222D87261DDDF90047B163 /* celadon-icon-app-76x76@2x.png in Resources */,
 				40640046200ED30300106789 /* TextWithAccessoryButtonCell.xib in Resources */,
@@ -14926,6 +14935,7 @@
 				FABB20762602FC2C00C8785C /* WordPressShare.js in Resources */,
 				FABB20772602FC2C00C8785C /* world-map.svg in Resources */,
 				FABB20782602FC2C00C8785C /* NoteBlockTextTableViewCell.xib in Resources */,
+				9822A8562624D01800FD8A03 /* UserProfileSiteCell.xib in Resources */,
 				FABB207C2602FC2C00C8785C /* ReaderCommentCell.xib in Resources */,
 				FABB207D2602FC2C00C8785C /* RELEASE-NOTES.txt in Resources */,
 				FABB207E2602FC2C00C8785C /* EpilogueUserInfoCell.xib in Resources */,
@@ -17137,6 +17147,7 @@
 				324780E1247F2E2A00987525 /* NoResultsViewController+FollowedSites.swift in Sources */,
 				98F0297C2405C9E500FFD862 /* LoginEpilogueConnectSiteCell.swift in Sources */,
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,
+				9822A8412624CFB900FD8A03 /* UserProfileSiteCell.swift in Sources */,
 				9A38DC6D218899FB006A409B /* DiffAbstractValue.swift in Sources */,
 				17B7C8C120EE2A870042E260 /* Routes+Notifications.swift in Sources */,
 				7E92A1FB233CB1B7006D281B /* Autosaver.swift in Sources */,
@@ -19215,6 +19226,7 @@
 				FABB25852602FC2C00C8785C /* LoginEpilogueConnectSiteCell.swift in Sources */,
 				FABB25862602FC2C00C8785C /* WordPress-11-12.xcmappingmodel in Sources */,
 				FABB25872602FC2C00C8785C /* DiffAbstractValue.swift in Sources */,
+				9822A8422624CFB900FD8A03 /* UserProfileSiteCell.swift in Sources */,
 				FABB25882602FC2C00C8785C /* Routes+Notifications.swift in Sources */,
 				FABB25892602FC2C00C8785C /* Autosaver.swift in Sources */,
 				FABB258A2602FC2C00C8785C /* BlogAuthor.swift in Sources */,
