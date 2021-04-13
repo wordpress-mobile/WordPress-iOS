@@ -4766,6 +4766,10 @@
 		24AD675025FC262F0056102C /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/Sites.strings; sourceTree = "<group>"; };
 		24ADA24B24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeatureFlagStore.swift; sourceTree = "<group>"; };
 		24B1AE3024FEC79900B9F334 /* RemoteFeatureFlagTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeatureFlagTests.swift; sourceTree = "<group>"; };
+		24B54FAD2624F8350041B18E /* JetpackRelease-Internal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "JetpackRelease-Internal.entitlements"; sourceTree = "<group>"; };
+		24B54FAE2624F8430041B18E /* JetpackRelease-Alpha.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "JetpackRelease-Alpha.entitlements"; sourceTree = "<group>"; };
+		24B54FAF2624F84C0041B18E /* JetpackRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JetpackRelease.entitlements; sourceTree = "<group>"; };
+		24B54FB02624F8690041B18E /* JetpackDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JetpackDebug.entitlements; sourceTree = "<group>"; };
 		24C69A8A2612421900312D9A /* UserSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsTests.swift; sourceTree = "<group>"; };
 		24C69AC12612467C00312D9A /* UserSettingsTestsObjc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserSettingsTestsObjc.m; sourceTree = "<group>"; };
 		24D40491253F6CEE002843AC /* WordPressStatsWidgetsRelease-Internal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "WordPressStatsWidgetsRelease-Internal.entitlements"; sourceTree = "<group>"; };
@@ -13671,6 +13675,10 @@
 		FABB1F8E2602FC0100C8785C /* Jetpack */ = {
 			isa = PBXGroup;
 			children = (
+				24B54FB02624F8690041B18E /* JetpackDebug.entitlements */,
+				24B54FAF2624F84C0041B18E /* JetpackRelease.entitlements */,
+				24B54FAE2624F8430041B18E /* JetpackRelease-Alpha.entitlements */,
+				24B54FAD2624F8350041B18E /* JetpackRelease-Internal.entitlements */,
 				FABB28482603068B00C8785C /* Resources */,
 				FABB268A2602FCD400C8785C /* Supporting Files */,
 				FA25FB8C2609B9CB0005E08F /* App Configuration */,
@@ -22790,7 +22798,7 @@
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
-				CODE_SIGN_ENTITLEMENTS = WordPress.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Jetpack/JetpackDebug.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
@@ -22861,7 +22869,7 @@
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
-				CODE_SIGN_ENTITLEMENTS = WordPress.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Jetpack/JetpackRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: Automattic, Inc. (PZYM8XX95Q)";
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
@@ -22928,7 +22936,7 @@
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
-				CODE_SIGN_ENTITLEMENTS = "WordPress-Internal.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Jetpack/JetpackRelease-Internal.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
@@ -22978,7 +22986,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.internal;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal";
+				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.internal";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -22996,7 +23004,7 @@
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
-				CODE_SIGN_ENTITLEMENTS = "WordPress-Alpha.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Jetpack/JetpackRelease-Alpha.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
@@ -23046,7 +23054,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.alpha;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha";
+				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.alpha";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
