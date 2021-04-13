@@ -46,7 +46,7 @@ class AztecPostViewController_MenuTests: XCTestCase {
     func testMenuWillShowSwitchToBlockEditor() throws {
         // Arrange
         let post = blogPost(with: "")
-        
+
         aztecPostViewController = Mock(post: post, replaceEditor: { (_, _) in })
         let exp = expectation(description: "Wait for alert controller")
         aztecPostViewController.callback = { alertController in
