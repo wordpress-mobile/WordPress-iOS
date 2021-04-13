@@ -42,9 +42,6 @@ open class ActivityTableViewCell: WPTableViewCell {
         actionButtonContainer.isHidden  = !activity.isRewindable
 
         actionButton.setImage(actionGridicon, for: .normal)
-        guard FeatureFlag.jetpackBackupAndRestore.enabled else {
-            return
-        }
         actionButton.tintColor = .listIcon
     }
 
@@ -58,9 +55,7 @@ open class ActivityTableViewCell: WPTableViewCell {
 
     fileprivate var activity: Activity?
     fileprivate var actionGridicon: UIImage {
-        return FeatureFlag.jetpackBackupAndRestore.enabled
-            ? UIImage.gridicon(.ellipsis)
-            : UIImage.gridicon(.history)
+        return UIImage.gridicon(.ellipsis)
     }
 
     // MARK: - IBOutlets
