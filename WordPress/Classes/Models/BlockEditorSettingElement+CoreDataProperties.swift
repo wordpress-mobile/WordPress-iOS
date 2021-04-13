@@ -4,6 +4,10 @@ import CoreData
 enum BlockEditorSettingElementTypes: String {
     case color
     case gradient
+
+    var valueKey: String {
+        self.rawValue
+    }
 }
 
 extension BlockEditorSettingElement {
@@ -35,5 +39,21 @@ extension BlockEditorSettingElement {
 }
 
 extension BlockEditorSettingElement: Identifiable {
+    var rawRepresentation: [String: String]? {
+        guard let type = BlockEditorSettingElementTypes(rawValue: self.type) else { return nil }
+        return [
+            #keyPath(BlockEditorSettingElement.slug): self.slug,
+            #keyPath(BlockEditorSettingElement.name): self.name,
+            type.valueKey: self.value
+        ]
+    }
 
+    convenience init(fromRawRepresentation rawObject: [String: String], type: BlockEditorSettingElementTypes, context: NSManagedObjectContext) {
+        self.init(context: context)
+
+        self.type = type.rawValue
+        self.value = rawObject[type.valueKey] ?? ""
+        self.slug = rawObject[#keyPath(BlockEditorSettingElement.slug)] ?? ""
+        self.name = rawObject[ #keyPath(BlockEditorSettingElement.name)] ?? ""
+    }
 }
