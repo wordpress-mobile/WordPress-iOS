@@ -268,7 +268,61 @@ jobs:
       - store_artifacts:
           path: Artifacts
           destination: Artifacts
-
+  jetpack-installable-build:
+    executor:
+      name: ios/default
+      <<: *xcode_version
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - fix-image
+      - git/shallow-checkout
+      - ios/install-dependencies:
+            bundle-install: true
+            pod-install: true
+            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
+      - run:
+          name: Copy Secrets
+          command: bundle exec fastlane run configure_apply
+      - run:
+          name: Install other tools
+          command: |
+            brew install imagemagick
+            brew install ghostscript
+            curl -sL https://sentry.io/get-cli/ | bash
+      - run:
+          name: Build
+          command: bundle exec fastlane build_and_upload_jetpack_installable_build
+          no_output_timeout: 60m
+      - store_artifacts:
+          path: Artifacts
+          destination: Artifacts
+  jetpack-pr-build:
+    executor:
+      name: ios/default
+      <<: *xcode_version
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - fix-image
+      - git/shallow-checkout
+      - ios/install-dependencies:
+            bundle-install: true
+            pod-install: true
+            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
+      - run:
+          name: Copy Secrets
+          command: bundle exec fastlane run configure_apply
+      - run:
+          name: Install other tools
+          command: |
+            brew install imagemagick
+            brew install ghostscript
+            curl -sL https://sentry.io/get-cli/ | bash
+      - run:
+          name: Build
+          command: bundle exec fastlane build_jetpack_for_testing
+          no_output_timeout: 60m
 workflows:
   wordpress_ios:
     when:
@@ -303,6 +357,8 @@ workflows:
               only:
                 - develop
                 - /^release.*/
+      - jetpack-installable-build
+      - jetpack-pr-build
       #Optionally run UI tests on PRs
       - Optional Tests:
           type: approval
@@ -346,3 +402,14 @@ workflows:
     when: << pipeline.parameters.translation_review_build >>
     jobs:
       - translation-review-build
+  Jetpack Nightly:
+    triggers:
+       - schedule:
+           cron: "0 0 * * *"
+           filters:
+             branches:
+               only:
+                 - develop
+    jobs:
+      - jetpack-installable-build
+
