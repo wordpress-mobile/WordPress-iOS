@@ -109,7 +109,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
         view.addSubview(containerStackView)
         containerStackView.axis = .vertical
 
-        if FeatureFlag.activityLogFilters.enabled && site.shouldShowActivityLogFilter() {
+        if site.shouldShowActivityLogFilter() {
             setupFilterBar()
         }
 
@@ -406,29 +406,6 @@ extension BaseActivityListViewController: ActivityPresenter {
 
     func presentRestoreFor(activity: Activity, from: String? = nil) {
         guard activity.isRewindable, let rewindID = activity.rewindID else {
-            return
-        }
-
-        guard FeatureFlag.jetpackBackupAndRestore.enabled else {
-            let title = NSLocalizedString("Rewind Site",
-                                          comment: "Title displayed in the Restore Site alert, should match Calypso")
-            let rewindDate = viewModel.mediumDateFormatterWithTime.string(from: activity.published)
-            let messageFormat = NSLocalizedString("Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost.",
-                                                  comment: "Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso.")
-            let message = String(format: messageFormat, rewindDate)
-
-            let alertController = UIAlertController(title: title,
-                                                    message: message,
-                                                    preferredStyle: .alert)
-
-            alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. A button title."))
-            alertController.addDestructiveActionWithTitle(NSLocalizedString("Confirm",
-                                                                            comment: "Confirm Rewind button title"),
-                                                          handler: { action in
-                                                            self.restoreSiteToRewindID(rewindID)
-                                                          })
-            self.present(alertController, animated: true)
-
             return
         }
 
