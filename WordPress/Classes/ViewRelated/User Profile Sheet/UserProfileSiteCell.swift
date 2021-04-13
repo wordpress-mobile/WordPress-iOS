@@ -20,7 +20,7 @@ class UserProfileSiteCell: UITableViewCell, NibReusable {
     // MARK: - Public Methods
 
     func configure() {
-        downloadGravatarWithURL(nil)
+        downloadIconWithURL(nil)
     }
 }
 
@@ -33,7 +33,7 @@ private extension UserProfileSiteCell {
         siteUrlLabel.textColor = .textSubtle
     }
 
-    func downloadGravatarWithURL(_ url: String?) {
+    func downloadIconWithURL(_ url: String?) {
         // Always reset icon
         siteIconImageView.cancelImageDownload()
         siteIconImageView.image = .siteIconPlaceholderImage

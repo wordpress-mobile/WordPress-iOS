@@ -27,8 +27,8 @@
                                     <constraint firstAttribute="width" secondItem="G7K-hZ-0Y6" secondAttribute="height" multiplier="1:1" id="f67-02-hIc"/>
                                 </constraints>
                             </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="8lZ-oQ-0Za" userLabel="Label Stack View">
-                                <rect key="frame" x="52" y="16" width="328" height="34"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" axis="vertical" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="8lZ-oQ-0Za" userLabel="Label Stack View">
+                                <rect key="frame" x="52" y="15" width="328" height="36"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="09U-nj-lDM" userLabel="Site Name Label">
                                         <rect key="frame" x="0.0" y="0.0" width="70.5" height="18"/>
@@ -37,7 +37,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="siteurl.wordpress.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Mt-kW-h4I" userLabel="Site Url Label">
-                                        <rect key="frame" x="0.0" y="18" width="133" height="16"/>
+                                        <rect key="frame" x="0.0" y="20" width="133" height="16"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                         <color key="textColor" name="Gray"/>
                                         <nil key="highlightedColor"/>
