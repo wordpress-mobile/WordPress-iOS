@@ -21,7 +21,7 @@ extension UIColor {
     }
 
     static var lightAppBarTint: UIColor {
-        return UIColor(light: .brand, dark: .white)
+        return .text
     }
 
     static var appBarText: UIColor {
