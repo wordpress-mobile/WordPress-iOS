@@ -8,6 +8,7 @@ struct JetpackScanStatusViewModel {
 
     private(set) var primaryButtonTitle: String?
     private(set) var secondaryButtonTitle: String?
+    private(set) var warningButtonTitle: String?
     private(set) var progress: Float?
 
     private let coordinator: JetpackScanCoordinator
@@ -23,6 +24,10 @@ struct JetpackScanStatusViewModel {
         }
 
         hasValidCredentials = scan.hasValidCredentials
+
+        if !hasValidCredentials {
+            warningButtonTitle = Strings.missingCredentialsTitle
+        }
 
         let blog = coordinator.blog
         let state = Self.viewState(for: scan)
@@ -202,6 +207,7 @@ struct JetpackScanStatusViewModel {
 
     // MARK: - Localized Strings
     private struct Strings {
+        static let missingCredentialsTitle = NSLocalizedString("Enter your server credentials to enable threat fixing.", comment: "Title for button when a site is ")
         static let noThreatsTitle = NSLocalizedString("Don’t worry about a thing", comment: "Title for label when there are no threats on the users site")
         static let noThreatsDescriptionFormat = NSLocalizedString("The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.", comment: "Description for label when there are no threats on a users site and how long ago the scan ran.")
         static let noThreatsDescription = NSLocalizedString("The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.",
