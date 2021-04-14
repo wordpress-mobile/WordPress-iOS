@@ -251,7 +251,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         let result: WordPressAuthenticatorResult = .presentPasswordController(value: true)
         onCompletion(result)
-        return
     }
 
     /// Presents the Login Epilogue, in the specified NavigationController.
