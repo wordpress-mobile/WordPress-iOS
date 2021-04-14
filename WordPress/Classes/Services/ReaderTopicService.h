@@ -238,16 +238,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  */
 - (ReaderSiteTopic *)findSiteTopicWithFeedID:(NSNumber *)feedID;
 
-/**
- Find a site topic by siteID.
- Combines `findSiteTopicWithSiteID` and `findSiteTopicWithFeedID` to get a topic by ID.
- Useful when it's not known if the siteID is internal or external.
- 
- @param siteID The site id of the topic
- @return A matched site topic
- */
-- (ReaderSiteTopic *)siteTopicForSiteID:(NSNumber *)siteID;
-
 @end
 
 @interface ReaderTopicService (Tests)
