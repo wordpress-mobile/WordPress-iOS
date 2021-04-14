@@ -2,6 +2,7 @@ import UIKit
 
 class JetpackScanHistoryViewController: UIViewController {
     private let blog: Blog
+    private let hasValidCredentials: Bool
 
     lazy var coordinator: JetpackScanHistoryCoordinator = {
         return JetpackScanHistoryCoordinator(blog: blog, view: self)
@@ -17,8 +18,9 @@ class JetpackScanHistoryViewController: UIViewController {
     private var noResultsViewController: NoResultsViewController?
 
     // MARK: - Initializers
-    @objc init(blog: Blog) {
+    @objc init(blog: Blog, hasValidCredentials: Bool) {
         self.blog = blog
+        self.hasValidCredentials = hasValidCredentials
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -194,7 +196,9 @@ extension JetpackScanHistoryViewController: UITableViewDataSource, UITableViewDe
             return
         }
 
-        let threatDetailsVC = JetpackScanThreatDetailsViewController(blog: blog, threat: threat)
+        let threatDetailsVC = JetpackScanThreatDetailsViewController(blog: blog,
+                                                                     threat: threat,
+                                                                     hasValidCredentials: hasValidCredentials)
         self.navigationController?.pushViewController(threatDetailsVC, animated: true)
 
         WPAnalytics.track(.jetpackScanThreatListItemTapped, properties: ["threat_signature": threat.signature, "section": "history"])

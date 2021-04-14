@@ -132,7 +132,11 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
 
     // MARK: - Actions
     @objc func showHistory() {
-        let viewController = JetpackScanHistoryViewController(blog: blog)
+        guard let hasValidCredentials = coordinator.scan?.hasValidCredentials else {
+            return
+        }
+
+        let viewController = JetpackScanHistoryViewController(blog: blog, hasValidCredentials: hasValidCredentials)
         navigationController?.pushViewController(viewController, animated: true)
     }
 
@@ -269,11 +273,14 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        guard let threat = threat(for: indexPath), threat.status != .fixing else {
+        guard let threat = threat(for: indexPath), threat.status != .fixing,
+              let hasValidCredentials = coordinator.scan?.hasValidCredentials else {
             return
         }
 
-        let threatDetailsVC = JetpackScanThreatDetailsViewController(blog: blog, threat: threat)
+        let threatDetailsVC = JetpackScanThreatDetailsViewController(blog: blog,
+                                                                     threat: threat,
+                                                                     hasValidCredentials: hasValidCredentials)
         threatDetailsVC.delegate = self
         self.navigationController?.pushViewController(threatDetailsVC, animated: true)
 

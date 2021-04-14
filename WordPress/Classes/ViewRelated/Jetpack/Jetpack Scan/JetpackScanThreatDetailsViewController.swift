@@ -46,6 +46,7 @@ class JetpackScanThreatDetailsViewController: UIViewController {
 
     private let blog: Blog
     private let threat: JetpackScanThreat
+    private let hasValidCredentials: Bool
 
     private lazy var viewModel: JetpackScanThreatViewModel = {
         return JetpackScanThreatViewModel(threat: threat)
@@ -53,9 +54,10 @@ class JetpackScanThreatDetailsViewController: UIViewController {
 
     // MARK: - Init
 
-    init(blog: Blog, threat: JetpackScanThreat) {
+    init(blog: Blog, threat: JetpackScanThreat, hasValidCredentials: Bool) {
         self.blog = blog
         self.threat = threat
+        self.hasValidCredentials = hasValidCredentials
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -155,6 +157,7 @@ extension JetpackScanThreatDetailsViewController {
 
         if let fixActionTitle = viewModel.fixActionTitle {
             fixThreatButton.setTitle(fixActionTitle, for: .normal)
+            fixThreatButton.isEnabled = hasValidCredentials
             fixThreatButton.isHidden = false
         } else {
             fixThreatButton.isHidden = true
