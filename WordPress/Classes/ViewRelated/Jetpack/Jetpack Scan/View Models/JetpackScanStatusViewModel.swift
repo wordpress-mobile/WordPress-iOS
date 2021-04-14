@@ -15,6 +15,7 @@ struct JetpackScanStatusViewModel {
 
     private var primaryButtonAction: ButtonAction?
     private var secondaryButtonAction: ButtonAction?
+    private var warningButtonAction: ButtonAction?
 
     init?(coordinator: JetpackScanCoordinator) {
         self.coordinator = coordinator
@@ -24,10 +25,6 @@ struct JetpackScanStatusViewModel {
         }
 
         hasValidCredentials = scan.hasValidCredentials
-
-        if !hasValidCredentials {
-            warningButtonTitle = Strings.missingCredentialsTitle
-        }
 
         let blog = coordinator.blog
         let state = Self.viewState(for: scan)
@@ -82,6 +79,11 @@ struct JetpackScanStatusViewModel {
 
                     secondaryButtonTitle = Strings.scanAgainTitle
                     secondaryButtonAction = .triggerScan
+
+                    if !hasValidCredentials {
+                        warningButtonTitle = Strings.missingCredentialsTitle
+                        warningButtonAction = .enterServerCredentials
+                    }
                 }
             }
 
@@ -115,6 +117,7 @@ struct JetpackScanStatusViewModel {
         case triggerScan
         case fixAll
         case contactSupport
+        case enterServerCredentials
     }
 
     func primaryButtonTapped(_ sender: Any) {
@@ -133,6 +136,14 @@ struct JetpackScanStatusViewModel {
         buttonTapped(action: action)
     }
 
+    func warningButtonTapped(_ sender: Any) {
+        guard let action = warningButtonAction else {
+            return
+        }
+
+        buttonTapped(action: action)
+    }
+
     private func buttonTapped(action: ButtonAction) {
         switch action {
         case .fixAll:
@@ -145,6 +156,9 @@ struct JetpackScanStatusViewModel {
 
         case .contactSupport:
             coordinator.openSupport()
+
+        case .enterServerCredentials:
+            coordinator.openJetpackSettings()
         }
     }
 

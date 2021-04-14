@@ -91,6 +91,14 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
         viewModel.secondaryButtonTapped(sender)
     }
 
+    @IBAction func warningButtonTapped(_ sender: Any) {
+        guard let viewModel = model else {
+            return
+        }
+
+        viewModel.warningButtonTapped(sender)
+    }
+
     // MARK: - Private: View Configuration
     private func configureProgressView() {
         progressView.isHidden = true

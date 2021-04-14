@@ -205,6 +205,9 @@ class JetpackScanCoordinator {
         supportVC.showFromTabBar()
     }
 
+    public func openJetpackSettings() {
+    }
+
     public func noResultsButtonPressed() {
         guard let action = actionButtonState else {
             return
