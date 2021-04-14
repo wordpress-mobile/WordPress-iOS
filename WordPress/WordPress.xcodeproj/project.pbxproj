@@ -12477,7 +12477,6 @@
 		C7F7AC71261CF1BD00CE547F /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				C7F7BE0626262B9900CE547F /* AuthenticationHandler.swift */,
 				C7F7ABD5261CED7A00CE547F /* JetpackAuthenticationManager.swift */,
 				C7F7AC72261CF1C900CE547F /* ViewRelated */,
 			);
@@ -13589,6 +13588,7 @@
 		FA25FB242609B98E0005E08F /* App Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				C7F7BE0626262B9900CE547F /* AuthenticationHandler.swift */,
 				FA25F9FD2609AA830005E08F /* AppConfiguration.swift */,
 				FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */,
 				FAADE42726159B1300BF29FE /* AppConstants.swift */,
