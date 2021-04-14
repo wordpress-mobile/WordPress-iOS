@@ -928,6 +928,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     remotePost.password = post.password;
     remotePost.type = @"post";
     remotePost.authorAvatarURL = post.authorAvatarURL;
+    remotePost.authorID = post.authorID;
     remotePost.excerpt = post.mt_excerpt;
     remotePost.slug = post.wp_slug;
 
