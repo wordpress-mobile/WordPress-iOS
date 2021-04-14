@@ -3,6 +3,7 @@ class UserProfileSheetViewController: UITableViewController {
     // MARK: - Properties
 
     private let user: RemoteUser
+    private lazy var readerTopicService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
     // MARK: - Init
 
@@ -118,15 +119,29 @@ extension UserProfileSheetViewController {
             return
         }
 
-        // TODO: show site
+        showSite()
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
 }
 
 // MARK: - Private Extension
 
 private extension UserProfileSheetViewController {
+
+    func showSite() {
+
+        // TODO: Remove. For testing only. Use siteID from user object.
+        let siteID = NSNumber(value: 999999999999999999)
+
+        guard let siteTopic = readerTopicService.siteTopic(forSiteID: siteID) else {
+            DDLogError("Error: could not find ReaderSiteTopic for siteID [\(siteID)]")
+            return
+        }
+
+        let controller = ReaderStreamViewController.controllerWithTopic(siteTopic)
+        let navController = UINavigationController(rootViewController: controller)
+        present(navController, animated: true)
+    }
 
     func configureTable() {
         tableView.backgroundColor = .basicBackground
