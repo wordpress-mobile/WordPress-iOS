@@ -1176,6 +1176,11 @@ array are marked as being unfollowed in Core Data.
     return (ReaderSiteTopic *)[results firstObject];
 }
 
+- (ReaderSiteTopic *)siteTopicForSiteID:(NSNumber *)siteID
+{
+    return [self findSiteTopicWithSiteID:siteID] ?: [self findSiteTopicWithFeedID:siteID];
+}
+
 - (ReaderSiteTopic *)findSiteTopicWithFeedURL:(NSString *)feedURL
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSiteTopic classNameWithoutNamespaces]];
