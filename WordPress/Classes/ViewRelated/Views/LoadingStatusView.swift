@@ -6,17 +6,15 @@ class LoadingStatusView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .clear
         autoresizingMask = .flexibleWidth
-        accessibilityHint = NSLocalizedString("Tap to cancel uploading.", comment: "This is a status indicator on the editor")
-        let localizedString = NSLocalizedString("%@", comment: "\"Uploading\" Status text")
-        titleLabel.text = String.localizedStringWithFormat(localizedString, title)
+        titleLabel.text = title
         activityIndicator.startAnimating()
         configureLayout()
     }
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
-        label.font = WPFontManager.systemBoldFont(ofSize: 14.0)
+        label.textColor = .appBarText
+        label.font = WPFontManager.systemRegularFont(ofSize: 14.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.sizeToFit()
         label.numberOfLines = 1
