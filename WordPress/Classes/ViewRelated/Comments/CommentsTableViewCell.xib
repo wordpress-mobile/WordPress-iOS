@@ -32,40 +32,21 @@
                             <constraint firstAttribute="width" constant="42" id="pBo-eH-W4J"/>
                         </constraints>
                     </imageView>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="TCy-wp-wTe" userLabel="Label Stack View">
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="TCy-wp-wTe" userLabel="Label Stack View">
                         <rect key="frame" x="74" y="16" width="230" height="75"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wrp-Wr-ZBq" userLabel="Title Label">
-                                <rect key="frame" x="0.0" y="-4" width="230" height="24"/>
+                                <rect key="frame" x="0.0" y="-4" width="230" height="37"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xkp-oe-UgU">
-                                <rect key="frame" x="0.0" y="25" width="230" height="20.5"/>
+                                <rect key="frame" x="0.0" y="38" width="230" height="37"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="dIK-tl-nW4" userLabel="Timestamp Stack View">
-                                <rect key="frame" x="0.0" y="50.5" width="230" height="24.5"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reader-postaction-time" translatesAutoresizingMaskIntoConstraints="NO" id="rcg-tb-060">
-                                        <rect key="frame" x="0.0" y="4.5" width="16" height="16"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="16" id="YZR-zM-ndp"/>
-                                            <constraint firstAttribute="height" constant="16" id="xwF-CO-6ZI"/>
-                                        </constraints>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timestamp" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bDl-id-9M7">
-                                        <rect key="frame" x="20" y="4.5" width="210" height="16"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
-                            </stackView>
                         </subviews>
                         <edgeInsets key="layoutMargins" top="-4" left="0.0" bottom="0.0" right="0.0"/>
                     </stackView>
@@ -87,9 +68,6 @@
                 <outlet property="gravatarImageView" destination="0Gm-n3-CNm" id="GXM-xm-h6r"/>
                 <outlet property="pendingIndicator" destination="btO-r2-hQO" id="uEa-SX-swe"/>
                 <outlet property="pendingIndicatorWidthConstraint" destination="WeL-cC-lqa" id="NGZ-2z-ehN"/>
-                <outlet property="timestampImageView" destination="rcg-tb-060" id="cp9-u0-P57"/>
-                <outlet property="timestampLabel" destination="bDl-id-9M7" id="sk9-hl-b6r"/>
-                <outlet property="timestampStackView" destination="dIK-tl-nW4" id="3n0-tf-xMe"/>
                 <outlet property="titleLabel" destination="Wrp-Wr-ZBq" id="lVi-a7-Ppp"/>
             </connections>
             <point key="canvasLocation" x="33.600000000000001" y="70.614692653673174"/>
@@ -97,7 +75,6 @@
     </objects>
     <resources>
         <image name="gravatar" width="85" height="85"/>
-        <image name="reader-postaction-time" width="16" height="16"/>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
