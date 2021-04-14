@@ -4,6 +4,7 @@ struct JetpackScanStatusViewModel {
     let imageName: String
     let title: String
     let description: String
+    let hasValidCredentials: Bool
 
     private(set) var primaryButtonTitle: String?
     private(set) var secondaryButtonTitle: String?
@@ -20,6 +21,8 @@ struct JetpackScanStatusViewModel {
         guard let scan = coordinator.scan else {
             return nil
         }
+
+        hasValidCredentials = scan.hasValidCredentials
 
         let blog = coordinator.blog
         let state = Self.viewState(for: scan)
