@@ -54,6 +54,8 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 
     post.postFormat = blog.settings.defaultPostFormat;
     post.postType = Post.typeDefaultIdentifier;
+    post.authorID = blog.account.userID;
+    post.author = blog.account.displayName;
 
     [blog.managedObjectContext obtainPermanentIDsForObjects:@[post] error:nil];
     NSAssert(![post.objectID isTemporaryID], @"The new post for this blog must have a permanent ObjectID");
@@ -73,6 +75,8 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     page.blog = blog;
     page.date_created_gmt = [NSDate date];
     page.remoteStatus = AbstractPostRemoteStatusSync;
+    page.authorID = blog.account.userID;
+    page.author = blog.account.displayName;
 
     [blog.managedObjectContext obtainPermanentIDsForObjects:@[page] error:nil];
     NSAssert(![page.objectID isTemporaryID], @"The new page for this blog must have a permanent ObjectID");
