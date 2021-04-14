@@ -401,7 +401,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.31.0-beta.1):
+  - WordPressKit (4.31.0-beta.3):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -669,7 +669,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
   WordPressKit:
-    :commit: 71e5a4d9e180705b4aa9067230f5343e53ec697b
+    :commit: 4960cb523b474f29e1d8fb450bb1902be552bd3d
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
@@ -752,7 +752,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
   WordPressAuthenticator: 21d96070b30c4ce6b98de52c05779d27c2f9b399
-  WordPressKit: 9d4106b401595523967756ffdc4a519c32859546
+  WordPressKit: 56f5087518977744c2e7b4e8a39abcc264f937f2
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 0f7f10e96f8354d64f951c223ae61e8de7495a46
   WordPressUI: 3b70cccc4c44cff09024ca3e94ae25a8768b26c1
