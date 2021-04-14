@@ -123,6 +123,15 @@ class JetpackScanThreatDetailsViewController: UIViewController {
     }
 
     @IBAction func warningButtonTapped(_ sender: Any) {
+        guard let siteID = blog.dotComID as? Int,
+              let jetpackSettingsURL = URL(string: "https://wordpress.com/settings/jetpack/\(siteID)") else {
+            displayNotice(title: Strings.jetpackSettingsNotice)
+            return
+        }
+
+        let controller = WebViewControllerFactory.controller(url: jetpackSettingsURL)
+        let navVC = UINavigationController(rootViewController: controller)
+        present(navVC, animated: true)
     }
 
     // MARK: - Private
@@ -256,5 +265,6 @@ extension JetpackScanThreatDetailsViewController {
         static let title = NSLocalizedString("Threat details", comment: "Title for the Jetpack Scan Threat Details screen")
         static let ok = NSLocalizedString("OK", comment: "OK button for alert")
         static let cancel = NSLocalizedString("Cancel", comment: "Cancel button for alert")
+        static let jetpackSettingsNotice = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
     }
 }
