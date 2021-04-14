@@ -32,6 +32,7 @@ import Foundation
     case editorPostFormatChanged
     case editorPostFeaturedImageChanged
     case editorPostStickyChanged
+    case editorPostAuthorChanged
     case editorPostLocationChanged
     case editorPostSlugChanged
     case editorPostExcerptChanged
@@ -218,6 +219,8 @@ import Foundation
             return "editor_post_featured_image_changed"
         case .editorPostStickyChanged:
             return "editor_post_sticky_changed"
+        case .editorPostAuthorChanged:
+            return "editor_post_author_changed"
         case .editorPostLocationChanged:
             return "editor_post_location_changed"
         case .editorPostSlugChanged:
