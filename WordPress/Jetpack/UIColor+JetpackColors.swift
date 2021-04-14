@@ -37,7 +37,7 @@ extension UIColor {
     }
 
     static var filterBarSelected: UIColor {
-        return UIColor(light: .primary, dark: .label)
+        return .primary
     }
 
     static var filterBarSelectedText: UIColor {
