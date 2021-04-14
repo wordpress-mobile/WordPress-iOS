@@ -103,7 +103,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         present(alert, animated: true, completion: nil)
     }
 
-    func presentNotice(with title: String, message: String) {
+    func presentNotice(with title: String, message: String?) {
         displayNotice(title: title, message: message)
     }
 
@@ -123,6 +123,11 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         let model = JetpackScanThreatViewModel(threat: threat)
         let notice = Notice(title: model.ignoreErrorTitle)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    func showJetpackSettings(webViewController: UIViewController) {
+        let navigationVC = UINavigationController(rootViewController: webViewController)
+        present(navigationVC, animated: true)
     }
 
     // MARK: - Actions
