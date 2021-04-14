@@ -2,7 +2,11 @@ import Foundation
 
 
 extension BlogService {
-    @objc func blogAuthors(for blog: Blog, with remoteUsers: [RemoteUser]) {
+    /// Synchronizes authors for a `Blog` from an array of `RemoteUser`s.
+    /// - Parameters:
+    ///   - blog: Blog object.
+    ///   - remoteUsers: Array of `RemoteUser`s.
+    @objc func updateBlogAuthors(for blog: Blog, with remoteUsers: [RemoteUser]) {
         do {
             guard let blog = try managedObjectContext.existingObject(with: blog.objectID) as? Blog else {
                 return
@@ -20,6 +24,12 @@ extension BlogService {
 
                 blog.addToAuthors(blogAuthor)
             }
+
+            // Clean up authors who weren't in the remote array.
+            let remoteUserIDs = Set(remoteUsers.map { $0.userID })
+            blog.authors?
+                .filter { !remoteUserIDs.contains($0.userID) }
+                .forEach { blog.removeFromAuthors($0) }
         } catch {
             return
         }
