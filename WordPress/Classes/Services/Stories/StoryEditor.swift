@@ -90,17 +90,13 @@ class StoryEditor: CameraController {
         return settings
     }
 
-    enum EditorCreationError: Error {
-        case unsupportedDevice
-    }
-
     typealias UpdateResult = Result<String, PostCoordinator.SavingError>
     typealias UploadResult = Result<Void, PostCoordinator.SavingError>
 
     static func editor(blog: Blog,
                        context: NSManagedObjectContext,
                        updated: @escaping (UpdateResult) -> Void,
-                       uploaded: @escaping (UploadResult) -> Void) throws -> StoryEditor {
+                       uploaded: @escaping (UploadResult) -> Void) -> StoryEditor {
         let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
         return try editor(post: post, mediaFiles: nil, publishOnCompletion: true, updated: updated, uploaded: uploaded)
     }
@@ -109,12 +105,7 @@ class StoryEditor: CameraController {
                        mediaFiles: [MediaFile]?,
                        publishOnCompletion: Bool = false,
                        updated: @escaping (UpdateResult) -> Void,
-                       uploaded: @escaping (UploadResult) -> Void) throws -> StoryEditor {
-
-        guard !UIDevice.isPad() else {
-            throw EditorCreationError.unsupportedDevice
-        }
-
+                       uploaded: @escaping (UploadResult) -> Void) -> StoryEditor {
         let controller = StoryEditor(post: post,
                                      onClose: nil,
                                      settings: cameraSettings,
@@ -233,7 +224,7 @@ extension StoryEditor: PublishingEditor {
     }
 
     var prepublishingSourceView: UIView? {
-        return nil
+        return confirmButton
     }
 
     var alertBarButtonItem: UIBarButtonItem? {

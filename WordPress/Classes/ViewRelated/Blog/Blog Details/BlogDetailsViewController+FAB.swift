@@ -36,6 +36,6 @@ extension BlogDetailsViewController {
 
     //TODO: Can be removed after stories launches
     private var shouldShowNewStory: Bool {
-        return Feature.enabled(.stories) && blog.supports(.stories) && !UIDevice.isPad()
+        return Feature.enabled(.stories) && blog.supports(.stories)
     }
 }

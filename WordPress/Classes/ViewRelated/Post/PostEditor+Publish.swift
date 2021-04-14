@@ -250,7 +250,7 @@ extension PublishingEditor where Self: UIViewController {
         let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing)
         let bottomSheet = BottomSheetViewController(childViewController: prepublishingNavigationController, customHeaderSpacing: 0)
         if let sourceView = prepublishingSourceView {
-            bottomSheet.show(from: self, sourceView: sourceView)
+            bottomSheet.show(from: self.topmostPresentedViewController, sourceView: sourceView)
         } else {
             bottomSheet.show(from: self.topmostPresentedViewController)
         }
