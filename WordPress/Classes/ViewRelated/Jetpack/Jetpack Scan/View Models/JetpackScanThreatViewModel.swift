@@ -9,6 +9,7 @@ struct JetpackScanThreatViewModel {
     let title: String
     let description: String?
     let isFixing: Bool
+    let hasValidCredentials: Bool
 
     // Threat Details
     let detailIconImage: UIImage?
@@ -28,6 +29,7 @@ struct JetpackScanThreatViewModel {
     let fixActionTitle: String?
     let ignoreActionTitle: String?
     let ignoreActionMessage: String
+    let warningActionTitle: String?
 
     // Threat Detail Success
     let fixSuccessTitle: String
@@ -70,8 +72,9 @@ struct JetpackScanThreatViewModel {
         return threat.context?.attributedString(with: contextConfig)
     }()
 
-    init(threat: JetpackScanThreat) {
+    init(threat: JetpackScanThreat, hasValidCredentials: Bool) {
         self.threat = threat
+        self.hasValidCredentials = hasValidCredentials
 
         let status = threat.status
 
@@ -99,6 +102,7 @@ struct JetpackScanThreatViewModel {
         fixActionTitle = Self.fixActionTitle(for: threat)
         ignoreActionTitle = Self.ignoreActionTitle(for: threat)
         ignoreActionMessage = Strings.details.actions.messages.ignore
+        warningActionTitle = Self.warningActionTitle(for: threat, hasValidCredentials: hasValidCredentials)
 
         // Threat Detail Success
         fixSuccessTitle = Strings.details.success.fix
@@ -270,6 +274,14 @@ struct JetpackScanThreatViewModel {
         return Strings.details.actions.titles.ignore
     }
 
+    private static func warningActionTitle(for threat: JetpackScanThreat, hasValidCredentials: Bool) -> String? {
+        guard fixActionTitle(for: threat) != nil, !hasValidCredentials else {
+            return nil
+        }
+
+        return Strings.details.actions.titles.enterServerCredentials
+    }
+
     private struct Strings {
 
         struct details {
@@ -309,6 +321,7 @@ struct JetpackScanThreatViewModel {
                 struct titles {
                     static let ignore = NSLocalizedString("Ignore threat", comment: "Title for button that will ignore the threat")
                     static let fixable = NSLocalizedString("Fix threat", comment: "Title for button that will fix the threat")
+                    static let enterServerCredentials = NSLocalizedString("Enter your server credentials to enable threat fixing.", comment: "Title for button when a site is ")
                 }
 
                 struct messages {

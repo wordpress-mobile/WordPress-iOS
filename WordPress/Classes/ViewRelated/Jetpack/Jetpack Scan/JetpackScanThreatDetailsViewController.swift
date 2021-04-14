@@ -38,6 +38,7 @@ class JetpackScanThreatDetailsViewController: UIViewController {
     @IBOutlet private weak var buttonsStackView: UIStackView!
     @IBOutlet private weak var fixThreatButton: FancyButton!
     @IBOutlet private weak var ignoreThreatButton: FancyButton!
+    @IBOutlet private weak var warningButton: UIButton!
     @IBOutlet weak var ignoreActivityIndicatorView: UIActivityIndicatorView!
 
     // MARK: - Properties
@@ -49,7 +50,7 @@ class JetpackScanThreatDetailsViewController: UIViewController {
     private let hasValidCredentials: Bool
 
     private lazy var viewModel: JetpackScanThreatViewModel = {
-        return JetpackScanThreatViewModel(threat: threat)
+        return JetpackScanThreatViewModel(threat: threat, hasValidCredentials: hasValidCredentials)
     }()
 
     // MARK: - Init
@@ -121,6 +122,9 @@ class JetpackScanThreatDetailsViewController: UIViewController {
         trackEvent(.jetpackScanIgnoreThreatDialogOpen)
     }
 
+    @IBAction func warningButtonTapped(_ sender: Any) {
+    }
+
     // MARK: - Private
 
     private func trackEvent(_ event: WPAnalyticsEvent) {
@@ -157,7 +161,7 @@ extension JetpackScanThreatDetailsViewController {
 
         if let fixActionTitle = viewModel.fixActionTitle {
             fixThreatButton.setTitle(fixActionTitle, for: .normal)
-            fixThreatButton.isEnabled = hasValidCredentials
+            fixThreatButton.isEnabled = viewModel.hasValidCredentials
             fixThreatButton.isHidden = false
         } else {
             fixThreatButton.isHidden = true
@@ -168,6 +172,13 @@ extension JetpackScanThreatDetailsViewController {
             ignoreThreatButton.isHidden = false
         } else {
             ignoreThreatButton.isHidden = true
+        }
+
+        if let warningActionTitle = viewModel.warningActionTitle {
+            warningButton.isHidden = false
+            warningButton.setTitle(warningActionTitle, for: .normal)
+        } else {
+            warningButton.isHidden = true
         }
 
         applyStyles()

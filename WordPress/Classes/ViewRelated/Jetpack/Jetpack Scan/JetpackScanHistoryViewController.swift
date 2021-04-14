@@ -206,7 +206,7 @@ extension JetpackScanHistoryViewController: UITableViewDataSource, UITableViewDe
     }
 
     private func configureThreatCell(cell: JetpackScanThreatCell, threat: JetpackScanThreat) {
-        let model = JetpackScanThreatViewModel(threat: threat)
+        let model = JetpackScanThreatViewModel(threat: threat, hasValidCredentials: hasValidCredentials)
         cell.configure(with: model)
     }
 

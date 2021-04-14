@@ -28,6 +28,10 @@ class JetpackScanCoordinator {
         }
     }
 
+    var hasValidCredentials: Bool {
+        return scan?.hasValidCredentials ?? false
+    }
+
     let blog: Blog
 
     /// Returns the threats if we're in the idle state
