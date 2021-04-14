@@ -348,6 +348,10 @@ class JetpackScanCoordinator {
 }
 
 extension JetpackScan {
+    var hasValidCredentials: Bool {
+        return credentials?.first?.stillValid ?? false
+    }
+
     var hasFixableThreats: Bool {
         let count = fixableThreats?.count ?? 0
         return count > 0
