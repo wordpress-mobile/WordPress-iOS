@@ -4,6 +4,18 @@ struct AppConstants {
     static let productTwitterHandle = "@WordPressiOS"
     static let productTwitterURL = "https://twitter.com/WordPressiOS"
     static let productBlogURL = "https://blog.wordpress.com"
+
+    /// Notifications Constants
+    ///
+    #if DEBUG
+    static let pushNotificationAppId = "org.wordpress.appstore.dev"
+    #else
+    #if INTERNAL_BUILD
+    static let pushNotificationAppId = "org.wordpress.internal"
+    #else
+    static let pushNotificationAppId = "org.wordpress.appstore"
+    #endif
+    #endif
 }
 
 // MARK: - Localized Strings

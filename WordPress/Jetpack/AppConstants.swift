@@ -4,6 +4,18 @@ struct AppConstants {
     static let productTwitterHandle = "@jetpack"
     static let productTwitterURL = "https://twitter.com/jetpack"
     static let productBlogURL = "https://jetpack.com/blog"
+
+    /// Notifications Constants
+    ///
+    #if DEBUG
+    static let pushNotificationAppId = "com.jetpack.appstore.dev"
+    #else
+    #if INTERNAL_BUILD
+    static let pushNotificationAppId = "com.jetpack.internal"
+    #else
+    static let pushNotificationAppId = "com.jetpack.appstore"
+    #endif
+    #endif
 }
 
 // MARK: - Localized Strings
