@@ -1,6 +1,7 @@
 17.2
 -----
 
+* [*] Fixed an issue where post author display names weren't visible. [#16297]
 * [***] Updated custom app icons. [#16261]
 
 17.1
