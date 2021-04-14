@@ -10,6 +10,8 @@ class WordPressAuthenticationManager: NSObject {
     static var isPresentingSignIn = false
     private let windowManager: WindowManager
 
+    /// Allows overriding some WordPressAuthenticator delegate methods
+    /// without having to reimplement WordPressAuthenticatorDelegate
     private let authenticationHandler: AuthenticationHandler?
 
     init(windowManager: WindowManager, authenticationHandler: AuthenticationHandler? = nil) {
