@@ -23,6 +23,17 @@ class UserProfileSheetViewController: UITableViewController {
         registerTableCells()
     }
 
+    // We are using intrinsicHeight as the view's collapsedHeight which is calculated from the preferredContentSize.
+    override var preferredContentSize: CGSize {
+        set {
+            // no-op, but is needed to override the property.
+        }
+        get {
+            return UIDevice.isPad() ? Constants.iPadPreferredContentSize :
+                                      Constants.iPhonePreferredContentSize
+        }
+    }
+
 }
 
 // MARK: - DrawerPresentable Extension
@@ -34,7 +45,7 @@ extension UserProfileSheetViewController: DrawerPresentable {
             return .maxHeight
         }
 
-        return .contentHeight(320)
+        return .intrinsicHeight
     }
 
     var scrollableView: UIScrollView? {
@@ -154,6 +165,8 @@ private extension UserProfileSheetViewController {
     enum Constants {
         static let userInfoSection = 0
         static let siteSectionTitle = NSLocalizedString("Site", comment: "Header for a single site, shown in Notification user profile.").localizedUppercase
+        static let iPadPreferredContentSize = CGSize(width: 300.0, height: 270.0)
+        static let iPhonePreferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: 280.0)
     }
 
 }
