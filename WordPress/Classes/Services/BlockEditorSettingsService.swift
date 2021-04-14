@@ -1,17 +1,36 @@
 import Foundation
+import WordPressKit
 
 class BlockEditorSettingsService {
     typealias BlockEditorSettingsServiceCompletion = (_ hasChanges: Bool, _ blockEditorSettings: BlockEditorSettings?) -> Void
 
     let blog: Blog
+    let remoteAPI: WordPressRestApi
     let context: NSManagedObjectContext
 
     var cachedSettings: BlockEditorSettings? {
         return blog.blockEditorSettings
     }
 
-    init(blog: Blog, context: NSManagedObjectContext) {
+    convenience init?(blog: Blog, context: NSManagedObjectContext) {
+        let remoteAPI: WordPressRestApi
+        if blog.isAccessibleThroughWPCom(),
+           blog.dotComID?.intValue != nil,
+           let restAPI = blog.wordPressComRestApi() {
+            remoteAPI = restAPI
+        } else if let orgAPI = blog.wordPressOrgRestApi {
+            remoteAPI = orgAPI
+        } else {
+            // This is should only happen if there is a problem with the blog itsself.
+            return nil
+        }
+
+        self.init(blog: blog, remoteAPI: remoteAPI, context: context)
+    }
+
+    init(blog: Blog, remoteAPI: WordPressRestApi, context: NSManagedObjectContext) {
         self.blog = blog
+        self.remoteAPI = remoteAPI
         self.context = context
     }
 
@@ -24,7 +43,8 @@ class BlockEditorSettingsService {
 private extension BlockEditorSettingsService {
     func fetchTheme(_ completion: @escaping BlockEditorSettingsServiceCompletion) {
         let requestPath = "/wp/v2/themes?status=active"
-        GutenbergNetworkRequest(path: requestPath, blog: blog).request {  [weak self] result in
+        let modifiedPath = remoteAPI.requestPath(fromOrgPath: requestPath, with: blog.dotComID?.intValue)
+        remoteAPI.GET(modifiedPath, parameters: nil) { [weak self] (result, _) in
             guard let `self` = self else { return }
             switch result {
             case .success(let response):
@@ -79,7 +99,10 @@ private extension BlockEditorSettingsService {
     }
 
     func persistToCoreData(blogID: NSManagedObjectID, editorTheme: EditorTheme, completion: @escaping (_ success: Bool) -> Void) {
-        let parsingContext = ContextManager.shared.newDerivedContext()
+        let parsingContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        parsingContext.parent = context
+        parsingContext.mergePolicy =  NSMergePolicy.mergeByPropertyObjectTrump
+
         parsingContext.perform {
             guard let blog = parsingContext.object(with: blogID) as? Blog else {
                 completion(false)
