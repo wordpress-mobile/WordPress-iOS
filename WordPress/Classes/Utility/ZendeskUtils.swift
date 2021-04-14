@@ -1033,7 +1033,7 @@ private extension ZendeskUtils {
         static let mobileCategoryID: UInt64 = 360000041586
         static let articleLabel = "iOS"
         static let platformTag = "iOS"
-        static let ticketSubject = NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
+        static let ticketSubject = AppConstants.ticketSubject
         static let blogSeperator = "\n----------\n"
         static let jetpackTag = "jetpack"
         static let wpComTag = "wpcom"

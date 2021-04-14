@@ -4,6 +4,7 @@ struct AppConstants {
     static let productTwitterHandle = "@jetpack"
     static let productTwitterURL = "https://twitter.com/jetpack"
     static let productBlogURL = "https://jetpack.com/blog"
+    static let ticketSubject = "Jetpack for iOS Support"
 }
 
 // MARK: - Localized Strings
