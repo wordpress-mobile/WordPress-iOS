@@ -502,7 +502,7 @@ DEPENDENCIES:
   - WordPressKit (~> 4.30.0)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.16.0)
-  - WordPressUI (~> 1.9.0)
+  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS`, branch `feature/fancy-alert-dividers`)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.50.0/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.2.0)
@@ -553,7 +553,6 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressMocks
     - WordPressShared
-    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -651,6 +650,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.50.0
+  WordPressUI:
+    :branch: feature/fancy-alert-dividers
+    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.50.0/third-party-podspecs/Yoga.podspec.json
 
@@ -666,6 +668,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.50.0
+  WordPressUI:
+    :commit: e2bd11d562f8b477e3518690d865904475d110cf
+    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -750,7 +755,7 @@ SPEC CHECKSUMS:
   WordPressKit: 894ed4ad3af910b3e5a00fbd018724eac26a6133
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 0f7f10e96f8354d64f951c223ae61e8de7495a46
-  WordPressUI: 3b70cccc4c44cff09024ca3e94ae25a8768b26c1
+  WordPressUI: 8137124966f11d1aa8c3045c34d7018e7b3df3ff
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
@@ -763,6 +768,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 483c37b687db38acd25eb3ee225978b7a15cd573
+PODFILE CHECKSUM: d89d38bb77376cb27d0ff9696684a307cfe5aa21
 
 COCOAPODS: 1.10.0

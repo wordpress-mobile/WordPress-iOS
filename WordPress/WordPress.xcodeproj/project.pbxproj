@@ -213,6 +213,8 @@
 		1759F1721FE017F20003EC81 /* QueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F1711FE017F20003EC81 /* QueueTests.swift */; };
 		1759F1801FE1460C0003EC81 /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F17F1FE1460C0003EC81 /* NoticeView.swift */; };
 		175A650C20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175A650B20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift */; };
+		175F99B52625FDE100F2687E /* FancyAlertViewController+AppIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175F99B42625FDE100F2687E /* FancyAlertViewController+AppIcons.swift */; };
+		175F99B62625FDE100F2687E /* FancyAlertViewController+AppIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175F99B42625FDE100F2687E /* FancyAlertViewController+AppIcons.swift */; };
 		1761F17126209AEE000815EF /* open-source-dark-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F14E26209AEC000815EF /* open-source-dark-icon-app-83.5x83.5@2x.png */; };
 		1761F17226209AEE000815EF /* open-source-dark-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F14F26209AEC000815EF /* open-source-dark-icon-app-60x60@3x.png */; };
 		1761F17326209AEE000815EF /* open-source-dark-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F15026209AEC000815EF /* open-source-dark-icon-app-60x60@2x.png */; };
@@ -4515,6 +4517,7 @@
 		1759F1711FE017F20003EC81 /* QueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueTests.swift; sourceTree = "<group>"; };
 		1759F17F1FE1460C0003EC81 /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
 		175A650B20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderSaveForLater+Analytics.swift"; sourceTree = "<group>"; };
+		175F99B42625FDE100F2687E /* FancyAlertViewController+AppIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FancyAlertViewController+AppIcons.swift"; sourceTree = "<group>"; };
 		1761F14E26209AEC000815EF /* open-source-dark-icon-app-83.5x83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-source-dark-icon-app-83.5x83.5@2x.png"; sourceTree = "<group>"; };
 		1761F14F26209AEC000815EF /* open-source-dark-icon-app-60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-source-dark-icon-app-60x60@3x.png"; sourceTree = "<group>"; };
 		1761F15026209AEC000815EF /* open-source-dark-icon-app-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-source-dark-icon-app-60x60@2x.png"; sourceTree = "<group>"; };
@@ -7925,6 +7928,7 @@
 			children = (
 				405B53FA1F83C369002E19BF /* FancyAlerts+VerificationPrompt.swift */,
 				176BB87E20D0068500751DCE /* FancyAlertViewController+SavedPosts.swift */,
+				175F99B42625FDE100F2687E /* FancyAlertViewController+AppIcons.swift */,
 				4319AADD2090F00C0025D68E /* FancyAlertViewController+NotificationPrimer.swift */,
 				43290CF3214F755400F6B398 /* FancyAlertViewController+QuickStart.swift */,
 			);
@@ -16019,6 +16023,7 @@
 				E62AFB6C1DC8E593007484FC /* WPRichTextFormatter.swift in Sources */,
 				40A71C67220E1952002E3D25 /* LastPostStatsRecordValue+CoreDataProperties.swift in Sources */,
 				F50B0E7B246212B8006601DD /* NoticeAnimator.swift in Sources */,
+				175F99B52625FDE100F2687E /* FancyAlertViewController+AppIcons.swift in Sources */,
 				74CEF0781F9AA10100B729CA /* ShareExtensionSessionManager.swift in Sources */,
 				8BD8201B24BCDBFF00FF25FD /* ReaderWelcomeBanner.swift in Sources */,
 				74FA4BE51FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */,
@@ -18097,6 +18102,7 @@
 				FABB21342602FC2C00C8785C /* PostSettingsViewController.m in Sources */,
 				FABB21352602FC2C00C8785C /* MenuItem.m in Sources */,
 				FABB21362602FC2C00C8785C /* WPRichTextFormatter.swift in Sources */,
+				175F99B62625FDE100F2687E /* FancyAlertViewController+AppIcons.swift in Sources */,
 				FABB21372602FC2C00C8785C /* LastPostStatsRecordValue+CoreDataProperties.swift in Sources */,
 				FABB21382602FC2C00C8785C /* NoticeAnimator.swift in Sources */,
 				FABB21392602FC2C00C8785C /* ShareExtensionSessionManager.swift in Sources */,

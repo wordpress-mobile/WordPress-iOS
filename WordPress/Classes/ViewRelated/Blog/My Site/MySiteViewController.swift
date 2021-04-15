@@ -66,6 +66,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
         WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+
+        FancyAlertViewController.presentCustomAppIconUpgradeAlertIfNecessary(from: self)
     }
 
     private func subscribeToPostSignupNotifications() {
@@ -360,5 +362,17 @@ extension MySiteViewController {
 
     func showDetailView(for section: BlogDetailsSubsection) {
         blogDetailsViewController?.showDetailView(for: section)
+    }
+}
+
+// MARK: - UIViewControllerTransitioningDelegate
+//
+extension MySiteViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        guard presented is FancyAlertViewController else {
+            return nil
+        }
+
+        return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }
