@@ -213,7 +213,7 @@ class JetpackScanCoordinator {
 
     public func openJetpackSettings() {
         guard let siteID = blog.dotComID as? Int,
-              let jetpackSettingsURL = URL(string: "https://wordpress.com/settings/jetpack/\(siteID)") else {
+              let jetpackSettingsURL = AppConstants.jetpackSettingsURL(siteID: siteID) else {
             view.presentNotice(with: Strings.jetpackSettingsNotice.title, message: nil)
             return
         }

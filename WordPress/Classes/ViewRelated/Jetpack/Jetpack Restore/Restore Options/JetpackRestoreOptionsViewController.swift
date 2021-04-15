@@ -56,7 +56,7 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
     }
 
     override func detailActionButtonTapped() {
-        guard let jetpackSettingsURL = URL(string: "https://wordpress.com/settings/jetpack/\(site.siteID)") else {
+        guard let jetpackSettingsURL = AppConstants.jetpackSettingsURL(siteID: site.siteID) else {
 
             let title = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
 

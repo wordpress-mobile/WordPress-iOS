@@ -124,7 +124,7 @@ class JetpackScanThreatDetailsViewController: UIViewController {
 
     @IBAction func warningButtonTapped(_ sender: Any) {
         guard let siteID = blog.dotComID as? Int,
-              let jetpackSettingsURL = URL(string: "https://wordpress.com/settings/jetpack/\(siteID)") else {
+              let jetpackSettingsURL = AppConstants.jetpackSettingsURL(siteID: siteID) else {
             displayNotice(title: Strings.jetpackSettingsNotice)
             return
         }
