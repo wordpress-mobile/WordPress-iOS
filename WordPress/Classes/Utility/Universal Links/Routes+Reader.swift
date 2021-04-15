@@ -14,6 +14,7 @@ enum ReaderRoute {
     case blog
     case feedsPost
     case blogsPost
+    case wpcomPost
 }
 
 extension ReaderRoute: Route {
@@ -45,6 +46,8 @@ extension ReaderRoute: Route {
             return "/read/feeds/:feed_id/posts/:post_id"
         case .blogsPost:
             return "/read/blogs/:blog_id/posts/:post_id"
+        case .wpcomPost:
+            return "/:post_year/:post_month/:post_day/:post_name"
         }
     }
 
@@ -105,6 +108,10 @@ extension ReaderRoute: NavigationAction {
         case .blogsPost:
             if let (blogID, postID) = blogAndPostID(from: values) {
                 coordinator.showPost(with: postID, for: blogID, isFeed: false)
+            }
+        case .wpcomPost:
+            if let urlString = values["matched-route-url"], let url = URL(string: urlString) {
+                coordinator.showPost(with: url)
             }
         }
     }
