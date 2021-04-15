@@ -8,10 +8,6 @@ class UserProfileSheetViewController: UITableViewController {
         return ContextManager.sharedInstance().mainContext
     }()
 
-    private lazy var readerTopicService = {
-        return ReaderTopicService(managedObjectContext: mainContext)
-    }()
-
     private lazy var contentCoordinator: ContentCoordinator = {
         return DefaultContentCoordinator(controller: self, context: mainContext)
     }()
@@ -130,7 +126,7 @@ extension UserProfileSheetViewController {
             return
         }
 
-        fetchAndShowSite()
+        showSite()
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
@@ -139,36 +135,25 @@ extension UserProfileSheetViewController {
 
 private extension UserProfileSheetViewController {
 
-    func fetchAndShowSite() {
+    func showSite() {
 
         // TODO: Remove. For testing only. Use siteID from user object.
         var stubbySiteID: NSNumber?
         // use this to test external site
-        stubbySiteID = nil
+        // stubbySiteID = nil
         // use this to test internal site
-        // stubbySiteID = NSNumber(value: 9999999999)
+        stubbySiteID = NSNumber(value: 9999999999)
 
         guard let siteID = stubbySiteID else {
             showSiteWebView()
             return
         }
 
-        readerTopicService.siteTopicForSite(withID: siteID,
-                                            isFeed: false,
-                                            success: { [weak self] (objectID: NSManagedObjectID?, isFollowing: Bool) in
-                                                guard let objectID = objectID,
-                                                      let siteTopic = (try? self?.mainContext.existingObject(with: objectID)) as? ReaderAbstractTopic else {
-                                                    DDLogError("User Profile: Error retrieving an existing site topic by its objectID.")
-                                                    return
-                                                }
-
-                                                self?.showSiteTopic(siteTopic)
-                                            },
-                                            failure: nil)
+        showSiteTopicWithID(siteID)
     }
 
-    func showSiteTopic(_ topic: ReaderAbstractTopic) {
-        let controller = ReaderStreamViewController.controllerWithTopic(topic)
+    func showSiteTopicWithID(_ siteID: NSNumber) {
+        let controller = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: false)
         let navController = UINavigationController(rootViewController: controller)
         present(navController, animated: true)
     }
