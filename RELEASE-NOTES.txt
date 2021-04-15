@@ -9,7 +9,6 @@
 * [*] Added preview device mode selector in the page layout previews [#16141]
 * [***] Block Editor: Improved the accessibility of range and step-type block settings. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3255]
 * [**] Block Editor: Added Contact Info block to sites on WPcom or with Jetpack version >= 8.5.
-* [**] We updated the app's color scheme with a brighter new blue used throughout. [#16213, #16207]
 * [**] We updated the login prologue with brand new content and graphics. [#16159, #16177, #16185, #16187, #16200, #16217, #16219, #16221, #16222]
 * [**] We updated the app's color scheme with a brighter new blue used throughout. [#16213, #16207] 
 * [**] Updated the app icon to match the new color scheme within the app. [#16220]
