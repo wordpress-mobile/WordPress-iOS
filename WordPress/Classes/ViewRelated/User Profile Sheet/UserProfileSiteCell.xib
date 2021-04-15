@@ -10,25 +10,25 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="66" id="sLn-if-drv" customClass="UserProfileSiteCell" customModule="WordPress" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="451" height="66"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="91" id="sLn-if-drv" customClass="UserProfileSiteCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="451" height="91"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sLn-if-drv" id="0Cg-qu-VkU">
-                <rect key="frame" x="0.0" y="0.0" width="420" height="66"/>
+                <rect key="frame" x="0.0" y="0.0" width="420" height="91"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="31U-Nu-ioG" userLabel="Cell Stack View">
-                        <rect key="frame" x="20" y="0.0" width="380" height="66"/>
+                        <rect key="frame" x="20" y="10" width="380" height="71"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="G7K-hZ-0Y6" userLabel="Site Icon Image View">
-                                <rect key="frame" x="0.0" y="13" width="40" height="40"/>
+                                <rect key="frame" x="0.0" y="15.5" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="GXL-Gi-tFE"/>
                                     <constraint firstAttribute="width" secondItem="G7K-hZ-0Y6" secondAttribute="height" multiplier="1:1" id="f67-02-hIc"/>
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" axis="vertical" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="8lZ-oQ-0Za" userLabel="Label Stack View">
-                                <rect key="frame" x="52" y="15" width="328" height="36"/>
+                                <rect key="frame" x="52" y="17.5" width="328" height="36"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="09U-nj-lDM" userLabel="Site Name Label">
                                         <rect key="frame" x="0.0" y="0.0" width="70.5" height="18"/>
@@ -49,9 +49,9 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="31U-Nu-ioG" firstAttribute="leading" secondItem="0Cg-qu-VkU" secondAttribute="leading" constant="20" id="CGE-2w-825"/>
-                    <constraint firstItem="31U-Nu-ioG" firstAttribute="top" secondItem="0Cg-qu-VkU" secondAttribute="top" id="IX7-kU-rWC"/>
+                    <constraint firstItem="31U-Nu-ioG" firstAttribute="top" secondItem="0Cg-qu-VkU" secondAttribute="top" constant="10" id="IX7-kU-rWC"/>
                     <constraint firstAttribute="trailing" secondItem="31U-Nu-ioG" secondAttribute="trailing" constant="20" id="aa4-uM-Kg4"/>
-                    <constraint firstAttribute="bottom" secondItem="31U-Nu-ioG" secondAttribute="bottom" id="bED-Hv-xOq"/>
+                    <constraint firstAttribute="bottom" secondItem="31U-Nu-ioG" secondAttribute="bottom" constant="10" id="bED-Hv-xOq"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
@@ -59,7 +59,7 @@
                 <outlet property="siteNameLabel" destination="09U-nj-lDM" id="kjV-Oq-iR5"/>
                 <outlet property="siteUrlLabel" destination="8Mt-kW-h4I" id="3jf-An-xKn"/>
             </connections>
-            <point key="canvasLocation" x="-327" y="-159"/>
+            <point key="canvasLocation" x="-328.26086956521743" y="-151.00446428571428"/>
         </tableViewCell>
     </objects>
     <resources>
