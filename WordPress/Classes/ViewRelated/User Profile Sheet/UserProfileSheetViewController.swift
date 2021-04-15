@@ -126,7 +126,7 @@ extension UserProfileSheetViewController {
             return
         }
 
-        fetchAndShowSite()
+        showSite()
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
@@ -135,7 +135,7 @@ extension UserProfileSheetViewController {
 
 private extension UserProfileSheetViewController {
 
-    func fetchAndShowSite() {
+    func showSite() {
 
         // TODO: Remove. For testing only. Use siteID from user object.
         var stubbySiteID: NSNumber?
