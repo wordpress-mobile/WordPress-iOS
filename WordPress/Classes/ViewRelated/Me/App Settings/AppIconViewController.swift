@@ -69,7 +69,7 @@ open class AppIconViewController: UITableViewController {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier, for: indexPath)
 
-        cell.textLabel?.text = icon.name
+        cell.textLabel?.text = icon.displayName
 
         if let imageView = cell.imageView {
             imageView.image = UIImage(named: icon.imageName)
@@ -100,9 +100,9 @@ open class AppIconViewController: UITableViewController {
 
     open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let isOriginalIcon = self.isOriginalIcon(at: indexPath)
-        let icon = isOriginalIcon ? nil : icons[indexPath.section][indexPath.row].name
+        let iconName = isOriginalIcon ? nil : icons[indexPath.section][indexPath.row].name
 
-        UIApplication.shared.setAlternateIconName(icon, completionHandler: { [weak self] error in
+        UIApplication.shared.setAlternateIconName(iconName, completionHandler: { [weak self] error in
             if error == nil {
                 let event: WPAnalyticsStat = isOriginalIcon ? .appIconReset : .appIconChanged
                 WPAppAnalytics.track(event)
@@ -162,6 +162,10 @@ struct AppIcon {
     let name: String
     let isBordered: Bool
     let isLegacy: Bool
+
+    var displayName: String {
+        return name.replacingMatches(of: " Classic", with: "")
+    }
 
     var imageName: String {
         let lowered = name.lowercased().replacingMatches(of: " ", with: "-")
