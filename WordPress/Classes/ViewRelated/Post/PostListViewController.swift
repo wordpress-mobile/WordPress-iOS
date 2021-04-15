@@ -549,7 +549,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        cell.isAuthorHidden = showingJustMyPosts
+        cell.shouldHideAuthor = showingJustMyPosts
     }
 
     private func configureRestoreCell(_ cell: UITableViewCell) {

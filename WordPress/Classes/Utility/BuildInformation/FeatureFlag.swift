@@ -15,7 +15,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case siteCreationHomePagePicker
     case todayWidget
     case milestoneNotifications
-    case commentFilters
     case newLikeNotifications
 
     /// Returns a boolean indicating if the feature is enabled
@@ -50,8 +49,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .todayWidget:
             return true
         case .milestoneNotifications:
-            return true
-        case .commentFilters:
             return true
         case .newLikeNotifications:
             return false
@@ -107,8 +104,6 @@ extension FeatureFlag {
             return "iOS 14 Today Widget"
         case .milestoneNotifications:
             return "Milestone notifications"
-        case .commentFilters:
-            return "Comment filters"
         case .newLikeNotifications:
             return "New Like Notifications"
         }

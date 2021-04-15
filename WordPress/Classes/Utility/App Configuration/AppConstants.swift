@@ -4,6 +4,7 @@ struct AppConstants {
     static let productTwitterHandle = "@WordPressiOS"
     static let productTwitterURL = "https://twitter.com/WordPressiOS"
     static let productBlogURL = "https://blog.wordpress.com"
+    static let ticketSubject = NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
 
     /// Notifications Constants
     ///
