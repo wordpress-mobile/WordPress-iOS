@@ -2330,21 +2330,6 @@ extension AztecPostViewController {
     private func stopEditing() {
         view.endEditing(true)
     }
-
-    func contentByStrippingMediaAttachments() -> String {
-        if editorView.editingMode == .html {
-            setHTML(htmlTextView.text)
-        }
-
-        richTextView.removeMediaAttachments()
-        let strippedHTML = getHTML()
-
-        if editorView.editingMode == .html {
-            setHTML(strippedHTML)
-        }
-
-        return strippedHTML
-    }
 }
 
 // MARK: - Computed Properties

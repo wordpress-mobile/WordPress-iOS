@@ -83,9 +83,6 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
     /// MediaLibraryPickerDataSource
     var mediaLibraryDataSource: MediaLibraryPickerDataSource { get set }
 
-    /// Returns the media attachment removed version of html
-    func contentByStrippingMediaAttachments() -> String
-
     /// Navigation bar manager for this post editor
     var navigationBarManager: PostEditorNavigationBarManager { get }
 
