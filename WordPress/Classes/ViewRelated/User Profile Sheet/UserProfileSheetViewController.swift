@@ -5,11 +5,11 @@ class UserProfileSheetViewController: UITableViewController {
     private let user: RemoteUser
 
     private lazy var mainContext = {
-        ContextManager.sharedInstance().mainContext
+        return ContextManager.sharedInstance().mainContext
     }()
 
     private lazy var readerTopicService = {
-        ReaderTopicService(managedObjectContext: mainContext)
+        return ReaderTopicService(managedObjectContext: mainContext)
     }()
 
     private lazy var contentCoordinator: ContentCoordinator = {
