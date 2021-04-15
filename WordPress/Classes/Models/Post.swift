@@ -195,27 +195,6 @@ class Post: AbstractPost {
 
     // MARK: - AbstractPost
 
-    override func hasSiteSpecificChanges() -> Bool {
-        if super.hasSiteSpecificChanges() {
-            return true
-        }
-
-        assert(original == nil || original is Post)
-
-        if let originalPost = original as? Post {
-
-            if postFormat != originalPost.postFormat {
-                return true
-            }
-
-            if categories != originalPost.categories {
-                return true
-            }
-        }
-
-        return false
-    }
-
     override func hasCategories() -> Bool {
         return (categories?.count > 0)
     }
