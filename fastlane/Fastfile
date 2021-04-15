@@ -20,6 +20,8 @@ PROJECT_ENV_FILE_PATH = File.join(PROJECT_ROOT_FOLDER, '.configure-files', 'proj
 # Other defines used across multiple lanes
 REPOSITORY_NAME="WordPress-iOS"
 
+import "Jetpack-Fastfile"
+
 ALL_BUNDLE_IDENTIFIERS = [
       "org.wordpress",
       "org.wordpress.WordPressShare",

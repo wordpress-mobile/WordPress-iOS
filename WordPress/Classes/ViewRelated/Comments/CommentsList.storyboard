@@ -50,7 +50,6 @@
                     <connections>
                         <outlet property="filterTabBar" destination="bno-oB-pDf" id="HTz-ai-FRw"/>
                         <outlet property="tableView" destination="7aR-Vp-g6a" id="b8S-2O-Yk9"/>
-                        <outlet property="tableViewTopConstraint" destination="Rmm-F3-kCp" id="P4H-ty-YIf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wHe-tJ-scb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

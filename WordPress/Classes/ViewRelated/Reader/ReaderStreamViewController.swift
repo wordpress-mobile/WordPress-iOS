@@ -311,6 +311,7 @@ import WordPressFlux
 
         refreshImageRequestAuthToken()
 
+        configureCloseButtonIfNeeded()
         setupTableView()
         setupFooterView()
         setupContentHandler()
@@ -624,6 +625,18 @@ import WordPressFlux
         }
     }
 
+    private func configureCloseButtonIfNeeded() {
+        if isModal() {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(image: .gridicon(.cross),
+                                                               style: .plain,
+                                                               target: self,
+                                                               action: #selector(closeButtonTapped))
+        }
+    }
+
+    @objc private func closeButtonTapped() {
+        dismiss(animated: true)
+    }
 
     /// Fetch and cache the current defaultAccount authtoken, if available.
     private func refreshImageRequestAuthToken() {

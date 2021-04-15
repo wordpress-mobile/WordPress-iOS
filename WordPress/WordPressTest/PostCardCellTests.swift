@@ -249,7 +249,7 @@ class PostCardCellTests: XCTestCase {
         let post = PostBuilder(context).with(author: "John Doe").build()
         postCell.configure(with: post)
 
-        postCell.isAuthorHidden = true
+        postCell.shouldHideAuthor = true
 
         XCTAssertTrue(postCell.authorLabel.isHidden)
         XCTAssertTrue(postCell.separatorLabel.isHidden)
@@ -259,10 +259,20 @@ class PostCardCellTests: XCTestCase {
         let post = PostBuilder(context).with(author: "John Doe").build()
         postCell.configure(with: post)
 
-        postCell.isAuthorHidden = false
+        postCell.shouldHideAuthor = false
 
         XCTAssertFalse(postCell.authorLabel.isHidden)
         XCTAssertFalse(postCell.separatorLabel.isHidden)
+    }
+
+    func testHidesAuthorSeparatorWhenAuthorEmpty() {
+        let post = PostBuilder(context).with(author: "").build()
+        postCell.configure(with: post)
+
+        postCell.shouldHideAuthor = false
+
+        XCTAssertTrue(postCell.authorLabel.isHidden)
+        XCTAssertTrue(postCell.separatorLabel.isHidden)
     }
 
     func testShowsPostWillBePublishedWarningForFailedPublishedPostsWithRemote() {

@@ -183,7 +183,7 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
             return
         }
 
-        delegate?.didSelectUser(user)
+        delegate?.didSelectUser(user, at: indexPath)
     }
 
 }
@@ -241,7 +241,7 @@ protocol LikesListControllerDelegate: class {
 
     /// Reports to the delegate that the user cell has been tapped.
     /// - Parameter user: A RemoteUser instance representing the user at the selected row.
-    func didSelectUser(_ user: RemoteUser)
+    func didSelectUser(_ user: RemoteUser, at indexPath: IndexPath)
 }
 
 // MARK: - Private Definitions
