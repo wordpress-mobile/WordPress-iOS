@@ -20,7 +20,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-    pod 'WordPressShared', '~> 1.16.0-beta'
+    pod 'WordPressShared', '~> 1.16.0'
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.30.0-beta'
+    pod 'WordPressKit', '~> 4.30.0'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -55,7 +55,7 @@ def wordpress_kit
 end
 
 def kanvas
-  pod 'Kanvas', '~> 1.2.5'
+  pod 'Kanvas', '~> 1.2.6'
   #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
   #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
   #pod 'Kanvas', :path => '../Kanvas-iOS'
@@ -161,7 +161,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.50.0-alpha1'
+    gutenberg :tag => 'v1.50.0'
 
 
     ## Third party libraries
@@ -191,7 +191,7 @@ abstract_target 'Apps' do
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.8.3'
+    pod 'Automattic-Tracks-iOS', '~> 0.8.4'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
     # Local Development
@@ -207,9 +207,9 @@ abstract_target 'Apps' do
 
     pod 'Gridicons', '~> 1.1.0'
 
-    pod 'WordPressAuthenticator', '~> 1.36.0-beta'
+    pod 'WordPressAuthenticator', '~> 1.36.0'
     # While in PR
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/nux-button-shadows'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
@@ -474,11 +474,9 @@ post_install do |installer|
     # =====================================
     #
     installer.pods_project.targets.each do |target|
-      if target.name == "WordPress" || target.name == "Jetpack"
-        target.build_configurations.each do |configuration|
-           pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
-           configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
-        end
+      target.build_configurations.each do |configuration|
+        pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
+        configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
       end
     end
 end

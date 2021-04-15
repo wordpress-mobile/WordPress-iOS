@@ -42,9 +42,9 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
     private var accentColor: UIColor {
         return UIColor { (traitCollection: UITraitCollection) -> UIColor in
             if traitCollection.userInterfaceStyle == .dark {
-                return UIColor.muriel(color: .accent, .shade40)
+                return UIColor.muriel(color: .primary, .shade40)
             } else {
-                return UIColor.muriel(color: .accent, .shade50)
+                return UIColor.muriel(color: .primary, .shade50)
             }
         }
     }

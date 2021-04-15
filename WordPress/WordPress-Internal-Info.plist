@@ -8,131 +8,106 @@
 	<string>WP Internal</string>
 	<key>CFBundleIcons~ipad</key>
 	<dict>
-		<key>CFBundlePrimaryIcon</key>
-		<dict>
-			<key>CFBundleIconFiles</key>
-			<array>
-				<string>AppIcon</string>
-			</array>
-			<key>UIPrerenderedIcon</key>
-			<true/>
-		</dict>
 		<key>CFBundleAlternateIcons</key>
 		<dict>
-			<key>WordPress Dark</key>
+			<key>Black</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>wordpress_dark_icon_20pt</string>
-					<string>wordpress_dark_icon_29pt</string>
-					<string>wordpress_dark_icon_76pt</string>
-					<string>wordpress_dark_icon_83.5</string>
+					<string>black-icon-app-60x60</string>
+					<string>black-icon-app-76x76</string>
+					<string>black-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Open Source</key>
+			<key>Black Classic</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>open_source_icon_20pt</string>
-					<string>open_source_icon_29pt</string>
-					<string>open_source_icon_76pt</string>
-					<string>open_source_icon_83.5</string>
-					<string></string>
+					<string>black-classic-icon-app-60x60</string>
+					<string>black-classic-icon-app-76x76</string>
+					<string>black-classic-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>Blue Classic</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>blue-classic-icon-app-60x60</string>
+					<string>blue-classic-icon-app-76x76</string>
+					<string>blue-classic-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>Celadon</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>celadon-icon-app-60x60</string>
+					<string>celadon-icon-app-76x76</string>
+					<string>celadon-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Open Source Dark</key>
+			<key>Celadon Classic</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>open_source_dark_icon_20pt</string>
-					<string>open_source_dark_icon_29pt</string>
-					<string>open_source_dark_icon_76pt</string>
-					<string>open_source_dark_icon_83.5</string>
+					<string>celadon-classic-icon-app-60x60</string>
+					<string>celadon-classic-icon-app-76x76</string>
+					<string>celadon-classic-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
-				<false/>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
 			</dict>
 			<key>Hot Pink</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>hot_pink_icon_20pt</string>
-					<string>hot_pink_icon_29pt</string>
-					<string>hot_pink_icon_76pt</string>
-					<string>hot_pink_icon_83.5</string>
+					<string>hot-pink-icon-app-60x60</string>
+					<string>hot-pink-icon-app-76x76</string>
+					<string>hot-pink-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPLegacyIcon</key>
 				<true/>
 			</dict>
 			<key>Jetpack Green</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>jetpack_green_icon_20pt</string>
-					<string>jetpack_green_icon_29pt</string>
-					<string>jetpack_green_icon_76pt</string>
-					<string>jetpack_green_icon_83.5</string>
+					<string>jetpack-green-icon-app-60x60</string>
+					<string>jetpack-green-icon-app-76x76</string>
+					<string>jetpack-green-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
-			</dict>
-			<key>Pride</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>pride_icon_20pt</string>
-					<string>pride_icon_29pt</string>
-					<string>pride_icon_76pt</string>
-					<string>pride_icon_83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
-		</dict>
-	</dict>
-	<key>CFBundleIcons</key>
-	<dict>
-		<key>CFBundlePrimaryIcon</key>
-		<dict>
-			<key>CFBundleIconFiles</key>
-			<array>
-				<string>AppIcon</string>
-			</array>
-			<key>UIPrerenderedIcon</key>
-			<true/>
-		</dict>
-		<key>CFBundleAlternateIcons</key>
-		<dict>
-			<key>WordPress Dark</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>wordpress_dark_icon_20pt</string>
-					<string>wordpress_dark_icon_29pt</string>
-					<string>wordpress_dark_icon_40pt</string>
-					<string>wordpress_dark_icon_60pt</string>
-					<string>wordpress_dark_icon_76pt</string>
-					<string>wordpress_dark_icon_83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
+				<key>WPLegacyIcon</key>
 				<true/>
 			</dict>
 			<key>Open Source</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>open_source_icon_20pt</string>
-					<string>open_source_icon_29pt</string>
-					<string>open_source_icon_40pt</string>
-					<string>open_source_icon_60pt</string>
-					<string>open_source_icon_76pt</string>
-					<string>open_source_icon_83.5</string>
+					<string>open-source-icon-app-60x60</string>
+					<string>open-source-icon-app-76x76</string>
+					<string>open-source-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPLegacyIcon</key>
 				<true/>
 				<key>WPRequiresBorder</key>
 				<true/>
@@ -141,58 +116,302 @@
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>open_source_dark_icon_20pt</string>
-					<string>open_source_dark_icon_29pt</string>
-					<string>open_source_dark_icon_40pt</string>
-					<string>open_source_dark_icon_60pt</string>
-					<string>open_source_dark_icon_76pt</string>
-					<string>open_source_dark_icon_83.5</string>
+					<string>open-source-dark-icon-app-60x60</string>
+					<string>open-source-dark-icon-app-76x76</string>
+					<string>open-source-dark-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPLegacyIcon</key>
+				<true/>
+			</dict>
+			<key>Pink</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>pink-icon-app-60x60</string>
+					<string>pink-icon-app-76x76</string>
+					<string>pink-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Hot Pink</key>
+			<key>Pink Classic</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>hot_pink_icon_20pt</string>
-					<string>hot_pink_icon_29pt</string>
-					<string>hot_pink_icon_40pt</string>
-					<string>hot_pink_icon_60pt</string>
-					<string>hot_pink_icon_76pt</string>
-					<string>hot_pink_icon_83.5</string>
+					<string>pink-classic-icon-app-60x60</string>
+					<string>pink-classic-icon-app-76x76</string>
+					<string>pink-classic-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
-			</dict>
-			<key>Jetpack Green</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>jetpack_green_icon_20pt</string>
-					<string>jetpack_green_icon_29pt</string>
-					<string>jetpack_green_icon_40pt</string>
-					<string>jetpack_green_icon_60pt</string>
-					<string>jetpack_green_icon_76pt</string>
-					<string>jetpack_green_icon_83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
+				<key>WPRequiresBorder</key>
 				<true/>
 			</dict>
 			<key>Pride</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>pride_icon_20pt</string>
-					<string>pride_icon_29pt</string>
-					<string>pride_icon_40pt</string>
-					<string>pride_icon_60pt</string>
-					<string>pride_icon_76pt</string>
-					<string>pride_icon_83.5</string>
+					<string>pride-icon-app-60x60</string>
+					<string>pride-icon-app-76x76</string>
+					<string>pride-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPLegacyIcon</key>
+				<true/>
+			</dict>
+			<key>Spectrum</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>spectrum-icon-app-60x60</string>
+					<string>spectrum-icon-app-76x76</string>
+					<string>spectrum-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
+			<key>Spectrum Classic</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>spectrum-classic-icon-app-60x60</string>
+					<string>spectrum-classic-icon-app-76x76</string>
+					<string>spectrum-classic-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>WordPress Dark</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>wordpress-dark-icon-app-60x60</string>
+					<string>wordpress-dark-icon-app-76x76</string>
+					<string>wordpress-dark-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPLegacyIcon</key>
+				<true/>
+			</dict>
+		</dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>AppIcon</string>
+			</array>
+			<key>UIPrerenderedIcon</key>
+			<true/>
+		</dict>
+	</dict>
+	<key>CFBundleIcons</key>
+	<dict>
+		<key>CFBundleAlternateIcons</key>
+		<dict>
+			<key>Black</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>black-icon-app-60x60</string>
+					<string>black-icon-app-76x76</string>
+					<string>black-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Black Classic</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>black-classic-icon-app-60x60</string>
+					<string>black-classic-icon-app-76x76</string>
+					<string>black-classic-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>Blue Classic</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>blue-classic-icon-app-60x60</string>
+					<string>blue-classic-icon-app-76x76</string>
+					<string>blue-classic-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>Celadon</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>celadon-icon-app-60x60</string>
+					<string>celadon-icon-app-76x76</string>
+					<string>celadon-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Celadon Classic</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>celadon-classic-icon-app-60x60</string>
+					<string>celadon-classic-icon-app-76x76</string>
+					<string>celadon-classic-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>Hot Pink</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>hot-pink-icon-app-60x60</string>
+					<string>hot-pink-icon-app-76x76</string>
+					<string>hot-pink-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPLegacyIcon</key>
+				<true/>
+			</dict>
+			<key>Jetpack Green</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>jetpack-green-icon-app-60x60</string>
+					<string>jetpack-green-icon-app-76x76</string>
+					<string>jetpack-green-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPLegacyIcon</key>
+				<true/>
+			</dict>
+			<key>Open Source</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>open-source-icon-app-60x60</string>
+					<string>open-source-icon-app-76x76</string>
+					<string>open-source-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPLegacyIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>Open Source Dark</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>open-source-dark-icon-app-60x60</string>
+					<string>open-source-dark-icon-app-76x76</string>
+					<string>open-source-dark-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPLegacyIcon</key>
+				<true/>
+			</dict>
+			<key>Pink</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>pink-icon-app-60x60</string>
+					<string>pink-icon-app-76x76</string>
+					<string>pink-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Pink Classic</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>pink-classic-icon-app-60x60</string>
+					<string>pink-classic-icon-app-76x76</string>
+					<string>pink-classic-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>Pride</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>pride-icon-app-60x60</string>
+					<string>pride-icon-app-76x76</string>
+					<string>pride-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPLegacyIcon</key>
+				<true/>
+			</dict>
+			<key>Spectrum</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>spectrum-icon-app-60x60</string>
+					<string>spectrum-icon-app-76x76</string>
+					<string>spectrum-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Spectrum Classic</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>spectrum-classic-icon-app-60x60</string>
+					<string>spectrum-classic-icon-app-76x76</string>
+					<string>spectrum-classic-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>WordPress Dark</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>wordpress-dark-icon-app-60x60</string>
+					<string>wordpress-dark-icon-app-76x76</string>
+					<string>wordpress-dark-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPLegacyIcon</key>
+				<true/>
+			</dict>
+		</dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>AppIcon</string>
+			</array>
+			<key>UIPrerenderedIcon</key>
+			<true/>
 		</dict>
 	</dict>
 	<key>CFBundleExecutable</key>

@@ -1,16 +1,16 @@
 {
   "info": {
     "author": "blog.color-studio",
-    "version": "2.0.0-rc.4"
+    "version": "2.5.0"
   },
   "colors": [
     {
       "idiom": "universal",
       "color": {
         "components": {
-          "red": "164",
-          "green": "245",
-          "blue": "200",
+          "red": "184",
+          "green": "230",
+          "blue": "191",
           "alpha": 1
         },
         "color-space": "srgb"

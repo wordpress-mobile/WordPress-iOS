@@ -20,6 +20,10 @@ extension UIColor {
         return .white
     }
 
+    static var lightAppBarTint: UIColor {
+        return .text
+    }
+
     static var appBarText: UIColor {
         if FeatureFlag.newNavBarAppearance.enabled {
             return .text
@@ -33,7 +37,7 @@ extension UIColor {
     }
 
     static var filterBarSelected: UIColor {
-        return UIColor(light: .primary, dark: .label)
+        return .primary
     }
 
     static var filterBarSelectedText: UIColor {

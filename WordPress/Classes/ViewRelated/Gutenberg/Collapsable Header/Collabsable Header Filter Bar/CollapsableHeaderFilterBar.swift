@@ -8,7 +8,7 @@ protocol CollapsableHeaderFilterBarDelegate: class {
 }
 
 class CollapsableHeaderFilterBar: UICollectionView {
-    var filterDelegate: CollapsableHeaderFilterBarDelegate?
+    weak var filterDelegate: CollapsableHeaderFilterBarDelegate?
     private let defaultCellHeight: CGFloat = 44
     private let defaultCellWidth: CGFloat = 105
 

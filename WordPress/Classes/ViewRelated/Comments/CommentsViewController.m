@@ -29,7 +29,6 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 @property (nonatomic) CommentStatusFilter cachedStatusFilter;
 @property (weak, nonatomic) IBOutlet FilterTabBar *filterTabBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTopConstraint;
 
 @end
 
@@ -57,7 +56,6 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
     [self configureFilterTabBar:self.filterTabBar];
     [self getSelectedFilterFromUserDefaults];
-    [self setTableConstraints];
     [self configureNavBar];
     [self configureLoadMoreSpinner];
     [self initializeNoResultsViews];
@@ -66,21 +64,6 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self configureTableView];
     [self configureTableViewFooter];
     [self configureTableViewHandler];
-}
-
-- (void)setTableConstraints
-{
-    // Configure view per commentFilters feature flag.
-    // When commentFilters feature flag is removed, this entire method can be removed.
-
-    BOOL filtersEnabled = [Feature enabled:FeatureFlagCommentFilters];
-    self.filterTabBar.hidden = !filtersEnabled;
-    
-    if (!filtersEnabled) {
-        self.tableViewTopConstraint.constant = -self.filterTabBar.frame.size.height;
-    } else {
-        self.tableViewTopConstraint.constant = 0;
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -229,21 +212,6 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [CommentAnalytics trackCommentViewedWithComment:comment];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    
-    // When FeatureFlagCommentFilters is removed, this whole method can be removed
-    // and just let WPTableViewHandler provide the height.
-
-    if ([Feature enabled:FeatureFlagCommentFilters]) {
-        return UITableViewAutomaticDimension;
-    }
-    
-    // Override WPTableViewHandler's default of UITableViewAutomaticDimension,
-    // which results in 30pt tall headers on iOS 11
-    return 0;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     return 0;
@@ -348,23 +316,11 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
 
-    if ([Feature enabled:FeatureFlagCommentFilters]) {
-        // CommentService purges Comments that do not belong to the current filter.
-        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@)", self.blog];
-    } else {
-        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, CommentStatusSpam];
-    }
-
+    // CommentService purges Comments that do not belong to the current filter.
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@)", self.blog];
 
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
-    
-    if ([Feature enabled:FeatureFlagCommentFilters]) {
-        fetchRequest.sortDescriptors = @[sortDescriptorDate];
-    } else {
-        NSSortDescriptor *sortDescriptorStatus = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
-        fetchRequest.sortDescriptors = @[sortDescriptorStatus, sortDescriptorDate];
-    }
-    
+    fetchRequest.sortDescriptors = @[sortDescriptorDate];
     fetchRequest.fetchBatchSize = CommentsFetchBatchSize;
     
     return fetchRequest;
@@ -392,11 +348,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (NSString *)sectionNameKeyPath
 {
-    if ([Feature enabled:FeatureFlagCommentFilters]) {
-        return @"sectionIdentifier";
-    }
-    
-    return nil;
+    return @"sectionIdentifier";
 }
 
 #pragma mark - WPContentSyncHelper Methods
