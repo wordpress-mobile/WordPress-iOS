@@ -80,9 +80,6 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
     /// Error domain used when reporting error to Crash Logger
     var errorDomain: String { get }
 
-    /// Returns true if the site mode is on
-    var isSingleSiteMode: Bool { get }
-
     /// MediaLibraryPickerDataSource
     var mediaLibraryDataSource: MediaLibraryPickerDataSource { get set }
 
@@ -117,19 +114,6 @@ extension PostEditor {
     func editorContentWasUpdated() {
         postEditorStateContext.updated(hasContent: editorHasContent)
         postEditorStateContext.updated(hasChanges: editorHasChanges)
-    }
-
-    var mainContext: NSManagedObjectContext {
-        return ContextManager.sharedInstance().mainContext
-    }
-
-    var currentBlogCount: Int {
-        let service = BlogService(managedObjectContext: mainContext)
-        return postIsReblogged ? service.blogCountForWPComAccounts() : service.blogCountForAllAccounts()
-    }
-
-    var isSingleSiteMode: Bool {
-        return currentBlogCount <= 1 || post.hasRemote()
     }
 
     var alertBarButtonItem: UIBarButtonItem? {
