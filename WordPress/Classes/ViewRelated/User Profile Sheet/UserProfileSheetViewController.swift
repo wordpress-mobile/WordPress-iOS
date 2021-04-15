@@ -3,8 +3,18 @@ class UserProfileSheetViewController: UITableViewController {
     // MARK: - Properties
 
     private let user: RemoteUser
-    private lazy var context = ContextManager.sharedInstance().mainContext
-    private lazy var readerTopicService = ReaderTopicService(managedObjectContext: context)
+
+    private lazy var mainContext = {
+        ContextManager.sharedInstance().mainContext
+    }()
+
+    private lazy var readerTopicService = {
+        ReaderTopicService(managedObjectContext: mainContext)
+    }()
+
+    private lazy var contentCoordinator: ContentCoordinator = {
+        return DefaultContentCoordinator(controller: self, context: mainContext)
+    }()
 
     // MARK: - Init
 
@@ -132,13 +142,22 @@ private extension UserProfileSheetViewController {
     func fetchAndShowSite() {
 
         // TODO: Remove. For testing only. Use siteID from user object.
-        let siteID = NSNumber(value: 999999999999999999)
+        var stubbySiteID: NSNumber?
+        // use this to test external site
+        stubbySiteID = nil
+        // use this to test internal site
+        // stubbySiteID = NSNumber(value: 9999999999)
+
+        guard let siteID = stubbySiteID else {
+            showSiteWebView()
+            return
+        }
 
         readerTopicService.siteTopicForSite(withID: siteID,
                                             isFeed: false,
                                             success: { [weak self] (objectID: NSManagedObjectID?, isFollowing: Bool) in
                                                 guard let objectID = objectID,
-                                                      let siteTopic = (try? self?.context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
+                                                      let siteTopic = (try? self?.mainContext.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                                                     DDLogError("User Profile: Error retrieving an existing site topic by its objectID.")
                                                     return
                                                 }
@@ -152,6 +171,18 @@ private extension UserProfileSheetViewController {
         let controller = ReaderStreamViewController.controllerWithTopic(topic)
         let navController = UINavigationController(rootViewController: controller)
         present(navController, animated: true)
+    }
+
+    func showSiteWebView() {
+        // TODO: Remove. For testing only. Use URL from user object.
+        let siteUrl = "http://www.peopleofwalmart.com/"
+
+        guard let url = URL(string: siteUrl) else {
+            DDLogError("User Profile: Error creating URL from site string.")
+            return
+        }
+
+        contentCoordinator.displayWebViewWithURL(url)
     }
 
     func configureTable() {
