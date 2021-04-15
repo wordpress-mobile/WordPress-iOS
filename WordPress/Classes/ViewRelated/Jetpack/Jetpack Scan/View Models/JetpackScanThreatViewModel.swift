@@ -321,7 +321,7 @@ struct JetpackScanThreatViewModel {
                 struct titles {
                     static let ignore = NSLocalizedString("Ignore threat", comment: "Title for button that will ignore the threat")
                     static let fixable = NSLocalizedString("Fix threat", comment: "Title for button that will fix the threat")
-                    static let enterServerCredentials = NSLocalizedString("Enter your server credentials to enable threat fixing.", comment: "Title for button when a site is ")
+                    static let enterServerCredentials = NSLocalizedString("Enter your server credentials to fix threat.", comment: "Title for button when a site is ")
                 }
 
                 struct messages {
