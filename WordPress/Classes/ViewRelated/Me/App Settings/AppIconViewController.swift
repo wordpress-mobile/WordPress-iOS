@@ -107,6 +107,11 @@ open class AppIconViewController: UITableViewController {
         let isOriginalIcon = self.isOriginalIcon(at: indexPath)
         let iconName = isOriginalIcon ? nil : icons[indexPath.section][indexPath.row].name
 
+        // Prevent showing the custom icon upgrade alert to a user
+        // who's just set an icon for the first time.
+        // We'll remove this alert after a couple of releases.
+        UserDefaults.standard.hasShownCustomAppIconUpgradeAlert = true
+
         UIApplication.shared.setAlternateIconName(iconName, completionHandler: { [weak self] error in
             if error == nil {
                 let event: WPAnalyticsStat = isOriginalIcon ? .appIconReset : .appIconChanged
