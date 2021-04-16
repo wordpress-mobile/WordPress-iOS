@@ -187,7 +187,7 @@ import WordPressFlux
         case reader
         case user_profile
     }
-    var statSource: StatSource = StatSource.reader
+    var statSource: StatSource = .reader
 
     /// Facilitates sharing of a blog via `ReaderStreamViewController+Sharing.swift`.
     let sharingController = PostSharingController()
