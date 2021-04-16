@@ -99,6 +99,11 @@ open class AppIconViewController: UITableViewController {
     }
 
     open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard !iconIsSelected(for: indexPath) else {
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
+        }
+
         let isOriginalIcon = self.isOriginalIcon(at: indexPath)
         let iconName = isOriginalIcon ? nil : icons[indexPath.section][indexPath.row].name
 
