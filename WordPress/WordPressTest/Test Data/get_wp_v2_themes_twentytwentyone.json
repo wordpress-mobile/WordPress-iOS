@@ -1,0 +1,247 @@
+[
+    {
+        "stylesheet": "twentytwentyone",
+        "template": "twentytwentyone",
+        "requires_php": "5.6",
+        "requires_wp": "5.3",
+        "textdomain": "twentytwentyone",
+        "version": "1.2",
+        "screenshot": "https://unique-peccary.jurassic.ninja/wp-content/themes/twentytwentyone/screenshot.png",
+        "author": {
+            "raw": "the WordPress team",
+            "rendered": "<a href=\"https://wordpress.org/\">the WordPress team</a>"
+        },
+        "author_uri": {
+            "raw": "https://wordpress.org/",
+            "rendered": "https://wordpress.org/"
+        },
+        "description": {
+            "raw": "Twenty Twenty-One is a blank canvas for your ideas and it makes the block editor your best brush. With new block patterns, which allow you to create a beautiful layout in a matter of seconds, this theme’s soft colors and eye-catching — yet timeless — design will let your work shine. Take it for a spin! See how Twenty Twenty-One elevates your portfolio, business website, or personal blog.",
+            "rendered": "Twenty Twenty-One is a blank canvas for your ideas and it makes the block editor your best brush. With new block patterns, which allow you to create a beautiful layout in a matter of seconds, this theme’s soft colors and eye-catching — yet timeless — design will let your work shine. Take it for a spin! See how Twenty Twenty-One elevates your portfolio, business website, or personal blog."
+        },
+        "name": {
+            "raw": "Twenty Twenty-One",
+            "rendered": "Twenty Twenty-One"
+        },
+        "tags": {
+            "raw": [
+                "one-column",
+                "accessibility-ready",
+                "custom-colors",
+                "custom-menu",
+                "custom-logo",
+                "editor-style",
+                "featured-images",
+                "footer-widgets",
+                "block-patterns",
+                "rtl-language-support",
+                "sticky-post",
+                "threaded-comments",
+                "translation-ready"
+            ],
+            "rendered": "one-column, accessibility-ready, custom-colors, custom-menu, custom-logo, editor-style, featured-images, footer-widgets, block-patterns, rtl-language-support, sticky-post, threaded-comments, translation-ready"
+        },
+        "theme_uri": {
+            "raw": "https://wordpress.org/themes/twentytwentyone/",
+            "rendered": "https://wordpress.org/themes/twentytwentyone/"
+        },
+        "status": "active",
+        "theme_supports": {
+            "align-wide": true,
+            "automatic-feed-links": true,
+            "custom-background": {
+                "default-image": "",
+                "default-preset": "default",
+                "default-position-x": "left",
+                "default-position-y": "top",
+                "default-size": "auto",
+                "default-repeat": "repeat",
+                "default-attachment": "scroll",
+                "default-color": "d1e4dd"
+            },
+            "custom-header": false,
+            "custom-logo": {
+                "width": 300,
+                "height": 100,
+                "flex-width": true,
+                "flex-height": true,
+                "header-text": [],
+                "unlink-homepage-logo": true
+            },
+            "customize-selective-refresh-widgets": true,
+            "dark-editor-style": false,
+            "disable-custom-colors": false,
+            "disable-custom-font-sizes": false,
+            "disable-custom-gradients": false,
+            "editor-color-palette": [
+                {
+                    "name": "Black",
+                    "slug": "black",
+                    "color": "#000000"
+                },
+                {
+                    "name": "Dark gray",
+                    "slug": "dark-gray",
+                    "color": "#28303D"
+                },
+                {
+                    "name": "Gray",
+                    "slug": "gray",
+                    "color": "#39414D"
+                },
+                {
+                    "name": "Green",
+                    "slug": "green",
+                    "color": "#D1E4DD"
+                },
+                {
+                    "name": "Blue",
+                    "slug": "blue",
+                    "color": "#D1DFE4"
+                },
+                {
+                    "name": "Purple",
+                    "slug": "purple",
+                    "color": "#D1D1E4"
+                },
+                {
+                    "name": "Red",
+                    "slug": "red",
+                    "color": "#E4D1D1"
+                },
+                {
+                    "name": "Orange",
+                    "slug": "orange",
+                    "color": "#E4DAD1"
+                },
+                {
+                    "name": "Yellow",
+                    "slug": "yellow",
+                    "color": "#EEEADD"
+                },
+                {
+                    "name": "White",
+                    "slug": "white",
+                    "color": "#FFFFFF"
+                }
+            ],
+            "editor-font-sizes": [
+                {
+                    "name": "Extra small",
+                    "size": 16,
+                    "slug": "extra-small"
+                },
+                {
+                    "name": "Small",
+                    "size": 18,
+                    "slug": "small"
+                },
+                {
+                    "name": "Normal",
+                    "size": 20,
+                    "slug": "normal"
+                },
+                {
+                    "name": "Large",
+                    "size": 24,
+                    "slug": "large"
+                },
+                {
+                    "name": "Extra large",
+                    "size": 40,
+                    "slug": "extra-large"
+                },
+                {
+                    "name": "Huge",
+                    "size": 96,
+                    "slug": "huge"
+                },
+                {
+                    "name": "Gigantic",
+                    "size": 144,
+                    "slug": "gigantic"
+                }
+            ],
+            "editor-gradient-presets": [
+                {
+                    "name": "Purple to yellow",
+                    "gradient": "linear-gradient(160deg, #D1D1E4 0%, #EEEADD 100%)",
+                    "slug": "purple-to-yellow"
+                },
+                {
+                    "name": "Yellow to purple",
+                    "gradient": "linear-gradient(160deg, #EEEADD 0%, #D1D1E4 100%)",
+                    "slug": "yellow-to-purple"
+                },
+                {
+                    "name": "Green to yellow",
+                    "gradient": "linear-gradient(160deg, #D1E4DD 0%, #EEEADD 100%)",
+                    "slug": "green-to-yellow"
+                },
+                {
+                    "name": "Yellow to green",
+                    "gradient": "linear-gradient(160deg, #EEEADD 0%, #D1E4DD 100%)",
+                    "slug": "yellow-to-green"
+                },
+                {
+                    "name": "Red to yellow",
+                    "gradient": "linear-gradient(160deg, #E4D1D1 0%, #EEEADD 100%)",
+                    "slug": "red-to-yellow"
+                },
+                {
+                    "name": "Yellow to red",
+                    "gradient": "linear-gradient(160deg, #EEEADD 0%, #E4D1D1 100%)",
+                    "slug": "yellow-to-red"
+                },
+                {
+                    "name": "Purple to red",
+                    "gradient": "linear-gradient(160deg, #D1D1E4 0%, #E4D1D1 100%)",
+                    "slug": "purple-to-red"
+                },
+                {
+                    "name": "Red to purple",
+                    "gradient": "linear-gradient(160deg, #E4D1D1 0%, #D1D1E4 100%)",
+                    "slug": "red-to-purple"
+                }
+            ],
+            "editor-styles": true,
+            "html5": [
+                "comment-form",
+                "comment-list",
+                "gallery",
+                "caption",
+                "style",
+                "script",
+                "navigation-widgets"
+            ],
+            "formats": [
+                "standard",
+                "link",
+                "aside",
+                "gallery",
+                "image",
+                "quote",
+                "status",
+                "video",
+                "audio",
+                "chat"
+            ],
+            "post-thumbnails": true,
+            "responsive-embeds": true,
+            "title-tag": true,
+            "wp-block-styles": true
+        },
+        "_links": {
+            "self": [
+                {
+                    "href": "https://unique-peccary.jurassic.ninja/wp-json/wp/v2/themes/twentytwentyone"
+                }
+            ],
+            "collection": [
+                {
+                    "href": "https://unique-peccary.jurassic.ninja/wp-json/wp/v2/themes"
+                }
+            ]
+        }
+    }
+]
