@@ -71,6 +71,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 ///
 - (AbstractPost *)latest;
 - (AbstractPost *)cloneFrom:(AbstractPost *)source;
+- (BOOL)hasSiteSpecificChanges;
 - (BOOL)hasPhoto;
 - (BOOL)hasVideo;
 - (BOOL)hasCategories;
