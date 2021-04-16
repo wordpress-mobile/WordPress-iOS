@@ -1,9 +1,15 @@
 import Foundation
 
+protocol LinkRouter {
+    init(routes: [Route])
+    func canHandle(url: URL) -> Bool
+    func handle(url: URL, shouldTrack track: Bool, source: UIViewController?)
+}
+
 /// UniversalLinkRouter keeps a list of possible URL routes that are exposed
 /// via universal links, and handles incoming links to trigger the appropriate route.
 ///
-struct UniversalLinkRouter {
+struct UniversalLinkRouter: LinkRouter {
     private let matcher: RouteMatcher
 
     init(routes: [Route]) {
@@ -26,7 +32,8 @@ struct UniversalLinkRouter {
         readerRoutes +
         statsRoutes +
         mySitesRoutes +
-        appBannerRoutes
+        appBannerRoutes +
+        startRoutes
 
     static let meRoutes: [Route] = [
         MeRoute(),
@@ -92,6 +99,10 @@ struct UniversalLinkRouter {
         AppBannerRoute()
     ]
 
+    static let startRoutes: [Route] = [
+        StartRoute()
+    ]
+
     static let redirects: [Route] = [
         MbarRoute()
     ]
@@ -130,7 +141,7 @@ struct UniversalLinkRouter {
         }
 
         for matchedRoute in matches {
-            matchedRoute.action.perform(matchedRoute.values, source: source)
+            matchedRoute.action.perform(matchedRoute.values, source: source, router: self)
         }
     }
 
