@@ -285,10 +285,13 @@ class GutenbergViewController: UIViewController, PostEditor {
         return gutenbergSettings.shouldPresentInformativeDialog(for: post.blog)
     }()
 
-    private var themeSupportQuery: Receipt? = nil
-    private var themeSupportReceipt: Receipt? = nil
-
     internal private(set) var contentInfo: ContentInfo?
+    lazy var editorSettingsService: BlockEditorSettingsService? = {
+        let blog = post.blog
+        guard let context = blog.managedObjectContext else { return nil }
+
+        return BlockEditorSettingsService(blog: blog, context: context)
+    }()
 
     // MARK: - Initializers
     required init(
@@ -335,7 +338,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         refreshInterface()
 
         gutenberg.delegate = self
-        fetchEditorTheme()
+        fetchBlockSettings()
         presentNewPageNoticeIfNeeded()
 
         service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
@@ -416,15 +419,16 @@ class GutenbergViewController: UIViewController, PostEditor {
         navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
         navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
+        navigationItem.titleView = navigationBarManager.blogTitleViewLabel
     }
 
-    private func reloadBlogPickerButton() {
-        var pickerTitle = post.blog.url ?? String()
+    private func reloadBlogTitleView() {
+        var blogTitle = post.blog.url ?? String()
         if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
-            pickerTitle = blogName
+            blogTitle = blogName
         }
 
-        navigationBarManager.reloadBlogPickerButton(with: pickerTitle, enabled: !isSingleSiteMode)
+        navigationBarManager.reloadBlogTitleView(text: blogTitle)
     }
 
     private func reloadEditorContents() {
@@ -439,7 +443,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     private func refreshInterface() {
-        reloadBlogPickerButton()
+        reloadBlogTitleView()
         reloadEditorContents()
         reloadPublishButton()
     }
@@ -821,7 +825,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             }
             focusTitleIfNeeded()
             mediaInserterHelper.refreshMediaStatus()
-            refreshEditorTheme()
         }
     }
 
@@ -1148,8 +1151,8 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadLeftNavigationItems items: [UIBarButtonItem]) {
-        navigationItem.leftBarButtonItems = items
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadTitleView view: UIView) {
+        navigationItem.titleView = view
     }
 }
 
@@ -1186,29 +1189,18 @@ private extension GutenbergViewController {
     }
 }
 
-// Editor Theme Support
+// Block Editor Settings
 extension GutenbergViewController {
 
     // GutenbergBridgeDataSource
     func gutenbergEditorTheme() -> GutenbergEditorTheme? {
-        return StoreContainer.shared.editorTheme.state.editorTheme(forBlog: post.blog)?.themeSupport
+        return editorSettingsService?.cachedSettings
     }
 
-    private func fetchEditorTheme() {
-        let themeSupportStore = StoreContainer.shared.editorTheme
-        themeSupportQuery = themeSupportStore.query(EditorThemeQuery(blog: post.blog))
-        themeSupportReceipt = themeSupportStore.onStateChange { [weak self] (_, state) in
-            DispatchQueue.main.async {
-                if let strongSelf = self, let themeSupport = state.editorTheme(forBlog: strongSelf.post.blog)?.themeSupport {
-                    strongSelf.gutenberg.updateTheme(themeSupport)
-                }
-            }
-        }
-    }
-
-    private func refreshEditorTheme() {
-        if let themeSupport = StoreContainer.shared.editorTheme.state.editorTheme(forBlog: post.blog)?.themeSupport {
-            gutenberg.updateTheme(themeSupport)
-        }
+    private func fetchBlockSettings() {
+        editorSettingsService?.fetchSettings({ [weak self] (hasChanges, settings) in
+            guard hasChanges, let `self` = self else { return }
+            self.gutenberg.updateTheme(settings)
+        })
     }
 }

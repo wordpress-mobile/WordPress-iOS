@@ -92,8 +92,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     func displayScanWithSiteID(_ siteID: NSNumber?) throws {
-        guard Feature.enabled(.jetpackScan),
-              let siteID = siteID,
+        guard let siteID = siteID,
               let blog = Blog.lookup(withID: siteID, in: mainContext),
               blog.isScanAllowed()
         else {

@@ -21,7 +21,7 @@ extension UIColor {
     }
 
     static var lightAppBarTint: UIColor {
-        return UIColor(light: .brand, dark: .white)
+        return .text
     }
 
     static var appBarText: UIColor {
@@ -37,7 +37,7 @@ extension UIColor {
     }
 
     static var filterBarSelected: UIColor {
-        return UIColor(light: .primary, dark: .label)
+        return .primary
     }
 
     static var filterBarSelectedText: UIColor {

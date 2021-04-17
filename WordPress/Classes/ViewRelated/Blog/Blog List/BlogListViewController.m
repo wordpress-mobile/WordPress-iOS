@@ -946,6 +946,11 @@ static NSInteger HideSearchMinSites = 3;
         return;
     }
 
+    if (![AppConfiguration allowSiteCreation]) {
+        self.navigationItem.rightBarButtonItem = self.editButtonItem;
+        return;
+    }
+
     if (showEditButton) {
         self.navigationItem.rightBarButtonItems = @[ self.addSiteButton, self.editButtonItem ];
     } else {
