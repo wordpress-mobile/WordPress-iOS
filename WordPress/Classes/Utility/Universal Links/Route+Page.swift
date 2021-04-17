@@ -11,7 +11,7 @@ struct NewPageForSiteRoute: Route {
 }
 
 struct NewPageNavigationAction: NavigationAction {
-    func perform(_ values: [String: String], source: UIViewController? = nil) {
+    func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
         if let blog = blog(from: values) {
             WPTabBarController.sharedInstance()?.showPageEditor(forBlog: blog)
         } else {

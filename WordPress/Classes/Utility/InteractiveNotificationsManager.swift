@@ -532,6 +532,6 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
-        MeNavigationAction.notificationSettings.perform()
+        MeNavigationAction.notificationSettings.perform(router: UniversalLinkRouter.shared)
     }
 }

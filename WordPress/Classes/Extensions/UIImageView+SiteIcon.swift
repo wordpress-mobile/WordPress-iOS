@@ -1,4 +1,5 @@
 import AlamofireImage
+import Alamofire
 import AutomatticTracks
 import Foundation
 import Gridicons
@@ -91,7 +92,12 @@ extension UIImageView {
             case .failure(let error):
                 if case .requestCancelled = (error as? AFIError) {
                     // Do not log intentionally cancelled requests as errors.
-                } else {
+                } else if case let Alamofire.AFError.responseValidationFailed(reason) = error,
+                          case let Alamofire.AFError.ResponseValidationFailureReason.unacceptableStatusCode(code) = reason,
+                          code == 404 {
+                    // Do not log 404 errors since they are expected for site icons
+                }
+                else {
                     WordPressAppDelegate.crashLogging?.logError(error)
                 }
             }

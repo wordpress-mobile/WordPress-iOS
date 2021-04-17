@@ -449,7 +449,7 @@ extension WordPressAppDelegate {
     }
 
     @objc func configureWordPressAuthenticator() {
-        let authManager = WordPressAuthenticationManager(windowManager: windowManager)
+        let authManager = AppDependency.authenticationManager(windowManager: windowManager)
 
         authManager.initializeWordPressAuthenticator()
         authManager.startRelayingSupportNotifications()
