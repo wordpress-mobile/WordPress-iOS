@@ -103,7 +103,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         present(alert, animated: true, completion: nil)
     }
 
-    func presentNotice(with title: String, message: String?) {
+    func presentNotice(with title: String, message: String) {
         displayNotice(title: title, message: message)
     }
 
@@ -125,8 +125,15 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
-    func showJetpackSettings(webViewController: UIViewController) {
-        let navigationVC = UINavigationController(rootViewController: webViewController)
+    func showJetpackSettings(with siteID: Int) {
+        guard let controller = WebViewControllerFactory.jetpackSettingsWebViewController(siteID: siteID) else {
+
+            let title = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
+            displayNotice(title: title)
+            return
+        }
+
+        let navigationVC = UINavigationController(rootViewController: controller)
         present(navigationVC, animated: true)
     }
 
