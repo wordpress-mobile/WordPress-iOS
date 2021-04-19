@@ -1,10 +1,11 @@
 import Foundation
 
-struct AppConstants {
+@objc class AppConstants: NSObject {
     static let productTwitterHandle = "@jetpack"
     static let productTwitterURL = "https://twitter.com/jetpack"
     static let productBlogURL = "https://jetpack.com/blog"
     static let ticketSubject = "Jetpack for iOS Support"
+    @objc static let eventNamePrefix = "jpios"
 
     /// Notifications Constants
     ///
