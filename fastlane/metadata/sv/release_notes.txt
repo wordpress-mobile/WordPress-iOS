@@ -1,9 +1,1 @@
-Nyheter i version 16.9?
-
-Den klassiska redigeraren kommer snart inte längre att vara tillgänglig för att skapa nya inlägg. Du kommer fortfarande att kunna redigera befintliga inlägg och sidor i den klassiska redigeraren, men vi rekommenderar att du nu börjar använda blockredigeraren om du ännu inte gjort det.
-
-När du skapar en ny webbplats kan du nu välja en webbplatskategori för att göra det enklare att söka efter och hitta designer som du kanske gillar. Det går även att välja ensidiga webbplatsutföranden.
-
-I läsaren har vi gjort ändringar för att förbättra upplevelsen vid sökande efter innehåll. Nu kommer du att se relaterat innehåll i ditt flöde och omdesignad sektion med rekommenderade ämnen under fliken upptäcka. Det finns även ett nytt sätt att hitta ämnen under hanteringsinställningarna.
-
-Vi har dessutom gjort flera mindre förbättringar på olika ställen i appen!
+Vi har vårstädat även i vår app och kan nu berätta om de senaste nyheterna i WPiOS. Vi har fräschat upp designen med nya rubriker och en ny webbplatsväljare som du kommer åt via ”Min webbplats”. Nu går det att filtrera kommentarsvyn på status – Alla, Väntande, Godkända, Kastade, Spam. Dessutom kan du aktivera visning av information om uppnådda milstenar. Varför inte ta och prova den uppsnyggade appen en vända!

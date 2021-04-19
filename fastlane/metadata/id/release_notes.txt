@@ -1,9 +1,1 @@
-Apa yang baru di versi 16.9?
-
-Dalam waktu dekat editor klasik tidak akan tersedia lagi untuk pembuatan pos baru. Anda tetap dapat menggunakan editor klasik untuk menyunting pos dan halaman yang sudah ada tetapi kami menyarankan agar Anda beralih ke editor blok jika belum menggunakannya. 
- 
- Ketika membuat situs, sekarang Anda dapat memilih kategori untuk membantu mencari dan mengidentifikasi desain yang mungkin Anda sukai. Anda juga dapat memilih desain situs satu halaman. 
- 
- Pada Pembaca, kami telah melakukan pembaruan untuk meningkatkan pengalaman penjelajahan konten. Sekarang feed Anda akan menampilkan konten terkait. Selain itu, bagian topik yang disarankan pada tab Jelajahi juga telah didesain ulang. Ada juga cara baru untuk menjelajahi topik di bawah pengaturan Kelola. 
- 
- Kami telah membuat perubahan kecil lainnya yang meningkatkan pengalaman Anda secara keseluruhan saat menggunakan aplikasi! 
+Dalam semangat musim yang baru, dengan bangga kami mengumumkan perubahan untuk WPiOS. Kami telah mempercantik desain aplikasi dengan header dan pengalih situs yang baru, yang dapat diakses pada Situs Saya. Sekarang Anda dapat menyaring komentar berdasarkan statusnya—Semua, Ditangguhkan, Disetujui, Dibuang, Ditandai sebagai spam—dan mengaktifkan pemberitahuan penampilan pencapaian. Cobalah fitur-fitur baru pada aplikasi elegan ini! 

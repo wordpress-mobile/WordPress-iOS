@@ -144,6 +144,8 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)configureTableViewData;
 - (void)scrollToElement:(QuickStartTourElement)element;
 
+- (void)switchToBlog:(Blog *)blog;
+- (void)showInitialDetailsForBlog;
 - (void)showPostListFromSource:(BlogDetailsNavigationSource)source;
 - (void)showPageListFromSource:(BlogDetailsNavigationSource)source;
 - (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source;

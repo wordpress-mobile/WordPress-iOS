@@ -1,6 +1,17 @@
-17.0
+17.1
 -----
 
+
+17.0
+-----
+* [internal] Updated Zendesk to latest version. Should be no functional changes. [#16051]
+* [*] Reader: fixed an issue that caused unfollowing external sites to fail. [#16060]
+* [*] Stats: fixed an issue where an error was displayed for Latest Post Summary if the site had no posts. [#16074]
+* [*] Fixed an issue where password text on Post Settings was showing as black in dark mode. [#15768]
+* [*] Added a thumbnail device mode selector in the page layout, and use a default setting based on the current device. [#16019]
+* [**] Comments can now be filtered by status (All, Pending, Approved, Trashed, or Spam). [#15955, #16110]
+* [*] Notifications: Enabled the new view milestone notifications [#16144]
+* [***] We updated the app's design, with fresh new headers throughout and a new site switcher in My Site. [#15750] 
 
 16.9
 -----

@@ -5,18 +5,21 @@ import WidgetKit
 ///
 extension Tracks {
 
-    // MARK: - Public Methods
+    func trackWidgetUpdatedIfNeeded(entry: StatsWidgetEntry, widgetKind: String, widgetCountKey: String) {
+        switch entry {
+        case .siteSelected(_, let context):
+            if !context.isPreview {
+                trackWidgetUpdated(widgetKind: widgetKind,
+                                          widgetCountKey: widgetCountKey)
+            }
 
-    public func trackExtensionStatsLaunched(_ siteID: Int) {
-        let properties = ["site_id": siteID]
-        trackExtensionEvent(.statsLaunched, properties: properties as [String: AnyObject]?)
+        case .loggedOut, .noData:
+            trackWidgetUpdated(widgetKind: widgetKind,
+                                      widgetCountKey: widgetCountKey)
+        }
     }
 
-    public func trackExtensionLoginLaunched() {
-        trackExtensionEvent(.loginLaunched)
-    }
-
-    public func trackWidgetUpdated(widgetKind: String, widgetCountKey: String) {
+    func trackWidgetUpdated(widgetKind: String, widgetCountKey: String) {
 
         DispatchQueue.global().async {
             WidgetCenter.shared.getCurrentConfigurations { result in

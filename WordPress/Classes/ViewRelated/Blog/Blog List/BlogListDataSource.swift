@@ -82,6 +82,10 @@ class BlogListDataSource: NSObject {
 
     @objc let recentSitesMinCount = 11
 
+    /// If this is set to `false`, the rows will never show the disclosure indicator.
+    ///
+    @objc var shouldShowDisclosureIndicator = true
+
     // MARK: - Inputs
 
     // Pass to the LoggedInDataSource to match a specifc blog.
@@ -338,7 +342,7 @@ extension BlogListDataSource: UITableViewDataSource {
             case .loggedIn:
                 cell.accessoryType = .none
             default:
-                cell.accessoryType = .disclosureIndicator
+                cell.accessoryType = shouldShowDisclosureIndicator ? .disclosureIndicator : .none
             }
         }
 

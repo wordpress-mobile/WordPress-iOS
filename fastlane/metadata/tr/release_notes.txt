@@ -1,9 +1,1 @@
-16.9 sürümündeki yenilikler neler?
-
-Yakında, yeni yayınlar oluşturmak için artık klasik düzenleyici kullanamayacaksınız. Klasik düzenleyicide mevcut yayınlarınızı ve sayfalarınızı yine de düzenleyebilirsiniz, ancak henüz yapmadıysanız blok düzenleyiciye geçmenizi öneririz. 
- 
- Bir site oluştururken, artık beğenebileceğiniz tasarımları daha iyi aramanıza ve belirlemenize yardımcı olacak kategorileri seçebilirsiniz. Tek sayfalık site tasarımları da seçebilirsiniz. 
- 
- Okuyucu'da, içerik bulma ile ilgili deneyimi iyileştirmek için güncellemeler yaptık. Artık beslemenizde ilgili içeriği, Keşfet sekmenizde de yeniden tasarlanmış önerilen konular bölümünü göreceksiniz. Ayrıca Yönet ayarı altında, konuları keşfetmenizi sağlayacak yeni bir yol sunuyoruz. 
- 
- Uygulamadaki genel deneyiminizi iyileştiren başka küçük değişiklikler de yaptık. 
+Bahar temizliği ruhuyla, WPiOS'ta yeni değişiklikleri duyurmaktan heyecan duyuyoruz. Sitem üzerinden erişilen yeni başlıklar ve yeni bir site değiştiriciyle uygulamanın tasarımını güzelleştirdik. Artık yorumları duruma göre (Tümü, Beklemede, Onaylandı, Çöp Kutusuna Gönderildi, Spam) filtreleyebilir ve görüntülemeyle ilgili dönüm noktası niteliğinde bildirimleri etkinleştirebilirsiniz. Yepyeni uygulamayı deneyin. 

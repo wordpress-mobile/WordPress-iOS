@@ -179,6 +179,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         DDLogInfo("\(self) \(#function)")
 
         uploadsManager.resume()
+
+        ABTest.refreshIfNeeded()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -399,8 +401,7 @@ extension WordPressAppDelegate {
 
     @objc func configureAppCenterSDK() {
         #if APPCENTER_ENABLED
-        MSAppCenter.start(ApiCredentials.appCenterAppId(), withServices: [MSDistribute.self])
-        MSDistribute.setEnabled(true)
+        AppCenter.start(withAppSecret: ApiCredentials.appCenterAppId(), services: [Distribute.self])
         #endif
     }
 

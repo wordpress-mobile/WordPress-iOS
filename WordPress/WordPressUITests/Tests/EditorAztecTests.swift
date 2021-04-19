@@ -11,6 +11,7 @@ class EditorAztecTests: XCTestCase {
             .toggleBlockEditor(to: .off)
             .goBackToMySite()
             .tabBar.gotoAztecEditorScreen()
+            .dismissNotificationAlertIfNeeded(.accept)
     }
 
     override func tearDown() {

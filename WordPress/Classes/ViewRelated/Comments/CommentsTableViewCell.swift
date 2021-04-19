@@ -10,6 +10,8 @@ open class CommentsTableViewCell: WPTableViewCell {
     @IBOutlet private weak var gravatarImageView: CircularImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var detailLabel: UILabel!
+
+    @IBOutlet weak var timestampStackView: UIStackView!
     @IBOutlet private weak var timestampImageView: UIImageView!
     @IBOutlet private weak var timestampLabel: UILabel!
 
@@ -47,7 +49,10 @@ open class CommentsTableViewCell: WPTableViewCell {
         pending = (comment.status == CommentStatusPending)
         postTitle = comment.titleForDisplay() ?? Labels.noTitle
         content = comment.contentPreviewForDisplay() ?? String()
-        timestamp = comment.dateCreated.mediumString()
+
+        if let dateCreated = comment.dateCreated {
+            timestamp = dateCreated.mediumString()
+        }
 
         if let avatarURLForDisplay = comment.avatarURLForDisplay() {
             downloadGravatarWithURL(avatarURLForDisplay)
@@ -101,11 +106,15 @@ private extension CommentsTableViewCell {
     }
 
     func configureTimestamp() {
+
+        // When FeatureFlag.commentFilters is removed,
+        // all timestamp elements can be removed.
+        timestampStackView.isHidden = FeatureFlag.commentFilters.enabled
+
         timestampLabel.text = timestamp
         timestampLabel.font = Style.timestampFont
         timestampLabel.textColor = Style.detailTextColor
         timestampImageView.image = Style.timestampImage
-
     }
 
     func attributedTitle() -> NSAttributedString {

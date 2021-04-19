@@ -102,8 +102,8 @@ import Foundation
     case jetpackManageConnectionViewed
     case jetpackDisconnectTapped
     case jetpackDisconnectRequested
-    case jetpackWhitelistedIpsViewed
-    case jetpackWhitelistedIpsChanged
+    case jetpackAllowlistedIpsViewed
+    case jetpackAllowlistedIpsChanged
     case activitylogFilterbarSelectType
     case activitylogFilterbarResetType
     case activitylogFilterbarTypeButtonTapped
@@ -150,6 +150,7 @@ import Foundation
     case commentEditorOpened
     case commentEdited
     case commentRepliedTo
+    case commentFilterChanged
 
     // InviteLinks
     case inviteLinksGetStatus
@@ -333,10 +334,10 @@ import Foundation
             return "jetpack_disconnect_tapped"
         case .jetpackDisconnectRequested:
             return "jetpack_disconnect_requested"
-        case .jetpackWhitelistedIpsViewed:
-            return "jetpack_whitelisted_ips_viewed"
-        case .jetpackWhitelistedIpsChanged:
-            return "jetpack_whitelisted_ips_changed"
+        case .jetpackAllowlistedIpsViewed:
+            return "jetpack_allowlisted_ips_viewed"
+        case .jetpackAllowlistedIpsChanged:
+            return "jetpack_allowlisted_ips_changed"
         case .activitylogFilterbarSelectType:
             return "activitylog_filterbar_select_type"
         case .activitylogFilterbarResetType:
@@ -425,6 +426,8 @@ import Foundation
             return "comment_edited"
         case .commentRepliedTo:
             return "comment_replied_to"
+        case .commentFilterChanged:
+            return "comment_filter_changed"
 
         // Invite Links
         case .inviteLinksGetStatus:

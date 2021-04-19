@@ -272,6 +272,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.navigationItem.backBarButtonItem = backButton;
 
     self.title = NSLocalizedString(@"Comments", @"Title of the reader's comments screen");
+    self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
 }
 
 - (void)configurePostHeader

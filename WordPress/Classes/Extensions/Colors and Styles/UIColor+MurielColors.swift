@@ -175,7 +175,7 @@ extension UIColor {
     /// Muriel/iOS navigation color
     static var appBarBackground: UIColor {
         if FeatureFlag.newNavBarAppearance.enabled {
-            return UIColor(light: white, dark: .gray(.shade100))
+            return .secondarySystemGroupedBackground
         }
 
         return UIColor(light: .brand, dark: .gray(.shade100))

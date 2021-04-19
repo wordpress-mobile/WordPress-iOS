@@ -9,6 +9,9 @@ extension PageTemplateLayout {
 
     @NSManaged public var content: String
     @NSManaged public var preview: String
+    @NSManaged public var previewTablet: String
+    @NSManaged public var previewMobile: String
+    @NSManaged public var demoUrl: String
     @NSManaged public var slug: String
     @NSManaged public var title: String?
     @NSManaged public var categories: Set<PageTemplateCategory>?
@@ -36,6 +39,9 @@ extension PageTemplateLayout {
     convenience init(context: NSManagedObjectContext, layout: RemoteLayout) {
         self.init(context: context)
         preview = layout.preview ?? ""
+        previewTablet = layout.previewTablet ?? ""
+        previewMobile = layout.previewMobile ?? ""
+        demoUrl = layout.demoUrl ?? ""
         content = layout.content ?? ""
         title = layout.title
         slug = layout.slug

@@ -1,9 +1,1 @@
-Quali sono le novità della versione 16.9?
-
-L'editor classico presto non sarà più disponibile per la creazione di nuovi articoli. Potrai ancora modificare gli articoli e le pagine esistenti nell'editor classico, ma ti consigliamo di passare ora all'editor a blocchi, se non l'hai già fatto. 
- 
- Quando crei un sito, ora puoi selezionare le categorie per aiutarti a cercare e identificare meglio i design che potrebbero piacerti. Puoi anche scegliere design dei siti a una sola pagina. 
- 
- Nel Reader, abbiamo apportato aggiornamenti per migliorare l'esperienza di scoperta dei contenuti. Ora vedrai i contenuti correlati al tuo feed e una sezione degli argomenti consigliati riprogettata nella scheda Scopri. Esiste anche un nuovo modo per scoprire gli argomenti nell'impostazione Gestisci. 
- 
- Abbiamo apportato altre modifiche minori che migliorano l'esperienza generale nell'app. 
+Nello spirito delle pulizie di primavera, siamo felici di annunciare nuove modifiche a WordPress per iOS. Abbiamo migliorato il design dell'applicazione con nuove intestazioni e un nuovo pulsante per cambiare sito, accessibile tramite Il mio sito. Ora puoi filtrare i commenti in base allo stato (Tutti, In sospeso, Approvato, Eliminato nel cestino, Nello spam) e abilitare le notifiche relative alla visualizzazione dei traguardi. Fai un giro nell'app appena ritoccata. 

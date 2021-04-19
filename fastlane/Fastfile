@@ -126,7 +126,7 @@ import "./ScreenshotFastfile"
     ios_completecodefreeze_prechecks(options)
     ios_localize_project()
     version = ios_get_app_version()
-    trigger_release_build(branch_to_build: "release/#{version}")
+    trigger_beta_build(branch_to_build: "release/#{version}")
   end
 
   #####################################################################################
@@ -190,7 +190,7 @@ import "./ScreenshotFastfile"
   lane :new_beta_release do | options |
     ios_betabuild_prechecks(options)
     ios_update_metadata(options)
-    ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
+    #ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta()
     version = ios_get_app_version()
     trigger_beta_build(branch_to_build: "release/#{version}")
@@ -273,8 +273,8 @@ import "./ScreenshotFastfile"
   # it for both internal and external distribution
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane build_and_upload_beta_release [skip_confirm:<skip confirm>] 
-  #   [create_gh_release:<create release on GH>] 
+  # bundle exec fastlane build_and_upload_beta_release [skip_confirm:<skip confirm>]
+  #   [create_gh_release:<create release on GH>]
   #
   # Example:
   # bundle exec fastlane build_and_upload_beta_release
@@ -284,7 +284,7 @@ import "./ScreenshotFastfile"
   desc "Builds and uploads a beta release for distribution"
   lane :build_and_upload_beta_release do | options |
     build_and_upload_release(
-      skip_confirm: options[:skip_confirm], 
+      skip_confirm: options[:skip_confirm],
       create_gh_release: options[:create_gh_release],
       beta_release: true)
   end
@@ -296,8 +296,8 @@ import "./ScreenshotFastfile"
   # it for distribution
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane build_and_upload_stable_release [skip_confirm:<skip confirm>] 
-  #   [create_gh_release:<create release on GH>] 
+  # bundle exec fastlane build_and_upload_stable_release [skip_confirm:<skip confirm>]
+  #   [create_gh_release:<create release on GH>]
   #
   # Example:
   # bundle exec fastlane build_and_upload_stable_release
@@ -307,7 +307,7 @@ import "./ScreenshotFastfile"
   desc "Builds and uploads a stable release for distribution"
   lane :build_and_upload_stable_release do | options |
     build_and_upload_release(
-      skip_confirm: options[:skip_confirm], 
+      skip_confirm: options[:skip_confirm],
       create_gh_release: options[:create_gh_release],
       beta_release: false)
   end
@@ -318,7 +318,7 @@ import "./ScreenshotFastfile"
   # This lane builds the app and uploads it for both internal and external distribution
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane build_and_upload_release [skip_confirm:<skip confirm>] 
+  # bundle exec fastlane build_and_upload_release [skip_confirm:<skip confirm>]
   #  [create_gh_release:<create release on GH>] [beta_release:<is a beta release>]
   #
   # Example:
@@ -636,8 +636,8 @@ import "./ScreenshotFastfile"
   #####################################################################################
   lane :trigger_beta_build do | options |
     circleci_trigger_job(
-      circle_ci_token: ENV["CIRCLE_CI_AUTH_TOKEN"], 
-      repository: REPOSITORY_NAME, 
+      circle_ci_token: ENV["CIRCLE_CI_AUTH_TOKEN"],
+      repository: REPOSITORY_NAME,
       branch: options[:branch_to_build],
       job_params: {"beta_build" => true}
     )
@@ -654,8 +654,8 @@ import "./ScreenshotFastfile"
   #####################################################################################
   lane :trigger_release_build do | options |
     circleci_trigger_job(
-      circle_ci_token: ENV["CIRCLE_CI_AUTH_TOKEN"], 
-      repository: REPOSITORY_NAME, 
+      circle_ci_token: ENV["CIRCLE_CI_AUTH_TOKEN"],
+      repository: REPOSITORY_NAME,
       branch: options[:branch_to_build],
       job_params: {"release_build" => true}
     )

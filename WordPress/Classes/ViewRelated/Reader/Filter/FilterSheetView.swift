@@ -137,6 +137,9 @@ class FilterSheetView: UIView {
         }
         selectedFilter = filters.first
 
+        // If there is only one filter, don't show the filter tab bar.
+        filterTabBar.isHidden = filters.count == 1
+
         addSubview(stackView)
         pinSubviewToAllEdges(stackView)
 

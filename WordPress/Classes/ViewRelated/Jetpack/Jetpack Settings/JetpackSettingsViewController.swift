@@ -98,9 +98,9 @@ open class JetpackSettingsViewController: UITableViewController {
 
         if self.settings.jetpackBlockMaliciousLoginAttempts {
             bruteForceAttackRows.append(
-                NavigationItemRow(title: NSLocalizedString("Whitelisted IP addresses",
-                                                           comment: "Jetpack Settings: Whitelisted IP addresses"),
-                                  action: self.pressedWhitelistedIPAddresses())
+                NavigationItemRow(title: NSLocalizedString("Allowlisted IP addresses",
+                                                           comment: "Jetpack Settings: Allowlisted IP addresses"),
+                                  action: self.pressedAllowlistedIPAddresses())
             )
         }
 
@@ -231,22 +231,22 @@ open class JetpackSettingsViewController: UITableViewController {
         }
     }
 
-    func pressedWhitelistedIPAddresses() -> ImmuTableAction {
+    func pressedAllowlistedIPAddresses() -> ImmuTableAction {
         return { [unowned self] row in
-            let whiteListedIPs = self.settings.jetpackLoginWhiteListedIPAddresses
-            let settingsViewController = SettingsListEditorViewController(collection: whiteListedIPs)
+            let allowListedIPs = self.settings.jetpackLoginAllowListedIPAddresses
+            let settingsViewController = SettingsListEditorViewController(collection: allowListedIPs)
 
-            settingsViewController.title = NSLocalizedString("Whitelisted IP Addresses",
-                                                             comment: "Whitelisted IP Addresses Title")
+            settingsViewController.title = NSLocalizedString("Allowlisted IP Addresses",
+                                                             comment: "Allowlisted IP Addresses Title")
             settingsViewController.insertTitle = NSLocalizedString("New IP or IP Range",
                                                                    comment: "IP Address or Range Insertion Title")
             settingsViewController.editTitle = NSLocalizedString("Edit IP or IP Range",
                                                                  comment: "IP Address or Range Edition Title")
-            settingsViewController.footerText = NSLocalizedString("You may whitelist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100.",
-                                                                  comment: "Text rendered at the bottom of the Whitelisted IP Addresses editor, should match Calypso.")
+            settingsViewController.footerText = NSLocalizedString("You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100.",
+                                                                  comment: "Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso.")
 
             settingsViewController.onChange = { [weak self] (updated: Set<String>) in
-                self?.settings.jetpackLoginWhiteListedIPAddresses = updated
+                self?.settings.jetpackLoginAllowListedIPAddresses = updated
                 guard let blog = self?.blog else {
                     return
                 }
@@ -255,14 +255,14 @@ open class JetpackSettingsViewController: UITableViewController {
                                                                // viewWillAppear will trigger a refresh, maybe before
                                                                // the new IPs are saved, so lets refresh again here
                                                                self?.refreshSettings()
-                                                            WPAnalytics.track(.jetpackWhitelistedIpsChanged)
+                                                            WPAnalytics.track(.jetpackAllowlistedIpsChanged)
                                                            },
                                                            failure: { [weak self] (_) in
                                                                self?.refreshSettingsAfterSavingError()
                                                            })
             }
             self.navigationController?.pushViewController(settingsViewController, animated: true)
-            WPAnalytics.track(.jetpackWhitelistedIpsViewed)
+            WPAnalytics.track(.jetpackAllowlistedIpsViewed)
         }
     }
 
