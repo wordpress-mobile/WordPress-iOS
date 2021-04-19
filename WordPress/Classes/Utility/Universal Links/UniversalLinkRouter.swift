@@ -68,7 +68,8 @@ struct UniversalLinkRouter: LinkRouter {
         ReaderRoute.feed,
         ReaderRoute.blog,
         ReaderRoute.feedsPost,
-        ReaderRoute.blogsPost
+        ReaderRoute.blogsPost,
+        ReaderRoute.wpcomPost
     ]
 
     static let statsRoutes: [Route] = [

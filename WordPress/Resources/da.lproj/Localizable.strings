@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-10 10:32:55+0000 */
+/* Translation-Revision-Date: 2021-04-09 23:21:35+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: da_DK */
@@ -2538,7 +2538,7 @@
 
 /* Status for Media object that is failed upload or export.
    The action failed */
-"Failed" = "Fejlede";
+"Failed" = "Mislykkedes";
 
 /* Error title when picked media cannot be imported into stories. */
 "Failed Media Export" = "Failed Media Export";
