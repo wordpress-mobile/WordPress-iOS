@@ -6,6 +6,8 @@
 
 * [*] Fixed the navigation bar color in dark mode. [#16348]
 
+* [**] A new author can be chosen for Posts and Pages for sites with multiple authors. [#16269, #16301, #16281]
+
 17.2
 -----
 
