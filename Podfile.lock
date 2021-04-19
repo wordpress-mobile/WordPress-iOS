@@ -458,7 +458,7 @@ DEPENDENCIES:
   - Nimble (~> 9.0.0)
   - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
-  - OCMock (= 3.4.3)
+  - OCMock (~> 3.4.3)
   - OHHTTPStubs/Swift (~> 9.1.0)
   - RCTRequired (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.51.0/third-party-podspecs/RCTRequired.podspec.json`)
   - RCTTypeSafety (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.51.0/third-party-podspecs/RCTTypeSafety.podspec.json`)
@@ -763,6 +763,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: d9ece699054cbb025f2bbfefba82632e12991fcc
+PODFILE CHECKSUM: c7e42bbb17e1c3b6f9084b2b877a074028064b0a
 
 COCOAPODS: 1.10.0
