@@ -136,13 +136,14 @@ extension UserProfileSheetViewController {
 private extension UserProfileSheetViewController {
 
     func showSite() {
+        WPAnalytics.track(.userProfileSheetSiteShown)
 
         // TODO: Remove. For testing only. Use siteID from user object.
         var stubbySiteID: NSNumber?
         // use this to test external site
-        // stubbySiteID = nil
+        stubbySiteID = nil
         // use this to test internal site
-        stubbySiteID = NSNumber(value: 9999999999)
+        // stubbySiteID = NSNumber(value: 9999999999)
 
         guard let siteID = stubbySiteID else {
             showSiteWebView()
@@ -154,13 +155,14 @@ private extension UserProfileSheetViewController {
 
     func showSiteTopicWithID(_ siteID: NSNumber) {
         let controller = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: false)
+        controller.statSource = ReaderStreamViewController.StatSource.user_profile
         let navController = UINavigationController(rootViewController: controller)
         present(navController, animated: true)
     }
 
     func showSiteWebView() {
         // TODO: Remove. For testing only. Use URL from user object.
-        let siteUrl = "http://www.peopleofwalmart.com/"
+        let siteUrl = "https://www.funnycatpix.com/"
 
         guard let url = URL(string: siteUrl) else {
             DDLogError("User Profile: Error creating URL from site string.")
