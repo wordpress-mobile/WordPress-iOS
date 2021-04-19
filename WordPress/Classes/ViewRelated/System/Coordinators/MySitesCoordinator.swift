@@ -107,8 +107,9 @@ class MySitesCoordinator: NSObject {
         showRootViewController()
 
         if Feature.enabled(.newNavBarAppearance) {
-            blogListViewController.modalPresentationStyle = .pageSheet
-            mySiteViewController.present(blogListViewController, animated: true)
+            let navigationController = UINavigationController(rootViewController: blogListViewController)
+            navigationController.modalPresentationStyle = .formSheet
+            mySiteViewController.present(navigationController, animated: true)
         }
     }
 
@@ -131,7 +132,10 @@ class MySitesCoordinator: NSObject {
     func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection) {
         showBlogDetails(for: blog)
 
-        if let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
+        if Feature.enabled(.newNavBarAppearance),
+           let mySiteViewController = navigationController.topViewController as? MySiteViewController {
+            mySiteViewController.showBlogDetailsSubsection(subsection)
+        } else if let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
             blogDetailsViewController.showDetailView(for: subsection)
         }
     }
@@ -145,7 +149,12 @@ class MySitesCoordinator: NSObject {
     func showStats(for blog: Blog, timePeriod: StatsPeriodType) {
         showBlogDetails(for: blog)
 
-        if let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
+        if FeatureFlag.newNavBarAppearance.enabled {
+
+            UserDefaults.standard.set(timePeriod.rawValue, forKey: StatsPeriodType.statsPeriodTypeDefaultsKey)
+            mySiteViewController.showDetailView(for: .stats)
+
+        } else if let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
             // Setting this user default is a bit of a hack, but it's by far the easiest way to
             // get the stats view controller displaying the correct period. I spent some time
             // trying to do it differently, but the existing stats view controller setup is
@@ -163,11 +172,16 @@ class MySitesCoordinator: NSObject {
     }
 
     // MARK: - Adding a new site
-    @objc
-    func showAddNewSite(from view: UIView) {
-        showSitesList()
 
-        blogListViewController.presentInterfaceForAddingNewSite(from: view)
+    func showSiteCreation() {
+        showRootViewController()
+        mySiteViewController.launchSiteCreation()
+    }
+
+    @objc
+    func showAddNewSite() {
+        showRootViewController()
+        mySiteViewController.presentInterfaceForAddingNewSite()
     }
 
     // MARK: - My Sites

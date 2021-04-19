@@ -465,14 +465,14 @@ private extension AppSettingsViewController {
         )
 
         let aboutRow = NavigationItemRow(
-            title: NSLocalizedString("About WordPress for iOS", comment: "Link to About screen for WordPress for iOS"),
+            title: AppConstants.Settings.aboutTitle,
             action: pushAbout()
         )
 
         var rows: [ImmuTableRow] = [settingsRow, aboutRow]
-        if #available(iOS 10.3, *),
-            UIApplication.shared.supportsAlternateIcons {
-                rows.insert(iconRow, at: 0)
+        if AppConfiguration.allowsCustomAppIcons && UIApplication.shared.supportsAlternateIcons {
+            // We don't show custom icons for Jetpack
+            rows.insert(iconRow, at: 0)
         }
 
         if FeatureFlag.debugMenu.enabled {

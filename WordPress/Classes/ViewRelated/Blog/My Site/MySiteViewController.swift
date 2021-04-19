@@ -66,6 +66,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
         WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+
+        FancyAlertViewController.presentCustomAppIconUpgradeAlertIfNecessary(from: self)
     }
 
     private func subscribeToPostSignupNotifications() {
@@ -169,14 +171,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             image: "mysites-nosites") { noResultsViewController in
 
             noResultsViewController.actionButtonHandler = { [weak self] in
-                self?.showAddSiteAlert()
+                self?.presentInterfaceForAddingNewSite()
             }
         }
     }
 
     // MARK: - Add Site Alert
 
-    private func showAddSiteAlert() {
+    @objc
+    func presentInterfaceForAddingNewSite() {
         let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(canCreateWPComSite: defaultAccount() != nil) { [weak self] in
             self?.launchSiteCreation()
         } addSelfHostedSite: {
@@ -195,7 +198,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     @objc
-    private func launchSiteCreation() {
+    func launchSiteCreation() {
         let wizardLauncher = SiteCreationWizardLauncher()
         guard let wizard = wizardLauncher.ui else {
             return
@@ -218,6 +221,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         remove(blogDetailsViewController)
         self.blogDetailsViewController = nil
+    }
+
+    /// Shows the specified `BlogDetailsSubsection` for a `Blog`.
+    ///
+    /// - Parameters:
+    ///         - subsection: The specific subsection to show.
+    ///
+    func showBlogDetailsSubsection(_ subsection: BlogDetailsSubsection) {
+        blogDetailsViewController?.showDetailView(for: subsection)
     }
 
     /// Shows a `BlogDetailsViewController` for the specified `Blog`.  If the VC doesn't exist, this method also takes care
@@ -343,5 +355,25 @@ extension MySiteViewController: WPSplitViewControllerDetailProvider {
         }
 
         return blogDetailsViewController.initialDetailViewControllerForSplitView(splitView)
+    }
+}
+
+// MARK: - My site detail views
+extension MySiteViewController {
+
+    func showDetailView(for section: BlogDetailsSubsection) {
+        blogDetailsViewController?.showDetailView(for: section)
+    }
+}
+
+// MARK: - UIViewControllerTransitioningDelegate
+//
+extension MySiteViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        guard presented is FancyAlertViewController else {
+            return nil
+        }
+
+        return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }

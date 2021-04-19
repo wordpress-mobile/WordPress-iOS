@@ -1,30 +1,35 @@
 import Foundation
 import Gutenberg
 
-struct EditorTheme: Codable, Equatable {
+struct EditorTheme: Codable {
     static func == (lhs: EditorTheme, rhs: EditorTheme) -> Bool {
-        return lhs.description == rhs.description
+        return lhs.checksum == rhs.checksum
     }
 
     enum CodingKeys: String, CodingKey {
         case themeSupport = "theme_supports"
-        case version
-        case stylesheet
     }
 
     let themeSupport: EditorThemeSupport?
-    let version: String?
-    let stylesheet: String?
-
-    var description: String {
-        return "\(stylesheet ?? "")-\(version ?? "")"
-    }
+    let checksum: String
 
     init(from decoder: Decoder) throws {
         let map = try decoder.container(keyedBy: CodingKeys.self)
-        self.themeSupport = try? map.decode(EditorThemeSupport.self, forKey: .themeSupport)
-        self.version = try? map.decode(String.self, forKey: .version)
-        self.stylesheet = try? map.decode(String.self, forKey: .stylesheet)
+        let parsedTheme = try? map.decode(EditorThemeSupport.self, forKey: .themeSupport)
+        self.themeSupport = parsedTheme
+        self.checksum = {
+            guard let parsedTheme = parsedTheme else { return "" }
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .sortedKeys
+            let result: String
+            do {
+                let data = try encoder.encode(parsedTheme)
+                result = String(data: data, encoding: .utf8) ?? ""
+            } catch {
+                result = ""
+            }
+            return result.md5()
+        }()
     }
 }
 

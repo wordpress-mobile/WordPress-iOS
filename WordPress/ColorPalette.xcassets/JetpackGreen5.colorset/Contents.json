@@ -1,20 +1,38 @@
 {
-  "info": {
-    "author": "blog.color-studio",
-    "version": "2.5.0"
-  },
-  "colors": [
+  "colors" : [
     {
-      "idiom": "universal",
-      "color": {
-        "components": {
-          "red": "208",
-          "green": "230",
-          "blue": "184",
-          "alpha": 1
-        },
-        "color-space": "srgb"
-      }
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "184",
+          "green" : "230",
+          "red" : "208"
+        }
+      },
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0.920",
+          "green" : "0.950",
+          "red" : "0.941"
+        }
+      },
+      "idiom" : "universal"
     }
-  ]
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
 }

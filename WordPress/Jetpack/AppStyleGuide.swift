@@ -6,6 +6,7 @@ struct AppStyleGuide {
     static let navigationBarStandardFont: UIFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
     static let navigationBarLargeFont: UIFont = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .semibold)
     static let blogDetailHeaderTitleFont: UIFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .semibold)
+    static let epilogueTitleFont: UIFont = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .semibold)
 }
 
 // MARK: - Colors
@@ -26,4 +27,5 @@ extension AppStyleGuide {
 // MARK: - Images
 extension AppStyleGuide {
     static let mySiteTabIcon = UIImage.gridicon(.house)
+    static let aboutAppIcon = UIImage(named: "jetpack-install-logo")
 }

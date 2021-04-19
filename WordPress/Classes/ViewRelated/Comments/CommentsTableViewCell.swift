@@ -11,16 +11,11 @@ open class CommentsTableViewCell: WPTableViewCell {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var detailLabel: UILabel!
 
-    @IBOutlet weak var timestampStackView: UIStackView!
-    @IBOutlet private weak var timestampImageView: UIImageView!
-    @IBOutlet private weak var timestampLabel: UILabel!
-
     // MARK: - Private Properties
 
     private var author = String()
     private var postTitle = String()
     private var content = String()
-    private var timestamp: String?
     private var pending: Bool = false
     private var gravatarURL: URL?
     private typealias Style = WPStyleGuide.Comments
@@ -50,10 +45,6 @@ open class CommentsTableViewCell: WPTableViewCell {
         postTitle = comment.titleForDisplay() ?? Labels.noTitle
         content = comment.contentPreviewForDisplay() ?? String()
 
-        if let dateCreated = comment.dateCreated {
-            timestamp = dateCreated.mediumString()
-        }
-
         if let avatarURLForDisplay = comment.avatarURLForDisplay() {
             downloadGravatarWithURL(avatarURLForDisplay)
         } else {
@@ -62,7 +53,6 @@ open class CommentsTableViewCell: WPTableViewCell {
 
         configurePendingIndicator()
         configureCommentLabels()
-        configureTimestamp()
     }
 
 }
@@ -103,18 +93,6 @@ private extension CommentsTableViewCell {
         detailLabel.text = content.trimmingCharacters(in: .whitespacesAndNewlines)
         detailLabel.font = Style.detailFont
         detailLabel.textColor = Style.detailTextColor
-    }
-
-    func configureTimestamp() {
-
-        // When FeatureFlag.commentFilters is removed,
-        // all timestamp elements can be removed.
-        timestampStackView.isHidden = FeatureFlag.commentFilters.enabled
-
-        timestampLabel.text = timestamp
-        timestampLabel.font = Style.timestampFont
-        timestampLabel.textColor = Style.detailTextColor
-        timestampImageView.image = Style.timestampImage
     }
 
     func attributedTitle() -> NSAttributedString {

@@ -1,0 +1,104 @@
+  #####################################################################################
+  # build_and_upload_installable_build
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app and upload it for adhoc testing
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_installable_build [version_long:<version_long>]
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_installable_build
+  # bundle exec fastlane build_and_upload_installable_build build_number:123
+  #####################################################################################
+  desc "Builds and uploads a Jetpack installable build"
+  lane :build_and_upload_jetpack_installable_build do | options |
+    jetpack_alpha_code_signing
+
+    # Get the current build version, and update it if needed
+    version_config_path = File.join(PROJECT_ROOT_FOLDER, "config", "Version.internal.xcconfig")
+    versions = Xcodeproj::Config.new(File.new(version_config_path)).to_hash
+
+    build_number = Time.new.strftime("%Y-%m-%d-%H")
+    UI.message("Updating build version to #{build_number}")
+
+    versions["VERSION_SHORT"] = "0.1"
+    versions["VERSION_LONG"] = build_number
+    new_config = Xcodeproj::Config.new(versions)
+    new_config.save_as(Pathname.new(version_config_path))
+
+    gym(
+      scheme: "Jetpack",
+      workspace: WORKSPACE_PATH,
+      export_method: "enterprise",
+      configuration: "Release-Alpha",
+      clean: true,
+      output_directory: BUILD_PRODUCTS_PATH,
+      output_name: "Jetpack Alpha",
+      derived_data_path: DERIVED_DATA_PATH,
+      export_team_id: ENV["INT_EXPORT_TEAM_ID"],
+      export_options: { method: "enterprise" }
+    )
+
+    appcenter_upload(
+      api_token: get_required_env("APPCENTER_API_TOKEN"),
+      owner_name: "automattic",
+      owner_type: "organization",
+      app_name: "jetpack-installable-builds",
+      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
+      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
+      destinations: "Collaborators",
+      notify_testers: false
+    )
+
+    # Install SentryCLI prior to trying to upload dSYMs
+    sh("curl -sL https://sentry.io/get-cli/ | bash") unless sh("which sentry-cli")
+
+    sentry_upload_dsym(
+      auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
+      org_slug: 'a8c',
+      project_slug: 'jetpack-ios',
+      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH],
+    )
+  end
+
+  desc "Build for Testing"
+  lane :build_jetpack_for_testing do | options |
+    run_tests(
+      workspace: WORKSPACE_PATH,
+      scheme: "Jetpack",
+      derived_data_path: DERIVED_DATA_PATH,
+      build_for_testing: true,
+      deployment_target_version: options[:ios_version],
+    )
+  end
+
+########################################################################
+# Jetpack Fastlane match code signing
+########################################################################
+private_lane :jetpack_alpha_code_signing do |options|
+  match(
+    type: "enterprise",
+    team_id: get_required_env("INT_EXPORT_TEAM_ID"),
+    readonly: true,
+    app_identifier: "com.jetpack.alpha"
+  )
+end
+
+private_lane :jetpack_internal_code_signing do |options|
+  match(
+    type: "enterprise",
+    team_id: get_required_env("INT_EXPORT_TEAM_ID"),
+    readonly: true,
+    app_identifier: "com.jetpack.internal"
+  )
+end
+
+private_lane :jetpack_appstore_code_signing do |options|
+  match(
+    type: "appstore",
+    team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
+    readonly: true,
+    app_identifier: "com.jetpack"
+  )
+end
+
