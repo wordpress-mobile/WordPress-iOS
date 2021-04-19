@@ -60,7 +60,7 @@ extension CommentServiceTests {
         remoteMock.remoteUsersToReturnOnGetLikes = expectedUsers
 
         // Act
-        waitUntil(timeout: 2) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
             self.service.getLikesForCommentID(commentID, siteID: siteID, success: { users in
                 // Assert
                 expect(users).toNot(beNil())
@@ -81,7 +81,7 @@ extension CommentServiceTests {
         remoteMock.fetchLikesShouldSucceed = false
 
         // Act
-        waitUntil(timeout: 2) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
             self.service.getLikesForCommentID(commentID, siteID: siteID, success: { users in
                 fail("this closure should not be called")
             },

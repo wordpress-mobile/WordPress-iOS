@@ -31,9 +31,9 @@ PODS:
   - Charts (3.2.2):
     - Charts/Core (= 3.2.2)
   - Charts/Core (3.2.2)
-  - CocoaLumberjack (3.7.0):
-    - CocoaLumberjack/Core (= 3.7.0)
-  - CocoaLumberjack/Core (3.7.0)
+  - CocoaLumberjack (3.7.2):
+    - CocoaLumberjack/Core (= 3.7.2)
+  - CocoaLumberjack/Core (3.7.2)
   - CropViewController (2.5.3)
   - DoubleConversion (1.1.5)
   - Down (0.6.6)
@@ -107,7 +107,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.8.3)
   - MRProgress/Stopable (0.8.3):
     - MRProgress/Helper
-  - Nimble (7.3.4)
+  - Nimble (9.0.0)
   - NSObject-SafeExpectations (0.0.4)
   - "NSURL+IDN (0.4)"
   - OCMock (3.4.3)
@@ -455,7 +455,7 @@ DEPENDENCIES:
   - Kanvas (~> 1.2.6)
   - MediaEditor (~> 1.2.1)
   - MRProgress (= 0.8.3)
-  - Nimble (~> 7.3.1)
+  - Nimble (~> 9.0.0)
   - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
   - OCMock (= 3.4.3)
@@ -678,7 +678,7 @@ SPEC CHECKSUMS:
   Automattic-Tracks-iOS: 87e14e4f06f753f02a6e0f747824e766bae7f939
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
-  CocoaLumberjack: e8955b9d337ac307103b0a34fd141c32f27e53c5
+  CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   CropViewController: a5c143548a0fabcd6cc25f2d26e40460cfb8c78c
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
@@ -699,7 +699,7 @@ SPEC CHECKSUMS:
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
-  Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
+  Nimble: 3b4ec3fd40f1dc178058e0981107721c615643d8
   NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
@@ -763,6 +763,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: d077f69b44182e6b310835d992829dadedc1b32b
+PODFILE CHECKSUM: d9ece699054cbb025f2bbfefba82632e12991fcc
 
 COCOAPODS: 1.10.0
