@@ -163,8 +163,8 @@ import Foundation
     case categoryFilterDeselected
 
     // User Profile Sheet
-    case userProfileShown
-    case userProfileSiteShown
+    case userProfileSheetShown
+    case userProfileSheetSiteShown
 
     /// A String that represents the event
     var value: String {
@@ -450,10 +450,10 @@ import Foundation
             return "category_filter_deselected"
 
         // User Profile Sheet
-        case .userProfileShown:
-            return "user_profile_shown"
-        case .userProfileSiteShown:
-            return "user_profile_site_shown"
+        case .userProfileSheetShown:
+            return "user_profile_sheet_shown"
+        case .userProfileSheetSiteShown:
+            return "user_profile_sheet_site_shown"
         }
     }
 

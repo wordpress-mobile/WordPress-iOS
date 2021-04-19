@@ -136,7 +136,7 @@ extension UserProfileSheetViewController {
 private extension UserProfileSheetViewController {
 
     func showSite() {
-        WPAnalytics.track(.userProfileSiteShown)
+        WPAnalytics.track(.userProfileSheetSiteShown)
 
         // TODO: Remove. For testing only. Use siteID from user object.
         var stubbySiteID: NSNumber?
