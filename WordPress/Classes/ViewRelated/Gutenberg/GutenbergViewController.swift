@@ -1023,6 +1023,10 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return post.postTitle ?? ""
     }
 
+    func gutenbergFeaturedImageId() -> NSNumber? {
+        return post.featuredImage?.mediaID
+    }
+
     func gutenbergPostType() -> String {
         return post is Page ? "page" : "post"
     }
