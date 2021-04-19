@@ -4,10 +4,6 @@ struct AppConstants {
     static let productTwitterHandle = "@WordPressiOS"
     static let productTwitterURL = "https://twitter.com/WordPressiOS"
     static let productBlogURL = "https://blog.wordpress.com"
-
-    static func jetpackSettingsURL(siteID: Int) -> URL? {
-        return URL(string: "https://wordpress.com/settings/jetpack/\(siteID)")
-    }
 }
 
 // MARK: - Localized Strings

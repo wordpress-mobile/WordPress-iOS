@@ -40,3 +40,12 @@ class WebViewControllerFactory: NSObject {
     }
 
 }
+
+extension WebViewControllerFactory {
+    static func jetpackSettingsWebViewController(siteID: Int) -> UIViewController? {
+        guard let url = URL(string: "https://wordpress.com/settings/jetpack/\(siteID)") else {
+            return nil
+        }
+        return controller(url: url)
+    }
+}

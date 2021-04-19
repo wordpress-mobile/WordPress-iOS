@@ -213,12 +213,11 @@ class JetpackScanCoordinator {
 
     public func openJetpackSettings() {
         guard let siteID = blog.dotComID as? Int,
-              let jetpackSettingsURL = AppConstants.jetpackSettingsURL(siteID: siteID) else {
+              let controller = WebViewControllerFactory.jetpackSettingsWebViewController(siteID: siteID) else {
             view.presentNotice(with: Strings.jetpackSettingsNotice.title, message: nil)
             return
         }
 
-        let controller = WebViewControllerFactory.controller(url: jetpackSettingsURL)
         view.showJetpackSettings(webViewController: controller)
     }
 

@@ -56,7 +56,7 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
     }
 
     override func detailActionButtonTapped() {
-        guard let jetpackSettingsURL = AppConstants.jetpackSettingsURL(siteID: site.siteID) else {
+        guard let controller = WebViewControllerFactory.jetpackSettingsWebViewController(siteID: site.siteID) else {
 
             let title = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
 
@@ -65,8 +65,7 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
             return
         }
 
-        let webVC = WebViewControllerFactory.controller(url: jetpackSettingsURL)
-        let navigationVC = UINavigationController(rootViewController: webVC)
+        let navigationVC = UINavigationController(rootViewController: controller)
 
         present(navigationVC, animated: true)
     }
