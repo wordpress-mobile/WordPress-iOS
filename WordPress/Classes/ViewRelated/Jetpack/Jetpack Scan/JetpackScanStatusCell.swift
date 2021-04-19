@@ -40,7 +40,7 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
         }
 
         primaryButton.setTitle(primaryTitle, for: .normal)
-        primaryButton.isEnabled = model.hasValidCredentials
+        primaryButton.isEnabled = model.primaryButtonEnabled
         primaryButton.isHidden = false
     }
 

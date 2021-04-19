@@ -4,9 +4,9 @@ struct JetpackScanStatusViewModel {
     let imageName: String
     let title: String
     let description: String
-    let hasValidCredentials: Bool
 
     private(set) var primaryButtonTitle: String?
+    private(set) var primaryButtonEnabled: Bool = true
     private(set) var secondaryButtonTitle: String?
     private(set) var warningButtonTitle: String?
     private(set) var progress: Float?
@@ -23,8 +23,6 @@ struct JetpackScanStatusViewModel {
         guard let scan = coordinator.scan else {
             return nil
         }
-
-        hasValidCredentials = scan.hasValidCredentials
 
         let blog = coordinator.blog
         let state = Self.viewState(for: scan)
@@ -80,9 +78,11 @@ struct JetpackScanStatusViewModel {
                     secondaryButtonTitle = Strings.scanAgainTitle
                     secondaryButtonAction = .triggerScan
 
-                    if !hasValidCredentials {
+                    if !scan.hasValidCredentials {
                         warningButtonTitle = Strings.enterServerCredentialsTitle
                         warningButtonAction = .enterServerCredentials
+
+                        primaryButtonEnabled = false
                     }
                 }
             }

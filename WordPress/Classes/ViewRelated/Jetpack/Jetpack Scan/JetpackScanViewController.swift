@@ -111,7 +111,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         navigationController?.popViewController(animated: true)
         coordinator.refreshData()
 
-        let model = JetpackScanThreatViewModel(threat: threat, hasValidCredentials: coordinator.hasValidCredentials)
+        let model = JetpackScanThreatViewModel(threat: threat)
         let notice = Notice(title: model.ignoreSuccessTitle)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
@@ -120,7 +120,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         navigationController?.popViewController(animated: true)
         coordinator.refreshData()
 
-        let model = JetpackScanThreatViewModel(threat: threat, hasValidCredentials: coordinator.hasValidCredentials)
+        let model = JetpackScanThreatViewModel(threat: threat)
         let notice = Notice(title: model.ignoreErrorTitle)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
@@ -132,7 +132,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
 
     // MARK: - Actions
     @objc func showHistory() {
-        let viewController = JetpackScanHistoryViewController(blog: blog, hasValidCredentials: coordinator.hasValidCredentials)
+        let viewController = JetpackScanHistoryViewController(blog: blog)
         navigationController?.pushViewController(viewController, animated: true)
     }
 
@@ -244,7 +244,7 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
     }
 
     private func configureThreatCell(cell: JetpackScanThreatCell, threat: JetpackScanThreat) {
-        let model = JetpackScanThreatViewModel(threat: threat, hasValidCredentials: coordinator.hasValidCredentials)
+        let model = JetpackScanThreatViewModel(threat: threat)
         cell.configure(with: model)
     }
 

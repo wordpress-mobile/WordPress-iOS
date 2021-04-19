@@ -55,7 +55,7 @@ class JetpackScanThreatDetailsViewController: UIViewController {
 
     // MARK: - Init
 
-    init(blog: Blog, threat: JetpackScanThreat, hasValidCredentials: Bool) {
+    init(blog: Blog, threat: JetpackScanThreat, hasValidCredentials: Bool = false) {
         self.blog = blog
         self.threat = threat
         self.hasValidCredentials = hasValidCredentials
@@ -169,7 +169,7 @@ extension JetpackScanThreatDetailsViewController {
 
         if let fixActionTitle = viewModel.fixActionTitle {
             fixThreatButton.setTitle(fixActionTitle, for: .normal)
-            fixThreatButton.isEnabled = viewModel.hasValidCredentials
+            fixThreatButton.isEnabled = viewModel.fixActionEnabled
             fixThreatButton.isHidden = false
         } else {
             fixThreatButton.isHidden = true

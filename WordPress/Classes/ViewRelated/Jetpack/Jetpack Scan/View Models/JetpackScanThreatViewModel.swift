@@ -9,7 +9,7 @@ struct JetpackScanThreatViewModel {
     let title: String
     let description: String?
     let isFixing: Bool
-    let hasValidCredentials: Bool
+    private let hasValidCredentials: Bool?
 
     // Threat Details
     let detailIconImage: UIImage?
@@ -27,6 +27,7 @@ struct JetpackScanThreatViewModel {
 
     // Threat Detail Action
     let fixActionTitle: String?
+    let fixActionEnabled: Bool
     let ignoreActionTitle: String?
     let ignoreActionMessage: String
     let warningActionTitle: String?
@@ -72,7 +73,7 @@ struct JetpackScanThreatViewModel {
         return threat.context?.attributedString(with: contextConfig)
     }()
 
-    init(threat: JetpackScanThreat, hasValidCredentials: Bool) {
+    init(threat: JetpackScanThreat, hasValidCredentials: Bool? = nil) {
         self.threat = threat
         self.hasValidCredentials = hasValidCredentials
 
@@ -100,6 +101,7 @@ struct JetpackScanThreatViewModel {
 
         // Threat Details Action
         fixActionTitle = Self.fixActionTitle(for: threat)
+        fixActionEnabled = hasValidCredentials ?? false
         ignoreActionTitle = Self.ignoreActionTitle(for: threat)
         ignoreActionMessage = Strings.details.actions.messages.ignore
         warningActionTitle = Self.warningActionTitle(for: threat, hasValidCredentials: hasValidCredentials)
@@ -274,8 +276,10 @@ struct JetpackScanThreatViewModel {
         return Strings.details.actions.titles.ignore
     }
 
-    private static func warningActionTitle(for threat: JetpackScanThreat, hasValidCredentials: Bool) -> String? {
-        guard fixActionTitle(for: threat) != nil, !hasValidCredentials else {
+    private static func warningActionTitle(for threat: JetpackScanThreat, hasValidCredentials: Bool?) -> String? {
+        guard fixActionTitle(for: threat) != nil,
+              let hasValidCredentials = hasValidCredentials,
+              !hasValidCredentials else {
             return nil
         }
 
