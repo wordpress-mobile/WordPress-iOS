@@ -175,7 +175,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     NSDictionary *options = @{ @"status": [NSNumber numberWithInt:commentStatus] };
 
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
-    
+
     [remote getCommentsWithMaximumCount:WPNumberOfCommentsToSync
                                 options:options
                                 success:^(NSArray *comments) {
@@ -187,7 +187,14 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             }
             NSArray *fetchedComments = comments;
             if (filterUnreplied) {
-                fetchedComments = [self filterUnrepliedComments:comments];
+                NSString *author = @"";
+                if (blog.account) {
+                    author = blogInContext.account.email;
+                } else {
+                    BlogAuthor *blogAuthor = [blogInContext getAuthorWithId:blogInContext.userID];
+                    author = (blogAuthor) ? blogAuthor.email : author;
+                }
+                fetchedComments = [self filterUnrepliedComments:comments forAuthor:author];
             }
             
             [self mergeComments:fetchedComments
@@ -220,9 +227,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     }];
 }
 
-- (NSArray *)filterUnrepliedComments:(NSArray *)comments {
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *account = [service defaultWordPressComAccount];
+- (NSArray *)filterUnrepliedComments:(NSArray *)comments forAuthor:(NSString *)author {
     NSMutableArray *marr = [comments mutableCopy];
 
     NSMutableArray *foundIDs = [NSMutableArray array];
@@ -230,7 +235,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     // get ids of comments that user has replied to.
     for (RemoteComment *comment in marr) {
-        if (![comment.authorEmail isEqualToString:account.email] || !comment.parentID) {
+        if (![comment.authorEmail isEqualToString:author] || !comment.parentID) {
             continue;
         }
         [foundIDs addObject:comment.parentID];
@@ -260,9 +265,9 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // remove any remaining child comments.
     // remove any remaining root comments made by the user.
     for (RemoteComment *comment in marr) {
-        if (comment.parentID != 0) {
+        if (comment.parentID.intValue != 0) {
             [discardables addObject:comment];
-        } else if ([comment.authorEmail isEqualToString:account.email]) {
+        } else if ([comment.authorEmail isEqualToString:author]) {
             [discardables addObject:comment];
         }
     }
