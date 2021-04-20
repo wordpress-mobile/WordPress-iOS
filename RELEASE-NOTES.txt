@@ -1,6 +1,6 @@
 17.3
 -----
-
+* [**] Fix issue where Undo would sometimes convert content to the the classic editor. [#16342]
 
 17.2
 -----
@@ -21,7 +21,7 @@
 * [**] Block Editor: Added Contact Info block to sites on WPcom or with Jetpack version >= 8.5.
 * [**] We updated the app's color scheme with a brighter new blue used throughout. [#16213, #16207]
 * [**] We updated the login prologue with brand new content and graphics. [#16159, #16177, #16185, #16187, #16200, #16217, #16219, #16221, #16222]
-* [**] We updated the app's color scheme with a brighter new blue used throughout. [#16213, #16207] 
+* [**] We updated the app's color scheme with a brighter new blue used throughout. [#16213, #16207]
 * [**] Updated the app icon to match the new color scheme within the app. [#16220]
 * [*] Fixed an issue where some webview navigation bar controls weren't visible. [#16257]
 
@@ -34,7 +34,7 @@
 * [*] Added a thumbnail device mode selector in the page layout, and use a default setting based on the current device. [#16019]
 * [**] Comments can now be filtered by status (All, Pending, Approved, Trashed, or Spam). [#15955, #16110]
 * [*] Notifications: Enabled the new view milestone notifications [#16144]
-* [***] We updated the app's design, with fresh new headers throughout and a new site switcher in My Site. [#15750] 
+* [***] We updated the app's design, with fresh new headers throughout and a new site switcher in My Site. [#15750]
 
 16.9
 -----
@@ -53,7 +53,7 @@
 -----
 
 * [**] Stories: Fixed an issue which could remove content from a post when a new Story block was edited. [#16059]
- 
+
 16.8
 -----
 * [**] Prevent deleting published homepages which would have the effect of breaking a site. [#15797]
