@@ -988,6 +988,8 @@ private extension NotificationDetailsViewController {
 
         let sourceView = tableView.cellForRow(at: indexPath) ?? view
         bottomSheet.show(from: self, sourceView: sourceView)
+
+        WPAnalytics.track(.userProfileSheetShown, properties: ["source": "like_notification_list"])
     }
 
 }
