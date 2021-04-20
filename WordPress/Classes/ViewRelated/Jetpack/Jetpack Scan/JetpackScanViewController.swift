@@ -103,7 +103,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         present(alert, animated: true, completion: nil)
     }
 
-    func presentNotice(with title: String, message: String) {
+    func presentNotice(with title: String, message: String?) {
         displayNotice(title: title, message: message)
     }
 

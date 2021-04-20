@@ -9,7 +9,7 @@ protocol JetpackScanView {
     func showScanStartError()
 
     func presentAlert(_ alert: UIAlertController)
-    func presentNotice(with title: String, message: String)
+    func presentNotice(with title: String, message: String?)
 
     func showIgnoreThreatSuccess(for threat: JetpackScanThreat)
     func showIgnoreThreatError(for threat: JetpackScanThreat)
@@ -213,6 +213,7 @@ class JetpackScanCoordinator {
 
     public func openJetpackSettings() {
         guard let siteID = blog.dotComID as? Int else {
+            view.presentNotice(with: Strings.jetpackSettingsNotice.title, message: nil)
             return
         }
         view.showJetpackSettings(with: siteID)
@@ -343,6 +344,10 @@ class JetpackScanCoordinator {
             static let message = NSLocalizedString("No threats found", comment: "Message for a notice informing the user their scan completed and no threats were found")
             static let messageThreatsFound = NSLocalizedString("%d potential threats found", comment: "Message for a notice informing the user their scan completed and %d threats were found")
             static let messageSingleThreatFound = NSLocalizedString("1 potential threat found", comment: "Message for a notice informing the user their scan completed and 1 threat was found")
+        }
+
+        struct jetpackSettingsNotice {
+            static let title = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
         }
 
         static let fixAllAlertTitleFormat = NSLocalizedString("Please confirm you want to fix all %1$d active threats", comment: "Confirmation title presented before fixing all the threats, displays the number of threats to be fixed")
