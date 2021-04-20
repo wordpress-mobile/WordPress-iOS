@@ -13,10 +13,10 @@ extension Blog {
     @NSManaged public func removeFromAuthors(_ value: BlogAuthor)
 
     @objc(addAuthors:)
-    @NSManaged public func addToAuthors(_ values: NSSet)
+    @NSManaged public func addToAuthors(_ values: Set<BlogAuthor>)
 
     @objc(removeAuthors:)
-    @NSManaged public func removeFromAuthors(_ values: NSSet)
+    @NSManaged public func removeFromAuthors(_ values: Set<BlogAuthor>)
 
     @objc
     func getAuthorWith(id: NSNumber) -> BlogAuthor? {
