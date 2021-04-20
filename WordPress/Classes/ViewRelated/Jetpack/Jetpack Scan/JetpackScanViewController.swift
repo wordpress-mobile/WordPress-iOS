@@ -126,7 +126,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     }
 
     func showJetpackSettings(with siteID: Int) {
-        guard let controller = WebViewControllerFactory.jetpackSettingsWebViewController(siteID: siteID) else {
+        guard let controller = JetpackWebViewControllerFactory.settingsController(siteID: siteID) else {
 
             let title = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
             displayNotice(title: title)

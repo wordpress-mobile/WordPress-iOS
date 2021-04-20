@@ -124,7 +124,7 @@ class JetpackScanThreatDetailsViewController: UIViewController {
 
     @IBAction func warningButtonTapped(_ sender: Any) {
         guard let siteID = blog.dotComID as? Int,
-              let controller = WebViewControllerFactory.jetpackSettingsWebViewController(siteID: siteID) else {
+              let controller = JetpackWebViewControllerFactory.settingsController(siteID: siteID) else {
             displayNotice(title: Strings.jetpackSettingsNotice)
             return
         }

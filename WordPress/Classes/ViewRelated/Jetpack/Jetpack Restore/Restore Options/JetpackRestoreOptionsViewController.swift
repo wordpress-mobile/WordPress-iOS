@@ -56,7 +56,7 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
     }
 
     override func detailActionButtonTapped() {
-        guard let controller = WebViewControllerFactory.jetpackSettingsWebViewController(siteID: site.siteID) else {
+        guard let controller = JetpackWebViewControllerFactory.settingsController(siteID: site.siteID) else {
 
             let title = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
 
