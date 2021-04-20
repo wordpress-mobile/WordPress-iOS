@@ -49,7 +49,7 @@ class PostServiceSelfHostedTests: XCTestCase {
         remoteMock.remotePostToReturnOnCreatePost = createRemotePost(.draft)
 
         // Act
-        waitUntil(timeout: 3) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(3)) { done in
             self.service.autoSave(post, success: { _, _ in
                 done()
             }, failure: self.impossibleFailureBlock)
@@ -68,7 +68,7 @@ class PostServiceSelfHostedTests: XCTestCase {
 
         // Act
         var failureBlockCalled = false
-        waitUntil(timeout: 3) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(3)) { done in
             self.service.autoSave(post, success: { _, _ in
                 done()
             }, failure: { _ in
@@ -96,7 +96,7 @@ class PostServiceSelfHostedTests: XCTestCase {
         remoteMock.remotePostToReturnOnCreatePost = createRemotePost(.draft)
 
         // Act
-        waitUntil(timeout: 2) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
             self.service.uploadPost(post, forceDraftIfCreating: true, success: { _ in
                 done()
             }, failure: self.impossibleFailureBlock)

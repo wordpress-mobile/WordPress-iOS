@@ -162,6 +162,10 @@ import Foundation
     case categoryFilterSelected
     case categoryFilterDeselected
 
+    // User Profile Sheet
+    case userProfileSheetShown
+    case userProfileSheetSiteShown
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -444,6 +448,12 @@ import Foundation
             return "category_filter_selected"
         case .categoryFilterDeselected:
             return "category_filter_deselected"
+
+        // User Profile Sheet
+        case .userProfileSheetShown:
+            return "user_profile_sheet_shown"
+        case .userProfileSheetSiteShown:
+            return "user_profile_sheet_site_shown"
         }
     }
 

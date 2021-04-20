@@ -107,7 +107,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.8.3)
   - MRProgress/Stopable (0.8.3):
     - MRProgress/Helper
-  - Nimble (7.3.4)
+  - Nimble (9.0.0)
   - NSObject-SafeExpectations (0.0.4)
   - "NSURL+IDN (0.4)"
   - OCMock (3.4.3)
@@ -455,10 +455,10 @@ DEPENDENCIES:
   - Kanvas (~> 1.2.6)
   - MediaEditor (~> 1.2.1)
   - MRProgress (= 0.8.3)
-  - Nimble (~> 7.3.1)
+  - Nimble (~> 9.0.0)
   - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
-  - OCMock (= 3.4.3)
+  - OCMock (~> 3.4.3)
   - OHHTTPStubs/Swift (~> 9.1.0)
   - RCTRequired (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.51.0/third-party-podspecs/RCTRequired.podspec.json`)
   - RCTTypeSafety (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.51.0/third-party-podspecs/RCTTypeSafety.podspec.json`)
@@ -502,7 +502,7 @@ DEPENDENCIES:
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, tag `4.32.0-beta.1`)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.16.0)
-  - WordPressUI (~> 1.10.0-beta.1)
+  - WordPressUI (~> 1.10.0)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.51.0/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.2.0)
@@ -704,7 +704,7 @@ SPEC CHECKSUMS:
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
-  Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
+  Nimble: 3b4ec3fd40f1dc178058e0981107721c615643d8
   NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
@@ -768,6 +768,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 63f1475afbf3bc843783eb32c849045fbbf20812
+PODFILE CHECKSUM: 412fa67638670c44b777190edc1769865f3d07b8
 
 COCOAPODS: 1.10.0
