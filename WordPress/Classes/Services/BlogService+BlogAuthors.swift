@@ -25,11 +25,13 @@ extension BlogService {
                 blog.addToAuthors(blogAuthor)
             }
 
-            // Clean up authors who weren't in the remote array.
+            // Clean up old authors who weren't in the remote array.
             let remoteUserIDs = Set(remoteUsers.map { $0.userID })
-            blog.authors?
-                .filter { !remoteUserIDs.contains($0.userID) }
-                .forEach { blog.removeFromAuthors($0) }
+            let oldAuthors = blog.authors?.filter { !remoteUserIDs.contains($0.userID) }
+
+            if let oldAuthors = oldAuthors {
+                blog.removeFromAuthors(oldAuthors)
+            }
         } catch {
             return
         }
