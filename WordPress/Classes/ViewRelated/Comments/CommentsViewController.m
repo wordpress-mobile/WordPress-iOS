@@ -317,7 +317,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
 
     // CommentService purges Comments that do not belong to the current filter.
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@)", self.blog];
+    fetchRequest.predicate = [self predicateForFetchRequest:self.currentStatusFilter];
 
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
     fetchRequest.sortDescriptors = @[sortDescriptorDate];
@@ -349,6 +349,30 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (NSString *)sectionNameKeyPath
 {
     return @"sectionIdentifier";
+}
+
+#pragma mark - Predicate Wrangling
+
+- (void)updateFetchRequestPredicate:(CommentStatusFilter)statusFilter
+{
+    NSPredicate *predicate = [self predicateForFetchRequest:statusFilter];
+    NSFetchedResultsController *resultsController = [[self tableViewHandler] resultsController];
+    [[resultsController fetchRequest] setPredicate:predicate];
+    NSError *error;
+    [resultsController performFetch:&error];
+    [self.tableView reloadData];
+}
+
+- (NSPredicate *)predicateForFetchRequest:(CommentStatusFilter)statusFilter
+{
+    NSPredicate *predicate;
+    if (statusFilter == CommentStatusFilterAll && ![self isUnrepliedFilterSelected:self.filterTabBar]) {
+        predicate = [NSPredicate predicateWithFormat:@"(blog == %@)", self.blog];
+    } else {
+        // Exclude any local replies from all filters except all.
+        predicate = [NSPredicate predicateWithFormat:@"(blog == %@) AND commentID != nil", self.blog];
+    }
+    return predicate;
 }
 
 #pragma mark - WPContentSyncHelper Methods
@@ -467,6 +491,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)refreshWithStatusFilter:(CommentStatusFilter)statusFilter
 {
+    [self updateFetchRequestPredicate:statusFilter];
     [self saveSelectedFilterToUserDefaults];
     self.currentStatusFilter = statusFilter;
     [self refreshAndSyncWithInteraction];
