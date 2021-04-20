@@ -1,10 +1,11 @@
 import Foundation
 
-struct AppConstants {
+@objc class AppConstants: NSObject {
     static let productTwitterHandle = "@WordPressiOS"
     static let productTwitterURL = "https://twitter.com/WordPressiOS"
     static let productBlogURL = "https://blog.wordpress.com"
     static let ticketSubject = NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
+    @objc static let eventNamePrefix = "wpios"
 
     /// Notifications Constants
     ///

@@ -181,6 +181,14 @@ import WordPressFlux
         }
     }
 
+    /// Used for the `source` property in Stats.
+    /// Indicates where the view was shown from.
+    enum StatSource: String {
+        case reader
+        case user_profile
+    }
+    var statSource: StatSource = .reader
+
     /// Facilitates sharing of a blog via `ReaderStreamViewController+Sharing.swift`.
     let sharingController = PostSharingController()
 
@@ -718,14 +726,17 @@ import WordPressFlux
             assertionFailure("A reader topic is required")
             return nil
         }
+
         let title = topic.title
         var key: String = "list"
+
         if ReaderHelpers.isTopicTag(topic) {
             key = "tag"
         } else if ReaderHelpers.isTopicSite(topic) {
             key = "site"
         }
-        return [key: title]
+
+        return [key: title, "source": statSource.rawValue]
     }
 
     /// The fetch request can need a different predicate depending on how the content

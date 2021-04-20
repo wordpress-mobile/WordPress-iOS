@@ -519,4 +519,24 @@ class PostTests: XCTestCase {
 
         XCTAssertFalse(revision.hasLocalChanges())
     }
+
+    /// When changing an authorID hasLocalChanges returns true
+    func testLocalChangesWhenAuthorIsChanged() {
+        let post = newTestPost()
+        post.authorID = 1
+        let revision = post.createRevision()
+        revision.authorID = 2
+
+        XCTAssertTrue(revision.hasLocalChanges())
+    }
+
+    /// When setting the same authorID hasLocalChanges returns false
+    func testLocalChangesWhenAuthorIsTheSame() {
+        let post = newTestPost()
+        post.authorID = 1
+        let revision = post.createRevision()
+        revision.authorID = 1
+
+        XCTAssertFalse(revision.hasLocalChanges())
+    }
 }
