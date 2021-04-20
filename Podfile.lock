@@ -31,9 +31,9 @@ PODS:
   - Charts (3.2.2):
     - Charts/Core (= 3.2.2)
   - Charts/Core (3.2.2)
-  - CocoaLumberjack (3.7.0):
-    - CocoaLumberjack/Core (= 3.7.0)
-  - CocoaLumberjack/Core (3.7.0)
+  - CocoaLumberjack (3.7.2):
+    - CocoaLumberjack/Core (= 3.7.2)
+  - CocoaLumberjack/Core (3.7.2)
   - CropViewController (2.5.3)
   - DoubleConversion (1.1.5)
   - Down (0.6.6)
@@ -107,7 +107,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.8.3)
   - MRProgress/Stopable (0.8.3):
     - MRProgress/Helper
-  - Nimble (7.3.4)
+  - Nimble (9.0.0)
   - NSObject-SafeExpectations (0.0.4)
   - "NSURL+IDN (0.4)"
   - OCMock (3.4.3)
@@ -401,7 +401,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.31.0-beta.3):
+  - WordPressKit (4.31.0):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -412,7 +412,7 @@ PODS:
   - WordPressShared (1.16.0):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (~> 1.8)
-  - WordPressUI (1.10.0-beta.1)
+  - WordPressUI (1.10.0)
   - WPMediaPicker (1.7.2)
   - wpxmlrpc (0.9.0)
   - Yoga (1.14.0)
@@ -455,10 +455,10 @@ DEPENDENCIES:
   - Kanvas (~> 1.2.6)
   - MediaEditor (~> 1.2.1)
   - MRProgress (= 0.8.3)
-  - Nimble (~> 7.3.1)
+  - Nimble (~> 9.0.0)
   - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
-  - OCMock (= 3.4.3)
+  - OCMock (~> 3.4.3)
   - OHHTTPStubs/Swift (~> 9.1.0)
   - RCTRequired (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.51.0/third-party-podspecs/RCTRequired.podspec.json`)
   - RCTTypeSafety (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.51.0/third-party-podspecs/RCTTypeSafety.podspec.json`)
@@ -499,10 +499,10 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
   - WordPressAuthenticator (~> 1.36.0)
-  - WordPressKit (~> 4.31.0-beta3)
+  - WordPressKit (~> 4.31.0)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.16.0)
-  - WordPressUI (~> 1.10.0-beta.1)
+  - WordPressUI (~> 1.10.0)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.51.0/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.2.0)
@@ -511,6 +511,8 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
+    - WordPressKit
+    - WordPressUI
   trunk:
     - 1PasswordExtension
     - Alamofire
@@ -550,10 +552,8 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressKit
     - WordPressMocks
     - WordPressShared
-    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -678,7 +678,7 @@ SPEC CHECKSUMS:
   Automattic-Tracks-iOS: 87e14e4f06f753f02a6e0f747824e766bae7f939
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
-  CocoaLumberjack: e8955b9d337ac307103b0a34fd141c32f27e53c5
+  CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   CropViewController: a5c143548a0fabcd6cc25f2d26e40460cfb8c78c
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
@@ -699,7 +699,7 @@ SPEC CHECKSUMS:
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
-  Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
+  Nimble: 3b4ec3fd40f1dc178058e0981107721c615643d8
   NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
@@ -747,10 +747,10 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
   WordPressAuthenticator: 21d96070b30c4ce6b98de52c05779d27c2f9b399
-  WordPressKit: 56f5087518977744c2e7b4e8a39abcc264f937f2
+  WordPressKit: 4282eb0b5f55415210a77c7bb8739d8ad00cb4c1
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 0f7f10e96f8354d64f951c223ae61e8de7495a46
-  WordPressUI: 826dad3b1c3cd8f621c5a3ba9aed2ec44db36e3b
+  WordPressUI: 7735014eb5a518a8346b1179b36ba77abcb49ee5
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
@@ -763,6 +763,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: d71b2e34a1c875b6cf5e7018052394ac795915e0
+PODFILE CHECKSUM: c7e42bbb17e1c3b6f9084b2b877a074028064b0a
 
 COCOAPODS: 1.10.0
