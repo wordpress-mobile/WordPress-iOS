@@ -26,4 +26,10 @@ extension AppConstants {
         static let aboutTitle = NSLocalizedString("About Jetpack for iOS", comment: "Link to About screen for Jetpack for iOS")
     }
 
+    struct Login {
+        static let continueButtonTitle = NSLocalizedString(
+            "Continue With WordPress.com",
+            comment: "Button title. Takes the user to the login with WordPress.com flow."
+        )
+    }
 }
