@@ -1,1 +1,9 @@
-Vi har vårstädat även i vår app och kan nu berätta om de senaste nyheterna i WPiOS. Vi har fräschat upp designen med nya rubriker och en ny webbplatsväljare som du kommer åt via ”Min webbplats”. Nu går det att filtrera kommentarsvyn på status – Alla, Väntande, Godkända, Kastade, Spam. Dessutom kan du aktivera visning av information om uppnådda milstenar. Varför inte ta och prova den uppsnyggade appen en vända!
+Vad är nytt i den här versionen?
+
+Ett nytt utseende! Vi har designat om inloggningsupplevelsen, med en välkomstkarusell av nytt innehåll och grafik som framhäver appens funktioner och fördelar. Du kommer också att märka en ny färgpalett, komplett med en uppdaterad appikon.
+
+Vi har gjort hjälpmedelsförbättringar i blockredigeraren för personer som använder en VoiceOver-skärmläsare. Dessa uppdateringar förbättrar din upplevelse med kolumnblocken.
+
+För att hjälpa dig att hantera kommentarsaktivitet på din webbplats finns det nu ett filter kallat "Obesvarat", så att du kan se alla dina obesvarade kommentarer på en flik.
+
+Vi har också gjort andra förbättringar, inklusive uppdateringar av sidlayoutväljaren.

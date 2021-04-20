@@ -139,36 +139,4 @@ class ReaderTabItemsStoreTests: XCTestCase {
             }
         }
     }
-
-    /// fetch request succeeds but type cast to [ReaderAbstractTopic] fails
-    func testGetItemsInvalidFetchedType() {
-
-        let mockTopics = ["we", "are", "not", "topics"]
-
-        context.returnedObjects = mockTopics
-
-        service.fetchReaderMenuExpectation = expectation(description: "fetch menu items executed")
-        service.fetchMenuSuccessExpectation = expectation(description: "fetch from remote service succeeded")
-
-        let stateChangeExpectation = expectation(description: "state change emitted")
-        stateChangeExpectation.expectedFulfillmentCount = 2
-
-        subscription = store.onChange {
-            stateChangeExpectation.fulfill()
-            switch self.store.state {
-            case .ready, .loading:
-                XCTFail("failure not detected")
-            case .error(let error):
-                XCTAssertEqual(error as NSError, NSError(domain: "ReaderTabItemsStoreDomain", code: -1, userInfo: nil))
-            }
-        }
-        // When
-        store.getItems()
-        // Then
-        waitForExpectations(timeout: 4) { error in
-            if let error = error {
-                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-            }
-        }
-    }
 }

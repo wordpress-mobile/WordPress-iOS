@@ -61,6 +61,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         super.viewDidAppear(animated)
 
         workaroundLargeTitleCollapseBug()
+
+        guard FeatureFlag.newNavBarAppearance.enabled else {
+            return
+        }
+        WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
     }
 
     private func subscribeToPostSignupNotifications() {
@@ -213,6 +218,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         remove(blogDetailsViewController)
         self.blogDetailsViewController = nil
+    }
+
+    /// Shows the specified `BlogDetailsSubsection` for a `Blog`.
+    ///
+    /// - Parameters:
+    ///         - subsection: The specific subsection to show.
+    ///
+    func showBlogDetailsSubsection(_ subsection: BlogDetailsSubsection) {
+        blogDetailsViewController?.showDetailView(for: subsection)
     }
 
     /// Shows a `BlogDetailsViewController` for the specified `Blog`.  If the VC doesn't exist, this method also takes care

@@ -13,7 +13,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         case publish
         case close
         case more
-        case switchToAztec
         case switchBlog
         case autoSave
     }
@@ -303,7 +302,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
-        self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .gutenberg, post: post)
+        self.editorSession = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -500,12 +499,6 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return presentationController(forPresented: presented, presenting: presenting)
-    }
-
-    // MARK: - Switch to Aztec
-
-    func savePostEditsAndSwitchToAztec() {
-        requestHTML(for: .switchToAztec)
     }
 }
 
@@ -809,9 +802,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 cancelEditing()
             case .more:
                 displayMoreSheet()
-            case .switchToAztec:
-                editorSession.switch(editor: .classic)
-                EditorFactory().switchToAztec(from: self)
             case .switchBlog:
                 blogPickerWasPressed()
             case .autoSave:
@@ -855,15 +845,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             DDLogWarn(message)
         case .error, .fatal:
             DDLogError(message)
-        }
-    }
-
-    func gutenbergDidLogUserEvent(_ event: GutenbergUserEvent) {
-        switch event {
-        case .editorSessionTemplateApply(let template):
-            editorSession.apply(template: template)
-        case .editorSessionTemplatePreview(let template):
-            editorSession.preview(template: template)
         }
     }
 
@@ -1064,6 +1045,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return [
             .mentions: FeatureFlag.gutenbergMentions.enabled && SuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .xposts: FeatureFlag.gutenbergXposts.enabled && SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
+            .contactInfoBlock: post.blog.supports(.contactInfo) && FeatureFlag.contactInfo.enabled,
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .audioBlock: !isFreeWPCom, // Disable audio block until it's usable on free sites via "Insert from URL" capability

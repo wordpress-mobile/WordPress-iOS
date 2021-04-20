@@ -124,7 +124,10 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     DDLogMethod();
 
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
-    [remote getBlogsWithSuccess:^(NSArray *blogs) {
+    
+    BOOL filterJetpackSites = [AppConfiguration isJetpack];
+
+    [remote getBlogs:filterJetpackSites success:^(NSArray *blogs) {
         [[[JetpackCapabilitiesService alloc] init] syncWithBlogs:blogs success:^(NSArray<RemoteBlog *> *blogs) {
             [self.managedObjectContext performBlock:^{
 
@@ -616,7 +619,10 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                                      failure:(void (^)(NSError *error))failure
 {
     AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
-    [remote getBlogsWithSuccess:^(NSArray *remoteBlogs) {
+    
+    BOOL filterJetpackSites = [AppConfiguration isJetpack];
+    
+    [remote getBlogs:filterJetpackSites success:^(NSArray *remoteBlogs) {
 
         NSMutableSet *accountBlogIDs = [NSMutableSet new];
         for (RemoteBlog *remoteBlog in remoteBlogs) {

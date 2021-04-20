@@ -59,15 +59,8 @@ import WordPressShared
     fileprivate func configureNavbar() {
         let image = UIImage.gridicon(.cross)
         let closeButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(SharingAccountViewController.handleCloseTapped(_:)))
-        closeButton.tintColor = UIColor.white
+        closeButton.tintColor = FeatureFlag.newNavBarAppearance.enabled ? .appBarTint : UIColor.white
         navigationItem.leftBarButtonItem = closeButton
-
-        // The preceding WPWebViewController changes the default navbar appearance. Restore it.
-        if let navBar = navigationController?.navigationBar {
-            navBar.shadowImage = WPStyleGuide.navigationBarShadowImage()
-            navBar.setBackgroundImage(WPStyleGuide.navigationBarBackgroundImage(), for: .default)
-            navBar.barStyle = WPStyleGuide.navigationBarBarStyle()
-        }
     }
 
 

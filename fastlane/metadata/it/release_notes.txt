@@ -1,1 +1,9 @@
-Nello spirito delle pulizie di primavera, siamo felici di annunciare nuove modifiche a WordPress per iOS. Abbiamo migliorato il design dell'applicazione con nuove intestazioni e un nuovo pulsante per cambiare sito, accessibile tramite Il mio sito. Ora puoi filtrare i commenti in base allo stato (Tutti, In sospeso, Approvato, Eliminato nel cestino, Nello spam) e abilitare le notifiche relative alla visualizzazione dei traguardi. Fai un giro nell'app appena ritoccata. 
+Quali sono le novità in questo rilascio?
+
+Un nuovo look visuale. Abbiamo riprogettato l'esperienza di login, con un carosello di benvenuto di nuovi contenuti e grafici che promuovono le funzionalità principali e i benefici dell'app. Abbiamo anche notato una palette di colori, con un'icona dell'app aggiornata da abbinare.
+
+Abbiamo eseguito miglioramenti all'accessibilità nell'editor a blocchi per le persone che usano il lettore della schermata di VoiceOver. Questi aggiornamenti migliorano l'esperienza con il blocco Colonne.
+
+Per aiutarti a gestire l'attività dei commenti sul tuo sito, ora è presente un filtro "Senza risposta" in modo che tu possa visualizzare tutti i commenti senza risposta sotto un'unica scheda.
+
+Abbiamo anche effettuato altri miglioramenti, inclusi aggiornamenti all'esperienza del selettore del layout della pagina.

@@ -1,1 +1,9 @@
-Dans l’esprit du nettoyage de printemps, nous sommes heureux d’annoncer de nouvelles modifications apportées à WPiOS. Nous avons amélioré le design de l’application avec de nouveaux en-têtes et un nouveau sélecteur de site, accessible via Mon site. Vous pouvez désormais filtrer les commentaires par état (Tous, En attente, Approuvés, À la corbeille, Indésirables) et activer les notifications sur l’affichage des événements marquants. Découvrez la nouvelle apparence de l’application ! 
+Quelles sont les nouveautés de cette version ?
+
+Un nouveau look visuel ! Nous avons repensé l’expérience de connexion, avec un carrousel de bienvenue de nouveaux contenus et graphiques qui promeuvent les fonctionnalités et les avantages de l’application. Vous remarquerez également une nouvelle palette de couleurs, avec une icône d’application mise à jour en conséquence.
+
+Nous avons apporté des améliorations à l’accessibilité dans l’éditeur de blocs pour les personnes qui utilisent un lecteur d’écran VoiceOver. Ces mises à jour améliorent votre expérience avec le bloc de colonnes.
+
+Pour vous aider à gérer l’activité des commentaires sur votre site, il existe désormais un filtre « Sans réponse » qui vous permet d’afficher tous vos commentaires sans réponse sous un seul onglet.
+
+Nous avons également apporté d’autres améliorations, notamment des mises à jour de l’expérience du sélecteur de mise en page.

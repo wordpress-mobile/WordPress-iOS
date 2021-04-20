@@ -109,6 +109,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         return WPTabBarController.sharedInstance()?.readerNavigationController.viewControllers.contains(self) == false
     }
 
+    /// Used to disable ineffective buttons when a Related post fails to load.
+    var enableRightBarButtons = true
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -488,6 +491,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         coordinator.remoteSimplePost = simplePost
         controller.coordinator = coordinator
 
+        controller.postLoadFailureBlock = {
+            controller.enableRightBarButtons = false
+        }
+
         return controller
     }
 
@@ -704,9 +711,11 @@ private extension ReaderDetailViewController {
 private extension ReaderDetailViewController {
 
     func configureNavigationBar() {
+
+        // If a Related post fails to load, disable the More and Share buttons as they won't do anything.
         let rightItems = [
-            moreButtonItem(),
-            shareButtonItem(),
+            moreButtonItem(enabled: enableRightBarButtons),
+            shareButtonItem(enabled: enableRightBarButtons),
             safariButtonItem()
         ]
 
@@ -748,19 +757,22 @@ private extension ReaderDetailViewController {
         return button
     }
 
-    func moreButtonItem() -> UIBarButtonItem? {
+    func moreButtonItem(enabled: Bool = true) -> UIBarButtonItem? {
         guard let icon = UIImage(named: "icon-menu-vertical-ellipsis") else {
             return nil
         }
 
         let button = barButtonItem(with: icon, action: #selector(didTapMenuButton(_:)))
         button.accessibilityLabel = Strings.moreButtonAccessibilityLabel
+        button.isEnabled = enabled
+
         return button
     }
 
-    func shareButtonItem() -> UIBarButtonItem? {
+    func shareButtonItem(enabled: Bool = true) -> UIBarButtonItem? {
         let button = barButtonItem(with: .gridicon(.shareiOS), action: #selector(didTapShareButton(_:)))
         button.accessibilityLabel = Strings.shareButtonAccessibilityLabel
+        button.isEnabled = enabled
 
         return button
     }

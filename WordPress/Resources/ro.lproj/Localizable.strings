@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-25 13:30:51+0000 */
+/* Translation-Revision-Date: 2021-04-03 05:59:35+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -4684,7 +4684,7 @@
 
 /* Name of the button to open the post settings
    The title of the Post Settings screen. */
-"Post Settings" = "Setări articol";
+"Post Settings" = "Setări articole";
 
 /* Window title for Post Stats view. */
 "Post Stats" = "Statistici articol";

@@ -20,7 +20,7 @@ class GutenbergLightNavigationController: UINavigationController {
         navigationBar.barStyle = .default
         navigationBar.barTintColor = .white
 
-        let tintColor = UIColor(light: .brand, dark: .white)
+        let tintColor = UIColor.lightAppBarTint
         let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [GutenbergLightNavigationController.self])
         barButtonItemAppearance.tintColor = tintColor
         barButtonItemAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),

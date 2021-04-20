@@ -66,7 +66,7 @@ class MySitesCoordinator: NSObject {
         navigationController.restorationIdentifier = MySitesCoordinator.navigationControllerRestorationID
         navigationController.navigationBar.isTranslucent = false
 
-        let tabBarImage = UIImage(named: "icon-tab-mysites")
+        let tabBarImage = AppStyleGuide.mySiteTabIcon
         navigationController.tabBarItem.image = tabBarImage
         navigationController.tabBarItem.selectedImage = tabBarImage
         navigationController.tabBarItem.accessibilityLabel = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
@@ -131,7 +131,10 @@ class MySitesCoordinator: NSObject {
     func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection) {
         showBlogDetails(for: blog)
 
-        if let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
+        if Feature.enabled(.newNavBarAppearance),
+           let mySiteViewController = navigationController.topViewController as? MySiteViewController {
+            mySiteViewController.showBlogDetailsSubsection(subsection)
+        } else if let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
             blogDetailsViewController.showDetailView(for: subsection)
         }
     }

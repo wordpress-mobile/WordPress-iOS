@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-05 22:53:11+0000 */
+/* Translation-Revision-Date: 2021-04-05 19:57:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pt_BR */
@@ -3527,7 +3527,7 @@
 
 /* Button title. Takes the user to the login by email flow.
    Button title. Tapping begins our normal log in process. */
-"Log in or sign up with WordPress.com" = "Log in or sign up with WordPress.com";
+"Log in or sign up with WordPress.com" = "Faça login ou se registre no WordPress.com";
 
 /* Instruction text on the login's email address screen. */
 "Log in to the WordPress.com account you used to connect Jetpack." = "Acesse a conta do WordPress.com usada para se conectar ao Jetpack.";
