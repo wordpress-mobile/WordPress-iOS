@@ -76,17 +76,13 @@ class PostCardStatusViewModelTests: XCTestCase {
         expectations.forEach { scenario, post, expectedButtonGroups in
             let viewModel = PostCardStatusViewModel(post: post, isInternetReachable: false)
 
-            expect({
-                guard viewModel.buttonGroups == expectedButtonGroups else {
-                    let reason = "The scenario \"\(scenario)\" failed. "
-                        + " Expected buttonGroups to be: \(expectedButtonGroups.prettifiedDescription)."
-                        + " Actual: \(viewModel.buttonGroups.prettifiedDescription)"
-
-                    return .failed(reason: reason)
-                }
-
-                return .succeeded
-            }).to(succeed())
+            guard viewModel.buttonGroups == expectedButtonGroups else {
+                let reason = "The scenario \"\(scenario)\" failed. "
+                    + " Expected buttonGroups to be: \(expectedButtonGroups.prettifiedDescription)."
+                    + " Actual: \(viewModel.buttonGroups.prettifiedDescription)"
+                XCTFail(reason)
+                return
+            }
         }
     }
 

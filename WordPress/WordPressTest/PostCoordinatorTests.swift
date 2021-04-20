@@ -306,7 +306,7 @@ class PostCoordinatorTests: XCTestCase {
 
         // Act
         var result: Result<AbstractPost, Error>? = nil
-        waitUntil(timeout: 2) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
             postCoordinator.save(post) { aResult in
                 result = aResult
                 done()
@@ -345,7 +345,7 @@ class PostCoordinatorTests: XCTestCase {
 
         // Act
         var result: Result<AbstractPost, Error>? = nil
-        waitUntil(timeout: 2) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
             postCoordinator.save(post) { aResult in
                 result = aResult
                 done()
@@ -385,7 +385,7 @@ class PostCoordinatorTests: XCTestCase {
 
         // Act
         var result: Result<AbstractPost, Error>? = nil
-        waitUntil(timeout: 2) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
             postCoordinator.save(post) { aResult in
                 result = aResult
                 done()
@@ -425,7 +425,7 @@ class PostCoordinatorTests: XCTestCase {
 
         // Act
         var results = [Result<AbstractPost, Error>]()
-        waitUntil(timeout: 2) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
             postCoordinator.save(post) { aResult in
                 results.append(aResult)
                 done()

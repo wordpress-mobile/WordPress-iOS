@@ -202,7 +202,8 @@ fileprivate extension NewBlogDetailHeaderView {
             static let betweenSiteIconAndTitle: CGFloat = 16
             static let betweenTitleAndSiteSwitcher: CGFloat = 16
             static let betweenSiteSwitcherAndRightPadding: CGFloat = 4
-            static let subtitleButtonImageInsets: UIEdgeInsets = UIEdgeInsets(top: 1, left: 4, bottom: 0, right: 0)
+            static let subtitleButtonImageInsets = UIEdgeInsets(top: 1, left: 4, bottom: 0, right: 0)
+            static let rtlSubtitleButtonImageInsets = UIEdgeInsets(top: 1, left: -4, bottom: 0, right: 4)
         }
 
         // MARK: - Child Views
@@ -228,8 +229,13 @@ fileprivate extension NewBlogDetailHeaderView {
             }
 
             // Align the image to the right
-            button.semanticContentAttribute = (UIApplication.shared.userInterfaceLayoutDirection == .leftToRight) ? .forceRightToLeft : .forceLeftToRight
-            button.imageEdgeInsets = LayoutSpacing.subtitleButtonImageInsets
+            if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
+                button.semanticContentAttribute = .forceLeftToRight
+                button.imageEdgeInsets = LayoutSpacing.rtlSubtitleButtonImageInsets
+            } else {
+                button.semanticContentAttribute = .forceRightToLeft
+                button.imageEdgeInsets = LayoutSpacing.subtitleButtonImageInsets
+            }
 
             button.translatesAutoresizingMaskIntoConstraints = false
             button.addTarget(self, action: #selector(subtitleButtonTapped), for: .touchUpInside)
@@ -331,7 +337,7 @@ fileprivate extension NewBlogDetailHeaderView {
             [
                 siteIconView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
                 siteIconView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
-                siteIconView.leftAnchor.constraint(equalTo: leftAnchor),
+                siteIconView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 siteIconView.heightAnchor.constraint(equalToConstant: Dimensions.siteIconHeight),
                 siteIconView.widthAnchor.constraint(equalToConstant: Dimensions.siteIconWidth),
             ]

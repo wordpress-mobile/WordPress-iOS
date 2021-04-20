@@ -8,10 +8,6 @@ class UserProfileSheetViewController: UITableViewController {
         return ContextManager.sharedInstance().mainContext
     }()
 
-    private lazy var readerTopicService = {
-        return ReaderTopicService(managedObjectContext: mainContext)
-    }()
-
     private lazy var contentCoordinator: ContentCoordinator = {
         return DefaultContentCoordinator(controller: self, context: mainContext)
     }()
@@ -130,7 +126,7 @@ extension UserProfileSheetViewController {
             return
         }
 
-        fetchAndShowSite()
+        showSite()
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
@@ -139,7 +135,8 @@ extension UserProfileSheetViewController {
 
 private extension UserProfileSheetViewController {
 
-    func fetchAndShowSite() {
+    func showSite() {
+        WPAnalytics.track(.userProfileSheetSiteShown)
 
         // TODO: Remove. For testing only. Use siteID from user object.
         var stubbySiteID: NSNumber?
@@ -153,29 +150,19 @@ private extension UserProfileSheetViewController {
             return
         }
 
-        readerTopicService.siteTopicForSite(withID: siteID,
-                                            isFeed: false,
-                                            success: { [weak self] (objectID: NSManagedObjectID?, isFollowing: Bool) in
-                                                guard let objectID = objectID,
-                                                      let siteTopic = (try? self?.mainContext.existingObject(with: objectID)) as? ReaderAbstractTopic else {
-                                                    DDLogError("User Profile: Error retrieving an existing site topic by its objectID.")
-                                                    return
-                                                }
-
-                                                self?.showSiteTopic(siteTopic)
-                                            },
-                                            failure: nil)
+        showSiteTopicWithID(siteID)
     }
 
-    func showSiteTopic(_ topic: ReaderAbstractTopic) {
-        let controller = ReaderStreamViewController.controllerWithTopic(topic)
+    func showSiteTopicWithID(_ siteID: NSNumber) {
+        let controller = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: false)
+        controller.statSource = ReaderStreamViewController.StatSource.user_profile
         let navController = UINavigationController(rootViewController: controller)
         present(navController, animated: true)
     }
 
     func showSiteWebView() {
         // TODO: Remove. For testing only. Use URL from user object.
-        let siteUrl = "http://www.peopleofwalmart.com/"
+        let siteUrl = "https://www.funnycatpix.com/"
 
         guard let url = URL(string: siteUrl) else {
             DDLogError("User Profile: Error creating URL from site string.")
