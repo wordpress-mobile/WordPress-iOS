@@ -43,7 +43,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .stories:
             return true
         case .contactInfo:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .siteCreationHomePagePicker:
             return true
         case .todayWidget:
