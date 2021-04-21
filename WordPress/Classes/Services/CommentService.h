@@ -44,6 +44,12 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                     success:(void (^)(BOOL hasMore))success
                     failure:(void (^)(NSError *error))failure;
 
+- (void)syncCommentsForBlog:(Blog *)blog
+                 withStatus:(CommentStatusFilter)status
+            filterUnreplied:(BOOL)filterUnreplied
+                    success:(void (^)(BOOL hasMore))success
+                    failure:(void (^)(NSError *error))failure;
+
 // Determine if a recent cache is available
 + (BOOL)shouldRefreshCacheFor:(Blog *)blog;
 
