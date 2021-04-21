@@ -96,9 +96,14 @@ class WordPressAuthenticationManager: NSObject {
                                                               navButtonTextColor: FeatureFlag.newNavBarAppearance.enabled ? .appBarTint : .primary,
                                                               navTitleTextColor: FeatureFlag.newNavBarAppearance.enabled ? .appBarText : .text)
 
+        let displayStrings = WordPressAuthenticatorDisplayStrings(
+            continueWithWPButtonTitle: AppConstants.Login.continueButtonTitle
+        )
+
         WordPressAuthenticator.initialize(configuration: configuration,
                                           style: style,
-                                          unifiedStyle: unifiedStyle)
+                                          unifiedStyle: unifiedStyle,
+                                          displayStrings: displayStrings)
     }
 }
 
