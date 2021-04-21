@@ -3,6 +3,13 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 121
+
+@twstokes 2021-04-21
+
+- `BlogAuthor`: added the attribute
+    - `deletedFromBlog` (required, default `NO`, `Boolean`)
+
 ## WordPress 120
 
 @chipsnyder 2021-04-12
