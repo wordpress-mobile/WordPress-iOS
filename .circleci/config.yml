@@ -347,6 +347,7 @@ workflows:
               only:
                 - develop
                 - /^release.*/
+                - /^gutenberg\/integrate_release_.*/
       - UI Tests:
           name: UI Tests (iPad Air 4th generation)
           <<: *ipad_test_device
@@ -357,6 +358,7 @@ workflows:
               only:
                 - develop
                 - /^release.*/
+                - /^gutenberg\/integrate_release_.*/
       - jetpack-installable-build
       - jetpack-pr-build
       #Optionally run UI tests on PRs
@@ -368,6 +370,7 @@ workflows:
               ignore:
                 - develop
                 - /^release.*/
+                - /^gutenberg\/integrate_release_.*/
       - UI Tests:
           name: UI Tests (iPhone 11)
           <<: *iphone_test_device
