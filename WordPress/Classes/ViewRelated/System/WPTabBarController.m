@@ -281,7 +281,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     
     NSMutableArray *mutableTabs = [tabs mutableCopy];
     
-    if ([AppConfiguration showsReader]) {
+    if (AppConfiguration.showsReader) {
         [mutableTabs insertObject:self.readerNavigationController atIndex:1];
     }
     
