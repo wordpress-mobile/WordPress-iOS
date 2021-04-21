@@ -1,5 +1,6 @@
 17.3
 -----
+* [*] Comments can be filtered to show the most recent unreplied comments from other users. [#16215]
 
 
 17.2
