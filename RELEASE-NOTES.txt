@@ -1,6 +1,7 @@
 17.3
 -----
 
+* [***] Fixed the navigation bar color in dark mode. [#16348]
 
 17.2
 -----
