@@ -401,7 +401,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.31.0):
+  - WordPressKit (4.32.0-beta.3):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -499,7 +499,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
   - WordPressAuthenticator (~> 1.37.0-beta.1)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, tag `4.32.0-beta.1`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `feature/15662-likes_preferred_blog`)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.16.0)
   - WordPressUI (~> 1.10.0)
@@ -651,8 +651,8 @@ EXTERNAL SOURCES:
     :submodules: true
     :tag: v1.51.0
   WordPressKit:
+    :branch: feature/15662-likes_preferred_blog
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-    :tag: 4.32.0-beta.1
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.51.0/third-party-podspecs/Yoga.podspec.json
 
@@ -669,8 +669,8 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.51.0
   WordPressKit:
+    :commit: 9fb71680bf2652420d6536b86480bb9cfb9402a0
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-    :tag: 4.32.0-beta.1
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -752,7 +752,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
   WordPressAuthenticator: cb9e17ac7d9b66d001e3f7abe2e860fe3b6e817e
-  WordPressKit: 9ff7c4280955ec7662aae59d72763ae5eb4dea98
+  WordPressKit: 3d3a2e32741cf0dbb4068dd0d60fa973df5ccd02
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 0f7f10e96f8354d64f951c223ae61e8de7495a46
   WordPressUI: 8c754c252a9f36fa32a4c588e9cdeb0d7d8dbe07
@@ -768,6 +768,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: a6174e457dd39356a2b3cc8095fcc2382e856431
+PODFILE CHECKSUM: 37138c16610607b46aeb17a0250f76ec873f7695
 
 COCOAPODS: 1.10.0
