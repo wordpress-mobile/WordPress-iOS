@@ -1,5 +1,6 @@
 17.3
 -----
+* [*] Fixed bug where contact info wasn't showing up in block inserter due to feature flag [https://github.com/wordpress-mobile/WordPress-iOS/pull/16347]
 
 
 17.2
