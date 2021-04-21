@@ -1,4 +1,5 @@
 import Foundation
+import WordPressAuthenticator
 
 @objc class AppConstants: NSObject {
     static let productTwitterHandle = "@WordPressiOS"
@@ -27,4 +28,7 @@ extension AppConstants {
         static let aboutTitle = NSLocalizedString("About WordPress for iOS", comment: "Link to About screen for WordPress for iOS")
     }
 
+    struct Login {
+        static let continueButtonTitle = WordPressAuthenticatorDisplayStrings.defaultStrings.continueWithWPButtonTitle
+    }
 }
