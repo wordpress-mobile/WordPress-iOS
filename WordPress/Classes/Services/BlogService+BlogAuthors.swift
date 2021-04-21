@@ -2,7 +2,11 @@ import Foundation
 
 
 extension BlogService {
-    @objc func blogAuthors(for blog: Blog, with remoteUsers: [RemoteUser]) {
+    /// Synchronizes authors for a `Blog` from an array of `RemoteUser`s.
+    /// - Parameters:
+    ///   - blog: Blog object.
+    ///   - remoteUsers: Array of `RemoteUser`s.
+    @objc func updateBlogAuthors(for blog: Blog, with remoteUsers: [RemoteUser]) {
         do {
             guard let blog = try managedObjectContext.existingObject(with: blog.objectID) as? Blog else {
                 return
@@ -17,9 +21,16 @@ extension BlogService {
                 blogAuthor.primaryBlogID = $0.primaryBlogID
                 blogAuthor.avatarURL = $0.avatarURL
                 blogAuthor.linkedUserID = $0.linkedUserID
+                blogAuthor.deletedFromBlog = false
 
                 blog.addToAuthors(blogAuthor)
             }
+
+            // Local authors who weren't included in the remote users array should be set as deleted.
+            let remoteUserIDs = Set(remoteUsers.map { $0.userID })
+            blog.authors?
+                .filter { !remoteUserIDs.contains($0.userID) }
+                .forEach { $0.deletedFromBlog = true }
         } catch {
             return
         }
