@@ -22,4 +22,9 @@ extension Blog {
     func getAuthorWith(id: NSNumber) -> BlogAuthor? {
         return authors?.first(where: { $0.userID == id })
     }
+
+    @objc
+    func getAuthorWith(linkedID: NSNumber) -> BlogAuthor? {
+        return authors?.first(where: { $0.linkedUserID == linkedID })
+    }
 }

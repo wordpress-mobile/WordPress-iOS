@@ -189,7 +189,9 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             if (filterUnreplied) {
                 NSString *author = @"";
                 if (blog.account) {
-                    author = blogInContext.account.email;
+                    // See if there is a linked Jetpack user that we should use.
+                    BlogAuthor *blogAuthor = [blogInContext getAuthorWithLinkedID:blog.account.userID];
+                    author = (blogAuthor) ? blogAuthor.email : blogInContext.account.email;
                 } else {
                     BlogAuthor *blogAuthor = [blogInContext getAuthorWithId:blogInContext.userID];
                     author = (blogAuthor) ? blogAuthor.email : author;
