@@ -10,4 +10,5 @@ import Foundation
     @objc static let allowSiteCreation: Bool = false
     @objc static let allowSignUp: Bool = false
     @objc static let allowsCustomAppIcons: Bool = false
+    @objc static let showsReader: Bool = false
 }
