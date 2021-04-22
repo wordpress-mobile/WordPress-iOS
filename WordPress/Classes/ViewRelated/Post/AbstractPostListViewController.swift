@@ -1002,8 +1002,10 @@ class AbstractPostListViewController: UIViewController,
             recentlyTrashedPostObjectIDs.remove(at: index)
         }
 
-        // Needed or else the post will remain in the published list.
-        updateAndPerformFetchRequest()
+        if filterSettings.currentPostListFilter().filterType != .draft {
+            // Needed or else the post will remain in the published list.
+            updateAndPerformFetchRequest()
+        }
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
