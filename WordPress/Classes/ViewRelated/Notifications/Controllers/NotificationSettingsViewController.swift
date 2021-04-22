@@ -60,7 +60,6 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
 
-
     // MARK: - Service Helpers
 
     fileprivate func reloadSettings() {
