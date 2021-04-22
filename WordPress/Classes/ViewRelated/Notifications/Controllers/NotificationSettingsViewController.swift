@@ -55,6 +55,8 @@ open class NotificationSettingsViewController: UIViewController {
         // Style!
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+
+        activityIndicatorView.tintColor = .textSubtle
     }
 
 

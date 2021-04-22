@@ -20,6 +20,8 @@
                        textStyle:UIFontTextStyleCallout
                       fontWeight:UIFontWeightSemibold];
     [button setTitleColor:[UIColor murielPrimary] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor murielPrimaryDark] forState:UIControlStateHighlighted];
+    button.tintColor = [UIColor murielPrimary];
 }
 
 + (void)applyRestoreSavedPostLabelStyle:(UILabel *)label
