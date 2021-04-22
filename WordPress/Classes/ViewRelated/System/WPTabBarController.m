@@ -274,18 +274,18 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (NSArray<UIViewController *> *)tabViewControllers
 {
-    NSArray *tabs = @[
+    if (AppConfiguration.showsReader) {
+        return @[
+            self.mySitesCoordinator.rootViewController,
+            self.readerNavigationController,
+            self.notificationsSplitViewController
+        ];
+    }
+    
+    return @[
         self.mySitesCoordinator.rootViewController,
         self.notificationsSplitViewController
     ];
-    
-    NSMutableArray *mutableTabs = [tabs mutableCopy];
-    
-    if (AppConfiguration.showsReader) {
-        [mutableTabs insertObject:self.readerNavigationController atIndex:1];
-    }
-    
-    return mutableTabs;
 }
 
 - (void)showMySitesTab
