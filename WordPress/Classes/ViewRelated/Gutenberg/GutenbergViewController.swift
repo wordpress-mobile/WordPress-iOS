@@ -5,7 +5,11 @@ import Aztec
 import WordPressFlux
 import Kanvas
 
-class GutenbergViewController: UIViewController, PostEditor {
+class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate {
+
+    func didSetFeaturedImage(_ mediaID: NSNumber) {
+        print("Featured image set!")
+    }
 
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
