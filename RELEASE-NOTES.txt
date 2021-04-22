@@ -1,7 +1,10 @@
 17.3
 -----
+* [**] Fix issue where deleting a post and selecting undo would sometimes convert the content to the classic editor. [#16342]
+* [**] Fix issue where restoring a post left the restored post in the published list even though it has been converted to a draft. [#16358]
 * [*] Comments can be filtered to show the most recent unreplied comments from other users. [#16215]
 
+* [*] Fixed the navigation bar color in dark mode. [#16348]
 
 17.2
 -----
