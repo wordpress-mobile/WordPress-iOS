@@ -3,6 +3,15 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 121
+
+@scoutharris 2021-04-22
+
+- Added new entities:
+  - `LikeUser`
+  - `LikeUserPreferredBlog`
+- Created one-to-one relationship between `LikeUser` and `LikeUserPreferredBlog`
+
 ## WordPress 120
 
 @chipsnyder 2021-04-12
