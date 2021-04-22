@@ -2,6 +2,7 @@
 -----
 * [*] Comments can be filtered to show the most recent unreplied comments from other users. [#16215]
 
+* [*] Fixed the navigation bar color in dark mode. [#16348]
 
 17.2
 -----
