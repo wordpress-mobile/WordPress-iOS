@@ -12,4 +12,5 @@ import Foundation
     @objc static let allowsCustomAppIcons: Bool = true
     @objc static let showsReader: Bool = true
     @objc static let showsCreateButton: Bool = true
+    @objc static let showsJetpackSectionHeader: Bool = true
 }
