@@ -415,7 +415,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidAppear:animated];
     [self cancelCompletedToursIfNeeded];
-    if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
+    if ([self.tabBarController isKindOfClass:[WPTabBarController class]] &&
+        AppConfiguration.showsCreateButton) {
         [self.createButtonCoordinator showCreateButtonFor:self.blog];
     }
     [self createUserActivity];
@@ -859,7 +860,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     NSString *title = @"";
 
-    if ([self.blog supports:BlogFeatureJetpackSettings]) {
+    if ([self.blog supports:BlogFeatureJetpackSettings] &&
+        AppConfiguration.showsJetpackSectionHeader) {
         title = NSLocalizedString(@"Jetpack", @"Section title for the publish table section in the blog details screen");
     }
 
