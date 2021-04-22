@@ -39,8 +39,8 @@ extension SchedulingCalendarViewController: UIViewControllerTransitioningDelegat
 class SchedulingLightNavigationController: LightNavigationController {
     var onDismiss: (() -> Void)?
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         onDismiss?()
     }
 }

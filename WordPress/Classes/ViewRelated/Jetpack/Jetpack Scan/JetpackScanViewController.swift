@@ -103,7 +103,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         present(alert, animated: true, completion: nil)
     }
 
-    func presentNotice(with title: String, message: String) {
+    func presentNotice(with title: String, message: String?) {
         displayNotice(title: title, message: message)
     }
 
@@ -123,6 +123,18 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         let model = JetpackScanThreatViewModel(threat: threat)
         let notice = Notice(title: model.ignoreErrorTitle)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    func showJetpackSettings(with siteID: Int) {
+        guard let controller = JetpackWebViewControllerFactory.settingsController(siteID: siteID) else {
+
+            let title = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
+            displayNotice(title: title)
+            return
+        }
+
+        let navigationVC = UINavigationController(rootViewController: controller)
+        present(navigationVC, animated: true)
     }
 
     // MARK: - Actions
@@ -268,7 +280,9 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
             return
         }
 
-        let threatDetailsVC = JetpackScanThreatDetailsViewController(blog: blog, threat: threat)
+        let threatDetailsVC = JetpackScanThreatDetailsViewController(blog: blog,
+                                                                     threat: threat,
+                                                                     hasValidCredentials: coordinator.hasValidCredentials)
         threatDetailsVC.delegate = self
         self.navigationController?.pushViewController(threatDetailsVC, animated: true)
 
