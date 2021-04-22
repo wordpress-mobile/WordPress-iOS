@@ -59,7 +59,7 @@ open class NotificationSettingsViewController: UIViewController {
         activityIndicatorView.tintColor = .textSubtle
     }
 
-    
+
 
     // MARK: - Service Helpers
 
