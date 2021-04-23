@@ -11,4 +11,5 @@ public class BlogAuthor: NSManagedObject {
     @NSManaged public var avatarURL: String?
     @NSManaged public var linkedUserID: NSNumber?
     @NSManaged public var blog: Blog?
+    @NSManaged public var deletedFromBlog: Bool
 }
