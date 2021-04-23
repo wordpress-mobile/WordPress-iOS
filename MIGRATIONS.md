@@ -5,12 +5,10 @@ data model as well as any custom migrations.
 
 ## WordPress 121
 
-@scoutharris 2021-04-22
+@twstokes 2021-04-21
 
-- Added new entities:
-  - `LikeUser`
-  - `LikeUserPreferredBlog`
-- Created one-to-one relationship between `LikeUser` and `LikeUserPreferredBlog`
+- `BlogAuthor`: added the attribute
+    - `deletedFromBlog` (required, default `NO`, `Boolean`)
 
 ## WordPress 120
 

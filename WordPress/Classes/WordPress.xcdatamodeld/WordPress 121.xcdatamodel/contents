@@ -204,6 +204,7 @@
     </entity>
     <entity name="BlogAuthor" representedClassName="WordPress.BlogAuthor" syncable="YES">
         <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="deletedFromBlog" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="linkedUserID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
@@ -371,23 +372,6 @@
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="viewsCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-    </entity>
-    <entity name="LikeUser" representedClassName="LikeUser" syncable="YES">
-        <attribute name="avatarUrl" attributeType="String" defaultValueString="" syncable="YES"/>
-        <attribute name="bio" attributeType="String" defaultValueString="" syncable="YES"/>
-        <attribute name="dateLiked" attributeType="String" defaultValueString="" syncable="YES"/>
-        <attribute name="displayName" attributeType="String" defaultValueString="" syncable="YES"/>
-        <attribute name="primaryBlogID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="userID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="username" attributeType="String" defaultValueString="" syncable="YES"/>
-        <relationship name="preferredBlog" maxCount="1" deletionRule="Nullify" destinationEntity="LikeUserPreferredBlog" inverseName="user" inverseEntity="LikeUserPreferredBlog" syncable="YES"/>
-    </entity>
-    <entity name="LikeUserPreferredBlog" representedClassName="LikeUserPreferredBlog" syncable="YES">
-        <attribute name="blogID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="blogName" attributeType="String" defaultValueString="" syncable="YES"/>
-        <attribute name="blogUrl" attributeType="String" defaultValueString="" syncable="YES"/>
-        <attribute name="iconUrl" attributeType="String" defaultValueString="" syncable="YES"/>
-        <relationship name="user" maxCount="1" deletionRule="Nullify" destinationEntity="LikeUser" inverseName="preferredBlog" inverseEntity="LikeUser" syncable="YES"/>
     </entity>
     <entity name="Media" representedClassName="Media">
         <attribute name="alt" optional="YES" attributeType="String" syncable="YES"/>
@@ -964,7 +948,7 @@
         <element name="BlockEditorSettingElement" positionX="-1620" positionY="-432" width="128" height="104"/>
         <element name="BlockEditorSettings" positionX="-1629" positionY="-441" width="128" height="104"/>
         <element name="Blog" positionX="315.19921875" positionY="-178.44921875" width="188.421875" height="854"/>
-        <element name="BlogAuthor" positionX="564.83203125" positionY="-385.12109375" width="128" height="165"/>
+        <element name="BlogAuthor" positionX="564.83203125" positionY="-385.12109375" width="128" height="164"/>
         <element name="BlogSettings" positionX="1056.86328125" positionY="236.3984375" width="128" height="853"/>
         <element name="Category" positionX="-472.19921875" positionY="-178.47265625" width="128" height="118"/>
         <element name="ClicksStatsRecordValue" positionX="493.99609375" positionY="1741.6171875" width="128" height="133"/>
@@ -979,8 +963,6 @@
         <element name="FollowersStatsRecordValue" positionX="158.42578125" positionY="2028.71875" width="128" height="103"/>
         <element name="InviteLinks" positionX="-1638" positionY="-459" width="128" height="163"/>
         <element name="LastPostStatsRecordValue" positionX="-141.33203125" positionY="1970.5078125" width="128" height="148"/>
-        <element name="LikeUser" positionX="-1638" positionY="-450" width="128" height="149"/>
-        <element name="LikeUserPreferredBlog" positionX="-1647" positionY="-459" width="128" height="104"/>
         <element name="Media" positionX="-155.23046875" positionY="83.17578125" width="128" height="433"/>
         <element name="Menu" positionX="1276.01953125" positionY="-190.328125" width="128" height="135"/>
         <element name="MenuItem" positionX="1261.1484375" positionY="-6.04296875" width="128" height="255"/>
