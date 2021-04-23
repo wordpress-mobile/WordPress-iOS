@@ -1,37 +1,32 @@
 import UIKit
 
 @objc class PostAuthorSelectorViewController: SettingsSelectionViewController {
-    /// The post to change the author
+    /// The post to change the author.
     private var post: AbstractPost!
 
-    /// A completion block that is called after the user select an option
+    /// A completion block that is called after the user selects an option.
     @objc var completion: (() -> Void)?
+
+    /// Representation of an Author used by the view.
+    private typealias Author = (displayName: String, userID: NSNumber, avatarURL: String?)
 
     // MARK: - Constructors
 
     @objc init(_ post: AbstractPost) {
         self.post = post
 
-        guard let authors = post.blog.authors, let currentAuthorID = post.authorID else {
+        let authors = PostAuthorSelectorViewController.sortedActiveAuthors(for: post.blog)
+
+        guard !authors.isEmpty, let currentAuthorID = post.authorID else {
             super.init(style: .plain)
             return
         }
 
-        // Sort authors by their display name.
-        let sortedAuthors: [(displayName: String, authorID: NSNumber)] = authors.compactMap {
-            guard let displayName = $0.displayName else {
-                return nil
-            }
-
-            return (displayName, $0.userID)
-        }.sorted(by: { $0.displayName.lowercased() < $1.displayName.lowercased() })
-
-
         let authorsDict: [AnyHashable: Any] = [
             "DefaultValue": currentAuthorID,
             "Title": NSLocalizedString("Author", comment: "Author label."),
-            "Titles": sortedAuthors.map { $0.displayName },
-            "Values": sortedAuthors.map { $0.authorID },
+            "Titles": authors.map { $0.displayName },
+            "Values": authors.map { $0.userID },
             "CurrentValue": currentAuthorID
         ]
 
@@ -64,5 +59,22 @@ import UIKit
 
     override init(style: UITableView.Style) {
         super.init(style: style)
+    }
+
+    /// Sort authors by their display name.
+    private static func sortedActiveAuthors(for blog: Blog) -> [Author] {
+        /// Don't include any deleted authors.
+        guard let activeAuthors = blog.authors?.filter ({ !$0.deletedFromBlog }) else {
+            return []
+        }
+
+        return activeAuthors.compactMap {
+            /// Require a display name to be available.
+            guard let displayName = $0.displayName else {
+                return nil
+            }
+
+            return (displayName, $0.userID, $0.avatarURL)
+        }.sorted(by: { $0.displayName.lowercased() < $1.displayName.lowercased() })
     }
 }
