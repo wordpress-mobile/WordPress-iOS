@@ -1,9 +1,0 @@
-Neuerungen in dieser Release
-
-Ein neuer visueller Look! Wir haben die Anmeldeerfahrung umgestaltet und ein Willkommenskarussell mit neuen Inhalten und Grafiken hinzugefügt, das die Funktionen und Vorteile der App bewirbt. Außerdem haben wir eine neue Farbpalette und ein dazu passendes App-Icon gewählt.
-
-Für Personen, die einen Screenreader mit VoiceOver nutzen, haben wir im Block-Editor Verbesserungen an den Bedienungshilfen vorgenommen. Diese Updates verbessern den Umgang mit dem Spaltenblock.
-
-Mit einem neuen „Unbeantwortet“-Filter kannst du all deine unbeantworteten Kommentare in einem Tab anzeigen und die Kommentaraktivitäten auf deiner Website somit besser verwalten.
-
-Wir haben noch mehr verbessert und beispielsweise die Auswahl der Seitenlayouts aktualisiert.
