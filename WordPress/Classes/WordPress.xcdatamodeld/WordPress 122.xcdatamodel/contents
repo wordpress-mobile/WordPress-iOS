@@ -377,6 +377,7 @@
         <attribute name="avatarUrl" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="bio" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="dateLiked" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="dateLikesString" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="displayName" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="primaryBlogID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="userID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -980,6 +981,8 @@
         <element name="FollowersStatsRecordValue" positionX="158.42578125" positionY="2028.71875" width="128" height="103"/>
         <element name="InviteLinks" positionX="-1638" positionY="-459" width="128" height="163"/>
         <element name="LastPostStatsRecordValue" positionX="-141.33203125" positionY="1970.5078125" width="128" height="148"/>
+        <element name="LikeUser" positionX="-1647" positionY="-459" width="128" height="164"/>
+        <element name="LikeUserPreferredBlog" positionX="-1638" positionY="-450" width="128" height="104"/>
         <element name="Media" positionX="-155.23046875" positionY="83.17578125" width="128" height="433"/>
         <element name="Menu" positionX="1276.01953125" positionY="-190.328125" width="128" height="135"/>
         <element name="MenuItem" positionX="1261.1484375" positionY="-6.04296875" width="128" height="255"/>
@@ -1036,7 +1039,5 @@
         <element name="TopViewedVideoStatsRecordValue" positionX="-638.37890625" positionY="1936.55859375" width="128" height="103"/>
         <element name="UserSuggestion" positionX="160" positionY="192" width="128" height="103"/>
         <element name="VisitsSummaryStatsRecordValue" positionX="-325.91015625" positionY="1975.75390625" width="128" height="118"/>
-        <element name="LikeUser" positionX="-1647" positionY="-459" width="128" height="149"/>
-        <element name="LikeUserPreferredBlog" positionX="-1638" positionY="-450" width="128" height="104"/>
     </elements>
 </model>
