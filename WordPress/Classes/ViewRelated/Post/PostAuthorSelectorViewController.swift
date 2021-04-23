@@ -77,12 +77,6 @@ import UIKit
             }
 
             return (displayName, $0.userID, $0.avatarURL)
-        }.sorted(by: { $0.displayName.diacriticsAndCaseInsensitive() < $1.displayName.diacriticsAndCaseInsensitive() })
-    }
-}
-
-private extension String {
-    func diacriticsAndCaseInsensitive() -> String {
-        return self.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
+        }.sorted(by: { $0.displayName.localizedCaseInsensitiveCompare($1.displayName) == .orderedAscending })
     }
 }
