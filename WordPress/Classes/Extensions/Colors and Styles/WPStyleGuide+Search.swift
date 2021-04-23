@@ -33,16 +33,16 @@ extension WPStyleGuide {
     @objc public class func configureSearchBarTextAppearance() {
         // Cancel button
         let barButtonTitleAttributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fixedFont(for: .headline),
-                                                                      .foregroundColor: UIColor.neutral(.shade70)]
+                                                                       .foregroundColor: UIColor.neutral(.shade70)]
         let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self])
         barButtonItemAppearance.setTitleTextAttributes(barButtonTitleAttributes, for: UIControl.State())
 
         // Text field
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes =
-            (WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(.shade70)))
+            (WPStyleGuide.defaultSearchBarTextAttributesSwifted())
         let placeholderText = NSLocalizedString("Search", comment: "Placeholder text for the search bar")
         let attributedPlaceholderText = NSAttributedString(string: placeholderText,
-                                                           attributes: WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(.shade30)))
+                                                           attributes: WPStyleGuide.defaultSearchBarTextAttributesSwifted())
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).attributedPlaceholder =
             attributedPlaceholderText
     }
