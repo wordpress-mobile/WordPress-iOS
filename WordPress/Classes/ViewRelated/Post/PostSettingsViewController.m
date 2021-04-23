@@ -30,10 +30,10 @@
 typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowCategories = 0,
     PostSettingsRowTags,
+    PostSettingsRowAuthor,
     PostSettingsRowPublishDate,
     PostSettingsRowStatus,
     PostSettingsRowVisibility,
-    PostSettingsRowAuthor,
     PostSettingsRowPassword,
     PostSettingsRowFormat,
     PostSettingsRowFeaturedImage,
