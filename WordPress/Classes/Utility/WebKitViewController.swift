@@ -87,6 +87,8 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     private var tapLocation = CGPoint(x: 0.0, y: 0.0)
     private var widthConstraint: NSLayoutConstraint?
     private var onClose: (() -> Void)?
+    private weak var parentWebKitViewController: WebKitViewController?
+    private var didExchangeWPcomCookie = false
 
     private var useLightStyle: Bool {
         navigationController is LightNavigationController || FeatureFlag.newNavBarAppearance.enabled
@@ -137,6 +139,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         navigationDelegate = parent.navigationDelegate
         linkBehavior = parent.linkBehavior
         opensNewInSafari = parent.opensNewInSafari
+        parentWebKitViewController = parent
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
         startObservingWebView()
@@ -479,9 +482,44 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     }
 }
 
-extension WebKitViewController: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+// These methods add support for the WordPress.com replacement for third-party cookie
+// authentication when liking or commenting on a blog with a custom domain.
+extension WebKitViewController {
 
+    func dismissAfterExchangingWPComCookiesIfNecessary() {
+        // Dismiss after logging in to exchange cookies with a custom domain.
+        guard let parentController = parentWebKitViewController, didExchangeWPcomCookie else {
+            return
+        }
+        // Refresh the parent controller so it's web view can see the cookies exchanged by this controller.
+        parentController.refresh()
+        if !isBeingPresented {
+            dismiss(animated: true, completion: nil)
+        }
+    }
+
+    func checkIfWPComCookiesWereExchanged(navigationAction: WKNavigationAction) {
+        guard
+            navigationAction.navigationType == WKNavigationType.linkActivated,
+            let url = navigationAction.request.url,
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+            components.path.contains("public.api/connect"),
+            let query = components.query,
+            query.contains("cookie=")
+        else {
+            return
+        }
+        didExchangeWPcomCookie = true
+    }
+}
+
+extension WebKitViewController: WKNavigationDelegate {
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        dismissAfterExchangingWPComCookiesIfNecessary()
+    }
+
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let delegate = navigationDelegate {
             let policy = delegate.shouldNavigate(request: navigationAction.request)
             if let redirect = policy.redirectRequest {
@@ -496,6 +534,8 @@ extension WebKitViewController: WKNavigationDelegate {
             decisionHandler(.allow)
             return
         }
+
+        checkIfWPComCookiesWereExchanged(navigationAction: navigationAction)
 
         // Check for link protocols such as `tel:` and set the correct behavior
         if let url = navigationAction.request.url, let scheme = url.scheme {
@@ -552,18 +592,18 @@ extension WebKitViewController: WKUIDelegate {
 }
 
 extension WebKitViewController: UIPopoverPresentationControllerDelegate {
-     func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
-       handleDocumentMenuPresentation(presented: popoverPresentationController)
-     }
+    func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+        handleDocumentMenuPresentation(presented: popoverPresentationController)
+    }
 
     private func handleDocumentMenuPresentation(presented: UIPopoverPresentationController) {
-          presented.sourceView = webView
-          presented.sourceRect = CGRect(origin: tapLocation, size: CGSize(width: 0, height: 0))
-      }
+        presented.sourceView = webView
+        presented.sourceRect = CGRect(origin: tapLocation, size: CGSize(width: 0, height: 0))
+    }
 }
 
 extension WebKitViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-      return true
+        return true
     }
 }
