@@ -63,7 +63,7 @@ import UIKit
 
     // MARK: - Class Methods
 
-    /// Sort authors by their display name.
+    /// Sort authors by their display name in lexicographical order, accounting for diacritical marks.
     private static func sortedActiveAuthors(for blog: Blog) -> [Author] {
         /// Don't include any deleted authors.
         guard let activeAuthors = blog.authors?.filter ({ !$0.deletedFromBlog }) else {
@@ -77,6 +77,12 @@ import UIKit
             }
 
             return (displayName, $0.userID, $0.avatarURL)
-        }.sorted(by: { $0.displayName.lowercased() < $1.displayName.lowercased() })
+        }.sorted(by: { $0.displayName.diacriticsAndCaseInsensitive() < $1.displayName.diacriticsAndCaseInsensitive() })
+    }
+}
+
+private extension String {
+    func diacriticsAndCaseInsensitive() -> String {
+        return self.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
     }
 }
