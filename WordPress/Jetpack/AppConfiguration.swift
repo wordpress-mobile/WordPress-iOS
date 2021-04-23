@@ -13,4 +13,5 @@ import Foundation
     @objc static let showsReader: Bool = false
     @objc static let showsCreateButton: Bool = false
     @objc static let showsJetpackSectionHeader: Bool = false
+    @objc static let showsQuickActions: Bool = false
 }
