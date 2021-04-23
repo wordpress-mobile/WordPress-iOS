@@ -26,13 +26,13 @@ import Foundation
     case editorPostTitleChanged
     case editorPostVisibilityChanged
     case editorPostTagsChanged
+    case editorPostAuthorChanged
     case editorPostPublishNowTapped
     case editorPostCategoryChanged
     case editorPostStatusChanged
     case editorPostFormatChanged
     case editorPostFeaturedImageChanged
     case editorPostStickyChanged
-    case editorPostAuthorChanged
     case editorPostLocationChanged
     case editorPostSlugChanged
     case editorPostExcerptChanged
