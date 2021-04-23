@@ -152,7 +152,7 @@ jobs:
                 include_job_number_field: false
                 include_project_field: false
                 failure_message: '${SLACK_FAILURE_MESSAGE}'
-  Installable Build:
+  WordPress Installable Build:
     executor:
       name: ios/default
       <<: *xcode_version
@@ -268,7 +268,7 @@ jobs:
       - store_artifacts:
           path: Artifacts
           destination: Artifacts
-  jetpack-installable-build:
+  Jetpack Installable Build:
     executor:
       name: ios/default
       <<: *xcode_version
@@ -297,7 +297,7 @@ jobs:
       - store_artifacts:
           path: Artifacts
           destination: Artifacts
-  jetpack-pr-build:
+  Build Jetpack:
     executor:
       name: ios/default
       <<: *xcode_version
@@ -359,8 +359,8 @@ workflows:
                 - develop
                 - /^release.*/
                 - /^gutenberg\/integrate_release_.*/
-      - jetpack-installable-build
-      - jetpack-pr-build
+      - Build Jetpack:
+          name: Build Jetpack (without testing)
       #Optionally run UI tests on PRs
       - Optional Tests:
           type: approval
@@ -386,16 +386,27 @@ workflows:
         - not: << pipeline.parameters.beta_build >>
         - not: << pipeline.parameters.release_build >>
     jobs:
-      - Hold:
+      - Approve WordPress:
           type: approval
           filters:
             branches:
               ignore: /pull\/[0-9]+/
-      - Installable Build:
-          requires: [Hold]
+      - WordPress Installable Build:
+          requires: [Approve WordPress]
           filters:
             branches:
               ignore: /pull\/[0-9]+/
+      - Approve Jetpack:
+          type: approval
+          filters:
+            branches:
+              ignore: /pull\/[0-9]+/
+      - Jetpack Installable Build:
+          requires: [Approve Jetpack]
+          filters:
+            branches:
+              ignore: /pull\/[0-9]+/
+
   Release Build:
     when:
       or: [ << pipeline.parameters.beta_build >>, << pipeline.parameters.release_build >> ]
@@ -414,5 +425,4 @@ workflows:
                only:
                  - develop
     jobs:
-      - jetpack-installable-build
-
+      - Jetpack Installable Build
