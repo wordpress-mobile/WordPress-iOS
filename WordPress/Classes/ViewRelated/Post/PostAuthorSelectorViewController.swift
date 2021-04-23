@@ -61,6 +61,8 @@ import UIKit
         super.init(style: style)
     }
 
+    // MARK: - Class Methods
+
     /// Sort authors by their display name.
     private static func sortedActiveAuthors(for blog: Blog) -> [Author] {
         /// Don't include any deleted authors.
