@@ -9,11 +9,11 @@ extension WPStyleGuide {
         searchBar.accessibilityIdentifier = "Search"
         searchBar.autocapitalizationType = .none
         searchBar.autocorrectionType = .no
-        searchBar.isTranslucent = false
-        searchBar.barTintColor = WPStyleGuide.barTintColor
+        searchBar.isTranslucent = true
+        searchBar.backgroundImage = UIImage()
+        searchBar.backgroundColor = .appBarBackground
         searchBar.layer.borderWidth = 1.0
         searchBar.returnKeyType = .done
-        searchBar.searchTextField.backgroundColor = .basicBackground
     }
 
     @objc public class func configureSearchBarAppearance() {
@@ -54,6 +54,6 @@ extension UISearchBar {
     // `tintColorDidChange` is called when the appearance changes, so re-set the border color when this occurs.
     open override func tintColorDidChange() {
         super.tintColorDidChange()
-        layer.borderColor = WPStyleGuide.barTintColor.cgColor
+        layer.borderColor = UIColor.appBarBackground.cgColor
     }
 }
