@@ -168,6 +168,18 @@ class GutenbergSettings {
         }
     }
 
+    func canViewEditorOnboarding() -> Bool {
+        guard
+            ReachabilityUtils.isInternetReachable(),
+            let account = AccountService(managedObjectContext: context).defaultWordPressComAccount()
+        else {
+            return false
+        }
+
+        let rollout = GutenbergOnboardingRollout()
+        return rollout.isUserIdInPhaseRolloutPercentage(account.userID.intValue)
+    }
+
     // MARK: - Gutenberg Choice Logic
 
     func isSimpleWPComSite(_ blog: Blog) -> Bool {
