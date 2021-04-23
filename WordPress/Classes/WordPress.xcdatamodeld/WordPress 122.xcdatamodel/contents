@@ -376,7 +376,7 @@
     <entity name="LikeUser" representedClassName="LikeUser" syncable="YES">
         <attribute name="avatarUrl" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="bio" attributeType="String" defaultValueString="" syncable="YES"/>
-        <attribute name="dateLiked" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="dateLiked" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dateLikesString" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="displayName" attributeType="String" defaultValueString="" syncable="YES"/>
         <attribute name="primaryBlogID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
