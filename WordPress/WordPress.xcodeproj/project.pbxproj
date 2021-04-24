@@ -18419,7 +18419,6 @@
 				FABB21BC2602FC2C00C8785C /* MediaNoticeNavigationCoordinator.swift in Sources */,
 				FABB21BD2602FC2C00C8785C /* ReaderPostToReaderPost37to38.swift in Sources */,
 				FABB21BE2602FC2C00C8785C /* ReaderRelatedPostsSectionHeaderView.swift in Sources */,
-				C3E2463B26277B7A00B99EA6 /* PostAuthorSelectorViewController.swift in Sources */,
 				FABB21BF2602FC2C00C8785C /* WidgetNoConnectionCell.swift in Sources */,
 				FABB21C02602FC2C00C8785C /* AppRatingUtilityType.swift in Sources */,
 				FABB21C12602FC2C00C8785C /* MenuItemSourceFooterView.m in Sources */,
