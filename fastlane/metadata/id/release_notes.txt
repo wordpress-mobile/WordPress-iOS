@@ -1,9 +1,0 @@
-Apa yang baru dalam rilis ini?
-
-Tampilan baru! Kami menghadirkan pengalaman baru untuk login, dengan carousel sambutan berisi konten dan ilustrasi baru yang menonjolkan fitur dan manfaat aplikasi. Anda juga akan melihat palet warna baru, dengan penyesuaian pada ikon aplikasi yang diperbarui.
-
-Kami melakukan peningkatan aksesibilitas pada editor blok bagi orang-orang yang menggunakan pembaca layar VoiceOver. Dengan pembaruan ini, pengalaman Anda menggunakan blok Kolom jadi lebih sempurna.
-
-Untuk membantu mengelola aktivitas komentar di situs Anda, sekarang ada penyaring "Belum dibalas" sehingga Anda dapat melihat semua komentar yang belum dibalas dalam satu tab.
-
-Kami juga telah melakukan sejumlah peningkatan lain, termasuk pembaruan pada pengalaman pemilih tata letak halaman.
