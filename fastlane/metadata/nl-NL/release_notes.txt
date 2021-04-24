@@ -1,9 +1,0 @@
-Wat is er nieuw in deze release?
-
-Een nieuwe visuele look! We hebben de inlogervaring opnieuw ontworpen, met een welkomst carrousel met nieuwe inhoud en afbeeldingen die de functies en voordelen van de app promoten. Je zult ook een nieuw kleurenpalet opmerken, met een geüpdatet app-pictogram dat daarbij past.
-
-We hebben verbeteringen in toegankelijkheid aangebracht in de blok-editor voor mensen die een VoiceOver schermlezer gebruiken. Deze updates verbeteren je ervaring met het kolommenblok.
-
-Om je te helpen bij het beheren van reacties op je site, is er nu een filter 'Niet beantwoord', zodat je al je niet-beantwoorde reacties op één tab kunt zien.
-
-We hebben ook andere verbeteringen aangebracht, waaronder updates voor de ervaring van de paginalay-out kiezer.

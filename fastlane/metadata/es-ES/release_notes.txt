@@ -1,9 +1,0 @@
-¿Qué novedades hay en esta versión?
-
-¡Un nuevo aspecto visual! Hemos rediseñado la experiencia de acceso con un carrusel de bienvenida de nuevos contenidos y gráficos que promueven las características y beneficios de la aplicación. También notarás una nueva paleta de color con un icono de la aplicación actualizado a juego.
-
-Hemos hecho mejoras en la accesibilidad en el editor de bloques para las personas que utilizan un lector de pantalla VoiceOver. Estas actualizaciones mejoran tu experiencia con el bloque de columnas.
-
-Para ayudarte a gestionar la actividad de los comentarios en tu sitio, ahora hay un filtro «Sin respuesta» para que puedas ver todos tus comentarios sin respuesta en una pestaña.
-
-También hemos hecho otras mejoras, incluyendo actualizaciones del diseño de la página del selector de experiencia.

@@ -401,7 +401,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.32.0-beta.4):
+  - WordPressKit (4.32.0-beta.5):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -511,6 +511,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
+    - WordPressKit
   trunk:
     - 1PasswordExtension
     - Alamofire
@@ -550,7 +551,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -747,7 +747,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
   WordPressAuthenticator: cb9e17ac7d9b66d001e3f7abe2e860fe3b6e817e
-  WordPressKit: 173628293093c393db9aae156bc8a0dd0c624905
+  WordPressKit: f941a43d9a181897f5b54bb256ef01ecbdca120d
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 0f7f10e96f8354d64f951c223ae61e8de7495a46
   WordPressUI: 8c754c252a9f36fa32a4c588e9cdeb0d7d8dbe07
