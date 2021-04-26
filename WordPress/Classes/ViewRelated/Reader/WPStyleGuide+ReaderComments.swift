@@ -13,12 +13,12 @@ extension WPStyleGuide {
             .font: WPStyleGuide.fixedFont(for: .footnote)
         ]
     }
-    
+
     class func defaultSearchBarTextAttributesSwifted(_ color: UIColor) -> [NSAttributedString.Key: Any] {
         var attributes = defaultSearchBarTextAttributesSwifted()
-        
+
         attributes[.foregroundColor] = color
-        
+
         return attributes
     }
 }
