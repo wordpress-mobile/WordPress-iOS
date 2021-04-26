@@ -24,8 +24,8 @@ extension WPStyleGuide {
 
         // We have to manually tint these images, as we want them
         // a different color from the search bar's cursor (which uses `tintColor`)
-        let cancelImage = UIImage(named: "icon-clear-searchfield")?.imageWithTintColor(.neutral(.shade60))
-        let searchImage = UIImage(named: "icon-post-list-search")?.imageWithTintColor(.neutral(.shade60))
+        let cancelImage = UIImage(named: "icon-clear-searchfield")?.withTintColor(.secondaryLabel)
+        let searchImage = UIImage(named: "icon-post-list-search")?.withTintColor(.secondaryLabel)
         UISearchBar.appearance().setImage(cancelImage, for: .clear, state: UIControl.State())
         UISearchBar.appearance().setImage(searchImage, for: .search, state: UIControl.State())
     }
