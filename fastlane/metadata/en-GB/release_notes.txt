@@ -1,9 +1,0 @@
-What’s new in this release?
-
-A new visual look! We redesigned the login experience, with a welcome carousel of new content and graphics that promote the app’s features and benefits. You’ll also notice a new colour palette, with an updated app icon to match.
-
-We made accessibility improvements in the block editor for people who use a VoiceOver screen reader. These updates improve your experience with the Columns block.
-
-To help you manage comment activity on your site, there’s now an “Unreplied” filter so you can view all of your unreplied comments under one tab.
-
-We also made other enhancements, including updates to the page layout picker experience.
