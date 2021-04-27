@@ -22,7 +22,7 @@ class JetpackScreenshotGeneration: XCTestCase {
             XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
         }
 
-        LoginFlow.login(siteUrl: "WordPress.com", username: ScreenshotCredentials.username, password: ScreenshotCredentials.password)
+        LoginFlow.login(email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
     }
 
     override func tearDown() {
@@ -51,5 +51,17 @@ class JetpackScreenshotGeneration: XCTestCase {
             .dismissCustomizeInsightsNotice()
             .switchTo(mode: .months)
             .thenTakeScreenshot(5, named: "Stats")
+    }
+}
+
+extension BaseScreen {
+    @discardableResult
+    func thenTakeScreenshot(_ index: Int, named title: String) -> Self {
+        let mode = isDarkMode ? "dark" : "light"
+        let filename = "\(index)-\(mode)-\(title)"
+
+        snapshot(filename)
+
+        return self
     }
 }
