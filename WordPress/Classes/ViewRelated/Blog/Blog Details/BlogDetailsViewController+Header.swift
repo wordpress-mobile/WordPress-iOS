@@ -3,24 +3,8 @@ import WordPressFlux
 
 extension BlogDetailsViewController {
     @objc func configureHeaderView() -> BlogDetailHeader {
-        let actionItems: [ActionRow.Item] = [
-            .init(image: .gridicon(.statsAlt), title: NSLocalizedString("Stats", comment: "Noun. Abbv. of Statistics. Links to a blog's Stats screen.")) { [weak self] in
-                self?.tableView.deselectSelectedRowWithAnimation(false)
-                self?.showStats(from: .button)
-            },
-            .init(image: .gridicon(.posts), title: NSLocalizedString("Posts", comment: "Noun. Title. Links to the blog's Posts screen.")) { [weak self] in
-                self?.tableView.deselectSelectedRowWithAnimation(false)
-                self?.showPostList(from: .button)
-            },
-            .init(image: .gridicon(.image), title: NSLocalizedString("Media", comment: "Noun. Title. Links to the blog's Media library.")) { [weak self] in
-                self?.tableView.deselectSelectedRowWithAnimation(false)
-                self?.showMediaLibrary(from: .button)
-            },
-            .init(image: .gridicon(.pages), title: NSLocalizedString("Pages", comment: "Noun. Title. Links to the blog's Pages screen.")) { [weak self] in
-                self?.tableView.deselectSelectedRowWithAnimation(false)
-                self?.showPageList(from: .button)
-            }
-        ]
+
+        let actionItems = createActionItems()
 
         guard Feature.enabled(.newNavBarAppearance) else {
             return BlogDetailHeaderView(items: actionItems)
@@ -47,6 +31,33 @@ extension BlogDetailsViewController {
         let navigationController = UINavigationController(rootViewController: controller)
         navigationController.modalPresentationStyle = .formSheet
         present(navigationController, animated: true)
+    }
+
+    private func createActionItems() -> [ActionRow.Item] {
+        guard AppConfiguration.showsQuickActions else {
+            return []
+        }
+
+        let actionItems: [ActionRow.Item] = [
+            .init(image: .gridicon(.statsAlt), title: NSLocalizedString("Stats", comment: "Noun. Abbv. of Statistics. Links to a blog's Stats screen.")) { [weak self] in
+                self?.tableView.deselectSelectedRowWithAnimation(false)
+                self?.showStats(from: .button)
+            },
+            .init(image: .gridicon(.posts), title: NSLocalizedString("Posts", comment: "Noun. Title. Links to the blog's Posts screen.")) { [weak self] in
+                self?.tableView.deselectSelectedRowWithAnimation(false)
+                self?.showPostList(from: .button)
+            },
+            .init(image: .gridicon(.image), title: NSLocalizedString("Media", comment: "Noun. Title. Links to the blog's Media library.")) { [weak self] in
+                self?.tableView.deselectSelectedRowWithAnimation(false)
+                self?.showMediaLibrary(from: .button)
+            },
+            .init(image: .gridicon(.pages), title: NSLocalizedString("Pages", comment: "Noun. Title. Links to the blog's Pages screen.")) { [weak self] in
+                self?.tableView.deselectSelectedRowWithAnimation(false)
+                self?.showPageList(from: .button)
+            }
+        ]
+
+        return actionItems
     }
 
     private func saveSiteTitleSettings(_ title: String) {

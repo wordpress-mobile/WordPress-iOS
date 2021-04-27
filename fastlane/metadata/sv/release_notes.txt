@@ -1,9 +1,0 @@
-Vad är nytt i den här versionen?
-
-Ett nytt utseende! Vi har designat om inloggningsupplevelsen, med en välkomstkarusell av nytt innehåll och grafik som framhäver appens funktioner och fördelar. Du kommer också att märka en ny färgpalett, komplett med en uppdaterad appikon.
-
-Vi har gjort hjälpmedelsförbättringar i blockredigeraren för personer som använder en VoiceOver-skärmläsare. Dessa uppdateringar förbättrar din upplevelse med kolumnblocken.
-
-För att hjälpa dig att hantera kommentarsaktivitet på din webbplats finns det nu ett filter kallat "Obesvarat", så att du kan se alla dina obesvarade kommentarer på en flik.
-
-Vi har också gjort andra förbättringar, inklusive uppdateringar av sidlayoutväljaren.
