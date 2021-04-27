@@ -4350,6 +4350,13 @@
 			remoteGlobalIDString = 1D6058900D05DD3D006BFB54;
 			remoteInfo = WordPress;
 		};
+		FAF64C392637E02700E8A1DF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FABB1F8F2602FC2C00C8785C;
+			remoteInfo = Jetpack;
+		};
 		FF2716941CAAC87B0006E2D4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -14315,6 +14322,7 @@
 			);
 			dependencies = (
 				FAF64B672637DEEC00E8A1DF /* PBXTargetDependency */,
+				FAF64C3A2637E02700E8A1DF /* PBXTargetDependency */,
 			);
 			name = JetpackScreenshotGeneration;
 			productName = WordPressScreenshotGeneration;
@@ -14467,6 +14475,9 @@
 					F1F163BD25658B4D003DC13B = {
 						CreatedOnToolsVersion = 12.2;
 						ProvisioningStyle = Manual;
+					};
+					FAF64B662637DEEC00E8A1DF = {
+						TestTargetID = FABB1F8F2602FC2C00C8785C;
 					};
 					FF27168E1CAAC87A0006E2D4 = {
 						CreatedOnToolsVersion = 7.3;
@@ -19875,6 +19886,11 @@
 			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
 			targetProxy = FAF64B682637DEEC00E8A1DF /* PBXContainerItemProxy */;
 		};
+		FAF64C3A2637E02700E8A1DF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FABB1F8F2602FC2C00C8785C /* Jetpack */;
+			targetProxy = FAF64C392637E02700E8A1DF /* PBXContainerItemProxy */;
+		};
 		FF2716951CAAC87B0006E2D4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
@@ -23340,9 +23356,10 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressScreenshotGeneration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = WordPress;
+				TEST_TARGET_NAME = Jetpack;
 				USES_XCTRUNNER = YES;
 				WIREMOCK_HOST = localhost;
 				WIREMOCK_PORT = 8282;
@@ -23388,8 +23405,9 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressScreenshotGeneration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = WordPress;
+				TEST_TARGET_NAME = Jetpack;
 				USES_XCTRUNNER = YES;
 				WIREMOCK_HOST = localhost;
 				WIREMOCK_PORT = 8282;
@@ -23435,8 +23453,9 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressScreenshotGeneration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = WordPress;
+				TEST_TARGET_NAME = Jetpack;
 				USES_XCTRUNNER = YES;
 				WIREMOCK_HOST = localhost;
 				WIREMOCK_PORT = 8282;
@@ -23483,8 +23502,9 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressScreenshotGeneration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = WordPress;
+				TEST_TARGET_NAME = Jetpack;
 				USES_XCTRUNNER = YES;
 				WIREMOCK_HOST = localhost;
 				WIREMOCK_PORT = 8282;
