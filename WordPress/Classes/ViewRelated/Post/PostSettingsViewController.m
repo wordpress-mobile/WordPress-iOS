@@ -180,6 +180,7 @@ FeaturedImageViewControllerDelegate>
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     [self.navigationController setToolbarHidden:YES];
     
+    [self configureMetaSectionRows];
     [self reloadData];
 }
 
@@ -435,7 +436,6 @@ FeaturedImageViewControllerDelegate>
         return 2;
 
     } else if (sec == PostSettingsSectionMeta) {
-        [self configureMetaSectionRows];
         return [self.postMetaSectionRows count];
 
     } else if (sec == PostSettingsSectionFormat) {
@@ -530,7 +530,8 @@ FeaturedImageViewControllerDelegate>
     }
 
     if (sectionId == PostSettingsSectionMeta) {
-        if (indexPath.row == PostSettingsRowPassword) {
+        NSInteger row = [[self.postMetaSectionRows objectAtIndex:indexPath.row] integerValue];
+        if (row == PostSettingsRowPassword) {
             return CellHeight;
         }
     }
