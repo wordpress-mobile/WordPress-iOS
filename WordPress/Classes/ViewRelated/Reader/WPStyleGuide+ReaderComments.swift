@@ -10,7 +10,7 @@ extension WPStyleGuide {
 
     class func defaultSearchBarTextAttributesSwifted() -> [NSAttributedString.Key: Any] {
         return [
-            .font: WPStyleGuide.fixedFont(for: .footnote)
+            .font: WPStyleGuide.fixedFont(for: .body)
         ]
     }
 
