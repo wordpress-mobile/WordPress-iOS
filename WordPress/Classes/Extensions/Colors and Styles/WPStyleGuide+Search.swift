@@ -26,8 +26,8 @@ extension WPStyleGuide {
 
         // We have to manually tint these images, as we want them
         // a different color from the search bar's cursor (which uses `tintColor`)
-        let cancelImage = UIImage.gridicon(.crossCircle, size: iconSizes).withTintColor(.secondaryLabel).withRenderingMode(.alwaysOriginal)
-        let searchImage = UIImage.gridicon(.search, size: iconSizes).withTintColor(.secondaryLabel).withRenderingMode(.alwaysOriginal)
+        let cancelImage = UIImage.gridicon(.crossCircle, size: iconSizes).withTintColor(.searchFieldIcons).withRenderingMode(.alwaysOriginal)
+        let searchImage = UIImage.gridicon(.search, size: iconSizes).withTintColor(.searchFieldIcons).withRenderingMode(.alwaysOriginal)
         UISearchBar.appearance().setImage(cancelImage, for: .clear, state: UIControl.State())
         UISearchBar.appearance().setImage(searchImage, for: .search, state: UIControl.State())
     }
@@ -44,7 +44,7 @@ extension WPStyleGuide {
             (WPStyleGuide.defaultSearchBarTextAttributesSwifted())
         let placeholderText = NSLocalizedString("Search", comment: "Placeholder text for the search bar")
         let attributedPlaceholderText = NSAttributedString(string: placeholderText,
-                                                           attributes: WPStyleGuide.defaultSearchBarTextAttributesSwifted())
+                                                           attributes: WPStyleGuide.defaultSearchBarTextAttributesSwifted(.searchFieldPlaceholderText))
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).attributedPlaceholder =
             attributedPlaceholderText
     }
