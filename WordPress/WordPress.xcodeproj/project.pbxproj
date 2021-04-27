@@ -4190,6 +4190,7 @@
 		FAF64B982637DEEC00E8A1DF /* ScreenshotCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9463A7221C05EE90081F11E /* ScreenshotCredentials.swift */; };
 		FAF64B992637DEEC00E8A1DF /* MediaPickerAlbumScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC52189B2279D295008998CE /* MediaPickerAlbumScreen.swift */; };
 		FAF64B9B2637DEEC00E8A1DF /* Pods_WordPressScreenshotGeneration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB390AA9C94F16E78184E9D1 /* Pods_WordPressScreenshotGeneration.framework */; };
+		FAF64E4F2637E85800E8A1DF /* JetpackScreenshotGeneration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF64E4E2637E85800E8A1DF /* JetpackScreenshotGeneration.swift */; };
 		FAFF153D1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFF153C1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift */; };
 		FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
@@ -7246,6 +7247,7 @@
 		FAF13E2F25A59240003EE470 /* JetpackRestoreStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreStatusViewController.swift; sourceTree = "<group>"; };
 		FAF64BA22637DEEC00E8A1DF /* JetpackScreenshotGeneration.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JetpackScreenshotGeneration.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAF64BDC2637DF7500E8A1DF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FAF64E4E2637E85800E8A1DF /* JetpackScreenshotGeneration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScreenshotGeneration.swift; sourceTree = "<group>"; };
 		FAFF153C1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SiteSettingsViewController+SiteManagement.swift"; sourceTree = "<group>"; };
 		FD0D42C11499F31700F5E115 /* WordPress 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 4.xcdatamodel"; sourceTree = "<group>"; };
 		FD21397E13128C5300099582 /* libiconv.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
@@ -13947,6 +13949,7 @@
 			isa = PBXGroup;
 			children = (
 				FAF64BDC2637DF7500E8A1DF /* Info.plist */,
+				FAF64E4E2637E85800E8A1DF /* JetpackScreenshotGeneration.swift */,
 			);
 			path = JetpackScreenshotGeneration;
 			sourceTree = "<group>";
@@ -19705,6 +19708,7 @@
 				FAF64B702637DEEC00E8A1DF /* BlockEditorScreen.swift in Sources */,
 				FAF64B712637DEEC00E8A1DF /* EditorPostSettings.swift in Sources */,
 				FAF64B722637DEEC00E8A1DF /* XCTest+Extensions.swift in Sources */,
+				FAF64E4F2637E85800E8A1DF /* JetpackScreenshotGeneration.swift in Sources */,
 				FAF64B732637DEEC00E8A1DF /* SignupEmailScreen.swift in Sources */,
 				FAF64B742637DEEC00E8A1DF /* WPUITestCredentials.swift in Sources */,
 				FAF64B752637DEEC00E8A1DF /* MediaPickerAlbumListScreen.swift in Sources */,
