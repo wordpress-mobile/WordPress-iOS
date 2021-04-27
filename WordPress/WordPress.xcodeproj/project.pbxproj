@@ -4343,13 +4343,6 @@
 			remoteGlobalIDString = FFC3F6F41B0DBF0900EFC359;
 			remoteInfo = UpdatePlistPreprocessor;
 		};
-		FAF64B682637DEEC00E8A1DF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1D6058900D05DD3D006BFB54;
-			remoteInfo = WordPress;
-		};
 		FAF64C392637E02700E8A1DF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -14321,7 +14314,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				FAF64B672637DEEC00E8A1DF /* PBXTargetDependency */,
 				FAF64C3A2637E02700E8A1DF /* PBXTargetDependency */,
 			);
 			name = JetpackScreenshotGeneration;
@@ -19880,11 +19872,6 @@
 			isa = PBXTargetDependency;
 			target = FFC3F6F41B0DBF0900EFC359 /* UpdatePlistPreprocessor */;
 			targetProxy = FABB1F912602FC2C00C8785C /* PBXContainerItemProxy */;
-		};
-		FAF64B672637DEEC00E8A1DF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
-			targetProxy = FAF64B682637DEEC00E8A1DF /* PBXContainerItemProxy */;
 		};
 		FAF64C3A2637E02700E8A1DF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
