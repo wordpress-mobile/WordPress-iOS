@@ -10,29 +10,23 @@ extension PostService {
      */
     func getLikesFor(postID: NSNumber,
                      siteID: NSNumber,
-                     success: @escaping (([LikeUser]?) -> Void),
-                     failure: ((Error?) -> Void)? = nil) {
+                     success: @escaping (([LikeUser]) -> Void),
+                     failure: @escaping ((Error?) -> Void)) {
 
         guard let remote = PostServiceRemoteFactory().restRemoteFor(siteID: siteID, context: managedObjectContext) else {
             DDLogError("Unable to create a REST remote for posts.")
-            failure?(nil)
+            failure(nil)
             return
         }
 
         remote.getLikesForPostID(postID) { remoteLikeUsers in
-
-            self.deleteExistingUsersFor(postID: postID)
-
-            guard let remoteLikeUsers = remoteLikeUsers,
-                  !remoteLikeUsers.isEmpty else {
-                success(nil)
-                return
+            self.createNewUsers(from: remoteLikeUsers, for: postID) {
+                let users = self.likeUsersFor(postID: postID)
+                success(users)
             }
-
-            success(self.createNewUsers(from: remoteLikeUsers))
         } failure: { error in
             DDLogError(String(describing: error))
-            failure?(error)
+            failure(error)
         }
     }
 
@@ -40,29 +34,57 @@ extension PostService {
 
 private extension PostService {
 
-    private func createNewUsers(from remoteLikeUsers: [RemoteLikeUser]) -> [LikeUser] {
-        var likeUsers = [LikeUser]()
+    func createNewUsers(from remoteLikeUsers: [RemoteLikeUser]?,
+                        for postID: NSNumber,
+                        onComplete: @escaping (() -> Void)) {
 
-        remoteLikeUsers.forEach {
-            if let likeUser = LikeUserHelper.createUserFrom(remoteUser: $0, context: self.managedObjectContext) {
-                likeUsers.append(likeUser)
-            }
+        guard let remoteLikeUsers = remoteLikeUsers,
+              !remoteLikeUsers.isEmpty else {
+            onComplete()
+            return
         }
 
-        return likeUsers
+        let derivedContext = ContextManager.shared.newDerivedContext()
+
+        derivedContext.perform {
+
+            self.deleteExistingUsersFor(postID: postID, from: derivedContext)
+
+            remoteLikeUsers.forEach {
+                LikeUserHelper.createUserFrom(remoteUser: $0, context: derivedContext)
+            }
+
+            ContextManager.shared.save(derivedContext) {
+                DispatchQueue.main.async {
+                    onComplete()
+                }
+            }
+        }
     }
 
-    private func deleteExistingUsersFor(postID: NSNumber) {
+    func deleteExistingUsersFor(postID: NSNumber, from context: NSManagedObjectContext) {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
 
-        // TODO: filter by postID
+        // TODO: filter request by postID
 
         do {
-            let users = try managedObjectContext.fetch(request)
-            users.forEach { managedObjectContext.delete($0) }
+            let users = try context.fetch(request)
+            users.forEach { context.delete($0) }
         } catch {
             DDLogError("Error fetching Like Users: \(error)")
         }
+    }
+
+    func likeUsersFor(postID: NSNumber) -> [LikeUser] {
+        let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
+
+        // TODO: filter request by postID
+
+        if let users = try? managedObjectContext.fetch(request) {
+            return users
+        }
+
+        return [LikeUser]()
     }
 
 }

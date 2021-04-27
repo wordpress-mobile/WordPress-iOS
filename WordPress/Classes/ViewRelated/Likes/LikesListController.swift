@@ -126,11 +126,11 @@ class LikesListController: NSObject {
 
             ///
             // TODO: for testing only. Remove before merging.
-            let successBlock = { (likeUsers: [LikeUser]?) -> Void in
+            let successBlock = { (likeUsers: [LikeUser]) -> Void in
                 print("🔴 likeUsers: ", likeUsers)
             }
 
-            postService.getLikesFor(postID: postID, siteID: siteID, success: successBlock)
+            postService.getLikesFor(postID: postID, siteID: siteID, success: successBlock, failure: failure)
             ///
 
         case .comment(let commentID):

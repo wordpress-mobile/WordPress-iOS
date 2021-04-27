@@ -5,10 +5,10 @@ import Foundation
 ///
 @objc class LikeUserHelper: NSObject {
 
-    @objc class func createUserFrom(remoteUser: RemoteLikeUser, context: NSManagedObjectContext) -> LikeUser? {
+    @objc class func createUserFrom(remoteUser: RemoteLikeUser, context: NSManagedObjectContext) {
 
         guard let likeUser = NSEntityDescription.insertNewObject(forEntityName: "LikeUser", into: context) as? LikeUser else {
-            return nil
+            return
         }
 
         likeUser.userID = remoteUser.userID.int64Value
@@ -20,8 +20,6 @@ import Foundation
         likeUser.dateLikesString = remoteUser.dateLiked ?? ""
         likeUser.dateLiked = DateUtils.date(fromISOString: likeUser.dateLikesString)
         likeUser.preferredBlog = createPreferredBlogFrom(remotePreferredBlog: remoteUser.preferredBlog, forUser: likeUser, context: context)
-
-        return likeUser
     }
 
     private class func createPreferredBlogFrom(remotePreferredBlog: RemoteLikeUserPreferredBlog?,
