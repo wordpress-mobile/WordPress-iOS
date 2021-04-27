@@ -18,8 +18,6 @@ typedef enum {
 
 @property (nonnull, nonatomic, strong) NSArray *sections;
 
-@property (nonnull, nonatomic, strong) NSArray *postMetaSectionRows;
-
 @property (nullable, nonatomic, strong) NSProgress *featuredImageProgress;
 
 @property (nonatomic, assign) BOOL isUploadingMedia;
