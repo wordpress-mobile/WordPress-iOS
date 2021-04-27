@@ -44,7 +44,7 @@ private extension PostService {
         var likeUsers = [LikeUser]()
 
         remoteLikeUsers.forEach {
-            if let likeUser = LikeUser.createUserFrom(remoteUser: $0, context: self.managedObjectContext) {
+            if let likeUser = LikeUserHelper.createUserFrom(remoteUser: $0, context: self.managedObjectContext) {
                 likeUsers.append(likeUser)
             }
         }

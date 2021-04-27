@@ -1374,6 +1374,8 @@
 		93F2E5421E9E5A350050D489 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E5411E9E5A350050D489 /* QuickLook.framework */; };
 		93F2E5441E9E5A570050D489 /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E5431E9E5A570050D489 /* CoreSpotlight.framework */; };
 		93FA59DD18D88C1C001446BC /* PostCategoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FA59DC18D88C1C001446BC /* PostCategoryService.m */; };
+		9804A097263780B500354097 /* LikeUserHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9804A096263780B400354097 /* LikeUserHelpers.swift */; };
+		9804A098263780B500354097 /* LikeUserHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9804A096263780B400354097 /* LikeUserHelpers.swift */; };
 		98077B5A2075561800109F95 /* SupportTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98077B592075561800109F95 /* SupportTableViewController.swift */; };
 		9808655A203D075E00D58786 /* EpilogueUserInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98086559203D075D00D58786 /* EpilogueUserInfoCell.xib */; };
 		9808655C203D079B00D58786 /* EpilogueUserInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808655B203D079A00D58786 /* EpilogueUserInfoCell.swift */; };
@@ -5886,6 +5888,7 @@
 		968136B9BC83DFA8E463D5E4 /* Pods-WordPressScreenshotGeneration.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressScreenshotGeneration.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressScreenshotGeneration/Pods-WordPressScreenshotGeneration.release.xcconfig"; sourceTree = "<group>"; };
 		979B445A45E13F3289F2E99E /* Pods_WordPressThisWeekWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressThisWeekWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98035B7225C49CC1002C0EB4 /* WordPress 112.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 112.xcdatamodel"; sourceTree = "<group>"; };
+		9804A096263780B400354097 /* LikeUserHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeUserHelpers.swift; sourceTree = "<group>"; };
 		98077B592075561800109F95 /* SupportTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportTableViewController.swift; sourceTree = "<group>"; };
 		98086559203D075D00D58786 /* EpilogueUserInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EpilogueUserInfoCell.xib; sourceTree = "<group>"; };
 		9808655B203D079A00D58786 /* EpilogueUserInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpilogueUserInfoCell.swift; sourceTree = "<group>"; };
@@ -10918,6 +10921,7 @@
 				8C6A22E325783D2000A79950 /* JetpackScanService.swift */,
 				9A2D0B35225E2511009E585F /* JetpackService.swift */,
 				1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */,
+				9804A096263780B400354097 /* LikeUserHelpers.swift */,
 				930284B618EAF7B600CB0BF4 /* LocalCoreDataService.h */,
 				FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */,
 				98921EF621372E12004949AA /* MediaCoordinator.swift */,
@@ -16931,6 +16935,7 @@
 				176CF39A25E0005F00E1E598 /* NoteBlockButtonTableViewCell.swift in Sources */,
 				43DDFE922178635D008BE72F /* QuickStartCongratulationsCell.swift in Sources */,
 				820ADD721F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift in Sources */,
+				9804A097263780B500354097 /* LikeUserHelpers.swift in Sources */,
 				82B85DF91EDDB807004FD510 /* SiteIconPickerPresenter.swift in Sources */,
 				B50421E91B68170F008EEA82 /* NoteUndoOverlayView.swift in Sources */,
 				C99B08FC26081AD600CA71EB /* TemplatePreviewViewController.swift in Sources */,
@@ -18421,6 +18426,7 @@
 				FABB21BD2602FC2C00C8785C /* ReaderPostToReaderPost37to38.swift in Sources */,
 				FABB21BE2602FC2C00C8785C /* ReaderRelatedPostsSectionHeaderView.swift in Sources */,
 				FABB21BF2602FC2C00C8785C /* WidgetNoConnectionCell.swift in Sources */,
+				9804A098263780B500354097 /* LikeUserHelpers.swift in Sources */,
 				FABB21C02602FC2C00C8785C /* AppRatingUtilityType.swift in Sources */,
 				FABB21C12602FC2C00C8785C /* MenuItemSourceFooterView.m in Sources */,
 				FABB21C22602FC2C00C8785C /* JetpackRestoreFailedViewController.swift in Sources */,
