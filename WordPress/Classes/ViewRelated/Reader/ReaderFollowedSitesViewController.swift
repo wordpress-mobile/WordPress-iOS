@@ -132,10 +132,14 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).defaultTextAttributes = textAttributes
         WPStyleGuide.configureSearchBar(searchBar)
 
+        let iconSizes = CGSize(width: 20, height: 20)
+        let clearImage = UIImage.gridicon(.crossCircle, size: iconSizes).withTintColor(.searchFieldIcons).withRenderingMode(.alwaysOriginal)
+        let addOutline = UIImage.gridicon(.addOutline, size: iconSizes).withTintColor(.searchFieldIcons).withRenderingMode(.alwaysOriginal)
+        
         searchBar.autocapitalizationType = .none
         searchBar.keyboardType = .URL
-        searchBar.setImage(UIImage(named: "icon-clear-textfield"), for: .clear, state: UIControl.State())
-        searchBar.setImage(UIImage(named: "icon-reader-search-plus"), for: .search, state: UIControl.State())
+        searchBar.setImage(clearImage, for: .clear, state: UIControl.State())
+        searchBar.setImage(addOutline, for: .search, state: UIControl.State())
         searchBar.searchTextField.accessibilityLabel = NSLocalizedString("Site URL", comment: "The accessibility label for the followed sites search field")
         searchBar.searchTextField.accessibilityValue = nil
         searchBar.searchTextField.accessibilityHint = placeholderText
