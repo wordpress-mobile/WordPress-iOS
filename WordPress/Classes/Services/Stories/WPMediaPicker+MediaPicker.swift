@@ -48,6 +48,7 @@ class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker
         }
 
         let tabBar = PortraitTabBarController()
+        tabBar.modalPresentationStyle = .fullScreen
 
         let mediaPickerDelegate = MediaPickerDelegate(kanvasDelegate: delegate, presenter: tabBar)
         let options = WPMediaPickerOptions()
