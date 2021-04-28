@@ -2492,6 +2492,8 @@
 		FA3536F525B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */; };
 		FA41044D263932AC00E90EBF /* ActivityLogScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */; };
 		FA4104602639346D00E90EBF /* ActivityLogScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */; };
+		FA4104742639393700E90EBF /* JetpackScanScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4104732639393700E90EBF /* JetpackScanScreen.swift */; };
+		FA410487263939B700E90EBF /* JetpackScanScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4104732639393700E90EBF /* JetpackScanScreen.swift */; };
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
 		FA4F65A72594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */; };
@@ -7196,6 +7198,7 @@
 		FA2D12891BCED0AD006F2A15 /* WordPress 40.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 40.xcdatamodel"; sourceTree = "<group>"; };
 		FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreCompleteViewController.swift; sourceTree = "<group>"; };
 		FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogScreen.swift; sourceTree = "<group>"; };
+		FA4104732639393700E90EBF /* JetpackScanScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanScreen.swift; sourceTree = "<group>"; };
 		FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementService.swift; sourceTree = "<group>"; };
 		FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementServiceTests.swift; sourceTree = "<group>"; };
 		FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreOptionsViewController.swift; sourceTree = "<group>"; };
@@ -12476,6 +12479,7 @@
 				F97DA41F23D67B820050E791 /* MediaScreen.swift */,
 				F9C47A8E238C9D6400AAD9ED /* StatsScreen.swift */,
 				FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */,
+				FA4104732639393700E90EBF /* JetpackScanScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -19693,6 +19697,7 @@
 				FAF64B742637DEEC00E8A1DF /* WPUITestCredentials.swift in Sources */,
 				FAF64B752637DEEC00E8A1DF /* MediaPickerAlbumListScreen.swift in Sources */,
 				FAF64B762637DEEC00E8A1DF /* MediaScreen.swift in Sources */,
+				FA410487263939B700E90EBF /* JetpackScanScreen.swift in Sources */,
 				FAF64B772637DEEC00E8A1DF /* LoginEpilogueScreen.swift in Sources */,
 				FAF64B782637DEEC00E8A1DF /* GetStartedScreen.swift in Sources */,
 				FAF64B792637DEEC00E8A1DF /* NotificationsScreen.swift in Sources */,
@@ -19774,6 +19779,7 @@
 				BE6DD3281FD6705200E55192 /* LoginPasswordScreen.swift in Sources */,
 				F9C47A8F238C9D6400AAD9ED /* StatsScreen.swift in Sources */,
 				BE6DD3301FD67F3B00E55192 /* TabNavComponent.swift in Sources */,
+				FA4104742639393700E90EBF /* JetpackScanScreen.swift in Sources */,
 				F9C47A8C238C801600AAD9ED /* PostsScreen.swift in Sources */,
 				CC7CB97322B1510900642EE9 /* SignupTests.swift in Sources */,
 				CC7CB97822B15B2C00642EE9 /* SignupCheckMagicLinkScreen.swift in Sources */,
