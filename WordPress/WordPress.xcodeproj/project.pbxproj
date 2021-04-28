@@ -2494,6 +2494,10 @@
 		FA4104602639346D00E90EBF /* ActivityLogScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */; };
 		FA4104742639393700E90EBF /* JetpackScanScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4104732639393700E90EBF /* JetpackScanScreen.swift */; };
 		FA410487263939B700E90EBF /* JetpackScanScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4104732639393700E90EBF /* JetpackScanScreen.swift */; };
+		FA4104BF26393F1A00E90EBF /* JetpackBackupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4104BE26393F1A00E90EBF /* JetpackBackupScreen.swift */; };
+		FA4104D226393F2700E90EBF /* JetpackBackupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4104BE26393F1A00E90EBF /* JetpackBackupScreen.swift */; };
+		FA41070E263957C000E90EBF /* JetpackBackupOptionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41070D263957C000E90EBF /* JetpackBackupOptionsScreen.swift */; };
+		FA4107212639581C00E90EBF /* JetpackBackupOptionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41070D263957C000E90EBF /* JetpackBackupOptionsScreen.swift */; };
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
 		FA4F65A72594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */; };
@@ -7199,6 +7203,8 @@
 		FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreCompleteViewController.swift; sourceTree = "<group>"; };
 		FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogScreen.swift; sourceTree = "<group>"; };
 		FA4104732639393700E90EBF /* JetpackScanScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanScreen.swift; sourceTree = "<group>"; };
+		FA4104BE26393F1A00E90EBF /* JetpackBackupScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupScreen.swift; sourceTree = "<group>"; };
+		FA41070D263957C000E90EBF /* JetpackBackupOptionsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupOptionsScreen.swift; sourceTree = "<group>"; };
 		FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementService.swift; sourceTree = "<group>"; };
 		FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementServiceTests.swift; sourceTree = "<group>"; };
 		FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreOptionsViewController.swift; sourceTree = "<group>"; };
@@ -12480,6 +12486,8 @@
 				F9C47A8E238C9D6400AAD9ED /* StatsScreen.swift */,
 				FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */,
 				FA4104732639393700E90EBF /* JetpackScanScreen.swift */,
+				FA4104BE26393F1A00E90EBF /* JetpackBackupScreen.swift */,
+				FA41070D263957C000E90EBF /* JetpackBackupOptionsScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -19691,6 +19699,7 @@
 				FAF64B6F2637DEEC00E8A1DF /* BaseScreen.swift in Sources */,
 				FAF64B702637DEEC00E8A1DF /* BlockEditorScreen.swift in Sources */,
 				FAF64B712637DEEC00E8A1DF /* EditorPostSettings.swift in Sources */,
+				FA4107212639581C00E90EBF /* JetpackBackupOptionsScreen.swift in Sources */,
 				FAF64B722637DEEC00E8A1DF /* XCTest+Extensions.swift in Sources */,
 				FAF64E4F2637E85800E8A1DF /* JetpackScreenshotGeneration.swift in Sources */,
 				FAF64B732637DEEC00E8A1DF /* SignupEmailScreen.swift in Sources */,
@@ -19718,6 +19727,7 @@
 				FAF64B872637DEEC00E8A1DF /* LoginSiteAddressScreen.swift in Sources */,
 				FAF64B882637DEEC00E8A1DF /* WireMock.swift in Sources */,
 				FAF64B892637DEEC00E8A1DF /* TagsComponent.swift in Sources */,
+				FA4104D226393F2700E90EBF /* JetpackBackupScreen.swift in Sources */,
 				FAF64B8A2637DEEC00E8A1DF /* EditorNoticeComponent.swift in Sources */,
 				FAF64B8B2637DEEC00E8A1DF /* LoginCheckMagicLinkScreen.swift in Sources */,
 				FAF64B8C2637DEEC00E8A1DF /* CategoriesComponent.swift in Sources */,
@@ -19740,6 +19750,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA4104BF26393F1A00E90EBF /* JetpackBackupScreen.swift in Sources */,
 				CC52189A2279CF3B008998CE /* MediaPickerAlbumListScreen.swift in Sources */,
 				CC94FC6A2214532D002E5825 /* FancyAlertComponent.swift in Sources */,
 				98ADDDDA25083CA9008FF6EE /* PasswordScreen.swift in Sources */,
@@ -19750,6 +19761,7 @@
 				FFA0B7D71CAC1F9F00533B9D /* MainNavigationTests.swift in Sources */,
 				CC7CB97622B15A2900642EE9 /* SignupEmailScreen.swift in Sources */,
 				CCE911BE221D85E4007E1D4E /* LoginUsernamePasswordScreen.swift in Sources */,
+				FA41070E263957C000E90EBF /* JetpackBackupOptionsScreen.swift in Sources */,
 				BE6DD32E1FD67EDA00E55192 /* MySitesScreen.swift in Sources */,
 				BED4D8351FF1208400A11345 /* AztecEditorScreen.swift in Sources */,
 				BE6DD32C1FD6782A00E55192 /* LoginEpilogueScreen.swift in Sources */,
