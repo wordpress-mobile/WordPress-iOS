@@ -135,7 +135,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         let iconSizes = CGSize(width: 20, height: 20)
         let clearImage = UIImage.gridicon(.crossCircle, size: iconSizes).withTintColor(.searchFieldIcons).withRenderingMode(.alwaysOriginal)
         let addOutline = UIImage.gridicon(.addOutline, size: iconSizes).withTintColor(.searchFieldIcons).withRenderingMode(.alwaysOriginal)
-        
+
         searchBar.autocapitalizationType = .none
         searchBar.keyboardType = .URL
         searchBar.setImage(clearImage, for: .clear, state: UIControl.State())
