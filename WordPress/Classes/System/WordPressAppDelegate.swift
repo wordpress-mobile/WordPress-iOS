@@ -180,8 +180,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         DDLogInfo("\(self) \(#function)")
 
         uploadsManager.resume()
-
-        ABTest.refreshIfNeeded()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
