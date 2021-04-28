@@ -824,6 +824,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if ([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Activity Log", @"Noun. Links to a blog's Activity screen.")
+                                      accessibilityIdentifier:@"Activity Log Row"
                                                         image:[UIImage gridiconOfType:GridiconTypeHistory]
                                                      callback:^{
                                                          [weakSelf showActivity];

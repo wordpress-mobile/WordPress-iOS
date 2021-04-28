@@ -37,7 +37,11 @@ class JetpackScreenshotGeneration: XCTestCase {
             .thenTakeScreenshot(1, named: "MySite")
 
         // Get Activity Log screenshot
-        // TODO
+        let activityLog = mySite
+            .gotoActivityLog()
+            .thenTakeScreenshot(2, named: "ActivityLog")
+
+        activityLog.pop()
 
         // Get Scan screenshot
         // TODO

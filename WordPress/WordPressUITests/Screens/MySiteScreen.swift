@@ -5,6 +5,7 @@ private struct ElementStringIDs {
     static let navBarTitle = "My Site"
     static let blogTable = "Blog Details Table"
     static let removeSiteButton = "BlogDetailsRemoveSiteCell"
+    static let activityLogButton = "Activity Log Row"
     static let postsButton = "Blog Post Row"
     static let mediaButton = "Media Row"
     static let statsButton = "Stats Row"
@@ -20,6 +21,7 @@ class MySiteScreen: BaseScreen {
     let removeSiteButton: XCUIElement
     let removeSiteSheet: XCUIElement
     let removeSiteAlert: XCUIElement
+    let activityLogButton: XCUIElement
     let postsButton: XCUIElement
     let mediaButton: XCUIElement
     let statsButton: XCUIElement
@@ -41,6 +43,7 @@ class MySiteScreen: BaseScreen {
         removeSiteButton = app.cells[ElementStringIDs.removeSiteButton]
         removeSiteSheet = app.sheets.buttons.element(boundBy: 0)
         removeSiteAlert = app.alerts.buttons.element(boundBy: 1)
+        activityLogButton = app.cells[ElementStringIDs.activityLogButton]
         postsButton = app.cells[ElementStringIDs.postsButton]
         mediaButton = app.cells[ElementStringIDs.mediaButton]
         statsButton = app.cells[ElementStringIDs.statsButton]
@@ -64,6 +67,11 @@ class MySiteScreen: BaseScreen {
         } else {
             removeSiteSheet.tap()
         }
+    }
+
+    func gotoActivityLog() -> ActivityLogScreen {
+        activityLogButton.tap()
+        return ActivityLogScreen()
     }
 
     func gotoPostsScreen() -> PostsScreen {
