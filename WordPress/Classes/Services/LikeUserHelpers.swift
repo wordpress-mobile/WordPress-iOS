@@ -17,8 +17,11 @@ import Foundation
         likeUser.primaryBlogID = remoteUser.primaryBlogID.int64Value
         likeUser.avatarUrl = remoteUser.avatarURL
         likeUser.bio = remoteUser.bio ?? ""
-        likeUser.dateLikesString = remoteUser.dateLiked ?? ""
-        likeUser.dateLiked = DateUtils.date(fromISOString: likeUser.dateLikesString)
+        likeUser.dateLikedString = remoteUser.dateLiked ?? ""
+        likeUser.dateLiked = DateUtils.date(fromISOString: likeUser.dateLikedString)
+        likeUser.likedSiteID = remoteUser.likedSiteID?.int64Value ?? 0
+        likeUser.likedPostID = remoteUser.likedPostID?.int64Value ?? 0
+        likeUser.likedCommentID = remoteUser.likedCommentID?.int64Value ?? 0
         likeUser.preferredBlog = createPreferredBlogFrom(remotePreferredBlog: remoteUser.preferredBlog, forUser: likeUser, context: context)
     }
 
