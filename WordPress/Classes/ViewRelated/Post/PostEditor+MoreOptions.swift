@@ -10,6 +10,7 @@ extension PostEditor where Self: UIViewController {
         } else {
             settingsViewController = PostSettingsViewController(post: post)
         }
+        settingsViewController.featuredImageDelegate = self as? FeaturedImageDelegate
         settingsViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(settingsViewController, animated: true)
     }
