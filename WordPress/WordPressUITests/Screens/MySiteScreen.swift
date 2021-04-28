@@ -6,6 +6,7 @@ private struct ElementStringIDs {
     static let blogTable = "Blog Details Table"
     static let removeSiteButton = "BlogDetailsRemoveSiteCell"
     static let activityLogButton = "Activity Log Row"
+    static let jetpackScanButton = "Scan Row"
     static let postsButton = "Blog Post Row"
     static let mediaButton = "Media Row"
     static let statsButton = "Stats Row"
@@ -22,6 +23,7 @@ class MySiteScreen: BaseScreen {
     let removeSiteSheet: XCUIElement
     let removeSiteAlert: XCUIElement
     let activityLogButton: XCUIElement
+    let jetpackScanButton: XCUIElement
     let postsButton: XCUIElement
     let mediaButton: XCUIElement
     let statsButton: XCUIElement
@@ -44,6 +46,7 @@ class MySiteScreen: BaseScreen {
         removeSiteSheet = app.sheets.buttons.element(boundBy: 0)
         removeSiteAlert = app.alerts.buttons.element(boundBy: 1)
         activityLogButton = app.cells[ElementStringIDs.activityLogButton]
+        jetpackScanButton = app.cells[ElementStringIDs.jetpackScanButton]
         postsButton = app.cells[ElementStringIDs.postsButton]
         mediaButton = app.cells[ElementStringIDs.mediaButton]
         statsButton = app.cells[ElementStringIDs.statsButton]
@@ -72,6 +75,11 @@ class MySiteScreen: BaseScreen {
     func gotoActivityLog() -> ActivityLogScreen {
         activityLogButton.tap()
         return ActivityLogScreen()
+    }
+
+    func gotoJetpackScan() -> JetpackScanScreen {
+        jetpackScanButton.tap()
+        return JetpackScanScreen()
     }
 
     func gotoPostsScreen() -> PostsScreen {
