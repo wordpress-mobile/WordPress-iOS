@@ -834,6 +834,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if ([self.blog isBackupsAllowed]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Backup", @"Noun. Links to a blog's Jetpack Backups screen.")
+                                      accessibilityIdentifier:@"Backup Row"
                                                         image:[UIImage gridiconOfType:GridiconTypeCloudUpload]
                                                      callback:^{
                                                          [weakSelf showBackup];

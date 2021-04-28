@@ -7,6 +7,7 @@ private struct ElementStringIDs {
     static let removeSiteButton = "BlogDetailsRemoveSiteCell"
     static let activityLogButton = "Activity Log Row"
     static let jetpackScanButton = "Scan Row"
+    static let jetpackBackupButton = "Backup Row"
     static let postsButton = "Blog Post Row"
     static let mediaButton = "Media Row"
     static let statsButton = "Stats Row"
@@ -24,6 +25,7 @@ class MySiteScreen: BaseScreen {
     let removeSiteAlert: XCUIElement
     let activityLogButton: XCUIElement
     let jetpackScanButton: XCUIElement
+    let jetpackBackupButton: XCUIElement
     let postsButton: XCUIElement
     let mediaButton: XCUIElement
     let statsButton: XCUIElement
@@ -47,6 +49,7 @@ class MySiteScreen: BaseScreen {
         removeSiteAlert = app.alerts.buttons.element(boundBy: 1)
         activityLogButton = app.cells[ElementStringIDs.activityLogButton]
         jetpackScanButton = app.cells[ElementStringIDs.jetpackScanButton]
+        jetpackBackupButton = app.cells[ElementStringIDs.jetpackBackupButton]
         postsButton = app.cells[ElementStringIDs.postsButton]
         mediaButton = app.cells[ElementStringIDs.mediaButton]
         statsButton = app.cells[ElementStringIDs.statsButton]
@@ -80,6 +83,11 @@ class MySiteScreen: BaseScreen {
     func gotoJetpackScan() -> JetpackScanScreen {
         jetpackScanButton.tap()
         return JetpackScanScreen()
+    }
+
+    func gotoJetpackBackup() -> JetpackBackupScreen {
+        jetpackBackupButton.tap()
+        return JetpackBackupScreen()
     }
 
     func gotoPostsScreen() -> PostsScreen {
