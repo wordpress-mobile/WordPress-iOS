@@ -21,7 +21,7 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (4.1.1):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (0.8.4):
+  - Automattic-Tracks-iOS (0.8.5):
     - CocoaLumberjack (~> 3)
     - Reachability (~> 3)
     - Sentry (~> 6)
@@ -438,7 +438,7 @@ DEPENDENCIES:
   - AMScrollingNavbar (= 5.6.0)
   - AppCenter (= 4.1.1)
   - AppCenter/Distribute (= 4.1.1)
-  - Automattic-Tracks-iOS (~> 0.8.4)
+  - Automattic-Tracks-iOS (~> 0.8.5)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (~> 3.0)
   - CropViewController (= 2.5.3)
@@ -675,7 +675,7 @@ SPEC CHECKSUMS:
   AMScrollingNavbar: cf0ec5a5ee659d76ba2509f630bf14fba7e16dc3
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   AppCenter: cd53e3ed3563cc720bcb806c9731a12389b40d44
-  Automattic-Tracks-iOS: 87e14e4f06f753f02a6e0f747824e766bae7f939
+  Automattic-Tracks-iOS: 4f079f4ca5b66d59a4959204ffec3b4465944adf
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
@@ -763,6 +763,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 2d5cb8b46a7d06c27483a62bab0c650a86cf1449
+PODFILE CHECKSUM: c6d4556d0c50a4b6995bca5d6315ce5441418a18
 
 COCOAPODS: 1.10.0
