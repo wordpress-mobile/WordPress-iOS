@@ -3,7 +3,7 @@
 
 @protocol FeaturedImageDelegate
 
-- (void)sendToJSFeaturedImageId:(nonnull NSNumber *)mediaID;
+- (void)gutenbergDidRequestFeaturedImageId:(nonnull NSNumber *)mediaID;
 
 @end
 

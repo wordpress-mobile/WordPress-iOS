@@ -495,6 +495,10 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         }
     }
 
+    func gutenbergDidRequestFeaturedImageId(_ mediaID: NSNumber) {
+        gutenberg.featuredImageIdNativeUpdated(mediaId: Int32(truncating: mediaID))
+    }
+    
     // MARK: - Event handlers
 
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -931,10 +935,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             case .missingBlockAlertActionButton:
                 handleMissingBlockAlertButtonPressed()
         }
-    }
-
-    func sendToJSFeaturedImageId(_ mediaID: NSNumber) {
-        gutenberg.featuredImageIdNativeUpdated(mediaId: Int32(truncating: mediaID))
     }
 }
 
