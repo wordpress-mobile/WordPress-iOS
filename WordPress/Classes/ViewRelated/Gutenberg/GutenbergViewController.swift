@@ -7,10 +7,6 @@ import Kanvas
 
 class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate {
 
-    func didSetFeaturedImage(_ mediaID: NSNumber) {
-        print("Featured image set!")
-    }
-
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
     enum RequestHTMLReason {
@@ -935,6 +931,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             case .missingBlockAlertActionButton:
                 handleMissingBlockAlertButtonPressed()
         }
+    }
+    
+    func didSetFeaturedImage(_ mediaID: NSNumber) {
+        gutenberg.featuredImageIdNativeUpdated(mediaId: Int32(truncating: mediaID))
     }
 }
 
