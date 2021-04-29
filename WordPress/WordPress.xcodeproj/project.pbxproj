@@ -1407,6 +1407,8 @@
 		9826AE9121B5D3CD00C851FA /* PostingActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9826AE8F21B5D3CD00C851FA /* PostingActivityCell.xib */; };
 		9829162F2224BC1C008736C0 /* SiteStatsDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9829162E2224BC1C008736C0 /* SiteStatsDetailsViewModel.swift */; };
 		982A4C3520227D6700B5518E /* NoResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982A4C3420227D6700B5518E /* NoResultsViewController.swift */; };
+		982DA9A7263B1E2F00E5743B /* CommentService+Likes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982DA9A6263B1E2F00E5743B /* CommentService+Likes.swift */; };
+		982DA9A8263B1E2F00E5743B /* CommentService+Likes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982DA9A6263B1E2F00E5743B /* CommentService+Likes.swift */; };
 		982DDF90263238A6002B3904 /* LikeUser+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982DDF8C263238A6002B3904 /* LikeUser+CoreDataClass.swift */; };
 		982DDF91263238A6002B3904 /* LikeUser+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982DDF8C263238A6002B3904 /* LikeUser+CoreDataClass.swift */; };
 		982DDF92263238A6002B3904 /* LikeUser+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982DDF8D263238A6002B3904 /* LikeUser+CoreDataProperties.swift */; };
@@ -5917,6 +5919,7 @@
 		9826AE8F21B5D3CD00C851FA /* PostingActivityCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostingActivityCell.xib; sourceTree = "<group>"; };
 		9829162E2224BC1C008736C0 /* SiteStatsDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsDetailsViewModel.swift; sourceTree = "<group>"; };
 		982A4C3420227D6700B5518E /* NoResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoResultsViewController.swift; sourceTree = "<group>"; };
+		982DA9A6263B1E2F00E5743B /* CommentService+Likes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentService+Likes.swift"; sourceTree = "<group>"; };
 		982DDF8C263238A6002B3904 /* LikeUser+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LikeUser+CoreDataClass.swift"; sourceTree = "<group>"; };
 		982DDF8D263238A6002B3904 /* LikeUser+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LikeUser+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		982DDF8E263238A6002B3904 /* LikeUserPreferredBlog+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LikeUserPreferredBlog+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -10909,6 +10912,7 @@
 				9A2D0B22225CB92B009E585F /* BlogService+JetpackConvenience.swift */,
 				E1556CF0193F6FE900FC52EA /* CommentService.h */,
 				E1556CF1193F6FE900FC52EA /* CommentService.m */,
+				982DA9A6263B1E2F00E5743B /* CommentService+Likes.swift */,
 				AB2211D125ED68E300BF72FC /* CommentServiceRemoteFactory.swift */,
 				E16A76F21FC4766900A661E3 /* CredentialsService.swift */,
 				1702BBDF1CF3034E00766A33 /* DomainsService.swift */,
@@ -16781,6 +16785,7 @@
 				912347192213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift in Sources */,
 				2FA6511721F26A24009AA935 /* ChangePasswordViewController.swift in Sources */,
 				D816C1F020E0893A00C4D82F /* LikeComment.swift in Sources */,
+				982DA9A7263B1E2F00E5743B /* CommentService+Likes.swift in Sources */,
 				59E1D46E1CEF77B500126697 /* Page.swift in Sources */,
 				321955BF24BE234C00E3F316 /* ReaderInterestsCoordinator.swift in Sources */,
 				FAE4327425874D140039EB8C /* ReaderSavedPostCellActions.swift in Sources */,
@@ -19249,6 +19254,7 @@
 				FABB24DE2602FC2C00C8785C /* UIViewController+NoResults.swift in Sources */,
 				FABB24DF2602FC2C00C8785C /* TimeZoneStore.swift in Sources */,
 				FABB24E02602FC2C00C8785C /* UserSuggestion+CoreDataClass.swift in Sources */,
+				982DA9A8263B1E2F00E5743B /* CommentService+Likes.swift in Sources */,
 				FABB24E12602FC2C00C8785C /* MediaLibraryPicker.swift in Sources */,
 				46F583D52624D0BC0010A723 /* Blog+BlockEditorSettings.swift in Sources */,
 				FABB24E22602FC2C00C8785C /* SharingAccountViewController.swift in Sources */,
