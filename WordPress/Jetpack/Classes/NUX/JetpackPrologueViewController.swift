@@ -16,7 +16,7 @@ class JetpackPrologueViewController: UIViewController {
         let gradientLayer = CAGradientLayer()
 
         // Start color is the background color with no alpha because if we use clear it will fade to black
-        // instead of just disappearin
+        // instead of just disappearing
         let startColor = JetpackPrologueStyleGuide.backgroundColor.withAlphaComponent(0)
         let endColor = JetpackPrologueStyleGuide.backgroundColor
 
