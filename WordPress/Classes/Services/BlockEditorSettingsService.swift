@@ -35,7 +35,11 @@ class BlockEditorSettingsService {
     }
 
     func fetchSettings(_ completion: @escaping BlockEditorSettingsServiceCompletion) {
-        fetchTheme(completion)
+        if FeatureFlag.globalStyleSettings.enabled {
+            fetchBlockEditorSettings(completion)
+        } else {
+            fetchTheme(completion)
+        }
     }
 }
 
@@ -65,7 +69,7 @@ private extension BlockEditorSettingsService {
         }
 
         guard let editorTheme = editorTheme else {
-            /// The original checksum is different than an empty one so we need to claer the old settings.
+            /// The original checksum is different than an empty one so we need to clear the old settings.
             clearCoreData(completion: completion)
             return
         }
@@ -110,7 +114,71 @@ private extension BlockEditorSettingsService {
 
 // MARK: Editor Global Styles support
 private extension BlockEditorSettingsService {
-// ToDo: Add support for Global Styles https://github.com/wordpress-mobile/gutenberg-mobile/issues/3163
+    func fetchBlockEditorSettings(_ completion: @escaping BlockEditorSettingsServiceCompletion) {
+        remote.fetchBlockEditorSettings { [weak self] (response) in
+            guard let `self` = self else { return }
+            switch response {
+            case .success(let remoteSettings):
+                self.context.perform {
+                    let originalChecksum = self.blog.blockEditorSettings?.checksum ?? ""
+                    self.updateBlockEditorSettingsCache(originalChecksum: originalChecksum, remoteSettings: remoteSettings, completion: completion)
+                }
+            case .failure(let error):
+                DDLogError("Error loading Block Editor Settings: \(error)")
+            }
+        }
+    }
+
+    func updateBlockEditorSettingsCache(originalChecksum: String, remoteSettings: RemoteBlockEditorSettings?, completion: @escaping BlockEditorSettingsServiceCompletion) {
+        let newChecksum = remoteSettings?.checksum ?? ""
+        guard originalChecksum != newChecksum else {
+            /// The fetched Block Editor Settings is the same as the cached one so respond with no new changes.
+            completion(false, self.blog.blockEditorSettings)
+            return
+        }
+
+        guard let remoteSettings = remoteSettings else {
+            /// The original checksum is different than an empty one so we need to clear the old settings.
+            clearCoreData(completion: completion)
+            return
+        }
+
+        /// The fetched Block Editor Settings is different than the cached one so persist the new one and delete the old one.
+        context.perform {
+            self.persistBlockEditorSettingsToCoreData(blogID: self.blog.objectID, remoteSettings: remoteSettings) { success in
+                guard success else {
+                    completion(false, nil)
+                    return
+                }
+
+                self.context.perform {
+                    completion(true, self.blog.blockEditorSettings)
+                }
+            }
+        }
+    }
+
+    func persistBlockEditorSettingsToCoreData(blogID: NSManagedObjectID, remoteSettings: RemoteBlockEditorSettings, completion: @escaping (_ success: Bool) -> Void) {
+        let parsingContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        parsingContext.parent = context
+        parsingContext.mergePolicy =  NSMergePolicy.mergeByPropertyObjectTrump
+
+        parsingContext.perform {
+            guard let blog = parsingContext.object(with: blogID) as? Blog else {
+                completion(false)
+                return
+            }
+
+            if let blockEditorSettings = blog.blockEditorSettings {
+                // Block Editor Settings nullify on delete
+                parsingContext.delete(blockEditorSettings)
+            }
+
+            blog.blockEditorSettings = BlockEditorSettings(remoteSettings: remoteSettings, context: parsingContext)
+            try? parsingContext.save()
+            completion(true)
+        }
+    }
 }
 
 // MARK: Shared Core Data Support

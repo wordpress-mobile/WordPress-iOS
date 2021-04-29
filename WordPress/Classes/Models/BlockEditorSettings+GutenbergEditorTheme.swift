@@ -38,4 +38,32 @@ extension BlockEditorSettings {
 
         self.elements = parsedElements
     }
+
+    convenience init?(remoteSettings: RemoteBlockEditorSettings, context: NSManagedObjectContext) {
+        self.init(context: context)
+        self.lastUpdated = Date()
+        self.checksum = remoteSettings.checksum
+
+        var parsedElements = Set<BlockEditorSettingElement>()
+
+        if let globalStyles = remoteSettings.globalStylesBaseStyles {
+            globalStyles.colorSettings.colors?.forEach({ (color) in
+                parsedElements.insert(BlockEditorSettingElement(fromRawRepresentation: color, type: .color, context: context))
+            })
+
+            globalStyles.colorSettings.gradients?.forEach({ (gradient) in
+                parsedElements.insert(BlockEditorSettingElement(fromRawRepresentation: gradient, type: .gradient, context: context))
+            })
+        } else {
+            remoteSettings.colors?.forEach({ (color) in
+                parsedElements.insert(BlockEditorSettingElement(fromRawRepresentation: color, type: .color, context: context))
+            })
+
+            remoteSettings.gradients?.forEach({ (gradient) in
+                parsedElements.insert(BlockEditorSettingElement(fromRawRepresentation: gradient, type: .gradient, context: context))
+            })
+        }
+
+        self.elements = parsedElements
+    }
 }

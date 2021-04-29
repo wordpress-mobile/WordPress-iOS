@@ -16,6 +16,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case todayWidget
     case milestoneNotifications
     case newLikeNotifications
+    case globalStyleSettings
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -51,6 +52,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .milestoneNotifications:
             return true
         case .newLikeNotifications:
+            return false
+        case .globalStyleSettings:
             return false
         }
     }
@@ -106,6 +109,8 @@ extension FeatureFlag {
             return "Milestone notifications"
         case .newLikeNotifications:
             return "New Like Notifications"
+        case .globalStyleSettings:
+            return "Global Style Settings"
         }
     }
 
