@@ -932,7 +932,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 handleMissingBlockAlertButtonPressed()
         }
     }
-    
+
     func didSetFeaturedImage(_ mediaID: NSNumber) {
         gutenberg.featuredImageIdNativeUpdated(mediaId: Int32(truncating: mediaID))
     }
