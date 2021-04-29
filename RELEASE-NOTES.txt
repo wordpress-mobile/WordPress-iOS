@@ -5,6 +5,9 @@
 * [**] Fix issue where trashing a post converted it to Classic content. [#16367]
 * [*] Comments can be filtered to show the most recent unreplied comments from other users. [#16215]
 * [*] Fixed the navigation bar color in dark mode. [#16348]
+* [*] Fix translation issues for templates fetched on the site creation design selection screen. [#16404]
+* [*] Fix translation issues for templates fetched on the page creation design selection screen. [#16404]
+* [*] Fix translation issue for the Choose button on the template preview in the site creation flow. [#16404]
 
 17.2
 -----
