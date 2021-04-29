@@ -5,7 +5,7 @@ class BlockEditorSettingsService {
     typealias BlockEditorSettingsServiceCompletion = (_ hasChanges: Bool, _ blockEditorSettings: BlockEditorSettings?) -> Void
 
     let blog: Blog
-    let remoteAPI: WordPressRestApi
+    let remote: BlockEditorSettingsServiceRemote
     let context: NSManagedObjectContext
 
     var cachedSettings: BlockEditorSettings? {
@@ -30,8 +30,8 @@ class BlockEditorSettingsService {
 
     init(blog: Blog, remoteAPI: WordPressRestApi, context: NSManagedObjectContext) {
         self.blog = blog
-        self.remoteAPI = remoteAPI
         self.context = context
+        self.remote = BlockEditorSettingsServiceRemote(remoteAPI: remoteAPI)
     }
 
     func fetchSettings(_ completion: @escaping BlockEditorSettingsServiceCompletion) {
@@ -42,17 +42,13 @@ class BlockEditorSettingsService {
 // MARK: Editor `theme_supports` support
 private extension BlockEditorSettingsService {
     func fetchTheme(_ completion: @escaping BlockEditorSettingsServiceCompletion) {
-        let requestPath = "/wp/v2/themes?status=active"
-        let modifiedPath = remoteAPI.requestPath(fromOrgPath: requestPath, with: blog.dotComID?.intValue)
-        remoteAPI.GET(modifiedPath, parameters: nil) { [weak self] (result, _) in
+        remote.fetchTheme(forSiteID: blog.dotComID?.intValue) { [weak self] (response) in
             guard let `self` = self else { return }
-            switch result {
-            case .success(let response):
-                self.processResponse(response) { editorTheme in
-                    self.context.perform {
-                        let originalChecksum = self.blog.blockEditorSettings?.checksum ?? ""
-                        self.updateCache(originalChecksum: originalChecksum, editorTheme: editorTheme, completion: completion)
-                    }
+            switch response {
+            case .success(let editorTheme):
+                self.context.perform {
+                    let originalChecksum = self.blog.blockEditorSettings?.checksum ?? ""
+                    self.updateEditorThemeCache(originalChecksum: originalChecksum, editorTheme: editorTheme, completion: completion)
                 }
             case .failure(let error):
                 DDLogError("Error loading active theme: \(error)")
@@ -60,16 +56,7 @@ private extension BlockEditorSettingsService {
         }
     }
 
-    func processResponse(_ response: Any, completion: (_ editorTheme: EditorTheme?) -> Void) {
-        guard let responseData = try? JSONSerialization.data(withJSONObject: response, options: []),
-              let editorThemes = try? JSONDecoder().decode([EditorTheme].self, from: responseData) else {
-            completion(nil)
-            return
-        }
-        completion(editorThemes.first)
-    }
-
-    func updateCache(originalChecksum: String, editorTheme: EditorTheme?, completion: @escaping BlockEditorSettingsServiceCompletion) {
+    func updateEditorThemeCache(originalChecksum: String, editorTheme: RemoteEditorTheme?, completion: @escaping BlockEditorSettingsServiceCompletion) {
         let newChecksum = editorTheme?.checksum ?? ""
         guard originalChecksum != newChecksum else {
             /// The fetched Editor Theme is the same as the cached one so respond with no new changes.
@@ -85,7 +72,7 @@ private extension BlockEditorSettingsService {
 
         /// The fetched Editor Theme is different than the cached one so persist the new one and delete the old one.
         context.perform {
-            self.persistToCoreData(blogID: self.blog.objectID, editorTheme: editorTheme) { success in
+            self.persistEditorThemeToCoreData(blogID: self.blog.objectID, editorTheme: editorTheme) { success in
                 guard success else {
                     completion(false, nil)
                     return
@@ -98,7 +85,7 @@ private extension BlockEditorSettingsService {
         }
     }
 
-    func persistToCoreData(blogID: NSManagedObjectID, editorTheme: EditorTheme, completion: @escaping (_ success: Bool) -> Void) {
+    func persistEditorThemeToCoreData(blogID: NSManagedObjectID, editorTheme: RemoteEditorTheme, completion: @escaping (_ success: Bool) -> Void) {
         let parsingContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         parsingContext.parent = context
         parsingContext.mergePolicy =  NSMergePolicy.mergeByPropertyObjectTrump

@@ -83,7 +83,8 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     }
 
     private func validateResponse() {
-        expect(self.mockRemoteApi.URLStringPassedIn!).to(equal("/wp/v2/sites/1/themes?status=active"))
+        expect(self.mockRemoteApi.URLStringPassedIn!).to(equal("/wp/v2/sites/1/themes"))
+        expect(((self.mockRemoteApi.parametersPassedIn! as! [String: Any])["status"]! as! String)).to(equal("active"))
         expect(self.blog.blockEditorSettings?.colors?.count).to(beGreaterThan(0))
         expect(self.blog.blockEditorSettings?.gradients?.count).to(beGreaterThan(0))
     }
@@ -92,7 +93,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
 extension BlockEditorSettingsServiceTests {
 
     func mockedData(withFilename filename: String) -> AnyObject {
-        let json = Bundle(for: SiteSegmentTests.self).url(forResource: filename, withExtension: "json")!
+        let json = Bundle(for: BlockEditorSettingsServiceTests.self).url(forResource: filename, withExtension: "json")!
         let data = try! Data(contentsOf: json)
         return try! JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
     }

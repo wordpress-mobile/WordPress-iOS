@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 import Gutenberg
 
 extension BlockEditorSettings: GutenbergEditorTheme {
@@ -19,7 +20,7 @@ extension BlockEditorSettings: GutenbergEditorTheme {
 }
 
 extension BlockEditorSettings {
-    convenience init?(editorTheme: EditorTheme, context: NSManagedObjectContext) {
+    convenience init?(editorTheme: RemoteEditorTheme, context: NSManagedObjectContext) {
         self.init(context: context)
         self.lastUpdated = Date()
         self.checksum = editorTheme.checksum
