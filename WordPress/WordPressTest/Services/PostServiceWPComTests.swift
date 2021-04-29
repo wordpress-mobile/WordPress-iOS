@@ -312,7 +312,7 @@ class PostServiceWPComTests: XCTestCase {
                                         "avatar_URL": "avatar URL"
         ]
 
-        return RemoteLikeUser(dictionary: userDict)
+        return RemoteLikeUser(dictionary: userDict, postID: NSNumber(value: 1), siteID: NSNumber(value: 2))
     }
 }
 
