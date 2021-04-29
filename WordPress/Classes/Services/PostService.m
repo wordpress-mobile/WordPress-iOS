@@ -684,6 +684,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     [remote restorePost:remotePost success:successBlock failure:failureBlock];
 }
 
+// TODO: remove when LikesListController is updated to use LikeUsers method.
 - (void)getLikesForPostID:(NSNumber *)postID
                    siteID:(NSNumber *)siteID
                   success:(void (^)(NSArray<RemoteUser *> *))success
