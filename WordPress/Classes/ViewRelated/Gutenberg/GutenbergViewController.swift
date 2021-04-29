@@ -933,7 +933,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func didSetFeaturedImage(_ mediaID: NSNumber) {
+    func sendToJSFeaturedImageId(_ mediaID: NSNumber) {
         gutenberg.featuredImageIdNativeUpdated(mediaId: Int32(truncating: mediaID))
     }
 }

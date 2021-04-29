@@ -19,7 +19,7 @@ extension PostSettingsViewController {
             setupObservingOf(media: media)
         }
 
-        featuredImageDelegate?.didSetFeaturedImage((apost.featuredImage?.mediaID)!)
+        featuredImageDelegate?.sendToJSFeaturedImageId((apost.featuredImage?.mediaID)!)
     }
 
     @objc func removeMediaObserver() {

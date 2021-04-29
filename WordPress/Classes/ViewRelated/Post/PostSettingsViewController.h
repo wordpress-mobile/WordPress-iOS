@@ -3,7 +3,7 @@
 
 @protocol FeaturedImageDelegate
 
-- (void)didSetFeaturedImage:(nonnull NSNumber *)mediaID;
+- (void)sendToJSFeaturedImageId:(nonnull NSNumber *)mediaID;
 
 @end
 
