@@ -1472,6 +1472,7 @@ FeaturedImageViewControllerDelegate>
     [self.apost setFeaturedImage:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
     [self.tableView reloadData];
+    [self.featuredImageDelegate didSetFeaturedImage:nil];
 }
 
 @end
