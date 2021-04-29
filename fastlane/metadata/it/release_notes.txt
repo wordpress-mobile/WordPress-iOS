@@ -1,0 +1,3 @@
+Questa versione introduce un nuovo blocco: Informazioni di contatto di Jetpack. È perfetto per la visualizzazione di un indirizzo formattato in modo corretto sul tuo sito. Abbiamo anche introdotto nuove splendide icone delle app che puoi usare per personalizzare il modo in cui appare l'app sulla schermata principale.
+
+Abbiamo alcune modifiche ingegnose di cui parlarti. Abbiamo rimosso il pulsante per cambiare sito dall'editor per semplificare la pubblicazione, risolto un bug che comportava l'invisibilità dei nomi degli autori, migliorato il supporto di VoiceOver per il blocco Colonne e reso semplice aggiungere il testo alternativo a un blocco Immagine.
