@@ -71,13 +71,14 @@ private extension PostService {
             let users = try context.fetch(request)
             users.forEach { context.delete($0) }
         } catch {
-            DDLogError("Error fetching Like Users: \(error)")
+            DDLogError("Error fetching post Like Users: \(error)")
         }
     }
 
     func likeUsersFor(postID: NSNumber, siteID: NSNumber) -> [LikeUser] {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
         request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@", siteID, postID)
+        request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
 
         if let users = try? managedObjectContext.fetch(request) {
             return users
