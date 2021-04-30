@@ -13,7 +13,10 @@ extension LikeUser {
     @NSManaged public var avatarUrl: String
     @NSManaged public var bio: String
     @NSManaged public var dateLiked: Date
-    @NSManaged public var dateLikesString: String
+    @NSManaged public var dateLikedString: String
+    @NSManaged public var likedSiteID: Int64
+    @NSManaged public var likedPostID: Int64
+    @NSManaged public var likedCommentID: Int64
     @NSManaged public var preferredBlog: LikeUserPreferredBlog?
 
 }

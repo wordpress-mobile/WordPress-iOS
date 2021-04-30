@@ -3,6 +3,16 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 123
+
+@scoutharris 2021-04-28
+
+- Added new attributes to `LikeUser`:
+  - `likedSiteID`
+  - `likedPostID`
+  - `likedCommentID`
+- Corrected spelling of  `dateLikedString`  
+
 ## WordPress 122
 
 @scoutharris 2021-04-23

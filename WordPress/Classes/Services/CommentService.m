@@ -778,6 +778,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     }
 }
 
+// TODO: remove when LikesListController is updated to use LikeUsers method.
 - (void)getLikesForCommentID:(NSNumber *)commentID
                       siteID:(NSNumber *)siteID
                      success:(void (^)(NSArray<RemoteUser *> *))success
