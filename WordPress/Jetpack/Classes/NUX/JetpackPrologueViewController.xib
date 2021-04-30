@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_5" orientation="portrait" appearance="dark"/>
+    <device id="retina5_5" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -17,11 +17,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="c4I-Pt-bJk">
-                    <rect key="frame" x="32" y="282" width="350" height="153"/>
+                    <rect key="frame" x="32" y="218" width="350" height="153"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="prologue-logo" translatesAutoresizingMaskIntoConstraints="NO" id="c17-CD-Ryj">
                             <rect key="frame" x="75" y="0.0" width="200" height="105"/>
@@ -45,6 +45,7 @@ from your pocket</string>
             <constraints>
                 <constraint firstItem="c4I-Pt-bJk" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="32" id="3Rn-Ua-Uaa"/>
                 <constraint firstAttribute="trailing" secondItem="c4I-Pt-bJk" secondAttribute="trailing" constant="32" id="elB-ly-0IH"/>
+                <constraint firstItem="BiF-BR-kOe" firstAttribute="height" relation="lessThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.5" id="kzT-qs-J2q"/>
                 <constraint firstItem="c4I-Pt-bJk" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" multiplier="0.8" id="plP-QZ-YT9"/>
             </constraints>
             <point key="canvasLocation" x="139" y="149"/>

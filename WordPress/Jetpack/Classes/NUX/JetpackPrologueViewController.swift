@@ -34,14 +34,30 @@ class JetpackPrologueViewController: UIViewController {
         view.layer.addSublayer(gradientLayer)
 
         titleLabel.text = NSLocalizedString("Site security and performance\nfrom your pocket", comment: "Prologue title label, the \n force splits it into 2 lines.")
-        titleLabel.font = JetpackPrologueStyleGuide.Title.font
         titleLabel.textColor = JetpackPrologueStyleGuide.Title.textColor
+        titleLabel.font = JetpackPrologueStyleGuide.Title.font
 
         // Move the layers to appear below everything else
         starFieldView.layer.zPosition = Constants.starLayerPosition
         gradientLayer.zPosition = Constants.gradientLayerPosition
 
         addParallax()
+
+        updateLabel(for: traitCollection)
+    }
+
+    func updateLabel(for traitCollection: UITraitCollection) {
+        let contentSize = traitCollection.preferredContentSizeCategory
+
+        // Hide the title label if the accessibility larger font size option is enabled
+        // this prevents the label from becoming truncated or clipped
+        titleLabel.isHidden = contentSize.isAccessibilityCategory
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        updateLabel(for: traitCollection)
     }
 
     override func viewDidLayoutSubviews() {
