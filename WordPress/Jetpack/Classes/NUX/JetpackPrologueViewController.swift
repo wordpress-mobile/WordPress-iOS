@@ -70,7 +70,7 @@ class JetpackPrologueViewController: UIViewController {
     }
 
     private struct Constants {
-        static let parallaxAmount: CGFloat = 20
+        static let parallaxAmount: CGFloat = 30
         static let starLayerPosition: CGFloat = -100
         static let gradientLayerPosition: CGFloat = -99
     }
