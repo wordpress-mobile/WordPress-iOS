@@ -26,7 +26,7 @@ class CameraHandler: CameraControllerDelegate {
         let cancelTitle = NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
         let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
 
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: UIDevice.isPad() ? .alert : .actionSheet)
         alertController.view.accessibilityIdentifier = "post-has-changes-alert"
 
         // Button: Keep editing

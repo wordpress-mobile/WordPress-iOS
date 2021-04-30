@@ -86,12 +86,9 @@ class StoryEditor: CameraController {
         settings.exportStopMotionPhotoAsVideo = false
         settings.fontSelectorUsesFont = true
         settings.aspectRatio = 9/16
+        settings.showShadowOverMediaClips = false
 
         return settings
-    }
-
-    enum EditorCreationError: Error {
-        case unsupportedDevice
     }
 
     typealias UpdateResult = Result<String, PostCoordinator.SavingError>
@@ -100,7 +97,7 @@ class StoryEditor: CameraController {
     static func editor(blog: Blog,
                        context: NSManagedObjectContext,
                        updated: @escaping (UpdateResult) -> Void,
-                       uploaded: @escaping (UploadResult) -> Void) throws -> StoryEditor {
+                       uploaded: @escaping (UploadResult) -> Void) -> StoryEditor {
         let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
         return try editor(post: post, mediaFiles: nil, publishOnCompletion: true, updated: updated, uploaded: uploaded)
     }
@@ -109,12 +106,7 @@ class StoryEditor: CameraController {
                        mediaFiles: [MediaFile]?,
                        publishOnCompletion: Bool = false,
                        updated: @escaping (UpdateResult) -> Void,
-                       uploaded: @escaping (UploadResult) -> Void) throws -> StoryEditor {
-
-        guard !UIDevice.isPad() else {
-            throw EditorCreationError.unsupportedDevice
-        }
-
+                       uploaded: @escaping (UploadResult) -> Void) -> StoryEditor {
         let controller = StoryEditor(post: post,
                                      onClose: nil,
                                      settings: cameraSettings,
@@ -150,6 +142,7 @@ class StoryEditor: CameraController {
         Kanvas.KanvasColors.shared = KanvasCustomUI.shared.cameraColors()
         Kanvas.KanvasFonts.shared = KanvasCustomUI.shared.cameraFonts()
         Kanvas.KanvasImages.shared = KanvasCustomUI.shared.cameraImages()
+        Kanvas.KanvasEditorDesign.shared = Kanvas.KanvasEditorDesign.storiesDesign
         Kanvas.KanvasStrings.shared = KanvasStrings(
             cameraPermissionsTitleLabel: NSLocalizedString("Post to WordPress", comment: "Title of camera permissions screen"),
             cameraPermissionsDescriptionLabel: NSLocalizedString("Allow access so you can start taking photos and videos.", comment: "Message on camera permissions screen to explain why the app needs camera and microphone permissions")
@@ -233,7 +226,7 @@ extension StoryEditor: PublishingEditor {
     }
 
     var prepublishingSourceView: UIView? {
-        return nil
+        return confirmButton
     }
 
     var alertBarButtonItem: UIBarButtonItem? {

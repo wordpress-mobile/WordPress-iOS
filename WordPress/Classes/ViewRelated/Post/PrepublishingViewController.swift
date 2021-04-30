@@ -139,6 +139,19 @@ class PrepublishingViewController: UITableViewController {
         }
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if let footerView = tableView.tableFooterView {
+            let width = tableView.bounds.size.width
+            let size = footerView.systemLayoutSizeFitting(CGSize(width: width, height: UIView.layoutFittingCompressedSize.height))
+            if footerView.frame.size.height != size.height {
+                footerView.frame.size.height = size.height
+                tableView.tableFooterView = footerView
+            }
+        }
+        calculatePreferredContentSize()
+    }
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -347,7 +360,7 @@ class PrepublishingViewController: UITableViewController {
     // MARK: - Publish Button
 
     private func setupPublishButton() {
-        let footer = UIView(frame: Constants.footerFrame)
+        let footer = UIView(frame: .zero)
         footer.addSubview(publishButton)
         footer.pinSubviewToSafeArea(publishButton, insets: Constants.nuxButtonInsets)
         publishButton.translatesAutoresizingMaskIntoConstraints = false
@@ -432,7 +445,6 @@ class PrepublishingViewController: UITableViewController {
         static let textFieldReuseIdentifier = "wpTextFieldCell"
         static let nuxButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static let cellMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        static let footerFrame = CGRect(x: 0, y: 0, width: 100, height: 80)
         static let publishNow = NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post")
         static let scheduleNow = NSLocalizedString("Schedule Now", comment: "Label for the button that schedules the post")
         static let publishDateLabel = NSLocalizedString("Publish Date", comment: "Label for Publish date")
