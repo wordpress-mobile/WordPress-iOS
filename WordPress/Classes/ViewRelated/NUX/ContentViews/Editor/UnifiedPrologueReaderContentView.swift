@@ -142,9 +142,9 @@ private extension UnifiedPrologueReaderContentView {
         static let tagMusic: String = NSLocalizedString("Music", comment: "An example tag used in the login prologue screens.")
         static let tagPolitics: String = NSLocalizedString("Politics", comment: "An example tag used in the login prologue screens.")
 
-        static let firstPostTitle: LocalizedStringKey = "My Top Ten Cafes"
-        static let secondPostTitle: LocalizedStringKey = "The World's Best Fans"
-        static let thirdPostTitle: LocalizedStringKey = "Museums to See In London"
+        static let firstPostTitle: String = NSLocalizedString("My Top Ten Cafes", comment: "Example post title used in the login prologue screens.")
+        static let secondPostTitle: String = NSLocalizedString("The World's Best Fans", comment: "Example post title used in the login prologue screens. This is a post about football fans.")
+        static let thirdPostTitle: String = NSLocalizedString("Museums to See In London", comment: "Example post title used in the login prologue screens.")
     }
 }
 
@@ -204,7 +204,7 @@ extension View {
 ///
 private struct PostView: View {
     let image: String
-    let title: LocalizedStringKey
+    let title: String
     let size: CGFloat
     let font: Font
 

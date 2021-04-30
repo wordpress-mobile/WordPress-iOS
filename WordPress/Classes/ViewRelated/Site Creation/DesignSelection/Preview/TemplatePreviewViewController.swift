@@ -97,6 +97,7 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
         primaryActionButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
         primaryActionButton.backgroundColor = accentColor
         primaryActionButton.layer.cornerRadius = 8
+        primaryActionButton.setTitle(NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design"), for: .normal)
     }
 
     private func configurePreviewDeviceButton() {
