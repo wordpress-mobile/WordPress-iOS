@@ -13,7 +13,7 @@ protocol Route {
 }
 
 protocol NavigationAction {
-    func perform(_ values: [String: String], source: UIViewController?)
+    func perform(_ values: [String: String], source: UIViewController?, router: LinkRouter)
 }
 
 extension NavigationAction {
@@ -33,7 +33,7 @@ extension NavigationAction {
 }
 
 struct FailureNavigationAction: NavigationAction {
-    func perform(_ values: [String: String], source: UIViewController?) {
+    func perform(_ values: [String: String], source: UIViewController?, router: LinkRouter) {
         // This navigation action exists only to fail navigations
     }
 

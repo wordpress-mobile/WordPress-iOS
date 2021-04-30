@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
+#import "ReaderTopicService.h"
 
 typedef NS_ENUM(NSUInteger, ReaderSiteServiceError) {
     ReaderSiteServiceErrorNotLoggedIn,
@@ -85,5 +86,17 @@ extern NSString * const ReaderSiteServiceErrorDomain;
              asBlocked:(BOOL)blocked
                success:(void(^)(void))success
                failure:(void(^)(NSError *error))failure;
+
+/**
+ Returns a ReaderSiteTopic for the given site URL.
+ 
+ @param siteURL The URL of the site.
+ @param success block called on a successful fetch containing the ReaderSiteTopic.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)topicWithSiteURL:(NSURL *)siteURL
+                 success:(void (^)(ReaderSiteTopic *topic))success
+                 failure:(void(^)(NSError *error))failure;
+
 
 @end

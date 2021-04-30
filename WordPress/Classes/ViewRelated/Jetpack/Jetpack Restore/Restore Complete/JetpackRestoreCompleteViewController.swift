@@ -38,7 +38,7 @@ class JetpackRestoreCompleteViewController: BaseRestoreCompleteViewController {
         self.dismiss(animated: true)
     }
 
-    override func secondaryButtonTapped() {
+    override func secondaryButtonTapped(from sender: UIButton) {
         visitSite()
     }
 

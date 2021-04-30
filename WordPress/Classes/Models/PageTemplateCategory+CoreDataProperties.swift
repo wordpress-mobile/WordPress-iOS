@@ -1,7 +1,7 @@
 import Foundation
 import CoreData
 
-extension PageTemplateCategory: CollabsableHeaderFilterOption {
+extension PageTemplateCategory {
 
     @nonobjc public class func fetchRequest(forBlog blog: Blog, categorySlugs: [String]) -> NSFetchRequest<PageTemplateCategory> {
         let request = NSFetchRequest<PageTemplateCategory>(entityName: "PageTemplateCategory")
@@ -23,6 +23,7 @@ extension PageTemplateCategory: CollabsableHeaderFilterOption {
     @NSManaged public var title: String
     @NSManaged public var layouts: Set<PageTemplateLayout>?
     @NSManaged public var blog: Blog?
+    @NSManaged public var ordinal: Int
 }
 
 // MARK: Generated accessors for layouts
@@ -44,11 +45,12 @@ extension PageTemplateCategory {
 
 extension PageTemplateCategory {
 
-    convenience init(context: NSManagedObjectContext, category: RemoteLayoutCategory) {
+    convenience init(context: NSManagedObjectContext, category: RemoteLayoutCategory, ordinal: Int) {
         self.init(context: context)
         slug = category.slug
         title = category.title
         desc = category.description
         emoji = category.emoji
+        self.ordinal = ordinal
     }
 }

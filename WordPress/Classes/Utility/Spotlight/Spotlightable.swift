@@ -7,6 +7,7 @@ protocol Spotlightable: UIView {
 class SpotlightableButton: UIButton, Spotlightable {
 
     var spotlight: QuickStartSpotlightView?
+    var originalTitle: String?
 
     var shouldShowSpotlight: Bool {
         get {
@@ -22,6 +23,30 @@ class SpotlightableButton: UIButton, Spotlightable {
             }
         }
     }
+
+    func startLoading() {
+        originalTitle = titleLabel?.text
+        setTitle("", for: .normal)
+        activityIndicator.startAnimating()
+    }
+
+    func stopLoading() {
+        activityIndicator.stopAnimating()
+        setTitle(originalTitle, for: .normal)
+    }
+
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(activityIndicator)
+
+        NSLayoutConstraint.activate([
+            activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+        ])
+
+        return activityIndicator
+    }()
 
     private func setupSpotlight() {
         spotlight?.removeFromSuperview()

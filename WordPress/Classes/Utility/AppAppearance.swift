@@ -3,7 +3,6 @@ import UIKit
 /// Encapsulates UIUserInterfaceStyle getting and setting for the app's
 /// main window. Allows users to override the interface style for the app.
 ///
-@available(iOS 13.0, *)
 struct AppAppearance {
     /// The default interface style if not overridden
     static let `default`: UIUserInterfaceStyle = .unspecified
@@ -65,7 +64,6 @@ struct AppAppearance {
     }
 }
 
-@available(iOS 13.0, *)
 extension UIUserInterfaceStyle {
     var appearanceDescription: String {
         switch self {

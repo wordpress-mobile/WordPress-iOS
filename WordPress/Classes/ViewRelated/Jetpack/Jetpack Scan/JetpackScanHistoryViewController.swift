@@ -37,6 +37,12 @@ class JetpackScanHistoryViewController: UIViewController {
         coordinator.viewDidLoad()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        WPAnalytics.track(.jetpackScanHistoryAccessed)
+    }
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: { _ in
@@ -53,6 +59,8 @@ class JetpackScanHistoryViewController: UIViewController {
         }
 
         coordinator.changeFilter(filter)
+
+        WPAnalytics.track(.jetpackScanHistoryFilter, properties: ["filter": filter.eventProperty])
     }
 
     // MARK: - Private: Config
@@ -177,6 +185,20 @@ extension JetpackScanHistoryViewController: UITableViewDataSource, UITableViewDe
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return ActivityListSectionHeaderView.height
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        guard let threat = threat(for: indexPath) else {
+            return
+        }
+
+        let threatDetailsVC = JetpackScanThreatDetailsViewController(blog: blog, threat: threat)
+        self.navigationController?.pushViewController(threatDetailsVC, animated: true)
+
+        WPAnalytics.track(.jetpackScanThreatListItemTapped, properties: ["threat_signature": threat.signature, "section": "history"])
+
     }
 
     private func configureThreatCell(cell: JetpackScanThreatCell, threat: JetpackScanThreat) {

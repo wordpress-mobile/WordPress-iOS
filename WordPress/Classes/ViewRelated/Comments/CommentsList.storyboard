@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="cBt-Sc-5RS">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Comments View Controller-->
+        <scene sceneID="Zaz-EE-DkY">
+            <objects>
+                <viewController storyboardIdentifier="CommentsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cBt-Sc-5RS" customClass="CommentsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="MpO-o7-pbX"/>
+                        <viewControllerLayoutGuide type="bottom" id="uCp-uQ-tOJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gDw-cc-yIW">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bno-oB-pDf" customClass="FilterTabBar" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="46" id="mN2-YL-PRM"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7aR-Vp-g6a">
+                                <rect key="frame" x="0.0" y="46" width="375" height="621"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="cBt-Sc-5RS" id="ACo-bR-be2"/>
+                                    <outlet property="delegate" destination="cBt-Sc-5RS" id="hKz-4a-sNu"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="bno-oB-pDf" firstAttribute="leading" secondItem="gDw-cc-yIW" secondAttribute="leading" id="7Jf-su-8WM"/>
+                            <constraint firstAttribute="trailing" secondItem="bno-oB-pDf" secondAttribute="trailing" id="AgG-aE-VG8"/>
+                            <constraint firstItem="7aR-Vp-g6a" firstAttribute="leading" secondItem="gDw-cc-yIW" secondAttribute="leading" id="Nt5-JK-DbB"/>
+                            <constraint firstItem="uCp-uQ-tOJ" firstAttribute="top" secondItem="7aR-Vp-g6a" secondAttribute="bottom" id="Oly-V9-tho"/>
+                            <constraint firstItem="7aR-Vp-g6a" firstAttribute="top" secondItem="bno-oB-pDf" secondAttribute="bottom" id="Rmm-F3-kCp"/>
+                            <constraint firstAttribute="trailing" secondItem="7aR-Vp-g6a" secondAttribute="trailing" id="htA-bQ-QaF"/>
+                            <constraint firstItem="bno-oB-pDf" firstAttribute="top" secondItem="MpO-o7-pbX" secondAttribute="bottom" id="tfA-U7-Sc2"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="filterTabBar" destination="bno-oB-pDf" id="HTz-ai-FRw"/>
+                        <outlet property="tableView" destination="7aR-Vp-g6a" id="b8S-2O-Yk9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wHe-tJ-scb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="21.600000000000001" y="272.11394302848578"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

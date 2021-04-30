@@ -1,0 +1,20 @@
+{
+  "info": {
+    "author": "blog.color-studio",
+    "version": "2.5.0"
+  },
+  "colors": [
+    {
+      "idiom": "universal",
+      "color": {
+        "components": {
+          "red": "154",
+          "green": "105",
+          "blue": "199",
+          "alpha": 1
+        },
+        "color-space": "srgb"
+      }
+    }
+  ]
+}

@@ -73,11 +73,20 @@ struct NotificationContentRouter {
         case .comment:
             try coordinator.displayCommentsWithPostId(range.postID, siteID: range.siteID)
         case .stats:
-            try coordinator.displayStatsWithSiteID(range.siteID)
+            /// Backup notifications are configured as "stat" notifications
+            /// For now this is just a workaround to fix the routing
+            if url.absoluteString.matches(regex: "\\/backup\\/").count > 0 {
+                try coordinator.displayBackupWithSiteID(range.siteID)
+            } else {
+                try coordinator.displayStatsWithSiteID(range.siteID, url: url)
+            }
         case .follow:
             try coordinator.displayFollowersWithSiteID(range.siteID, expirationTime: expirationFiveMinutes)
         case .user:
             try coordinator.displayStreamWithSiteID(range.siteID)
+        case .scan:
+            try coordinator.displayScanWithSiteID(range.siteID)
+
         default:
             throw DefaultContentCoordinator.DisplayError.unsupportedType
         }

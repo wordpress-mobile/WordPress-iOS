@@ -114,9 +114,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     private var accentColor: UIColor {
         return UIColor { (traitCollection: UITraitCollection) -> UIColor in
             if traitCollection.userInterfaceStyle == .dark {
-                return UIColor.muriel(color: .accent, .shade40)
+                return UIColor.muriel(color: .primary, .shade40)
             } else {
-                return UIColor.muriel(color: .accent, .shade50)
+                return UIColor.muriel(color: .primary, .shade50)
             }
         }
     }
@@ -238,6 +238,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
 
         if let previousTraitCollection = previousTraitCollection, traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass {
+            isUserInitiatedScroll = false
             layoutHeaderInsets()
 
             // This helps reset the header changes after a rotation.
@@ -444,6 +445,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     /// order to preserve the header's collpased state we cache the offset and attempt to reapply it if needed.
     private var stashedOffset: CGPoint? = nil
 
+    /// Tracks if the current scroll behavior was intiated by a user drag event
+    private var isUserInitiatedScroll = false
+
     /// A public interface to notify the container that the content size of the scroll view is about to change. This is useful in adjusting the bottom insets to allow the
     /// view to still be scrollable with the content size is less than the total space of the expanded screen.
     public func contentSizeWillChange() {
@@ -462,7 +466,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             })
             return
         }
-
+        guard hasSelectedItem == selectedStateButtonsContainer.isHidden else { return }
         defaultActionButton.isHidden = false
         selectedStateButtonsContainer.isHidden = false
 
@@ -538,18 +542,19 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         }
     }
 
-    private func updateTitleViewVisibility(_ animated: Bool = true) {
-        let shouldHide = (headerHeightConstraint.constant > midHeaderHeight) && !shouldUseCompactLayout
+    internal func updateTitleViewVisibility(_ animated: Bool = true) {
+        let shouldHide = shouldUseCompactLayout ? false : (headerHeightConstraint.constant > midHeaderHeight)
         titleView.animatableSetIsHidden(shouldHide, animated: animated)
     }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         /// Clear the stashed offset because the user has initiated a change
         stashedOffset = nil
+        isUserInitiatedScroll = true
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard stashedOffset == nil else {
+        guard stashedOffset == nil || stashedOffset == CGPoint.zero else {
             restoreContentOffsetIfNeeded(scrollView)
             return
         }
@@ -562,12 +567,13 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         }
         disableInitialLayoutHelpers()
         resizeHeaderIfNeeded(scrollView)
-        updateTitleViewVisibility()
+        updateTitleViewVisibility(isUserInitiatedScroll)
         updateSeperatorStyle()
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         snapToHeight(scrollView)
+        isUserInitiatedScroll = false
     }
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -586,6 +592,11 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         } else if headerHeightConstraint.constant != minHeaderHeight {
             snapToHeight(scrollView, height: minHeaderHeight)
         }
+    }
+
+    public func expandHeader() {
+        guard !shouldUseCompactLayout else { return }
+        snapToHeight(scrollableView, height: maxHeaderHeight)
     }
 
     private func snapToHeight(_ scrollView: UIScrollView, height: CGFloat, animated: Bool = true) {

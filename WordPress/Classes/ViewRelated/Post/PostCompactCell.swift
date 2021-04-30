@@ -104,7 +104,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
             let host = MediaHost(with: post, failure: { error in
                 // We'll log the error, so we know it's there, but we won't halt execution.
-                CrashLogging.logError(error)
+                WordPressAppDelegate.crashLogging?.logError(error)
             })
 
             imageLoader.loadImage(with: url, from: host, preferredSize: CGSize(width: featuredImageView.frame.width, height: featuredImageView.frame.height))

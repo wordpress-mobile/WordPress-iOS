@@ -402,6 +402,11 @@
     return [self.status isEqualToString:PostStatusDraft];
 }
 
+- (BOOL)isPublished
+{
+    return [self.status isEqualToString:PostStatusPublish];
+}
+
 - (BOOL)originalIsDraft
 {
     if ([self.status isEqualToString:PostStatusDraft]) {
@@ -574,6 +579,12 @@
 
     if ( ((self.featuredImage != nil) && ![self.featuredImage.objectID isEqual: original.featuredImage.objectID]) ||
         (self.featuredImage == nil && self.original.featuredImage != nil) ) {
+        return YES;
+    }
+
+    if ((self.authorID != original.authorID)
+        && (![self.authorID isEqual:original.authorID]))
+    {
         return YES;
     }
 

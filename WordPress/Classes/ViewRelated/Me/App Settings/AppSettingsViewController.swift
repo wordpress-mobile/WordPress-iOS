@@ -197,7 +197,6 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    @available(iOS 13.0, *)
     func pushAppearanceSettings() -> ImmuTableAction {
         return { [weak self] row in
             let values = UIUserInterfaceStyle.allStyles
@@ -228,7 +227,6 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    @available(iOS 13.0, *)
     private func overrideAppAppearance(with style: UIUserInterfaceStyle) {
         let transitionView: UIView = WordPressAppDelegate.shared?.window ?? view
         UIView.transition(with: transitionView,
@@ -467,22 +465,21 @@ private extension AppSettingsViewController {
         )
 
         let aboutRow = NavigationItemRow(
-            title: NSLocalizedString("About WordPress for iOS", comment: "Link to About screen for WordPress for iOS"),
+            title: AppConstants.Settings.aboutTitle,
             action: pushAbout()
         )
 
         var rows: [ImmuTableRow] = [settingsRow, aboutRow]
-        if #available(iOS 10.3, *),
-            UIApplication.shared.supportsAlternateIcons {
-                rows.insert(iconRow, at: 0)
+        if AppConfiguration.allowsCustomAppIcons && UIApplication.shared.supportsAlternateIcons {
+            // We don't show custom icons for Jetpack
+            rows.insert(iconRow, at: 0)
         }
 
         if FeatureFlag.debugMenu.enabled {
             rows.append(debugRow)
         }
 
-        if FeatureFlag.whatIsNew.enabled,
-            let presenter = WPTabBarController.sharedInstance()?.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
+        if let presenter = WPTabBarController.sharedInstance()?.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
             presenter.versionHasAnnouncements {
             let whatIsNewRow = NavigationItemRow(title: NSLocalizedString("What's New in WordPress",
                                                                           comment: "Opens the What's New / Feature Announcement modal"),
@@ -490,11 +487,9 @@ private extension AppSettingsViewController {
             rows.append(whatIsNewRow)
         }
 
-        if #available(iOS 13.0, *) {
-            let appearanceRow = NavigationItemRow(title: NSLocalizedString("Appearance", comment: "The title of the app appearance settings screen"), detail: AppAppearance.current.appearanceDescription, action: pushAppearanceSettings())
+        let appearanceRow = NavigationItemRow(title: NSLocalizedString("Appearance", comment: "The title of the app appearance settings screen"), detail: AppAppearance.current.appearanceDescription, action: pushAppearanceSettings())
 
-            rows.insert(appearanceRow, at: 0)
-        }
+        rows.insert(appearanceRow, at: 0)
 
         return ImmuTableSection(
             headerText: otherHeader,

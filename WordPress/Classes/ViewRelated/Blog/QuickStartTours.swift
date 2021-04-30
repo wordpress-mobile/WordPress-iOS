@@ -353,11 +353,7 @@ private extension String {
 
         if let icon = icon {
             let iconAttachment = NSTextAttachment()
-            if #available(iOS 13.0, *) {
-                iconAttachment.image = icon.withTintColor(Appearance.highlightColor)
-            } else {
-                iconAttachment.image = icon.imageWithTintColor(Appearance.highlightColor)
-            }
+            iconAttachment.image = icon.withTintColor(Appearance.highlightColor)
             iconAttachment.bounds = CGRect(x: 0.0, y: Fonts.regular.descender + Appearance.iconOffset, width: Appearance.iconSize, height: Appearance.iconSize)
             let iconStr = NSAttributedString(attachment: iconAttachment)
 

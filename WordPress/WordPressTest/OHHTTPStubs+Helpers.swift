@@ -5,7 +5,7 @@ import OHHTTPStubs
 
 // MARK: - Private helpers
 //
-public extension OHHTTPStubs {
+public extension HTTPStubs {
     static func stubRequest(forEndpoint endpoint: String, withFileAtPath path: String) {
         stub(condition: { request in
             return request.url?.absoluteString.range(of: endpoint) != nil

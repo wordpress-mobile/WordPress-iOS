@@ -41,10 +41,12 @@ class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
 
     override func primaryButtonTapped() {
         downloadFile()
+        WPAnalytics.track(.backupFileDownloadTapped)
     }
 
-    override func secondaryButtonTapped() {
-        shareLink()
+    override func secondaryButtonTapped(from sender: UIButton) {
+        shareLink(from: sender)
+        WPAnalytics.track(.backupDownloadShareLinkTapped)
     }
 
     // MARK: - Private
@@ -63,7 +65,7 @@ class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
         UIApplication.shared.open(downloadURL)
     }
 
-    private func shareLink() {
+    private func shareLink(from sender: UIButton) {
         guard let url = backup.url,
               let downloadURL = URL(string: url),
               let activities = WPActivityDefaults.defaultActivities() as? [UIActivity] else {
@@ -76,7 +78,9 @@ class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
         }
 
         let activityVC = UIActivityViewController(activityItems: [downloadURL], applicationActivities: activities)
-        activityVC.popoverPresentationController?.sourceView = self.view
+        activityVC.popoverPresentationController?.sourceView = sender
+        activityVC.modalPresentationStyle = .popover
+
 
         self.present(activityVC, animated: true)
     }

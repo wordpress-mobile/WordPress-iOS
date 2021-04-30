@@ -11,6 +11,7 @@ enum MurielColorName: String, CustomStringConvertible {
     case purple
     case red
     case yellow
+    case jetpackGreen
 
     var description: String {
         // can't use .capitalized because it lowercases the P and B in "wordPressBlue"
@@ -57,16 +58,17 @@ struct MurielColor {
     }
 
     // MARK: - Muriel's semantic colors
-    static let accent = MurielColor(name: .pink)
-    static let brand = MurielColor(name: .wordPressBlue)
-    static let divider = MurielColor(name: .gray, shade: .shade10)
-    static let error = MurielColor(name: .red)
-    static let gray = MurielColor(name: .gray)
-    static let primary = MurielColor(name: .blue)
-    static let success = MurielColor(name: .green)
-    static let text = MurielColor(name: .gray, shade: .shade80)
-    static let textSubtle = MurielColor(name: .gray, shade: .shade50)
-    static let warning = MurielColor(name: .yellow)
+    static let accent = AppStyleGuide.accent
+    static let brand = AppStyleGuide.brand
+    static let divider = AppStyleGuide.divider
+    static let error = AppStyleGuide.error
+    static let gray = AppStyleGuide.gray
+    static let primary = AppStyleGuide.primary
+    static let success = AppStyleGuide.success
+    static let text = AppStyleGuide.text
+    static let textSubtle = AppStyleGuide.textSubtle
+    static let warning = AppStyleGuide.warning
+    static let jetpackGreen = AppStyleGuide.jetpackGreen
 
     /// The full name of the color, with required shade value
     func assetName() -> String {

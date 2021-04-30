@@ -5,6 +5,7 @@ class JetpackScanThreatCell: UITableViewCell, NibReusable {
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     func configure(with model: JetpackScanThreatViewModel) {
         applyStyles()
@@ -15,6 +16,18 @@ class JetpackScanThreatCell: UITableViewCell, NibReusable {
 
         detailLabel.text = model.description ?? ""
         detailLabel.isHidden = model.description == nil
+
+        iconImageView.isHidden = model.isFixing
+        iconBackgroundImageView.isHidden = model.isFixing
+
+        selectionStyle = model.isFixing ? .none : .default
+        accessoryType = model.isFixing ? .none : .disclosureIndicator
+
+        if model.isFixing {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+        }
     }
 
     private func applyStyles() {

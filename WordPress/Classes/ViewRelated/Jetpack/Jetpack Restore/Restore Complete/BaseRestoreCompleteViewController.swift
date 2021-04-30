@@ -65,7 +65,7 @@ class BaseRestoreCompleteViewController: UIViewController {
         fatalError("Must override in subclass")
     }
 
-    func secondaryButtonTapped() {
+    func secondaryButtonTapped(from sender: UIButton) {
         fatalError("Must override in subclass")
     }
 
@@ -99,8 +99,8 @@ class BaseRestoreCompleteViewController: UIViewController {
             self?.primaryButtonTapped()
         }
 
-        completeView.secondaryButtonHandler = { [weak self] in
-            self?.secondaryButtonTapped()
+        completeView.secondaryButtonHandler = { [weak self] sender in
+            self?.secondaryButtonTapped(from: sender)
         }
 
         view.addSubview(completeView)

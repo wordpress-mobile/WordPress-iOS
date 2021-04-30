@@ -32,6 +32,8 @@ NSString * const WPAppAnalyticsKeyReplyingTo                        = @"replying
 NSString * const WPAppAnalyticsKeySiteType                          = @"site_type";
 
 NSString * const WPAppAnalyticsKeyHasGutenbergBlocks                = @"has_gutenberg_blocks";
+NSString * const WPAppAnalyticsKeyHasStoriesBlocks                  = @"has_wp_stories_blocks";
+
 static NSString * const WPAppAnalyticsKeyLastVisibleScreen          = @"last_visible_screen";
 static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_app";
 
@@ -94,7 +96,8 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
     [self initializeOptOutTracking];
 
     BOOL userHasOptedOut = [WPAppAnalytics userHasOptedOut];
-    if (!userHasOptedOut) {
+    BOOL isUITesting = [[NSProcessInfo processInfo].arguments containsObject:@"-ui-testing"];
+    if (!isUITesting && !userHasOptedOut) {
         [self registerTrackers];
         [self beginSession];
     }
@@ -114,8 +117,8 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
 
 + (NSString *)siteTypeForBlogWithID:(NSNumber *)blogID
 {
-    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    Blog *blog = [service blogByBlogId:blogID];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    Blog *blog = [Blog lookupWithID:blogID in:context];
     return [blog isWPForTeams] ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog;
 }
 
@@ -300,6 +303,7 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
         mutableProperties[WPAppAnalyticsKeyPostID] = postOrPage.postID;
     }
     mutableProperties[WPAppAnalyticsKeyHasGutenbergBlocks] = @([postOrPage containsGutenbergBlocks]);
+    mutableProperties[WPAppAnalyticsKeyHasStoriesBlocks] = @([postOrPage containsStoriesBlocks]);
 
     [WPAppAnalytics track:stat withProperties:mutableProperties withBlog:postOrPage.blog];
 }

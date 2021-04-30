@@ -13,6 +13,12 @@ parameters:
   translation_review_lang_id:
     type: string
     default: all-lang
+  beta_build:
+    type: boolean
+    default: false
+  release_build:
+    type: boolean
+    default: false
 
 xcode_version: &xcode_version
   xcode-version: "12.1.0"
@@ -42,6 +48,9 @@ commands:
             chruby ruby-2.6.6
             gem install bundler
 
+            # Prevent fastlane from checking for updates, also removing the verbose fastlane changelog at the end of each invocation.
+            echo "export FASTLANE_SKIP_UPDATE_CHECK=1" >> $BASH_ENV
+
 jobs:
   Build Tests:
     parameters:
@@ -66,7 +75,7 @@ jobs:
           command: rake dependencies
       - run:
           name: Build for Testing
-          command: cd ./Scripts && bundle exec fastlane build_for_testing device:'<< parameters.device >>' ios-version:'<< parameters.ios-version >>'
+          command: bundle exec fastlane build_for_testing device:'<< parameters.device >>' ios-version:'<< parameters.ios-version >>'
       - persist_to_workspace:
           root: ./
           paths:
@@ -94,7 +103,6 @@ jobs:
           command: bundle --path vendor/bundle
       - run:
           name: Run Unit Tests
-          working_directory: Scripts
           command: bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3 device:'<< parameters.device >>' ios-version:'<< parameters.ios-version >>'
       - ios/save-xcodebuild-artifacts:
           result-bundle-path: build/results
@@ -127,7 +135,6 @@ jobs:
           background: true
       - run:
           name: Run UI Tests
-          working_directory: Scripts
           command: bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:'<< parameters.device >>' ios-version:'<< parameters.ios-version >>'
       - ios/save-xcodebuild-artifacts:
           result-bundle-path: build/results
@@ -145,7 +152,7 @@ jobs:
                 include_job_number_field: false
                 include_project_field: false
                 failure_message: '${SLACK_FAILURE_MESSAGE}'
-  Installable Build:
+  WordPress Installable Build:
     executor:
       name: ios/default
       <<: *xcode_version
@@ -161,13 +168,12 @@ jobs:
           command: bundle exec fastlane run configure_apply
       - run:
           name: Build
-          working_directory: Scripts
           command: "bundle exec fastlane build_and_upload_installable_build build_number:$CIRCLE_BUILD_NUM"
       - run:
           name: Prepare Artifacts
           command: |
             mkdir -p Artifacts
-            mv "Scripts/fastlane/comment.json" "Artifacts/comment.json"
+            mv "fastlane/comment.json" "Artifacts/comment.json"
       - store_artifacts:
           path: Artifacts
           destination: Artifacts
@@ -188,24 +194,38 @@ jobs:
             bundle-install: true
             pod-install: true
             cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
-      - run: 
+      - run:
           name: Copy Secrets
           command: bundle exec fastlane run configure_apply
-      - run: 
+      - run:
           name: Install other tools
           command: |
+            brew update # Update homebrew to temporarily fix a bintray issue
             brew install imagemagick
             brew install ghostscript
             curl -sL https://sentry.io/get-cli/ | bash
       - run:
-          name: Build
-          working_directory: Scripts
+          name: Setup notifications
           command: |
-            APP_VERSION=$(cat ../config/Version.Public.xcconfig | grep "^VERSION_LONG" | cut -d "=" -f2)
+            APP_VERSION=$(cat config/Version.Public.xcconfig | grep "^VERSION_LONG" | cut -d "=" -f2)
             echo "export SLACK_FAILURE_MESSAGE=':red_circle: Build for WordPress iOS $APP_VERSION failed!'" >> $BASH_ENV
-            echo "export SLACK_SUCCESS_MESSAGE=':tada: WordPress iOS $APP_VERSION has been deployed!'" >> $BASH_ENV 
-            bundle exec fastlane build_and_upload_release skip_confirm:true
-          no_output_timeout: 60m
+            echo "export SLACK_SUCCESS_MESSAGE=':tada: WordPress iOS $APP_VERSION has been deployed!'" >> $BASH_ENV
+      - when:
+          condition: << pipeline.parameters.beta_build >>
+          steps:
+            - run:
+                name: Build
+                command: |
+                  bundle exec fastlane build_and_upload_beta_release skip_confirm:true create_gh_release:true
+                no_output_timeout: 60m
+      - when:
+          condition: << pipeline.parameters.release_build >>
+          steps:
+            - run:
+                name: Build
+                command: |
+                  bundle exec fastlane build_and_upload_stable_release skip_confirm:true create_gh_release:true
+                no_output_timeout: 60m
       - slack/status:
           include_job_number_field: false
           include_project_field: false
@@ -214,7 +234,7 @@ jobs:
           failure_message: '${SLACK_FAILURE_MESSAGE}'
           success_message: '${SLACK_SUCCESS_MESSAGE}'
   translation-review-build:
-    executor: 
+    executor:
       name: ios/default
       <<: *xcode_version
     environment:
@@ -226,41 +246,94 @@ jobs:
             bundle-install: true
             pod-install: true
             cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
-      - run: 
+      - run:
           name: Copy Secrets
           command: bundle exec fastlane run configure_apply
-      - run: 
+      - run:
           name: Install other tools
           command: |
-            brew unlink python@2
+            brew update # Update homebrew to temporarily fix a bintray issue
             brew install imagemagick
             brew install ghostscript
             curl -sL https://sentry.io/get-cli/ | bash
       - run:
           name: Build
-          working_directory: Scripts
-          command: | 
-            orig_version=`cat ../config/Version.internal.xcconfig | grep VERSION_SHORT | cut -d'=' -f2`
-            sed -i '' "$(awk '/^VERSION_SHORT/{ print NR; exit }' "../config/Version.internal.xcconfig")s/=.*/="${orig_version}"-`date +"%Y%d%m"`-"${CIRCLE_BUILD_NUM}"/" "../config/Version.internal.xcconfig"
-            bundle exec fastlane build_for_translation_review
+          command: |
+            orig_version=`cat config/Version.internal.xcconfig | grep VERSION_SHORT | cut -d'=' -f2`
+            sed -i '' "$(awk '/^VERSION_SHORT/{ print NR; exit }' "config/Version.internal.xcconfig")s/=.*/="${orig_version}"-`date +"%Y%d%m"`-"${CIRCLE_BUILD_NUM}"/" "config/Version.internal.xcconfig"
 
             VERSION_NAME="all-lang-build-${CIRCLE_BUILD_NUM}"
             echo "export VERSION_NAME=$VERSION_NAME" >> $BASH_ENV
 
-            mkdir -p ../Artifacts
-            mv /var/tmp/Debug-iphonesimulator/WordPress.zip "../Artifacts/WordPress-${VERSION_NAME}.zip"
+            bundle exec fastlane build_for_translation_review version_name:$VERSION_NAME
           no_output_timeout: 60m
-      - run: 
-          name: Upload APP
-          command: |
-            curl --http1.1 https://${APPET_TOKEN}@api.appetize.io/v1/apps/${APPET_APPID} -F "file=@Artifacts/WordPress-${VERSION_NAME}.zip" -F "platform=ios"
       - store_artifacts:
           path: Artifacts
           destination: Artifacts
-
+  Jetpack Installable Build:
+    executor:
+      name: ios/default
+      <<: *xcode_version
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - fix-image
+      - git/shallow-checkout
+      - ios/install-dependencies:
+            bundle-install: true
+            pod-install: true
+            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
+      - run:
+          name: Copy Secrets
+          command: bundle exec fastlane run configure_apply
+      - run:
+          name: Install other tools
+          command: |
+            brew update # Update homebrew to temporarily fix a bintray issue
+            brew install imagemagick
+            brew install ghostscript
+            curl -sL https://sentry.io/get-cli/ | bash
+      - run:
+          name: Build
+          command: bundle exec fastlane build_and_upload_jetpack_installable_build
+          no_output_timeout: 60m
+      - store_artifacts:
+          path: Artifacts
+          destination: Artifacts
+  Build Jetpack:
+    executor:
+      name: ios/default
+      <<: *xcode_version
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - fix-image
+      - git/shallow-checkout
+      - ios/install-dependencies:
+            bundle-install: true
+            pod-install: true
+            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
+      - run:
+          name: Copy Secrets
+          command: bundle exec fastlane run configure_apply
+      - run:
+          name: Install other tools
+          command: |
+            brew update # Update homebrew to temporarily fix a bintray issue
+            brew install imagemagick
+            brew install ghostscript
+            curl -sL https://sentry.io/get-cli/ | bash
+      - run:
+          name: Build
+          command: bundle exec fastlane build_jetpack_for_testing
+          no_output_timeout: 60m
 workflows:
   wordpress_ios:
-    unless: << pipeline.parameters.translation_review_build >>
+    when:
+      and:
+        - not: << pipeline.parameters.translation_review_build >>
+        - not: << pipeline.parameters.beta_build >>
+        - not: << pipeline.parameters.release_build >>
     jobs:
       - Build Tests:
           <<: *iphone_test_device
@@ -278,6 +351,7 @@ workflows:
               only:
                 - develop
                 - /^release.*/
+                - /^gutenberg\/integrate_release_.*/
       - UI Tests:
           name: UI Tests (iPad Air 4th generation)
           <<: *ipad_test_device
@@ -288,6 +362,9 @@ workflows:
               only:
                 - develop
                 - /^release.*/
+                - /^gutenberg\/integrate_release_.*/
+      - Build Jetpack:
+          name: Build Jetpack (without testing)
       #Optionally run UI tests on PRs
       - Optional Tests:
           type: approval
@@ -297,6 +374,7 @@ workflows:
               ignore:
                 - develop
                 - /^release.*/
+                - /^gutenberg\/integrate_release_.*/
       - UI Tests:
           name: UI Tests (iPhone 11)
           <<: *iphone_test_device
@@ -306,28 +384,49 @@ workflows:
           <<: *ipad_test_device
           requires: [ "Optional Tests" ]
   Installable Build:
-    unless: << pipeline.parameters.translation_review_build >>
+    when:
+      and:
+        - not: << pipeline.parameters.translation_review_build >>
+        - not: << pipeline.parameters.beta_build >>
+        - not: << pipeline.parameters.release_build >>
     jobs:
-      - Hold:
+      - Approve WordPress:
           type: approval
           filters:
             branches:
               ignore: /pull\/[0-9]+/
-      - Installable Build:
-          requires: [Hold]  
+      - WordPress Installable Build:
+          requires: [Approve WordPress]
           filters:
             branches:
               ignore: /pull\/[0-9]+/
-  Release Build:
-    unless: << pipeline.parameters.translation_review_build >>
-    jobs:
-      - Release Build: 
+      - Approve Jetpack:
+          type: approval
           filters:
             branches:
-              ignore: /.*/
-            tags:
-              only: /^\d.\d?(.\d)?(.\d)?(.\d{1,4})$/
+              ignore: /pull\/[0-9]+/
+      - Jetpack Installable Build:
+          requires: [Approve Jetpack]
+          filters:
+            branches:
+              ignore: /pull\/[0-9]+/
+
+  Release Build:
+    when:
+      or: [ << pipeline.parameters.beta_build >>, << pipeline.parameters.release_build >> ]
+    jobs:
+      - Release Build
   Translation Review Build:
     when: << pipeline.parameters.translation_review_build >>
     jobs:
       - translation-review-build
+  Jetpack Nightly:
+    triggers:
+       - schedule:
+           cron: "0 0 * * *"
+           filters:
+             branches:
+               only:
+                 - develop
+    jobs:
+      - Jetpack Installable Build

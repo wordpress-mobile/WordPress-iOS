@@ -82,7 +82,7 @@ final class SiteCreationVerticalsService: LocalCoreDataService, SiteVerticalsSer
             switch result {
             case .success(let verticals):
                 guard let vertical = verticals.first else {
-                    CrashLogging.logMessage("The verticals service should always return at least 1 match for the precise term queried.", level: .error)
+                    WordPressAppDelegate.crashLogging?.logMessage("The verticals service should always return at least 1 match for the precise term queried.", level: .error)
                     completion(.failure(.serviceFailure))
                     return
                 }

@@ -5,6 +5,7 @@ class BackupListViewController: BaseActivityListViewController {
         store.onlyRestorableItems = true
 
         let activityListConfiguration = ActivityListConfiguration(
+            identifier: "backup",
             title: NSLocalizedString("Backup", comment: "Title for the Jetpack's backup list"),
             loadingTitle: NSLocalizedString("Loading Backups...", comment: "Text displayed while loading the activity feed for a site"),
             noActivitiesTitle: NSLocalizedString("Your first backup will be ready soon", comment: "Title for the view when there aren't any Backups to display"),
@@ -24,6 +25,17 @@ class BackupListViewController: BaseActivityListViewController {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc convenience init?(blog: Blog) {
+        precondition(blog.dotComID != nil)
+        guard let siteRef = JetpackSiteRef(blog: blog) else {
+            return nil
+        }
+
+
+        let isFreeWPCom = blog.isHostedAtWPcom && !blog.hasPaidPlan
+        self.init(site: siteRef, store: StoreContainer.shared.activity, isFreeWPCom: isFreeWPCom)
     }
 
     // MARK: - View lifecycle

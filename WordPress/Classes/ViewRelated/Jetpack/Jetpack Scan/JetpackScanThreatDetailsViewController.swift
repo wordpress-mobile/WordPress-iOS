@@ -1,4 +1,10 @@
 import UIKit
+import WordPressFlux
+
+protocol JetpackScanThreatDetailsViewControllerDelegate: class {
+    func willFixThreat(_ threat: JetpackScanThreat, controller: JetpackScanThreatDetailsViewController)
+    func willIgnoreThreat(_ threat: JetpackScanThreat, controller: JetpackScanThreatDetailsViewController)
+}
 
 class JetpackScanThreatDetailsViewController: UIViewController {
 
@@ -30,17 +36,29 @@ class JetpackScanThreatDetailsViewController: UIViewController {
 
     /// Buttons
     @IBOutlet private weak var buttonsStackView: UIStackView!
-    @IBOutlet private weak var primaryActionButton: FancyButton!
-    @IBOutlet private weak var secondaryActionButton: FancyButton!
+    @IBOutlet private weak var fixThreatButton: FancyButton!
+    @IBOutlet private weak var ignoreThreatButton: FancyButton!
+    @IBOutlet private weak var warningButton: UIButton!
+    @IBOutlet weak var ignoreActivityIndicatorView: UIActivityIndicatorView!
 
     // MARK: - Properties
 
+    weak var delegate: JetpackScanThreatDetailsViewControllerDelegate?
+
+    private let blog: Blog
     private let threat: JetpackScanThreat
+    private let hasValidCredentials: Bool
+
+    private lazy var viewModel: JetpackScanThreatViewModel = {
+        return JetpackScanThreatViewModel(threat: threat, hasValidCredentials: hasValidCredentials)
+    }()
 
     // MARK: - Init
 
-    init(threat: JetpackScanThreat) {
+    init(blog: Blog, threat: JetpackScanThreat, hasValidCredentials: Bool = false) {
+        self.blog = blog
         self.threat = threat
+        self.hasValidCredentials = hasValidCredentials
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -53,17 +71,72 @@ class JetpackScanThreatDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = Strings.title
-
-        let viewModel = JetpackScanThreatViewModel(threat: threat)
         configure(with: viewModel)
     }
 
     // MARK: - IBActions
 
-    @IBAction private func primaryActionButtonTapped(_ sender: Any) {
+    @IBAction private func fixThreatButtonTapped(_ sender: Any) {
+        let alert = UIAlertController(title: viewModel.fixActionTitle,
+                                      message: viewModel.fixDescription,
+                                      preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: Strings.cancel, style: .cancel))
+        alert.addAction(UIAlertAction(title: Strings.ok, style: .default, handler: { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            self.delegate?.willFixThreat(self.threat, controller: self)
+            self.trackEvent(.jetpackScanThreatFixTapped)
+        }))
+
+        present(alert, animated: true)
+
+        trackEvent(.jetpackScanFixThreatDialogOpen)
     }
 
-    @IBAction private func secondaryActionButtonTapped(_ sender: Any) {
+    @IBAction private func ignoreThreatButtonTapped(_ sender: Any) {
+        guard let blogName = blog.settings?.name else {
+            return
+        }
+
+        let alert = UIAlertController(title: viewModel.ignoreActionTitle,
+                                      message: String(format: viewModel.ignoreActionMessage, blogName),
+                                      preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: Strings.cancel, style: .cancel))
+        alert.addAction(UIAlertAction(title: Strings.ok, style: .default, handler: { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+
+            self.ignoreThreatButton.isHidden = true
+            self.ignoreActivityIndicatorView.startAnimating()
+
+            self.delegate?.willIgnoreThreat(self.threat, controller: self)
+            self.trackEvent(.jetpackScanThreatIgnoreTapped)
+        }))
+
+        present(alert, animated: true)
+
+        trackEvent(.jetpackScanIgnoreThreatDialogOpen)
+    }
+
+    @IBAction func warningButtonTapped(_ sender: Any) {
+        guard let siteID = blog.dotComID as? Int,
+              let controller = JetpackWebViewControllerFactory.settingsController(siteID: siteID) else {
+            displayNotice(title: Strings.jetpackSettingsNotice)
+            return
+        }
+
+        let navVC = UINavigationController(rootViewController: controller)
+        present(navVC, animated: true)
+    }
+
+    // MARK: - Private
+
+    private func trackEvent(_ event: WPAnalyticsEvent) {
+        WPAnalytics.track(event, properties: ["threat_signature": threat.signature])
     }
 }
 
@@ -81,11 +154,11 @@ extension JetpackScanThreatDetailsViewController {
         problemTitleLabel.text = viewModel.problemTitle
         problemDescriptionLabel.text = viewModel.problemDescription
 
-        if viewModel.fileContext != nil {
+        if let attributedFileContext = self.viewModel.attributedFileContext {
             technicalDetailsTitleLabel.text = viewModel.technicalDetailsTitle
             technicalDetailsDescriptionLabel.text = viewModel.technicalDetailsDescription
             technicalDetailsFileLabel.text = viewModel.fileName
-            technicalDetailsContextLabel.text = "" // FIXME
+            technicalDetailsContextLabel.attributedText = attributedFileContext
             technicalDetailsStackView.isHidden = false
         } else {
             technicalDetailsStackView.isHidden = true
@@ -94,14 +167,27 @@ extension JetpackScanThreatDetailsViewController {
         fixTitleLabel.text = viewModel.fixTitle
         fixDescriptionLabel.text = viewModel.fixDescription
 
-        if let primaryButtonTitle = viewModel.primaryButtonTitle {
-            primaryActionButton.setTitle(primaryButtonTitle, for: .normal)
-            primaryActionButton.isHidden = false
+        if let fixActionTitle = viewModel.fixActionTitle {
+            fixThreatButton.setTitle(fixActionTitle, for: .normal)
+            fixThreatButton.isEnabled = viewModel.fixActionEnabled
+            fixThreatButton.isHidden = false
         } else {
-            primaryActionButton.isHidden = true
+            fixThreatButton.isHidden = true
         }
 
-        secondaryActionButton.setTitle(viewModel.secondaryButtonTitle, for: .normal)
+        if let ignoreActionTitle = viewModel.ignoreActionTitle {
+            ignoreThreatButton.setTitle(ignoreActionTitle, for: .normal)
+            ignoreThreatButton.isHidden = false
+        } else {
+            ignoreThreatButton.isHidden = true
+        }
+
+        if let warningActionTitle = viewModel.warningActionTitle {
+            warningButton.isHidden = false
+            warningButton.setTitle(warningActionTitle, for: .normal)
+        } else {
+            warningButton.isHidden = true
+        }
 
         applyStyles()
     }
@@ -142,15 +228,17 @@ extension JetpackScanThreatDetailsViewController {
         technicalDetailsTitleLabel.textColor = .text
         technicalDetailsTitleLabel.numberOfLines = 0
 
-        technicalDetailsFileContainerView.backgroundColor = .listBackground
+        technicalDetailsFileContainerView.backgroundColor = viewModel.fileNameBackgroundColor
 
-        technicalDetailsFileLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
-        technicalDetailsFileLabel.textColor = .text
+        technicalDetailsFileLabel.font = viewModel.fileNameFont
+        technicalDetailsFileLabel.textColor = viewModel.fileNameColor
         technicalDetailsFileLabel.numberOfLines = 0
 
         technicalDetailsDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
         technicalDetailsDescriptionLabel.textColor = .text
         technicalDetailsDescriptionLabel.numberOfLines = 0
+
+        technicalDetailsContextLabel.numberOfLines = 0
     }
 
     private func styleFixSection() {
@@ -164,9 +252,9 @@ extension JetpackScanThreatDetailsViewController {
     }
 
     private func styleButtons() {
-        primaryActionButton.isPrimary = true
+        fixThreatButton.isPrimary = true
 
-        secondaryActionButton.isPrimary = false
+        ignoreThreatButton.isPrimary = false
     }
 }
 
@@ -174,5 +262,8 @@ extension JetpackScanThreatDetailsViewController {
 
     private enum Strings {
         static let title = NSLocalizedString("Threat details", comment: "Title for the Jetpack Scan Threat Details screen")
+        static let ok = NSLocalizedString("OK", comment: "OK button for alert")
+        static let cancel = NSLocalizedString("Cancel", comment: "Cancel button for alert")
+        static let jetpackSettingsNotice = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
     }
 }

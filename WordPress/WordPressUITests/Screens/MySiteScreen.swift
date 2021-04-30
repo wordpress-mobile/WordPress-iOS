@@ -2,6 +2,7 @@ import Foundation
 import XCTest
 
 private struct ElementStringIDs {
+    static let navBarTitle = "My Site"
     static let blogTable = "Blog Details Table"
     static let removeSiteButton = "BlogDetailsRemoveSiteCell"
     static let postsButton = "Blog Post Row"
@@ -10,6 +11,8 @@ private struct ElementStringIDs {
     static let settingsButton = "Settings Row"
     static let createButton = "floatingCreateButton"
     static let ReaderButton = "Reader"
+    static let switchSiteButton = "SwitchSiteButton"
+    static let addNewSiteButton = "Add new site Button"
 }
 
 class MySiteScreen: BaseScreen {
@@ -23,6 +26,7 @@ class MySiteScreen: BaseScreen {
     let siteSettingsButton: XCUIElement
     let createButton: XCUIElement
     let readerButton: XCUIElement
+    let switchSiteButton: XCUIElement
 
     static var isVisible: Bool {
         let app = XCUIApplication()
@@ -43,12 +47,13 @@ class MySiteScreen: BaseScreen {
         siteSettingsButton = app.cells[ElementStringIDs.settingsButton]
         createButton = app.buttons[ElementStringIDs.createButton]
         readerButton = app.buttons[ElementStringIDs.ReaderButton]
+        switchSiteButton = app.buttons[ElementStringIDs.switchSiteButton]
 
-        super.init(element: blogTable)
+        super.init(element: XCUIApplication().navigationBars[ElementStringIDs.navBarTitle])
     }
 
     func showSiteSwitcher() -> MySitesScreen {
-        navBackButton.tap()
+        switchSiteButton.tap()
         return MySitesScreen()
     }
 
@@ -87,6 +92,6 @@ class MySiteScreen: BaseScreen {
     }
 
     static func isLoaded() -> Bool {
-        return XCUIApplication().tables[ElementStringIDs.blogTable].exists
+        return XCUIApplication().navigationBars[ElementStringIDs.navBarTitle].exists
     }
 }

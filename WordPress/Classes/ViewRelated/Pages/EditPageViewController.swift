@@ -6,7 +6,6 @@ class EditPageViewController: UIViewController {
     fileprivate var postTitle: String?
     fileprivate var content: String?
     fileprivate var hasShownEditor = false
-    fileprivate var appliedTemplate: String?
 
     convenience init(page: Page) {
         self.init(page: page, blog: page.blog, postTitle: nil, content: nil, appliedTemplate: nil)
@@ -21,7 +20,6 @@ class EditPageViewController: UIViewController {
         self.blog = blog
         self.postTitle = postTitle
         self.content = content
-        self.appliedTemplate = appliedTemplate
 
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .overFullScreen
@@ -65,7 +63,6 @@ class EditPageViewController: UIViewController {
 
         let editorViewController = editorFactory.instantiateEditor(
             for: self.pageToEdit(),
-            appliedTemplate: appliedTemplate,
             replaceEditor: { [weak self] (editor, replacement) in
                 self?.replaceEditor(editor: editor, replacement: replacement)
         })

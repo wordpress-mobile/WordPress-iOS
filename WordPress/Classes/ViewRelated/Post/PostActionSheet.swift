@@ -77,7 +77,7 @@ class PostActionSheet {
                         self?.interactivePostViewDelegate?.share(post, fromView: view)
                     }
                 case .more:
-                    CrashLogging.logMessage("Cannot handle unexpected button for post action sheet: \(button). This is a configuration error.", level: .error)
+                    WordPressAppDelegate.crashLogging?.logMessage("Cannot handle unexpected button for post action sheet: \(button). This is a configuration error.", level: .error)
                 }
         }
 

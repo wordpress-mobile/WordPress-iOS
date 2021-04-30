@@ -71,7 +71,6 @@ final class PageListTableViewHandler: WPTableViewHandler {
         }
     }
 
-
     // MARK: - Public methods
 
     func page(at indexPath: IndexPath) -> Page {

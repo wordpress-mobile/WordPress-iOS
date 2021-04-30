@@ -60,7 +60,7 @@ class ReaderInterestsDataSourceTests: XCTestCase {
     func testFetchInterestsSucceeds() {
         let service = MockInterestsService()
 
-        let dataSource = ReaderInterestsDataSource(service: service)
+        let dataSource = ReaderInterestsDataSource(topics: [], service: service)
 
         let successExpectation = expectation(description: "Fetching of interests succeeds")
 
@@ -76,7 +76,7 @@ class ReaderInterestsDataSourceTests: XCTestCase {
 
     func testFetchInterestsFails() {
         let service = MockInterestsService()
-        let dataSource = ReaderInterestsDataSource(service: service)
+        let dataSource = ReaderInterestsDataSource(topics: [], service: service)
 
         let failureExpectation = expectation(description: "Fetching of interests fails")
 
@@ -95,7 +95,7 @@ class ReaderInterestsDataSourceTests: XCTestCase {
         let delegate = MockInterestsDelegate(delegateExpectation)
 
         let service = MockInterestsService()
-        let dataSource = ReaderInterestsDataSource(service: service)
+        let dataSource = ReaderInterestsDataSource(topics: [], service: service)
         dataSource.delegate = delegate
 
         dataSource.reload()
@@ -107,7 +107,7 @@ class ReaderInterestsDataSourceTests: XCTestCase {
 
     func testDataSourceInterestInterestFor() {
         let service = MockInterestsService()
-        let dataSource = ReaderInterestsDataSource(service: service)
+        let dataSource = ReaderInterestsDataSource(topics: [], service: service)
         let successExpectation = expectation(description: "Fetching of interests succeeds")
 
         service.success = true
@@ -124,7 +124,7 @@ class ReaderInterestsDataSourceTests: XCTestCase {
 
     func testDataSourceInterestToggleSelected() {
         let service = MockInterestsService()
-        let dataSource = ReaderInterestsDataSource(service: service)
+        let dataSource = ReaderInterestsDataSource(topics: [], service: service)
         let successExpectation = expectation(description: "Fetching of interests succeeds")
 
         service.success = true
@@ -145,7 +145,7 @@ class ReaderInterestsDataSourceTests: XCTestCase {
 
     func testDataSourceInterestSelectedInterests() {
         let service = MockInterestsService()
-        let dataSource = ReaderInterestsDataSource(service: service)
+        let dataSource = ReaderInterestsDataSource(topics: [], service: service)
         let successExpectation = expectation(description: "Fetching of interests succeeds")
 
         service.success = true

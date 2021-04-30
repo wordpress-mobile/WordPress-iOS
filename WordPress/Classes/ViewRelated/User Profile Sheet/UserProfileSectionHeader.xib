@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view userInteractionEnabled="NO" contentMode="scaleToFill" id="kPA-oR-TOp" customClass="UserProfileSectionHeader" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="394" height="102"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SITE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QfN-CJ-PfS">
+                    <rect key="frame" x="20" y="59" width="354" height="38"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                    <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="epR-21-48u"/>
+            <constraints>
+                <constraint firstItem="epR-21-48u" firstAttribute="trailing" secondItem="QfN-CJ-PfS" secondAttribute="trailing" constant="20" id="00m-PJ-fLJ"/>
+                <constraint firstItem="QfN-CJ-PfS" firstAttribute="leading" secondItem="epR-21-48u" secondAttribute="leading" constant="20" id="Gh8-nd-6Kk"/>
+                <constraint firstItem="QfN-CJ-PfS" firstAttribute="top" secondItem="epR-21-48u" secondAttribute="top" constant="15" id="Ode-gE-Yfd"/>
+                <constraint firstItem="epR-21-48u" firstAttribute="bottom" secondItem="QfN-CJ-PfS" secondAttribute="bottom" constant="5" id="YHh-Zx-Rq0"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="titleLabel" destination="QfN-CJ-PfS" id="13k-63-kjJ"/>
+            </connections>
+            <point key="canvasLocation" x="36.231884057971016" y="102.45535714285714"/>
+        </view>
+    </objects>
+</document>

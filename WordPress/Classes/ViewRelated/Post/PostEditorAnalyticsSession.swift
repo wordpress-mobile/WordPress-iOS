@@ -9,15 +9,13 @@ struct PostEditorAnalyticsSession {
     var currentEditor: Editor
     var hasUnsupportedBlocks = false
     var outcome: Outcome? = nil
-    var template: String?
     private let startTime = DispatchTime.now().uptimeNanoseconds
 
-    init(editor: Editor, post: AbstractPost, template: String? = nil) {
+    init(editor: Editor, post: AbstractPost) {
         currentEditor = editor
         postType = post.analyticsPostType ?? "unsupported"
         blogType = post.blog.analyticsType.rawValue
         contentType = ContentType(post: post).rawValue
-        self.template = template
     }
 
     mutating func start(unsupportedBlocks: [String] = []) {
@@ -28,17 +26,6 @@ struct PostEditorAnalyticsSession {
 
         WPAppAnalytics.track(.editorSessionStart, withProperties: properties)
         started = true
-    }
-
-    mutating func apply(template: String) {
-        self.template = template
-        WPAnalytics.track(.editorSessionTemplateApply, withProperties: commonProperties)
-    }
-
-    func preview(template: String) {
-        let properties = commonProperties.merging([ Property.template: template], uniquingKeysWith: { $1 })
-
-        WPAnalytics.track(.editorSessionTemplatePreview, withProperties: properties)
     }
 
     private func startEventProperties(with unsupportedBlocks: [String]) -> [String: Any] {
@@ -100,7 +87,6 @@ private extension PostEditorAnalyticsSession {
             Property.blogType: blogType,
             Property.sessionId: sessionId,
             Property.hasUnsupportedBlocks: hasUnsupportedBlocks ? "1" : "0",
-            Property.template: template
         ].compactMapValues { $0 }
     }
 }
@@ -108,6 +94,7 @@ private extension PostEditorAnalyticsSession {
 extension PostEditorAnalyticsSession {
     enum Editor: String {
         case gutenberg
+        case stories
         case classic
         case html
     }

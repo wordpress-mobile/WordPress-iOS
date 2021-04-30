@@ -19,7 +19,7 @@ final class AuthenticatedImageDownload: AsyncOperation {
         let mediaRequestAuthenticator = MediaRequestAuthenticator()
         let host = MediaHost(with: blog) { error in
             // We'll log the error, so we know it's there, but we won't halt execution.
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
         }
 
         mediaRequestAuthenticator.authenticatedRequest(
@@ -72,7 +72,7 @@ class EditorMediaUtility {
         default:
             icon = .gridicon(.attachment, size: size)
         }
-        if #available(iOS 13.0, *), let color = tintColor {
+        if let color = tintColor {
             icon = icon.withTintColor(color)
         }
         icon.addAccessibilityForAttachment(attachment)

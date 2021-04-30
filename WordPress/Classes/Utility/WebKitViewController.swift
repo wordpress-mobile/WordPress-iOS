@@ -88,6 +88,19 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     private var widthConstraint: NSLayoutConstraint?
     private var onClose: (() -> Void)?
 
+    private var useLightStyle: Bool {
+        navigationController is LightNavigationController || FeatureFlag.newNavBarAppearance.enabled
+    }
+
+    private var barButtonTintColor: UIColor {
+        useLightStyle ? .listIcon : UIColor(light: .white, dark: .neutral(.shade70))
+    }
+
+    private var navBarTitleColor: UIColor {
+        useLightStyle ? .text : UIColor(light: .white, dark: .neutral(.shade70))
+    }
+
+
     private struct WebViewErrors {
         static let frameLoadInterrupted = 102
     }
@@ -247,12 +260,9 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
     private func setupNavBarTitleView() {
         titleView.titleLabel.text = NSLocalizedString("Loading...", comment: "Loading. Verb")
-        if #available(iOS 13.0, *), navigationController is LightNavigationController == false {
-            titleView.titleLabel.textColor = UIColor(light: .white, dark: .neutral(.shade70))
-        } else {
-            titleView.titleLabel.textColor = .neutral(.shade70)
-        }
-        titleView.subtitleLabel.textColor = .neutral(.shade30)
+
+        titleView.titleLabel.textColor = navBarTitleColor
+        titleView.subtitleLabel.textColor = useLightStyle ? .neutral(.shade30) : .neutral(.shade5)
 
         if let title = customTitle {
             self.title = title
@@ -266,7 +276,14 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
             return
         }
         navigationBar.barStyle = .default
-        navigationBar.titleTextAttributes = [.foregroundColor: UIColor.neutral(.shade70)]
+
+        if !useLightStyle {
+            navigationBar.titleTextAttributes = [.foregroundColor: UIColor.neutral(.shade70)]
+        } else {
+            // Remove serif title bar formatting
+            navigationBar.standardAppearance.titleTextAttributes = [:]
+        }
+
         navigationBar.shadowImage = UIImage(color: WPStyleGuide.webViewModalNavigationBarShadow())
         navigationBar.setBackgroundImage(UIImage(color: WPStyleGuide.webViewModalNavigationBarBackground()), for: .default)
 
@@ -274,6 +291,10 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     }
 
     private func styleNavBarButtons() {
+        guard !useLightStyle else {
+            return
+        }
+
         navigationItem.leftBarButtonItems?.forEach(styleBarButton)
         navigationItem.rightBarButtonItems?.forEach(styleBarButton)
     }
@@ -340,11 +361,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     }
 
     private func styleBarButton(_ button: UIBarButtonItem) {
-        if #available(iOS 13.0, *), navigationController is LightNavigationController == false {
-            button.tintColor = UIColor(light: .white, dark: .neutral(.shade70))
-        } else {
-            button.tintColor = .listIcon
-        }
+        button.tintColor = barButtonTintColor
     }
 
     private func styleToolBarButton(_ button: UIBarButtonItem) {

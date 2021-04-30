@@ -51,9 +51,9 @@ class FollowCommentsService: NSObject {
     ///   - success: Success block called on a successful fetch.
     ///   - failure: Failure block called if there is any error.
     @objc func toggleSubscribed(_ isSubscribed: Bool,
-                                success: @escaping () -> Void,
+                                success: @escaping (Bool) -> Void,
                                 failure: @escaping (Error?) -> Void) {
-        let successBlock = {
+        let successBlock = { (taskSuccessful: Bool) -> Void in
             let newIsSubscribed = !isSubscribed
             let followAction: FollowCommentsService.FollowAction = newIsSubscribed ? .followed : .unfollowed
 
@@ -62,7 +62,7 @@ class FollowCommentsService: NSObject {
             properties[WPAppAnalyticsKeyBlogID] = self.siteID
             WPAnalytics.trackReader(.readerToggleFollowConversation, properties: properties)
 
-            success()
+            success(taskSuccessful)
         }
 
         if isSubscribed {

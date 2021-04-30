@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
+require 'fileutils'
+
 # Supported languages:
 # ar,ca,cs,cy,da,de,el,en,en-CA,en-GB,es,fi,fr,he,hr,hu,id,it,ja,ko,ms,nb,nl,pl,pt,pt-PT,ro,ru,sk,sv,th,tr,uk,vi,zh-Hans,zh-Hant
 # * Arabic
@@ -39,11 +41,6 @@
 # * Chinese (China) [zh-Hans]
 # * Chinese (Taiwan) [zh-Hant]
 # * Welsh
-
-if Dir.pwd =~ /Scripts/
-  puts "Must run script from root folder"
-  exit
-end
 
 ALL_LANGS={
   'ar' => 'ar',         # Arabic
@@ -124,27 +121,48 @@ else
   langs = ALL_LANGS
 end
 
-langs.each do |code,local|
-  lang_dir = File.join('WordPress', 'Resources', "#{local}.lproj")
-  puts "Updating #{code}"
-  system "mkdir -p #{lang_dir}"
+script_root = __dir__
+project_dir = File.dirname(script_root)
 
-  # Download for production
-  system "if [ -e #{lang_dir}/Localizable#{strings_file_ext}.strings ]; then cp #{lang_dir}/Localizable#{strings_file_ext}.strings #{lang_dir}/Localizable#{strings_file_ext}.strings.bak; fi"
+langs.each do |code,local|
+  lang_dir = File.join(project_dir, 'WordPress', 'Resources', "#{local}.lproj")
+  puts "Updating #{code} in #{lang_dir}"
+  system "mkdir", "-p", lang_dir
+
+  destination = "#{lang_dir}/Localizable#{strings_file_ext}.strings"
+  backup_destination = "#{destination}.bak"
+
+  # Step 2 – Download the new strings
+  if File.exist? destination
+    FileUtils.copy destination, backup_destination
+  end
 
   url = "#{download_url}/#{code}/default/export-translations?#{strings_filter}format=strings"
-  destination = "#{lang_dir}/Localizable#{strings_file_ext}.strings"
 
-  system "curl -fLso #{destination} \"#{url}\"" or begin
-    puts "Error downloading #{code}"
+  system("curl", "-fgsLo", destination, url) or raise "Error downloading #{url}"
+
+  # Step 3 – Validate the new file
+  if !File.exist?(destination) or File.size(destination).to_f == 0
+    puts "\e[31mFatal Error: #{destination} appears to be empty. Exiting.\e[0m"
+    abort()
   end
 
-  if File.size(destination).to_f == 0
-    abort("\e[31mFatal Error: #{destination} appears to be empty. Exiting.\e[0m")
-  end
+  fix_script_path = File.join(script_root, 'fix-translation')
 
-  system "./Scripts/fix-translation #{lang_dir}/Localizable#{strings_file_ext}.strings"
-  system "plutil -lint #{lang_dir}/Localizable#{strings_file_ext}.strings" and system "rm #{lang_dir}/Localizable#{strings_file_ext}.strings.bak"
-  system "grep -a '\\x00\\x20\\x00\\x22\\x00\\x22\\x00\\x3b$' #{lang_dir}/Localizable#{strings_file_ext}.strings"
+  # References a file like: "#{lang_dir}.Localizable-old.strings" where strings_file_ext == "old"
+  strings_file_path = File.join(lang_dir, "Localizable#{strings_file_ext}.strings")
+
+  system fix_script_path, strings_file_path
+  system "plutil", "-lint", strings_file_path
+  # The fix-translations script is supposed to have replaced all strings with empty translations, to use the key (aka English copy)
+  # as the translation instead, as a fallback. So after that pass we should not have any more empty translations left,
+  # but just as a control, let's grep for lines ending with the UTF-16 sequence ` "";` to ensure there's none left.
+  system "grep", "-a", "\\x00\\x20\\x00\\x22\\x00\\x22\\x00\\x3b$", strings_file_path
+
+  # Clean up after ourselves
+  FileUtils.rm_f backup_destination
 end
-system "Scripts/extract-framework-translations.swift" if strings_filter.empty? 
+
+extract_framework_translations_script_path = File.join(script_root, 'extract-framework-translations.swift')
+
+system extract_framework_translations_script_path if strings_filter.empty? 

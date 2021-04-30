@@ -2,9 +2,9 @@ import WordPressFlux
 
 protocol ActivityPresenter: class {
     func presentDetailsFor(activity: FormattableActivity)
-    func presentBackupOrRestoreFor(activity: Activity)
-    func presentRestoreFor(activity: Activity)
-    func presentBackupFor(activity: Activity)
+    func presentBackupOrRestoreFor(activity: Activity, from sender: UIButton)
+    func presentRestoreFor(activity: Activity, from: String?)
+    func presentBackupFor(activity: Activity, from: String?)
 }
 
 class ActivityListViewModel: Observable {
@@ -54,6 +54,10 @@ class ActivityListViewModel: Observable {
         return store.state.groups[site] ?? []
     }
 
+    lazy var downloadPromptView: AppFeedbackPromptView = {
+        AppFeedbackPromptView()
+    }()
+
     init(site: JetpackSiteRef,
          store: ActivityStore = StoreContainer.shared.activity,
          configuration: ActivityListConfiguration) {
@@ -78,8 +82,9 @@ class ActivityListViewModel: Observable {
     }
 
     public func refresh(after: Date? = nil, before: Date? = nil, group: [ActivityGroup] = []) {
-
         store.fetchRewindStatus(site: site)
+
+        ActionDispatcher.dispatch(ActivityAction.refreshBackupStatus(site: site))
 
         // If a new filter is being applied, remove all activities
         if isApplyingNewFilter(after: after, before: before, group: group) {
@@ -183,12 +188,7 @@ class ActivityListViewModel: Observable {
                     presenter?.presentDetailsFor(activity: formattableActivity)
                 },
                 actionButtonHandler: { [weak presenter] (button) in
-                    if !FeatureFlag.jetpackBackupAndRestore.enabled {
-                        presenter?.presentDetailsFor(activity: formattableActivity)
-                        return
-                    }
-
-                    presenter?.presentBackupOrRestoreFor(activity: formattableActivity.activity)
+                    presenter?.presentBackupOrRestoreFor(activity: formattableActivity.activity, from: button)
                 }
             )
         })
@@ -204,7 +204,7 @@ class ActivityListViewModel: Observable {
                                         footerText: nil)
             }
 
-        return ImmuTable(optionalSections: [restoreStatusSection()] + activitiesSections)
+        return ImmuTable(optionalSections: [backupStatusSection(), restoreStatusSection()] + activitiesSections)
         // So far the only "extra" section is the restore one. In the future, this will include
         // showing plugin updates/CTA's and other things like this.
     }
@@ -228,6 +228,36 @@ class ActivityListViewModel: Observable {
         }
 
         return formattedDateRanges.joined(separator: " - ")
+    }
+
+    func backupDownloadHeader() -> UIView? {
+        guard let validUntil = store.getBackupStatus(site: site)?.validUntil,
+              Date() < validUntil,
+              let backupPoint = store.getBackupStatus(site: site)?.backupPoint,
+              let downloadURLString = store.getBackupStatus(site: site)?.url,
+              let downloadURL = URL(string: downloadURLString),
+              let downloadID = store.getBackupStatus(site: site)?.downloadID else {
+            return nil
+        }
+
+        let headingMessage = NSLocalizedString("We successfully created a backup of your site as of %@", comment: "Message displayed when a backup has finished")
+        downloadPromptView.setupHeading(String.init(format: headingMessage, arguments: [longDateFormatterWithTime.string(from: backupPoint)]))
+
+        let downloadTitle = NSLocalizedString("Download", comment: "Download button title")
+        downloadPromptView.setupYesButton(title: downloadTitle) { _ in
+            UIApplication.shared.open(downloadURL)
+        }
+
+        let dismissTitle = NSLocalizedString("Dismiss", comment: "Dismiss button title")
+        downloadPromptView.setupNoButton(title: dismissTitle) { [weak self] button in
+            guard let self = self else {
+                return
+            }
+
+            ActionDispatcher.dispatch(ActivityAction.dismissBackupNotice(site: self.site, downloadID: downloadID))
+        }
+
+        return downloadPromptView
     }
 
     func activityTypeDescription() -> String? {
@@ -262,6 +292,30 @@ class ActivityListViewModel: Observable {
         after != self.after || before != self.before
     }
 
+    private func backupStatusSection() -> ImmuTableSection? {
+        guard let backup = store.getBackupStatus(site: site), let backupProgress = backup.progress else {
+            return nil
+        }
+
+        let title = NSLocalizedString("Backing up site", comment: "Title of the cell displaying status of a backup in progress")
+        let summary: String
+        let progress = max(Float(backupProgress) / 100, 0.05)
+        // We don't want to show a completely empty progress bar — it'd seem something is broken. 5% looks acceptable
+        // for the starting state.
+
+        summary = NSLocalizedString("Creating downloadable backup", comment: "Description of the cell displaying status of a backup in progress")
+
+        let rewindRow = RewindStatusRow(
+            title: title,
+            summary: summary,
+            progress: progress
+        )
+
+        return ImmuTableSection(headerText: NSLocalizedString("Backup", comment: "Title of section showing backup status"),
+                                rows: [rewindRow],
+                                footerText: nil)
+    }
+
     private func restoreStatusSection() -> ImmuTableSection? {
         guard let restore = store.getCurrentRewindStatus(site: site)?.restore, restore.status == .running || restore.status == .queued else {
             return nil
@@ -276,14 +330,8 @@ class ActivityListViewModel: Observable {
         if let rewindPoint = store.getActivity(site: site, rewindID: restore.id) {
             let dateString = mediumDateFormatterWithTime.string(from: rewindPoint.published)
 
-            let messageFormat: String
-            if FeatureFlag.jetpackBackupAndRestore.enabled {
-                messageFormat = NSLocalizedString("Restoring to %@",
+            let messageFormat = NSLocalizedString("Restoring to %@",
                                                   comment: "Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date.")
-            } else {
-                messageFormat = NSLocalizedString("Rewinding to %@",
-                                                  comment: "Text showing the point in time the site is being currently rewinded to. %@' is a placeholder that will expand to a date.")
-            }
 
             summary = String(format: messageFormat, dateString)
         } else {
@@ -296,12 +344,7 @@ class ActivityListViewModel: Observable {
             progress: progress
         )
 
-        let headerText: String
-        if FeatureFlag.jetpackBackupAndRestore.enabled {
-            headerText = NSLocalizedString("Restore", comment: "Title of section showing restore status")
-        } else {
-            headerText = NSLocalizedString("Rewind", comment: "Title of section showing rewind status")
-        }
+        let headerText = NSLocalizedString("Restore", comment: "Title of section showing restore status")
 
         return ImmuTableSection(headerText: headerText,
                                 rows: [rewindRow],
@@ -323,7 +366,11 @@ class ActivityListViewModel: Observable {
     // MARK: - Date/Time handling
 
     lazy var longDateFormatterWithoutTime: DateFormatter = {
-        return ActivityDateFormatting.longDateFormatterWithoutTime(for: site)
+        return ActivityDateFormatting.longDateFormatter(for: site, withTime: false)
+    }()
+
+    lazy var longDateFormatterWithTime: DateFormatter = {
+        return ActivityDateFormatting.longDateFormatter(for: site, withTime: true)
     }()
 
     lazy var mediumDateFormatterWithTime: DateFormatter = {

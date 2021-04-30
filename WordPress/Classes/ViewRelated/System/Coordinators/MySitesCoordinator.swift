@@ -2,44 +2,140 @@ import UIKit
 
 @objc
 class MySitesCoordinator: NSObject {
-    let mySitesSplitViewController: WPSplitViewController
-    let mySitesNavigationController: UINavigationController
-    let blogListViewController: BlogListViewController
+    static let splitViewControllerRestorationID = "MySiteSplitViewControllerRestorationID"
+    static let navigationControllerRestorationID = "MySiteNavigationControllerRestorationID"
+
+    private let meScenePresenter: ScenePresenter
+
     let becomeActiveTab: () -> Void
 
     @objc
-    init(
-        mySitesSplitViewController: WPSplitViewController,
-        mySitesNavigationController: UINavigationController,
-        blogListViewController: BlogListViewController,
-        onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
-
-        self.mySitesSplitViewController = mySitesSplitViewController
-        self.mySitesNavigationController = mySitesNavigationController
-        self.blogListViewController = blogListViewController
+    init(meScenePresenter: ScenePresenter, onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
+        self.meScenePresenter = meScenePresenter
         self.becomeActiveTab = becomeActiveTab
 
         super.init()
     }
 
-    func showMySites() {
-        becomeActiveTab()
+    // MARK: - Root View Controller
 
-        mySitesNavigationController.viewControllers = [blogListViewController]
+    private var rootContentViewController: UIViewController {
+        if Feature.enabled(.newNavBarAppearance) {
+            return mySiteViewController
+        } else {
+            return blogListViewController
+        }
+    }
+
+    // MARK: - VCs
+
+    /// The view controller that should be presented by the tab bar controller.
+    ///
+    @objc
+    var rootViewController: UIViewController {
+        return splitViewController
     }
 
     @objc
-    func showBlogDetails(for blog: Blog) {
-        showMySites()
+    lazy var splitViewController: WPSplitViewController = {
+        let splitViewController = WPSplitViewController()
 
-        blogListViewController.setSelectedBlog(blog, animated: false)
+        splitViewController.restorationIdentifier = MySitesCoordinator.splitViewControllerRestorationID
+        splitViewController.presentsWithGesture = false
+        splitViewController.setInitialPrimaryViewController(navigationController)
+        splitViewController.dimsDetailViewControllerAutomatically = !FeatureFlag.newNavBarAppearance.enabled
+        splitViewController.tabBarItem = navigationController.tabBarItem
+
+        if Feature.enabled(.newNavBarAppearance) {
+            splitViewController.wpPrimaryColumnWidth = .default
+        } else {
+            splitViewController.wpPrimaryColumnWidth = .narrow
+        }
+
+        return splitViewController
+    }()
+
+    @objc
+    lazy var navigationController: UINavigationController = {
+        let navigationController = UINavigationController(rootViewController: rootContentViewController)
+
+        if Feature.enabled(.newNavBarAppearance) {
+            navigationController.navigationBar.prefersLargeTitles = true
+        }
+
+        navigationController.restorationIdentifier = MySitesCoordinator.navigationControllerRestorationID
+        navigationController.navigationBar.isTranslucent = false
+
+        let tabBarImage = AppStyleGuide.mySiteTabIcon
+        navigationController.tabBarItem.image = tabBarImage
+        navigationController.tabBarItem.selectedImage = tabBarImage
+        navigationController.tabBarItem.accessibilityLabel = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
+        navigationController.tabBarItem.accessibilityIdentifier = "mySitesTabButton"
+        navigationController.tabBarItem.title = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
+
+        if !FeatureFlag.newNavBarAppearance.enabled {
+            let context = ContextManager.shared.mainContext
+            let service = BlogService(managedObjectContext: context)
+            if let blogToOpen = service.lastUsedOrFirstBlog() {
+                blogListViewController.selectedBlog = blogToOpen
+            }
+        }
+
+        return navigationController
+    }()
+
+    @objc
+    private(set) lazy var blogListViewController: BlogListViewController = {
+        BlogListViewController(meScenePresenter: self.meScenePresenter)
+    }()
+
+    private lazy var mySiteViewController: MySiteViewController = {
+        MySiteViewController(meScenePresenter: self.meScenePresenter)
+    }()
+
+    // MARK: - Navigation
+
+    func showRootViewController() {
+        becomeActiveTab()
+
+        navigationController.viewControllers = [rootContentViewController]
     }
 
-    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection? = nil) {
+    // MARK: - Sites List
+
+    private func showSitesList() {
+        showRootViewController()
+
+        if Feature.enabled(.newNavBarAppearance) {
+            let navigationController = UINavigationController(rootViewController: blogListViewController)
+            navigationController.modalPresentationStyle = .formSheet
+            mySiteViewController.present(navigationController, animated: true)
+        }
+    }
+
+    // MARK: - Blog Details
+
+    @objc
+    func showBlogDetails(for blog: Blog) {
+        showRootViewController()
+
+        if Feature.enabled(.newNavBarAppearance) {
+            mySiteViewController.blog = blog
+            if mySiteViewController.presentedViewController != nil {
+                mySiteViewController.dismiss(animated: true, completion: nil)
+            }
+        } else {
+            blogListViewController.setSelectedBlog(blog, animated: false)
+        }
+    }
+
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection) {
         showBlogDetails(for: blog)
 
-        if let subsection = subsection,
-            let blogDetailsViewController = mySitesNavigationController.topViewController as? BlogDetailsViewController {
+        if Feature.enabled(.newNavBarAppearance),
+           let mySiteViewController = navigationController.topViewController as? MySiteViewController {
+            mySiteViewController.showBlogDetailsSubsection(subsection)
+        } else if let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
             blogDetailsViewController.showDetailView(for: subsection)
         }
     }
@@ -53,14 +149,19 @@ class MySitesCoordinator: NSObject {
     func showStats(for blog: Blog, timePeriod: StatsPeriodType) {
         showBlogDetails(for: blog)
 
-        if let blogDetailsViewController = mySitesNavigationController.topViewController as? BlogDetailsViewController {
+        if FeatureFlag.newNavBarAppearance.enabled {
+
+            UserDefaults.standard.set(timePeriod.rawValue, forKey: StatsPeriodType.statsPeriodTypeDefaultsKey)
+            mySiteViewController.showDetailView(for: .stats)
+
+        } else if let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
             // Setting this user default is a bit of a hack, but it's by far the easiest way to
             // get the stats view controller displaying the correct period. I spent some time
             // trying to do it differently, but the existing stats view controller setup is
             // quite complex and contains many nested child view controllers. As we're planning
             // to revamp that section in the not too distant future, I opted for this simpler
             // configuration for now. 2018-07-11 @frosty
-            UserDefaults.standard.set(timePeriod.rawValue, forKey: MySitesCoordinator.statsPeriodTypeDefaultsKey)
+            UserDefaults.standard.set(timePeriod.rawValue, forKey: StatsPeriodType.statsPeriodTypeDefaultsKey)
 
             blogDetailsViewController.showDetailView(for: .stats)
         }
@@ -70,7 +171,18 @@ class MySitesCoordinator: NSObject {
         showBlogDetails(for: blog, then: .activity)
     }
 
-    private static let statsPeriodTypeDefaultsKey = "LastSelectedStatsPeriodType"
+    // MARK: - Adding a new site
+
+    func showSiteCreation() {
+        showRootViewController()
+        mySiteViewController.launchSiteCreation()
+    }
+
+    @objc
+    func showAddNewSite() {
+        showRootViewController()
+        mySiteViewController.presentInterfaceForAddingNewSite()
+    }
 
     // MARK: - My Sites
 
@@ -115,7 +227,7 @@ class MySitesCoordinator: NSObject {
         }
 
         guard let site = JetpackSiteRef(blog: blog),
-            let navigationController = mySitesSplitViewController.topDetailViewController?.navigationController else {
+              let navigationController = splitViewController.topDetailViewController?.navigationController else {
             return
         }
 

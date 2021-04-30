@@ -37,7 +37,11 @@ extension BlogDetailsViewController {
                     self.dismiss(animated: true) {
                         self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
                         self.shouldScrollToViewSite = true
-                        navigationController.popToViewController(self, animated: true)
+                        if FeatureFlag.newNavBarAppearance.enabled {
+                            navigationController.popToRootViewController(animated: true)
+                        } else {
+                            navigationController.popToViewController(self, animated: true)
+                        }
                     }
                 default:
                     break
@@ -102,6 +106,13 @@ extension BlogDetailsViewController {
         showQuickStart(with: .grow)
     }
 
+    @objc func cancelCompletedToursIfNeeded() {
+        if shouldShowQuickStartChecklist() && blog.homepagePageID == nil {
+            // Ends the tour Edit Homepage if the site doesn't have a homepage set or uses the blog.
+            QuickStartTourGuide.shared.complete(tour: QuickStartEditHomepageTour(), for: blog, postNotification: false)
+        }
+    }
+
     private func showQuickStart(with type: QuickStartType) {
         let checklist = QuickStartChecklistViewController(blog: blog, type: type)
         let navigationViewController = UINavigationController(rootViewController: checklist)
@@ -110,6 +121,8 @@ extension BlogDetailsViewController {
         }
 
         QuickStartTourGuide.shared.visited(.checklist)
+
+        createButtonCoordinator?.hideCreateButtonTooltip()
     }
 
     @objc func quickStartSectionViewModel() -> BlogDetailsSection {

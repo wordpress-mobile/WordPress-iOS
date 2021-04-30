@@ -99,6 +99,7 @@ import Gridicons
         super.viewDidLoad()
 
         navigationItem.title = NSLocalizedString("Search", comment: "Title of the Reader's search feature")
+        navigationItem.largeTitleDisplayMode = .never
 
         WPStyleGuide.configureColors(view: view, tableView: nil)
         setupSearchBar()
@@ -160,11 +161,8 @@ import Gridicons
     @objc func setupSearchBar() {
         // Appearance must be set before the search bar is added to the view hierarchy.
         let placeholderText = NSLocalizedString("Search WordPress", comment: "Placeholder text for the Reader search feature.")
-        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(.shade30))
-        let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).attributedPlaceholder = attributedPlaceholder
-        let textAttributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(.shade60))
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).defaultTextAttributes = textAttributes
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).placeholder = placeholderText
+
         searchBar.becomeFirstResponder()
         WPStyleGuide.configureSearchBar(searchBar)
     }

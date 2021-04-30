@@ -1,9 +1,15 @@
 import Foundation
 
+protocol LinkRouter {
+    init(routes: [Route])
+    func canHandle(url: URL) -> Bool
+    func handle(url: URL, shouldTrack track: Bool, source: UIViewController?)
+}
+
 /// UniversalLinkRouter keeps a list of possible URL routes that are exposed
 /// via universal links, and handles incoming links to trigger the appropriate route.
 ///
-struct UniversalLinkRouter {
+struct UniversalLinkRouter: LinkRouter {
     private let matcher: RouteMatcher
 
     init(routes: [Route]) {
@@ -26,7 +32,8 @@ struct UniversalLinkRouter {
         readerRoutes +
         statsRoutes +
         mySitesRoutes +
-        appBannerRoutes
+        appBannerRoutes +
+        startRoutes
 
     static let meRoutes: [Route] = [
         MeRoute(),
@@ -61,7 +68,8 @@ struct UniversalLinkRouter {
         ReaderRoute.feed,
         ReaderRoute.blog,
         ReaderRoute.feedsPost,
-        ReaderRoute.blogsPost
+        ReaderRoute.blogsPost,
+        ReaderRoute.wpcomPost
     ]
 
     static let statsRoutes: [Route] = [
@@ -92,6 +100,10 @@ struct UniversalLinkRouter {
         AppBannerRoute()
     ]
 
+    static let startRoutes: [Route] = [
+        StartRoute()
+    ]
+
     static let redirects: [Route] = [
         MbarRoute()
     ]
@@ -102,12 +114,12 @@ struct UniversalLinkRouter {
     func canHandle(url: URL) -> Bool {
         let matcherCanHandle = matcher.routesMatching(url).count > 0
 
-        guard let host = url.host else {
+        guard let host = url.host, let scheme = url.scheme else {
             return matcherCanHandle
         }
 
         // If there's a hostname, check it's WordPress.com
-        return host == "wordpress.com" && matcherCanHandle
+        return scheme == "https" && host == "wordpress.com" && matcherCanHandle
     }
 
     /// Attempts to find a route that matches the url's path, and perform its
@@ -130,14 +142,24 @@ struct UniversalLinkRouter {
         }
 
         for matchedRoute in matches {
-            matchedRoute.action.perform(matchedRoute.values, source: source)
+            matchedRoute.action.perform(matchedRoute.values, source: source, router: self)
         }
     }
 
     private func trackDeepLink(matchCount: Int, url: URL) {
         let stat: WPAnalyticsStat = (matchCount > 0) ? .deepLinked : .deepLinkFailed
-        let properties = ["url": url.absoluteString]
+        var properties = [TracksPropertyKeys.url: url.absoluteString]
+
+        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        if let source = components?.queryItems?.first(where: { $0.name == TracksPropertyKeys.source }) {
+            properties[TracksPropertyKeys.source] = source.value
+        }
 
         WPAppAnalytics.track(stat, withProperties: properties)
+    }
+
+    private enum TracksPropertyKeys {
+        static let url = "url"
+        static let source = "source"
     }
 }

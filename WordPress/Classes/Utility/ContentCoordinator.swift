@@ -2,12 +2,14 @@
 protocol ContentCoordinator {
     func displayReaderWithPostId(_ postID: NSNumber?, siteID: NSNumber?) throws
     func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?) throws
-    func displayStatsWithSiteID(_ siteID: NSNumber?) throws
+    func displayStatsWithSiteID(_ siteID: NSNumber?, url: URL?) throws
     func displayFollowersWithSiteID(_ siteID: NSNumber?, expirationTime: TimeInterval) throws
     func displayStreamWithSiteID(_ siteID: NSNumber?) throws
     func displayWebViewWithURL(_ url: URL)
     func displayFullscreenImage(_ image: UIImage)
     func displayPlugin(withSlug pluginSlug: String, on siteSlug: String) throws
+    func displayBackupWithSiteID(_ siteID: NSNumber?) throws
+    func displayScanWithSiteID(_ siteID: NSNumber?) throws
 }
 
 
@@ -49,9 +51,17 @@ struct DefaultContentCoordinator: ContentCoordinator {
         controller?.navigationController?.pushViewController(commentsViewController!, animated: true)
     }
 
-    func displayStatsWithSiteID(_ siteID: NSNumber?) throws {
-        guard let blog = blogWithBlogID(siteID), blog.supports(.stats) else {
+    func displayStatsWithSiteID(_ siteID: NSNumber?, url: URL? = nil) throws {
+        guard let siteID = siteID,
+              let blog = Blog.lookup(withID: siteID, in: mainContext),
+              blog.supports(.stats)
+        else {
             throw DisplayError.missingParameter
+        }
+
+        // Stats URLs should be of the form /stats/:time_period/:domain
+        if let url = url {
+            setTimePeriodForStatsURLIfPossible(url)
         }
 
         let statsViewController = StatsViewController()
@@ -59,13 +69,48 @@ struct DefaultContentCoordinator: ContentCoordinator {
         controller?.navigationController?.pushViewController(statsViewController, animated: true)
     }
 
-    func displayFollowersWithSiteID(_ siteID: NSNumber?, expirationTime: TimeInterval) throws {
-        guard let blog = blogWithBlogID(siteID) else {
+    private func setTimePeriodForStatsURLIfPossible(_ url: URL) {
+        let matcher = RouteMatcher(routes: UniversalLinkRouter.statsRoutes)
+        let matches = matcher.routesMatching(url)
+        if let match = matches.first,
+           let action = match.action as? StatsRoute,
+           let timePeriod = action.timePeriod {
+            // Initializing a StatsPeriodType to ensure we have a valid period
+            UserDefaults.standard.set(timePeriod.rawValue, forKey: StatsPeriodType.statsPeriodTypeDefaultsKey)
+        }
+    }
+
+    func displayBackupWithSiteID(_ siteID: NSNumber?) throws {
+        guard let siteID = siteID,
+              let blog = Blog.lookup(withID: siteID, in: mainContext),
+              let backupListViewController = BackupListViewController(blog: blog)
+        else {
             throw DisplayError.missingParameter
         }
 
-        let service = BlogService(managedObjectContext: mainContext)
-        SiteStatsInformation.sharedInstance.siteTimeZone = service.timeZone(for: blog)
+        controller?.navigationController?.pushViewController(backupListViewController, animated: true)
+    }
+
+    func displayScanWithSiteID(_ siteID: NSNumber?) throws {
+        guard let siteID = siteID,
+              let blog = Blog.lookup(withID: siteID, in: mainContext),
+              blog.isScanAllowed()
+        else {
+            throw DisplayError.missingParameter
+        }
+
+        let scanViewController = JetpackScanViewController(blog: blog)
+        controller?.navigationController?.pushViewController(scanViewController, animated: true)
+    }
+
+    func displayFollowersWithSiteID(_ siteID: NSNumber?, expirationTime: TimeInterval) throws {
+        guard let siteID = siteID,
+              let blog = Blog.lookup(withID: siteID, in: mainContext)
+        else {
+            throw DisplayError.missingParameter
+        }
+
+        SiteStatsInformation.sharedInstance.siteTimeZone = blog.timeZone
         SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
         SiteStatsInformation.sharedInstance.siteID = blog.dotComID
 
@@ -116,14 +161,4 @@ struct DefaultContentCoordinator: ContentCoordinator {
         }
         return jetpack
     }
-
-    private func blogWithBlogID(_ blogID: NSNumber?) -> Blog? {
-        guard let blogID = blogID else {
-            return nil
-        }
-
-        let service = BlogService(managedObjectContext: mainContext)
-        return service.blog(byBlogId: blogID)
-    }
-
 }

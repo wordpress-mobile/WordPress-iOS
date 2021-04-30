@@ -1,5 +1,12 @@
 #import "ContextManagerMock.h"
 
+// This deserves a little bit of explanation – this was previously part of the public interface for `ContextManager`, which shouldn't make this API
+// public to the hosting app. Rather than rework the `CoreDataMigrationTests` right away (which will be done later as part of adopting Woo's
+// updated and well-tested migrator), we can use this hack for now to preserve the behaviour for those tests and come back to them later.
+@interface ContextManager(DeprecatedAccessors)
+    - (NSPersistentStoreCoordinator *) persistentStoreCoordinator;
+    - (NSManagedObjectModel *) managedObjectModel;
+@end
 
 @implementation ContextManagerMock
 

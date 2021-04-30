@@ -232,7 +232,7 @@ private extension BlogJetpackSettingsService {
     func updateJetpackSettings(_ settings: BlogSettings, remoteSettings: RemoteBlogJetpackSettings) {
         settings.jetpackMonitorEnabled = remoteSettings.monitorEnabled
         settings.jetpackBlockMaliciousLoginAttempts = remoteSettings.blockMaliciousLoginAttempts
-        settings.jetpackLoginWhiteListedIPAddresses = remoteSettings.loginWhiteListedIPAddresses
+        settings.jetpackLoginAllowListedIPAddresses = remoteSettings.loginAllowListedIPAddresses
         settings.jetpackSSOEnabled = remoteSettings.ssoEnabled
         settings.jetpackSSOMatchAccountsByEmail = remoteSettings.ssoMatchAccountsByEmail
         settings.jetpackSSORequireTwoStepAuthentication = remoteSettings.ssoRequireTwoStepAuthentication
@@ -251,7 +251,7 @@ private extension BlogJetpackSettingsService {
     func jetpackSettingsRemote(_ settings: BlogSettings) -> RemoteBlogJetpackSettings {
         return RemoteBlogJetpackSettings(monitorEnabled: settings.jetpackMonitorEnabled,
                                          blockMaliciousLoginAttempts: settings.jetpackBlockMaliciousLoginAttempts,
-                                         loginWhiteListedIPAddresses: settings.jetpackLoginWhiteListedIPAddresses ?? Set<String>(),
+                                         loginAllowListedIPAddresses: settings.jetpackLoginAllowListedIPAddresses ?? Set<String>(),
                                          ssoEnabled: settings.jetpackSSOEnabled,
                                          ssoMatchAccountsByEmail: settings.jetpackSSOMatchAccountsByEmail,
                                          ssoRequireTwoStepAuthentication: settings.jetpackSSORequireTwoStepAuthentication)

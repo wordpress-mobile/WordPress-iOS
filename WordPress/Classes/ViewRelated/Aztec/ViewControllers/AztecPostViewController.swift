@@ -463,6 +463,20 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     private var mediaPreviewHelper: MediaPreviewHelper? = nil
 
+    private let database: KeyValueDatabase = UserDefaults()
+    private enum Key {
+        static let classicDeprecationNoticeHasBeenShown = "kClassicDeprecationNoticeHasBeenShown"
+    }
+
+    private var hasNoticeBeenShown: Bool {
+        get {
+            database.bool(forKey: Key.classicDeprecationNoticeHasBeenShown)
+        }
+        set {
+            database.set(newValue, forKey: Key.classicDeprecationNoticeHasBeenShown)
+        }
+    }
+
     // MARK: - Initializers
 
     required init(
@@ -534,6 +548,41 @@ class AztecPostViewController: UIViewController, PostEditor {
         if !editorSession.started {
             editorSession.start()
         }
+
+        if shouldShowDeprecationNotice() {
+            showDeprecationNotice()
+            hasNoticeBeenShown = true
+        }
+    }
+
+    private func shouldShowDeprecationNotice() -> Bool {
+        return hasNoticeBeenShown == false &&
+            (post.postTitle ?? "").isEmpty &&
+            (post.content ?? "").isEmpty
+    }
+
+    private func showDeprecationNotice() {
+        let okButton: (title: String, handler: FancyAlertViewController.FancyAlertButtonHandler?) =
+        (
+            title: NSLocalizedString("Dismiss", comment: "The title of a button to close the classic editor deprecation notice alert dialog."),
+            handler: { alert, _ in
+                alert.dismiss(animated: true, completion: nil)
+            }
+        )
+
+        let config = FancyAlertViewController.Config(
+            titleText: NSLocalizedString("Try the new Block Editor", comment: "The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app."),
+            bodyText: NSLocalizedString("We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings.", comment: "The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app."),
+            headerImage: nil,
+            dividerPosition: .top,
+            defaultButton: okButton,
+            cancelButton: nil
+        )
+
+        let alert = FancyAlertViewController.controllerWithConfiguration(configuration: config)
+        alert.modalPresentationStyle = .custom
+        alert.transitioningDelegate = self
+        present(alert, animated: true)
     }
 
 
@@ -724,6 +773,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         navigationController?.navigationBar.accessibilityIdentifier = "Azctec Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
         navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
+        navigationItem.titleView = navigationBarManager.blogTitleViewLabel
     }
 
     func configureDismissButton() {
@@ -802,17 +852,17 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func refreshInterface() {
-        reloadBlogPickerButton()
+        reloadBlogTitleView()
         reloadEditorContents()
         reloadPublishButton()
-        refreshNavigationBar()
+        refreshTitleViewForMediaUploadIfNeeded()
     }
 
-    func refreshNavigationBar() {
+    func refreshTitleViewForMediaUploadIfNeeded() {
         if postEditorStateContext.isUploadingMedia {
-            navigationItem.leftBarButtonItems = navigationBarManager.uploadingMediaLeftBarButtonItems
+            navigationItem.titleView = navigationBarManager.uploadingMediaTitleView
         } else {
-            navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
+            navigationItem.titleView = navigationBarManager.blogTitleViewLabel
         }
     }
 
@@ -856,13 +906,13 @@ class AztecPostViewController: UIViewController, PostEditor {
         setHTML(content)
     }
 
-    func reloadBlogPickerButton() {
-        var pickerTitle = post.blog.url ?? String()
+    func reloadBlogTitleView() {
+        var blogTitle = post.blog.url ?? String()
         if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
-            pickerTitle = blogName
+            blogTitle = blogName
         }
 
-        navigationBarManager.reloadBlogPickerButton(with: pickerTitle, enabled: !isSingleSiteMode)
+        navigationBarManager.reloadBlogTitleView(text: blogTitle)
     }
 
     func reloadPublishButton() {
@@ -1108,7 +1158,7 @@ extension AztecPostViewController {
         guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
             // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
             let error = NSError(domain: errorDomain, code: ErrorCode.expectedSecondaryAction.rawValue, userInfo: nil)
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
             return
         }
 
@@ -2385,7 +2435,7 @@ extension AztecPostViewController {
         mediaProgressView.isHidden = !mediaCoordinator.isUploadingMedia(for: post)
         mediaProgressView.progress = Float(mediaCoordinator.totalProgress(for: post))
         postEditorStateContext.update(isUploadingMedia: mediaCoordinator.isUploadingMedia(for: post))
-        refreshNavigationBar()
+        refreshTitleViewForMediaUploadIfNeeded()
     }
 
     fileprivate func insert(exportableAsset: ExportableAsset, source: MediaSource, attachment: MediaAttachment? = nil) {
@@ -3496,8 +3546,8 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
         displayCancelMediaUploads()
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadLeftNavigationItems items: [UIBarButtonItem]) {
-        navigationItem.leftBarButtonItems = items
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadTitleView view: UIView) {
+        navigationItem.titleView = view
     }
 }
 

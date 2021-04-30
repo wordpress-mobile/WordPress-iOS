@@ -7,6 +7,7 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var primaryButton: FancyButton!
     @IBOutlet weak var secondaryButton: FancyButton!
+    @IBOutlet weak var warningButton: UIButton!
     @IBOutlet weak var progressView: UIProgressView!
 
     private var model: JetpackScanStatusViewModel?
@@ -28,6 +29,7 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
 
         configurePrimaryButton(model)
         configureSecondaryButton(model)
+        configureWarningButton(model)
         configureProgressView(model)
     }
 
@@ -38,6 +40,7 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
         }
 
         primaryButton.setTitle(primaryTitle, for: .normal)
+        primaryButton.isEnabled = model.primaryButtonEnabled
         primaryButton.isHidden = false
     }
 
@@ -49,6 +52,16 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
 
         secondaryButton.setTitle(secondaryTitle, for: .normal)
         secondaryButton.isHidden = false
+    }
+
+    private func configureWarningButton(_ model: JetpackScanStatusViewModel) {
+        guard let warningButtonTitle = model.warningButtonTitle else {
+            warningButton.isHidden = true
+            return
+        }
+
+        warningButton.setTitle(warningButtonTitle, for: .normal)
+        warningButton.isHidden = false
     }
 
     private func configureProgressView(_ model: JetpackScanStatusViewModel) {
@@ -78,13 +91,22 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
         viewModel.secondaryButtonTapped(sender)
     }
 
+    @IBAction func warningButtonTapped(_ sender: Any) {
+        guard let viewModel = model else {
+            return
+        }
+
+        viewModel.warningButtonTapped(sender)
+    }
+
     // MARK: - Private: View Configuration
     private func configureProgressView() {
         progressView.isHidden = true
 
         progressView.layer.cornerRadius = 4
         progressView.clipsToBounds = true
-        // TODO: Replace hex with styleguide color
-        progressView.tintColor = .init(fromHex: 0x069e08)
+
+        let color = UIColor.muriel(color: .jetpackGreen, .shade50)
+        progressView.tintColor = color
     }
 }

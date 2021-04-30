@@ -109,9 +109,9 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     self.forwardButton.image                = [[UIImage gridiconOfType:GridiconTypeChevronRight] imageFlippedForRightToLeftLayoutDirection];
 
     // Toolbar: Hidden by default!
-    self.toolbar.barTintColor               = [UIColor whiteColor];
-    self.backButton.tintColor               = [UIColor murielNeutral20];
-    self.forwardButton.tintColor            = [UIColor murielNeutral20];
+    self.toolbar.barTintColor               = [[UIColor alloc] initWithLight:[UIColor whiteColor] dark:[UIColor murielAppBarBackground]];
+    self.backButton.tintColor               = [UIColor murielListIcon];
+    self.forwardButton.tintColor            = [UIColor murielListIcon];
     self.toolbarBottomConstraint.constant   = WPWebViewToolbarHiddenConstant;
 
     // Share
@@ -127,7 +127,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     [self loadWebViewRequest];
 
     if (UIAccessibilityIsBoldTextEnabled()) {
-        self.navigationController.navigationBar.tintColor = [UIColor murielNeutral20];
+        self.navigationController.navigationBar.tintColor = [UIColor murielListIcon];
     }
 }
 
@@ -145,19 +145,13 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         return;
     }
 
-    UIImage *navBackgroundImage             = [UIImage imageWithColor:[WPStyleGuide webViewModalNavigationBarBackground]];
-    UIImage *navShadowImage                 = [UIImage imageWithColor:[WPStyleGuide webViewModalNavigationBarShadow]];
-
-    UINavigationBar *navigationBar          = self.navigationController.navigationBar;
-    navigationBar.shadowImage               = navShadowImage;
-    navigationBar.barStyle                  = UIBarStyleDefault;
-    [navigationBar setBackgroundImage:navBackgroundImage forBarMetrics:UIBarMetricsDefault];
-
-    self.titleView.titleLabel.textColor     = [UIColor whiteColor];
-    self.titleView.subtitleLabel.textColor  = [UIColor whiteColor];
-
-    self.dismissButton.tintColor            = [UIColor whiteColor];
-    self.optionsButton.tintColor            = [UIColor whiteColor];
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        self.titleView.titleLabel.textColor     = [UIColor murielText];
+        self.titleView.subtitleLabel.textColor  = [UIColor murielNeutral30];
+    } else {
+        self.titleView.titleLabel.textColor     = [UIColor whiteColor];
+        self.titleView.subtitleLabel.textColor  = [UIColor whiteColor];
+    }
 
     self.navigationItem.leftBarButtonItem   = self.dismissButton;
 }

@@ -126,7 +126,7 @@ private extension XCUIElement {
 
 private extension XCUIElementAttributes {
     var isNetworkLoadingIndicator: Bool {
-        if hasWhiteListedIdentifier { return false }
+        if hasAllowListedIdentifier { return false }
 
         let hasOldLoadingIndicatorSize = frame.size == CGSize(width: 10, height: 20)
         let hasNewLoadingIndicatorSize = frame.size.width.isBetween(46, and: 47) && frame.size.height.isBetween(2, and: 3)
@@ -134,10 +134,10 @@ private extension XCUIElementAttributes {
         return hasOldLoadingIndicatorSize || hasNewLoadingIndicatorSize
     }
 
-    var hasWhiteListedIdentifier: Bool {
-        let whiteListedIdentifiers = ["GeofenceLocationTrackingOn", "StandardLocationTrackingOn"]
+    var hasAllowListedIdentifier: Bool {
+        let allowListedIdentifiers = ["GeofenceLocationTrackingOn", "StandardLocationTrackingOn"]
 
-        return whiteListedIdentifiers.contains(identifier)
+        return allowListedIdentifiers.contains(identifier)
     }
 
     func isStatusBar(_ deviceWidth: CGFloat) -> Bool {

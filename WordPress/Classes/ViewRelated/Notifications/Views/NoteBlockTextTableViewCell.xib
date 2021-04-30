@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,24 +13,27 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="iFe-U5-rWI" id="viy-Fi-ur6">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hE4-fp-yCe" customClass="RichTextView" customModule="WordPress">
-                        <rect key="frame" x="15" y="8" width="290" height="25"/>
+                        <rect key="frame" x="20" y="8" width="280" height="25"/>
                         <color key="backgroundColor" red="0.90245449542999268" green="0.91623926162719727" blue="0.93599998950958252" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="hE4-fp-yCe" firstAttribute="top" secondItem="viy-Fi-ur6" secondAttribute="topMargin" constant="-3" id="NKT-QG-MST"/>
                     <constraint firstAttribute="bottomMargin" secondItem="hE4-fp-yCe" secondAttribute="bottom" id="PRW-Vw-tNv"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="hE4-fp-yCe" secondAttribute="trailing" id="dkA-7C-ajm"/>
-                    <constraint firstItem="hE4-fp-yCe" firstAttribute="leading" secondItem="viy-Fi-ur6" secondAttribute="leadingMargin" id="hYV-Xw-F9X"/>
+                    <constraint firstAttribute="trailing" secondItem="hE4-fp-yCe" secondAttribute="trailing" constant="20" id="dkA-7C-ajm"/>
+                    <constraint firstItem="hE4-fp-yCe" firstAttribute="leading" secondItem="viy-Fi-ur6" secondAttribute="leading" constant="20" id="hYV-Xw-F9X"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="textView" destination="hE4-fp-yCe" id="dPZ-RS-zf9"/>
+                <outletCollection property="horizontalEdgeConstraints" destination="hYV-Xw-F9X" collectionClass="NSMutableArray" id="Oe5-3o-grc"/>
+                <outletCollection property="horizontalEdgeConstraints" destination="dkA-7C-ajm" collectionClass="NSMutableArray" id="XLl-RR-YO8"/>
             </connections>
+            <point key="canvasLocation" x="139" y="154"/>
         </tableViewCell>
     </objects>
 </document>

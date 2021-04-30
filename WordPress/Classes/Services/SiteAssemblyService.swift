@@ -90,6 +90,7 @@ final class EnhancedSiteCreationService: LocalCoreDataService, SiteAssemblyServi
         // Here we designate the new site as the last used, so that it will be presented post-creation
         if let siteUrl = createdBlog?.url {
             RecentSitesService().touch(site: siteUrl)
+            StoreContainer.shared.statsWidgets.refreshStatsWidgetsSiteList()
         }
 
         currentStatus = .succeeded

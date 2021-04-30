@@ -84,6 +84,7 @@ public protocol ThemePresenter: class {
 
     @objc static let reuseIdentifierForThemesHeader = "ThemeBrowserSectionHeaderViewThemes"
     @objc static let reuseIdentifierForCustomThemesHeader = "ThemeBrowserSectionHeaderViewCustomThemes"
+    static let themesLoaderFrame = CGRect(x: 0.0, y: 0.0, width: 40.0, height: 20.0)
 
     // MARK: - Properties: must be set by parent
 
@@ -183,6 +184,15 @@ public protocol ThemePresenter: class {
         return !suspendedSearch.trim().isEmpty
     }
 
+    fileprivate var activityIndicator: UIActivityIndicatorView = {
+        let indicatorView = UIActivityIndicatorView(style: .medium)
+        indicatorView.frame = themesLoaderFrame
+        //TODO update color with white headers
+        indicatorView.color = .white
+        indicatorView.startAnimating()
+        return indicatorView
+       }()
+
     open var filterType: ThemeType = ThemeType.mayPurchase ? .all : .free
 
     /**
@@ -209,6 +219,18 @@ public protocol ThemePresenter: class {
             return customThemesController.object(at: IndexPath(row: indexPath.row, section: 0)) as? Theme
         }
         return nil
+    }
+
+    fileprivate func updateActivateButton(isLoading: Bool) {
+        if isLoading {
+            activateButton?.customView = activityIndicator
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+            activateButton?.customView = nil
+            activateButton?.isEnabled = false
+            activateButton?.title = ThemeAction.active.title
+        }
     }
 
     fileprivate var presentingTheme: Theme?
@@ -243,6 +265,7 @@ public protocol ThemePresenter: class {
     fileprivate var themesSyncingPage = 0
     fileprivate var customThemesSyncHelper: WPContentSyncHelper!
     fileprivate let syncPadding = 5
+    fileprivate var activateButton: UIBarButtonItem?
 
     // MARK: - Private Aliases
 
@@ -768,6 +791,8 @@ public protocol ThemePresenter: class {
             return
         }
 
+        updateActivateButton(isLoading: true)
+
         _ = themeService.activate(theme,
             for: blog,
             success: { [weak self] (theme: Theme?) in
@@ -780,6 +805,9 @@ public protocol ThemePresenter: class {
                 let successMessage = String(format: successFormat, theme?.name ?? "", theme?.author ?? "")
                 let manageTitle = NSLocalizedString("Manage site", comment: "Return to blog screen action when theme activation succeeds")
                 let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
+
+                self?.updateActivateButton(isLoading: false)
+
                 let alertController = UIAlertController(title: successTitle,
                     message: successMessage,
                     preferredStyle: .alert)
@@ -791,11 +819,15 @@ public protocol ThemePresenter: class {
                 alertController.addDefaultActionWithTitle(okTitle, handler: nil)
                 alertController.presentFromRootViewController()
             },
-            failure: { (error) in
+            failure: { [weak self] (error) in
                 DDLogError("Error activating theme \(String(describing: theme.themeId)): \(String(describing: error?.localizedDescription))")
 
                 let errorTitle = NSLocalizedString("Activation Error", comment: "Title of alert when theme activation fails")
                 let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
+
+                self?.activityIndicator.stopAnimating()
+                self?.activateButton?.customView = nil
+
                 let alertController = UIAlertController(title: errorTitle,
                     message: error?.localizedDescription,
                     preferredStyle: .alert)
@@ -857,13 +889,13 @@ public protocol ThemePresenter: class {
         configuration.customTitle = theme.name
         configuration.navigationDelegate = customizerNavigationDelegate
         configuration.onClose = onClose
+
+        let title = activeButton ? ThemeAction.activate.title : ThemeAction.active.title
+        activateButton = UIBarButtonItem(title: title, style: .plain, target: self, action: #selector(ThemeBrowserViewController.activatePresentingTheme))
+        activateButton?.isEnabled = !theme.isCurrentTheme()
+
         let webViewController = WebViewControllerFactory.controller(configuration: configuration)
-        var buttons: [UIBarButtonItem]?
-        if activeButton && !theme.isCurrentTheme() {
-           let activate = UIBarButtonItem(title: ThemeAction.activate.title, style: .plain, target: self, action: #selector(ThemeBrowserViewController.activatePresentingTheme))
-            buttons = [activate]
-        }
-        webViewController.navigationItem.rightBarButtonItems = buttons
+        webViewController.navigationItem.rightBarButtonItem = activateButton
         let navigation = UINavigationController(rootViewController: webViewController)
         navigation.modalPresentationStyle = modalStyle
 
@@ -878,7 +910,6 @@ public protocol ThemePresenter: class {
 
     @objc open func activatePresentingTheme() {
         suspendedSearch = ""
-        _ = navigationController?.popViewController(animated: true)
         activateTheme(presentingTheme)
         presentingTheme = nil
     }

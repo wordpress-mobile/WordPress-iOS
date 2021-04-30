@@ -15,7 +15,7 @@ msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Manage your website anywhere"
+msgid "Build a website or blog"
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
@@ -37,26 +37,14 @@ msgstr ""
 #. translators: Keywords used in the App Store search engine to find the app.
 #. Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
 msgctxt "app_store_keywords"
-msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
+msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v16.5-whats-new"
+msgctxt "v17.2-whats-new"
 msgid ""
-"What’s new in the latest release?\n"
+"This version introduces a new block – Jetpack contact info. It's perfect for displaying a nicely formatted address on your site. We've also introduced some spiffy new app icons you can use to customize how the app looks on your home screen.\n"
 "\n"
-"The block editor:\n"
-"\n"
-"– When working with blocks, you may notice a few changes. You can now move blocks up and down your post or page by long-pressing on the “up” and “down” buttons. We’ve also added support for full-width and wide alignment in the Columns block and have made it easier to pick and set a URL for an image in the Image block.\n"
-"\n"
-"– Do you use P2 to collaborate with your team? When publishing a new post, type the + character to tag another P2 and “cross-post” to the site, alerting its users of your new post.\n"
-"\n"
-"Various fixes and updates:\n"
-"\n"
-"– The Choose a Domain feature now returns more options in search results. Try it out!\n"
-"\n"
-"– In your Site Pages list, you can quickly duplicate a page, which can save you time when creating content.\n"
-"\n"
-"– Other updates, including changes in the Reader, improve your overall app experience.\n"
+"We've got some nifty tweaks to tell you about! We've removed the site switcher from the editor to simplify posting, fixed a bug where author names weren't visible, improved VoiceOver support for the columns block, and made it easier to add alt text to an image block.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

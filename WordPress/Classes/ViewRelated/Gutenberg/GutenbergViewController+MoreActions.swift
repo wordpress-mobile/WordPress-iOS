@@ -27,10 +27,6 @@ extension GutenbergViewController {
             }
         }
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.classicTitle) { [unowned self] _ in
-            self.savePostEditsAndSwitchToAztec()
-        }
-
         let toggleModeTitle: String = {
             if mode == .richText {
                 return MoreSheetAlert.htmlTitle
@@ -80,7 +76,7 @@ extension GutenbergViewController {
         guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
             // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
             let error = NSError(domain: errorDomain, code: ErrorCode.expectedSecondaryAction.rawValue, userInfo: nil)
-            CrashLogging.logError(error)
+            WordPressAppDelegate.crashLogging?.logError(error)
             return
         }
 
@@ -105,10 +101,6 @@ extension GutenbergViewController {
 
 extension GutenbergViewController {
     struct MoreSheetAlert {
-        static let classicTitle = NSLocalizedString(
-            "Switch to classic editor",
-            comment: "Switches from Gutenberg mobile to the classic editor"
-        )
         static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
         static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")

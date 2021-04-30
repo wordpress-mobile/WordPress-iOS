@@ -1,6 +1,7 @@
 import XCTest
-@testable import WordPress
 import MobileCoreServices
+import OHHTTPStubs
+@testable import WordPress
 
 class MediaURLExporterTests: XCTestCase {
 

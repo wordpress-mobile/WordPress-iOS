@@ -209,10 +209,7 @@ class DateCell: JTACDayCell {
         static let labelSize: CGFloat = 28
         static let reuseIdentifier = "dateCell"
         static var selectedColor: UIColor {
-            UIColor(
-                light: UIColor(red: 0.91, green: 0.94, blue: 0.96, alpha: 1.00),
-                dark: UIColor(red: 0.02, green: 0.22, blue: 0.35, alpha: 1.00)
-            )
+            UIColor(light: .primary(.shade5), dark: .primary(.shade90))
         }
     }
 
@@ -316,17 +313,17 @@ extension DateCell {
             dateLabel.backgroundColor = .clear
         case .left:
             textColor = .white
-            dateLabel.backgroundColor = WPStyleGuide.wordPressBlue()
+            dateLabel.backgroundColor = .primary
             rightPlaceholder.backgroundColor = Constants.selectedColor
         case .right:
             textColor = .white
-            dateLabel.backgroundColor = WPStyleGuide.wordPressBlue()
+            dateLabel.backgroundColor = .primary
             leftPlaceholder.backgroundColor = Constants.selectedColor
         case .full:
             textColor = .textInverted
             leftPlaceholder.backgroundColor = .clear
             rightPlaceholder.backgroundColor = .clear
-            dateLabel.backgroundColor = WPStyleGuide.wordPressBlue()
+            dateLabel.backgroundColor = .primary
         case .none:
             leftPlaceholder.backgroundColor = .clear
             rightPlaceholder.backgroundColor = .clear
@@ -416,11 +413,13 @@ extension Date {
 
 class WPJTACMonthView: JTACMonthView {
 
-    // Avoids content to scroll above the maximum size
+    // Avoids content to scroll above/below the maximum/minimum size
     override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
         let maxY = contentSize.height - frame.size.height
         if contentOffset.y > maxY {
             super.setContentOffset(CGPoint(x: contentOffset.x, y: maxY), animated: animated)
+        } else if contentOffset.y < 0 {
+            super.setContentOffset(CGPoint(x: contentOffset.x, y: 0), animated: animated)
         } else {
             super.setContentOffset(contentOffset, animated: animated)
         }

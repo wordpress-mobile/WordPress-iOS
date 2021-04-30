@@ -9,6 +9,7 @@ extension FormattableContentGroup.Kind {
     static let subject = FormattableContentGroup.Kind("subject")
     static let header = FormattableContentGroup.Kind("header")
     static let footer = FormattableContentGroup.Kind("footer")
+    static let button = FormattableContentGroup.Kind("button")
 }
 
 // MARK: - FormattableContentGroup: Adapter to match 1 View <> 1 BlockGroup

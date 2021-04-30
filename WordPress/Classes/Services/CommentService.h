@@ -1,14 +1,25 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
 
+@import WordPressKit;
+
 extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 
 @class Blog;
 @class Comment;
 @class ReaderPost;
 @class BasePost;
+@class RemoteUser;
+@class CommentServiceRemoteFactory;
 
 @interface CommentService : LocalCoreDataService
+
+/// Initializes the instance with a custom service remote provider.
+///
+/// @param context The context this instance will use for interacting with CoreData.
+/// @param commentServiceRemoteFactory The factory this instance will use to get service remote instances from.
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
+                 commentServiceRemoteFactory:(CommentServiceRemoteFactory *)remoteFactory NS_DESIGNATED_INITIALIZER;
 
 + (BOOL)isSyncingCommentsForBlog:(Blog *)blog;
 
@@ -28,6 +39,17 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                     success:(void (^)(BOOL hasMore))success
                     failure:(void (^)(NSError *error))failure;
 
+- (void)syncCommentsForBlog:(Blog *)blog
+                 withStatus:(CommentStatusFilter)status
+                    success:(void (^)(BOOL hasMore))success
+                    failure:(void (^)(NSError *error))failure;
+
+- (void)syncCommentsForBlog:(Blog *)blog
+                 withStatus:(CommentStatusFilter)status
+            filterUnreplied:(BOOL)filterUnreplied
+                    success:(void (^)(BOOL hasMore))success
+                    failure:(void (^)(NSError *error))failure;
+
 // Determine if a recent cache is available
 + (BOOL)shouldRefreshCacheFor:(Blog *)blog;
 
@@ -36,6 +58,11 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                         success:(void (^)(BOOL hasMore))success
                         failure:(void (^)(NSError *))failure;
 
+- (void)loadMoreCommentsForBlog:(Blog *)blog
+                     withStatus:(CommentStatusFilter)status
+                        success:(void (^)(BOOL hasMore))success
+                        failure:(void (^)(NSError *))failure;
+    
 // Upload comment
 - (void)uploadComment:(Comment *)comment
               success:(void (^)(void))success
@@ -152,5 +179,27 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                             siteID:(NSNumber *)siteID
                            success:(void (^)(void))success
                            failure:(void (^)(NSError *error))failure;
+
+/**
+ Fetches a list of users that liked the comment with the given ID.
+
+ @param commentID   The ID of the comment to fetch likes for
+ @param siteID      The ID of the site that contains the post
+ @param success     A success block
+ @param failure     A failure block
+ */
+- (void)getLikesForCommentID:(NSNumber *)commentID
+                      siteID:(NSNumber *)siteID
+                     success:(void (^)(NSArray<RemoteUser *> *))success
+                     failure:(void (^)(NSError * _Nullable))failure;
+
+/**
+ Get a CommentServiceRemoteREST for the given site.
+ This is public so it can be accessed from Swift extensions.
+ 
+ @param siteID The ID of the site the remote will be used for.
+ */
+- (CommentServiceRemoteREST *_Nullable)restRemoteForSite:(NSNumber *_Nonnull)siteID;
+
 
 @end

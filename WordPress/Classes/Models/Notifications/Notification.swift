@@ -216,6 +216,10 @@ extension Notification {
         return block.isActionEnabled(id: commandId) && !block.isActionOn(id: commandId)
     }
 
+    var isViewMilestone: Bool {
+        return FeatureFlag.milestoneNotifications.enabled && type == "view_milestone"
+    }
+
     /// Returns the Meta ID's collection, if any.
     ///
     fileprivate var metaIds: [String: AnyObject]? {

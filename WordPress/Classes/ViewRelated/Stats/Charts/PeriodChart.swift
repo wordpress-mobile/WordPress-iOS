@@ -178,11 +178,11 @@ private final class PeriodChartDataTransformer {
     }
 
     static func primaryHighlightColor(forCount count: Int) -> UIColor? {
-        return count > 0 ? UIColor(light: .accent(.shade30), dark: .accent(.shade60)) : nil
+        return count > 0 ? .statsPrimaryHighlight : nil
     }
 
     static func secondaryHighlightColor(forCount count: Int) -> UIColor? {
-        return count > 0 ? UIColor(light: .accent(.shade60), dark: .accent(.shade30)) : nil
+        return count > 0 ? .statsSecondaryHighlight : nil
     }
 
 }

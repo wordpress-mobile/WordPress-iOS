@@ -46,7 +46,7 @@ open class AboutViewController: UITableViewController {
     fileprivate func setupTableView() {
         // Load and Tint the Logo
         let color                   = UIColor.primary
-        let tintedImage             = UIImage(named: "icon-wp")?.withRenderingMode(.alwaysTemplate)
+        let tintedImage             = AppStyleGuide.aboutAppIcon?.withRenderingMode(.alwaysTemplate)
         let imageView               = UIImageView(image: tintedImage)
         imageView.tintColor = color
         imageView.autoresizingMask  = [.flexibleLeftMargin, .flexibleRightMargin]
@@ -170,7 +170,7 @@ open class AboutViewController: UITableViewController {
     }
 
     fileprivate func displayTwitterAccount() {
-        let twitterURL = URL(string: WPTwitterWordPressMobileURL)!
+        let twitterURL = URL(string: AppConstants.productTwitterURL)!
         UIApplication.shared.open(twitterURL)
     }
 
@@ -203,15 +203,29 @@ open class AboutViewController: UITableViewController {
         return String(format: localizedTitleText, year)
     }()
 
+    fileprivate lazy var versionString: String = {
+
+        guard let bundleVersion = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String else {
+            return Bundle.main.shortVersionString()
+        }
+
+        /// The version number doesn't really matter for debug builds
+        #if DEBUG
+        return Bundle.main.shortVersionString()
+        #else
+        return Bundle.main.shortVersionString() + "(\(bundleVersion))"
+        #endif
+    }()
+
     fileprivate var rows: [[Row]] {
-        let appsBlogHostname = URL(string: WPAutomatticAppsBlogURL)?.host ?? String()
+        let appsBlogHostname = URL(string: AppConstants.productBlogURL)?.host ?? String()
 
         let acknowledgementsString = NSLocalizedString("Acknowledgements", comment: "Displays the list of third-party libraries we use")
 
         return [
             [
                 Row(title: NSLocalizedString("Version", comment: "Displays the version of the App"),
-                    details: Bundle.main.shortVersionString(),
+                    details: versionString,
                     handler: nil),
 
                 Row(title: NSLocalizedString("Terms of Service", comment: "Opens the Terms of Service Web"),
@@ -224,12 +238,12 @@ open class AboutViewController: UITableViewController {
             ],
             [
                 Row(title: NSLocalizedString("Twitter", comment: "Launches the Twitter App"),
-                    details: WPTwitterWordPressHandle,
+                    details: AppConstants.productTwitterHandle,
                     handler: { self.displayTwitterAccount() }),
 
                 Row(title: NSLocalizedString("Blog", comment: "Opens the WordPress Mobile Blog"),
                     details: appsBlogHostname,
-                    handler: { self.displayWebView(WPAutomatticAppsBlogURL) }),
+                    handler: { self.displayWebView(AppConstants.productBlogURL) }),
 
                 Row(title: NSLocalizedString("Rate us on the App Store", comment: "Prompts the user to rate us on the store"),
                     details: nil,

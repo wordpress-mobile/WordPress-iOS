@@ -57,11 +57,6 @@ static ContextManager *_override;
     return [self newChildContextWithConcurrencyType:NSPrivateQueueConcurrencyType];
 }
 
-- (NSManagedObjectContext *const)newMainContextChildContext
-{
-    return [self newChildContextWithConcurrencyType:NSMainQueueConcurrencyType];
-}
-
 - (NSManagedObjectContext *const)writerContext
 {
     static dispatch_once_t onceToken;
@@ -157,26 +152,6 @@ static ContextManager *_override;
     if (completionBlock) {
         dispatch_async(dispatch_get_main_queue(), completionBlock);
     }
-}
-
-- (BOOL)obtainPermanentIDForObject:(NSManagedObject *)managedObject
-{
-    // Failsafe
-    if (!managedObject) {
-        return NO;
-    }
-
-    if (managedObject && ![managedObject.objectID isTemporaryID]) {
-        // Object already has a permanent ID so just return success.
-        return YES;
-    }
-
-    NSError *error;
-    if (![managedObject.managedObjectContext obtainPermanentIDsForObjects:@[managedObject] error:&error]) {
-        DDLogError(@"Error obtaining permanent object ID for %@, %@", managedObject, error);
-        return NO;
-    }
-    return YES;
 }
 
 - (void)mergeChanges:(NSManagedObjectContext *)context fromContextDidSaveNotification:(NSNotification *)notification

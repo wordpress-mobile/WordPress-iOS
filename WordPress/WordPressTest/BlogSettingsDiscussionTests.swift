@@ -19,21 +19,21 @@ class BlogSettingsDiscussionTests: XCTestCase {
         let settings = newSettings()
         settings.commentsAutoapproval = .disabled
         XCTAssertTrue(settings.commentsRequireManualModeration)
-        XCTAssertFalse(settings.commentsFromKnownUsersWhitelisted)
+        XCTAssertFalse(settings.commentsFromKnownUsersAllowlisted)
     }
 
-    func testCommentsAutoapprovalFromKnownUsersEnablesWhitelistedFlag() {
+    func testCommentsAutoapprovalFromKnownUsersEnablesAllowlistedFlag() {
         let settings = newSettings()
         settings.commentsAutoapproval = .fromKnownUsers
         XCTAssertFalse(settings.commentsRequireManualModeration)
-        XCTAssertTrue(settings.commentsFromKnownUsersWhitelisted)
+        XCTAssertTrue(settings.commentsFromKnownUsersAllowlisted)
     }
 
-    func testCommentsAutoapprovalEverythingDisablesManualModerationAndWhitelistedFlags() {
+    func testCommentsAutoapprovalEverythingDisablesManualModerationAndAllowlistedFlags() {
         let settings = newSettings()
         settings.commentsAutoapproval = .everything
         XCTAssertFalse(settings.commentsRequireManualModeration)
-        XCTAssertFalse(settings.commentsFromKnownUsersWhitelisted)
+        XCTAssertFalse(settings.commentsFromKnownUsersAllowlisted)
     }
 
     func testCommentsSortingSetsTheCorrectCommentSortOrderIntegerValue() {

@@ -13,6 +13,12 @@ class ReaderDetailCoordinator {
         }
     }
 
+    /// Used to determine if block and report are shown in the options menu.
+    var readerTopic: ReaderAbstractTopic?
+
+    /// Used for analytics
+    var remoteSimplePost: RemoteReaderSimplePost?
+
     /// A post URL to be loaded and be displayed
     var postURL: URL?
 
@@ -105,6 +111,16 @@ class ReaderDetailCoordinator {
         }
     }
 
+    /// Fetch related posts for the current post
+    ///
+    func fetchRelatedPosts(for post: ReaderPost) {
+        service.fetchRelatedPosts(for: post) { [weak self] relatedPosts in
+            self?.view?.renderRelatedPosts(relatedPosts)
+        } failure: { error in
+            DDLogError("Error fetching related posts for detail: \(String(describing: error?.localizedDescription))")
+        }
+    }
+
     /// Share the current post
     ///
     func share(fromView anchorView: UIView) {
@@ -168,10 +184,17 @@ class ReaderDetailCoordinator {
     /// Open the postURL in a separated view controller
     ///
     func openInBrowser() {
-        guard
-            let permaLink = post?.permaLink,
-            let postURL = URL(string: permaLink)
-        else {
+
+        let url: URL? = {
+            // For Reader posts, use post link.
+            if let permaLink = post?.permaLink {
+                return URL(string: permaLink)
+            }
+            // For Related posts, use postURL.
+            return postURL
+        }()
+
+        guard let postURL = url else {
             return
         }
 
@@ -241,10 +264,7 @@ class ReaderDetailCoordinator {
 
         bumpStats()
         bumpPageViewsForPost()
-
-        if FeatureFlag.unseenPosts.enabled {
-            markPostAsSeen()
-        }
+        markPostAsSeen()
     }
 
     private func markPostAsSeen() {
@@ -294,19 +314,19 @@ class ReaderDetailCoordinator {
     ///
     private func showMenu(_ anchorView: UIView) {
         guard let post = post,
-            let context = post.managedObjectContext else {
+            let context = post.managedObjectContext,
+            let viewController = viewController else {
             return
         }
 
-        guard post.isFollowing else {
-            ReaderPostMenu.showMenuForPost(post, fromView: anchorView, inViewController: viewController)
-            return
-        }
+        ReaderMenuAction(logged: ReaderHelpers.isLoggedIn()).execute(post: post,
+                                                                     context: context,
+                                                                     readerTopic: readerTopic,
+                                                                     anchor: anchorView,
+                                                                     vc: viewController,
+                                                                     source: ReaderPostMenuSource.details)
 
-        let service: ReaderTopicService = ReaderTopicService(managedObjectContext: context)
-        let siteTopic: ReaderSiteTopic? = service.findSiteTopic(withSiteID: post.siteID)
-
-        ReaderPostMenu.showMenuForPost(post, topic: siteTopic, fromView: anchorView, inViewController: viewController)
+        WPAnalytics.trackReader(.readerArticleDetailMoreTapped)
     }
 
     private func showTopic(_ topic: String) {
@@ -314,7 +334,7 @@ class ReaderDetailCoordinator {
         viewController?.navigationController?.pushViewController(controller, animated: true)
     }
 
-    /// Show a list with posts contianing this tag
+    /// Show a list with posts containing this tag
     ///
     private func showTag() {
         guard let post = post else {
@@ -396,9 +416,11 @@ class ReaderDetailCoordinator {
         ReaderFollowAction().execute(with: post,
                                      context: coreDataStack.mainContext,
                                      completion: { [weak self] in
+                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: true)
                                          self?.view?.updateHeader()
                                      },
-                                     failure: { [weak self] in
+                                     failure: { [weak self] _ in
+                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: false)
                                          self?.view?.updateHeader()
                                      })
     }
@@ -424,7 +446,7 @@ class ReaderDetailCoordinator {
         configuration.authenticateWithDefaultAccount()
         configuration.addsWPComReferrer = true
         let controller = WebViewControllerFactory.controller(configuration: configuration)
-        let navController = UINavigationController(rootViewController: controller)
+        let navController = LightNavigationController(rootViewController: controller)
         viewController?.present(navController, animated: true)
     }
 
@@ -471,6 +493,21 @@ class ReaderDetailCoordinator {
         var properties = ReaderHelpers.statsPropertiesForPost(readerPost, andValue: nil, forKey: nil)
         properties[DetailAnalyticsConstants.TypeKey] = detailType
         properties[DetailAnalyticsConstants.OfflineKey] = isOfflineView
+
+
+        // Track related post tapped
+        if let simplePost = remoteSimplePost {
+            switch simplePost.postType {
+                case .local:
+                    WPAnalytics.track(.readerRelatedPostFromSameSiteClicked, properties: properties)
+                case .global:
+                    WPAnalytics.track(.readerRelatedPostFromOtherSiteClicked, properties: properties)
+                default:
+                    DDLogError("Unknown related post type: \(String(describing: simplePost.postType))")
+            }
+        }
+
+        // Track open
         WPAppAnalytics.track(.readerArticleOpened, withProperties: properties)
 
         if let railcar = readerPost.railcarDictionary() {

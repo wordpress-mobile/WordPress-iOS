@@ -42,19 +42,22 @@ class MockPostService: PostService {
 
 
 class ReblogTestCase: XCTestCase {
-    var context: NSManagedObjectContext?
+    var contextManager: TestContextManager!
+    var context: NSManagedObjectContext!
     var readerPost: ReaderPost?
     var blogService: MockBlogService?
     var postService: MockPostService?
 
     override func setUp() {
-        context = MockContext.getContext()
+        contextManager = TestContextManager()
+        context = contextManager.getMockContext()
         readerPost = ReaderPost(context: self.context!)
         blogService = MockBlogService(managedObjectContext: self.context!)
         postService = MockPostService(managedObjectContext: self.context!)
     }
 
     override func tearDown() {
+        contextManager = nil
         context = nil
         readerPost = nil
         blogService = nil

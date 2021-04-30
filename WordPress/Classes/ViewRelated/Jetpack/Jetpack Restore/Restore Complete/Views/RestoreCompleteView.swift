@@ -13,7 +13,7 @@ class RestoreCompleteView: UIView, NibLoadable {
     @IBOutlet private weak var hintLabel: UILabel!
 
     var primaryButtonHandler: (() -> Void)?
-    var secondaryButtonHandler: (() -> Void)?
+    var secondaryButtonHandler: ((_ sender: UIButton) -> Void)?
 
     // MARK: - Initialization
 
@@ -92,7 +92,7 @@ class RestoreCompleteView: UIView, NibLoadable {
         primaryButtonHandler?()
     }
 
-    @IBAction private func secondaryButtonTapped(_ sender: Any) {
-        secondaryButtonHandler?()
+    @IBAction private func secondaryButtonTapped(_ sender: UIButton) {
+        secondaryButtonHandler?(sender as UIButton)
     }
 }

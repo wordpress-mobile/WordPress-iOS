@@ -37,7 +37,11 @@ static NSInteger HideSearchMinSites = 3;
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
-    return [[WPTabBarController sharedInstance] blogListViewController];
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        return nil;
+    }
+
+    return [WPTabBarController sharedInstance].mySitesCoordinator.blogListViewController;
 }
 
 - (instancetype)init
@@ -65,6 +69,11 @@ static NSInteger HideSearchMinSites = 3;
 - (void)configureDataSource
 {
     self.dataSource = [BlogListDataSource new];
+    
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        self.dataSource.shouldShowDisclosureIndicator = NO;
+    }
+    
     __weak __typeof(self) weakSelf = self;
     self.dataSource.visibilityChanged = ^(Blog *blog, BOOL visible) {
         [weakSelf setVisible:visible forBlog:blog];
@@ -89,7 +98,16 @@ static NSInteger HideSearchMinSites = 3;
                                                                        target:self
                                                                        action:@selector(addSite)];
 
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
+    }
+
     self.navigationItem.title = NSLocalizedString(@"My Sites", @"");
+}
+
+- (void)cancelTapped
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (NSString *)modelIdentifierForElementAtIndexPath:(NSIndexPath *)indexPath inView:(UIView *)view
@@ -166,6 +184,10 @@ static NSInteger HideSearchMinSites = 3;
 {
     [super viewDidAppear:animated];
     [self createUserActivity];
+
+    #if JETPACK
+    printf("Welcome to the Jetpack app!");
+    #endif
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -196,9 +218,12 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)updateEditButton
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    if ([blogService blogCountForWPComAccounts] > 0) {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        [self updateBarButtons];
+        return;
+    }
+
+    if ([self shouldShowEditButton]){
         self.navigationItem.leftBarButtonItem = self.editButtonItem;
     } else {
         self.navigationItem.leftBarButtonItem = nil;
@@ -462,6 +487,11 @@ static NSInteger HideSearchMinSites = 3;
 
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
 {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        // We should never bypass the list when we're using the new navigation bar
+        return false;
+    }
+
     return self.dataSource.displayedBlogsCount == 1;
 }
 
@@ -792,6 +822,19 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated
 {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        if (self.blogSelected != nil) {
+            self.blogSelected(self, selectedBlog);
+        } else {
+            // The site picker without a site-selection callback makes no sense.  We'll dismiss the VC to keep
+            // the app running, but the user won't be able to switch sites.
+            DDLogError(@"There's no site-selection callback assigned to the site picker.");
+            [self dismissViewControllerAnimated:animated completion:nil];
+        }
+        
+        return;
+    }
+    
     if (selectedBlog != _selectedBlog || !_blogDetailsViewController) {
         _selectedBlog = selectedBlog;
         self.blogDetailsViewController = [self makeBlogDetailsViewController];
@@ -881,6 +924,40 @@ static NSInteger HideSearchMinSites = 3;
     }
 }
 
+- (BOOL)shouldShowAddSiteButton
+{
+    return self.dataSource.allBlogsCount > 0;
+}
+
+- (BOOL)shouldShowEditButton
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    return [blogService blogCountForWPComAccounts] > 0;
+}
+
+- (void)updateBarButtons
+{
+    BOOL showAddSiteButton = [self shouldShowAddSiteButton];
+    BOOL showEditButton = [self shouldShowEditButton];
+
+    if (!showAddSiteButton) {
+        [self addMeButtonToNavigationBarWithEmail:[[self defaultWordPressComAccount] email] meScenePresenter:self.meScenePresenter];
+        return;
+    }
+
+    if (![AppConfiguration allowSiteCreation]) {
+        self.navigationItem.rightBarButtonItem = self.editButtonItem;
+        return;
+    }
+
+    if (showEditButton) {
+        self.navigationItem.rightBarButtonItems = @[ self.addSiteButton, self.editButtonItem ];
+    } else {
+        self.navigationItem.rightBarButtonItem = self.addSiteButton;
+    }
+}
+
 - (void)toggleAddSiteButton:(BOOL)enabled
 {
     self.addSiteButton.enabled = enabled;
@@ -888,12 +965,17 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)setAddSiteBarButtonItem
 {
-    if (self.dataSource.allBlogsCount == 0) {
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        [self updateBarButtons];
+        return;
+    }
+
+    if (![self shouldShowAddSiteButton]) {
         [self addMeButtonToNavigationBarWithEmail:[[self defaultWordPressComAccount] email] meScenePresenter:self.meScenePresenter];
+        return;
     }
-    else {
-        self.navigationItem.rightBarButtonItem = self.addSiteButton;
-    }
+
+    self.navigationItem.rightBarButtonItem = self.addSiteButton;
 }
 
 - (void)addSite

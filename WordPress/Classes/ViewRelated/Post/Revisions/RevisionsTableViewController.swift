@@ -96,8 +96,11 @@ private extension RevisionsTableViewController {
     }
 
     private func getAuthor(for id: NSNumber?) -> BlogAuthor? {
-        let authors: [BlogAuthor]? = post?.blog.authors?.allObjects as? [BlogAuthor]
-        return authors?.first { $0.userID == id }
+        guard let authorId = id else {
+            return nil
+        }
+
+        return post?.blog.getAuthorWith(id: authorId)
     }
 
     private func getRevisionState(at indexPath: IndexPath) -> RevisionBrowserState {
@@ -193,12 +196,13 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
         }
 
         let revision = getRevision(at: indexPath)
-        let authors = getAuthor(for: revision.postAuthorId)
+        let author = getAuthor(for: revision.postAuthorId)
+
         cell.title = revision.revisionDate.shortTimeString()
-        cell.subtitle = authors?.username ?? revision.revisionDate.mediumString()
+        cell.subtitle = author?.username ?? revision.revisionDate.mediumString()
         cell.totalAdd = revision.diff?.totalAdditions.intValue
         cell.totalDel = revision.diff?.totalDeletions.intValue
-        cell.avatarURL = authors?.avatarURL
+        cell.avatarURL = author?.avatarURL
     }
 
 

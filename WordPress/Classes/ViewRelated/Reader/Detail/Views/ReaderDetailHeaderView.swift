@@ -26,6 +26,10 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     @IBOutlet weak var collectionViewPaddingView: UIView!
     @IBOutlet weak var topicsCollectionView: TopicsCollectionView!
 
+    /// Temporary work around until white headers are shipped app-wide,
+    /// allowing Reader Detail to use a blue navbar.
+    var useCompatibilityMode: Bool = false
+
     /// The post to show details in the header
     ///
     private var post: ReaderPost?
@@ -173,7 +177,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         followButton.isSelected = post?.isFollowing() ?? false
         iPadFollowButton.isSelected = post?.isFollowing() ?? false
 
-        followButton.setImage(UIImage.gridicon(.readerFollow, size: CGSize(width: 24, height: 24)).imageWithTintColor(.accent), for: .normal)
+        followButton.setImage(UIImage.gridicon(.readerFollow, size: CGSize(width: 24, height: 24)).imageWithTintColor(.primary), for: .normal)
         followButton.setImage(UIImage.gridicon(.readerFollowing, size: CGSize(width: 24, height: 24)).imageWithTintColor(.gray(.shade20)), for: .selected)
         WPStyleGuide.applyReaderFollowButtonStyle(iPadFollowButton)
 
@@ -197,7 +201,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
             return
         }
 
-        let featuredImageIsDisplayed = ReaderDetailFeaturedImageView.shouldDisplayFeaturedImage(with: post)
+        let featuredImageIsDisplayed = useCompatibilityMode || ReaderDetailFeaturedImageView.shouldDisplayFeaturedImage(with: post)
         collectionViewPaddingView.isHidden = !featuredImageIsDisplayed
 
         topicsCollectionView.topicDelegate = self

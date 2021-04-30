@@ -1,6 +1,6 @@
 import UIKit
 
-class ReaderInterestsCollectionViewCell: UICollectionViewCell {
+class ReaderInterestsCollectionViewCell: UICollectionViewCell, NibReusable {
     @IBOutlet weak var label: UILabel!
 
     override func awakeFromNib() {

@@ -50,9 +50,7 @@ class ReaderTabViewController: UIViewController {
 
         ReaderTracker.shared.start(.main)
 
-        if FeatureFlag.whatIsNew.enabled {
-            WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
-        }
+        WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -79,6 +77,11 @@ class ReaderTabViewController: UIViewController {
 
     override func loadView() {
         view = readerTabView
+
+        if FeatureFlag.newNavBarAppearance.enabled {
+            navigationItem.largeTitleDisplayMode = .always
+            navigationController?.navigationBar.prefersLargeTitles = true
+        }
     }
 
     @objc func willEnterForeground() {

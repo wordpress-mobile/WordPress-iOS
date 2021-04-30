@@ -1,4 +1,5 @@
 import Foundation
+import OHHTTPStubs
 @testable import WordPress
 
 class MediaThumbnailExporterTests: XCTestCase {

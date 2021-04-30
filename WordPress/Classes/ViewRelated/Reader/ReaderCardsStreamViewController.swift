@@ -22,7 +22,22 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     /// This is set to true after the Reader Manage view is dismissed
     private var shouldForceRefresh = false
 
-    private var selectInterestsViewController: ReaderSelectInterestsViewController = ReaderSelectInterestsViewController()
+    private lazy var selectInterestsViewController: ReaderSelectInterestsViewController = {
+        let title = NSLocalizedString("Discover and follow blogs you love", comment: "Reader select interests title label text")
+        let subtitle = NSLocalizedString("Choose your topics", comment: "Reader select interests subtitle label text")
+        let buttonTitleEnabled = NSLocalizedString("Done", comment: "Reader select interests next button enabled title text")
+        let buttonTitleDisabled = NSLocalizedString("Select a few to continue", comment: "Reader select interests next button disabled title text")
+        let loading = NSLocalizedString("Finding blogs and stories you’ll love...", comment: "Label displayed to the user while loading their selected interests")
+
+        let configuration = ReaderSelectInterestsConfiguration(
+            title: title,
+            subtitle: subtitle,
+            buttonTitle: (enabled: buttonTitleEnabled, disabled: buttonTitleDisabled),
+            loading: loading
+        )
+
+        return ReaderSelectInterestsViewController(configuration: configuration)
+    }()
 
     /// Whether the current view controller is visible
     private var isVisible: Bool {
@@ -32,7 +47,8 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ReaderWelcomeBanner.displayIfNeeded(in: tableView)
-        tableView.register(ReaderTopicsCardCell.self, forCellReuseIdentifier: readerCardTopicsIdentifier)
+
+        tableView.register(ReaderTopicsCardCell.defaultNib, forCellReuseIdentifier: readerCardTopicsIdentifier)
         tableView.register(ReaderSitesCardCell.self, forCellReuseIdentifier: readerCardSitesIdentifier)
 
         addObservers()
@@ -52,7 +68,10 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
         switch card.type {
         case .post:
-            return cell(for: card.post!, at: indexPath)
+            guard let post = card.post else {
+                return UITableViewCell()
+            }
+            return cell(for: post, at: indexPath)
         case .topics:
             return cell(for: card.topicsArray)
         case .sites:
@@ -181,22 +200,38 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     }
 
     private func addObservers() {
-        // Observe the managedObjectContext for changes (likes, saves) and reload the tableView
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(reload(_:)),
-                                               name: .NSManagedObjectContextDidSave,
-                                               object: managedObjectContext())
 
         // Listens for when the reader manage view controller is dismissed
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(manageControllerWasDismissed(_:)),
                                                name: .readerManageControllerWasDismissed,
                                                object: nil)
+
+        // Listens for when a site is blocked
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(siteBlocked(_:)),
+                                               name: .ReaderSiteBlocked,
+                                               object: nil)
     }
 
-    @objc func manageControllerWasDismissed(_ notification: Foundation.Notification) {
+    @objc private func manageControllerWasDismissed(_ notification: Foundation.Notification) {
         shouldForceRefresh = true
         self.displaySelectInterestsIfNeeded()
+    }
+
+    /// Update the post card when a site is blocked from post details.
+    ///
+    @objc private func siteBlocked(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo,
+              let post = userInfo[ReaderNotificationKeys.post] as? ReaderPost,
+              let posts = content.content as? [ReaderCard], // let posts = cards
+              let contentPost = posts.first(where: { $0.post?.postID == post.postID }),
+              let indexPath = content.indexPath(forObject: contentPost) else {
+            return
+        }
+
+        super.syncIfAppropriate(forceSync: true)
+        tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
     }
 }
 

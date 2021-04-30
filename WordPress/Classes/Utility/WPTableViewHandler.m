@@ -656,6 +656,12 @@ static CGFloat const DefaultCellHeight = 44.0;
         return;
     }
 
+    // Prevents a crash where index path rows could end with an integer overflow error.
+    // See https://github.com/wordpress-mobile/WordPress-iOS/issues/15366
+    if (indexPath.row == NSUIntegerMax || newIndexPath.row == NSUIntegerMax) {
+        return;
+    }
+
     if (NSFetchedResultsChangeUpdate == type && newIndexPath && ![newIndexPath isEqual:indexPath]) {
         // Seriously, Apple?
         // http://developer.apple.com/library/ios/#releasenotes/iPhone/NSFetchedResultsChangeMoveReportedAsNSFetchedResultsChangeUpdate/_index.html

@@ -1,12 +1,29 @@
 import UIKit
 import WordPressAuthenticator
+import Combine
 
 private struct PrepublishingOption {
     let id: PrepublishingIdentifier
     let title: String
+    let type: PrepublishingCellType
 }
 
-private enum PrepublishingIdentifier {
+private enum PrepublishingCellType {
+    case value
+    case textField
+
+    var cellType: UITableViewCell.Type {
+        switch self {
+        case .value:
+            return WPTableViewCell.self
+        case .textField:
+            return WPTextFieldTableViewCell.self
+        }
+    }
+}
+
+enum PrepublishingIdentifier {
+    case title
     case schedule
     case visibility
     case tags
@@ -29,14 +46,14 @@ class PrepublishingViewController: UITableViewController {
         return (navigationController as? PrepublishingNavigationController)?.presentedVC
     }()
 
-    private let completion: (AbstractPost) -> ()
+    enum CompletionResult {
+        case completed(AbstractPost)
+        case dismissed
+    }
 
-    private let options: [PrepublishingOption] = [
-        PrepublishingOption(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility")),
-        PrepublishingOption(id: .schedule, title: Constants.publishDateLabel),
-        PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags")),
-        PrepublishingOption(id: .categories, title: NSLocalizedString("Categories", comment: "Label for Categories"))
-    ]
+    private let completion: (CompletionResult) -> ()
+
+    private let options: [PrepublishingOption]
 
     private var didTapPublish = false
 
@@ -47,8 +64,14 @@ class PrepublishingViewController: UITableViewController {
         return nuxButton
     }()
 
-    init(post: Post, completion: @escaping (AbstractPost) -> ()) {
+    /// Determines whether the text has been first responder already. If it has, don't force it back on the user unless it's been selected by them.
+    private var hasSelectedText: Bool = false
+
+    init(post: Post, identifiers: [PrepublishingIdentifier], completion: @escaping (CompletionResult) -> ()) {
         self.post = post
+        self.options = identifiers.map { identifier in
+            return PrepublishingOption(identifier: identifier)
+        }
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
     }
@@ -56,6 +79,9 @@ class PrepublishingViewController: UITableViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    private var cancellables = Set<AnyCancellable>()
+    @Published private var keyboardShown: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,9 +93,25 @@ class PrepublishingViewController: UITableViewController {
         setupPublishButton()
         setupFooterSeparator()
 
+        updatePublishButtonLabel()
         announcePublishButton()
 
         calculatePreferredContentSize()
+
+        configureKeyboardToggle()
+    }
+
+    /// Toggles `keyboardShown` as the keyboard notifications come in
+    private func configureKeyboardToggle() {
+        NotificationCenter.default.publisher(for: UIResponder.keyboardDidShowNotification)
+            .map { _ in return true }
+            .assign(to: \.keyboardShown, on: self)
+            .store(in: &cancellables)
+
+        NotificationCenter.default.publisher(for: UIResponder.keyboardDidHideNotification)
+            .map { _ in return false }
+            .assign(to: \.keyboardShown, on: self)
+            .store(in: &cancellables)
     }
 
     private func calculatePreferredContentSize() {
@@ -114,21 +156,30 @@ class PrepublishingViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: WPTableViewCell = {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier) as? WPTableViewCell else {
-                return WPTableViewCell.init(style: .value1, reuseIdentifier: Constants.reuseIdentifier)
-            }
-            return cell
-        }()
+
+        let option = options[indexPath.row]
+
+        let cell = dequeueCell(for: option.type, indexPath: indexPath)
 
         cell.preservesSuperviewLayoutMargins = false
         cell.separatorInset = .zero
         cell.layoutMargins = Constants.cellMargins
 
-        cell.accessoryType = .disclosureIndicator
-        cell.textLabel?.text = options[indexPath.row].title
+        switch option.type {
+        case .textField:
+            if let cell = cell as? WPTextFieldTableViewCell {
+                setupTextFieldCell(cell)
+            }
+        case .value:
+            cell.accessoryType = .disclosureIndicator
+            cell.textLabel?.text = option.title
+        }
 
-        switch options[indexPath.row].id {
+        switch option.id {
+        case .title:
+            if let cell = cell as? WPTextFieldTableViewCell {
+                configureTitleCell(cell)
+            }
         case .tags:
             configureTagCell(cell)
         case .visibility:
@@ -142,8 +193,25 @@ class PrepublishingViewController: UITableViewController {
         return cell
     }
 
+    private func dequeueCell(for type: PrepublishingCellType, indexPath: IndexPath) -> WPTableViewCell {
+        switch type {
+        case .textField:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.textFieldReuseIdentifier) as? WPTextFieldTableViewCell else {
+                return WPTextFieldTableViewCell.init(style: .default, reuseIdentifier: Constants.textFieldReuseIdentifier)
+            }
+            return cell
+        case .value:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier) as? WPTableViewCell else {
+                return WPTableViewCell.init(style: .value1, reuseIdentifier: Constants.reuseIdentifier)
+            }
+            return cell
+        }
+    }
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch options[indexPath.row].id {
+        case .title:
+            break
         case .tags:
             didTapTagCell()
         case .visibility:
@@ -157,6 +225,28 @@ class PrepublishingViewController: UITableViewController {
 
     private func reloadData() {
         tableView.reloadData()
+    }
+
+    private func setupTextFieldCell(_ cell: WPTextFieldTableViewCell) {
+        WPStyleGuide.configureTableViewTextCell(cell)
+        cell.delegate = self
+    }
+
+    // MARK: - Title
+
+    private func configureTitleCell(_ cell: WPTextFieldTableViewCell) {
+        cell.textField.text = post.postTitle
+        cell.textField.adjustsFontForContentSizeCategory = true
+        cell.textField.font = .preferredFont(forTextStyle: .body)
+        cell.textField.textColor = .text
+        cell.textField.placeholder = Constants.titlePlaceholder
+        cell.textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        cell.textField.autocorrectionType = .yes
+        cell.textField.autocapitalizationType = .sentences
+        if !hasSelectedText {
+            cell.textField.becomeFirstResponder()
+            hasSelectedText = true
+        }
     }
 
     // MARK: - Tags
@@ -291,7 +381,7 @@ class PrepublishingViewController: UITableViewController {
         didTapPublish = true
         navigationController?.dismiss(animated: true) {
             WPAnalytics.track(.editorPostPublishNowTapped)
-            self.completion(self.post)
+            self.completion(.completed(self.post))
         }
     }
 
@@ -337,8 +427,9 @@ class PrepublishingViewController: UITableViewController {
         presentedVC?.transition(to: position)
     }
 
-    private enum Constants {
+    fileprivate enum Constants {
         static let reuseIdentifier = "wpTableViewCell"
+        static let textFieldReuseIdentifier = "wpTextFieldCell"
         static let nuxButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static let cellMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static let footerFrame = CGRect(x: 0, y: 0, width: 100, height: 80)
@@ -346,6 +437,7 @@ class PrepublishingViewController: UITableViewController {
         static let scheduleNow = NSLocalizedString("Schedule Now", comment: "Label for the button that schedules the post")
         static let publishDateLabel = NSLocalizedString("Publish Date", comment: "Label for Publish date")
         static let scheduledLabel = NSLocalizedString("Scheduled for", comment: "Scheduled for [date]")
+        static let titlePlaceholder = NSLocalizedString("Title", comment: "Placeholder for title")
         static let headerHeight: CGFloat = 70
         static let analyticsDefaultProperty = ["via": "prepublishing_nudges"]
     }
@@ -359,6 +451,7 @@ extension PrepublishingViewController: PrepublishingHeaderViewDelegate {
 
 extension PrepublishingViewController: PrepublishingDismissible {
     func handleDismiss() {
+        defer { completion(.dismissed) }
         guard
             !didTapPublish,
             post.status == .publishPrivate,
@@ -369,6 +462,18 @@ extension PrepublishingViewController: PrepublishingDismissible {
         post.status = originalStatus
     }
 }
+
+extension PrepublishingViewController: WPTextFieldTableViewCellDelegate {
+    func cellWants(toSelectNextField cell: WPTextFieldTableViewCell!) {
+
+    }
+
+    func cellTextDidChange(_ cell: WPTextFieldTableViewCell!) {
+        WPAnalytics.track(.editorPostTitleChanged, properties: Constants.analyticsDefaultProperty)
+        post.postTitle = cell.textField.text
+    }
+}
+
 extension PrepublishingViewController: PostCategoriesViewControllerDelegate {
     func postCategoriesViewController(_ controller: PostCategoriesViewController, didUpdateSelectedCategories categories: NSSet) {
         WPAnalytics.track(.editorPostCategoryChanged, properties: ["via": "prepublishing_nudges"])
@@ -392,10 +497,27 @@ extension Set {
 // MARK: - DrawerPresentable
 extension PrepublishingViewController: DrawerPresentable {
     var allowsUserTransition: Bool {
-        return false
+        return keyboardShown == false
     }
 
     var collapsedHeight: DrawerHeight {
         return .intrinsicHeight
+    }
+}
+
+private extension PrepublishingOption {
+    init(identifier: PrepublishingIdentifier) {
+        switch identifier {
+        case .title:
+            self.init(id: .title, title: PrepublishingViewController.Constants.titlePlaceholder, type: .textField)
+        case .schedule:
+            self.init(id: .schedule, title: PrepublishingViewController.Constants.publishDateLabel, type: .value)
+        case .categories:
+            self.init(id: .categories, title: NSLocalizedString("Categories", comment: "Label for Categories"), type: .value)
+        case .visibility:
+            self.init(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility"), type: .value)
+        case .tags:
+            self.init(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"), type: .value)
+        }
     }
 }

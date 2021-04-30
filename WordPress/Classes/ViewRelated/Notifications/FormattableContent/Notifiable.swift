@@ -16,6 +16,7 @@ enum NotificationKind: String {
     case post           = "post"
     case user           = "user"
     case login          = "push_auth"
+    case viewMilestone  = "view_milestone"
     case unknown        = "unknown"
 }
 
@@ -50,6 +51,13 @@ extension NotificationKind {
     /// - Returns: `true` if the kind supports rich notifications; `false` otherwise
     static func isSupportedByRichNotifications(_ kind: NotificationKind) -> Bool {
         return kindsWithRichNotificationSupport.contains(kind)
+    }
+
+    /// Indicates whether or not a given kind is view milestone.
+    /// - Parameter kind: the notification type to evaluate
+    /// - Returns: `true` if the notification kind is `viewMilestone`, `false` otherwise
+    static func isViewMilestone(_ kind: NotificationKind) -> Bool {
+        return kind == .viewMilestone
     }
 
     /// Returns a client-side notification category. The category provides a match to ensure that the Long Look

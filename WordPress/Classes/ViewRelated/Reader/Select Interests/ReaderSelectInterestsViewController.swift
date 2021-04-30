@@ -1,5 +1,12 @@
 import UIKit
 
+struct ReaderSelectInterestsConfiguration {
+    let title: String
+    let subtitle: String?
+    let buttonTitle: (enabled: String, disabled: String)?
+    let loading: String
+}
+
 class ReaderSelectInterestsViewController: UIViewController {
     private struct Constants {
         static let reuseIdentifier = ReaderInterestsCollectionViewCell.classNameWithoutNamespaces()
@@ -13,11 +20,7 @@ class ReaderSelectInterestsViewController: UIViewController {
     }
 
     private struct Strings {
-        static let title: String = NSLocalizedString("Discover and follow blogs you love", comment: "Reader select interests title label text")
-        static let subtitle: String = NSLocalizedString("Choose your interests", comment: "Reader select interests subtitle label text")
-        static let nextButtonDisabled: String = NSLocalizedString("Select a few to continue", comment: "Reader select interests next button disabled title text")
-        static let nextButtonEnabled: String = NSLocalizedString("Done", comment: "Reader select interests next button enabled title text")
-        static let loading: String = NSLocalizedString("Finding blogs and stories you’ll love...", comment: "Label displayed to the user while loading their selected interests")
+        static let noSearchResultsTitle = NSLocalizedString("No new topics to follow", comment: "Message shown when there are no new topics to follow.")
         static let tryAgainNoticeTitle = NSLocalizedString("Something went wrong. Please try again.", comment: "Error message shown when the app fails to save user selected interests")
         static let tryAgainButtonTitle = NSLocalizedString("Try Again", comment: "Try to load the list of interests again.")
     }
@@ -37,18 +40,38 @@ class ReaderSelectInterestsViewController: UIViewController {
     @IBOutlet weak var bottomSpaceHeightConstraint: NSLayoutConstraint!
 
     // MARK: - Data
-    private let dataSource: ReaderInterestsDataSource = ReaderInterestsDataSource()
+    private lazy var dataSource: ReaderInterestsDataSource = {
+        return ReaderInterestsDataSource(topics: topics)
+    }()
+
     private let coordinator: ReaderSelectInterestsCoordinator = ReaderSelectInterestsCoordinator()
 
     private let noResultsViewController = NoResultsViewController.controller()
 
+    private let topics: [ReaderTagTopic]
+
+    private let configuration: ReaderSelectInterestsConfiguration
+
     var didSaveInterests: (() -> Void)? = nil
 
+    // MARK: - Init
+    init(configuration: ReaderSelectInterestsConfiguration, topics: [ReaderTagTopic] = []) {
+        self.configuration = configuration
+        self.topics = topics
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
         dataSource.delegate = self
 
+        configureNavigationBar()
         configureI18N()
         configureCollectionView()
         configureNoResultsViewController()
@@ -136,13 +159,42 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     }
 
-    private func configureI18N() {
-        titleLabel.text = Strings.title
-        subTitleLabel.text = Strings.subtitle
-        nextButton.setTitle(Strings.nextButtonDisabled, for: .disabled)
-        nextButton.setTitle(Strings.nextButtonEnabled, for: .normal)
+    private func configureNavigationBar() {
+        guard isModal() else {
+            return
+        }
 
-        loadingLabel.text = Strings.loading
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
+                                                           target: self,
+                                                           action: #selector(saveSelectedInterests))
+    }
+
+    private func configureI18N() {
+
+        if isModal() {
+            title = configuration.title
+            titleLabel.isHidden = true
+        } else {
+            titleLabel.text = configuration.title
+            titleLabel.isHidden = false
+        }
+
+        if let subtitle = configuration.subtitle {
+            subTitleLabel.text = subtitle
+            subTitleLabel.isHidden = false
+        } else {
+            subTitleLabel.isHidden = true
+        }
+
+        if let buttonTitle = configuration.buttonTitle {
+            nextButton.setTitle(buttonTitle.enabled, for: .normal)
+            nextButton.setTitle(buttonTitle.disabled, for: .disabled)
+            nextButton.isHidden = false
+        } else {
+            nextButton.isHidden = true
+        }
+
+        loadingLabel.text = configuration.loading
     }
 
     // MARK: - Private: Data
@@ -162,7 +214,13 @@ class ReaderSelectInterestsViewController: UIViewController {
         stopLoading()
     }
 
-    private func saveSelectedInterests() {
+    @objc private func saveSelectedInterests() {
+        guard !dataSource.selectedInterests.isEmpty else {
+            self.didSaveInterests?()
+            return
+        }
+
+        navigationItem.rightBarButtonItem?.isEnabled = false
         startLoading()
         announceLoadingTopics()
 
@@ -283,6 +341,8 @@ extension ReaderSelectInterestsViewController: ReaderInterestsDataDelegate {
         if dataSource.count > 0 {
             hideLoadingView()
             reloadData()
+        } else if !topics.isEmpty {
+            displayLoadingViewWithNoSearchResults(title: Strings.noSearchResultsTitle)
         } else {
             displayLoadingViewWithWebAction(title: "")
         }
@@ -297,6 +357,12 @@ extension ReaderSelectInterestsViewController: NoResultsViewControllerDelegate {
 }
 
 extension ReaderSelectInterestsViewController {
+
+    func displayLoadingViewWithNoSearchResults(title: String) {
+        noResultsViewController.configureForNoSearchResults(title: title)
+        showLoadingView()
+    }
+
     func displayLoadingViewWithWebAction(title: String, accessoryView: UIView? = nil) {
         noResultsViewController.configure(title: title,
                                           buttonTitle: Strings.tryAgainButtonTitle,

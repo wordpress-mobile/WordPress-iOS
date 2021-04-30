@@ -21,6 +21,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             static let restorePageCellNibName = "RestorePageTableViewCell"
             static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
         }
+
+        struct Events {
+            static let source = "page_list"
+            static let pagePostType = "page"
+        }
     }
 
     fileprivate lazy var sectionFooterSeparatorView: UIView = {
@@ -51,9 +56,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }()
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
-        return CreateButtonCoordinator(self, actions: [PageAction(handler: { [weak self] in
+        let action = PageAction(handler: { [weak self] in
             self?.createPost()
-        })])
+        }, source: Constant.Events.source)
+        return CreateButtonCoordinator(self, actions: [action], source: Constant.Events.source)
     }()
 
     // MARK: - GUI
@@ -410,8 +416,17 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let page = pageAtIndexPath(indexPath)
         if page.isSiteHomepage {
-            QuickStartTourGuide.shared.visited(.editHomepage)
+            let guide = QuickStartTourGuide.shared
+            if guide.isCurrentElement(.editHomepage) {
+                QuickStartTourGuide.shared.visited(.editHomepage)
+            } else {
+                QuickStartTourGuide.shared.complete(tour: QuickStartEditHomepageTour(), silentlyForBlog: blog)
+            }
+
             tableView.reloadRows(at: [indexPath], with: .automatic)
+        } else {
+            QuickStartTourGuide.shared.endCurrentTour()
+            tableView.reloadData()
         }
 
         guard page.status != .trash else {
@@ -435,6 +450,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         if page.isSiteHomepage && QuickStartTourGuide.shared.isCurrentElement(.editHomepage) {
             cell.accessoryView = QuickStartSpotlightView()
+        } else {
+            cell.accessoryView = nil
         }
 
         return cell
@@ -483,7 +500,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Post Actions
 
     override func createPost() {
-        WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: "posts_view", WPAppAnalyticsKeyPostType: "page"], with: blog)
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: Constant.Events.source, WPAppAnalyticsKeyPostType: Constant.Events.pagePostType], with: blog)
 
         PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] (selectedLayout) in
             self?.createPage(selectedLayout)
@@ -601,7 +618,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let indexPath = tableView.indexPath(for: cell)
 
         let filter = filterSettings.currentPostListFilter().filterType
-
+        let isHomepage = ((page as? Page)?.isSiteHomepage ?? false)
         if filter == .trashed {
             alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
                 guard let strongSelf = self,
@@ -647,24 +664,28 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 addSetPostsPageAction(to: alertController, for: page, at: indexPath)
                 addDuplicateAction(to: alertController, for: page)
 
-                alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                        let page = strongSelf.pageForObjectID(objectID) else {
+                if !isHomepage {
+                    alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
+                        guard let strongSelf = self,
+                              let page = strongSelf.pageForObjectID(objectID) else {
                             return
-                    }
+                        }
 
-                    strongSelf.draftPage(page, at: indexPath)
-                })
+                        strongSelf.draftPage(page, at: indexPath)
+                    })
+                }
             }
 
-            alertController.addActionWithTitle(trashButtonTitle, style: .destructive, handler: { [weak self] (action) in
-                guard let strongSelf = self,
-                    let page = strongSelf.pageForObjectID(objectID) else {
+            if !isHomepage {
+                alertController.addActionWithTitle(trashButtonTitle, style: .destructive, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                          let page = strongSelf.pageForObjectID(objectID) else {
                         return
-                }
+                    }
 
-                strongSelf.handleTrashPage(page)
-            })
+                    strongSelf.handleTrashPage(page)
+                })
+            }
         } else {
             if page.isFailed {
                 alertController.addActionWithTitle(retryButtonTitle, style: .default, handler: { [weak self] (action) in
@@ -719,6 +740,22 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             presentationController.permittedArrowDirections = .any
             presentationController.sourceView = button
             presentationController.sourceRect = button.bounds
+        }
+    }
+
+    override func deletePost(_ apost: AbstractPost) {
+        completeQuickStartStepIfNeeded(apost)
+        super.deletePost(apost)
+    }
+
+    private func completeQuickStartStepIfNeeded(_ page: AbstractPost) {
+        guard let page = page as? Page else { return }
+        guard page.isSiteHomepage else { return }
+
+        if QuickStartTourGuide.shared.isCurrentElement(.editHomepage) {
+            QuickStartTourGuide.shared.visited(.editHomepage)
+        } else {
+            QuickStartTourGuide.shared.complete(tour: QuickStartEditHomepageTour(), for: blog, postNotification: false)
         }
     }
 

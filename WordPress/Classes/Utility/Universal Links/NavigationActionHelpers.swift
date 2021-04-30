@@ -23,7 +23,7 @@ extension NavigationAction {
 
         // Some stats URLs use a site ID instead
         if let siteIDValue = Int(domain) {
-            return service.blog(byBlogId: NSNumber(value: siteIDValue))
+            return try? Blog.lookup(withID: siteIDValue, in: context)
         }
 
         return nil

@@ -21,6 +21,16 @@ extension UIColor {
         let newColor = MurielColor(from: color, shade: shade)
         return muriel(color: newColor)
     }
+
+    /// Get a UIColor from the Muriel color palette by name, adjusted to a given shade
+    /// - Parameters:
+    ///   - name: a MurielColorName
+    ///   - shade: a MurielColorShade
+    /// - Returns: the desired color/shade
+    class func muriel(name: MurielColorName, _ shade: MurielColorShade) -> UIColor {
+        let newColor = MurielColor(name: name, shade: shade)
+        return muriel(color: newColor)
+    }
 }
 // MARK: - Basic Colors
 extension UIColor {
@@ -112,270 +122,134 @@ extension UIColor {
 extension UIColor {
     /// The most basic background: white in light mode, black in dark mode
     static var basicBackground: UIColor {
-        if #available(iOS 13, *) {
-            return .systemBackground
-        }
-        return .white
+        return .systemBackground
     }
 
     /// Tertiary background
     static var tertiaryBackground: UIColor {
-        if #available(iOS 13, *) {
-            return .tertiarySystemBackground
-        }
-
-        return .neutral(.shade10)
+        return .tertiarySystemBackground
     }
 
     /// Quaternary background
     static var quaternaryBackground: UIColor {
-        if #available(iOS 13, *) {
-            return .quaternarySystemFill
-        }
-
-        return .neutral(.shade5)
+        return .quaternarySystemFill
     }
 
     /// Tertiary system fill
      static var tertiaryFill: UIColor {
-         if #available(iOS 13, *) {
-             return .tertiarySystemFill
-         }
-
-         return .neutral(.shade5)
+        return .tertiarySystemFill
      }
 
     /// Default text color: high contrast
     static var text: UIColor {
-        if #available(iOS 13, *) {
-            return .label
-        }
-
-        return muriel(color: .text)
+        return .label
     }
 
     /// Secondary text color: less contrast
     static var textSubtle: UIColor {
-        if #available(iOS 13, *) {
-            return .secondaryLabel
-        }
-
-        return muriel(color: .gray)
+        return .secondaryLabel
     }
 
     /// Very low contrast text
     static var textTertiary: UIColor {
-        if #available(iOS 13, *) {
-            return .tertiaryLabel
-        }
-
-        return UIColor.neutral(.shade20)
+        return .tertiaryLabel
     }
 
     /// Very, very low contrast text
     static var textQuaternary: UIColor {
-        if #available(iOS 13, *) {
-            return .quaternaryLabel
-        }
-
-        return UIColor.neutral(.shade10)
+        return .quaternaryLabel
     }
 
     static var textInverted = UIColor(light: .white, dark: .gray(.shade100))
     static var textPlaceholder: UIColor {
-        if #available(iOS 13, *) {
-            return .tertiaryLabel
-        }
-
-        return neutral(.shade30)
+        return .tertiaryLabel
     }
     static var placeholderElement: UIColor {
-        if #available(iOS 13, *) {
-            return UIColor(light: .systemGray5, dark: .systemGray4)
-        }
-
-        return .gray(.shade10)
+        return UIColor(light: .systemGray5, dark: .systemGray4)
     }
+
     static var placeholderElementFaded: UIColor {
-        if #available(iOS 13, *) {
-            return UIColor(light: .systemGray6, dark: .systemGray5)
-        }
-
-        return .gray(.shade5)
+        return UIColor(light: .systemGray6, dark: .systemGray5)
     }
 
-    /// Muriel/iOS navigation color
-    static var appBarBackground: UIColor {
-        if FeatureFlag.newNavBarAppearance.enabled {
-            return UIColor(light: white, dark: .gray(.shade100))
-        }
+    // MARK: - Search Fields
 
-        return UIColor(light: .brand, dark: .gray(.shade100))
+    static var searchFieldPlaceholderText: UIColor {
+        return .secondaryLabel
     }
 
-    static var appBarTint: UIColor {
-        if FeatureFlag.newNavBarAppearance.enabled {
-            return .primary
-        }
-
-        return .white
-    }
-
-    static var appBarText: UIColor {
-        if FeatureFlag.newNavBarAppearance.enabled {
-            return .text
-        }
-
-        return .white
+    static var searchFieldIcons: UIColor {
+        return .secondaryLabel
     }
 
     // MARK: - Table Views
 
     static var divider: UIColor {
-        if #available(iOS 13, *) {
-            return .separator
-        }
-
-        return muriel(color: .divider)
+        return .separator
     }
 
     static var primaryButtonBorder: UIColor {
-           if #available(iOS 13, *) {
-               return .opaqueSeparator
-           }
-
-        return muriel(color: .gray, .shade10)
+        return .opaqueSeparator
     }
 
     /// WP color for table foregrounds (cells, etc)
     static var listForeground: UIColor {
-        if #available(iOS 13, *) {
-            return .secondarySystemGroupedBackground
-        }
-
-        return .white
+        return .secondarySystemGroupedBackground
     }
 
     static var listForegroundUnread: UIColor {
-        if #available(iOS 13, *) {
-            return .tertiarySystemGroupedBackground
-        }
-
-        return .primary(.shade0)
+        return .tertiarySystemGroupedBackground
     }
 
     static var listBackground: UIColor {
-        if #available(iOS 13, *) {
-            return .systemGroupedBackground
-        }
-
-        return muriel(color: .gray, .shade0)
+        return .systemGroupedBackground
     }
 
     static var ungroupedListBackground: UIColor {
-        if #available(iOS 13, *) {
-            return .systemBackground
-        }
-
-        return .white
+        return .systemBackground
     }
 
     static var ungroupedListUnread: UIColor {
-        if #available(iOS 13, *) {
-            return UIColor(light: .primary(.shade0), dark: muriel(color: .gray, .shade80))
-        }
-
-        return .primary(.shade0)
+        return UIColor(light: .primary(.shade0), dark: muriel(color: .gray, .shade80))
     }
 
     /// For icons that are present in a table view, or similar list
     static var listIcon: UIColor {
-        if #available(iOS 13, *) {
-            return .secondaryLabel
-        }
-
-        return .neutral(.shade20)
+        return .secondaryLabel
     }
 
     /// For small icons, such as the badges on notification gravatars
     static var listSmallIcon: UIColor {
-        if #available(iOS 13, *) {
-            return .systemGray
-        }
-
-        return .neutral(.shade20)
+        return .systemGray
     }
 
     static var buttonIcon: UIColor {
-        if #available(iOS 13, *) {
-            return .systemGray2
-        }
-
-        return .neutral(.shade5)
-    }
-
-    static var filterBarBackground: UIColor {
-        if #available(iOS 13, *) {
-            return UIColor(light: white, dark: .gray(.shade100))
-        }
-
-        return white
-    }
-
-    static var filterBarSelected: UIColor {
-        if #available(iOS 13, *) {
-            return UIColor(light: .primary, dark: .label)
-        }
-
-        return .primary
+        return .systemGray2
     }
 
     /// For icons that are present in a toolbar or similar view
     static var toolbarInactive: UIColor {
-        if #available(iOS 13, *) {
-               return .secondaryLabel
-           }
-
-        return .neutral(.shade30)
+        return .secondaryLabel
     }
 
-    /// Note: these values are intended to match the iOS defaults
-    static var tabUnselected: UIColor =  UIColor(light: UIColor(hexString: "999999"), dark: UIColor(hexString: "757575"))
-
     static var barButtonItemTitle: UIColor {
-        if #available(iOS 13, *) {
-            return UIColor(light: UIColor.primary(.shade50), dark: UIColor.primary(.shade30))
-        }
-        return UIColor.primary(.shade50)
+        return UIColor(light: UIColor.primary(.shade50), dark: UIColor.primary(.shade30))
     }
 
 // MARK: - WP Fancy Buttons
-    static var primaryButtonBackground = accent
-    static var primaryButtonDownBackground = muriel(color: .accent, .shade80)
+    static var primaryButtonBackground = primary
+    static var primaryButtonDownBackground = muriel(color: .primary, .shade80)
 
     static var secondaryButtonBackground: UIColor {
-        if #available(iOS 13, *) {
-            return UIColor(light: .white, dark: .systemGray5)
-        }
-
-        return .white
+        return UIColor(light: .white, dark: .systemGray5)
     }
 
     static var secondaryButtonBorder: UIColor {
-        if #available(iOS 13, *) {
-            return .systemGray3
-        }
-
-        return .neutral(.shade20)
+        return .systemGray3
     }
 
     static var secondaryButtonDownBackground: UIColor {
-
-        if #available(iOS 13, *) {
-            return .systemGray3
-        }
-
-        return .neutral(.shade20)
+        return .systemGray3
     }
 
     static var secondaryButtonDownBorder: UIColor {
@@ -383,46 +257,35 @@ extension UIColor {
     }
 
     static var authSecondaryButtonBackground: UIColor {
-        if #available(iOS 13, *) {
-            return UIColor(light: .white, dark: .black)
-        }
-
-        return .white
+        return UIColor(light: .white, dark: .black)
     }
 
     static var authButtonViewBackground: UIColor {
-        if #available(iOS 13, *) {
-            return UIColor(light: .white, dark: .black)
-        }
-
-        return .white
+        return UIColor(light: .white, dark: .black)
     }
 
     // MARK: - Others
 
     static var preformattedBackground: UIColor {
-        if #available(iOS 13, *) {
-            return .systemGray6
-        } else {
-            return UIColor.black.withAlphaComponent(0.05)
-        }
+        return .systemGray6
+    }
+
+    static var prologueBackground: UIColor {
+        return UIColor(light: muriel(color: MurielColor(name: .blue, shade: .shade0)), dark: .systemBackground)
     }
 }
 
+@objc
 extension UIColor {
     // A way to create dynamic colors that's compatible with iOS 11 & 12
+    @objc
     convenience init(light: UIColor, dark: UIColor) {
-        if #available(iOS 13, *) {
-            self.init { traitCollection in
-                if traitCollection.userInterfaceStyle == .dark {
-                    return dark
-                } else {
-                    return light
-                }
+        self.init { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return dark
+            } else {
+                return light
             }
-        } else {
-            // in older versions of iOS, we assume light mode
-            self.init(color: light)
         }
     }
 
@@ -439,7 +302,7 @@ extension UIColor {
 
 extension UIColor {
     func color(for trait: UITraitCollection?) -> UIColor {
-        if #available(iOS 13, *), let trait = trait {
+        if let trait = trait {
             return resolvedColor(with: trait)
         }
         return self

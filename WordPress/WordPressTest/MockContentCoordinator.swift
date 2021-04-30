@@ -21,11 +21,19 @@ class MockContentCoordinator: ContentCoordinator {
         commentSiteID = siteID
     }
 
-    func displayStatsWithSiteID(_ siteID: NSNumber?) throws {
+    func displayStatsWithSiteID(_ siteID: NSNumber?, url: URL? = nil) throws {
 
     }
 
     func displayFollowersWithSiteID(_ siteID: NSNumber?, expirationTime: TimeInterval) throws {
+
+    }
+
+    func displayBackupWithSiteID(_ siteID: NSNumber?) throws {
+
+    }
+
+    func displayScanWithSiteID(_ siteID: NSNumber?) throws {
 
     }
 

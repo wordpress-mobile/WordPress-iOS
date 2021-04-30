@@ -72,7 +72,10 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         guard let post = provider as? ReaderPost else {
             return
         }
-        toggleLikeForPost(post)
+
+        ReaderLikeAction().execute(with: post, context: context, completion: {
+            cell.refreshLikeButton()
+        })
     }
 
     func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
@@ -80,7 +83,8 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
             return
         }
 
-        ReaderMenuAction(logged: isLoggedIn).execute(post: post, context: context, readerTopic: topic, anchor: sender, vc: origin)
+        ReaderMenuAction(logged: isLoggedIn).execute(post: post, context: context, readerTopic: topic, anchor: sender, vc: origin, source: ReaderPostMenuSource.card)
+        WPAnalytics.trackReader(.postCardMoreTapped)
     }
 
     func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider) {
@@ -101,18 +105,16 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         return imageRequestAuthToken
     }
 
-    fileprivate func toggleFollowingForPost(_ post: ReaderPost) {
-        let siteTitle = post.blogNameForDisplay()
-        let siteID = post.siteID
-        let toFollow = !post.isFollowing
-
-        ReaderFollowAction().execute(with: post, context: context,
-                                     completion: { [weak self] in
-                                        if toFollow {
-                                            self?.origin?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
+    private func toggleFollowingForPost(_ post: ReaderPost) {
+        ReaderFollowAction().execute(with: post,
+                                     context: context,
+                                     completion: {
+                                        if post.isFollowing {
+                                            ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: true)
                                         }
-                                     },
-                                     failure: nil)
+                                     }, failure: { _ in
+                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: false)
+                                     })
     }
 
     func toggleSavedForLater(for post: ReaderPost) {
@@ -148,11 +150,6 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
             return
         }
         ReaderShowAttributionAction().execute(with: post, context: context, origin: origin)
-    }
-
-
-    fileprivate func toggleLikeForPost(_ post: ReaderPost) {
-        ReaderLikeAction().execute(with: post, context: context)
     }
 
     fileprivate func sharePost(_ post: ReaderPost, fromView anchorView: UIView) {

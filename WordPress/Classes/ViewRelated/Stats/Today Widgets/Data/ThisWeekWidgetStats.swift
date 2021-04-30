@@ -14,7 +14,7 @@ struct ThisWeekWidgetStats: Codable {
     }
 }
 
-struct ThisWeekWidgetDay: Codable {
+struct ThisWeekWidgetDay: Codable, Hashable {
     let date: Date
     let viewsCount: Int
     let dailyChangePercent: Float

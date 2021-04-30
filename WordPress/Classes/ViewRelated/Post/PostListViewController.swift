@@ -168,7 +168,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             PostAction(handler: { [weak self] in
                     self?.dismiss(animated: false, completion: nil)
                     self?.createPost()
-            })
+            }, source: Constants.source)
         ]
         if Feature.enabled(.stories) && blog.supports(.stories) {
             actions.append(
@@ -176,11 +176,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                     guard let self = self else {
                         return
                     }
-                    (self.tabBarController as? WPTabBarController)?.showStoryEditor(blog: self.blog, title: nil, content: nil, source: "post_list")
-                })
+                    (self.tabBarController as? WPTabBarController)?.showStoryEditor(blog: self.blog, title: nil, content: nil)
+                }, source: Constants.source)
             )
         }
-        return CreateButtonCoordinator(self, actions: actions)
+        return CreateButtonCoordinator(self, actions: actions, source: Constants.source)
     }()
 
     override func viewDidAppear(_ animated: Bool) {
@@ -549,7 +549,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        cell.isAuthorHidden = showingJustMyPosts
+        cell.shouldHideAuthor = showingJustMyPosts
     }
 
     private func configureRestoreCell(_ cell: UITableViewCell) {
@@ -636,8 +636,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        SiteStatsInformation.sharedInstance.siteTimeZone = service.timeZone(for: blog)
+        SiteStatsInformation.sharedInstance.siteTimeZone = blog.timeZone
         SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
         SiteStatsInformation.sharedInstance.siteID = blog.dotComID
 
@@ -798,6 +797,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         static let searchHeaderHeight: CGFloat = 40
         static let card = "card"
         static let compact = "compact"
+        static let source = "post_list"
     }
 }
 

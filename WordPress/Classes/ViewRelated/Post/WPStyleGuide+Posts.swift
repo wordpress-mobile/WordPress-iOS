@@ -55,9 +55,9 @@ extension WPStyleGuide {
 
     class func applyRestorePostButtonStyle(_ button: UIButton) {
         configureLabelForRegularFontStyle(button.titleLabel)
-        button.setTitleColor(.accent, for: .normal)
-        button.setTitleColor(.accentDark, for: .highlighted)
-        button.tintColor = .accent
+        button.setTitleColor(.primary, for: .normal)
+        button.setTitleColor(.primaryDark, for: .highlighted)
+        button.tintColor = .primary
     }
 
     class func applyBorderStyle(_ view: UIView) {

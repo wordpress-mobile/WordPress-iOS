@@ -41,7 +41,7 @@ class PostCompactCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        XCTAssertEqual(postCell.timestampLabel.text, "just now")
+        XCTAssertEqual(postCell.timestampLabel.text, "now")
     }
 
     func testMoreAction() {

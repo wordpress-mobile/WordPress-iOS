@@ -264,7 +264,7 @@ FeaturedImageViewControllerDelegate>
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateStyle = NSDateFormatterLongStyle;
     dateFormatter.timeStyle = NSDateFormatterShortStyle;
-    dateFormatter.timeZone = [self.blogService timeZoneForBlog:self.apost.blog];
+    dateFormatter.timeZone = [self.apost.blog timeZone];
     self.postDateFormatter = dateFormatter;
 }
 
@@ -697,6 +697,7 @@ FeaturedImageViewControllerDelegate>
     // Password
     WPTextFieldTableViewCell *textCell = [self getWPTableViewTextFieldCell];
     textCell.textLabel.text = NSLocalizedString(@"Password", @"Label for the password field. Should be the same as WP core.");
+    textCell.textField.textColor = [UIColor murielText];
     textCell.textField.text = self.apost.password;
     textCell.textField.attributedPlaceholder = nil;
     textCell.textField.placeholder = NSLocalizedString(@"Enter a password", @"");

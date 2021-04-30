@@ -8,13 +8,15 @@ class ActivityStoreTests: XCTestCase {
     private var dispatcher: ActionDispatcher!
     private var store: ActivityStore!
     private var activityServiceMock: ActivityServiceRemoteMock!
+    private var backupServiceMock: JetpackBackupServiceMock!
 
     override func setUp() {
         super.setUp()
 
         dispatcher = ActionDispatcher()
         activityServiceMock = ActivityServiceRemoteMock()
-        store = ActivityStore.init(dispatcher: dispatcher, activityServiceRemote: activityServiceMock)
+        backupServiceMock = JetpackBackupServiceMock()
+        store = ActivityStore(dispatcher: dispatcher, activityServiceRemote: activityServiceMock, backupService: backupServiceMock)
     }
 
     override func tearDown() {
@@ -163,6 +165,19 @@ class ActivityStoreTests: XCTestCase {
         XCTAssertEqual(activityServiceMock.getActivityGroupsForSiteCalledTimes, 2)
     }
 
+    // MARK: - Backup Status
+
+    // Query for backup status call the service
+    //
+    func testBackupStatusQueryCallsService() {
+        let jetpackSiteRef = JetpackSiteRef.mock(siteID: 9, username: "foo")
+
+        _ = store.query(.backupStatus(site: jetpackSiteRef))
+        store.processQueries()
+
+        XCTAssertEqual(backupServiceMock.didCallGetAllBackupStatusWithSite, jetpackSiteRef)
+    }
+
     // MARK: - Helpers
 
     private func dispatch(_ action: ActivityAction) {
@@ -218,10 +233,29 @@ class ActivityServiceRemoteMock: ActivityServiceRemote {
             success(groupsToReturn)
         }
     }
+
+    override func getRewindStatus(_ siteID: Int, success: @escaping (RewindStatus) -> Void, failure: @escaping (Error) -> Void) {
+
+    }
 }
 
 extension ActivityGroup {
     class func mock() -> ActivityGroup {
         try! ActivityGroup("post", dictionary: ["name": "Posts and Pages", "count": 5] as [String: AnyObject])
+    }
+}
+
+class JetpackBackupServiceMock: JetpackBackupService {
+    var didCallGetAllBackupStatusWithSite: JetpackSiteRef?
+
+    init() {
+        super.init(managedObjectContext: TestContextManager.sharedInstance().mainContext)
+    }
+
+    override func getAllBackupStatus(for site: JetpackSiteRef, success: @escaping ([JetpackBackup]) -> Void, failure: @escaping (Error) -> Void) {
+        didCallGetAllBackupStatusWithSite = site
+
+        let jetpackBackup = JetpackBackup(backupPoint: Date(), downloadID: 100, rewindID: "", startedAt: Date(), progress: 10, downloadCount: 0, url: "", validUntil: nil)
+        success([jetpackBackup])
     }
 }

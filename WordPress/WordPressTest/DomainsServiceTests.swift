@@ -28,7 +28,7 @@ class DomainsServiceTests: XCTestCase {
 
         ContextManager.overrideSharedInstance(nil)
         context.reset()
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
     }
 
     fileprivate func stubDomainsResponseWithFile(_ filename: String) {

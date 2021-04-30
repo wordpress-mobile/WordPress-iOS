@@ -1,13 +1,103 @@
+17.3
+-----
+* [**] Fix issue where deleting a post and selecting undo would sometimes convert the content to the classic editor. [#16342]
+* [**] Fix issue where restoring a post left the restored post in the published list even though it has been converted to a draft. [#16358]
+* [**] Fix issue where trashing a post converted it to Classic content. [#16367]
+* [*] Comments can be filtered to show the most recent unreplied comments from other users. [#16215]
+* [*] Fixed the background color of search fields. [#16365]
+* [*] Fixed the navigation bar color in dark mode. [#16348]
+
+17.2
+-----
+
+* [*] Fixed an issue where some author display names weren't visible for self-hosted sites. [#16297]
+* [***] Updated custom app icons. [#16261]
+* [**] Removed Site Switcher in the Editor
+* [*] a11y: Bug fix: Allow stepper cell to be selected by screenreader [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3362]
+* [*] Image block: Improve text entry for long alt text. [https://github.com/WordPress/gutenberg/pull/29670]
+* [***] New Block: Jetpack contact info. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3340]
+
+17.1
+-----
+
+* [*] Reordered categories in page layout picker [#16156]
+* [*] Added preview device mode selector in the page layout previews [#16141]
+* [***] Block Editor: Improved the accessibility of range and step-type block settings. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3255]
+* [**] Block Editor: Added Contact Info block to sites on WPcom or with Jetpack version >= 8.5.
+* [**] We updated the app's color scheme with a brighter new blue used throughout. [#16213, #16207]
+* [**] We updated the login prologue with brand new content and graphics. [#16159, #16177, #16185, #16187, #16200, #16217, #16219, #16221, #16222]
+* [**] We updated the app's color scheme with a brighter new blue used throughout. [#16213, #16207] 
+* [**] Updated the app icon to match the new color scheme within the app. [#16220]
+* [*] Fixed an issue where some webview navigation bar controls weren't visible. [#16257]
+
+17.0
+-----
+* [internal] Updated Zendesk to latest version. Should be no functional changes. [#16051]
+* [*] Reader: fixed an issue that caused unfollowing external sites to fail. [#16060]
+* [*] Stats: fixed an issue where an error was displayed for Latest Post Summary if the site had no posts. [#16074]
+* [*] Fixed an issue where password text on Post Settings was showing as black in dark mode. [#15768]
+* [*] Added a thumbnail device mode selector in the page layout, and use a default setting based on the current device. [#16019]
+* [**] Comments can now be filtered by status (All, Pending, Approved, Trashed, or Spam). [#15955, #16110]
+* [*] Notifications: Enabled the new view milestone notifications [#16144]
+* [***] We updated the app's design, with fresh new headers throughout and a new site switcher in My Site. [#15750] 
+
+16.9
+-----
+* [*] Adds helper UI to Choose a Domain screen to provide a hint of what a domain is. [#15962]
+* [**] Site Creation: Adds filterable categories to the site design picker when creating a WordPress.com site, and includes single-page site designs [#15933]
+* [**] The classic editor will no longer be available for new posts soon, but this won’t affect editing any existing posts or pages. Users should consider switching over to the Block Editor now. [#16008]
+* [**] Reader: Added related posts to the bottom of reader posts
+* [*] Reader: We redesigned the recommended topics section of Discover
+* [*] Reader: Added a way to discover new topics from the Manage Topics view
+* [*] P2 users can create and share group invite links via the Invite Person screen under the People Management feature. [#16005]
+* [*] Fixed an issue that prevented searching for plugins and the Popular Plugins section from appearing: [#16070]
+* [**] Stories: Fixed a video playback issue when recording on iPhone 7, 8, and SE devices. [#16109]
+* [*] Stories: Fixed a video playback issue when selecting an exported Story video from a site's library. [#16109]
+
+16.8.1
+-----
+
+* [**] Stories: Fixed an issue which could remove content from a post when a new Story block was edited. [#16059]
+ 
+16.8
+-----
+* [**] Prevent deleting published homepages which would have the effect of breaking a site. [#15797]
+* [**] Prevent converting published homepage to a draft in the page list and settings which would have the effect of breaking a site. [#15797]
+* [*] Fix app crash when device is offline and user visits Notification or Reader screens [#15916]
+* [*] Under-the-hood improvements to the Reader Stream, People Management, and Sharing Buttons [#15849, #15861, #15862]
+* [*] Block Editor: Fixed block mover title wording for better clarity from 'Move block position' to 'Change block position'. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3049]
+* [**] Block Editor: Add support for setting Cover block focal point. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3028]
+* [**] Prevent converting published homepage to a draft in the page list and editor's status settings which would have the effect of breaking a site. [#15797]
+* [*] Prevent selection of unpublished homepages the homepage settings which would have the effect of breaking a site. [#15885]
+* [*] Quick Start: Completing a step outside of a tour now automatically marks it as complete. [#15712]
+* [internal] Site Comments: updated UI. Should be no functional changes. [#15944]
+* [***] iOS 14 Widgets: new This Week Widgets to display This Week Stats in your home screen. [#15844]
+* [***] Stories: There is now a new Story post type available to quickly and conveniently post images and videos to your blog.
+
 16.7
 -----
 * [**] Site Creation: Adds the option to choose between mobile, tablet or desktop thumbnails and previews in the home page design picker when creating a WordPress.com site [https://github.com/wordpress-mobile/WordPress-iOS/pull/15688]
+* [*] Block Editor: Fix issue with uploading media after exiting the editor multiple times [https://github.com/wordpress-mobile/WordPress-iOS/pull/15656].
 * [**] Site Creation: Enables dot blog subdomains for each site design. [#15736]
+* [**] Reader post card and post details: added ability to mark a followed post as seen/unseen. [#15638, #15645, #15676]
+* [**] Reader site filter: show unseen post count. [#15581]
+* [***] Block Editor: New Block: Audio [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2854, https://github.com/wordpress-mobile/gutenberg-mobile/pull/3070]
+* [**] Block Editor: Add support for setting heading anchors [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2947]
+* [**] Block Editor: Disable Unsupported Block Editor for Reusable blocks [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3067]
+* [**] Block Editor: Add proper handling for single use blocks such as the more block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3042]
+* [*] Reader post options: fixed an issue where the options in post details did not match those on post cards. [#15778]
+* [***] iOS 14 Widgets: new All Time Widgets to display All Time Stats in your home screen. [#15771, #15794]
+* [***] Jetpack: Backup and Restore is now available, depending on your sites plan you can now restore your site to a point in time, or download a backup file. [https://github.com/wordpress-mobile/WordPress-iOS/issues/15191]
+* [***] Jetpack: For sites that have Jetpack Scan enabled you will now see a new section that allows you to scan your site for threats, as well as fix or ignore them. [https://github.com/wordpress-mobile/WordPress-iOS/issues/15190]
+* [**] Block Editor: Make inserter long-press options "add to beginning" and "add to end" always available. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3074]
+* [*] Block Editor: Fix crash when Column block width attribute was empty. [https://github.com/WordPress/gutenberg/pull/29015]
 
 16.6
 -----
 * [**] Activity Log: adds support for Date Range and Activity Type filters. [https://github.com/wordpress-mobile/WordPress-iOS/issues/15192]
 * [*] Quick Start: Removed the Browse theme step and added guidance for reviewing pages and editing your Homepage. [#15680]
 * [**] iOS 14 Widgets: new Today Widgets to display your Today Stats in your home screen.
+* [*] Fixes an issue where the submit button was invisible during the domain registration flow.
 
 16.5
 -----

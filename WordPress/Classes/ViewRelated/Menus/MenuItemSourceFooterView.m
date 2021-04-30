@@ -42,13 +42,9 @@
 
 - (void)setupActivityIndicator
 {
-    if (@available(iOS 13.0, *)) {
-        _activityIndicator = [[UIActivityIndicatorView alloc] init]; // defaults to Medium
-    } else {
-        _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleMedium];
-    }
-
+    _activityIndicator = [[UIActivityIndicatorView alloc] init]; // defaults to Medium
     _activityIndicator.translatesAutoresizingMaskIntoConstraints = false;
+
     [self addSubview: _activityIndicator];
     [self pinSubviewAtCenter: _activityIndicator];
 }

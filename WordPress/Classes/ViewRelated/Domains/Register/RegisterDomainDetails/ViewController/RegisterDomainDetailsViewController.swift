@@ -22,6 +22,7 @@ class RegisterDomainDetailsViewController: UITableViewController {
 
     private(set) lazy var footerView: RegisterDomainDetailsFooterView = {
         let buttonView = RegisterDomainDetailsFooterView.loadFromNib()
+        buttonView.translatesAutoresizingMaskIntoConstraints = false
 
         buttonView.submitButton.isEnabled = false
         buttonView.submitButton.addTarget(
@@ -64,10 +65,6 @@ class RegisterDomainDetailsViewController: UITableViewController {
         viewModel.prefill()
 
         setupEditingEndingTapGestureRecognizer()
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        configureTableFooterView(width: size.width)
     }
 
     private func configureTableView() {
