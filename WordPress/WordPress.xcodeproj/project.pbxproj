@@ -22929,6 +22929,7 @@
 				CODE_SIGN_ENTITLEMENTS = Jetpack/JetpackDebug.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				ENABLE_BITCODE = NO;
@@ -22959,7 +22960,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = q;
+				MARKETING_VERSION = 0.1;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-format-security",
@@ -22975,7 +22976,7 @@
 					"-l\"z\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG -D JETPACK";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "WPiOS Development Profile";
@@ -23000,6 +23001,7 @@
 				CODE_SIGN_ENTITLEMENTS = Jetpack/JetpackRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: Automattic, Inc. (PZYM8XX95Q)";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				ENABLE_BITCODE = NO;
@@ -23028,7 +23030,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = q;
+				MARKETING_VERSION = 0.1;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-format-security",
@@ -23043,10 +23045,10 @@
 					"-l\"z\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D JETPACK";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -23067,6 +23069,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Jetpack/JetpackRelease-Internal.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 99KV9Z6BKV;
 				ENABLE_BITCODE = NO;
@@ -23096,7 +23099,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = q;
+				MARKETING_VERSION = 0.1;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-format-security",
@@ -23135,6 +23138,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Jetpack/JetpackRelease-Alpha.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 99KV9Z6BKV;
 				ENABLE_BITCODE = NO;
@@ -23164,7 +23168,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = q;
+				MARKETING_VERSION = 0.1;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-format-security",
