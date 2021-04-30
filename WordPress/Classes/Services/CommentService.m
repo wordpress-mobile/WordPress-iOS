@@ -778,19 +778,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     }
 }
 
-// TODO: remove when CommentServiceTests is updated to use LikeUsers method.
-- (void)getLikesForCommentID:(NSNumber *)commentID
-                      siteID:(NSNumber *)siteID
-                     success:(void (^)(NSArray<RemoteUser *> *))success
-                     failure:(void (^)(NSError * _Nullable))failure
-{
-    NSParameterAssert(commentID);
-    NSParameterAssert(siteID);
-
-    CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
-    [remote getLikesForCommentID:commentID success:success failure:failure];
-}
-
 
 #pragma mark - Private methods
 
