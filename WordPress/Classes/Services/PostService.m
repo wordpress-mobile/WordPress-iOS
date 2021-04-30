@@ -19,8 +19,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 
 @interface PostService ()
 
-@property (nonnull, strong, nonatomic) PostServiceRemoteFactory *postServiceRemoteFactory;
-
 @end
 
 @implementation PostService
