@@ -39,8 +39,8 @@ struct JetpackPrologueStyleGuide {
                                                                    titleColor: .white),
 
                                                      highlighted: .init(backgroundColor: Self.backgroundColor,
-                                                                        borderColor: UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.90),
-                                                                        titleColor: .white),
+                                                                        borderColor: UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.20),
+                                                                        titleColor: UIColor.white.withAlphaComponent(0.7)),
 
                                                      disabled: .init(backgroundColor: .white,
                                                                      borderColor: .white,
