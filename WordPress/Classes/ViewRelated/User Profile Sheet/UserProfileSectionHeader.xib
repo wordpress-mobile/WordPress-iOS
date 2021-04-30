@@ -15,10 +15,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SITE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QfN-CJ-PfS">
-                    <rect key="frame" x="20" y="59" width="354" height="28"/>
-                    <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="10" id="itQ-Bj-pPT"/>
-                    </constraints>
+                    <rect key="frame" x="20" y="59" width="354" height="38"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                     <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -29,7 +26,7 @@
                 <constraint firstItem="epR-21-48u" firstAttribute="trailing" secondItem="QfN-CJ-PfS" secondAttribute="trailing" constant="20" id="00m-PJ-fLJ"/>
                 <constraint firstItem="QfN-CJ-PfS" firstAttribute="leading" secondItem="epR-21-48u" secondAttribute="leading" constant="20" id="Gh8-nd-6Kk"/>
                 <constraint firstItem="QfN-CJ-PfS" firstAttribute="top" secondItem="epR-21-48u" secondAttribute="top" constant="15" id="Ode-gE-Yfd"/>
-                <constraint firstItem="epR-21-48u" firstAttribute="bottom" secondItem="QfN-CJ-PfS" secondAttribute="bottom" constant="15" id="YHh-Zx-Rq0"/>
+                <constraint firstItem="epR-21-48u" firstAttribute="bottom" secondItem="QfN-CJ-PfS" secondAttribute="bottom" constant="5" id="YHh-Zx-Rq0"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

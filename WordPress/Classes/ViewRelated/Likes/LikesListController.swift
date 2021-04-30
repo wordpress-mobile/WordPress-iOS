@@ -8,17 +8,11 @@ import WordPressKit
 class LikesListController: NSObject {
 
     private let formatter = FormattableContentFormatter()
-
     private let content: ContentIdentifier
-
     private let siteID: NSNumber
-
     private let notification: Notification?
-
     private let tableView: UITableView
-
-    private var likingUsers: [RemoteUser] = []
-
+    private var likingUsers: [LikeUser] = []
     private weak var delegate: LikesListControllerDelegate?
 
     private lazy var postService: PostService = {
@@ -104,7 +98,7 @@ class LikesListController: NSObject {
         isLoadingContent = true
 
         fetchLikes(success: { [weak self] users in
-            self?.likingUsers = users ?? []
+            self?.likingUsers = users
             self?.isLoadingContent = false
         }, failure: { [weak self] _ in
             // TODO: Handle error state
@@ -116,18 +110,12 @@ class LikesListController: NSObject {
     /// - Parameters:
     ///   - success: Closure to be called when the fetch is successful.
     ///   - failure: Closure to be called when the fetch failed.
-    private func fetchLikes(success: @escaping ([RemoteUser]?) -> Void, failure: @escaping (Error?) -> Void) {
+    private func fetchLikes(success: @escaping ([LikeUser]) -> Void, failure: @escaping (Error?) -> Void) {
         switch content {
         case .post(let postID):
-            postService.getLikesForPostID(postID,
-                                          siteID: siteID,
-                                          success: success,
-                                          failure: failure)
+            postService.getLikesFor(postID: postID, siteID: siteID, success: success, failure: failure)
         case .comment(let commentID):
-            commentService.getLikesForCommentID(commentID,
-                                                siteID: siteID,
-                                                success: success,
-                                                failure: failure)
+            commentService.getLikesFor(commentID: commentID, siteID: siteID, success: success, failure: failure)
         }
     }
 }
@@ -183,7 +171,7 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
             return
         }
 
-        delegate?.didSelectUser(user)
+        delegate?.didSelectUser(user, at: indexPath)
     }
 
 }
@@ -240,8 +228,8 @@ protocol LikesListControllerDelegate: class {
     func didSelectHeader()
 
     /// Reports to the delegate that the user cell has been tapped.
-    /// - Parameter user: A RemoteUser instance representing the user at the selected row.
-    func didSelectUser(_ user: RemoteUser)
+    /// - Parameter user: A LikeUser instance representing the user at the selected row.
+    func didSelectUser(_ user: LikeUser, at indexPath: IndexPath)
 }
 
 // MARK: - Private Definitions

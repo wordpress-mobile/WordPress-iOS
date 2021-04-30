@@ -4,15 +4,18 @@ import WordPressShared
 open class AppIconViewController: UITableViewController {
 
     private enum Section: Int {
-        case current
+        case currentColorfulBackground
+        case currentLightBackground
         // Legacy icons are our v1 custom icons,
         // which will be removed at some point in the future.
         case legacy
 
         var title: String? {
             switch self {
-            case .current:
-                return nil
+            case .currentColorfulBackground:
+                return NSLocalizedString("Colorful backgrounds", comment: "Title displayed for selection of custom app icons that have colorful backgrounds.")
+            case .currentLightBackground:
+                return NSLocalizedString("Light backgrounds", comment: "Title displayed for selection of custom app icons that have white backgrounds.")
             case .legacy:
                 return NSLocalizedString("Legacy Icons", comment: "Title displayed for selection of custom app icons that may be removed in a future release of the app.")
             }
@@ -36,6 +39,15 @@ open class AppIconViewController: UITableViewController {
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellIdentifier)
         tableView.rowHeight = Constants.rowHeight
+
+        if isModal() {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTapped))
+        }
+    }
+
+    @objc
+    private func cancelTapped() {
+        dismiss(animated: true, completion: nil)
     }
 
     // MARK: - UITableview Data Source
@@ -57,7 +69,7 @@ open class AppIconViewController: UITableViewController {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier, for: indexPath)
 
-        cell.textLabel?.text = icon.name
+        cell.textLabel?.text = icon.displayName
 
         if let imageView = cell.imageView {
             imageView.image = UIImage(named: icon.imageName)
@@ -78,7 +90,7 @@ open class AppIconViewController: UITableViewController {
 
         // If there's no custom icon in use and we're checking the top (default) row
         let isDefaultIconInUse = currentIconName == nil
-        if isDefaultIconInUse && indexPath.section == Section.current.rawValue && indexPath.row == 0 {
+        if isDefaultIconInUse && isOriginalIcon(at: indexPath) {
             return true
         }
 
@@ -87,12 +99,22 @@ open class AppIconViewController: UITableViewController {
     }
 
     open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let isOriginalIconRow = (indexPath.section == Section.current.rawValue && indexPath.row == 0)
-        let icon = isOriginalIconRow ? nil : icons[indexPath.section][indexPath.row].name
+        guard !iconIsSelected(for: indexPath) else {
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
+        }
 
-        UIApplication.shared.setAlternateIconName(icon, completionHandler: { [weak self] error in
+        let isOriginalIcon = self.isOriginalIcon(at: indexPath)
+        let iconName = isOriginalIcon ? nil : icons[indexPath.section][indexPath.row].name
+
+        // Prevent showing the custom icon upgrade alert to a user
+        // who's just set an icon for the first time.
+        // We'll remove this alert after a couple of releases.
+        UserDefaults.standard.hasShownCustomAppIconUpgradeAlert = true
+
+        UIApplication.shared.setAlternateIconName(iconName, completionHandler: { [weak self] error in
             if error == nil {
-                let event: WPAnalyticsStat = isOriginalIconRow ? .appIconReset : .appIconChanged
+                let event: WPAnalyticsStat = isOriginalIcon ? .appIconReset : .appIconChanged
                 WPAppAnalytics.track(event)
             }
 
@@ -100,11 +122,14 @@ open class AppIconViewController: UITableViewController {
         })
     }
 
+    private func isOriginalIcon(at indexPath: IndexPath) -> Bool {
+        return indexPath.section == Section.currentColorfulBackground.rawValue && indexPath.row == 0
+    }
+
     // MARK: - Private helpers
 
     private func loadIcons() {
-        let defaultIcon = AppIcon(name: Constants.defaultIconName, isBordered: false, isLegacy: false)
-        let iconDict = [defaultIcon] + infoPlistIconsDict
+        let allIcons = AppIcon.allIcons
 
         // Produces a closure which sorts alphabetically, giving priority to items
         // beginning with the specified prefix.
@@ -124,29 +149,14 @@ open class AppIconViewController: UITableViewController {
         }
 
         // Filter out the current and legacy icon groups, with the Blue icons sorted to the top.
-        let currentIcons = iconDict.filter({ $0.isLegacy == false })
-                                   .sorted(by: sortWithPriority(toItemsWithPrefix: Constants.defaultIconName))
-        let legacyIcons = iconDict.filter({ $0.isLegacy == true })
-                                  .sorted(by: sortWithPriority(toItemsWithPrefix: Constants.defaultLegacyIconName))
+        let currentColorfulIcons = allIcons.filter({ $0.isLegacy == false && $0.isBordered == false })
+                                           .sorted(by: sortWithPriority(toItemsWithPrefix: AppIcon.defaultIconName))
+        let currentLightIcons = allIcons.filter({ $0.isLegacy == false && $0.isBordered == true })
+                                        .sorted(by: sortWithPriority(toItemsWithPrefix: AppIcon.defaultIconName))
+        let legacyIcons = allIcons.filter({ $0.isLegacy == true })
+                                  .sorted(by: sortWithPriority(toItemsWithPrefix: AppIcon.defaultLegacyIconName))
 
-        self.icons = [currentIcons, legacyIcons]
-    }
-
-    private var infoPlistIconsDict: [AppIcon] {
-        guard let bundleDict = Bundle.main.object(forInfoDictionaryKey: Constants.infoPlistBundleIconsKey) as? [String: Any],
-            let iconDict = bundleDict[Constants.infoPlistAlternateIconsKey] as? [String: Any] else {
-                return []
-        }
-
-        return iconDict.compactMap { (key, value) -> AppIcon? in
-            guard let value = value as? [String: Any] else {
-                return nil
-            }
-
-            let isBordered = value[Constants.infoPlistRequiresBorderKey] as? Bool == true
-            let isLegacy = value[Constants.infoPlistLegacyIconKey] as? Bool == true
-            return AppIcon(name: key, isBordered: isBordered, isLegacy: isLegacy)
-        }
+        self.icons = [currentColorfulIcons, currentLightIcons, legacyIcons]
     }
 
     private enum Constants {
@@ -155,27 +165,68 @@ open class AppIconViewController: UITableViewController {
         static let iconBorderColor: UIColor? = UITableView().separatorColor
 
         static let cellIdentifier = "IconCell"
-
-        static let iconPreviewBaseName = "icon-app-60x60"
-        static let defaultIconName = "Blue"
-        static let defaultLegacyIconName = "WordPress"
-
-        static let infoPlistBundleIconsKey = "CFBundleIcons"
-        static let infoPlistAlternateIconsKey = "CFBundleAlternateIcons"
-        static let infoPlistRequiresBorderKey = "WPRequiresBorder"
-        static let infoPlistLegacyIconKey = "WPLegacyIcon"
     }
 }
 
-private struct AppIcon {
+struct AppIcon {
     let name: String
     let isBordered: Bool
     let isLegacy: Bool
 
-    var imageName: String {
-        let lowered = name.lowercased().replacingMatches(of: " ", with: "-")
-        return "\(lowered)-\(AppIcon.imageBaseName)"
+    var displayName: String {
+        return name.replacingMatches(of: " Classic", with: "")
     }
 
-    private static let imageBaseName = "icon-app-60x60"
+    var imageName: String {
+        let lowered = name.lowercased().replacingMatches(of: " ", with: "-")
+        return "\(lowered)-\(Constants.imageBaseName)"
+    }
+
+    static var isUsingCustomIcon: Bool {
+        return UIApplication.shared.alternateIconName != nil
+    }
+
+    static var currentOrDefault: AppIcon {
+        if let name = UIApplication.shared.alternateIconName {
+            return allIcons.first(where: { $0.name == name }) ?? defaultIcon
+        } else {
+            return defaultIcon
+        }
+    }
+
+    static var defaultIcon: AppIcon {
+        return AppIcon(name: AppIcon.defaultIconName,
+                       isBordered: false,
+                       isLegacy: false)
+    }
+
+    static var allIcons: [AppIcon] {
+        guard let bundleDict = Bundle.main.object(forInfoDictionaryKey: Constants.infoPlistBundleIconsKey) as? [String: Any],
+              let iconDict = bundleDict[Constants.infoPlistAlternateIconsKey] as? [String: Any] else {
+            return [defaultIcon]
+        }
+
+        let customIcons = iconDict.compactMap { (key, value) -> AppIcon? in
+            guard let value = value as? [String: Any] else {
+                return nil
+            }
+
+            let isBordered = value[Constants.infoPlistRequiresBorderKey] as? Bool == true
+            let isLegacy = value[Constants.infoPlistLegacyIconKey] as? Bool == true
+            return AppIcon(name: key, isBordered: isBordered, isLegacy: isLegacy)
+        }
+
+        return [defaultIcon] + customIcons
+    }
+
+    private enum Constants {
+        static let infoPlistBundleIconsKey = "CFBundleIcons"
+        static let infoPlistAlternateIconsKey = "CFBundleAlternateIcons"
+        static let infoPlistRequiresBorderKey = "WPRequiresBorder"
+        static let infoPlistLegacyIconKey = "WPLegacyIcon"
+        static let imageBaseName = "icon-app-60x60"
+    }
+
+    static let defaultIconName = "Blue"
+    static let defaultLegacyIconName = "WordPress"
 }

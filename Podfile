@@ -39,17 +39,17 @@ def aztec
 end
 
 def wordpress_ui
-    pod 'WordPressUI', '~> 1.9.0'
+    pod 'WordPressUI', '~> 1.10.0'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
-    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
+    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'feature/fancy-alert-dividers'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => ''
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.30.0'
+    pod 'WordPressKit', '~> 4.32.0-beta'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -76,7 +76,7 @@ end
 
 def shared_test_pods
     pod 'OHHTTPStubs/Swift', '~> 9.1.0'
-    pod 'OCMock', '3.4.3'
+    pod 'OCMock', '~> 3.4.3'
 end
 
 def shared_with_extension_pods
@@ -161,7 +161,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.50.0'
+    gutenberg :tag => 'v1.51.0'
 
 
     ## Third party libraries
@@ -191,7 +191,7 @@ abstract_target 'Apps' do
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.8.4'
+    pod 'Automattic-Tracks-iOS', '~> 0.8.5'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
     # Local Development
@@ -207,9 +207,9 @@ abstract_target 'Apps' do
 
     pod 'Gridicons', '~> 1.1.0'
 
-    pod 'WordPressAuthenticator', '~> 1.36.0'
+     pod 'WordPressAuthenticator', '~> 1.37.0-beta.3'
     # While in PR
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/nux-button-shadows'
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
@@ -228,7 +228,7 @@ abstract_target 'Apps' do
             inherit! :search_paths
 
             shared_test_pods
-            pod 'Nimble', '~> 7.3.1'
+            pod 'Nimble', '~> 9.0.0'
         end
     end
 

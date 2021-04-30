@@ -1,2 +1,1 @@
-red,social,notas,jetpack,fotos,escribir,geotagging,media,blog,wordpress,web,blogging,diseño
-
+social,notas,jetpack,escritura,geoetiquetado,medios,blog,web,bloguear,diario

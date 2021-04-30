@@ -9,10 +9,12 @@ protocol JetpackScanView {
     func showScanStartError()
 
     func presentAlert(_ alert: UIAlertController)
-    func presentNotice(with title: String, message: String)
+    func presentNotice(with title: String, message: String?)
 
     func showIgnoreThreatSuccess(for threat: JetpackScanThreat)
     func showIgnoreThreatError(for threat: JetpackScanThreat)
+
+    func showJetpackSettings(with siteID: Int)
 }
 
 class JetpackScanCoordinator {
@@ -24,6 +26,10 @@ class JetpackScanCoordinator {
             configureSections()
             scanDidChange(from: oldValue, to: scan)
         }
+    }
+
+    var hasValidCredentials: Bool {
+        return scan?.hasValidCredentials ?? false
     }
 
     let blog: Blog
@@ -205,6 +211,14 @@ class JetpackScanCoordinator {
         supportVC.showFromTabBar()
     }
 
+    public func openJetpackSettings() {
+        guard let siteID = blog.dotComID as? Int else {
+            view.presentNotice(with: Strings.jetpackSettingsNotice.title, message: nil)
+            return
+        }
+        view.showJetpackSettings(with: siteID)
+    }
+
     public func noResultsButtonPressed() {
         guard let action = actionButtonState else {
             return
@@ -332,6 +346,10 @@ class JetpackScanCoordinator {
             static let messageSingleThreatFound = NSLocalizedString("1 potential threat found", comment: "Message for a notice informing the user their scan completed and 1 threat was found")
         }
 
+        struct jetpackSettingsNotice {
+            static let title = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
+        }
+
         static let fixAllAlertTitleFormat = NSLocalizedString("Please confirm you want to fix all %1$d active threats", comment: "Confirmation title presented before fixing all the threats, displays the number of threats to be fixed")
         static let fixAllSingleAlertTitle = NSLocalizedString("Please confirm you want to fix this threat", comment: "Confirmation title presented before fixing a single threat")
         static let fixAllAlertTitleMessage = NSLocalizedString("Jetpack will be fixing all the detected active threats.", comment: "Confirmation message presented before fixing all the threats, displays the number of threats to be fixed")
@@ -348,6 +366,10 @@ class JetpackScanCoordinator {
 }
 
 extension JetpackScan {
+    var hasValidCredentials: Bool {
+        return credentials?.first?.stillValid ?? false
+    }
+
     var hasFixableThreats: Bool {
         let count = fixableThreats?.count ?? 0
         return count > 0

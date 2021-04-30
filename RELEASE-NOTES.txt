@@ -1,7 +1,24 @@
+17.3
+-----
+* [**] Fix issue where deleting a post and selecting undo would sometimes convert the content to the classic editor. [#16342]
+* [**] Fix issue where restoring a post left the restored post in the published list even though it has been converted to a draft. [#16358]
+* [**] Fix issue where trashing a post converted it to Classic content. [#16367]
+* [*] Comments can be filtered to show the most recent unreplied comments from other users. [#16215]
+* [*] Fixed the background color of search fields. [#16365]
+* [*] Fixed the navigation bar color in dark mode. [#16348]
+* [*] Fix translation issues for templates fetched on the site creation design selection screen. [#16404]
+* [*] Fix translation issues for templates fetched on the page creation design selection screen. [#16404]
+* [*] Fix translation issue for the Choose button on the template preview in the site creation flow. [#16404]
+
 17.2
 -----
 
+* [*] Fixed an issue where some author display names weren't visible for self-hosted sites. [#16297]
 * [***] Updated custom app icons. [#16261]
+* [**] Removed Site Switcher in the Editor
+* [*] a11y: Bug fix: Allow stepper cell to be selected by screenreader [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3362]
+* [*] Image block: Improve text entry for long alt text. [https://github.com/WordPress/gutenberg/pull/29670]
+* [***] New Block: Jetpack contact info. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3340]
 
 17.1
 -----

@@ -2,7 +2,6 @@ import AutomatticTracks
 
 enum ABTest: String, CaseIterable {
     case unknown = "unknown"
-    case storyFirst = "wpios_create_menu_story_first"
 
     /// Returns a variation for the given experiment
     var variation: Variation {
@@ -18,14 +17,9 @@ extension ABTest {
             return
         }
 
+        let experimentNames = ABTest.allCases.filter { $0 != .unknown }.map { $0.rawValue }
+        ExPlat.shared?.register(experiments: experimentNames)
+
         ExPlat.shared?.refresh()
-    }
-
-    static func refreshIfNeeded() {
-        guard ABTest.allCases.count > 1, AccountHelper.isLoggedIn else {
-            return
-        }
-
-        ExPlat.shared?.refreshIfNeeded()
     }
 }

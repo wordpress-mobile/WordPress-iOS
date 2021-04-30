@@ -20,17 +20,6 @@ NSString *const WPComReferrerURL                                    = @"https://
 NSString *const AutomatticDomain                                    = @"automattic.com";
 NSString *const WPComDomain                                         = @"wordpress.com";
 
-/// Notifications Constants
-///
-#ifdef DEBUG
-NSString *const  WPPushNotificationAppId                            = @"org.wordpress.appstore.dev";
-#else
-#ifdef INTERNAL_BUILD
-NSString *const   WPPushNotificationAppId                           = @"org.wordpress.internal";
-#else
-NSString *const WPPushNotificationAppId                             = @"org.wordpress.appstore";
-#endif
-#endif
 /// Keychain Constants
 ///
 #ifdef INTERNAL_BUILD

@@ -40,10 +40,12 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     private var currentLoadedFeaturedImage: String?
     private weak var interactivePostViewDelegate: InteractivePostViewDelegate?
     private weak var actionSheetDelegate: PostActionSheetDelegate?
-    var isAuthorHidden: Bool = false {
+    var shouldHideAuthor: Bool = false {
         didSet {
-            authorLabel.isHidden = isAuthorHidden
-            separatorLabel.isHidden = isAuthorHidden
+            let emptyAuthor = viewModel?.author.isEmpty ?? true
+
+            authorLabel.isHidden = shouldHideAuthor || emptyAuthor
+            separatorLabel.isHidden = shouldHideAuthor || emptyAuthor
         }
     }
 

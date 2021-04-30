@@ -1,11 +1,11 @@
 require 'dotenv'
 Dotenv.load('~/.wpios-env.default')
 
-screenshots_path "./screenshots/"
+screenshots_path "./fastlane/promo-screenshots/"
 app_identifier "org.wordpress"
 
 # Make sure to update these keys for a new version
-app_version "17.1"
+app_version "17.2"
 
 skip_binary_upload true
 overwrite_screenshots true

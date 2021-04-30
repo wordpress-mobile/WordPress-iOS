@@ -38,6 +38,7 @@ class JetpackScanThreatDetailsViewController: UIViewController {
     @IBOutlet private weak var buttonsStackView: UIStackView!
     @IBOutlet private weak var fixThreatButton: FancyButton!
     @IBOutlet private weak var ignoreThreatButton: FancyButton!
+    @IBOutlet private weak var warningButton: UIButton!
     @IBOutlet weak var ignoreActivityIndicatorView: UIActivityIndicatorView!
 
     // MARK: - Properties
@@ -46,16 +47,18 @@ class JetpackScanThreatDetailsViewController: UIViewController {
 
     private let blog: Blog
     private let threat: JetpackScanThreat
+    private let hasValidCredentials: Bool
 
     private lazy var viewModel: JetpackScanThreatViewModel = {
-        return JetpackScanThreatViewModel(threat: threat)
+        return JetpackScanThreatViewModel(threat: threat, hasValidCredentials: hasValidCredentials)
     }()
 
     // MARK: - Init
 
-    init(blog: Blog, threat: JetpackScanThreat) {
+    init(blog: Blog, threat: JetpackScanThreat, hasValidCredentials: Bool = false) {
         self.blog = blog
         self.threat = threat
+        self.hasValidCredentials = hasValidCredentials
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -119,6 +122,17 @@ class JetpackScanThreatDetailsViewController: UIViewController {
         trackEvent(.jetpackScanIgnoreThreatDialogOpen)
     }
 
+    @IBAction func warningButtonTapped(_ sender: Any) {
+        guard let siteID = blog.dotComID as? Int,
+              let controller = JetpackWebViewControllerFactory.settingsController(siteID: siteID) else {
+            displayNotice(title: Strings.jetpackSettingsNotice)
+            return
+        }
+
+        let navVC = UINavigationController(rootViewController: controller)
+        present(navVC, animated: true)
+    }
+
     // MARK: - Private
 
     private func trackEvent(_ event: WPAnalyticsEvent) {
@@ -155,6 +169,7 @@ extension JetpackScanThreatDetailsViewController {
 
         if let fixActionTitle = viewModel.fixActionTitle {
             fixThreatButton.setTitle(fixActionTitle, for: .normal)
+            fixThreatButton.isEnabled = viewModel.fixActionEnabled
             fixThreatButton.isHidden = false
         } else {
             fixThreatButton.isHidden = true
@@ -165,6 +180,13 @@ extension JetpackScanThreatDetailsViewController {
             ignoreThreatButton.isHidden = false
         } else {
             ignoreThreatButton.isHidden = true
+        }
+
+        if let warningActionTitle = viewModel.warningActionTitle {
+            warningButton.isHidden = false
+            warningButton.setTitle(warningActionTitle, for: .normal)
+        } else {
+            warningButton.isHidden = true
         }
 
         applyStyles()
@@ -242,5 +264,6 @@ extension JetpackScanThreatDetailsViewController {
         static let title = NSLocalizedString("Threat details", comment: "Title for the Jetpack Scan Threat Details screen")
         static let ok = NSLocalizedString("OK", comment: "OK button for alert")
         static let cancel = NSLocalizedString("Cancel", comment: "Cancel button for alert")
+        static let jetpackSettingsNotice = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
     }
 }

@@ -18,20 +18,20 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="4Ut-AW-P1h" userLabel="Cell Stack View">
-                        <rect key="frame" x="20" y="5" width="395" height="151"/>
+                        <rect key="frame" x="20" y="5" width="395" height="150"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="YVe-Xq-IHC" userLabel="Top Stack View">
-                                <rect key="frame" x="0.0" y="0.0" width="395" height="118"/>
+                                <rect key="frame" x="0.0" y="0.0" width="395" height="117"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="10J-wX-NYd" userLabel="Gravatar Image View" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="31" width="56" height="56"/>
+                                        <rect key="frame" x="0.0" y="30.5" width="56" height="56"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="10J-wX-NYd" secondAttribute="height" multiplier="1:1" id="14o-d5-L9V"/>
                                             <constraint firstAttribute="width" constant="56" id="QaL-PC-gK7"/>
                                         </constraints>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="hys-IH-x9N" userLabel="Label Stack View">
-                                        <rect key="frame" x="68" y="38" width="327" height="42"/>
+                                        <rect key="frame" x="68" y="37.5" width="327" height="42"/>
                                         <subviews>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xXR-ER-499" userLabel="Name Label">
                                                 <rect key="frame" x="0.0" y="0.0" width="52" height="24"/>
@@ -49,8 +49,8 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User bio" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HPd-4P-tnS" userLabel="Bio Label">
-                                <rect key="frame" x="0.0" y="133" width="395" height="18"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User bio" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HPd-4P-tnS" userLabel="Bio Label">
+                                <rect key="frame" x="0.0" y="132" width="395" height="18"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <color key="textColor" name="Black"/>
                                 <nil key="highlightedColor"/>
@@ -60,7 +60,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="4Ut-AW-P1h" firstAttribute="top" secondItem="L1j-z8-YLw" secondAttribute="top" constant="5" id="4VA-bk-yYq"/>
-                    <constraint firstAttribute="bottom" secondItem="4Ut-AW-P1h" secondAttribute="bottom" id="8cw-B8-bS8"/>
+                    <constraint firstAttribute="bottom" secondItem="4Ut-AW-P1h" secondAttribute="bottom" constant="1" id="8cw-B8-bS8"/>
                     <constraint firstItem="4Ut-AW-P1h" firstAttribute="leading" secondItem="L1j-z8-YLw" secondAttribute="leading" constant="20" id="EJu-am-2SP"/>
                     <constraint firstAttribute="trailing" secondItem="4Ut-AW-P1h" secondAttribute="trailing" constant="20" id="LUA-Hx-nkW"/>
                 </constraints>

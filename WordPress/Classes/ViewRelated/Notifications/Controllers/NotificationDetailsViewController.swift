@@ -982,12 +982,14 @@ private extension NotificationDetailsViewController {
         }
     }
 
-    func displayUserProfile(_ user: RemoteUser) {
+    func displayUserProfile(_ user: LikeUser, from indexPath: IndexPath) {
         let userProfileVC = UserProfileSheetViewController(user: user)
         let bottomSheet = BottomSheetViewController(childViewController: userProfileVC)
 
-        // TODO: add sourceView for iPad
-        bottomSheet.show(from: self)
+        let sourceView = tableView.cellForRow(at: indexPath) ?? view
+        bottomSheet.show(from: self, sourceView: sourceView)
+
+        WPAnalytics.track(.userProfileSheetShown, properties: ["source": "like_notification_list"])
     }
 
 }
@@ -1376,8 +1378,8 @@ extension NotificationDetailsViewController: LikesListControllerDelegate {
         displayNotificationSource()
     }
 
-    func didSelectUser(_ user: RemoteUser) {
-        displayUserProfile(user)
+    func didSelectUser(_ user: LikeUser, at indexPath: IndexPath) {
+        displayUserProfile(user, from: indexPath)
     }
 
 }
