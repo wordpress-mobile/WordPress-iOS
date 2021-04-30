@@ -30,7 +30,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
     private let templateGroups: [TemplateGroup] = [.stable, .singlePage]
 
     let completion: SiteDesignStep.SiteDesignSelection
-    let restAPI = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
+    let restAPI = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
     var selectedIndexPath: IndexPath? = nil
     private var sections: [SiteDesignSection] = []
     internal override var categorySections: [CategorySection] { get { sections }}
