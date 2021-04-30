@@ -266,7 +266,7 @@ class PostServiceWPComTests: XCTestCase {
 
         // Act
         waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
-            self.service.getLikesForPostID(postID, siteID: siteID, success: { users in
+            self.service.getLikesFor(postID: postID, siteID: siteID, success: { users in
                 // Assert
                 expect(users.count) == 1
                 done()
@@ -286,7 +286,7 @@ class PostServiceWPComTests: XCTestCase {
 
         // Act
         waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
-            self.service.getLikesForPostID(postID, siteID: siteID, success: { users in
+            self.service.getLikesFor(postID: postID, siteID: siteID, success: { users in
                 fail("this closure should not be called")
             },
             failure: { _ in
@@ -309,7 +309,8 @@ class PostServiceWPComTests: XCTestCase {
                                         "login": "johndoe",
                                         "name": "John Doe",
                                         "site_ID": NSNumber(value: 456),
-                                        "avatar_URL": "avatar URL"
+                                        "avatar_URL": "avatar URL",
+                                        "date_liked": "2021-02-09 08:34:43"
         ]
 
         return RemoteLikeUser(dictionary: userDict, postID: NSNumber(value: 1), siteID: NSNumber(value: 2))
