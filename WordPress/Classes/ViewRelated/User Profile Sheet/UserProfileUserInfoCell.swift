@@ -18,16 +18,14 @@ class UserProfileUserInfoCell: UITableViewCell, NibReusable {
 
     // MARK: - Public Methods
 
-    func configure(withUser user: RemoteUser) {
+    func configure(withUser user: LikeUser) {
         nameLabel.text = user.displayName
         usernameLabel.text = String(format: Constants.usernameFormat, user.username)
 
-        // TODO:
-        // - replace with actual bio.
-        // - hide label if no bio.
-        userBioLabel.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Consectetur purus ut faucibus pulvinar. Tincidunt eget nullam non nisi est sit amet facilisis magna. Morbi tincidunt augue interdum velit euismod in pellentesque. Sed adipiscing diam donec adipiscing."
+        userBioLabel.text = user.bio
+        userBioLabel.isHidden = user.bio.isEmpty
 
-        downloadGravatarWithURL(user.avatarURL)
+        downloadGravatarWithURL(user.avatarUrl)
     }
 
 }
