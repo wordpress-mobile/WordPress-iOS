@@ -41,7 +41,7 @@ final class CommentServiceTests: XCTestCase {
                                         "avatar_URL": "avatar URL"
         ]
 
-        return RemoteLikeUser(dictionary: userDict)
+        return RemoteLikeUser(dictionary: userDict, commentID: NSNumber(value: 1), siteID: NSNumber(value: 2))
     }
 }
 
