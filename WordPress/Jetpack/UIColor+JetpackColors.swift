@@ -21,7 +21,7 @@ extension UIColor {
     }
 
     static var lightAppBarTint: UIColor {
-        return UIColor(light: .brand, dark: .white)
+        return .text
     }
 
     static var appBarText: UIColor {
@@ -37,7 +37,7 @@ extension UIColor {
     }
 
     static var filterBarSelected: UIColor {
-        return UIColor(light: .primary, dark: .label)
+        return .primary
     }
 
     static var filterBarSelectedText: UIColor {
@@ -50,4 +50,14 @@ extension UIColor {
 
     /// Note: these values are intended to match the iOS defaults
     static var tabUnselected: UIColor =  UIColor(light: UIColor(hexString: "999999"), dark: UIColor(hexString: "757575"))
+
+    static var statsPrimaryHighlight: UIColor {
+        return  UIColor(light: muriel(color: MurielColor(name: .pink, shade: .shade30)),
+                        dark: muriel(color: MurielColor(name: .pink, shade: .shade60)))
+    }
+
+    static var statsSecondaryHighlight: UIColor {
+        return UIColor(light: muriel(color: MurielColor(name: .pink, shade: .shade60)),
+                       dark: muriel(color: MurielColor(name: .pink, shade: .shade30)))
+    }
 }

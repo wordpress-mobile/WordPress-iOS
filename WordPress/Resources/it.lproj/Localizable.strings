@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-24 18:54:34+0000 */
+/* Translation-Revision-Date: 2021-03-31 15:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -36,11 +36,11 @@
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d articoli non letti";
 
-/* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: Current value. */
-"%1$s. Current value is %2$s" = "%1$s. Il valore attuale è %2$s";
+/* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
+"%1$s transformed to %2$s" = "%1$s transformed to %2$s";
 
-/* \"Uploading\" Status text */
-"%@" = "%@";
+/* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
+"%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s is %3$s %4$s.";
 
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
 "%@ - %@, %@" = "Dal %1$@ al %2$@ %3$@";
@@ -216,6 +216,12 @@
    the post has no title. */
 "(no title)" = "(senza titolo)";
 
+/* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
+"*Johann Brandt* responded to your post" = "*Johann Brandt* responded to your post";
+
+/* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
+"*Madison Ruiz* liked your post" = "*Madison Ruiz* liked your post";
+
 /* Menus button text for adding a new menu to a site. */
 "+ Add new menu" = "+ Aggiungi nuovo menu";
 
@@ -258,6 +264,9 @@
 /* Age between dates less than one hour. */
 "< 1 hour" = "< 1 ora";
 
+/* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
+"@%1$@" = "@%1$@";
+
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "Un pulsante \"Altro\" contiene un menu a tendina che mostra i pulsanti di condivisione";
 
@@ -267,26 +276,11 @@
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Un file contiene un modello di codice dannoso";
 
-/* No comment provided by engineer. */
-"A link to a URL." = "A link to a URL.";
-
-/* No comment provided by engineer. */
-"A link to a category." = "A link to a category.";
-
-/* No comment provided by engineer. */
-"A link to a page." = "A link to a page.";
-
-/* No comment provided by engineer. */
-"A link to a post." = "A link to a post.";
-
-/* No comment provided by engineer. */
-"A link to a tag." = "A link to a tag.";
-
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "Un elenco dei siti su questo account.";
 
 /* Story Intro welcome title */
-"A new way to create and publish engaging content on your site." = "A new way to create and publish engaging content on your site.";
+"A new way to create and publish engaging content on your site." = "Un nuovo modo di creare e pubblicare contenuti coinvolgenti sul tuo sito.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "Una serie di passaggi per mostrare come aggiungere un tema, un'icona del sito e molto altro.";
@@ -329,6 +323,9 @@
 
 /* About this app (information page title) */
 "About" = "Info";
+
+/* Link to About screen for Jetpack for iOS */
+"About Jetpack for iOS" = "About Jetpack for iOS";
 
 /* My Profile 'About me' label */
 "About Me" = "Su di me";
@@ -449,11 +446,11 @@
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Aggiungi immagine account.";
 
+/* No comment provided by engineer. */
+"Add alt text" = "Aggiungi un testo alternativo";
+
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Aggiungi qualsiasi argomento";
-
-/* No comment provided by engineer. */
-"Add button text" = "Add button text";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Aggiungi un'immagine, o un avatar, per rappresentare questo nuovo account.";
@@ -579,10 +576,10 @@
 "Allow this connection to be used by all admins and users of your site." = "Consenti che questa connessione venga utilizzata da tutti gli amministratori e tutti gli utenti del tuo sito.";
 
 /* Allowlisted IP Addresses Title */
-"Allowlisted IP Addresses" = "Allowlisted IP Addresses";
+"Allowlisted IP Addresses" = "Indirizzi IP consentiti inclusi nell'elenco";
 
 /* Jetpack Settings: Allowlisted IP addresses */
-"Allowlisted IP addresses" = "Allowlisted IP addresses";
+"Allowlisted IP addresses" = "Indirizzi IP consentiti inclusi nell'elenco";
 
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Ci siamo quasi! Inserisci il codice di verifica dalla tua app di autenticazione.";
@@ -740,9 +737,6 @@
 /* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Desideri ripristinare il sito al giorno %1$@? In questo modo verranno rimossi i contenuti e le opzioni creati o modificati da allora.";
 
-/* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
-"Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost." = "Desideri ripristinare il sito al giorno %1$@?\nQualsiasi modifica apportata da quel momento andrà persa.";
-
 /* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
 "Are you sure you want to save as draft?" = "Desideri salvare come bozza?";
 
@@ -763,6 +757,9 @@
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Desideri aggiornare?";
+
+/* An example tag used in the login prologue screens. */
+"Art" = "Art";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "A partire dal 1 agosto 2018, Facebook non consente più la condivisione diretta degli articoli sui profili di Facebook. Le connessioni alle pagine di Facebook restano invariate.";
@@ -939,7 +936,7 @@
 
 /* Blocklist Title
    Settings: Comments Blocklist */
-"Blocklist" = "Blocklist";
+"Blocklist" = "Elenco di elementi da bloccare";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
@@ -983,7 +980,7 @@
 "Button Style" = "Stile del pulsante";
 
 /* No comment provided by engineer. */
-"ButtonGroup" = "ButtonGroup";
+"ButtonGroup" = "Gruppo pulsante";
 
 /* Label for the post author in the post detail. */
 "By " = "Di";
@@ -1090,6 +1087,9 @@
 /* Dialog box title for when the user is canceling an upload. */
 "Cancel media uploads" = "Annulla caricamenti multimediali";
 
+/* No comment provided by engineer. */
+"Cancel search" = "Cancel search";
+
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Annulla condivisione";
 
@@ -1117,9 +1117,6 @@
 /* Category menu item in share extension.
    Menu item label for linking a specific category. */
 "Category" = "Categoria";
-
-/* No comment provided by engineer. */
-"Category Link" = "Category Link";
 
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "Manca il titolo della categoria";
@@ -1232,6 +1229,9 @@
 /* Select domain name. Title */
 "Choose a domain" = "Scegli un dominio";
 
+/* OK Button title shown in alert informing users about the Reader Save for Later feature. */
+"Choose a new app icon" = "Choose a new app icon";
+
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Scegli un tema";
 
@@ -1281,7 +1281,7 @@
 "Choose video" = "Scegli video";
 
 /* Reader select interests subtitle label text */
-"Choose your topics" = "Choose your topics";
+"Choose your topics" = "Scegli gli argomenti";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Se scegli un sito diverso perderai tutte le modifiche a contenuti specifici per questo sito, come file multimediali e categorie. Confermi?";
@@ -1306,6 +1306,9 @@
 
 /* Message of the trash confirmation alert. */
 "Clear all old activity logs?" = "Cancellare tutti i log delle vecchie attività?";
+
+/* No comment provided by engineer. */
+"Clear search" = "Clear search";
 
 /* Title of a button. */
 "Clear search history" = "Cancella la cronologia di ricerca";
@@ -1354,6 +1357,9 @@
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Raccogli informazioni";
+
+/* Title displayed for selection of custom app icons that have colorful backgrounds. */
+"Colorful backgrounds" = "Colorful backgrounds";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combina foto, video e testo per creare articoli della storia coinvolgenti e che si possono toccare che i visitatori ameranno.";
@@ -1455,7 +1461,6 @@
 "Configure" = "Configura";
 
 /* Confirm
-   Confirm Rewind button title
    Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Conferma";
 
@@ -1580,6 +1585,9 @@
 
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Continua con Apple";
+
+/* An example tag used in the login prologue screens. */
+"Cooking" = "Cooking";
 
 /* No comment provided by engineer. */
 "Copied block" = "Blocco copiato";
@@ -1708,7 +1716,8 @@
 /* Title for the site creation flow. */
 "Create New Site" = "Crea un nuovo sito";
 
-/* Button title, encourages users to create their first page on their blog.
+/* Button for selecting the current page template.
+   Button title, encourages users to create their first page on their blog.
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Crea pagina";
 
@@ -1940,6 +1949,9 @@
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Nega";
 
+/* No comment provided by engineer. */
+"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Describe the purpose of the image. Leave empty if the image is purely decorative. ";
+
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
@@ -1962,11 +1974,11 @@
 "Dimensions" = "Dimensioni";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
-"Disable" = "Disable";
+"Disable" = "Disattiva";
 
 /* Title. A call to action to disable invite links.
    Title. Title of a prompt to disable group invite links. */
-"Disable invite link" = "Disable invite link";
+"Disable invite link" = "Disattiva il link di invito";
 
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "Disabilitato";
@@ -2008,7 +2020,7 @@
 "Discover and follow blogs you love" = "Scopri e segui i blog che ami";
 
 /* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Discover more topics";
+"Discover more topics" = "Scopri ulteriori argomenti";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2093,9 +2105,6 @@
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Tocca due volte per aggiungere un blocco";
-
-/* translators: accessibility text (hint for focusing a slider) */
-"Double tap to change the value using slider" = "Tocca due volte per modificare il valore usando lo slider";
 
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "Doppio tocco per ignorare";
@@ -2209,7 +2218,7 @@
 "Edit %@ block" = "Modifica blocco %@";
 
 /* Blocklist Keyword Edition Title */
-"Edit Blocklist Word" = "Edit Blocklist Word";
+"Edit Blocklist Word" = "Modifica elenco delle parole da bloccare";
 
 /* No comment provided by engineer. */
 "Edit Comment" = "Modifica Commento";
@@ -2370,7 +2379,7 @@
 "Enter your password instead." = "Immetti la password.";
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
-"Enter your server credentials to enable one click site restores from backups." = "Enter your server credentials to enable one click site restores from backups.";
+"Enter your server credentials to enable one click site restores from backups." = "Inserisci le credenziali del server per abilitare i ripristini del sito con un clic dai backup.";
 
 /* Generic error alert title
    Generic error.
@@ -2509,7 +2518,7 @@
 "Expands to select a different menu area" = "Espande per selezionare un'area del menu differente";
 
 /* Title. Indicates an expiration date. */
-"Expires on" = "Expires on";
+"Expires on" = "Scade il giorno";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Spiega di cosa tratta il sito.";
@@ -2541,10 +2550,16 @@
 "Failed" = "Fallito";
 
 /* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "Failed Media Export";
+"Failed Media Export" = "Esportazione file multimediali non riuscita";
+
+/* No comment provided by engineer. */
+"Failed to insert audio file." = "Failed to insert audio file.";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Inserimento del file audio non riuscito Tocca per le opzioni.";
+
+/* No comment provided by engineer. */
+"Failed to insert media." = "Failed to insert media.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Errore nell'inserimento di un media.\n Fai un tap per le opzioni possibili.";
@@ -2559,7 +2574,7 @@
 "Failed to serialize request to the REST API." = "Tentativo di richiesta di serializzazione all'API REST non riuscito.";
 
 /* The app failed to unsubscribe from the comments for the post */
-"Failed to unfollow conversation" = "Failed to unfollow conversation";
+"Failed to unfollow conversation" = "Impossibile smettere di seguire la conversazione";
 
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "Impossibile caricare i file.\nTocca per le opzioni.";
@@ -2679,13 +2694,11 @@
 "Follow site" = "Segui sito";
 
 /* Screen title. Reader select interests title label text. */
-"Follow topics" = "Follow topics";
+"Follow topics" = "Segui gli argomenti";
 
-/* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "Follow your favorite sites and discover new blogs.";
-
-/* Shown in the prologue carousel (promotional screens) during first launch. */
-"Follow your favorite sites and discover new reads." = "Segui i tuoi siti preferiti e scopri nuove letture.";
+/* Caption displayed in promotional screens shown during the login flow.
+   Shown in the prologue carousel (promotional screens) during first launch. */
+"Follow your favorite sites and discover new blogs." = "Segui i tuoi siti preferiti e scopri nuovi blog.";
 
 /* Displayed in the Notification Settings View
    Followed Sites Title
@@ -2723,7 +2736,7 @@
 "Following conversation by email" = "Stai seguendo la conversazione tramite e-mail";
 
 /* Label displayed to the user while loading their selected interests */
-"Following new topics..." = "Following new topics...";
+"Following new topics..." = "Stai seguendo nuovi argomenti...";
 
 /* Filters Follows Notifications */
 "Follows" = "Segue";
@@ -2739,6 +2752,9 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Segui il tag.";
+
+/* An example tag used in the login prologue screens. */
+"Football" = "Football";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "Per agevolarti, abbiamo precompilato le tue informazioni di contatto di WordPress.com. Rileggi per verificare che le informazioni che desideri utilizzare per questo dominio siano corrette.";
@@ -2776,12 +2792,15 @@
 /* translators: accessibility text. %s: gallery caption. */
 "Gallery caption. %s" = "Didascalia della galleria. %s";
 
+/* An example tag used in the login prologue screens. */
+"Gardening" = "Gardening";
+
 /* Add New Stats Card category title
    Title for the general section in site settings screen */
 "General" = "Generali";
 
 /* Title. A call to action to generate a new invite link. */
-"Generate new link" = "Generate new link";
+"Generate new link" = "Genera un nuovo link";
 
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Generazione dell'anteprima in corso";
@@ -3194,7 +3213,7 @@
 "Invite" = "Invita";
 
 /* Title for the Invite Link section of the Invite Person screen. */
-"Invite Link" = "Invite Link";
+"Invite Link" = "Link di invito";
 
 /* Invite People Title */
 "Invite People" = "Invita delle persone";
@@ -3340,6 +3359,9 @@
 /* Left alignment for an image. Should be the same as in core WP. */
 "Left" = "Sinistra";
 
+/* Title displayed for selection of custom app icons that may be removed in a future release of the app. */
+"Legacy Icons" = "Legacy Icons";
+
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Permettici di aiutare";
 
@@ -3348,6 +3370,9 @@
 
 /* Title for the app appearance setting for light mode */
 "Light" = "Chiaro";
+
+/* Title displayed for selection of custom app icons that have white backgrounds. */
+"Light backgrounds" = "Light backgrounds";
 
 /* Like (verb)
    Like a post.
@@ -3744,10 +3769,10 @@
 "More Posts" = "Più articoli";
 
 /* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
-"More from %1$@" = "More from %1$@";
+"More from %1$@" = "Ulteriori informazioni da %1$@";
 
 /* Section title for global related posts. */
-"More on WordPress.com" = "More on WordPress.com";
+"More on WordPress.com" = "Ulteriori informazioni su WordPress.com";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Orari più popolari";
@@ -3810,6 +3835,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "Sposta il commento nel cestino.";
 
+/* An example tag used in the login prologue screens. */
+"Music" = "Music";
+
 /* Link to My Profile section
    My Profile view title */
 "My Profile" = "Il mio profilo";
@@ -3866,7 +3894,10 @@
 "New" = "Nuovo";
 
 /* Blocklist Keyword Insertion Title */
-"New Blocklist Word" = "New Blocklist Word";
+"New Blocklist Word" = "Nuovo elenco delle parole da bloccare";
+
+/* Title of alert informing users about the Reader Save for Later feature. */
+"New Custom App Icons" = "New Custom App Icons";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "Nuovo IP o nuovo IP Range";
@@ -4053,7 +4084,7 @@
 "No network available" = "Nessuna rete disponibile";
 
 /* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "No new topics to follow";
+"No new topics to follow" = "Nessun nuovo argomento da seguire";
 
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Nessuna notifica";
@@ -4240,7 +4271,7 @@
 "Oldest first" = "Prima i meno recenti";
 
 /* Warning message about disabling group invite links. */
-"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?";
+"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Una volta disattivato il link di invito, nessuno sarà in grado di usarlo per unirsi al tuo team. Sei sicuro?";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Una volta creato un sito WordPress.com, puoi ripubblicare il contenuto che ti piace sul tuo sito.";
@@ -4370,9 +4401,6 @@
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page */
 "Page" = "Pagina";
-
-/* No comment provided by engineer. */
-"Page Link" = "Page Link";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
 "Page Restored to Drafts" = "Pagina ripristinata in Bozze";
@@ -4649,6 +4677,9 @@
    Title for the plugin directory */
 "Plugins" = "Plugin";
 
+/* An example tag used in the login prologue screens. */
+"Politics" = "Politics";
+
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
 "Popular" = "Popolari";
@@ -4666,9 +4697,6 @@
 /* For setting the format of a post.
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Formato articolo";
-
-/* No comment provided by engineer. */
-"Post Link" = "Post Link";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "Articolo ripristinato in Bozze";
@@ -4845,11 +4873,11 @@
 /* No comment provided by engineer. */
 "Problem displaying block" = "Problema durante la visualizzazione del blocco";
 
+/* Error message title informing the user that reader content could not be loaded. */
+"Problem loading content" = "Problem loading content";
+
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "Problem loading sites" = "Problemi nel caricamento del sito";
-
-/* Error message title informing the user that a stream could not be loaded. */
-"Problem loading stream" = "Problema durante il caricamento dello stream";
 
 /* No comment provided by engineer. */
 "Problem opening the audio" = "Problema durante l'apertura dell'audio";
@@ -5285,21 +5313,14 @@
 /* Title of the screen that shows the revisions. */
 "Revision" = "Revisione";
 
-/* Title for button allowing user to rewind their Jetpack site
-   Title of section showing rewind status */
-"Rewind" = "Ripristina";
-
-/* Title displayed in the Restore Site alert, should match Calypso */
-"Rewind Site" = "Ripristina sito";
-
-/* Text showing the point in time the site is being currently rewinded to. %@' is a placeholder that will expand to a date. */
-"Rewinding to %@" = "Ripristino al giorno %@";
-
 /* Post Rich content */
 "Rich Content" = "Ricco di contenuti ";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Destra";
+
+/* Example Reader feed title */
+"Rock 'n Roll Weekly" = "Rock 'n Roll Weekly";
 
 /* Title. Indicates the user role an invite link is for.
    User Roles Title
@@ -5359,9 +5380,6 @@
 
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "Salva questo articolo per dopo";
-
-/* Message to indicate progress of saving draft */
-"Saving Draft" = "Salvataggio bozza in corso";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Salvataggio dell'articolo…";
@@ -5424,9 +5442,6 @@
 /* Prompt in the location search bar. */
 "Search Locations" = "Cerca località";
 
-/* No comment provided by engineer. */
-"Search Settings" = "Search Settings";
-
 /* Label for list of search term */
 "Search Term" = "Cerca il termine";
 
@@ -5438,6 +5453,12 @@
 
 /* A short message that is a call to action for the Reader's Search feature. */
 "Search WordPress\nfor a site or post" = "Cerca un sito o un post\nsu WordPress";
+
+/* No comment provided by engineer. */
+"Search block" = "Search block";
+
+/* No comment provided by engineer. */
+"Search blocks" = "Search blocks";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "Cerca o digita URL";
@@ -5675,7 +5696,7 @@
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Condividi informazioni con il nostro strumento di analisi relativamente al tuo uso dei servizi mentre sei connesso con il tuo account WordPress.com.";
 
 /* Title. A call to action to share an invite link. */
-"Share invite link" = "Share invite link";
+"Share invite link" = "Condividi il link di invito";
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Condividi il link";
@@ -5802,6 +5823,9 @@
 
 /* Label for button that clears user activities donated to Siri. */
 "Siri Reset Prompt" = "Cancella i suggerimenti per le scorciatoie di Siri";
+
+/* Header for a single site, shown in Notification user profile. */
+"Site" = "Site";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "Icona di sito";
@@ -5968,11 +5992,11 @@
 /* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "Spiacenti, non puoi usare quell'indirizzo per il tuo sito.";
 
+/* A short error message letting the user know the requested reader content could not be loaded. */
+"Sorry. The content could not be loaded." = "Sorry. The content could not be loaded.";
+
 /* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
 "Sorry. The social service did not tell us which account could be used for sharing." = "Siamo spiacenti, il servizio social non ci ha comunicato quale account poteva essere usato per la condivisione.";
-
-/* A short error message letting the user know the requested stream could not be loaded. */
-"Sorry. The stream could not be loaded." = "Siamo spiacenti. Lo stream non può essere caricato.";
 
 /* A short error message leting the user know the requested search could not be performed. */
 "Sorry. Your search results could not be loaded." = "Siamo spiacenti, non è possibile caricare i risultati della ricerca.";
@@ -6083,13 +6107,13 @@
 "Successfully cleared spotlight index" = "Indice Spotlight cancellato correttamente";
 
 /* The app successfully subscribed to the comments for the post */
-"Successfully followed conversation" = "Successfully followed conversation";
+"Successfully followed conversation" = "Conversazione seguita";
 
 /* Notice displayed after installing a plug-in. */
 "Successfully installed %@." = "Installazione di %@ completata correttamente.";
 
 /* The app successfully unsubscribed from the comments for the post */
-"Successfully unfollowed conversation" = "Successfully unfollowed conversation";
+"Successfully unfollowed conversation" = "Conversazione non più seguita";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -6099,7 +6123,7 @@
 "Suggestions updated" = "Suggerimenti aggiornati";
 
 /* No comment provided by engineer. */
-"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here.";
+"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Riassumi il tuo articolo con un elenco di titoli. Aggiungi ancoraggi HTML ai blocchi Titolo per collegarli qui.";
 
 /* User role badge */
 "Super Admin" = "Super Admin";
@@ -6108,9 +6132,6 @@
    Theme Support action title
    View title for Support page. */
 "Support" = "Supporto";
-
-/* Action button to switch the blog to which you'll be posting */
-"Switch Blog" = "Cambia blog";
 
 /* Button used to switch site */
 "Switch Site" = "Cambia sito";
@@ -6129,9 +6150,6 @@
 
 /* Switches from the classic editor to block editor. */
 "Switch to block editor" = "Passa all'editor a blocchi";
-
-/* Switches from Gutenberg mobile to the classic editor */
-"Switch to classic editor" = "Passa al Classic Editor";
 
 /* Accessibility Identifier for the H1 Aztec Style */
 "Switches to the Heading 1 font size" = "Passa alla dimensione carattere Heading 1";
@@ -6158,7 +6176,7 @@
 "System default" = "Sistema predefinito";
 
 /* No comment provided by engineer. */
-"Table of Contents" = "Table of Contents";
+"Table of Contents" = "Indice dei contenuti";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "La tabella mostra %@";
@@ -6172,9 +6190,6 @@
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
 "Tag" = "Tag";
-
-/* No comment provided by engineer. */
-"Tag Link" = "Tag Link";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "Il tag esiste già";
@@ -6225,7 +6240,7 @@
 "Tap to cancel uploading." = "Fai tap per cancellare il caricamento.";
 
 /* Accessibility hint for button used to change site title */
-"Tap to change the site's title" = "Tap to change the site's title";
+"Tap to change the site's title" = "Tocca per modificare il titolo del sito";
 
 /* Accessibility hint to inform the user what action the hide button performs */
 "Tap to collapse the post tags" = "Tocca per comprimere i tag dell'articolo";
@@ -6255,13 +6270,13 @@
 "Tap to select which blog to post to" = "Tocca per selezionare il blog su cui pubblicare";
 
 /* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "Tap to switch to another site, or add a new site";
+"Tap to switch to another site, or add a new site" = "Tocca per passare a un altro sito o aggiungerne uno nuovo";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Tocca per visualizzare gli articoli per questo tag";
 
 /* Accessibility hint for button used to view the user's site */
-"Tap to view your site" = "Tap to view your site";
+"Tap to view your site" = "Tocca per visualizzare il tuo sito";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Tassonomia";
@@ -6334,7 +6349,7 @@
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Il titolo del sito viene visualizzato nella barra del titolo di un browser web e nell'intestazione nella maggior parte dei temi.";
 
 /* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "The Stories editor is not currently available for your iPad. Please try Stories on your iPhone.";
+"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "L'Editor delle Storie non è attualmente disponibile per il tuo iPad. Prova Storie sull'iPhone.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "L'host dell'URL non è valido.";
@@ -6511,7 +6526,7 @@
 "There was a problem when trying to access your media. Please try again later." = "Si è verificato un problema nel tentativo di accedere ai tuoi elementi media. Riprova più tardi.";
 
 /* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen.";
+"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Si è verificato un problema con l'Editor delle Storie.  Se il problema persiste, puoi contattarci tramite la schermata Io > Schermata di Aiuto e supporto.";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -6770,6 +6785,12 @@
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Traffico";
 
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Transform %s to" = "Transform %s to";
+
+/* No comment provided by engineer. */
+"Transform block…" = "Transform block…";
+
 /* No comment provided by engineer. */
 "Translate" = "Traduci";
 
@@ -6820,7 +6841,7 @@
 "Try it now" = "Prova ora";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"Try the new Block Editor" = "Try the new Block Editor";
+"Try the new Block Editor" = "Prova il nuovo editor a blocchi";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */
 "Try with another email" = "Prova con un'altra email";
@@ -6853,7 +6874,7 @@
 "Type a label" = "Scrivi un'etichetta";
 
 /* Site creation. Seelect a domain, search field placeholder */
-"Type a name for your site" = "Type a name for your site";
+"Type a name for your site" = "Digita un nome per il sito";
 
 /* Register domain - Search field placeholder for the Suggested Domain screen */
 "Type to get more suggestions" = "Digita per ottenere ulteriori suggerimenti";
@@ -6871,7 +6892,7 @@
 "Unable to Connect" = "Impossibile connettersi";
 
 /* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "Unable to Create Stories Editor";
+"Unable to Create Stories Editor" = "Impossibile creare l'Editor delle Storie";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Impossibile caricare gli articoli";
@@ -6883,7 +6904,7 @@
 "Unable to block site" = "Impossibile bloccare il sito";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to create new invite links." = "Unable to create new invite links.";
+"Unable to create new invite links." = "Impossibile creare nuovi link di invito.";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "Non è possibile eliminare tutti gli elementi multimediali.";
@@ -6892,13 +6913,13 @@
 "Unable to delete media item." = "Non è possibile eliminare l'elemento multimediale. ";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to disable invite links." = "Unable to disable invite links.";
+"Unable to disable invite links." = "Impossibile disattivare i link di invito.";
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "Impossibile scaricare il file";
 
 /* The app failed to subscribe to the comments for the post */
-"Unable to follow conversation" = "Unable to follow conversation";
+"Unable to follow conversation" = "Impossibile seguire la conversazione";
 
 /* Notice title when following a site fails. */
 "Unable to follow site" = "Impossibile seguire il sito";
@@ -6916,6 +6937,7 @@
 "Unable to load the image. Please choose a different one or try again later." = "Impossibile caricare l'immagine. Selezionarne una diversa o riprovare più tardi.";
 
 /* Default title shown for no-results when the device is offline.
+   Informing the user that a network request failed because the device wasn't able to establish a network connection.
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "Impossibile caricare questo contenuto al momento.";
 
@@ -6992,7 +7014,7 @@
 "Unable to verify the email address. Please try again later." = "Impossibile verificare l'indirizzo email. Riprova più tardi.";
 
 /* Message displayed when visiting the Jetpack settings page fails. */
-"Unable to visit Jetpack settings for site" = "Unable to visit Jetpack settings for site";
+"Unable to visit Jetpack settings for site" = "Impossibile visitare le impostazioni di Jetpack per il sito";
 
 /* Message displayed when visiting a site fails. */
 "Unable to visit site" = "Impossibile visitare il sito";
@@ -7085,7 +7107,7 @@
 "Unsupported" = "Non supportato";
 
 /* Title for stories unsupported device error. */
-"Unsupported Device" = "Unsupported Device";
+"Unsupported Device" = "Dispositivo non supportato";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Senza titolo";
@@ -7204,7 +7226,7 @@
 "Use block editor" = "Usa editor a blocchi";
 
 /* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo";
+"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Usa questo link per accettare i membri del team senza doverli invitare uno per uno. Chiunque visiti questo URL potrà iscriversi alla tua organizzazione, anche se ha ricevuto un link da qualcun altro, quindi assicurati di condividerlo con le persone fidate.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Utilizza questo sito";
@@ -7628,6 +7650,9 @@
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
 "Web Display Settings" = "Impostazioni visualizzazione web";
 
+/* Example Reader feed title */
+"Web News" = "Web News";
+
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "La settimana inizia il";
 
@@ -7644,7 +7669,7 @@
 "Welcome to the Reader" = "Benvenuto al Reader";
 
 /* Caption displayed in promotional screens shown during the login flow. */
-"Welcome to the world's most popular website builder." = "Welcome to the world's most popular website builder.";
+"Welcome to the world's most popular website builder." = "Benvenuto nel costruttore di siti web più popolare del mondo.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "Benvenuto nel costruttore di siti web più popolare del mondo.";
@@ -7656,7 +7681,7 @@
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Inviamo sempre email importanti riguardanti il tuo account ma puoi ricevere anche altre informazioni extra.";
 
 /* The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings.";
+"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "Rimuoveremo presto l'editor classico per i nuovi articoli, ma questa operazione non influenzerà la modifica di qualsiasi tuo articolo o pagina esistente. Parti in vantaggio abilitando ora l'editor a blocchi nelle impostazioni del sito.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress.
    Hint displayed when we fail to fetch the status of the restore in progress. */
@@ -7677,11 +7702,17 @@
 /* Title of alert letting users know we've upgraded the quick start checklist. */
 "We’ve made some changes to your checklist" = "Abbiamo apportato delle modifiche alla checklist";
 
+/* Body text of alert informing users about the Reader Save for Later feature. */
+"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer.";
+
 /* This is the string we display when prompting the user to review the app */
 "What do you think about WordPress?" = "Che cosa pensi di WordPress?";
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Cosa desideri fare con questo file: caricarlo e aggiungere un link al file nel tuo articolo o aggiungere i contenuti del file direttamente nell'articolo?";
+
+/* No comment provided by engineer. */
+"What is alt text?" = "What is alt text?";
 
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "Qual era il problema?";
@@ -7950,10 +7981,10 @@
 "You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "Non hai ancora pubblicato alcun articolo. Una volta avviata la pubblicazione, il riepilogo del tuo ultimo articolo verrà visualizzato qui.";
 
 /* Title for a view milestone push notification */
-"You hit a milestone 🚀" = "";
+"You hit a milestone 🚀" = "Hai raggiunto un traguardo 🚀 ";
 
 /* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
-"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100.";
+"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Puoi includere nella lista di ciò che è consentito un indirizzo IP o serie di indirizzi per evitare che vengano bloccati da Jetpack. Sono accettati indirizzi IPv4 e IPv6. Per specificare un intervallo, inserisci il valore minimo e il valore massimo separati da un trattino. Esempio: 12.12.12.1-12.12.12.100.";
 
 /* A suggestion of topics the user might like */
 "You might like" = "Potrebbe piacerti";
@@ -7963,6 +7994,9 @@
 
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Devi verificare il tuo account prima che tu possa pubblicare un articolo.\nNon preoccuparti, il tuo articolo è al sicuro e sarà salvato come una bozza.";
+
+/* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
+"You received *50 likes* on your site today" = "You received *50 likes* on your site today";
 
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
@@ -8020,7 +8054,7 @@
 "Your first backup will be ready soon" = "Il tuo primo backup sarà pronto a breve";
 
 /* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.";
+"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Impossibile esportare i file multimediali. If the problem persists you can contact us via the Me > Schermata di Aiuto e supporto.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Le tue notifiche viaggiano con te: vedi i commenti e i mi piace in tempo reale.";
@@ -8110,10 +8144,13 @@
 "connections" = "connessioni";
 
 /* No comment provided by engineer. */
-"document outline" = "document outline";
+"document outline" = "struttura del documento";
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "Non è bello spuntare le cose su una lista?";
+
+/* No comment provided by engineer. */
+"double-tap to change unit" = "double-tap to change unit";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "ad esempio 1122334455";
@@ -8160,7 +8197,7 @@
 "phone number" = "numero di telefono";
 
 /* No comment provided by engineer. */
-"summary" = "summary";
+"summary" = "Riepilogo";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "questi elementi verranno eliminati:";

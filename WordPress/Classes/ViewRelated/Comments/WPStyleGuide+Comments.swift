@@ -11,9 +11,6 @@ extension WPStyleGuide {
         static let backgroundColor = UIColor.listForeground
         static let pendingIndicatorColor = UIColor.muriel(color: MurielColor(name: .yellow, shade: .shade20))
 
-        static let timestampFont = WPStyleGuide.fontForTextStyle(.caption1)
-        static let timestampImage = UIImage(named: "reader-postaction-time") ?? UIImage()
-
         static let detailFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         static let detailTextColor = UIColor.textSubtle
 

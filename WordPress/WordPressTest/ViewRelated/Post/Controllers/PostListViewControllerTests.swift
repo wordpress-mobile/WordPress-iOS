@@ -78,7 +78,6 @@ class PostListViewControllerTests: XCTestCase {
         expect {
             _ = PostBuilder(self.context, blog: blog).with(status: .draft).build()
             try! self.context.save()
-            return nil
         }.notTo(raiseException())
     }
 

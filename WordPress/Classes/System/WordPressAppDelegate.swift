@@ -180,8 +180,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         DDLogInfo("\(self) \(#function)")
 
         uploadsManager.resume()
-
-        ABTest.refreshIfNeeded()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -449,7 +447,7 @@ extension WordPressAppDelegate {
     }
 
     @objc func configureWordPressAuthenticator() {
-        let authManager = WordPressAuthenticationManager(windowManager: windowManager)
+        let authManager = AppDependency.authenticationManager(windowManager: windowManager)
 
         authManager.initializeWordPressAuthenticator()
         authManager.startRelayingSupportNotifications()

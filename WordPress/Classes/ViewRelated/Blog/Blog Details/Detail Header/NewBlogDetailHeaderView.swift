@@ -82,7 +82,9 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         static let atSides: CGFloat = 16
         static let top: CGFloat = 16
         static let belowActionRow: CGFloat = 24
-        static let betweenTitleViewAndActionRow: CGFloat = 32
+        static func betweenTitleViewAndActionRow(_ showsActionRow: Bool) -> CGFloat {
+            return showsActionRow ? 32 : 0
+        }
 
         static let spacingBelowIcon: CGFloat = 16
         static let spacingBelowTitle: CGFloat = 8
@@ -132,24 +134,25 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
         addBottomBorder(withColor: .separator)
 
-        setupConstraintsForChildViews()
+        let showsActionRow = items.count > 0
+        setupConstraintsForChildViews(showsActionRow)
     }
 
     // MARK: - Constraints
 
-    private func setupConstraintsForChildViews() {
-        let actionRowConstraints = constraintsForActionRow()
+    private func setupConstraintsForChildViews(_ showsActionRow: Bool) {
+        let actionRowConstraints = constraintsForActionRow(showsActionRow)
         let titleViewContraints = constraintsForTitleView()
 
         NSLayoutConstraint.activate(actionRowConstraints + titleViewContraints)
     }
 
-    private func constraintsForActionRow() -> [NSLayoutConstraint] {
+    private func constraintsForActionRow(_ showsActionRow: Bool) -> [NSLayoutConstraint] {
         let widthConstraint = actionRow.widthAnchor.constraint(equalToConstant: LayoutSpacing.maxButtonWidth)
         widthConstraint.priority = .defaultHigh
 
         return [
-            actionRow.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: LayoutSpacing.betweenTitleViewAndActionRow),
+            actionRow.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: LayoutSpacing.betweenTitleViewAndActionRow(showsActionRow)),
             actionRow.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -LayoutSpacing.belowActionRow),
             actionRow.leadingAnchor.constraint(greaterThanOrEqualTo: titleView.leadingAnchor),
             actionRow.trailingAnchor.constraint(lessThanOrEqualTo: titleView.trailingAnchor),
@@ -202,7 +205,8 @@ fileprivate extension NewBlogDetailHeaderView {
             static let betweenSiteIconAndTitle: CGFloat = 16
             static let betweenTitleAndSiteSwitcher: CGFloat = 16
             static let betweenSiteSwitcherAndRightPadding: CGFloat = 4
-            static let subtitleButtonImageInsets: UIEdgeInsets = UIEdgeInsets(top: 1, left: 4, bottom: 0, right: 0)
+            static let subtitleButtonImageInsets = UIEdgeInsets(top: 1, left: 4, bottom: 0, right: 0)
+            static let rtlSubtitleButtonImageInsets = UIEdgeInsets(top: 1, left: -4, bottom: 0, right: 4)
         }
 
         // MARK: - Child Views
@@ -228,8 +232,13 @@ fileprivate extension NewBlogDetailHeaderView {
             }
 
             // Align the image to the right
-            button.semanticContentAttribute = (UIApplication.shared.userInterfaceLayoutDirection == .leftToRight) ? .forceRightToLeft : .forceLeftToRight
-            button.imageEdgeInsets = LayoutSpacing.subtitleButtonImageInsets
+            if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
+                button.semanticContentAttribute = .forceLeftToRight
+                button.imageEdgeInsets = LayoutSpacing.rtlSubtitleButtonImageInsets
+            } else {
+                button.semanticContentAttribute = .forceRightToLeft
+                button.imageEdgeInsets = LayoutSpacing.subtitleButtonImageInsets
+            }
 
             button.translatesAutoresizingMaskIntoConstraints = false
             button.addTarget(self, action: #selector(subtitleButtonTapped), for: .touchUpInside)
@@ -239,6 +248,7 @@ fileprivate extension NewBlogDetailHeaderView {
 
         let titleButton: SpotlightableButton = {
             let button = SpotlightableButton(type: .custom)
+            button.contentHorizontalAlignment = .leading
             button.titleLabel?.font = AppStyleGuide.blogDetailHeaderTitleFont
             button.titleLabel?.adjustsFontForContentSizeCategory = true
             button.titleLabel?.lineBreakMode = .byTruncatingTail
@@ -330,7 +340,7 @@ fileprivate extension NewBlogDetailHeaderView {
             [
                 siteIconView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
                 siteIconView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
-                siteIconView.leftAnchor.constraint(equalTo: leftAnchor),
+                siteIconView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 siteIconView.heightAnchor.constraint(equalToConstant: Dimensions.siteIconHeight),
                 siteIconView.widthAnchor.constraint(equalToConstant: Dimensions.siteIconWidth),
             ]
@@ -350,6 +360,7 @@ fileprivate extension NewBlogDetailHeaderView {
             [
                 titleStackView.leadingAnchor.constraint(equalTo: siteIconView.trailingAnchor, constant: LayoutSpacing.betweenSiteIconAndTitle),
                 titleStackView.centerYAnchor.constraint(equalTo: siteIconView.centerYAnchor),
+                titleButton.trailingAnchor.constraint(equalTo: siteSwitcherButton.leadingAnchor, constant: -LayoutSpacing.betweenTitleAndSiteSwitcher),
             ]
         }
     }

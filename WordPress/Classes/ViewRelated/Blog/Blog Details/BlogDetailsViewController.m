@@ -415,7 +415,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidAppear:animated];
     [self cancelCompletedToursIfNeeded];
-    if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
+    if ([self.tabBarController isKindOfClass:[WPTabBarController class]] &&
+        AppConfiguration.showsCreateButton) {
         [self.createButtonCoordinator showCreateButtonFor:self.blog];
     }
     [self createUserActivity];
@@ -830,7 +831,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
 
-    if ([self.blog isBackupsAllowed] && [Feature enabled:FeatureFlagJetpackBackupAndRestore]) {
+    if ([self.blog isBackupsAllowed]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Backup", @"Noun. Links to a blog's Jetpack Backups screen.")
                                                         image:[UIImage gridiconOfType:GridiconTypeCloudUpload]
                                                      callback:^{
@@ -838,7 +839,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      }]];
     }
 
-    if ([self.blog isScanAllowed] && [Feature enabled:FeatureFlagJetpackScan]) {
+    if ([self.blog isScanAllowed]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Scan", @"Noun. Links to a blog's Jetpack Scan screen.")
                                                         image:[UIImage imageNamed:@"jetpack-scan-menu-icon"]
                                                      callback:^{

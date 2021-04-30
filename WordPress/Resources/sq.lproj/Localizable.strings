@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-02-27 13:18:14+0000 */
+/* Translation-Revision-Date: 2021-03-29 08:15:45+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -36,11 +36,11 @@
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d postime të papara";
 
-/* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: Current value. */
-"%1$s. Current value is %2$s" = "%1$s. Vlera e tanishme është %2$s";
+/* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
+"%1$s transformed to %2$s" = "%1$s transformed to %2$s";
 
-/* \"Uploading\" Status text */
-"%@" = "%@";
+/* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
+"%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s is %3$s %4$s.";
 
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
 "%@ - %@, %@" = "%1$@ - %2$@, %3$@";
@@ -216,6 +216,12 @@
    the post has no title. */
 "(no title)" = "(pa titull)";
 
+/* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
+"*Johann Brandt* responded to your post" = "*Johann Brandt* responded to your post";
+
+/* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
+"*Madison Ruiz* liked your post" = "*Madison Ruiz* liked your post";
+
 /* Menus button text for adding a new menu to a site. */
 "+ Add new menu" = "+ Shtoni menu të re";
 
@@ -258,6 +264,9 @@
 /* Age between dates less than one hour. */
 "< 1 hour" = "< 1 orë";
 
+/* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
+"@%1$@" = "@%1$@";
+
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "Një buton “Më tepër” përmban një menu hapmbyll që shfaq butona ndarjesh me të tjerët";
 
@@ -267,26 +276,11 @@
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Një kartelë përmban rregullsi kodi dashakeq";
 
-/* No comment provided by engineer. */
-"A link to a URL." = "A link to a URL.";
-
-/* No comment provided by engineer. */
-"A link to a category." = "A link to a category.";
-
-/* No comment provided by engineer. */
-"A link to a page." = "A link to a page.";
-
-/* No comment provided by engineer. */
-"A link to a post." = "A link to a post.";
-
-/* No comment provided by engineer. */
-"A link to a tag." = "A link to a tag.";
-
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "Një listë sajtesh në këtë llogari.";
 
 /* Story Intro welcome title */
-"A new way to create and publish engaging content on your site." = "A new way to create and publish engaging content on your site.";
+"A new way to create and publish engaging content on your site." = "Një rrugë e re për të krijuar dhe botuar lëndë tërheqëse në sajtin tuaj.";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "Një varg hapash që ju tregon se si të shtoni një temë, një ikonë sajti, etj.";
@@ -329,6 +323,9 @@
 
 /* About this app (information page title) */
 "About" = "Mbi";
+
+/* Link to About screen for Jetpack for iOS */
+"About Jetpack for iOS" = "About Jetpack for iOS";
 
 /* My Profile 'About me' label */
 "About Me" = "Rreth Meje";
@@ -449,11 +446,11 @@
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Shtoni figurë llogarie.";
 
+/* No comment provided by engineer. */
+"Add alt text" = "Shtoni tekst alternativ";
+
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Shtoni çfarëdo teme";
-
-/* No comment provided by engineer. */
-"Add button text" = "Add button text";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Shton figurë, ose avatar, që të përfaqësojë këtë llogari të re.";
@@ -579,10 +576,10 @@
 "Allow this connection to be used by all admins and users of your site." = "Lejoje këtë lidhje që të përdoret nga krejt përgjegjësit dhe përdoruesit e sajtit tuaj.";
 
 /* Allowlisted IP Addresses Title */
-"Allowlisted IP Addresses" = "Allowlisted IP Addresses";
+"Allowlisted IP Addresses" = "Adresa IP të shënuara si të lejuara";
 
 /* Jetpack Settings: Allowlisted IP addresses */
-"Allowlisted IP addresses" = "Allowlisted IP addresses";
+"Allowlisted IP addresses" = "Adresa IP të shënuara si të lejuara";
 
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Thuajse arritëm! Ju lutemi, jepni kodin e verifikimit prej aplikacionit tuaj Authenticator.";
@@ -740,9 +737,6 @@
 /* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Jeni i sigurt se doni të rikthehet sajti juaj në gjendjen më %1$@? Kjo të sjellë heqjen e krejt lëndës së krijuar apo ndryshuar dhe mundësive të ndryshuara që nga ajo datë.";
 
-/* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
-"Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost." = "Jeni i sigurt se doni të rikthehet sajti juaj në gjendjen më %@?\nÇfarëdo gjëje që keni ndryshuar që atëherë, do të humbë.";
-
 /* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
 "Are you sure you want to save as draft?" = "Jeni i sigurt se doni të ruhet si skicë?";
 
@@ -763,6 +757,9 @@
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Jeni i sigurt se doni të përditësohet?";
+
+/* An example tag used in the login prologue screens. */
+"Art" = "Art";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Nga 1 Gusht, 2018, Facebook-u nuk lejon më ndarje të drejtpërdrejtë të postimeve në Profile Facebook. Lidhjet te Faqe Facebook mbeten të pandryshuara.";
@@ -939,7 +936,7 @@
 
 /* Blocklist Title
    Settings: Comments Blocklist */
-"Blocklist" = "Blocklist";
+"Blocklist" = "Listë bllokimesh";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
@@ -1090,6 +1087,9 @@
 /* Dialog box title for when the user is canceling an upload. */
 "Cancel media uploads" = "Anulim ngarkimesh media";
 
+/* No comment provided by engineer. */
+"Cancel search" = "Cancel search";
+
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Anuloje ndarjen me të tjerët";
 
@@ -1117,9 +1117,6 @@
 /* Category menu item in share extension.
    Menu item label for linking a specific category. */
 "Category" = "Kategori";
-
-/* No comment provided by engineer. */
-"Category Link" = "Category Link";
 
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "Mungon titull kategorie.";
@@ -1232,6 +1229,9 @@
 /* Select domain name. Title */
 "Choose a domain" = "Zgjidhni përkatësi";
 
+/* OK Button title shown in alert informing users about the Reader Save for Later feature. */
+"Choose a new app icon" = "Choose a new app icon";
+
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Zgjidhni një temë";
 
@@ -1281,7 +1281,7 @@
 "Choose video" = "Zgjidhni video";
 
 /* Reader select interests subtitle label text */
-"Choose your topics" = "Choose your topics";
+"Choose your topics" = "Zgjidhni temat tuaja";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Zgjedhja e një sajti tjetër do të sjellë humbjen e përpunimeve te lëndë specifike e sajtit, të tilla si media dhe kategori. Jeni i sigurt?";
@@ -1306,6 +1306,9 @@
 
 /* Message of the trash confirmation alert. */
 "Clear all old activity logs?" = "Të spastrohen krejt regjistrat e vjetër të veprimtarisë?";
+
+/* No comment provided by engineer. */
+"Clear search" = "Clear search";
 
 /* Title of a button. */
 "Clear search history" = "Spastro historikun e kërkimeve";
@@ -1354,6 +1357,9 @@
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Grumbullo të dhëna";
+
+/* Title displayed for selection of custom app icons that have colorful backgrounds. */
+"Colorful backgrounds" = "Colorful backgrounds";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Ndërthurni foto, video dhe tekst, që të krijoni postime shkrimesh tërheqës, që vizitorët tuaj do t’i duan fort.";
@@ -1455,7 +1461,6 @@
 "Configure" = "Formësojeni";
 
 /* Confirm
-   Confirm Rewind button title
    Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Ripohojeni";
 
@@ -1580,6 +1585,9 @@
 
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Po vazhdohet me Apple";
+
+/* An example tag used in the login prologue screens. */
+"Cooking" = "Cooking";
 
 /* No comment provided by engineer. */
 "Copied block" = "Blloku u kopjua";
@@ -1708,7 +1716,8 @@
 /* Title for the site creation flow. */
 "Create New Site" = "Krijoni Sajt të Ri";
 
-/* Button title, encourages users to create their first page on their blog.
+/* Button for selecting the current page template.
+   Button title, encourages users to create their first page on their blog.
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Krijoni Faqe";
 
@@ -1940,6 +1949,9 @@
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Mohoje";
 
+/* No comment provided by engineer. */
+"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Describe the purpose of the image. Leave empty if the image is purely decorative. ";
+
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
@@ -1962,11 +1974,11 @@
 "Dimensions" = "Përmasa";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
-"Disable" = "Disable";
+"Disable" = "Çaktivizoje";
 
 /* Title. A call to action to disable invite links.
    Title. Title of a prompt to disable group invite links. */
-"Disable invite link" = "Disable invite link";
+"Disable invite link" = "Çaktivizoni lidhje ftese";
 
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "E çaktivizuar";
@@ -2008,7 +2020,7 @@
 "Discover and follow blogs you love" = "Zbuloni dhe ndiqni blogjet që keni për zemër";
 
 /* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Discover more topics";
+"Discover more topics" = "Zbuloni më tepër tema";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2093,9 +2105,6 @@
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Që të shtoni një bllok, prekeni dyfish";
-
-/* translators: accessibility text (hint for focusing a slider) */
-"Double tap to change the value using slider" = "Që ta ndryshoni vlerën duke përdorur rrëshqitësin, prekeni dyfish";
 
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "Prekeni dyfish që të hidhet tej";
@@ -2209,7 +2218,7 @@
 "Edit %@ block" = "Përpunoni bllok %@";
 
 /* Blocklist Keyword Edition Title */
-"Edit Blocklist Word" = "Edit Blocklist Word";
+"Edit Blocklist Word" = "Përpunoni Fjalë Liste Bllokimesh";
 
 /* No comment provided by engineer. */
 "Edit Comment" = "Përpunoni Komentin";
@@ -2370,7 +2379,7 @@
 "Enter your password instead." = "Në vend të kësaj, jepni fjalëkalimin tuaj.";
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
-"Enter your server credentials to enable one click site restores from backups." = "Enter your server credentials to enable one click site restores from backups.";
+"Enter your server credentials to enable one click site restores from backups." = "Që të aktivizohen rikthime me një klikim nga kopjeruatje, jepni kredencialet tuaja për te shërbyesi.";
 
 /* Generic error alert title
    Generic error.
@@ -2509,7 +2518,7 @@
 "Expands to select a different menu area" = "Zgjerohet për të përzgjedhur një zonë tjetër menuje";
 
 /* Title. Indicates an expiration date. */
-"Expires on" = "Expires on";
+"Expires on" = "Skadon më";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Shpjegoni se për çfarë është ky sajt.";
@@ -2541,10 +2550,16 @@
 "Failed" = "Dështoi";
 
 /* Error title when picked media cannot be imported into stories. */
-"Failed Media Export" = "Failed Media Export";
+"Failed Media Export" = "Eksportimi i Medias Dështoi";
+
+/* No comment provided by engineer. */
+"Failed to insert audio file." = "Failed to insert audio file.";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "S’u arrit të futej kartelë audio. Ju lutemi, prekeni për mundësi.";
+
+/* No comment provided by engineer. */
+"Failed to insert media." = "Failed to insert media.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Dështoi në futje mediash.\nJu lutemi, prekeni për mundësi.";
@@ -2559,7 +2574,7 @@
 "Failed to serialize request to the REST API." = "Dështoi serializimi i kërkesës ndaj API-t REST.";
 
 /* The app failed to unsubscribe from the comments for the post */
-"Failed to unfollow conversation" = "Failed to unfollow conversation";
+"Failed to unfollow conversation" = "S’u arrit të ndalet ndjekja e bisedës";
 
 /* No comment provided by engineer. */
 "Failed to upload files.\nPlease tap for options." = "S’u arrit të ngarkohen kartela.\nJu lutemi, prekeni për mundësi.";
@@ -2640,7 +2655,7 @@
 "Find your site address" = "Gjeni adresën e sajtit tuaj";
 
 /* Label displayed to the user while loading their selected interests */
-"Finding blogs and stories you’ll love..." = "Po gjenden blogje dhe artikuj që do t’i doni…";
+"Finding blogs and stories you’ll love..." = "Po gjenden blogje dhe shkrime që do t’i doni…";
 
 /* Geo-tagging posts, status message when geolocation is found. */
 "Finding your location..." = "Po gjendet vendndodhja juaj…";
@@ -2679,13 +2694,11 @@
 "Follow site" = "Ndiqe sajtin";
 
 /* Screen title. Reader select interests title label text. */
-"Follow topics" = "Follow topics";
+"Follow topics" = "Ndiqni tema";
 
-/* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "Follow your favorite sites and discover new blogs.";
-
-/* Shown in the prologue carousel (promotional screens) during first launch. */
-"Follow your favorite sites and discover new reads." = "Ndiqni sajtet tuaj të parapëlqyer dhe zbuloni gjëra të reja për të lexuar.";
+/* Caption displayed in promotional screens shown during the login flow.
+   Shown in the prologue carousel (promotional screens) during first launch. */
+"Follow your favorite sites and discover new blogs." = "Ndiqni sajtet tuaj të parapëlqyer dhe zbuloni blogje të rinj.";
 
 /* Displayed in the Notification Settings View
    Followed Sites Title
@@ -2723,7 +2736,7 @@
 "Following conversation by email" = "Ndjekje bisede përmes email-i";
 
 /* Label displayed to the user while loading their selected interests */
-"Following new topics..." = "Following new topics...";
+"Following new topics..." = "Ndiqni tema të reja…";
 
 /* Filters Follows Notifications */
 "Follows" = "Ndiqet";
@@ -2739,6 +2752,9 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Ndjek etiketën.";
+
+/* An example tag used in the login prologue screens. */
+"Football" = "Football";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "Që ta keni më të lehtë, kemi paraplotësuar të dhëna tuajat kontakti WordPress.com. Ju lutemi, shihini, për të qenë të sigurt se janë të dhënat e sakta që doni të përdoren për këtë përkatësi.";
@@ -2776,12 +2792,15 @@
 /* translators: accessibility text. %s: gallery caption. */
 "Gallery caption. %s" = "Titull galerie. %s";
 
+/* An example tag used in the login prologue screens. */
+"Gardening" = "Gardening";
+
 /* Add New Stats Card category title
    Title for the general section in site settings screen */
 "General" = "Të përgjithshme";
 
 /* Title. A call to action to generate a new invite link. */
-"Generate new link" = "Generate new link";
+"Generate new link" = "Prodho lidhje të re";
 
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Po prodhohet Paraparja";
@@ -3194,7 +3213,7 @@
 "Invite" = "Ftoje";
 
 /* Title for the Invite Link section of the Invite Person screen. */
-"Invite Link" = "Invite Link";
+"Invite Link" = "Lidhje Ftese";
 
 /* Invite People Title */
 "Invite People" = "Ftoni Njerëz";
@@ -3340,6 +3359,9 @@
 /* Left alignment for an image. Should be the same as in core WP. */
 "Left" = "Majtas";
 
+/* Title displayed for selection of custom app icons that may be removed in a future release of the app. */
+"Legacy Icons" = "Legacy Icons";
+
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Le T’ju Ndihmojmë";
 
@@ -3348,6 +3370,9 @@
 
 /* Title for the app appearance setting for light mode */
 "Light" = "E çelët";
+
+/* Title displayed for selection of custom app icons that have white backgrounds. */
+"Light backgrounds" = "Light backgrounds";
 
 /* Like (verb)
    Like a post.
@@ -3744,10 +3769,10 @@
 "More Posts" = "Më Tepër Postime";
 
 /* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
-"More from %1$@" = "More from %1$@";
+"More from %1$@" = "Më tepër nga %1$@";
 
 /* Section title for global related posts. */
-"More on WordPress.com" = "More on WordPress.com";
+"More on WordPress.com" = "Më tepër në WordPress.com";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Koha Më Popullore";
@@ -3810,6 +3835,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "Shpjere komentin te Hedhurinat.";
 
+/* An example tag used in the login prologue screens. */
+"Music" = "Music";
+
 /* Link to My Profile section
    My Profile view title */
 "My Profile" = "Profili Im";
@@ -3866,7 +3894,10 @@
 "New" = "E re";
 
 /* Blocklist Keyword Insertion Title */
-"New Blocklist Word" = "New Blocklist Word";
+"New Blocklist Word" = "Fjalë e Re Liste Bllokimesh";
+
+/* Title of alert informing users about the Reader Save for Later feature. */
+"New Custom App Icons" = "New Custom App Icons";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "IP ose Interval IP-sh i ri";
@@ -4053,7 +4084,7 @@
 "No network available" = "S’ka rrjet";
 
 /* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "No new topics to follow";
+"No new topics to follow" = "S’ka tema të reja për ndjekje";
 
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Ende pa njoftime";
@@ -4240,7 +4271,7 @@
 "Oldest first" = "Më të vjetrat së pari";
 
 /* Warning message about disabling group invite links. */
-"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?";
+"Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Pasi të jetë çaktivizuar kjo lidhje ftese, askush s’do të jetë në gjendje ta përdorë për t’u bërë pjesë e ekipit tuaj. Jeni i sigurt?";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Pasi të krijoni një sajt në WordPress.com, mund të riblogoni në sajtin tuaj lëndë që ju pëlqen.";
@@ -4370,9 +4401,6 @@
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page */
 "Page" = "Faqe";
-
-/* No comment provided by engineer. */
-"Page Link" = "Page Link";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
 "Page Restored to Drafts" = "Faqja u Rikthye te Skicat";
@@ -4649,6 +4677,9 @@
    Title for the plugin directory */
 "Plugins" = "Shtojca";
 
+/* An example tag used in the login prologue screens. */
+"Politics" = "Politics";
+
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
 "Popular" = "Popullore";
@@ -4666,9 +4697,6 @@
 /* For setting the format of a post.
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Format Postimesh";
-
-/* No comment provided by engineer. */
-"Post Link" = "Post Link";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "Postimi u Rikthye te Skicat";
@@ -4845,11 +4873,11 @@
 /* No comment provided by engineer. */
 "Problem displaying block" = "Problem me shfaqjen e bllokut";
 
+/* Error message title informing the user that reader content could not be loaded. */
+"Problem loading content" = "Problem loading content";
+
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "Problem loading sites" = "Problem në ngarkim sajtesh";
-
-/* Error message title informing the user that a stream could not be loaded. */
-"Problem loading stream" = "Problem në ngarkimin e rrjedhës";
 
 /* No comment provided by engineer. */
 "Problem opening the audio" = "Problem me hapjen e audios";
@@ -5285,21 +5313,14 @@
 /* Title of the screen that shows the revisions. */
 "Revision" = "Rishikim";
 
-/* Title for button allowing user to rewind their Jetpack site
-   Title of section showing rewind status */
-"Rewind" = "Rikthim";
-
-/* Title displayed in the Restore Site alert, should match Calypso */
-"Rewind Site" = "Riktheni Sajtin Në Një Datë të Dikurshme";
-
-/* Text showing the point in time the site is being currently rewinded to. %@' is a placeholder that will expand to a date. */
-"Rewinding to %@" = "Po rikthehet te %@";
-
 /* Post Rich content */
 "Rich Content" = "Lëndë e Pasur";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Djathtas";
+
+/* Example Reader feed title */
+"Rock 'n Roll Weekly" = "Rock 'n Roll Weekly";
 
 /* Title. Indicates the user role an invite link is for.
    User Roles Title
@@ -5359,9 +5380,6 @@
 
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "E ruan këtë postim për më vonë.";
-
-/* Message to indicate progress of saving draft */
-"Saving Draft" = "Po ruhet Skicë";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Po ruhet postimi…";
@@ -5424,9 +5442,6 @@
 /* Prompt in the location search bar. */
 "Search Locations" = "Kërkoni Për Vende";
 
-/* No comment provided by engineer. */
-"Search Settings" = "Search Settings";
-
 /* Label for list of search term */
 "Search Term" = "Term Kërkimi";
 
@@ -5438,6 +5453,12 @@
 
 /* A short message that is a call to action for the Reader's Search feature. */
 "Search WordPress\nfor a site or post" = "Kërkoni në WordPress\npër një sajt apo postim";
+
+/* No comment provided by engineer. */
+"Search block" = "Search block";
+
+/* No comment provided by engineer. */
+"Search blocks" = "Search blocks";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "Kërkoni ose shtypni URL";
@@ -5675,7 +5696,7 @@
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Ndani me mjetin tuaj të analizave të dhëna rreth përdorimit tuaj të shërbimeve, teksa jeni i futur në llogarinë tuaj WordPress.com.";
 
 /* Title. A call to action to share an invite link. */
-"Share invite link" = "Share invite link";
+"Share invite link" = "Jepuni lidhje ftese";
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Ndajeni lidhjen me të tjerët";
@@ -5802,6 +5823,9 @@
 
 /* Label for button that clears user activities donated to Siri. */
 "Siri Reset Prompt" = "Pastro Sugjerime Shkurtoresh Siri";
+
+/* Header for a single site, shown in Notification user profile. */
+"Site" = "Site";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "Ikonë Sajti";
@@ -5968,11 +5992,11 @@
 /* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "Na ndjeni, s’mund të përdorni atë adresë sajti.";
 
+/* A short error message letting the user know the requested reader content could not be loaded. */
+"Sorry. The content could not be loaded." = "Sorry. The content could not be loaded.";
+
 /* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
 "Sorry. The social service did not tell us which account could be used for sharing." = "Na ndjeni. Shërbimi shoqëror nuk na tregoi cila llogari të përdoret për ndarje me të tjerët.";
-
-/* A short error message letting the user know the requested stream could not be loaded. */
-"Sorry. The stream could not be loaded." = "Na ndjeni. Rrjedha s’u ngarkua dot.";
 
 /* A short error message leting the user know the requested search could not be performed. */
 "Sorry. Your search results could not be loaded." = "Na ndjeni. Përfundimet e kërkimit tuaj s’u ngarkuan dot.";
@@ -6083,13 +6107,13 @@
 "Successfully cleared spotlight index" = "Treguesi i projektorit u hoq me sukses";
 
 /* The app successfully subscribed to the comments for the post */
-"Successfully followed conversation" = "Successfully followed conversation";
+"Successfully followed conversation" = "Biseda është ndjekur me sukses";
 
 /* Notice displayed after installing a plug-in. */
 "Successfully installed %@." = "%@ u instalua me sukses.";
 
 /* The app successfully unsubscribed from the comments for the post */
-"Successfully unfollowed conversation" = "Successfully unfollowed conversation";
+"Successfully unfollowed conversation" = "Bisedës iu hoq ndjekja me sukses";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -6099,7 +6123,7 @@
 "Suggestions updated" = "Sugjerimet u përditësuan";
 
 /* No comment provided by engineer. */
-"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here.";
+"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Përmblidheni postimin tuaj me një listë kryesh. Shtoni spiranca HTML për te blloqe Kryesh, për t’i lidhur këtu.";
 
 /* User role badge */
 "Super Admin" = "Superpërgjegjës";
@@ -6108,9 +6132,6 @@
    Theme Support action title
    View title for Support page. */
 "Support" = "Asistencë";
-
-/* Action button to switch the blog to which you'll be posting */
-"Switch Blog" = "Ndërroni Blog";
 
 /* Button used to switch site */
 "Switch Site" = "Këmbe Sajt";
@@ -6129,9 +6150,6 @@
 
 /* Switches from the classic editor to block editor. */
 "Switch to block editor" = "Kalo te përpunuesi me blloqe";
-
-/* Switches from Gutenberg mobile to the classic editor */
-"Switch to classic editor" = "Kalo nën përpunuesin klasik";
 
 /* Accessibility Identifier for the H1 Aztec Style */
 "Switches to the Heading 1 font size" = "Kalohet te madhësia Titull 1 për shkronjat";
@@ -6158,7 +6176,7 @@
 "System default" = "Parazgjedhje sistemi";
 
 /* No comment provided by engineer. */
-"Table of Contents" = "Table of Contents";
+"Table of Contents" = "Tryeza e Lëndës";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "Tabelë që shfaqe %@";
@@ -6172,9 +6190,6 @@
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
 "Tag" = "Etiketë";
-
-/* No comment provided by engineer. */
-"Tag Link" = "Tag Link";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "Ka tashmë një etiketë të tillë";
@@ -6225,7 +6240,7 @@
 "Tap to cancel uploading." = "Prekeni që të anulohet ngarkimi.";
 
 /* Accessibility hint for button used to change site title */
-"Tap to change the site's title" = "Tap to change the site's title";
+"Tap to change the site's title" = "Prekeni që të ndryshoni titullin e sajtit";
 
 /* Accessibility hint to inform the user what action the hide button performs */
 "Tap to collapse the post tags" = "Prekeni që të palosen etiketa postimesh";
@@ -6255,13 +6270,13 @@
 "Tap to select which blog to post to" = "Prekeni që të përzgjidhni te cili blog të postohet";
 
 /* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "Tap to switch to another site, or add a new site";
+"Tap to switch to another site, or add a new site" = "Prekeni që të kalohet te një sajt tjetër, ose për të shtuar një sajt të ri";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "Prekeni që të shihni postimet për këtë etiketë";
 
 /* Accessibility hint for button used to view the user's site */
-"Tap to view your site" = "Tap to view your site";
+"Tap to view your site" = "Prekeni që të shihni sajtin tuaj";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Klasifikim";
@@ -6334,7 +6349,7 @@
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Titulli i Sajtit shfaqet te shtylla e titujve të një shfletuesi dhe, për shumicën e temave, shfaqet te kryet.";
 
 /* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "The Stories editor is not currently available for your iPad. Please try Stories on your iPhone.";
+"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "Përpunuesi i Shkrimeve aktualisht s’është i përdorshëm në iPad-in tuaj. Ju lutemi, provoni Shkrime në iPhone-in tuaj.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL-së i mungon një strehë e vlefshme.";
@@ -6511,7 +6526,7 @@
 "There was a problem when trying to access your media. Please try again later." = "Pati një problem kur po provohej të hyhej në median tuaj. Ju lutemi, riprovoni më vonë.";
 
 /* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen.";
+"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Pati një problem me përpunuesin e Shkrimeve. Nëse problemi vazhdon, mund të lidheni me ne përmes skenës Unë > Ndihmë & Asistencë.";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -6770,6 +6785,12 @@
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Trafik";
 
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Transform %s to" = "Transform %s to";
+
+/* No comment provided by engineer. */
+"Transform block…" = "Transform block…";
+
 /* No comment provided by engineer. */
 "Translate" = "Përkthejeni";
 
@@ -6820,7 +6841,7 @@
 "Try it now" = "Provojeni tani";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"Try the new Block Editor" = "Try the new Block Editor";
+"Try the new Block Editor" = "Provoni Përpunuesin e ri me Blloqe";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */
 "Try with another email" = "Provoni me një tjetër email";
@@ -6853,7 +6874,7 @@
 "Type a label" = "Shtypni një etiketë";
 
 /* Site creation. Seelect a domain, search field placeholder */
-"Type a name for your site" = "Type a name for your site";
+"Type a name for your site" = "Shtypni një emër për sajtin tuaj";
 
 /* Register domain - Search field placeholder for the Suggested Domain screen */
 "Type to get more suggestions" = "Shtypni që të merrni më tepër sugjerime";
@@ -6871,7 +6892,7 @@
 "Unable to Connect" = "S’arrihet të Lidhet";
 
 /* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "Unable to Create Stories Editor";
+"Unable to Create Stories Editor" = "S’arrihet të Krijohet Përpunues Shkrimesh";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "S’arrihet të Ngarkohen Postime";
@@ -6883,7 +6904,7 @@
 "Unable to block site" = "S’arrihet të bllokohet sajti";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to create new invite links." = "Unable to create new invite links.";
+"Unable to create new invite links." = "S’arrihet të krijohen lidhje të reja ftese.";
 
 /* Text displayed in HUD if there was an error attempting to delete a group of media items. */
 "Unable to delete all media items." = "S’arrihet të fshihen krejt objektet media.";
@@ -6892,13 +6913,13 @@
 "Unable to delete media item." = "S’arrihet të fshihet objekt media.";
 
 /* An error message shown when there is an issue creating new invite links. */
-"Unable to disable invite links." = "Unable to disable invite links.";
+"Unable to disable invite links." = "S’arrihet të çaktivizohen lidhje ftesash.";
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "S’arrihet të shkarkohet kartelë";
 
 /* The app failed to subscribe to the comments for the post */
-"Unable to follow conversation" = "Unable to follow conversation";
+"Unable to follow conversation" = "S’arrihet të ndiqet biseda";
 
 /* Notice title when following a site fails. */
 "Unable to follow site" = "S’arrihet të ndiqet sajti";
@@ -6916,6 +6937,7 @@
 "Unable to load the image. Please choose a different one or try again later." = "S’arrihet të ngarkohet figura. Ju lutemi, zgjidhni një tjetër ose riprovoni më vonë.";
 
 /* Default title shown for no-results when the device is offline.
+   Informing the user that a network request failed because the device wasn't able to establish a network connection.
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "S’arrihet të ngarkohet kjo lëndë këtë çast.";
 
@@ -6992,7 +7014,7 @@
 "Unable to verify the email address. Please try again later." = "S’u arrit të verifikohej adresa email. Ju lutemi, riprovoni më vonë.";
 
 /* Message displayed when visiting the Jetpack settings page fails. */
-"Unable to visit Jetpack settings for site" = "Unable to visit Jetpack settings for site";
+"Unable to visit Jetpack settings for site" = "S’arrihet të vizitohen rregullime Jetpack për sajtin";
 
 /* Message displayed when visiting a site fails. */
 "Unable to visit site" = "S’arrihet të vizitohet sajti";
@@ -7085,7 +7107,7 @@
 "Unsupported" = "I pambuluar";
 
 /* Title for stories unsupported device error. */
-"Unsupported Device" = "Unsupported Device";
+"Unsupported Device" = "Pajisje e Pammbuluar";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Pa titull";
@@ -7204,7 +7226,7 @@
 "Use block editor" = "Përdorni përpunuesin me blloqe";
 
 /* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo";
+"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Përdoreni këtë lidhje për hapat e mirëseardhjes për anëtarët e ekipit tuaj, pa u dashur t’i ftoni tek e tek. Gjithkush që viziton këtë URL, do të jetë në gjendje të regjistrohet në entin tuaj, madje edhe nëse lidhjen e marrin nga dikush tjetër, ndaj sigurohuni se ua jepni personave të besuar.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Përdor këtë sajt";
@@ -7628,6 +7650,9 @@
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
 "Web Display Settings" = "Rregullime Shfaqjeje Web";
 
+/* Example Reader feed title */
+"Web News" = "Web News";
+
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "Java nis me";
 
@@ -7644,7 +7669,7 @@
 "Welcome to the Reader" = "Mirë se vini te Lexuesi";
 
 /* Caption displayed in promotional screens shown during the login flow. */
-"Welcome to the world's most popular website builder." = "Welcome to the world's most popular website builder.";
+"Welcome to the world's most popular website builder." = "Mirë se vini te krijuesi më popullor në botë i sajteve.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "Mirë se vini te krijuesi më popullor në botë i sajteve.";
@@ -7656,7 +7681,7 @@
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Do të dërgojmë përherë email-e të rëndësishëm lidhur me llogarinë tuaj, por mundeni gjithashtu të merrni ca ekstra të dobishme.";
 
 /* The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings.";
+"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "Së shpejti do ta heqim përpunuesin klasik për postime të reja, por kjo s’do të prekë përpunimin e çfarëdo postimi apo faqeje ekzistuese. Përfitoni një avantazh, duke e aktivizuar Përpunuesin Me Blloqe që tani, te rregullimet e sajtit.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress.
    Hint displayed when we fail to fetch the status of the restore in progress. */
@@ -7677,11 +7702,17 @@
 /* Title of alert letting users know we've upgraded the quick start checklist. */
 "We’ve made some changes to your checklist" = "Bëmë ca ndryshime te lista juaj";
 
+/* Body text of alert informing users about the Reader Save for Later feature. */
+"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer.";
+
 /* This is the string we display when prompting the user to review the app */
 "What do you think about WordPress?" = "Si ju duket WordPress-i?";
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Ç’doni të bëni me këtë kartelë: të ngarkohet dhe të shtohet te postimi juaj një lidhje për te kartela, apo të shtohet lënda e kartelës drejt e te postimi?";
+
+/* No comment provided by engineer. */
+"What is alt text?" = "What is alt text?";
 
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "Cili qe problemi?";
@@ -7950,10 +7981,10 @@
 "You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "S’keni botuar ende ndonjë postim. Sapo të filloni të botoni, këtu do të shfaqet përmbledhja e postimit tuaj më të ri.";
 
 /* Title for a view milestone push notification */
-"You hit a milestone 🚀" = "";
+"You hit a milestone 🚀" = "Mbërritët në një piketë 🚀";
 
 /* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
-"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100.";
+"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Një adresë ose seri adresash IP mund t’i vendosni në një listë lejimesh për të penguar përgjithmonë bllokimin e tyre nga Jetpack-u. Janë të pranueshme adresa të llojit IPv4 dhe IPv6. Që të jepni një interval vlerash, jepni vlerën e ulët dhe të lartë të ndarë nga një vijë. Për shembull: 12.12.12.1–12.12.12.100.";
 
 /* A suggestion of topics the user might like */
 "You might like" = "Mund t’ju pëlqente edhe";
@@ -7963,6 +7994,9 @@
 
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Lypset të verifikoni llogarinë tuaj përpara se të mund të botoni një postim.\nMos u shqetësoni, postimi juaj është i parrezikuar dhe do të ruhet si një skicë.";
+
+/* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
+"You received *50 likes* on your site today" = "You received *50 likes* on your site today";
 
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
@@ -8020,7 +8054,7 @@
 "Your first backup will be ready soon" = "Kopjeruajtja juaj e parë do të jetë gati së shpejti";
 
 /* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.";
+"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Media juaj s’u eksportua dot. Nëse problemi vazhdon, mund të lidheni me ne që nga skena Unë > Ndihmë & Asistencë.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Njoftimet tuaja udhëtojnë tok me ju — shihini komentet dhe pëlqimet sapo të bëhen.";
@@ -8110,10 +8144,13 @@
 "connections" = "lidhje";
 
 /* No comment provided by engineer. */
-"document outline" = "document outline";
+"document outline" = "përvijim dokumenti";
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "a s’ju kënaq t’i hiqni vizë gjërave në një listë?";
+
+/* No comment provided by engineer. */
+"double-tap to change unit" = "double-tap to change unit";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "p.sh., 1122334455";
@@ -8160,7 +8197,7 @@
 "phone number" = "numër telefoni";
 
 /* No comment provided by engineer. */
-"summary" = "summary";
+"summary" = "përmbledhje";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "këto objekte do të fshihen:";

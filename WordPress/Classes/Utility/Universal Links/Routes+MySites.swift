@@ -39,7 +39,7 @@ extension MySitesRoute: Route {
 }
 
 extension MySitesRoute: NavigationAction {
-    func perform(_ values: [String: String], source: UIViewController? = nil) {
+    func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
         guard let coordinator = WPTabBarController.sharedInstance().mySitesCoordinator else {
             return
         }

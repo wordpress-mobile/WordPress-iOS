@@ -1,3 +1,22 @@
+17.3
+-----
+* [**] Fix issue where deleting a post and selecting undo would sometimes convert the content to the classic editor. [#16342]
+* [**] Fix issue where restoring a post left the restored post in the published list even though it has been converted to a draft. [#16358]
+* [**] Fix issue where trashing a post converted it to Classic content. [#16367]
+* [*] Comments can be filtered to show the most recent unreplied comments from other users. [#16215]
+* [*] Fixed the background color of search fields. [#16365]
+* [*] Fixed the navigation bar color in dark mode. [#16348]
+
+17.2
+-----
+
+* [*] Fixed an issue where some author display names weren't visible for self-hosted sites. [#16297]
+* [***] Updated custom app icons. [#16261]
+* [**] Removed Site Switcher in the Editor
+* [*] a11y: Bug fix: Allow stepper cell to be selected by screenreader [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3362]
+* [*] Image block: Improve text entry for long alt text. [https://github.com/WordPress/gutenberg/pull/29670]
+* [***] New Block: Jetpack contact info. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3340]
+
 17.1
 -----
 
@@ -9,6 +28,7 @@
 * [**] We updated the login prologue with brand new content and graphics. [#16159, #16177, #16185, #16187, #16200, #16217, #16219, #16221, #16222]
 * [**] We updated the app's color scheme with a brighter new blue used throughout. [#16213, #16207] 
 * [**] Updated the app icon to match the new color scheme within the app. [#16220]
+* [*] Fixed an issue where some webview navigation bar controls weren't visible. [#16257]
 
 17.0
 -----

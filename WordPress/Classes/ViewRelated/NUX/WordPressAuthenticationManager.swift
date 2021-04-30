@@ -10,8 +10,13 @@ class WordPressAuthenticationManager: NSObject {
     static var isPresentingSignIn = false
     private let windowManager: WindowManager
 
-    init(windowManager: WindowManager) {
+    /// Allows overriding some WordPressAuthenticator delegate methods
+    /// without having to reimplement WordPressAuthenticatorDelegate
+    private let authenticationHandler: AuthenticationHandler?
+
+    init(windowManager: WindowManager, authenticationHandler: AuthenticationHandler? = nil) {
         self.windowManager = windowManager
+        self.authenticationHandler = authenticationHandler
     }
 
     /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
@@ -28,7 +33,7 @@ class WordPressAuthenticationManager: NSObject {
 
         // SIWA can not be enabled for internal builds
         // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
-        let enableSignInWithApple = !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
+        let enableSignInWithApple = AppConfiguration.allowSignUp && !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
 
         let configuration = WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client(),
                                                                 wpcomSecret: ApiCredentials.secret(),
@@ -41,8 +46,9 @@ class WordPressAuthenticationManager: NSObject {
                                                                 googleLoginScheme: ApiCredentials.googleLoginSchemeId(),
                                                                 userAgent: WPUserAgent.wordPress(),
                                                                 showLoginOptions: true,
+                                                                enableSignUp: AppConfiguration.allowSignUp,
                                                                 enableSignInWithApple: enableSignInWithApple,
-                                                                enableSignupWithGoogle: true,
+                                                                enableSignupWithGoogle: AppConfiguration.allowSignUp,
                                                                 enableUnifiedAuth: true,
                                                                 enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled)
 
@@ -90,9 +96,14 @@ class WordPressAuthenticationManager: NSObject {
                                                               navButtonTextColor: FeatureFlag.newNavBarAppearance.enabled ? .appBarTint : .primary,
                                                               navTitleTextColor: FeatureFlag.newNavBarAppearance.enabled ? .appBarText : .text)
 
+        let displayStrings = WordPressAuthenticatorDisplayStrings(
+            continueWithWPButtonTitle: AppConstants.Login.continueButtonTitle
+        )
+
         WordPressAuthenticator.initialize(configuration: configuration,
                                           style: style,
-                                          unifiedStyle: unifiedStyle)
+                                          unifiedStyle: unifiedStyle,
+                                          displayStrings: displayStrings)
     }
 }
 
@@ -240,6 +251,11 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///     - onCompletion: Closure to be executed on completion.
     ///
     func shouldPresentUsernamePasswordController(for siteInfo: WordPressComSiteInfo?, onCompletion: @escaping (WordPressAuthenticatorResult) -> Void) {
+        if let authenticationHandler = authenticationHandler {
+            authenticationHandler.shouldPresentUsernamePasswordController(for: siteInfo, onCompletion: onCompletion)
+            return
+        }
+
         let result: WordPressAuthenticatorResult = .presentPasswordController(value: true)
         onCompletion(result)
     }
@@ -247,6 +263,11 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) {
+        if let authenticationHandler = authenticationHandler,
+           authenticationHandler.presentLoginEpilogue(in: navigationController, for: credentials, onDismiss: onDismiss) {
+            return
+        }
+
         if PostSignUpInterstitialViewController.shouldDisplay() {
             self.presentPostSignUpInterstitial(in: navigationController, onDismiss: onDismiss)
             return

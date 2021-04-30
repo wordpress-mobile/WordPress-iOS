@@ -15,7 +15,7 @@ msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Manage your website anywhere"
+msgid "Build a website or blog"
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
@@ -37,12 +37,14 @@ msgstr ""
 #. translators: Keywords used in the App Store search engine to find the app.
 #. Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
 msgctxt "app_store_keywords"
-msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
+msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v17.0-whats-new"
+msgctxt "v17.2-whats-new"
 msgid ""
-"In the spirit of spring cleaning, we’re excited to announce fresh changes to WPiOS. We’ve spruced up the app’s design with new headers and a new site switcher, accessed via My Site. You can now filter comments by status—All, Pending, Approved, Trashed, Spammed—and enable notifications about viewing milestones. Take the newly polished app for a spin!\n"
+"This version introduces a new block – Jetpack contact info. It's perfect for displaying a nicely formatted address on your site. We've also introduced some spiffy new app icons you can use to customize how the app looks on your home screen.\n"
+"\n"
+"We've got some nifty tweaks to tell you about! We've removed the site switcher from the editor to simplify posting, fixed a bug where author names weren't visible, improved VoiceOver support for the columns block, and made it easier to add alt text to an image block.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

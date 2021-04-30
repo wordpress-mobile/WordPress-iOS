@@ -181,6 +181,14 @@ import WordPressFlux
         }
     }
 
+    /// Used for the `source` property in Stats.
+    /// Indicates where the view was shown from.
+    enum StatSource: String {
+        case reader
+        case user_profile
+    }
+    var statSource: StatSource = .reader
+
     /// Facilitates sharing of a blog via `ReaderStreamViewController+Sharing.swift`.
     let sharingController = PostSharingController()
 
@@ -311,6 +319,7 @@ import WordPressFlux
 
         refreshImageRequestAuthToken()
 
+        configureCloseButtonIfNeeded()
         setupTableView()
         setupFooterView()
         setupContentHandler()
@@ -399,19 +408,24 @@ import WordPressFlux
 
     /// Fetches a site topic for the value of the `siteID` property.
     ///
-    // TODO: - READERNAV - Remove this when the new reader is released
     private func fetchSiteTopic() {
+        guard let siteID = siteID else {
+            DDLogError("A siteID is required before fetching a site topic")
+            return
+        }
+
         if isViewLoaded {
             displayLoadingStream()
         }
-        assert(siteID != nil, "A siteID is required before fetching a site topic")
+
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.siteTopicForSite(withID: siteID!,
+        service.siteTopicForSite(withID: siteID,
             isFeed: isFeed,
             success: { [weak self] (objectID: NSManagedObjectID?, isFollowing: Bool) in
 
                 let context = ContextManager.sharedInstance().mainContext
-                guard let objectID = objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
+                guard let objectID = objectID,
+                      let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogError("Reader: Error retriving an existing site topic by its objectID")
                     if self?.isLoadingDiscover ?? false {
                         self?.updateContent(synchronize: false)
@@ -624,6 +638,18 @@ import WordPressFlux
         }
     }
 
+    private func configureCloseButtonIfNeeded() {
+        if isModal() {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(image: .gridicon(.cross),
+                                                               style: .plain,
+                                                               target: self,
+                                                               action: #selector(closeButtonTapped))
+        }
+    }
+
+    @objc private func closeButtonTapped() {
+        dismiss(animated: true)
+    }
 
     /// Fetch and cache the current defaultAccount authtoken, if available.
     private func refreshImageRequestAuthToken() {
@@ -700,14 +726,17 @@ import WordPressFlux
             assertionFailure("A reader topic is required")
             return nil
         }
+
         let title = topic.title
         var key: String = "list"
+
         if ReaderHelpers.isTopicTag(topic) {
             key = "tag"
         } else if ReaderHelpers.isTopicSite(topic) {
             key = "site"
         }
-        return [key: title]
+
+        return [key: title, "source": statSource.rawValue]
     }
 
     /// The fetch request can need a different predicate depending on how the content
@@ -1724,8 +1753,8 @@ extension ReaderStreamViewController {
     struct ResultsStatusText {
         static let fetchingPostsTitle = NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         static let loadingStreamTitle = NSLocalizedString("Loading stream...", comment: "A short message to inform the user the requested stream is being loaded.")
-        static let loadingErrorTitle = NSLocalizedString("Problem loading stream", comment: "Error message title informing the user that a stream could not be loaded.")
-        static let loadingErrorMessage = NSLocalizedString("Sorry. The stream could not be loaded.", comment: "A short error message letting the user know the requested stream could not be loaded.")
+        static let loadingErrorTitle = NSLocalizedString("Problem loading content", comment: "Error message title informing the user that reader content could not be loaded.")
+        static let loadingErrorMessage = NSLocalizedString("Sorry. The content could not be loaded.", comment: "A short error message letting the user know the requested reader content could not be loaded.")
         static let manageSitesButtonTitle = NSLocalizedString("Manage Sites", comment: "Button title. Tapping lets the user manage the sites they follow.")
         static let followingButtonTitle = NSLocalizedString("Go to Following", comment: "Button title. Tapping lets the user view the sites they follow.")
         static let noConnectionTitle = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")

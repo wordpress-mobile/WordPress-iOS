@@ -1205,18 +1205,18 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
 //
 private extension NotificationsViewController {
     func showFiltersSegmentedControlIfApplicable() {
-        guard tableHeaderView.alpha == WPAlphaZero && shouldDisplayFilters == true else {
+        guard filterTabBar.isHidden == true && shouldDisplayFilters == true else {
             return
         }
 
         UIView.animate(withDuration: WPAnimationDurationDefault, animations: {
-            self.tableHeaderView.alpha = WPAlphaFull
+            self.filterTabBar.isHidden = false
         })
     }
 
     func hideFiltersSegmentedControlIfApplicable() {
-        if tableHeaderView.alpha == WPAlphaFull && shouldDisplayFilters == false {
-            tableHeaderView.alpha = WPAlphaZero
+        if filterTabBar.isHidden == false && shouldDisplayFilters == false {
+            self.filterTabBar.isHidden = true
         }
     }
 
@@ -1266,18 +1266,25 @@ private extension NotificationsViewController {
         addChild(noResultsViewController)
         tableView.insertSubview(noResultsViewController.view, belowSubview: tableHeaderView)
         noResultsViewController.view.frame = tableView.frame
-        adjustNoResultsViewSize()
+        setupNoResultsViewConstraints()
         noResultsViewController.didMove(toParent: self)
     }
 
-    func adjustNoResultsViewSize() {
-        noResultsViewController.view.frame.origin.y = tableHeaderView.frame.size.height
-
-        if inlinePromptView.alpha == WPAlphaFull {
-            noResultsViewController.view.frame.size.height -= tableHeaderView.frame.size.height
-        } else {
-            noResultsViewController.view.frame.size.height = tableView.frame.size.height - tableHeaderView.frame.size.height
+    func setupNoResultsViewConstraints() {
+        guard let nrv = noResultsViewController.view else {
+            return
         }
+
+        tableHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        nrv.translatesAutoresizingMaskIntoConstraints = false
+        nrv.setContentHuggingPriority(.defaultLow, for: .horizontal)
+
+        NSLayoutConstraint.activate([
+            nrv.widthAnchor.constraint(equalTo: view.widthAnchor),
+            nrv.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nrv.topAnchor.constraint(equalTo: tableHeaderView.bottomAnchor),
+            nrv.bottomAnchor.constraint(equalTo: view.safeBottomAnchor)
+        ])
     }
 
     func updateSplitViewAppearanceForNoResultsView() {
@@ -1304,11 +1311,17 @@ private extension NotificationsViewController {
         return filter.noResultsTitle
     }
 
-    var noResultsMessageText: String {
+    var noResultsMessageText: String? {
+        guard AppConfiguration.showsReader else {
+            return nil
+        }
         return filter.noResultsMessage
     }
 
-    var noResultsButtonText: String {
+    var noResultsButtonText: String? {
+        guard AppConfiguration.showsReader else {
+            return nil
+        }
         return filter.noResultsButtonTitle
     }
 
@@ -1501,7 +1514,10 @@ private extension NotificationsViewController {
 extension NotificationsViewController: WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
         guard let note = selectedNotification ?? fetchFirstNotification() else {
-            return nil
+            let controller = UIViewController()
+            controller.view.backgroundColor = .basicBackground
+            return controller
+
         }
 
         selectedNotification = note
@@ -1778,5 +1794,14 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
         // number of notifications after which the second alert will show up
         static let secondNotificationsAlertThreshold = 10
         static let secondNotificationsAlertDisabled = -1
+    }
+}
+
+// MARK: - Scrolling
+//
+extension NotificationsViewController: WPScrollableViewController {
+    // Used to scroll view to top when tapping on tab bar item when VC is already visible.
+    func scrollViewToTop() {
+        tableView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
     }
 }
