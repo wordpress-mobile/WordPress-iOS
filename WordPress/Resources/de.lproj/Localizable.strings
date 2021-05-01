@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-04-01 09:54:09+0000 */
+/* Translation-Revision-Date: 2021-04-30 16:12:06+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -37,10 +37,10 @@
 "%1$d unseen posts" = "%1$d ungesehene Beiträge";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
-"%1$s transformed to %2$s" = "%1$s transformed to %2$s";
+"%1$s transformed to %2$s" = "%1$s umgewandelt in %2$s";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
-"%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s is %3$s %4$s.";
+"%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s ist %3$s %4$s.";
 
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
 "%@ - %@, %@" = "%1$@–%2$@ %3$@";
@@ -217,10 +217,10 @@
 "(no title)" = "(kein Titel)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
-"*Johann Brandt* responded to your post" = "*Johann Brandt* responded to your post";
+"*Johann Brandt* responded to your post" = "*Johan Brandt* hat auf deinen Beitrag geantwortet";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
-"*Madison Ruiz* liked your post" = "*Madison Ruiz* liked your post";
+"*Madison Ruiz* liked your post" = "*Madison Ruiz* gefällt dein Beitrag";
 
 /* Menus button text for adding a new menu to a site. */
 "+ Add new menu" = "+ Neues Menü hinzufügen";
@@ -325,7 +325,7 @@
 "About" = "Über";
 
 /* Link to About screen for Jetpack for iOS */
-"About Jetpack for iOS" = "About Jetpack for iOS";
+"About Jetpack for iOS" = "Über Jetpack für iOS";
 
 /* My Profile 'About me' label */
 "About Me" = "Über mich";
@@ -759,7 +759,7 @@
 "Are you sure you want to update?" = "Bist du sicher, dass du ein Update vornehmen möchtest?";
 
 /* An example tag used in the login prologue screens. */
-"Art" = "Art";
+"Art" = "Kunst";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Ab 1. August 2018 lässt Facebook das direkte Teilen von Beiträgen auf Facebook-Profilen nicht mehr zu. Die Verknüpfungen zu Facebook-Seiten bleiben unverändert.";
@@ -1088,7 +1088,7 @@
 "Cancel media uploads" = "Medien-Uploads abbrechen";
 
 /* No comment provided by engineer. */
-"Cancel search" = "Cancel search";
+"Cancel search" = "Suche abbrechen";
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Teilen abbrechen";
@@ -1230,7 +1230,7 @@
 "Choose a domain" = "Domain auswählen";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
-"Choose a new app icon" = "Choose a new app icon";
+"Choose a new app icon" = "Wähle ein neues App-Icon";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Wähle ein Theme";
@@ -1308,7 +1308,7 @@
 "Clear all old activity logs?" = "Sollen alle alten Aktivitätsprotokolle gelöscht werden?";
 
 /* No comment provided by engineer. */
-"Clear search" = "Clear search";
+"Clear search" = "Suche löschen";
 
 /* Title of a button. */
 "Clear search history" = "Suchverlauf löschen";
@@ -1359,7 +1359,7 @@
 "Collect information" = "Informationen erfassen";
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
-"Colorful backgrounds" = "Colorful backgrounds";
+"Colorful backgrounds" = "Farbige Hintergründe";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Kombiniere Fotos, Videos und Text, um ansprechende und antippbare Story-Beiträge zu erstellen, die deine Besucher begeistern.";
@@ -1587,7 +1587,7 @@
 "Continuing with Apple" = "Weiter mit Apple";
 
 /* An example tag used in the login prologue screens. */
-"Cooking" = "Cooking";
+"Cooking" = "Kochen";
 
 /* No comment provided by engineer. */
 "Copied block" = "Kopierter Block";
@@ -1950,7 +1950,7 @@
 "Deny" = "Ablehnen";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Describe the purpose of the image. Leave empty if the image is purely decorative. ";
+"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Beschreibe den Zweck des Bildes. Lass dieses Feld frei, falls das Bild rein dekorativ ist. ";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2553,13 +2553,13 @@
 "Failed Media Export" = "Medienexport fehlgeschlagen";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "Failed to insert audio file.";
+"Failed to insert audio file." = "Audiodatei kann nicht eingefügt werden.";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Audiodatei kann nicht eingefügt werden. Für Optionen hier tippen.";
 
 /* No comment provided by engineer. */
-"Failed to insert media." = "Failed to insert media.";
+"Failed to insert media." = "Das Medium konnte nicht eingefügt werden.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Das Einfügen von Medien ist fehlgeschlagen.\nBitte tippe hier für Optionen.";
@@ -2754,7 +2754,7 @@
 "Follows the tag." = "Folgt dem Schlagwort.";
 
 /* An example tag used in the login prologue screens. */
-"Football" = "Football";
+"Football" = "American Football";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "Wir haben bereits deine WordPress.com-Kontaktinformationen für dich ausgefüllt. Überprüfe bitte, ob wir die Informationen, die du für diese Domain verwenden möchtest, korrekt eingegeben haben.";
@@ -2793,7 +2793,7 @@
 "Gallery caption. %s" = "Bildunterschrift der Galerie. %s";
 
 /* An example tag used in the login prologue screens. */
-"Gardening" = "Gardening";
+"Gardening" = "Gärtnern";
 
 /* Add New Stats Card category title
    Title for the general section in site settings screen */
@@ -3360,7 +3360,7 @@
 "Left" = "Links";
 
 /* Title displayed for selection of custom app icons that may be removed in a future release of the app. */
-"Legacy Icons" = "Legacy Icons";
+"Legacy Icons" = "Veraltete Icons";
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Wir helfen dir";
@@ -3372,7 +3372,7 @@
 "Light" = "Hell";
 
 /* Title displayed for selection of custom app icons that have white backgrounds. */
-"Light backgrounds" = "Light backgrounds";
+"Light backgrounds" = "Helle Hintergründe";
 
 /* Like (verb)
    Like a post.
@@ -3836,7 +3836,7 @@
 "Moves the comment to the Trash." = "Verschiebt den Kommentar in den Papierkorb.";
 
 /* An example tag used in the login prologue screens. */
-"Music" = "Music";
+"Music" = "Musik";
 
 /* Link to My Profile section
    My Profile view title */
@@ -3897,7 +3897,7 @@
 "New Blocklist Word" = "New Blocklist Word";
 
 /* Title of alert informing users about the Reader Save for Later feature. */
-"New Custom App Icons" = "New Custom App Icons";
+"New Custom App Icons" = "Neue benutzerdefinierte App-Icons";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "Neue IP- oder IP-Bereich";
@@ -4678,7 +4678,7 @@
 "Plugins" = "Plugins";
 
 /* An example tag used in the login prologue screens. */
-"Politics" = "Politics";
+"Politics" = "Politik";
 
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
@@ -4874,7 +4874,7 @@
 "Problem displaying block" = "Problem beim Anzeigen des Blocks";
 
 /* Error message title informing the user that reader content could not be loaded. */
-"Problem loading content" = "Problem loading content";
+"Problem loading content" = "Beim Laden des Inhalts ist ein Problem aufgetreten";
 
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "Problem loading sites" = "Problem beim Laden von Websites";
@@ -5320,7 +5320,7 @@
 "Right" = "Rechts";
 
 /* Example Reader feed title */
-"Rock 'n Roll Weekly" = "Rock 'n Roll Weekly";
+"Rock 'n Roll Weekly" = "Die wöchentliche Ausgabe von Rock 'n Roll";
 
 /* Title. Indicates the user role an invite link is for.
    User Roles Title
@@ -5455,10 +5455,10 @@
 "Search WordPress\nfor a site or post" = "WordPress durchsuchen\nnach einer Website oder Beitrag";
 
 /* No comment provided by engineer. */
-"Search block" = "Search block";
+"Search block" = "Block suchen";
 
 /* No comment provided by engineer. */
-"Search blocks" = "Search blocks";
+"Search blocks" = "Blöcke suchen";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "URL suchen oder eingeben";
@@ -5825,7 +5825,7 @@
 "Siri Reset Prompt" = "Vorschläge für Siri-Shortcuts löschen";
 
 /* Header for a single site, shown in Notification user profile. */
-"Site" = "Site";
+"Site" = "Website";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "Website-Icon";
@@ -5993,7 +5993,7 @@
 "Sorry, you may not use that site address." = "Tut mir Leid, du darfst diese Website-Adresse leider nicht benutzen.";
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
-"Sorry. The content could not be loaded." = "Sorry. The content could not be loaded.";
+"Sorry. The content could not be loaded." = "Tut uns leid. Der Inhalt konnte nicht geladen werden.";
 
 /* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
 "Sorry. The social service did not tell us which account could be used for sharing." = "Tut uns leid. Der Social Media-Dienst hat uns nicht mitgeteilt, welches Konto zum Teilen verwendet werden kann.";
@@ -6786,10 +6786,10 @@
 "Traffic" = "Traffic";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"Transform %s to" = "Transform %s to";
+"Transform %s to" = "%s umwandeln in ";
 
 /* No comment provided by engineer. */
-"Transform block…" = "Transform block…";
+"Transform block…" = "Block umwandeln …";
 
 /* No comment provided by engineer. */
 "Translate" = "Übersetzen";
@@ -7651,7 +7651,7 @@
 "Web Display Settings" = "Webanzeige-Einstellungen";
 
 /* Example Reader feed title */
-"Web News" = "Web News";
+"Web News" = "Web-Nachrichten";
 
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "Woche beginnt am";
@@ -7703,7 +7703,7 @@
 "We’ve made some changes to your checklist" = "Wir haben einige Änderungen an deiner Checkliste vorgenommen.";
 
 /* Body text of alert informing users about the Reader Save for Later feature. */
-"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer.";
+"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "Wir haben unseren benutzerdefinierten App-Icons einen frischen, neuen Look verpasst. Du kannst aus 10 neuen Stilen wählen oder auch einfach dein aktuelles Icon behalten.";
 
 /* This is the string we display when prompting the user to review the app */
 "What do you think about WordPress?" = "Was ist deine Meinung zu WordPress?";
@@ -7712,7 +7712,7 @@
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Was möchtest du mit dieser Datei machen? Möchtest du sie hochladen und deinem Beitrag einen Link zu der Datei hinzufügen oder möchtest du die Dateiinhalte direkt in den Beitrag einfügen?";
 
 /* No comment provided by engineer. */
-"What is alt text?" = "What is alt text?";
+"What is alt text?" = "Was ist Alt-Text?";
 
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "Was war das Problem?";
@@ -7996,7 +7996,7 @@
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Du musst dein Konto verifizieren, bevor du einen Beitrag veröffentlichen kannst.\nKeine Sorge, dein Beitrag ist sicher und wird als Entwurf gespeichert.";
 
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
-"You received *50 likes* on your site today" = "You received *50 likes* on your site today";
+"You received *50 likes* on your site today" = "Du hast *50 likes* on your site today dafür bekommen";
 
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
@@ -8150,7 +8150,7 @@
 "doesn’t it feel good to cross things off a list?" = "Fühlt es sich nicht gut an, Dinge von einer Liste abzuhaken?";
 
 /* No comment provided by engineer. */
-"double-tap to change unit" = "double-tap to change unit";
+"double-tap to change unit" = "Zum Wechseln der Einheit zweimal tippen";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "z. B. 1122334455";
