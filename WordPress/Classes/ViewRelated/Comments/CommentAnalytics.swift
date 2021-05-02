@@ -28,7 +28,7 @@ import Foundation
         return [
             Constants.context: trackingContext(),
             WPAppAnalyticsKeyPostID: comment.postID.intValue,
-            WPAppAnalyticsKeyCommentID: comment.commentID.intValue
+            WPAppAnalyticsKeyCommentID: comment.commentID != nil ? comment.commentID.intValue : 0 // An unpublished comment could have a nil comment ID.
         ]
     }
 
