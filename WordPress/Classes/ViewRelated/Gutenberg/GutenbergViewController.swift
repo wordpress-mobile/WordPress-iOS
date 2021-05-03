@@ -836,6 +836,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             // is still reflecting the actual startup time of the editor
             editorSession.start(unsupportedBlocks: unsupportedBlockNames)
         }
+
+        gutenbergSettings.setHasLaunchedGutenbergEditor(true)
     }
 
     func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
