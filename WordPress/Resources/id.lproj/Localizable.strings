@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-04-01 09:54:08+0000 */
+/* Translation-Revision-Date: 2021-04-30 16:03:41+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -37,10 +37,10 @@
 "%1$d unseen posts" = "%1$d pos yang belum dilihat";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
-"%1$s transformed to %2$s" = "%1$s transformed to %2$s";
+"%1$s transformed to %2$s" = "%1$s diubah menjadi %2$s";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
-"%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s is %3$s %4$s.";
+"%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s adalah %3$s %4$s.";
 
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
 "%@ - %@, %@" = "%1$@ - %2$@, %3$@";
@@ -217,10 +217,10 @@
 "(no title)" = "(tanpa judul)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
-"*Johann Brandt* responded to your post" = "*Johann Brandt* responded to your post";
+"*Johann Brandt* responded to your post" = "*Johan Brandt* menanggapi pos Anda";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
-"*Madison Ruiz* liked your post" = "*Madison Ruiz* liked your post";
+"*Madison Ruiz* liked your post" = "*Madison Ruiz* menyukai pos Anda";
 
 /* Menus button text for adding a new menu to a site. */
 "+ Add new menu" = "+ Tambahkan menu baru";
@@ -325,7 +325,7 @@
 "About" = "Perihal";
 
 /* Link to About screen for Jetpack for iOS */
-"About Jetpack for iOS" = "About Jetpack for iOS";
+"About Jetpack for iOS" = "Tentang Jetpack untuk iOS";
 
 /* My Profile 'About me' label */
 "About Me" = "Tentang Saya";
@@ -759,7 +759,7 @@
 "Are you sure you want to update?" = "Anda yakin ingin memperbarui?";
 
 /* An example tag used in the login prologue screens. */
-"Art" = "Art";
+"Art" = "Seni";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Per 1 Agustus 2018, Facebook tak lagi mengizinkan berbagi pos langsung ke Profil Facebook. Sambungan ke Halaman Facebook tidak berubah.";
@@ -1088,7 +1088,7 @@
 "Cancel media uploads" = "Batalkan unggahan media";
 
 /* No comment provided by engineer. */
-"Cancel search" = "Cancel search";
+"Cancel search" = "Batalkan pencarian";
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Batalkan berbagi";
@@ -1230,7 +1230,7 @@
 "Choose a domain" = "Pilih domain";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
-"Choose a new app icon" = "Choose a new app icon";
+"Choose a new app icon" = "Pilih ikon aplikasi baru";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Pilih tema";
@@ -1308,7 +1308,7 @@
 "Clear all old activity logs?" = "Hapus semua log aktivitas lama?";
 
 /* No comment provided by engineer. */
-"Clear search" = "Clear search";
+"Clear search" = "Hapus pencarian";
 
 /* Title of a button. */
 "Clear search history" = "Bersihkan riwayat pencarian";
@@ -1359,7 +1359,7 @@
 "Collect information" = "Kumpulkan informasi";
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
-"Colorful backgrounds" = "Colorful backgrounds";
+"Colorful backgrounds" = "Latar belakang berwarna";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Kombinasikan foto, video, dan teks untuk membuat pos cerita, yang menarik dan memancing pengunjung Anda untuk mengetuk, yang pasti disukai pengunjung Anda.";
@@ -1587,7 +1587,7 @@
 "Continuing with Apple" = "Melanjutkan dengan Apple";
 
 /* An example tag used in the login prologue screens. */
-"Cooking" = "Cooking";
+"Cooking" = "Memasak";
 
 /* No comment provided by engineer. */
 "Copied block" = "Blok disalin";
@@ -1950,7 +1950,7 @@
 "Deny" = "Tolak";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Describe the purpose of the image. Leave empty if the image is purely decorative. ";
+"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Jelaskan maksud gambar tersebut. Biarkan kosong jika gambar hanya hiasan. ";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2553,13 +2553,13 @@
 "Failed Media Export" = "Ekspor Media Gagal";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "Failed to insert audio file.";
+"Failed to insert audio file." = "Gagal memasukkan file audio.";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Gagal memasukkan file audio. Ketuk untuk melihat pilihan.";
 
 /* No comment provided by engineer. */
-"Failed to insert media." = "Failed to insert media.";
+"Failed to insert media." = "Gagal memasukkan media.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Gagal memasukkan media.\nHarap ketuk untuk melihat pilihan.";
@@ -2754,7 +2754,7 @@
 "Follows the tag." = "Ikuti tag.";
 
 /* An example tag used in the login prologue screens. */
-"Football" = "Football";
+"Football" = "Sepakbola";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "Demi kenyamanan Anda, kami telah mengisi informasi kontak WordPress.com Anda terlebih dahulu. Harap tinjau untuk memastikan informasi yang ingin Anda gunakan untuk domain ini sudah benar.";
@@ -2793,7 +2793,7 @@
 "Gallery caption. %s" = "Keterangan galeri. %s";
 
 /* An example tag used in the login prologue screens. */
-"Gardening" = "Gardening";
+"Gardening" = "Berkebun";
 
 /* Add New Stats Card category title
    Title for the general section in site settings screen */
@@ -3360,7 +3360,7 @@
 "Left" = "Rata Kiri";
 
 /* Title displayed for selection of custom app icons that may be removed in a future release of the app. */
-"Legacy Icons" = "Legacy Icons";
+"Legacy Icons" = "Ikon Lawas";
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Mari Kami Bantu";
@@ -3372,7 +3372,7 @@
 "Light" = "Terang";
 
 /* Title displayed for selection of custom app icons that have white backgrounds. */
-"Light backgrounds" = "Light backgrounds";
+"Light backgrounds" = "Latar belakang terang";
 
 /* Like (verb)
    Like a post.
@@ -3836,7 +3836,7 @@
 "Moves the comment to the Trash." = "Pindahkan komentar ke Tempat Sampah";
 
 /* An example tag used in the login prologue screens. */
-"Music" = "Music";
+"Music" = "Musik";
 
 /* Link to My Profile section
    My Profile view title */
@@ -3897,7 +3897,7 @@
 "New Blocklist Word" = "Daftar Blokir Kata Baru";
 
 /* Title of alert informing users about the Reader Save for Later feature. */
-"New Custom App Icons" = "New Custom App Icons";
+"New Custom App Icons" = "Ikon Aplikasi Kustom Baru";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "IP atau Rentang IP baru";
@@ -4678,7 +4678,7 @@
 "Plugins" = "Plugin";
 
 /* An example tag used in the login prologue screens. */
-"Politics" = "Politics";
+"Politics" = "Politik";
 
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
@@ -4874,7 +4874,7 @@
 "Problem displaying block" = "Terjadi masalah saat menampilkan blok";
 
 /* Error message title informing the user that reader content could not be loaded. */
-"Problem loading content" = "Problem loading content";
+"Problem loading content" = "Masalah pemuatan konten";
 
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "Problem loading sites" = "Masalah saat memuat situs";
@@ -5320,7 +5320,7 @@
 "Right" = "Rata Kanan";
 
 /* Example Reader feed title */
-"Rock 'n Roll Weekly" = "Rock 'n Roll Weekly";
+"Rock 'n Roll Weekly" = "Rock 'n Roll Mingguan";
 
 /* Title. Indicates the user role an invite link is for.
    User Roles Title
@@ -5455,10 +5455,10 @@
 "Search WordPress\nfor a site or post" = "Cari WordPress\nuntuk situs atau tulisan";
 
 /* No comment provided by engineer. */
-"Search block" = "Search block";
+"Search block" = "Cari blok";
 
 /* No comment provided by engineer. */
-"Search blocks" = "Search blocks";
+"Search blocks" = "Cari blok";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "Cari atau ketik URL";
@@ -5825,7 +5825,7 @@
 "Siri Reset Prompt" = "Kosongkan Saran Pintasan Siri";
 
 /* Header for a single site, shown in Notification user profile. */
-"Site" = "Site";
+"Site" = "Situs";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "Ikon Situs";
@@ -5993,7 +5993,7 @@
 "Sorry, you may not use that site address." = "Maaf, Anda tidak dapat menggunakan alamat situs tersebut.";
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
-"Sorry. The content could not be loaded." = "Sorry. The content could not be loaded.";
+"Sorry. The content could not be loaded." = "Maaf. Konten tidak dapat dimuat.";
 
 /* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
 "Sorry. The social service did not tell us which account could be used for sharing." = "Maaf. Layanan sosial tersebut tidak memberi tahu kami mengenai akun mana yang dapat digunakan untuk berbagi.";
@@ -6786,10 +6786,10 @@
 "Traffic" = "Lalu Lintas";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"Transform %s to" = "Transform %s to";
+"Transform %s to" = "Ubah %s menjadi";
 
 /* No comment provided by engineer. */
-"Transform block…" = "Transform block…";
+"Transform block…" = "Mengubah blok...";
 
 /* No comment provided by engineer. */
 "Translate" = "Terjemahan";
@@ -7651,7 +7651,7 @@
 "Web Display Settings" = "Pengaturan Tampilan Web";
 
 /* Example Reader feed title */
-"Web News" = "Web News";
+"Web News" = "Berita Web";
 
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "Minggu dimulai";
@@ -7703,7 +7703,7 @@
 "We’ve made some changes to your checklist" = "Kami telah melakukan beberapa perubahan pada daftar periksa Anda";
 
 /* Body text of alert informing users about the Reader Save for Later feature. */
-"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer.";
+"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "Kami telah memperbarui ikon aplikasi kustom dengan tampilan baru yang lebih segar.  Ada 10 gaya baru yang dapat dipilih, tapi Anda tetap bisa menggunakan ikon yang ada jika lebih menyukainya.";
 
 /* This is the string we display when prompting the user to review the app */
 "What do you think about WordPress?" = "Apa pendapat Anda tentang WordPress?";
@@ -7712,7 +7712,7 @@
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Apa yang ingin Anda lakukan dengan file ini: mengunggahnya dan menambahkan tautan ke file dalam pos Anda, atau menambahkan konten file langsung ke pos?";
 
 /* No comment provided by engineer. */
-"What is alt text?" = "What is alt text?";
+"What is alt text?" = "Apa itu teks alt?";
 
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "Apa masalahnya?";
@@ -7996,7 +7996,7 @@
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Anda perlu melakukan verifikasi akun Anda sebelum dapat mempublikasikan pos.\nJangan khawatir, pos Anda aman dan akan disimpan sebagai draft.";
 
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
-"You received *50 likes* on your site today" = "You received *50 likes* on your site today";
+"You received *50 likes* on your site today" = "Anda menerima *50 likes* on your site today";
 
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
@@ -8150,7 +8150,7 @@
 "doesn’t it feel good to cross things off a list?" = "bukankah menyenangkan rasanya saat mencoret satu hal dari daftar?";
 
 /* No comment provided by engineer. */
-"double-tap to change unit" = "double-tap to change unit";
+"double-tap to change unit" = "ketuk dua kali untuk mengubah unit";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "misalnya 1122334455";

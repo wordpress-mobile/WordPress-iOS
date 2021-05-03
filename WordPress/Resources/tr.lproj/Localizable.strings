@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-30 11:54:09+0000 */
+/* Translation-Revision-Date: 2021-04-30 16:05:23+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -37,10 +37,10 @@
 "%1$d unseen posts" = "%1$d görülmemiş yazı";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
-"%1$s transformed to %2$s" = "%1$s transformed to %2$s";
+"%1$s transformed to %2$s" = "%1$s, %2$s olarak dönüştürüldü";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
-"%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s is %3$s %4$s.";
+"%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s, %3$s %4$s.";
 
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
 "%@ - %@, %@" = "%1$@ - %2$@, %3$@";
@@ -217,10 +217,10 @@
 "(no title)" = "(başlık yok)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
-"*Johann Brandt* responded to your post" = "*Johann Brandt* responded to your post";
+"*Johann Brandt* responded to your post" = "*Johan Brandt* yazınıza yanıt verdi";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
-"*Madison Ruiz* liked your post" = "*Madison Ruiz* liked your post";
+"*Madison Ruiz* liked your post" = "*Madison Ruiz* yazınızı beğendi";
 
 /* Menus button text for adding a new menu to a site. */
 "+ Add new menu" = "+ Yeni menü ekle";
@@ -325,7 +325,7 @@
 "About" = "Hakkında";
 
 /* Link to About screen for Jetpack for iOS */
-"About Jetpack for iOS" = "About Jetpack for iOS";
+"About Jetpack for iOS" = "İOS için Jetpack hakkında";
 
 /* My Profile 'About me' label */
 "About Me" = "Hakkımda";
@@ -759,7 +759,7 @@
 "Are you sure you want to update?" = "Güncellemek istediğinizden emin misiniz?";
 
 /* An example tag used in the login prologue screens. */
-"Art" = "Art";
+"Art" = "Sanat";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "1 ağustos 2018 itibarıyla Facebook, yazıların doğrudan Facebook profillerinde paylaşımına izin vermez. Facebook sayfalarına bağlantı değişmeden kalır.";
@@ -1088,7 +1088,7 @@
 "Cancel media uploads" = "Görsel yüklemelerini iptal et";
 
 /* No comment provided by engineer. */
-"Cancel search" = "Cancel search";
+"Cancel search" = "Aramayı iptal et";
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Paylaşımı iptal et";
@@ -1230,7 +1230,7 @@
 "Choose a domain" = "Alan adı seç";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
-"Choose a new app icon" = "Choose a new app icon";
+"Choose a new app icon" = "Yeni bir uygulama simgesi seçin";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Bir tema seçin";
@@ -1308,7 +1308,7 @@
 "Clear all old activity logs?" = "Tüm eski etkinlik günlükleri temizlensin mi?";
 
 /* No comment provided by engineer. */
-"Clear search" = "Clear search";
+"Clear search" = "Aramayı temizle";
 
 /* Title of a button. */
 "Clear search history" = "Arama geçmişini temizle";
@@ -1359,7 +1359,7 @@
 "Collect information" = "Bilgi topla";
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
-"Colorful backgrounds" = "Colorful backgrounds";
+"Colorful backgrounds" = "Renkli arka planlar";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Ziyaretçilerinizin seveceği ilgi çekici ve dokunulabilir öykü yayınları oluşturmak için fotoğrafları, videoları ve metinleri birleştirin.";
@@ -1587,7 +1587,7 @@
 "Continuing with Apple" = "Apple ile devam ediliyor";
 
 /* An example tag used in the login prologue screens. */
-"Cooking" = "Cooking";
+"Cooking" = "Yemek pişirme";
 
 /* No comment provided by engineer. */
 "Copied block" = "Kopyalanan blok";
@@ -1950,7 +1950,7 @@
 "Deny" = "Reddet";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Describe the purpose of the image. Leave empty if the image is purely decorative. ";
+"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Görselin amacını açıklayın. Görsel tamamen dekoratif amaçlıysa boş bırakın. ";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2553,13 +2553,13 @@
 "Failed Media Export" = "Medya Dışa Aktarılamadı";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "Failed to insert audio file.";
+"Failed to insert audio file." = "Ses dosyası eklenemedi.";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Ses dosyası eklenemedi. Seçenekler için lütfen dokunun.";
 
 /* No comment provided by engineer. */
-"Failed to insert media." = "Failed to insert media.";
+"Failed to insert media." = "Medya eklenemedi.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Ortam eklenemedi.\n Lütfen seçenekler için dokunun.";
@@ -2754,7 +2754,7 @@
 "Follows the tag." = "Etiketi takip eder.";
 
 /* An example tag used in the login prologue screens. */
-"Football" = "Football";
+"Football" = "Futbol";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "Size kolaylık olması için, WordPress.com iletişim bilgilerinizi önceden doldurduk. Lütfen bu bilgilerin bu alan adında kullanmak istediğiniz doğru bilgiler olduğundan emin olmak için gözden geçirin.";
@@ -2793,7 +2793,7 @@
 "Gallery caption. %s" = "Galeri yazısı. %s";
 
 /* An example tag used in the login prologue screens. */
-"Gardening" = "Gardening";
+"Gardening" = "Bahçe İşçiliği";
 
 /* Add New Stats Card category title
    Title for the general section in site settings screen */
@@ -3360,7 +3360,7 @@
 "Left" = "Sol";
 
 /* Title displayed for selection of custom app icons that may be removed in a future release of the app. */
-"Legacy Icons" = "Legacy Icons";
+"Legacy Icons" = "Eski Simgeler";
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Size Yardımcı Olalım";
@@ -3372,7 +3372,7 @@
 "Light" = "Açık";
 
 /* Title displayed for selection of custom app icons that have white backgrounds. */
-"Light backgrounds" = "Light backgrounds";
+"Light backgrounds" = "Açık renkli arka planlar";
 
 /* Like (verb)
    Like a post.
@@ -3836,7 +3836,7 @@
 "Moves the comment to the Trash." = "Yorumu çöpe taşır.";
 
 /* An example tag used in the login prologue screens. */
-"Music" = "Music";
+"Music" = "Müzik";
 
 /* Link to My Profile section
    My Profile view title */
@@ -3897,7 +3897,7 @@
 "New Blocklist Word" = "Yeni Kara Liste Sözcüğü";
 
 /* Title of alert informing users about the Reader Save for Later feature. */
-"New Custom App Icons" = "New Custom App Icons";
+"New Custom App Icons" = "Yeni Özel Uygulama Simgeleri";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "Yeni IP veya IP aralığı";
@@ -4678,7 +4678,7 @@
 "Plugins" = "Eklentiler";
 
 /* An example tag used in the login prologue screens. */
-"Politics" = "Politics";
+"Politics" = "Politika";
 
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
@@ -4874,7 +4874,7 @@
 "Problem displaying block" = "Blok görüntülenirken bir sorun oluştu";
 
 /* Error message title informing the user that reader content could not be loaded. */
-"Problem loading content" = "Problem loading content";
+"Problem loading content" = "İçerik yükleme sorunu";
 
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "Problem loading sites" = "Siteler yüklenirken problem oluştu";
@@ -5320,7 +5320,7 @@
 "Right" = "Sağ";
 
 /* Example Reader feed title */
-"Rock 'n Roll Weekly" = "Rock 'n Roll Weekly";
+"Rock 'n Roll Weekly" = "Haftalık Rock 'n Roll";
 
 /* Title. Indicates the user role an invite link is for.
    User Roles Title
@@ -5455,10 +5455,10 @@
 "Search WordPress\nfor a site or post" = "Yazı veya site için\nWordPressde arayın";
 
 /* No comment provided by engineer. */
-"Search block" = "Search block";
+"Search block" = "Arama bloğu";
 
 /* No comment provided by engineer. */
-"Search blocks" = "Search blocks";
+"Search blocks" = "Arama blokları";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "URL ara veya yaz";
@@ -5993,7 +5993,7 @@
 "Sorry, you may not use that site address." = "Üzgünüz, bu site adresini kullanamazsınız.";
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
-"Sorry. The content could not be loaded." = "Sorry. The content could not be loaded.";
+"Sorry. The content could not be loaded." = "Üzgünüz. İçerik yüklenemedi.";
 
 /* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
 "Sorry. The social service did not tell us which account could be used for sharing." = "Üzgünüm. Sosyal ağ servisi, hangi hesabın paylaşım için kullanılabileceğini söylemedi.";
@@ -6786,10 +6786,10 @@
 "Traffic" = "Trafik";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"Transform %s to" = "Transform %s to";
+"Transform %s to" = "%s öğesini şuna dönüştür:";
 
 /* No comment provided by engineer. */
-"Transform block…" = "Transform block…";
+"Transform block…" = "Bloku dönüştür…";
 
 /* No comment provided by engineer. */
 "Translate" = "Çevir";
@@ -7651,7 +7651,7 @@
 "Web Display Settings" = "Webde görüntüleme ayarları";
 
 /* Example Reader feed title */
-"Web News" = "Web News";
+"Web News" = "Web Haberleri";
 
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "Haftanın başlangıcı";
@@ -7703,7 +7703,7 @@
 "We’ve made some changes to your checklist" = "Kontrol listenizde bazı değişiklikler yaptık";
 
 /* Body text of alert informing users about the Reader Save for Later feature. */
-"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer.";
+"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "Özel uygulama simgelerimizi yepyeni bir görünümde olacak şekilde güncelledik. 10 yeni stil arasından seçim yapabilir veya isterseniz mevcut simgenizi kullanmaya devam edebilirsiniz.";
 
 /* This is the string we display when prompting the user to review the app */
 "What do you think about WordPress?" = "WordPress hakkında ne düşünüyorsunuz?";
@@ -7712,7 +7712,7 @@
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Bu dosya ile ne yapmak istersiniz: yükleyip, yazınızın içine bir bağlantı olarak mı eklemek istersiniz yoksa içeriğini direkt yazınıza mı eklemek istersiniz?";
 
 /* No comment provided by engineer. */
-"What is alt text?" = "What is alt text?";
+"What is alt text?" = "Alternatif metin nedir?";
 
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "Problem neydi?";
@@ -7996,7 +7996,7 @@
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Bir yazı yayınlamadan önce hesabınızı doğrulamanız gerekli.\nEndişelenmeyin, yazınız güvende ve taslak olarak kaydedilecek.";
 
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
-"You received *50 likes* on your site today" = "You received *50 likes* on your site today";
+"You received *50 likes* on your site today" = "*50 likes* on your site today aldınız";
 
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
@@ -8150,7 +8150,7 @@
 "doesn’t it feel good to cross things off a list?" = "listedeki bazı işleri tamamlamak iyi hissettirmiyor mu?";
 
 /* No comment provided by engineer. */
-"double-tap to change unit" = "double-tap to change unit";
+"double-tap to change unit" = "birimi değiştirmek için çift dokunun";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "ör. 1122334455";

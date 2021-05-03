@@ -107,7 +107,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.8.3)
   - MRProgress/Stopable (0.8.3):
     - MRProgress/Helper
-  - Nimble (9.0.1)
+  - Nimble (9.0.0)
   - NSObject-SafeExpectations (0.0.4)
   - "NSURL+IDN (0.4)"
   - OCMock (3.4.3)
@@ -511,7 +511,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
-    - WordPressKit
+    - WordPressUI
   trunk:
     - 1PasswordExtension
     - Alamofire
@@ -551,9 +551,9 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressKit
     - WordPressMocks
     - WordPressShared
-    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -699,7 +699,7 @@ SPEC CHECKSUMS:
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
-  Nimble: 7bed62ffabd6dbfe05f5925cbc43722533248990
+  Nimble: 3b4ec3fd40f1dc178058e0981107721c615643d8
   NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
@@ -747,10 +747,10 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
   WordPressAuthenticator: ade67c843e35afd5c462ce937a8c9126dff0303c
-  WordPressKit: d8bfbd3774490ff24c8df01e007ddcb6940f3727
+  WordPressKit: 53d1329848231bc5776cb04f6a3cc340b32eb953
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 0f7f10e96f8354d64f951c223ae61e8de7495a46
-  WordPressUI: 8c754c252a9f36fa32a4c588e9cdeb0d7d8dbe07
+  WordPressUI: 7735014eb5a518a8346b1179b36ba77abcb49ee5
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
