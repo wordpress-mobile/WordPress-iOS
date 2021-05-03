@@ -1,3 +1,7 @@
+17.4
+-----
+* [**] A new author can be chosen for Posts and Pages on multi-author sites. [#16281]
+
 17.3
 -----
 * [**] Fix issue where deleting a post and selecting undo would sometimes convert the content to the classic editor. [#16342]
@@ -7,7 +11,6 @@
 * [*] Comments can be filtered to show the most recent unreplied comments from other users. [#16215]
 * [*] Fixed the background color of search fields. [#16365]
 * [*] Fixed the navigation bar color in dark mode. [#16348]
-* [**] A new author can be chosen for Posts and Pages on multi-author sites. [#16281]
 * [*] Fix translation issues for templates fetched on the site creation design selection screen. [#16404]
 * [*] Fix translation issues for templates fetched on the page creation design selection screen. [#16404]
 * [*] Fix translation issue for the Choose button on the template preview in the site creation flow. [#16404]
