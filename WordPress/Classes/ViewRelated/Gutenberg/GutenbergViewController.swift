@@ -649,6 +649,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
     
     func gutenbergDidRequestToSetFeaturedImage(for mediaID: Int32) {
+        // Dismiss controller behind settings modal to enable the alert controller to be presented.
+        presentedViewController?.dismiss(animated: false, completion: nil)
+                
         if (mediaID == 0) {
             mediaInserterHelper.setFeaturedImage(mediaID: mediaID)
         } else if (post.featuredImage?.mediaID == nil) {
@@ -659,6 +662,18 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
     
     func showAlertForReplacingFeaturedImage(mediaID: Int32) {
+        let alertController = UIAlertController(title: NSLocalizedString("Replace current?", comment: "Replace current featured image title"),
+                                                message: NSLocalizedString("You already have a featured image set. Do you want to replace it?", comment: "Replace current featured image confirmation message"),
+                                                preferredStyle: .actionSheet)
+        
+        let replaceAction = UIAlertAction(title: "Replace", style: .default) { (action) in
+            self.mediaInserterHelper.setFeaturedImage(mediaID: mediaID)
+        }
+        
+        alertController.addAction(replaceAction)
+        alertController.addCancelActionWithTitle("Cancel")
+        
+        present(alertController, animated: true, completion: nil)
     }
 
     struct AnyEncodable: Encodable {
