@@ -1,0 +1,3 @@
+Bu sürümde yeni bir blok sunuyoruz - Jetpack iletişim bilgisi. Sitenizde güzel biçimlendirilmiş bir adres görüntülemek için mükemmeldir. Ayrıca uygulamanın ana ekranınızda görünümünü özelleştirmek için kullanabileceğiniz bazı şık yeni uygulama simgeleri de ekledik.
+
+Size söylememiz gereken bazı şık ince ayarlarımız var. Gönderimi kolaylaştırmak için site değiştiriciyi düzenleyiciden kaldırdık, yazar adlarının görünmesini engelleyen bir hatayı düzelttik, sütun bloku için VoiceOver desteğini iyileştirdik ve bir resim blokuna alternatif metin eklemeyi kolaylaştırdık.

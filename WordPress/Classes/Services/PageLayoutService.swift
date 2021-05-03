@@ -20,11 +20,11 @@ class PageLayoutService {
         let dotComID: Int?
         if blog.isAccessibleThroughWPCom(),
            let blogID = blog.dotComID?.intValue,
-           let restAPI = blog.wordPressComRestApi() {
+           let restAPI = blog.account?.wordPressComRestV2Api {
             api = restAPI
             dotComID = blogID
         } else {
-            api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
+            api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
             dotComID = nil
         }
 

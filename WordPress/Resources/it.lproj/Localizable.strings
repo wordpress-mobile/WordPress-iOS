@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-31 15:54:08+0000 */
+/* Translation-Revision-Date: 2021-04-30 16:02:50+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -40,7 +40,7 @@
 "%1$s transformed to %2$s" = "%1$s transformed to %2$s";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
-"%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s is %3$s %4$s.";
+"%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s è %3$s %4$s.";
 
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
 "%@ - %@, %@" = "Dal %1$@ al %2$@ %3$@";
@@ -217,10 +217,10 @@
 "(no title)" = "(senza titolo)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
-"*Johann Brandt* responded to your post" = "*Johann Brandt* responded to your post";
+"*Johann Brandt* responded to your post" = "*Johan Brandt* ha risposto al tuo articolo";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
-"*Madison Ruiz* liked your post" = "*Madison Ruiz* liked your post";
+"*Madison Ruiz* liked your post" = "A *Madison Ruiz* è piaciuto il tuo articolo";
 
 /* Menus button text for adding a new menu to a site. */
 "+ Add new menu" = "+ Aggiungi nuovo menu";
@@ -1230,7 +1230,7 @@
 "Choose a domain" = "Scegli un dominio";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
-"Choose a new app icon" = "Choose a new app icon";
+"Choose a new app icon" = "Scegli una nuova icona dell'app";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Scegli un tema";
@@ -1359,7 +1359,7 @@
 "Collect information" = "Raccogli informazioni";
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
-"Colorful backgrounds" = "Colorful backgrounds";
+"Colorful backgrounds" = "Sfondi colorati";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combina foto, video e testo per creare articoli della storia coinvolgenti e che si possono toccare che i visitatori ameranno.";
@@ -1950,7 +1950,7 @@
 "Deny" = "Nega";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Describe the purpose of the image. Leave empty if the image is purely decorative. ";
+"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Descrivi lo scopo dell'immagine. Lascia vuoto, se l'immagine è semplicemente decorativa. ";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2559,7 +2559,7 @@
 "Failed to insert audio file. Please tap for options." = "Inserimento del file audio non riuscito Tocca per le opzioni.";
 
 /* No comment provided by engineer. */
-"Failed to insert media." = "Failed to insert media.";
+"Failed to insert media." = "Impossibile inserire file multimediali.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Errore nell'inserimento di un media.\n Fai un tap per le opzioni possibili.";
@@ -3360,7 +3360,7 @@
 "Left" = "Sinistra";
 
 /* Title displayed for selection of custom app icons that may be removed in a future release of the app. */
-"Legacy Icons" = "Legacy Icons";
+"Legacy Icons" = "Icone legacy";
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Permettici di aiutare";
@@ -3372,7 +3372,7 @@
 "Light" = "Chiaro";
 
 /* Title displayed for selection of custom app icons that have white backgrounds. */
-"Light backgrounds" = "Light backgrounds";
+"Light backgrounds" = "Sfondi chiari";
 
 /* Like (verb)
    Like a post.
@@ -3897,7 +3897,7 @@
 "New Blocklist Word" = "Nuovo elenco delle parole da bloccare";
 
 /* Title of alert informing users about the Reader Save for Later feature. */
-"New Custom App Icons" = "New Custom App Icons";
+"New Custom App Icons" = "Nuove icone delle app personalizzate";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "Nuovo IP o nuovo IP Range";
@@ -4874,7 +4874,7 @@
 "Problem displaying block" = "Problema durante la visualizzazione del blocco";
 
 /* Error message title informing the user that reader content could not be loaded. */
-"Problem loading content" = "Problem loading content";
+"Problem loading content" = "Problema con il caricamento del contenuto";
 
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "Problem loading sites" = "Problemi nel caricamento del sito";
@@ -5320,7 +5320,7 @@
 "Right" = "Destra";
 
 /* Example Reader feed title */
-"Rock 'n Roll Weekly" = "Rock 'n Roll Weekly";
+"Rock 'n Roll Weekly" = "Rock 'n' Roll di questa settimana";
 
 /* Title. Indicates the user role an invite link is for.
    User Roles Title
@@ -5455,10 +5455,10 @@
 "Search WordPress\nfor a site or post" = "Cerca un sito o un post\nsu WordPress";
 
 /* No comment provided by engineer. */
-"Search block" = "Search block";
+"Search block" = "Cerca blocco";
 
 /* No comment provided by engineer. */
-"Search blocks" = "Search blocks";
+"Search blocks" = "Cerca blocchi";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "Cerca o digita URL";
@@ -5825,7 +5825,7 @@
 "Siri Reset Prompt" = "Cancella i suggerimenti per le scorciatoie di Siri";
 
 /* Header for a single site, shown in Notification user profile. */
-"Site" = "Site";
+"Site" = "Sito";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "Icona di sito";
@@ -5993,7 +5993,7 @@
 "Sorry, you may not use that site address." = "Spiacenti, non puoi usare quell'indirizzo per il tuo sito.";
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
-"Sorry. The content could not be loaded." = "Sorry. The content could not be loaded.";
+"Sorry. The content could not be loaded." = "Il contenuto non può essere caricato.";
 
 /* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
 "Sorry. The social service did not tell us which account could be used for sharing." = "Siamo spiacenti, il servizio social non ci ha comunicato quale account poteva essere usato per la condivisione.";
@@ -6786,10 +6786,10 @@
 "Traffic" = "Traffico";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"Transform %s to" = "Transform %s to";
+"Transform %s to" = "Trasforma %s in";
 
 /* No comment provided by engineer. */
-"Transform block…" = "Transform block…";
+"Transform block…" = "Trasforma il blocco...";
 
 /* No comment provided by engineer. */
 "Translate" = "Traduci";
@@ -7651,7 +7651,7 @@
 "Web Display Settings" = "Impostazioni visualizzazione web";
 
 /* Example Reader feed title */
-"Web News" = "Web News";
+"Web News" = "News del web";
 
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "La settimana inizia il";
@@ -7703,7 +7703,7 @@
 "We’ve made some changes to your checklist" = "Abbiamo apportato delle modifiche alla checklist";
 
 /* Body text of alert informing users about the Reader Save for Later feature. */
-"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer.";
+"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "Abbiamo aggiornato le icone delle nostre app personalizzate con un nuovo aspetto. Esistono 10 nuovi stili tra cui scegliere oppure, se preferisci, puoi semplicemente mantenere la tua icona esistente.";
 
 /* This is the string we display when prompting the user to review the app */
 "What do you think about WordPress?" = "Che cosa pensi di WordPress?";
@@ -7712,7 +7712,7 @@
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Cosa desideri fare con questo file: caricarlo e aggiungere un link al file nel tuo articolo o aggiungere i contenuti del file direttamente nell'articolo?";
 
 /* No comment provided by engineer. */
-"What is alt text?" = "What is alt text?";
+"What is alt text?" = "Cos'è il testo alternativo?";
 
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "Qual era il problema?";
@@ -7996,7 +7996,7 @@
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Devi verificare il tuo account prima che tu possa pubblicare un articolo.\nNon preoccuparti, il tuo articolo è al sicuro e sarà salvato come una bozza.";
 
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
-"You received *50 likes* on your site today" = "You received *50 likes* on your site today";
+"You received *50 likes* on your site today" = "Hai ricevuto *50 likes* on your site today";
 
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */

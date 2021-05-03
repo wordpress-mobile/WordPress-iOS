@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-04-23 10:38:41+0000 */
+/* Translation-Revision-Date: 2021-04-23 23:21:28+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -595,7 +595,7 @@
 "Always Send Crash Logs" = "Skicka alltid kraschloggar";
 
 /* Error message when loading failed because there's no connection */
-"An active internet connection is required" = "Man behöver ha en fungerande internetanslutning";
+"An active internet connection is required" = "En aktiv internetanslutning krävs";
 
 /* Error message shown when trying to view the scan status and there is no internet connection. */
 "An active internet connection is required to view Jetpack Scan" = "En aktiv internetanslutning krävs för att kunna visa Jetpack Scan";
@@ -632,7 +632,7 @@
 "An error occurred loading the menu, please check your internet connection." = "Ett fel uppstod när menyn laddades, kontrollera din internetanslutning.";
 
 /* The error message displayed when a user is editing a MenuItem and the results cannot be loaded, such as posts, pages, etc. */
-"An error occurred loading the results, please try again in a moment." = "Ett fel uppstod vid hämtningen av resultaten, vänligen försök igen om en stund.";
+"An error occurred loading the results, please try again in a moment." = "Ett fel uppstod vid hämtningen av resultaten, försök igen om en stund.";
 
 /* An error description explaining that a Menu could not be updated. */
 "An error occurred updating the Menu." = "Ett fel uppstod vid uppdateringen av menyn.";
@@ -2008,7 +2008,7 @@
 "Disconnect failed" = "Frånkoppling misslyckades";
 
 /* Disconnect from WordPress.com button */
-"Disconnect from WordPress.com" = "Avbryt anslutning till WordPress.com";
+"Disconnect from WordPress.com" = "Koppla från anslutningen till WordPress.com";
 
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Frånkoppling av detta konto innebär att publicerade inlägg inte längre automatiskt kommer att delas till %@";
@@ -6954,7 +6954,7 @@
 "Unable to play video" = "Det går inte att spela video";
 
 /* No comment provided by engineer. */
-"Unable to read the WordPress site at that URL. Tap 'Need Help?' to view the FAQ." = "Kunde inte läsa WordPress-webbplatsen på denna URL. Ttryck på \"Behöver du hjälp?\" för att se FAQ.";
+"Unable to read the WordPress site at that URL. Tap 'Need Help?' to view the FAQ." = "Kunde inte läsa WordPress-webbplatsen på denna URL. Tryck på ”Behöver du hjälp?” för att se “Vanliga frågor”.";
 
 /* Alert title when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
 "Unable to register domain" = "Det går inte att registrera domänen";
@@ -7703,7 +7703,7 @@
 "We’ve made some changes to your checklist" = "Vi har gjort några ändringar i din checklista";
 
 /* Body text of alert informing users about the Reader Save for Later feature. */
-"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer.";
+"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "Ikonerna för din anpassade app har fått ett nytta, fräscht utseende. Nu kan du välja någon av 10 olika nya stilar. Men om du vill kan också behålla den ikon du redan använder.";
 
 /* This is the string we display when prompting the user to review the app */
 "What do you think about WordPress?" = "Vad tycker du om WordPress?";
@@ -7813,7 +7813,7 @@
 "WordPress for iOS Support" = "WordPress for iOS-Support";
 
 /* Explaining to the user why the app needs access to the device location. */
-"WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress behöver tillåtelse för åtkomst till din enhets aktuella plats för att kunna lägga till den i ditt inlägg. Vänligen uppdatera dina integritetsinställningar.";
+"WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress behöver tillåtelse för åtkomst till din enhets aktuella plats för att kunna lägga till den i ditt inlägg. Uppdatera dina integritetsinställningar.";
 
 /* Downloadable/Restorable items: WordPress root */
 "WordPress root" = "WordPress-rot";

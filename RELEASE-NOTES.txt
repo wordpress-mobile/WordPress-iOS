@@ -3,9 +3,18 @@
 * [**] Fix issue where deleting a post and selecting undo would sometimes convert the content to the classic editor. [#16342]
 * [**] Fix issue where restoring a post left the restored post in the published list even though it has been converted to a draft. [#16358]
 * [**] Fix issue where trashing a post converted it to Classic content. [#16367]
+* [**] Fix issue where users could not leave the username selection screen due to styling issues. [#16380]
 * [*] Comments can be filtered to show the most recent unreplied comments from other users. [#16215]
+* [*] Fixed the background color of search fields. [#16365]
 * [*] Fixed the navigation bar color in dark mode. [#16348]
 * [**] A new author can be chosen for Posts and Pages on multi-author sites. [#16281]
+* [*] Fix translation issues for templates fetched on the site creation design selection screen. [#16404]
+* [*] Fix translation issues for templates fetched on the page creation design selection screen. [#16404]
+* [*] Fix translation issue for the Choose button on the template preview in the site creation flow. [#16404]
+* [***]  Block Editor: New Block: Search Block [#https://github.com/wordpress-mobile/gutenberg-mobile/pull/3210]
+* [**]  Block Editor: The media upload options of the Image, Video and Gallery block automatically opens when the respective block is inserted. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2700]
+* [**]  Block Editor: The media upload options of the File and Audio block automatically opens when the respective block is inserted. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3399]
+* [*]  Block Editor: Remove visual feedback from non-interactive bottom-sheet cell sections [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3404]
 
 17.2
 -----

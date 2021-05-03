@@ -82,7 +82,9 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         static let atSides: CGFloat = 16
         static let top: CGFloat = 16
         static let belowActionRow: CGFloat = 24
-        static let betweenTitleViewAndActionRow: CGFloat = 32
+        static func betweenTitleViewAndActionRow(_ showsActionRow: Bool) -> CGFloat {
+            return showsActionRow ? 32 : 0
+        }
 
         static let spacingBelowIcon: CGFloat = 16
         static let spacingBelowTitle: CGFloat = 8
@@ -132,24 +134,25 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
         addBottomBorder(withColor: .separator)
 
-        setupConstraintsForChildViews()
+        let showsActionRow = items.count > 0
+        setupConstraintsForChildViews(showsActionRow)
     }
 
     // MARK: - Constraints
 
-    private func setupConstraintsForChildViews() {
-        let actionRowConstraints = constraintsForActionRow()
+    private func setupConstraintsForChildViews(_ showsActionRow: Bool) {
+        let actionRowConstraints = constraintsForActionRow(showsActionRow)
         let titleViewContraints = constraintsForTitleView()
 
         NSLayoutConstraint.activate(actionRowConstraints + titleViewContraints)
     }
 
-    private func constraintsForActionRow() -> [NSLayoutConstraint] {
+    private func constraintsForActionRow(_ showsActionRow: Bool) -> [NSLayoutConstraint] {
         let widthConstraint = actionRow.widthAnchor.constraint(equalToConstant: LayoutSpacing.maxButtonWidth)
         widthConstraint.priority = .defaultHigh
 
         return [
-            actionRow.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: LayoutSpacing.betweenTitleViewAndActionRow),
+            actionRow.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: LayoutSpacing.betweenTitleViewAndActionRow(showsActionRow)),
             actionRow.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -LayoutSpacing.belowActionRow),
             actionRow.leadingAnchor.constraint(greaterThanOrEqualTo: titleView.leadingAnchor),
             actionRow.trailingAnchor.constraint(lessThanOrEqualTo: titleView.trailingAnchor),
