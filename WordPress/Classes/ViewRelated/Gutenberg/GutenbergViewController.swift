@@ -652,9 +652,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         // Dismiss controller behind settings modal to enable the alert controller to be presented.
         presentedViewController?.dismiss(animated: false, completion: nil)
 
-        if (mediaID == 0) {
-            mediaInserterHelper.setFeaturedImage(mediaID: mediaID)
-        } else if (post.featuredImage?.mediaID == nil) {
+        if (mediaID == 0 || post.featuredImage?.mediaID == nil) {
             mediaInserterHelper.setFeaturedImage(mediaID: mediaID)
         } else {
             showAlertForReplacingFeaturedImage(mediaID: mediaID)
