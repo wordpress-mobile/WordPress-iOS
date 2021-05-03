@@ -649,6 +649,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
     
     func gutenbergDidRequestToSetFeaturedImage(for mediaID: Int32) {
+        if (mediaID == 0) {
+            mediaInserterHelper.setFeaturedImage(mediaID: mediaID)
+        } else if (post.featuredImage?.mediaID == nil) {
+            mediaInserterHelper.setFeaturedImage(mediaID: mediaID)
+        } else {
+            showAlertForReplacingFeaturedImage(mediaID: mediaID)
+        }
     }
     
     func showAlertForReplacingFeaturedImage(mediaID: Int32) {
