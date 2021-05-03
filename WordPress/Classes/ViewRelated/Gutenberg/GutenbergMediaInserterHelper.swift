@@ -182,6 +182,12 @@ class GutenbergMediaInserterHelper: NSObject {
         mediaCoordinator.cancelUploadAndDeleteMedia(media)
         gutenberg.mediaUploadUpdate(id: media.gutenbergUploadID, state: .reset, progress: 0, url: nil, serverID: nil)
     }
+    
+    func setFeaturedImage(mediaID: Int32) {
+        let media = Media.existingMediaWith(mediaID: NSNumber(value: mediaID), inBlog: post.blog)
+        post.featuredImage = media
+        gutenberg.featuredImageIdNativeUpdated(mediaId: mediaID)
+    }
 
     func retryUploadOf(media: Media) {
         mediaCoordinator.retryMedia(media)
