@@ -647,6 +647,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
         mediaInserterHelper.cancelUploadOf(media: media)
     }
+    
+    func gutenbergDidRequestToSetFeaturedImage(for mediaID: Int32) {
+    }
+    
 
     struct AnyEncodable: Encodable {
 
