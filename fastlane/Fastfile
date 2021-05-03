@@ -131,6 +131,10 @@ import "./ScreenshotFastfile"
     trigger_beta_build(branch_to_build: "release/#{version}")
   end
 
+  lane :test_localization_changes do
+    ios_localize_project()
+  end
+
   #####################################################################################
   # update_appstore_strings
   # -----------------------------------------------------------------------------------
