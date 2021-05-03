@@ -76,7 +76,7 @@ end
 
 def shared_test_pods
     pod 'OHHTTPStubs/Swift', '~> 9.1.0'
-    pod 'OCMock', '~> 3.4.3'
+    pod 'OCMock', '~> 3.4'
 end
 
 def shared_with_extension_pods

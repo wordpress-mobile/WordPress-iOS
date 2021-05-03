@@ -110,7 +110,7 @@ PODS:
   - Nimble (9.0.0)
   - NSObject-SafeExpectations (0.0.4)
   - "NSURL+IDN (0.4)"
-  - OCMock (3.4.3)
+  - OCMock (3.8.1)
   - OHHTTPStubs/Core (9.1.0)
   - OHHTTPStubs/Default (9.1.0):
     - OHHTTPStubs/Core
@@ -458,7 +458,7 @@ DEPENDENCIES:
   - Nimble (~> 9.0.0)
   - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
-  - OCMock (~> 3.4.3)
+  - OCMock (~> 3.4)
   - OHHTTPStubs/Swift (~> 9.1.0)
   - RCTRequired (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.52.0/third-party-podspecs/RCTRequired.podspec.json`)
   - RCTTypeSafety (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.52.0/third-party-podspecs/RCTTypeSafety.podspec.json`)
@@ -702,7 +702,7 @@ SPEC CHECKSUMS:
   Nimble: 3b4ec3fd40f1dc178058e0981107721c615643d8
   NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
-  OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
+  OCMock: 29f6e52085b4e7d9b075cbf03ed7c3112f82f934
   OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
   RCTRequired: 3ca691422140f76f04fd2af6dc90914cf0f81ef1
   RCTTypeSafety: aab4e9679dbb3682bf0404fded7b9557d7306795
@@ -763,6 +763,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 0625d369bb9da486e6a13b348516a7b7b2b0e428
+PODFILE CHECKSUM: 4ab434811d8ff8d12706cb64a9507bce340217b7
 
 COCOAPODS: 1.10.0
