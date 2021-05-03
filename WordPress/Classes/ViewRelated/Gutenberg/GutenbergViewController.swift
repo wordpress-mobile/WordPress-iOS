@@ -651,6 +651,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidRequestToSetFeaturedImage(for mediaID: Int32) {
     }
     
+    func showAlertForReplacingFeaturedImage(mediaID: Int32) {
+    }
 
     struct AnyEncodable: Encodable {
 
