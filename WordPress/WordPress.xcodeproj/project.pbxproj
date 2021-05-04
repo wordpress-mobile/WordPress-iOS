@@ -12621,7 +12621,7 @@
 			path = "View Models";
 			sourceTree = "<group>";
 		};
-		C72A4F66264088D1009CA633 /* Jetpack Error View Models */ = {
+		C72A4F66264088D1009CA633 /* View Models */ = {
 			isa = PBXGroup;
 			children = (
 				C7F7ACBD261E4F0600CE547F /* JetpackErrorViewModel.swift */,
@@ -12629,7 +12629,17 @@
 				C72A4F7A26408943009CA633 /* JetpackNotWPErrorViewModel.swift */,
 				C72A4F8D26408C73009CA633 /* JetpackNoSitesErrorViewModel.swift */,
 			);
-			path = "Jetpack Error View Models";
+			path = "View Models";
+			sourceTree = "<group>";
+		};
+		C72A4FB12641837A009CA633 /* Login Error */ = {
+			isa = PBXGroup;
+			children = (
+				C72A4F66264088D1009CA633 /* View Models */,
+				C7F7AC73261CF1F300CE547F /* JetpackLoginErrorViewController.swift */,
+				C7F7AC74261CF1F300CE547F /* JetpackLoginErrorViewController.xib */,
+			);
+			path = "Login Error";
 			sourceTree = "<group>";
 		};
 		C7F7AC71261CF1BD00CE547F /* Classes */ = {
@@ -12645,9 +12655,7 @@
 		C7F7AC72261CF1C900CE547F /* ViewRelated */ = {
 			isa = PBXGroup;
 			children = (
-				C72A4F66264088D1009CA633 /* Jetpack Error View Models */,
-				C7F7AC73261CF1F300CE547F /* JetpackLoginErrorViewController.swift */,
-				C7F7AC74261CF1F300CE547F /* JetpackLoginErrorViewController.xib */,
+				C72A4FB12641837A009CA633 /* Login Error */,
 			);
 			path = ViewRelated;
 			sourceTree = "<group>";
