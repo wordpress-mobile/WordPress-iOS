@@ -1,3 +1,7 @@
+17.4
+-----
+
+
 17.3
 -----
 * [**] Fix issue where deleting a post and selecting undo would sometimes convert the content to the classic editor. [#16342]
