@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -24,25 +24,25 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="5JF-4N-1bo" userLabel="Description ">
-                    <rect key="frame" x="34" y="240" width="346" height="386.5"/>
+                    <rect key="frame" x="34" y="239.99999999999997" width="346" height="386.33333333333326"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="site-creation-error" translatesAutoresizingMaskIntoConstraints="NO" id="31P-iz-jd7" userLabel="Error Image View">
                             <rect key="frame" x="0.0" y="0.0" width="346" height="116"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fob-oH-Upm" userLabel="Error Description Label">
-                            <rect key="frame" x="0.0" y="148" width="346" height="86.5"/>
+                            <rect key="frame" x="0.0" y="148" width="346" height="86.333333333333314"/>
                             <string key="text">Qui eum est quo et recusandae ut. Hic cupiditate nobis et pariatur quidem dolorum. Doloribus est tempora ipsam eius. Quos ab et aspernatur velit corporis aut rem.</string>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                             <color key="textColor" systemColor="secondaryLabelColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="66u-Sn-miR">
-                            <rect key="frame" x="0.0" y="266.5" width="346" height="120"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="66u-Sn-miR">
+                            <rect key="frame" x="0.0" y="266.33333333333331" width="346" height="120"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c2a-kB-DHJ" userLabel="secondary action button" customClass="FancyButton" customModule="WordPressUI">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="c2a-kB-DHJ" customClass="FancyButton" customModule="WordPressUI">
                                     <rect key="frame" x="0.0" y="0.0" width="346" height="50"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="50" id="aEa-pn-r6v"/>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="aEa-pn-r6v"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                     <state key="normal" title="Primary Action Button">
@@ -52,10 +52,10 @@
                                         <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
                                     </userDefinedRuntimeAttributes>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C6I-HH-kiP" userLabel="Action Button" customClass="FancyButton" customModule="WordPressUI">
-                                    <rect key="frame" x="0.0" y="70" width="346" height="50"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="C6I-HH-kiP" customClass="FancyButton" customModule="WordPressUI">
+                                    <rect key="frame" x="0.0" y="70.000000000000057" width="346" height="50"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="50" id="21I-1c-69H"/>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="21I-1c-69H"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                     <state key="normal" title="Secondary Action Button">
@@ -68,15 +68,18 @@
                             </subviews>
                         </stackView>
                     </subviews>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="500" id="1C4-c6-mvz"/>
+                    </constraints>
                 </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="7tR-VK-QF9"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="5JF-4N-1bo" firstAttribute="centerY" secondItem="7tR-VK-QF9" secondAttribute="centerY" constant="-20" id="DbZ-rV-cjG"/>
-                <constraint firstItem="5JF-4N-1bo" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7tR-VK-QF9" secondAttribute="top" constant="8" id="VAT-vV-jrr"/>
-                <constraint firstItem="5JF-4N-1bo" firstAttribute="leading" secondItem="7tR-VK-QF9" secondAttribute="leading" constant="34" id="Xsn-eG-EDf"/>
-                <constraint firstAttribute="trailing" secondItem="5JF-4N-1bo" secondAttribute="trailing" constant="34" id="ffY-2G-r0V"/>
+                <constraint firstAttribute="trailing" secondItem="5JF-4N-1bo" secondAttribute="trailing" priority="750" constant="34" id="dCI-zj-sLO"/>
+                <constraint firstItem="5JF-4N-1bo" firstAttribute="leading" secondItem="RDV-rd-NgA" secondAttribute="leading" priority="750" constant="34" id="njV-yp-P4j"/>
+                <constraint firstItem="5JF-4N-1bo" firstAttribute="centerX" secondItem="RDV-rd-NgA" secondAttribute="centerX" id="uOs-gM-oQH"/>
             </constraints>
             <point key="canvasLocation" x="137.68115942028987" y="86.383928571428569"/>
         </view>
