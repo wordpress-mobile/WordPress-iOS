@@ -51,10 +51,16 @@ extension JetpackLoginErrorViewController {
     }
 
     private func configureDescriptionLabel() {
-        descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        descriptionLabel.textColor = .secondaryLabel
+        descriptionLabel.font = Self.descriptionFont
+        descriptionLabel.textColor = Self.descriptionTextColor
+        descriptionLabel.adjustsFontForContentSizeCategory = true
 
-        descriptionLabel.text = viewModel.description
+        guard let attributedString = viewModel.description.attributedStringValue else {
+            descriptionLabel.text = viewModel.description.stringValue
+            return
+        }
+
+        descriptionLabel.attributedText = attributedString
     }
 
     private func configurePrimaryButton() {
@@ -80,4 +86,10 @@ extension JetpackLoginErrorViewController {
             self?.viewModel.didTapSecondaryButton(in: self)
         }
     }
+}
+
+// MARK: - Styles
+extension JetpackLoginErrorViewController {
+    static let descriptionFont: UIFont = WPStyleGuide.fontForTextStyle(.body)
+    static let descriptionTextColor: UIColor = .text
 }
