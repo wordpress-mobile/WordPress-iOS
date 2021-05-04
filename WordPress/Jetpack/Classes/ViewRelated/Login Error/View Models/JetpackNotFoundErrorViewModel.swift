@@ -1,15 +1,26 @@
-import Foundation
+import UIKit
 
 struct JetpackNotFoundErrorViewModel: JetpackErrorViewModel {
     let image: UIImage? = UIImage(named: "wp-illustration-construct-site")
-    var description: String = Constants.description
+    let image: UIImage? = UIImage(named: "jetpack-empty-state-illustration")
+    var description: FormattedStringProvider {
+        let siteName = siteURL
+        let description = String(format: Constants.description, siteName)
+        let font: UIFont = JetpackLoginErrorViewController.descriptionFont.semibold()
+
+        let attributedString = NSMutableAttributedString(string: description)
+        attributedString.applyStylesToMatchesWithPattern(siteName, styles: [.font: font])
+
+        return FormattedStringProvider(attributedString: attributedString)
+    }
+
     var primaryButtonTitle: String? = Constants.primaryButtonTitle
     var secondaryButtonTitle: String? = Constants.secondaryButtonTitle
 
     private let siteURL: String
 
     init(with siteURL: String?) {
-        self.siteURL = siteURL ?? Constants.yourSite
+        self.siteURL = siteURL?.trimURLScheme() ?? Constants.yourSite
     }
 
     func didTapPrimaryButton(in viewController: UIViewController?) {
@@ -46,5 +57,17 @@ struct JetpackNotFoundErrorViewModel: JetpackErrorViewModel {
                                                                 + "Presented when logging in with a site address that does not have a valid Jetpack installation")
 
         static let helpURLString = "https://jetpack.com/support/getting-started-with-jetpack/"
+    }
+}
+
+private extension String {
+    // Removes http:// or https://
+    func trimURLScheme() -> String? {
+        guard let urlComponents = URLComponents(string: self),
+              let host = urlComponents.host else {
+            return self
+        }
+
+        return host + urlComponents.path
     }
 }

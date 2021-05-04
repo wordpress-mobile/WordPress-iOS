@@ -6,7 +6,7 @@ protocol JetpackErrorViewModel {
     var image: UIImage? { get }
 
     /// The error description text
-    var description: String { get }
+    var description: FormattedStringProvider { get }
 
     /// The title for the first button
     /// If this is nil the button will be hidden
@@ -23,4 +23,20 @@ protocol JetpackErrorViewModel {
     /// Executes action associated to a tap in the view controller secondary button
     /// - Parameter viewController: usually the view controller sending the tap
     func didTapSecondaryButton(in viewController: UIViewController?)
+}
+
+/// Helper struct to define a type as both a regular string and an attributed one
+struct FormattedStringProvider {
+    let stringValue: String
+    let attributedStringValue: NSAttributedString?
+
+    init(string: String) {
+        stringValue = string
+        attributedStringValue = nil
+    }
+
+    init(attributedString: NSAttributedString) {
+        attributedStringValue = attributedString
+        stringValue = attributedString.string
+    }
 }

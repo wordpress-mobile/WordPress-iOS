@@ -2,7 +2,7 @@ import Foundation
 
 struct JetpackNoSitesErrorViewModel: JetpackErrorViewModel {
     let image: UIImage? = UIImage(named: "wp-illustration-construct-site")
-    var description: String = Constants.description
+    var description: FormattedStringProvider = FormattedStringProvider(string: Constants.description)
     var primaryButtonTitle: String? = Constants.primaryButtonTitle
     var secondaryButtonTitle: String? = Constants.secondaryButtonTitle
 
