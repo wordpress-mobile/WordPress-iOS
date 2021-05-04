@@ -2,6 +2,7 @@
 -----
 * [**] A new author can be chosen for Posts and Pages on multi-author sites. [#16281]
 
+
 17.3
 -----
 * [**] Fix issue where deleting a post and selecting undo would sometimes convert the content to the classic editor. [#16342]
