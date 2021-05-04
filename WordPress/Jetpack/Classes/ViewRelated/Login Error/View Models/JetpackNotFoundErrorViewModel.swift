@@ -1,7 +1,6 @@
 import UIKit
 
 struct JetpackNotFoundErrorViewModel: JetpackErrorViewModel {
-    let image: UIImage? = UIImage(named: "wp-illustration-construct-site")
     let image: UIImage? = UIImage(named: "jetpack-empty-state-illustration")
     var description: FormattedStringProvider {
         let siteName = siteURL
