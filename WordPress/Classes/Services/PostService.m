@@ -19,8 +19,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 
 @interface PostService ()
 
-@property (nonnull, strong, nonatomic) PostServiceRemoteFactory *postServiceRemoteFactory;
-
 @end
 
 @implementation PostService
@@ -682,29 +680,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     
     id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
     [remote restorePost:remotePost success:successBlock failure:failureBlock];
-}
-
-// TODO: remove when PostServiceWPComTests is updated to use LikeUsers method.
-- (void)getLikesForPostID:(NSNumber *)postID
-                   siteID:(NSNumber *)siteID
-                  success:(void (^)(NSArray<RemoteUser *> *))success
-                  failure:(void (^)(NSError * _Nullable))failure
-{
-    NSParameterAssert(postID);
-    NSParameterAssert(siteID);
-
-    PostServiceRemoteREST *remote = [self.postServiceRemoteFactory restRemoteForSiteID:siteID
-                                                                               context:self.managedObjectContext];
-    if (remote) {
-        [remote getLikesForPostID:postID
-                          success:success
-                          failure:failure];
-    } else {
-        NSError *error = [NSError errorWithDomain:PostServiceErrorDomain
-                                             code:0
-                                         userInfo:@{ NSLocalizedDescriptionKey : @"Unable to create a REST remote for posts." }];
-        failure(error);
-    }
 }
 
 #pragma mark - Helpers

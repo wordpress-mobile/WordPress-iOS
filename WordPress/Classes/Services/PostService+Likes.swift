@@ -13,7 +13,7 @@ extension PostService {
                      success: @escaping (([LikeUser]) -> Void),
                      failure: @escaping ((Error?) -> Void)) {
 
-        guard let remote = PostServiceRemoteFactory().restRemoteFor(siteID: siteID, context: managedObjectContext) else {
+        guard let remote = postServiceRemoteFactory.restRemoteFor(siteID: siteID, context: managedObjectContext) else {
             DDLogError("Unable to create a REST remote for posts.")
             failure(nil)
             return
