@@ -3,7 +3,6 @@ import CocoaLumberjack
 import WordPressShared
 import WordPressFlux
 
-
 class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
     private struct Constant {
         struct Size {

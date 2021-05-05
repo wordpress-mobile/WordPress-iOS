@@ -2347,6 +2347,8 @@
 		F17A2A2023BFBD84001E96AC /* UIView+ExistingConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17A2A1F23BFBD84001E96AC /* UIView+ExistingConstraints.swift */; };
 		F1863716253E49B8003D4BEF /* AddSiteAlertFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1863715253E49B8003D4BEF /* AddSiteAlertFactory.swift */; };
 		F18B43781F849F580089B817 /* PostAttachmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B43771F849F580089B817 /* PostAttachmentTests.swift */; };
+		F18CB8962642E58700B90794 /* FixedSizeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18CB8952642E58700B90794 /* FixedSizeImageView.swift */; };
+		F18CB8972642E58700B90794 /* FixedSizeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18CB8952642E58700B90794 /* FixedSizeImageView.swift */; };
 		F19153BD2549ED0800629EC4 /* UITextField+WorkaroundContinueIssue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19153BC2549ED0800629EC4 /* UITextField+WorkaroundContinueIssue.swift */; };
 		F198FF3B256D47AB001266EB /* HomeWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6DA04025646F96002AB88F /* HomeWidgetData.swift */; };
 		F198FF4C256D483D001266EB /* TodayWidgetStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E58A2E2360D23400E5534B /* TodayWidgetStats.swift */; };
@@ -7040,6 +7042,7 @@
 		F17A2A1F23BFBD84001E96AC /* UIView+ExistingConstraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ExistingConstraints.swift"; sourceTree = "<group>"; };
 		F1863715253E49B8003D4BEF /* AddSiteAlertFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSiteAlertFactory.swift; sourceTree = "<group>"; };
 		F18B43771F849F580089B817 /* PostAttachmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostAttachmentTests.swift; path = Posts/PostAttachmentTests.swift; sourceTree = "<group>"; };
+		F18CB8952642E58700B90794 /* FixedSizeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedSizeImageView.swift; sourceTree = "<group>"; };
 		F19153BC2549ED0800629EC4 /* UITextField+WorkaroundContinueIssue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+WorkaroundContinueIssue.swift"; sourceTree = "<group>"; };
 		F198FF6E256D4914001266EB /* WordPressIntents.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WordPressIntents.entitlements; sourceTree = "<group>"; };
 		F198FF7F256D498A001266EB /* WordPressIntentsRelease-Internal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "WordPressIntentsRelease-Internal.entitlements"; sourceTree = "<group>"; };
@@ -7537,6 +7540,7 @@
 				177076201EA206C000705A4A /* PlayIconView.swift */,
 				2F161B0522CC2DC70066A5C5 /* LoadingStatusView.swift */,
 				32F2565F25012D3F006B8BC4 /* LinearGradientView.swift */,
+				F18CB8952642E58700B90794 /* FixedSizeImageView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -16814,6 +16818,7 @@
 				7E21C765202BBF4400837CF5 /* SearchAdsAttribution.swift in Sources */,
 				5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */,
 				1716AEFC25F2927600CF49EC /* MySiteViewController.swift in Sources */,
+				F18CB8962642E58700B90794 /* FixedSizeImageView.swift in Sources */,
 				7E3E7A6020E44E490075D159 /* FooterContentGroup.swift in Sources */,
 				46F584B82624E6380010A723 /* BlockEditorSettings+GutenbergEditorTheme.swift in Sources */,
 				59A3CADD1CD2FF0C009BFA1B /* BasePageListCell.m in Sources */,
@@ -18315,6 +18320,7 @@
 				175F99B62625FDE100F2687E /* FancyAlertViewController+AppIcons.swift in Sources */,
 				FABB21372602FC2C00C8785C /* LastPostStatsRecordValue+CoreDataProperties.swift in Sources */,
 				FABB21382602FC2C00C8785C /* NoticeAnimator.swift in Sources */,
+				F18CB8972642E58700B90794 /* FixedSizeImageView.swift in Sources */,
 				FABB21392602FC2C00C8785C /* ShareExtensionSessionManager.swift in Sources */,
 				FABB213A2602FC2C00C8785C /* ReaderWelcomeBanner.swift in Sources */,
 				FABB213B2602FC2C00C8785C /* Extensions.xcdatamodeld in Sources */,
