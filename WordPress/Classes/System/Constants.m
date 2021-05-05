@@ -15,25 +15,11 @@ NSString *const WPAutomatticTermsOfServiceURL                       = @"https://
 NSString *const WPAutomatticPrivacyURL                              = @"https://automattic.com/privacy/";
 NSString *const WPAutomatticCCPAPrivacyNoticeURL                    = @"https://automattic.com/privacy/#california-consumer-privacy-act-ccpa";
 NSString *const WPAutomatticCookiesURL                              = @"https://automattic.com/cookies/";
-NSString *const WPAutomatticAppsBlogURL                             = @"https://blog.wordpress.com";
 NSString *const WPGithubMainURL                                     = @"https://github.com/wordpress-mobile/WordPress-iOS/";
-NSString *const WPTwitterWordPressHandle                            = @"@WordPressiOS";
-NSString *const WPTwitterWordPressMobileURL                         = @"https://twitter.com/WordPressiOS";
 NSString *const WPComReferrerURL                                    = @"https://wordpress.com";
 NSString *const AutomatticDomain                                    = @"automattic.com";
 NSString *const WPComDomain                                         = @"wordpress.com";
 
-/// Notifications Constants
-///
-#ifdef DEBUG
-NSString *const  WPPushNotificationAppId                            = @"org.wordpress.appstore.dev";
-#else
-#ifdef INTERNAL_BUILD
-NSString *const   WPPushNotificationAppId                           = @"org.wordpress.internal";
-#else
-NSString *const WPPushNotificationAppId                             = @"org.wordpress.appstore";
-#endif
-#endif
 /// Keychain Constants
 ///
 #ifdef INTERNAL_BUILD

@@ -1,9 +1,3 @@
-Bu sürümdeki yenilikler neler?
+Bu sürümde yeni bir blok sunuyoruz - Jetpack iletişim bilgisi. Sitenizde güzel biçimlendirilmiş bir adres görüntülemek için mükemmeldir. Ayrıca uygulamanın ana ekranınızda görünümünü özelleştirmek için kullanabileceğiniz bazı şık yeni uygulama simgeleri de ekledik.
 
-Yeni bir görsel görünüm! Giriş deneyimini, uygulamanın özelliklerini ve avantajlarını tanıtan yeni içerik ve grafiklerden oluşan hoş bir dönen menü ile yeniden tasarladık. Ayrıca, uygun şekilde güncellenmiş bir uygulama simgesiyle yeni bir renk paleti de göreceksiniz.
-
-VoiceOver ekran okuyucu kullanan kişiler için blok düzenleyicide erişilebilirlikle ilgili iyileştirmeler yaptık. Bu güncellemeler, Sütunlar bloku ile deneyiminizi daha ileri seviyeye çıkarıyor.
-
-Sitenizdeki yorum etkinliğini yönetmenize yardımcı olmak için artık bir "Yanıtlanmamış" filtresi var. Böylece yanıtlanmamış tüm yorumlarınızı tek bir sekme altında görüntüleyebilirsiniz.
-
-Ayrıca, sayfa düzeni seçici deneyimi ile ilgili güncellemeler de dahil olmak üzere başka geliştirmeler de yaptık.
+Size söylememiz gereken bazı şık ince ayarlarımız var. Gönderimi kolaylaştırmak için site değiştiriciyi düzenleyiciden kaldırdık, yazar adlarının görünmesini engelleyen bir hatayı düzelttik, sütun bloku için VoiceOver desteğini iyileştirdik ve bir resim blokuna alternatif metin eklemeyi kolaylaştırdık.

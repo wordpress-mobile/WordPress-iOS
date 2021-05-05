@@ -103,7 +103,7 @@ private extension EpilogueUserInfoCell {
         gravatarAddIcon.backgroundColor = .basicBackground
 
         fullNameLabel.textColor = .text
-        fullNameLabel.font = WPStyleGuide.serifFontForTextStyle(.largeTitle, fontWeight: .semibold)
+        fullNameLabel.font = AppStyleGuide.epilogueTitleFont
 
         usernameLabel.textColor = .textSubtle
         usernameLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .headline).pointSize, weight: .regular)

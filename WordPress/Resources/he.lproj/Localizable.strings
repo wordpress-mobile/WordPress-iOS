@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-04-01 13:54:08+0000 */
+/* Translation-Revision-Date: 2021-04-30 16:13:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -36,11 +36,11 @@
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "⁦%1$d⁩ פוסטים מוסתרים";
 
-/* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: Current value. */
-"%1$s. Current value is %2$s" = "%1$s. הערך הנוכחי הוא %2$s";
+/* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
+"%1$s transformed to %2$s" = "⁦%1$s⁩ שונה אל ⁦%2$s⁩";
 
-/* \"Uploading\" Status text */
-"%@" = "‎%@";
+/* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
+"%1$s. %2$s is %3$s %4$s." = "%1$s. ⁦%2$s⁩ הוא ⁦%3$s⁩ %4$s.";
 
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
 "%@ - %@, %@" = "%1$@ - %2$@, %3$@";
@@ -216,6 +216,12 @@
    the post has no title. */
 "(no title)" = "(חסרה כותרת)";
 
+/* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
+"*Johann Brandt* responded to your post" = "*ישראל ישראלי* הגיב לפוסט שלך";
+
+/* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
+"*Madison Ruiz* liked your post" = "*ישראלה ישראלה* סימנה לייק בפוסט שלך";
+
 /* Menus button text for adding a new menu to a site. */
 "+ Add new menu" = "+ הוספת תפריט חדש";
 
@@ -258,6 +264,9 @@
 /* Age between dates less than one hour. */
 "< 1 hour" = "< שעה אחת";
 
+/* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
+"@%1$@" = "@%1$@";
+
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "הכפתור 'עוד' כולל תפריט נפתח שמציג כפתורי שיתוף";
 
@@ -266,21 +275,6 @@
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "קובץ שמכיל תבנית של קוד זדוני";
-
-/* No comment provided by engineer. */
-"A link to a URL." = "קישור לכתובת URL.";
-
-/* No comment provided by engineer. */
-"A link to a category." = "קישור לקטגוריה מסוימת.";
-
-/* No comment provided by engineer. */
-"A link to a page." = "קישור לעמוד מסוים.";
-
-/* No comment provided by engineer. */
-"A link to a post." = "קישור לפוסט מסוים.";
-
-/* No comment provided by engineer. */
-"A link to a tag." = "קישור לתגית מסוימת.";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "רשימה של אתרים בחשבון זה.";
@@ -329,6 +323,9 @@
 
 /* About this app (information page title) */
 "About" = "אודות";
+
+/* Link to About screen for Jetpack for iOS */
+"About Jetpack for iOS" = "מידע לגבי Jetpack עבור iOS";
 
 /* My Profile 'About me' label */
 "About Me" = "אודותיי";
@@ -449,11 +446,11 @@
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "להוסיף תמונת חשבון.";
 
+/* No comment provided by engineer. */
+"Add alt text" = "הוספת טקסט חלופי";
+
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "להוסיף נושא כלשהו";
-
-/* No comment provided by engineer. */
-"Add button text" = "להוסיף טקסט לכפתור";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "להוסיף תמונה או תמונת פרופיל שתייצג את החשבון חדש.";
@@ -740,9 +737,6 @@
 /* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "האם ברצונך לשחזר את האתר חזרה לגרסה מתאריך %1$@? פעולה זו תסיר את התוכן והאפשרויות שנוצרו או ששונו מאז.";
 
-/* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
-"Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost." = "האם ברצונך לשחזר את האתר חזרה לגרסה מתאריך %@?\nכל השינויים שבוצעו לאחר מועד זה יאבדו.";
-
 /* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
 "Are you sure you want to save as draft?" = "האם ברצונך לשמור כטיוטה?";
 
@@ -763,6 +757,9 @@
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "האם ברצונך לעדכן?";
+
+/* An example tag used in the login prologue screens. */
+"Art" = "אומנות";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "החל מ-1 באוגוסט 2018, פלטפורמת פייסבוק לא תאפשר עוד שיתוף ישיר של פוסטים לפרופילים בפייסבוק. החשבונות המקושרים לדפים בפייסבוק לא ישתנו.";
@@ -1090,6 +1087,9 @@
 /* Dialog box title for when the user is canceling an upload. */
 "Cancel media uploads" = "ביטול טעינת מדיה";
 
+/* No comment provided by engineer. */
+"Cancel search" = "לבטל חיפוש";
+
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "ביטול השיתוף";
 
@@ -1117,9 +1117,6 @@
 /* Category menu item in share extension.
    Menu item label for linking a specific category. */
 "Category" = "קטגוריה";
-
-/* No comment provided by engineer. */
-"Category Link" = "קישור לקטגוריה";
 
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "חסרה כותרת לקטגוריה";
@@ -1232,6 +1229,9 @@
 /* Select domain name. Title */
 "Choose a domain" = "לבחור דומיין";
 
+/* OK Button title shown in alert informing users about the Reader Save for Later feature. */
+"Choose a new app icon" = "לבחור סמל חדש לאפליקציה";
+
 /* Title of a Quick Start Tour */
 "Choose a theme" = "בחירת ערכת עיצוב";
 
@@ -1307,6 +1307,9 @@
 /* Message of the trash confirmation alert. */
 "Clear all old activity logs?" = "האם למחוק את כל יומני הפעילות הישנים?";
 
+/* No comment provided by engineer. */
+"Clear search" = "לנקות את החיפוש";
+
 /* Title of a button. */
 "Clear search history" = "ניקוי היסטוריית חיפוש";
 
@@ -1354,6 +1357,9 @@
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "איסוף מידע";
+
+/* Title displayed for selection of custom app icons that have colorful backgrounds. */
+"Colorful backgrounds" = "רקעים צבעוניים";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "אפשר לשלב תמונות, סרטוני וידאו וטקסטים כדי ליצור פוסטים מעניינים של סטורי שיוצגו בהקשה ולהרשים את הקוראים שלך.";
@@ -1455,7 +1461,6 @@
 "Configure" = "הגדר";
 
 /* Confirm
-   Confirm Rewind button title
    Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "אשר";
 
@@ -1580,6 +1585,9 @@
 
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "להמשיך עם Apple";
+
+/* An example tag used in the login prologue screens. */
+"Cooking" = "בישול";
 
 /* No comment provided by engineer. */
 "Copied block" = "הבלוק הועתק";
@@ -1708,7 +1716,8 @@
 /* Title for the site creation flow. */
 "Create New Site" = "יצירת אתר חדש";
 
-/* Button title, encourages users to create their first page on their blog.
+/* Button for selecting the current page template.
+   Button title, encourages users to create their first page on their blog.
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "ליצור עמוד";
 
@@ -1940,6 +1949,9 @@
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "דחייה";
 
+/* No comment provided by engineer. */
+"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "לתאר את מטרת התמונה. יש להשאיר את השדה ריק אם התמונה נוספה לצורך דקורטיבי בלבד. ";
+
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
@@ -2093,9 +2105,6 @@
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "יש להקיש פעמיים כדי להוסיף בלוק";
-
-/* translators: accessibility text (hint for focusing a slider) */
-"Double tap to change the value using slider" = "יש להקיש פעמיים כדי לשנות את הערך באמצעות הסליידר";
 
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "יש להקיש פעמיים כדי להתעלם";
@@ -2544,7 +2553,13 @@
 "Failed Media Export" = "ייצוא המדיה נכשל";
 
 /* No comment provided by engineer. */
+"Failed to insert audio file." = "ההוספה של קובץ האודיו נכשלה.";
+
+/* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "נכשלה ההוספה של קובץ האודיו. יש להקיש לאפשרויות.";
+
+/* No comment provided by engineer. */
+"Failed to insert media." = "ההוספה של המדיה נכשלה.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "שילוב פירטי המדיה נכשל.\n יש להקיש לאפשרויות.";
@@ -2681,11 +2696,9 @@
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "לעקוב אחר נושאים";
 
-/* Caption displayed in promotional screens shown during the login flow. */
+/* Caption displayed in promotional screens shown during the login flow.
+   Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new blogs." = "כדאי לעקוב אחר האתרים המועדפים שלך ולגלות בלוגים חדשים לקריאה.";
-
-/* Shown in the prologue carousel (promotional screens) during first launch. */
-"Follow your favorite sites and discover new reads." = "כדאי לעקוב אחר האתרים המועדפים שלך ולגלות חומרי קריאה חדשים.";
 
 /* Displayed in the Notification Settings View
    Followed Sites Title
@@ -2740,6 +2753,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "עוקב אחר התגית.";
 
+/* An example tag used in the login prologue screens. */
+"Football" = "פוטבול";
+
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "לנוחותך, מילאנו מראש את הפרטים ליצירת קשר עמך ב-WordPress.com. יש לבדוק את הפרטים ולוודא שהמידע נכון לדומיין שבו ברצונך להשתמש.";
 
@@ -2775,6 +2791,9 @@
 
 /* translators: accessibility text. %s: gallery caption. */
 "Gallery caption. %s" = "כיתוב לגלריה. %s";
+
+/* An example tag used in the login prologue screens. */
+"Gardening" = "גינון";
 
 /* Add New Stats Card category title
    Title for the general section in site settings screen */
@@ -3340,6 +3359,9 @@
 /* Left alignment for an image. Should be the same as in core WP. */
 "Left" = "שמאל";
 
+/* Title displayed for selection of custom app icons that may be removed in a future release of the app. */
+"Legacy Icons" = "סמלים ישנים";
+
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "תנו לנו לעזור";
 
@@ -3348,6 +3370,9 @@
 
 /* Title for the app appearance setting for light mode */
 "Light" = "צבעים בהירים";
+
+/* Title displayed for selection of custom app icons that have white backgrounds. */
+"Light backgrounds" = "צבעים בהירים לרקע";
 
 /* Like (verb)
    Like a post.
@@ -3810,6 +3835,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "העברת התגובות לפח.";
 
+/* An example tag used in the login prologue screens. */
+"Music" = "מוזיקה";
+
 /* Link to My Profile section
    My Profile view title */
 "My Profile" = "הפרופיל שלי";
@@ -3867,6 +3895,9 @@
 
 /* Blocklist Keyword Insertion Title */
 "New Blocklist Word" = "מילה חדשה לרשימת החסימות";
+
+/* Title of alert informing users about the Reader Save for Later feature. */
+"New Custom App Icons" = "סמלים מותאמים חדשים באפליקציה";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "כתובת IP או טווח IP חדשים";
@@ -4371,9 +4402,6 @@
    Noun. Type of content being selected is a blog page */
 "Page" = "עמוד";
 
-/* No comment provided by engineer. */
-"Page Link" = "קישור לעמוד";
-
 /* Prompts the user that a restored page was moved to the drafts list. */
 "Page Restored to Drafts" = "עמוד שוחזר למצב 'טיוטה'";
 
@@ -4649,6 +4677,9 @@
    Title for the plugin directory */
 "Plugins" = "תוספים";
 
+/* An example tag used in the login prologue screens. */
+"Politics" = "פוליטיקה";
+
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
 "Popular" = "פופולארי";
@@ -4666,9 +4697,6 @@
 /* For setting the format of a post.
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "פורמט";
-
-/* No comment provided by engineer. */
-"Post Link" = "קישור לפוסט";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "פוסט שוחזר למצב \"טיוטה\"";
@@ -4845,11 +4873,11 @@
 /* No comment provided by engineer. */
 "Problem displaying block" = "בעיה בהצגת הבלוק";
 
+/* Error message title informing the user that reader content could not be loaded. */
+"Problem loading content" = "בעיה בטעינת התוכן";
+
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "Problem loading sites" = "בעיה בטעינת האתר";
-
-/* Error message title informing the user that a stream could not be loaded. */
-"Problem loading stream" = "בעיה בטעינת זרם";
 
 /* No comment provided by engineer. */
 "Problem opening the audio" = "בעיה בפתיחת האודיו";
@@ -5285,21 +5313,14 @@
 /* Title of the screen that shows the revisions. */
 "Revision" = "גרסה";
 
-/* Title for button allowing user to rewind their Jetpack site
-   Title of section showing rewind status */
-"Rewind" = "שחזור לגרסה קודמת";
-
-/* Title displayed in the Restore Site alert, should match Calypso */
-"Rewind Site" = "שחזר גרסה קודמת של האתר";
-
-/* Text showing the point in time the site is being currently rewinded to. %@' is a placeholder that will expand to a date. */
-"Rewinding to %@" = "משחזר לתאריך %@";
-
 /* Post Rich content */
 "Rich Content" = "תוכן עשיר";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "ימין";
+
+/* Example Reader feed title */
+"Rock 'n Roll Weekly" = "חדשות הרוקנרול";
 
 /* Title. Indicates the user role an invite link is for.
    User Roles Title
@@ -5359,9 +5380,6 @@
 
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "שומר את הפוסט הנוכחי למועד מאוחר יותר.";
-
-/* Message to indicate progress of saving draft */
-"Saving Draft" = "שומר טיוטה";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "שומר פוסט...";
@@ -5424,9 +5442,6 @@
 /* Prompt in the location search bar. */
 "Search Locations" = "חיפוש מיקומים";
 
-/* No comment provided by engineer. */
-"Search Settings" = "הגדרות חיפוש";
-
 /* Label for list of search term */
 "Search Term" = "מונח חיפוש";
 
@@ -5438,6 +5453,12 @@
 
 /* A short message that is a call to action for the Reader's Search feature. */
 "Search WordPress\nfor a site or post" = "לחפש ב-WordPress \nאתר או פוסט";
+
+/* No comment provided by engineer. */
+"Search block" = "בלוק החיפוש";
+
+/* No comment provided by engineer. */
+"Search blocks" = "בלוקים של חיפוש";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "לחפש או להקליד כתובת URL";
@@ -5803,6 +5824,9 @@
 /* Label for button that clears user activities donated to Siri. */
 "Siri Reset Prompt" = "ניקוי של ההצעות לקיצורי הדרך של Siri";
 
+/* Header for a single site, shown in Notification user profile. */
+"Site" = "אתר";
+
 /* Accessibility label for site icon button */
 "Site Icon" = "סמל אתר";
 
@@ -5968,11 +5992,11 @@
 /* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "לא ניתן להשתמש בכתובת את זו.";
 
+/* A short error message letting the user know the requested reader content could not be loaded. */
+"Sorry. The content could not be loaded." = "מצטערים. לא ניתן היה לטעון את התוכן הזה.";
+
 /* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
 "Sorry. The social service did not tell us which account could be used for sharing." = "מצטערים. הרשת החברתית לא ציינה באיזה חשבון עלינו להשתמש לשיתוף.";
-
-/* A short error message letting the user know the requested stream could not be loaded. */
-"Sorry. The stream could not be loaded." = "מצטערים. לא ניתן היה לטעון את הזרם.";
 
 /* A short error message leting the user know the requested search could not be performed. */
 "Sorry. Your search results could not be loaded." = "מצטערים. לא ניתן לטעון את תוצאות החיפוש שלך.";
@@ -6109,9 +6133,6 @@
    View title for Support page. */
 "Support" = "תמיכה";
 
-/* Action button to switch the blog to which you'll be posting */
-"Switch Blog" = "להחליף בלוג";
-
 /* Button used to switch site */
 "Switch Site" = "החלפת אתר";
 
@@ -6129,9 +6150,6 @@
 
 /* Switches from the classic editor to block editor. */
 "Switch to block editor" = "להחליף לעורך הבלוקים";
-
-/* Switches from Gutenberg mobile to the classic editor */
-"Switch to classic editor" = "להחליף לעורך הקלאסי";
 
 /* Accessibility Identifier for the H1 Aztec Style */
 "Switches to the Heading 1 font size" = "מבצע החלפה לגודל גופן 1 בכותרת";
@@ -6172,9 +6190,6 @@
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
 "Tag" = "תגית";
-
-/* No comment provided by engineer. */
-"Tag Link" = "קישור לתגית";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "התגית כבר קיימת";
@@ -6770,6 +6785,12 @@
 /* Title for the traffic section in site settings screen */
 "Traffic" = "תעבורה";
 
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Transform %s to" = "לשנות את %s אל";
+
+/* No comment provided by engineer. */
+"Transform block…" = "לשנות בלוק...";
+
 /* No comment provided by engineer. */
 "Translate" = "לתרגם";
 
@@ -6916,6 +6937,7 @@
 "Unable to load the image. Please choose a different one or try again later." = "לא ניתן לטעון את התמונה. יש לספק תמונה אחרת או לנסות שוב מאוחר יותר.";
 
 /* Default title shown for no-results when the device is offline.
+   Informing the user that a network request failed because the device wasn't able to establish a network connection.
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "אין אפשרות לטעון את התוכן כרגע.";
 
@@ -7628,6 +7650,9 @@
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
 "Web Display Settings" = "הגדרות תצוגת אינטרנט";
 
+/* Example Reader feed title */
+"Web News" = "חדשות באינטרנט";
+
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "היום הראשון בשבוע";
 
@@ -7677,11 +7702,17 @@
 /* Title of alert letting users know we've upgraded the quick start checklist. */
 "We’ve made some changes to your checklist" = "ביצענו מספר שינויים לרשימת המשימות שלך";
 
+/* Body text of alert informing users about the Reader Save for Later feature. */
+"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "עדכנו את הסמלים המותאמים באפליקציה עם סגנון חדש ומרענן. יש עשרה סגנונות חדשים שמהם ניתן לבחור ואפשר גם להשאיר את הסמלים שקיימים אצלך, לבחירתך.";
+
 /* This is the string we display when prompting the user to review the app */
 "What do you think about WordPress?" = "מה דעתך על וורדפרס?";
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "מה ברצונך לעשות עם הקובץ: האם להעלות אותו ולהוסיף קישור לקובץ בפוסט שלך או להוסיף את התוכן של הקובץ ישירות לפוסט?";
+
+/* No comment provided by engineer. */
+"What is alt text?" = "מה זה טקסט חלופי?";
 
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "מתי הבעיה התרחשה?";
@@ -7964,6 +7995,9 @@
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "עליך לאמת את החשבון שלך לפני שיהיה באפשרותך לפרסם פוסט.\nאל דאגה, הפוסט שלך בטוח ויישמר כטיוטה.";
 
+/* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
+"You received *50 likes* on your site today" = "קיבלת ⁦*50 likes* on your site today⁩";
+
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "לאחרונה ביצעת שינויים בפוסט וטרם שמרת אותם. יש לבחור את הגרסה שברצונך לטעון: \n\nמהמכשיר הנייד הזה\nנשמר בתאריך %1$@\n\nממכשיר אחר\nנשמר בתאריך %2$@\n";
@@ -8114,6 +8148,9 @@
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "שמחים שהשלמת את המטרה שהצבת לעצמך!";
+
+/* No comment provided by engineer. */
+"double-tap to change unit" = "יש להקיש פעמיים כדי לשנות את היחידה";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "לדוגמה 1122334455";

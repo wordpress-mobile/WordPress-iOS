@@ -3,7 +3,7 @@ import CoreData
 
 
 extension Blog {
-    @NSManaged public var authors: NSSet?
+    @NSManaged public var authors: Set<BlogAuthor>?
 
 
     @objc(addAuthorsObject:)
@@ -17,4 +17,9 @@ extension Blog {
 
     @objc(removeAuthors:)
     @NSManaged public func removeFromAuthors(_ values: NSSet)
+
+    @objc
+    func getAuthorWith(id: NSNumber) -> BlogAuthor? {
+        return authors?.first(where: { $0.userID == id })
+    }
 }

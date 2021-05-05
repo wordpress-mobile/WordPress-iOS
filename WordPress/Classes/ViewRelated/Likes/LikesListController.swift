@@ -163,7 +163,7 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return Constants.estimatedRowHeight
+        return LikeUserTableViewCell.estimatedRowHeight
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -178,11 +178,12 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
             return
         }
 
-        guard !isLoadingContent, indexPath.row < likingUsers.count else {
+        guard !isLoadingContent,
+              let user = likingUsers[safe: indexPath.row] else {
             return
         }
 
-        delegate?.didSelectUser(likingUsers[indexPath.row])
+        delegate?.didSelectUser(user, at: indexPath)
     }
 
 }
@@ -219,30 +220,14 @@ private extension LikesListController {
         cell.downloadAuthorAvatar(with: mediaURL)
     }
 
-    func userCell(for indexPath: IndexPath) -> NoteBlockUserTableViewCell {
-        guard indexPath.row < likingUsers.count,
-              let cell = tableView.dequeueReusableCell(withIdentifier: NoteBlockUserTableViewCell.reuseIdentifier()) as? NoteBlockUserTableViewCell else {
-            DDLogError("Error: couldn't get a user cell or requested row is out of boundary")
-            return NoteBlockUserTableViewCell()
+    func userCell(for indexPath: IndexPath) -> UITableViewCell {
+        guard let user = likingUsers[safe: indexPath.row],
+              let cell = tableView.dequeueReusableCell(withIdentifier: LikeUserTableViewCell.defaultReuseID) as? LikeUserTableViewCell else {
+            DDLogError("Failed dequeueing LikeUserTableViewCell")
+            return UITableViewCell()
         }
 
-        let user = likingUsers[indexPath.row]
-        cell.accessoryType = .none
-        cell.name = user.displayName
-
-        cell.isFollowEnabled = false
-        cell.isFollowOn = false
-
-        // TODO: Configure blog title once the information is available.
-        cell.blogTitle = ""
-
-        if let mediaURL = URL(string: user.avatarURL) {
-            cell.downloadGravatarWithURL(mediaURL)
-        }
-
-        // configure the ending separator line
-        cell.isLastRow = (indexPath.row == likingUsers.count - 1)
-
+        cell.configure(withUser: user, isLastRow: (indexPath.row == likingUsers.endIndex - 1))
         return cell
     }
 
@@ -256,7 +241,7 @@ protocol LikesListControllerDelegate: class {
 
     /// Reports to the delegate that the user cell has been tapped.
     /// - Parameter user: A RemoteUser instance representing the user at the selected row.
-    func didSelectUser(_ user: RemoteUser)
+    func didSelectUser(_ user: RemoteUser, at indexPath: IndexPath)
 }
 
 // MARK: - Private Definitions
@@ -269,9 +254,8 @@ private extension LikesListController {
         case comment(id: NSNumber)
     }
 
-    enum Constants {
+    struct Constants {
         static let numberOfSections = 2
-        static let estimatedRowHeight: CGFloat = 44
         static let headerSectionIndex = 0
         static let headerRowIndex = 0
         static let numberOfHeaderRows = 1

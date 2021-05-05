@@ -1,9 +1,3 @@
-Quelles sont les nouveautés de cette version ?
+Un nouveau bloc est disponible avec cette version : les coordonnées Jetpack. It's perfect for displaying a nicely formatted address on your site. We've also introduced some spiffy new app icons you can use to customize how the app looks on your home screen.
 
-Un nouveau look visuel ! Nous avons repensé l’expérience de connexion, avec un carrousel de bienvenue de nouveaux contenus et graphiques qui promeuvent les fonctionnalités et les avantages de l’application. Vous remarquerez également une nouvelle palette de couleurs, avec une icône d’application mise à jour en conséquence.
-
-Nous avons apporté des améliorations à l’accessibilité dans l’éditeur de blocs pour les personnes qui utilisent un lecteur d’écran VoiceOver. Ces mises à jour améliorent votre expérience avec le bloc de colonnes.
-
-Pour vous aider à gérer l’activité des commentaires sur votre site, il existe désormais un filtre « Sans réponse » qui vous permet d’afficher tous vos commentaires sans réponse sous un seul onglet.
-
-Nous avons également apporté d’autres améliorations, notamment des mises à jour de l’expérience du sélecteur de mise en page.
+We've got some nifty tweaks to tell you about ! We've removed the site switcher from the editor to simplify posting, fixed a bug where author names weren't visible, improved VoiceOver support for the columns block, and made it easier to add alt text to an image block.

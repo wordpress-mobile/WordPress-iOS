@@ -13,12 +13,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case stories
     case contactInfo
     case siteCreationHomePagePicker
-    case jetpackScan
-    case activityLogFilters
-    case jetpackBackupAndRestore
     case todayWidget
     case milestoneNotifications
-    case commentFilters
     case newLikeNotifications
 
     /// Returns a boolean indicating if the feature is enabled
@@ -47,20 +43,12 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .stories:
             return true
         case .contactInfo:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .siteCreationHomePagePicker:
-            return true
-        case .jetpackScan:
-            return true
-        case .activityLogFilters:
-            return true
-        case .jetpackBackupAndRestore:
             return true
         case .todayWidget:
             return true
         case .milestoneNotifications:
-            return true
-        case .commentFilters:
             return true
         case .newLikeNotifications:
             return false
@@ -112,18 +100,10 @@ extension FeatureFlag {
             return "Contact Info"
         case .siteCreationHomePagePicker:
             return "Site Creation: Home Page Picker"
-        case .jetpackScan:
-            return "Jetpack Scan"
-        case .activityLogFilters:
-            return "Jetpack's Activity Log Filters"
-        case .jetpackBackupAndRestore:
-            return "Jetpack Backup and Restore"
         case .todayWidget:
             return "iOS 14 Today Widget"
         case .milestoneNotifications:
             return "Milestone notifications"
-        case .commentFilters:
-            return "Comment filters"
         case .newLikeNotifications:
             return "New Like Notifications"
         }

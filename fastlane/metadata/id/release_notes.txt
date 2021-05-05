@@ -1,9 +1,3 @@
-Apa yang baru dalam rilis ini?
+Versi ini memperkenalkan blok baru – info kontak Jetpack. Ini sangat sempurna untuk menampilkan alamat terformat rapi di situs Anda. Kami juga memperkenalkan beberapa ikon aplikasi baru yang menarik yang dapat Anda gunakan untuk menyesuaikan tampilan aplikasi pada layar beranda Anda.
 
-Tampilan baru! Kami menghadirkan pengalaman baru untuk login, dengan carousel sambutan berisi konten dan ilustrasi baru yang menonjolkan fitur dan manfaat aplikasi. Anda juga akan melihat palet warna baru, dengan penyesuaian pada ikon aplikasi yang diperbarui.
-
-Kami melakukan peningkatan aksesibilitas pada editor blok bagi orang-orang yang menggunakan pembaca layar VoiceOver. Dengan pembaruan ini, pengalaman Anda menggunakan blok Kolom jadi lebih sempurna.
-
-Untuk membantu mengelola aktivitas komentar di situs Anda, sekarang ada penyaring "Belum dibalas" sehingga Anda dapat melihat semua komentar yang belum dibalas dalam satu tab.
-
-Kami juga telah melakukan sejumlah peningkatan lain, termasuk pembaruan pada pengalaman pemilih tata letak halaman.
+Kami ingin menginformasikan sejumlah perubahan yang bagus! Kami menghapus pengalih situs dari editor untuk menyederhanakan penerbitan pos, memperbaiki bug yang membuat nama penulis tidak terlihat, meningkatkan dukungan VoiceOver untuk blok kolom, dan mempermudah penambahan teks alt ke blok gambar.

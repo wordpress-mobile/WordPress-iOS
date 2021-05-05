@@ -1,6 +1,16 @@
+17.3
+-----
+
+
 17.2
 -----
 
+* [*] Fixed an issue where some author display names weren't visible for self-hosted sites. [#16297]
+* [***] Updated custom app icons. [#16261]
+* [**] Removed Site Switcher in the Editor
+* [*] a11y: Bug fix: Allow stepper cell to be selected by screenreader [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3362]
+* [*] Image block: Improve text entry for long alt text. [https://github.com/WordPress/gutenberg/pull/29670]
+* [***] New Block: Jetpack contact info. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3340]
 
 17.1
 -----

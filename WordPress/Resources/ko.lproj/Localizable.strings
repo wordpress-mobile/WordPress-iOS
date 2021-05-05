@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-31 11:54:07+0000 */
+/* Translation-Revision-Date: 2021-04-30 16:14:00+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -36,11 +36,11 @@
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d개의 보지 않은 글";
 
-/* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: Current value. */
-"%1$s. Current value is %2$s" = "%1$s 현재 값은 %2$s입니다.";
+/* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
+"%1$s transformed to %2$s" = "%2$s(으)로 변형된 %1$s";
 
-/* \"Uploading\" Status text */
-"%@" = "%@";
+/* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
+"%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s은(는) %3$s %4$s입니다.";
 
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
 "%@ - %@, %@" = "%1$@ - %2$@, %3$@";
@@ -216,6 +216,12 @@
    the post has no title. */
 "(no title)" = "(제목 없음)";
 
+/* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
+"*Johann Brandt* responded to your post" = "*요한 브란트*가 글에 답했습니다";
+
+/* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
+"*Madison Ruiz* liked your post" = "*메디슨 루이즈*가 글을 좋아합니다";
+
 /* Menus button text for adding a new menu to a site. */
 "+ Add new menu" = "+ 새 메뉴 추가";
 
@@ -258,6 +264,9 @@
 /* Age between dates less than one hour. */
 "< 1 hour" = "< 1시간";
 
+/* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
+"@%1$@" = "@%1$@";
+
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "\"더 보기\" 버튼에는 공유 버튼을 표시하는 드롭다운이 있습니다.";
 
@@ -266,21 +275,6 @@
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "파일에 악성 코드 패턴이 있음";
-
-/* No comment provided by engineer. */
-"A link to a URL." = "URL 링크입니다.";
-
-/* No comment provided by engineer. */
-"A link to a category." = "카테고리 링크입니다.";
-
-/* No comment provided by engineer. */
-"A link to a page." = "페이지 링크입니다.";
-
-/* No comment provided by engineer. */
-"A link to a post." = "글 링크입니다.";
-
-/* No comment provided by engineer. */
-"A link to a tag." = "태그 링크입니다.";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "이 계정의 사이트 목록";
@@ -329,6 +323,9 @@
 
 /* About this app (information page title) */
 "About" = "이 앱은";
+
+/* Link to About screen for Jetpack for iOS */
+"About Jetpack for iOS" = "iOS용 젯팩 정보";
 
 /* My Profile 'About me' label */
 "About Me" = "내 소개";
@@ -449,11 +446,11 @@
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "계정 이미지 추가";
 
+/* No comment provided by engineer. */
+"Add alt text" = "대체 텍스트 추가하기";
+
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "모든 토픽 추가하기";
-
-/* No comment provided by engineer. */
-"Add button text" = "추가 버튼 텍스트";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "새 계정을 나타내는 이미지 또는 아바타를 추가합니다.";
@@ -740,9 +737,6 @@
 /* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "사이트를 %1$@(으)로 다시 복원하시겠어요? 이렇게 하면 이 날짜 이후로 만들거나 변경한 콘텐츠와 옵션이 제거됩니다.";
 
-/* Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso. */
-"Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost." = "사이트를 %@(으)로 다시 복원하시겠어요?\n해당 시점 이후에 변경한 모든 내용이 손실됩니다.";
-
 /* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
 "Are you sure you want to save as draft?" = "임시글로 저장하시겠습니까?";
 
@@ -763,6 +757,9 @@
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "업데이트하시겠습니까?";
+
+/* An example tag used in the login prologue screens. */
+"Art" = "예술";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "2018년 8월 1일 현재, 페이스북은 더 이상 페이스북 프로필에 직접 글 공유를 허용하지 않습니다. 페이스북 페이지에 대한 연결은 그대로 유지됩니다.";
@@ -1090,6 +1087,9 @@
 /* Dialog box title for when the user is canceling an upload. */
 "Cancel media uploads" = "미디어 업로드 취소";
 
+/* No comment provided by engineer. */
+"Cancel search" = "검색 취소";
+
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "공유 취소";
 
@@ -1117,9 +1117,6 @@
 /* Category menu item in share extension.
    Menu item label for linking a specific category. */
 "Category" = "카테고리";
-
-/* No comment provided by engineer. */
-"Category Link" = "카테고리 링크";
 
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "카테고리 제목 없음.";
@@ -1232,6 +1229,9 @@
 /* Select domain name. Title */
 "Choose a domain" = "도메인 선택하기";
 
+/* OK Button title shown in alert informing users about the Reader Save for Later feature. */
+"Choose a new app icon" = "새 앱 아이콘 선택";
+
 /* Title of a Quick Start Tour */
 "Choose a theme" = "테마 선택";
 
@@ -1307,6 +1307,9 @@
 /* Message of the trash confirmation alert. */
 "Clear all old activity logs?" = "이전 활동 기록 지우기";
 
+/* No comment provided by engineer. */
+"Clear search" = "검색 지우기";
+
 /* Title of a button. */
 "Clear search history" = "검색 내역 삭제";
 
@@ -1354,6 +1357,9 @@
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "정보 수집";
+
+/* Title displayed for selection of custom app icons that have colorful backgrounds. */
+"Colorful backgrounds" = "화려한 배경";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "사진, 비디오, 그리고 문자를 조합하여 방문자에게 매력적이고 좋아할 수 있는 탭할 수 있는 이야기 글을 만드세요.";
@@ -1455,7 +1461,6 @@
 "Configure" = "환경설정";
 
 /* Confirm
-   Confirm Rewind button title
    Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "확인";
 
@@ -1580,6 +1585,9 @@
 
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Apple 로 계속하기";
+
+/* An example tag used in the login prologue screens. */
+"Cooking" = "요리";
 
 /* No comment provided by engineer. */
 "Copied block" = "복사된 블록";
@@ -1708,7 +1716,8 @@
 /* Title for the site creation flow. */
 "Create New Site" = "새 사이트 생성";
 
-/* Button title, encourages users to create their first page on their blog.
+/* Button for selecting the current page template.
+   Button title, encourages users to create their first page on their blog.
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "페이지 만들기";
 
@@ -1940,6 +1949,9 @@
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "거부하기";
 
+/* No comment provided by engineer. */
+"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "이미지의 용도를 설명합니다. 이미지가 장식용이면 비워 둡니다. ";
+
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
@@ -2093,9 +2105,6 @@
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "블록을 추가하려면 두 번 탭하세요.";
-
-/* translators: accessibility text (hint for focusing a slider) */
-"Double tap to change the value using slider" = "슬라이더를 사용하여 값을 변경하려면 두 번 탭하세요.";
 
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "두 번 눌러 무시하기";
@@ -2544,7 +2553,13 @@
 "Failed Media Export" = "미디어 내보내기 실패";
 
 /* No comment provided by engineer. */
+"Failed to insert audio file." = "오디오 파일 삽입에 실패했습니다.";
+
+/* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "오디오 파일 삽입에 실패했습니다. 옵션을 보려면 누르세요.";
+
+/* No comment provided by engineer. */
+"Failed to insert media." = "미디어를 삽입하는 데 실패했습니다.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "미디어 삽입에 실패했습니다.\n 옵션을 보려면 탭하세요.";
@@ -2681,11 +2696,9 @@
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "토픽 따르기";
 
-/* Caption displayed in promotional screens shown during the login flow. */
+/* Caption displayed in promotional screens shown during the login flow.
+   Shown in the prologue carousel (promotional screens) during first launch. */
 "Follow your favorite sites and discover new blogs." = "좋아하는 사이트를 팔로우하고 새 블로그를 검색하세요.";
-
-/* Shown in the prologue carousel (promotional screens) during first launch. */
-"Follow your favorite sites and discover new reads." = "좋아하는 사이트를 팔로우하고 새 읽을 거리를 발견하세요.";
 
 /* Displayed in the Notification Settings View
    Followed Sites Title
@@ -2740,6 +2753,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "태그를 팔로우합니다.";
 
+/* An example tag used in the login prologue screens. */
+"Football" = "축구";
+
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "편의를 위해 워드프레스닷컴 연락처 정보를 미리 채웠습니다. 이 도메인에 사용하려는 정보가 정확한지 검토하여 확인하세요.";
 
@@ -2775,6 +2791,9 @@
 
 /* translators: accessibility text. %s: gallery caption. */
 "Gallery caption. %s" = "갤러리 캡션. %s";
+
+/* An example tag used in the login prologue screens. */
+"Gardening" = "원예";
 
 /* Add New Stats Card category title
    Title for the general section in site settings screen */
@@ -3340,6 +3359,9 @@
 /* Left alignment for an image. Should be the same as in core WP. */
 "Left" = "좌측";
 
+/* Title displayed for selection of custom app icons that may be removed in a future release of the app. */
+"Legacy Icons" = "기존 아이콘";
+
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "지원";
 
@@ -3348,6 +3370,9 @@
 
 /* Title for the app appearance setting for light mode */
 "Light" = "밝음";
+
+/* Title displayed for selection of custom app icons that have white backgrounds. */
+"Light backgrounds" = "밝은 배경";
 
 /* Like (verb)
    Like a post.
@@ -3810,6 +3835,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "댓글을 휴지통으로 이동";
 
+/* An example tag used in the login prologue screens. */
+"Music" = "음악";
+
 /* Link to My Profile section
    My Profile view title */
 "My Profile" = "내 프로필";
@@ -3867,6 +3895,9 @@
 
 /* Blocklist Keyword Insertion Title */
 "New Blocklist Word" = "새 차단 목록 단어";
+
+/* Title of alert informing users about the Reader Save for Later feature. */
+"New Custom App Icons" = "새 사용자 정의 앱 아이콘";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "새 IP 또는 IP 범위";
@@ -4371,9 +4402,6 @@
    Noun. Type of content being selected is a blog page */
 "Page" = "페이지";
 
-/* No comment provided by engineer. */
-"Page Link" = "페이지 링크";
-
 /* Prompts the user that a restored page was moved to the drafts list. */
 "Page Restored to Drafts" = "페이지를 원본으로 복원";
 
@@ -4649,6 +4677,9 @@
    Title for the plugin directory */
 "Plugins" = "플러그인";
 
+/* An example tag used in the login prologue screens. */
+"Politics" = "정치";
+
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
 "Popular" = "인기순";
@@ -4666,9 +4697,6 @@
 /* For setting the format of a post.
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "글 형식";
-
-/* No comment provided by engineer. */
-"Post Link" = "글 링크";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "글이 임시글 목록으로 복원됨";
@@ -4845,11 +4873,11 @@
 /* No comment provided by engineer. */
 "Problem displaying block" = "블록 표시 문제";
 
+/* Error message title informing the user that reader content could not be loaded. */
+"Problem loading content" = "콘텐츠 로드 중 문제 발생";
+
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "Problem loading sites" = "사이트 로드 중 문제 발생";
-
-/* Error message title informing the user that a stream could not be loaded. */
-"Problem loading stream" = "스트림을 로드하는 데 문제 발생";
 
 /* No comment provided by engineer. */
 "Problem opening the audio" = "오디오 열기 문제";
@@ -5285,21 +5313,14 @@
 /* Title of the screen that shows the revisions. */
 "Revision" = "수정";
 
-/* Title for button allowing user to rewind their Jetpack site
-   Title of section showing rewind status */
-"Rewind" = "되돌리기";
-
-/* Title displayed in the Restore Site alert, should match Calypso */
-"Rewind Site" = "사이트 되돌리기";
-
-/* Text showing the point in time the site is being currently rewinded to. %@' is a placeholder that will expand to a date. */
-"Rewinding to %@" = "%@(으)로 되돌리는 중";
-
 /* Post Rich content */
 "Rich Content" = "리치 콘텐츠";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "우측";
+
+/* Example Reader feed title */
+"Rock 'n Roll Weekly" = "주간 락앤롤";
 
 /* Title. Indicates the user role an invite link is for.
    User Roles Title
@@ -5359,9 +5380,6 @@
 
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "나중에 사용할 수 있게 이 글 저장";
-
-/* Message to indicate progress of saving draft */
-"Saving Draft" = "Saving Draft";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "글을 저장하는 중…";
@@ -5424,9 +5442,6 @@
 /* Prompt in the location search bar. */
 "Search Locations" = "검색 위치";
 
-/* No comment provided by engineer. */
-"Search Settings" = "설정 검색";
-
 /* Label for list of search term */
 "Search Term" = "검색어";
 
@@ -5438,6 +5453,12 @@
 
 /* A short message that is a call to action for the Reader's Search feature. */
 "Search WordPress\nfor a site or post" = "사이트나 게시물을 위한\n워드프레스 검색";
+
+/* No comment provided by engineer. */
+"Search block" = "블록 검색";
+
+/* No comment provided by engineer. */
+"Search blocks" = "블록 검색";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "검색하거나 URL 입력하기";
@@ -5803,6 +5824,9 @@
 /* Label for button that clears user activities donated to Siri. */
 "Siri Reset Prompt" = "Siri 단축키 제안 지우기";
 
+/* Header for a single site, shown in Notification user profile. */
+"Site" = "사이트";
+
 /* Accessibility label for site icon button */
 "Site Icon" = "사이트 아이콘";
 
@@ -5968,11 +5992,11 @@
 /* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "죄송합니다. 해당 사이트 주소는 사용할 수 없습니다.";
 
+/* A short error message letting the user know the requested reader content could not be loaded. */
+"Sorry. The content could not be loaded." = "죄송합니다. 콘텐츠를 로드할 수 없습니다.";
+
 /* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
 "Sorry. The social service did not tell us which account could be used for sharing." = "죄송합니다. 소셜 서비스에서 공유에 사용할 수 있는 계정을 알려주지 않았습니다.";
-
-/* A short error message letting the user know the requested stream could not be loaded. */
-"Sorry. The stream could not be loaded." = "죄송합니다. 스트림을 가져올 수 없습니다.";
 
 /* A short error message leting the user know the requested search could not be performed. */
 "Sorry. Your search results could not be loaded." = "죄송합니다. 검색 결과를 로드할 수 없습니다.";
@@ -6109,9 +6133,6 @@
    View title for Support page. */
 "Support" = "지원";
 
-/* Action button to switch the blog to which you'll be posting */
-"Switch Blog" = "블로그 전환:";
-
 /* Button used to switch site */
 "Switch Site" = "사이트 전환";
 
@@ -6129,9 +6150,6 @@
 
 /* Switches from the classic editor to block editor. */
 "Switch to block editor" = "블록 편집기로 전환";
-
-/* Switches from Gutenberg mobile to the classic editor */
-"Switch to classic editor" = "클래식 편집기로 전환";
 
 /* Accessibility Identifier for the H1 Aztec Style */
 "Switches to the Heading 1 font size" = "제목 1 글꼴 크기로 전환";
@@ -6172,9 +6190,6 @@
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
 "Tag" = "태그";
-
-/* No comment provided by engineer. */
-"Tag Link" = "태그 링크";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "태그가 이미 존재합니다.";
@@ -6770,6 +6785,12 @@
 /* Title for the traffic section in site settings screen */
 "Traffic" = "트래픽";
 
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Transform %s to" = "다음으로 %s 변형";
+
+/* No comment provided by engineer. */
+"Transform block…" = "블록 변형…";
+
 /* No comment provided by engineer. */
 "Translate" = "번역";
 
@@ -6916,6 +6937,7 @@
 "Unable to load the image. Please choose a different one or try again later." = "이미지를 로드할 수 없습니다. 다른 이미지를 선택하거나 나중에 다시 시도하세요.";
 
 /* Default title shown for no-results when the device is offline.
+   Informing the user that a network request failed because the device wasn't able to establish a network connection.
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "지금 이 콘텐츠를 로드할 수 없습니다.";
 
@@ -7628,6 +7650,9 @@
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
 "Web Display Settings" = "웹 표시 설정";
 
+/* Example Reader feed title */
+"Web News" = "웹 뉴스";
+
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "시작 요일";
 
@@ -7677,11 +7702,17 @@
 /* Title of alert letting users know we've upgraded the quick start checklist. */
 "We’ve made some changes to your checklist" = "회원님의 체크리스트에 몇 가지 변경 사항이 있습니다.";
 
+/* Body text of alert informing users about the Reader Save for Later feature. */
+"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "사용자 정의 앱 아이콘을 신선한 새 모양으로 업데이트했습니다. 새로운 10가지 스타일 중에서 선택하거나 원하면 기존 아이콘을 간단히 유지하실 수 있습니다.";
+
 /* This is the string we display when prompting the user to review the app */
 "What do you think about WordPress?" = "WordPress를 어떻게 생각하시나요?";
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "이 파일로 무엇을 하고 싶으신가요? 파일을 업로드하고 파일의 링크를 글에 추가하거나, 파일 콘텐츠를 글에 직접 추가하시겠습니까?";
+
+/* No comment provided by engineer. */
+"What is alt text?" = "대체 텍스트란 무엇인가요?";
 
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "What was the problem?";
@@ -7964,6 +7995,9 @@
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "게시물을 게시하려면 먼저 계정을 확인해야 합니다.\n걱정하지 마세요. 작성한 게시물은 안전하게 임시글로 저장됩니다.";
 
+/* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
+"You received *50 likes* on your site today" = "*50 likes* on your site today개 받음";
+
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "You recently made changes to this post but didn't save them. Choose a version to load:\n\n이 장치에서\n다음으로 저장됨 %1$@\n\n다른 장치에서\n다음으로 저장됨 %2$@\n";
@@ -8114,6 +8148,9 @@
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "목록에서 끝난 일을 지우는 건 항상 기분 좋은 일이죠.";
+
+/* No comment provided by engineer. */
+"double-tap to change unit" = "두 번 눌러 단위 변경하기";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "예: 1122334455";

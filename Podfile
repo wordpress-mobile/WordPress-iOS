@@ -39,15 +39,15 @@ def aztec
 end
 
 def wordpress_ui
-    pod 'WordPressUI', '~> 1.9.0'
+    pod 'WordPressUI', '~> 1.10.0'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
-    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
+    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'feature/fancy-alert-dividers'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => ''
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.30.0'
+    pod 'WordPressKit', '~> 4.31.0'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -55,7 +55,7 @@ def wordpress_kit
 end
 
 def kanvas
-  pod 'Kanvas', '~> 1.2.5'
+  pod 'Kanvas', '~> 1.2.6'
   #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
   #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
   #pod 'Kanvas', :path => '../Kanvas-iOS'
@@ -76,7 +76,7 @@ end
 
 def shared_test_pods
     pod 'OHHTTPStubs/Swift', '~> 9.1.0'
-    pod 'OCMock', '3.4.3'
+    pod 'OCMock', '~> 3.4.3'
 end
 
 def shared_with_extension_pods
@@ -161,7 +161,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.50.1'
+    gutenberg :tag => 'v1.51.1'
 
 
     ## Third party libraries
@@ -228,7 +228,7 @@ abstract_target 'Apps' do
             inherit! :search_paths
 
             shared_test_pods
-            pod 'Nimble', '~> 7.3.1'
+            pod 'Nimble', '~> 9.0.0'
         end
     end
 

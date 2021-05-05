@@ -45,7 +45,7 @@ class PostServiceWPComTests: XCTestCase {
 
         // Act
         var post: AbstractPost?
-        waitUntil(timeout: 3) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(3)) { done in
             self.service.getPostWithID(123, for: blog, success: { postFromAPI in
                 post = postFromAPI
                 done()
@@ -67,7 +67,7 @@ class PostServiceWPComTests: XCTestCase {
 
         // Act
         var posts: [AbstractPost]?
-        waitUntil(timeout: 3) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(3)) { done in
             self.service.syncPosts(ofType: .any, for: blog, success: { postsFromAPI in
                 posts = postsFromAPI
                 done()
@@ -95,7 +95,7 @@ class PostServiceWPComTests: XCTestCase {
 
         // Act
         var postFromAPI: AbstractPost?
-        waitUntil(timeout: 3) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(3)) { done in
             self.service.uploadPost(post, success: { aPost in
                 postFromAPI = aPost
                 done()
@@ -122,7 +122,7 @@ class PostServiceWPComTests: XCTestCase {
         remoteMock.remotePostToReturnOnTrashPost = remotePost
 
         // Act
-        waitUntil(timeout: 3) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(3)) { done in
          self.service.trashPost(post, success: {
              done()
          }, failure: self.impossibleFailureBlock)
@@ -143,7 +143,7 @@ class PostServiceWPComTests: XCTestCase {
         remoteMock.remotePostToReturnOnCreatePost = createRemotePost(.draft)
 
         // Act
-        waitUntil(timeout: 3) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(3)) { done in
             self.service.autoSave(post, success: { _, _ in
                 done()
             }, failure: self.impossibleFailureBlock)
@@ -164,7 +164,7 @@ class PostServiceWPComTests: XCTestCase {
         remoteMock.remotePostToReturnOnGetPostWithID = remotePost
 
         // Act
-        waitUntil(timeout: 3) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(3)) { done in
             self.service.autoSave(post, success: { _, _ in
                 done()
             }, failure: self.impossibleFailureBlock)
@@ -184,7 +184,7 @@ class PostServiceWPComTests: XCTestCase {
         remoteMock.remotePostToReturnOnCreatePost = createRemotePost(.draft)
 
         // Act
-        waitUntil(timeout: 3) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(3)) { done in
             self.service.autoSave(post, success: { _, _ in
                 done()
             }, failure: self.impossibleFailureBlock)
@@ -203,7 +203,7 @@ class PostServiceWPComTests: XCTestCase {
 
         // Act
         var failureBlockCalled = false
-        waitUntil(timeout: 2) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
             self.service.autoSave(post, success: { _, _ in
                 done()
             }, failure: { _ in
@@ -224,7 +224,7 @@ class PostServiceWPComTests: XCTestCase {
         remoteMock.autoSaveStubbedBehavior = .success(createRemotePost(.publish))
 
         // Act
-        waitUntil(timeout: 3) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(3)) { done in
             self.service.autoSave(post, success: { _, _ in
                 done()
             }, failure: self.impossibleFailureBlock)
@@ -243,7 +243,7 @@ class PostServiceWPComTests: XCTestCase {
         remoteMock.autoSaveStubbedBehavior = .fail
 
         // Act
-        waitUntil(timeout: 2) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
             self.service.autoSave(post, success: { _, _ in
                 done()
             }, failure: { _ in
@@ -265,7 +265,7 @@ class PostServiceWPComTests: XCTestCase {
         remoteMock.remoteUsersToReturnOnGetLikes = expectedUsers
 
         // Act
-        waitUntil(timeout: 2) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
             self.service.getLikesForPostID(postID, siteID: siteID, success: { users in
                 // Assert
                 expect(users.count) == 1
@@ -285,7 +285,7 @@ class PostServiceWPComTests: XCTestCase {
         remoteMock.fetchLikesShouldSucceed = false
 
         // Act
-        waitUntil(timeout: 2) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
             self.service.getLikesForPostID(postID, siteID: siteID, success: { users in
                 fail("this closure should not be called")
             },

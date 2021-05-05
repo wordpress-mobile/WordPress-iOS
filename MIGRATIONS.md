@@ -3,6 +3,32 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 120
+
+@chipsnyder 2021-04-12
+
+- Created a new entity `BlockEditorSettings` with:
+  - `isFSETheme` (required, default `false`, `Boolean`) FSE = "Full Site Editing"
+  - `lastUpdated` (required, no default, `Date`)
+
+- Created a new entity `BlockEditorSettingElement` with:
+  - `type` (required, no default, `String`)
+  - `value` (required, no default, `String`)
+  - `slug` (required, no default, `String`)
+  - `name` ( required, no default, `String`)
+
+- Created one-to-many relationship between `BlockEditorSettings` and `BlockEditorSettingElement`
+  - `BlockEditorSettings`
+    - `elements` (optional, to-many, cascade on delete)
+  - `BlockEditorSettingElement`
+    - `settings` (required, to-one, nullify on delete)
+
+- Created one-to-one relationship between `Blog` and `BlockEditorSettings`
+  - `BlockEditorSettings`
+    - `blockEditorSettings` (optional, to-one, cascade on delete)
+  - `BlockEditorSettings`
+    - `blog` (required, to-one, nullify on delete)
+
 ## WordPress 119
 
 @mkevins 2021-03-31
