@@ -176,8 +176,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                     return
                 }
                 (self.tabBarController as? WPTabBarController)?.showStoryEditor(blog: self.blog, title: nil, content: nil)
-            }, source: Constants.source)
-            , at: 0)
+            }, source: Constants.source), at: 0)
         }
         return CreateButtonCoordinator(self, actions: actions, source: Constants.source)
     }()
