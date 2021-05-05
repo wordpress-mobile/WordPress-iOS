@@ -163,7 +163,6 @@ abstract_target 'Apps' do
     ##
     gutenberg :commit => 'afa38e07bb82877a799d67e46079725a88182e62'
 
-
     ## Third party libraries
     ## =====================
     ##
