@@ -391,10 +391,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return Constant.Size.pageSectionHeaderHeight
     }
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return Constant.Size.pageCellWithTagEstimatedRowHeight
-    }
-
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard _tableViewHandler.groupResults else {
             return UIView(frame: .zero)
