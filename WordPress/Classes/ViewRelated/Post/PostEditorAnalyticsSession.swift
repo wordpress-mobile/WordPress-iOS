@@ -33,10 +33,14 @@ struct PostEditorAnalyticsSession {
         // Let's make sure to round the value and send an integer for consistency
         let startupTimeNanoseconds = DispatchTime.now().uptimeNanoseconds - startTime
         let startupTimeMilliseconds = Int(Double(startupTimeNanoseconds) / 1_000_000)
-        return [
-            Property.startupTime: startupTimeMilliseconds,
-            Property.unsupportedBlocks: unsupportedBlocks
-        ].merging(commonProperties, uniquingKeysWith: { $1 })
+        var properties: [String: Any] = [ Property.startupTime: startupTimeMilliseconds ]
+
+        // Tracks custom event types can't be arrays so we need to convert this to JSON
+        if let data = try? JSONSerialization.data(withJSONObject: unsupportedBlocks, options: .fragmentsAllowed) {
+            let blocksJSON = String(data: data, encoding: .utf8)
+            properties[Property.unsupportedBlocks] = blocksJSON
+        }
+        return properties.merging(commonProperties, uniquingKeysWith: { $1 })
     }
 
     mutating func `switch`(editor: Editor) {
