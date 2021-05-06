@@ -26,6 +26,7 @@ import Foundation
     case editorPostTitleChanged
     case editorPostVisibilityChanged
     case editorPostTagsChanged
+    case editorPostAuthorChanged
     case editorPostPublishNowTapped
     case editorPostCategoryChanged
     case editorPostStatusChanged
@@ -218,6 +219,8 @@ import Foundation
             return "editor_post_featured_image_changed"
         case .editorPostStickyChanged:
             return "editor_post_sticky_changed"
+        case .editorPostAuthorChanged:
+            return "editor_post_author_changed"
         case .editorPostLocationChanged:
             return "editor_post_location_changed"
         case .editorPostSlugChanged:

@@ -1,9 +1,3 @@
-What’s new in this release?
+This version introduces a new block – Jetpack contact info. It's perfect for displaying a nicely formatted address on your site. We've also introduced some spiffy new app icons you can use to customise how the app looks on your home screen.
 
-A new visual look! We redesigned the login experience, with a welcome carousel of new content and graphics that promote the app’s features and benefits. You’ll also notice a new colour palette, with an updated app icon to match.
-
-We made accessibility improvements in the block editor for people who use a VoiceOver screen reader. These updates improve your experience with the Columns block.
-
-To help you manage comment activity on your site, there’s now an “Unreplied” filter so you can view all of your unreplied comments under one tab.
-
-We also made other enhancements, including updates to the page layout picker experience.
+We've got some nifty tweaks to tell you about! We've removed the site switcher from the editor to simplify posting, fixed a bug where author names weren't visible, improved VoiceOver support for the columns block, and made it easier to add alt text to an image block.

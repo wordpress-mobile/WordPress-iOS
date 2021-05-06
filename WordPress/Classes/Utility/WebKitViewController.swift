@@ -126,8 +126,8 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         startObservingWebView()
     }
 
-    fileprivate init(url: URL, parent: WebKitViewController) {
-        webView = WKWebView(frame: .zero, configuration: parent.webView.configuration)
+    fileprivate init(url: URL, parent: WebKitViewController, configuration: WKWebViewConfiguration) {
+        webView = WKWebView(frame: .zero, configuration: configuration)
         self.url = url
         customOptionsButton = parent.customOptionsButton
         secureInteraction = parent.secureInteraction
@@ -521,9 +521,10 @@ extension WebKitViewController: WKUIDelegate {
             if opensNewInSafari {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             } else {
-                let controller = WebKitViewController(url: url, parent: self)
+                let controller = WebKitViewController(url: url, parent: self, configuration: configuration)
                 let navController = UINavigationController(rootViewController: controller)
                 present(navController, animated: true)
+                return controller.webView
             }
         }
         return nil
@@ -546,7 +547,7 @@ extension WebKitViewController: WKUIDelegate {
             ReachabilityUtils.showNoInternetConnectionNotice()
             reloadWhenConnectionRestored()
         } else {
-            WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Generic error alert title"), message: error.localizedDescription)
+            DDLogError("WebView \(webView) didFailProvisionalNavigation: \(error.localizedDescription)")
         }
     }
 }

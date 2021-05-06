@@ -181,16 +181,12 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                            failure:(void (^)(NSError *error))failure;
 
 /**
- Fetches a list of users that liked the comment with the given ID.
-
- @param commentID   The ID of the comment to fetch likes for
- @param siteID      The ID of the site that contains the post
- @param success     A success block
- @param failure     A failure block
+ Get a CommentServiceRemoteREST for the given site.
+ This is public so it can be accessed from Swift extensions.
+ 
+ @param siteID The ID of the site the remote will be used for.
  */
-- (void)getLikesForCommentID:(NSNumber *)commentID
-                      siteID:(NSNumber *)siteID
-                     success:(void (^)(NSArray<RemoteUser *> *))success
-                     failure:(void (^)(NSError * _Nullable))failure;
+- (CommentServiceRemoteREST *_Nullable)restRemoteForSite:(NSNumber *_Nonnull)siteID;
+
 
 @end

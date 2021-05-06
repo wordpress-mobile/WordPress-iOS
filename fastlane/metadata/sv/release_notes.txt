@@ -1,9 +1,3 @@
-Vad är nytt i den här versionen?
+Med denna version lanseras ett nytt block – Jetpack kontaktinformation, som passar perfekt för att visa en snyggt formaterad adress på webbplatsen. Vi har även lagt till flera stycken tjusiga app-ikoner som du kan använda för att anpassa appens utseende på din startskärm.
 
-Ett nytt utseende! Vi har designat om inloggningsupplevelsen, med en välkomstkarusell av nytt innehåll och grafik som framhäver appens funktioner och fördelar. Du kommer också att märka en ny färgpalett, komplett med en uppdaterad appikon.
-
-Vi har gjort hjälpmedelsförbättringar i blockredigeraren för personer som använder en VoiceOver-skärmläsare. Dessa uppdateringar förbättrar din upplevelse med kolumnblocken.
-
-För att hjälpa dig att hantera kommentarsaktivitet på din webbplats finns det nu ett filter kallat "Obesvarat", så att du kan se alla dina obesvarade kommentarer på en flik.
-
-Vi har också gjort andra förbättringar, inklusive uppdateringar av sidlayoutväljaren.
+Sen har vi några stiliga mindre ändringar att berätta om. Vi har gjort det enklare att publicera ett nytt inlägg genom att vi tagit bort webbplatsväljaren i redigeringsvyn, rättat ett fel där författarens namn ibland inte visades, förbättrat stödet för VoiceOver i kolumnblocket, och gjort det enklare att lägga in långa alt-texter i bildblocket.

@@ -38,10 +38,11 @@ final class CommentServiceTests: XCTestCase {
                                         "login": "johndoe",
                                         "name": "John Doe",
                                         "site_ID": NSNumber(value: 456),
-                                        "avatar_URL": "avatar URL"
+                                        "avatar_URL": "avatar URL",
+                                        "date_liked": "2021-02-09 08:34:43"
         ]
 
-        return RemoteLikeUser(dictionary: userDict)
+        return RemoteLikeUser(dictionary: userDict, commentID: NSNumber(value: 1), siteID: NSNumber(value: 2))
     }
 }
 
@@ -61,10 +62,10 @@ extension CommentServiceTests {
 
         // Act
         waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
-            self.service.getLikesForCommentID(commentID, siteID: siteID, success: { users in
+            self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users in
                 // Assert
                 expect(users).toNot(beNil())
-                expect(users?.count) == 1
+                expect(users.count) == 1
                 done()
             },
             failure: { _ in
@@ -82,7 +83,7 @@ extension CommentServiceTests {
 
         // Act
         waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
-            self.service.getLikesForCommentID(commentID, siteID: siteID, success: { users in
+            self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users in
                 fail("this closure should not be called")
             },
             failure: { _ in

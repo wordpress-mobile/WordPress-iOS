@@ -1,10 +1,18 @@
 import WordPressAuthenticator
 
 struct JetpackAuthenticationManager: AuthenticationHandler {
+    var statusBarStyle: UIStatusBarStyle = .lightContent
+    var prologueViewController: UIViewController? = JetpackPrologueViewController()
+    var buttonViewTopShadowImage: UIImage? = UIImage()
+    var prologueButtonsBackgroundColor: UIColor? = JetpackPrologueStyleGuide.backgroundColor
+
+    var prologuePrimaryButtonStyle: NUXButtonStyle? = JetpackPrologueStyleGuide.continueButtonStyle
+    var prologueSecondaryButtonStyle: NUXButtonStyle? = JetpackPrologueStyleGuide.siteAddressButtonStyle
+
     func shouldPresentUsernamePasswordController(for siteInfo: WordPressComSiteInfo?, onCompletion: @escaping (WordPressAuthenticatorResult) -> Void) {
         /// Jetpack is required. Present an error if we don't detect a valid installation.
         guard let site = siteInfo, isValidJetpack(for: site) else {
-            let viewModel = JetpackErrorViewModel(title: "Jetpack Not Found")
+            let viewModel = JetpackNotFoundErrorViewModel(with: siteInfo?.url)
             let controller = errorViewController(with: viewModel)
 
             let authenticationResult: WordPressAuthenticatorResult = .injectViewController(value: controller)
@@ -15,7 +23,7 @@ struct JetpackAuthenticationManager: AuthenticationHandler {
 
         /// WordPress must be present.
         guard site.isWP else {
-            let viewModel = JetpackErrorViewModel(title: "WordPress Not Installed")
+            let viewModel = JetpackNotWPErrorViewModel()
             let controller = errorViewController(with: viewModel)
 
             let authenticationResult: WordPressAuthenticatorResult = .injectViewController(value: controller)
@@ -45,7 +53,7 @@ struct JetpackAuthenticationManager: AuthenticationHandler {
             return false
         }
 
-        let viewModel = JetpackErrorViewModel(title: "No Jetpack Sites")
+        let viewModel = JetpackNoSitesErrorViewModel()
         let controller = errorViewController(with: viewModel)
         navigationController.pushViewController(controller, animated: true)
 

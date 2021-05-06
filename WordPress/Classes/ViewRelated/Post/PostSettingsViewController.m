@@ -30,6 +30,7 @@
 typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowCategories = 0,
     PostSettingsRowTags,
+    PostSettingsRowAuthor,
     PostSettingsRowPublishDate,
     PostSettingsRowStatus,
     PostSettingsRowVisibility,
@@ -49,7 +50,6 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
 static CGFloat CellHeight = 44.0f;
 static CGFloat LoadingIndicatorHeight = 28.0f;
 
-static NSInteger RowIndexForPassword = 3;
 static CGFloat LocationCellHeightToWidthAspectRatio = 0.5f;
 
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
@@ -69,6 +69,7 @@ FeaturedImageViewControllerDelegate>
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UIButton *passwordVisibilityButton;
+@property (nonatomic, strong) NSArray *postMetaSectionRows;
 @property (nonatomic, strong) NSArray *visibilityList;
 @property (nonatomic, strong) NSArray *formatsList;
 @property (nonatomic, strong) WPTableImageSource *imageSource;
@@ -180,6 +181,7 @@ FeaturedImageViewControllerDelegate>
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     [self.navigationController setToolbarHidden:YES];
     
+    [self configureMetaSectionRows];
     [self reloadData];
 }
 
@@ -435,10 +437,7 @@ FeaturedImageViewControllerDelegate>
         return 2;
 
     } else if (sec == PostSettingsSectionMeta) {
-        if (self.apost.password) {
-            return 4;
-        }
-        return 3;
+        return [self.postMetaSectionRows count];
 
     } else if (sec == PostSettingsSectionFormat) {
         return 1;
@@ -532,7 +531,8 @@ FeaturedImageViewControllerDelegate>
     }
 
     if (sectionId == PostSettingsSectionMeta) {
-        if (indexPath.row == RowIndexForPassword) {
+        NSInteger row = [[self.postMetaSectionRows objectAtIndex:indexPath.row] integerValue];
+        if (row == PostSettingsRowPassword) {
             return CellHeight;
         }
     }
@@ -583,6 +583,8 @@ FeaturedImageViewControllerDelegate>
         [self showPostStatusSelector];
     } else if (cell.tag == PostSettingsRowVisibility) {
         [self showPostVisibilitySelector];
+    } else if (cell.tag == PostSettingsRowAuthor) {
+        [self showPostAuthorSelector];
     } else if (cell.tag == PostSettingsRowFormat) {
         [self showPostFormatSelector];
     } else if (cell.tag == PostSettingsRowFeaturedImage) {
@@ -635,10 +637,38 @@ FeaturedImageViewControllerDelegate>
     return cell;
 }
 
+- (void)configureMetaSectionRows
+{
+    NSMutableArray *metaRows = [[NSMutableArray alloc] init];
+
+    if (self.apost.isMultiAuthorBlog) {
+        [metaRows addObject:@(PostSettingsRowAuthor)];
+    }
+
+    [metaRows addObjectsFromArray:@[ @(PostSettingsRowPublishDate),
+                                      @(PostSettingsRowStatus),
+                                      @(PostSettingsRowVisibility) ]];
+
+    if (self.apost.password) {
+        [metaRows addObject:@(PostSettingsRowPassword)];
+    }
+
+    self.postMetaSectionRows = [metaRows copy];
+}
+
 - (UITableViewCell *)configureMetaPostMetaCellForIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
-    if (indexPath.row == 0) {
+    NSInteger row = [[self.postMetaSectionRows objectAtIndex:indexPath.row] integerValue];
+
+    if (row == PostSettingsRowAuthor) {
+        // Author
+        cell = [self getWPTableViewDisclosureCell];
+        cell.textLabel.text = NSLocalizedString(@"Author", @"The author of the post or page.");
+        cell.accessibilityIdentifier = @"SetAuthor";
+        cell.detailTextLabel.text = [self.apost authorNameForDisplay];
+        cell.tag = PostSettingsRowAuthor;
+    } else if (row == PostSettingsRowPublishDate) {
         // Publish date
         cell = [self getWPTableViewDisclosureCell];
         if (self.apost.dateCreated && ![self.apost shouldPublishImmediately]) {
@@ -662,7 +692,7 @@ FeaturedImageViewControllerDelegate>
         }
 
         cell.tag = PostSettingsRowPublishDate;
-    } else if (indexPath.row == 1) {
+    } else if (row == PostSettingsRowStatus) {
         // Publish Status
         cell = [self getWPTableViewDisclosureCell];
         cell.textLabel.text = NSLocalizedString(@"Status", @"The status of the post. Should be the same as in core WP.");
@@ -677,7 +707,7 @@ FeaturedImageViewControllerDelegate>
 
         cell.tag = PostSettingsRowStatus;
 
-    } else if (indexPath.row == 2) {
+    } else if (row == PostSettingsRowVisibility) {
         // Visibility
         cell = [self getWPTableViewDisclosureCell];
         cell.textLabel.text = NSLocalizedString(@"Visibility", @"The visibility settings of the post. Should be the same as in core WP.");
@@ -685,7 +715,7 @@ FeaturedImageViewControllerDelegate>
         cell.tag = PostSettingsRowVisibility;
         cell.accessibilityIdentifier = @"Visibility";
 
-    } else {
+    } else if (row == PostSettingsRowPassword) {
         cell = [self configurePasswordCell];
     }
 
@@ -1051,6 +1081,18 @@ FeaturedImageViewControllerDelegate>
     __weak PostVisibilitySelectorViewController *weakVc = vc;
     vc.completion = ^(NSString *visibility) {
         [WPAnalytics trackEvent:WPAnalyticsEventEditorPostVisibilityChanged properties:@{@"via": @"settings"}];
+        [weakVc dismiss];
+        [self.tableView reloadData];
+    };
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)showPostAuthorSelector
+{
+    PostAuthorSelectorViewController *vc = [[PostAuthorSelectorViewController alloc] init:self.apost];
+    __weak PostAuthorSelectorViewController *weakVc = vc;
+    vc.completion = ^{
+        [WPAnalytics trackEvent:WPAnalyticsEventEditorPostAuthorChanged properties:@{@"via": @"settings"}];
         [weakVc dismiss];
         [self.tableView reloadData];
     };
