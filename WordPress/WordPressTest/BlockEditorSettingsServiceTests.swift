@@ -109,7 +109,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
 
         waitForExpectations(timeout: 0.1)
-        validateBlockEditorSettingsResponse()
+        validateBlockEditorSettingsResponse(isGlobalStyles: false)
         XCTAssertNotNil(self.blog.blockEditorSettings?.checksum)
     }
 
@@ -126,7 +126,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
 
         waitForExpectations(timeout: 0.1)
-        validateBlockEditorSettingsResponse()
+        validateBlockEditorSettingsResponse(isGlobalStyles: true)
         XCTAssertNotNil(self.blog.blockEditorSettings?.checksum)
     }
 
@@ -146,7 +146,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
 
         waitForExpectations(timeout: 0.1)
-        validateBlockEditorSettingsResponse()
+        validateBlockEditorSettingsResponse(isGlobalStyles: true)
         XCTAssertNotNil(self.blog.blockEditorSettings?.checksum)
         XCTAssertNotEqual(self.blog.blockEditorSettings?.checksum, originalChecksum)
     }
@@ -168,12 +168,12 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
 
         waitForExpectations(timeout: 0.1)
-        validateBlockEditorSettingsResponse()
+        validateBlockEditorSettingsResponse(isGlobalStyles: true)
         XCTAssertNotNil(self.blog.blockEditorSettings?.checksum)
         XCTAssertNotEqual(self.blog.blockEditorSettings?.checksum, originalChecksum)
     }
 
-    func testFetchBlockEditorSettingsHoChange() {
+    func testFetchBlockEditorSettingsNoChange() {
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
 
         setData(withFilename: blockSettingsThemeJSONResponseFilename)
@@ -190,17 +190,22 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
 
         waitForExpectations(timeout: 0.1)
-        validateBlockEditorSettingsResponse()
+        validateBlockEditorSettingsResponse(isGlobalStyles: true)
         XCTAssertNotNil(self.blog.blockEditorSettings?.checksum)
         XCTAssertEqual(self.blog.blockEditorSettings?.checksum, originalChecksum)
     }
 
-    private func validateBlockEditorSettingsResponse() {
+    private func validateBlockEditorSettingsResponse(isGlobalStyles: Bool) {
         XCTAssertTrue(self.mockRemoteApi.getMethodCalled)
         XCTAssertEqual(self.mockRemoteApi.URLStringPassedIn!, "/__experimental/wp-block-editor/v1/settings")
         XCTAssertEqual((self.mockRemoteApi.parametersPassedIn as! [String: String])["context"], "site-editor")
-        XCTAssertGreaterThan(self.blog.blockEditorSettings!.colors!.count, 0)
-        XCTAssertGreaterThan(self.blog.blockEditorSettings!.gradients!.count, 0)
+
+        if isGlobalStyles {
+            XCTAssertNotNil(self.blog.blockEditorSettings?.rawGlobalStylesBaseStyles)
+        } else {
+            XCTAssertGreaterThan(self.blog.blockEditorSettings!.colors!.count, 0)
+            XCTAssertGreaterThan(self.blog.blockEditorSettings!.gradients!.count, 0)
+        }
     }
 }
 

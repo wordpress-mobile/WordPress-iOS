@@ -755,8 +755,8 @@
 		46F583D52624D0BC0010A723 /* Blog+BlockEditorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F583D32624D0BC0010A723 /* Blog+BlockEditorSettings.swift */; };
 		46F584822624DCC80010A723 /* BlockEditorSettingsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F584812624DCC80010A723 /* BlockEditorSettingsService.swift */; };
 		46F584832624DCC80010A723 /* BlockEditorSettingsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F584812624DCC80010A723 /* BlockEditorSettingsService.swift */; };
-		46F584B82624E6380010A723 /* BlockEditorSettings+GutenbergEditorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F584B72624E6380010A723 /* BlockEditorSettings+GutenbergEditorTheme.swift */; };
-		46F584B92624E6380010A723 /* BlockEditorSettings+GutenbergEditorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F584B72624E6380010A723 /* BlockEditorSettings+GutenbergEditorTheme.swift */; };
+		46F584B82624E6380010A723 /* BlockEditorSettings+GutenbergEditorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F584B72624E6380010A723 /* BlockEditorSettings+GutenbergEditorSettings.swift */; };
+		46F584B92624E6380010A723 /* BlockEditorSettings+GutenbergEditorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F584B72624E6380010A723 /* BlockEditorSettings+GutenbergEditorSettings.swift */; };
 		46F58501262605930010A723 /* BlockEditorSettingsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F58500262605930010A723 /* BlockEditorSettingsServiceTests.swift */; };
 		4B2DD0F29CD6AC353C056D41 /* Pods_WordPressUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DCE7542239FBC709B90EA85 /* Pods_WordPressUITests.framework */; };
 		4C8A715EBCE7E73AEE216293 /* Pods_WordPressShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F47DB4A8EC2E6844E213A3FA /* Pods_WordPressShareExtension.framework */; };
@@ -5163,7 +5163,7 @@
 		46F583A82624CE790010A723 /* BlockEditorSettingElement+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlockEditorSettingElement+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		46F583D32624D0BC0010A723 /* Blog+BlockEditorSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+BlockEditorSettings.swift"; sourceTree = "<group>"; };
 		46F584812624DCC80010A723 /* BlockEditorSettingsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockEditorSettingsService.swift; sourceTree = "<group>"; };
-		46F584B72624E6380010A723 /* BlockEditorSettings+GutenbergEditorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlockEditorSettings+GutenbergEditorTheme.swift"; sourceTree = "<group>"; };
+		46F584B72624E6380010A723 /* BlockEditorSettings+GutenbergEditorSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlockEditorSettings+GutenbergEditorSettings.swift"; sourceTree = "<group>"; };
 		46F58500262605930010A723 /* BlockEditorSettingsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockEditorSettingsServiceTests.swift; sourceTree = "<group>"; };
 		46F84612185A8B7E009D0DA5 /* PostContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostContentProvider.h; sourceTree = "<group>"; };
 		48690E659987FD4472EEDE5F /* Pods-WordPressNotificationContentExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressNotificationContentExtension.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressNotificationContentExtension/Pods-WordPressNotificationContentExtension.release.xcconfig"; sourceTree = "<group>"; };
@@ -9330,7 +9330,7 @@
 				46F583A82624CE790010A723 /* BlockEditorSettingElement+CoreDataProperties.swift */,
 				46F583A52624CE790010A723 /* BlockEditorSettings+CoreDataClass.swift */,
 				46F583A62624CE790010A723 /* BlockEditorSettings+CoreDataProperties.swift */,
-				46F584B72624E6380010A723 /* BlockEditorSettings+GutenbergEditorTheme.swift */,
+				46F584B72624E6380010A723 /* BlockEditorSettings+GutenbergEditorSettings.swift */,
 				46183D1D251BD6A0004F9AFD /* PageTemplateCategory+CoreDataClass.swift */,
 				46183D1E251BD6A0004F9AFD /* PageTemplateCategory+CoreDataProperties.swift */,
 				46183CF2251BD658004F9AFD /* PageTemplateLayout+CoreDataClass.swift */,
@@ -16846,7 +16846,7 @@
 				5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */,
 				1716AEFC25F2927600CF49EC /* MySiteViewController.swift in Sources */,
 				7E3E7A6020E44E490075D159 /* FooterContentGroup.swift in Sources */,
-				46F584B82624E6380010A723 /* BlockEditorSettings+GutenbergEditorTheme.swift in Sources */,
+				46F584B82624E6380010A723 /* BlockEditorSettings+GutenbergEditorSettings.swift in Sources */,
 				59A3CADD1CD2FF0C009BFA1B /* BasePageListCell.m in Sources */,
 				436D56202117312700CEAA33 /* RegisterDomainSuggestionsTableViewController.swift in Sources */,
 				E114D79A153D85A800984182 /* WPError.m in Sources */,
@@ -18950,7 +18950,7 @@
 				FABB237F2602FC2C00C8785C /* SearchAdsAttribution.swift in Sources */,
 				FABB23802602FC2C00C8785C /* ReaderCommentsViewController.m in Sources */,
 				FABB23812602FC2C00C8785C /* MySiteViewController.swift in Sources */,
-				46F584B92624E6380010A723 /* BlockEditorSettings+GutenbergEditorTheme.swift in Sources */,
+				46F584B92624E6380010A723 /* BlockEditorSettings+GutenbergEditorSettings.swift in Sources */,
 				FABB23822602FC2C00C8785C /* FooterContentGroup.swift in Sources */,
 				FABB23832602FC2C00C8785C /* BasePageListCell.m in Sources */,
 				FABB23842602FC2C00C8785C /* RegisterDomainSuggestionsTableViewController.swift in Sources */,

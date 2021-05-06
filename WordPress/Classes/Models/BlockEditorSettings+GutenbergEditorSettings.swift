@@ -2,7 +2,7 @@ import Foundation
 import WordPressKit
 import Gutenberg
 
-extension BlockEditorSettings: GutenbergEditorTheme {
+extension BlockEditorSettings: GutenbergEditorSettings {
     public var colors: [[String: String]]? {
         elementsByType(.color)
     }
@@ -44,17 +44,11 @@ extension BlockEditorSettings {
         self.lastUpdated = Date()
         self.checksum = remoteSettings.checksum
 
-        var parsedElements = Set<BlockEditorSettingElement>()
-
-        if let globalStyles = remoteSettings.globalStylesBaseStyles {
-            globalStyles.colorSettings.colors?.forEach({ (color) in
-                parsedElements.insert(BlockEditorSettingElement(fromRawRepresentation: color, type: .color, context: context))
-            })
-
-            globalStyles.colorSettings.gradients?.forEach({ (gradient) in
-                parsedElements.insert(BlockEditorSettingElement(fromRawRepresentation: gradient, type: .gradient, context: context))
-            })
+        if let globalStyles = remoteSettings.rawGlobalStylesBaseStyles {
+            self.rawGlobalStylesBaseStyles = globalStyles
         } else {
+            var parsedElements = Set<BlockEditorSettingElement>()
+
             remoteSettings.colors?.forEach({ (color) in
                 parsedElements.insert(BlockEditorSettingElement(fromRawRepresentation: color, type: .color, context: context))
             })
@@ -62,8 +56,8 @@ extension BlockEditorSettings {
             remoteSettings.gradients?.forEach({ (gradient) in
                 parsedElements.insert(BlockEditorSettingElement(fromRawRepresentation: gradient, type: .gradient, context: context))
             })
-        }
 
-        self.elements = parsedElements
+            self.elements = parsedElements
+        }
     }
 }
