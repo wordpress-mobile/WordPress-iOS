@@ -3,6 +3,13 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 124
+
+@chipsnyder 2021-05-06
+
+- `BlockEditorSettings`: added the attribute
+    - `rawGlobalStylesBaseStyles` (optional, no default, `String`)
+
 ## WordPress 123
 
 @scoutharris 2021-04-28
