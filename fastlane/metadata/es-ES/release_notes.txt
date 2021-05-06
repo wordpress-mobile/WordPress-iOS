@@ -1,0 +1,3 @@
+Esta versión introduce un nuevo bloque: Información de contacto de Jetpack. Es perfecto para mostrar una dirección bien formada en tu sitio. También hemos introducido unos nuevos y elegantes iconos de aplicación que puedes usar para personalizar el aspecto de la aplicación en tu pantalla de inicio.
+
+¡Tenemos que contarte algunos retoques ingeniosos! Hemos eliminado el conmutador de sitios del editor para simplificar la publicación, corregido un fallo por el que los nombres de los autores no eran visibles, mejorado la compatibilidad con VoiceOver para el bloque de columnas y hemos hecho más fácil añadir de texto alternativo a un bloque de imágenes.

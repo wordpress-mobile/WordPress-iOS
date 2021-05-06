@@ -128,7 +128,6 @@ class BlockEditorScreen: BaseScreen {
      Select Image from Camera Roll by its ID. Starts with 0
      */
     private func addImageByOrder(id: Int) {
-        imagePlaceholder.tap()
         imageDeviceButton.tap()
 
         // Allow access to device media

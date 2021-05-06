@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-31 11:54:07+0000 */
+/* Translation-Revision-Date: 2021-04-30 16:14:00+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -37,10 +37,10 @@
 "%1$d unseen posts" = "%1$d개의 보지 않은 글";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
-"%1$s transformed to %2$s" = "%1$s transformed to %2$s";
+"%1$s transformed to %2$s" = "%2$s(으)로 변형된 %1$s";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
-"%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s is %3$s %4$s.";
+"%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s은(는) %3$s %4$s입니다.";
 
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
 "%@ - %@, %@" = "%1$@ - %2$@, %3$@";
@@ -217,10 +217,10 @@
 "(no title)" = "(제목 없음)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
-"*Johann Brandt* responded to your post" = "*Johann Brandt* responded to your post";
+"*Johann Brandt* responded to your post" = "*요한 브란트*가 글에 답했습니다";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
-"*Madison Ruiz* liked your post" = "*Madison Ruiz* liked your post";
+"*Madison Ruiz* liked your post" = "*메디슨 루이즈*가 글을 좋아합니다";
 
 /* Menus button text for adding a new menu to a site. */
 "+ Add new menu" = "+ 새 메뉴 추가";
@@ -325,7 +325,7 @@
 "About" = "이 앱은";
 
 /* Link to About screen for Jetpack for iOS */
-"About Jetpack for iOS" = "About Jetpack for iOS";
+"About Jetpack for iOS" = "iOS용 젯팩 정보";
 
 /* My Profile 'About me' label */
 "About Me" = "내 소개";
@@ -759,7 +759,7 @@
 "Are you sure you want to update?" = "업데이트하시겠습니까?";
 
 /* An example tag used in the login prologue screens. */
-"Art" = "Art";
+"Art" = "예술";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "2018년 8월 1일 현재, 페이스북은 더 이상 페이스북 프로필에 직접 글 공유를 허용하지 않습니다. 페이스북 페이지에 대한 연결은 그대로 유지됩니다.";
@@ -1088,7 +1088,7 @@
 "Cancel media uploads" = "미디어 업로드 취소";
 
 /* No comment provided by engineer. */
-"Cancel search" = "Cancel search";
+"Cancel search" = "검색 취소";
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "공유 취소";
@@ -1230,7 +1230,7 @@
 "Choose a domain" = "도메인 선택하기";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
-"Choose a new app icon" = "Choose a new app icon";
+"Choose a new app icon" = "새 앱 아이콘 선택";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "테마 선택";
@@ -1308,7 +1308,7 @@
 "Clear all old activity logs?" = "이전 활동 기록 지우기";
 
 /* No comment provided by engineer. */
-"Clear search" = "Clear search";
+"Clear search" = "검색 지우기";
 
 /* Title of a button. */
 "Clear search history" = "검색 내역 삭제";
@@ -1359,7 +1359,7 @@
 "Collect information" = "정보 수집";
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
-"Colorful backgrounds" = "Colorful backgrounds";
+"Colorful backgrounds" = "화려한 배경";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "사진, 비디오, 그리고 문자를 조합하여 방문자에게 매력적이고 좋아할 수 있는 탭할 수 있는 이야기 글을 만드세요.";
@@ -1587,7 +1587,7 @@
 "Continuing with Apple" = "Apple 로 계속하기";
 
 /* An example tag used in the login prologue screens. */
-"Cooking" = "Cooking";
+"Cooking" = "요리";
 
 /* No comment provided by engineer. */
 "Copied block" = "복사된 블록";
@@ -1950,7 +1950,7 @@
 "Deny" = "거부하기";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Describe the purpose of the image. Leave empty if the image is purely decorative. ";
+"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "이미지의 용도를 설명합니다. 이미지가 장식용이면 비워 둡니다. ";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2553,13 +2553,13 @@
 "Failed Media Export" = "미디어 내보내기 실패";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "Failed to insert audio file.";
+"Failed to insert audio file." = "오디오 파일 삽입에 실패했습니다.";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "오디오 파일 삽입에 실패했습니다. 옵션을 보려면 누르세요.";
 
 /* No comment provided by engineer. */
-"Failed to insert media." = "Failed to insert media.";
+"Failed to insert media." = "미디어를 삽입하는 데 실패했습니다.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "미디어 삽입에 실패했습니다.\n 옵션을 보려면 탭하세요.";
@@ -2754,7 +2754,7 @@
 "Follows the tag." = "태그를 팔로우합니다.";
 
 /* An example tag used in the login prologue screens. */
-"Football" = "Football";
+"Football" = "축구";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "편의를 위해 워드프레스닷컴 연락처 정보를 미리 채웠습니다. 이 도메인에 사용하려는 정보가 정확한지 검토하여 확인하세요.";
@@ -2793,7 +2793,7 @@
 "Gallery caption. %s" = "갤러리 캡션. %s";
 
 /* An example tag used in the login prologue screens. */
-"Gardening" = "Gardening";
+"Gardening" = "원예";
 
 /* Add New Stats Card category title
    Title for the general section in site settings screen */
@@ -3360,7 +3360,7 @@
 "Left" = "좌측";
 
 /* Title displayed for selection of custom app icons that may be removed in a future release of the app. */
-"Legacy Icons" = "Legacy Icons";
+"Legacy Icons" = "기존 아이콘";
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "지원";
@@ -3372,7 +3372,7 @@
 "Light" = "밝음";
 
 /* Title displayed for selection of custom app icons that have white backgrounds. */
-"Light backgrounds" = "Light backgrounds";
+"Light backgrounds" = "밝은 배경";
 
 /* Like (verb)
    Like a post.
@@ -3836,7 +3836,7 @@
 "Moves the comment to the Trash." = "댓글을 휴지통으로 이동";
 
 /* An example tag used in the login prologue screens. */
-"Music" = "Music";
+"Music" = "음악";
 
 /* Link to My Profile section
    My Profile view title */
@@ -3897,7 +3897,7 @@
 "New Blocklist Word" = "새 차단 목록 단어";
 
 /* Title of alert informing users about the Reader Save for Later feature. */
-"New Custom App Icons" = "New Custom App Icons";
+"New Custom App Icons" = "새 사용자 정의 앱 아이콘";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "새 IP 또는 IP 범위";
@@ -4678,7 +4678,7 @@
 "Plugins" = "플러그인";
 
 /* An example tag used in the login prologue screens. */
-"Politics" = "Politics";
+"Politics" = "정치";
 
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
@@ -4874,7 +4874,7 @@
 "Problem displaying block" = "블록 표시 문제";
 
 /* Error message title informing the user that reader content could not be loaded. */
-"Problem loading content" = "Problem loading content";
+"Problem loading content" = "콘텐츠 로드 중 문제 발생";
 
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "Problem loading sites" = "사이트 로드 중 문제 발생";
@@ -5320,7 +5320,7 @@
 "Right" = "우측";
 
 /* Example Reader feed title */
-"Rock 'n Roll Weekly" = "Rock 'n Roll Weekly";
+"Rock 'n Roll Weekly" = "주간 락앤롤";
 
 /* Title. Indicates the user role an invite link is for.
    User Roles Title
@@ -5455,10 +5455,10 @@
 "Search WordPress\nfor a site or post" = "사이트나 게시물을 위한\n워드프레스 검색";
 
 /* No comment provided by engineer. */
-"Search block" = "Search block";
+"Search block" = "블록 검색";
 
 /* No comment provided by engineer. */
-"Search blocks" = "Search blocks";
+"Search blocks" = "블록 검색";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "검색하거나 URL 입력하기";
@@ -5825,7 +5825,7 @@
 "Siri Reset Prompt" = "Siri 단축키 제안 지우기";
 
 /* Header for a single site, shown in Notification user profile. */
-"Site" = "Site";
+"Site" = "사이트";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "사이트 아이콘";
@@ -5993,7 +5993,7 @@
 "Sorry, you may not use that site address." = "죄송합니다. 해당 사이트 주소는 사용할 수 없습니다.";
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
-"Sorry. The content could not be loaded." = "Sorry. The content could not be loaded.";
+"Sorry. The content could not be loaded." = "죄송합니다. 콘텐츠를 로드할 수 없습니다.";
 
 /* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
 "Sorry. The social service did not tell us which account could be used for sharing." = "죄송합니다. 소셜 서비스에서 공유에 사용할 수 있는 계정을 알려주지 않았습니다.";
@@ -6786,10 +6786,10 @@
 "Traffic" = "트래픽";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"Transform %s to" = "Transform %s to";
+"Transform %s to" = "다음으로 %s 변형";
 
 /* No comment provided by engineer. */
-"Transform block…" = "Transform block…";
+"Transform block…" = "블록 변형…";
 
 /* No comment provided by engineer. */
 "Translate" = "번역";
@@ -7651,7 +7651,7 @@
 "Web Display Settings" = "웹 표시 설정";
 
 /* Example Reader feed title */
-"Web News" = "Web News";
+"Web News" = "웹 뉴스";
 
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "시작 요일";
@@ -7703,7 +7703,7 @@
 "We’ve made some changes to your checklist" = "회원님의 체크리스트에 몇 가지 변경 사항이 있습니다.";
 
 /* Body text of alert informing users about the Reader Save for Later feature. */
-"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer.";
+"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "사용자 정의 앱 아이콘을 신선한 새 모양으로 업데이트했습니다. 새로운 10가지 스타일 중에서 선택하거나 원하면 기존 아이콘을 간단히 유지하실 수 있습니다.";
 
 /* This is the string we display when prompting the user to review the app */
 "What do you think about WordPress?" = "WordPress를 어떻게 생각하시나요?";
@@ -7712,7 +7712,7 @@
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "이 파일로 무엇을 하고 싶으신가요? 파일을 업로드하고 파일의 링크를 글에 추가하거나, 파일 콘텐츠를 글에 직접 추가하시겠습니까?";
 
 /* No comment provided by engineer. */
-"What is alt text?" = "What is alt text?";
+"What is alt text?" = "대체 텍스트란 무엇인가요?";
 
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "What was the problem?";
@@ -7996,7 +7996,7 @@
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "게시물을 게시하려면 먼저 계정을 확인해야 합니다.\n걱정하지 마세요. 작성한 게시물은 안전하게 임시글로 저장됩니다.";
 
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
-"You received *50 likes* on your site today" = "You received *50 likes* on your site today";
+"You received *50 likes* on your site today" = "*50 likes* on your site today개 받음";
 
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
@@ -8150,7 +8150,7 @@
 "doesn’t it feel good to cross things off a list?" = "목록에서 끝난 일을 지우는 건 항상 기분 좋은 일이죠.";
 
 /* No comment provided by engineer. */
-"double-tap to change unit" = "double-tap to change unit";
+"double-tap to change unit" = "두 번 눌러 단위 변경하기";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "예: 1122334455";

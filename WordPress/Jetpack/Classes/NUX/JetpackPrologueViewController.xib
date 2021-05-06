@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait" appearance="dark"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JetpackPrologueViewController" customModule="WordPress" customModuleProvider="target">
+            <connections>
+                <outlet property="stackView" destination="c4I-Pt-bJk" id="14z-Ah-E54"/>
+                <outlet property="titleLabel" destination="BiF-BR-kOe" id="ytZ-Zk-ifP"/>
+                <outlet property="view" destination="iN0-l3-epB" id="Sm5-nF-1Uo"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="c4I-Pt-bJk">
+                    <rect key="frame" x="32" y="218" width="350" height="153"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="prologue-logo" translatesAutoresizingMaskIntoConstraints="NO" id="c17-CD-Ryj">
+                            <rect key="frame" x="75" y="0.0" width="200" height="105"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="ec0-nX-dEq"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BiF-BR-kOe">
+                            <rect key="frame" x="37" y="105" width="276.33333333333331" height="48"/>
+                            <string key="text">Site security and performance
+from your pocket</string>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="c4I-Pt-bJk" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="32" id="3Rn-Ua-Uaa"/>
+                <constraint firstAttribute="trailing" secondItem="c4I-Pt-bJk" secondAttribute="trailing" constant="32" id="elB-ly-0IH"/>
+                <constraint firstItem="BiF-BR-kOe" firstAttribute="height" relation="lessThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.5" id="kzT-qs-J2q"/>
+                <constraint firstItem="c4I-Pt-bJk" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" multiplier="0.8" id="plP-QZ-YT9"/>
+            </constraints>
+            <point key="canvasLocation" x="139" y="149"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="prologue-logo" width="386" height="105"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

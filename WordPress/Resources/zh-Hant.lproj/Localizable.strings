@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-31 09:54:08+0000 */
+/* Translation-Revision-Date: 2021-04-30 16:01:20+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -37,10 +37,10 @@
 "%1$d unseen posts" = "%1$d 篇還沒看過的文章";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
-"%1$s transformed to %2$s" = "%1$s transformed to %2$s";
+"%1$s transformed to %2$s" = "%1$s 已轉換為 %2$s";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
-"%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s is %3$s %4$s.";
+"%1$s. %2$s is %3$s %4$s." = "%1$s。%2$s 是 %3$s %4$s。";
 
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
 "%@ - %@, %@" = "%3$@ 年，%1$@到 %2$@";
@@ -217,10 +217,10 @@
 "(no title)" = "(無標題)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
-"*Johann Brandt* responded to your post" = "*Johann Brandt* responded to your post";
+"*Johann Brandt* responded to your post" = "*Johan Brandt* 已回應你的文章";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
-"*Madison Ruiz* liked your post" = "*Madison Ruiz* liked your post";
+"*Madison Ruiz* liked your post" = "*Madison Ruiz* 已對你的文章按讚";
 
 /* Menus button text for adding a new menu to a site. */
 "+ Add new menu" = "+ 新增選單";
@@ -325,7 +325,7 @@
 "About" = " 關於";
 
 /* Link to About screen for Jetpack for iOS */
-"About Jetpack for iOS" = "About Jetpack for iOS";
+"About Jetpack for iOS" = "關於 iOS 版 Jetpack";
 
 /* My Profile 'About me' label */
 "About Me" = "關於我";
@@ -759,7 +759,7 @@
 "Are you sure you want to update?" = "是否確定要更新？";
 
 /* An example tag used in the login prologue screens. */
-"Art" = "Art";
+"Art" = "藝術";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Facebook 自 2018 年 8 月 1 日起將禁止直接將文章分享至 Facebook 個人檔案。與 Facebook 粉絲專頁的連結將不受影響。";
@@ -1088,7 +1088,7 @@
 "Cancel media uploads" = "取消媒體上傳";
 
 /* No comment provided by engineer. */
-"Cancel search" = "Cancel search";
+"Cancel search" = "取消搜尋";
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "取消分享";
@@ -1230,7 +1230,7 @@
 "Choose a domain" = "選擇網域";
 
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
-"Choose a new app icon" = "Choose a new app icon";
+"Choose a new app icon" = "選擇新的應用程式圖示";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "選擇佈景主題";
@@ -1308,7 +1308,7 @@
 "Clear all old activity logs?" = "是否清除所有舊活動記錄？";
 
 /* No comment provided by engineer. */
-"Clear search" = "Clear search";
+"Clear search" = "清除搜尋";
 
 /* Title of a button. */
 "Clear search history" = "清除搜尋記錄";
@@ -1359,7 +1359,7 @@
 "Collect information" = "收集資訊";
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
-"Colorful backgrounds" = "Colorful backgrounds";
+"Colorful backgrounds" = "彩色背景";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "結合相片、視訊和文字，建立吸睛又可點按的限時動態，你的訪客一定會喜歡。";
@@ -1587,7 +1587,7 @@
 "Continuing with Apple" = "繼續使用 Apple";
 
 /* An example tag used in the login prologue screens. */
-"Cooking" = "Cooking";
+"Cooking" = "烹飪";
 
 /* No comment provided by engineer. */
 "Copied block" = "複製的區塊";
@@ -1950,7 +1950,7 @@
 "Deny" = "拒絕";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Describe the purpose of the image. Leave empty if the image is purely decorative. ";
+"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "說明圖片用途。 如果圖片只是為了裝飾，請保留空白。 ";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2553,13 +2553,13 @@
 "Failed Media Export" = "無法匯出媒體";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "Failed to insert audio file.";
+"Failed to insert audio file." = "無法插入音訊檔案。";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "無法插入音訊檔案。 請點選以顯示選項。";
 
 /* No comment provided by engineer. */
-"Failed to insert media." = "Failed to insert media.";
+"Failed to insert media." = "無法插入媒體。";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "未能添加媒體\n請輕觸螢幕查看其他選項。";
@@ -2754,7 +2754,7 @@
 "Follows the tag." = "關注此標籤。";
 
 /* An example tag used in the login prologue screens. */
-"Football" = "Football";
+"Football" = "橄欖球";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "為了方便起見，我們已預先填入你的 WordPress.com 聯絡人資訊。請檢視各項資訊，以確認這是你想要用於此網域的正確資訊。";
@@ -2793,7 +2793,7 @@
 "Gallery caption. %s" = "圖庫標題。%s";
 
 /* An example tag used in the login prologue screens. */
-"Gardening" = "Gardening";
+"Gardening" = "園藝";
 
 /* Add New Stats Card category title
    Title for the general section in site settings screen */
@@ -3360,7 +3360,7 @@
 "Left" = "靠左";
 
 /* Title displayed for selection of custom app icons that may be removed in a future release of the app. */
-"Legacy Icons" = "Legacy Icons";
+"Legacy Icons" = "舊版圖示";
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "我們樂意協助";
@@ -3372,7 +3372,7 @@
 "Light" = "淡色系";
 
 /* Title displayed for selection of custom app icons that have white backgrounds. */
-"Light backgrounds" = "Light backgrounds";
+"Light backgrounds" = "淺色背景";
 
 /* Like (verb)
    Like a post.
@@ -3836,7 +3836,7 @@
 "Moves the comment to the Trash." = "將留言移至垃圾桶。";
 
 /* An example tag used in the login prologue screens. */
-"Music" = "Music";
+"Music" = "音樂";
 
 /* Link to My Profile section
    My Profile view title */
@@ -3897,7 +3897,7 @@
 "New Blocklist Word" = "新增封鎖清單字詞";
 
 /* Title of alert informing users about the Reader Save for Later feature. */
-"New Custom App Icons" = "New Custom App Icons";
+"New Custom App Icons" = "全新自訂應用程式圖示";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "新IP或IP範圍";
@@ -4678,7 +4678,7 @@
 "Plugins" = "外掛程式";
 
 /* An example tag used in the login prologue screens. */
-"Politics" = "Politics";
+"Politics" = "政治";
 
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
@@ -4874,7 +4874,7 @@
 "Problem displaying block" = "顯示區塊時發生問題";
 
 /* Error message title informing the user that reader content could not be loaded. */
-"Problem loading content" = "Problem loading content";
+"Problem loading content" = "載入內容時發生問題";
 
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "Problem loading sites" = "載入網站時發生問題";
@@ -5320,7 +5320,7 @@
 "Right" = "靠右";
 
 /* Example Reader feed title */
-"Rock 'n Roll Weekly" = "Rock 'n Roll Weekly";
+"Rock 'n Roll Weekly" = "搖滾週刊";
 
 /* Title. Indicates the user role an invite link is for.
    User Roles Title
@@ -5455,10 +5455,10 @@
 "Search WordPress\nfor a site or post" = "Search WordPress\nfor a site or post";
 
 /* No comment provided by engineer. */
-"Search block" = "Search block";
+"Search block" = "搜尋區塊";
 
 /* No comment provided by engineer. */
-"Search blocks" = "Search blocks";
+"Search blocks" = "搜尋區塊";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "搜尋或輸入 URL";
@@ -5825,7 +5825,7 @@
 "Siri Reset Prompt" = "清除 Siri 快速鍵建議";
 
 /* Header for a single site, shown in Notification user profile. */
-"Site" = "Site";
+"Site" = "網站";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "網站圖示";
@@ -5993,7 +5993,7 @@
 "Sorry, you may not use that site address." = "很抱歉，你不可使用該網站位址。";
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
-"Sorry. The content could not be loaded." = "Sorry. The content could not be loaded.";
+"Sorry. The content could not be loaded." = "很抱歉。 無法載入內容。";
 
 /* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
 "Sorry. The social service did not tell us which account could be used for sharing." = "很抱歉，社交服務並未顯示哪個帳號可用於分享。";
@@ -6786,10 +6786,10 @@
 "Traffic" = "流量";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"Transform %s to" = "Transform %s to";
+"Transform %s to" = "將 %s 轉換為";
 
 /* No comment provided by engineer. */
-"Transform block…" = "Transform block…";
+"Transform block…" = "轉換區塊…";
 
 /* No comment provided by engineer. */
 "Translate" = "翻譯";
@@ -7651,7 +7651,7 @@
 "Web Display Settings" = "網頁顯示設定";
 
 /* Example Reader feed title */
-"Web News" = "Web News";
+"Web News" = "網路新聞";
 
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "每週開始於";
@@ -7703,7 +7703,7 @@
 "We’ve made some changes to your checklist" = "我們已稍微更動你的檢查清單";
 
 /* Body text of alert informing users about the Reader Save for Later feature. */
-"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer.";
+"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "我們更新了自訂應用程式圖示，現在自訂應用程式有全新樣貌。 有 10 種新樣式可供選擇；你也可以繼續使用現有圖示。";
 
 /* This is the string we display when prompting the user to review the app */
 "What do you think about WordPress?" = "你覺得 WordPress 如何？";
@@ -7712,7 +7712,7 @@
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "你想要對這個檔案執行什麼動作：上傳檔案，並將該檔案的連結加入你的文章之中；或是將檔案內容直接新增至你的文章之中？";
 
 /* No comment provided by engineer. */
-"What is alt text?" = "What is alt text?";
+"What is alt text?" = "替代文字是什麼？";
 
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "問題為何？";
@@ -7996,7 +7996,7 @@
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft.";
 
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
-"You received *50 likes* on your site today" = "You received *50 likes* on your site today";
+"You received *50 likes* on your site today" = "你已收到 *50 likes* on your site today";
 
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
@@ -8150,7 +8150,7 @@
 "doesn’t it feel good to cross things off a list?" = "清單中又少了一件事情，感覺不錯吧！";
 
 /* No comment provided by engineer. */
-"double-tap to change unit" = "double-tap to change unit";
+"double-tap to change unit" = "點兩下即可變更單位";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "例如：1122334455";

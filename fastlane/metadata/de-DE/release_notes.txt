@@ -1,0 +1,3 @@
+In dieser Version wird ein neuer Block vorgestellt – Jetpack Kontaktinfo. Er eignet sich hervorragend, um formatierte Adressen auf deiner Website sauber anzuzeigen. Außerdem haben wir ein paar schicke neue App-Icons eingeführt, mit denen du den Look der App auf deiner Startseite individuell gestalten kannst.
+
+Wir haben ein paar raffinierte Änderungen vorgenommen! Wir haben den Website-Schnellzugriff vom Editor entfernt, damit du deine Beiträge einfacher posten kannst, und den Fehler behoben, der dazu führte, dass die Namen der Autoren nicht angezeigt wurden. Außerdem haben wir die VoiceOver-Unterstützung für den Spaltenblock verbessert und dafür gesorgt, dass Alt-Text jetzt leichter zu einem Bildblock hinzugefügt werden kann.
