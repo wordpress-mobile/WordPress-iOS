@@ -5,7 +5,7 @@ import Aztec
 import WordPressFlux
 import Kanvas
 
-class GutenbergViewController: UIViewController, PostEditor {
+class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate {
 
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
@@ -497,6 +497,10 @@ class GutenbergViewController: UIViewController, PostEditor {
                 self?.gutenberg.updateCapabilities()
             }
         }
+    }
+
+    func gutenbergDidRequestFeaturedImageId(_ mediaID: NSNumber) {
+        gutenberg.featuredImageIdNativeUpdated(mediaId: Int32(truncating: mediaID))
     }
 
     // MARK: - Event handlers
@@ -1024,6 +1028,10 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
 
     func gutenbergInitialTitle() -> String? {
         return post.postTitle ?? ""
+    }
+
+    func gutenbergFeaturedImageId() -> NSNumber? {
+        return post.featuredImage?.mediaID
     }
 
     func gutenbergPostType() -> String {
