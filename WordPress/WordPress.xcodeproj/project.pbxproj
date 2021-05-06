@@ -2502,6 +2502,10 @@
 		FA4104D226393F2700E90EBF /* JetpackBackupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4104BE26393F1A00E90EBF /* JetpackBackupScreen.swift */; };
 		FA41070E263957C000E90EBF /* JetpackBackupOptionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41070D263957C000E90EBF /* JetpackBackupOptionsScreen.swift */; };
 		FA4107212639581C00E90EBF /* JetpackBackupOptionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41070D263957C000E90EBF /* JetpackBackupOptionsScreen.swift */; };
+		FA4108D4263A2D1700E90EBF /* ActivityLogScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */; };
+		FA4108E7263A2D1A00E90EBF /* JetpackScanScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4104732639393700E90EBF /* JetpackScanScreen.swift */; };
+		FA4108FA263A2D1F00E90EBF /* JetpackBackupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4104BE26393F1A00E90EBF /* JetpackBackupScreen.swift */; };
+		FA4108FB263A2D2200E90EBF /* JetpackBackupOptionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41070D263957C000E90EBF /* JetpackBackupOptionsScreen.swift */; };
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
 		FA4F65A72594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */; };
@@ -17789,16 +17793,19 @@
 				F9C47A78238C7DAC00AAD9ED /* BaseScreen.swift in Sources */,
 				F9C47A80238C7DC100AAD9ED /* BlockEditorScreen.swift in Sources */,
 				F9C47A82238C7DC100AAD9ED /* EditorPostSettings.swift in Sources */,
+				FA4108FB263A2D2200E90EBF /* JetpackBackupOptionsScreen.swift in Sources */,
 				F98C58192228849E0073D752 /* XCTest+Extensions.swift in Sources */,
 				F9C47A84238C7DC500AAD9ED /* SignupEmailScreen.swift in Sources */,
 				CCBC9EB4251258FB008E1D5F /* WPUITestCredentials.swift in Sources */,
 				F9C47A87238C7DF100AAD9ED /* MediaPickerAlbumListScreen.swift in Sources */,
 				F97DA42123D67BBB0050E791 /* MediaScreen.swift in Sources */,
 				F9C47A77238C7D8800AAD9ED /* LoginEpilogueScreen.swift in Sources */,
+				FA4108E7263A2D1A00E90EBF /* JetpackScanScreen.swift in Sources */,
 				CCBC9EB02512446F008E1D5F /* GetStartedScreen.swift in Sources */,
 				F9C47A7C238C7DAC00AAD9ED /* NotificationsScreen.swift in Sources */,
 				CCBC9EB225124474008E1D5F /* PasswordScreen.swift in Sources */,
 				F9C47A6B238C7CFD00AAD9ED /* LoginFlow.swift in Sources */,
+				FA4108D4263A2D1700E90EBF /* ActivityLogScreen.swift in Sources */,
 				F9C47A8D238C809700AAD9ED /* PostsScreen.swift in Sources */,
 				F9C47A6F238C7D8800AAD9ED /* WelcomeScreenLoginComponent.swift in Sources */,
 				F9C47A70238C7D8800AAD9ED /* WelcomeScreen.swift in Sources */,
@@ -17814,6 +17821,7 @@
 				1AED7239229D2E260036C5B8 /* WireMock.swift in Sources */,
 				F9C47A8A238C7E2600AAD9ED /* TagsComponent.swift in Sources */,
 				F9C47A81238C7DC100AAD9ED /* EditorNoticeComponent.swift in Sources */,
+				FA4108FA263A2D1F00E90EBF /* JetpackBackupScreen.swift in Sources */,
 				F9C47A74238C7D8800AAD9ED /* LoginCheckMagicLinkScreen.swift in Sources */,
 				F9C47A89238C7E2600AAD9ED /* CategoriesComponent.swift in Sources */,
 				F9C47A7B238C7DAC00AAD9ED /* SiteSettingsScreen.swift in Sources */,
