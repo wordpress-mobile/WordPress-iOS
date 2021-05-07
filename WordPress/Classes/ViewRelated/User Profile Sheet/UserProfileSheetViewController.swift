@@ -12,6 +12,8 @@ class UserProfileSheetViewController: UITableViewController {
         return DefaultContentCoordinator(controller: self, context: mainContext)
     }()
 
+    private let contentSizeKeyPath = "contentSize"
+
     // MARK: - Init
 
     init(user: LikeUser) {
@@ -29,6 +31,29 @@ class UserProfileSheetViewController: UITableViewController {
         super.viewDidLoad()
         configureTable()
         registerTableCells()
+
+        tableView.addObserver(self, forKeyPath: contentSizeKeyPath, options: .new, context: nil)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        tableView.removeObserver(self, forKeyPath: contentSizeKeyPath)
+        super.viewWillDisappear(animated)
+    }
+
+    // Update preferredContentSize when the table size changes
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+        guard keyPath == contentSizeKeyPath else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
+
+        guard !UIDevice.isPad(),
+              let newSize = change?[.newKey] as? CGSize else {
+            return
+        }
+
+        preferredContentSize = newSize
+        presentedVC?.presentedView?.layoutIfNeeded()
     }
 
     // We are using intrinsicHeight as the view's collapsedHeight which is calculated from the preferredContentSize.
@@ -37,8 +62,7 @@ class UserProfileSheetViewController: UITableViewController {
             // no-op, but is needed to override the property.
         }
         get {
-            return UIDevice.isPad() ? Constants.iPadPreferredContentSize :
-                                      Constants.iPhonePreferredContentSize
+            return UIDevice.isPad() ? Constants.iPadPreferredContentSize : tableView.contentSize
         }
     }
 
@@ -53,6 +77,7 @@ extension UserProfileSheetViewController: DrawerPresentable {
             return .maxHeight
         }
 
+        tableView.layoutIfNeeded()
         return .intrinsicHeight
     }
 
@@ -200,7 +225,6 @@ private extension UserProfileSheetViewController {
         static let userInfoSection = 0
         static let siteSectionTitle = NSLocalizedString("Site", comment: "Header for a single site, shown in Notification user profile.").localizedUppercase
         static let iPadPreferredContentSize = CGSize(width: 300.0, height: 270.0)
-        static let iPhonePreferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: 280.0)
     }
 
 }
