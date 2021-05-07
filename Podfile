@@ -55,9 +55,9 @@ def wordpress_kit
 end
 
 def kanvas
-  pod 'Kanvas', '~> 1.2.7'
+  #pod 'Kanvas', '~> 1.2.6'
   #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
-  #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
+  pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => '9daac5f'
   #pod 'Kanvas', :path => '../Kanvas-iOS'
 end
 
