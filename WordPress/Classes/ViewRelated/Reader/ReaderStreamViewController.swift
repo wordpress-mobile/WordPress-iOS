@@ -185,7 +185,7 @@ import WordPressFlux
     /// Indicates where the view was shown from.
     enum StatSource: String {
         case reader
-        case user_profile
+        case notif_like_list_user_profile
     }
     var statSource: StatSource = .reader
 
