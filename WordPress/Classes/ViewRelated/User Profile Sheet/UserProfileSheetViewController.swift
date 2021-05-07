@@ -3,6 +3,7 @@ class UserProfileSheetViewController: UITableViewController {
     // MARK: - Properties
 
     private let user: LikeUser
+    private let statSource = ReaderStreamViewController.StatSource.notif_like_list_user_profile
 
     private lazy var mainContext = {
         return ContextManager.sharedInstance().mainContext
@@ -144,13 +145,12 @@ private extension UserProfileSheetViewController {
 
     func showSiteTopicWithID(_ siteID: NSNumber) {
         let controller = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: false)
-        controller.statSource = ReaderStreamViewController.StatSource.user_profile
+        controller.statSource = statSource
         let navController = UINavigationController(rootViewController: controller)
         present(navController, animated: true)
     }
 
     func showSiteWebView(withUrl url: String?) {
-
         guard let urlString = url,
               !urlString.isEmpty,
               let siteURL = URL(string: urlString) else {
@@ -158,8 +158,9 @@ private extension UserProfileSheetViewController {
             return
         }
 
-    contentCoordinator.displayWebViewWithURL(siteURL)
-}
+        WPAnalytics.track(.blogUrlPreviewed, properties: ["source": statSource.rawValue])
+        contentCoordinator.displayWebViewWithURL(siteURL)
+    }
 
     func configureTable() {
         tableView.backgroundColor = .basicBackground
