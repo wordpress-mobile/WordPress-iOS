@@ -176,6 +176,8 @@ extern NSString *const WPBlogUpdatedNotification;
 
 - (NSArray *)blogsWithPredicate:(NSPredicate *)predicate;
 
+- (NSInteger)blogCountWithPredicate:(NSPredicate *)predicate;
+
 /**
  Returns every stored blog, arranged in a Dictionary by blogId.
  */

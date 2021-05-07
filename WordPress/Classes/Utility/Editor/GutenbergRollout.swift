@@ -29,7 +29,7 @@ struct GutenbergRollout {
     }
 
     private func atLeastOneSiteHasAztecEnabled() -> Bool {
-        let allBlogs = BlogService(managedObjectContext: context).blogsForAllAccounts()
-        return allBlogs.contains { $0.editor == .aztec }
+        let predicate = NSPredicate(format: "mobileEditor == %@", "aztec")
+        return BlogService(managedObjectContext: context).blogCount(with: predicate) > 0
     }
 }
