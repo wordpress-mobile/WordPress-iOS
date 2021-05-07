@@ -41,7 +41,7 @@ class GutenbergSettings {
     }
 
     convenience init() {
-        self.init(database: UserDefaults() as KeyValueDatabase)
+        self.init(database: UserDefaults.standard as KeyValueDatabase)
     }
 
     // MARK: Public accessors
