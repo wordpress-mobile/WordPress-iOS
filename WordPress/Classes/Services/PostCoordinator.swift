@@ -141,6 +141,11 @@ class PostCoordinator: NSObject {
             trackObserver(receipt: uuid, for: post)
 
             return
+        } else {
+            // Ensure that all media references are up to date
+            post.media.forEach { media in
+                self.updateReferences(to: media, in: post)
+            }
         }
 
         completion(.success(post))
