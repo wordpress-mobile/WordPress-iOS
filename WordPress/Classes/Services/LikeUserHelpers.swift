@@ -23,6 +23,7 @@ import Foundation
         likeUser.likedPostID = remoteUser.likedPostID?.int64Value ?? 0
         likeUser.likedCommentID = remoteUser.likedCommentID?.int64Value ?? 0
         likeUser.preferredBlog = createPreferredBlogFrom(remotePreferredBlog: remoteUser.preferredBlog, forUser: likeUser, context: context)
+        likeUser.dateFetched = Date()
     }
 
     private class func createPreferredBlogFrom(remotePreferredBlog: RemoteLikeUserPreferredBlog?,
