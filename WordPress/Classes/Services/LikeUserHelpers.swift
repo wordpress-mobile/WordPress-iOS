@@ -44,4 +44,31 @@ import Foundation
         return preferredBlog
     }
 
+    class func purgeStaleLikes() {
+        let derivedContext = ContextManager.shared.newDerivedContext()
+
+        derivedContext.perform {
+            purgeStaleLikes(fromContext: derivedContext)
+            ContextManager.shared.save(derivedContext)
+        }
+    }
+
+    // Delete all LikeUsers that were last fetched at least 7 days ago.
+    private class func purgeStaleLikes(fromContext context: NSManagedObjectContext) {
+        guard let staleDate = Calendar.current.date(byAdding: .day, value: -7, to: Date()) else {
+            DDLogError("Error creating date to purge stale Likes.")
+            return
+        }
+
+        let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
+        request.predicate = NSPredicate(format: "dateFetched <= %@", staleDate as CVarArg)
+
+        do {
+            let users = try context.fetch(request)
+            users.forEach { context.delete($0) }
+        } catch {
+            DDLogError("Error fetching Like Users: \(error)")
+        }
+    }
+
 }

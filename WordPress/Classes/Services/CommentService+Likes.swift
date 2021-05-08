@@ -28,6 +28,8 @@ extension CommentService {
             DDLogError(String(describing: error))
             failure(error)
         }
+
+        LikeUserHelper.purgeStaleLikes()
     }
 
 }
