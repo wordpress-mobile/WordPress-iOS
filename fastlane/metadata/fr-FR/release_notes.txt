@@ -1,3 +1,0 @@
-Un nouveau bloc est disponible avec cette version : les coordonnées Jetpack. It's perfect for displaying a nicely formatted address on your site. We've also introduced some spiffy new app icons you can use to customize how the app looks on your home screen.
-
-We've got some nifty tweaks to tell you about ! We've removed the site switcher from the editor to simplify posting, fixed a bug where author names weren't visible, improved VoiceOver support for the columns block, and made it easier to add alt text to an image block.
