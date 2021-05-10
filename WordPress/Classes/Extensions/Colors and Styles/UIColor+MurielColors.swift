@@ -287,7 +287,7 @@ extension UIColor {
             return .secondaryButtonDownBackground
         }
 
-        return UIColor(light: .black, dark: .white).withAlphaComponent(0.2)
+        return UIColor(light: .black, dark: .white).withAlphaComponent(0.17)
     }
 
     // MARK: - Others
