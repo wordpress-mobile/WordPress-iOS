@@ -57,6 +57,7 @@ extension UserProfileSheetViewController: DrawerPresentable {
             return .maxHeight
         }
 
+        // Force the table layout to update so the Bottom Sheet gets the right height.
         tableView.layoutIfNeeded()
         return .intrinsicHeight
     }
