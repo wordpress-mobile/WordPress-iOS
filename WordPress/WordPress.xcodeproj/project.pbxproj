@@ -23192,7 +23192,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = wpdebug;
+				WPCOM_SCHEME = jpdebug;
 			};
 			name = Debug;
 		};
@@ -23259,7 +23259,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = wordpress;
+				WPCOM_SCHEME = jetpack;
 			};
 			name = Release;
 		};
@@ -23327,7 +23327,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = wpinternal;
+				WPCOM_SCHEME = jpinternal;
 			};
 			name = "Release-Internal";
 		};
@@ -23395,7 +23395,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = wpalpha;
+				WPCOM_SCHEME = jpalpha;
 			};
 			name = "Release-Alpha";
 		};
