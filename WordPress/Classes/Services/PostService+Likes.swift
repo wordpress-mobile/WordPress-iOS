@@ -23,13 +23,12 @@ extension PostService {
             self.createNewUsers(from: remoteLikeUsers, postID: postID, siteID: siteID) {
                 let users = self.likeUsersFor(postID: postID, siteID: siteID)
                 success(users)
+                LikeUserHelper.purgeStaleLikes()
             }
         } failure: { error in
             DDLogError(String(describing: error))
             failure(error)
         }
-
-        LikeUserHelper.purgeStaleLikes()
     }
 
 }

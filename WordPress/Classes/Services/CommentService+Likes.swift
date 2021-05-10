@@ -23,13 +23,12 @@ extension CommentService {
             self.createNewUsers(from: remoteLikeUsers, commentID: commentID, siteID: siteID) {
                 let users = self.likeUsersFor(commentID: commentID, siteID: siteID)
                 success(users)
+                LikeUserHelper.purgeStaleLikes()
             }
         } failure: { error in
             DDLogError(String(describing: error))
             failure(error)
         }
-
-        LikeUserHelper.purgeStaleLikes()
     }
 
 }
