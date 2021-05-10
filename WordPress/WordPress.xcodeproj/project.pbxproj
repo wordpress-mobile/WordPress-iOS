@@ -20165,7 +20165,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = q;
+				MARKETING_VERSION = "$(VERSION_SHORT)";
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-format-security",
@@ -20232,7 +20232,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = q;
+				MARKETING_VERSION = "$(VERSION_SHORT)";
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-format-security",
@@ -21368,7 +21368,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = q;
+				MARKETING_VERSION = "$(VERSION_SHORT)";
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-format-security",
@@ -21872,7 +21872,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = q;
+				MARKETING_VERSION = "$(VERSION_SHORT)";
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-format-security",
