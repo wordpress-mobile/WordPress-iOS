@@ -10,6 +10,9 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
     private var service: AccountSettingsService?
     private var isSearching: Bool = false
     private var selectedCell: UITableViewCell?
+    // adapt suggestion cell layout
+    var suggestionCellNumberOfLines = 1
+    var suggestionCellLineBreakMode: NSLineBreakMode = .byTruncatingTail
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -197,8 +200,13 @@ extension SignupUsernameTableViewController {
 
         cell.textLabel?.text = username
         cell.textLabel?.textColor = .neutral(.shade70)
+
+        cell.textLabel?.numberOfLines = suggestionCellNumberOfLines
+        cell.textLabel?.lineBreakMode = suggestionCellLineBreakMode
+
         cell.indentationWidth = SuggestionStyles.indentationWidth
         cell.indentationLevel = SuggestionStyles.indentationLevel
+
         if checked {
             cell.accessoryType = .checkmark
         }
