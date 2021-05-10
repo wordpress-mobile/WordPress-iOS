@@ -12,8 +12,6 @@ class UserProfileSheetViewController: UITableViewController {
         return DefaultContentCoordinator(controller: self, context: mainContext)
     }()
 
-    private let contentSizeKeyPath = "contentSize"
-
     // MARK: - Init
 
     init(user: LikeUser) {
@@ -31,28 +29,10 @@ class UserProfileSheetViewController: UITableViewController {
         super.viewDidLoad()
         configureTable()
         registerTableCells()
-
-        tableView.addObserver(self, forKeyPath: contentSizeKeyPath, options: .new, context: nil)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        tableView.removeObserver(self, forKeyPath: contentSizeKeyPath)
-        super.viewWillDisappear(animated)
-    }
-
-    // Update preferredContentSize when the table size changes
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        guard keyPath == contentSizeKeyPath else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-            return
-        }
-
-        guard !UIDevice.isPad(),
-              let newSize = change?[.newKey] as? CGSize else {
-            return
-        }
-
-        preferredContentSize = newSize
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         presentedVC?.presentedView?.layoutIfNeeded()
     }
 
