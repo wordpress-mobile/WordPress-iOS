@@ -53,9 +53,14 @@ struct JetpackAuthenticationManager: AuthenticationHandler {
             return false
         }
 
+        // Exit out of the sign in process, if we don't do this we later can't
+        // display the sign in again
+        windowManager.dismissFullscreenSignIn()
+
+        // Display the no sites view
         let viewModel = JetpackNoSitesErrorViewModel()
         let controller = errorViewController(with: viewModel)
-        navigationController.pushViewController(controller, animated: true)
+        windowManager.show(controller, completion: nil)
 
         return true
     }
@@ -65,13 +70,6 @@ struct JetpackAuthenticationManager: AuthenticationHandler {
         return site.hasJetpack &&
             site.isJetpackConnected &&
             site.isJetpackActive
-    }
-
-    private func hasJetpackSites() -> Bool {
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-
-        return blogService.blogCountForAllAccounts() > 0
     }
 
     private func errorViewController(with model: JetpackErrorViewModel) -> JetpackLoginErrorViewController {
