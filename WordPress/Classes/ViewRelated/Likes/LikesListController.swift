@@ -97,16 +97,39 @@ class LikesListController: NSObject {
         // shows the loading cell and prevents double refresh.
         isLoadingContent = true
 
-        fetchLikes(success: { [weak self] users in
+        let successBlock: ([LikeUser]) -> Void = { [weak self] users in
             self?.likingUsers = users
             self?.isLoadingContent = false
-        }, failure: { [weak self] _ in
+        }
+
+        let failureBlock: (Error?) -> Void = { [weak self] _ in
             // TODO: Handle error state
             self?.isLoadingContent = false
-        })
+        }
+
+        fetchStoredLikes(success: successBlock, failure: failureBlock)
+        fetchLikes(success: successBlock, failure: failureBlock)
     }
 
-    /// Convenient method that fetches likes data depending on the notification's content type.
+    /// Fetch Likes from Core Data depending on the notification's content type.
+    /// - Parameters:
+    ///   - success: Closure to be called when the fetch is successful.
+    ///   - failure: Closure to be called when the fetch failed.
+    private func fetchStoredLikes(success: @escaping ([LikeUser]) -> Void, failure: @escaping (Error?) -> Void) {
+
+        let users: [LikeUser]
+
+        switch content {
+        case .post(let postID):
+            users = postService.likeUsersFor(postID: postID, siteID: siteID)
+        case .comment(let commentID):
+            users = commentService.likeUsersFor(commentID: commentID, siteID: siteID)
+        }
+
+        success(users)
+    }
+
+    /// Fetch Likes depending on the notification's content type.
     /// - Parameters:
     ///   - success: Closure to be called when the fetch is successful.
     ///   - failure: Closure to be called when the fetch failed.
