@@ -1,6 +1,7 @@
 17.4
 -----
 * [**] A new author can be chosen for Posts and Pages on multi-author sites. [#16281]
+* [*] The Menus configuration is removed from the Site Details Screen. [#16413]
 
 
 17.3
