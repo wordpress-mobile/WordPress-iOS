@@ -956,9 +956,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatMediaServiceUploadCanceled:
             eventName = @"media_service_upload_canceled";
             break;
-        case WPAnalyticsStatMenusAccessed:
-            eventName = @"menus_accessed";
-            break;
         case WPAnalyticsStatMenusCreatedItem:
             eventName = @"menus_created_item";
             break;

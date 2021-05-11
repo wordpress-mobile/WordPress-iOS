@@ -12,7 +12,6 @@
 #import "WPAppAnalytics.h"
 #import "WPGUIConstants.h"
 #import "WordPress-Swift.h"
-#import "MenusViewController.h"
 #import <Reachability/Reachability.h>
 #import <WordPressShared/WPTableViewCell.h>
 
@@ -925,13 +924,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         row.quickStartIdentifier = QuickStartTourElementThemes;
         [rows addObject:row];
     }
-    if ([self.blog supports:BlogFeatureMenus]) {
-        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Menus", @"Menus option in the blog details")
-                                                        image:[[UIImage gridiconOfType:GridiconTypeMenus] imageFlippedForRightToLeftLayoutDirection]
-                                                     callback:^{
-                                                         [weakSelf showMenus];
-                                                     }]];
-    }
     NSString *title =NSLocalizedString(@"Personalize", @"Section title for the personalize table section in the blog details screen.");
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryPersonalize];
 }
@@ -1763,16 +1755,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self showDetailViewController:viewController sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementThemes];
-}
-
-- (void)showMenus
-{
-    [WPAppAnalytics track:WPAnalyticsStatMenusAccessed withBlog:self.blog];
-    MenusViewController *viewController = [MenusViewController controllerWithBlog:self.blog];
-    viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-    [self showDetailViewController:viewController sender:self];
-
-    [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
 - (void)showViewSiteFromSource:(BlogDetailsNavigationSource)source
