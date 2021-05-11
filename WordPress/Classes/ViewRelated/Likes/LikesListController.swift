@@ -107,15 +107,14 @@ class LikesListController: NSObject {
             self?.isLoadingContent = false
         }
 
-        fetchStoredLikes(success: successBlock, failure: failureBlock)
+        fetchStoredLikes(completion: successBlock)
         fetchLikes(success: successBlock, failure: failureBlock)
     }
 
     /// Fetch Likes from Core Data depending on the notification's content type.
     /// - Parameters:
-    ///   - success: Closure to be called when the fetch is successful.
-    ///   - failure: Closure to be called when the fetch failed.
-    private func fetchStoredLikes(success: @escaping ([LikeUser]) -> Void, failure: @escaping (Error?) -> Void) {
+    ///   - completion: Closure to be called when the fetch is complete.
+    private func fetchStoredLikes(completion: @escaping ([LikeUser]) -> Void) {
 
         let users: [LikeUser]
 
@@ -126,7 +125,7 @@ class LikesListController: NSObject {
             users = commentService.likeUsersFor(commentID: commentID, siteID: siteID)
         }
 
-        success(users)
+        completion(users)
     }
 
     /// Fetch Likes depending on the notification's content type.
