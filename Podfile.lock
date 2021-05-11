@@ -499,9 +499,9 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
   - WordPressAuthenticator (~> 1.37.0)
-  - WordPressKit (~> 4.32.0)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `issue/16413-RemoveMenus`)
   - WordPressMocks (~> 0.0.9)
-  - WordPressShared (~> 1.16.0)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `issue/16413-RemoveMenus`)
   - WordPressUI (~> 1.10.0)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.52.1/third-party-podspecs/Yoga.podspec.json`)
@@ -551,9 +551,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressKit
     - WordPressMocks
-    - WordPressShared
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -651,6 +649,12 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.52.1
+  WordPressKit:
+    :branch: issue/16413-RemoveMenus
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
+  WordPressShared:
+    :branch: issue/16413-RemoveMenus
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.52.1/third-party-podspecs/Yoga.podspec.json
 
@@ -666,6 +670,12 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.52.1
+  WordPressKit:
+    :commit: e38d7c47b57172250254b4de128e9a668ee90419
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
+  WordPressShared:
+    :commit: a06a09cd220d36fde10365e6d3e5e3bf70a40864
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -763,6 +773,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: a789aefd75489c964d28b1e31eae71bee0baaf7b
+PODFILE CHECKSUM: dd89c86513e548d5df4a3dbc595fbfcd2d9d6d4d
 
 COCOAPODS: 1.10.0
