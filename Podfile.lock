@@ -75,7 +75,7 @@ PODS:
     - React-RCTImage (= 0.61.5)
     - RNTAztecView
   - JTAppleCalendar (8.0.3)
-  - Kanvas (1.2.6)
+  - Kanvas (1.2.7)
   - lottie-ios (3.1.9)
   - MediaEditor (1.2.1):
     - CropViewController (~> 2.5.3)
@@ -452,7 +452,7 @@ DEPENDENCIES:
   - Gridicons (~> 1.1.0)
   - Gutenberg (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.52.1`)
   - JTAppleCalendar (~> 8.0.2)
-  - Kanvas (from `https://github.com/tumblr/Kanvas-iOS.git`, commit `452fd6`)
+  - Kanvas (~> 1.2.7)
   - MediaEditor (~> 1.2.1)
   - MRProgress (= 0.8.3)
   - Nimble (~> 9.0.0)
@@ -534,6 +534,7 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - JTAppleCalendar
+    - Kanvas
     - lottie-ios
     - MediaEditor
     - MRProgress
@@ -580,9 +581,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.52.1
-  Kanvas:
-    :commit: 452fd6
-    :git: https://github.com/tumblr/Kanvas-iOS.git
   RCTRequired:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.52.1/third-party-podspecs/RCTRequired.podspec.json
   RCTTypeSafety:
@@ -664,9 +662,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.52.1
-  Kanvas:
-    :commit: 452fd6
-    :git: https://github.com/tumblr/Kanvas-iOS.git
   RNTAztecView:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
@@ -700,7 +695,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Gutenberg: a4a9798242faf6ef2157f19e622e15401518dfc8
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
-  Kanvas: 828033a062a8df8bd73e6efd1a09ac438ead4b41
+  Kanvas: 7ef6614513c4f44ffc248225cefda0de1d4cf571
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
@@ -768,6 +763,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 1650924a5acbd8a910c6fefee204a2c63ef56879
+PODFILE CHECKSUM: a88f23e209cb26d91c0aedbce63662b4f3ccf493
 
 COCOAPODS: 1.10.0
