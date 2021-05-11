@@ -69,7 +69,6 @@
 		088B89891DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B89881DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift */; };
 		08A2AD791CCED2A800E84454 /* PostTagServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A2AD781CCED2A800E84454 /* PostTagServiceTests.m */; };
 		08A2AD7B1CCED8E500E84454 /* PostCategoryServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A2AD7A1CCED8E500E84454 /* PostCategoryServiceTests.m */; };
-		08AAD6A11CBEA610002B2418 /* MenusServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08AAD6A01CBEA610002B2418 /* MenusServiceTests.m */; };
 		08B6D6F31C8F7DCE0052C52B /* PostType.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B6D6F11C8F7DCE0052C52B /* PostType.m */; };
 		08B6E51A1F036CAD00268F57 /* MediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B6E5191F036CAD00268F57 /* MediaFileManager.swift */; };
 		08B6E51C1F037ADD00268F57 /* MediaFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B6E51B1F037ADD00268F57 /* MediaFileManagerTests.swift */; };
@@ -4389,7 +4388,6 @@
 		088B89881DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostCardContentLabel.swift; sourceTree = "<group>"; };
 		08A2AD781CCED2A800E84454 /* PostTagServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTagServiceTests.m; sourceTree = "<group>"; };
 		08A2AD7A1CCED8E500E84454 /* PostCategoryServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCategoryServiceTests.m; sourceTree = "<group>"; };
-		08AAD6A01CBEA610002B2418 /* MenusServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceTests.m; sourceTree = "<group>"; };
 		08B6D6F01C8F7DCE0052C52B /* PostType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostType.h; sourceTree = "<group>"; };
 		08B6D6F11C8F7DCE0052C52B /* PostType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostType.m; sourceTree = "<group>"; };
 		08B6E5191F036CAD00268F57 /* MediaFileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaFileManager.swift; sourceTree = "<group>"; };
@@ -12028,7 +12026,6 @@
 				59A9AB391B4C3ECD00A433DC /* LocalCoreDataServiceTests.m */,
 				F11023A0231863CE00C4E84A /* MediaServiceTests.swift */,
 				E1C5457F1C6C79BB001CEB0E /* MediaSettingsTests.swift */,
-				08AAD6A01CBEA610002B2418 /* MenusServiceTests.m */,
 				E135965C1E7152D1006C6606 /* RecentSitesServiceTests.swift */,
 				B5EFB1C81B333C5A007608A3 /* NotificationSettingsServiceTests.swift */,
 				B532ACCE1DC3AB8E00FFFA57 /* NotificationSyncMediatorTests.swift */,
@@ -17979,7 +17976,6 @@
 				B5552D821CD1061F00B26DF6 /* StringExtensionsTests.swift in Sources */,
 				8B821F3C240020E2006B697E /* PostServiceUploadingListTests.swift in Sources */,
 				73178C3521BEE9AC00E37C9A /* TitleSubtitleHeaderTests.swift in Sources */,
-				08AAD6A11CBEA610002B2418 /* MenusServiceTests.m in Sources */,
 				BEA0E4851BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift in Sources */,
 				174C116F2624603400346EC6 /* MBarRouteTests.swift in Sources */,
 				46B30B782582C7DD00A25E66 /* SiteAddressServiceTests.swift in Sources */,
