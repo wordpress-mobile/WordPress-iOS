@@ -18,7 +18,7 @@ struct JetpackNoSitesErrorViewModel: JetpackErrorViewModel {
     }
 
     func didTapSecondaryButton(in viewController: UIViewController?) {
-        viewController?.navigationController?.popToRootViewController(animated: true)
+        AccountHelper.logOutDefaultWordPressComAccount()
     }
 
     private struct Constants {
