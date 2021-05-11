@@ -48,7 +48,7 @@ struct JetpackAuthenticationManager: AuthenticationHandler {
         onCompletion(authenticationResult)
     }
 
-    func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void, windowManager: WindowManager) -> Bool {
+    func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, windowManager: WindowManager, onDismiss: @escaping () -> Void) -> Bool {
         if AccountHelper.hasBlogs {
             return false
         }
