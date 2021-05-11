@@ -75,7 +75,7 @@ PODS:
     - React-RCTImage (= 0.61.5)
     - RNTAztecView
   - JTAppleCalendar (8.0.3)
-  - Kanvas (1.2.6)
+  - Kanvas (1.2.7)
   - lottie-ios (3.1.9)
   - MediaEditor (1.2.1):
     - CropViewController (~> 2.5.3)
@@ -452,7 +452,7 @@ DEPENDENCIES:
   - Gridicons (~> 1.1.0)
   - Gutenberg (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.52.1`)
   - JTAppleCalendar (~> 8.0.2)
-  - Kanvas (~> 1.2.6)
+  - Kanvas (~> 1.2.7)
   - MediaEditor (~> 1.2.1)
   - MRProgress (= 0.8.3)
   - Nimble (~> 9.0.0)
@@ -695,7 +695,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Gutenberg: a4a9798242faf6ef2157f19e622e15401518dfc8
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
-  Kanvas: 828033a062a8df8bd73e6efd1a09ac438ead4b41
+  Kanvas: 7ef6614513c4f44ffc248225cefda0de1d4cf571
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
@@ -763,6 +763,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: d131c0213343ada1485905361d5b8c31a0330e39
+PODFILE CHECKSUM: d58a25b995d7dbc1f949c248340d5bff66f8d15b
 
 COCOAPODS: 1.10.0

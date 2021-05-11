@@ -32,14 +32,18 @@ class UserProfileSheetViewController: UITableViewController {
         registerTableCells()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        presentedVC?.presentedView?.layoutIfNeeded()
+    }
+
     // We are using intrinsicHeight as the view's collapsedHeight which is calculated from the preferredContentSize.
     override var preferredContentSize: CGSize {
         set {
             // no-op, but is needed to override the property.
         }
         get {
-            return UIDevice.isPad() ? Constants.iPadPreferredContentSize :
-                                      Constants.iPhonePreferredContentSize
+            return UIDevice.isPad() ? Constants.iPadPreferredContentSize : tableView.contentSize
         }
     }
 
@@ -54,6 +58,8 @@ extension UserProfileSheetViewController: DrawerPresentable {
             return .maxHeight
         }
 
+        // Force the table layout to update so the Bottom Sheet gets the right height.
+        tableView.layoutIfNeeded()
         return .intrinsicHeight
     }
 
@@ -201,7 +207,6 @@ private extension UserProfileSheetViewController {
         static let userInfoSection = 0
         static let siteSectionTitle = NSLocalizedString("Site", comment: "Header for a single site, shown in Notification user profile.").localizedUppercase
         static let iPadPreferredContentSize = CGSize(width: 300.0, height: 270.0)
-        static let iPhonePreferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: 280.0)
     }
 
 }

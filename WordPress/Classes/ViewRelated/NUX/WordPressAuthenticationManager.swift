@@ -315,7 +315,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) {
         if let authenticationHandler = authenticationHandler,
-           authenticationHandler.presentLoginEpilogue(in: navigationController, for: credentials, onDismiss: onDismiss) {
+           authenticationHandler.presentLoginEpilogue(in: navigationController, for: credentials, windowManager: windowManager, onDismiss: onDismiss) {
             return
         }
 
