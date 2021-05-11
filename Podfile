@@ -39,11 +39,12 @@ def aztec
 end
 
 def wordpress_ui
-    pod 'WordPressUI', '~> 1.10.0'
+#    pod 'WordPressUI', '~> 1.10.0'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'feature/fancy-alert-dividers'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => ''
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'issues/bottom-sheet-preferred-content-size'
 end
 
 def wordpress_kit
