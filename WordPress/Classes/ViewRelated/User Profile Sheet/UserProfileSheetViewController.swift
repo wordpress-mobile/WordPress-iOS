@@ -197,7 +197,6 @@ private extension UserProfileSheetViewController {
     enum Constants {
         static let userInfoSection = 0
         static let siteSectionTitle = NSLocalizedString("Site", comment: "Header for a single site, shown in Notification user profile.").localizedUppercase
-        static let iPadPreferredContentSize = CGSize(width: 300.0, height: 270.0)
     }
 
 }
