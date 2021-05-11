@@ -15,11 +15,7 @@ class ChangeUsernameViewController: SignupUsernameTableViewController {
     init(service: AccountSettingsService, settings: AccountSettings?, completionBlock: @escaping CompletionBlock) {
         self.viewModel = ChangeUsernameViewModel(service: service, settings: settings)
         self.completionBlock = completionBlock
-
         super.init(nibName: nil, bundle: nil)
-
-        self.suggestionCellNumberOfLines = 0
-        self.suggestionCellLineBreakMode = .byCharWrapping
     }
 
     required init?(coder aDecoder: NSCoder) {
