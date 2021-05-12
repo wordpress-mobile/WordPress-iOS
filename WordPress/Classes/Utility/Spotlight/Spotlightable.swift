@@ -9,8 +9,7 @@ class SpotlightableButton: UIButton, Spotlightable {
     var spotlight: QuickStartSpotlightView?
     var originalTitle: String?
 
-    /// The default offset is (-10, 0).
-    /// If this property is set, the default will be overridden.
+    /// If this property is set, the default offset will be overridden.
     ///
     var spotlightOffset: UIOffset?
     private var spotlightXConstraint: NSLayoutConstraint?
@@ -73,10 +72,10 @@ class SpotlightableButton: UIButton, Spotlightable {
         let newSpotlightHeight = spotlightView.heightAnchor.constraint(equalToConstant: Constants.spotlightDiameter)
 
         NSLayoutConstraint.activate([
-                                        spotlightXConstraint,
-                                        spotlightYConstraint,
-                                        newSpotlightWidth,
-                                        newSpotlightHeight
+            spotlightXConstraint,
+            spotlightYConstraint,
+            newSpotlightWidth,
+            newSpotlightHeight
         ])
 
         spotlight = spotlightView
