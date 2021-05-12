@@ -34,17 +34,8 @@ class UserProfileSheetViewController: UITableViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        preferredContentSize = tableView.contentSize
         presentedVC?.presentedView?.layoutIfNeeded()
-    }
-
-    // We are using intrinsicHeight as the view's collapsedHeight which is calculated from the preferredContentSize.
-    override var preferredContentSize: CGSize {
-        set {
-            // no-op, but is needed to override the property.
-        }
-        get {
-            return UIDevice.isPad() ? Constants.iPadPreferredContentSize : tableView.contentSize
-        }
     }
 
 }
@@ -206,7 +197,6 @@ private extension UserProfileSheetViewController {
     enum Constants {
         static let userInfoSection = 0
         static let siteSectionTitle = NSLocalizedString("Site", comment: "Header for a single site, shown in Notification user profile.").localizedUppercase
-        static let iPadPreferredContentSize = CGSize(width: 300.0, height: 270.0)
     }
 
 }
