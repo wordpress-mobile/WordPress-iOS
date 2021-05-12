@@ -956,33 +956,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatMediaServiceUploadCanceled:
             eventName = @"media_service_upload_canceled";
             break;
-        case WPAnalyticsStatMenusCreatedItem:
-            eventName = @"menus_created_item";
-            break;
-        case WPAnalyticsStatMenusCreatedMenu:
-            eventName = @"menus_created_menu";
-            break;
-        case WPAnalyticsStatMenusDeletedMenu:
-            eventName = @"menus_deleted_menu";
-            break;
-        case WPAnalyticsStatMenusDeletedItem:
-            eventName = @"menus_deleted_item";
-            break;
-        case WPAnalyticsStatMenusDiscardedChanges:
-            eventName = @"menus_discarded_changes";
-            break;
-        case WPAnalyticsStatMenusEditedItem:
-            eventName = @"menus_edited_item";
-            break;
-        case WPAnalyticsStatMenusOpenedItemEditor:
-            eventName = @"menus_opened_item_editor";
-            break;
-        case WPAnalyticsStatMenusOrderedItems:
-            eventName = @"menus_ordered_items";
-            break;
-        case WPAnalyticsStatMenusSavedMenu:
-            eventName = @"menus_saved_menu";
-            break;
         case WPAnalyticsStatMeTabAccessed:
             eventName = @"me_tab_accessed";
             break;
