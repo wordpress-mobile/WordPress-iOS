@@ -24,6 +24,7 @@
 17.2
 -----
 
+* [**] Added transform block capability [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3321]
 * [*] Fixed an issue where some author display names weren't visible for self-hosted sites. [#16297]
 * [***] Updated custom app icons. [#16261]
 * [**] Removed Site Switcher in the Editor
