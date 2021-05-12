@@ -7,7 +7,6 @@
 #import "ActivityLogViewController.h"
 #import "AbstractPost+HashHelpers.h"
 #import "AccountService.h"
-#import "ApiCredentials.h"
 
 #import "Blog.h"
 #import "BlogService.h"
