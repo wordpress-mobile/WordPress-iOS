@@ -1,6 +1,7 @@
 17.4
 -----
 * [**] A new author can be chosen for Posts and Pages on multi-author sites. [#16281]
+* [***] Block Editor: New Block: Reusable block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3490]
 
 
 17.3
