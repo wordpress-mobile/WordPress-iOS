@@ -72,6 +72,36 @@
     )
   end
 
+  desc "Build for TestFlight"
+  lane :build_jetpack_for_app_store do |options|
+
+    jetpack_appstore_code_signing
+
+    gym(
+      scheme: "Jetpack",
+      workspace: WORKSPACE_PATH,
+      clean: true,
+      export_team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
+      output_directory: BUILD_PRODUCTS_PATH,
+      derived_data_path: DERIVED_DATA_PATH,
+      export_options: { method: "app-store" }
+    )
+
+    testflight(
+      skip_waiting_for_build_processing: true,
+      team_id: "299112",
+      api_key_path: File.join(PROJECT_ROOT_FOLDER, '.configure-files', 'app_store_connect_fastlane_api_key.json'),
+    )
+
+    sentry_upload_dsym(
+      auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
+      org_slug: 'a8c',
+      project_slug: 'jetpack-ios',
+      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    )
+
+  end
+
 ########################################################################
 # Jetpack Fastlane match code signing
 ########################################################################
@@ -98,7 +128,7 @@ private_lane :jetpack_appstore_code_signing do |options|
     type: "appstore",
     team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
     readonly: true,
-    app_identifier: "com.jetpack"
+    app_identifier: "com.automattic.jetpack"
   )
 end
 

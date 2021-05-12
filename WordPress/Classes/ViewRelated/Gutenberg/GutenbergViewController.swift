@@ -708,13 +708,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 self?.dismiss(animated: true, completion: nil)
                 DDLogError("Failed to update story: \(error)")
             }
-        }, uploaded: { result in
-            switch result {
-            case .success:
-                break // Posts will be updated when the MediaFilesProcessor receives upload events
-            case .failure(let error):
-                DDLogError("Failed to upload story: \(error)")
-            }
         })
 
         storyEditor?.trackOpen()

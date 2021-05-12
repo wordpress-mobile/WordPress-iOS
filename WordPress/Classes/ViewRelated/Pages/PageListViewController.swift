@@ -3,7 +3,6 @@ import CocoaLumberjack
 import WordPressShared
 import WordPressFlux
 
-
 class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
     private struct Constant {
         struct Size {
@@ -389,10 +388,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             return 0.0
         }
         return Constant.Size.pageSectionHeaderHeight
-    }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return Constant.Size.pageCellWithTagEstimatedRowHeight
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
