@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 
 class ReaderTabViewController: UIViewController {
 
@@ -9,6 +10,8 @@ class ReaderTabViewController: UIViewController {
     private lazy var readerTabView: ReaderTabView = {
         return makeReaderTabView(viewModel)
     }()
+
+    private let searchButton: SpotlightableButton = SpotlightableButton(type: .custom)
 
     init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
         self.viewModel = viewModel
@@ -51,6 +54,8 @@ class ReaderTabViewController: UIViewController {
         ReaderTracker.shared.start(.main)
 
         WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+
+        searchButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.readerSearch)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -68,11 +73,14 @@ class ReaderTabViewController: UIViewController {
         settingsButton.accessibilityIdentifier = ReaderTabConstants.settingsButtonIdentifier
 
         // Search Button
-        let searchButton = UIBarButtonItem(barButtonSystemItem: .search,
-                                           target: self,
-                                           action: #selector(didTapSearchButton))
+        searchButton.spotlightOffset = UIOffset(horizontal: 20, vertical: -10)
+        searchButton.setImage(.gridicon(.search), for: .normal)
+        searchButton.addTarget(self, action: #selector(didTapSearchButton), for: .touchUpInside)
         searchButton.accessibilityIdentifier = ReaderTabConstants.searchButtonAccessibilityIdentifier
-        navigationItem.rightBarButtonItems = [searchButton, settingsButton]
+
+        let searchBarButton = UIBarButtonItem(customView: searchButton)
+
+        navigationItem.rightBarButtonItems = [searchBarButton, settingsButton]
     }
 
     override func loadView() {
