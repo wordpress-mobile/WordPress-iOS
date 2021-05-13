@@ -16,10 +16,11 @@ class SharingServiceTests: XCTestCase {
     func testSyncingPublicizeConnectionsForNonDotComBlogCallsACompletionBlock() throws {
         let blogService = BlogService(managedObjectContext: context)
         let blog = blogService.createBlog()
-        let sharingService = SharingService(managedObjectContext: context)
+        blog.account = nil
 
         let expect = expectation(description: "Sharing service completion block called.")
 
+        let sharingService = SharingService(managedObjectContext: context)
         sharingService.syncPublicizeConnectionsForBlog(blog) {
             expect.fulfill()
         } failure: { (error) in
