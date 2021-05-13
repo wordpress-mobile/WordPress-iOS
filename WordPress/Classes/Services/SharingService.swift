@@ -61,7 +61,6 @@ open class SharingService: LocalCoreDataService {
     @objc open func syncPublicizeConnectionsForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
         let blogObjectID = blog.objectID
         guard let remote = remoteForBlog(blog) else {
-            failure?(nil)
             return
         }
         remote.getPublicizeConnections(blog.dotComID!, success: { remoteConnections in
