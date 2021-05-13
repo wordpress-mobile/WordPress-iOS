@@ -1045,6 +1045,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
 
     func gutenbergCapabilities() -> [Capabilities: Bool] {
         let isFreeWPCom = post.blog.isHostedAtWPcom && !post.blog.hasPaidPlan
+        let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
         return [
             .mentions: FeatureFlag.gutenbergMentions.enabled && SuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .xposts: FeatureFlag.gutenbergXposts.enabled && SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
@@ -1055,7 +1056,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories) && !UIDevice.isPad(),
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
-            .reusableBlock: post.blog.isHostedAtWPcom
+            .reusableBlock: isWPComSite
         ]
     }
 
