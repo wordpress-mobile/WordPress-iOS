@@ -97,6 +97,11 @@ class LikesListController: NSObject {
         // shows the loading cell and prevents double refresh.
         isLoadingContent = true
 
+        fetchStoredLikes()
+
+        // If there are no cached users, continue showing the loading cell.
+        isLoadingContent = likingUsers.isEmpty
+
         fetchLikes(success: { [weak self] users in
             self?.likingUsers = users
             self?.isLoadingContent = false
@@ -106,7 +111,17 @@ class LikesListController: NSObject {
         })
     }
 
-    /// Convenient method that fetches likes data depending on the notification's content type.
+    /// Fetch Likes from Core Data depending on the notification's content type.
+    private func fetchStoredLikes() {
+        switch content {
+        case .post(let postID):
+            likingUsers = postService.likeUsersFor(postID: postID, siteID: siteID)
+        case .comment(let commentID):
+            likingUsers = commentService.likeUsersFor(commentID: commentID, siteID: siteID)
+        }
+    }
+
+    /// Fetch Likes depending on the notification's content type.
     /// - Parameters:
     ///   - success: Closure to be called when the fetch is successful.
     ///   - failure: Closure to be called when the fetch failed.

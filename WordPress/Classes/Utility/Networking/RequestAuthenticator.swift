@@ -153,9 +153,9 @@ class RequestAuthenticator: NSObject {
 
         authenticationService.loadAuthCookiesForSelfHosted(into: cookieJar, loginURL: loginURL, username: username, password: password, success: {
             done()
-        }) { error in
+        }) { [weak self] error in
             // Make sure this error scenario isn't silently ignored.
-            WordPressAppDelegate.crashLogging?.logError(error)
+            self?.logErrorIfNeeded(error)
 
             // Even if getting the auth cookies fail, we'll still try to load the URL
             // so that the user sees a reasonable error situation on screen.
@@ -183,9 +183,9 @@ class RequestAuthenticator: NSObject {
 
         authenticationService.loadAuthCookies(into: cookieJar, username: username, siteID: siteID, success: {
             done()
-        }) { error in
+        }) { [weak self] error in
             // Make sure this error scenario isn't silently ignored.
-            WordPressAppDelegate.crashLogging?.logError(error)
+            self?.logErrorIfNeeded(error)
 
             // Even if getting the auth cookies fail, we'll still try to load the URL
             // so that the user sees a reasonable error situation on screen.
@@ -213,9 +213,9 @@ class RequestAuthenticator: NSObject {
 
         authenticationService.loadAuthCookiesForWPCom(into: cookieJar, username: username, authToken: authToken, success: {
             done()
-        }) { error in
+        }) { [weak self] error in
             // Make sure this error scenario isn't silently ignored.
-            WordPressAppDelegate.crashLogging?.logError(error)
+            self?.logErrorIfNeeded(error)
 
             // Even if getting the auth cookies fail, we'll still try to load the URL
             // so that the user sees a reasonable error situation on screen.
@@ -259,9 +259,9 @@ class RequestAuthenticator: NSObject {
 
         authenticationService.loadAuthCookiesForWPCom(into: cookieJar, username: username, authToken: authToken, success: {
             done()
-        }) { error in
+        }) { [weak self] error in
             // Make sure this error scenario isn't silently ignored.
-            WordPressAppDelegate.crashLogging?.logError(error)
+            self?.logErrorIfNeeded(error)
 
             // Even if getting the auth cookies fail, we'll still try to load the URL
             // so that the user sees a reasonable error situation on screen.
@@ -280,15 +280,26 @@ class RequestAuthenticator: NSObject {
 
         authenticationService.loadAuthCookiesForWPCom(into: cookieJar, username: username, authToken: authToken, success: {
             done()
-        }) { error in
+        }) { [weak self] error in
             // Make sure this error scenario isn't silently ignored.
-            WordPressAppDelegate.crashLogging?.logError(error)
+            self?.logErrorIfNeeded(error)
 
             // Even if getting the auth cookies fail, we'll still try to load the URL
             // so that the user sees a reasonable error situation on screen.
             // We could opt to create a special screen but for now I'd rather users report
             // the issue when it happens.
             done()
+        }
+    }
+
+    private func logErrorIfNeeded(_ error: Swift.Error) {
+        let nsError = error as NSError
+
+        switch nsError.code {
+        case NSURLErrorTimedOut, NSURLErrorNotConnectedToInternet:
+            return
+        default:
+            WordPressAppDelegate.crashLogging?.logError(error)
         }
     }
 }

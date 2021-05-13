@@ -2,7 +2,6 @@
 #import <XCTest/XCTest.h>
 
 #import "AccountService.h"
-#import "ApiCredentials.h"
 #import "WPAppAnalytics.h"
 #import "WPAnalyticsTrackerWPCom.h"
 @import OCMock;

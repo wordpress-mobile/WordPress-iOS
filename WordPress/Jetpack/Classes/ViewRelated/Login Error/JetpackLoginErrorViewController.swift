@@ -26,9 +26,6 @@ class JetpackLoginErrorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Log the user out to prevent them being able to access the app after a restart
-        AccountHelper.logOutDefaultWordPressComAccount()
-
         configureImageView()
         configureDescriptionLabel()
         configurePrimaryButton()

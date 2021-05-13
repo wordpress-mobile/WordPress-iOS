@@ -31,6 +31,13 @@ import Foundation
         return blogService.blogCountSelfHosted() == 0 && blogService.hasAnyJetpackBlogs() == false
     }
 
+    static var hasBlogs: Bool {
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+
+        return blogService.blogCountForAllAccounts() > 0
+    }
+
     @objc static var noWordPressDotComAccount: Bool {
         return !AccountHelper.isDotcomAvailable()
     }

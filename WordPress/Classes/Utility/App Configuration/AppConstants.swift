@@ -6,6 +6,7 @@ import WordPressAuthenticator
     static let productTwitterURL = "https://twitter.com/WordPressiOS"
     static let productBlogURL = "https://blog.wordpress.com"
     static let ticketSubject = NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
+    static let logOutAlert = NSLocalizedString("Log out of WordPress?", comment: "LogOut confirmation text, whenever there are no local changes")
     @objc static let eventNamePrefix = "wpios"
 
     /// Notifications Constants
