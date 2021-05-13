@@ -1,2 +1,4 @@
 #include "Version.internal.xcconfig"
 #include "SDKVersions.xcconfig"
+
+BUILD_SCHEME=WordPress Alpha

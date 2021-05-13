@@ -33,11 +33,6 @@ enum PrepublishingIdentifier {
 class PrepublishingViewController: UITableViewController {
     let post: Post
 
-    lazy var header: PrepublishingHeaderView = {
-         let header = PrepublishingHeaderView.loadFromNib()
-         return header
-     }()
-
     private lazy var publishSettingsViewModel: PublishSettingsViewModel = {
         return PublishSettingsViewModel(post: post)
     }()
@@ -88,8 +83,9 @@ class PrepublishingViewController: UITableViewController {
 
         title = ""
 
-        header.delegate = self
-        header.configure(post.blog)
+        let nib = UINib(nibName: "PrepublishingHeaderView", bundle: nil)
+        tableView.register(nib, forHeaderFooterViewReuseIdentifier: Constants.headerReuseIdentifier)
+
         setupPublishButton()
         setupFooterSeparator()
 
@@ -144,11 +140,19 @@ class PrepublishingViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        // Forced unwrap copied from this guide by Apple:
+        // https://developer.apple.com/documentation/uikit/views_and_controls/table_views/adding_headers_and_footers_to_table_sections
+        //
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Constants.headerReuseIdentifier) as! PrepublishingHeaderView
+
+        header.delegate = self
+        header.configure(post.blog)
+
         return header
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return Constants.headerHeight
+        return UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -429,6 +433,7 @@ class PrepublishingViewController: UITableViewController {
 
     fileprivate enum Constants {
         static let reuseIdentifier = "wpTableViewCell"
+        static let headerReuseIdentifier = "wpTableViewHeader"
         static let textFieldReuseIdentifier = "wpTextFieldCell"
         static let nuxButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static let cellMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
@@ -438,7 +443,6 @@ class PrepublishingViewController: UITableViewController {
         static let publishDateLabel = NSLocalizedString("Publish Date", comment: "Label for Publish date")
         static let scheduledLabel = NSLocalizedString("Scheduled for", comment: "Scheduled for [date]")
         static let titlePlaceholder = NSLocalizedString("Title", comment: "Placeholder for title")
-        static let headerHeight: CGFloat = 70
         static let analyticsDefaultProperty = ["via": "prepublishing_nudges"]
     }
 }

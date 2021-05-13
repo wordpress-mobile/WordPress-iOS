@@ -982,7 +982,7 @@ private extension NotificationDetailsViewController {
         }
     }
 
-    func displayUserProfile(_ user: RemoteUser, from indexPath: IndexPath) {
+    func displayUserProfile(_ user: LikeUser, from indexPath: IndexPath) {
         let userProfileVC = UserProfileSheetViewController(user: user)
         let bottomSheet = BottomSheetViewController(childViewController: userProfileVC)
 
@@ -1378,7 +1378,7 @@ extension NotificationDetailsViewController: LikesListControllerDelegate {
         displayNotificationSource()
     }
 
-    func didSelectUser(_ user: RemoteUser, at indexPath: IndexPath) {
+    func didSelectUser(_ user: LikeUser, at indexPath: IndexPath) {
         displayUserProfile(user, from: indexPath)
     }
 

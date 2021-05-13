@@ -22,6 +22,19 @@ class ReaderDetailCoordinator {
     /// A post URL to be loaded and be displayed
     var postURL: URL?
 
+    /// A comment ID used to navigate to a comment
+    var commentID: Int? {
+        // Comment fragments have the form #comment-50484
+        // If one is present, we'll extract the ID and return it.
+        if let fragment = postURL?.fragment,
+           fragment.hasPrefix("comment-"),
+           let idString = fragment.components(separatedBy: "comment-").last {
+            return Int(idString)
+        }
+
+        return nil
+    }
+
     /// Called if the view controller's post fails to load
     var postLoadFailureBlock: (() -> Void)? = nil
 

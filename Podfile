@@ -39,15 +39,15 @@ def aztec
 end
 
 def wordpress_ui
-    pod 'WordPressUI', '~> 1.10.0'
+    pod 'WordPressUI', '~> 1.11.0-beta'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
-    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'feature/fancy-alert-dividers'
+    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'feature/fancy-button-text-wrap'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => ''
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.32.0-beta'
+    pod 'WordPressKit', '~> 4.33.0-beta.1'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -55,7 +55,7 @@ def wordpress_kit
 end
 
 def kanvas
-  pod 'Kanvas', '~> 1.2.6'
+  pod 'Kanvas', '~> 1.2.7'
   #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
   #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
   #pod 'Kanvas', :path => '../Kanvas-iOS'
@@ -161,7 +161,8 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '18aa6d0faeecc5a1e02de83058f17fc0c040d453'
+    gutenberg :tag => 'v1.52.1'
+
 
     ## Third party libraries
     ## =====================
@@ -206,7 +207,7 @@ abstract_target 'Apps' do
 
     pod 'Gridicons', '~> 1.1.0'
 
-    pod 'WordPressAuthenticator', '~> 1.37.0-beta.1'
+     pod 'WordPressAuthenticator', '~> 1.37.0'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''

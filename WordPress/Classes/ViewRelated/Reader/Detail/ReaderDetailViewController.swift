@@ -112,6 +112,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Used to disable ineffective buttons when a Related post fails to load.
     var enableRightBarButtons = true
 
+    /// Track whether we've automatically navigated to the comments view or not.
+    /// This may happen if we initialize our coordinator with a postURL that
+    /// has a comment anchor fragment.
+    private var hasAutomaticallyTriggeredCommentAction = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -220,6 +225,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         featuredImage.load { [weak self] in
             self?.hideLoading()
         }
+
+        navigateToCommentIfNecessary()
     }
 
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) {
@@ -228,6 +235,19 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         relatedPosts = sections.sorted { $0.postType.rawValue < $1.postType.rawValue }
         tableView.reloadData()
         tableView.invalidateIntrinsicContentSize()
+    }
+
+    private func navigateToCommentIfNecessary() {
+        if let post = post,
+           let commentID = coordinator?.commentID,
+           !hasAutomaticallyTriggeredCommentAction {
+            hasAutomaticallyTriggeredCommentAction = true
+
+            ReaderCommentAction().execute(post: post,
+                                          origin: self,
+                                          promptToAddComment: false,
+                                          navigateToCommentID: commentID)
+        }
     }
 
     /// Show ghost cells indicating the content is loading

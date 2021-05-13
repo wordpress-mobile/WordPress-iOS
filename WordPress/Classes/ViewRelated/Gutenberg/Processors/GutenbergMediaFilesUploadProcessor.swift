@@ -35,13 +35,13 @@ class GutenbergMediaFilesUploadProcessor: Processor {
             }
 
             do {
-                if let mediaURL = URL(string: mediaFile.url) {
+                if let mediaURL = URL(string: mediaFile.url), FileManager.default.fileExists(atPath: newURL.path) == false {
                     try FileManager.default.moveItem(at: mediaURL, to: newURL)
                 } else {
                     DDLogError("No Media File URL was present. This is a Stories error and should be investigated")
                 }
             } catch let error {
-                assertionFailure("Failed to move archived file to new location: \(error)")
+                assertionFailure("Failed to move archived file: \(mediaFile.url) to new location: \(newURL) - \(error)")
             }
 
             let file = MediaFile(alt: mediaFile.alt,

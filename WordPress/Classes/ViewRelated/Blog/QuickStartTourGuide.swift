@@ -223,11 +223,6 @@ open class QuickStartTourGuide: NSObject {
         }
         currentTourState = nextStep
 
-        // Don't show a notice for the step after readerTab
-        if element == .readerTab {
-            return
-        }
-
         showCurrentStep()
     }
 
