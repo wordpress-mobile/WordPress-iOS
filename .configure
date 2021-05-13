@@ -4,21 +4,6 @@
   "pinned_hash": "3b9a78517bf364e61bd1b1f8a857a3dded835418",
   "files_to_copy": [
     {
-      "file": "iOS/WPiOS/wpcom_app_credentials",
-      "destination": ".configure-files/wpcom_app_credentials",
-      "encrypt": true
-    },
-    {
-      "file": "iOS/WPiOS/wpcom_alpha_app_credentials",
-      "destination": ".configure-files/wpcom_alpha_app_credentials",
-      "encrypt": true
-    },
-    {
-      "file": "iOS/WPiOS/wpcom_internal_app_credentials",
-      "destination": ".configure-files/wpcom_internal_app_credentials",
-      "encrypt": true
-    },
-    {
       "file": "shared/google_cloud_keys.json",
       "destination": ".configure-files/google_cloud_keys.json",
       "encrypt": true
@@ -46,6 +31,11 @@
     {
       "file": "iOS/WPiOS/Secrets-Alpha.swift",
       "destination": ".configure-files/Secrets-Alpha.swift",
+      "encrypt": true
+    },
+    {
+      "file": "iOS/JPiOS/Secrets.swift",
+      "destination": ".configure-files/Jetpack-Secrets.swift",
       "encrypt": true
     }
   ],
