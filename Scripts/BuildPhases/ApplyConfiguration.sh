@@ -1,14 +1,16 @@
 #!/bin/sh
 
 # The Secrets File Sources
-PRODUCTION_SECRETS_FILE="${PROJECT_ROOT}/.configure-files/Secrets.swift"
-INTERNAL_SECRETS_FILE="${PROJECT_ROOT}/.configure-files/Secrets-Internal.swift"
-ALPHA_SECRETS_FILE="${PROJECT_ROOT}/.configure-files/Secrets-Alpha.swift"
+PRODUCTION_SECRETS_FILE="${PROJECT_ROOT}/.configure-files/WordPress-Secrets.swift"
+INTERNAL_SECRETS_FILE="${PROJECT_ROOT}/.configure-files/WordPress-Secrets-Internal.swift"
+ALPHA_SECRETS_FILE="${PROJECT_ROOT}/.configure-files/WordPress-Secrets-Alpha.swift"
+JETPACK_SECRETS_FILE="${PROJECT_ROOT}/.configure-files/Jetpack-Secrets.swift"
 LOCAL_SECRETS_FILE="${SRCROOT}/Credentials/Secrets.swift"
 EXAMPLE_SECRETS_FILE="${SRCROOT}/Credentials/Secrets-example.swift"
 
 # The Secrets file destination
-SECRETS_DESTINATION_FILE="${CONFIGURATION_BUILD_DIR}/Secrets.swift"
+SECRETS_DESTINATION_FILE="${BUILD_DIR}/Secrets/Secrets.swift"
+mkdir -p "basename $SECRETS_DESTINATION_FILE"
 
 # If the WordPress Production Secrets are available for WordPress, use them
 if [ -f "$PRODUCTION_SECRETS_FILE" ] && [ "$BUILD_SCHEME" == "WordPress" ]; then
@@ -28,6 +30,13 @@ fi
 if [ -f "$INTERNAL_SECRETS_FILE" ] && [ "${BUILD_SCHEME}" == "WordPress Alpha" ]; then
     echo "Applying Alpha Secrets"
     cp -v $ALPHA_SECRETS_FILE $SECRETS_DESTINATION_FILE
+    exit 0
+fi
+
+# If the Jetpack Secrets are available (and if we're building Jetpack) use them
+if [ -f "$JETPACK_SECRETS_FILE" ] && [ "${BUILD_SCHEME}" == "Jetpack" ]; then
+    echo "Applying Jetpack Secrets"
+    cp -v $JETPACK_SECRETS_FILE $SECRETS_DESTINATION_FILE
     exit 0
 fi
 

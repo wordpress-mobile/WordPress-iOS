@@ -1,7 +1,7 @@
 {
   "project_name": "WordPress-iOS",
   "branch": "trunk",
-  "pinned_hash": "3b9a78517bf364e61bd1b1f8a857a3dded835418",
+  "pinned_hash": "c7a590de2624e2c433aa78c5a3435fbdba93e519",
   "files_to_copy": [
     {
       "file": "shared/google_cloud_keys.json",
@@ -20,21 +20,21 @@
     },
     {
       "file": "iOS/WPiOS/Secrets.swift",
-      "destination": ".configure-files/Secrets.swift",
+      "destination": ".configure-files/WordPress-Secrets.swift",
       "encrypt": true
     },
     {
       "file": "iOS/WPiOS/Secrets-Internal.swift",
-      "destination": ".configure-files/Secrets-Internal.swift",
+      "destination": ".configure-files/WordPress-Secrets-Internal.swift",
       "encrypt": true
     },
     {
       "file": "iOS/WPiOS/Secrets-Alpha.swift",
-      "destination": ".configure-files/Secrets-Alpha.swift",
+      "destination": ".configure-files/WordPress-Secrets-Alpha.swift",
       "encrypt": true
     },
     {
-      "file": "iOS/JPiOS/Secrets.swift",
+      "file": "iOS/JPiOS/Jetpack-Secrets.swift",
       "destination": ".configure-files/Jetpack-Secrets.swift",
       "encrypt": true
     }
