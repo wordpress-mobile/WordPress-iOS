@@ -17,10 +17,10 @@ struct EventLoggingDataProvider: EventLoggingDataSource {
     }
 
     /// The key used to encrypt log files
-    let loggingEncryptionKey: String = ApiCredentials.encryptedLogKey()
+    let loggingEncryptionKey: String = ApiCredentials.encryptedLogKey
 
     /// The Authorization token for the upload endpoint
-    var loggingAuthenticationToken: String = ApiCredentials.secret()
+    var loggingAuthenticationToken: String = ApiCredentials.secret
 
     /// The current session log will almost always be the correct one, because they're split by day
     func logFilePath(forErrorLevel: EventLoggingErrorType, at date: Date) -> URL? {

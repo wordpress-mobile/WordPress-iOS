@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-04-20 13:39:16+0000 */
+/* Translation-Revision-Date: 2021-05-06 19:56:49+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -36,8 +36,8 @@
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d ongeziene berichten";
 
-/* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
-"%1$s transformed to %2$s" = "%1$s getransformeerd naar %2$s";
+/* translators: 1: Block label (i.e. \"Block: Column\"), 2: Position of the selected block, 3: Total number of sibling blocks of the same type */
+"%1$s (%2$d of %3$d)" = "%1$s (%2$d van %3$d)";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
 "%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s is %3$s %4$s.";
@@ -193,14 +193,17 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li woorden, %2$li karakters";
 
-/* translators: %s: block title e.g: \"Paragraph\". */
-"%s block options" = "%s blokopties";
-
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s blok. Leeg";
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s blok. Dit blok heeft ongeldige inhoud";
+
+/* translators: %s: Number of comments */
+"%s comment" = "%s reactie";
+
+/* translators: %s: name of the social service. */
+"%s label" = "%s label";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "'%s' wordt niet volledig ondersteund";
@@ -228,6 +231,13 @@
 /* Register Domain - Address information field add new address line */
 "+ Address line %@" = "+ Adresregel %@";
 
+/* No comment provided by engineer. */
+"- Select -" = "- Selecteer -";
+
+/* translators: Preserve \
+ markers for line breaks */
+"\/\/ A \"block\" is the abstract term used\n\/\/ to describe units of markup that\n\/\/ when composed together, form the\n\/\/ content or layout of a page.\nregisterBlockType( name, settings );" = "\/\/ Een \"blok\" is een abstracte term dat wordt gebruikt om\n\/\/ markup eenheden te beschrijven die allemaal samen\n\/\/ de inhoud of de lay-out van een pagina vormen.\nregisterBlockType( name, settings );";
+
 /* Local notification displayed to the user when a single draft post has been successfully uploaded. */
 "1 draft post uploaded" = "1 concept bericht geüpload.";
 
@@ -249,20 +259,65 @@
 /* Message for a notice informing the user their scan completed and 1 threat was found */
 "1 potential threat found" = "1 potentiële bedreiging gevonden";
 
+/* No comment provided by engineer. */
+"100" = "100";
+
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
+
+/* No comment provided by engineer. */
+"10:16" = "10:16";
+
+/* No comment provided by engineer. */
+"16:10" = "16:10";
+
+/* No comment provided by engineer. */
+"16:9" = "16:9";
+
+/* No comment provided by engineer. */
+"25 \/ 50 \/ 25" = "25 \/ 50 \/ 25";
+
+/* No comment provided by engineer. */
+"2:3" = "2:3";
+
+/* No comment provided by engineer. */
+"30 \/ 70" = "30 \/ 70";
+
+/* No comment provided by engineer. */
+"33 \/ 33 \/ 33" = "33 \/ 33 \/ 33";
+
+/* No comment provided by engineer. */
+"3:2" = "3:2";
+
+/* No comment provided by engineer. */
+"3:4" = "3:4";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
 
+/* No comment provided by engineer. */
+"4:3" = "4:3";
+
 /* Indicates a video will be resized to 4K 3840x2160 when uploaded. */
 "4K" = "4K";
+
+/* No comment provided by engineer. */
+"50 \/ 50" = "50 \/ 50";
+
+/* No comment provided by engineer. */
+"70 \/ 30" = "70 \/ 30";
 
 /* Indicates a video will be resized to HD 1280x720 when uploaded. */
 "720p" = "720p";
 
+/* No comment provided by engineer. */
+"9:16" = "9:16";
+
 /* Age between dates less than one hour. */
 "< 1 hour" = "< 1 uur";
+
+/* No comment provided by engineer. */
+"<strong>Snow Patrol<\/strong>" = "<strong>Snow Patrol<\/strong>";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -270,11 +325,35 @@
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "Een \"meer\" knop bevat een dropdown met sharing knoppen";
 
+/* No comment provided by engineer. */
+"A calendar of your site’s posts." = "Een kalender met de berichten van je site.";
+
+/* No comment provided by engineer. */
+"A cloud of your most used tags." = "Een wolk van je meest gebruikte tags.";
+
+/* No comment provided by engineer. */
+"A collection of blocks that allow visitors to get around your site." = "Een verzameling blokken waarmee bezoekers op je site kunnen navigeren.";
+
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "Een uitgelichte afbeelding is ingesteld. Klik om het te wijzigen.";
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Een bestand bevat een kwaadaardig codepatroon";
+
+/* No comment provided by engineer. */
+"A link to a category." = "Een link naar een categorie.";
+
+/* No comment provided by engineer. */
+"A link to a custom URL." = "Een link naar een aangepaste URL.";
+
+/* No comment provided by engineer. */
+"A link to a page." = "Een link naar een pagina.";
+
+/* No comment provided by engineer. */
+"A link to a post." = "Een link naar een bericht.";
+
+/* No comment provided by engineer. */
+"A link to a tag." = "Een link naar een tag.";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "Een lijst van sites op dit account.";
@@ -287,6 +366,9 @@
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button. */
 "A series of steps to assist with growing your site's audience." = "Een aantal stappen om je te helpen, een groter publiek te krijgen voor je site.";
+
+/* No comment provided by engineer. */
+"A single column within a columns block." = "Een enkele kolom in een kolommenblok.";
 
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "Een tag genaamd '%@' bestaat al.";
@@ -321,7 +403,8 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRES";
 
-/* About this app (information page title) */
+/* About this app (information page title)
+   translators: 'About' as in a website's about page. */
 "About" = "Over";
 
 /* Link to About screen for Jetpack for iOS */
@@ -408,6 +491,9 @@
 "Add New Stats Card" = "Nieuwe statistiekenkaart toevoegen";
 
 /* No comment provided by engineer. */
+"Add Template" = "Template toevoegen";
+
+/* No comment provided by engineer. */
 "Add To Beginning" = "Toevoegen aan begin";
 
 /* No comment provided by engineer. */
@@ -428,8 +514,20 @@
 /* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "Voeg een onderwerp toe";
 
+/* No comment provided by engineer. */
+"Add a block that displays content in multiple columns, then add whatever content blocks you’d like." = "Een blok toevoegen dat inhoud toont in meerdere kolommen, daarna de inhoudsblokken toevoegen die je wilt.";
+
+/* No comment provided by engineer. */
+"Add a block that displays content pulled from other sites, like Twitter, Instagram or YouTube." = "Een blok toevoegen dat inhoud van andere sites laat zien, zoals Twitter, Instagram, of YouTube.";
+
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Voeg een URL voor eigen CSS toe die geladen wordt in Lezer. Als je Calypso lokaal gebruikt, kan dit zoiets zijn: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* No comment provided by engineer. */
+"Add a link to a downloadable file." = "Voeg een link naar een downloadbaar bestand toe.";
+
+/* No comment provided by engineer. */
+"Add a page, link, or another item to your navigation." = "Voeg een pagina, link, of ander element toe aan je navigatie.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Voeg een zelf-gehoste site toe";
@@ -449,8 +547,20 @@
 /* No comment provided by engineer. */
 "Add alt text" = "Voeg alt-tekst toe";
 
+/* No comment provided by engineer. */
+"Add an image or video with a text overlay — great for headers." = "Voeg een afbeelding of video toe met tekst eroverheen — geweldig voor headers.";
+
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Voeg elk onderwerp toe";
+
+/* No comment provided by engineer. */
+"Add caption" = "Bijschrift toevoegen";
+
+/* translators: placeholder text used for the citation */
+"Add citation" = "Citaat toevoegen";
+
+/* No comment provided by engineer. */
+"Add custom HTML code and preview it as you edit." = "Aangepaste HTML-code toevoegen en voorbeeld bekijken tijdens het bewerken.";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Voeg een afbeelding of avatar toe, die bij dit nieuwe account hoort.";
@@ -479,6 +589,9 @@
 /* No comment provided by engineer. */
 "Add paragraph block" = "Paragraafblok toevoegen";
 
+/* translators: placeholder text used for the quote */
+"Add quote" = "Quote toevoegen";
+
 /* Add self-hosted site button */
 "Add self-hosted site" = "Een zelf-gehoste site toevoegen";
 
@@ -490,6 +603,18 @@
 "Add tags" = "Voeg tags toe";
 
 /* No comment provided by engineer. */
+"Add text that respects your spacing and tabs, and also allows styling." = "Tekst toevoegen die je tussenruimte en tabs behoudt, en ook styling toestaat.";
+
+/* No comment provided by engineer. */
+"Add text…" = "Tekst toevoegen...";
+
+/* No comment provided by engineer. */
+"Add the author of this post." = "Voeg de auteur van dit bericht toe.";
+
+/* No comment provided by engineer. */
+"Add the date of this post." = "Voeg de datum van dit bericht toe.";
+
+/* No comment provided by engineer. */
 "Add this email link" = "Voeg deze e-mail link toe";
 
 /* No comment provided by engineer. */
@@ -497,6 +622,12 @@
 
 /* No comment provided by engineer. */
 "Add this telephone link" = "Voeg deze telefoon link toe";
+
+/* No comment provided by engineer. */
+"Add tracks" = "Tracks toevoegen";
+
+/* No comment provided by engineer. */
+"Add white space between blocks and customize its height." = "Ruimte toevoegen tussen blokken en de hoogte aanpassen.";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Sitefuncties toevoegen";
@@ -519,6 +650,15 @@
 
 /* Description of albums in the photo libraries */
 "Albums" = "Albums";
+
+/* No comment provided by engineer. */
+"Align column center" = "Centreer kolom naar het midden";
+
+/* No comment provided by engineer. */
+"Align column left" = "Kolom naar links uitlijnen";
+
+/* No comment provided by engineer. */
+"Align column right" = "Kolom naar rechts uitlijnen";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -646,6 +786,9 @@
 /* Text displayed when a stat section failed to load. */
 "An error occurred." = "Er is een fout opgetreden.";
 
+/* No comment provided by engineer. */
+"An example title" = "Een voorbeeld titel";
+
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "Een onbekende fout heeft zich voorgedaan. Probeer opnieuw.";
 
@@ -684,6 +827,15 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
 "Approves the Comment." = "Reactie goedkeuren.";
+
+/* No comment provided by engineer. */
+"Archive Title" = "Archieftitel";
+
+/* No comment provided by engineer. */
+"Archive title" = "Archieftitel";
+
+/* No comment provided by engineer. */
+"Archives settings" = "Archiefinstellingen";
 
 /* Menus alert message for alerting the user to unsaved changes while trying back out of Menus. */
 "Are you sure you want to cancel and discard changes?" = "Weet je zeker dat je wilt annuleren en wijzigingen wilt verwerpen?";
@@ -758,23 +910,38 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Weet je zeker dat je wilt updaten?";
 
+/* No comment provided by engineer. */
+"Area" = "Gebied";
+
 /* An example tag used in the login prologue screens. */
 "Art" = "Kunst";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Vanaf 1 augustus 2018 kunnen berichten niet meer direct op Facebook-profielen worden gedeeld. Koppelingen aan Facebook-pagina's blijven ongewijzigd.";
 
+/* No comment provided by engineer. */
+"Aspect Ratio" = "Aspect ratio";
+
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Bestand als link bijvoegen";
 
 /* No comment provided by engineer. */
+"Attachment page" = "Bijlagepagina";
+
+/* No comment provided by engineer. */
 "Audio Player" = "Audiospeler";
+
+/* No comment provided by engineer. */
+"Audio caption text" = "Tekst audio bijschrift";
 
 /* translators: accessibility text. %s: Audio caption. */
 "Audio caption. %s" = "Audio bijschrift. %s";
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "Audio bijschrift. Leeg";
+
+/* No comment provided by engineer. */
+"Audio settings" = "Audio-instellingen";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "Audio, %@";
@@ -798,6 +965,9 @@
 /* Label for comments by author
    Period Stats 'Authors' header */
 "Authors" = "Auteurs";
+
+/* No comment provided by engineer. */
+"Auto" = "Automatisch";
 
 /* Describes a status of a plugin */
 "Auto-managed" = "Automatisch beheerd";
@@ -823,6 +993,9 @@
 
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "Deel nieuwe berichten automatisch op je socialmedia-accounts.";
+
+/* No comment provided by engineer. */
+"Autoplay" = "Automatisch afspelen";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Automatische updates";
@@ -904,29 +1077,17 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Citaat";
 
-/* translators: displayed right after the block is copied. */
-"Block copied" = "Blok gekopieerd";
-
-/* translators: displayed right after the block is cut. */
-"Block cut" = "Blok geknipt";
-
-/* translators: displayed right after the block is duplicated. */
-"Block duplicated" = "Blok gedupliceerd";
+/* No comment provided by engineer. */
+"Block cannot be rendered inside itself." = "Blok kan niet binnen zichzelf getoond worden.";
 
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Blok-editor ingeschakeld";
 
+/* No comment provided by engineer. */
+"Block has been deleted or is unavailable." = "Blok is verwijderd of is niet beschikbaar.";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Blokkeer verdachte inlogpogingen";
-
-/* translators: displayed right after the block is pasted. */
-"Block pasted" = "Blok geplakt";
-
-/* translators: displayed right after the block is removed. */
-"Block removed" = "Blok verwijderd";
-
-/* No comment provided by engineer. */
-"Block settings" = "Blok instellingen";
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Blokkeer deze site";
@@ -957,15 +1118,33 @@
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Blog's bezoeker";
 
+/* No comment provided by engineer. */
+"Body cell text" = "Body cel tekst";
+
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Vet";
 
+/* No comment provided by engineer. */
+"Border" = "Rand";
+
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "Deel reacties in threads op in meerdere pagina's.";
 
+/* No comment provided by engineer. */
+"Briefly describe the link to help screen reader users." = "Beschrijf kort de link om schermlezer-gebruikers te helpen.";
+
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Blader door al onze thema's om het thema te vinden dat perfect bij je past.";
+
+/* No comment provided by engineer. */
+"Browse all templates" = "Blader door alle templates";
+
+/* No comment provided by engineer. */
+"Browse all templates. This will open the template menu in the navigation side panel." = "Blader door alle templates. Dit opent het template menu in het navigatie zijpaneel.";
+
+/* No comment provided by engineer. */
+"Browser default" = "Browser standaard";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Brute Force Attack bescherming";
@@ -980,7 +1159,10 @@
 "Button Style" = "Knop style";
 
 /* No comment provided by engineer. */
-"ButtonGroup" = "Knoppen groep";
+"Buttons shown in a column." = "Knoppen weergegeven in een kolom.";
+
+/* No comment provided by engineer. */
+"Buttons shown in a row." = "Knoppen weergegeven in een rij.";
 
 /* Label for the post author in the post detail. */
 "By " = "Door";
@@ -1009,6 +1191,9 @@
 
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Wordt berekend ...";
+
+/* No comment provided by engineer. */
+"Call to Action" = "Call to action";
 
 /* Accessibility label for taking an image or video with the camera on formatting toolbar.
    Accessibility label for the camera tile in the collection view */
@@ -1103,6 +1288,9 @@
    Noun. Label for the caption for a media asset (image / video) */
 "Caption" = "Onderschrift";
 
+/* No comment provided by engineer. */
+"Captions" = "Bijschriften";
+
 /* Alert title.
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Voorzichtig!";
@@ -1118,6 +1306,9 @@
    Menu item label for linking a specific category. */
 "Category" = "Categorie";
 
+/* No comment provided by engineer. */
+"Category Link" = "Categorielink";
+
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "Categorie titel ontbreekt.";
 
@@ -1126,6 +1317,9 @@
 
 /* Popup title for wrong SSL certificate. */
 "Certificate error" = "Certificaat fout";
+
+/* No comment provided by engineer. */
+"Change Date" = "Verander datum";
 
 /* Account Settings Change password label
    Main title */
@@ -1146,8 +1340,14 @@
 /* No comment provided by engineer. */
 "Change block position" = "Wijzig blokpositie";
 
+/* No comment provided by engineer. */
+"Change column alignment" = "Wijzig uitlijning kolom";
+
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Wijzigen mislukt";
+
+/* No comment provided by engineer. */
+"Change heading level" = "Wijzig heading niveau";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "Wijzig het te gebruiken type apparaat voor voorbeeld";
@@ -1173,6 +1373,9 @@
 
 /* Shown while the app waits for the username changing web service to return. */
 "Changing username" = "Gebruikersnaam wijzigen";
+
+/* No comment provided by engineer. */
+"Chapters" = "Hoofdstukken";
 
 /* Title of alert when getting purchases fails */
 "Check Purchases Error" = "Fout bij controleren van aankopen";
@@ -1248,6 +1451,9 @@
 "Choose domain" = "Kies domein";
 
 /* No comment provided by engineer. */
+"Choose existing" = "Kies bestaande";
+
+/* No comment provided by engineer. */
 "Choose file" = "Kies bestand";
 
 /* Menu option for selecting media from the device's photo library. */
@@ -1308,6 +1514,9 @@
 "Clear all old activity logs?" = "Wis logboek van alle oude activiteiten?";
 
 /* No comment provided by engineer. */
+"Clear customizations" = "Aanpassingen wissen";
+
+/* No comment provided by engineer. */
 "Clear search" = "Zoekopdracht wissen";
 
 /* Title of a button. */
@@ -1340,11 +1549,23 @@
 /* Close Comments Title */
 "Close commenting" = "Reacties afsluiten";
 
+/* No comment provided by engineer. */
+"Close global styles sidebar" = "Sluit de globale stijl zijbalk";
+
+/* No comment provided by engineer. */
+"Close list view sidebar" = "Sluit de zijbalk van de lijstweergave";
+
+/* No comment provided by engineer. */
+"Close settings sidebar" = "Sluiten instellingen zijbalk";
+
 /* Accessibility hint the  Done button in the Me screen. */
 "Close the Me screen" = "Sluit het ik-scherm";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Code";
+
+/* No comment provided by engineer. */
+"Code is Poetry" = "Code is poëzie";
 
 /* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
 "Collapsed, %i completed tasks, toggling expands the list of these tasks" = "Ingevouwen, %i voltooide taken; door deze knop om te zetten, wordt de lijst met deze taken uitgevouwen";
@@ -1360,6 +1581,21 @@
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "Kleurrijke achtergronden";
+
+/* translators: %d: column index (starting with 1) */
+"Column %d text" = "Kolom %d tekst";
+
+/* No comment provided by engineer. */
+"Column count" = "Aantal kolommen";
+
+/* No comment provided by engineer. */
+"Column settings" = "Kolom instellingen";
+
+/* No comment provided by engineer. */
+"Columns" = "Kolommen";
+
+/* No comment provided by engineer. */
+"Combine blocks into a group." = "Combine blocks into a group.";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combineer foto's, video's en tekst om boeiende en tikbare verhalen te maken die je bezoekers geweldig zullen vinden.";
@@ -1540,6 +1776,9 @@
 /* Section title for Publicize services in Sharing screen */
 "Connections" = "Verbindingen";
 
+/* translators: 'Contact' as in a website's contact page. */
+"Contact" = "Contact";
+
 /* Support email label. */
 "Contact Email" = "E-mail contactpersoon";
 
@@ -1555,11 +1794,17 @@
    Title of a button. A call to action to contact support for assistance. */
 "Contact support" = "Neem contact op met support";
 
+/* No comment provided by engineer. */
+"Contact us" = "Neem contact op";
+
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
 "Contact us at %@" = "Neem contact op via %@";
 
 /* Displays the number of blocks, words and characters in text */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Inhouds-structuur\nBlokken: %1$li, Woorden: %2$li, Karakters: %3$li";
+
+/* No comment provided by engineer. */
+"Content before this block will be shown in the excerpt on your archives page." = "Content before this block will be shown in the excerpt on your archives page.";
 
 /* Action title to dismiss domain credit redemption success screen
    Apply changes localy to single block edition in the web block editor
@@ -1567,6 +1812,9 @@
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
 "Continue" = "Doorgaan";
+
+/* Button title. Takes the user to the login with WordPress.com flow. */
+"Continue With WordPress.com" = "Ga verder met WordPress.com";
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "Blijven werken";
@@ -1586,8 +1834,20 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Ga verder met Apple";
 
+/* No comment provided by engineer. */
+"Convert to blocks" = "Converteren naar blokken";
+
+/* No comment provided by engineer. */
+"Convert to ordered list" = "Convert to ordered list";
+
+/* No comment provided by engineer. */
+"Convert to unordered list" = "Convert to unordered list";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Koken";
+
+/* No comment provided by engineer. */
+"Copied URL to clipboard." = "URL gekopieerd naar klembord.";
 
 /* No comment provided by engineer. */
 "Copied block" = "Gekopieerd blok";
@@ -1596,7 +1856,7 @@
 "Copy Link to Comment" = "Kopieer link naar reactie";
 
 /* No comment provided by engineer. */
-"Copy block" = "Blok kopieren";
+"Copy URL" = "Kopieer URL";
 
 /* No comment provided by engineer. */
 "Copy file URL" = "Kopieer bestands URL";
@@ -1618,6 +1878,9 @@
 
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "Site-aankopen konden niet gecontroleerd worden.";
+
+/* translators: 1. Error message */
+"Could not edit image. %s" = "Could not edit image. %s";
 
 /* Title of a prompt. */
 "Could not follow site" = "Kon site niet volgen";
@@ -1732,6 +1995,9 @@
 /* Stories intro continue button title */
 "Create Story Post" = "Verhaal maken";
 
+/* No comment provided by engineer. */
+"Create Table" = "Create Table";
+
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "WordPress.com site maken";
 
@@ -1741,17 +2007,32 @@
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Maak een tag";
 
+/* No comment provided by engineer. */
+"Create a break between ideas or sections with a horizontal separator." = "Create a break between ideas or sections with a horizontal separator.";
+
+/* No comment provided by engineer. */
+"Create a bulleted or numbered list." = "Create a bulleted or numbered list.";
+
 /* Title for a button that when tapped starts the site creation process */
 "Create a new site" = "Maak een nieuwe site";
 
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Maak een nieuwe site voor jouw bedrijf, tijdschrift of persoonlijke blog; of verbind een bestaande WordPress installatie.";
 
+/* No comment provided by engineer. */
+"Create a new template part or pick an existing one from the list." = "Create a new template part or pick an existing one from the list.";
+
 /* Accessibility hint for create floating action button */
 "Create a post or page" = "Maak een bericht of pagina";
 
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "Een bericht, pagina of verhaal maken";
+
+/* No comment provided by engineer. */
+"Create a template part" = "Create a template part";
+
+/* No comment provided by engineer. */
+"Create and save content to reuse across your site. Update the block, and the changes apply everywhere it’s used." = "Create and save content to reuse across your site. Update the block, and the changes apply everywhere it’s used.";
 
 /* Label that describes the download backup action */
 "Create downloadable backup" = "Maak downloadbare back-up";
@@ -1810,6 +2091,9 @@
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "Momenteel aan het herstellen: %1$@";
 
+/* No comment provided by engineer. */
+"Custom Link" = "Custom Link";
+
 /* Placeholder for Invite People message field. */
 "Custom message…" = "Aangepast bericht…";
 
@@ -1838,9 +2122,6 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Je site-instellingen aanpassen voor Likes, Reacties, Volgt en meer.";
-
-/* No comment provided by engineer. */
-"Cut block" = "Blok knippen";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Donker";
@@ -1880,6 +2161,9 @@
 /* Only December needs to be translated */
 "December 17, 2017" = "December 17, 2017";
 
+/* No comment provided by engineer. */
+"December 6, 2018" = "December 6, 2018";
+
 /* Description of the default paragraph formatting style in the editor.
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "Standaard";
@@ -1897,6 +2181,9 @@
 
 /* Placeholder for the reader CSS URL */
 "Default URL" = "Standaard URL";
+
+/* translators: %s: HTML tag based on area. */
+"Default based on area (%s)" = "Default based on area (%s)";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Standaardinstellingen voor nieuwe berichten";
@@ -1931,8 +2218,14 @@
 /* Title of alert when site deletion fails */
 "Delete Site Error" = "Fout bij het verwijderen van site";
 
+/* No comment provided by engineer. */
+"Delete column" = "Delete column";
+
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "Menu verwijderen";
+
+/* No comment provided by engineer. */
+"Delete row" = "Delete row";
 
 /* Delete Tag confirmation action title */
 "Delete this tag" = "Verwijder deze tag";
@@ -1957,11 +2250,17 @@
    Title of section that contains plugins' description */
 "Description" = "Beschrijving";
 
+/* No comment provided by engineer. */
+"Descriptions" = "Beschrijvingen";
+
 /* Shortened version of the main title to be used in back navigation */
 "Design" = "Ontwerp";
 
 /* Title for the desktop web preview */
 "Desktop" = "Desktop";
+
+/* No comment provided by engineer. */
+"Detach blocks from template part" = "Detach blocks from template part";
 
 /* Details button that appears in the Theme Browser Header
    Theme Details action title */
@@ -2055,6 +2354,96 @@
    User's Display Name */
 "Display Name" = "Weergavenaam";
 
+/* No comment provided by engineer. */
+"Display a legacy widget." = "Display a legacy widget.";
+
+/* No comment provided by engineer. */
+"Display a list of all categories." = "Display a list of all categories.";
+
+/* No comment provided by engineer. */
+"Display a list of all pages." = "Display a list of all pages.";
+
+/* No comment provided by engineer. */
+"Display a list of your most recent comments." = "Display a list of your most recent comments.";
+
+/* No comment provided by engineer. */
+"Display a list of your most recent posts, excluding sticky posts." = "Display a list of your most recent posts, excluding sticky posts.";
+
+/* No comment provided by engineer. */
+"Display a list of your most recent posts." = "Display a list of your most recent posts.";
+
+/* No comment provided by engineer. */
+"Display a monthly archive of your posts." = "Display a monthly archive of your posts.";
+
+/* No comment provided by engineer. */
+"Display a post's categories." = "Toon de categorieën van een bericht.";
+
+/* No comment provided by engineer. */
+"Display a post's comments count." = "Toon het aantal reacties van een bericht.";
+
+/* No comment provided by engineer. */
+"Display a post's comments form." = "Toon het reacties formulier van een bericht.";
+
+/* No comment provided by engineer. */
+"Display a post's comments." = "Toon de reacties van een bericht.";
+
+/* No comment provided by engineer. */
+"Display a post's excerpt." = "Toon samenvatting van bericht.";
+
+/* No comment provided by engineer. */
+"Display a post's featured image." = "Toon de uitgelichte afbeelding van bericht.";
+
+/* No comment provided by engineer. */
+"Display a post's tags." = "Toon tags van het bericht.";
+
+/* No comment provided by engineer. */
+"Display an icon linking to a social media profile or website." = "Toon een pictogram die verwijst naar een social media profiel of site.";
+
+/* No comment provided by engineer. */
+"Display as dropdown" = "Toon als dropdown";
+
+/* No comment provided by engineer. */
+"Display author" = "Toon auteur";
+
+/* No comment provided by engineer. */
+"Display avatar" = "Toon avatar";
+
+/* No comment provided by engineer. */
+"Display code snippets that respect your spacing and tabs." = "Display code snippets that respect your spacing and tabs.";
+
+/* No comment provided by engineer. */
+"Display date" = "Display date";
+
+/* No comment provided by engineer. */
+"Display entries from any RSS or Atom feed." = "Display entries from any RSS or Atom feed.";
+
+/* No comment provided by engineer. */
+"Display excerpt" = "Display excerpt";
+
+/* No comment provided by engineer. */
+"Display icons linking to your social media profiles or websites." = "Display icons linking to your social media profiles or websites.";
+
+/* No comment provided by engineer. */
+"Display login as form" = "Display login as form";
+
+/* No comment provided by engineer. */
+"Display multiple images in a rich gallery." = "Display multiple images in a rich gallery.";
+
+/* No comment provided by engineer. */
+"Display post date" = "Display post date";
+
+/* No comment provided by engineer. */
+"Display the archive title based on the queried object." = "Display the archive title based on the queried object.";
+
+/* No comment provided by engineer. */
+"Display the description of categories, tags and custom taxonomies when viewing an archive." = "Display the description of categories, tags and custom taxonomies when viewing an archive.";
+
+/* No comment provided by engineer. */
+"Display the query title." = "Display the query title.";
+
+/* No comment provided by engineer. */
+"Display the title as a link" = "Display the title as a link";
+
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Toon je site-statistieken voor allertijden hier. Configureer in de WordPress-app in je site-statistieken.";
 
@@ -2063,6 +2452,42 @@
 
 /* Unconfigured stats today widget helper text */
 "Display your site stats for today here. Configure in the WordPress app in your site stats." = "Toon je site-statistieken voor vandaag hier. Configureer in de WordPress-app in je site-statistieken.";
+
+/* No comment provided by engineer. */
+"Displays a list of page numbers for pagination" = "Displays a list of page numbers for pagination";
+
+/* No comment provided by engineer. */
+"Displays a list of posts as a result of a query." = "Displays a list of posts as a result of a query.";
+
+/* No comment provided by engineer. */
+"Displays a paginated navigation to next\/previous set of posts, when applicable." = "Displays a paginated navigation to next\/previous set of posts, when applicable.";
+
+/* No comment provided by engineer. */
+"Displays and allows editing the name of the site. The site title usually appears in the browser title bar, in search results, and more. Also available in Settings > General." = "Displays and allows editing the name of the site. The site title usually appears in the browser title bar, in search results, and more. Also available in Settings > General.";
+
+/* No comment provided by engineer. */
+"Displays the contents of a post or page." = "Displays the contents of a post or page.";
+
+/* No comment provided by engineer. */
+"Displays the link to the current post comments." = "Displays the link to the current post comments.";
+
+/* No comment provided by engineer. */
+"Displays the next or previous post link that is adjacent to the current post." = "Displays the next or previous post link that is adjacent to the current post.";
+
+/* No comment provided by engineer. */
+"Displays the next posts page link." = "Displays the next posts page link.";
+
+/* No comment provided by engineer. */
+"Displays the post link that follows the current post." = "Displays the post link that follows the current post.";
+
+/* No comment provided by engineer. */
+"Displays the post link that precedes the current post." = "Displays the post link that precedes the current post.";
+
+/* No comment provided by engineer. */
+"Displays the previous posts page link." = "Displays the previous posts page link.";
+
+/* No comment provided by engineer. */
+"Displays the title of a post, page, or any other content-type." = "Displays the title of a post, page, or any other content-type.";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Document: %@";
@@ -2100,6 +2525,9 @@
 /* Title for label when there are no threats on the users site */
 "Don’t worry about a thing" = "Maak je geen zorgen";
 
+/* No comment provided by engineer. */
+"Dots" = "Dots";
+
 /* Screen reader hint for button that will move the menu item */
 "Double tap and hold to move this menu item up or down" = "Dubbel tikken en vasthouden om dit menu-item naar boven of beneden te verplaatsen";
 
@@ -2134,13 +2562,7 @@
 "Double tap to open Action Sheet to edit, replace, or clear the image" = "Dubbeltikken om het actieblad te openen om de afbeelding te bewerken, vervangen of wissen";
 
 /* No comment provided by engineer. */
-"Double tap to open Action Sheet with available options" = "Dubbeltik om actieblad te openen met beschikbare opties";
-
-/* No comment provided by engineer. */
 "Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Dubbeltikken om onderste blad te openen om de afbeelding te bewerken, vervangen of wissen";
-
-/* No comment provided by engineer. */
-"Double tap to open Bottom Sheet with available options" = "Dubbeltik om onderste blad te openen met beschikbare opties";
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "Tik tweemaal om laatste wijziging opnieuw uit te voeren";
@@ -2176,8 +2598,17 @@
    Title for button allowing user to backup their Jetpack site */
 "Download backup" = "Back-up downloaden";
 
+/* No comment provided by engineer. */
+"Download button settings" = "Download button settings";
+
+/* No comment provided by engineer. */
+"Download button text" = "Download button text";
+
 /* Title for the button that will download the backup file. */
 "Download file" = "Bestand downloaden";
+
+/* No comment provided by engineer. */
+"Download your templates and template parts." = "Download your templates and template parts.";
 
 /* Label for number of file downloads. */
 "Downloads" = "Downloads";
@@ -2189,12 +2620,15 @@
    Title of the drafts header in search list. */
 "Drafts" = "Concepten";
 
+/* No comment provided by engineer. */
+"Drop cap" = "Drop cap";
+
 /* Label for page duplicate option. Tapping creates a copy of the page.
    Label for post duplicate option. Tapping creates a copy of the post. */
 "Duplicate" = "Dupliceer";
 
-/* No comment provided by engineer. */
-"Duplicate block" = "Dupliceer blok";
+/* translators: Sample content for the Preformatted block. Can be replaced with a more locale-adequate work. */
+"EXT. XANADU - FAINT DAWN - 1940 (MINIATURE)\nWindow, very small in the distance, illuminated.\nAll around this is an almost totally black screen. Now, as the camera moves slowly towards the window which is almost a postage stamp in the frame, other forms ap" = "EXT. XANADU - FAINT DAWN - 1940 (MINIATURE)\nWindow, very small in the distance, illuminated.\nAll around this is an almost totally black screen. Now, as the camera moves slowly towards the window which is almost a postage stamp in the frame, other forms ap";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Oost";
@@ -2217,6 +2651,9 @@
 /* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
 "Edit %@ block" = "Bewerk %@ blok";
 
+/* translators: %s: Label of the video text track e.g: \"French subtitles\" */
+"Edit %s" = "Edit %s";
+
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Bewerk bloklijst woord";
 
@@ -2235,10 +2672,22 @@
 "Edit Post" = "Bewerk bericht";
 
 /* No comment provided by engineer. */
+"Edit RSS URL" = "Edit RSS URL";
+
+/* No comment provided by engineer. */
+"Edit URL" = "Edit URL";
+
+/* No comment provided by engineer. */
 "Edit file" = "Bestand bewerken";
 
 /* No comment provided by engineer. */
 "Edit focal point" = "Focuspunt bewerken";
+
+/* No comment provided by engineer. */
+"Edit gallery image" = "Edit gallery image";
+
+/* No comment provided by engineer. */
+"Edit image" = "Bewerk afbeelding";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Bewerk nieuwe berichten en pagina's met de blok-editor.";
@@ -2246,8 +2695,14 @@
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Wijzig deel knoppen";
 
+/* No comment provided by engineer. */
+"Edit table" = "Edit table";
+
 /* Button title displayed in popup indicating that the user edits the post first */
 "Edit the post first" = "Bewerk eerst het bericht";
+
+/* No comment provided by engineer. */
+"Edit track" = "Edit track";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "Bewerk met gebruik van de webeditor";
@@ -2305,12 +2760,132 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-mail verzonden!";
 
+/* No comment provided by engineer. */
+"Embed Amazon Kindle content." = "Embed Amazon Kindle content.";
+
+/* No comment provided by engineer. */
+"Embed Cloudup content." = "Embed Cloudup content.";
+
+/* No comment provided by engineer. */
+"Embed CollegeHumor content." = "Embed CollegeHumor content.";
+
+/* No comment provided by engineer. */
+"Embed Crowdsignal (formerly Polldaddy) content." = "Embed Crowdsignal (formerly Polldaddy) content.";
+
+/* No comment provided by engineer. */
+"Embed Flickr content." = "Embed Flickr content.";
+
+/* No comment provided by engineer. */
+"Embed Imgur content." = "Embed Imgur content.";
+
+/* No comment provided by engineer. */
+"Embed Issuu content." = "Embed Issuu content.";
+
+/* No comment provided by engineer. */
+"Embed Kickstarter content." = "Embed Kickstarter content.";
+
+/* No comment provided by engineer. */
+"Embed Meetup.com content." = "Embed Meetup.com content.";
+
+/* No comment provided by engineer. */
+"Embed Mixcloud content." = "Embed Mixcloud content.";
+
+/* No comment provided by engineer. */
+"Embed ReverbNation content." = "Embed ReverbNation content.";
+
+/* No comment provided by engineer. */
+"Embed Screencast content." = "Embed Screencast content.";
+
+/* No comment provided by engineer. */
+"Embed Scribd content." = "Embed Scribd content.";
+
+/* No comment provided by engineer. */
+"Embed Slideshare content." = "Embed Slideshare content.";
+
+/* No comment provided by engineer. */
+"Embed SmugMug content." = "Embed SmugMug content.";
+
+/* No comment provided by engineer. */
+"Embed SoundCloud content." = "Embed SoundCloud content.";
+
+/* No comment provided by engineer. */
+"Embed Speaker Deck content." = "Embed Speaker Deck content.";
+
+/* No comment provided by engineer. */
+"Embed Spotify content." = "Embed Spotify content.";
+
+/* No comment provided by engineer. */
+"Embed a Dailymotion video." = "Embed a Dailymotion video.";
+
+/* No comment provided by engineer. */
+"Embed a Facebook post." = "Embed a Facebook post.";
+
+/* No comment provided by engineer. */
+"Embed a Reddit thread." = "Embed a Reddit thread.";
+
+/* No comment provided by engineer. */
+"Embed a TED video." = "Embed a TED video.";
+
+/* No comment provided by engineer. */
+"Embed a TikTok video." = "Embed a TikTok video.";
+
+/* No comment provided by engineer. */
+"Embed a Tumblr post." = "Embed a Tumblr post.";
+
+/* No comment provided by engineer. */
+"Embed a VideoPress video." = "Embed a VideoPress video.";
+
+/* No comment provided by engineer. */
+"Embed a Vimeo video." = "Embed a Vimeo video.";
+
+/* No comment provided by engineer. */
+"Embed a WordPress post." = "Embed a WordPress post.";
+
+/* No comment provided by engineer. */
+"Embed a WordPress.tv video." = "Embed a WordPress.tv video.";
+
+/* No comment provided by engineer. */
+"Embed a YouTube video." = "Embed a YouTube video.";
+
+/* No comment provided by engineer. */
+"Embed a simple audio player." = "Embed a simple audio player.";
+
+/* No comment provided by engineer. */
+"Embed a tweet." = "Embed a tweet.";
+
+/* No comment provided by engineer. */
+"Embed a video from your media library or upload a new one." = "Embed a video from your media library or upload a new one.";
+
+/* No comment provided by engineer. */
+"Embed an Animoto video." = "Embed an Animoto video.";
+
+/* No comment provided by engineer. */
+"Embed an Instagram post." = "Embed an Instagram post.";
+
+/* translators: %s: filename. */
+"Embed of %s." = "Embed of %s.";
+
+/* No comment provided by engineer. */
+"Embed of the selected PDF file." = "Embed of the selected PDF file.";
+
+/* translators: %s: host providing embed content e.g: www.youtube.com */
+"Embedded content from %s" = "Embedded content from %s";
+
+/* translators: %s: host providing embed content e.g: www.youtube.com */
+"Embedded content from %s can't be previewed in the editor." = "Embedded content from %s can't be previewed in the editor.";
+
+/* No comment provided by engineer. */
+"Embedding…" = "Embedding…";
+
 /* Accessibility value presented in the signup epilogue for an empty value.
    Label for size of media when the cache is empty. */
 "Empty" = "Leeg";
 
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Lege URL";
+
+/* No comment provided by engineer. */
+"Empty block; start writing or type forward slash to choose a block" = "Empty block; start writing or type forward slash to choose a block";
 
 /* Button title for the enable site notifications action. */
 "Enable" = "Inschakelen";
@@ -2333,8 +2908,17 @@
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "Einddatum";
 
+/* No comment provided by engineer. */
+"English" = "English";
+
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Volledig scherm openen";
+
+/* No comment provided by engineer. */
+"Enter URL here…" = "Enter URL here…";
+
+/* No comment provided by engineer. */
+"Enter URL to embed here…" = "Enter URL to embed here…";
 
 /* Enter a custom value */
 "Enter a custom value" = "Voeg een aangepaste waarde in";
@@ -2344,6 +2928,9 @@
 
 /* Message explaining why the user might enter a password. */
 "Enter a password to protect this post" = "Vul een wachtwoord in om dit bericht te beveiligen";
+
+/* No comment provided by engineer. */
+"Enter address" = "Enter address";
 
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "Voer hierboven andere woorden in, zodat wij op zoek kunnen gaan naar een adres dat overeenkomt.";
@@ -2380,6 +2967,12 @@
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
 "Enter your server credentials to enable one click site restores from backups." = "Voer de inloggegevens voor je server in om terugzetten in één klik voor je back-ups in te schakelen.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threat." = "Enter your server credentials to fix threat.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threats." = "Enter your server credentials to fix threats.";
 
 /* Generic error alert title
    Generic error.
@@ -2471,6 +3064,9 @@
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Fout bij updaten van snelheidsverbeteringen site";
 
+/* translators: example text. */
+"Etiam et egestas lorem. Vivamus sagittis sit amet dolor quis lobortis. Integer sed fermentum arcu, id vulputate lacus. Etiam fermentum sem eu quam hendrerit." = "Etiam et egestas lorem. Vivamus sagittis sit amet dolor quis lobortis. Integer sed fermentum arcu, id vulputate lacus. Etiam fermentum sem eu quam hendrerit.";
+
 /* Title for the activity detail view */
 "Event" = "Evenement";
 
@@ -2525,6 +3121,9 @@
 
 /* Title of a Quick Start Tour */
 "Explore plans" = "Abonnementen verkennen";
+
+/* No comment provided by engineer. */
+"Export" = "Export";
 
 /* Export Content confirmation action title
    Label for selecting the Export Content Settings item */
@@ -2598,6 +3197,9 @@
 /* No comment provided by engineer. */
 "Featured Image did not load" = "Uitgelichte afbeelding kan niet worden geladen";
 
+/* No comment provided by engineer. */
+"February 21, 2019" = "February 21, 2019";
+
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Thema's ophalen...";
 
@@ -2636,6 +3238,9 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Bestandstype";
 
+/* No comment provided by engineer. */
+"Fill" = "Fill";
+
 /* The password manager button in login pages. The button opens a dialog showing which password manager to use (e.g. 1Password, LastPass). */
 "Fill with password manager" = "Invullen met wachtwoordmanager";
 
@@ -2665,6 +3270,9 @@
    User's First Name */
 "First Name" = "Voornaam";
 
+/* No comment provided by engineer. */
+"Five." = "Five.";
+
 /* Button title that attempts to fix all fixable threats */
 "Fix All" = "Alles oplossen";
 
@@ -2676,6 +3284,9 @@
 
 /* Displays the fixed threats */
 "Fixed" = "Opgelost";
+
+/* No comment provided by engineer. */
+"Fixed width table cells" = "Fixed width table cells";
 
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Bezig met bedreigingen oplossen";
@@ -2756,11 +3367,29 @@
 /* An example tag used in the login prologue screens. */
 "Football" = "Voetbal";
 
+/* No comment provided by engineer. */
+"Footer cell text" = "Footer cell text";
+
+/* No comment provided by engineer. */
+"Footer label" = "Footer label";
+
+/* No comment provided by engineer. */
+"Footer section" = "Footer section";
+
+/* No comment provided by engineer. */
+"Footers" = "Footers";
+
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "We hebben je contactgegevens van WordPress.com alvast ingevuld om je op weg te helpen. Controleer of dit de juiste gegevens zijn die je voor dit domein wilt gebruiken.";
 
+/* No comment provided by engineer. */
+"Format settings" = "Format settings";
+
 /* Next web page */
 "Forward" = "Doorsturen";
+
+/* No comment provided by engineer. */
+"Four." = "Four.";
 
 /* Browse free themes selection title */
 "Free" = "Gratis";
@@ -2788,6 +3417,9 @@
 
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
+
+/* No comment provided by engineer. */
+"Gallery caption text" = "Gallery caption text";
 
 /* translators: accessibility text. %s: gallery caption. */
 "Gallery caption. %s" = "Galerij bijschrift. %s";
@@ -2832,14 +3464,26 @@
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Ga aan de slag met je site";
 
+/* Example post title used in the login prologue screens. */
+"Getting Inspired" = "Getting Inspired";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Account informatie ophalen";
 
 /* Cancel */
 "Give Up" = "Opgeven";
 
+/* No comment provided by engineer. */
+"Give quoted text visual emphasis. \"In quoting others, we cite ourselves.\" — Julio Cortázar" = "Give quoted text visual emphasis. \"In quoting others, we cite ourselves.\" — Julio Cortázar";
+
+/* No comment provided by engineer. */
+"Give special visual emphasis to a quote from your text." = "Give special visual emphasis to a quote from your text.";
+
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Geef je site een naam die zijn personaliteit en onderwerp reflecteerd. De eerste indruk telt!";
+
+/* No comment provided by engineer. */
+"Global Styles" = "Global Styles";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -2913,6 +3557,9 @@
 /* Post HTML content */
 "HTML Content" = "HTML inhoud";
 
+/* No comment provided by engineer. */
+"HTML element" = "HTML element";
+
 /* Accessibility label for selecting h1 paragraph style button on the formatting toolbar. */
 "Header 1" = "Koptekst 1";
 
@@ -2930,6 +3577,24 @@
 
 /* Accessibility label for selecting h6 paragraph style button on the formatting toolbar. */
 "Header 6" = "Koptekst 6";
+
+/* No comment provided by engineer. */
+"Header cell text" = "Header cell text";
+
+/* No comment provided by engineer. */
+"Header label" = "Header label";
+
+/* No comment provided by engineer. */
+"Header section" = "Header section";
+
+/* No comment provided by engineer. */
+"Headers" = "Headers";
+
+/* No comment provided by engineer. */
+"Heading" = "Heading";
+
+/* translators: %s: heading level e.g: \"1\", \"2\", \"3\" */
+"Heading %d" = "Heading %d";
 
 /* H1 Aztec Style */
 "Heading 1" = "Heading 1";
@@ -2949,6 +3614,12 @@
 /* H6 Aztec Style */
 "Heading 6" = "Heading 6";
 
+/* No comment provided by engineer. */
+"Heading text" = "Heading text";
+
+/* No comment provided by engineer. */
+"Height in pixels" = "Height in pixels";
+
 /* Help button */
 "Help" = "Help";
 
@@ -2961,6 +3632,9 @@
 
 /* No comment provided by engineer. */
 "Help icon" = "Help-icoon";
+
+/* No comment provided by engineer. */
+"Help visitors find your content." = "Help visitors find your content.";
 
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Hier zie je hoe het bericht het tot nu toe heeft gedaan.";
@@ -2982,6 +3656,9 @@
 /* No comment provided by engineer. */
 "Hide keyboard" = "Toetsenbord verbergen";
 
+/* No comment provided by engineer. */
+"Hide the excerpt on the full content page" = "Hide the excerpt on the full content page";
+
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
    Title of the post history screen */
@@ -2996,6 +3673,9 @@
 /* Moderation Keys Title
    Settings: Comments Moderation */
 "Hold for Moderation" = "Inhouden voor moderatie";
+
+/* translators: 'Home' as in a website's home page. */
+"Home" = "Home";
 
 /* The item to select during a guided tour.
    Title for setting which shows the current page assigned as a site's homepage
@@ -3013,6 +3693,9 @@
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hoera!\nBijna klaar";
 
+/* No comment provided by engineer. */
+"Horizontal" = "Horizontal";
+
 /* Title for the fix section in Threat Details: Threat is fixed */
 "How did Jetpack fix it?" = "Hoe heeft Jetpack het opgelost?";
 
@@ -3024,6 +3707,9 @@
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "Ik vind dit leuk";
+
+/* Example post content used in the login prologue screens. */
+"I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next";
 
 /* Title of a button style */
 "Icon & Text" = "Icon & Tekst";
@@ -3039,6 +3725,9 @@
 
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Als je doorgaat met een Apple of Google account en je hebt nog geen WordPress.com account, dan maak je een account aan en ga je akkoord met onze _algemene voorwaarden_.";
+
+/* No comment provided by engineer. */
+"If you have entered a custom label, it will be prepended before the title." = "If you have entered a custom label, it will be prepended before the title.";
 
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
 "If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "Als je %1$@ verwijdert, kan deze gebruiker deze site niet meer openen. Alle inhoud die door %2$@ is gemaakt blijft op de site staan.";
@@ -3079,14 +3768,26 @@
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Afbeeldingsgrootte";
 
+/* No comment provided by engineer. */
+"Image caption text" = "Image caption text";
+
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Onderschrift afbeelding. %s";
+
+/* No comment provided by engineer. */
+"Image settings" = "Image settings";
 
 /* Hint for image title on image settings. */
 "Image title" = "Titel voor afbeelding";
 
+/* No comment provided by engineer. */
+"Image width" = "Afbeelding breedte";
+
 /* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
 "Image, %@" = "Afbeelding, %@";
+
+/* No comment provided by engineer. */
+"Image, Date, & Title" = "Image, Date, & Title";
 
 /* Undated post time label */
 "Immediately" = "Onmiddellijk";
@@ -3096,6 +3797,15 @@
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Beschrijf in een paar woorden waar deze site over gaat.";
+
+/* No comment provided by engineer. */
+"In a few words, what this site is about." = "In a few words, what this site is about.";
+
+/* No comment provided by engineer. */
+"In a village of La Mancha, the name of which I have no desire to call to mind, there lived not long since one of those gentlemen that keep a lance in the lance-rack, an old buckler, a lean hack, and a greyhound for coursing." = "In a village of La Mancha, the name of which I have no desire to call to mind, there lived not long since one of those gentlemen that keep a lance in the lance-rack, an old buckler, a lean hack, and a greyhound for coursing.";
+
+/* No comment provided by engineer. */
+"In quoting others, we cite ourselves." = "In quoting others, we cite ourselves.";
 
 /* Describes a status of a plugin */
 "Inactive" = "Inactief";
@@ -3114,6 +3824,12 @@
 
 /* An error message shown when a user signed in with incorrect credentials. */
 "Incorrect username or password. Please try entering your login details again." = "Gebruikersnaam of wachtwoord onjuist. Probeer nogmaals je inloggegevens in te voeren.";
+
+/* No comment provided by engineer. */
+"Indent" = "Indent";
+
+/* No comment provided by engineer. */
+"Indent list item" = "Indent list item";
 
 /* Title for a threat */
 "Infected core file" = "Geïnfecteerd core-bestand";
@@ -3146,8 +3862,35 @@
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "Media invoeren";
 
+/* No comment provided by engineer. */
+"Insert a table for sharing data." = "Insert a table for sharing data.";
+
+/* No comment provided by engineer. */
+"Insert a table — perfect for sharing charts and data." = "Insert a table — perfect for sharing charts and data.";
+
+/* No comment provided by engineer. */
+"Insert additional custom elements with a WordPress shortcode." = "Insert additional custom elements with a WordPress shortcode.";
+
+/* No comment provided by engineer. */
+"Insert an image to make a visual statement." = "Insert an image to make a visual statement.";
+
+/* No comment provided by engineer. */
+"Insert column after" = "Insert column after";
+
+/* No comment provided by engineer. */
+"Insert column before" = "Insert column before";
+
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Media invoeren";
+
+/* No comment provided by engineer. */
+"Insert poetry. Use special spacing formats. Or quote song lyrics." = "Insert poetry. Use special spacing formats. Or quote song lyrics.";
+
+/* No comment provided by engineer. */
+"Insert row after" = "Insert row after";
+
+/* No comment provided by engineer. */
+"Insert row before" = "Insert row before";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Invoegen geselecteerd";
@@ -3184,6 +3927,9 @@
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Het installeren van de eerste plugin op je site kan maximaal een minuut duren. Terwijl dit gebeurt, kun je geen wijzigingen aan je site aanbrengen.";
+
+/* No comment provided by engineer. */
+"Introduce new sections and organize content to help visitors (and search engines) understand the structure of your content." = "Introduce new sections and organize content to help visitors (and search engines) understand the structure of your content.";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Introductie verhalen";
@@ -3233,6 +3979,9 @@
 /* Accessibility label for italic button on formatting toolbar.
    Discoverability title for italic formatting keyboard shortcut. */
 "Italic" = "Cursief";
+
+/* No comment provided by engineer. */
+"Jazz Musician" = "Jazz Musician";
 
 /* Section title for the publish table section in the blog details screen
    Title for the Jetpack Installation
@@ -3308,6 +4057,9 @@
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Houd de prestaties van je site bij.";
 
+/* No comment provided by engineer. */
+"Kind" = "Kind";
+
 /* Autoapprove only from known users */
 "Known Users" = "Bekende gebruikers";
 
@@ -3317,10 +4069,16 @@
 /* Noun. Title for the setting to edit the sharing label text. */
 "Label" = "Label";
 
+/* No comment provided by engineer. */
+"Landscape" = "Landschap";
+
 /* Label for the privacy setting
    Language of the current blog
    Title for the Language Picker Screen */
 "Language" = "Taal";
+
+/* No comment provided by engineer. */
+"Language tag (en, fr, etc.)" = "Language tag (en, fr, etc.)";
 
 /* Large image size. Should be the same as in core WP. */
 "Large" = "Groot";
@@ -3332,6 +4090,9 @@
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "Samenvatting laatste bericht";
+
+/* No comment provided by engineer. */
+"Latest comments settings" = "Latest comments settings";
 
 /* Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "Meer leren";
@@ -3350,6 +4111,9 @@
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "Ontdek meer over datum- en tijdnotaties.";
 
+/* No comment provided by engineer. */
+"Learn more about embeds" = "Learn more about embeds";
+
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Leer meer over rollen";
 
@@ -3362,11 +4126,20 @@
 /* Title displayed for selection of custom app icons that may be removed in a future release of the app. */
 "Legacy Icons" = "Verouderde pictogrammen";
 
+/* No comment provided by engineer. */
+"Legacy Widget" = "Legacy Widget";
+
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Laat ons je helpen";
 
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Laat het mij weten als het klaar is!";
+
+/* translators: accessibility text. 1: heading level. 2: heading content. */
+"Level %1$s. %2$s" = "Niveau %1$s. %2$s";
+
+/* translators: accessibility text. %s: heading level. */
+"Level %s. Empty." = "Niveau %s. Leeg.";
 
 /* Title for the app appearance setting for light mode */
 "Light" = "Licht";
@@ -3428,6 +4201,21 @@
 /* Image link option title. */
 "Link To" = "Link naar";
 
+/* No comment provided by engineer. */
+"Link color" = "Link color";
+
+/* No comment provided by engineer. */
+"Link label" = "Link label";
+
+/* No comment provided by engineer. */
+"Link rel" = "Link rel";
+
+/* No comment provided by engineer. */
+"Link to" = "Link to";
+
+/* translators: %s: Name of the post type e.g: \"post\". */
+"Link to %s" = "Link to %s";
+
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Link naar bestaande inhoud";
 
@@ -3436,8 +4224,23 @@
    Settings: Comments Approval settings */
 "Links in comments" = "Links in reacties";
 
+/* No comment provided by engineer. */
+"Links shown in a column." = "Links shown in a column.";
+
+/* No comment provided by engineer. */
+"Links shown in a row." = "Links shown in a row.";
+
+/* No comment provided by engineer. */
+"List" = "List";
+
+/* No comment provided by engineer. */
+"List of template parts" = "List of template parts";
+
 /* The accessibility label for the list style button in the Post List. */
 "List style" = "Lijststijl";
+
+/* No comment provided by engineer. */
+"List text" = "Lijsttekst";
 
 /* Title of the screen that load selected the revisions. */
 "Load" = "Laden";
@@ -3508,6 +4311,9 @@
    Text displayed while loading time zones */
 "Loading..." = "Laden...";
 
+/* No comment provided by engineer. */
+"Loading…" = "Laden...";
+
 /* Status for Media object that is only exists locally. */
 "Local" = "Lokaal";
 
@@ -3563,12 +4369,21 @@
 /* Instructions on the WordPress.com username / password log in form. */
 "Log in with your WordPress.com username and password." = "Log in met je WordPress.com gebruikersnaam en wachtwoord.";
 
+/* No comment provided by engineer. */
+"Log out" = "Log out";
+
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Uitloggen van WordPress?";
 
 /* Error message shown when a user is trying to login.
    Login Request Expired */
 "Login Request Expired" = "Aanmeldingsverzoek is verlopen";
+
+/* No comment provided by engineer. */
+"Login\/out settings" = "Login\/out settings";
+
+/* No comment provided by engineer. */
+"Logos Only" = "Logos Only";
 
 /* No comment provided by engineer. */
 "Logs" = "Logs";
@@ -3579,6 +4394,12 @@
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Het lijkt er op dat Jetpack is geïnstalleerd op je site. Gefeliciteerd!\nLogin met je WordPress.com inloggegevens om statistieken en meldingen in te schakelen.";
 
+/* No comment provided by engineer. */
+"Loop" = "Loop";
+
+/* translators: example text. */
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et eros eu felis." = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et eros eu felis.";
+
 /* Title of a button. */
 "Lost your password?" = "Wachtwoord vergeten?";
 
@@ -3587,6 +4408,15 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Hoofdnavigatie";
+
+/* No comment provided by engineer. */
+"Main color" = "Main color";
+
+/* No comment provided by engineer. */
+"Make template part" = "Make template part";
+
+/* No comment provided by engineer. */
+"Make title a link" = "Make title a link";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -3646,11 +4476,20 @@
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "Koppel accounts via e-mail";
 
+/* No comment provided by engineer. */
+"Matt Mullenweg" = "Matt Mullenweg";
+
 /* Title for the image size settings option. */
 "Max Image Upload Size" = "Max. uploadgrootte bestand";
 
 /* Title for the video size settings option. */
 "Max Video Upload Size" = "Max Video upload-grootte";
+
+/* No comment provided by engineer. */
+"Max number of words in excerpt" = "Max number of words in excerpt";
+
+/* No comment provided by engineer. */
+"May 7, 2019" = "May 7, 2019";
 
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
@@ -3688,14 +4527,23 @@
 /* Downloadable/Restorable items: Media Uploads */
 "Media Uploads" = "Media uploads";
 
+/* No comment provided by engineer. */
+"Media area" = "Media area";
+
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "Media heeft geen geassocieerd bestand om te uploaden.";
+
+/* No comment provided by engineer. */
+"Media file" = "Media file";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "Formaat van mediabestand (%1$@) is te groot om te uploaden. Maximaal toegestane bestandsgrootte is %2$@";
 
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "Voorvertoning media mislukt.";
+
+/* No comment provided by engineer. */
+"Media settings" = "Media instellingen";
 
 /* Alert displayed to the user when multiple media items have uploaded successfully. */
 "Media uploaded (%ld files)" = "Media geüpload (%ld bestanden)";
@@ -3744,6 +4592,9 @@
 /* Jetpack Monitor Settings: Monitor site's uptime */
 "Monitor your site's uptime" = "Monitor de uptime van je site";
 
+/* translators: Caption accompanying an image of the Mont Blanc, which serves as an example for the Image block. */
+"Mont Blanc appears—still, snowy, and serene." = "Mont Blanc appears—still, snowy, and serene.";
+
 /* Title of Months stats filter. */
 "Months" = "Maanden";
 
@@ -3773,6 +4624,9 @@
 
 /* Section title for global related posts. */
 "More on WordPress.com" = "Meer op WordPress.com";
+
+/* No comment provided by engineer. */
+"More tools & options" = "More tools & options";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Populairste tijd";
@@ -3810,6 +4664,12 @@
 /* Option to move Insight down in the view. */
 "Move down" = "Omlaag verplaatsen";
 
+/* No comment provided by engineer. */
+"Move image backward" = "Move image backward";
+
+/* No comment provided by engineer. */
+"Move image forward" = "Afbeelding naar voren verplaatsen";
+
 /* Screen reader text for button that will move the menu item */
 "Move menu item" = "Verplaats menu-item";
 
@@ -3835,8 +4695,14 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "Verplaatst de reactie naar de prullenbak.";
 
+/* Example post title used in the login prologue screens. */
+"Museums to See In London" = "Museums om te zien in Londen";
+
 /* An example tag used in the login prologue screens. */
 "Music" = "Muziek";
+
+/* No comment provided by engineer. */
+"Muted" = "Gedempt";
 
 /* Link to My Profile section
    My Profile view title */
@@ -3858,6 +4724,12 @@
 /* Option in Support view to access previous help tickets. */
 "My Tickets" = "Mijn tickets";
 
+/* Example post title used in the login prologue screens. */
+"My Top Ten Cafes" = "Mijn toptien café's";
+
+/* translators: example text. */
+"Nam risus massa, ullamcorper consectetur eros fermentum, porta aliquet ligula. Sed vel mauris nec enim." = "Nam risus massa, ullamcorper consectetur eros fermentum, porta aliquet ligula. Sed vel mauris nec enim.";
+
 /* Accessibility label for the Email text field.
    Name text field placeholder */
 "Name" = "Naam";
@@ -3873,6 +4745,12 @@
 
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Navigeert naar aanpassen van het verloop";
+
+/* No comment provided by engineer. */
+"Navigation (horizontal)" = "Navigatie (horizontaal)";
+
+/* No comment provided by engineer. */
+"Navigation (vertical)" = "Navigatie (verticaal)";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Hulp nodig?";
@@ -3895,6 +4773,9 @@
 
 /* Blocklist Keyword Insertion Title */
 "New Blocklist Word" = "Nieuw bloklijst woord";
+
+/* No comment provided by engineer. */
+"New Column" = "Nieuwe kolom";
 
 /* Title of alert informing users about the Reader Save for Later feature. */
 "New Custom App Icons" = "Nieuwe aangepaste app pictogrammen";
@@ -3920,6 +4801,9 @@
 /* Noun. The title of an item in a list. */
 "New posts" = "Nieuwe berichten";
 
+/* No comment provided by engineer. */
+"New template part" = "Nieuw template onderdeel";
+
 /* Screen title, where users can see the newest plugins */
 "Newest" = "Nieuwste";
 
@@ -3932,14 +4816,23 @@
    Title of a button. The text should be capitalized. */
 "Next" = "Volgende";
 
+/* No comment provided by engineer. */
+"Next Page" = "Volgende pagina";
+
 /* Table view title for the quick start section. */
 "Next Steps" = "Volgende stappen";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "Volgende notificatie";
 
+/* No comment provided by engineer. */
+"Next page link" = "Volgende pagina link";
+
 /* Accessibility label */
 "Next period" = "Volgende periode";
+
+/* No comment provided by engineer. */
+"Next post" = "Volgende bericht";
 
 /* Label for a cancel button */
 "No" = "Nee";
@@ -3956,6 +4849,9 @@
 /* Title for the error view when there's no connection
    Title of error prompt when no internet connection is available. */
 "No Connection" = "Geen verbinding";
+
+/* No comment provided by engineer. */
+"No Date" = "Geen datum";
 
 /* List Editor Empty State Message */
 "No Items" = "Geen items";
@@ -4008,6 +4904,9 @@
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Nog geen reacties";
+
+/* No comment provided by engineer. */
+"No comments." = "Geen reacties.";
 
 /* An error message title shown when there is no internet connection.
    Displayed during Site Creation, when searching for Verticals and the network is unavailable.
@@ -4117,6 +5016,9 @@
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "Geen berichten.";
 
+/* No comment provided by engineer. */
+"No preview available." = "Geen voorbeeld beschikbaar.";
+
 /* A message title */
 "No recent posts" = "Geen recente berichten";
 
@@ -4180,7 +5082,16 @@
 "Not seeing the email? Check your Spam or Junk Mail folder." = "Kan je de e-mail niet vinden? Controleer je spam-map of ongewenste e-mail.";
 
 /* No comment provided by engineer. */
+"Note: Autoplaying audio may cause usability issues for some visitors." = "Opmerking: het automatisch afspelen van audio kan voor sommige bezoekers bruikbaarheidsproblemen veroorzaken.";
+
+/* No comment provided by engineer. */
+"Note: Autoplaying videos may cause usability issues for some visitors." = "Note: Autoplaying videos may cause usability issues for some visitors.";
+
+/* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "Opmerking: Kolom lay-out kan verschillen tussen thema's en schermafmetingen";
+
+/* No comment provided by engineer. */
+"Note: Most phone and tablet browsers won't display embedded PDFs." = "Note: Most phone and tablet browsers won't display embedded PDFs.";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Niets gevonden.";
@@ -4222,6 +5133,9 @@
 
 /* Register Domain - Address information field Number */
 "Number" = "Nummer";
+
+/* No comment provided by engineer. */
+"Number of comments" = "Number of comments";
 
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Genummerde lijst";
@@ -4279,6 +5193,15 @@
 /* Accessibility label for 1 password button */
 "One Password button" = "One Password knop";
 
+/* No comment provided by engineer. */
+"One column" = "One column";
+
+/* translators: Quote serving as example for the Pullquote block. Attributed to Matt Mullenweg. */
+"One of the hardest things to do in technology is disrupt yourself." = "One of the hardest things to do in technology is disrupt yourself.";
+
+/* No comment provided by engineer. */
+"One." = "One.";
+
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Bekijk alleen de meest relevante statistieken. Voeg inzichten toe, zodat deze aansluiten bij je behoeften.";
 
@@ -4297,9 +5220,6 @@
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Oeps!";
 
-/* No comment provided by engineer. */
-"Open Block Actions Menu" = "Open menu met blokacties";
-
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Open apparaat instellingen";
 
@@ -4312,6 +5232,9 @@
 
 /* Today widget label to launch WP app */
 "Open WordPress" = "Open WordPress";
+
+/* No comment provided by engineer. */
+"Open block navigation" = "Open block navigation";
 
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "Open de volledige mediakiezer";
@@ -4358,8 +5281,14 @@
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Of login door _je site-adres in te voeren_.";
 
+/* No comment provided by engineer. */
+"Ordered" = "Ordered";
+
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Geordende lijst";
+
+/* No comment provided by engineer. */
+"Ordered list settings" = "Ordered list settings";
 
 /* Register Domain - Domain contact information field Organization */
 "Organization" = "Organisatie";
@@ -4392,8 +5321,23 @@
    Other Sites Notification Settings Title */
 "Other Sites" = "Andere sites";
 
+/* No comment provided by engineer. */
+"Outdent" = "Outdent";
+
+/* No comment provided by engineer. */
+"Outdent list item" = "Outdent list item";
+
+/* No comment provided by engineer. */
+"Outline" = "Outline";
+
 /* Used to indicate a setting is overridden in debug builds of the app */
 "Overridden" = "Overschreven";
+
+/* No comment provided by engineer. */
+"PDF embed" = "PDF embed";
+
+/* No comment provided by engineer. */
+"PDF settings" = "PDF settings";
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEFOON";
@@ -4401,6 +5345,9 @@
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page */
 "Page" = "Pagina";
+
+/* No comment provided by engineer. */
+"Page Link" = "Paginalink";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
 "Page Restored to Drafts" = "Pagina teruggezet naar Concepten";
@@ -4414,6 +5361,9 @@
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
 "Page Settings" = "Pagina-instellingen";
+
+/* No comment provided by engineer. */
+"Page break" = "Page break";
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Blok Pagina-einde. %s";
@@ -4457,6 +5407,12 @@
    Settings: Comments Paging preferences */
 "Paging" = "Paginatie";
 
+/* No comment provided by engineer. */
+"Paragraph" = "Paragraaf";
+
+/* No comment provided by engineer. */
+"Paragraph block" = "Paragraph block";
+
 /* Placeholder to set a parent category for a new category.
    Title for selecting parent category of a category */
 "Parent Category" = "Bovenliggende categorie";
@@ -4486,7 +5442,7 @@
 "Paste URL" = "Plak URL";
 
 /* No comment provided by engineer. */
-"Paste block after" = "Plak het blok na";
+"Paste a link to the content you want to display on your site." = "Paste a link to the content you want to display on your site.";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Plak zonder formattering";
@@ -4534,6 +5490,9 @@
 /* Prompt for the screen to pick a design and homepage for a site. */
 "Pick your favorite homepage layout. You can edit and customize it later." = "Kies je favoriete homepage lay-out. Je kunt hem bewerken of later aanpassen.";
 
+/* No comment provided by engineer. */
+"Pill Shape" = "Pill Shape";
+
 /* The item to select during a guided tour. */
 "Plan" = "Abonnement";
 
@@ -4541,8 +5500,14 @@
    Title for the plan selector */
 "Plans" = "Abonnementen";
 
+/* No comment provided by engineer. */
+"Play inline" = "Play inline";
+
 /* User action to play a video on the editor. */
 "Play video" = "Speel video";
+
+/* No comment provided by engineer. */
+"Playback controls" = "Playback controls";
 
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "Voeg enige inhoud toe voordat je probeert om te publiceren.";
@@ -4687,6 +5652,9 @@
 /* Section title for Popular Languages */
 "Popular languages" = "Populaire talen";
 
+/* No comment provided by engineer. */
+"Portrait" = "Portret";
+
 /* Menu item label for linking a post.
    Noun. Type of content being selected is a blog post */
 "Post" = "Publiceer";
@@ -4694,9 +5662,39 @@
 /* Title for selecting categories for a post */
 "Post Categories" = "Berichtcategorieën";
 
+/* No comment provided by engineer. */
+"Post Comment" = "Post Comment";
+
+/* No comment provided by engineer. */
+"Post Comment Author" = "Post Comment Author";
+
+/* No comment provided by engineer. */
+"Post Comment Content" = "Post Comment Content";
+
+/* No comment provided by engineer. */
+"Post Comment Date" = "Post Comment Date";
+
+/* No comment provided by engineer. */
+"Post Comments Count block: post not found." = "Post Comments Count block: post not found.";
+
+/* No comment provided by engineer. */
+"Post Comments Form" = "Post Comments Form";
+
+/* No comment provided by engineer. */
+"Post Comments Form block: comments are not enabled for this post type." = "Post Comments Form block: comments are not enabled for this post type.";
+
+/* No comment provided by engineer. */
+"Post Comments Form block: comments to this post are not allowed." = "Post Comments Form block: comments to this post are not allowed.";
+
+/* No comment provided by engineer. */
+"Post Comments Link block: post not found." = "Post Comments Link block: post not found.";
+
 /* For setting the format of a post.
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Post Format";
+
+/* No comment provided by engineer. */
+"Post Link" = "Berichtlink";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "Bericht teruggezet naar Concepten";
@@ -4717,6 +5715,12 @@
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "Bericht door %1$@ van %2$@";
 
+/* No comment provided by engineer. */
+"Post comments block: no post found." = "Post comments block: no post found.";
+
+/* No comment provided by engineer. */
+"Post content settings" = "Bericht inhoud-instellingen";
+
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Bericht gemaakt op %@";
 
@@ -4725,6 +5729,9 @@
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Uploaden van bericht mislukt";
+
+/* No comment provided by engineer. */
+"Post meta settings" = "Bericht meta-instellingen";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "Bericht verplaatst naar prullenbak.";
@@ -4768,6 +5775,9 @@
 /* Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, blog URL, author name */
 "Posted in %@, at %@, by %@." = "Geplaatst in %1$@, op %2$@, door %3$@.";
 
+/* No comment provided by engineer. */
+"Poster image" = "Posterafbeelding";
+
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Berichtactiviteiten";
@@ -4777,6 +5787,9 @@
    Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query */
 "Posts" = "Berichten";
+
+/* No comment provided by engineer. */
+"Posts List" = "Posts List";
 
 /* Title for setting which shows the current page assigned as a site's posts page */
 "Posts Page" = "Berichtenpagina";
@@ -4803,6 +5816,12 @@
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "Mogelijk gemaakt door Tenor";
+
+/* No comment provided by engineer. */
+"Preformatted text" = "Preformatted text";
+
+/* No comment provided by engineer. */
+"Preload" = "Preload";
 
 /* Browse premium themes selection title */
 "Premium" = "Premium";
@@ -4836,11 +5855,20 @@
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "Bekijk een voorbeeld van je nieuwe site om te zien wat je bezoekers zien..";
 
+/* No comment provided by engineer. */
+"Previous Page" = "Previous Page";
+
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Vorige notificatie";
 
+/* No comment provided by engineer. */
+"Previous page link" = "Previous page link";
+
 /* Accessibility label */
 "Previous period" = "Vorige periode";
+
+/* No comment provided by engineer. */
+"Previous post" = "Previous post";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -4893,6 +5921,15 @@
 
 /* Menu item label for linking a project page. */
 "Projects" = "Projecten";
+
+/* No comment provided by engineer. */
+"Prompt visitors to take action with a button-style link." = "Prompt visitors to take action with a button-style link.";
+
+/* No comment provided by engineer. */
+"Prompt visitors to take action with a group of button-style links." = "Prompt visitors to take action with a group of button-style links.";
+
+/* No comment provided by engineer. */
+"Provided type is not supported." = "Provided type is not supported.";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
@@ -4965,6 +6002,12 @@
 /* Text displayed in HUD while a post is being published. */
 "Publishing..." = "Publiceren...";
 
+/* No comment provided by engineer. */
+"Pullquote citation text" = "Pullquote citation text";
+
+/* No comment provided by engineer. */
+"Pullquote text" = "Pullquote text";
+
 /* Title of screen showing site purchases */
 "Purchases" = "Aankopen";
 
@@ -4980,11 +6023,29 @@
 /* This is the string we display when asking the user to approve push notifications in the settings app after previously having denied them. */
 "Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on." = "Pushmeldingen zijn uitgeschakeld in iOS-instellingen. Selecteer 'Meldingen toestaan' om ze weer in te schakelen.";
 
+/* No comment provided by engineer. */
+"Query Title" = "Query Title";
+
 /* The menu item to select during a guided tour. */
 "Quick Start" = "Snel start";
 
+/* No comment provided by engineer. */
+"Quote citation text" = "Quote citation text";
+
+/* No comment provided by engineer. */
+"Quote text" = "Quote text";
+
+/* No comment provided by engineer. */
+"RSS settings" = "RSS-instellingen";
+
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Beoordeel ons in de App Store";
+
+/* No comment provided by engineer. */
+"Read more" = "Lees meer";
+
+/* No comment provided by engineer. */
+"Read more link text" = "Read more link text";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Lees op";
@@ -5039,6 +6100,9 @@
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "Opnieuw verbinding gemaakt";
 
+/* No comment provided by engineer. */
+"Redirect to current URL" = "Redirect to current URL";
+
 /* Label for link title in Referrers stat. */
 "Referrer" = "Referrer";
 
@@ -5077,6 +6141,9 @@
 
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "Gerelateerde berichten geven relevante content van je site weer onder je berichten";
+
+/* No comment provided by engineer. */
+"Release Date" = "Release Date";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -5131,6 +6198,9 @@
 /* Accessibility hint for the 'Save Post' button when a post is already saved. */
 "Remove this post from my saved posts." = "Dit bericht verwijderen uit mijn opgeslagen berichten.";
 
+/* No comment provided by engineer. */
+"Remove track" = "Remove track";
+
 /* User action to remove video. */
 "Remove video" = "Video verwijderen";
 
@@ -5154,6 +6224,9 @@
 
 /* No comment provided by engineer. */
 "Replace file" = "Vervang bestand";
+
+/* No comment provided by engineer. */
+"Replace image" = "Replace image";
 
 /* No comment provided by engineer. */
 "Replace image or video" = "Afbeelding of video vervangen";
@@ -5228,6 +6301,9 @@
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Afmeting wijzigen en bijsnijden";
 
+/* No comment provided by engineer. */
+"Resize for smaller devices" = "Resize for smaller devices";
+
 /* The largest resolution allowed for uploading */
 "Resolution" = "Resolutie";
 
@@ -5251,6 +6327,9 @@
 
 /* Label that describes the restore site action */
 "Restore site" = "Site terugzetten";
+
+/* No comment provided by engineer. */
+"Restore template to theme default" = "Restore template to theme default";
 
 /* Button title for restore site action */
 "Restore to this point" = "Terugzetten naar dit punt";
@@ -5304,6 +6383,9 @@
 /* No comment provided by engineer. */
 "Reusable blocks aren't editable on WordPress for iOS" = "Herbruikbare blokken zijn niet bewerkbaar in WordPress voor iOS";
 
+/* No comment provided by engineer. */
+"Reverse list numbering" = "Reverse list numbering";
+
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Wijziging in behandeling terugzetten";
 
@@ -5326,6 +6408,12 @@
    User Roles Title
    User's Role */
 "Role" = "Rol";
+
+/* No comment provided by engineer. */
+"Rotate" = "Rotate";
+
+/* No comment provided by engineer. */
+"Row count" = "Aantal rijen";
 
 /* One Time Code has been sent via SMS */
 "SMS Sent" = "Sms verzonden";
@@ -5560,6 +6648,9 @@
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Alineastijl selecteren";
 
+/* No comment provided by engineer. */
+"Select poster image" = "Select poster image";
+
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "Selecteer %@ om je social media accounts toe te voegen";
 
@@ -5629,6 +6720,9 @@
 /* Jetpack Monitor Settings: Send push notifications */
 "Send push notifications" = "Stuur pushmeldingen";
 
+/* No comment provided by engineer. */
+"Separate your content into a multi-page experience." = "Separate your content into a multi-page experience.";
+
 /* Title for the Serve images from our servers setting */
 "Serve images from our servers" = "Serveer afbeeldingen van onze servers";
 
@@ -5650,6 +6744,9 @@
 
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "Instellen als berichten pagina";
+
+/* No comment provided by engineer. */
+"Set media and words side-by-side for a richer layout." = "Set media and words side-by-side for a richer layout.";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "Instellen";
@@ -5721,6 +6818,12 @@
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Fout tijdens delen";
 
+/* No comment provided by engineer. */
+"Shortcode" = "Shortcode";
+
+/* No comment provided by engineer. */
+"Shortcode text" = "Shortcode text";
+
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Koptekst weergeven";
 
@@ -5739,12 +6842,24 @@
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "Toon gerelateerde berichten";
 
+/* No comment provided by engineer. */
+"Show download button" = "Show download button";
+
+/* No comment provided by engineer. */
+"Show inline embed" = "Show inline embed";
+
+/* No comment provided by engineer. */
+"Show login & logout links." = "Show login & logout links.";
+
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "Toon wachtwoord";
 
 /* No comment provided by engineer. */
 "Show post content" = "Toon bericht inhoud";
+
+/* No comment provided by engineer. */
+"Show post counts" = "Toon aantal berichten";
 
 /* translators: Checkbox toggle label */
 "Show section" = "Toon sectie";
@@ -5757,6 +6872,9 @@
 
 /* Voiceover description for the post list filter which shows posts for just the current user on a site. */
 "Showing just my posts" = "Alleen mijn berichten worden getoond";
+
+/* No comment provided by engineer. */
+"Showing large initial letter." = "Showing large initial letter.";
 
 /* Label on Post Stats view indicating which post the stats are for. */
 "Showing stats for:" = "Statistieken tonen voor:";
@@ -5800,6 +6918,9 @@
 /* Accessibility hint for the site name and URL button on Reader's Post Details. */
 "Shows the site's posts." = "Toont de berichten van de site.";
 
+/* No comment provided by engineer. */
+"Sidebars" = "Zijbalken";
+
 /* View title during the sign up process. */
 "Sign Up" = "Aanmelden";
 
@@ -5832,6 +6953,9 @@
 
 /* Title for the Language Picker View */
 "Site Language" = "Site taal";
+
+/* No comment provided by engineer. */
+"Site Logo" = "Site-logo";
 
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
@@ -5878,11 +7002,21 @@
 /* Create new Site Page button title */
 "Site page" = "Site-pagina";
 
+/* Prologue title label, the 
+ force splits it into 2 lines. */
+"Site security and performance\nfrom your pocket" = "Site security and performance\nfrom your pocket";
+
+/* No comment provided by engineer. */
+"Site tagline text" = "Siteslogan tekst";
+
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Site tijdzone (UTC%1$@%2$d%3$@)";
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "Site titel is met succes gewijzigd";
+
+/* No comment provided by engineer. */
+"Site title text" = "Sitetitel tekst";
 
 /* Sites Filter Tab Title
    Title of a Reader tab showing Sites matching a user's search query */
@@ -5893,6 +7027,9 @@
 
 /* A suggestion of topics the user might */
 "Sites to follow" = "Te volgen sites";
+
+/* No comment provided by engineer. */
+"Six." = "Zes.";
 
 /* Image size option title. */
 "Size" = "Grootte";
@@ -5919,6 +7056,12 @@
 
 /* Follower Totals label for social media followers */
 "Social" = "Sociaal";
+
+/* No comment provided by engineer. */
+"Social Icon" = "Social pictogram";
+
+/* No comment provided by engineer. */
+"Solid color" = "Effen kleur";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Er zijn uploads van media mislukt. Door deze handeling worden alle mislukte media uit het bericht verwijderd.\nToch opslaan?";
@@ -5978,6 +7121,9 @@
 "Sorry, that username is unavailable." = "Sorry, deze gebruikersnaam is niet beschikbaar.";
 
 /* No comment provided by engineer. */
+"Sorry, this content could not be embedded." = "Deze inhoud kon niet ingesloten worden.";
+
+/* No comment provided by engineer. */
 "Sorry, usernames can only contain lowercase letters (a-z) and numbers." = "Sorry, gebruikersnamen kunnen alleen kleine letters (a-z) en nummers bevatten.";
 
 /* No comment provided by engineer. */
@@ -6005,14 +7151,23 @@
    Settings: Comments Sort Order */
 "Sort By" = "Sorteer  Op";
 
+/* No comment provided by engineer. */
+"Sorting and filtering" = "Sortering en filtering";
+
 /* Opens the Github Repository Web */
 "Source Code" = "Broncode";
+
+/* No comment provided by engineer. */
+"Source language" = "Source language";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "South" = "Zuid";
 
 /* Label for showing the available disk space quota available for media */
 "Space used" = "Ruimte verbruikt";
+
+/* No comment provided by engineer. */
+"Spacer settings" = "Spacer settings";
 
 /* Marks comment as spam.
    Spam
@@ -6026,6 +7181,9 @@
    Title for the Speed up your site Settings Screen */
 "Speed up your site" = "Versnel jouw site";
 
+/* No comment provided by engineer. */
+"Square" = "Vierkant";
+
 /* Standard post format label */
 "Standard" = "Standaard";
 
@@ -6035,6 +7193,12 @@
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
 "Start Over" = "Begin opnieuw";
+
+/* No comment provided by engineer. */
+"Start value" = "Beginwaarde";
+
+/* No comment provided by engineer. */
+"Start with the building block of all narrative." = "Start with the building block of all narrative.";
 
 /* No comment provided by engineer. */
 "Start writing…" = "Begin met schrijven...";
@@ -6094,6 +7258,9 @@
 /* Discoverability title for strikethrough formatting keyboard shortcut. */
 "Strikethrough" = "Doorstrepen";
 
+/* No comment provided by engineer. */
+"Stripes" = "Strepen";
+
 /* Status for Media object that is only has the mediaID locally. */
 "Stub" = "Stub";
 
@@ -6102,6 +7269,9 @@
 
 /* Text displayed in HUD while a post is being submitted for review. */
 "Submitting for Review..." = "Inzenden voor beoordeling...";
+
+/* No comment provided by engineer. */
+"Subtitles" = "Ondertitels";
 
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "Spotlight-index succesvol gewist";
@@ -6132,6 +7302,9 @@
    Theme Support action title
    View title for Support page. */
 "Support" = "Ondersteuning";
+
+/* translators: example text. */
+"Suspendisse commodo neque lacus, a dictum orci interdum et." = "Suspendisse commodo neque lacus, a dictum orci interdum et.";
 
 /* Button used to switch site */
 "Switch Site" = "Site wisselen";
@@ -6176,7 +7349,16 @@
 "System default" = "Systeemstandaard";
 
 /* No comment provided by engineer. */
+"Table" = "Tabel";
+
+/* No comment provided by engineer. */
+"Table caption text" = "Table caption text";
+
+/* No comment provided by engineer. */
 "Table of Contents" = "Inhoudsopgave";
+
+/* No comment provided by engineer. */
+"Table settings" = "Table settings";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "Tabel toont %@";
@@ -6190,6 +7372,12 @@
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
 "Tag" = "Tag";
+
+/* No comment provided by engineer. */
+"Tag Cloud settings" = "Tag Cloud settings";
+
+/* No comment provided by engineer. */
+"Tag Link" = "Tag link";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "Tag bestaat al";
@@ -6287,6 +7475,24 @@
 /* Create site, step 1. Select type of site. Title */
 "Tell us what kind of site you'd like to make" = "Laat ons weten wat voor soort site je wilt maken";
 
+/* No comment provided by engineer. */
+"Template Part" = "Template Part";
+
+/* translators: %s: template part title. */
+"Template Part \"%s\" inserted." = "Template Part \"%s\" inserted.";
+
+/* No comment provided by engineer. */
+"Template Parts" = "Template Parts";
+
+/* No comment provided by engineer. */
+"Template part created." = "Template part created.";
+
+/* No comment provided by engineer. */
+"Templates" = "Templates";
+
+/* No comment provided by engineer. */
+"Term description." = "Term description.";
+
 /* The underlined title sentence */
 "Terms and Conditions" = "Algemene voorwaarden";
 
@@ -6299,9 +7505,18 @@
 /* Title of a button style */
 "Text Only" = "Enkel tekst";
 
+/* No comment provided by engineer. */
+"Text link settings" = "Text link settings";
+
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
 "Text me a code instead" = "SMS een code naar me toe";
+
+/* No comment provided by engineer. */
+"Text settings" = "Text settings";
+
+/* No comment provided by engineer. */
+"Text tracks" = "Text tracks";
 
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Bedankt voor het kiezen van %1$@ door %2$@";
@@ -6357,11 +7572,23 @@
 /* Text for related post cell preview */
 "The WordPress for Android App Gets a Big Facelift" = "De WordPress voor Android-app krijgt een grote update";
 
+/* Example post title used in the login prologue screens. This is a post about football fans. */
+"The World's Best Fans" = "The World's Best Fans";
+
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "De app herkent het antwoord van de server niet. Controleer de configuratie van je site.";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Het certificaat voor deze server is ongeldig. Je maakt mogelijk verbinding met een server die zich voordoet als “%@”, wat je vertrouwelijke informatie in gevaar kan brengen.\n\nWil je het certificaat toch vertrouwen?";
+
+/* translators: %s: poster image URL. */
+"The current poster image url is %s" = "The current poster image url is %s";
+
+/* No comment provided by engineer. */
+"The excerpt is hidden." = "De samenvatting is verborgen.";
+
+/* No comment provided by engineer. */
+"The excerpt is visible." = "De samenvatting is zichtbaar.";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "Het bestand %1$@ bevat een kwaadaardig codepatroon";
@@ -6451,6 +7678,9 @@
 /* Message shown when a video failed to load while trying to add it to the Media library. */
 "The video could not be added to the Media Library." = "De video kon niet aan de mediabibliotheek toegevoegd worden.";
 
+/* No comment provided by engineer. */
+"The wren<br>Earns his living<br>Noiselessly." = "Het winterkoninkje<br>Verdient z'n brood<br>Geruisloos.";
+
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Thema geactiveerd";
 
@@ -6491,6 +7721,9 @@
 
 /* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
 "There is an issue connecting to %@. Reconnect to continue publicizing." = "Er is een probleem opgetreden met %@. Maak opnieuw verbinding om door te gaan met publiceren.";
+
+/* No comment provided by engineer. */
+"There is no poster image currently selected" = "Er is momenteel geen posterafbeelding geselecteerd";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
    No comment (test)
@@ -6589,6 +7822,12 @@
 /* Explaining to the user why the app needs access to the device media library. */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Deze app heeft toestemming nodig om de mediabibliotheek van je apparaat te kunnen openen voor het toevoegen van foto's en\/of video's aan je berichten. Wijzig de privacyinstellingen als je dit wilt toestaan.";
 
+/* No comment provided by engineer. */
+"This block is deprecated. Please use the Columns block instead." = "Dit blok is verouderd. Gebruik in plaats hiervan het kolommenblok.";
+
+/* No comment provided by engineer. */
+"This column count exceeds the recommended amount and may cause visual breakage." = "Deze kolom waarde overschrijd het aanbevolen aantal en kan daarmee visuele problemen veroorzaken.";
+
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
 "This domain is unavailable" = "Dit domein is niet beschikbaar";
 
@@ -6657,6 +7896,15 @@
 /* Message displayed when a threat is ignored successfully. */
 "Threat ignored." = "Bedreiging genegeerd.";
 
+/* No comment provided by engineer. */
+"Three columns; equal split" = "Drie kolommen; gelijkmatig verdeeld";
+
+/* No comment provided by engineer. */
+"Three columns; wide center column" = "Drie kolommen; brede midden kolom";
+
+/* No comment provided by engineer. */
+"Three." = "Drie.";
+
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Miniatuur";
 
@@ -6686,8 +7934,20 @@
    Title of the new Category being created. */
 "Title" = "Titel";
 
+/* No comment provided by engineer. */
+"Title & Date" = "Titel & datum";
+
+/* No comment provided by engineer. */
+"Title & Excerpt" = "Titel & samenvatting";
+
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Titel voor de categorie is verplicht.";
+
+/* No comment provided by engineer. */
+"Title of track" = "Titel van track";
+
+/* No comment provided by engineer. */
+"Title, Date, & Excerpt" = "Titel, datum & samenvatting";
 
 /* NSPhotoLibraryAddUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library.
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
@@ -6720,6 +7980,9 @@
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Om verder te gaan met dit Google account, meld je eerst aan met je WordPress.com wachtwoord. Dit wordt maar één keer gevraagd.";
 
+/* No comment provided by engineer. */
+"To show a comment, input the comment ID." = "Om een reactie te tonen, geef het reactie ID in.";
+
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Voor het maken van foto's of video's die gebruikt kunnen worden in je berichten.";
 
@@ -6736,6 +7999,12 @@
 
 /* Discoverability title for HTML keyboard shortcut. */
 "Toggle HTML Source " = "HTML-bron in-\/uitschakelen ";
+
+/* No comment provided by engineer. */
+"Toggle navigation" = "Toggle navigatie";
+
+/* No comment provided by engineer. */
+"Toggle to show a large initial letter." = "Toggle om een grote beginletter weer te geven.";
 
 /* Accessibility Identifier for the Aztec Ordered List Style. */
 "Toggles the ordered list style" = "Omschakelen naar geordende lijststijl";
@@ -6782,14 +8051,11 @@
 /* 'This Year' label for total number of words. */
 "Total Words" = "Totaal aantal woorden";
 
+/* No comment provided by engineer. */
+"Tracks can be subtitles, captions, chapters, or descriptions. They help make your content more accessible to a wider range of users." = "Tracks kunnen ondertitels, bijschriften, hoofdstukken of beschrijvingen zijn. Ze helpen je inhoud toegankelijker te maken voor een breder scala aan gebruikers.";
+
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Verkeer";
-
-/* translators: %s: block title e.g: \"Paragraph\". */
-"Transform %s to" = "Transformeer %s naar";
-
-/* No comment provided by engineer. */
-"Transform block…" = "Transformeer blok...";
 
 /* No comment provided by engineer. */
 "Translate" = "Vertaal";
@@ -6866,6 +8132,18 @@
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter gebruikersnaam";
+
+/* No comment provided by engineer. */
+"Two columns; equal split" = "Twee kolommen; gelijkmatig verdeeld";
+
+/* No comment provided by engineer. */
+"Two columns; one-third, two-thirds split" = "Twee kolommen; één derde, twee derde verdeling";
+
+/* No comment provided by engineer. */
+"Two columns; two-thirds, one-third split" = "Twee kolommen; twee derde, één derde verdeling";
+
+/* No comment provided by engineer. */
+"Two." = "Twee.";
 
 /* Placeholder text for domain search during site creation. */
 "Type a keyword for more ideas" = "Type een trefwoord voor meer ideeën";
@@ -7094,11 +8372,17 @@
 /* Displayed when a site has no name */
 "Unnamed Site" = "Naamloze site";
 
+/* No comment provided by engineer. */
+"Unordered" = "Ongeordend";
+
 /* Accessibility label for unordered list button on formatting toolbar. */
 "Unordered List" = "Ongeordende lijst ";
 
 /* Filters Unread Notifications */
 "Unread" = "Ongelezen";
+
+/* Title of unreplied Comments filter. */
+"Unreplied" = "Onbeantwoord";
 
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Niet-opgeslagen wijzigingen";
@@ -7111,6 +8395,9 @@
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Zonder titel";
+
+/* No comment provided by engineer. */
+"Untitled Template Part" = "Template onderdeel zonder titel";
 
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "Logs worden zeven dagen lang opgeslagen.";
@@ -7162,8 +8449,14 @@
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Media uploaden";
 
+/* No comment provided by engineer. */
+"Upload a file or pick one from your media library." = "Upload een bestand of selecteer er één vanuit je mediabibliotheek.";
+
 /* Title of a Quick Start Tour */
 "Upload a site icon" = "Upload een favicon";
+
+/* No comment provided by engineer. */
+"Upload an image, or pick one from your media library, to be your site logo" = "Upload een afbeelding of kies er een uit je slide bibliotheek om er je site-logo van te maken";
 
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
@@ -7222,14 +8515,23 @@
 /* Label for cell that sets the location of a post to the current location */
 "Use Current Location" = "Gebruik huidige locatie";
 
+/* No comment provided by engineer. */
+"Use URL" = "Gebruik URL";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Gebruik blok-editor";
+
+/* No comment provided by engineer. */
+"Use the classic WordPress editor." = "Gebruik de klassieke WordPress editor.";
 
 /* Footer text for Invite Links section of the Invite People screen. */
 "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Gebruik deze link om je teamleden aan boord te krijgen zonder ze een voor een uit te nodigen. Iedereen die deze URL bezoekt, kan zich aanmelden bij je organisatie, zelfs als ze de link van iemand anders hebben ontvangen, dus zorg ervoor dat je deze deelt met vertrouwde mensen.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Gebruik deze site";
+
+/* No comment provided by engineer. */
+"Useful for displaying a graphic mark, design, or symbol to represent the site. Once a site logo is set, it can be reused in different places and templates. It should not be confused with the site icon, which is the small image used in the dashboard, brows" = "Useful for displaying a graphic mark, design, or symbol to represent the site. Once a site logo is set, it can be reused in different places and templates. It should not be confused with the site icon, which is the small image used in the dashboard, brows";
 
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
@@ -7267,6 +8569,9 @@
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Verifieer je e-mailadres - instructies verzonden aan %@";
 
+/* No comment provided by engineer. */
+"Verse text" = "Verse tekst";
+
 /* Displays the version of the App
    Label in Support view displaying the app version. */
 "Version" = "Versie";
@@ -7284,8 +8589,14 @@
 /* Message to show when a new plugin version is available */
 "Version %@ is available" = "Versie %@ is beschikbaar";
 
+/* No comment provided by engineer. */
+"Vertical" = "Verticaal";
+
 /* Message shown if a video preview image is unavailable while the video is being uploaded. */
 "Video Preview Unavailable" = "Video preview niet beschikbaar";
+
+/* No comment provided by engineer. */
+"Video caption text" = "Video bijschrift tekst";
 
 /* translators: accessibility text. %s: video caption. */
 "Video caption. %s" = "Onderschrift video. %s";
@@ -7295,6 +8606,9 @@
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Export video geannuleerd.";
+
+/* No comment provided by engineer. */
+"Video settings" = "Video-instellingen";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Video, %@";
@@ -7342,6 +8656,9 @@
 
 /* Blog Viewers */
 "Viewers" = "Lezers";
+
+/* No comment provided by engineer. */
+"Viewport height (vh)" = "Viewport hoogte (vh)";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Views' label
@@ -7400,6 +8717,9 @@
 
 /* Title for a threat that includes the file name of the theme and the affected version */
 "Vulnerable Theme %1$@ (version %2$@)" = "Kwetsbaar thema: %1$@ (versie %2$@)";
+
+/* translators: Sample content for the Verse block. Can be replaced with a more locale-adequate work. */
+"WHAT was he doing, the great god Pan,\n	Down in the reeds by the river?\nSpreading ruin and scattering ban,\nSplashing and paddling with hoofs of a goat,\nAnd breaking the golden lilies afloat\n    With the dragon-fly on the river." = "WAT deed hij, de grote god Pan,\nBeneden in het riet bij de rivier?\nHet verspreiden van ruïne en verstrooiingsverbod,\nSpetteren en peddelen met hoeven van een geit,\nEn het breken van de gouden lelies drijvend\n    Met de drakenvlieg op de rivier.";
 
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "WP Admin";
@@ -7668,6 +8988,9 @@
 /* A message title */
 "Welcome to the Reader" = "Welkom bij de Reader";
 
+/* No comment provided by engineer. */
+"Welcome to the wonderful world of blocks…" = "Welkom in de wondere wereld van blokken...";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "Welkom bij de wereld's meest populaire sitebouwer.";
 
@@ -7757,8 +9080,14 @@
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Oeps, dat is geen geldige twee-factor verificatiecode. Controleer de code en probeer nogmaals.";
 
+/* No comment provided by engineer. */
+"Wide Line" = "Brede lijn";
+
 /* Nav bar button title to set the site used for Stats widgets. */
 "Widgets" = "Widgets";
+
+/* No comment provided by engineer. */
+"Width in pixels" = "Breedte in pixels";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Zal niet publiekelijk getoond worden.";
@@ -7766,6 +9095,9 @@
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
 "With this powerful editor you can post on the go." = "Met deze krachtige editor kun je onderweg publiceren.";
+
+/* translators: Caption accompanying a video of the wood thrush singing, which serves as an example for the Video block. */
+"Wood thrush singing in Central Park, NYC." = "Houtlijster zingt in Central Park, NYC.";
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "WordPress app-instellingen";
@@ -7867,6 +9199,33 @@
 
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Schrijf een reactie...";
+
+/* No comment provided by engineer. */
+"Write code…" = "Schrijf code…";
+
+/* No comment provided by engineer. */
+"Write file name…" = "Schrijf bestandsnaam...";
+
+/* No comment provided by engineer. */
+"Write gallery caption…" = "Schrijf een galerij bijschrift...";
+
+/* No comment provided by engineer. */
+"Write preformatted text…" = "Schrijf voorgeformatteerde tekst...";
+
+/* No comment provided by engineer. */
+"Write shortcode here…" = "Schrijf hier een shortcode...";
+
+/* No comment provided by engineer. */
+"Write site tagline…" = "Schrijf slogan voor site...";
+
+/* No comment provided by engineer. */
+"Write site title…" = "Schrijf sitetitel...";
+
+/* No comment provided by engineer. */
+"Write title…" = "Schrijf titel...";
+
+/* No comment provided by engineer. */
+"Write verse…" = "Schrijf een vers...";
 
 /* Title for the writing section in site settings screen */
 "Writing" = "Schrijven";
@@ -8074,6 +9433,15 @@
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Je site-adres verschijnt in de balk boven aan het scherm wanneer je je site bezoekt in Safari.";
 
+/* translators: %s: block name */
+"Your site doesn’t include support for the \"%s\" block. You can leave this block intact or remove it entirely." = "Je site biedt geen ondersteuning voor het \"%s\" blok. Je kunt dit blok laten staan of het helemaal verwijderen.";
+
+/* translators: %s: block name */
+"Your site doesn’t include support for the \"%s\" block. You can leave this block intact, convert its content to a Custom HTML block, or remove it entirely." = "Je site biedt geen ondersteuning voor het \"%s\" blok. Je kunt dit blok laten staan, de inhoud converteren naar een Aangepast HTML-blok of het helemaal verwijderen.";
+
+/* No comment provided by engineer. */
+"Your site doesn’t include support for this block." = "Je site biedt geen ondersteuning voor dit blok.";
+
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Je site is gemaakt!";
 
@@ -8119,6 +9487,9 @@
 /* Popup content about why this post is being opened in block editor */
 "You’re now using the block editor for new posts — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "Je gebruikt nu de blokeditor voor nieuwe berichten. Geweldig! Als je toch liever de klassieke editor gebruikt, ga dan naar 'Mijn site' > 'Site-instellingen'.";
 
+/* No comment provided by engineer. */
+"Zoom" = "Zoom";
+
 /* Comment Attachment Label */
 "[COMMENT]" = "[REACTIE]";
 
@@ -8134,14 +9505,44 @@
 /* Age between dates equaling one hour. */
 "an hour" = "een uur";
 
+/* No comment provided by engineer. */
+"archive" = "archief";
+
+/* No comment provided by engineer. */
+"atom" = "atom";
+
 /* Label displayed on audio media items. */
 "audio" = "audio";
+
+/* No comment provided by engineer. */
+"blockquote" = "blockquote";
+
+/* No comment provided by engineer. */
+"blog" = "blog";
+
+/* No comment provided by engineer. */
+"bullet list" = "ongeordende lijst";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "door %@";
 
+/* No comment provided by engineer. */
+"cite" = "citaat";
+
 /* The menu item to select during a guided tour. */
 "connections" = "verbindingen";
+
+/* No comment provided by engineer. */
+"container" = "container";
+
+/* No comment provided by engineer. */
+"description" = "beschrijving";
+
+/* No comment provided by engineer. */
+"divider" = "divider";
+
+/* No comment provided by engineer. */
+"document" = "document";
 
 /* No comment provided by engineer. */
 "document outline" = "documentoverzicht";
@@ -8152,25 +9553,55 @@
 /* No comment provided by engineer. */
 "double-tap to change unit" = "dubbel tik om de eenheid te wijzigen";
 
+/* No comment provided by engineer. */
+"download" = "download";
+
+/* No comment provided by engineer. */
+"ebook" = "ebook";
+
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "bijv. 1122334455";
 
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "bijv. 44";
 
+/* No comment provided by engineer. */
+"embed" = "embed";
+
 /* Placeholder for the site url textfield.
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "voorbeeld.nl";
 
+/* No comment provided by engineer. */
+"feed" = "feed";
+
+/* No comment provided by engineer. */
+"find" = "find";
+
 /* Noun. Describes a site's follower. */
 "follower" = "volger";
+
+/* No comment provided by engineer. */
+"form" = "form";
+
+/* No comment provided by engineer. */
+"horizontal-line" = "horizontal-line";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/mijn-site-adres (URL)";
 
+/* No comment provided by engineer. */
+"https:\/\/wordpress.org\/support\/article\/embeds\/" = "https:\/\/wordpress.org\/support\/article\/embeds\/";
+
 /* Label displayed on image media items. */
 "image" = "afbeelding";
+
+/* translators: 1: the order number of the image. 2: the total number of images. */
+"image %1$d of %2$d in gallery" = "image %1$d of %2$d in gallery";
+
+/* No comment provided by engineer. */
+"images" = "images";
 
 /* Text for related post cell preview */
 "in \"Apps\"" = "in \"Apps\"";
@@ -8184,23 +9615,119 @@
 /* Later today */
 "later today" = "later vandaag";
 
+/* No comment provided by engineer. */
+"link" = "link";
+
+/* No comment provided by engineer. */
+"links" = "links";
+
+/* No comment provided by engineer. */
+"login" = "login";
+
+/* No comment provided by engineer. */
+"logout" = "logout";
+
+/* No comment provided by engineer. */
+"menu" = "menu";
+
+/* No comment provided by engineer. */
+"movie" = "film";
+
+/* No comment provided by engineer. */
+"music" = "muziek";
+
+/* No comment provided by engineer. */
+"navigation" = "navigatie";
+
+/* No comment provided by engineer. */
+"next page" = "volgende pagina";
+
+/* No comment provided by engineer. */
+"numbered list" = "numbered list";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "van";
+
+/* No comment provided by engineer. */
+"ordered list" = "Gesorteerde lijst";
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "andere";
 
 /* No comment provided by engineer. */
+"pagination" = "pagination";
+
+/* No comment provided by engineer. */
 "password" = "wachtwoord";
+
+/* No comment provided by engineer. */
+"pdf" = "pdf";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "Telefoonnummer";
 
 /* No comment provided by engineer. */
+"photos" = "photos";
+
+/* No comment provided by engineer. */
+"picture" = "picture";
+
+/* No comment provided by engineer. */
+"podcast" = "podcast";
+
+/* No comment provided by engineer. */
+"poem" = "gedicht";
+
+/* No comment provided by engineer. */
+"poetry" = "poëzie";
+
+/* No comment provided by engineer. */
+"post" = "bericht";
+
+/* No comment provided by engineer. */
+"posts" = "berichten";
+
+/* No comment provided by engineer. */
+"read more" = "lees meer";
+
+/* No comment provided by engineer. */
+"recent comments" = "recent comments";
+
+/* No comment provided by engineer. */
+"recent posts" = "recent posts";
+
+/* No comment provided by engineer. */
+"recording" = "recording";
+
+/* No comment provided by engineer. */
+"row" = "rij";
+
+/* No comment provided by engineer. */
+"section" = "sectie";
+
+/* No comment provided by engineer. */
+"social" = "social";
+
+/* No comment provided by engineer. */
+"sound" = "geluid";
+
+/* No comment provided by engineer. */
+"subtitle" = "subtitel";
+
+/* No comment provided by engineer. */
 "summary" = "samenvatting";
+
+/* No comment provided by engineer. */
+"survey" = "survey";
+
+/* No comment provided by engineer. */
+"text" = "text";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Deze items worden verwijderd:";
+
+/* No comment provided by engineer. */
+"title" = "titel";
 
 /* Today */
 "today" = "vandaag";
@@ -8241,6 +9768,9 @@
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog";
 
+/* No comment provided by engineer. */
+"wrapper" = "wrapper";
+
 /* Details about recently acquired domain on domain credit redemption success screen */
 "your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "je nieuwe domein %@ wordt ingesteld. Je site maakt salto's van opwinding!";
 
@@ -8249,6 +9779,9 @@
 
 /* About View's Footer Text. The variable is the current year */
 "© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
+
+/* No comment provided by engineer. */
+"— Kobayashi Issa (一茶)" = "— Kobayashi Issa (一茶)";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Domeinen";

@@ -26,6 +26,7 @@ import Foundation
     case editorPostTitleChanged
     case editorPostVisibilityChanged
     case editorPostTagsChanged
+    case editorPostAuthorChanged
     case editorPostPublishNowTapped
     case editorPostCategoryChanged
     case editorPostStatusChanged
@@ -166,6 +167,9 @@ import Foundation
     case userProfileSheetShown
     case userProfileSheetSiteShown
 
+    // Blog preview by URL (that is, in a WebView)
+    case blogUrlPreviewed
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -218,6 +222,8 @@ import Foundation
             return "editor_post_featured_image_changed"
         case .editorPostStickyChanged:
             return "editor_post_sticky_changed"
+        case .editorPostAuthorChanged:
+            return "editor_post_author_changed"
         case .editorPostLocationChanged:
             return "editor_post_location_changed"
         case .editorPostSlugChanged:
@@ -454,6 +460,10 @@ import Foundation
             return "user_profile_sheet_shown"
         case .userProfileSheetSiteShown:
             return "user_profile_sheet_site_shown"
+
+        // Blog preview by URL (that is, in a WebView)
+        case .blogUrlPreviewed:
+            return "blog_url_previewed"
         }
     }
 

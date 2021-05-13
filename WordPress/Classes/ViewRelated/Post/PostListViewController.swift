@@ -171,14 +171,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             }, source: Constants.source)
         ]
         if Feature.enabled(.stories) && blog.supports(.stories) {
-            actions.append(
-                StoryAction(handler: { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-                    (self.tabBarController as? WPTabBarController)?.showStoryEditor(blog: self.blog, title: nil, content: nil)
-                }, source: Constants.source)
-            )
+            actions.insert(StoryAction(handler: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                (self.tabBarController as? WPTabBarController)?.showStoryEditor(blog: self.blog, title: nil, content: nil)
+            }, source: Constants.source), at: 0)
         }
         return CreateButtonCoordinator(self, actions: actions, source: Constants.source)
     }()

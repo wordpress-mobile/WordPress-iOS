@@ -19,7 +19,9 @@ extension PostSettingsViewController {
             setupObservingOf(media: media)
         }
 
-        featuredImageDelegate?.gutenbergDidRequestFeaturedImageId((apost.featuredImage?.mediaID)!)
+        if let mediaIdentifier = apost.featuredImage?.mediaID {
+            featuredImageDelegate?.gutenbergDidRequestFeaturedImageId(mediaIdentifier)
+        }
     }
 
     @objc func removeMediaObserver() {

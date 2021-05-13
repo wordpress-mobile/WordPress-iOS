@@ -74,7 +74,8 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
         let tracked = TestAnalyticsTracker.tracked.first
 
         XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionStart)
-        XCTAssertEqual(tracked?.value(for: "unsupported_blocks"), unsupportedBlocks)
+        let serializedArray = String(data: try! JSONSerialization.data(withJSONObject: unsupportedBlocks, options: .fragmentsAllowed), encoding: .utf8)
+        XCTAssertEqual(tracked?.value(for: "unsupported_blocks"), serializedArray)
         XCTAssertEqual(tracked?.value(for: "has_unsupported_blocks"), "1")
     }
 
@@ -87,7 +88,8 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
         let tracked = TestAnalyticsTracker.tracked.first
 
         XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionStart)
-        XCTAssertEqual(tracked?.value(for: "unsupported_blocks"), unsupportedBlocks)
+        let serializedArray = String(data: try! JSONSerialization.data(withJSONObject: unsupportedBlocks, options: .fragmentsAllowed), encoding: .utf8)
+        XCTAssertEqual(tracked?.value(for: "unsupported_blocks"), serializedArray)
         XCTAssertEqual(tracked?.value(for: "has_unsupported_blocks"), "0")
     }
 

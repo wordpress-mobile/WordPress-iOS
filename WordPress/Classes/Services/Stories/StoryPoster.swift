@@ -117,15 +117,13 @@ class StoryPoster {
     ///   - post: The post to add media items to.
     ///   - completion: Called on completion with the new post or an error.
     /// - Returns: `(String, [Media])` A tuple containing the Block which was added to contain the media and the new uploading Media objects will be returned.
-    func upload(mediaItems: [MediaItem], post: AbstractPost, completion: @escaping (Result<AbstractPost, PostCoordinator.SavingError>) -> Void) throws -> (String, [Media]) {
+    func add(mediaItems: [MediaItem], post: AbstractPost) throws -> (String, [Media]) {
         let assets = mediaItems.map { item in
             return item.url as ExportableAsset
         }
 
         // Uploades the media and notifies upong completion with the updated post.
-        let media = PostCoordinator.shared.upload(assets: assets, to: post, completion: { result in
-            completion(result)
-        }).compactMap { return $0 }
+        let media = PostCoordinator.shared.add(assets: assets, to: post).compactMap { return $0 }
 
         // Update set of `MediaItem`s with values from the new added uploading `Media`.
         let mediaFiles: [MediaFile] = media.enumerated().map { (idx, media) -> MediaFile in

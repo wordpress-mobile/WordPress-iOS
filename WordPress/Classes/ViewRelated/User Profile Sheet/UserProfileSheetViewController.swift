@@ -2,7 +2,8 @@ class UserProfileSheetViewController: UITableViewController {
 
     // MARK: - Properties
 
-    private let user: RemoteUser
+    private let user: LikeUser
+    private let statSource = ReaderStreamViewController.StatSource.notif_like_list_user_profile
 
     private lazy var mainContext = {
         return ContextManager.sharedInstance().mainContext
@@ -14,7 +15,7 @@ class UserProfileSheetViewController: UITableViewController {
 
     // MARK: - Init
 
-    init(user: RemoteUser) {
+    init(user: LikeUser) {
         self.user = user
         super.init(nibName: nil, bundle: nil)
     }
@@ -31,15 +32,10 @@ class UserProfileSheetViewController: UITableViewController {
         registerTableCells()
     }
 
-    // We are using intrinsicHeight as the view's collapsedHeight which is calculated from the preferredContentSize.
-    override var preferredContentSize: CGSize {
-        set {
-            // no-op, but is needed to override the property.
-        }
-        get {
-            return UIDevice.isPad() ? Constants.iPadPreferredContentSize :
-                                      Constants.iPhonePreferredContentSize
-        }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        preferredContentSize = tableView.contentSize
+        presentedVC?.presentedView?.layoutIfNeeded()
     }
 
 }
@@ -53,6 +49,8 @@ extension UserProfileSheetViewController: DrawerPresentable {
             return .maxHeight
         }
 
+        // Force the table layout to update so the Bottom Sheet gets the right height.
+        tableView.layoutIfNeeded()
         return .intrinsicHeight
     }
 
@@ -67,8 +65,7 @@ extension UserProfileSheetViewController: DrawerPresentable {
 extension UserProfileSheetViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // TODO: if no site, return 1.
-        return 2
+        return user.preferredBlog != nil ? 2 : 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -92,8 +89,6 @@ extension UserProfileSheetViewController {
             return nil
         }
 
-        // TODO: Don't show section header if there are no sites.
-
         header.titleLabel.text = Constants.siteSectionTitle
         return header
     }
@@ -108,13 +103,7 @@ extension UserProfileSheetViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-
-        // TODO: return 0 if there are no sites.
-        if section == Constants.userInfoSection {
-            return 0
-        }
-
-        return UITableView.automaticDimension
+        return section == Constants.userInfoSection ? 0 : UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -138,38 +127,36 @@ private extension UserProfileSheetViewController {
     func showSite() {
         WPAnalytics.track(.userProfileSheetSiteShown)
 
-        // TODO: Remove. For testing only. Use siteID from user object.
-        var stubbySiteID: NSNumber?
-        // use this to test external site
-        stubbySiteID = nil
-        // use this to test internal site
-        // stubbySiteID = NSNumber(value: 9999999999)
-
-        guard let siteID = stubbySiteID else {
-            showSiteWebView()
+        guard let blog = user.preferredBlog else {
             return
         }
 
-        showSiteTopicWithID(siteID)
+        guard blog.blogID > 0 else {
+            showSiteWebView(withUrl: blog.blogUrl)
+            return
+        }
+
+        showSiteTopicWithID(NSNumber(value: blog.blogID))
+
     }
 
     func showSiteTopicWithID(_ siteID: NSNumber) {
         let controller = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: false)
-        controller.statSource = ReaderStreamViewController.StatSource.user_profile
+        controller.statSource = statSource
         let navController = UINavigationController(rootViewController: controller)
         present(navController, animated: true)
     }
 
-    func showSiteWebView() {
-        // TODO: Remove. For testing only. Use URL from user object.
-        let siteUrl = "https://www.funnycatpix.com/"
-
-        guard let url = URL(string: siteUrl) else {
+    func showSiteWebView(withUrl url: String?) {
+        guard let urlString = url,
+              !urlString.isEmpty,
+              let siteURL = URL(string: urlString) else {
             DDLogError("User Profile: Error creating URL from site string.")
             return
         }
 
-        contentCoordinator.displayWebViewWithURL(url)
+        WPAnalytics.track(.blogUrlPreviewed, properties: ["source": statSource.rawValue])
+        contentCoordinator.displayWebViewWithURL(siteURL)
     }
 
     func configureTable() {
@@ -198,19 +185,18 @@ private extension UserProfileSheetViewController {
     }
 
     func siteCell() -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: UserProfileSiteCell.defaultReuseID) as? UserProfileSiteCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: UserProfileSiteCell.defaultReuseID) as? UserProfileSiteCell,
+              let blog = user.preferredBlog else {
             return UITableViewCell()
         }
 
-        cell.configure()
+        cell.configure(withBlog: blog)
         return cell
     }
 
     enum Constants {
         static let userInfoSection = 0
         static let siteSectionTitle = NSLocalizedString("Site", comment: "Header for a single site, shown in Notification user profile.").localizedUppercase
-        static let iPadPreferredContentSize = CGSize(width: 300.0, height: 270.0)
-        static let iPhonePreferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: 280.0)
     }
 
 }
