@@ -287,6 +287,8 @@ extension PushNotificationsManager {
         ///
         if applicationState != .background || userInteraction {
             authenticationManager.handleAuthenticationNotification(userInfo)
+        } else {
+            DDLogInfo("Skipping handling authentication notification due to app being in background or user not interacting with it.")
         }
 
         completionHandler?(.newData)
