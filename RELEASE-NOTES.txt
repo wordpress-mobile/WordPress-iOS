@@ -18,7 +18,7 @@
 * [**]  Block Editor: The media upload options of the Image, Video and Gallery block automatically opens when the respective block is inserted. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2700]
 * [**]  Block Editor: The media upload options of the File and Audio block automatically opens when the respective block is inserted. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3399]
 * [*]  Block Editor: Remove visual feedback from non-interactive bottom-sheet cell sections [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3404]
-* [*]  Block Editor: Fixed an issue that was causing the featured image badge to be shown on images. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3494]
+* [*]  Block Editor: Fixed an issue that was causing the featured image badge to be shown on images in an incorrect manner. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3494]
 
 
 17.2
