@@ -3,6 +3,7 @@ class UserProfileSheetViewController: UITableViewController {
     // MARK: - Properties
 
     private let user: LikeUser
+    private let statSource = ReaderStreamViewController.StatSource.notif_like_list_user_profile
 
     private lazy var mainContext = {
         return ContextManager.sharedInstance().mainContext
@@ -31,15 +32,10 @@ class UserProfileSheetViewController: UITableViewController {
         registerTableCells()
     }
 
-    // We are using intrinsicHeight as the view's collapsedHeight which is calculated from the preferredContentSize.
-    override var preferredContentSize: CGSize {
-        set {
-            // no-op, but is needed to override the property.
-        }
-        get {
-            return UIDevice.isPad() ? Constants.iPadPreferredContentSize :
-                                      Constants.iPhonePreferredContentSize
-        }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        preferredContentSize = tableView.contentSize
+        presentedVC?.presentedView?.layoutIfNeeded()
     }
 
 }
@@ -53,6 +49,8 @@ extension UserProfileSheetViewController: DrawerPresentable {
             return .maxHeight
         }
 
+        // Force the table layout to update so the Bottom Sheet gets the right height.
+        tableView.layoutIfNeeded()
         return .intrinsicHeight
     }
 
@@ -144,13 +142,12 @@ private extension UserProfileSheetViewController {
 
     func showSiteTopicWithID(_ siteID: NSNumber) {
         let controller = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: false)
-        controller.statSource = ReaderStreamViewController.StatSource.user_profile
+        controller.statSource = statSource
         let navController = UINavigationController(rootViewController: controller)
         present(navController, animated: true)
     }
 
     func showSiteWebView(withUrl url: String?) {
-
         guard let urlString = url,
               !urlString.isEmpty,
               let siteURL = URL(string: urlString) else {
@@ -158,8 +155,9 @@ private extension UserProfileSheetViewController {
             return
         }
 
-    contentCoordinator.displayWebViewWithURL(siteURL)
-}
+        WPAnalytics.track(.blogUrlPreviewed, properties: ["source": statSource.rawValue])
+        contentCoordinator.displayWebViewWithURL(siteURL)
+    }
 
     func configureTable() {
         tableView.backgroundColor = .basicBackground
@@ -199,8 +197,6 @@ private extension UserProfileSheetViewController {
     enum Constants {
         static let userInfoSection = 0
         static let siteSectionTitle = NSLocalizedString("Site", comment: "Header for a single site, shown in Notification user profile.").localizedUppercase
-        static let iPadPreferredContentSize = CGSize(width: 300.0, height: 270.0)
-        static let iPhonePreferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: 280.0)
     }
 
 }

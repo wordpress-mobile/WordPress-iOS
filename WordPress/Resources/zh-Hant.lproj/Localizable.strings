@@ -36,8 +36,8 @@
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d 篇還沒看過的文章";
 
-/* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
-"%1$s transformed to %2$s" = "%1$s 已轉換為 %2$s";
+/* translators: 1: Block label (i.e. \"Block: Column\"), 2: Position of the selected block, 3: Total number of sibling blocks of the same type */
+"%1$s (%2$d of %3$d)" = "%1$s (%2$d of %3$d)";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
 "%1$s. %2$s is %3$s %4$s." = "%1$s。%2$s 是 %3$s %4$s。";
@@ -193,14 +193,17 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li 個字、%2$li 個字元";
 
-/* translators: %s: block title e.g: \"Paragraph\". */
-"%s block options" = "%s 區塊選項";
-
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s 區塊空白";
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s 區塊含有無效內容";
+
+/* translators: %s: Number of comments */
+"%s comment" = "%s comment";
+
+/* translators: %s: name of the social service. */
+"%s label" = "%s label";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "系統不完全支援「%s」";
@@ -228,6 +231,13 @@
 /* Register Domain - Address information field add new address line */
 "+ Address line %@" = "+ 地址第 %@ 行";
 
+/* No comment provided by engineer. */
+"- Select -" = "- Select -";
+
+/* translators: Preserve \
+ markers for line breaks */
+"\/\/ A \"block\" is the abstract term used\n\/\/ to describe units of markup that\n\/\/ when composed together, form the\n\/\/ content or layout of a page.\nregisterBlockType( name, settings );" = "\/\/ A \"block\" is the abstract term used\n\/\/ to describe units of markup that\n\/\/ when composed together, form the\n\/\/ content or layout of a page.\nregisterBlockType( name, settings );";
+
 /* Local notification displayed to the user when a single draft post has been successfully uploaded. */
 "1 draft post uploaded" = "已上傳 1 篇文章草稿";
 
@@ -249,20 +259,65 @@
 /* Message for a notice informing the user their scan completed and 1 threat was found */
 "1 potential threat found" = "發現 1 個潛在威脅";
 
+/* No comment provided by engineer. */
+"100" = "100";
+
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
+
+/* No comment provided by engineer. */
+"10:16" = "10:16";
+
+/* No comment provided by engineer. */
+"16:10" = "16:10";
+
+/* No comment provided by engineer. */
+"16:9" = "16:9";
+
+/* No comment provided by engineer. */
+"25 \/ 50 \/ 25" = "25 \/ 50 \/ 25";
+
+/* No comment provided by engineer. */
+"2:3" = "2:3";
+
+/* No comment provided by engineer. */
+"30 \/ 70" = "30 \/ 70";
+
+/* No comment provided by engineer. */
+"33 \/ 33 \/ 33" = "33 \/ 33 \/ 33";
+
+/* No comment provided by engineer. */
+"3:2" = "3:2";
+
+/* No comment provided by engineer. */
+"3:4" = "3:4";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
 
+/* No comment provided by engineer. */
+"4:3" = "4:3";
+
 /* Indicates a video will be resized to 4K 3840x2160 when uploaded. */
 "4K" = "4K";
+
+/* No comment provided by engineer. */
+"50 \/ 50" = "50 \/ 50";
+
+/* No comment provided by engineer. */
+"70 \/ 30" = "70 \/ 30";
 
 /* Indicates a video will be resized to HD 1280x720 when uploaded. */
 "720p" = "720p";
 
+/* No comment provided by engineer. */
+"9:16" = "9:16";
+
 /* Age between dates less than one hour. */
 "< 1 hour" = "不到 1 小時";
+
+/* No comment provided by engineer. */
+"<strong>Snow Patrol<\/strong>" = "<strong>Snow Patrol<\/strong>";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -270,11 +325,35 @@
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "一個「更多」按鈕包含顯示分享按鈕的下拉式選單";
 
+/* No comment provided by engineer. */
+"A calendar of your site’s posts." = "A calendar of your site’s posts.";
+
+/* No comment provided by engineer. */
+"A cloud of your most used tags." = "A cloud of your most used tags.";
+
+/* No comment provided by engineer. */
+"A collection of blocks that allow visitors to get around your site." = "A collection of blocks that allow visitors to get around your site.";
+
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "精選圖片已設定。點選即可變更。";
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "檔案包含惡意程式碼模式";
+
+/* No comment provided by engineer. */
+"A link to a category." = "類別連結。";
+
+/* No comment provided by engineer. */
+"A link to a custom URL." = "A link to a custom URL.";
+
+/* No comment provided by engineer. */
+"A link to a page." = "網頁連結。";
+
+/* No comment provided by engineer. */
+"A link to a post." = "文章連結。";
+
+/* No comment provided by engineer. */
+"A link to a tag." = "標籤連結。";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "此帳號的網站清單。";
@@ -287,6 +366,9 @@
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button. */
 "A series of steps to assist with growing your site's audience." = "提供一系列步驟，協助你拓展觀眾群。";
+
+/* No comment provided by engineer. */
+"A single column within a columns block." = "A single column within a columns block.";
 
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "已有名稱為「%@」的標籤。";
@@ -321,7 +403,8 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "地址";
 
-/* About this app (information page title) */
+/* About this app (information page title)
+   translators: 'About' as in a website's about page. */
 "About" = " 關於";
 
 /* Link to About screen for Jetpack for iOS */
@@ -408,6 +491,9 @@
 "Add New Stats Card" = "新增統計資料卡片";
 
 /* No comment provided by engineer. */
+"Add Template" = "Add Template";
+
+/* No comment provided by engineer. */
 "Add To Beginning" = "新增至「開始」";
 
 /* No comment provided by engineer. */
@@ -428,8 +514,20 @@
 /* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "新增主題";
 
+/* No comment provided by engineer. */
+"Add a block that displays content in multiple columns, then add whatever content blocks you’d like." = "Add a block that displays content in multiple columns, then add whatever content blocks you’d like.";
+
+/* No comment provided by engineer. */
+"Add a block that displays content pulled from other sites, like Twitter, Instagram or YouTube." = "Add a block that displays content pulled from other sites, like Twitter, Instagram or YouTube.";
+
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "在此新增要在讀取器中載入的自訂 CSS URL。 若你在本機執行 Calypso，可能會看到類似以下格式的 URL：http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* No comment provided by engineer. */
+"Add a link to a downloadable file." = "Add a link to a downloadable file.";
+
+/* No comment provided by engineer. */
+"Add a page, link, or another item to your navigation." = "Add a page, link, or another item to your navigation.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "新增一個自助託管網站";
@@ -449,8 +547,20 @@
 /* No comment provided by engineer. */
 "Add alt text" = "新增替代文字";
 
+/* No comment provided by engineer. */
+"Add an image or video with a text overlay — great for headers." = "Add an image or video with a text overlay — great for headers.";
+
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "新增任何主題";
+
+/* No comment provided by engineer. */
+"Add caption" = "Add caption";
+
+/* translators: placeholder text used for the citation */
+"Add citation" = "Add citation";
+
+/* No comment provided by engineer. */
+"Add custom HTML code and preview it as you edit." = "Add custom HTML code and preview it as you edit.";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "新增圖片或大頭貼來代表這個新帳號。";
@@ -479,6 +589,9 @@
 /* No comment provided by engineer. */
 "Add paragraph block" = "新增段落區塊";
 
+/* translators: placeholder text used for the quote */
+"Add quote" = "Add quote";
+
 /* Add self-hosted site button */
 "Add self-hosted site" = "新增自助託管網站";
 
@@ -490,6 +603,18 @@
 "Add tags" = "新增標籤";
 
 /* No comment provided by engineer. */
+"Add text that respects your spacing and tabs, and also allows styling." = "Add text that respects your spacing and tabs, and also allows styling.";
+
+/* No comment provided by engineer. */
+"Add text…" = "Add text…";
+
+/* No comment provided by engineer. */
+"Add the author of this post." = "Add the author of this post.";
+
+/* No comment provided by engineer. */
+"Add the date of this post." = "Add the date of this post.";
+
+/* No comment provided by engineer. */
 "Add this email link" = "新增此電子郵件連結";
 
 /* No comment provided by engineer. */
@@ -497,6 +622,12 @@
 
 /* No comment provided by engineer. */
 "Add this telephone link" = "新增此電話連結";
+
+/* No comment provided by engineer. */
+"Add tracks" = "Add tracks";
+
+/* No comment provided by engineer. */
+"Add white space between blocks and customize its height." = "Add white space between blocks and customize its height.";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "新增網站功能";
@@ -519,6 +650,15 @@
 
 /* Description of albums in the photo libraries */
 "Albums" = "相簿";
+
+/* No comment provided by engineer. */
+"Align column center" = "Align column center";
+
+/* No comment provided by engineer. */
+"Align column left" = "Align column left";
+
+/* No comment provided by engineer. */
+"Align column right" = "Align column right";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -646,6 +786,9 @@
 /* Text displayed when a stat section failed to load. */
 "An error occurred." = "發生錯誤。";
 
+/* No comment provided by engineer. */
+"An example title" = "An example title";
+
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "發生不明的錯誤。請再試一次。";
 
@@ -684,6 +827,15 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
 "Approves the Comment." = "核准留言。";
+
+/* No comment provided by engineer. */
+"Archive Title" = "Archive Title";
+
+/* No comment provided by engineer. */
+"Archive title" = "Archive title";
+
+/* No comment provided by engineer. */
+"Archives settings" = "Archives settings";
 
 /* Menus alert message for alerting the user to unsaved changes while trying back out of Menus. */
 "Are you sure you want to cancel and discard changes?" = "確定要取消並捨棄變更？";
@@ -758,23 +910,38 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "是否確定要更新？";
 
+/* No comment provided by engineer. */
+"Area" = "Area";
+
 /* An example tag used in the login prologue screens. */
 "Art" = "藝術";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Facebook 自 2018 年 8 月 1 日起將禁止直接將文章分享至 Facebook 個人檔案。與 Facebook 粉絲專頁的連結將不受影響。";
 
+/* No comment provided by engineer. */
+"Aspect Ratio" = "Aspect Ratio";
+
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "附加檔案連結";
 
 /* No comment provided by engineer. */
+"Attachment page" = "Attachment page";
+
+/* No comment provided by engineer. */
 "Audio Player" = "音樂播放器";
+
+/* No comment provided by engineer. */
+"Audio caption text" = "Audio caption text";
 
 /* translators: accessibility text. %s: Audio caption. */
 "Audio caption. %s" = "音訊字幕。 %s";
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "音訊字幕。 清空";
+
+/* No comment provided by engineer. */
+"Audio settings" = "Audio settings";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "音訊，%@";
@@ -798,6 +965,9 @@
 /* Label for comments by author
    Period Stats 'Authors' header */
 "Authors" = "作者";
+
+/* No comment provided by engineer. */
+"Auto" = "Auto";
 
 /* Describes a status of a plugin */
 "Auto-managed" = "自動管理";
@@ -823,6 +993,9 @@
 
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "自動將新文章分享到社交媒體帳號。";
+
+/* No comment provided by engineer. */
+"Autoplay" = "Autoplay";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "自動更新";
@@ -904,29 +1077,17 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "封鎖引文";
 
-/* translators: displayed right after the block is copied. */
-"Block copied" = "已複製區塊";
-
-/* translators: displayed right after the block is cut. */
-"Block cut" = "已剪下區塊";
-
-/* translators: displayed right after the block is duplicated. */
-"Block duplicated" = "已重複區塊";
+/* No comment provided by engineer. */
+"Block cannot be rendered inside itself." = "Block cannot be rendered inside itself.";
 
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "已啟用區塊編輯器";
 
+/* No comment provided by engineer. */
+"Block has been deleted or is unavailable." = "Block has been deleted or is unavailable.";
+
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "封鎖惡意的登入嘗試";
-
-/* translators: displayed right after the block is pasted. */
-"Block pasted" = "已貼上區塊";
-
-/* translators: displayed right after the block is removed. */
-"Block removed" = "已移除區塊";
-
-/* No comment provided by engineer. */
-"Block settings" = "區塊設定";
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Block this site";
@@ -957,15 +1118,33 @@
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "網誌的瀏覽者";
 
+/* No comment provided by engineer. */
+"Body cell text" = "Body cell text";
+
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "粗體";
 
+/* No comment provided by engineer. */
+"Border" = "Border";
+
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "將留言串分為數頁。";
 
+/* No comment provided by engineer. */
+"Briefly describe the link to help screen reader users." = "Briefly describe the link to help screen reader users.";
+
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "瀏覽所有佈景主題，尋找最適合你的一個。";
+
+/* No comment provided by engineer. */
+"Browse all templates" = "Browse all templates";
+
+/* No comment provided by engineer. */
+"Browse all templates. This will open the template menu in the navigation side panel." = "Browse all templates. This will open the template menu in the navigation side panel.";
+
+/* No comment provided by engineer. */
+"Browser default" = "Browser default";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "蠻力攻擊防護";
@@ -980,7 +1159,10 @@
 "Button Style" = "按鈕樣式";
 
 /* No comment provided by engineer. */
-"ButtonGroup" = "ButtonGroup";
+"Buttons shown in a column." = "Buttons shown in a column.";
+
+/* No comment provided by engineer. */
+"Buttons shown in a row." = "Buttons shown in a row.";
 
 /* Label for the post author in the post detail. */
 "By " = "By ";
@@ -1009,6 +1191,9 @@
 
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "正在計算…";
+
+/* No comment provided by engineer. */
+"Call to Action" = "Call to Action";
 
 /* Accessibility label for taking an image or video with the camera on formatting toolbar.
    Accessibility label for the camera tile in the collection view */
@@ -1103,6 +1288,9 @@
    Noun. Label for the caption for a media asset (image / video) */
 "Caption" = "說明文字";
 
+/* No comment provided by engineer. */
+"Captions" = "Captions";
+
 /* Alert title.
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "請小心！";
@@ -1118,6 +1306,9 @@
    Menu item label for linking a specific category. */
 "Category" = "分類";
 
+/* No comment provided by engineer. */
+"Category Link" = "類別連結";
+
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "分類標題遺失。";
 
@@ -1126,6 +1317,9 @@
 
 /* Popup title for wrong SSL certificate. */
 "Certificate error" = "憑證錯誤";
+
+/* No comment provided by engineer. */
+"Change Date" = "Change Date";
 
 /* Account Settings Change password label
    Main title */
@@ -1146,8 +1340,14 @@
 /* No comment provided by engineer. */
 "Change block position" = "變更區塊位置";
 
+/* No comment provided by engineer. */
+"Change column alignment" = "Change column alignment";
+
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "變更失敗";
+
+/* No comment provided by engineer. */
+"Change heading level" = "Change heading level";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "變更用於預覽的裝置類型";
@@ -1173,6 +1373,9 @@
 
 /* Shown while the app waits for the username changing web service to return. */
 "Changing username" = "正在變更使用者名稱";
+
+/* No comment provided by engineer. */
+"Chapters" = "Chapters";
 
 /* Title of alert when getting purchases fails */
 "Check Purchases Error" = "確認購買項目發生錯誤";
@@ -1248,6 +1451,9 @@
 "Choose domain" = "選擇網域";
 
 /* No comment provided by engineer. */
+"Choose existing" = "Choose existing";
+
+/* No comment provided by engineer. */
 "Choose file" = "選擇檔案";
 
 /* Menu option for selecting media from the device's photo library. */
@@ -1308,6 +1514,9 @@
 "Clear all old activity logs?" = "是否清除所有舊活動記錄？";
 
 /* No comment provided by engineer. */
+"Clear customizations" = "Clear customizations";
+
+/* No comment provided by engineer. */
 "Clear search" = "清除搜尋";
 
 /* Title of a button. */
@@ -1340,11 +1549,23 @@
 /* Close Comments Title */
 "Close commenting" = "關閉留言功能";
 
+/* No comment provided by engineer. */
+"Close global styles sidebar" = "Close global styles sidebar";
+
+/* No comment provided by engineer. */
+"Close list view sidebar" = "Close list view sidebar";
+
+/* No comment provided by engineer. */
+"Close settings sidebar" = "Close settings sidebar";
+
 /* Accessibility hint the  Done button in the Me screen. */
 "Close the Me screen" = "關閉「我」畫面";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "程式碼";
+
+/* No comment provided by engineer. */
+"Code is Poetry" = "Code is Poetry";
 
 /* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
 "Collapsed, %i completed tasks, toggling expands the list of these tasks" = "已折疊，%i 件已完成的工作，切換以展開這些工作的清單";
@@ -1360,6 +1581,21 @@
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "彩色背景";
+
+/* translators: %d: column index (starting with 1) */
+"Column %d text" = "Column %d text";
+
+/* No comment provided by engineer. */
+"Column count" = "Column count";
+
+/* No comment provided by engineer. */
+"Column settings" = "Column settings";
+
+/* No comment provided by engineer. */
+"Columns" = "Columns";
+
+/* No comment provided by engineer. */
+"Combine blocks into a group." = "Combine blocks into a group.";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "結合相片、視訊和文字，建立吸睛又可點按的限時動態，你的訪客一定會喜歡。";
@@ -1540,6 +1776,9 @@
 /* Section title for Publicize services in Sharing screen */
 "Connections" = "連結";
 
+/* translators: 'Contact' as in a website's contact page. */
+"Contact" = "聯絡";
+
 /* Support email label. */
 "Contact Email" = "聯絡電子郵件";
 
@@ -1555,11 +1794,17 @@
    Title of a button. A call to action to contact support for assistance. */
 "Contact support" = "聯絡支援團隊";
 
+/* No comment provided by engineer. */
+"Contact us" = "Contact us";
+
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
 "Contact us at %@" = "透過 %@ 聯絡我們";
 
 /* Displays the number of blocks, words and characters in text */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "內容結構\n區塊：%1$li、文字：%2$li、字元：%3$li";
+
+/* No comment provided by engineer. */
+"Content before this block will be shown in the excerpt on your archives page." = "Content before this block will be shown in the excerpt on your archives page.";
 
 /* Action title to dismiss domain credit redemption success screen
    Apply changes localy to single block edition in the web block editor
@@ -1567,6 +1812,9 @@
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
 "Continue" = "繼續";
+
+/* Button title. Takes the user to the login with WordPress.com flow. */
+"Continue With WordPress.com" = "Continue With WordPress.com";
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "繼續操作";
@@ -1586,8 +1834,20 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "繼續使用 Apple";
 
+/* No comment provided by engineer. */
+"Convert to blocks" = "轉換為區塊";
+
+/* No comment provided by engineer. */
+"Convert to ordered list" = "Convert to ordered list";
+
+/* No comment provided by engineer. */
+"Convert to unordered list" = "Convert to unordered list";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "烹飪";
+
+/* No comment provided by engineer. */
+"Copied URL to clipboard." = "Copied URL to clipboard.";
 
 /* No comment provided by engineer. */
 "Copied block" = "複製的區塊";
@@ -1596,7 +1856,7 @@
 "Copy Link to Comment" = "將連結複製到留言";
 
 /* No comment provided by engineer. */
-"Copy block" = "複製區塊";
+"Copy URL" = "Copy URL";
 
 /* No comment provided by engineer. */
 "Copy file URL" = "複製檔案 URL";
@@ -1618,6 +1878,9 @@
 
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "無法確認網站購買項目。";
+
+/* translators: 1. Error message */
+"Could not edit image. %s" = "Could not edit image. %s";
 
 /* Title of a prompt. */
 "Could not follow site" = "無法關注網站";
@@ -1732,6 +1995,9 @@
 /* Stories intro continue button title */
 "Create Story Post" = "建立限時動態文章";
 
+/* No comment provided by engineer. */
+"Create Table" = "Create Table";
+
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "建立 WordPress.com 網站";
 
@@ -1741,17 +2007,32 @@
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "建立標籤";
 
+/* No comment provided by engineer. */
+"Create a break between ideas or sections with a horizontal separator." = "Create a break between ideas or sections with a horizontal separator.";
+
+/* No comment provided by engineer. */
+"Create a bulleted or numbered list." = "Create a bulleted or numbered list.";
+
 /* Title for a button that when tapped starts the site creation process */
 "Create a new site" = "建立一個新網站";
 
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "為你的商務版、雜誌或個人網誌建立新網站；或連結既有的 WordPress 安裝。";
 
+/* No comment provided by engineer. */
+"Create a new template part or pick an existing one from the list." = "Create a new template part or pick an existing one from the list.";
+
 /* Accessibility hint for create floating action button */
 "Create a post or page" = "建立文章或頁面";
 
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "建立文章、頁面或限時動態";
+
+/* No comment provided by engineer. */
+"Create a template part" = "Create a template part";
+
+/* No comment provided by engineer. */
+"Create and save content to reuse across your site. Update the block, and the changes apply everywhere it’s used." = "Create and save content to reuse across your site. Update the block, and the changes apply everywhere it’s used.";
 
 /* Label that describes the download backup action */
 "Create downloadable backup" = "建立可下載的備份";
@@ -1810,6 +2091,9 @@
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "目前正在還原：%1$@";
 
+/* No comment provided by engineer. */
+"Custom Link" = "Custom Link";
+
 /* Placeholder for Invite People message field. */
 "Custom message…" = "自訂訊息…";
 
@@ -1838,9 +2122,6 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "自訂按讚、留言、關注等功能的網站設定。";
-
-/* No comment provided by engineer. */
-"Cut block" = "剪下區塊";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "深色系";
@@ -1880,6 +2161,9 @@
 /* Only December needs to be translated */
 "December 17, 2017" = "2017 年 12 月 17 日";
 
+/* No comment provided by engineer. */
+"December 6, 2018" = "December 6, 2018";
+
 /* Description of the default paragraph formatting style in the editor.
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "預設";
@@ -1897,6 +2181,9 @@
 
 /* Placeholder for the reader CSS URL */
 "Default URL" = "預設 URL";
+
+/* translators: %s: HTML tag based on area. */
+"Default based on area (%s)" = "Default based on area (%s)";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "新文章預設值";
@@ -1931,8 +2218,14 @@
 /* Title of alert when site deletion fails */
 "Delete Site Error" = "刪除網站錯誤";
 
+/* No comment provided by engineer. */
+"Delete column" = "Delete column";
+
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "刪除選單";
+
+/* No comment provided by engineer. */
+"Delete row" = "Delete row";
 
 /* Delete Tag confirmation action title */
 "Delete this tag" = "刪除此標籤";
@@ -1957,11 +2250,17 @@
    Title of section that contains plugins' description */
 "Description" = "敘述";
 
+/* No comment provided by engineer. */
+"Descriptions" = "Descriptions";
+
 /* Shortened version of the main title to be used in back navigation */
 "Design" = "設計";
 
 /* Title for the desktop web preview */
 "Desktop" = "桌上型電腦";
+
+/* No comment provided by engineer. */
+"Detach blocks from template part" = "Detach blocks from template part";
 
 /* Details button that appears in the Theme Browser Header
    Theme Details action title */
@@ -2055,6 +2354,96 @@
    User's Display Name */
 "Display Name" = "顯示名稱";
 
+/* No comment provided by engineer. */
+"Display a legacy widget." = "Display a legacy widget.";
+
+/* No comment provided by engineer. */
+"Display a list of all categories." = "Display a list of all categories.";
+
+/* No comment provided by engineer. */
+"Display a list of all pages." = "Display a list of all pages.";
+
+/* No comment provided by engineer. */
+"Display a list of your most recent comments." = "Display a list of your most recent comments.";
+
+/* No comment provided by engineer. */
+"Display a list of your most recent posts, excluding sticky posts." = "Display a list of your most recent posts, excluding sticky posts.";
+
+/* No comment provided by engineer. */
+"Display a list of your most recent posts." = "Display a list of your most recent posts.";
+
+/* No comment provided by engineer. */
+"Display a monthly archive of your posts." = "Display a monthly archive of your posts.";
+
+/* No comment provided by engineer. */
+"Display a post's categories." = "Display a post's categories.";
+
+/* No comment provided by engineer. */
+"Display a post's comments count." = "Display a post's comments count.";
+
+/* No comment provided by engineer. */
+"Display a post's comments form." = "Display a post's comments form.";
+
+/* No comment provided by engineer. */
+"Display a post's comments." = "Display a post's comments.";
+
+/* No comment provided by engineer. */
+"Display a post's excerpt." = "Display a post's excerpt.";
+
+/* No comment provided by engineer. */
+"Display a post's featured image." = "Display a post's featured image.";
+
+/* No comment provided by engineer. */
+"Display a post's tags." = "Display a post's tags.";
+
+/* No comment provided by engineer. */
+"Display an icon linking to a social media profile or website." = "Display an icon linking to a social media profile or website.";
+
+/* No comment provided by engineer. */
+"Display as dropdown" = "Display as dropdown";
+
+/* No comment provided by engineer. */
+"Display author" = "Display author";
+
+/* No comment provided by engineer. */
+"Display avatar" = "Display avatar";
+
+/* No comment provided by engineer. */
+"Display code snippets that respect your spacing and tabs." = "Display code snippets that respect your spacing and tabs.";
+
+/* No comment provided by engineer. */
+"Display date" = "Display date";
+
+/* No comment provided by engineer. */
+"Display entries from any RSS or Atom feed." = "Display entries from any RSS or Atom feed.";
+
+/* No comment provided by engineer. */
+"Display excerpt" = "Display excerpt";
+
+/* No comment provided by engineer. */
+"Display icons linking to your social media profiles or websites." = "Display icons linking to your social media profiles or websites.";
+
+/* No comment provided by engineer. */
+"Display login as form" = "Display login as form";
+
+/* No comment provided by engineer. */
+"Display multiple images in a rich gallery." = "Display multiple images in a rich gallery.";
+
+/* No comment provided by engineer. */
+"Display post date" = "Display post date";
+
+/* No comment provided by engineer. */
+"Display the archive title based on the queried object." = "Display the archive title based on the queried object.";
+
+/* No comment provided by engineer. */
+"Display the description of categories, tags and custom taxonomies when viewing an archive." = "Display the description of categories, tags and custom taxonomies when viewing an archive.";
+
+/* No comment provided by engineer. */
+"Display the query title." = "Display the query title.";
+
+/* No comment provided by engineer. */
+"Display the title as a link" = "Display the title as a link";
+
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "在此顯示你的全時段網站統計資料。前往 WordPress 應用程式，在網站的統計資料處即可設定。";
 
@@ -2063,6 +2452,42 @@
 
 /* Unconfigured stats today widget helper text */
 "Display your site stats for today here. Configure in the WordPress app in your site stats." = "在此處顯示網站今日的統計資料。前往 WordPress 應用程式，在網站的統計資料處即可設定。";
+
+/* No comment provided by engineer. */
+"Displays a list of page numbers for pagination" = "Displays a list of page numbers for pagination";
+
+/* No comment provided by engineer. */
+"Displays a list of posts as a result of a query." = "Displays a list of posts as a result of a query.";
+
+/* No comment provided by engineer. */
+"Displays a paginated navigation to next\/previous set of posts, when applicable." = "Displays a paginated navigation to next\/previous set of posts, when applicable.";
+
+/* No comment provided by engineer. */
+"Displays and allows editing the name of the site. The site title usually appears in the browser title bar, in search results, and more. Also available in Settings > General." = "Displays and allows editing the name of the site. The site title usually appears in the browser title bar, in search results, and more. Also available in Settings > General.";
+
+/* No comment provided by engineer. */
+"Displays the contents of a post or page." = "Displays the contents of a post or page.";
+
+/* No comment provided by engineer. */
+"Displays the link to the current post comments." = "Displays the link to the current post comments.";
+
+/* No comment provided by engineer. */
+"Displays the next or previous post link that is adjacent to the current post." = "Displays the next or previous post link that is adjacent to the current post.";
+
+/* No comment provided by engineer. */
+"Displays the next posts page link." = "Displays the next posts page link.";
+
+/* No comment provided by engineer. */
+"Displays the post link that follows the current post." = "Displays the post link that follows the current post.";
+
+/* No comment provided by engineer. */
+"Displays the post link that precedes the current post." = "Displays the post link that precedes the current post.";
+
+/* No comment provided by engineer. */
+"Displays the previous posts page link." = "Displays the previous posts page link.";
+
+/* No comment provided by engineer. */
+"Displays the title of a post, page, or any other content-type." = "Displays the title of a post, page, or any other content-type.";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "文件：%@";
@@ -2100,6 +2525,9 @@
 /* Title for label when there are no threats on the users site */
 "Don’t worry about a thing" = "不必擔心";
 
+/* No comment provided by engineer. */
+"Dots" = "Dots";
+
 /* Screen reader hint for button that will move the menu item */
 "Double tap and hold to move this menu item up or down" = "點兩下並按住即可上下移動此選單項目";
 
@@ -2134,13 +2562,7 @@
 "Double tap to open Action Sheet to edit, replace, or clear the image" = "點兩下開啟動作工作表，然後編輯、取代或清除圖片";
 
 /* No comment provided by engineer. */
-"Double tap to open Action Sheet with available options" = "按兩下以開啟含有可用選項的操作工作表";
-
-/* No comment provided by engineer. */
 "Double tap to open Bottom Sheet to edit, replace, or clear the image" = "點兩下開啟底部工作表，然後編輯、取代或清除圖片";
-
-/* No comment provided by engineer. */
-"Double tap to open Bottom Sheet with available options" = "按兩下以開啟含有可用選項的底部工作表";
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "按兩次即可取消復原上次變更";
@@ -2176,8 +2598,17 @@
    Title for button allowing user to backup their Jetpack site */
 "Download backup" = "下載備份";
 
+/* No comment provided by engineer. */
+"Download button settings" = "Download button settings";
+
+/* No comment provided by engineer. */
+"Download button text" = "Download button text";
+
 /* Title for the button that will download the backup file. */
 "Download file" = "下載檔案";
+
+/* No comment provided by engineer. */
+"Download your templates and template parts." = "Download your templates and template parts.";
 
 /* Label for number of file downloads. */
 "Downloads" = "下載";
@@ -2189,12 +2620,15 @@
    Title of the drafts header in search list. */
 "Drafts" = "草稿";
 
+/* No comment provided by engineer. */
+"Drop cap" = "Drop cap";
+
 /* Label for page duplicate option. Tapping creates a copy of the page.
    Label for post duplicate option. Tapping creates a copy of the post. */
 "Duplicate" = "複製";
 
-/* No comment provided by engineer. */
-"Duplicate block" = "重複區塊";
+/* translators: Sample content for the Preformatted block. Can be replaced with a more locale-adequate work. */
+"EXT. XANADU - FAINT DAWN - 1940 (MINIATURE)\nWindow, very small in the distance, illuminated.\nAll around this is an almost totally black screen. Now, as the camera moves slowly towards the window which is almost a postage stamp in the frame, other forms ap" = "EXT. XANADU - FAINT DAWN - 1940 (MINIATURE)\nWindow, very small in the distance, illuminated.\nAll around this is an almost totally black screen. Now, as the camera moves slowly towards the window which is almost a postage stamp in the frame, other forms ap";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "東";
@@ -2217,6 +2651,9 @@
 /* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
 "Edit %@ block" = "編輯 %@ 區塊";
 
+/* translators: %s: Label of the video text track e.g: \"French subtitles\" */
+"Edit %s" = "Edit %s";
+
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "編輯封鎖清單字詞";
 
@@ -2235,10 +2672,22 @@
 "Edit Post" = "編輯文章";
 
 /* No comment provided by engineer. */
+"Edit RSS URL" = "Edit RSS URL";
+
+/* No comment provided by engineer. */
+"Edit URL" = "Edit URL";
+
+/* No comment provided by engineer. */
 "Edit file" = "編輯檔案";
 
 /* No comment provided by engineer. */
 "Edit focal point" = "編輯焦點";
+
+/* No comment provided by engineer. */
+"Edit gallery image" = "Edit gallery image";
+
+/* No comment provided by engineer. */
+"Edit image" = "Edit image";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "使用區塊編輯器編輯新文章和頁面。";
@@ -2246,8 +2695,14 @@
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "編輯分享按鈕";
 
+/* No comment provided by engineer. */
+"Edit table" = "Edit table";
+
 /* Button title displayed in popup indicating that the user edits the post first */
 "Edit the post first" = "首先編輯文章";
+
+/* No comment provided by engineer. */
+"Edit track" = "Edit track";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "使用網頁編輯器編輯";
@@ -2305,12 +2760,132 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "已傳送電子郵件！";
 
+/* No comment provided by engineer. */
+"Embed Amazon Kindle content." = "Embed Amazon Kindle content.";
+
+/* No comment provided by engineer. */
+"Embed Cloudup content." = "Embed Cloudup content.";
+
+/* No comment provided by engineer. */
+"Embed CollegeHumor content." = "Embed CollegeHumor content.";
+
+/* No comment provided by engineer. */
+"Embed Crowdsignal (formerly Polldaddy) content." = "Embed Crowdsignal (formerly Polldaddy) content.";
+
+/* No comment provided by engineer. */
+"Embed Flickr content." = "Embed Flickr content.";
+
+/* No comment provided by engineer. */
+"Embed Imgur content." = "Embed Imgur content.";
+
+/* No comment provided by engineer. */
+"Embed Issuu content." = "Embed Issuu content.";
+
+/* No comment provided by engineer. */
+"Embed Kickstarter content." = "Embed Kickstarter content.";
+
+/* No comment provided by engineer. */
+"Embed Meetup.com content." = "Embed Meetup.com content.";
+
+/* No comment provided by engineer. */
+"Embed Mixcloud content." = "Embed Mixcloud content.";
+
+/* No comment provided by engineer. */
+"Embed ReverbNation content." = "Embed ReverbNation content.";
+
+/* No comment provided by engineer. */
+"Embed Screencast content." = "Embed Screencast content.";
+
+/* No comment provided by engineer. */
+"Embed Scribd content." = "Embed Scribd content.";
+
+/* No comment provided by engineer. */
+"Embed Slideshare content." = "Embed Slideshare content.";
+
+/* No comment provided by engineer. */
+"Embed SmugMug content." = "Embed SmugMug content.";
+
+/* No comment provided by engineer. */
+"Embed SoundCloud content." = "Embed SoundCloud content.";
+
+/* No comment provided by engineer. */
+"Embed Speaker Deck content." = "Embed Speaker Deck content.";
+
+/* No comment provided by engineer. */
+"Embed Spotify content." = "Embed Spotify content.";
+
+/* No comment provided by engineer. */
+"Embed a Dailymotion video." = "Embed a Dailymotion video.";
+
+/* No comment provided by engineer. */
+"Embed a Facebook post." = "Embed a Facebook post.";
+
+/* No comment provided by engineer. */
+"Embed a Reddit thread." = "Embed a Reddit thread.";
+
+/* No comment provided by engineer. */
+"Embed a TED video." = "Embed a TED video.";
+
+/* No comment provided by engineer. */
+"Embed a TikTok video." = "Embed a TikTok video.";
+
+/* No comment provided by engineer. */
+"Embed a Tumblr post." = "Embed a Tumblr post.";
+
+/* No comment provided by engineer. */
+"Embed a VideoPress video." = "Embed a VideoPress video.";
+
+/* No comment provided by engineer. */
+"Embed a Vimeo video." = "Embed a Vimeo video.";
+
+/* No comment provided by engineer. */
+"Embed a WordPress post." = "Embed a WordPress post.";
+
+/* No comment provided by engineer. */
+"Embed a WordPress.tv video." = "Embed a WordPress.tv video.";
+
+/* No comment provided by engineer. */
+"Embed a YouTube video." = "Embed a YouTube video.";
+
+/* No comment provided by engineer. */
+"Embed a simple audio player." = "Embed a simple audio player.";
+
+/* No comment provided by engineer. */
+"Embed a tweet." = "Embed a tweet.";
+
+/* No comment provided by engineer. */
+"Embed a video from your media library or upload a new one." = "Embed a video from your media library or upload a new one.";
+
+/* No comment provided by engineer. */
+"Embed an Animoto video." = "Embed an Animoto video.";
+
+/* No comment provided by engineer. */
+"Embed an Instagram post." = "Embed an Instagram post.";
+
+/* translators: %s: filename. */
+"Embed of %s." = "Embed of %s.";
+
+/* No comment provided by engineer. */
+"Embed of the selected PDF file." = "Embed of the selected PDF file.";
+
+/* translators: %s: host providing embed content e.g: www.youtube.com */
+"Embedded content from %s" = "Embedded content from %s";
+
+/* translators: %s: host providing embed content e.g: www.youtube.com */
+"Embedded content from %s can't be previewed in the editor." = "Embedded content from %s can't be previewed in the editor.";
+
+/* No comment provided by engineer. */
+"Embedding…" = "Embedding…";
+
 /* Accessibility value presented in the signup epilogue for an empty value.
    Label for size of media when the cache is empty. */
 "Empty" = "清空";
 
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "空的網址";
+
+/* No comment provided by engineer. */
+"Empty block; start writing or type forward slash to choose a block" = "Empty block; start writing or type forward slash to choose a block";
 
 /* Button title for the enable site notifications action. */
 "Enable" = "啓用";
@@ -2333,8 +2908,17 @@
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "結束日期";
 
+/* No comment provided by engineer. */
+"English" = "English";
+
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "進入全螢幕";
+
+/* No comment provided by engineer. */
+"Enter URL here…" = "Enter URL here…";
+
+/* No comment provided by engineer. */
+"Enter URL to embed here…" = "Enter URL to embed here…";
 
 /* Enter a custom value */
 "Enter a custom value" = "輸入自訂值";
@@ -2344,6 +2928,9 @@
 
 /* Message explaining why the user might enter a password. */
 "Enter a password to protect this post" = "輸入密碼保護這篇文章";
+
+/* No comment provided by engineer. */
+"Enter address" = "Enter address";
 
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "請在上方輸入其他文字，我們會尋找與其相符的地址。";
@@ -2380,6 +2967,12 @@
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
 "Enter your server credentials to enable one click site restores from backups." = "輸入你的伺服器憑證，啟用從備份一鍵還原網站的功能。";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threat." = "Enter your server credentials to fix threat.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threats." = "Enter your server credentials to fix threats.";
 
 /* Generic error alert title
    Generic error.
@@ -2471,6 +3064,9 @@
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "更新加速網站設定時發生錯誤";
 
+/* translators: example text. */
+"Etiam et egestas lorem. Vivamus sagittis sit amet dolor quis lobortis. Integer sed fermentum arcu, id vulputate lacus. Etiam fermentum sem eu quam hendrerit." = "Etiam et egestas lorem. Vivamus sagittis sit amet dolor quis lobortis. Integer sed fermentum arcu, id vulputate lacus. Etiam fermentum sem eu quam hendrerit.";
+
 /* Title for the activity detail view */
 "Event" = "活動";
 
@@ -2525,6 +3121,9 @@
 
 /* Title of a Quick Start Tour */
 "Explore plans" = "探索各種方案";
+
+/* No comment provided by engineer. */
+"Export" = "Export";
 
 /* Export Content confirmation action title
    Label for selecting the Export Content Settings item */
@@ -2598,6 +3197,9 @@
 /* No comment provided by engineer. */
 "Featured Image did not load" = "精選圖片未載入";
 
+/* No comment provided by engineer. */
+"February 21, 2019" = "February 21, 2019";
+
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "正在擷取佈景主題...";
 
@@ -2636,6 +3238,9 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "檔案類型";
 
+/* No comment provided by engineer. */
+"Fill" = "Fill";
+
 /* The password manager button in login pages. The button opens a dialog showing which password manager to use (e.g. 1Password, LastPass). */
 "Fill with password manager" = "使用密碼管理員填寫";
 
@@ -2665,6 +3270,9 @@
    User's First Name */
 "First Name" = "名字";
 
+/* No comment provided by engineer. */
+"Five." = "Five.";
+
 /* Button title that attempts to fix all fixable threats */
 "Fix All" = "全部修復";
 
@@ -2676,6 +3284,9 @@
 
 /* Displays the fixed threats */
 "Fixed" = "固定";
+
+/* No comment provided by engineer. */
+"Fixed width table cells" = "Fixed width table cells";
 
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "正在修正威脅";
@@ -2756,11 +3367,29 @@
 /* An example tag used in the login prologue screens. */
 "Football" = "橄欖球";
 
+/* No comment provided by engineer. */
+"Footer cell text" = "Footer cell text";
+
+/* No comment provided by engineer. */
+"Footer label" = "Footer label";
+
+/* No comment provided by engineer. */
+"Footer section" = "Footer section";
+
+/* No comment provided by engineer. */
+"Footers" = "Footers";
+
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "為了方便起見，我們已預先填入你的 WordPress.com 聯絡人資訊。請檢視各項資訊，以確認這是你想要用於此網域的正確資訊。";
 
+/* No comment provided by engineer. */
+"Format settings" = "Format settings";
+
 /* Next web page */
 "Forward" = "轉寄";
+
+/* No comment provided by engineer. */
+"Four." = "Four.";
 
 /* Browse free themes selection title */
 "Free" = "免費";
@@ -2788,6 +3417,9 @@
 
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
+
+/* No comment provided by engineer. */
+"Gallery caption text" = "Gallery caption text";
 
 /* translators: accessibility text. %s: gallery caption. */
 "Gallery caption. %s" = "圖庫標題。%s";
@@ -2832,14 +3464,26 @@
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "讓你的網站上線運作";
 
+/* Example post title used in the login prologue screens. */
+"Getting Inspired" = "Getting Inspired";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "取得帳號資訊";
 
 /* Cancel */
 "Give Up" = "放棄";
 
+/* No comment provided by engineer. */
+"Give quoted text visual emphasis. \"In quoting others, we cite ourselves.\" — Julio Cortázar" = "Give quoted text visual emphasis. \"In quoting others, we cite ourselves.\" — Julio Cortázar";
+
+/* No comment provided by engineer. */
+"Give special visual emphasis to a quote from your text." = "Give special visual emphasis to a quote from your text.";
+
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "為網站取一個能反映出自我風格和主題的名稱。 第一印象很重要！";
+
+/* No comment provided by engineer. */
+"Global Styles" = "Global Styles";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -2913,6 +3557,9 @@
 /* Post HTML content */
 "HTML Content" = "HTML 內容";
 
+/* No comment provided by engineer. */
+"HTML element" = "HTML element";
+
 /* Accessibility label for selecting h1 paragraph style button on the formatting toolbar. */
 "Header 1" = "標題 1";
 
@@ -2930,6 +3577,24 @@
 
 /* Accessibility label for selecting h6 paragraph style button on the formatting toolbar. */
 "Header 6" = "標題 6";
+
+/* No comment provided by engineer. */
+"Header cell text" = "Header cell text";
+
+/* No comment provided by engineer. */
+"Header label" = "Header label";
+
+/* No comment provided by engineer. */
+"Header section" = "Header section";
+
+/* No comment provided by engineer. */
+"Headers" = "Headers";
+
+/* No comment provided by engineer. */
+"Heading" = "Heading";
+
+/* translators: %s: heading level e.g: \"1\", \"2\", \"3\" */
+"Heading %d" = "Heading %d";
 
 /* H1 Aztec Style */
 "Heading 1" = "標題 1";
@@ -2949,6 +3614,12 @@
 /* H6 Aztec Style */
 "Heading 6" = "標題 6";
 
+/* No comment provided by engineer. */
+"Heading text" = "Heading text";
+
+/* No comment provided by engineer. */
+"Height in pixels" = "Height in pixels";
+
 /* Help button */
 "Help" = "幫助";
 
@@ -2961,6 +3632,9 @@
 
 /* No comment provided by engineer. */
 "Help icon" = "說明圖示";
+
+/* No comment provided by engineer. */
+"Help visitors find your content." = "Help visitors find your content.";
 
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "文章截至目前為止獲得的迴響如下。";
@@ -2982,6 +3656,9 @@
 /* No comment provided by engineer. */
 "Hide keyboard" = "隱藏鍵盤";
 
+/* No comment provided by engineer. */
+"Hide the excerpt on the full content page" = "Hide the excerpt on the full content page";
+
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
    Title of the post history screen */
@@ -2996,6 +3673,9 @@
 /* Moderation Keys Title
    Settings: Comments Moderation */
 "Hold for Moderation" = "等待審核";
+
+/* translators: 'Home' as in a website's home page. */
+"Home" = "Home";
 
 /* The item to select during a guided tour.
    Title for setting which shows the current page assigned as a site's homepage
@@ -3013,6 +3693,9 @@
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hooray!\nAlmost done";
 
+/* No comment provided by engineer. */
+"Horizontal" = "Horizontal";
+
 /* Title for the fix section in Threat Details: Threat is fixed */
 "How did Jetpack fix it?" = "Jetpack 如何修復問題？";
 
@@ -3024,6 +3707,9 @@
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "我喜歡";
+
+/* Example post content used in the login prologue screens. */
+"I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next";
 
 /* Title of a button style */
 "Icon & Text" = "圖示與文字";
@@ -3039,6 +3725,9 @@
 
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "如果你繼續使用 Apple 或 Google 操作且尚未擁有 WordPress.com 帳號，即表示你正在建立帳號，並同意我們的_服務條款_。";
+
+/* No comment provided by engineer. */
+"If you have entered a custom label, it will be prepended before the title." = "If you have entered a custom label, it will be prepended before the title.";
 
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
 "If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "若移除 %1$@，該使用者將無法再存取此網站，但 %2$@ 建立的所有內容仍會保留在網站上。";
@@ -3079,14 +3768,26 @@
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "圖片大小";
 
+/* No comment provided by engineer. */
+"Image caption text" = "Image caption text";
+
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "圖片說明。%s";
+
+/* No comment provided by engineer. */
+"Image settings" = "Image settings";
 
 /* Hint for image title on image settings. */
 "Image title" = "圖片標題";
 
+/* No comment provided by engineer. */
+"Image width" = "圖片寬度";
+
 /* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
 "Image, %@" = "圖片 (%@ 建立)";
+
+/* No comment provided by engineer. */
+"Image, Date, & Title" = "Image, Date, & Title";
 
 /* Undated post time label */
 "Immediately" = "立即";
@@ -3096,6 +3797,15 @@
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "請用簡單幾字描述此網站的內容。";
+
+/* No comment provided by engineer. */
+"In a few words, what this site is about." = "In a few words, what this site is about.";
+
+/* No comment provided by engineer. */
+"In a village of La Mancha, the name of which I have no desire to call to mind, there lived not long since one of those gentlemen that keep a lance in the lance-rack, an old buckler, a lean hack, and a greyhound for coursing." = "In a village of La Mancha, the name of which I have no desire to call to mind, there lived not long since one of those gentlemen that keep a lance in the lance-rack, an old buckler, a lean hack, and a greyhound for coursing.";
+
+/* No comment provided by engineer. */
+"In quoting others, we cite ourselves." = "In quoting others, we cite ourselves.";
 
 /* Describes a status of a plugin */
 "Inactive" = "未啟用";
@@ -3114,6 +3824,12 @@
 
 /* An error message shown when a user signed in with incorrect credentials. */
 "Incorrect username or password. Please try entering your login details again." = "錯誤的使用者名稱或密碼。請再次嘗試輸入你的登入詳細資料。";
+
+/* No comment provided by engineer. */
+"Indent" = "Indent";
+
+/* No comment provided by engineer. */
+"Indent list item" = "Indent list item";
 
 /* Title for a threat */
 "Infected core file" = "受感染的核心檔案";
@@ -3146,8 +3862,35 @@
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "插入媒體";
 
+/* No comment provided by engineer. */
+"Insert a table for sharing data." = "Insert a table for sharing data.";
+
+/* No comment provided by engineer. */
+"Insert a table — perfect for sharing charts and data." = "Insert a table — perfect for sharing charts and data.";
+
+/* No comment provided by engineer. */
+"Insert additional custom elements with a WordPress shortcode." = "Insert additional custom elements with a WordPress shortcode.";
+
+/* No comment provided by engineer. */
+"Insert an image to make a visual statement." = "Insert an image to make a visual statement.";
+
+/* No comment provided by engineer. */
+"Insert column after" = "Insert column after";
+
+/* No comment provided by engineer. */
+"Insert column before" = "Insert column before";
+
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "插入媒體";
+
+/* No comment provided by engineer. */
+"Insert poetry. Use special spacing formats. Or quote song lyrics." = "Insert poetry. Use special spacing formats. Or quote song lyrics.";
+
+/* No comment provided by engineer. */
+"Insert row after" = "Insert row after";
+
+/* No comment provided by engineer. */
+"Insert row before" = "Insert row before";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "插入選取的項目";
@@ -3184,6 +3927,9 @@
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "在你的網站上安裝第一個外掛程式，可能需要 1 分鐘的時間。在此期間，你無法對你的網站進行任何變更。";
+
+/* No comment provided by engineer. */
+"Introduce new sections and organize content to help visitors (and search engines) understand the structure of your content." = "Introduce new sections and organize content to help visitors (and search engines) understand the structure of your content.";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "限時動態文章介紹";
@@ -3233,6 +3979,9 @@
 /* Accessibility label for italic button on formatting toolbar.
    Discoverability title for italic formatting keyboard shortcut. */
 "Italic" = "斜體";
+
+/* No comment provided by engineer. */
+"Jazz Musician" = "Jazz Musician";
 
 /* Section title for the publish table section in the blog details screen
    Title for the Jetpack Installation
@@ -3308,6 +4057,9 @@
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "隨時掌握你的網站效能。";
 
+/* No comment provided by engineer. */
+"Kind" = "Kind";
+
 /* Autoapprove only from known users */
 "Known Users" = "已知使用者";
 
@@ -3317,10 +4069,16 @@
 /* Noun. Title for the setting to edit the sharing label text. */
 "Label" = "標籤";
 
+/* No comment provided by engineer. */
+"Landscape" = "橫向螢幕";
+
 /* Label for the privacy setting
    Language of the current blog
    Title for the Language Picker Screen */
 "Language" = "語言";
+
+/* No comment provided by engineer. */
+"Language tag (en, fr, etc.)" = "Language tag (en, fr, etc.)";
 
 /* Large image size. Should be the same as in core WP. */
 "Large" = "大";
@@ -3332,6 +4090,9 @@
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "最新文章摘要";
+
+/* No comment provided by engineer. */
+"Latest comments settings" = "Latest comments settings";
 
 /* Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "了解更多資訊";
@@ -3350,6 +4111,9 @@
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "深入瞭解日期與時間格式。";
 
+/* No comment provided by engineer. */
+"Learn more about embeds" = "Learn more about embeds";
+
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "瞭解更多有關角色的資訊";
 
@@ -3362,11 +4126,20 @@
 /* Title displayed for selection of custom app icons that may be removed in a future release of the app. */
 "Legacy Icons" = "舊版圖示";
 
+/* No comment provided by engineer. */
+"Legacy Widget" = "Legacy Widget";
+
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "我們樂意協助";
 
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "完成時通知我！";
+
+/* translators: accessibility text. 1: heading level. 2: heading content. */
+"Level %1$s. %2$s" = "層級　%1$s。%2$s";
+
+/* translators: accessibility text. %s: heading level. */
+"Level %s. Empty." = "層級　%s。空白。";
 
 /* Title for the app appearance setting for light mode */
 "Light" = "淡色系";
@@ -3428,6 +4201,21 @@
 /* Image link option title. */
 "Link To" = "連結至";
 
+/* No comment provided by engineer. */
+"Link color" = "Link color";
+
+/* No comment provided by engineer. */
+"Link label" = "Link label";
+
+/* No comment provided by engineer. */
+"Link rel" = "Link rel";
+
+/* No comment provided by engineer. */
+"Link to" = "Link to";
+
+/* translators: %s: Name of the post type e.g: \"post\". */
+"Link to %s" = "Link to %s";
+
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "連結至既有內容";
 
@@ -3436,8 +4224,23 @@
    Settings: Comments Approval settings */
 "Links in comments" = "留言中的連結";
 
+/* No comment provided by engineer. */
+"Links shown in a column." = "Links shown in a column.";
+
+/* No comment provided by engineer. */
+"Links shown in a row." = "Links shown in a row.";
+
+/* No comment provided by engineer. */
+"List" = "List";
+
+/* No comment provided by engineer. */
+"List of template parts" = "List of template parts";
+
 /* The accessibility label for the list style button in the Post List. */
 "List style" = "清單樣式";
+
+/* No comment provided by engineer. */
+"List text" = "List text";
 
 /* Title of the screen that load selected the revisions. */
 "Load" = "載入";
@@ -3508,6 +4311,9 @@
    Text displayed while loading time zones */
 "Loading..." = "正在載入...";
 
+/* No comment provided by engineer. */
+"Loading…" = "Loading…";
+
 /* Status for Media object that is only exists locally. */
 "Local" = "本機";
 
@@ -3563,12 +4369,21 @@
 /* Instructions on the WordPress.com username / password log in form. */
 "Log in with your WordPress.com username and password." = "請使用你的 WordPress.com 使用者名稱和密碼登入。";
 
+/* No comment provided by engineer. */
+"Log out" = "Log out";
+
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "是否要登出 WordPress？";
 
 /* Error message shown when a user is trying to login.
    Login Request Expired */
 "Login Request Expired" = "登入要求已到期";
+
+/* No comment provided by engineer. */
+"Login\/out settings" = "Login\/out settings";
+
+/* No comment provided by engineer. */
+"Logos Only" = "Logos Only";
 
 /* No comment provided by engineer. */
 "Logs" = "記錄";
@@ -3579,6 +4394,12 @@
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "你似乎已在網站上設定 Jetpack。恭喜！使用 WordPress.com 憑證登入，以啟用「統計與通知」。";
 
+/* No comment provided by engineer. */
+"Loop" = "Loop";
+
+/* translators: example text. */
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et eros eu felis." = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et eros eu felis.";
+
 /* Title of a button. */
 "Lost your password?" = "忘記密碼？";
 
@@ -3587,6 +4408,15 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "主導覽";
+
+/* No comment provided by engineer. */
+"Main color" = "Main color";
+
+/* No comment provided by engineer. */
+"Make template part" = "Make template part";
+
+/* No comment provided by engineer. */
+"Make title a link" = "Make title a link";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -3646,11 +4476,20 @@
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "以電子郵件尋配對帳戶";
 
+/* No comment provided by engineer. */
+"Matt Mullenweg" = "Matt Mullenweg";
+
 /* Title for the image size settings option. */
 "Max Image Upload Size" = "最大圖片上傳大小";
 
 /* Title for the video size settings option. */
 "Max Video Upload Size" = "最大影片上傳大小";
+
+/* No comment provided by engineer. */
+"Max number of words in excerpt" = "Max number of words in excerpt";
+
+/* No comment provided by engineer. */
+"May 7, 2019" = "May 7, 2019";
 
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
@@ -3688,14 +4527,23 @@
 /* Downloadable/Restorable items: Media Uploads */
 "Media Uploads" = "媒體上傳";
 
+/* No comment provided by engineer. */
+"Media area" = "Media area";
+
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "媒體沒有可上傳的相關檔案。";
+
+/* No comment provided by engineer. */
+"Media file" = "Media file";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "媒體檔案大小 (%1$@) 太大，無法上傳。檔案大小上限為 %2$@";
 
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "媒體預覽失敗。";
+
+/* No comment provided by engineer. */
+"Media settings" = "Media settings";
 
 /* Alert displayed to the user when multiple media items have uploaded successfully. */
 "Media uploaded (%ld files)" = "上傳的媒體 (%ld 個檔案)";
@@ -3744,6 +4592,9 @@
 /* Jetpack Monitor Settings: Monitor site's uptime */
 "Monitor your site's uptime" = "監看頁面的運行時間";
 
+/* translators: Caption accompanying an image of the Mont Blanc, which serves as an example for the Image block. */
+"Mont Blanc appears—still, snowy, and serene." = "Mont Blanc appears—still, snowy, and serene.";
+
 /* Title of Months stats filter. */
 "Months" = "月";
 
@@ -3773,6 +4624,9 @@
 
 /* Section title for global related posts. */
 "More on WordPress.com" = "如要瞭解更多資訊，請前往 WordPress.com";
+
+/* No comment provided by engineer. */
+"More tools & options" = "More tools & options";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "最熱門的時間";
@@ -3810,6 +4664,12 @@
 /* Option to move Insight down in the view. */
 "Move down" = "向下移動";
 
+/* No comment provided by engineer. */
+"Move image backward" = "Move image backward";
+
+/* No comment provided by engineer. */
+"Move image forward" = "Move image forward";
+
 /* Screen reader text for button that will move the menu item */
 "Move menu item" = "移動選單項目";
 
@@ -3835,8 +4695,14 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "將留言移至垃圾桶。";
 
+/* Example post title used in the login prologue screens. */
+"Museums to See In London" = "Museums to See In London";
+
 /* An example tag used in the login prologue screens. */
 "Music" = "音樂";
+
+/* No comment provided by engineer. */
+"Muted" = "Muted";
 
 /* Link to My Profile section
    My Profile view title */
@@ -3858,6 +4724,12 @@
 /* Option in Support view to access previous help tickets. */
 "My Tickets" = "我的票證";
 
+/* Example post title used in the login prologue screens. */
+"My Top Ten Cafes" = "My Top Ten Cafes";
+
+/* translators: example text. */
+"Nam risus massa, ullamcorper consectetur eros fermentum, porta aliquet ligula. Sed vel mauris nec enim." = "Nam risus massa, ullamcorper consectetur eros fermentum, porta aliquet ligula. Sed vel mauris nec enim.";
+
 /* Accessibility label for the Email text field.
    Name text field placeholder */
 "Name" = "名稱";
@@ -3873,6 +4745,12 @@
 
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "瀏覽至自訂漸層色彩";
+
+/* No comment provided by engineer. */
+"Navigation (horizontal)" = "Navigation (horizontal)";
+
+/* No comment provided by engineer. */
+"Navigation (vertical)" = "Navigation (vertical)";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "需要幫助嗎？";
@@ -3895,6 +4773,9 @@
 
 /* Blocklist Keyword Insertion Title */
 "New Blocklist Word" = "新增封鎖清單字詞";
+
+/* No comment provided by engineer. */
+"New Column" = "New Column";
 
 /* Title of alert informing users about the Reader Save for Later feature. */
 "New Custom App Icons" = "全新自訂應用程式圖示";
@@ -3920,6 +4801,9 @@
 /* Noun. The title of an item in a list. */
 "New posts" = "新文章";
 
+/* No comment provided by engineer. */
+"New template part" = "New template part";
+
 /* Screen title, where users can see the newest plugins */
 "Newest" = "最新";
 
@@ -3932,14 +4816,23 @@
    Title of a button. The text should be capitalized. */
 "Next" = "下一篇";
 
+/* No comment provided by engineer. */
+"Next Page" = "Next Page";
+
 /* Table view title for the quick start section. */
 "Next Steps" = "後續步驟";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "下一則通知";
 
+/* No comment provided by engineer. */
+"Next page link" = "Next page link";
+
 /* Accessibility label */
 "Next period" = "下個期間";
+
+/* No comment provided by engineer. */
+"Next post" = "Next post";
 
 /* Label for a cancel button */
 "No" = "不";
@@ -3956,6 +4849,9 @@
 /* Title for the error view when there's no connection
    Title of error prompt when no internet connection is available. */
 "No Connection" = "沒有連線";
+
+/* No comment provided by engineer. */
+"No Date" = "No Date";
 
 /* List Editor Empty State Message */
 "No Items" = "無項目";
@@ -4008,6 +4904,9 @@
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "尚無回應";
+
+/* No comment provided by engineer. */
+"No comments." = "No comments.";
 
 /* An error message title shown when there is no internet connection.
    Displayed during Site Creation, when searching for Verticals and the network is unavailable.
@@ -4117,6 +5016,9 @@
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "沒有文章。";
 
+/* No comment provided by engineer. */
+"No preview available." = "No preview available.";
+
 /* A message title */
 "No recent posts" = "沒有近期文章";
 
@@ -4180,7 +5082,16 @@
 "Not seeing the email? Check your Spam or Junk Mail folder." = "沒看到電子郵件？ 請檢查你的「垃圾郵件」資料夾。";
 
 /* No comment provided by engineer. */
+"Note: Autoplaying audio may cause usability issues for some visitors." = "Note: Autoplaying audio may cause usability issues for some visitors.";
+
+/* No comment provided by engineer. */
+"Note: Autoplaying videos may cause usability issues for some visitors." = "Note: Autoplaying videos may cause usability issues for some visitors.";
+
+/* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "請注意：內容欄版面配置可能會因佈景主題和螢幕尺寸而有所不同";
+
+/* No comment provided by engineer. */
+"Note: Most phone and tablet browsers won't display embedded PDFs." = "Note: Most phone and tablet browsers won't display embedded PDFs.";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "什麼都沒找到。";
@@ -4222,6 +5133,9 @@
 
 /* Register Domain - Address information field Number */
 "Number" = "號";
+
+/* No comment provided by engineer. */
+"Number of comments" = "Number of comments";
 
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "編號清單";
@@ -4279,6 +5193,15 @@
 /* Accessibility label for 1 password button */
 "One Password button" = "One Password 按鈕";
 
+/* No comment provided by engineer. */
+"One column" = "One column";
+
+/* translators: Quote serving as example for the Pullquote block. Attributed to Matt Mullenweg. */
+"One of the hardest things to do in technology is disrupt yourself." = "One of the hardest things to do in technology is disrupt yourself.";
+
+/* No comment provided by engineer. */
+"One." = "One.";
+
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "只查看最相關的統計資料。新增洞察報告，滿足您的需求。";
 
@@ -4297,9 +5220,6 @@
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "糟糕！";
 
-/* No comment provided by engineer. */
-"Open Block Actions Menu" = "開啟區塊操作選單";
-
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "開啟裝置設定";
 
@@ -4312,6 +5232,9 @@
 
 /* Today widget label to launch WP app */
 "Open WordPress" = "開啟 WordPress";
+
+/* No comment provided by engineer. */
+"Open block navigation" = "Open block navigation";
 
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "開啟所有媒體挑選器";
@@ -4358,8 +5281,14 @@
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "或輸入網站位址登入。";
 
+/* No comment provided by engineer. */
+"Ordered" = "Ordered";
+
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "已排序清單";
+
+/* No comment provided by engineer. */
+"Ordered list settings" = "Ordered list settings";
 
 /* Register Domain - Domain contact information field Organization */
 "Organization" = "組織";
@@ -4392,8 +5321,23 @@
    Other Sites Notification Settings Title */
 "Other Sites" = "其他網站";
 
+/* No comment provided by engineer. */
+"Outdent" = "Outdent";
+
+/* No comment provided by engineer. */
+"Outdent list item" = "Outdent list item";
+
+/* No comment provided by engineer. */
+"Outline" = "Outline";
+
 /* Used to indicate a setting is overridden in debug builds of the app */
 "Overridden" = "已覆寫";
+
+/* No comment provided by engineer. */
+"PDF embed" = "PDF embed";
+
+/* No comment provided by engineer. */
+"PDF settings" = "PDF settings";
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "電話";
@@ -4401,6 +5345,9 @@
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page */
 "Page" = "網頁";
+
+/* No comment provided by engineer. */
+"Page Link" = "網頁連結";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
 "Page Restored to Drafts" = "頁面已還原為草稿";
@@ -4414,6 +5361,9 @@
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
 "Page Settings" = "頁面設定";
+
+/* No comment provided by engineer. */
+"Page break" = "Page break";
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "分頁符號區塊。%s";
@@ -4457,6 +5407,12 @@
    Settings: Comments Paging preferences */
 "Paging" = "分頁";
 
+/* No comment provided by engineer. */
+"Paragraph" = "段落";
+
+/* No comment provided by engineer. */
+"Paragraph block" = "Paragraph block";
+
 /* Placeholder to set a parent category for a new category.
    Title for selecting parent category of a category */
 "Parent Category" = "上層分類";
@@ -4486,7 +5442,7 @@
 "Paste URL" = "貼上 URL";
 
 /* No comment provided by engineer. */
-"Paste block after" = "將區塊貼在以下物件後方：";
+"Paste a link to the content you want to display on your site." = "Paste a link to the content you want to display on your site.";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "貼上並且不設定格式";
@@ -4534,6 +5490,9 @@
 /* Prompt for the screen to pick a design and homepage for a site. */
 "Pick your favorite homepage layout. You can edit and customize it later." = "選擇你喜愛的首頁版面配置。 你可於稍後加以編輯及自訂。";
 
+/* No comment provided by engineer. */
+"Pill Shape" = "Pill Shape";
+
 /* The item to select during a guided tour. */
 "Plan" = "方案";
 
@@ -4541,8 +5500,14 @@
    Title for the plan selector */
 "Plans" = "方案";
 
+/* No comment provided by engineer. */
+"Play inline" = "Play inline";
+
 /* User action to play a video on the editor. */
 "Play video" = "播放影片";
+
+/* No comment provided by engineer. */
+"Playback controls" = "Playback controls";
 
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "請先新增一些內容，再嘗試發表。";
@@ -4687,6 +5652,9 @@
 /* Section title for Popular Languages */
 "Popular languages" = "熱門語言";
 
+/* No comment provided by engineer. */
+"Portrait" = "大頭照";
+
 /* Menu item label for linking a post.
    Noun. Type of content being selected is a blog post */
 "Post" = "張貼";
@@ -4694,9 +5662,39 @@
 /* Title for selecting categories for a post */
 "Post Categories" = "文章類別";
 
+/* No comment provided by engineer. */
+"Post Comment" = "Post Comment";
+
+/* No comment provided by engineer. */
+"Post Comment Author" = "Post Comment Author";
+
+/* No comment provided by engineer. */
+"Post Comment Content" = "Post Comment Content";
+
+/* No comment provided by engineer. */
+"Post Comment Date" = "Post Comment Date";
+
+/* No comment provided by engineer. */
+"Post Comments Count block: post not found." = "Post Comments Count block: post not found.";
+
+/* No comment provided by engineer. */
+"Post Comments Form" = "Post Comments Form";
+
+/* No comment provided by engineer. */
+"Post Comments Form block: comments are not enabled for this post type." = "Post Comments Form block: comments are not enabled for this post type.";
+
+/* No comment provided by engineer. */
+"Post Comments Form block: comments to this post are not allowed." = "Post Comments Form block: comments to this post are not allowed.";
+
+/* No comment provided by engineer. */
+"Post Comments Link block: post not found." = "Post Comments Link block: post not found.";
+
 /* For setting the format of a post.
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "文章格式";
+
+/* No comment provided by engineer. */
+"Post Link" = "文章連結";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "文章已還原為草稿";
@@ -4717,6 +5715,12 @@
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "作者 %1$@，來自 %2$@";
 
+/* No comment provided by engineer. */
+"Post comments block: no post found." = "Post comments block: no post found.";
+
+/* No comment provided by engineer. */
+"Post content settings" = "Post content settings";
+
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Post created on %@";
 
@@ -4725,6 +5729,9 @@
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "文章上傳失敗";
+
+/* No comment provided by engineer. */
+"Post meta settings" = "Post meta settings";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "文章已移至垃圾桶。";
@@ -4768,6 +5775,9 @@
 /* Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, blog URL, author name */
 "Posted in %@, at %@, by %@." = "發表於 %1$@，網址：%2$@，作者：%3$@。";
 
+/* No comment provided by engineer. */
+"Poster image" = "Poster image";
+
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "張貼活動";
@@ -4777,6 +5787,9 @@
    Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query */
 "Posts" = "文章";
+
+/* No comment provided by engineer. */
+"Posts List" = "Posts List";
 
 /* Title for setting which shows the current page assigned as a site's posts page */
 "Posts Page" = "文章列表頁面";
@@ -4803,6 +5816,12 @@
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "由 Tenor 支援";
+
+/* No comment provided by engineer. */
+"Preformatted text" = "Preformatted text";
+
+/* No comment provided by engineer. */
+"Preload" = "Preload";
 
 /* Browse premium themes selection title */
 "Premium" = "進階版";
@@ -4836,11 +5855,20 @@
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "預覽你的新網站即可查看訪客將會看到的內容。";
 
+/* No comment provided by engineer. */
+"Previous Page" = "Previous Page";
+
 /* Accessibility label for the previous notification button */
 "Previous notification" = "上一則通知";
 
+/* No comment provided by engineer. */
+"Previous page link" = "Previous page link";
+
 /* Accessibility label */
 "Previous period" = "上個期間";
+
+/* No comment provided by engineer. */
+"Previous post" = "Previous post";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -4893,6 +5921,15 @@
 
 /* Menu item label for linking a project page. */
 "Projects" = "專案";
+
+/* No comment provided by engineer. */
+"Prompt visitors to take action with a button-style link." = "Prompt visitors to take action with a button-style link.";
+
+/* No comment provided by engineer. */
+"Prompt visitors to take action with a group of button-style links." = "Prompt visitors to take action with a group of button-style links.";
+
+/* No comment provided by engineer. */
+"Provided type is not supported." = "Provided type is not supported.";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
@@ -4965,6 +6002,12 @@
 /* Text displayed in HUD while a post is being published. */
 "Publishing..." = "正在發表...";
 
+/* No comment provided by engineer. */
+"Pullquote citation text" = "Pullquote citation text";
+
+/* No comment provided by engineer. */
+"Pullquote text" = "Pullquote text";
+
 /* Title of screen showing site purchases */
 "Purchases" = "購買項目";
 
@@ -4980,11 +6023,29 @@
 /* This is the string we display when asking the user to approve push notifications in the settings app after previously having denied them. */
 "Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on." = "已於「iOS 設定」中關閉推播通知。切換至「允許通知」，重新開啟此功能。";
 
+/* No comment provided by engineer. */
+"Query Title" = "Query Title";
+
 /* The menu item to select during a guided tour. */
 "Quick Start" = "快速入門";
 
+/* No comment provided by engineer. */
+"Quote citation text" = "Quote citation text";
+
+/* No comment provided by engineer. */
+"Quote text" = "Quote text";
+
+/* No comment provided by engineer. */
+"RSS settings" = "RSS settings";
+
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "在 App Store 中為我們評分";
+
+/* No comment provided by engineer. */
+"Read more" = "Read more";
+
+/* No comment provided by engineer. */
+"Read more link text" = "Read more link text";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "到這裡瞭解：";
@@ -5039,6 +6100,9 @@
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "已重新連線";
 
+/* No comment provided by engineer. */
+"Redirect to current URL" = "Redirect to current URL";
+
 /* Label for link title in Referrers stat. */
 "Referrer" = "訪客連結來源";
 
@@ -5077,6 +6141,9 @@
 
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "相關文章會在你的文章下方顯示網站上的相關內容";
+
+/* No comment provided by engineer. */
+"Release Date" = "Release Date";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -5131,6 +6198,9 @@
 /* Accessibility hint for the 'Save Post' button when a post is already saved. */
 "Remove this post from my saved posts." = "從我的已儲存文章移除此文章。";
 
+/* No comment provided by engineer. */
+"Remove track" = "Remove track";
+
 /* User action to remove video. */
 "Remove video" = "移除影片";
 
@@ -5154,6 +6224,9 @@
 
 /* No comment provided by engineer. */
 "Replace file" = "取代檔案";
+
+/* No comment provided by engineer. */
+"Replace image" = "Replace image";
 
 /* No comment provided by engineer. */
 "Replace image or video" = "替換圖片或視訊";
@@ -5228,6 +6301,9 @@
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "重新調整大小與裁切";
 
+/* No comment provided by engineer. */
+"Resize for smaller devices" = "Resize for smaller devices";
+
 /* The largest resolution allowed for uploading */
 "Resolution" = "解析度";
 
@@ -5251,6 +6327,9 @@
 
 /* Label that describes the restore site action */
 "Restore site" = "還原網站";
+
+/* No comment provided by engineer. */
+"Restore template to theme default" = "Restore template to theme default";
 
 /* Button title for restore site action */
 "Restore to this point" = "還原至此時間點";
@@ -5304,6 +6383,9 @@
 /* No comment provided by engineer. */
 "Reusable blocks aren't editable on WordPress for iOS" = "可重複使用區塊無法在 iOS 版 WordPress 中編輯";
 
+/* No comment provided by engineer. */
+"Reverse list numbering" = "Reverse list numbering";
+
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "回復待確認的變更";
 
@@ -5326,6 +6408,12 @@
    User Roles Title
    User's Role */
 "Role" = "角色";
+
+/* No comment provided by engineer. */
+"Rotate" = "Rotate";
+
+/* No comment provided by engineer. */
+"Row count" = "Row count";
 
 /* One Time Code has been sent via SMS */
 "SMS Sent" = "簡訊已傳送";
@@ -5560,6 +6648,9 @@
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "選取段落風格";
 
+/* No comment provided by engineer. */
+"Select poster image" = "Select poster image";
+
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "選取 %@ 以新增社交媒體帳號";
 
@@ -5629,6 +6720,9 @@
 /* Jetpack Monitor Settings: Send push notifications */
 "Send push notifications" = "傳送推播通知";
 
+/* No comment provided by engineer. */
+"Separate your content into a multi-page experience." = "Separate your content into a multi-page experience.";
+
 /* Title for the Serve images from our servers setting */
 "Serve images from our servers" = "由我們的伺服器提供圖片";
 
@@ -5650,6 +6744,9 @@
 
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "設定為文章頁面";
+
+/* No comment provided by engineer. */
+"Set media and words side-by-side for a richer layout." = "Set media and words side-by-side for a richer layout.";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "設定";
@@ -5721,6 +6818,12 @@
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "分享錯誤";
 
+/* No comment provided by engineer. */
+"Shortcode" = "Shortcode";
+
+/* No comment provided by engineer. */
+"Shortcode text" = "Shortcode text";
+
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "顯示頁首";
 
@@ -5739,12 +6842,24 @@
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "顯示相關文章";
 
+/* No comment provided by engineer. */
+"Show download button" = "Show download button";
+
+/* No comment provided by engineer. */
+"Show inline embed" = "Show inline embed";
+
+/* No comment provided by engineer. */
+"Show login & logout links." = "Show login & logout links.";
+
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "顯示密碼";
 
 /* No comment provided by engineer. */
 "Show post content" = "顯示文章內容";
+
+/* No comment provided by engineer. */
+"Show post counts" = "Show post counts";
 
 /* translators: Checkbox toggle label */
 "Show section" = "顯示區段";
@@ -5757,6 +6872,9 @@
 
 /* Voiceover description for the post list filter which shows posts for just the current user on a site. */
 "Showing just my posts" = "只顯示我的文章";
+
+/* No comment provided by engineer. */
+"Showing large initial letter." = "Showing large initial letter.";
 
 /* Label on Post Stats view indicating which post the stats are for. */
 "Showing stats for:" = "顯示以下統計資料：";
@@ -5800,6 +6918,9 @@
 /* Accessibility hint for the site name and URL button on Reader's Post Details. */
 "Shows the site's posts." = "顯示網站的文章。";
 
+/* No comment provided by engineer. */
+"Sidebars" = "Sidebars";
+
 /* View title during the sign up process. */
 "Sign Up" = "註冊";
 
@@ -5832,6 +6953,9 @@
 
 /* Title for the Language Picker View */
 "Site Language" = "網站語言";
+
+/* No comment provided by engineer. */
+"Site Logo" = "網站標誌";
 
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
@@ -5878,11 +7002,21 @@
 /* Create new Site Page button title */
 "Site page" = "網頁";
 
+/* Prologue title label, the 
+ force splits it into 2 lines. */
+"Site security and performance\nfrom your pocket" = "Site security and performance\nfrom your pocket";
+
+/* No comment provided by engineer. */
+"Site tagline text" = "Site tagline text";
+
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "網站時區 (UTC%1$@%2$d%3$@)";
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "已成功變更網站標題";
+
+/* No comment provided by engineer. */
+"Site title text" = "Site title text";
 
 /* Sites Filter Tab Title
    Title of a Reader tab showing Sites matching a user's search query */
@@ -5893,6 +7027,9 @@
 
 /* A suggestion of topics the user might */
 "Sites to follow" = "值得關注的網站";
+
+/* No comment provided by engineer. */
+"Six." = "Six.";
 
 /* Image size option title. */
 "Size" = "大小";
@@ -5919,6 +7056,12 @@
 
 /* Follower Totals label for social media followers */
 "Social" = "社交";
+
+/* No comment provided by engineer. */
+"Social Icon" = "Social Icon";
+
+/* No comment provided by engineer. */
+"Solid color" = "Solid color";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "部分媒體上傳失敗。此動作將移除文章中所有上傳失敗的媒體。\n是否仍要儲存？";
@@ -5978,6 +7121,9 @@
 "Sorry, that username is unavailable." = "很抱歉，該使用者名稱無法使用。";
 
 /* No comment provided by engineer. */
+"Sorry, this content could not be embedded." = "Sorry, this content could not be embedded.";
+
+/* No comment provided by engineer. */
 "Sorry, usernames can only contain lowercase letters (a-z) and numbers." = "很抱歉，使用者名稱只能包含小寫字母 (a-z) 和數字。";
 
 /* No comment provided by engineer. */
@@ -6005,14 +7151,23 @@
    Settings: Comments Sort Order */
 "Sort By" = "排序依據";
 
+/* No comment provided by engineer. */
+"Sorting and filtering" = "Sorting and filtering";
+
 /* Opens the Github Repository Web */
 "Source Code" = "原始碼";
+
+/* No comment provided by engineer. */
+"Source language" = "Source language";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "South" = "南";
 
 /* Label for showing the available disk space quota available for media */
 "Space used" = "已使用的空間";
+
+/* No comment provided by engineer. */
+"Spacer settings" = "Spacer settings";
 
 /* Marks comment as spam.
    Spam
@@ -6026,6 +7181,9 @@
    Title for the Speed up your site Settings Screen */
 "Speed up your site" = "加快網站的速度";
 
+/* No comment provided by engineer. */
+"Square" = "Square";
+
 /* Standard post format label */
 "Standard" = "標準";
 
@@ -6035,6 +7193,12 @@
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
 "Start Over" = "重新開始";
+
+/* No comment provided by engineer. */
+"Start value" = "Start value";
+
+/* No comment provided by engineer. */
+"Start with the building block of all narrative." = "Start with the building block of all narrative.";
 
 /* No comment provided by engineer. */
 "Start writing…" = "開始撰寫內容…";
@@ -6094,6 +7258,9 @@
 /* Discoverability title for strikethrough formatting keyboard shortcut. */
 "Strikethrough" = "刪除線";
 
+/* No comment provided by engineer. */
+"Stripes" = "Stripes";
+
 /* Status for Media object that is only has the mediaID locally. */
 "Stub" = "Stub";
 
@@ -6102,6 +7269,9 @@
 
 /* Text displayed in HUD while a post is being submitted for review. */
 "Submitting for Review..." = "正在送交審查...";
+
+/* No comment provided by engineer. */
+"Subtitles" = "Subtitles";
 
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "已成功清除焦點索引";
@@ -6132,6 +7302,9 @@
    Theme Support action title
    View title for Support page. */
 "Support" = "支援";
+
+/* translators: example text. */
+"Suspendisse commodo neque lacus, a dictum orci interdum et." = "Suspendisse commodo neque lacus, a dictum orci interdum et.";
 
 /* Button used to switch site */
 "Switch Site" = "切換網站";
@@ -6176,7 +7349,16 @@
 "System default" = "系統預設";
 
 /* No comment provided by engineer. */
+"Table" = "Table";
+
+/* No comment provided by engineer. */
+"Table caption text" = "Table caption text";
+
+/* No comment provided by engineer. */
 "Table of Contents" = "目錄";
+
+/* No comment provided by engineer. */
+"Table settings" = "Table settings";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "顯示 %@ 的表格";
@@ -6190,6 +7372,12 @@
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
 "Tag" = "標籤";
+
+/* No comment provided by engineer. */
+"Tag Cloud settings" = "Tag Cloud settings";
+
+/* No comment provided by engineer. */
+"Tag Link" = "標籤連結";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "標籤已經存在";
@@ -6287,6 +7475,24 @@
 /* Create site, step 1. Select type of site. Title */
 "Tell us what kind of site you'd like to make" = "告訴我們你希望建立什麼類型的網站";
 
+/* No comment provided by engineer. */
+"Template Part" = "Template Part";
+
+/* translators: %s: template part title. */
+"Template Part \"%s\" inserted." = "Template Part \"%s\" inserted.";
+
+/* No comment provided by engineer. */
+"Template Parts" = "Template Parts";
+
+/* No comment provided by engineer. */
+"Template part created." = "Template part created.";
+
+/* No comment provided by engineer. */
+"Templates" = "Templates";
+
+/* No comment provided by engineer. */
+"Term description." = "Term description.";
+
 /* The underlined title sentence */
 "Terms and Conditions" = "條款與條件";
 
@@ -6299,9 +7505,18 @@
 /* Title of a button style */
 "Text Only" = "只顯示文字";
 
+/* No comment provided by engineer. */
+"Text link settings" = "Text link settings";
+
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
 "Text me a code instead" = "請改用簡訊傳送驗證碼給我";
+
+/* No comment provided by engineer. */
+"Text settings" = "Text settings";
+
+/* No comment provided by engineer. */
+"Text tracks" = "Text tracks";
 
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "感謝你選擇 %2$@ 設計的 %1$@";
@@ -6357,11 +7572,23 @@
 /* Text for related post cell preview */
 "The WordPress for Android App Gets a Big Facelift" = "Android 專用的 WordPress 應用程式已全面改款";
 
+/* Example post title used in the login prologue screens. This is a post about football fans. */
+"The World's Best Fans" = "The World's Best Fans";
+
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "應用程式無法辨識伺服器回應。請檢查你網站的設定。";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "此伺服器的憑證無效。你可能正連線至冒充為「%@」的伺服器，而這可能洩漏你的機密資料。\n\n是否仍然要信任憑證？";
+
+/* translators: %s: poster image URL. */
+"The current poster image url is %s" = "The current poster image url is %s";
+
+/* No comment provided by engineer. */
+"The excerpt is hidden." = "The excerpt is hidden.";
+
+/* No comment provided by engineer. */
+"The excerpt is visible." = "The excerpt is visible.";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "檔案 %1$@ 包含惡意程式碼模式";
@@ -6451,6 +7678,9 @@
 /* Message shown when a video failed to load while trying to add it to the Media library. */
 "The video could not be added to the Media Library." = "無法將影片新增到媒體庫。";
 
+/* No comment provided by engineer. */
+"The wren<br>Earns his living<br>Noiselessly." = "The wren<br>Earns his living<br>Noiselessly.";
+
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "已啟用佈景主題";
 
@@ -6491,6 +7721,9 @@
 
 /* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
 "There is an issue connecting to %@. Reconnect to continue publicizing." = "連線至 %@ 時發生問題。重新連線，以繼續使用宣傳功能。";
+
+/* No comment provided by engineer. */
+"There is no poster image currently selected" = "There is no poster image currently selected";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
    No comment (test)
@@ -6589,6 +7822,12 @@
 /* Explaining to the user why the app needs access to the device media library. */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "此應用程式需要權限才能存取你的裝置媒體庫，以便在你的文章中新增相片和\/或影片。若你希望允許此應用程式功能，請變更隱私設定。";
 
+/* No comment provided by engineer. */
+"This block is deprecated. Please use the Columns block instead." = "This block is deprecated. Please use the Columns block instead.";
+
+/* No comment provided by engineer. */
+"This column count exceeds the recommended amount and may cause visual breakage." = "This column count exceeds the recommended amount and may cause visual breakage.";
+
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
 "This domain is unavailable" = "此網域不可使用";
 
@@ -6657,6 +7896,15 @@
 /* Message displayed when a threat is ignored successfully. */
 "Threat ignored." = "已忽略威脅。";
 
+/* No comment provided by engineer. */
+"Three columns; equal split" = "Three columns; equal split";
+
+/* No comment provided by engineer. */
+"Three columns; wide center column" = "Three columns; wide center column";
+
+/* No comment provided by engineer. */
+"Three." = "Three.";
+
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "縮圖";
 
@@ -6686,8 +7934,20 @@
    Title of the new Category being created. */
 "Title" = "標題";
 
+/* No comment provided by engineer. */
+"Title & Date" = "Title & Date";
+
+/* No comment provided by engineer. */
+"Title & Excerpt" = "Title & Excerpt";
+
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "分類標題是必填的。";
+
+/* No comment provided by engineer. */
+"Title of track" = "Title of track";
+
+/* No comment provided by engineer. */
+"Title, Date, & Excerpt" = "Title, Date, & Excerpt";
 
 /* NSPhotoLibraryAddUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library.
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
@@ -6720,6 +7980,9 @@
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "若要繼續使用這個 Google 帳號，請先使用你的 WordPress.com 密碼登入。系統只會向你要求一次。";
 
+/* No comment provided by engineer. */
+"To show a comment, input the comment ID." = "To show a comment, input the comment ID.";
+
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "拍些相片或影片供文章使用。";
 
@@ -6736,6 +7999,12 @@
 
 /* Discoverability title for HTML keyboard shortcut. */
 "Toggle HTML Source " = "切換 HTML 原始碼";
+
+/* No comment provided by engineer. */
+"Toggle navigation" = "Toggle navigation";
+
+/* No comment provided by engineer. */
+"Toggle to show a large initial letter." = "Toggle to show a large initial letter.";
 
 /* Accessibility Identifier for the Aztec Ordered List Style. */
 "Toggles the ordered list style" = "切換至排序清單樣式";
@@ -6782,14 +8051,11 @@
 /* 'This Year' label for total number of words. */
 "Total Words" = "總字數";
 
+/* No comment provided by engineer. */
+"Tracks can be subtitles, captions, chapters, or descriptions. They help make your content more accessible to a wider range of users." = "Tracks can be subtitles, captions, chapters, or descriptions. They help make your content more accessible to a wider range of users.";
+
 /* Title for the traffic section in site settings screen */
 "Traffic" = "流量";
-
-/* translators: %s: block title e.g: \"Paragraph\". */
-"Transform %s to" = "將 %s 轉換為";
-
-/* No comment provided by engineer. */
-"Transform block…" = "轉換區塊…";
 
 /* No comment provided by engineer. */
 "Translate" = "翻譯";
@@ -6866,6 +8132,18 @@
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter 使用者名稱";
+
+/* No comment provided by engineer. */
+"Two columns; equal split" = "Two columns; equal split";
+
+/* No comment provided by engineer. */
+"Two columns; one-third, two-thirds split" = "Two columns; one-third, two-thirds split";
+
+/* No comment provided by engineer. */
+"Two columns; two-thirds, one-third split" = "Two columns; two-thirds, one-third split";
+
+/* No comment provided by engineer. */
+"Two." = "Two.";
 
 /* Placeholder text for domain search during site creation. */
 "Type a keyword for more ideas" = "輸入一個關鍵字以獲得更多構想";
@@ -7094,11 +8372,17 @@
 /* Displayed when a site has no name */
 "Unnamed Site" = "未命名的網站";
 
+/* No comment provided by engineer. */
+"Unordered" = "Unordered";
+
 /* Accessibility label for unordered list button on formatting toolbar. */
 "Unordered List" = "未排序清單";
 
 /* Filters Unread Notifications */
 "Unread" = "未讀";
+
+/* Title of unreplied Comments filter. */
+"Unreplied" = "Unreplied";
 
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "未儲存的變更";
@@ -7111,6 +8395,9 @@
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "無標題";
+
+/* No comment provided by engineer. */
+"Untitled Template Part" = "Untitled Template Part";
 
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "可儲存最多七天的記錄。";
@@ -7162,8 +8449,14 @@
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "上傳媒體";
 
+/* No comment provided by engineer. */
+"Upload a file or pick one from your media library." = "Upload a file or pick one from your media library.";
+
 /* Title of a Quick Start Tour */
 "Upload a site icon" = "上傳網站圖示";
+
+/* No comment provided by engineer. */
+"Upload an image, or pick one from your media library, to be your site logo" = "上傳或從媒體庫選擇圖片設為你的網站標誌";
 
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
@@ -7222,14 +8515,23 @@
 /* Label for cell that sets the location of a post to the current location */
 "Use Current Location" = "使用目前的位置";
 
+/* No comment provided by engineer. */
+"Use URL" = "Use URL";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Use block editor";
+
+/* No comment provided by engineer. */
+"Use the classic WordPress editor." = "Use the classic WordPress editor.";
 
 /* Footer text for Invite Links section of the Invite People screen. */
 "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "你可以用這個連結一口氣加入所有團隊成員，無須逐一邀請。 凡是造訪這個 URL 的人，不管是以何種方式取得連結，都可以申請加入貴機構，因此在分享網址前，請確認對方值得信任。";
 
 /* No comment provided by engineer. */
 "Use this site" = "使用此網站";
+
+/* No comment provided by engineer. */
+"Useful for displaying a graphic mark, design, or symbol to represent the site. Once a site logo is set, it can be reused in different places and templates. It should not be confused with the site icon, which is the small image used in the dashboard, brows" = "Useful for displaying a graphic mark, design, or symbol to represent the site. Once a site logo is set, it can be reused in different places and templates. It should not be confused with the site icon, which is the small image used in the dashboard, brows";
 
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
@@ -7267,6 +8569,9 @@
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "驗證你的電子郵件地址 - 已將說明傳送至 %@";
 
+/* No comment provided by engineer. */
+"Verse text" = "Verse text";
+
 /* Displays the version of the App
    Label in Support view displaying the app version. */
 "Version" = "版本";
@@ -7284,8 +8589,14 @@
 /* Message to show when a new plugin version is available */
 "Version %@ is available" = "版本 %@ 可供使用";
 
+/* No comment provided by engineer. */
+"Vertical" = "Vertical";
+
 /* Message shown if a video preview image is unavailable while the video is being uploaded. */
 "Video Preview Unavailable" = "無法預覽影片";
+
+/* No comment provided by engineer. */
+"Video caption text" = "Video caption text";
 
 /* translators: accessibility text. %s: video caption. */
 "Video caption. %s" = "視訊標題。%s";
@@ -7295,6 +8606,9 @@
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "視訊匯出已取消。";
+
+/* No comment provided by engineer. */
+"Video settings" = "Video settings";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "影片 (%@ 建立)";
@@ -7342,6 +8656,9 @@
 
 /* Blog Viewers */
 "Viewers" = "讀者";
+
+/* No comment provided by engineer. */
+"Viewport height (vh)" = "Viewport height (vh)";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Views' label
@@ -7400,6 +8717,9 @@
 
 /* Title for a threat that includes the file name of the theme and the affected version */
 "Vulnerable Theme %1$@ (version %2$@)" = "有漏洞的佈景主題 %1$@ (版本 %2$@)";
+
+/* translators: Sample content for the Verse block. Can be replaced with a more locale-adequate work. */
+"WHAT was he doing, the great god Pan,\n	Down in the reeds by the river?\nSpreading ruin and scattering ban,\nSplashing and paddling with hoofs of a goat,\nAnd breaking the golden lilies afloat\n    With the dragon-fly on the river." = "WHAT was he doing, the great god Pan,\n	Down in the reeds by the river?\nSpreading ruin and scattering ban,\nSplashing and paddling with hoofs of a goat,\nAnd breaking the golden lilies afloat\n    With the dragon-fly on the river.";
 
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "WP 管理員";
@@ -7668,6 +8988,9 @@
 /* A message title */
 "Welcome to the Reader" = "歡迎使用讀取器";
 
+/* No comment provided by engineer. */
+"Welcome to the wonderful world of blocks…" = "Welcome to the wonderful world of blocks…";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "歡迎使用全球最受歡迎的網站建置工具。";
 
@@ -7757,8 +9080,14 @@
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "糟糕，此雙重驗證碼無效。請再次檢查你的驗證碼，然後再試一次！";
 
+/* No comment provided by engineer. */
+"Wide Line" = "Wide Line";
+
 /* Nav bar button title to set the site used for Stats widgets. */
 "Widgets" = "小工具";
+
+/* No comment provided by engineer. */
+"Width in pixels" = "Width in pixels";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "不會被公開。";
@@ -7766,6 +9095,9 @@
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
 "With this powerful editor you can post on the go." = "這個功能強大的編輯器讓你隨時隨地都能發佈文章。";
+
+/* translators: Caption accompanying a video of the wood thrush singing, which serves as an example for the Video block. */
+"Wood thrush singing in Central Park, NYC." = "Wood thrush singing in Central Park, NYC.";
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "WordPress 應用程式設定";
@@ -7867,6 +9199,33 @@
 
 /* Placeholder text for inline compose view */
 "Write a reply…" = "撰寫回應…";
+
+/* No comment provided by engineer. */
+"Write code…" = "Write code…";
+
+/* No comment provided by engineer. */
+"Write file name…" = "Write file name…";
+
+/* No comment provided by engineer. */
+"Write gallery caption…" = "Write gallery caption…";
+
+/* No comment provided by engineer. */
+"Write preformatted text…" = "Write preformatted text…";
+
+/* No comment provided by engineer. */
+"Write shortcode here…" = "Write shortcode here…";
+
+/* No comment provided by engineer. */
+"Write site tagline…" = "Write site tagline…";
+
+/* No comment provided by engineer. */
+"Write site title…" = "Write site title…";
+
+/* No comment provided by engineer. */
+"Write title…" = "Write title…";
+
+/* No comment provided by engineer. */
+"Write verse…" = "Write verse…";
 
 /* Title for the writing section in site settings screen */
 "Writing" = "撰寫";
@@ -8074,6 +9433,15 @@
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Your site address appears in the bar at the top of the screen when you visit your site in Safari.";
 
+/* translators: %s: block name */
+"Your site doesn’t include support for the \"%s\" block. You can leave this block intact or remove it entirely." = "Your site doesn’t include support for the \"%s\" block. You can leave this block intact or remove it entirely.";
+
+/* translators: %s: block name */
+"Your site doesn’t include support for the \"%s\" block. You can leave this block intact, convert its content to a Custom HTML block, or remove it entirely." = "Your site doesn’t include support for the \"%s\" block. You can leave this block intact, convert its content to a Custom HTML block, or remove it entirely.";
+
+/* No comment provided by engineer. */
+"Your site doesn’t include support for this block." = "Your site doesn’t include support for this block.";
+
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "你的網站已建立！";
 
@@ -8119,6 +9487,9 @@
 /* Popup content about why this post is being opened in block editor */
 "You’re now using the block editor for new posts — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "你正在使用區塊編輯器編輯新文章，太棒了！若你想改用傳統編輯器，請前往「我的網站」>「網站設定」。";
 
+/* No comment provided by engineer. */
+"Zoom" = "Zoom";
+
 /* Comment Attachment Label */
 "[COMMENT]" = "[留言]";
 
@@ -8134,14 +9505,44 @@
 /* Age between dates equaling one hour. */
 "an hour" = "一小時";
 
+/* No comment provided by engineer. */
+"archive" = "archive";
+
+/* No comment provided by engineer. */
+"atom" = "atom";
+
 /* Label displayed on audio media items. */
 "audio" = "音訊";
+
+/* No comment provided by engineer. */
+"blockquote" = "blockquote";
+
+/* No comment provided by engineer. */
+"blog" = "blog";
+
+/* No comment provided by engineer. */
+"bullet list" = "bullet list";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "作者：%@";
 
+/* No comment provided by engineer. */
+"cite" = "cite";
+
 /* The menu item to select during a guided tour. */
 "connections" = "連線";
+
+/* No comment provided by engineer. */
+"container" = "container";
+
+/* No comment provided by engineer. */
+"description" = "description";
+
+/* No comment provided by engineer. */
+"divider" = "divider";
+
+/* No comment provided by engineer. */
+"document" = "document";
 
 /* No comment provided by engineer. */
 "document outline" = "文件大綱";
@@ -8152,25 +9553,55 @@
 /* No comment provided by engineer. */
 "double-tap to change unit" = "點兩下即可變更單位";
 
+/* No comment provided by engineer. */
+"download" = "download";
+
+/* No comment provided by engineer. */
+"ebook" = "ebook";
+
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "例如：1122334455";
 
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "例如：44";
 
+/* No comment provided by engineer. */
+"embed" = "embed";
+
 /* Placeholder for the site url textfield.
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
 
+/* No comment provided by engineer. */
+"feed" = "feed";
+
+/* No comment provided by engineer. */
+"find" = "find";
+
 /* Noun. Describes a site's follower. */
 "follower" = "關注者";
+
+/* No comment provided by engineer. */
+"form" = "form";
+
+/* No comment provided by engineer. */
+"horizontal-line" = "horizontal-line";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (網址)";
 
+/* No comment provided by engineer. */
+"https:\/\/wordpress.org\/support\/article\/embeds\/" = "https:\/\/wordpress.org\/support\/article\/embeds\/";
+
 /* Label displayed on image media items. */
 "image" = "圖片";
+
+/* translators: 1: the order number of the image. 2: the total number of images. */
+"image %1$d of %2$d in gallery" = "image %1$d of %2$d in gallery";
+
+/* No comment provided by engineer. */
+"images" = "images";
 
 /* Text for related post cell preview */
 "in \"Apps\"" = "在「應用程式」中";
@@ -8184,23 +9615,119 @@
 /* Later today */
 "later today" = "今日稍晚";
 
+/* No comment provided by engineer. */
+"link" = "鍊結";
+
+/* No comment provided by engineer. */
+"links" = "links";
+
+/* No comment provided by engineer. */
+"login" = "login";
+
+/* No comment provided by engineer. */
+"logout" = "logout";
+
+/* No comment provided by engineer. */
+"menu" = "menu";
+
+/* No comment provided by engineer. */
+"movie" = "movie";
+
+/* No comment provided by engineer. */
+"music" = "music";
+
+/* No comment provided by engineer. */
+"navigation" = "navigation";
+
+/* No comment provided by engineer. */
+"next page" = "next page";
+
+/* No comment provided by engineer. */
+"numbered list" = "numbered list";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "的";
+
+/* No comment provided by engineer. */
+"ordered list" = "有序列表";
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "其它";
 
 /* No comment provided by engineer. */
+"pagination" = "pagination";
+
+/* No comment provided by engineer. */
 "password" = "密碼";
+
+/* No comment provided by engineer. */
+"pdf" = "pdf";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "電話號碼";
 
 /* No comment provided by engineer. */
+"photos" = "photos";
+
+/* No comment provided by engineer. */
+"picture" = "picture";
+
+/* No comment provided by engineer. */
+"podcast" = "podcast";
+
+/* No comment provided by engineer. */
+"poem" = "poem";
+
+/* No comment provided by engineer. */
+"poetry" = "poetry";
+
+/* No comment provided by engineer. */
+"post" = "文章";
+
+/* No comment provided by engineer. */
+"posts" = "posts";
+
+/* No comment provided by engineer. */
+"read more" = "read more";
+
+/* No comment provided by engineer. */
+"recent comments" = "recent comments";
+
+/* No comment provided by engineer. */
+"recent posts" = "recent posts";
+
+/* No comment provided by engineer. */
+"recording" = "recording";
+
+/* No comment provided by engineer. */
+"row" = "row";
+
+/* No comment provided by engineer. */
+"section" = "section";
+
+/* No comment provided by engineer. */
+"social" = "social";
+
+/* No comment provided by engineer. */
+"sound" = "sound";
+
+/* No comment provided by engineer. */
+"subtitle" = "subtitle";
+
+/* No comment provided by engineer. */
 "summary" = "摘要";
+
+/* No comment provided by engineer. */
+"survey" = "survey";
+
+/* No comment provided by engineer. */
+"text" = "text";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "這些項目將會刪除：";
+
+/* No comment provided by engineer. */
+"title" = "title";
 
 /* Today */
 "today" = "今天";
@@ -8241,6 +9768,9 @@
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, 網站, 網站, 網誌, 網誌";
 
+/* No comment provided by engineer. */
+"wrapper" = "wrapper";
+
 /* Details about recently acquired domain on domain credit redemption success screen */
 "your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "正在設定你的新網域 %@。你的網站簡直樂不可支！";
 
@@ -8249,6 +9779,9 @@
 
 /* About View's Footer Text. The variable is the current year */
 "© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
+
+/* No comment provided by engineer. */
+"— Kobayashi Issa (一茶)" = "— Kobayashi Issa (一茶)";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "•網域";

@@ -49,15 +49,15 @@ extension WordPressAuthenticationManager {
         // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
         let enableSignInWithApple = AppConfiguration.allowSignUp && !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
 
-        return WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client(),
-                                                   wpcomSecret: ApiCredentials.secret(),
+        return WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client,
+                                                   wpcomSecret: ApiCredentials.secret,
                                                    wpcomScheme: WPComScheme,
                                                    wpcomTermsOfServiceURL: WPAutomatticTermsOfServiceURL,
                                                    wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseUrl,
                                                    wpcomAPIBaseURL: Environment.current.wordPressComApiBase,
-                                                   googleLoginClientId: ApiCredentials.googleLoginClientId(),
-                                                   googleLoginServerClientId: ApiCredentials.googleLoginServerClientId(),
-                                                   googleLoginScheme: ApiCredentials.googleLoginSchemeId(),
+                                                   googleLoginClientId: ApiCredentials.googleLoginClientId,
+                                                   googleLoginServerClientId: ApiCredentials.googleLoginServerClientId,
+                                                   googleLoginScheme: ApiCredentials.googleLoginSchemeId,
                                                    userAgent: WPUserAgent.wordPress(),
                                                    showLoginOptions: true,
                                                    enableSignUp: AppConfiguration.allowSignUp,
@@ -315,7 +315,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) {
         if let authenticationHandler = authenticationHandler,
-           authenticationHandler.presentLoginEpilogue(in: navigationController, for: credentials, onDismiss: onDismiss) {
+           authenticationHandler.presentLoginEpilogue(in: navigationController, for: credentials, windowManager: windowManager, onDismiss: onDismiss) {
             return
         }
 

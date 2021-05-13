@@ -1,3 +1,0 @@
-Deze versie introduceert een nieuw blok - Jetpack contact info. Het is perfect om een mooi opgemaakt adres op je site weer te geven. We hebben ook een aantal nieuwe app pictogrammen geïntroduceerd die je kunt gebruiken om aan te passen hoe de app eruitziet op je startscherm.
-
-We hebben een paar handige aanpassingen om je over te vertellen! We hebben de site wisselaar uit de editor verwijderd om het plaatsen te vereenvoudigen, een bug opgelost waarbij de namen van auteurs niet zichtbaar waren, de VoiceOver ondersteuning voor het kolommenblok verbeterd en het gemakkelijker gemaakt om alt-tekst aan een afbeeldingsblok toe te voegen.
