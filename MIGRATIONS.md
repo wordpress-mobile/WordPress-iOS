@@ -3,12 +3,18 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 124
+## WordPress 125
 
-@chipsnyder 2021-05-06
+@chipsnyder 2021-05-14
 
 - `BlockEditorSettings`: added the attribute
     - `rawGlobalStylesBaseStyles` (optional, no default, `String`)
+
+## WordPress 124
+
+@scoutharris 2021-05-07
+
+- `LikeUser`: added  `dateFetched` attribute.
 
 ## WordPress 123
 

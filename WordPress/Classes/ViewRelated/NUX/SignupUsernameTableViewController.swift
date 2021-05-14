@@ -197,8 +197,13 @@ extension SignupUsernameTableViewController {
 
         cell.textLabel?.text = username
         cell.textLabel?.textColor = .neutral(.shade70)
+
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.lineBreakMode = .byCharWrapping
+
         cell.indentationWidth = SuggestionStyles.indentationWidth
         cell.indentationLevel = SuggestionStyles.indentationLevel
+
         if checked {
             cell.accessoryType = .checkmark
         }

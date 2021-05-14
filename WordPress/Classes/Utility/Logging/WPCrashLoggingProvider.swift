@@ -35,7 +35,7 @@ struct WPLoggingStack {
 }
 
 struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
-    let sentryDSN: String = ApiCredentials.sentryDSN()
+    let sentryDSN: String = ApiCredentials.sentryDSN
 
     var userHasOptedOut: Bool {
         return UserSettings.userHasOptedOutOfCrashLogging

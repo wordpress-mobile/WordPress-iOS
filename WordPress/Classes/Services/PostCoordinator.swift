@@ -141,6 +141,11 @@ class PostCoordinator: NSObject {
             trackObserver(receipt: uuid, for: post)
 
             return
+        } else {
+            // Ensure that all media references are up to date
+            post.media.forEach { media in
+                self.updateReferences(to: media, in: post)
+            }
         }
 
         completion(.success(post))
@@ -241,30 +246,10 @@ class PostCoordinator: NSObject {
         })
     }
 
-    func upload(assets: [ExportableAsset], to post: AbstractPost, completion: @escaping (Result<AbstractPost, SavingError>) -> Void) -> [Media?] {
-        guard mediaCoordinator.uploadMedia(for: post) else {
-            change(post: post, status: .failed) { savedPost in
-                completion(.failure(SavingError.mediaFailure(savedPost)))
-            }
-            return []
-        }
-
-        change(post: post, status: .pushing)
-
-        change(post: post, status: .pushingMedia)
-
-        // Only observe if we're not already
-        guard !isObserving(post: post) else {
-            return []
-        }
-
-        let uuid = observeMedia(for: post, completion: completion)
-        trackObserver(receipt: uuid, for: post)
-
+    func add(assets: [ExportableAsset], to post: AbstractPost) -> [Media?] {
         let media = assets.map { asset in
             return mediaCoordinator.addMedia(from: asset, to: post)
         }
-
         return media
     }
 

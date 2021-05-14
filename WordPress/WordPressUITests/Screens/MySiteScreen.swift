@@ -5,6 +5,9 @@ private struct ElementStringIDs {
     static let navBarTitle = "My Site"
     static let blogTable = "Blog Details Table"
     static let removeSiteButton = "BlogDetailsRemoveSiteCell"
+    static let activityLogButton = "Activity Log Row"
+    static let jetpackScanButton = "Scan Row"
+    static let jetpackBackupButton = "Backup Row"
     static let postsButton = "Blog Post Row"
     static let mediaButton = "Media Row"
     static let statsButton = "Stats Row"
@@ -20,6 +23,9 @@ class MySiteScreen: BaseScreen {
     let removeSiteButton: XCUIElement
     let removeSiteSheet: XCUIElement
     let removeSiteAlert: XCUIElement
+    let activityLogButton: XCUIElement
+    let jetpackScanButton: XCUIElement
+    let jetpackBackupButton: XCUIElement
     let postsButton: XCUIElement
     let mediaButton: XCUIElement
     let statsButton: XCUIElement
@@ -41,6 +47,9 @@ class MySiteScreen: BaseScreen {
         removeSiteButton = app.cells[ElementStringIDs.removeSiteButton]
         removeSiteSheet = app.sheets.buttons.element(boundBy: 0)
         removeSiteAlert = app.alerts.buttons.element(boundBy: 1)
+        activityLogButton = app.cells[ElementStringIDs.activityLogButton]
+        jetpackScanButton = app.cells[ElementStringIDs.jetpackScanButton]
+        jetpackBackupButton = app.cells[ElementStringIDs.jetpackBackupButton]
         postsButton = app.cells[ElementStringIDs.postsButton]
         mediaButton = app.cells[ElementStringIDs.mediaButton]
         statsButton = app.cells[ElementStringIDs.statsButton]
@@ -49,7 +58,7 @@ class MySiteScreen: BaseScreen {
         readerButton = app.buttons[ElementStringIDs.ReaderButton]
         switchSiteButton = app.buttons[ElementStringIDs.switchSiteButton]
 
-        super.init(element: XCUIApplication().navigationBars[ElementStringIDs.navBarTitle])
+        super.init(element: switchSiteButton)
     }
 
     func showSiteSwitcher() -> MySitesScreen {
@@ -66,7 +75,28 @@ class MySiteScreen: BaseScreen {
         }
     }
 
+    func gotoActivityLog() -> ActivityLogScreen {
+        activityLogButton.tap()
+        return ActivityLogScreen()
+    }
+
+    func gotoJetpackScan() -> JetpackScanScreen {
+        jetpackScanButton.tap()
+        return JetpackScanScreen()
+    }
+
+    func gotoJetpackBackup() -> JetpackBackupScreen {
+        jetpackBackupButton.tap()
+        return JetpackBackupScreen()
+    }
+
     func gotoPostsScreen() -> PostsScreen {
+
+        // A hack for iPad, because sometimes tapping "posts" doesn't load it the first time
+        if isIpad {
+            mediaButton.tap()
+        }
+
         postsButton.tap()
         return PostsScreen()
     }

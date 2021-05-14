@@ -167,6 +167,9 @@ import Foundation
     case userProfileSheetShown
     case userProfileSheetSiteShown
 
+    // Blog preview by URL (that is, in a WebView)
+    case blogUrlPreviewed
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -457,6 +460,10 @@ import Foundation
             return "user_profile_sheet_shown"
         case .userProfileSheetSiteShown:
             return "user_profile_sheet_site_shown"
+
+        // Blog preview by URL (that is, in a WebView)
+        case .blogUrlPreviewed:
+            return "blog_url_previewed"
         }
     }
 

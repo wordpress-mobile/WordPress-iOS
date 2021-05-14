@@ -26,10 +26,15 @@ extension BlogDetailsViewController {
 
         let source = "my_site"
 
-        var actions: [ActionSheetItem] = [PostAction(handler: newPost, source: source), PageAction(handler: newPage, source: source)]
+        var actions: [ActionSheetItem] = []
+
         if shouldShowNewStory {
             actions.append(StoryAction(handler: newStory, source: source))
         }
+
+        actions.append(PostAction(handler: newPost, source: source))
+        actions.append(PageAction(handler: newPage, source: source))
+
         let coordinator = CreateButtonCoordinator(self, actions: actions, source: source)
         return coordinator
     }

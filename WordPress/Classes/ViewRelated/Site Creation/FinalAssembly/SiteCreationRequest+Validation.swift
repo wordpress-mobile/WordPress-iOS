@@ -37,8 +37,8 @@ extension SiteCreationRequest {
                   isPublic: true,
                   languageIdentifier: WordPressComLanguageDatabase().deviceLanguageIdNumber().stringValue,
                   shouldValidate: true,
-                  clientIdentifier: ApiCredentials.client(),
-                  clientSecret: ApiCredentials.secret()
+                  clientIdentifier: ApiCredentials.client,
+                  clientSecret: ApiCredentials.secret
         )
     }
 

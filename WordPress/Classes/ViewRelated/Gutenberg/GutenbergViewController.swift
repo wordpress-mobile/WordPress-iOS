@@ -708,13 +708,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 self?.dismiss(animated: true, completion: nil)
                 DDLogError("Failed to update story: \(error)")
             }
-        }, uploaded: { result in
-            switch result {
-            case .success:
-                break // Posts will be updated when the MediaFilesProcessor receives upload events
-            case .failure(let error):
-                DDLogError("Failed to upload story: \(error)")
-            }
         })
 
         storyEditor?.trackOpen()
@@ -836,6 +829,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             // is still reflecting the actual startup time of the editor
             editorSession.start(unsupportedBlocks: unsupportedBlockNames)
         }
+
+        gutenbergSettings.setHasLaunchedGutenbergEditor(true)
     }
 
     func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
@@ -1052,7 +1047,8 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .audioBlock: !isFreeWPCom, // Disable audio block until it's usable on free sites via "Insert from URL" capability
-            .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories) && !UIDevice.isPad()
+            .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories) && !UIDevice.isPad(),
+            .canViewEditorOnboarding: gutenbergSettings.canViewEditorOnboarding()
         ]
     }
 

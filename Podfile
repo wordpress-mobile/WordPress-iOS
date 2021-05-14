@@ -39,9 +39,9 @@ def aztec
 end
 
 def wordpress_ui
-    pod 'WordPressUI', '~> 1.10.0'
+    pod 'WordPressUI', '~> 1.11.0-beta'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
-    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'feature/fancy-alert-dividers'
+    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'feature/fancy-button-text-wrap'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => ''
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
 end
@@ -55,7 +55,7 @@ def wordpress_kit
 end
 
 def kanvas
-  pod 'Kanvas', '~> 1.2.6'
+  pod 'Kanvas', '~> 1.2.7'
   #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
   #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
   #pod 'Kanvas', :path => '../Kanvas-iOS'
@@ -161,7 +161,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.52.0'
+    gutenberg :tag => 'v1.53.0-alpha1'
 
 
     ## Third party libraries
@@ -358,7 +358,7 @@ end
 ## ===================
 ##
 def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.9'
+  pod 'WordPressMocks', '~> 0.0.11'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :branch => ''
   # pod 'WordPressMocks', :path => '../WordPressMocks'

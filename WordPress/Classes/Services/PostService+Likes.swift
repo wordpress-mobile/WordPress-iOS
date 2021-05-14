@@ -1,7 +1,7 @@
 extension PostService {
 
     /**
-     Fetches a list of users that liked the post with the given ID.
+     Fetches a list of users from remote that liked the post with the given IDs.
      
      @param postID  The ID of the post to fetch likes for
      @param siteID  The ID of the site that contains the post
@@ -23,11 +23,30 @@ extension PostService {
             self.createNewUsers(from: remoteLikeUsers, postID: postID, siteID: siteID) {
                 let users = self.likeUsersFor(postID: postID, siteID: siteID)
                 success(users)
+                LikeUserHelper.purgeStaleLikes()
             }
         } failure: { error in
             DDLogError(String(describing: error))
             failure(error)
         }
+    }
+
+    /**
+     Fetches a list of users from Core Data that liked the post with the given IDs.
+     
+     @param postID  The ID of the post to fetch likes for
+     @param siteID  The ID of the site that contains the post
+     */
+    func likeUsersFor(postID: NSNumber, siteID: NSNumber) -> [LikeUser] {
+        let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
+        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@", siteID, postID)
+        request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
+
+        if let users = try? managedObjectContext.fetch(request) {
+            return users
+        }
+
+        return [LikeUser]()
     }
 
 }
@@ -73,18 +92,6 @@ private extension PostService {
         } catch {
             DDLogError("Error fetching post Like Users: \(error)")
         }
-    }
-
-    func likeUsersFor(postID: NSNumber, siteID: NSNumber) -> [LikeUser] {
-        let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
-        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@", siteID, postID)
-        request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
-
-        if let users = try? managedObjectContext.fetch(request) {
-            return users
-        }
-
-        return [LikeUser]()
     }
 
 }
