@@ -13,6 +13,7 @@ class GutenbergSettings {
             return "kShowGutenbergPhase2Dialog-" + url
         }
         static let focalPointPickerTooltipShown = "kGutenbergFocalPointPickerTooltipShown"
+        static let hasLaunchedGutenbergEditor = "kHasLaunchedGutenbergEditor"
 
         private static func urlStringFrom(_ blog: Blog) -> String {
             return (blog.url ?? "")
@@ -166,6 +167,23 @@ class GutenbergSettings {
         set {
             database.set(newValue, forKey: Key.focalPointPickerTooltipShown)
         }
+    }
+
+    func canViewEditorOnboarding() -> Bool {
+        guard
+            ReachabilityUtils.isInternetReachable(),
+            let account = AccountService(managedObjectContext: context).defaultWordPressComAccount()
+        else {
+            return false
+        }
+
+        let rollout = GutenbergOnboardingRollout()
+        let hasLaunchedGutenbergEditor = database.bool(forKey: Key.hasLaunchedGutenbergEditor)
+        return rollout.isUserIdInPhaseRolloutPercentage(account.userID.intValue) && !hasLaunchedGutenbergEditor
+    }
+
+    func setHasLaunchedGutenbergEditor(_ hasLaunched: Bool) {
+        database.set(hasLaunched, forKey: Key.hasLaunchedGutenbergEditor)
     }
 
     // MARK: - Gutenberg Choice Logic
