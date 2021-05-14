@@ -34,6 +34,8 @@ class JetpackScreenshotGeneration: XCTestCase {
 
         // Get My Site screenshot
         let mySite = MySiteScreen()
+            .showSiteSwitcher()
+            .switchToSite(withTitle: "yourjetpack.blog")
             .thenTakeScreenshot(1, named: "MySite")
 
         // Get Activity Log screenshot
