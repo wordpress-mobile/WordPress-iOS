@@ -107,6 +107,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         // large title, you can remove the following line.
         //
         extendedLayoutIncludesOpaqueBars = true
+
+        // Set the nav bar
+        navigationController?.navigationBar.accessibilityIdentifier = "my-site-navigation-bar"
     }
 
     // MARK: - Account

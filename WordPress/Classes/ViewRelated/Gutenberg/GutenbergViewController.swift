@@ -829,6 +829,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             // is still reflecting the actual startup time of the editor
             editorSession.start(unsupportedBlocks: unsupportedBlockNames)
         }
+
+        gutenbergSettings.setHasLaunchedGutenbergEditor(true)
     }
 
     func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
@@ -1049,7 +1051,8 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories) && !UIDevice.isPad(),
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
-            .reusableBlock: isWPComSite
+            .reusableBlock: isWPComSite,
+            .canViewEditorOnboarding: gutenbergSettings.canViewEditorOnboarding()
         ]
     }
 
