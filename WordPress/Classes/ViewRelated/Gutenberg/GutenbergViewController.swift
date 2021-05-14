@@ -829,6 +829,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             // is still reflecting the actual startup time of the editor
             editorSession.start(unsupportedBlocks: unsupportedBlockNames)
         }
+
+        gutenbergSettings.setHasLaunchedGutenbergEditor(true)
     }
 
     func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
@@ -1045,7 +1047,8 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .audioBlock: !isFreeWPCom, // Disable audio block until it's usable on free sites via "Insert from URL" capability
-            .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories) && !UIDevice.isPad()
+            .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories) && !UIDevice.isPad(),
+            .canViewEditorOnboarding: gutenbergSettings.canViewEditorOnboarding()
         ]
     }
 
