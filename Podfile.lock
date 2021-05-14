@@ -500,7 +500,7 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (~> 1.19.4)
   - WordPressAuthenticator (~> 1.37.0)
   - WordPressKit (~> 4.33.0-beta.1)
-  - WordPressMocks (from `https://github.com/wordpress-mobile/WordPressMocks.git`, branch `fix/jetpack-me-sites-param`)
+  - WordPressMocks (~> 0.0.11)
   - WordPressShared (~> 1.16.0)
   - WordPressUI (~> 1.11.0-beta)
   - WPMediaPicker (~> 1.7.2)
@@ -552,6 +552,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressMocks
     - WordPressShared
     - WPMediaPicker
     - wpxmlrpc
@@ -650,9 +651,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.52.1
-  WordPressMocks:
-    :branch: fix/jetpack-me-sites-param
-    :git: https://github.com/wordpress-mobile/WordPressMocks.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.52.1/third-party-podspecs/Yoga.podspec.json
 
@@ -668,9 +666,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.52.1
-  WordPressMocks:
-    :commit: 59a43f05429d283622bdcbc87e13b2ffb36f4780
-    :git: https://github.com/wordpress-mobile/WordPressMocks.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -768,6 +763,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: feac132e7af6e6cd747562660def3293478b5c80
+PODFILE CHECKSUM: 433e8f90ab0ee27c8c1f4830da0a2c151a765ce6
 
 COCOAPODS: 1.10.0
