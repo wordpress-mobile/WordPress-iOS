@@ -2,7 +2,7 @@ import Foundation
 import XCTest
 
 private struct ElementStringIDs {
-    static let navBarTitle = "My Site"
+    static let navBarTitle = "my-site-navigation-bar"
     static let blogTable = "Blog Details Table"
     static let removeSiteButton = "BlogDetailsRemoveSiteCell"
     static let activityLogButton = "Activity Log Row"
