@@ -8,7 +8,8 @@ data model as well as any custom migrations.
 @chipsnyder 2021-05-14
 
 - `BlockEditorSettings`: added the attribute
-    - `rawGlobalStylesBaseStyles` (optional, no default, `String`)
+    - `rawStyles` (optional, no default, `String`)
+    - `rawFeatures` (optional, no default, `String`)
 
 ## WordPress 124
 

@@ -22,6 +22,7 @@ extension BlockEditorSettings: GutenbergEditorSettings {
 extension BlockEditorSettings {
     convenience init?(editorTheme: RemoteEditorTheme, context: NSManagedObjectContext) {
         self.init(context: context)
+        self.isFSETheme = false
         self.lastUpdated = Date()
         self.checksum = editorTheme.checksum
 
@@ -41,23 +42,10 @@ extension BlockEditorSettings {
 
     convenience init?(remoteSettings: RemoteBlockEditorSettings, context: NSManagedObjectContext) {
         self.init(context: context)
+        self.isFSETheme = remoteSettings.isFSETheme
         self.lastUpdated = Date()
         self.checksum = remoteSettings.checksum
-
-        if let globalStyles = remoteSettings.rawGlobalStylesBaseStyles {
-            self.rawGlobalStylesBaseStyles = globalStyles
-        } else {
-            var parsedElements = Set<BlockEditorSettingElement>()
-
-            remoteSettings.colors?.forEach({ (color) in
-                parsedElements.insert(BlockEditorSettingElement(fromRawRepresentation: color, type: .color, context: context))
-            })
-
-            remoteSettings.gradients?.forEach({ (gradient) in
-                parsedElements.insert(BlockEditorSettingElement(fromRawRepresentation: gradient, type: .gradient, context: context))
-            })
-
-            self.elements = parsedElements
-        }
+        self.rawStyles = remoteSettings.rawStyles
+        self.rawFeatures = remoteSettings.rawFeatures
     }
 }

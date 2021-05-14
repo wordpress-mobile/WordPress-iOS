@@ -35,7 +35,7 @@ class BlockEditorSettingsService {
     }
 
     func fetchSettings(_ completion: @escaping BlockEditorSettingsServiceCompletion) {
-        if FeatureFlag.globalStyleSettings.enabled {
+        if blog.supports(.blockEditorSettings) {
             fetchBlockEditorSettings(completion)
         } else {
             fetchTheme(completion)

@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    # pod 'WordPressKit', '~> 4.32.0-beta'
+    # pod 'WordPressKit', '~> 4.33.0-beta'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'gutenberg/issue/3163-gss'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -161,8 +161,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.53.0-alpha1'
-
+    gutenberg :commit => 'a70a6b3fa8a548168f285101b4521de4bdd7535d'
 
     ## Third party libraries
     ## =====================
