@@ -3,7 +3,7 @@ import Foundation
 protocol LinkRouter {
     init(routes: [Route])
     func canHandle(url: URL) -> Bool
-    func handle(url: URL, shouldTrack track: Bool, source: UIViewController?)
+    func handle(url: URL, shouldTrack track: Bool, source: DeepLinkSource?)
 }
 
 /// UniversalLinkRouter keeps a list of possible URL routes that are exposed
@@ -128,11 +128,12 @@ struct UniversalLinkRouter: LinkRouter {
     /// - parameter url: The URL to match against.
     /// - parameter track: If false, don't post an analytics event for this URL.
     ///
-    func handle(url: URL, shouldTrack track: Bool = true, source: UIViewController? = nil) {
+    func handle(url: URL, shouldTrack track: Bool = true, source: DeepLinkSource? = nil) {
         let matches = matcher.routesMatching(url)
 
-        if track {
-            trackDeepLink(matchCount: matches.count, url: url)
+        // We don't want to track internal links
+        if track, source?.isInternal != true {
+            trackDeepLinks(with: matches, for: url, source: source)
         }
 
         if matches.isEmpty {
@@ -141,21 +142,38 @@ struct UniversalLinkRouter: LinkRouter {
                                       completionHandler: nil)
         }
 
+        // Extract the presenter if there is one
+        var presentingViewController: UIViewController? = nil
+        if case .inApp(let viewController) = source {
+            presentingViewController = viewController
+        }
+
         for matchedRoute in matches {
-            matchedRoute.action.perform(matchedRoute.values, source: source, router: self)
+            matchedRoute.action.perform(matchedRoute.values, source: presentingViewController, router: self)
         }
     }
 
-    private func trackDeepLink(matchCount: Int, url: URL) {
-        let stat: WPAnalyticsStat = (matchCount > 0) ? .deepLinked : .deepLinkFailed
-        var properties = [TracksPropertyKeys.url: url.absoluteString]
-
-        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        if let source = components?.queryItems?.first(where: { $0.name == TracksPropertyKeys.source }) {
-            properties[TracksPropertyKeys.source] = source.value
+    private func trackDeepLinks(with matches: [MatchedRoute], for url: URL, source: DeepLinkSource? = nil) {
+        if matches.isEmpty {
+            WPAppAnalytics.track(.deepLinkFailed, withProperties: [TracksPropertyKeys.url: url])
+            return
         }
 
-        WPAppAnalytics.track(stat, withProperties: properties)
+        matches.forEach({ trackDeepLink(for: $0, source: source) })
+    }
+
+    private func trackDeepLink(for match: MatchedRoute, source: DeepLinkSource? = nil) {
+        }
+
+        // If we've been passed a source we'll use that to override the route's original source.
+        // For example, if we've been handed a link from a banner.
+        let properties: [String: String] = [
+            TracksPropertyKeys.url: match.path,
+            TracksPropertyKeys.source: source?.tracksValue ?? match.source.tracksValue,
+            TracksPropertyKeys.section: match.section?.rawValue ?? "",
+        ]
+
+        WPAppAnalytics.track(.deepLinked, withProperties: properties)
     }
 
     private enum TracksPropertyKeys {
@@ -164,3 +182,21 @@ struct UniversalLinkRouter: LinkRouter {
         static let section = "section"
     }
 }
+
+extension DeepLinkSource {
+    var tracksValue: String {
+        switch self {
+        case .link:
+            return "link"
+        case .banner:
+            return "banner"
+        case .email:
+            return "email"
+        case .widget:
+            return "widget"
+        case .inApp(_):
+            return "internal"
+        }
+    }
+}
+

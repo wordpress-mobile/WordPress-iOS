@@ -10,7 +10,15 @@ import Foundation
 protocol Route {
     var path: String { get }
     var section: DeepLinkSection? { get }
+    var source: DeepLinkSource { get }
     var action: NavigationAction { get }
+}
+
+extension Route {
+    // Default routes to handling links rather than other source types
+    var source: DeepLinkSource {
+        return .link
+    }
 }
 
 protocol NavigationAction {
@@ -61,6 +69,25 @@ extension Route {
 }
 
 // MARK: - Tracking
+
+/// Where did the deep link originate?
+///
+enum DeepLinkSource {
+    case link
+    case banner
+    case email
+    case widget
+    case inApp(UIViewController?)
+
+    var isInternal: Bool {
+        switch self {
+        case .inApp(_):
+            return true
+        default:
+            return false
+        }
+    }
+}
 
 /// Which broad section of the app is being linked to?
 ///

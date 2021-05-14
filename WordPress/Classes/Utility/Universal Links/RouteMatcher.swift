@@ -94,12 +94,14 @@ class RouteMatcher {
 struct MatchedRoute: Route {
     let path: String
     let section: DeepLinkSection?
+    let source: DeepLinkSource
     let action: NavigationAction
     let values: [String: String]
 
     init(from route: Route, with values: [String: String] = [:]) {
         self.path = route.path
         self.section = route.section
+        self.source = route.source
         self.action = route.action
         self.values = values
     }

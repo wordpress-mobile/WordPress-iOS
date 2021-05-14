@@ -76,6 +76,6 @@ extension MbarRoute: NavigationAction {
                 }
             }
 
-        router.handle(url: redirectUrl, shouldTrack: true, source: source)
+        router.handle(url: redirectUrl, shouldTrack: true, source: .email)
     }
 }
