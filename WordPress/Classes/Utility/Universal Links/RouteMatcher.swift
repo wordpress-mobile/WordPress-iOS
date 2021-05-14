@@ -96,6 +96,7 @@ struct MatchedRoute: Route {
     let section: DeepLinkSection?
     let source: DeepLinkSource
     let action: NavigationAction
+    let shouldTrack: Bool
     let values: [String: String]
 
     init(from route: Route, with values: [String: String] = [:]) {
@@ -103,6 +104,7 @@ struct MatchedRoute: Route {
         self.section = route.section
         self.source = route.source
         self.action = route.action
+        self.shouldTrack = route.shouldTrack
         self.values = values
     }
 }

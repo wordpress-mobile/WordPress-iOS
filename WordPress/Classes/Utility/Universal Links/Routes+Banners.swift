@@ -13,6 +13,7 @@ struct AppBannerRoute: Route {
     let path = "/get"
     let section: DeepLinkSection? = nil
     let source: DeepLinkSource = .banner
+    let shouldTrack: Bool = false
 
     var action: NavigationAction {
         return self

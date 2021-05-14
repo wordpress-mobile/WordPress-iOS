@@ -12,12 +12,20 @@ protocol Route {
     var section: DeepLinkSection? { get }
     var source: DeepLinkSource { get }
     var action: NavigationAction { get }
+    var shouldTrack: Bool { get }
 }
 
 extension Route {
     // Default routes to handling links rather than other source types
     var source: DeepLinkSource {
         return .link
+    }
+
+    // By default, we'll track all routes, but certain routes can override this.
+    // Routes like banner and email routes may not want to track their original
+    // link, but will instead just track any redirect that they contain.
+    var shouldTrack: Bool {
+        return true
     }
 }
 

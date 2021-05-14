@@ -163,6 +163,9 @@ struct UniversalLinkRouter: LinkRouter {
     }
 
     private func trackDeepLink(for match: MatchedRoute, source: DeepLinkSource? = nil) {
+        // Check if the route is overridding tracking
+        if match.shouldTrack == false {
+            return
         }
 
         // If we've been passed a source we'll use that to override the route's original source.

@@ -30,6 +30,8 @@ public struct MbarRoute: Route {
         return self
     }
 
+    let shouldTrack: Bool = false
+
     private func redirectURL(from url: String) -> URL? {
         guard let components = URLComponents(string: url) else {
             return nil
