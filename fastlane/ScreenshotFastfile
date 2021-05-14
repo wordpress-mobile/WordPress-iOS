@@ -25,9 +25,11 @@ platform :ios do
     sh('bundle exec pod install')
     FileUtils.rm_rf(DERIVED_DATA_PATH)
 
+    scheme = options[:scheme] || "WordPressScreenshotGeneration"
+
     scan(
       workspace: WORKSPACE_PATH,
-      scheme: "WordPressScreenshotGeneration",
+      scheme: scheme,
       build_for_testing: true,
       derived_data_path: DERIVED_DATA_PATH,
     )
@@ -46,7 +48,7 @@ platform :ios do
     [true, false].each { | dark_mode_enabled |
       capture_ios_screenshots(
         workspace: WORKSPACE_PATH,
-        scheme: "WordPressScreenshotGeneration",
+        scheme: scheme,
         test_without_building: true,
         derived_data_path: DERIVED_DATA_PATH,
         languages: languages,
