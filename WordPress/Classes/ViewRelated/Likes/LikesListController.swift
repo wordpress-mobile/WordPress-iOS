@@ -99,6 +99,16 @@ class LikesListController: NSObject {
 
         fetchStoredLikes()
 
+        guard ReachabilityUtils.isInternetReachable() else {
+            isLoadingContent = false
+
+            if likingUsers.isEmpty {
+                delegate?.showErrorView()
+            }
+
+            return
+        }
+
         // If there are no cached users, continue showing the loading cell.
         isLoadingContent = likingUsers.isEmpty
 
@@ -106,8 +116,8 @@ class LikesListController: NSObject {
             self?.likingUsers = users
             self?.isLoadingContent = false
         }, failure: { [weak self] _ in
-            // TODO: Handle error state
             self?.isLoadingContent = false
+            self?.delegate?.showErrorView()
         })
     }
 
@@ -245,6 +255,9 @@ protocol LikesListControllerDelegate: class {
     /// Reports to the delegate that the user cell has been tapped.
     /// - Parameter user: A LikeUser instance representing the user at the selected row.
     func didSelectUser(_ user: LikeUser, at indexPath: IndexPath)
+
+    /// Ask the delegate to show an error view when fetching fails or there is no connection.
+    func showErrorView()
 }
 
 // MARK: - Private Definitions
