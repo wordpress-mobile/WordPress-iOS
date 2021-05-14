@@ -36,8 +36,8 @@
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d непросмотренных записей";
 
-/* translators: 1: Block label (i.e. \"Block: Column\"), 2: Position of the selected block, 3: Total number of sibling blocks of the same type */
-"%1$s (%2$d of %3$d)" = "%1$s (%2$d из %3$d)";
+/* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
+"%1$s transformed to %2$s" = "Блок %1$s преобразован в %2$s";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
 "%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s - %3$s %4$s.";
@@ -193,17 +193,14 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li слов, %2$li символов";
 
+/* translators: %s: block title e.g: \"Paragraph\". */
+"%s block options" = "настройки блока %s";
+
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "Блок %s. Пустой";
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "Блок %s. Блок имеет неверное содержимое.";
-
-/* translators: %s: Number of comments */
-"%s comment" = "Комментариев: %s";
-
-/* translators: %s: name of the social service. */
-"%s label" = "%s ярлык";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "'%s' полностью не поддерживается";
@@ -231,13 +228,6 @@
 /* Register Domain - Address information field add new address line */
 "+ Address line %@" = "+ строка адреса %@";
 
-/* No comment provided by engineer. */
-"- Select -" = "- Выбрать -";
-
-/* translators: Preserve \
- markers for line breaks */
-"\/\/ A \"block\" is the abstract term used\n\/\/ to describe units of markup that\n\/\/ when composed together, form the\n\/\/ content or layout of a page.\nregisterBlockType( name, settings );" = "\/\/ \"Блок\" - это абстрактный термин, используемый\n\/\/ для описания единиц разметки, которые\n\/\/ совместно, формируют\n\/\/ контент или макет страницы.\nregisterBlockType( name, settings );";
-
 /* Local notification displayed to the user when a single draft post has been successfully uploaded. */
 "1 draft post uploaded" = "Загружена 1 запись черновика";
 
@@ -259,65 +249,20 @@
 /* Message for a notice informing the user their scan completed and 1 threat was found */
 "1 potential threat found" = "Найдена одна возможная угроза";
 
-/* No comment provided by engineer. */
-"100" = "100";
-
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
-
-/* No comment provided by engineer. */
-"10:16" = "10:16";
-
-/* No comment provided by engineer. */
-"16:10" = "16:10";
-
-/* No comment provided by engineer. */
-"16:9" = "16:9";
-
-/* No comment provided by engineer. */
-"25 \/ 50 \/ 25" = "25 \/ 50 \/ 25";
-
-/* No comment provided by engineer. */
-"2:3" = "2:3";
-
-/* No comment provided by engineer. */
-"30 \/ 70" = "30 \/ 70";
-
-/* No comment provided by engineer. */
-"33 \/ 33 \/ 33" = "33 \/ 33 \/ 33";
-
-/* No comment provided by engineer. */
-"3:2" = "3:2";
-
-/* No comment provided by engineer. */
-"3:4" = "3:4";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
 
-/* No comment provided by engineer. */
-"4:3" = "4:3";
-
 /* Indicates a video will be resized to 4K 3840x2160 when uploaded. */
 "4K" = "4K";
-
-/* No comment provided by engineer. */
-"50 \/ 50" = "50 \/ 50";
-
-/* No comment provided by engineer. */
-"70 \/ 30" = "70 \/ 30";
 
 /* Indicates a video will be resized to HD 1280x720 when uploaded. */
 "720p" = "720p";
 
-/* No comment provided by engineer. */
-"9:16" = "9:16";
-
 /* Age between dates less than one hour. */
 "< 1 hour" = "менее 1 часа";
-
-/* No comment provided by engineer. */
-"<strong>Snow Patrol<\/strong>" = "<strong>Снежный патруль<\/strong>";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -325,35 +270,11 @@
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "При нажатии на кнопку «Ещё» открывается список кнопок «Поделиться»";
 
-/* No comment provided by engineer. */
-"A calendar of your site’s posts." = "Календарь записей сайта.";
-
-/* No comment provided by engineer. */
-"A cloud of your most used tags." = "Облако часто используемых меток.";
-
-/* No comment provided by engineer. */
-"A collection of blocks that allow visitors to get around your site." = "Набор блоков, которые позволяют посетителям обойти ваш сайт.";
-
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "Изображение записи установлено. Нажмите, чтобы изменить его.";
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Файл содержит элемент вредоносного кода";
-
-/* No comment provided by engineer. */
-"A link to a category." = "Ссылка на рубрику.";
-
-/* No comment provided by engineer. */
-"A link to a custom URL." = "Произвольная ссылка (URL).";
-
-/* No comment provided by engineer. */
-"A link to a page." = "Ссылка на страницу.";
-
-/* No comment provided by engineer. */
-"A link to a post." = "Ссылка на запись.";
-
-/* No comment provided by engineer. */
-"A link to a tag." = "Ссылка на метку.";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "Список сайтов на этой учётной записи.";
@@ -366,9 +287,6 @@
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button. */
 "A series of steps to assist with growing your site's audience." = "Последовательность шагов позволяющая увеличить аудиторию вашего сайта.";
-
-/* No comment provided by engineer. */
-"A single column within a columns block." = "Один столбец в блоке столбцов.";
 
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "Метка с именем '%@' уже существует.";
@@ -403,8 +321,7 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "АДРЕС";
 
-/* About this app (information page title)
-   translators: 'About' as in a website's about page. */
+/* About this app (information page title) */
 "About" = "О нас";
 
 /* Link to About screen for Jetpack for iOS */
@@ -491,9 +408,6 @@
 "Add New Stats Card" = "Добавить новую карточку статистики";
 
 /* No comment provided by engineer. */
-"Add Template" = "Добавить шаблон";
-
-/* No comment provided by engineer. */
 "Add To Beginning" = "Добавить в начале";
 
 /* No comment provided by engineer. */
@@ -514,20 +428,8 @@
 /* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "Добавить тему";
 
-/* No comment provided by engineer. */
-"Add a block that displays content in multiple columns, then add whatever content blocks you’d like." = "Добавьте блок, который отображает содержимое в нескольких столбцах, а затем добавьте в него любые другие блоки с желаемым содержимым.";
-
-/* No comment provided by engineer. */
-"Add a block that displays content pulled from other sites, like Twitter, Instagram or YouTube." = "Добавляет блок, который выводит содержимое с других сайтов, таких как Twitter, Instagram или YouTube.";
-
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Добавьте URL пользовательской CSS для загрузки в Чтиве. Если вы используете локальную установку Calypso, то он может выглядеть примерно так: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
-
-/* No comment provided by engineer. */
-"Add a link to a downloadable file." = "Добавьте ссылку на скачиваемый файл.";
-
-/* No comment provided by engineer. */
-"Add a page, link, or another item to your navigation." = "Добавьте страницу, ссылку или другой элемент в навигацию.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Добавить автономный веб-сайт";
@@ -547,20 +449,11 @@
 /* No comment provided by engineer. */
 "Add alt text" = "Добавить атрибут alt";
 
-/* No comment provided by engineer. */
-"Add an image or video with a text overlay — great for headers." = "Добавьте изображение или видео с текстовым перекрытием — замечательно для заголовков.";
-
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Добавьте любую тему";
 
 /* No comment provided by engineer. */
 "Add caption" = "Добавить подпись";
-
-/* translators: placeholder text used for the citation */
-"Add citation" = "Добавьте цитату";
-
-/* No comment provided by engineer. */
-"Add custom HTML code and preview it as you edit." = "Добавьте произвольный код HTML и смотрите на результат в процессе редактирования.";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Добавьте изображение (или аватар) для представления этой новой учетной записи.";
@@ -589,9 +482,6 @@
 /* No comment provided by engineer. */
 "Add paragraph block" = "Добавить блок параграфа";
 
-/* translators: placeholder text used for the quote */
-"Add quote" = "Добавьте цитату";
-
 /* Add self-hosted site button */
 "Add self-hosted site" = "Добавить автономный веб-сайт";
 
@@ -603,16 +493,7 @@
 "Add tags" = "Добавить метки";
 
 /* No comment provided by engineer. */
-"Add text that respects your spacing and tabs, and also allows styling." = "Добавьте текст, который соответствует вашим интервалам и вкладкам, а также позволяет стилизовать.";
-
-/* No comment provided by engineer. */
 "Add text…" = "Добавить текст…";
-
-/* No comment provided by engineer. */
-"Add the author of this post." = "Добавьте автора этой записи.";
-
-/* No comment provided by engineer. */
-"Add the date of this post." = "Добавьте дату к этой записи.";
 
 /* No comment provided by engineer. */
 "Add this email link" = "Добавить ссылку на email";
@@ -622,12 +503,6 @@
 
 /* No comment provided by engineer. */
 "Add this telephone link" = "Добавить ссылку на номер телефона";
-
-/* No comment provided by engineer. */
-"Add tracks" = "Добавить дорожки";
-
-/* No comment provided by engineer. */
-"Add white space between blocks and customize its height." = "Добавьте пространство между блоками и настройте его высоту.";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Добавление функциональности сайта";
@@ -650,15 +525,6 @@
 
 /* Description of albums in the photo libraries */
 "Albums" = "Альбомы";
-
-/* No comment provided by engineer. */
-"Align column center" = "Выровнять столбец по центру";
-
-/* No comment provided by engineer. */
-"Align column left" = "Выровнять столбец по левому краю";
-
-/* No comment provided by engineer. */
-"Align column right" = "Выровнять столбец по правому краю";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -786,9 +652,6 @@
 /* Text displayed when a stat section failed to load. */
 "An error occurred." = "Произошла ошибка.";
 
-/* No comment provided by engineer. */
-"An example title" = "Пример названия";
-
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "Произошла неизвестная ошибка. Повторите попытку.";
 
@@ -827,15 +690,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
 "Approves the Comment." = "Одобрить комментарий.";
-
-/* No comment provided by engineer. */
-"Archive Title" = "Название архива";
-
-/* No comment provided by engineer. */
-"Archive title" = "Название архива";
-
-/* No comment provided by engineer. */
-"Archives settings" = "Настройки архивов";
 
 /* Menus alert message for alerting the user to unsaved changes while trying back out of Menus. */
 "Are you sure you want to cancel and discard changes?" = "Вы уверены, что хотите отменить и удалить изменения?";
@@ -910,17 +764,11 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Вы точно хотите обновить?";
 
-/* No comment provided by engineer. */
-"Area" = "Область";
-
 /* An example tag used in the login prologue screens. */
 "Art" = "Искусство";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "C 01.08.2018 Facebook более не разрешает напрямую делиться записями в профили Facebook. Связи со страницами FB останутся неизмененными.";
-
-/* No comment provided by engineer. */
-"Aspect Ratio" = "Пропорции";
 
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Добавить файл как ссылку";
@@ -930,9 +778,6 @@
 
 /* No comment provided by engineer. */
 "Audio Player" = "Аудиоплеер";
-
-/* No comment provided by engineer. */
-"Audio caption text" = "Текст подписи к аудио";
 
 /* translators: accessibility text. %s: Audio caption. */
 "Audio caption. %s" = "Подпись к аудиозаписи. %s";
@@ -1080,6 +925,15 @@
 /* No comment provided by engineer. */
 "Block cannot be rendered inside itself." = "Блок не может быть отображен внутри себя же.";
 
+/* translators: displayed right after the block is copied. */
+"Block copied" = "Блок скопирован";
+
+/* translators: displayed right after the block is cut. */
+"Block cut" = "Блок вырезан";
+
+/* translators: displayed right after the block is duplicated. */
+"Block duplicated" = "Блок продублирован";
+
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Редактор блоков включен";
 
@@ -1088,6 +942,15 @@
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Блокировать попытки несанкционированного входа";
+
+/* translators: displayed right after the block is pasted. */
+"Block pasted" = "Блок вставлен";
+
+/* translators: displayed right after the block is removed. */
+"Block removed" = "Блок удален";
+
+/* No comment provided by engineer. */
+"Block settings" = "Настройки блока";
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Блокировать этот веб-сайт";
@@ -1118,30 +981,15 @@
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Обозреватель блога";
 
-/* No comment provided by engineer. */
-"Body cell text" = "Текст ячейки тела содержимого";
-
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Полужирный";
 
-/* No comment provided by engineer. */
-"Border" = "Граница";
-
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "Выделять ветки комментариев на отдельные страницы.";
 
-/* No comment provided by engineer. */
-"Briefly describe the link to help screen reader users." = "Кратко опишите ссылку, чтобы помочь пользователям с программой чтения с экрана.";
-
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Посмотрите все наши темы, чтобы найти свой идеал.";
-
-/* No comment provided by engineer. */
-"Browse all templates" = "Просмотреть все шаблоны.";
-
-/* No comment provided by engineer. */
-"Browse all templates. This will open the template menu in the navigation side panel." = "Просмотрите все шаблоны. Это откроет меню шаблона на боковой панели навигации.";
 
 /* No comment provided by engineer. */
 "Browser default" = "Браузер по умолчанию";
@@ -1159,10 +1007,7 @@
 "Button Style" = "Стиль кнопки";
 
 /* No comment provided by engineer. */
-"Buttons shown in a column." = "Кнопки, выведенные в колонку.";
-
-/* No comment provided by engineer. */
-"Buttons shown in a row." = "Кнопки, выведенные в ряд.";
+"ButtonGroup" = "Группа кнопок";
 
 /* Label for the post author in the post detail. */
 "By " = "Автор:";
@@ -1191,9 +1036,6 @@
 
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Идет подсчет...";
-
-/* No comment provided by engineer. */
-"Call to Action" = "Призыв к действию";
 
 /* Accessibility label for taking an image or video with the camera on formatting toolbar.
    Accessibility label for the camera tile in the collection view */
@@ -1288,9 +1130,6 @@
    Noun. Label for the caption for a media asset (image / video) */
 "Caption" = "Подпись";
 
-/* No comment provided by engineer. */
-"Captions" = "Подписи";
-
 /* Alert title.
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Осторожно!";
@@ -1306,9 +1145,6 @@
    Menu item label for linking a specific category. */
 "Category" = "Рубрика";
 
-/* No comment provided by engineer. */
-"Category Link" = "Ссылка на рубрику";
-
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "Отсутствует название рубрики.";
 
@@ -1317,9 +1153,6 @@
 
 /* Popup title for wrong SSL certificate. */
 "Certificate error" = "Ошибка сертификата";
-
-/* No comment provided by engineer. */
-"Change Date" = "Изменить дату";
 
 /* Account Settings Change password label
    Main title */
@@ -1339,9 +1172,6 @@
 
 /* No comment provided by engineer. */
 "Change block position" = "Переместить блок";
-
-/* No comment provided by engineer. */
-"Change column alignment" = "Изменить выравнивание столбца";
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Не удалось внести изменение.";
@@ -1373,9 +1203,6 @@
 
 /* Shown while the app waits for the username changing web service to return. */
 "Changing username" = "Смена имени пользователя";
-
-/* No comment provided by engineer. */
-"Chapters" = "Главы";
 
 /* Title of alert when getting purchases fails */
 "Check Purchases Error" = "Ошибка проверки покупок";
@@ -1451,9 +1278,6 @@
 "Choose domain" = "Выберите домен";
 
 /* No comment provided by engineer. */
-"Choose existing" = "Выбрать существующий";
-
-/* No comment provided by engineer. */
 "Choose file" = "Выбрать файл";
 
 /* Menu option for selecting media from the device's photo library. */
@@ -1514,9 +1338,6 @@
 "Clear all old activity logs?" = "Очистить старые журналы активности?";
 
 /* No comment provided by engineer. */
-"Clear customizations" = "Сбросить персонализированные настройки";
-
-/* No comment provided by engineer. */
 "Clear search" = "Очистить поиск";
 
 /* Title of a button. */
@@ -1549,23 +1370,11 @@
 /* Close Comments Title */
 "Close commenting" = "Закрыть обсуждение";
 
-/* No comment provided by engineer. */
-"Close global styles sidebar" = "Закрыть боковую панель глобальных стилей";
-
-/* No comment provided by engineer. */
-"Close list view sidebar" = "Закрыть боковую панель просмотра списка";
-
-/* No comment provided by engineer. */
-"Close settings sidebar" = "Закрыть боковую панель настроек";
-
 /* Accessibility hint the  Done button in the Me screen. */
 "Close the Me screen" = "Закрыть мой профиль";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Код";
-
-/* No comment provided by engineer. */
-"Code is Poetry" = "Код — это поэзия.";
 
 /* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
 "Collapsed, %i completed tasks, toggling expands the list of these tasks" = "Свернуто, %i задач завершено, можно развернуть список этих задач";
@@ -1581,21 +1390,6 @@
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "Цветные фоны";
-
-/* translators: %d: column index (starting with 1) */
-"Column %d text" = "Текст столбца %d";
-
-/* No comment provided by engineer. */
-"Column count" = "Количество столбцов";
-
-/* No comment provided by engineer. */
-"Column settings" = "Настройки столбцов";
-
-/* No comment provided by engineer. */
-"Columns" = "Столбцы";
-
-/* No comment provided by engineer. */
-"Combine blocks into a group." = "Объединить блоки в группу.";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Комбинируйте фото, видео и текст для создания захватывающих историй с переходами, они обязательно полюбятся вашим посетителям.";
@@ -1776,9 +1570,6 @@
 /* Section title for Publicize services in Sharing screen */
 "Connections" = "Подключения";
 
-/* translators: 'Contact' as in a website's contact page. */
-"Contact" = "Обратная связь";
-
 /* Support email label. */
 "Contact Email" = "Контактный адрес эл.почты";
 
@@ -1794,17 +1585,11 @@
    Title of a button. A call to action to contact support for assistance. */
 "Contact support" = "Обратиться в службу поддержки";
 
-/* No comment provided by engineer. */
-"Contact us" = "Связаться с нами";
-
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
 "Contact us at %@" = "Свяжитесь с нами, написав на %@";
 
 /* Displays the number of blocks, words and characters in text */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Структура содержимого\nБлоки: %1$li, Слова: %2$li, Символы: %3$li";
-
-/* No comment provided by engineer. */
-"Content before this block will be shown in the excerpt on your archives page." = "Содержимое до этого блока будет показано как отрывок на странице архивов.";
 
 /* Action title to dismiss domain credit redemption success screen
    Apply changes localy to single block edition in the web block editor
@@ -1834,20 +1619,8 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Продолжение через Apple";
 
-/* No comment provided by engineer. */
-"Convert to blocks" = "Преобразовать в блоки";
-
-/* No comment provided by engineer. */
-"Convert to ordered list" = "Преобразовать в упорядоченный список";
-
-/* No comment provided by engineer. */
-"Convert to unordered list" = "Преобразовать в неупорядоченный список";
-
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Кулинария";
-
-/* No comment provided by engineer. */
-"Copied URL to clipboard." = "URL скопирован в буфер обмена.";
 
 /* No comment provided by engineer. */
 "Copied block" = "Скопированный блок";
@@ -1856,7 +1629,7 @@
 "Copy Link to Comment" = "Скопировать ссылку в комментарий";
 
 /* No comment provided by engineer. */
-"Copy URL" = "Копировать URL";
+"Copy block" = "Копировать блок";
 
 /* No comment provided by engineer. */
 "Copy file URL" = "Скопировать URL файла";
@@ -1878,9 +1651,6 @@
 
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "Не удалось проверить покупки.";
-
-/* translators: 1. Error message */
-"Could not edit image. %s" = "Невозможно отредактировать изображение. %s";
 
 /* Title of a prompt. */
 "Could not follow site" = "Не удалось подписаться на веб-сайт";
@@ -1995,9 +1765,6 @@
 /* Stories intro continue button title */
 "Create Story Post" = "Создать запись-историю";
 
-/* No comment provided by engineer. */
-"Create Table" = "Создать таблицу";
-
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "Создать сайт на WordPress.com";
 
@@ -2007,32 +1774,17 @@
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Создать метку";
 
-/* No comment provided by engineer. */
-"Create a break between ideas or sections with a horizontal separator." = "Создайте промежуток между идеями или разделами с помощью горизонтального разделителя.";
-
-/* No comment provided by engineer. */
-"Create a bulleted or numbered list." = "Создать маркированый или нумерованый список.";
-
 /* Title for a button that when tapped starts the site creation process */
 "Create a new site" = "Создание нового сайта";
 
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Создайте новый сайт для вашего бизнеса, журнал или персональный блог; или подключите имеющуюся установку WordPress.";
 
-/* No comment provided by engineer. */
-"Create a new template part or pick an existing one from the list." = "Создайте новую часть шаблона или выберите существующую из списка.";
-
 /* Accessibility hint for create floating action button */
 "Create a post or page" = "Создать запись или страницу";
 
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "Создать запись, страницу или историю";
-
-/* No comment provided by engineer. */
-"Create a template part" = "Создать часть шаблона";
-
-/* No comment provided by engineer. */
-"Create and save content to reuse across your site. Update the block, and the changes apply everywhere it’s used." = "Создавайте и сохраняйте содержимое для повторного использования на вашем сайте. Обновите блок, и изменения будут применены повсюду, где он используется.";
 
 /* Label that describes the download backup action */
 "Create downloadable backup" = "Создание резервной копии для скачивания";
@@ -2091,9 +1843,6 @@
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "Ведётся восстановление: %1$@";
 
-/* No comment provided by engineer. */
-"Custom Link" = "Произвольная ссылка";
-
 /* Placeholder for Invite People message field. */
 "Custom message…" = "Пользовательское сообщение...";
 
@@ -2122,6 +1871,9 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Настройте уведомления об оценках, комментариях, подписках и так далее.";
+
+/* No comment provided by engineer. */
+"Cut block" = "Вырезать блок";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Тёмное оформление";
@@ -2161,9 +1913,6 @@
 /* Only December needs to be translated */
 "December 17, 2017" = "Декабрь 17, 2017";
 
-/* No comment provided by engineer. */
-"December 6, 2018" = "6 декабря 2018";
-
 /* Description of the default paragraph formatting style in the editor.
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "По умолчанию";
@@ -2181,9 +1930,6 @@
 
 /* Placeholder for the reader CSS URL */
 "Default URL" = "URL по умолчанию";
-
-/* translators: %s: HTML tag based on area. */
-"Default based on area (%s)" = "По умолчанию в зависимости от области (%s)";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Параметры по умолчанию для новых записей";
@@ -2218,14 +1964,8 @@
 /* Title of alert when site deletion fails */
 "Delete Site Error" = "Удалить сведения об ошибке на сайте";
 
-/* No comment provided by engineer. */
-"Delete column" = "Удалить столбец";
-
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "Удалить меню";
-
-/* No comment provided by engineer. */
-"Delete row" = "Удалить строку";
 
 /* Delete Tag confirmation action title */
 "Delete this tag" = "Удалить эту метку";
@@ -2250,17 +1990,11 @@
    Title of section that contains plugins' description */
 "Description" = "Описание";
 
-/* No comment provided by engineer. */
-"Descriptions" = "Описания";
-
 /* Shortened version of the main title to be used in back navigation */
 "Design" = "Оформление";
 
 /* Title for the desktop web preview */
 "Desktop" = "ПК";
-
-/* No comment provided by engineer. */
-"Detach blocks from template part" = "Отделить блоки от частей шаблона";
 
 /* Details button that appears in the Theme Browser Header
    Theme Details action title */
@@ -2355,94 +2089,7 @@
 "Display Name" = "Отображаемое имя";
 
 /* No comment provided by engineer. */
-"Display a legacy widget." = "Показать устаревший виджет.";
-
-/* No comment provided by engineer. */
-"Display a list of all categories." = "Показ списка всех рубрик.";
-
-/* No comment provided by engineer. */
-"Display a list of all pages." = "Показ списка всех страниц.";
-
-/* No comment provided by engineer. */
-"Display a list of your most recent comments." = "Показ списка последних комментариев.";
-
-/* No comment provided by engineer. */
-"Display a list of your most recent posts, excluding sticky posts." = "Показ списка последних записей, исключая прикреплённые.";
-
-/* No comment provided by engineer. */
-"Display a list of your most recent posts." = "Показ списка последних записей.";
-
-/* No comment provided by engineer. */
-"Display a monthly archive of your posts." = "Показывать архивы записей за месяц.";
-
-/* No comment provided by engineer. */
-"Display a post's categories." = "Отображение рубрик записи.";
-
-/* No comment provided by engineer. */
-"Display a post's comments count." = "Отображение количества комментариев к записи.";
-
-/* No comment provided by engineer. */
-"Display a post's comments form." = "Отображение формы комментариев к записи.";
-
-/* No comment provided by engineer. */
-"Display a post's comments." = "Отображение комментариев к записи.";
-
-/* No comment provided by engineer. */
-"Display a post's excerpt." = "Показать отрывок записи.";
-
-/* No comment provided by engineer. */
-"Display a post's featured image." = "Показ изображения записи.";
-
-/* No comment provided by engineer. */
-"Display a post's tags." = "Показать метки записи.";
-
-/* No comment provided by engineer. */
-"Display an icon linking to a social media profile or website." = "Отображение значка, ссылающегося на профиль в социальных сетях или веб-сайт.";
-
-/* No comment provided by engineer. */
-"Display as dropdown" = "Показывать выпадающим списком";
-
-/* No comment provided by engineer. */
-"Display author" = "Показывать автора";
-
-/* No comment provided by engineer. */
-"Display avatar" = "Показывать аватар";
-
-/* No comment provided by engineer. */
-"Display code snippets that respect your spacing and tabs." = "Показ фрагментов кода с соблюдением интервалов и табуляции.";
-
-/* No comment provided by engineer. */
-"Display date" = "Показывать дату";
-
-/* No comment provided by engineer. */
-"Display entries from any RSS or Atom feed." = "Показывать элементы из любой RSS- или Atom-ленты.";
-
-/* No comment provided by engineer. */
-"Display excerpt" = "Показывать отрывок";
-
-/* No comment provided by engineer. */
-"Display icons linking to your social media profiles or websites." = "Отображение значков, ссылающихся на ваши профили в социальных сетях или веб-сайты.";
-
-/* No comment provided by engineer. */
-"Display login as form" = "Показывать вход на сайт в виде формы";
-
-/* No comment provided by engineer. */
-"Display multiple images in a rich gallery." = "Показывать несколько изображений в роскошной галерее.";
-
-/* No comment provided by engineer. */
 "Display post date" = "Показывать дату записи";
-
-/* No comment provided by engineer. */
-"Display the archive title based on the queried object." = "Показывать заголовок архива на основе запрошенного объекта.";
-
-/* No comment provided by engineer. */
-"Display the description of categories, tags and custom taxonomies when viewing an archive." = "Показывать описания рубрик, меток и пользовательских таксономий при просмотре архива.";
-
-/* No comment provided by engineer. */
-"Display the query title." = "Показывать заголовок запроса.";
-
-/* No comment provided by engineer. */
-"Display the title as a link" = "Отображение заголовка в виде ссылки";
 
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Показ статистики сайта за всё время. Настройте в приложении WordPress в разделе статистики.";
@@ -2452,42 +2099,6 @@
 
 /* Unconfigured stats today widget helper text */
 "Display your site stats for today here. Configure in the WordPress app in your site stats." = "Настройте отображение текущей статистики сайта здесь. Настройте в приложении WordPress в статистике сайта.";
-
-/* No comment provided by engineer. */
-"Displays a list of page numbers for pagination" = "Показывать список нумерации страниц при использовании разбиения на страницы";
-
-/* No comment provided by engineer. */
-"Displays a list of posts as a result of a query." = "Показывать список записей как результат запроса.";
-
-/* No comment provided by engineer. */
-"Displays a paginated navigation to next\/previous set of posts, when applicable." = "Если доступно, показывать постраничную навигацию далее\/назад для набора записей.";
-
-/* No comment provided by engineer. */
-"Displays and allows editing the name of the site. The site title usually appears in the browser title bar, in search results, and more. Also available in Settings > General." = "Отображает и позволяет редактировать название сайта. Название сайта обычно отображается в строке заголовка браузера, в результатах поиска и т. д. Также доступно в меню Настройки > Общие.";
-
-/* No comment provided by engineer. */
-"Displays the contents of a post or page." = "Отображает содержимое записи или страницы.";
-
-/* No comment provided by engineer. */
-"Displays the link to the current post comments." = "Отрбражает ссылку на комментарии к текущей записи.";
-
-/* No comment provided by engineer. */
-"Displays the next or previous post link that is adjacent to the current post." = "Отображает ссылку на следующую или предыдущую запись, расположенную рядом с текущей записью.";
-
-/* No comment provided by engineer. */
-"Displays the next posts page link." = "Отображает ссылку на следующую страницу записей.";
-
-/* No comment provided by engineer. */
-"Displays the post link that follows the current post." = "Отображает ссылку на следующую (по отношению к текущей) запись.";
-
-/* No comment provided by engineer. */
-"Displays the post link that precedes the current post." = "Отображает ссылку на предыдущую (по отношению к текущей) запись.";
-
-/* No comment provided by engineer. */
-"Displays the previous posts page link." = "Отображает ссылку на предыдущую страницу записей.";
-
-/* No comment provided by engineer. */
-"Displays the title of a post, page, or any other content-type." = "Показ названия записи, страницы или другого типа содержимого.";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Документ: %@";
@@ -2525,9 +2136,6 @@
 /* Title for label when there are no threats on the users site */
 "Don’t worry about a thing" = "Ни о чем не волнуйтесь";
 
-/* No comment provided by engineer. */
-"Dots" = "Точки";
-
 /* Screen reader hint for button that will move the menu item */
 "Double tap and hold to move this menu item up or down" = "Нажмите дважды и удерживайте для перемещения элемента меню выше или ниже";
 
@@ -2562,7 +2170,13 @@
 "Double tap to open Action Sheet to edit, replace, or clear the image" = "Нажмите дважды, чтобы открыть список действий для редактирования, замены или очистки изображения.";
 
 /* No comment provided by engineer. */
+"Double tap to open Action Sheet with available options" = "Нажмите дважды для того, чтобы открыть панель действий с доступными возможностями";
+
+/* No comment provided by engineer. */
 "Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Нажмите дважды, чтобы открыть нижний список действий для редактирования, замены или очистки изображения.";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet with available options" = "Нажмите дважды для того, чтобы открыть нижнюю панель действий с доступными возможностями";
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "Нажмите дважды для повторения последнего изименения";
@@ -2598,17 +2212,8 @@
    Title for button allowing user to backup their Jetpack site */
 "Download backup" = "Скачать резервную копию";
 
-/* No comment provided by engineer. */
-"Download button settings" = "Настройки кнопки скачивания";
-
-/* No comment provided by engineer. */
-"Download button text" = "Текст кнопки скачать";
-
 /* Title for the button that will download the backup file. */
 "Download file" = "Скачать файл";
-
-/* No comment provided by engineer. */
-"Download your templates and template parts." = "Cкачайте свои шаблоны и части шаблонов.";
 
 /* Label for number of file downloads. */
 "Downloads" = "Загрузки";
@@ -2620,15 +2225,12 @@
    Title of the drafts header in search list. */
 "Drafts" = "Черновики";
 
-/* No comment provided by engineer. */
-"Drop cap" = "Буквица";
-
 /* Label for page duplicate option. Tapping creates a copy of the page.
    Label for post duplicate option. Tapping creates a copy of the post. */
 "Duplicate" = "Дублировать";
 
-/* translators: Sample content for the Preformatted block. Can be replaced with a more locale-adequate work. */
-"EXT. XANADU - FAINT DAWN - 1940 (MINIATURE)\nWindow, very small in the distance, illuminated.\nAll around this is an almost totally black screen. Now, as the camera moves slowly towards the window which is almost a postage stamp in the frame, other forms ap" = "EXT. XANADU - FAINT DAWN - 1940 (MINIATURE)\nОкно,очень маленькое вдалеке, освещено.\nВсе вокруг - это почти полностью черный экран. Теперь, когда камера медленно движется к окну, которое является почти почтовой маркой в кадре, появляются другие формы;";
+/* No comment provided by engineer. */
+"Duplicate block" = "Дублировать блок";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "восток";
@@ -2651,9 +2253,6 @@
 /* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
 "Edit %@ block" = "Редактировать блок %@";
 
-/* translators: %s: Label of the video text track e.g: \"French subtitles\" */
-"Edit %s" = "Редактировать %s";
-
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Редактировать слово из списка блокировки";
 
@@ -2672,19 +2271,10 @@
 "Edit Post" = "Редактировать запись";
 
 /* No comment provided by engineer. */
-"Edit RSS URL" = "Редактировать URL RSS-ленты";
-
-/* No comment provided by engineer. */
-"Edit URL" = "Редактировать URL";
-
-/* No comment provided by engineer. */
 "Edit file" = "Изменить файл";
 
 /* No comment provided by engineer. */
 "Edit focal point" = "Изменить точку фокусировки";
-
-/* No comment provided by engineer. */
-"Edit gallery image" = "Редактировать изображение галереи";
 
 /* No comment provided by engineer. */
 "Edit image" = "Редактировать изображение";
@@ -2695,14 +2285,8 @@
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Изменить кнопки «Поделиться»";
 
-/* No comment provided by engineer. */
-"Edit table" = "Редактировать таблицу";
-
 /* Button title displayed in popup indicating that the user edits the post first */
 "Edit the post first" = "Сначала отредактируйте запись";
-
-/* No comment provided by engineer. */
-"Edit track" = "Редактировать дорожку";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "Редактировать используя веб-редактор";
@@ -2760,132 +2344,12 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "Письмо отправлено!";
 
-/* No comment provided by engineer. */
-"Embed Amazon Kindle content." = "Вставить содержимое Amazon Kindle.";
-
-/* No comment provided by engineer. */
-"Embed Cloudup content." = "Вставить содержимое Cloudup.";
-
-/* No comment provided by engineer. */
-"Embed CollegeHumor content." = "Вставить содержимое CollegeHumor.";
-
-/* No comment provided by engineer. */
-"Embed Crowdsignal (formerly Polldaddy) content." = "Вставить содержимое Crowdsignal (ранее Polldaddy).";
-
-/* No comment provided by engineer. */
-"Embed Flickr content." = "Вставить содержимое Flickr.";
-
-/* No comment provided by engineer. */
-"Embed Imgur content." = "Вставить содержимое Imgur.";
-
-/* No comment provided by engineer. */
-"Embed Issuu content." = "Вставить содержимое Issuu.";
-
-/* No comment provided by engineer. */
-"Embed Kickstarter content." = "Вставить содержимое Kickstarter.";
-
-/* No comment provided by engineer. */
-"Embed Meetup.com content." = "Вставить содержимое Meetup.com.";
-
-/* No comment provided by engineer. */
-"Embed Mixcloud content." = "Вставить содержимое Mixcloud.";
-
-/* No comment provided by engineer. */
-"Embed ReverbNation content." = "Вставить содержимое ReverbNation.";
-
-/* No comment provided by engineer. */
-"Embed Screencast content." = "Вставить содержимое Screencast.";
-
-/* No comment provided by engineer. */
-"Embed Scribd content." = "Вставить содержимое Scribd.";
-
-/* No comment provided by engineer. */
-"Embed Slideshare content." = "Вставить содержимое Slideshare.";
-
-/* No comment provided by engineer. */
-"Embed SmugMug content." = "Вставить содержимое SmugMug.";
-
-/* No comment provided by engineer. */
-"Embed SoundCloud content." = "Вставить содержимое SoundCloud.";
-
-/* No comment provided by engineer. */
-"Embed Speaker Deck content." = "Вставить содержимое Speaker Deck.";
-
-/* No comment provided by engineer. */
-"Embed Spotify content." = "Вставить содержимое Spotify.";
-
-/* No comment provided by engineer. */
-"Embed a Dailymotion video." = "Вставить видео Dailymotion.";
-
-/* No comment provided by engineer. */
-"Embed a Facebook post." = "Вставить запись Facebook.";
-
-/* No comment provided by engineer. */
-"Embed a Reddit thread." = "Вставить обсуждение Reddit.";
-
-/* No comment provided by engineer. */
-"Embed a TED video." = "Вставить видео TED.";
-
-/* No comment provided by engineer. */
-"Embed a TikTok video." = "Вставить видео TikTok.";
-
-/* No comment provided by engineer. */
-"Embed a Tumblr post." = "Вставить запись Tumblr.";
-
-/* No comment provided by engineer. */
-"Embed a VideoPress video." = "Вставить видео VideoPress.";
-
-/* No comment provided by engineer. */
-"Embed a Vimeo video." = "Вставить видео Vimeo.";
-
-/* No comment provided by engineer. */
-"Embed a WordPress post." = "Вставить запись WordPress.";
-
-/* No comment provided by engineer. */
-"Embed a WordPress.tv video." = "Вставить видео WordPress.tv.";
-
-/* No comment provided by engineer. */
-"Embed a YouTube video." = "Вставить видео YouTube.";
-
-/* No comment provided by engineer. */
-"Embed a simple audio player." = "Вставить простой аудиопроигрыватель.";
-
-/* No comment provided by engineer. */
-"Embed a tweet." = "Вставить твит.";
-
-/* No comment provided by engineer. */
-"Embed a video from your media library or upload a new one." = "Вставьте видео из вашей медиатеки или загрузите новое.";
-
-/* No comment provided by engineer. */
-"Embed an Animoto video." = "Вставить видео Animoto.";
-
-/* No comment provided by engineer. */
-"Embed an Instagram post." = "Вставить запись Instagram.";
-
-/* translators: %s: filename. */
-"Embed of %s." = "Вставка %s";
-
-/* No comment provided by engineer. */
-"Embed of the selected PDF file." = "Вставка выбранного файла PDF.";
-
-/* translators: %s: host providing embed content e.g: www.youtube.com */
-"Embedded content from %s" = "Вставленное содержимое с %s";
-
-/* translators: %s: host providing embed content e.g: www.youtube.com */
-"Embedded content from %s can't be previewed in the editor." = "Встроенное содержимое из %s невозможно просмотреть в редакторе.";
-
-/* No comment provided by engineer. */
-"Embedding…" = "Вставка...";
-
 /* Accessibility value presented in the signup epilogue for an empty value.
    Label for size of media when the cache is empty. */
 "Empty" = "Пусто";
 
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Пустой URL-адрес";
-
-/* No comment provided by engineer. */
-"Empty block; start writing or type forward slash to choose a block" = "Пустой блок; начните писать или нажмите прямой слэш (\/) для выбора блока";
 
 /* Button title for the enable site notifications action. */
 "Enable" = "Включить";
@@ -2908,14 +2372,8 @@
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "Дата окончания";
 
-/* No comment provided by engineer. */
-"English" = "Английский";
-
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Показать во весь экран";
-
-/* No comment provided by engineer. */
-"Enter URL here…" = "Введите URL здесь...";
 
 /* No comment provided by engineer. */
 "Enter URL to embed here…" = "Укажите URL для вставки...";
@@ -2928,9 +2386,6 @@
 
 /* Message explaining why the user might enter a password. */
 "Enter a password to protect this post" = "Введите пароль для защиты этой записи";
-
-/* No comment provided by engineer. */
-"Enter address" = "Введите адрес";
 
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "Введите другие слова выше и мы поищем адреса совпадающие с ними.";
@@ -3064,9 +2519,6 @@
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Ошибка обновления настроек ускорения сайта";
 
-/* translators: example text. */
-"Etiam et egestas lorem. Vivamus sagittis sit amet dolor quis lobortis. Integer sed fermentum arcu, id vulputate lacus. Etiam fermentum sem eu quam hendrerit." = "Etiam et egestas lorem. Vivamus sagittis sit amet dolor quis lobortis. Integer sed fermentum arcu, id vulputate lacus. Etiam fermentum sem eu quam hendrerit.";
-
 /* Title for the activity detail view */
 "Event" = "Событие";
 
@@ -3121,9 +2573,6 @@
 
 /* Title of a Quick Start Tour */
 "Explore plans" = "Посмотрите тарифы";
-
-/* No comment provided by engineer. */
-"Export" = "Экспорт";
 
 /* Export Content confirmation action title
    Label for selecting the Export Content Settings item */
@@ -3197,9 +2646,6 @@
 /* No comment provided by engineer. */
 "Featured Image did not load" = "Избранное изображение не загружено";
 
-/* No comment provided by engineer. */
-"February 21, 2019" = "21 февраля 2019";
-
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Получение тем…";
 
@@ -3238,9 +2684,6 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Тип файла";
 
-/* No comment provided by engineer. */
-"Fill" = "Заполнение";
-
 /* The password manager button in login pages. The button opens a dialog showing which password manager to use (e.g. 1Password, LastPass). */
 "Fill with password manager" = "Заполнить из менеджера паролей";
 
@@ -3270,9 +2713,6 @@
    User's First Name */
 "First Name" = "Имя";
 
-/* No comment provided by engineer. */
-"Five." = "Пять.";
-
 /* Button title that attempts to fix all fixable threats */
 "Fix All" = "Устранить все";
 
@@ -3284,9 +2724,6 @@
 
 /* Displays the fixed threats */
 "Fixed" = "Исправлено";
-
-/* No comment provided by engineer. */
-"Fixed width table cells" = "Ячейки таблицы фиксированной ширины";
 
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Устранение угроз";
@@ -3367,29 +2804,11 @@
 /* An example tag used in the login prologue screens. */
 "Football" = "Футбол";
 
-/* No comment provided by engineer. */
-"Footer cell text" = "Текст ячейки подвала";
-
-/* No comment provided by engineer. */
-"Footer label" = "Ярлык подвала";
-
-/* No comment provided by engineer. */
-"Footer section" = "Раздел подвала";
-
-/* No comment provided by engineer. */
-"Footers" = "Подвалы сайта";
-
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "Для вашего удобства, мы заполнили вашу контактную информацию WordPress.com. Пожалуйста, перепроверьте её на корректность, действительно ли вы хотите использовать её для этого домена.";
 
-/* No comment provided by engineer. */
-"Format settings" = "Настройки формата";
-
 /* Next web page */
 "Forward" = "Направить";
-
-/* No comment provided by engineer. */
-"Four." = "Четыре.";
 
 /* Browse free themes selection title */
 "Free" = "Бесплатно";
@@ -3417,9 +2836,6 @@
 
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
-
-/* No comment provided by engineer. */
-"Gallery caption text" = "Текст подписи к галерее";
 
 /* translators: accessibility text. %s: gallery caption. */
 "Gallery caption. %s" = "Подпись галереи. %s";
@@ -3473,17 +2889,8 @@
 /* Cancel */
 "Give Up" = "Не отправлять";
 
-/* No comment provided by engineer. */
-"Give quoted text visual emphasis. \"In quoting others, we cite ourselves.\" — Julio Cortázar" = "Визуально акцентируйте цитируемый текст. \"Цитируя других, мы цитируем себя.\" - Julio Cortázar";
-
-/* No comment provided by engineer. */
-"Give special visual emphasis to a quote from your text." = "Визуально акцентируйте цитату из вашего текста.";
-
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Первое впечатление важно! Назовите свой сайт так, как это отразит его индивидуальность и содержание.";
-
-/* No comment provided by engineer. */
-"Global Styles" = "Глобальные стили";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3557,9 +2964,6 @@
 /* Post HTML content */
 "HTML Content" = "HTML-содержимое";
 
-/* No comment provided by engineer. */
-"HTML element" = "Элемент HTML";
-
 /* Accessibility label for selecting h1 paragraph style button on the formatting toolbar. */
 "Header 1" = "Заголовок №1";
 
@@ -3577,21 +2981,6 @@
 
 /* Accessibility label for selecting h6 paragraph style button on the formatting toolbar. */
 "Header 6" = "Заголовок №6";
-
-/* No comment provided by engineer. */
-"Header cell text" = "Текст ячейки заголовка";
-
-/* No comment provided by engineer. */
-"Header label" = "Ярлык заголовка";
-
-/* No comment provided by engineer. */
-"Header section" = "Раздел заголовка";
-
-/* No comment provided by engineer. */
-"Headers" = "Заголовки";
-
-/* No comment provided by engineer. */
-"Heading" = "Заголовок";
 
 /* translators: %s: heading level e.g: \"1\", \"2\", \"3\" */
 "Heading %d" = "Заголовок %d";
@@ -3614,12 +3003,6 @@
 /* H6 Aztec Style */
 "Heading 6" = "Заголовок 6";
 
-/* No comment provided by engineer. */
-"Heading text" = "Текст заголовка";
-
-/* No comment provided by engineer. */
-"Height in pixels" = "Высота в пикселях";
-
 /* Help button */
 "Help" = "Помощь";
 
@@ -3632,9 +3015,6 @@
 
 /* No comment provided by engineer. */
 "Help icon" = "Значок справки";
-
-/* No comment provided by engineer. */
-"Help visitors find your content." = "Помогите посетителям найти содержимое вашего сайта.";
 
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Тут информация о том как поживает ваша запись.";
@@ -3656,9 +3036,6 @@
 /* No comment provided by engineer. */
 "Hide keyboard" = "Спрятать клавиатуру";
 
-/* No comment provided by engineer. */
-"Hide the excerpt on the full content page" = "Скрыть отрывок на полной странице содержимого";
-
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
    Title of the post history screen */
@@ -3673,9 +3050,6 @@
 /* Moderation Keys Title
    Settings: Comments Moderation */
 "Hold for Moderation" = "Отправить на модерацию";
-
-/* translators: 'Home' as in a website's home page. */
-"Home" = "Главная";
 
 /* The item to select during a guided tour.
    Title for setting which shows the current page assigned as a site's homepage
@@ -3692,9 +3066,6 @@
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Ура!\nПочти всё готово";
-
-/* No comment provided by engineer. */
-"Horizontal" = "Горизонтальный";
 
 /* Title for the fix section in Threat Details: Threat is fixed */
 "How did Jetpack fix it?" = "Как Jetpack исправил это?";
@@ -3725,9 +3096,6 @@
 
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Если вы продолжите работу с учетной записью Apple или Google, не имея учётной записи WordPress.com, вы создадите учётную запись и примете наши _Условия обслуживания_.";
-
-/* No comment provided by engineer. */
-"If you have entered a custom label, it will be prepended before the title." = "Если вы ввели специальный ярлык, он будет добавлен перед заголовком.";
 
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
 "If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "Если вы удалите %1$@, он больше не сможет посещать этот сайт, но всё содержимое, созданное %2$@, останется на сайте.";
@@ -3768,9 +3136,6 @@
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Размер изображения";
 
-/* No comment provided by engineer. */
-"Image caption text" = "Текст подписи к изображению";
-
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Подпись к изображению. %s";
 
@@ -3780,14 +3145,8 @@
 /* Hint for image title on image settings. */
 "Image title" = "Заголовок изображения";
 
-/* No comment provided by engineer. */
-"Image width" = "Ширина изображения";
-
 /* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
 "Image, %@" = "Изображение, %@";
-
-/* No comment provided by engineer. */
-"Image, Date, & Title" = "Изображение, дата и заголовок";
 
 /* Undated post time label */
 "Immediately" = "Немедленно";
@@ -3797,15 +3156,6 @@
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Объясните в нескольких словах, о чём этот сайт.";
-
-/* No comment provided by engineer. */
-"In a few words, what this site is about." = "Объясните в нескольких словах, о чём этот сайт.";
-
-/* No comment provided by engineer. */
-"In a village of La Mancha, the name of which I have no desire to call to mind, there lived not long since one of those gentlemen that keep a lance in the lance-rack, an old buckler, a lean hack, and a greyhound for coursing." = "В скромной деревушке провинции Ламанчи жил идальго, по имени Дон Кехана. Как и всякий дворянин, он гордился своим благородным происхождением, свято хранил древний щит и родовое копье и держал у себя на дворе тощую клячу и борзую собаку.";
-
-/* No comment provided by engineer. */
-"In quoting others, we cite ourselves." = "Цитируя других, мы цитируем себя.";
 
 /* Describes a status of a plugin */
 "Inactive" = "Неактивен";
@@ -3824,12 +3174,6 @@
 
 /* An error message shown when a user signed in with incorrect credentials. */
 "Incorrect username or password. Please try entering your login details again." = "Неправильное имя пользователя или пароль. Попробуйте ввести учётные данные ещё раз.";
-
-/* No comment provided by engineer. */
-"Indent" = "Отступ";
-
-/* No comment provided by engineer. */
-"Indent list item" = "Добавить отступ к элементу списка";
 
 /* Title for a threat */
 "Infected core file" = "Заражение файла ядра";
@@ -3862,35 +3206,8 @@
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "Вставить медиафайл";
 
-/* No comment provided by engineer. */
-"Insert a table for sharing data." = "Создать таблицу для представления данных.";
-
-/* No comment provided by engineer. */
-"Insert a table — perfect for sharing charts and data." = "Вставить таблицу — отличный выбор для графиков и данных.";
-
-/* No comment provided by engineer. */
-"Insert additional custom elements with a WordPress shortcode." = "Вставить дополнительные пользовательские элементы с помощью шорткода.";
-
-/* No comment provided by engineer. */
-"Insert an image to make a visual statement." = "Добавьте изображение для визуального утверждения.";
-
-/* No comment provided by engineer. */
-"Insert column after" = "Вставить столбец после";
-
-/* No comment provided by engineer. */
-"Insert column before" = "Вставить столбец до";
-
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Вставить файл";
-
-/* No comment provided by engineer. */
-"Insert poetry. Use special spacing formats. Or quote song lyrics." = "Вставить поэтические строфы. Можно использовать специальный формат интервалов или цитировать текст песни.";
-
-/* No comment provided by engineer. */
-"Insert row after" = "Вставить строку после";
-
-/* No comment provided by engineer. */
-"Insert row before" = "Вставить строку до";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Выбрана вставка";
@@ -3927,9 +3244,6 @@
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Установка первого плагина на ваш сайт может занять до одной минуты. В это время вы не сможете вносить изменения на свой сайт.";
-
-/* No comment provided by engineer. */
-"Introduce new sections and organize content to help visitors (and search engines) understand the structure of your content." = "Объявите новые разделы и организуйте содержимое для удобства посетителей (и поисковых систем) в понимании его структуры.";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Представляем записи-истории";
@@ -3979,9 +3293,6 @@
 /* Accessibility label for italic button on formatting toolbar.
    Discoverability title for italic formatting keyboard shortcut. */
 "Italic" = "Курсив";
-
-/* No comment provided by engineer. */
-"Jazz Musician" = "Джазовый музыкант";
 
 /* Section title for the publish table section in the blog details screen
    Title for the Jetpack Installation
@@ -4057,9 +3368,6 @@
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Будьте в курсе жизни вашего сайта.";
 
-/* No comment provided by engineer. */
-"Kind" = "Тип";
-
 /* Autoapprove only from known users */
 "Known Users" = "Известные пользователи";
 
@@ -4069,16 +3377,10 @@
 /* Noun. Title for the setting to edit the sharing label text. */
 "Label" = "Текст подписи";
 
-/* No comment provided by engineer. */
-"Landscape" = "Ландшафт";
-
 /* Label for the privacy setting
    Language of the current blog
    Title for the Language Picker Screen */
 "Language" = "Язык";
-
-/* No comment provided by engineer. */
-"Language tag (en, fr, etc.)" = "Языковая метка (en, fr и т. д.)";
 
 /* Large image size. Should be the same as in core WP. */
 "Large" = "Большой";
@@ -4090,9 +3392,6 @@
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "Сводка по последней записи";
-
-/* No comment provided by engineer. */
-"Latest comments settings" = "Настройки последних комментариев";
 
 /* Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "Подробнее";
@@ -4111,9 +3410,6 @@
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "Узнайте больше о форматировании даты и времени.";
 
-/* No comment provided by engineer. */
-"Learn more about embeds" = "Узнать больше о встраивании";
-
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Подробнее о ролях";
 
@@ -4126,20 +3422,11 @@
 /* Title displayed for selection of custom app icons that may be removed in a future release of the app. */
 "Legacy Icons" = "Старые значки";
 
-/* No comment provided by engineer. */
-"Legacy Widget" = "Устаревший виджет";
-
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Обратитесь к нам за помощью.";
 
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Дайте мне знать по завершению!";
-
-/* translators: accessibility text. 1: heading level. 2: heading content. */
-"Level %1$s. %2$s" = "Уровень %1$s. %2$s";
-
-/* translators: accessibility text. %s: heading level. */
-"Level %s. Empty." = "Уровень %s. Пустой.";
 
 /* Title for the app appearance setting for light mode */
 "Light" = "Светлое оформление";
@@ -4202,19 +3489,7 @@
 "Link To" = "Ссылка";
 
 /* No comment provided by engineer. */
-"Link color" = "Цвет ссылки";
-
-/* No comment provided by engineer. */
-"Link label" = "Ярлык ссылки";
-
-/* No comment provided by engineer. */
-"Link rel" = "Link rel";
-
-/* No comment provided by engineer. */
 "Link to" = "Ссылка на";
-
-/* translators: %s: Name of the post type e.g: \"post\". */
-"Link to %s" = "Ссылка на %s";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Ссылка на имеющееся содержимое";
@@ -4224,23 +3499,8 @@
    Settings: Comments Approval settings */
 "Links in comments" = "Ссылки в комментариях";
 
-/* No comment provided by engineer. */
-"Links shown in a column." = "Ссылки, показанные в столбце.";
-
-/* No comment provided by engineer. */
-"Links shown in a row." = "Ссылки, показанные в строке.";
-
-/* No comment provided by engineer. */
-"List" = "Список";
-
-/* No comment provided by engineer. */
-"List of template parts" = "Список частей шаблона";
-
 /* The accessibility label for the list style button in the Post List. */
 "List style" = "Стиль списка";
-
-/* No comment provided by engineer. */
-"List text" = "Текст списка";
 
 /* Title of the screen that load selected the revisions. */
 "Load" = "Загрузка";
@@ -4311,9 +3571,6 @@
    Text displayed while loading time zones */
 "Loading..." = "Загрузка...";
 
-/* No comment provided by engineer. */
-"Loading…" = "Загрузка...";
-
 /* Status for Media object that is only exists locally. */
 "Local" = "Черновики";
 
@@ -4369,21 +3626,12 @@
 /* Instructions on the WordPress.com username / password log in form. */
 "Log in with your WordPress.com username and password." = "Войдите, указав имя пользователя WordPress.com и пароль.";
 
-/* No comment provided by engineer. */
-"Log out" = "Выйти";
-
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Выйти из WordPress?";
 
 /* Error message shown when a user is trying to login.
    Login Request Expired */
 "Login Request Expired" = "Срок действия запроса истёк";
-
-/* No comment provided by engineer. */
-"Login\/out settings" = "Настройки входа\/выхода";
-
-/* No comment provided by engineer. */
-"Logos Only" = "Только логотипы";
 
 /* No comment provided by engineer. */
 "Logs" = "Логи";
@@ -4397,9 +3645,6 @@
 /* No comment provided by engineer. */
 "Loop" = "Цикл";
 
-/* translators: example text. */
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et eros eu felis." = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et eros eu felis.";
-
 /* Title of a button. */
 "Lost your password?" = "Забыли пароль?";
 
@@ -4408,15 +3653,6 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Меню навигации";
-
-/* No comment provided by engineer. */
-"Main color" = "Основной цвет";
-
-/* No comment provided by engineer. */
-"Make template part" = "Создать часть шаблона";
-
-/* No comment provided by engineer. */
-"Make title a link" = "Сделать заголовок ссылкой";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4476,20 +3712,11 @@
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "Сопоставить учётные записи, используя адрес электронной почты";
 
-/* No comment provided by engineer. */
-"Matt Mullenweg" = "Matt Mullenweg";
-
 /* Title for the image size settings option. */
 "Max Image Upload Size" = "Максимальный размер загружаемого изображения";
 
 /* Title for the video size settings option. */
 "Max Video Upload Size" = "Максимальный размер загружаемого видеофайла";
-
-/* No comment provided by engineer. */
-"Max number of words in excerpt" = "Максимальное количество слов в отрывке";
-
-/* No comment provided by engineer. */
-"May 7, 2019" = "7 мая 2019";
 
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
@@ -4542,9 +3769,6 @@
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "Не удалось загрузить медиафайл для предварительного просмотра.";
 
-/* No comment provided by engineer. */
-"Media settings" = "Настройки медиафайлов";
-
 /* Alert displayed to the user when multiple media items have uploaded successfully. */
 "Media uploaded (%ld files)" = "Загружено медиафайлов (%ld)";
 
@@ -4592,9 +3816,6 @@
 /* Jetpack Monitor Settings: Monitor site's uptime */
 "Monitor your site's uptime" = "Контроль бесперебойной работы сайта";
 
-/* translators: Caption accompanying an image of the Mont Blanc, which serves as an example for the Image block. */
-"Mont Blanc appears—still, snowy, and serene." = "Появляется Монблан - тихий, снежный и безмятежный.";
-
 /* Title of Months stats filter. */
 "Months" = "Месяцы";
 
@@ -4624,9 +3845,6 @@
 
 /* Section title for global related posts. */
 "More on WordPress.com" = "Подробнее на WordPress.com";
-
-/* No comment provided by engineer. */
-"More tools & options" = "Больше инструментов и возможностей";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Самое популярное время";
@@ -4664,12 +3882,6 @@
 /* Option to move Insight down in the view. */
 "Move down" = "Вниз";
 
-/* No comment provided by engineer. */
-"Move image backward" = "Переместить изображение назад";
-
-/* No comment provided by engineer. */
-"Move image forward" = "Переместить изображение вперёд";
-
 /* Screen reader text for button that will move the menu item */
 "Move menu item" = "Перемещение элемента меню";
 
@@ -4701,9 +3913,6 @@
 /* An example tag used in the login prologue screens. */
 "Music" = "Музыка";
 
-/* No comment provided by engineer. */
-"Muted" = "Беззвучно";
-
 /* Link to My Profile section
    My Profile view title */
 "My Profile" = "Мой профиль";
@@ -4727,9 +3936,6 @@
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Мой выбор лучших 10 кафе";
 
-/* translators: example text. */
-"Nam risus massa, ullamcorper consectetur eros fermentum, porta aliquet ligula. Sed vel mauris nec enim." = "Nam risus massa, ullamcorper consectetur eros fermentum, porta aliquet ligula. Sed vel mauris nec enim.";
-
 /* Accessibility label for the Email text field.
    Name text field placeholder */
 "Name" = "Имя";
@@ -4745,12 +3951,6 @@
 
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Переход к настройкам градиента";
-
-/* No comment provided by engineer. */
-"Navigation (horizontal)" = "Навигация (горизонтальная)";
-
-/* No comment provided by engineer. */
-"Navigation (vertical)" = "Навигация (вертикальная)";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Нужна помощь?";
@@ -4773,9 +3973,6 @@
 
 /* Blocklist Keyword Insertion Title */
 "New Blocklist Word" = "Новое слово из списка блокировки";
-
-/* No comment provided by engineer. */
-"New Column" = "Новый столбец";
 
 /* Title of alert informing users about the Reader Save for Later feature. */
 "New Custom App Icons" = "Новые пользовательские значки приложения";
@@ -4801,9 +3998,6 @@
 /* Noun. The title of an item in a list. */
 "New posts" = "Новые записи";
 
-/* No comment provided by engineer. */
-"New template part" = "Новая часть шаблона";
-
 /* Screen title, where users can see the newest plugins */
 "Newest" = "Новейшее";
 
@@ -4816,23 +4010,14 @@
    Title of a button. The text should be capitalized. */
 "Next" = "Далее";
 
-/* No comment provided by engineer. */
-"Next Page" = "Следующая страница";
-
 /* Table view title for the quick start section. */
 "Next Steps" = "Следующие шаги";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "Следующее уведомление";
 
-/* No comment provided by engineer. */
-"Next page link" = "Ссылка на следующую страницу";
-
 /* Accessibility label */
 "Next period" = "Следующий период";
-
-/* No comment provided by engineer. */
-"Next post" = "Следующая запись";
 
 /* Label for a cancel button */
 "No" = "Нет";
@@ -4849,9 +4034,6 @@
 /* Title for the error view when there's no connection
    Title of error prompt when no internet connection is available. */
 "No Connection" = "Нет соединения";
-
-/* No comment provided by engineer. */
-"No Date" = "Нет даты";
 
 /* List Editor Empty State Message */
 "No Items" = "Нет элементов";
@@ -4904,9 +4086,6 @@
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Комментариев пока нет";
-
-/* No comment provided by engineer. */
-"No comments." = "Комментариев нет.";
 
 /* An error message title shown when there is no internet connection.
    Displayed during Site Creation, when searching for Verticals and the network is unavailable.
@@ -5016,9 +4195,6 @@
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "Записей нет.";
 
-/* No comment provided by engineer. */
-"No preview available." = "Предварительный просмотр недоступен.";
-
 /* A message title */
 "No recent posts" = "Нет свежих записей";
 
@@ -5082,16 +4258,7 @@
 "Not seeing the email? Check your Spam or Junk Mail folder." = "Не нашли письмо? Загляните в папку со спамом.";
 
 /* No comment provided by engineer. */
-"Note: Autoplaying audio may cause usability issues for some visitors." = "Внимание: Автовоспроизведение видео может составить проблему для некоторых посетителей.";
-
-/* No comment provided by engineer. */
-"Note: Autoplaying videos may cause usability issues for some visitors." = "Внимание: Автовоспроизведение видео может составить проблему для некоторых посетителей.";
-
-/* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "Заметьте: макет колонок может меняться в зависимости от темы и размера экрана";
-
-/* No comment provided by engineer. */
-"Note: Most phone and tablet browsers won't display embedded PDFs." = "Примечание: большинство телефонов и планшетов не отображают встроенные PDF-файлы.";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Ничего не найдено.";
@@ -5133,9 +4300,6 @@
 
 /* Register Domain - Address information field Number */
 "Number" = "Номер";
-
-/* No comment provided by engineer. */
-"Number of comments" = "Количество комментариев";
 
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Нумерованный список";
@@ -5193,15 +4357,6 @@
 /* Accessibility label for 1 password button */
 "One Password button" = "Кнопка One Password";
 
-/* No comment provided by engineer. */
-"One column" = "Один столбец";
-
-/* translators: Quote serving as example for the Pullquote block. Attributed to Matt Mullenweg. */
-"One of the hardest things to do in technology is disrupt yourself." = "One of the hardest things to do in technology is disrupt yourself.";
-
-/* No comment provided by engineer. */
-"One." = "Один.";
-
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Смотрите только интересующую вас статистику. Добавьте тенденции, которые вам нужны.";
 
@@ -5220,6 +4375,9 @@
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Ой!";
 
+/* No comment provided by engineer. */
+"Open Block Actions Menu" = "Открыть меню действий с блоком";
+
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Открыть настройки устройства";
 
@@ -5232,9 +4390,6 @@
 
 /* Today widget label to launch WP app */
 "Open WordPress" = "Открыть WordPress";
-
-/* No comment provided by engineer. */
-"Open block navigation" = "Навигация по открытым блокам";
 
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "Открыть инструмент выбора медиафайлов полностью";
@@ -5281,14 +4436,8 @@
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Или войдите с _адресом вашего сайта_.";
 
-/* No comment provided by engineer. */
-"Ordered" = "Упорядоченный";
-
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Упорядоченный список";
-
-/* No comment provided by engineer. */
-"Ordered list settings" = "Настройки упорядоченного списка";
 
 /* Register Domain - Domain contact information field Organization */
 "Organization" = "Организация";
@@ -5321,23 +4470,8 @@
    Other Sites Notification Settings Title */
 "Other Sites" = "Другие сайты";
 
-/* No comment provided by engineer. */
-"Outdent" = "Обратный отступ";
-
-/* No comment provided by engineer. */
-"Outdent list item" = "Обратный отступ для элемента списка";
-
-/* No comment provided by engineer. */
-"Outline" = "Контур";
-
 /* Used to indicate a setting is overridden in debug builds of the app */
 "Overridden" = "Переопределено";
-
-/* No comment provided by engineer. */
-"PDF embed" = "Встроенный PDF";
-
-/* No comment provided by engineer. */
-"PDF settings" = "Настройки PDF";
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "ТЕЛЕФОН";
@@ -5345,9 +4479,6 @@
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page */
 "Page" = "Страница";
-
-/* No comment provided by engineer. */
-"Page Link" = "Ссылка на страницу";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
 "Page Restored to Drafts" = "Страница восстановлена в списке \"Черновики\"";
@@ -5407,12 +4538,6 @@
    Settings: Comments Paging preferences */
 "Paging" = "Разбиение на страницы";
 
-/* No comment provided by engineer. */
-"Paragraph" = "Абзац";
-
-/* No comment provided by engineer. */
-"Paragraph block" = "Блок параграфа";
-
 /* Placeholder to set a parent category for a new category.
    Title for selecting parent category of a category */
 "Parent Category" = "Родительская рубрика";
@@ -5442,7 +4567,7 @@
 "Paste URL" = "Вставьте URL";
 
 /* No comment provided by engineer. */
-"Paste a link to the content you want to display on your site." = "Вставьте ссылку на содержимое, которое вы хотите отобразить на своем сайте.";
+"Paste block after" = "Вставить блок после";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Вставить без форматирования";
@@ -5490,9 +4615,6 @@
 /* Prompt for the screen to pick a design and homepage for a site. */
 "Pick your favorite homepage layout. You can edit and customize it later." = "Выберите макет главной страницы. Его можно настроить или изменить позже.";
 
-/* No comment provided by engineer. */
-"Pill Shape" = "Форма таблетки";
-
 /* The item to select during a guided tour. */
 "Plan" = "Тариф";
 
@@ -5500,14 +4622,8 @@
    Title for the plan selector */
 "Plans" = "Тарифные планы";
 
-/* No comment provided by engineer. */
-"Play inline" = "Проигрывать встроенным";
-
 /* User action to play a video on the editor. */
 "Play video" = "Воспроизвести видео";
-
-/* No comment provided by engineer. */
-"Playback controls" = "Контроль воспроизведения";
 
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "Пожалуйста добавьте что-нибудь в содержимое перед публикацией.";
@@ -5652,9 +4768,6 @@
 /* Section title for Popular Languages */
 "Popular languages" = "Популярные языки";
 
-/* No comment provided by engineer. */
-"Portrait" = "Портрет";
-
 /* Menu item label for linking a post.
    Noun. Type of content being selected is a blog post */
 "Post" = "Запись";
@@ -5662,39 +4775,9 @@
 /* Title for selecting categories for a post */
 "Post Categories" = "Рубрики записи";
 
-/* No comment provided by engineer. */
-"Post Comment" = "Комментарий к записи";
-
-/* No comment provided by engineer. */
-"Post Comment Author" = "Автор комментария";
-
-/* No comment provided by engineer. */
-"Post Comment Content" = "Содержимое комментария";
-
-/* No comment provided by engineer. */
-"Post Comment Date" = "Дата комментария";
-
-/* No comment provided by engineer. */
-"Post Comments Count block: post not found." = "Блок подсчета комментариев к записи: записей не найдено.";
-
-/* No comment provided by engineer. */
-"Post Comments Form" = "Форма комментирования записи";
-
-/* No comment provided by engineer. */
-"Post Comments Form block: comments are not enabled for this post type." = "Блок формы комментария: комментарии не включены для этого типа записей.";
-
-/* No comment provided by engineer. */
-"Post Comments Form block: comments to this post are not allowed." = "Блок формы комментирования: комментарии к этой записи не разрешаются.";
-
-/* No comment provided by engineer. */
-"Post Comments Link block: post not found." = "Блок ссылок для комментариев : запись не найдена.";
-
 /* For setting the format of a post.
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Формат записи";
-
-/* No comment provided by engineer. */
-"Post Link" = "Ссылка записи";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "Запись восстановлена и перемещена в черновики";
@@ -5714,9 +4797,6 @@
 
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "Запись автора %1$@, из %2$@";
-
-/* No comment provided by engineer. */
-"Post comments block: no post found." = "Блок комментариев к записи: запись не найдена.";
 
 /* No comment provided by engineer. */
 "Post content settings" = "Настройки содержимого записи";
@@ -5775,9 +4855,6 @@
 /* Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, blog URL, author name */
 "Posted in %@, at %@, by %@." = "Опубликовано в %1$@, %2$@, автором %3$@.";
 
-/* No comment provided by engineer. */
-"Poster image" = "Постер";
-
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Частота публикаций";
@@ -5787,9 +4864,6 @@
    Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query */
 "Posts" = "Записи";
-
-/* No comment provided by engineer. */
-"Posts List" = "Список записей";
 
 /* Title for setting which shows the current page assigned as a site's posts page */
 "Posts Page" = "Страница записей";
@@ -5816,9 +4890,6 @@
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "Предоставлено Tenor";
-
-/* No comment provided by engineer. */
-"Preformatted text" = "Преформатированный текст";
 
 /* No comment provided by engineer. */
 "Preload" = "Предварительная загрузка";
@@ -5855,20 +4926,11 @@
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "Посмотрите ваш сайт перед тем, как его увидят посетители.";
 
-/* No comment provided by engineer. */
-"Previous Page" = "Предыдущая страница";
-
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Предыдущее уведомление";
 
-/* No comment provided by engineer. */
-"Previous page link" = "Ссылка на предыдущую страницу";
-
 /* Accessibility label */
 "Previous period" = "Предыдущий период";
-
-/* No comment provided by engineer. */
-"Previous post" = "Предыдущая запись";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -5921,15 +4983,6 @@
 
 /* Menu item label for linking a project page. */
 "Projects" = "Проекты";
-
-/* No comment provided by engineer. */
-"Prompt visitors to take action with a button-style link." = "Мотивируйте посетителей к действию ссылкой в виде кнопки.";
-
-/* No comment provided by engineer. */
-"Prompt visitors to take action with a group of button-style links." = "Мотивируйте посетителей к действию с помощью группы ссылок в стиле кнопок.";
-
-/* No comment provided by engineer. */
-"Provided type is not supported." = "Предоставленный тип не поддерживается.";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
@@ -6002,12 +5055,6 @@
 /* Text displayed in HUD while a post is being published. */
 "Publishing..." = "Публикация…";
 
-/* No comment provided by engineer. */
-"Pullquote citation text" = "Цитируемый текст выдержки";
-
-/* No comment provided by engineer. */
-"Pullquote text" = "Текст выдержки";
-
 /* Title of screen showing site purchases */
 "Purchases" = "Покупки";
 
@@ -6023,29 +5070,14 @@
 /* This is the string we display when asking the user to approve push notifications in the settings app after previously having denied them. */
 "Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on." = "Push-уведомления отключены в настройках iOS. Включите \"Разрешить уведомления\".";
 
-/* No comment provided by engineer. */
-"Query Title" = "Заголовок запроса";
-
 /* The menu item to select during a guided tour. */
 "Quick Start" = "Быстрый старт";
-
-/* No comment provided by engineer. */
-"Quote citation text" = "Цитируемый текст выдержки";
-
-/* No comment provided by engineer. */
-"Quote text" = "Текст цитаты";
-
-/* No comment provided by engineer. */
-"RSS settings" = "Настройки RSS";
 
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Оцените нас в App Store";
 
 /* No comment provided by engineer. */
 "Read more" = "Читать далее";
-
-/* No comment provided by engineer. */
-"Read more link text" = "Текст ссылки \"Читать далее\"";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Прочесть на";
@@ -6100,9 +5132,6 @@
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "Подключение установлено.";
 
-/* No comment provided by engineer. */
-"Redirect to current URL" = "Перенаправить на текущий URL";
-
 /* Label for link title in Referrers stat. */
 "Referrer" = "Источник перехода";
 
@@ -6141,9 +5170,6 @@
 
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "В разделе «Связанные записи» под вашими записями отображается соответствующее содержимое с вашего сайта";
-
-/* No comment provided by engineer. */
-"Release Date" = "Дата выпуска";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -6197,9 +5223,6 @@
 
 /* Accessibility hint for the 'Save Post' button when a post is already saved. */
 "Remove this post from my saved posts." = "Удалить эту запись из моих сохраненных записей.";
-
-/* No comment provided by engineer. */
-"Remove track" = "Удалить дорожку";
 
 /* User action to remove video. */
 "Remove video" = "Удалить видеофайл";
@@ -6301,9 +5324,6 @@
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Изменить размер и обрезать";
 
-/* No comment provided by engineer. */
-"Resize for smaller devices" = "Изменить размер для устройств с небольшим экраном";
-
 /* The largest resolution allowed for uploading */
 "Resolution" = "Разрешение";
 
@@ -6327,9 +5347,6 @@
 
 /* Label that describes the restore site action */
 "Restore site" = "Восстановление сайта";
-
-/* No comment provided by engineer. */
-"Restore template to theme default" = "Восстановить шаблон на предоставляемый темой по умолчанию";
 
 /* Button title for restore site action */
 "Restore to this point" = "Восстановить до этой точки";
@@ -6383,9 +5400,6 @@
 /* No comment provided by engineer. */
 "Reusable blocks aren't editable on WordPress for iOS" = "\"Мои блоки\" нельзя редактировать в приложении WordPress для iOS";
 
-/* No comment provided by engineer. */
-"Reverse list numbering" = "Обратная нумерация списка";
-
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Отменить ожидание изменения";
 
@@ -6408,12 +5422,6 @@
    User Roles Title
    User's Role */
 "Role" = "Роль";
-
-/* No comment provided by engineer. */
-"Rotate" = "Вращать";
-
-/* No comment provided by engineer. */
-"Row count" = "Количество строк";
 
 /* One Time Code has been sent via SMS */
 "SMS Sent" = "SMS отправлено";
@@ -6648,9 +5656,6 @@
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Выбрать стиль абзацев";
 
-/* No comment provided by engineer. */
-"Select poster image" = "Выберите изображение постера";
-
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "Выберите %@ , чтобы добавить учетные записи социальных сетей";
 
@@ -6720,9 +5725,6 @@
 /* Jetpack Monitor Settings: Send push notifications */
 "Send push notifications" = "Отправлять push-уведомления";
 
-/* No comment provided by engineer. */
-"Separate your content into a multi-page experience." = "Разделите содержимое на несколько страниц.";
-
 /* Title for the Serve images from our servers setting */
 "Serve images from our servers" = "Отдавать изображения с наших серверов";
 
@@ -6744,9 +5746,6 @@
 
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "Установить как страницу записей";
-
-/* No comment provided by engineer. */
-"Set media and words side-by-side for a richer layout." = "Установите медиафайл и текст по бокам от него для богатства макета.";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "Настройка";
@@ -6821,9 +5820,6 @@
 /* No comment provided by engineer. */
 "Shortcode" = "Шорткод";
 
-/* No comment provided by engineer. */
-"Shortcode text" = "Текст шорткода";
-
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Показывать заголовок";
 
@@ -6845,21 +5841,12 @@
 /* No comment provided by engineer. */
 "Show download button" = "Показать кнопку скачивания";
 
-/* No comment provided by engineer. */
-"Show inline embed" = "Показать встроенные объекты";
-
-/* No comment provided by engineer. */
-"Show login & logout links." = "Показывать ссылки входа и выхода.";
-
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "Показать пароль";
 
 /* No comment provided by engineer. */
 "Show post content" = "Показать содержимое записи";
-
-/* No comment provided by engineer. */
-"Show post counts" = "Отображать число записей";
 
 /* translators: Checkbox toggle label */
 "Show section" = "Показать раздел";
@@ -6872,9 +5859,6 @@
 
 /* Voiceover description for the post list filter which shows posts for just the current user on a site. */
 "Showing just my posts" = "Показаны только ваши записи";
-
-/* No comment provided by engineer. */
-"Showing large initial letter." = "Отображение большой начальной буквы.";
 
 /* Label on Post Stats view indicating which post the stats are for. */
 "Showing stats for:" = "Показ статистики для:";
@@ -6918,9 +5902,6 @@
 /* Accessibility hint for the site name and URL button on Reader's Post Details. */
 "Shows the site's posts." = "Показывает записи сайта";
 
-/* No comment provided by engineer. */
-"Sidebars" = "Боковые панели";
-
 /* View title during the sign up process. */
 "Sign Up" = "Регистрация";
 
@@ -6953,9 +5934,6 @@
 
 /* Title for the Language Picker View */
 "Site Language" = "Язык сайта";
-
-/* No comment provided by engineer. */
-"Site Logo" = "Логотип сайта";
 
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
@@ -7006,17 +5984,11 @@
  force splits it into 2 lines. */
 "Site security and performance\nfrom your pocket" = "Безопасность и производительность сайта\nв вашем кармане";
 
-/* No comment provided by engineer. */
-"Site tagline text" = "Текст слогана сайта";
-
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Часовой пояс сайта (UTC%1$@%2$d%3$@)";
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "Название сайта изменено";
-
-/* No comment provided by engineer. */
-"Site title text" = "Текст названия сайта";
 
 /* Sites Filter Tab Title
    Title of a Reader tab showing Sites matching a user's search query */
@@ -7027,9 +5999,6 @@
 
 /* A suggestion of topics the user might */
 "Sites to follow" = "Сайты для подписки";
-
-/* No comment provided by engineer. */
-"Six." = "Шесть.";
 
 /* Image size option title. */
 "Size" = "Размер";
@@ -7056,12 +6025,6 @@
 
 /* Follower Totals label for social media followers */
 "Social" = "Соцсети";
-
-/* No comment provided by engineer. */
-"Social Icon" = "Значок соцсетей";
-
-/* No comment provided by engineer. */
-"Solid color" = "Сплошной цвет";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Произошел сбой при загрузке некоторых медиафайлов. Это действие удалит из записи все медиафайлы, которые не удалось загрузить.\nВсе равно сохранить?";
@@ -7121,9 +6084,6 @@
 "Sorry, that username is unavailable." = "Извините, это имя недоступно.";
 
 /* No comment provided by engineer. */
-"Sorry, this content could not be embedded." = "К сожалению, это содержимое не может быть встроено.";
-
-/* No comment provided by engineer. */
 "Sorry, usernames can only contain lowercase letters (a-z) and numbers." = "Извините, имя пользователя может содержать только строчные латинские буквы (a&#8212;z) и цифры.";
 
 /* No comment provided by engineer. */
@@ -7157,17 +6117,11 @@
 /* Opens the Github Repository Web */
 "Source Code" = "Исходный код";
 
-/* No comment provided by engineer. */
-"Source language" = "Язык источника";
-
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "South" = "юг";
 
 /* Label for showing the available disk space quota available for media */
 "Space used" = "Использованное место";
-
-/* No comment provided by engineer. */
-"Spacer settings" = "Настройки интервала";
 
 /* Marks comment as spam.
    Spam
@@ -7181,9 +6135,6 @@
    Title for the Speed up your site Settings Screen */
 "Speed up your site" = "Ускорьте ваш сайт";
 
-/* No comment provided by engineer. */
-"Square" = "Квадрат";
-
 /* Standard post format label */
 "Standard" = "Стандартный";
 
@@ -7193,12 +6144,6 @@
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
 "Start Over" = "Начать сначала";
-
-/* No comment provided by engineer. */
-"Start value" = "Начальное значение";
-
-/* No comment provided by engineer. */
-"Start with the building block of all narrative." = "Начните с создания повествовательного блока.";
 
 /* No comment provided by engineer. */
 "Start writing…" = "Начните писать...";
@@ -7258,9 +6203,6 @@
 /* Discoverability title for strikethrough formatting keyboard shortcut. */
 "Strikethrough" = "Перечёркнутый";
 
-/* No comment provided by engineer. */
-"Stripes" = "Полосы";
-
 /* Status for Media object that is only has the mediaID locally. */
 "Stub" = "Заглушка";
 
@@ -7269,9 +6211,6 @@
 
 /* Text displayed in HUD while a post is being submitted for review. */
 "Submitting for Review..." = "Отправка на рассмотрение...";
-
-/* No comment provided by engineer. */
-"Subtitles" = "Субтитры";
 
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "Индекс Spotlight очищен";
@@ -7302,9 +6241,6 @@
    Theme Support action title
    View title for Support page. */
 "Support" = "Поддержка";
-
-/* translators: example text. */
-"Suspendisse commodo neque lacus, a dictum orci interdum et." = "Suspendisse commodo neque lacus, a dictum orci interdum et.";
 
 /* Button used to switch site */
 "Switch Site" = "Сменить сайт";
@@ -7349,16 +6285,7 @@
 "System default" = "Системные параметры по умолчанию";
 
 /* No comment provided by engineer. */
-"Table" = "Таблица";
-
-/* No comment provided by engineer. */
-"Table caption text" = "Текст подписи к таблице";
-
-/* No comment provided by engineer. */
 "Table of Contents" = "Содержание";
-
-/* No comment provided by engineer. */
-"Table settings" = "Настройки таблицы";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "Таблица с показом %@";
@@ -7372,12 +6299,6 @@
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
 "Tag" = "Метка";
-
-/* No comment provided by engineer. */
-"Tag Cloud settings" = "Настройки облака меток";
-
-/* No comment provided by engineer. */
-"Tag Link" = "Ссылка на метку";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "Метка уже существует";
@@ -7475,24 +6396,6 @@
 /* Create site, step 1. Select type of site. Title */
 "Tell us what kind of site you'd like to make" = "Расскажите какой тип сайта вы хотите создать";
 
-/* No comment provided by engineer. */
-"Template Part" = "Часть шаблона";
-
-/* translators: %s: template part title. */
-"Template Part \"%s\" inserted." = "Часть шаблона \"%s\" вставлена.";
-
-/* No comment provided by engineer. */
-"Template Parts" = "Части шаблона";
-
-/* No comment provided by engineer. */
-"Template part created." = "Часть шаблона создана.";
-
-/* No comment provided by engineer. */
-"Templates" = "Шаблоны";
-
-/* No comment provided by engineer. */
-"Term description." = "Описание элемента.";
-
 /* The underlined title sentence */
 "Terms and Conditions" = "Правила и условия";
 
@@ -7505,18 +6408,9 @@
 /* Title of a button style */
 "Text Only" = "Только текст";
 
-/* No comment provided by engineer. */
-"Text link settings" = "Настройки текстовой ссылки";
-
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
 "Text me a code instead" = "Пришлите мне сообщение с кодом";
-
-/* No comment provided by engineer. */
-"Text settings" = "Настройки текста";
-
-/* No comment provided by engineer. */
-"Text tracks" = "Текстовые дорожки";
 
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Благодарим вас за выбор темы %1$@ от %2$@!";
@@ -7580,15 +6474,6 @@
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Сертификат для этого сервера недействителен. Возможно, вы пытаетесь подключиться к серверу, который имитирует «%@». Это может представлять риск для конфиденциальности вашей информации.\n\nДоверять этому сертификату?";
-
-/* translators: %s: poster image URL. */
-"The current poster image url is %s" = "Адрес изображения-постера %s";
-
-/* No comment provided by engineer. */
-"The excerpt is hidden." = "Отрывок скрыт.";
-
-/* No comment provided by engineer. */
-"The excerpt is visible." = "Отрывок показан.";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "Файл %1$@ содержит элемент вредоносного кода";
@@ -7678,9 +6563,6 @@
 /* Message shown when a video failed to load while trying to add it to the Media library. */
 "The video could not be added to the Media Library." = "Невозможно добавить видео в «Библиотеку файлов».";
 
-/* No comment provided by engineer. */
-"The wren<br>Earns his living<br>Noiselessly." = "Клюв свой раскрыв,<br>Запеть не успел крапивник.<br>Кончился день.";
-
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Тема подключена";
 
@@ -7721,9 +6603,6 @@
 
 /* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
 "There is an issue connecting to %@. Reconnect to continue publicizing." = "Не удалось подключиться к %@. Чтобы публиковать записи, установите подключение.";
-
-/* No comment provided by engineer. */
-"There is no poster image currently selected" = "Изображение-постер не выбрано";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
    No comment (test)
@@ -7822,12 +6701,6 @@
 /* Explaining to the user why the app needs access to the device media library. */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Для добавления фотографий и видео к вашим записям этому приложению необходим доступ к библиотеке медиафайлов на вашем устройстве. Если вы хотите разрешить доступ, измените настройки конфиденциальности.";
 
-/* No comment provided by engineer. */
-"This block is deprecated. Please use the Columns block instead." = "Этот блок устарел. Вместо этого используйте блок «Столбцы».";
-
-/* No comment provided by engineer. */
-"This column count exceeds the recommended amount and may cause visual breakage." = "Это количество столбцов превышает рекомендуемое количество и может привести к визуальной поломке.";
-
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
 "This domain is unavailable" = "Этот домен недоступен";
 
@@ -7896,15 +6769,6 @@
 /* Message displayed when a threat is ignored successfully. */
 "Threat ignored." = "Угроза проигнорирована.";
 
-/* No comment provided by engineer. */
-"Three columns; equal split" = "Три столбца с равным разделением";
-
-/* No comment provided by engineer. */
-"Three columns; wide center column" = "Три столбца текста; широкий центральный столбец";
-
-/* No comment provided by engineer. */
-"Three." = "Три.";
-
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Миниатюра";
 
@@ -7934,20 +6798,8 @@
    Title of the new Category being created. */
 "Title" = "Заголовок";
 
-/* No comment provided by engineer. */
-"Title & Date" = "Заголовок и дата";
-
-/* No comment provided by engineer. */
-"Title & Excerpt" = "Заголовок и отрывок";
-
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Название рубрики обязательно.";
-
-/* No comment provided by engineer. */
-"Title of track" = "Заголовок дорожки";
-
-/* No comment provided by engineer. */
-"Title, Date, & Excerpt" = "Заголовок, дата и отрывок";
 
 /* NSPhotoLibraryAddUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library.
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
@@ -7980,9 +6832,6 @@
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Чтобы войти через эту учетную запись Google, пожалуйста войдите сначала с паролем WordPress.com. Это запрашивается только один раз.";
 
-/* No comment provided by engineer. */
-"To show a comment, input the comment ID." = "Чтобы показать комментарий, введите его ID.";
-
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Для создания фотографий и видео, которые будут размещаться в ваших записях.";
 
@@ -7999,12 +6848,6 @@
 
 /* Discoverability title for HTML keyboard shortcut. */
 "Toggle HTML Source " = "Показать исходный код HTML ";
-
-/* No comment provided by engineer. */
-"Toggle navigation" = "Переключить навигацию";
-
-/* No comment provided by engineer. */
-"Toggle to show a large initial letter." = "Сделать начальную букву большой.";
 
 /* Accessibility Identifier for the Aztec Ordered List Style. */
 "Toggles the ordered list style" = "Переход к упорядоченному списку";
@@ -8051,11 +6894,14 @@
 /* 'This Year' label for total number of words. */
 "Total Words" = "Всего слов";
 
-/* No comment provided by engineer. */
-"Tracks can be subtitles, captions, chapters, or descriptions. They help make your content more accessible to a wider range of users." = "Дорожки могут быть субтитрами, подписями, главами или описаниями. Они помогают сделать ваш контент более доступным для более широкого круга пользователей.";
-
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Трафик";
+
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Transform %s to" = "Преобразовать %s в";
+
+/* No comment provided by engineer. */
+"Transform block…" = "Преобразовать блок...";
 
 /* No comment provided by engineer. */
 "Translate" = "Перевести";
@@ -8132,18 +6978,6 @@
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Имя пользователя Twitter";
-
-/* No comment provided by engineer. */
-"Two columns; equal split" = "Два столбца с равным разделением";
-
-/* No comment provided by engineer. */
-"Two columns; one-third, two-thirds split" = "Два столбца, разделение: одна треть, две трети";
-
-/* No comment provided by engineer. */
-"Two columns; two-thirds, one-third split" = "Два столбца, разделение: две трети, одна треть";
-
-/* No comment provided by engineer. */
-"Two." = "Два.";
 
 /* Placeholder text for domain search during site creation. */
 "Type a keyword for more ideas" = "Введите ключевое слово для большего числа предложений";
@@ -8372,9 +7206,6 @@
 /* Displayed when a site has no name */
 "Unnamed Site" = "Сайт без названия";
 
-/* No comment provided by engineer. */
-"Unordered" = "Неупорядоченный";
-
 /* Accessibility label for unordered list button on formatting toolbar. */
 "Unordered List" = "Неупорядоченный список";
 
@@ -8395,9 +7226,6 @@
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Без названия";
-
-/* No comment provided by engineer. */
-"Untitled Template Part" = "Часть шаблона без заголовка";
 
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "Журналы хранятся в течение 7 дней.";
@@ -8449,14 +7277,8 @@
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Загрузить медиафайлы";
 
-/* No comment provided by engineer. */
-"Upload a file or pick one from your media library." = "Загрузите файл или выберите его из медиабиблиотеки.";
-
 /* Title of a Quick Start Tour */
 "Upload a site icon" = "Загрузить значок сайта";
-
-/* No comment provided by engineer. */
-"Upload an image, or pick one from your media library, to be your site logo" = "Загрузите изображение логотипа или выберите его из медиабиблиотеки.";
 
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
@@ -8515,23 +7337,14 @@
 /* Label for cell that sets the location of a post to the current location */
 "Use Current Location" = "Использовать текущее местоположение";
 
-/* No comment provided by engineer. */
-"Use URL" = "Использовать URL";
-
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Использовать редактор блоков";
-
-/* No comment provided by engineer. */
-"Use the classic WordPress editor." = "Использовать классический редактор WordPress.";
 
 /* Footer text for Invite Links section of the Invite People screen. */
 "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Используйте эту ссылку, чтобы подключить членов вашей команды, не приглашая их по одному. Любой, кто посетит этот URL-адрес, сможет зарегистрироваться в вашей организации, даже если он получил ссылку от кого-то другого, поэтому убедитесь, что вы делитесь ею с доверенными людьми.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Использовать этот сайт";
-
-/* No comment provided by engineer. */
-"Useful for displaying a graphic mark, design, or symbol to represent the site. Once a site logo is set, it can be reused in different places and templates. It should not be confused with the site icon, which is the small image used in the dashboard, brows" = "Полезно для отображения графического знака, дизайна или символа, представляющего сайт. После того, как логотип сайта установлен, его можно повторно использовать в разных местах и ​​в разных шаблонах. Его не следует путать со значком сайта, который представляет собой небольшое изображение, используемое на панели управления, вкладках браузера, общедоступных результатах поиска и.т.д. для облегчения распознавания сайта.";
 
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
@@ -8569,9 +7382,6 @@
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Проверьте ваш адрес электронной почты, инструкции отосланы на %@";
 
-/* No comment provided by engineer. */
-"Verse text" = "Текст стиха";
-
 /* Displays the version of the App
    Label in Support view displaying the app version. */
 "Version" = "Версия";
@@ -8589,14 +7399,8 @@
 /* Message to show when a new plugin version is available */
 "Version %@ is available" = "Доступна версия %@";
 
-/* No comment provided by engineer. */
-"Vertical" = "Вертикальный";
-
 /* Message shown if a video preview image is unavailable while the video is being uploaded. */
 "Video Preview Unavailable" = "Предварительный просмотр видео недоступен";
-
-/* No comment provided by engineer. */
-"Video caption text" = "Текст подписи к видео";
 
 /* translators: accessibility text. %s: video caption. */
 "Video caption. %s" = "Подпись к видео. %s";
@@ -8657,9 +7461,6 @@
 /* Blog Viewers */
 "Viewers" = "Обозреватели";
 
-/* No comment provided by engineer. */
-"Viewport height (vh)" = "Высота области просмотра (vh)";
-
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Views' label
    Label for number of views.
@@ -8717,9 +7518,6 @@
 
 /* Title for a threat that includes the file name of the theme and the affected version */
 "Vulnerable Theme %1$@ (version %2$@)" = "Уязвимая тема: %1$@ (версия %2$@)";
-
-/* translators: Sample content for the Verse block. Can be replaced with a more locale-adequate work. */
-"WHAT was he doing, the great god Pan,\n	Down in the reeds by the river?\nSpreading ruin and scattering ban,\nSplashing and paddling with hoofs of a goat,\nAnd breaking the golden lilies afloat\n    With the dragon-fly on the river." = "Над чем развозился великий бог Пан,\nВнизу в камышах на реке?\nНаносит повсюду разор да изъян,\nПлескаясь и брызжа козлиной ногой,\nКувшинкам помял он убор золотой,\nСтрекоз разогнал по реке.";
 
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "Консоль";
@@ -8988,9 +7786,6 @@
 /* A message title */
 "Welcome to the Reader" = "Добро пожаловать в раздел «Чтиво».";
 
-/* No comment provided by engineer. */
-"Welcome to the wonderful world of blocks…" = "Добро пожаловать в удивительный мир блоков...";
-
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "Добро пожаловать в самый популярный в мире конструктор сайтов.";
 
@@ -9080,14 +7875,8 @@
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Проверочный код для двухфакторной аутентификации недействителен. Проверьте код и повторите попытку.";
 
-/* No comment provided by engineer. */
-"Wide Line" = "Широкая линия";
-
 /* Nav bar button title to set the site used for Stats widgets. */
 "Widgets" = "Виджеты";
-
-/* No comment provided by engineer. */
-"Width in pixels" = "Ширина в пикселях";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Не будет опубликован.";
@@ -9095,9 +7884,6 @@
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
 "With this powerful editor you can post on the go." = "С настолько мощным редактором вы можете создавать публикации на ходу.";
-
-/* translators: Caption accompanying a video of the wood thrush singing, which serves as an example for the Video block. */
-"Wood thrush singing in Central Park, NYC." = "Лесной дрозд поёт в Центральном парке, Нью-Йорк.";
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "Настройки приложения WordPress";
@@ -9202,30 +7988,6 @@
 
 /* No comment provided by engineer. */
 "Write code…" = "Введите код...";
-
-/* No comment provided by engineer. */
-"Write file name…" = "Впишите имя файла ...";
-
-/* No comment provided by engineer. */
-"Write gallery caption…" = "Добавить подпись к галерее...";
-
-/* No comment provided by engineer. */
-"Write preformatted text…" = "Напишите предварительно отформатированный текст...";
-
-/* No comment provided by engineer. */
-"Write shortcode here…" = "Введите шорткод здесь...";
-
-/* No comment provided by engineer. */
-"Write site tagline…" = "Напишите слоган сайта...";
-
-/* No comment provided by engineer. */
-"Write site title…" = "Написать название сайта…";
-
-/* No comment provided by engineer. */
-"Write title…" = "Напишите заголовок";
-
-/* No comment provided by engineer. */
-"Write verse…" = "Напишите стих...";
 
 /* Title for the writing section in site settings screen */
 "Writing" = "Написание";
@@ -9433,15 +8195,6 @@
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "При открытии сайта в браузере Safari его адрес отображается в строке в верхней части экрана.";
 
-/* translators: %s: block name */
-"Your site doesn’t include support for the \"%s\" block. You can leave this block intact or remove it entirely." = "Ваш сайт не поддерживает \"%s\" блок. Вы можете оставить этот блок нетронутым или полностью удалить его.";
-
-/* translators: %s: block name */
-"Your site doesn’t include support for the \"%s\" block. You can leave this block intact, convert its content to a Custom HTML block, or remove it entirely." = "Ваш сайт не поддерживает \"%s\" блок. Вы можете оставить этот блок нетронутым, преобразовать его содержимое в произвольный HTML-блок или полностью удалить его.";
-
-/* No comment provided by engineer. */
-"Your site doesn’t include support for this block." = "Ваш сайт не поддерживает этот блок.";
-
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Ваш сайт создан!";
 
@@ -9487,9 +8240,6 @@
 /* Popup content about why this post is being opened in block editor */
 "You’re now using the block editor for new posts — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "Сейчас вы используете редактор блоков для новых записей. Отлично! Если захотите изменить редактор на классический, то сделайте это в 'Мой сайт'>'Настройки сайта',";
 
-/* No comment provided by engineer. */
-"Zoom" = "Увеличить";
-
 /* Comment Attachment Label */
 "[COMMENT]" = "[COMMENT]";
 
@@ -9505,44 +8255,14 @@
 /* Age between dates equaling one hour. */
 "an hour" = "час";
 
-/* No comment provided by engineer. */
-"archive" = "архив";
-
-/* No comment provided by engineer. */
-"atom" = "atom";
-
 /* Label displayed on audio media items. */
 "audio" = "аудио";
-
-/* No comment provided by engineer. */
-"blockquote" = "цитата";
-
-/* No comment provided by engineer. */
-"blog" = "блог";
-
-/* No comment provided by engineer. */
-"bullet list" = "маркированный список";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "автора %@";
 
-/* No comment provided by engineer. */
-"cite" = "цитировать";
-
 /* The menu item to select during a guided tour. */
 "connections" = "подключения";
-
-/* No comment provided by engineer. */
-"container" = "контейнер";
-
-/* No comment provided by engineer. */
-"description" = "описание";
-
-/* No comment provided by engineer. */
-"divider" = "разделитель";
-
-/* No comment provided by engineer. */
-"document" = "документ";
 
 /* No comment provided by engineer. */
 "document outline" = "структура документа";
@@ -9553,55 +8273,28 @@
 /* No comment provided by engineer. */
 "double-tap to change unit" = "нажмите дважды для смены единиц";
 
-/* No comment provided by engineer. */
-"download" = "скачать";
-
-/* No comment provided by engineer. */
-"ebook" = "ebook";
-
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "например: 1122334455";
 
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "напр. 44";
 
-/* No comment provided by engineer. */
-"embed" = "вставка";
-
 /* Placeholder for the site url textfield.
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
 
-/* No comment provided by engineer. */
-"feed" = "лента";
-
-/* No comment provided by engineer. */
-"find" = "найти";
-
 /* Noun. Describes a site's follower. */
 "follower" = "читатель";
 
-/* No comment provided by engineer. */
-"form" = "форма";
-
-/* No comment provided by engineer. */
-"horizontal-line" = "горизонтальная-линия";
-
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/мой-адрес-сайта (URL)";
-
-/* No comment provided by engineer. */
-"https:\/\/wordpress.org\/support\/article\/embeds\/" = "https:\/\/ru.wordpress.org\/support\/article\/embeds\/";
 
 /* Label displayed on image media items. */
 "image" = "Изображение";
 
 /* translators: 1: the order number of the image. 2: the total number of images. */
 "image %1$d of %2$d in gallery" = "Изображение в галерее %1$d из %2$d";
-
-/* No comment provided by engineer. */
-"images" = "изображения";
 
 /* Text for related post cell preview */
 "in \"Apps\"" = "в разделе «Приложения»";
@@ -9615,119 +8308,23 @@
 /* Later today */
 "later today" = "позже сегодня";
 
-/* No comment provided by engineer. */
-"link" = "ссылка";
-
-/* No comment provided by engineer. */
-"links" = "ссылки";
-
-/* No comment provided by engineer. */
-"login" = "вход";
-
-/* No comment provided by engineer. */
-"logout" = "выход";
-
-/* No comment provided by engineer. */
-"menu" = "меню";
-
-/* No comment provided by engineer. */
-"movie" = "фильм";
-
-/* No comment provided by engineer. */
-"music" = "музыка";
-
-/* No comment provided by engineer. */
-"navigation" = "навигация";
-
-/* No comment provided by engineer. */
-"next page" = "следующая страница";
-
-/* No comment provided by engineer. */
-"numbered list" = "нумерованный список";
-
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "из";
-
-/* No comment provided by engineer. */
-"ordered list" = "упорядоченный список";
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "другое";
 
 /* No comment provided by engineer. */
-"pagination" = "разделение на страницы";
-
-/* No comment provided by engineer. */
 "password" = "пароль";
-
-/* No comment provided by engineer. */
-"pdf" = "pdf";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "номер телефона";
 
 /* No comment provided by engineer. */
-"photos" = "фотографии";
-
-/* No comment provided by engineer. */
-"picture" = "изображение";
-
-/* No comment provided by engineer. */
-"podcast" = "подкаст";
-
-/* No comment provided by engineer. */
-"poem" = "стих";
-
-/* No comment provided by engineer. */
-"poetry" = "поэзия";
-
-/* No comment provided by engineer. */
-"post" = "записи";
-
-/* No comment provided by engineer. */
-"posts" = "записи";
-
-/* No comment provided by engineer. */
-"read more" = "читать далее";
-
-/* No comment provided by engineer. */
-"recent comments" = "недавние комментарии";
-
-/* No comment provided by engineer. */
-"recent posts" = "последние записи";
-
-/* No comment provided by engineer. */
-"recording" = "запись";
-
-/* No comment provided by engineer. */
-"row" = "строка";
-
-/* No comment provided by engineer. */
-"section" = "раздел";
-
-/* No comment provided by engineer. */
-"social" = "социальные сети";
-
-/* No comment provided by engineer. */
-"sound" = "звук";
-
-/* No comment provided by engineer. */
-"subtitle" = "субтитры";
-
-/* No comment provided by engineer. */
 "summary" = "итог";
-
-/* No comment provided by engineer. */
-"survey" = "опрос";
-
-/* No comment provided by engineer. */
-"text" = "текст";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "эти элементы будут удалены:";
-
-/* No comment provided by engineer. */
-"title" = "заголовок";
 
 /* Today */
 "today" = "сегодня";
@@ -9768,9 +8365,6 @@
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, сайты, сайт, блоги, блог";
 
-/* No comment provided by engineer. */
-"wrapper" = "декоратор";
-
 /* Details about recently acquired domain on domain credit redemption success screen */
 "your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "Ваш новый домен %@ настраивается.";
 
@@ -9779,9 +8373,6 @@
 
 /* About View's Footer Text. The variable is the current year */
 "© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
-
-/* No comment provided by engineer. */
-"— Kobayashi Issa (一茶)" = "— Кобаяси Исса (一茶)";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Домены";
