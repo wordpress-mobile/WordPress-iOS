@@ -51,6 +51,10 @@ extension ReaderRoute: Route {
         }
     }
 
+    var section: DeepLinkSection? {
+        return .reader
+    }
+
     var action: NavigationAction {
         return self
     }

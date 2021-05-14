@@ -3,6 +3,8 @@ import Foundation
 struct StartRoute: Route, NavigationAction {
     let path = "/start"
 
+    let section: DeepLinkSection? = nil
+
     var action: NavigationAction {
         return self
     }

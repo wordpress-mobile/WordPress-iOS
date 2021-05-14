@@ -161,5 +161,6 @@ struct UniversalLinkRouter: LinkRouter {
     private enum TracksPropertyKeys {
         static let url = "url"
         static let source = "source"
+        static let section = "section"
     }
 }

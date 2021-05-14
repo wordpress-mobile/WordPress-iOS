@@ -24,6 +24,8 @@ public struct MbarRoute: Route {
 
     let path = "/mbar"
 
+    let section: DeepLinkSection? = nil
+
     var action: NavigationAction {
         return self
     }

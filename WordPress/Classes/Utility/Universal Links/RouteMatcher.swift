@@ -93,12 +93,14 @@ class RouteMatcher {
 ///
 struct MatchedRoute: Route {
     let path: String
+    let section: DeepLinkSection?
     let action: NavigationAction
     let values: [String: String]
 
-    init(path: String, action: NavigationAction, values: [String: String] = [:]) {
-        self.path = path
-        self.action = action
+    init(from route: Route, with values: [String: String] = [:]) {
+        self.path = route.path
+        self.section = route.section
+        self.action = route.action
         self.values = values
     }
 }
@@ -107,7 +109,7 @@ extension Route {
     /// - returns: A MatchedRoute for the current path, with optional values
     ///            extracted from the resolved path.
     fileprivate func matched(with values: [String: String] = [:]) -> MatchedRoute {
-        return MatchedRoute(path: path, action: action, values: values)
+        return MatchedRoute(from: self, with: values)
     }
 }
 

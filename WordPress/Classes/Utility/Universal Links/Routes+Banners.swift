@@ -11,6 +11,7 @@ import Foundation
 ///
 struct AppBannerRoute: Route {
     let path = "/get"
+    let section: DeepLinkSection? = nil
 
     var action: NavigationAction {
         return self

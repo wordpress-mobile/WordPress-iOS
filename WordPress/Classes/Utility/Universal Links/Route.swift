@@ -9,6 +9,7 @@ import Foundation
 ///
 protocol Route {
     var path: String { get }
+    var section: DeepLinkSection? { get }
     var action: NavigationAction { get }
 }
 
@@ -57,4 +58,18 @@ extension Route {
     func isEqual(to route: Route) -> Bool {
         return path == route.path
     }
+}
+
+// MARK: - Tracking
+
+/// Which broad section of the app is being linked to?
+///
+enum DeepLinkSection: String {
+    case editor
+    case me
+    case mySite = "my_site"
+    case notifications
+    case reader
+    case siteCreation = "site_creation"
+    case stats
 }
