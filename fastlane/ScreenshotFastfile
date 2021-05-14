@@ -21,17 +21,15 @@ platform :ios do
   #####################################################################################
   desc "Generate localised screenshots"
   lane :screenshots  do |options| 
-    fastlane_directory = File.expand_path File.dirname(__FILE__)
-    derived_data_path = File.join(fastlane_directory, "DerivedData")
 
     sh('bundle exec pod install')
-    FileUtils.rm_rf(derived_data_path)
+    FileUtils.rm_rf(DERIVED_DATA_PATH)
 
     scan(
       workspace: WORKSPACE_PATH,
       scheme: "WordPressScreenshotGeneration",
       build_for_testing: true,
-      derived_data_path: derived_data_path,
+      derived_data_path: DERIVED_DATA_PATH,
     )
 
     languages = "da de-DE en-AU en-CA en-GB es-ES fr-FR id it ja ko no nl-NL pt-BR pt-PT ru sv th tr zh-Hans zh-Hant en-US".split(" ")
@@ -50,7 +48,7 @@ platform :ios do
         workspace: WORKSPACE_PATH,
         scheme: "WordPressScreenshotGeneration",
         test_without_building: true,
-        derived_data_path: derived_data_path,
+        derived_data_path: DERIVED_DATA_PATH,
         languages: languages,
         dark_mode: dark_mode_enabled,
         override_status_bar: true,
