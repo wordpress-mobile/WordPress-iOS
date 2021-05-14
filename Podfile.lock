@@ -502,7 +502,7 @@ DEPENDENCIES:
   - WordPressKit (~> 4.33.0-beta.1)
   - WordPressMocks (~> 0.0.9)
   - WordPressShared (~> 1.16.0)
-  - WordPressUI (~> 1.11.0-beta)
+  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS`, branch `task/16384-ipad-font-size`)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.52.1/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.2.0)
@@ -512,7 +512,6 @@ SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
     - WordPressKit
-    - WordPressUI
   trunk:
     - 1PasswordExtension
     - Alamofire
@@ -651,6 +650,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.52.1
+  WordPressUI:
+    :branch: task/16384-ipad-font-size
+    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.52.1/third-party-podspecs/Yoga.podspec.json
 
@@ -666,6 +668,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.52.1
+  WordPressUI:
+    :commit: 035d08d7352765fb2bef7e5b2d5be5592aa61381
+    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -750,7 +755,7 @@ SPEC CHECKSUMS:
   WordPressKit: 0b993ff14ad5f073d4e1062fc1db8ae689ef559c
   WordPressMocks: 903d2410f41a09fb2e0a1b44ad36ad80310570fb
   WordPressShared: 0f7f10e96f8354d64f951c223ae61e8de7495a46
-  WordPressUI: 1da49d679d30f20c7019af02c98352e8c805abe1
+  WordPressUI: 82f164f76b97b82a49f16ce5499523c280e295e9
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
@@ -763,6 +768,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: ab0f324cddce1affcae47da3b5a0d2a0b15d53f8
+PODFILE CHECKSUM: a8373709e02e67fd9586b3b63ec44f1efaf557aa
 
 COCOAPODS: 1.10.0
