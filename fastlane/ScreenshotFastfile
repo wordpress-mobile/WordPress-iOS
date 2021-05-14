@@ -71,6 +71,24 @@ platform :ios do
   end
 
   #####################################################################################
+  # jetpack_screenshots
+  # -----------------------------------------------------------------------------------
+  # This lane generates the localised Jetpack screenshots.
+  # It is the same as running bundle exec fastlane snapshot, but ensures that the app
+  # is only built once.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane jetpack_screenshots
+  #
+  # Example:
+  # bundle exec fastlane jetpack_screenshots
+  #####################################################################################
+  desc "Generate localised Jetpack screenshots"
+  lane :jetpack_screenshots do |options|
+     screenshots(scheme: "JetpackScreenshotGeneration")
+  end
+
+  #####################################################################################
   # create_promo_screenshots
   # -----------------------------------------------------------------------------------
   # This lane generates the promo screenshots. 
