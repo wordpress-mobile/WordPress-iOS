@@ -72,7 +72,7 @@ namespace :dependencies do
 
     task :install do
       fold("install.cocoapds") do
-        pod %w[install]
+        sh "bundle exec pod install || bundle exec pod install --repo-update"
       end
     end
 
