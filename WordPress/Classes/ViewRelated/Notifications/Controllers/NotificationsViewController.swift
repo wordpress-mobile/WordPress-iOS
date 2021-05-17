@@ -1311,11 +1311,17 @@ private extension NotificationsViewController {
         return filter.noResultsTitle
     }
 
-    var noResultsMessageText: String {
+    var noResultsMessageText: String? {
+        guard AppConfiguration.showsReader else {
+            return nil
+        }
         return filter.noResultsMessage
     }
 
-    var noResultsButtonText: String {
+    var noResultsButtonText: String? {
+        guard AppConfiguration.showsReader else {
+            return nil
+        }
         return filter.noResultsButtonTitle
     }
 

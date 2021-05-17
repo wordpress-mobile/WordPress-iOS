@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-04-30 16:02:50+0000 */
+/* Translation-Revision-Date: 2021-05-12 10:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -452,6 +452,9 @@
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Aggiungi qualsiasi argomento";
 
+/* No comment provided by engineer. */
+"Add caption" = "Aggiungi didascalia";
+
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Aggiungi un'immagine, o un avatar, per rappresentare questo nuovo account.";
 
@@ -488,6 +491,9 @@
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Aggiungi tag";
+
+/* No comment provided by engineer. */
+"Add text…" = "Aggiungi testo…";
 
 /* No comment provided by engineer. */
 "Add this email link" = "Aggiungi questo link dell'e-mail";
@@ -768,6 +774,9 @@
 "Attach File as Link" = "Allega file come link";
 
 /* No comment provided by engineer. */
+"Attachment page" = "Pagina allegato";
+
+/* No comment provided by engineer. */
 "Audio Player" = "Audio Player";
 
 /* translators: accessibility text. %s: Audio caption. */
@@ -775,6 +784,9 @@
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "Didascalia audio. Vuota";
+
+/* No comment provided by engineer. */
+"Audio settings" = "Impostazioni audio";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "Audio, %@";
@@ -798,6 +810,9 @@
 /* Label for comments by author
    Period Stats 'Authors' header */
 "Authors" = "Autori";
+
+/* No comment provided by engineer. */
+"Auto" = "Automatico";
 
 /* Describes a status of a plugin */
 "Auto-managed" = "Auto-gestito";
@@ -823,6 +838,9 @@
 
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "Condividi automaticamente i nuovi articoli sui tuoi account sui social media.";
+
+/* No comment provided by engineer. */
+"Autoplay" = "Riproduzione automatica";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Aggiornamenti automatici";
@@ -904,6 +922,9 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Blocco di citazione";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered inside itself." = "Impossibile impostare il blocco all'interno dello stesso.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Blocco copiato";
 
@@ -915,6 +936,9 @@
 
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Editor a blocchi abilitato";
+
+/* No comment provided by engineer. */
+"Block has been deleted or is unavailable." = "Il blocco è stato eliminato o non è disponibile.";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Blocca i tentativi di accesso dannosi";
@@ -966,6 +990,9 @@
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Sfoglia tutti i nostri temi per trovare quello perfetto per te.";
+
+/* No comment provided by engineer. */
+"Browser default" = "Browser predefinito";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Protezione dagli attacchi di forza bruta";
@@ -1148,6 +1175,9 @@
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Modifica non riuscita";
+
+/* No comment provided by engineer. */
+"Change heading level" = "Modifica il livello del titolo";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "Cambia il tipo di dispositivo usato per la visualizzazione in anteprima";
@@ -1567,6 +1597,9 @@
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
 "Continue" = "Prosegui";
+
+/* Button title. Takes the user to the login with WordPress.com flow. */
+"Continue With WordPress.com" = "Continue With WordPress.com";
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "Continua a lavorare";
@@ -2055,6 +2088,9 @@
    User's Display Name */
 "Display Name" = "Nome da visualizare";
 
+/* No comment provided by engineer. */
+"Display post date" = "Mostra la data dell'articolo";
+
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Visualizza tutte le tue statistiche del sito qui. Effettua la configurazione nell'app WordPress nelle statistiche del sito.";
 
@@ -2240,6 +2276,9 @@
 /* No comment provided by engineer. */
 "Edit focal point" = "Modifica il punto focale";
 
+/* No comment provided by engineer. */
+"Edit image" = "Edit image";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Modifica i nuovi articoli e le nuove pagine dall'editor a blocchi.";
 
@@ -2336,6 +2375,9 @@
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Attiva modalità schermo intero";
 
+/* No comment provided by engineer. */
+"Enter URL to embed here…" = "Inserisci l'URL da incorporare qui…";
+
 /* Enter a custom value */
 "Enter a custom value" = "Inserisci un valore personalizzato";
 
@@ -2380,6 +2422,12 @@
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
 "Enter your server credentials to enable one click site restores from backups." = "Inserisci le credenziali del server per abilitare i ripristini del sito con un clic dai backup.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threat." = "Inserisci le tue credenziali del server per risolvere la minaccia.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threats." = "Inserisci le tue credenziali del server per risolvere le minacce.";
 
 /* Generic error alert title
    Generic error.
@@ -2832,6 +2880,9 @@
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Configura il sito ed eseguilo";
 
+/* Example post title used in the login prologue screens. */
+"Getting Inspired" = "Lasciati ispirare";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Recupero informazioni account";
 
@@ -2931,6 +2982,9 @@
 /* Accessibility label for selecting h6 paragraph style button on the formatting toolbar. */
 "Header 6" = "Intestazione 6";
 
+/* translators: %s: heading level e.g: \"1\", \"2\", \"3\" */
+"Heading %d" = "Titolo %d";
+
 /* H1 Aztec Style */
 "Heading 1" = "Titolo 1";
 
@@ -3025,6 +3079,9 @@
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "Mi piace";
 
+/* Example post content used in the login prologue screens. */
+"I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Sono ispirato dal lavoro del fotografo Cameron Karsten. Proverò queste tecniche durante il mio prossimo";
+
 /* Title of a button style */
 "Icon & Text" = "Icona e testo";
 
@@ -3081,6 +3138,9 @@
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Didascalia immagine. %s";
+
+/* No comment provided by engineer. */
+"Image settings" = "Impostazioni immagini";
 
 /* Hint for image title on image settings. */
 "Image title" = "Titolo immagine";
@@ -3428,6 +3488,9 @@
 /* Image link option title. */
 "Link To" = "Link a";
 
+/* No comment provided by engineer. */
+"Link to" = "Link a";
+
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Inserisci un link a un contenuto esistente";
 
@@ -3579,6 +3642,9 @@
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Sembra che hai Jetpack installato sul tuo sito. Complimenti!\nAccedi con le tue credenziali WordPress.com per attivare le Statistiche e le Notifiche.";
 
+/* No comment provided by engineer. */
+"Loop" = "Ripeti";
+
 /* Title of a button. */
 "Lost your password?" = "Password dimenticata?";
 
@@ -3688,8 +3754,14 @@
 /* Downloadable/Restorable items: Media Uploads */
 "Media Uploads" = "Caricamento di contenuti multimediali";
 
+/* No comment provided by engineer. */
+"Media area" = "Area per elementi multimediali";
+
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "Gli elementi multimediali non sono associati a un file da caricare.";
+
+/* No comment provided by engineer. */
+"Media file" = "File multimediale";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "La dimensione del file multimediale (%1$@) è eccessiva per il caricamento. Il massimo consentito è %2$@";
@@ -3835,6 +3907,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "Sposta il commento nel cestino.";
 
+/* Example post title used in the login prologue screens. */
+"Museums to See In London" = "Musei da vedere a Londra";
+
 /* An example tag used in the login prologue screens. */
 "Music" = "Music";
 
@@ -3857,6 +3932,9 @@
 
 /* Option in Support view to access previous help tickets. */
 "My Tickets" = "I miei ticket";
+
+/* Example post title used in the login prologue screens. */
+"My Top Ten Cafes" = "La Top Ten dei bar";
 
 /* Accessibility label for the Email text field.
    Name text field placeholder */
@@ -4415,6 +4493,9 @@
    The title of the Page Settings screen. */
 "Page Settings" = "Impostazioni pagina";
 
+/* No comment provided by engineer. */
+"Page break" = "Interruzione di pagina";
+
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Blocco Interruzione di pagina. %s";
 
@@ -4717,6 +4798,9 @@
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "Articolo di %1$@, da %2$@";
 
+/* No comment provided by engineer. */
+"Post content settings" = "Impostazioni contenuti articolo";
+
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Articolo creato su %@";
 
@@ -4725,6 +4809,9 @@
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Il post non è stato caricato";
+
+/* No comment provided by engineer. */
+"Post meta settings" = "Impostazioni metadati di articolo";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "Articolo spostato nel cestino.";
@@ -4803,6 +4890,9 @@
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "Promosso da Tenor";
+
+/* No comment provided by engineer. */
+"Preload" = "Precaricamento";
 
 /* Browse premium themes selection title */
 "Premium" = "Premium";
@@ -4986,6 +5076,9 @@
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Valutaci sull'App Store";
 
+/* No comment provided by engineer. */
+"Read more" = "Leggi altro";
+
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Leggi su";
 
@@ -5154,6 +5247,9 @@
 
 /* No comment provided by engineer. */
 "Replace file" = "Sostituisci file";
+
+/* No comment provided by engineer. */
+"Replace image" = "Sostituisci immagine";
 
 /* No comment provided by engineer. */
 "Replace image or video" = "Sostituisci immagine o video";
@@ -5721,6 +5817,9 @@
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Condivisione dell'errore";
 
+/* No comment provided by engineer. */
+"Shortcode" = "Shortcode";
+
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Mostra l'intestazione";
 
@@ -5738,6 +5837,9 @@
 
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "Mostra gli articoli correlati";
+
+/* No comment provided by engineer. */
+"Show download button" = "Mostra il pulsante di scaricamento";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -5878,6 +5980,10 @@
 /* Create new Site Page button title */
 "Site page" = "Pagina sito";
 
+/* Prologue title label, the 
+ force splits it into 2 lines. */
+"Site security and performance\nfrom your pocket" = "Sicurezza e prestazioni del sito\ndalla tua tasca";
+
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Fuso orario del sito (UTC%1$@%2$d%3$@)";
 
@@ -6004,6 +6110,9 @@
 /* Discussion Settings Title
    Settings: Comments Sort Order */
 "Sort By" = "Ordina per";
+
+/* No comment provided by engineer. */
+"Sorting and filtering" = "Ordinamento e filtro";
 
 /* Opens the Github Repository Web */
 "Source Code" = "Codice sorgente";
@@ -6356,6 +6465,9 @@
 
 /* Text for related post cell preview */
 "The WordPress for Android App Gets a Big Facelift" = "Grande rinnovamento di WordPress per l'app Android";
+
+/* Example post title used in the login prologue screens. This is a post about football fans. */
+"The World's Best Fans" = "World's Best Fans";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "L'applicazione non è in grado di riconoscere la risposta del server. Si prega di controllare la configurazione del sito.";
@@ -7100,6 +7212,9 @@
 /* Filters Unread Notifications */
 "Unread" = "Non lette";
 
+/* Title of unreplied Comments filter. */
+"Unreplied" = "Senza risposta";
+
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Cambiamenti non salvati";
 
@@ -7295,6 +7410,9 @@
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Esportazione del video annullata.";
+
+/* No comment provided by engineer. */
+"Video settings" = "Impostazioni video";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Video, %@";
@@ -7868,6 +7986,9 @@
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Rispondi...";
 
+/* No comment provided by engineer. */
+"Write code…" = "Scrivi codice...";
+
 /* Title for the writing section in site settings screen */
 "Writing" = "Scrittura";
 
@@ -8171,6 +8292,9 @@
 
 /* Label displayed on image media items. */
 "image" = "Immagine";
+
+/* translators: 1: the order number of the image. 2: the total number of images. */
+"image %1$d of %2$d in gallery" = "immagine %1$d di %2$d nella galleria";
 
 /* Text for related post cell preview */
 "in \"Apps\"" = "in \"App\"";

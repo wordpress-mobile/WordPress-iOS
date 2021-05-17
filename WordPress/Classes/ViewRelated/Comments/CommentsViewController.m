@@ -317,7 +317,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
 
     // CommentService purges Comments that do not belong to the current filter.
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@)", self.blog];
+    fetchRequest.predicate = [self predicateForFetchRequest:self.currentStatusFilter];
 
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
     fetchRequest.sortDescriptors = @[sortDescriptorDate];
@@ -351,6 +351,30 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     return @"sectionIdentifier";
 }
 
+#pragma mark - Predicate Wrangling
+
+- (void)updateFetchRequestPredicate:(CommentStatusFilter)statusFilter
+{
+    NSPredicate *predicate = [self predicateForFetchRequest:statusFilter];
+    NSFetchedResultsController *resultsController = [[self tableViewHandler] resultsController];
+    [[resultsController fetchRequest] setPredicate:predicate];
+    NSError *error;
+    [resultsController performFetch:&error];
+    [self.tableView reloadData];
+}
+
+- (NSPredicate *)predicateForFetchRequest:(CommentStatusFilter)statusFilter
+{
+    NSPredicate *predicate;
+    if (statusFilter == CommentStatusFilterAll && ![self isUnrepliedFilterSelected:self.filterTabBar]) {
+        predicate = [NSPredicate predicateWithFormat:@"(blog == %@)", self.blog];
+    } else {
+        // Exclude any local replies from all filters except all.
+        predicate = [NSPredicate predicateWithFormat:@"(blog == %@) AND commentID != nil", self.blog];
+    }
+    return predicate;
+}
+
 #pragma mark - WPContentSyncHelper Methods
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
@@ -360,6 +384,8 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
     NSManagedObjectID *blogObjectID = self.blog.objectID;
 
+    BOOL filterUnreplied = [self isUnrepliedFilterSelected:self.filterTabBar];
+
     [context performBlock:^{
         Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
         if (!blogInContext) {
@@ -368,6 +394,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
         [commentService syncCommentsForBlog:blogInContext
                                  withStatus:self.currentStatusFilter
+                            filterUnreplied:filterUnreplied
                                     success:^(BOOL hasMore) {
             if (success) {
                 weakSelf.cachedStatusFilter = weakSelf.currentStatusFilter;
@@ -464,6 +491,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)refreshWithStatusFilter:(CommentStatusFilter)statusFilter
 {
+    [self updateFetchRequestPredicate:statusFilter];
     [self saveSelectedFilterToUserDefaults];
     self.currentStatusFilter = statusFilter;
     [self refreshAndSyncWithInteraction];

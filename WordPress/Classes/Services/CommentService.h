@@ -44,6 +44,12 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                     success:(void (^)(BOOL hasMore))success
                     failure:(void (^)(NSError *error))failure;
 
+- (void)syncCommentsForBlog:(Blog *)blog
+                 withStatus:(CommentStatusFilter)status
+            filterUnreplied:(BOOL)filterUnreplied
+                    success:(void (^)(BOOL hasMore))success
+                    failure:(void (^)(NSError *error))failure;
+
 // Determine if a recent cache is available
 + (BOOL)shouldRefreshCacheFor:(Blog *)blog;
 
@@ -186,5 +192,14 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                       siteID:(NSNumber *)siteID
                      success:(void (^)(NSArray<RemoteUser *> *))success
                      failure:(void (^)(NSError * _Nullable))failure;
+
+/**
+ Get a CommentServiceRemoteREST for the given site.
+ This is public so it can be accessed from Swift extensions.
+ 
+ @param siteID The ID of the site the remote will be used for.
+ */
+- (CommentServiceRemoteREST *_Nullable)restRemoteForSite:(NSNumber *_Nonnull)siteID;
+
 
 @end

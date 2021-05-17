@@ -152,7 +152,7 @@ jobs:
                 include_job_number_field: false
                 include_project_field: false
                 failure_message: '${SLACK_FAILURE_MESSAGE}'
-  Installable Build:
+  WordPress Installable Build:
     executor:
       name: ios/default
       <<: *xcode_version
@@ -200,6 +200,7 @@ jobs:
       - run:
           name: Install other tools
           command: |
+            brew update # Update homebrew to temporarily fix a bintray issue
             brew install imagemagick
             brew install ghostscript
             curl -sL https://sentry.io/get-cli/ | bash
@@ -251,6 +252,7 @@ jobs:
       - run:
           name: Install other tools
           command: |
+            brew update # Update homebrew to temporarily fix a bintray issue
             brew install imagemagick
             brew install ghostscript
             curl -sL https://sentry.io/get-cli/ | bash
@@ -268,7 +270,7 @@ jobs:
       - store_artifacts:
           path: Artifacts
           destination: Artifacts
-  jetpack-installable-build:
+  Jetpack Installable Build:
     executor:
       name: ios/default
       <<: *xcode_version
@@ -287,6 +289,7 @@ jobs:
       - run:
           name: Install other tools
           command: |
+            brew update # Update homebrew to temporarily fix a bintray issue
             brew install imagemagick
             brew install ghostscript
             curl -sL https://sentry.io/get-cli/ | bash
@@ -297,7 +300,7 @@ jobs:
       - store_artifacts:
           path: Artifacts
           destination: Artifacts
-  jetpack-pr-build:
+  Build Jetpack:
     executor:
       name: ios/default
       <<: *xcode_version
@@ -316,6 +319,7 @@ jobs:
       - run:
           name: Install other tools
           command: |
+            brew update # Update homebrew to temporarily fix a bintray issue
             brew install imagemagick
             brew install ghostscript
             curl -sL https://sentry.io/get-cli/ | bash
@@ -347,6 +351,7 @@ workflows:
               only:
                 - develop
                 - /^release.*/
+                - /^gutenberg\/integrate_release_.*/
       - UI Tests:
           name: UI Tests (iPad Air 4th generation)
           <<: *ipad_test_device
@@ -357,8 +362,9 @@ workflows:
               only:
                 - develop
                 - /^release.*/
-      - jetpack-installable-build
-      - jetpack-pr-build
+                - /^gutenberg\/integrate_release_.*/
+      - Build Jetpack:
+          name: Build Jetpack (without testing)
       #Optionally run UI tests on PRs
       - Optional Tests:
           type: approval
@@ -368,6 +374,7 @@ workflows:
               ignore:
                 - develop
                 - /^release.*/
+                - /^gutenberg\/integrate_release_.*/
       - UI Tests:
           name: UI Tests (iPhone 11)
           <<: *iphone_test_device
@@ -383,16 +390,27 @@ workflows:
         - not: << pipeline.parameters.beta_build >>
         - not: << pipeline.parameters.release_build >>
     jobs:
-      - Hold:
+      - Approve WordPress:
           type: approval
           filters:
             branches:
               ignore: /pull\/[0-9]+/
-      - Installable Build:
-          requires: [Hold]
+      - WordPress Installable Build:
+          requires: [Approve WordPress]
           filters:
             branches:
               ignore: /pull\/[0-9]+/
+      - Approve Jetpack:
+          type: approval
+          filters:
+            branches:
+              ignore: /pull\/[0-9]+/
+      - Jetpack Installable Build:
+          requires: [Approve Jetpack]
+          filters:
+            branches:
+              ignore: /pull\/[0-9]+/
+
   Release Build:
     when:
       or: [ << pipeline.parameters.beta_build >>, << pipeline.parameters.release_build >> ]
@@ -411,5 +429,4 @@ workflows:
                only:
                  - develop
     jobs:
-      - jetpack-installable-build
-
+      - Jetpack Installable Build

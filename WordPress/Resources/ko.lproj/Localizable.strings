@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-04-30 16:14:00+0000 */
+/* Translation-Revision-Date: 2021-05-12 10:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -452,6 +452,9 @@
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "모든 토픽 추가하기";
 
+/* No comment provided by engineer. */
+"Add caption" = "캡션 추가";
+
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "새 계정을 나타내는 이미지 또는 아바타를 추가합니다.";
 
@@ -488,6 +491,9 @@
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "태그 추가";
+
+/* No comment provided by engineer. */
+"Add text…" = "텍스트 추가...";
 
 /* No comment provided by engineer. */
 "Add this email link" = "이 이메일 링크 추가하기";
@@ -768,6 +774,9 @@
 "Attach File as Link" = "파일을 링크로 첨부";
 
 /* No comment provided by engineer. */
+"Attachment page" = "첨부 페이지";
+
+/* No comment provided by engineer. */
 "Audio Player" = "오디오 플레이어";
 
 /* translators: accessibility text. %s: Audio caption. */
@@ -775,6 +784,9 @@
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "오디오 캡션. 비었음";
+
+/* No comment provided by engineer. */
+"Audio settings" = "오디오 설정";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "오디오, %@";
@@ -798,6 +810,9 @@
 /* Label for comments by author
    Period Stats 'Authors' header */
 "Authors" = "작성자";
+
+/* No comment provided by engineer. */
+"Auto" = "자동";
 
 /* Describes a status of a plugin */
 "Auto-managed" = "자동 관리";
@@ -823,6 +838,9 @@
 
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "새 글을 소셜 미디어 계정에 자동으로 공유합니다.";
+
+/* No comment provided by engineer. */
+"Autoplay" = "자동 실행";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "자동 업데이트";
@@ -904,6 +922,9 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "인용 차단";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered inside itself." = "블록은 내부에 자체적으로 렌더링할 수 없습니다.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "블록을 복사하였습니다";
 
@@ -915,6 +936,9 @@
 
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "블록 편집기 활성화됨";
+
+/* No comment provided by engineer. */
+"Block has been deleted or is unavailable." = "블록이 삭제됐거나 기능하지 않습니다.";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "악의적인 로그인 시도 차단";
@@ -966,6 +990,9 @@
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "모든 테마를 검색하여 어울리는 것을 찾으세요.";
+
+/* No comment provided by engineer. */
+"Browser default" = "브라우저 기본 설정";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "무차별 공격 대입 보호";
@@ -1148,6 +1175,9 @@
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "변경 실패";
+
+/* No comment provided by engineer. */
+"Change heading level" = "변경 헤딩요소 레벨";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "미리보기에 사용한 기기 종류 변경하기";
@@ -1567,6 +1597,9 @@
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
 "Continue" = "계속";
+
+/* Button title. Takes the user to the login with WordPress.com flow. */
+"Continue With WordPress.com" = "워드프레스닷컴 계속";
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "작업 계속";
@@ -2055,6 +2088,9 @@
    User's Display Name */
 "Display Name" = "대화명";
 
+/* No comment provided by engineer. */
+"Display post date" = "발행일 표시";
+
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "여기에 모든 사이트 통계를 표시하세요. 워드프레스 앱의 사이트 통계에서 구성할 수 있습니다.";
 
@@ -2240,6 +2276,9 @@
 /* No comment provided by engineer. */
 "Edit focal point" = "초점 편집하기";
 
+/* No comment provided by engineer. */
+"Edit image" = "Edit image";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "블록 편집기에서 새 글과 페이지를 편집하세요.";
 
@@ -2336,6 +2375,9 @@
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "전체 화면으로 보기";
 
+/* No comment provided by engineer. */
+"Enter URL to embed here…" = "여기에 임베드하려면 URL을 입력하세요...";
+
 /* Enter a custom value */
 "Enter a custom value" = "사용자 정의 값 입력";
 
@@ -2380,6 +2422,12 @@
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
 "Enter your server credentials to enable one click site restores from backups." = "클릭 한 번으로 백업에서 사이트를 복원할 수 있도록 서버 자격 증명을 입력하세요.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threat." = "위협을 해결하려면 서버 자격 증명을 입력하세요.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threats." = "위협을 해결하려면 서버 자격 증명을 입력하세요.";
 
 /* Generic error alert title
    Generic error.
@@ -2832,6 +2880,9 @@
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "사이트가 가동되고 작동 중입니다.";
 
+/* Example post title used in the login prologue screens. */
+"Getting Inspired" = "영감받기";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "계정 정보 받기";
 
@@ -2931,6 +2982,9 @@
 /* Accessibility label for selecting h6 paragraph style button on the formatting toolbar. */
 "Header 6" = "헤더 6";
 
+/* translators: %s: heading level e.g: \"1\", \"2\", \"3\" */
+"Heading %d" = "헤딩요소 %d";
+
 /* H1 Aztec Style */
 "Heading 1" = "헤딩 1";
 
@@ -3025,6 +3079,9 @@
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "좋아요";
 
+/* Example post content used in the login prologue screens. */
+"I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "저는 사진 작가 Cameron Karsten의 작업에서 많은 영감을 받았습니다. 다음 작업에서 이러한 기법을 시도해볼 생각합니다.";
+
 /* Title of a button style */
 "Icon & Text" = "아이콘 및 텍스트";
 
@@ -3081,6 +3138,9 @@
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "이미지 캡션. %s";
+
+/* No comment provided by engineer. */
+"Image settings" = "이미지 설정";
 
 /* Hint for image title on image settings. */
 "Image title" = "이미지 제목";
@@ -3428,6 +3488,9 @@
 /* Image link option title. */
 "Link To" = "링크";
 
+/* No comment provided by engineer. */
+"Link to" = "링크 연결 대상:";
+
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "기존 콘텐츠에 연결";
 
@@ -3579,6 +3642,9 @@
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "젯팩을 설치해 두셨네요, 축하합니다!\n아래의 Wordpress.com 정보로 로그인 해서 알림과 통계를 활성화하세요.";
 
+/* No comment provided by engineer. */
+"Loop" = "연속재생";
+
 /* Title of a button. */
 "Lost your password?" = "비밀번호 분실?";
 
@@ -3688,8 +3754,14 @@
 /* Downloadable/Restorable items: Media Uploads */
 "Media Uploads" = "미디어 업로드";
 
+/* No comment provided by engineer. */
+"Media area" = "미디어 영역";
+
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "미디어에 업로드할 관련 파일이 없습니다.";
+
+/* No comment provided by engineer. */
+"Media file" = "미디어 파일";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "미디어 파일 크기(%1$@)가 너무 커서 업로드할 수 없습니다. 허용되는 최대값은 %2$@입니다.";
@@ -3835,6 +3907,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "댓글을 휴지통으로 이동";
 
+/* Example post title used in the login prologue screens. */
+"Museums to See In London" = "런던에서 볼 만한 박물관";
+
 /* An example tag used in the login prologue screens. */
 "Music" = "음악";
 
@@ -3857,6 +3932,9 @@
 
 /* Option in Support view to access previous help tickets. */
 "My Tickets" = "내 티켓";
+
+/* Example post title used in the login prologue screens. */
+"My Top Ten Cafes" = "상위 10개 카페";
 
 /* Accessibility label for the Email text field.
    Name text field placeholder */
@@ -4415,6 +4493,9 @@
    The title of the Page Settings screen. */
 "Page Settings" = "페이지 설정";
 
+/* No comment provided by engineer. */
+"Page break" = "페이지 자르기";
+
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "페이지 바꾸기 블록. %s";
 
@@ -4717,6 +4798,9 @@
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "%1$@님이 %2$@에 게시함";
 
+/* No comment provided by engineer. */
+"Post content settings" = "글 콘텐츠 설정";
+
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "%@에 작성된 글";
 
@@ -4725,6 +4809,9 @@
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "글 업로드 실패";
+
+/* No comment provided by engineer. */
+"Post meta settings" = "글 메타 설정";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "글을 휴지통으로 이동했습니다.";
@@ -4803,6 +4890,9 @@
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "테너가 제공합니다";
+
+/* No comment provided by engineer. */
+"Preload" = "프리로드";
 
 /* Browse premium themes selection title */
 "Premium" = "프리미엄";
@@ -4986,6 +5076,9 @@
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "App Store에서 워드프레스닷컴 평가";
 
+/* No comment provided by engineer. */
+"Read more" = "더 보기";
+
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "사이트 계속 읽기:";
 
@@ -5154,6 +5247,9 @@
 
 /* No comment provided by engineer. */
 "Replace file" = "파일 바꾸기";
+
+/* No comment provided by engineer. */
+"Replace image" = "이미지 교체";
 
 /* No comment provided by engineer. */
 "Replace image or video" = "이미지나 비디오를 대체하기";
@@ -5721,6 +5817,9 @@
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "공유 오류";
 
+/* No comment provided by engineer. */
+"Shortcode" = "쇼트코드";
+
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "헤더 표시";
 
@@ -5738,6 +5837,9 @@
 
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "관련 글 표시";
+
+/* No comment provided by engineer. */
+"Show download button" = "다운로드 버튼 표시";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -5878,6 +5980,10 @@
 /* Create new Site Page button title */
 "Site page" = "사이트 페이지";
 
+/* Prologue title label, the 
+ force splits it into 2 lines. */
+"Site security and performance\nfrom your pocket" = "사이트 보안 및 성능\n호주머니에서";
+
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "사이트 시간대(UTC%1$@%2$d%3$@)";
 
@@ -6004,6 +6110,9 @@
 /* Discussion Settings Title
    Settings: Comments Sort Order */
 "Sort By" = "정렬 기준";
+
+/* No comment provided by engineer. */
+"Sorting and filtering" = "정렬 및 필터링";
 
 /* Opens the Github Repository Web */
 "Source Code" = "소스 코드";
@@ -6356,6 +6465,9 @@
 
 /* Text for related post cell preview */
 "The WordPress for Android App Gets a Big Facelift" = "대대적으로 업데이트된 Android 앱용 WordPress";
+
+/* Example post title used in the login prologue screens. This is a post about football fans. */
+"The World's Best Fans" = "세계 최고의 팬";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "앱에서 서버 반응을 인식할 수 없습니다. 사이트의 구성을 확인하세요.";
@@ -7100,6 +7212,9 @@
 /* Filters Unread Notifications */
 "Unread" = "읽지 않음";
 
+/* Title of unreplied Comments filter. */
+"Unreplied" = "응답 없음";
+
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "저장되지 않은 변경 사항";
 
@@ -7295,6 +7410,9 @@
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "비디오 내보내기가 취소되었습니다.";
+
+/* No comment provided by engineer. */
+"Video settings" = "비디오 설정";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "비디오, %@";
@@ -7868,6 +7986,9 @@
 /* Placeholder text for inline compose view */
 "Write a reply…" = "답변 작성...";
 
+/* No comment provided by engineer. */
+"Write code…" = "코드 쓰기...";
+
 /* Title for the writing section in site settings screen */
 "Writing" = "쓰기";
 
@@ -8171,6 +8292,9 @@
 
 /* Label displayed on image media items. */
 "image" = "이미지";
+
+/* translators: 1: the order number of the image. 2: the total number of images. */
+"image %1$d of %2$d in gallery" = "갤러리의 이미지 %1$d\/%2$d개";
 
 /* Text for related post cell preview */
 "in \"Apps\"" = "\"앱\"에서";

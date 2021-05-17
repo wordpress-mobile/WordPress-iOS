@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-04-21 06:28:42+0000 */
+/* Translation-Revision-Date: 2021-05-06 07:51:48+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ru */
@@ -452,6 +452,9 @@
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Добавьте любую тему";
 
+/* No comment provided by engineer. */
+"Add caption" = "Добавить подпись";
+
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Добавьте изображение (или аватар) для представления этой новой учетной записи.";
 
@@ -488,6 +491,9 @@
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Добавить метки";
+
+/* No comment provided by engineer. */
+"Add text…" = "Добавить текст…";
 
 /* No comment provided by engineer. */
 "Add this email link" = "Добавить ссылку на email";
@@ -576,10 +582,10 @@
 "Allow this connection to be used by all admins and users of your site." = "Разрешить всем администраторам и посетителям вашего сайта использовать это подключение.";
 
 /* Allowlisted IP Addresses Title */
-"Allowlisted IP Addresses" = "Белый список IP";
+"Allowlisted IP Addresses" = "Разрешённые IP-адреса";
 
 /* Jetpack Settings: Allowlisted IP addresses */
-"Allowlisted IP addresses" = "Белый список IP";
+"Allowlisted IP addresses" = "Разрешённые IP-адреса";
 
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Почти готово! Введите проверочный код из приложения Authenticator.";
@@ -768,6 +774,9 @@
 "Attach File as Link" = "Добавить файл как ссылку";
 
 /* No comment provided by engineer. */
+"Attachment page" = "Страница вложения";
+
+/* No comment provided by engineer. */
 "Audio Player" = "Аудиоплеер";
 
 /* translators: accessibility text. %s: Audio caption. */
@@ -775,6 +784,9 @@
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "Подпись к аудиозаписи. Пустая";
+
+/* No comment provided by engineer. */
+"Audio settings" = "Настройки аудио";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "Аудио, %@";
@@ -798,6 +810,9 @@
 /* Label for comments by author
    Period Stats 'Authors' header */
 "Authors" = "Авторы";
+
+/* No comment provided by engineer. */
+"Auto" = "Авто";
 
 /* Describes a status of a plugin */
 "Auto-managed" = "Автоматическое управление";
@@ -823,6 +838,9 @@
 
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "Автоматически делиться новыми записями с ваших аккаунтов в соцсетях.";
+
+/* No comment provided by engineer. */
+"Autoplay" = "Автозапуск";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Автообновления";
@@ -904,6 +922,9 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Цитата";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered inside itself." = "Блок не может быть отображен внутри себя же.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Блок скопирован";
 
@@ -915,6 +936,9 @@
 
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Редактор блоков включен";
+
+/* No comment provided by engineer. */
+"Block has been deleted or is unavailable." = "Блок удален или недоступен.";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Блокировать попытки несанкционированного входа";
@@ -936,7 +960,7 @@
 
 /* Blocklist Title
    Settings: Comments Blocklist */
-"Blocklist" = "Чёрный список";
+"Blocklist" = "Список блокировки";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Блог";
@@ -966,6 +990,9 @@
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Посмотрите все наши темы, чтобы найти свой идеал.";
+
+/* No comment provided by engineer. */
+"Browser default" = "Браузер по умолчанию";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Защита от атак методом перебора";
@@ -1148,6 +1175,9 @@
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Не удалось внести изменение.";
+
+/* No comment provided by engineer. */
+"Change heading level" = "Изменение уровня заголовка";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "Измените тип устройства для предварительного просмотра";
@@ -1567,6 +1597,9 @@
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
 "Continue" = "Продолжить";
+
+/* Button title. Takes the user to the login with WordPress.com flow. */
+"Continue With WordPress.com" = "Продолжить с WordPress.com";
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "Продолжить работу";
@@ -2055,6 +2088,9 @@
    User's Display Name */
 "Display Name" = "Отображаемое имя";
 
+/* No comment provided by engineer. */
+"Display post date" = "Показывать дату записи";
+
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Показ статистики сайта за всё время. Настройте в приложении WordPress в разделе статистики.";
 
@@ -2218,7 +2254,7 @@
 "Edit %@ block" = "Редактировать блок %@";
 
 /* Blocklist Keyword Edition Title */
-"Edit Blocklist Word" = "Редактировать слова чёрного списка";
+"Edit Blocklist Word" = "Редактировать слово из списка блокировки";
 
 /* No comment provided by engineer. */
 "Edit Comment" = "Изменить комментарий";
@@ -2239,6 +2275,9 @@
 
 /* No comment provided by engineer. */
 "Edit focal point" = "Изменить точку фокусировки";
+
+/* No comment provided by engineer. */
+"Edit image" = "Редактировать изображение";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Редактировать новые записи и страницы в редаторе блоков.";
@@ -2336,6 +2375,9 @@
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Показать во весь экран";
 
+/* No comment provided by engineer. */
+"Enter URL to embed here…" = "Укажите URL для вставки...";
+
 /* Enter a custom value */
 "Enter a custom value" = "Введите пользовательское значение";
 
@@ -2380,6 +2422,12 @@
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
 "Enter your server credentials to enable one click site restores from backups." = "Введите учетные данные сервера, чтобы включить восстановление из резервных копий в одно нажатие.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threat." = "Введите данные для входа на сервер для исправления угрозы.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threats." = "Введите данные для входа на сервер для исправления угроз.";
 
 /* Generic error alert title
    Generic error.
@@ -2832,6 +2880,9 @@
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Запустите ваш сайт";
 
+/* Example post title used in the login prologue screens. */
+"Getting Inspired" = "Вдохновляйтесь";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Получение информации об учетной записи";
 
@@ -2931,6 +2982,9 @@
 /* Accessibility label for selecting h6 paragraph style button on the formatting toolbar. */
 "Header 6" = "Заголовок №6";
 
+/* translators: %s: heading level e.g: \"1\", \"2\", \"3\" */
+"Heading %d" = "Заголовок %d";
+
 /* H1 Aztec Style */
 "Heading 1" = "Заголовок 1";
 
@@ -3025,6 +3079,9 @@
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "Мне нравится";
 
+/* Example post content used in the login prologue screens. */
+"I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Меня восхищают работы фотографа Кэмерона Карстена. Я попробую его техники в будущем";
+
 /* Title of a button style */
 "Icon & Text" = "Значок и текст";
 
@@ -3081,6 +3138,9 @@
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Подпись к изображению. %s";
+
+/* No comment provided by engineer. */
+"Image settings" = "Настройки изображения";
 
 /* Hint for image title on image settings. */
 "Image title" = "Заголовок изображения";
@@ -3428,6 +3488,9 @@
 /* Image link option title. */
 "Link To" = "Ссылка";
 
+/* No comment provided by engineer. */
+"Link to" = "Ссылка на";
+
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Ссылка на имеющееся содержимое";
 
@@ -3579,6 +3642,9 @@
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Похоже, на вашем сайте настроен Jetpack. Поздравляем!\nВойдите в систему с использованием ваших учетных данных на WordPress.com ниже, чтобы включить статистику и уведомления. ";
 
+/* No comment provided by engineer. */
+"Loop" = "Цикл";
+
 /* Title of a button. */
 "Lost your password?" = "Забыли пароль?";
 
@@ -3688,8 +3754,14 @@
 /* Downloadable/Restorable items: Media Uploads */
 "Media Uploads" = "Загруженные медиафайлы";
 
+/* No comment provided by engineer. */
+"Media area" = "Область мультимедиа";
+
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "Мультимедиа объект не имеет ассоциированного файла для загрузки.";
+
+/* No comment provided by engineer. */
+"Media file" = "Медиафайл";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "Разме медиафайла (%1$@) слишком большой для загрузки, максимально разрешенный - %2$@";
@@ -3835,6 +3907,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "Отправить комментарий в «Корзину».";
 
+/* Example post title used in the login prologue screens. */
+"Museums to See In London" = "Музеи для посещения в Лондоне";
+
 /* An example tag used in the login prologue screens. */
 "Music" = "Музыка";
 
@@ -3857,6 +3932,9 @@
 
 /* Option in Support view to access previous help tickets. */
 "My Tickets" = "Мои обращения в поддержку";
+
+/* Example post title used in the login prologue screens. */
+"My Top Ten Cafes" = "Мой выбор лучших 10 кафе";
 
 /* Accessibility label for the Email text field.
    Name text field placeholder */
@@ -3894,7 +3972,7 @@
 "New" = "Новые";
 
 /* Blocklist Keyword Insertion Title */
-"New Blocklist Word" = "Новое слово из черного списка";
+"New Blocklist Word" = "Новое слово из списка блокировки";
 
 /* Title of alert informing users about the Reader Save for Later feature. */
 "New Custom App Icons" = "Новые пользовательские значки приложения";
@@ -4415,6 +4493,9 @@
    The title of the Page Settings screen. */
 "Page Settings" = "Настройки страницы";
 
+/* No comment provided by engineer. */
+"Page break" = "Разрыв страницы";
+
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Блок разрыва страницы. %s";
 
@@ -4717,6 +4798,9 @@
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "Запись автора %1$@, из %2$@";
 
+/* No comment provided by engineer. */
+"Post content settings" = "Настройки содержимого записи";
+
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Запись создана %@";
 
@@ -4725,6 +4809,9 @@
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Загрузка записи не удалась";
+
+/* No comment provided by engineer. */
+"Post meta settings" = "Настройки метаданных записи";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "Запись перемещена в корзину.";
@@ -4803,6 +4890,9 @@
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "Предоставлено Tenor";
+
+/* No comment provided by engineer. */
+"Preload" = "Предварительная загрузка";
 
 /* Browse premium themes selection title */
 "Premium" = "Премиум";
@@ -4986,6 +5076,9 @@
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Оцените нас в App Store";
 
+/* No comment provided by engineer. */
+"Read more" = "Читать далее";
+
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Прочесть на";
 
@@ -5154,6 +5247,9 @@
 
 /* No comment provided by engineer. */
 "Replace file" = "Заменить файл";
+
+/* No comment provided by engineer. */
+"Replace image" = "Заменить изображение";
 
 /* No comment provided by engineer. */
 "Replace image or video" = "Заменить изображение или видео";
@@ -5721,6 +5817,9 @@
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Ошибка поделиться";
 
+/* No comment provided by engineer. */
+"Shortcode" = "Шорткод";
+
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Показывать заголовок";
 
@@ -5738,6 +5837,9 @@
 
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "Показывать похожие записи";
+
+/* No comment provided by engineer. */
+"Show download button" = "Показать кнопку скачивания";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -5878,6 +5980,10 @@
 /* Create new Site Page button title */
 "Site page" = "Страница сайта";
 
+/* Prologue title label, the 
+ force splits it into 2 lines. */
+"Site security and performance\nfrom your pocket" = "Безопасность и производительность сайта\nв вашем кармане";
+
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Часовой пояс сайта (UTC%1$@%2$d%3$@)";
 
@@ -6004,6 +6110,9 @@
 /* Discussion Settings Title
    Settings: Comments Sort Order */
 "Sort By" = "Приоритет сортировки";
+
+/* No comment provided by engineer. */
+"Sorting and filtering" = "Сортировка и фильтрация";
 
 /* Opens the Github Repository Web */
 "Source Code" = "Исходный код";
@@ -6356,6 +6465,9 @@
 
 /* Text for related post cell preview */
 "The WordPress for Android App Gets a Big Facelift" = "Приложение WordPress для Android получило грандиозное обновление";
+
+/* Example post title used in the login prologue screens. This is a post about football fans. */
+"The World's Best Fans" = "Лучшие мировые фанаты";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Приложение не может распознать ответ сервера. Проверьте конфигурацию вашего сайта. Приложение не может распознать ответ сервера. Проверьте конфигурацию вашего сайта.";
@@ -7100,6 +7212,9 @@
 /* Filters Unread Notifications */
 "Unread" = "Непрочитанное";
 
+/* Title of unreplied Comments filter. */
+"Unreplied" = "Без ответов";
+
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Несохранённые изменения";
 
@@ -7295,6 +7410,9 @@
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Экспорт видео отменен.";
+
+/* No comment provided by engineer. */
+"Video settings" = "Настройки видео";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Видеофайл, %@";
@@ -7868,6 +7986,9 @@
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Написать ответ.";
 
+/* No comment provided by engineer. */
+"Write code…" = "Введите код...";
+
 /* Title for the writing section in site settings screen */
 "Writing" = "Написание";
 
@@ -7984,7 +8105,7 @@
 "You hit a milestone 🚀" = "Вы достигли важной вехи 🚀";
 
 /* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
-"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Вы можете добавить один или несколько IP-адресов в белый список, чтобы плагин Jetpack их никогда не блокировал. Можно указывать адреса IPv4 и IPv6. Чтобы указать диапазон, введите минимальное и максимальное значения, разделённые тире. Пример: 12.12.12.1-12.12.12.100.";
+"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Вы можете добавить один или несколько IP-адресов в список разрешенных, чтобы плагин Jetpack их никогда не блокировал. Можно указывать адреса IPv4 и IPv6. Чтобы указать диапазон, введите минимальное и максимальное значения, разделённые тире. Пример: 12.12.12.1-12.12.12.100.";
 
 /* A suggestion of topics the user might like */
 "You might like" = "Вам может понравиться";
@@ -8171,6 +8292,9 @@
 
 /* Label displayed on image media items. */
 "image" = "Изображение";
+
+/* translators: 1: the order number of the image. 2: the total number of images. */
+"image %1$d of %2$d in gallery" = "Изображение в галерее %1$d из %2$d";
 
 /* Text for related post cell preview */
 "in \"Apps\"" = "в разделе «Приложения»";

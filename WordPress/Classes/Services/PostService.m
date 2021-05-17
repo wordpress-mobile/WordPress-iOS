@@ -55,6 +55,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.postFormat = blog.settings.defaultPostFormat;
     post.postType = Post.typeDefaultIdentifier;
 
+    BlogAuthor *author = [blog getAuthorWithId:blog.userID];
+    post.authorID = author.userID ?: blog.account.userID;
+    post.author = author.displayName ?: blog.account.displayName;
+
     [blog.managedObjectContext obtainPermanentIDsForObjects:@[post] error:nil];
     NSAssert(![post.objectID isTemporaryID], @"The new post for this blog must have a permanent ObjectID");
 
@@ -73,6 +77,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     page.blog = blog;
     page.date_created_gmt = [NSDate date];
     page.remoteStatus = AbstractPostRemoteStatusSync;
+
+    BlogAuthor *author = [blog getAuthorWithId:blog.userID];
+    page.authorID = author.userID ?: blog.account.userID;
+    page.author = author.displayName ?: blog.account.displayName;
 
     [blog.managedObjectContext obtainPermanentIDsForObjects:@[page] error:nil];
     NSAssert(![page.objectID isTemporaryID], @"The new page for this blog must have a permanent ObjectID");
@@ -676,6 +684,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     [remote restorePost:remotePost success:successBlock failure:failureBlock];
 }
 
+// TODO: remove when PostServiceWPComTests is updated to use LikeUsers method.
 - (void)getLikesForPostID:(NSNumber *)postID
                    siteID:(NSNumber *)siteID
                   success:(void (^)(NSArray<RemoteUser *> *))success
@@ -924,6 +933,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     remotePost.password = post.password;
     remotePost.type = @"post";
     remotePost.authorAvatarURL = post.authorAvatarURL;
+    remotePost.authorID = post.authorID;
     remotePost.excerpt = post.mt_excerpt;
     remotePost.slug = post.wp_slug;
 

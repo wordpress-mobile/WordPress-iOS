@@ -14,4 +14,7 @@
 
 /// Opens the Add Comment when the view appears
 @property (nonatomic) BOOL promptToAddComment;
+/// Navigates to the specified comment when the view appears
+@property (nonatomic, strong) NSNumber *navigateToCommentID;
+
 @end

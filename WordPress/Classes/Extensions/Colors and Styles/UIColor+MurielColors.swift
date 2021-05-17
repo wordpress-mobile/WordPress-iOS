@@ -172,6 +172,16 @@ extension UIColor {
         return UIColor(light: .systemGray6, dark: .systemGray5)
     }
 
+    // MARK: - Search Fields
+
+    static var searchFieldPlaceholderText: UIColor {
+        return .secondaryLabel
+    }
+
+    static var searchFieldIcons: UIColor {
+        return .secondaryLabel
+    }
+
     // MARK: - Table Views
 
     static var divider: UIColor {

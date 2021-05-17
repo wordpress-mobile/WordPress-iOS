@@ -260,7 +260,7 @@ class PostServiceWPComTests: XCTestCase {
         // Arrange
         let postID = NSNumber(value: 1)
         let siteID = NSNumber(value: 2)
-        let expectedUsers = [createRemoteUser()]
+        let expectedUsers = [createRemoteLikeUser()]
         try! context.save()
         remoteMock.remoteUsersToReturnOnGetLikes = expectedUsers
 
@@ -304,15 +304,15 @@ class PostServiceWPComTests: XCTestCase {
         return remotePost
     }
 
-    private func createRemoteUser() -> RemoteUser {
-        let remoteUser = RemoteUser()
-        remoteUser.userID = NSNumber(value: 123)
-        remoteUser.primaryBlogID = NSNumber(value: 456)
-        remoteUser.username = "johndoe"
-        remoteUser.displayName = "John Doe"
-        remoteUser.avatarURL = "avatar URL"
+    private func createRemoteLikeUser() -> RemoteLikeUser {
+        let userDict: [String: Any] = [ "ID": NSNumber(value: 123),
+                                        "login": "johndoe",
+                                        "name": "John Doe",
+                                        "site_ID": NSNumber(value: 456),
+                                        "avatar_URL": "avatar URL"
+        ]
 
-        return remoteUser
+        return RemoteLikeUser(dictionary: userDict, postID: NSNumber(value: 1), siteID: NSNumber(value: 2))
     }
 }
 
@@ -344,7 +344,7 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
 
     // related to fetching likes
     var fetchLikesShouldSucceed: Bool = true
-    var remoteUsersToReturnOnGetLikes: [RemoteUser]? = nil
+    var remoteUsersToReturnOnGetLikes: [RemoteLikeUser]? = nil
 
     private(set) var invocationsCountOfCreatePost = 0
     private(set) var invocationsCountOfAutoSave = 0
@@ -395,7 +395,7 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
         }
     }
 
-    override func getLikesForPostID(_ postID: NSNumber!, success: (([RemoteUser]?) -> Void)!, failure: ((Error?) -> Void)!) {
+    override func getLikesForPostID(_ postID: NSNumber!, success: (([RemoteLikeUser]?) -> Void)!, failure: ((Error?) -> Void)!) {
         DispatchQueue.global().async {
             if self.fetchLikesShouldSucceed {
                 success(self.remoteUsersToReturnOnGetLikes)

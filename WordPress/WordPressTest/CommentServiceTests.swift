@@ -33,16 +33,16 @@ final class CommentServiceTests: XCTestCase {
 
     // MARK: Helpers
 
-    private func createRemoteUser() -> RemoteUser {
-         let remoteUser = RemoteUser()
-         remoteUser.userID = NSNumber(value: 123)
-         remoteUser.primaryBlogID = NSNumber(value: 456)
-         remoteUser.username = "johndoe"
-         remoteUser.displayName = "John Doe"
-         remoteUser.avatarURL = "avatar URL"
+    private func createRemoteLikeUser() -> RemoteLikeUser {
+        let userDict: [String: Any] = [ "ID": NSNumber(value: 123),
+                                        "login": "johndoe",
+                                        "name": "John Doe",
+                                        "site_ID": NSNumber(value: 456),
+                                        "avatar_URL": "avatar URL"
+        ]
 
-         return remoteUser
-     }
+        return RemoteLikeUser(dictionary: userDict, commentID: NSNumber(value: 1), siteID: NSNumber(value: 2))
+    }
 }
 
 // MARK: - Tests
@@ -55,7 +55,7 @@ extension CommentServiceTests {
         // Arrange
         let commentID = NSNumber(value: 1)
         let siteID = NSNumber(value: 2)
-        let expectedUsers = [createRemoteUser()]
+        let expectedUsers = [createRemoteLikeUser()]
         try! context.save()
         remoteMock.remoteUsersToReturnOnGetLikes = expectedUsers
 
@@ -108,9 +108,9 @@ private class CommentServiceRemoteRESTMock: CommentServiceRemoteREST {
 
     // related to fetching likes
     var fetchLikesShouldSucceed: Bool = true
-    var remoteUsersToReturnOnGetLikes: [RemoteUser]? = nil
+    var remoteUsersToReturnOnGetLikes: [RemoteLikeUser]? = nil
 
-    override func getLikesForCommentID(_ commentID: NSNumber!, success: (([RemoteUser]?) -> Void)!, failure: ((Error?) -> Void)!) {
+    override func getLikesForCommentID(_ commentID: NSNumber!, success: (([RemoteLikeUser]?) -> Void)!, failure: ((Error?) -> Void)!) {
         DispatchQueue.global().async {
             if self.fetchLikesShouldSucceed {
                 success(self.remoteUsersToReturnOnGetLikes)

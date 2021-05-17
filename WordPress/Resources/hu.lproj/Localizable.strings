@@ -452,6 +452,9 @@
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Add any topic";
 
+/* No comment provided by engineer. */
+"Add caption" = "Add caption";
+
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Add image, or avatar, to represent this new account.";
 
@@ -488,6 +491,9 @@
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Add tags";
+
+/* No comment provided by engineer. */
+"Add text…" = "Add text…";
 
 /* No comment provided by engineer. */
 "Add this email link" = "Add this email link";
@@ -768,6 +774,9 @@
 "Attach File as Link" = "Attach File as Link";
 
 /* No comment provided by engineer. */
+"Attachment page" = "Attachment page";
+
+/* No comment provided by engineer. */
 "Audio Player" = "Audio Player";
 
 /* translators: accessibility text. %s: Audio caption. */
@@ -775,6 +784,9 @@
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "Audio caption. Empty";
+
+/* No comment provided by engineer. */
+"Audio settings" = "Audio settings";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "Audio, %@";
@@ -798,6 +810,9 @@
 /* Label for comments by author
    Period Stats 'Authors' header */
 "Authors" = "Authors";
+
+/* No comment provided by engineer. */
+"Auto" = "Auto";
 
 /* Describes a status of a plugin */
 "Auto-managed" = "Auto-managed";
@@ -823,6 +838,9 @@
 
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "Automatically share new posts to your social media accounts.";
+
+/* No comment provided by engineer. */
+"Autoplay" = "Autoplay";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Autoupdates";
@@ -904,6 +922,9 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Block Quote";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered inside itself." = "Block cannot be rendered inside itself.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Block copied";
 
@@ -915,6 +936,9 @@
 
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Block editor enabled";
+
+/* No comment provided by engineer. */
+"Block has been deleted or is unavailable." = "Block has been deleted or is unavailable.";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Block malicious login attempts";
@@ -966,6 +990,9 @@
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Browse all our themes to find your perfect fit.";
+
+/* No comment provided by engineer. */
+"Browser default" = "Browser default";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Brute Force Attack Protection";
@@ -1148,6 +1175,9 @@
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Change failed";
+
+/* No comment provided by engineer. */
+"Change heading level" = "Change heading level";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "Change the device type used for preview";
@@ -1567,6 +1597,9 @@
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
 "Continue" = "Continue";
+
+/* Button title. Takes the user to the login with WordPress.com flow. */
+"Continue With WordPress.com" = "Continue With WordPress.com";
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "Continue Working";
@@ -2055,6 +2088,9 @@
    User's Display Name */
 "Display Name" = "Display Name";
 
+/* No comment provided by engineer. */
+"Display post date" = "Display post date";
+
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Display your all-time site stats here. Configure in the WordPress app in your site stats.";
 
@@ -2240,6 +2276,9 @@
 /* No comment provided by engineer. */
 "Edit focal point" = "Edit focal point";
 
+/* No comment provided by engineer. */
+"Edit image" = "Edit image";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Edit new posts and pages with the block editor.";
 
@@ -2336,6 +2375,9 @@
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Enter Full Screen";
 
+/* No comment provided by engineer. */
+"Enter URL to embed here…" = "Enter URL to embed here…";
+
 /* Enter a custom value */
 "Enter a custom value" = "Enter a custom value";
 
@@ -2380,6 +2422,12 @@
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
 "Enter your server credentials to enable one click site restores from backups." = "Enter your server credentials to enable one click site restores from backups.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threat." = "Enter your server credentials to fix threat.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threats." = "Enter your server credentials to fix threats.";
 
 /* Generic error alert title
    Generic error.
@@ -2832,6 +2880,9 @@
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Get your site up and running";
 
+/* Example post title used in the login prologue screens. */
+"Getting Inspired" = "Getting Inspired";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Fiók információk beszerzése";
 
@@ -2931,6 +2982,9 @@
 /* Accessibility label for selecting h6 paragraph style button on the formatting toolbar. */
 "Header 6" = "Header 6";
 
+/* translators: %s: heading level e.g: \"1\", \"2\", \"3\" */
+"Heading %d" = "Heading %d";
+
 /* H1 Aztec Style */
 "Heading 1" = "Heading 1";
 
@@ -3025,6 +3079,9 @@
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "I Like It";
 
+/* Example post content used in the login prologue screens. */
+"I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next";
+
 /* Title of a button style */
 "Icon & Text" = "Icon & Text";
 
@@ -3081,6 +3138,9 @@
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Image caption. %s";
+
+/* No comment provided by engineer. */
+"Image settings" = "Image settings";
 
 /* Hint for image title on image settings. */
 "Image title" = "Image title";
@@ -3428,6 +3488,9 @@
 /* Image link option title. */
 "Link To" = "Link To";
 
+/* No comment provided by engineer. */
+"Link to" = "Link to";
+
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Link to existing content";
 
@@ -3579,6 +3642,9 @@
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications.";
 
+/* No comment provided by engineer. */
+"Loop" = "Loop";
+
 /* Title of a button. */
 "Lost your password?" = "Elfelejtett jelszó";
 
@@ -3688,8 +3754,14 @@
 /* Downloadable/Restorable items: Media Uploads */
 "Media Uploads" = "Media Uploads";
 
+/* No comment provided by engineer. */
+"Media area" = "Media area";
+
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "Media doesn't have an associated file to upload.";
+
+/* No comment provided by engineer. */
+"Media file" = "Media file";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "Media filesize (%@) is too large to upload. Maximum allowed is %@";
@@ -3835,6 +3907,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "Moves the comment to the Trash.";
 
+/* Example post title used in the login prologue screens. */
+"Museums to See In London" = "Museums to See In London";
+
 /* An example tag used in the login prologue screens. */
 "Music" = "Music";
 
@@ -3857,6 +3932,9 @@
 
 /* Option in Support view to access previous help tickets. */
 "My Tickets" = "My Tickets";
+
+/* Example post title used in the login prologue screens. */
+"My Top Ten Cafes" = "My Top Ten Cafes";
 
 /* Accessibility label for the Email text field.
    Name text field placeholder */
@@ -4415,6 +4493,9 @@
    The title of the Page Settings screen. */
 "Page Settings" = "Page Settings";
 
+/* No comment provided by engineer. */
+"Page break" = "Page break";
+
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Page break block. %s";
 
@@ -4717,6 +4798,9 @@
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "Post by %@, from %@";
 
+/* No comment provided by engineer. */
+"Post content settings" = "Post content settings";
+
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Post created on %@";
 
@@ -4725,6 +4809,9 @@
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Post failed to upload";
+
+/* No comment provided by engineer. */
+"Post meta settings" = "Post meta settings";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "Post moved to trash.";
@@ -4803,6 +4890,9 @@
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "Powered by Tenor";
+
+/* No comment provided by engineer. */
+"Preload" = "Preload";
 
 /* Browse premium themes selection title */
 "Premium" = "Premium";
@@ -4986,6 +5076,9 @@
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Rate us on the App Store";
 
+/* No comment provided by engineer. */
+"Read more" = "Read more";
+
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Read on";
 
@@ -5154,6 +5247,9 @@
 
 /* No comment provided by engineer. */
 "Replace file" = "Replace file";
+
+/* No comment provided by engineer. */
+"Replace image" = "Replace image";
 
 /* No comment provided by engineer. */
 "Replace image or video" = "Replace image or video";
@@ -5721,6 +5817,9 @@
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Sharing error";
 
+/* No comment provided by engineer. */
+"Shortcode" = "Shortcode";
+
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Show Header";
 
@@ -5738,6 +5837,9 @@
 
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "Show Related Posts";
+
+/* No comment provided by engineer. */
+"Show download button" = "Show download button";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -5878,6 +5980,10 @@
 /* Create new Site Page button title */
 "Site page" = "Site page";
 
+/* Prologue title label, the 
+ force splits it into 2 lines. */
+"Site security and performance\nfrom your pocket" = "Site security and performance\nfrom your pocket";
+
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Site timezone (UTC%@%d%@)";
 
@@ -6004,6 +6110,9 @@
 /* Discussion Settings Title
    Settings: Comments Sort Order */
 "Sort By" = "Sort By";
+
+/* No comment provided by engineer. */
+"Sorting and filtering" = "Sorting and filtering";
 
 /* Opens the Github Repository Web */
 "Source Code" = "Source Code";
@@ -6356,6 +6465,9 @@
 
 /* Text for related post cell preview */
 "The WordPress for Android App Gets a Big Facelift" = "The WordPress for Android App Gets a Big Facelift";
+
+/* Example post title used in the login prologue screens. This is a post about football fans. */
+"The World's Best Fans" = "The World's Best Fans";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "The app can't recognize the server response. Please, check the configuration of your site.";
@@ -7100,6 +7212,9 @@
 /* Filters Unread Notifications */
 "Unread" = "Unread";
 
+/* Title of unreplied Comments filter. */
+"Unreplied" = "Unreplied";
+
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Unsaved Changes";
 
@@ -7295,6 +7410,9 @@
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Video export canceled.";
+
+/* No comment provided by engineer. */
+"Video settings" = "Video settings";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Video, %@";
@@ -7868,6 +7986,9 @@
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Write a reply…";
 
+/* No comment provided by engineer. */
+"Write code…" = "Write code…";
+
 /* Title for the writing section in site settings screen */
 "Writing" = "Writing";
 
@@ -8171,6 +8292,9 @@
 
 /* Label displayed on image media items. */
 "image" = "kép";
+
+/* translators: 1: the order number of the image. 2: the total number of images. */
+"image %1$d of %2$d in gallery" = "image %1$d of %2$d in gallery";
 
 /* Text for related post cell preview */
 "in \"Apps\"" = "in \"Apps\"";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-04-20 10:50:37+0000 */
+/* Translation-Revision-Date: 2021-05-11 09:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
@@ -452,6 +452,9 @@
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Añadir cualquier debate";
 
+/* No comment provided by engineer. */
+"Add caption" = "Añadir leyenda";
+
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Añade una imagen o avatar para representar a esta nueva cuenta.";
 
@@ -488,6 +491,9 @@
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Añadir etiquetas";
+
+/* No comment provided by engineer. */
+"Add text…" = "Añadir texto…";
 
 /* No comment provided by engineer. */
 "Add this email link" = "Añadir este enlace de correo electrónico";
@@ -579,7 +585,7 @@
 "Allowlisted IP Addresses" = "Direcciones IP en lista blanca";
 
 /* Jetpack Settings: Allowlisted IP addresses */
-"Allowlisted IP addresses" = "Direcciones IP en lista blanca";
+"Allowlisted IP addresses" = "Lista de direcciones IP permitidas";
 
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "¡Ya falta poco! Por favor, introduce el código de verificación de tu aplicación authenticator.";
@@ -768,6 +774,9 @@
 "Attach File as Link" = "Adjuntar archivo como enlace";
 
 /* No comment provided by engineer. */
+"Attachment page" = "Página de adjuntos";
+
+/* No comment provided by engineer. */
 "Audio Player" = "Reproductor de audio";
 
 /* translators: accessibility text. %s: Audio caption. */
@@ -775,6 +784,9 @@
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "Leyenda del audio. Vacía";
+
+/* No comment provided by engineer. */
+"Audio settings" = "Ajustes de audio";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "Audio, %@";
@@ -798,6 +810,9 @@
 /* Label for comments by author
    Period Stats 'Authors' header */
 "Authors" = "Autores";
+
+/* No comment provided by engineer. */
+"Auto" = "Automático";
 
 /* Describes a status of a plugin */
 "Auto-managed" = "Gestión automática";
@@ -823,6 +838,9 @@
 
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "Comparte automáticamente las nuevas entradas en tus cuentas de medios sociales.";
+
+/* No comment provided by engineer. */
+"Autoplay" = "Reproducción automática";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Actualizaciones automáticas";
@@ -904,6 +922,9 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Bloquear cita";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered inside itself." = "El bloque no puede renderizar en sí mismo.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Bloque copiado";
 
@@ -915,6 +936,9 @@
 
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Editor de bloques activado";
+
+/* No comment provided by engineer. */
+"Block has been deleted or is unavailable." = "El bloque se ha borrado o no está disponible.";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Bloquear intentos de acceso malintencionados";
@@ -966,6 +990,9 @@
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Navega por todos nuestros temas para encontrar el que se adapte a ti. ";
+
+/* No comment provided by engineer. */
+"Browser default" = "Valor por defecto del navegador";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Protección frente a ataques de fuerza bruta";
@@ -1148,6 +1175,9 @@
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Se ha producido un error al realizar el cambio";
+
+/* No comment provided by engineer. */
+"Change heading level" = "Cambiar nivel de encabezado";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "Cambia el tipo de dispositivo usado para la vista previa";
@@ -1567,6 +1597,9 @@
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
 "Continue" = "Continuar";
+
+/* Button title. Takes the user to the login with WordPress.com flow. */
+"Continue With WordPress.com" = "Sigue con WordPress.com";
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "Continúa trabajando";
@@ -2055,6 +2088,9 @@
    User's Display Name */
 "Display Name" = "Nombre público";
 
+/* No comment provided by engineer. */
+"Display post date" = "Mostrar fecha de la entrada";
+
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Muestra aquí todas las estadísticas de tu sitio. Configúralo en la aplicación WordPress en las estadísticas de tu sitio.";
 
@@ -2240,6 +2276,9 @@
 /* No comment provided by engineer. */
 "Edit focal point" = "Editar el punto focal";
 
+/* No comment provided by engineer. */
+"Edit image" = "Editar imagen";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Edita nuevas entradas y páginas con el editor de bloques.";
 
@@ -2336,6 +2375,9 @@
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Entrar en pantalla completa";
 
+/* No comment provided by engineer. */
+"Enter URL to embed here…" = "Introduce la URL a incrustar aquí…";
+
 /* Enter a custom value */
 "Enter a custom value" = "Introduce un valor personalizado";
 
@@ -2380,6 +2422,12 @@
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
 "Enter your server credentials to enable one click site restores from backups." = "Introduce las credenciales de tu servidor para activar las restauraciones con un clic de las copias de seguridad.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threat." = "Introduce las credenciales de tu servidor para corregir la amenaza.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threats." = "Introduce las credenciales de tu servidor para corregir amenazas.";
 
 /* Generic error alert title
    Generic error.
@@ -2832,6 +2880,9 @@
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Pon tu sitio en marcha";
 
+/* Example post title used in the login prologue screens. */
+"Getting Inspired" = "Inspírate";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Recuperando la información de la cuenta";
 
@@ -2931,6 +2982,9 @@
 /* Accessibility label for selecting h6 paragraph style button on the formatting toolbar. */
 "Header 6" = "Encabezado 6";
 
+/* translators: %s: heading level e.g: \"1\", \"2\", \"3\" */
+"Heading %d" = "Encabezado %d";
+
 /* H1 Aztec Style */
 "Heading 1" = "Cabecera 1";
 
@@ -3025,6 +3079,9 @@
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "Me gusta";
 
+/* Example post content used in the login prologue screens. */
+"I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "El trabajo de Cameron Karsten me sirve de inspiración. Probaré estas técnicas en mi siguiente trabajo";
+
 /* Title of a button style */
 "Icon & Text" = "Icono y texto";
 
@@ -3081,6 +3138,9 @@
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Leyenda de la imagen. %s";
+
+/* No comment provided by engineer. */
+"Image settings" = "Ajustes de imagen";
 
 /* Hint for image title on image settings. */
 "Image title" = "Título de la imagen";
@@ -3428,6 +3488,9 @@
 /* Image link option title. */
 "Link To" = "Enlace a";
 
+/* No comment provided by engineer. */
+"Link to" = "Enlazado a";
+
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Enlaza a contenido existente";
 
@@ -3579,6 +3642,9 @@
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Parece que tienes Jetpack instalado. ¡Enhorabuena! Accede con tus credenciales de WordPress.com para activar las estadísticas y los avisos.";
 
+/* No comment provided by engineer. */
+"Loop" = "Bucle";
+
 /* Title of a button. */
 "Lost your password?" = "¿Has perdido tu contraseña?";
 
@@ -3688,8 +3754,14 @@
 /* Downloadable/Restorable items: Media Uploads */
 "Media Uploads" = "Subidas de medios";
 
+/* No comment provided by engineer. */
+"Media area" = "Área de medios";
+
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "Los medios no están asociados a un archivo a subir.";
+
+/* No comment provided by engineer. */
+"Media file" = "Archivo multimedia";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "El tamaño del medio (%1$@) es demasiado grande para subirlo. El máximo permitido es de %2$@";
@@ -3835,6 +3907,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "Traslada el comentario a la papelera.";
 
+/* Example post title used in the login prologue screens. */
+"Museums to See In London" = "Museos que ver en Londres";
+
 /* An example tag used in the login prologue screens. */
 "Music" = "Música";
 
@@ -3857,6 +3932,9 @@
 
 /* Option in Support view to access previous help tickets. */
 "My Tickets" = "Mis tickets";
+
+/* Example post title used in the login prologue screens. */
+"My Top Ten Cafes" = "Mis diez mejores cafés";
 
 /* Accessibility label for the Email text field.
    Name text field placeholder */
@@ -4415,6 +4493,9 @@
    The title of the Page Settings screen. */
 "Page Settings" = "Ajustes de la página";
 
+/* No comment provided by engineer. */
+"Page break" = "Salto de página";
+
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Bloque de salto de página. %s";
 
@@ -4717,6 +4798,9 @@
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "Entrada de %1$@, desde %2$@";
 
+/* No comment provided by engineer. */
+"Post content settings" = "Ajustes de contenido de la entrada";
+
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Entrada creada el %@";
 
@@ -4725,6 +4809,9 @@
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Entrada que falló al subirse";
+
+/* No comment provided by engineer. */
+"Post meta settings" = "Ajustes meta de la entrada";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "Se ha enviado la entrada a la papelera.";
@@ -4803,6 +4890,9 @@
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "Funciona con Tenor";
+
+/* No comment provided by engineer. */
+"Preload" = "Precarga";
 
 /* Browse premium themes selection title */
 "Premium" = "Premium";
@@ -4986,6 +5076,9 @@
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Puntúanos en la App Store";
 
+/* No comment provided by engineer. */
+"Read more" = "Leer más";
+
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Leer en";
 
@@ -5154,6 +5247,9 @@
 
 /* No comment provided by engineer. */
 "Replace file" = "Reemplazar archivo";
+
+/* No comment provided by engineer. */
+"Replace image" = "Reemplazar imagen";
 
 /* No comment provided by engineer. */
 "Replace image or video" = "Reemplazar la imagen o vídeo";
@@ -5721,6 +5817,9 @@
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Error al compartir";
 
+/* No comment provided by engineer. */
+"Shortcode" = "Shortcode";
+
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Mostrar cabecera";
 
@@ -5738,6 +5837,9 @@
 
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "Mostrar entradas relacionadas";
+
+/* No comment provided by engineer. */
+"Show download button" = "Mostrar botón de descarga";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -5878,6 +5980,10 @@
 /* Create new Site Page button title */
 "Site page" = "Página del sitio";
 
+/* Prologue title label, the 
+ force splits it into 2 lines. */
+"Site security and performance\nfrom your pocket" = "Rendimiento y seguridad del sitio\nde tu bolsillo";
+
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Zona horaria del sitio (UTC%1$@%2$d%3$@)";
 
@@ -6004,6 +6110,9 @@
 /* Discussion Settings Title
    Settings: Comments Sort Order */
 "Sort By" = "Ordenar por";
+
+/* No comment provided by engineer. */
+"Sorting and filtering" = "Orden y filtros";
 
 /* Opens the Github Repository Web */
 "Source Code" = "Código fuente";
@@ -6356,6 +6465,9 @@
 
 /* Text for related post cell preview */
 "The WordPress for Android App Gets a Big Facelift" = "La aplicación para Android ha recibido una importante actualización";
+
+/* Example post title used in the login prologue screens. This is a post about football fans. */
+"The World's Best Fans" = "Los mejores fanáticos del mundo";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "La aplicación no reconoce la respuesta del servidor. Comprueba la configuración de tu sitio.";
@@ -7100,6 +7212,9 @@
 /* Filters Unread Notifications */
 "Unread" = "Sin leer";
 
+/* Title of unreplied Comments filter. */
+"Unreplied" = "Sin respuesta";
+
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Cambios no guardados";
 
@@ -7295,6 +7410,9 @@
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Exportación de vídeo cancelada.";
+
+/* No comment provided by engineer. */
+"Video settings" = "Ajustes de vídeo";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Vídeo, %@";
@@ -7868,6 +7986,9 @@
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Escribe una respuesta...";
 
+/* No comment provided by engineer. */
+"Write code…" = "Escribe código…";
+
 /* Title for the writing section in site settings screen */
 "Writing" = "Escritura";
 
@@ -7984,7 +8105,7 @@
 "You hit a milestone 🚀" = "Has alcanzado un hito 🚀";
 
 /* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
-"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Puedes poner en lista blanca una dirección o serie de direcciones IP para que no las bloquee Jetpack. Se acepta tanto IPv4 como IPv6. Para especificar un rango introduce el valor más bajo y el más alto separados por un guión. Ejemplo: 12.12.12.1-12.12.12.100. ";
+"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Puedes poner en lista de direcciones permitidas una dirección o serie de direcciones IP para que no las bloquee Jetpack. Se acepta tanto IPv4 como IPv6. Para especificar un rango introduce el valor más bajo y el más alto separados por un guión. Ejemplo: 12.12.12.1-12.12.12.100. ";
 
 /* A suggestion of topics the user might like */
 "You might like" = "Puede que te guste";
@@ -8171,6 +8292,9 @@
 
 /* Label displayed on image media items. */
 "image" = "imagen";
+
+/* translators: 1: the order number of the image. 2: the total number of images. */
+"image %1$d of %2$d in gallery" = "imagen %1$d de %2$d de la galería";
 
 /* Text for related post cell preview */
 "in \"Apps\"" = "en «Aplicaciones»";

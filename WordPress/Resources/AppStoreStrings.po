@@ -41,11 +41,15 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v17.2-whats-new"
+msgctxt "v17.3-whats-new"
 msgid ""
-"This version introduces a new block – Jetpack contact info. It's perfect for displaying a nicely formatted address on your site. We've also introduced some spiffy new app icons you can use to customize how the app looks on your home screen.\n"
+"What’s new in WordPress release 17.3:\n"
 "\n"
-"We've got some nifty tweaks to tell you about! We've removed the site switcher from the editor to simplify posting, fixed a bug where author names weren't visible, improved VoiceOver support for the columns block, and made it easier to add alt text to an image block.\n"
+"New block alert! With the Search block, you can now add a search function onto any page or post on your site. We’ve also simplified the process for inserting media while using the Image, Video, Gallery, File, and Audio blocks.\n"
+"\n"
+"We addressed a few issues where your post content was not behaving as expected! Unwanted posts, for example, were sometimes converting into Classic content. This unexpected behavior occurred when deleting a post and then selecting Undo, and also when trashing a post. We also fixed an issue where your restored posts remained in your list of published posts even though they had been converted to drafts. (Apparently, sometimes your posts have minds of their own!) We’re pleased to say that all these issues have been fixed.\n"
+"\n"
+"Overall, the team kept busy for this release, and we made various other improvements, including a styling fix on the Change Username page so people would no longer be stuck on the screen, and updating the comments experience so you can filter them to show the most recent unreplied comments from other users. We also squashed several translation bugs on various screens, and tweaked colors in the app where necessary.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

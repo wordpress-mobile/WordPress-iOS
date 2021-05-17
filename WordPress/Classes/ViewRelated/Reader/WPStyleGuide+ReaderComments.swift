@@ -8,10 +8,17 @@ extension WPStyleGuide {
         return NSAttributedString.Key.convertToRaw(attributes: attributes)
     }
 
-    class func defaultSearchBarTextAttributesSwifted(_ color: UIColor) -> [NSAttributedString.Key: Any] {
+    class func defaultSearchBarTextAttributesSwifted() -> [NSAttributedString.Key: Any] {
         return [
-            .foregroundColor: color,
-            .font: WPStyleGuide.fixedFont(for: .footnote)
+            .font: WPStyleGuide.fixedFont(for: .body)
         ]
+    }
+
+    class func defaultSearchBarTextAttributesSwifted(_ color: UIColor) -> [NSAttributedString.Key: Any] {
+        var attributes = defaultSearchBarTextAttributesSwifted()
+
+        attributes[.foregroundColor] = color
+
+        return attributes
     }
 }

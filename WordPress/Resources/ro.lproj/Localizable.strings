@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-04-20 07:07:12+0000 */
+/* Translation-Revision-Date: 2021-05-06 10:37:03+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -452,6 +452,9 @@
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Adaugă orice subiect";
 
+/* No comment provided by engineer. */
+"Add caption" = "Adaugă text imaginii";
+
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Adaugă o imagine sau un avatar care să reprezinte acest cont nou.";
 
@@ -488,6 +491,9 @@
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Adaugă etichete";
+
+/* No comment provided by engineer. */
+"Add text…" = "Adaugă text...";
 
 /* No comment provided by engineer. */
 "Add this email link" = "Adaugă această legătură la email";
@@ -768,6 +774,9 @@
 "Attach File as Link" = "Atașează fișierul ca o legătură";
 
 /* No comment provided by engineer. */
+"Attachment page" = "Pagină atașament";
+
+/* No comment provided by engineer. */
 "Audio Player" = "Player audio";
 
 /* translators: accessibility text. %s: Audio caption. */
@@ -775,6 +784,9 @@
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "Text asociat audio. Gol";
+
+/* No comment provided by engineer. */
+"Audio settings" = "Setări audio";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "Audio, %@";
@@ -798,6 +810,9 @@
 /* Label for comments by author
    Period Stats 'Authors' header */
 "Authors" = "Autori";
+
+/* No comment provided by engineer. */
+"Auto" = "Automat";
 
 /* Describes a status of a plugin */
 "Auto-managed" = "Administrat automat";
@@ -823,6 +838,9 @@
 
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "Partajează automat articole noi în conturile tale din media socială.";
+
+/* No comment provided by engineer. */
+"Autoplay" = "Redare automată";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Actualizări automate";
@@ -904,6 +922,9 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "bloc citat";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered inside itself." = "Blocurile nu pot fi randate în interiorul lor.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Bloc copiat";
 
@@ -915,6 +936,9 @@
 
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Editor de blocuri activat";
+
+/* No comment provided by engineer. */
+"Block has been deleted or is unavailable." = "Blocul a fost șters sau este indisponibil.";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Blochează încercările de autentificare rău intenționate";
@@ -966,6 +990,9 @@
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Răsfoiește toate temele pentru a o găsi pe cea care ți se potrivește perfect.";
+
+/* No comment provided by engineer. */
+"Browser default" = "Navigator implicit";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Protecție împotriva atacurilor cu forță-brută";
@@ -1148,6 +1175,9 @@
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Modificare eșuată";
+
+/* No comment provided by engineer. */
+"Change heading level" = "Schimbă nivelul subtitlului";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "Schimbă tipul de dispozitiv folosit pentru previzualizare";
@@ -1567,6 +1597,9 @@
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
 "Continue" = "Continuă";
+
+/* Button title. Takes the user to the login with WordPress.com flow. */
+"Continue With WordPress.com" = "Continuă cu WordPress.com";
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "Continuă lucrul";
@@ -2055,6 +2088,9 @@
    User's Display Name */
 "Display Name" = "Nume de afișat";
 
+/* No comment provided by engineer. */
+"Display post date" = "Afișează data articolului";
+
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Afișează aici toate statisticile sitului. Configurează statisticile sitului în aplicația WordPress.";
 
@@ -2240,6 +2276,9 @@
 /* No comment provided by engineer. */
 "Edit focal point" = "Editează punctul central";
 
+/* No comment provided by engineer. */
+"Edit image" = "Editează imaginea";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Editează articole și pagini noi cu editorul de blocuri.";
 
@@ -2339,6 +2378,9 @@
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Intră pe ecran complet";
 
+/* No comment provided by engineer. */
+"Enter URL to embed here…" = "Introdu URL-ul pentru a îngloba aici...";
+
 /* Enter a custom value */
 "Enter a custom value" = "Introdu o valoare  personalizată";
 
@@ -2383,6 +2425,12 @@
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
 "Enter your server credentials to enable one click site restores from backups." = "Introdu datele de conectare la server pentru a activa pe sit restaurările cu un singur clic din copiile tale de siguranță.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threat." = "Pentru a înlătura amenințarea, introdu datele de conectare la server.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threats." = "Pentru a înlătura amenințările, introdu datele de conectare la server.";
 
 /* Generic error alert title
    Generic error.
@@ -2835,6 +2883,9 @@
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Obții un sit care funcționează și rulează";
 
+/* Example post title used in the login prologue screens. */
+"Getting Inspired" = "Inspiră-te";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Preiau informațiile contului";
 
@@ -2934,6 +2985,9 @@
 /* Accessibility label for selecting h6 paragraph style button on the formatting toolbar. */
 "Header 6" = "Antet 6";
 
+/* translators: %s: heading level e.g: \"1\", \"2\", \"3\" */
+"Heading %d" = "Subtitlu %d";
+
 /* H1 Aztec Style */
 "Heading 1" = "Subtitlu 1";
 
@@ -3028,6 +3082,9 @@
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "Îmi place";
 
+/* Example post content used in the login prologue screens. */
+"I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "M-au inspirat foarte mult lucrările fotografului Cameron Karsten. Voi încerca aceste tehnici pe viitor";
+
 /* Title of a button style */
 "Icon & Text" = "Icon și text";
 
@@ -3084,6 +3141,9 @@
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Text asociat imagine. %s";
+
+/* No comment provided by engineer. */
+"Image settings" = "Setări imagine";
 
 /* Hint for image title on image settings. */
 "Image title" = "Titlu imagine";
@@ -3249,7 +3309,7 @@
 "Jetpack FAQ" = "Întrebări frecvente Jetpack";
 
 /* Description that explains that we are unable to auto fix the threat */
-"Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site." = "Scanarea Jetpack nu poate înlătura automat această amenințare. Îți sugerăm să înlături amenințarea manual: asigură-te că WordPress, tema ta și toate modulele sunt actualizate și înlătură de pe site codul, tema sau modulul care creează probleme.";
+"Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site." = "Scanarea Jetpack nu poate înlătura automat această amenințare. Îți sugerăm să înlături amenințarea manual: asigură-te că WordPress, tema ta și toate modulele sunt actualizate și înlătură de pe sit codul, tema sau modulul care creează probleme.";
 
 /* Description for a label when the scan has failed
    Error message shown when the scan start has failed. */
@@ -3431,6 +3491,9 @@
 /* Image link option title. */
 "Link To" = "Legătură la";
 
+/* No comment provided by engineer. */
+"Link to" = "Legătură la";
+
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Leagă-te la conținutul existent";
 
@@ -3582,6 +3645,9 @@
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Se pare că ai inițializat Jetpack pe situl tău. Felicitări! Autentifică-te cu datele tale de conectare WordPress.com pentru a activa statisticile și notificările.";
 
+/* No comment provided by engineer. */
+"Loop" = "Buclă";
+
 /* Title of a button. */
 "Lost your password?" = "Ai uitat parola?";
 
@@ -3691,8 +3757,14 @@
 /* Downloadable/Restorable items: Media Uploads */
 "Media Uploads" = "Încărcări media";
 
+/* No comment provided by engineer. */
+"Media area" = "Zonă media";
+
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "Media nu are un fișier asociat pentru a-l încărca.";
+
+/* No comment provided by engineer. */
+"Media file" = "Fișier media";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "Dimensiunea fișierului media (%1$@) este prea mare pentru încărcare. Dimensiunea maximă permisă este de %2$@";
@@ -3838,6 +3910,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "Mută comentariul la gunoi.";
 
+/* Example post title used in the login prologue screens. */
+"Museums to See In London" = "Muzee de văzut în Londra";
+
 /* An example tag used in the login prologue screens. */
 "Music" = "Muzică";
 
@@ -3860,6 +3935,9 @@
 
 /* Option in Support view to access previous help tickets. */
 "My Tickets" = "Tichetele mele";
+
+/* Example post title used in the login prologue screens. */
+"My Top Ten Cafes" = "Primele zece cafenele, pe gustul meu";
 
 /* Accessibility label for the Email text field.
    Name text field placeholder */
@@ -4418,6 +4496,9 @@
    The title of the Page Settings screen. */
 "Page Settings" = "Setări pagină";
 
+/* No comment provided by engineer. */
+"Page break" = "Sfârșit de pagină";
+
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Bloc Sfârșit de pagină. %s";
 
@@ -4695,7 +4776,7 @@
 "Post" = "Articol";
 
 /* Title for selecting categories for a post */
-"Post Categories" = "Categorii articole";
+"Post Categories" = "Categorii articol";
 
 /* For setting the format of a post.
    The post formats available for the post. Should be the same as in core WP. */
@@ -4720,6 +4801,9 @@
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "Publicat de %1$@, din %2$@";
 
+/* No comment provided by engineer. */
+"Post content settings" = "Setări conținut articol";
+
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Articol creat pe %@";
 
@@ -4728,6 +4812,9 @@
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Articolul a eșuat la încărcare";
+
+/* No comment provided by engineer. */
+"Post meta settings" = "Setări metadate articol";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "Articol mutat la gunoi.";
@@ -4806,6 +4893,9 @@
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "Propulsat de Tenor";
+
+/* No comment provided by engineer. */
+"Preload" = "Pre-încarcă";
 
 /* Browse premium themes selection title */
 "Premium" = "Premium";
@@ -4989,6 +5079,9 @@
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Evaluează-ne în App Store";
 
+/* No comment provided by engineer. */
+"Read more" = "Citește mai mult";
+
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Citește pe";
 
@@ -5157,6 +5250,9 @@
 
 /* No comment provided by engineer. */
 "Replace file" = "Înlocuiește fișierul";
+
+/* No comment provided by engineer. */
+"Replace image" = "Înlocuiește imaginea";
 
 /* No comment provided by engineer. */
 "Replace image or video" = "Înlocuiește imaginea sau videoul";
@@ -5724,6 +5820,9 @@
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Eroare de partajare";
 
+/* No comment provided by engineer. */
+"Shortcode" = "Scurtcod";
+
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Arată antet";
 
@@ -5741,6 +5840,9 @@
 
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "Arată articole similare";
+
+/* No comment provided by engineer. */
+"Show download button" = "Arată butonul de descărcare";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -5801,7 +5903,7 @@
 "Shows the post content" = "Arată conținutul articolului";
 
 /* Accessibility hint for the site name and URL button on Reader's Post Details. */
-"Shows the site's posts." = "Arată articolele site-ului.";
+"Shows the site's posts." = "Arată articolele sitului.";
 
 /* View title during the sign up process. */
 "Sign Up" = "Înregistrare";
@@ -5880,6 +5982,10 @@
 
 /* Create new Site Page button title */
 "Site page" = "Pagină sit";
+
+/* Prologue title label, the 
+ force splits it into 2 lines. */
+"Site security and performance\nfrom your pocket" = "Securitate și performanță sit\nle ai în buzunar";
 
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Fus orar sit (UTC%1$@%2$d%3$@)";
@@ -6007,6 +6113,9 @@
 /* Discussion Settings Title
    Settings: Comments Sort Order */
 "Sort By" = "Sortare după";
+
+/* No comment provided by engineer. */
+"Sorting and filtering" = "Sortare și filtrare";
 
 /* Opens the Github Repository Web */
 "Source Code" = "Cod sursă";
@@ -6359,6 +6468,9 @@
 
 /* Text for related post cell preview */
 "The WordPress for Android App Gets a Big Facelift" = "Aplicația WordPress pentru Android a primit o mare schimbare de aspect";
+
+/* Example post title used in the login prologue screens. This is a post about football fans. */
+"The World's Best Fans" = "Cei mai buni fani din lume";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Aplicația nu poate recunoaște răspunsul de la server. Te rog verifică configurare pentru situl tău.";
@@ -7103,6 +7215,9 @@
 /* Filters Unread Notifications */
 "Unread" = "Necitite";
 
+/* Title of unreplied Comments filter. */
+"Unreplied" = "Fără răspuns";
+
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Modificări nesalvate";
 
@@ -7299,6 +7414,9 @@
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Exportul videoului anulat.";
 
+/* No comment provided by engineer. */
+"Video settings" = "Setări video";
+
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Video, %@";
 
@@ -7425,7 +7543,7 @@
 "Warning" = "Avertizare";
 
 /* shown in promotional screens during first launch */
-"Watch readers from around the world read and interact with your site — in real time." = "Urmărești cititorii din întreaga lume care îți citesc situl și interacționează cu el — în timp real.";
+"Watch readers from around the world read and interact with your site — in real time." = "Urmărești cititorii din întreaga lume care îți citesc situl și interacționează cu el - în timp real.";
 
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
@@ -7627,7 +7745,7 @@
 "We're creating a downloadable backup of your site from %1$@." = "Creăm o copie de siguranță a sitului tău la %1$@, care poate fi descărcată.";
 
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
-"We're doing the final setup—almost done…" = "Facem inițializarea finală — aproape gata...";
+"We're doing the final setup—almost done…" = "Facem inițializarea finală - aproape gata...";
 
 /* Detail text display informing the user that we're fixing threats */
 "We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Lucrăm din greu (în fundal) pentru înlăturarea acestor amenințări. Între timp, îți poți folosi situl așa cum o faci de obicei și poți vedea oricând progresul făcut.";
@@ -7645,7 +7763,7 @@
 "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Ți-am trimis prin email o legătură de înregistrare pentru a-ți crea noul cont WordPress.com. Verifică emailurile primite pe acest dispozitiv și atinge legătura din emailul primit de la WordPress.com.";
 
 /* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
-"We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "Am avut probleme la modificarea domeniului principal pentru situl tău — dar nu-ți face griji, domeniul a fost cumpărat cu succes.";
+"We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "Am avut probleme la modificarea domeniului principal pentru situl tău - dar nu-ți face griji, domeniul a fost cumpărat cu succes.";
 
 /* Account Settings Web Address label */
 "Web Address" = "Adresă web";
@@ -7870,6 +7988,9 @@
 
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Scrie un răspuns...";
+
+/* No comment provided by engineer. */
+"Write code…" = "Scrie codul...";
 
 /* Title for the writing section in site settings screen */
 "Writing" = "Scriere";
@@ -8174,6 +8295,9 @@
 
 /* Label displayed on image media items. */
 "image" = "imagine";
+
+/* translators: 1: the order number of the image. 2: the total number of images. */
+"image %1$d of %2$d in gallery" = "imaginea %1$d din %2$d din galerie";
 
 /* Text for related post cell preview */
 "in \"Apps\"" = "în \"Apps\"";

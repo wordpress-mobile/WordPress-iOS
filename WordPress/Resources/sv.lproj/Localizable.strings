@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-04-23 23:21:28+0000 */
+/* Translation-Revision-Date: 2021-05-08 15:17:27+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -452,6 +452,9 @@
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Lägg till något ämne";
 
+/* No comment provided by engineer. */
+"Add caption" = "Lägg till bildtext";
+
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Lägg till en bild eller profilbild för att representera detta nya konto.";
 
@@ -488,6 +491,9 @@
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Lägg till etiketter";
+
+/* No comment provided by engineer. */
+"Add text…" = "Lägg till text …";
 
 /* No comment provided by engineer. */
 "Add this email link" = "Länka till denna e-postadress";
@@ -768,6 +774,9 @@
 "Attach File as Link" = "Bifoga filen som en länk";
 
 /* No comment provided by engineer. */
+"Attachment page" = "Sida för bilaga";
+
+/* No comment provided by engineer. */
 "Audio Player" = "Ljudspelare";
 
 /* translators: accessibility text. %s: Audio caption. */
@@ -775,6 +784,9 @@
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "Beskrivning för ljudfil. Tom";
+
+/* No comment provided by engineer. */
+"Audio settings" = "Ljudinställningar";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "Ljudfil, %@";
@@ -798,6 +810,9 @@
 /* Label for comments by author
    Period Stats 'Authors' header */
 "Authors" = "Författare";
+
+/* No comment provided by engineer. */
+"Auto" = "Automatisk";
 
 /* Describes a status of a plugin */
 "Auto-managed" = "Hanteras automatiskt";
@@ -823,6 +838,9 @@
 
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "Dela automatiskt nya inlägg på dina konton i sociala media.";
+
+/* No comment provided by engineer. */
+"Autoplay" = "Spela upp automatiskt";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Automatiska uppdateringar";
@@ -904,6 +922,9 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Citatblock";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered inside itself." = "Block kan inte visas inuti sig självt.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Blocket kopierat";
 
@@ -915,6 +936,9 @@
 
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Blockredigeraren är aktiverad";
+
+/* No comment provided by engineer. */
+"Block has been deleted or is unavailable." = "Block har tagits bort eller är inte tillgängligt.";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Blockera obehöriga inloggningsförsök";
@@ -966,6 +990,9 @@
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Bläddra bland alla teman för att hitta det som passar dig perfekt.";
+
+/* No comment provided by engineer. */
+"Browser default" = "Standardinställning för webbläsare";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Skydd mot brute force-attacker";
@@ -1148,6 +1175,9 @@
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Förändringen misslyckades";
+
+/* No comment provided by engineer. */
+"Change heading level" = "Ändra rubriknivå";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "Ändra typen av enhet som används för förhandsgranskning";
@@ -1567,6 +1597,9 @@
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
 "Continue" = "Fortsätt";
+
+/* Button title. Takes the user to the login with WordPress.com flow. */
+"Continue With WordPress.com" = "Fortsätt med WordPress.com";
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "Fortsätt arbeta";
@@ -2055,6 +2088,9 @@
    User's Display Name */
 "Display Name" = "Visningsnamn";
 
+/* No comment provided by engineer. */
+"Display post date" = "Visa inläggsdatum";
+
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Visa din sammanlagda statistik här. Konfigurera i WordPress-appen under din statistik.";
 
@@ -2240,6 +2276,9 @@
 /* No comment provided by engineer. */
 "Edit focal point" = "Ändra plats i fokus";
 
+/* No comment provided by engineer. */
+"Edit image" = "Redigera bild";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Redigera nya inlägg och sidor med blockredigeraren.";
 
@@ -2336,6 +2375,9 @@
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Starta fullskärmsläge";
 
+/* No comment provided by engineer. */
+"Enter URL to embed here…" = "Ange URL att bädda in här …";
+
 /* Enter a custom value */
 "Enter a custom value" = "Mata in ett anpassat värde";
 
@@ -2380,6 +2422,12 @@
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
 "Enter your server credentials to enable one click site restores from backups." = "Ange dina serverautentiseringsuppgifter för att möjliggöra återställning av din webbplats med ett klick från säkerhetskopior.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threat." = "Ange inloggningsuppgifterna till din server för att avhjälpa hotet.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threats." = "Ange inloggningsuppgifterna till din server för att avhjälpa hot.";
 
 /* Generic error alert title
    Generic error.
@@ -2832,6 +2880,9 @@
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Kom igång med din webbplats";
 
+/* Example post title used in the login prologue screens. */
+"Getting Inspired" = "Låt dig inspireras";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Hämtar kontoinformation";
 
@@ -2931,6 +2982,9 @@
 /* Accessibility label for selecting h6 paragraph style button on the formatting toolbar. */
 "Header 6" = "Rubrik 6";
 
+/* translators: %s: heading level e.g: \"1\", \"2\", \"3\" */
+"Heading %d" = "Rubriknivå %d";
+
 /* H1 Aztec Style */
 "Heading 1" = "Rubriknivå 1";
 
@@ -3025,6 +3079,9 @@
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "Jag gillar den";
 
+/* Example post content used in the login prologue screens. */
+"I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Jag är så inspirerad av fotografen Cameron Karstens arbete. Jag kommer att prova dessa tekniker nästa gång";
+
 /* Title of a button style */
 "Icon & Text" = "Ikon och text";
 
@@ -3081,6 +3138,9 @@
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Bildtext. %s";
+
+/* No comment provided by engineer. */
+"Image settings" = "Bildinställningar";
 
 /* Hint for image title on image settings. */
 "Image title" = "Bildrubrik";
@@ -3428,6 +3488,9 @@
 /* Image link option title. */
 "Link To" = "Länk till";
 
+/* No comment provided by engineer. */
+"Link to" = "Länk till";
+
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Länk till befintligt innehåll";
 
@@ -3579,6 +3642,9 @@
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Det verkar som att du har Jetpack installerat på din webbplats. Grattis!\nLogga in med dina användaruppgifter från WordPress.com för att kunna se din statistik och dina notiser.";
 
+/* No comment provided by engineer. */
+"Loop" = "Loop";
+
 /* Title of a button. */
 "Lost your password?" = "Glömt ditt lösenord?";
 
@@ -3688,8 +3754,14 @@
 /* Downloadable/Restorable items: Media Uploads */
 "Media Uploads" = "Mediauppladdningar";
 
+/* No comment provided by engineer. */
+"Media area" = "Mediaområde";
+
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "Valt media har ingen tillhörande fil som kan laddas upp.";
+
+/* No comment provided by engineer. */
+"Media file" = "Mediafil";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "Mediafilens storlek (%1$@) är för stor för uppladdning. Maximalt tillåtet är %2$@";
@@ -3835,6 +3907,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "Flyttar kommentaren till papperskorgen.";
 
+/* Example post title used in the login prologue screens. */
+"Museums to See In London" = "Museer att se i London";
+
 /* An example tag used in the login prologue screens. */
 "Music" = "Musik";
 
@@ -3857,6 +3932,9 @@
 
 /* Option in Support view to access previous help tickets. */
 "My Tickets" = "Mina ärenden";
+
+/* Example post title used in the login prologue screens. */
+"My Top Ten Cafes" = "Mina tio favoritcaféer";
 
 /* Accessibility label for the Email text field.
    Name text field placeholder */
@@ -4415,6 +4493,9 @@
    The title of the Page Settings screen. */
 "Page Settings" = "Sidinställningar";
 
+/* No comment provided by engineer. */
+"Page break" = "Sidbrytning";
+
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Sidbrytningblock. %s";
 
@@ -4717,6 +4798,9 @@
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "Inlägg av %1$@, från %2$@";
 
+/* No comment provided by engineer. */
+"Post content settings" = "Inställningar för inläggsinnehåll";
+
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Inlägget skapat %@";
 
@@ -4725,6 +4809,9 @@
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Det gick inte att ladda upp Inlägget";
+
+/* No comment provided by engineer. */
+"Post meta settings" = "Inställningar för metainformation om inlägg";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "Inlägg flyttat till papperskorgen.";
@@ -4803,6 +4890,9 @@
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "Drivs med Tenor";
+
+/* No comment provided by engineer. */
+"Preload" = "Förhandsladda";
 
 /* Browse premium themes selection title */
 "Premium" = "Premium";
@@ -4986,6 +5076,9 @@
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Betygsätt oss på App Store";
 
+/* No comment provided by engineer. */
+"Read more" = "Läs mer";
+
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Läs på";
 
@@ -5154,6 +5247,9 @@
 
 /* No comment provided by engineer. */
 "Replace file" = "Ersätt filen";
+
+/* No comment provided by engineer. */
+"Replace image" = "Ersätt bild";
 
 /* No comment provided by engineer. */
 "Replace image or video" = "Ersätt en bild eller ett videoklipp";
@@ -5721,6 +5817,9 @@
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Delningsfel";
 
+/* No comment provided by engineer. */
+"Shortcode" = "Kortkod";
+
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Visa sidhuvud";
 
@@ -5738,6 +5837,9 @@
 
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "Visa relaterade inlägg";
+
+/* No comment provided by engineer. */
+"Show download button" = "Visa nedladdningsknapp";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -5878,6 +5980,10 @@
 /* Create new Site Page button title */
 "Site page" = "Webbplatssida";
 
+/* Prologue title label, the 
+ force splits it into 2 lines. */
+"Site security and performance\nfrom your pocket" = "Webbplatssäkerhet och prestanda\nfrån din ficka";
+
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Webbplatsens tidszon (UTC%1$@%2$d%3$@)";
 
@@ -6004,6 +6110,9 @@
 /* Discussion Settings Title
    Settings: Comments Sort Order */
 "Sort By" = "Sortera efter";
+
+/* No comment provided by engineer. */
+"Sorting and filtering" = "Sortering och filtrering";
 
 /* Opens the Github Repository Web */
 "Source Code" = "Källkod";
@@ -6356,6 +6465,9 @@
 
 /* Text for related post cell preview */
 "The WordPress for Android App Gets a Big Facelift" = "WordPress för Android får en ny design";
+
+/* Example post title used in the login prologue screens. This is a post about football fans. */
+"The World's Best Fans" = "Världens bästa fans";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Appen förstår inte svaret från servern. Vänligen kontrollera din webbplats inställningar.";
@@ -7100,6 +7212,9 @@
 /* Filters Unread Notifications */
 "Unread" = "Olästa";
 
+/* Title of unreplied Comments filter. */
+"Unreplied" = "Obesvarat";
+
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Ej sparade ändringar";
 
@@ -7295,6 +7410,9 @@
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Export av video avbruten.";
+
+/* No comment provided by engineer. */
+"Video settings" = "Videoinställningar";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Video, %@";
@@ -7868,6 +7986,9 @@
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Skriv ett svar …";
 
+/* No comment provided by engineer. */
+"Write code…" = "Skriv kod …";
+
 /* Title for the writing section in site settings screen */
 "Writing" = "Skriva";
 
@@ -8171,6 +8292,9 @@
 
 /* Label displayed on image media items. */
 "image" = "bild";
+
+/* translators: 1: the order number of the image. 2: the total number of images. */
+"image %1$d of %2$d in gallery" = "bild %1$d av %2$d i galleriet";
 
 /* Text for related post cell preview */
 "in \"Apps\"" = "i ”Appar”";

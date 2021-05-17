@@ -1,3 +1,0 @@
-Med denna version lanseras ett nytt block – Jetpack kontaktinformation, som passar perfekt för att visa en snyggt formaterad adress på webbplatsen. Vi har även lagt till flera stycken tjusiga app-ikoner som du kan använda för att anpassa appens utseende på din startskärm.
-
-Sen har vi några stiliga mindre ändringar att berätta om. Vi har gjort det enklare att publicera ett nytt inlägg genom att vi tagit bort webbplatsväljaren i redigeringsvyn, rättat ett fel där författarens namn ibland inte visades, förbättrat stödet för VoiceOver i kolumnblocket, och gjort det enklare att lägga in långa alt-texter i bildblocket.

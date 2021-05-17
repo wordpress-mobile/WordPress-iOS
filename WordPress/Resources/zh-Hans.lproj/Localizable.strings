@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-04-20 05:41:14+0000 */
+/* Translation-Revision-Date: 2021-05-06 10:48:15+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -452,6 +452,9 @@
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "添加任何主题";
 
+/* No comment provided by engineer. */
+"Add caption" = "添加说明";
+
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "添加图像或头像以表示此新帐户。";
 
@@ -488,6 +491,9 @@
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "添加标签";
+
+/* No comment provided by engineer. */
+"Add text…" = "添加文字…";
 
 /* No comment provided by engineer. */
 "Add this email link" = "添加此电子邮件链接";
@@ -768,6 +774,9 @@
 "Attach File as Link" = "以链接形式附加文件";
 
 /* No comment provided by engineer. */
+"Attachment page" = "附件页面";
+
+/* No comment provided by engineer. */
 "Audio Player" = "音频播放器";
 
 /* translators: accessibility text. %s: Audio caption. */
@@ -775,6 +784,9 @@
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "音频说明。空";
+
+/* No comment provided by engineer. */
+"Audio settings" = "音频设置";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "音频，%@";
@@ -798,6 +810,9 @@
 /* Label for comments by author
    Period Stats 'Authors' header */
 "Authors" = "作者";
+
+/* No comment provided by engineer. */
+"Auto" = "自动";
 
 /* Describes a status of a plugin */
 "Auto-managed" = "已自动托管";
@@ -823,6 +838,9 @@
 
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "自动将新文章共享到社交媒体帐户。";
+
+/* No comment provided by engineer. */
+"Autoplay" = "自动播放";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "自动更新";
@@ -904,6 +922,9 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "块引用";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered inside itself." = "区块不能在其内部渲染。";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "区块已拷贝";
 
@@ -915,6 +936,9 @@
 
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "已启用区块编辑器";
+
+/* No comment provided by engineer. */
+"Block has been deleted or is unavailable." = "区块已被删除或不可用。";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "阻止恶意登录尝试";
@@ -966,6 +990,9 @@
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "浏览我们所有的主题，寻找最适合您的主题。";
+
+/* No comment provided by engineer. */
+"Browser default" = "浏览器默认";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "防范暴力攻击";
@@ -1148,6 +1175,9 @@
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "更改失败";
+
+/* No comment provided by engineer. */
+"Change heading level" = "修改标题级别";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "更改用于预览的设备类型";
@@ -1567,6 +1597,9 @@
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
 "Continue" = "继续";
+
+/* Button title. Takes the user to the login with WordPress.com flow. */
+"Continue With WordPress.com" = "继续使用 WordPress.com";
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "继续工作";
@@ -2055,6 +2088,9 @@
    User's Display Name */
 "Display Name" = "显示名称";
 
+/* No comment provided by engineer. */
+"Display post date" = "显示文章日期";
+
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "在此处显示您站点在所有时间的统计信息。在 WordPress 应用程序的站点统计信息中进行配置。";
 
@@ -2240,6 +2276,9 @@
 /* No comment provided by engineer. */
 "Edit focal point" = "编辑焦点";
 
+/* No comment provided by engineer. */
+"Edit image" = "编辑图像";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "使用区块编辑器编辑新文章和页面。";
 
@@ -2336,6 +2375,9 @@
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "进入全屏";
 
+/* No comment provided by engineer. */
+"Enter URL to embed here…" = "键入要在此嵌入的URL…";
+
 /* Enter a custom value */
 "Enter a custom value" = "输入自定义值";
 
@@ -2380,6 +2422,12 @@
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
 "Enter your server credentials to enable one click site restores from backups." = "输入您的服务器凭据以启用从备份中一键恢复站点的功能。";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threat." = "输入您的服务器凭据以修复威胁。";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threats." = "输入您的服务器凭据以修复威胁。";
 
 /* Generic error alert title
    Generic error.
@@ -2832,6 +2880,9 @@
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "建立并运行您的站点";
 
+/* Example post title used in the login prologue screens. */
+"Getting Inspired" = "受到启发";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "获取账户信息";
 
@@ -2931,6 +2982,9 @@
 /* Accessibility label for selecting h6 paragraph style button on the formatting toolbar. */
 "Header 6" = "标题 6";
 
+/* translators: %s: heading level e.g: \"1\", \"2\", \"3\" */
+"Heading %d" = "标题%d";
+
 /* H1 Aztec Style */
 "Heading 1" = "一级标题";
 
@@ -3025,6 +3079,9 @@
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "我喜欢";
 
+/* Example post content used in the login prologue screens. */
+"I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "摄影师Cameron Karsten的作品给了我很大的启发。我将在我的下一个作品中尝试这些技术。";
+
 /* Title of a button style */
 "Icon & Text" = "图标和文字";
 
@@ -3081,6 +3138,9 @@
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "图片说明。%s";
+
+/* No comment provided by engineer. */
+"Image settings" = "图像设置";
 
 /* Hint for image title on image settings. */
 "Image title" = "图像标题";
@@ -3428,6 +3488,9 @@
 /* Image link option title. */
 "Link To" = "链接到";
 
+/* No comment provided by engineer. */
+"Link to" = "链接到";
+
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "链接到现有内容";
 
@@ -3579,6 +3642,9 @@
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "似乎您已在站点上设置 Jetpack。恭喜！使用下方的 WordPress.com 凭据登录，以启用“统计数据”与“通知”功能。";
 
+/* No comment provided by engineer. */
+"Loop" = "循环";
+
 /* Title of a button. */
 "Lost your password?" = "忘记密码？";
 
@@ -3688,8 +3754,14 @@
 /* Downloadable/Restorable items: Media Uploads */
 "Media Uploads" = "媒体上传";
 
+/* No comment provided by engineer. */
+"Media area" = "媒体区";
+
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "媒体没有可上传的关联文件。";
+
+/* No comment provided by engineer. */
+"Media file" = "媒体文件";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "媒体文件 (%1$@) 过大，无法上传。大小上限为 %2$@";
@@ -3835,6 +3907,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "将评论移至回收站。";
 
+/* Example post title used in the login prologue screens. */
+"Museums to See In London" = "查看下一个贴士";
+
 /* An example tag used in the login prologue screens. */
 "Music" = "音乐";
 
@@ -3857,6 +3932,9 @@
 
 /* Option in Support view to access previous help tickets. */
 "My Tickets" = "我的申请单";
+
+/* Example post title used in the login prologue screens. */
+"My Top Ten Cafes" = "我的十大咖啡馆";
 
 /* Accessibility label for the Email text field.
    Name text field placeholder */
@@ -4415,6 +4493,9 @@
    The title of the Page Settings screen. */
 "Page Settings" = "页面设置";
 
+/* No comment provided by engineer. */
+"Page break" = "分页符";
+
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "分页符区块。%s";
 
@@ -4717,6 +4798,9 @@
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "作者：%1$@，来源：%2$@";
 
+/* No comment provided by engineer. */
+"Post content settings" = "文章内容设置";
+
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "文章创建日期：%@";
 
@@ -4725,6 +4809,9 @@
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "文章上传失败";
+
+/* No comment provided by engineer. */
+"Post meta settings" = "文章元数据设置";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "已将文章移动到回收站。";
@@ -4803,6 +4890,9 @@
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "由 Tenor 提供支持";
+
+/* No comment provided by engineer. */
+"Preload" = "预加载";
 
 /* Browse premium themes selection title */
 "Premium" = "付费";
@@ -4986,6 +5076,9 @@
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "在 App Store 中给我们评分";
 
+/* No comment provided by engineer. */
+"Read more" = "阅读更多";
+
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "在以下网站上阅读：";
 
@@ -5154,6 +5247,9 @@
 
 /* No comment provided by engineer. */
 "Replace file" = "替换文件";
+
+/* No comment provided by engineer. */
+"Replace image" = "更换图像";
 
 /* No comment provided by engineer. */
 "Replace image or video" = "替换图片或视频";
@@ -5721,6 +5817,9 @@
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "共享错误";
 
+/* No comment provided by engineer. */
+"Shortcode" = "简码";
+
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "显示标题";
 
@@ -5738,6 +5837,9 @@
 
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "显示相关文章";
+
+/* No comment provided by engineer. */
+"Show download button" = "显示下载按钮";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -5878,6 +5980,10 @@
 /* Create new Site Page button title */
 "Site page" = "站点页面";
 
+/* Prologue title label, the 
+ force splits it into 2 lines. */
+"Site security and performance\nfrom your pocket" = "站点安全和性能\n一切在您的口袋中掌握";
+
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "站点时区 (UTC%1$@%2$d%3$@)";
 
@@ -6004,6 +6110,9 @@
 /* Discussion Settings Title
    Settings: Comments Sort Order */
 "Sort By" = "排序方式";
+
+/* No comment provided by engineer. */
+"Sorting and filtering" = "排序和筛选";
 
 /* Opens the Github Repository Web */
 "Source Code" = "源代码";
@@ -6356,6 +6465,9 @@
 
 /* Text for related post cell preview */
 "The WordPress for Android App Gets a Big Facelift" = "Android 版 WordPress 应用程序外观有大变动";
+
+/* Example post title used in the login prologue screens. This is a post about football fans. */
+"The World's Best Fans" = "欢迎来到区块的多彩世界……";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "应用程序无法识别服务器响应，请检查您的站点配置。";
@@ -7100,6 +7212,9 @@
 /* Filters Unread Notifications */
 "Unread" = "未读";
 
+/* Title of unreplied Comments filter. */
+"Unreplied" = "未回复";
+
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "未保存的更改";
 
@@ -7295,6 +7410,9 @@
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "已取消视频导出。";
+
+/* No comment provided by engineer. */
+"Video settings" = "视频设置";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "视频，%@";
@@ -7868,6 +7986,9 @@
 /* Placeholder text for inline compose view */
 "Write a reply…" = "写回复…";
 
+/* No comment provided by engineer. */
+"Write code…" = "编写代码…";
+
 /* Title for the writing section in site settings screen */
 "Writing" = "撰写";
 
@@ -8171,6 +8292,9 @@
 
 /* Label displayed on image media items. */
 "image" = "图像";
+
+/* translators: 1: the order number of the image. 2: the total number of images. */
+"image %1$d of %2$d in gallery" = "画廊中第 %1$d\/%2$d 张图片";
 
 /* Text for related post cell preview */
 "in \"Apps\"" = "在“应用程序”中";

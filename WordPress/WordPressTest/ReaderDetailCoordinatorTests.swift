@@ -237,6 +237,16 @@ class ReaderDetailCoordinatorTests: XCTestCase {
 
         expect(viewMock.didCallScrollToWith).to(equal("hash"))
     }
+
+    func testExtractCommentIDFromPostURL() {
+        let postURL = URL(string: "https://example.wordpress.com/2014/07/24/post-title/#comment-10")
+        let serviceMock = ReaderPostServiceMock()
+        let viewMock = ReaderDetailViewMock()
+        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        coordinator.postURL = postURL
+
+        expect(coordinator.commentID).to(equal(10))
+    }
 }
 
 private class ReaderPostServiceMock: ReaderPostService {

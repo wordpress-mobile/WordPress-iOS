@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-04-22 19:40:44+0000 */
+/* Translation-Revision-Date: 2021-05-12 22:54:09+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -452,6 +452,9 @@
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "إضافة أي موضوع";
 
+/* No comment provided by engineer. */
+"Add caption" = "إضاقة تسمية توضيحية";
+
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "أضف صورة أو أفاتار لتمثيل هذا الحساب الجديد.";
 
@@ -488,6 +491,9 @@
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "إضافة علامات";
+
+/* No comment provided by engineer. */
+"Add text…" = "إضافة نص…";
 
 /* No comment provided by engineer. */
 "Add this email link" = "إضافة رابط البريد الإلكتروني هذا";
@@ -768,6 +774,9 @@
 "Attach File as Link" = "إرفاق ملف كرابط";
 
 /* No comment provided by engineer. */
+"Attachment page" = "صفحة المرفق";
+
+/* No comment provided by engineer. */
 "Audio Player" = "مشغل الصوت";
 
 /* translators: accessibility text. %s: Audio caption. */
@@ -775,6 +784,9 @@
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "تسمية الملف الصوتي. فارغة";
+
+/* No comment provided by engineer. */
+"Audio settings" = "إعدادات الصوت";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "الصوت، %@";
@@ -798,6 +810,9 @@
 /* Label for comments by author
    Period Stats 'Authors' header */
 "Authors" = "الكُتّاب";
+
+/* No comment provided by engineer. */
+"Auto" = "تلقائي";
 
 /* Describes a status of a plugin */
 "Auto-managed" = "إدارة تلقائية";
@@ -823,6 +838,9 @@
 
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "شارك المقالات الجديدة تلقائيًّا على حساباتك على وسائل التواصل الاجتماعي.";
+
+/* No comment provided by engineer. */
+"Autoplay" = "التشغيل التلقائي";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "تحديثات تلقائية";
@@ -904,6 +922,9 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "حظر الاقتباس";
 
+/* No comment provided by engineer. */
+"Block cannot be rendered inside itself." = "يتعذر عرض المكوِّن داخل نفسه.";
+
 /* translators: displayed right after the block is copied. */
 "Block copied" = "المكوِّن الذي تم نسخه";
 
@@ -915,6 +936,9 @@
 
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "تم تمكين محرر المكوّنات";
+
+/* No comment provided by engineer. */
+"Block has been deleted or is unavailable." = "لقد تم حذف المكوّن أو أنه غير متاح.";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "تم حظر محاولات تسجيل الدخول الضارة";
@@ -966,6 +990,9 @@
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "تصفّح جميع قوالبنا للعثور على ما يناسبك.";
+
+/* No comment provided by engineer. */
+"Browser default" = "المتصفح الافتراضي";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "الحماية من هجمات القوة الغاشمة";
@@ -1148,6 +1175,9 @@
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "فشل التغيير";
+
+/* No comment provided by engineer. */
+"Change heading level" = "تغيير مستوى العنوان";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "تغيير نوع الجهاز المستخدم للمعاينة";
@@ -1567,6 +1597,9 @@
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
 "Continue" = "المتابعة";
+
+/* Button title. Takes the user to the login with WordPress.com flow. */
+"Continue With WordPress.com" = "المتابعة باستخدام WordPress.com";
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "الاستمرار في العمل";
@@ -2055,6 +2088,9 @@
    User's Display Name */
 "Display Name" = "اسم العرض";
 
+/* No comment provided by engineer. */
+"Display post date" = "عرض تاريخ النشر";
+
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "اعرض إحصاءات موقعك طوال الوقت هنا. يمكنك التكوين في تطبيق ووردبريس في إحصاءات موقعك.";
 
@@ -2240,6 +2276,9 @@
 /* No comment provided by engineer. */
 "Edit focal point" = "Edit focal point";
 
+/* No comment provided by engineer. */
+"Edit image" = "تحرير الصورة";
+
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "تحرير المقالات والصفحات الجديدة باستخدام مُحرّر المكوّنات.";
 
@@ -2336,6 +2375,9 @@
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "الدخول إلى وضع ملء الشاشة";
 
+/* No comment provided by engineer. */
+"Enter URL to embed here…" = "إدخال عنوان URL لتضمينه هنا...";
+
 /* Enter a custom value */
 "Enter a custom value" = "أدخل قيمة مخصصة";
 
@@ -2380,6 +2422,12 @@
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. */
 "Enter your server credentials to enable one click site restores from backups." = "أدخل بيانات اعتماد الخادم الخاص بك لتمكين استعادة الموقع بنقرة واحدة من النُسخ الاحتياطية.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threat." = "أدخل بيانات اعتماد خادمك لإصلاح التهديد.";
+
+/* Title for button when a site is missing server credentials */
+"Enter your server credentials to fix threats." = "أدخل بيانات اعتماد خادمك لإصلاح التهديدات.";
 
 /* Generic error alert title
    Generic error.
@@ -2832,6 +2880,9 @@
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "جعل موقعك جاهزًا للعمل وقيد التشغيل";
 
+/* Example post title used in the login prologue screens. */
+"Getting Inspired" = "الحصول على الإلهام";
+
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "الحصول على معلومات الحساب";
 
@@ -2931,6 +2982,9 @@
 /* Accessibility label for selecting h6 paragraph style button on the formatting toolbar. */
 "Header 6" = "رأس الصفحة 6";
 
+/* translators: %s: heading level e.g: \"1\", \"2\", \"3\" */
+"Heading %d" = "عنوان %d";
+
 /* H1 Aztec Style */
 "Heading 1" = "العنوان 1";
 
@@ -3025,6 +3079,9 @@
 /* This is one of the buttons we display inside of the prompt to review the app */
 "I Like It" = "يعجبني هذا";
 
+/* Example post content used in the login prologue screens. */
+"I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "لقد ألهمتني أعمال المصور كاميرون كارستن للغاية. سأجرِّب هذه التقنيات في المحاولة التالية";
+
 /* Title of a button style */
 "Icon & Text" = "أيقونة ونص";
 
@@ -3081,6 +3138,9 @@
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "تسمية توضيحية للصورة. %s";
+
+/* No comment provided by engineer. */
+"Image settings" = "إعدادات الصورة";
 
 /* Hint for image title on image settings. */
 "Image title" = "عنوان الصورة";
@@ -3428,6 +3488,9 @@
 /* Image link option title. */
 "Link To" = "رابط لـ";
 
+/* No comment provided by engineer. */
+"Link to" = "رابط لـ";
+
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "ربط بمحتوى موجود";
 
@@ -3579,6 +3642,9 @@
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "يبدو أنّ لديك Jetpack معدٌ على موقعك. تهانينا! قم بتسجيل الدخول باستخدام بيانات اعتماد WordPress.com لتمكين الإحصاءات والإشعارات.";
 
+/* No comment provided by engineer. */
+"Loop" = "التكرار";
+
 /* Title of a button. */
 "Lost your password?" = "هل فقدت كلمة مرورك؟";
 
@@ -3688,8 +3754,14 @@
 /* Downloadable/Restorable items: Media Uploads */
 "Media Uploads" = "رفع الوسائط";
 
+/* No comment provided by engineer. */
+"Media area" = "منطقة الوسائط";
+
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "لا تحتوي وسائل التواصل على ملف مرتبط لرفعه.";
+
+/* No comment provided by engineer. */
+"Media file" = "ملف الوسائط";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "حجم ملف الوسائط (%1$@) كبير لدرجة يتعذر معها رفعه. الحد الأقصى المسموح به هو %2$@";
@@ -3778,10 +3850,10 @@
 "Most Popular Time" = "الوقت الأكثر شعبية";
 
 /* No comment provided by engineer. */
-"Move Image Backward" = "تحريك الصورة إلى الخلف";
+"Move Image Backward" = "تحريك الصورة للخلف";
 
 /* No comment provided by engineer. */
-"Move Image Forward" = "تحريك الصورة إلى الأمام";
+"Move Image Forward" = "تحريك الصورة للأمام";
 
 /* No comment provided by engineer. */
 "Move block down" = "تحريك المكوّن لأسفل";
@@ -3835,6 +3907,9 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "يَنقل التعليق إلى سلة المهملات.";
 
+/* Example post title used in the login prologue screens. */
+"Museums to See In London" = "متاحف يجب رؤيتها في لندن";
+
 /* An example tag used in the login prologue screens. */
 "Music" = "الموسيقى";
 
@@ -3857,6 +3932,9 @@
 
 /* Option in Support view to access previous help tickets. */
 "My Tickets" = "تذاكري";
+
+/* Example post title used in the login prologue screens. */
+"My Top Ten Cafes" = "أفضل عشرة مقاهي";
 
 /* Accessibility label for the Email text field.
    Name text field placeholder */
@@ -4415,6 +4493,9 @@
    The title of the Page Settings screen. */
 "Page Settings" = "إعدادات الصفحة";
 
+/* No comment provided by engineer. */
+"Page break" = "فاصل الصفحة";
+
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "مكوِّن فاصل الصفحات. %s";
 
@@ -4717,6 +4798,9 @@
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "مقالة باسم %1$@، من %2$@";
 
+/* No comment provided by engineer. */
+"Post content settings" = "إعدادات محتوى المقالة";
+
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "تمّ إنشاء المقالة على %@";
 
@@ -4725,6 +4809,9 @@
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "فشل رفع المقالة";
+
+/* No comment provided by engineer. */
+"Post meta settings" = "إعدادات بيانات تعريف المقالة";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "تم نقل المقالة إلى سلة المهملات.";
@@ -4803,6 +4890,9 @@
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "مدعوم من Tenor";
+
+/* No comment provided by engineer. */
+"Preload" = "التحميل المسبق";
 
 /* Browse premium themes selection title */
 "Premium" = "الإصدار المميز";
@@ -4986,6 +5076,9 @@
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "ضع تصنيفًا لنا على متجر التطبيقات";
 
+/* No comment provided by engineer. */
+"Read more" = "قراءة المزيد";
+
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "مواصلة القراءة";
 
@@ -5154,6 +5247,9 @@
 
 /* No comment provided by engineer. */
 "Replace file" = "استبدال الملف";
+
+/* No comment provided by engineer. */
+"Replace image" = "استبدال صورة";
 
 /* No comment provided by engineer. */
 "Replace image or video" = "استبدال صورة أو فيديو";
@@ -5721,6 +5817,9 @@
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "خطأ في المشاركة";
 
+/* No comment provided by engineer. */
+"Shortcode" = "كود قصير";
+
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "عرض الترويسة";
 
@@ -5738,6 +5837,9 @@
 
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "عرض المقالات ذات الصلة";
+
+/* No comment provided by engineer. */
+"Show download button" = "إظهار زر التنزيل";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -5878,6 +5980,10 @@
 /* Create new Site Page button title */
 "Site page" = "صفحة الموقع";
 
+/* Prologue title label, the 
+ force splits it into 2 lines. */
+"Site security and performance\nfrom your pocket" = "أمان الموقع وأداؤه\nمن جيبك";
+
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "المنطقة الزمنيّة للموقع (UTC%1$@%2$d%3$@)";
 
@@ -6004,6 +6110,9 @@
 /* Discussion Settings Title
    Settings: Comments Sort Order */
 "Sort By" = "فرز حسب";
+
+/* No comment provided by engineer. */
+"Sorting and filtering" = "الفرز والتصفية";
 
 /* Opens the Github Repository Web */
 "Source Code" = "التعليمات البرمجية المصدر";
@@ -6356,6 +6465,9 @@
 
 /* Text for related post cell preview */
 "The WordPress for Android App Gets a Big Facelift" = "تجري حاليًا صيانة تطبيق ووردبريس للأندرويد";
+
+/* Example post title used in the login prologue screens. This is a post about football fans. */
+"The World's Best Fans" = "أفضل المعجبين بالعالم";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "لا يمكن للتطبيق التعرف على استجابة الخادم. يُرجى التحقق من تكوين موقعك.";
@@ -7100,6 +7212,9 @@
 /* Filters Unread Notifications */
 "Unread" = "غير مقروء";
 
+/* Title of unreplied Comments filter. */
+"Unreplied" = "لم يتم الرد";
+
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "لم يتم حفظ التغييرات";
 
@@ -7295,6 +7410,9 @@
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "تم إلغاء تصدير مقطع الفيديو.";
+
+/* No comment provided by engineer. */
+"Video settings" = "إعدادات الفيديو";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "الفيديو %@";
@@ -7868,6 +7986,9 @@
 /* Placeholder text for inline compose view */
 "Write a reply…" = "اكتب ردًا…";
 
+/* No comment provided by engineer. */
+"Write code…" = "كتابة الكود…";
+
 /* Title for the writing section in site settings screen */
 "Writing" = "الكتابة";
 
@@ -8171,6 +8292,9 @@
 
 /* Label displayed on image media items. */
 "image" = "صورة";
+
+/* translators: 1: the order number of the image. 2: the total number of images. */
+"image %1$d of %2$d in gallery" = "صورة ⁦%1$d⁩ من ⁦%2$d⁩ في المعرض";
 
 /* Text for related post cell preview */
 "in \"Apps\"" = "في \"التطبيقات\"";

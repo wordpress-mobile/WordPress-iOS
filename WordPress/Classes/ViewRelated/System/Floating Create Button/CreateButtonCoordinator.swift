@@ -129,14 +129,7 @@ import WordPressFlux
         } else {
             let actionSheetVC = actionSheetController(with: viewController.traitCollection)
             viewController.present(actionSheetVC, animated: true, completion: { [weak self] in
-                let isShowingStoryOption = self?.isShowingStoryOption() ?? false
-                WPAnalytics.track(.createSheetShown,
-                                  properties: [
-                                    "source": self?.source ?? "",
-                                    "is_showing_stories": isShowingStoryOption,
-                                    "is_showing_stories_first": isShowingStoryOption && ABTest.storyFirst.variation != .control
-                                  ]
-                )
+                WPAnalytics.track(.createSheetShown, properties: ["source": self?.source ?? ""])
 
                 if let element = self?.currentTourElement {
                     QuickStartTourGuide.shared.visited(element)
