@@ -173,6 +173,7 @@ private extension SupportTableViewController {
             guard let url = Constants.appSupportURL else {
                 return
             }
+            WPAnalytics.track(.supportHelpCenterViewed)
             UIApplication.shared.open(url)
         }
     }
