@@ -650,6 +650,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.53.0
+  WordPressUI:
+    :branch: task/16384-ipad-font-size
+    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.53.0/third-party-podspecs/Yoga.podspec.json
 
@@ -665,6 +668,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.53.0
+  WordPressUI:
+    :commit: 4858127c4dc9d158374c3980a7496af00c7a1b4a
+    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -762,6 +768,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: a123d26f80f5f584a7b54add2057f9853d571c26
+PODFILE CHECKSUM: 4ce2488a7bf67246078a558489343e0945b043db
 
 COCOAPODS: 1.10.0
