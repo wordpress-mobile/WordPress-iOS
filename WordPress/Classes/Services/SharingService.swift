@@ -60,15 +60,17 @@ open class SharingService: LocalCoreDataService {
     ///
     @objc open func syncPublicizeConnectionsForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
         let blogObjectID = blog.objectID
-        guard let remote = remoteForBlog(blog) else {
+//        guard let remote = remoteForBlog(blog) else {
+            failure?(SharingServiceError.siteWithNoRemote as NSError)
             return
-        }
-        remote.getPublicizeConnections(blog.dotComID!, success: { remoteConnections in
-
-            // Process the results
-            self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections: remoteConnections, onComplete: success)
-        },
-        failure: failure)
+//        }
+//                
+//        remote.getPublicizeConnections(blog.dotComID!, success: { remoteConnections in
+//
+//            // Process the results
+//            self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections: remoteConnections, onComplete: success)
+//        },
+//        failure: failure)
     }
 
 
@@ -724,5 +726,10 @@ open class SharingService: LocalCoreDataService {
         }
 
         return SharingServiceRemote(wordPressComRestApi: api)
+    }
+
+    // Error for failure states
+    enum SharingServiceError: Error {
+        case siteWithNoRemote
     }
 }

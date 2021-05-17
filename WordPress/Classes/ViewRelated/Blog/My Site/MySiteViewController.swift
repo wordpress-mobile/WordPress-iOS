@@ -41,6 +41,12 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     ///
     private var blogDetailsViewController: BlogDetailsViewController?
 
+    /// When we display a no results view, we'll do so in a scrollview so that
+    /// we can allow pull to refresh to sync the user's list of sites.
+    ///
+    private var noResultsScrollView: UIScrollView?
+    private var noResultsRefreshControl: UIRefreshControl?
+
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
@@ -147,10 +153,30 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         showBlogDetails(for: mainBlog)
     }
 
+    @objc
+    private func syncBlogs() {
+        guard let account = defaultAccount() else {
+            return
+        }
+
+        let finishSync = { [weak self] in
+            self?.noResultsRefreshControl?.endRefreshing()
+        }
+
+        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+        blogService.syncBlogs(for: account) {
+            finishSync()
+        } failure: { (error) in
+            finishSync()
+        }
+    }
+
     // MARK: - No Sites UI logic
 
     private func hideNoSites() {
         hideNoResults()
+
+        cleanupNoResultsView()
     }
 
     private func showNoSites() {
@@ -161,25 +187,81 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         hideBlogDetails()
 
+        guard noResultsViewController.view.superview == nil else {
+            return
+        }
+
         addMeButtonToNavigationBar(email: defaultAccount()?.email, meScenePresenter: meScenePresenter)
 
-        configureAndDisplayNoResults(
-            on: view,
-            title: NSLocalizedString(
-                "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.",
-                comment: "Text shown when the account has no sites."),
-            buttonTitle: NSLocalizedString(
-                "Add new site",
-                comment: "Title of button to add a new site."),
-            image: "mysites-nosites") { noResultsViewController in
+        makeNoResultsScrollView()
+        configureNoResultsView()
+        addNoResultsViewAndConfigureConstraints()
+    }
 
-            noResultsViewController.actionButtonHandler = { [weak self] in
-                self?.presentInterfaceForAddingNewSite()
-            }
+    private func makeNoResultsScrollView() {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.backgroundColor = .basicBackground
+
+        view.addSubview(scrollView)
+        view.pinSubviewToAllEdges(scrollView)
+
+        let refreshControl = UIRefreshControl()
+        scrollView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(syncBlogs), for: .valueChanged)
+        noResultsRefreshControl = refreshControl
+
+        noResultsScrollView = scrollView
+    }
+
+    private func configureNoResultsView() {
+        noResultsViewController.configure(title: NSLocalizedString(
+                                            "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.",
+                                            comment: "Text shown when the account has no sites."),
+                                          buttonTitle: NSLocalizedString(
+                                            "Add new site",
+                                            comment: "Title of button to add a new site."),
+                                          image: "mysites-nosites")
+        noResultsViewController.actionButtonHandler = { [weak self] in
+            self?.presentInterfaceForAddingNewSite()
         }
     }
 
-    // MARK: - Add Site Alert
+    private func addNoResultsViewAndConfigureConstraints() {
+        guard let scrollView = noResultsScrollView else {
+            return
+        }
+
+        addChild(noResultsViewController)
+        scrollView.addSubview(noResultsViewController.view)
+        noResultsViewController.view.frame = scrollView.frame
+
+        guard let nrv = noResultsViewController.view else {
+            return
+        }
+
+        nrv.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            nrv.widthAnchor.constraint(equalTo: view.widthAnchor),
+            nrv.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nrv.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            nrv.bottomAnchor.constraint(equalTo: view.safeBottomAnchor)
+        ])
+
+        noResultsViewController.didMove(toParent: self)
+    }
+
+    private func cleanupNoResultsView() {
+        noResultsRefreshControl?.removeFromSuperview()
+        noResultsRefreshControl = nil
+
+        noResultsScrollView?.refreshControl = nil
+        noResultsScrollView?.removeFromSuperview()
+        noResultsScrollView = nil
+    }
+
+// MARK: - Add Site Alert
 
     @objc
     func presentInterfaceForAddingNewSite() {
