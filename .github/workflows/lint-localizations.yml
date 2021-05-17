@@ -1,0 +1,24 @@
+name: Lint Localizations
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  lint:
+    name: Lint App Store Strings
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Download WordPress
+      run: |
+        cd ..
+        wget https://wordpress.org/latest.tar.gz
+        tar -xf latest.tar.gz
+
+    - name: Lint Localizations
+      run: php .github/workflows/resources/lint.php WordPress/Resources/AppStoreStrings.po
