@@ -3,14 +3,18 @@ extension CommentService {
     /**
      Fetches a list of users from remote that liked the comment with the given IDs.
      
-     @param commentID  The ID of the comment to fetch likes for
-     @param siteID     The ID of the site that contains the post
-     @param success    A success block
-     @param failure    A failure block
+     @param commentID   The ID of the comment to fetch likes for
+     @param siteID      The ID of the site that contains the post
+     @param count       Number of records to retrieve. Optional. Defaults to the endpoint max of 90.
+     @param before      Filter results to likes before this date/time. Optional.
+     @param success     A success block
+     @param failure     A failure block
      */
     func getLikesFor(commentID: NSNumber,
                      siteID: NSNumber,
-                     success: @escaping (([LikeUser]) -> Void),
+                     count: Int = 90,
+                     before: String? = nil,
+                     success: @escaping (([LikeUser], Int) -> Void),
                      failure: @escaping ((Error?) -> Void)) {
 
         guard let remote = restRemote(forSite: siteID) else {
@@ -19,16 +23,20 @@ extension CommentService {
             return
         }
 
-        remote.getLikesForCommentID(commentID) { remoteLikeUsers in
-            self.createNewUsers(from: remoteLikeUsers, commentID: commentID, siteID: siteID) {
-                let users = self.likeUsersFor(commentID: commentID, siteID: siteID)
-                success(users)
-                LikeUserHelper.purgeStaleLikes()
-            }
-        } failure: { error in
-            DDLogError(String(describing: error))
-            failure(error)
-        }
+
+        remote.getLikesForCommentID(commentID,
+                                    count: NSNumber(value: count),
+                                    before: before,
+                                    success: { remoteLikeUsers, totalLikes in
+                                        self.createNewUsers(from: remoteLikeUsers, commentID: commentID, siteID: siteID) {
+                                            let users = self.likeUsersFor(commentID: commentID, siteID: siteID)
+                                            success(users, totalLikes.intValue)
+                                            LikeUserHelper.purgeStaleLikes()
+                                        }
+                                    }, failure: { error in
+                                        DDLogError(String(describing: error))
+                                        failure(error)
+                                    })
     }
 
     /**
