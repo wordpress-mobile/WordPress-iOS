@@ -824,6 +824,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if ([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Activity Log", @"Noun. Links to a blog's Activity screen.")
+                                      accessibilityIdentifier:@"Activity Log Row"
                                                         image:[UIImage gridiconOfType:GridiconTypeHistory]
                                                      callback:^{
                                                          [weakSelf showActivity];
@@ -833,6 +834,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if ([self.blog isBackupsAllowed]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Backup", @"Noun. Links to a blog's Jetpack Backups screen.")
+                                      accessibilityIdentifier:@"Backup Row"
                                                         image:[UIImage gridiconOfType:GridiconTypeCloudUpload]
                                                      callback:^{
                                                          [weakSelf showBackup];
@@ -841,6 +843,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if ([self.blog isScanAllowed]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Scan", @"Noun. Links to a blog's Jetpack Scan screen.")
+                                      accessibilityIdentifier:@"Scan Row"
                                                         image:[UIImage imageNamed:@"jetpack-scan-menu-icon"]
                                                      callback:^{
                                                          [weakSelf showScan];

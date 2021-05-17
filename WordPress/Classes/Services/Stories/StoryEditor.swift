@@ -99,17 +99,15 @@ class StoryEditor: CameraController {
 
     static func editor(blog: Blog,
                        context: NSManagedObjectContext,
-                       updated: @escaping (UpdateResult) -> Void,
-                       uploaded: @escaping (UploadResult) -> Void) throws -> StoryEditor {
+                       updated: @escaping (UpdateResult) -> Void) throws -> StoryEditor {
         let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
-        return try editor(post: post, mediaFiles: nil, publishOnCompletion: true, updated: updated, uploaded: uploaded)
+        return try editor(post: post, mediaFiles: nil, publishOnCompletion: true, updated: updated)
     }
 
     static func editor(post: AbstractPost,
                        mediaFiles: [MediaFile]?,
                        publishOnCompletion: Bool = false,
-                       updated: @escaping (UpdateResult) -> Void,
-                       uploaded: @escaping (UploadResult) -> Void) throws -> StoryEditor {
+                       updated: @escaping (UpdateResult) -> Void) throws -> StoryEditor {
 
         guard !UIDevice.isPad() else {
             throw EditorCreationError.unsupportedDevice
@@ -124,8 +122,7 @@ class StoryEditor: CameraController {
                                      tagCollection: nil,
                                      mediaFiles: mediaFiles,
                                      publishOnCompletion: publishOnCompletion,
-                                     updated: updated,
-                                     uploaded: uploaded)
+                                     updated: updated)
         controller.modalPresentationStyle = .fullScreen
         controller.modalTransitionStyle = .crossDissolve
         return controller
@@ -140,9 +137,7 @@ class StoryEditor: CameraController {
                      tagCollection: UIView?,
                      mediaFiles: [MediaFile]?,
                      publishOnCompletion: Bool,
-                     updated: @escaping (UpdateResult) -> Void,
-                     uploaded: @escaping (UploadResult) -> Void
-                    ) {
+                     updated: @escaping (UpdateResult) -> Void) {
         self.post = post
         self.onClose = onClose
         self.editorSession = PostEditorAnalyticsSession(editor: .stories, post: post)
@@ -185,9 +180,7 @@ class StoryEditor: CameraController {
 
             guard let self = self else { return }
 
-            let uploads: (String, [Media])? = try? self.poster?.upload(mediaItems: postMedia, post: post, completion: { post in
-                uploaded(.success(()))
-            })
+            let uploads: (String, [Media])? = try? self.poster?.add(mediaItems: postMedia, post: post)
 
             let content = uploads?.0 ?? ""
 

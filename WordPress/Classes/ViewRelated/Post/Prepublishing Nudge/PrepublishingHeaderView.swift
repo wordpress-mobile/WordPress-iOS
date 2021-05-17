@@ -5,7 +5,7 @@ protocol PrepublishingHeaderViewDelegate: class {
     func closeButtonTapped()
 }
 
-class PrepublishingHeaderView: UIView, NibLoadable {
+class PrepublishingHeaderView: UITableViewHeaderFooterView, NibLoadable {
 
     @IBOutlet weak var blogImageView: UIImageView!
     @IBOutlet weak var publishingToLabel: UILabel!
@@ -44,6 +44,12 @@ class PrepublishingHeaderView: UIView, NibLoadable {
         configureBlogTitleLabel()
         configureBlogImage()
         configureSeparator()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        self.delegate = nil
     }
 
     private func configureBackButton() {

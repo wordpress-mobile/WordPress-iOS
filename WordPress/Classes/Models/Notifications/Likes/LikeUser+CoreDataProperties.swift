@@ -18,5 +18,5 @@ extension LikeUser {
     @NSManaged public var likedPostID: Int64
     @NSManaged public var likedCommentID: Int64
     @NSManaged public var preferredBlog: LikeUserPreferredBlog?
-
+    @NSManaged public var dateFetched: Date
 }
