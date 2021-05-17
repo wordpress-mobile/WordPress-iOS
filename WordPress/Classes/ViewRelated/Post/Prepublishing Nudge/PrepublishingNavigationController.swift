@@ -9,6 +9,7 @@ class PrepublishingNavigationController: LightNavigationController {
     override public var preferredContentSize: CGSize {
         set {
             viewControllers.last?.preferredContentSize = newValue
+            super.preferredContentSize = newValue
         }
         get {
             guard let visibleViewController = viewControllers.last else {
