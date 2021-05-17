@@ -108,14 +108,10 @@ class PrepublishingViewController: UITableViewController {
             .store(in: &cancellables)
     }
 
-    override var preferredContentSize: CGSize {
-        get {
-            return tableView.contentSize
-        }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
 
-        set {
-            super.preferredContentSize = newValue
-        }
+        preferredContentSize = tableView.contentSize
     }
 
     override func viewWillAppear(_ animated: Bool) {
