@@ -27,6 +27,8 @@ platform :ios do
 
     scheme = options[:scheme] || "WordPressScreenshotGeneration"
 
+    output_directory = options[:output_directory] || File.join(Dir.pwd, "/screenshots")
+
     scan(
       workspace: WORKSPACE_PATH,
       scheme: scheme,
@@ -51,6 +53,7 @@ platform :ios do
         scheme: scheme,
         test_without_building: true,
         derived_data_path: DERIVED_DATA_PATH,
+        output_directory: output_directory,
         languages: languages,
         dark_mode: dark_mode_enabled,
         override_status_bar: true,
@@ -85,7 +88,10 @@ platform :ios do
   #####################################################################################
   desc "Generate localised Jetpack screenshots"
   lane :jetpack_screenshots do |options|
-     screenshots(scheme: "JetpackScreenshotGeneration")
+    screenshots(
+      scheme: "JetpackScreenshotGeneration",
+      output_directory: File.join(Dir.pwd, "/jetpack_screenshots")
+    )
   end
 
   #####################################################################################
