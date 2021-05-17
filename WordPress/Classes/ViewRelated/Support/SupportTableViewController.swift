@@ -168,19 +168,12 @@ private extension SupportTableViewController {
     // MARK: - Row Handlers
 
     func helpCenterSelected() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             self.tableView.deselectSelectedRowWithAnimation(true)
-            if ZendeskUtils.zendeskEnabled {
-                guard let controllerToShowFrom = self.controllerToShowFrom() else {
-                    return
-                }
-                ZendeskUtils.sharedInstance.showHelpCenterIfPossible(from: controllerToShowFrom, with: self.sourceTag)
-            } else {
-                guard let url = Constants.appSupportURL else {
-                    return
-                }
-                UIApplication.shared.open(url)
+            guard let url = Constants.appSupportURL else {
+                return
             }
+            UIApplication.shared.open(url)
         }
     }
 
@@ -353,7 +346,7 @@ private extension SupportTableViewController {
     // MARK: - Constants
 
     struct Constants {
-        static let appSupportURL = URL(string: "https://apps.wordpress.com/support")
+        static let appSupportURL = URL(string: "https://apps.wordpress.com/mobile-app-support/")
         static let forumsURL = URL(string: "https://ios.forums.wordpress.org")
         static let automatticEmails = ["@automattic.com", "@a8c.com"]
     }
