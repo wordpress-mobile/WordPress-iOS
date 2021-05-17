@@ -31,9 +31,7 @@ class WebViewControllerConfiguration: NSObject {
     }
 
     @objc func authenticateWithDefaultAccount() {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        guard let account = service.defaultWordPressComAccount() else {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext) else {
             return
         }
         authenticate(account: account)

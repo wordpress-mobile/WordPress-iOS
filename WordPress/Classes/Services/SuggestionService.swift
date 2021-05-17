@@ -110,9 +110,7 @@ class SuggestionService {
     }
 
     private func defaultAccount() -> WPAccount? {
-        let context = ContextManager.shared.mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        return accountService.defaultWordPressComAccount()
+        try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
     }
 
     private func retrievePersistedSuggestions(for blog: Blog) -> [UserSuggestion]? {

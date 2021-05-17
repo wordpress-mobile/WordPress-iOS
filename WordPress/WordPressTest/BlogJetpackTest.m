@@ -75,20 +75,16 @@
 }
 
 - (void)testJetpackSetupDoesntReplaceDotcomAccount {
-    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    self.testContextManager.testExpectation = saveExpectation;
-
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+    TestContextManager *contextManager = [TestContextManager new];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[contextManager mainContext]];
     WPAccount *wpComAccount = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
-    WPAccount * defaultAccount = [accountService defaultWordPressComAccount];
+    [[contextManager mainContext] save:nil];
+    WPAccount * defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:[contextManager mainContext]];
     XCTAssertEqualObjects(wpComAccount, defaultAccount);
 
-    saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    self.testContextManager.testExpectation = saveExpectation;
     [accountService createOrUpdateAccountWithUsername:@"test1" authToken:@"token1"];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
-    defaultAccount = [accountService defaultWordPressComAccount];
+    [[contextManager mainContext] save:nil];
+    defaultAccount =  [WPAccount lookupDefaultWordPressComAccountInContext:[contextManager mainContext]];
     XCTAssertEqualObjects(wpComAccount, defaultAccount);
 }
 

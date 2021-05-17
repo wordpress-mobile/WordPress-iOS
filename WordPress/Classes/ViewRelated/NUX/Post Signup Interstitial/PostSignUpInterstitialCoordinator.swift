@@ -12,10 +12,7 @@ class PostSignUpInterstitialCoordinator {
         self.database = database
 
         self.userId = userId ?? {
-            let context = ContextManager.sharedInstance().mainContext
-            let acctServ = AccountService(managedObjectContext: context)
-            let account = acctServ.defaultWordPressComAccount()
-
+            let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
             return account?.userID
         }()
     }

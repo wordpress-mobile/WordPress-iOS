@@ -14,13 +14,12 @@ final class ReaderTopicSwiftTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        testContextManager = TestContextManager.sharedInstance()
+        testContextManager = TestContextManager()
         context = testContextManager?.mainContext
     }
 
     override func tearDown() {
         context = nil
-        TestContextManager.overrideSharedInstance(nil)
         testContextManager = nil
         super.tearDown()
     }

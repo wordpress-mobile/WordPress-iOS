@@ -33,9 +33,8 @@ import WordPressKit
     ///
     /// - Returns: an instance of WordPressComRestApi
     private func apiForRESTRequest(using context: NSManagedObjectContext) -> WordPressComRestApi? {
-        let accountService = AccountService(managedObjectContext: context)
 
-        guard let account = accountService.defaultWordPressComAccount(),
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
               let api = account.wordPressComRestApi else {
             return nil
         }

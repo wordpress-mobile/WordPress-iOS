@@ -947,8 +947,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // In theory a sync could include a newly created comment before the request that created it returned.
     Comment *comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:self.managedObjectContext];
 
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    comment.author = [[service defaultWordPressComAccount] username];
+    WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
+    comment.author = [account username];
     comment.content = content;
     comment.dateCreated = [NSDate date];
     comment.parentID = parentID;
@@ -1195,8 +1195,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
  */
 - (WordPressComRestApi *)apiForRESTRequest
 {
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
     WordPressComRestApi *api = [defaultAccount wordPressComRestApi];
     //Sergio Estevao: Do we really want to do this? If the call going to be valid if no credential is available?
     if (![api hasCredentials]) {
