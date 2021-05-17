@@ -65,7 +65,7 @@ PODS:
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
   - Gridicons (1.1.0)
-  - GTMAppAuth (1.2.2):
+  - GTMAppAuth (1.2.1):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
   - GTMSessionFetcher/Core (1.5.0)
@@ -416,14 +416,14 @@ PODS:
   - WPMediaPicker (1.7.2)
   - wpxmlrpc (0.9.0)
   - Yoga (1.14.0)
-  - ZendeskCommonUISDK (6.1.1)
-  - ZendeskCoreSDK (2.5.1)
-  - ZendeskMessagingAPISDK (3.8.2):
-    - ZendeskSDKConfigurationsSDK (~> 1.1.8)
-  - ZendeskMessagingSDK (3.8.2):
-    - ZendeskCommonUISDK (~> 6.1.1)
-    - ZendeskMessagingAPISDK (~> 3.8.2)
-  - ZendeskSDKConfigurationsSDK (1.1.8)
+  - ZendeskCommonUISDK (6.1.0)
+  - ZendeskCoreSDK (2.5.0)
+  - ZendeskMessagingAPISDK (3.8.1):
+    - ZendeskSDKConfigurationsSDK (~> 1.1.7)
+  - ZendeskMessagingSDK (3.8.1):
+    - ZendeskCommonUISDK (~> 6.1.0)
+    - ZendeskMessagingAPISDK (~> 3.8.1)
+  - ZendeskSDKConfigurationsSDK (1.1.7)
   - ZendeskSupportProvidersSDK (5.2.0):
     - ZendeskCoreSDK (~> 2.5.0)
   - ZendeskSupportSDK (5.2.0):
@@ -696,7 +696,7 @@ SPEC CHECKSUMS:
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   Gridicons: 17d660b97ce4231d582101b02f8280628b141c9a
-  GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
+  GTMAppAuth: 5b53231ef6920f149ab84b2969cb0ab572da3077
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Gutenberg: 55c5cdf5597aaf49a24affc3769d5eaf95417320
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
@@ -759,15 +759,15 @@ SPEC CHECKSUMS:
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
-  ZendeskCommonUISDK: 5808802951ad2bb424f0bed4259dc3c0ce9b52ec
-  ZendeskCoreSDK: 19a18e5ef2edcb18f4dbc0ea0d12bd31f515712a
-  ZendeskMessagingAPISDK: 144e0fb0e633a3c4e73149b781ab65338938d5a8
-  ZendeskMessagingSDK: 500e83d9413481e95180c37ddca0d4ef9d515600
-  ZendeskSDKConfigurationsSDK: 8371b468db0d09e9198f6c5a97818826943ee1ee
+  ZendeskCommonUISDK: 92ca6b16956430a2cb61c89aeaa6ca123d1f81fd
+  ZendeskCoreSDK: f3d5dcd6a18186dcecbecd56f66296c40fb2fcb4
+  ZendeskMessagingAPISDK: 986919a8f6f11a7019660d1ff798f1efb42fa572
+  ZendeskMessagingSDK: bf9a06f0cbb219617d9cf60a46aba1b68c8f3b30
+  ZendeskSDKConfigurationsSDK: 45fa87ec8418697f7fce5e56bec472052f0aedb5
   ZendeskSupportProvidersSDK: 5221df6ca45e0b6f12470a5e8e65ccf3ccca17fa
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 4ce2488a7bf67246078a558489343e0945b043db
+PODFILE CHECKSUM: 5f63a2710d297ff10092c0e9644a5b48a6aa294c
 
 COCOAPODS: 1.10.0
