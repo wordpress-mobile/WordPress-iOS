@@ -173,10 +173,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private func hideNoSites() {
         hideNoResults()
 
-        noResultsRefreshControl = nil
-
-        noResultsScrollView?.removeFromSuperview()
-        noResultsScrollView = nil
+        cleanupNoResultsView()
     }
 
     private func showNoSites() {
@@ -250,6 +247,15 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         ])
 
         noResultsViewController.didMove(toParent: self)
+    }
+
+    private func cleanupNoResultsView() {
+        noResultsRefreshControl?.removeFromSuperview()
+        noResultsRefreshControl = nil
+
+        noResultsScrollView?.refreshControl = nil
+        noResultsScrollView?.removeFromSuperview()
+        noResultsScrollView = nil
     }
 
 // MARK: - Add Site Alert
