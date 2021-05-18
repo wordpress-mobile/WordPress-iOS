@@ -12,18 +12,20 @@ class GutenbergFilesAppMediaSource: NSObject {
     }
 
     func presentPicker(origin: UIViewController, filters: [Gutenberg.MediaType], allowedTypesOnBlog: [String], multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
-        let uttypeFilters = filters.contains(.any) ? allowedTypesOnBlog : allTypesFrom(allowedTypesOnBlog, conformingTo: filters)
-
         mediaPickerCallback = callback
-        let docPicker = UIDocumentPickerViewController(documentTypes: uttypeFilters, in: .import)
+        let documentTypes = getDocumentTypes(filters: filters, allowedTypesOnBlog: allowedTypesOnBlog)
+        let docPicker = UIDocumentPickerViewController(documentTypes: documentTypes, in: .import)
         docPicker.delegate = self
         docPicker.allowsMultipleSelection = multipleSelection
-
         origin.present(docPicker, animated: true)
     }
 
-    private func allTypesFrom(_ allTypes: [String], conformingTo filters: [Gutenberg.MediaType]) -> [String] {
-        return filters.map { $0.filterTypesConformingTo(allTypes: allTypes) }.reduce([], +)
+    private func getDocumentTypes(filters: [Gutenberg.MediaType], allowedTypesOnBlog: [String]) -> [String] {
+        if filters.contains(.any) {
+            return allowedTypesOnBlog
+        } else {
+            return filters.map { $0.filterTypesConformingTo(allTypes: allowedTypesOnBlog) }.reduce([], +)
+        }
     }
 }
 
@@ -70,7 +72,23 @@ extension Gutenberg.MediaType {
     }
 
     private func getTypesFrom(_ allTypes: [String], conformingTo uttype: CFString) -> [String] {
-        return allTypes.filter { UTTypeConformsTo($0 as CFString, uttype) }
+
+        return allTypes.filter {
+            if #available(iOS 14.0, *) {
+                guard let allowedType = UTType($0), let requiredType = UTType(uttype as String) else {
+                    return false
+                }
+                // Sometimes the compared type could be a supertype
+                // For example a self-hosted site without Jetpack may have "public.content" as allowedType
+                // Although "public.audio" conforms to "public.content", it's not true the other way around
+                if allowedType.isSupertype(of: requiredType) {
+                    return true
+                }
+                return allowedType.conforms(to: requiredType)
+            } else {
+                return UTTypeConformsTo($0 as CFString, uttype)
+            }
+        }
     }
 
     private var typeIdentifier: CFString? {

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-06 10:30:27+0000 */
+/* Translation-Revision-Date: 2021-05-10 18:55:30+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: cs_CZ */
@@ -36,8 +36,8 @@
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d neviditelných příspěvků";
 
-/* translators: 1: Block label (i.e. \"Block: Column\"), 2: Position of the selected block, 3: Total number of sibling blocks of the same type */
-"%1$s (%2$d of %3$d)" = "%1$s (%2$d z %3$d)";
+/* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
+"%1$s transformed to %2$s" = "%1$s změnit na %2$s";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
 "%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s je %3$s %4$s.";
@@ -193,17 +193,14 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li slov, %2$li znaků";
 
+/* translators: %s: block title e.g: \"Paragraph\". */
+"%s block options" = "%s možnosti bloku";
+
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s blok. Prázdný";
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s blok. Tento blok má neplatný obsah";
-
-/* translators: %s: Number of comments */
-"%s comment" = "%s komentář";
-
-/* translators: %s: name of the social service. */
-"%s label" = "%s označení";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "'%s' není plně podporován";
@@ -231,13 +228,6 @@
 /* Register Domain - Address information field add new address line */
 "+ Address line %@" = "+ Adresní řádek %@";
 
-/* No comment provided by engineer. */
-"- Select -" = "- Vybrat -";
-
-/* translators: Preserve \
- markers for line breaks */
-"\/\/ A \"block\" is the abstract term used\n\/\/ to describe units of markup that\n\/\/ when composed together, form the\n\/\/ content or layout of a page.\nregisterBlockType( name, settings );" = "\/\/ \"Block\" je abstraktní termín používaný \\ n\n\/\/ na popis jednotek značky, které \\ n\n\/\/ když jsou spojeny dohromady, vytvářejí \\ n\n\/\/ obsah nebo rozložení stránky. \\ N\nregisterBlockType (název, nastavení);";
-
 /* Local notification displayed to the user when a single draft post has been successfully uploaded. */
 "1 draft post uploaded" = "Byl nahrán 1 koncept příspěvku";
 
@@ -259,65 +249,20 @@
 /* Message for a notice informing the user their scan completed and 1 threat was found */
 "1 potential threat found" = "Nalezena 1 potenciální hrozba";
 
-/* No comment provided by engineer. */
-"100" = "100";
-
 /* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
 "1080p" = "1080p";
-
-/* No comment provided by engineer. */
-"10:16" = "10:16";
-
-/* No comment provided by engineer. */
-"16:10" = "16:10";
-
-/* No comment provided by engineer. */
-"16:9" = "16:9";
-
-/* No comment provided by engineer. */
-"25 \/ 50 \/ 25" = "25 \/ 50 \/ 25";
-
-/* No comment provided by engineer. */
-"2:3" = "2:3";
-
-/* No comment provided by engineer. */
-"30 \/ 70" = "30 \/ 70";
-
-/* No comment provided by engineer. */
-"33 \/ 33 \/ 33" = "33 \/ 33 \/ 33";
-
-/* No comment provided by engineer. */
-"3:2" = "3:2";
-
-/* No comment provided by engineer. */
-"3:4" = "3:4";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
 
-/* No comment provided by engineer. */
-"4:3" = "4:3";
-
 /* Indicates a video will be resized to 4K 3840x2160 when uploaded. */
 "4K" = "4K";
-
-/* No comment provided by engineer. */
-"50 \/ 50" = "50 \/ 50";
-
-/* No comment provided by engineer. */
-"70 \/ 30" = "70 \/ 30";
 
 /* Indicates a video will be resized to HD 1280x720 when uploaded. */
 "720p" = "720p";
 
-/* No comment provided by engineer. */
-"9:16" = "9:16";
-
 /* Age between dates less than one hour. */
 "< 1 hour" = "< 1 hodina";
-
-/* No comment provided by engineer. */
-"<strong>Snow Patrol<\/strong>" = "<strong>Snow Patrol<\/strong>";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -325,35 +270,11 @@
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "Tlačítko \"více\" obsahuje rozbalovací seznam, který zobrazuje tlačítka sdílení";
 
-/* No comment provided by engineer. */
-"A calendar of your site’s posts." = "A calendar of your site’s posts.";
-
-/* No comment provided by engineer. */
-"A cloud of your most used tags." = "A cloud of your most used tags.";
-
-/* No comment provided by engineer. */
-"A collection of blocks that allow visitors to get around your site." = "A collection of blocks that allow visitors to get around your site.";
-
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "Vybraný obrázek je nastaven. Klepnutím ho změňte.";
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Soubor obsahuje vzor škodlivého kódu";
-
-/* No comment provided by engineer. */
-"A link to a category." = "Odkaz na rubriku.";
-
-/* No comment provided by engineer. */
-"A link to a custom URL." = "A link to a custom URL.";
-
-/* No comment provided by engineer. */
-"A link to a page." = "Odkaz na stránku.";
-
-/* No comment provided by engineer. */
-"A link to a post." = "Odkaz na příspěvek.";
-
-/* No comment provided by engineer. */
-"A link to a tag." = "Odkaz na štítek.";
 
 /* Accessibility hint for My Sites list. */
 "A list of sites on this account." = "Seznam webů v tomto účtu.";
@@ -366,9 +287,6 @@
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button. */
 "A series of steps to assist with growing your site's audience." = "Série kroků, které vám pomohou rozšířit publikum vašeho webu.";
-
-/* No comment provided by engineer. */
-"A single column within a columns block." = "A single column within a columns block.";
 
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "Značka s názvem '%@' již existuje.";
@@ -403,8 +321,7 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "Adresa";
 
-/* About this app (information page title)
-   translators: 'About' as in a website's about page. */
+/* About this app (information page title) */
 "About" = "O nás";
 
 /* Link to About screen for Jetpack for iOS */
@@ -491,9 +408,6 @@
 "Add New Stats Card" = "Přidejte novou statistickou kartu";
 
 /* No comment provided by engineer. */
-"Add Template" = "Přidat šablonu";
-
-/* No comment provided by engineer. */
 "Add To Beginning" = "Přidat na začátek";
 
 /* No comment provided by engineer. */
@@ -514,20 +428,8 @@
 /* Title of a feature to add a new topic to the topics subscribed by the user. */
 "Add a Topic" = "Přidat téma";
 
-/* No comment provided by engineer. */
-"Add a block that displays content in multiple columns, then add whatever content blocks you’d like." = "Add a block that displays content in multiple columns, then add whatever content blocks you’d like.";
-
-/* No comment provided by engineer. */
-"Add a block that displays content pulled from other sites, like Twitter, Instagram or YouTube." = "Add a block that displays content pulled from other sites, like Twitter, Instagram or YouTube.";
-
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Zde přidejte vlastní adresu URL CSS, která se načte do aplikace Reader. Pokud používáte Calypso místně, může to být něco jako: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
-
-/* No comment provided by engineer. */
-"Add a link to a downloadable file." = "Add a link to a downloadable file.";
-
-/* No comment provided by engineer. */
-"Add a page, link, or another item to your navigation." = "Add a page, link, or another item to your navigation.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Přidejte web s vlastním hostitelem";
@@ -547,20 +449,11 @@
 /* No comment provided by engineer. */
 "Add alt text" = "Přidat alternativní text";
 
-/* No comment provided by engineer. */
-"Add an image or video with a text overlay — great for headers." = "Add an image or video with a text overlay — great for headers.";
-
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Přidejte jakékoli téma";
 
 /* No comment provided by engineer. */
 "Add caption" = "Přidat titulek";
-
-/* translators: placeholder text used for the citation */
-"Add citation" = "Add citation";
-
-/* No comment provided by engineer. */
-"Add custom HTML code and preview it as you edit." = "Přidejte vlastní kód HTML a zobrazte jeho náhled při úpravách.";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Přidejte obrázek nebo avatar, který představuje tento nový účet.";
@@ -589,9 +482,6 @@
 /* No comment provided by engineer. */
 "Add paragraph block" = "Přidat blok odstavců";
 
-/* translators: placeholder text used for the quote */
-"Add quote" = "Přidat citát";
-
 /* Add self-hosted site button */
 "Add self-hosted site" = "Přidejte vlastní web";
 
@@ -603,16 +493,7 @@
 "Add tags" = "Přidat štítky";
 
 /* No comment provided by engineer. */
-"Add text that respects your spacing and tabs, and also allows styling." = "Přidejte text, který respektuje vaše odsazení, tabulátory, a také umožňuje stylování.";
-
-/* No comment provided by engineer. */
 "Add text…" = "Přidat text…";
-
-/* No comment provided by engineer. */
-"Add the author of this post." = "Add the author of this post.";
-
-/* No comment provided by engineer. */
-"Add the date of this post." = "Add the date of this post.";
 
 /* No comment provided by engineer. */
 "Add this email link" = "Přidejte tento e-mailový odkaz";
@@ -622,12 +503,6 @@
 
 /* No comment provided by engineer. */
 "Add this telephone link" = "Přidejte tento telefonní odkaz";
-
-/* No comment provided by engineer. */
-"Add tracks" = "Add tracks";
-
-/* No comment provided by engineer. */
-"Add white space between blocks and customize its height." = "Přidejte mezeru mezi bloky a upravte její výšku.";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Přidávání funkcí webu";
@@ -650,15 +525,6 @@
 
 /* Description of albums in the photo libraries */
 "Albums" = "Alba";
-
-/* No comment provided by engineer. */
-"Align column center" = "Zarovnat sloupec na střed";
-
-/* No comment provided by engineer. */
-"Align column left" = "Zarovnat sloupec doleva";
-
-/* No comment provided by engineer. */
-"Align column right" = "Zarovnat sloupec doprava";
 
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
@@ -786,9 +652,6 @@
 /* Text displayed when a stat section failed to load. */
 "An error occurred." = "Vyskytla se chyba.";
 
-/* No comment provided by engineer. */
-"An example title" = "Příklad názvu";
-
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "Nastala neznámá chyba. Prosím zkuste to znovu.";
 
@@ -827,15 +690,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
 "Approves the Comment." = "Schválil komentář";
-
-/* No comment provided by engineer. */
-"Archive Title" = "Název archívu";
-
-/* No comment provided by engineer. */
-"Archive title" = "Název archívu";
-
-/* No comment provided by engineer. */
-"Archives settings" = "Nastavení archivů";
 
 /* Menus alert message for alerting the user to unsaved changes while trying back out of Menus. */
 "Are you sure you want to cancel and discard changes?" = "Jste si jisti, že chcete zrušit a odstranit změny?";
@@ -910,17 +764,11 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Opravdu chcete provést aktualizaci?";
 
-/* No comment provided by engineer. */
-"Area" = "Oblast";
-
 /* An example tag used in the login prologue screens. */
 "Art" = "Umění";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Od 1. srpna 2018 již Facebook neumožňuje přímé sdílení příspěvků na profily Facebooku. Připojení k Facebook stránkám zůstávají nezměněna.";
-
-/* No comment provided by engineer. */
-"Aspect Ratio" = "Poměr stran";
 
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Připojit soubor jako odkaz";
@@ -930,9 +778,6 @@
 
 /* No comment provided by engineer. */
 "Audio Player" = "Audio přehrávač";
-
-/* No comment provided by engineer. */
-"Audio caption text" = "Text zvukových titulků";
 
 /* translators: accessibility text. %s: Audio caption. */
 "Audio caption. %s" = "Zvukový titulek. %s";
@@ -1080,6 +925,15 @@
 /* No comment provided by engineer. */
 "Block cannot be rendered inside itself." = "Blok nelze vykreslit uvnitř sebe.";
 
+/* translators: displayed right after the block is copied. */
+"Block copied" = "Blok zkopírován";
+
+/* translators: displayed right after the block is cut. */
+"Block cut" = "Blok vyjmut";
+
+/* translators: displayed right after the block is duplicated. */
+"Block duplicated" = "Blok duplikován";
+
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Editor bloků povolen";
 
@@ -1088,6 +942,15 @@
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Blokovat škodlivé pokusy o přihlášení";
+
+/* translators: displayed right after the block is pasted. */
+"Block pasted" = "Blok vložen";
+
+/* translators: displayed right after the block is removed. */
+"Block removed" = "Blok odstraněn";
+
+/* No comment provided by engineer. */
+"Block settings" = "Nastavení bloku";
 
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Zablokovat tento web";
@@ -1118,30 +981,15 @@
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Prohlížeč blogu";
 
-/* No comment provided by engineer. */
-"Body cell text" = "Text hlavní buňky";
-
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Zvýraznit";
 
-/* No comment provided by engineer. */
-"Border" = "Ohraničení";
-
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "Rozdělit vlákna komentářů do více stránek.";
 
-/* No comment provided by engineer. */
-"Briefly describe the link to help screen reader users." = "Briefly describe the link to help screen reader users.";
-
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Prozkoumejte seznam šablon a nejděte tu co se hodí nejvíce.";
-
-/* No comment provided by engineer. */
-"Browse all templates" = "Browse all templates";
-
-/* No comment provided by engineer. */
-"Browse all templates. This will open the template menu in the navigation side panel." = "Browse all templates. This will open the template menu in the navigation side panel.";
 
 /* No comment provided by engineer. */
 "Browser default" = "Výchozí prohlížeč";
@@ -1159,10 +1007,7 @@
 "Button Style" = "Styl tlačítek";
 
 /* No comment provided by engineer. */
-"Buttons shown in a column." = "Tlačítka zobrazená ve sloupci.";
-
-/* No comment provided by engineer. */
-"Buttons shown in a row." = "Tlačítka zobrazená v řádku.";
+"ButtonGroup" = "Skupina tlačítek";
 
 /* Label for the post author in the post detail. */
 "By " = "od ";
@@ -1191,9 +1036,6 @@
 
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Výpočet...";
-
-/* No comment provided by engineer. */
-"Call to Action" = "Výzva k akci";
 
 /* Accessibility label for taking an image or video with the camera on formatting toolbar.
    Accessibility label for the camera tile in the collection view */
@@ -1288,9 +1130,6 @@
    Noun. Label for the caption for a media asset (image / video) */
 "Caption" = "Titulek";
 
-/* No comment provided by engineer. */
-"Captions" = "Popisky";
-
 /* Alert title.
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Opatrně!";
@@ -1306,9 +1145,6 @@
    Menu item label for linking a specific category. */
 "Category" = "Rubrika";
 
-/* No comment provided by engineer. */
-"Category Link" = "Odkaz rubriky";
-
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "Chybí název rubriky.";
 
@@ -1317,9 +1153,6 @@
 
 /* Popup title for wrong SSL certificate. */
 "Certificate error" = "Chyba certifikátu";
-
-/* No comment provided by engineer. */
-"Change Date" = "Změnit datum";
 
 /* Account Settings Change password label
    Main title */
@@ -1339,9 +1172,6 @@
 
 /* No comment provided by engineer. */
 "Change block position" = "Změňte pozici bloku";
-
-/* No comment provided by engineer. */
-"Change column alignment" = "Změnit zarovnání sloupce";
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Změna zrušena";
@@ -1373,9 +1203,6 @@
 
 /* Shown while the app waits for the username changing web service to return. */
 "Changing username" = "Změna uživatelského jména";
-
-/* No comment provided by engineer. */
-"Chapters" = "Kapitoly";
 
 /* Title of alert when getting purchases fails */
 "Check Purchases Error" = "Zkontrolujte chybu při nákupu";
@@ -1451,9 +1278,6 @@
 "Choose domain" = "Zvolit doménu";
 
 /* No comment provided by engineer. */
-"Choose existing" = "Vybrat existující";
-
-/* No comment provided by engineer. */
 "Choose file" = "Vyberte soubor";
 
 /* Menu option for selecting media from the device's photo library. */
@@ -1514,9 +1338,6 @@
 "Clear all old activity logs?" = "Vymazat všechny staré protokoly aktivit?";
 
 /* No comment provided by engineer. */
-"Clear customizations" = "Vymazat přizpůsobení";
-
-/* No comment provided by engineer. */
 "Clear search" = "Vymazat vyhledávání";
 
 /* Title of a button. */
@@ -1549,23 +1370,11 @@
 /* Close Comments Title */
 "Close commenting" = "Uzavřít komentování";
 
-/* No comment provided by engineer. */
-"Close global styles sidebar" = "Zavřít postranní panel globálních stylů";
-
-/* No comment provided by engineer. */
-"Close list view sidebar" = "Zavřít postranní panel zobrazení seznamu";
-
-/* No comment provided by engineer. */
-"Close settings sidebar" = "Zavřít postranní panel nastavení";
-
 /* Accessibility hint the  Done button in the Me screen. */
 "Close the Me screen" = "Zavřít mou obrazovku";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Kód";
-
-/* No comment provided by engineer. */
-"Code is Poetry" = "Code is Poetry";
 
 /* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
 "Collapsed, %i completed tasks, toggling expands the list of these tasks" = "Sbalené, %i dokončené úkoly, přepínání rozšiřuje seznam těchto úkolů";
@@ -1581,21 +1390,6 @@
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "Barevné pozadí";
-
-/* translators: %d: column index (starting with 1) */
-"Column %d text" = "Textový sloupec %d";
-
-/* No comment provided by engineer. */
-"Column count" = "Počet sloupců";
-
-/* No comment provided by engineer. */
-"Column settings" = "Nastavení sloupců";
-
-/* No comment provided by engineer. */
-"Columns" = "Sloupce";
-
-/* No comment provided by engineer. */
-"Combine blocks into a group." = "Spojit bloky do skupiny.";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Zkombinujte fotografie, videa a text a vytvořte poutavé příběhy příspěvků, na které lze klepnout, které se vašim návštěvníkům budou líbit.";
@@ -1776,9 +1570,6 @@
 /* Section title for Publicize services in Sharing screen */
 "Connections" = "Připojení";
 
-/* translators: 'Contact' as in a website's contact page. */
-"Contact" = "Kontakt";
-
 /* Support email label. */
 "Contact Email" = "Kontaktní e-mail";
 
@@ -1794,17 +1585,11 @@
    Title of a button. A call to action to contact support for assistance. */
 "Contact support" = "Kontaktovat podporu";
 
-/* No comment provided by engineer. */
-"Contact us" = "Kontaktujte nás";
-
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
 "Contact us at %@" = "Kontaktujte nás na adrese %@";
 
 /* Displays the number of blocks, words and characters in text */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Struktura obsahu\nBloky: %1$li, Slova: %2$li, Znaky: %3$li";
-
-/* No comment provided by engineer. */
-"Content before this block will be shown in the excerpt on your archives page." = "Obsah nad tímto blokem se v archivu zobrazí jako stručný výpis příspěvku.";
 
 /* Action title to dismiss domain credit redemption success screen
    Apply changes localy to single block edition in the web block editor
@@ -1834,20 +1619,8 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Pokračování s Apple";
 
-/* No comment provided by engineer. */
-"Convert to blocks" = "Převést na bloky";
-
-/* No comment provided by engineer. */
-"Convert to ordered list" = "Přenést na číslovaný seznam";
-
-/* No comment provided by engineer. */
-"Convert to unordered list" = "Převést na neuspořádaný seznam";
-
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Vaření";
-
-/* No comment provided by engineer. */
-"Copied URL to clipboard." = "Kopírovat URL do schránky.";
 
 /* No comment provided by engineer. */
 "Copied block" = "Zkopírovaný blok";
@@ -1856,7 +1629,7 @@
 "Copy Link to Comment" = "Zkopírovat odkaz na komentář";
 
 /* No comment provided by engineer. */
-"Copy URL" = "Kopírovat URL";
+"Copy block" = "Kopírovat blok";
 
 /* No comment provided by engineer. */
 "Copy file URL" = "Zkopírujte adresu URL souboru";
@@ -1878,9 +1651,6 @@
 
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "Nepodařilo se zjistit nákupy na webu.";
-
-/* translators: 1. Error message */
-"Could not edit image. %s" = "Nemůžete upravit obrázek. %s";
 
 /* Title of a prompt. */
 "Could not follow site" = "Nemůžu sledovat web";
@@ -1995,9 +1765,6 @@
 /* Stories intro continue button title */
 "Create Story Post" = "Vytvořit příběhový příspěvek";
 
-/* No comment provided by engineer. */
-"Create Table" = "Create Table";
-
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "Vytvořit web na WordPress.com";
 
@@ -2007,32 +1774,17 @@
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Vytvořit štítek";
 
-/* No comment provided by engineer. */
-"Create a break between ideas or sections with a horizontal separator." = "Oddělte jednotlivé nápady nebo oddíly vodorovnou čarou.";
-
-/* No comment provided by engineer. */
-"Create a bulleted or numbered list." = "Create a bulleted or numbered list.";
-
 /* Title for a button that when tapped starts the site creation process */
 "Create a new site" = "Vytvořte nový web";
 
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Vytvořte nový web pro své podnikání, časopis nebo osobní blog; nebo připojte stávající instalaci WordPress.";
 
-/* No comment provided by engineer. */
-"Create a new template part or pick an existing one from the list." = "Create a new template part or pick an existing one from the list.";
-
 /* Accessibility hint for create floating action button */
 "Create a post or page" = "Vytvořte příspěvek nebo stránku";
 
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "Vytvořte příspěvek, stránku nebo příběh";
-
-/* No comment provided by engineer. */
-"Create a template part" = "Create a template part";
-
-/* No comment provided by engineer. */
-"Create and save content to reuse across your site. Update the block, and the changes apply everywhere it’s used." = "Create and save content to reuse across your site. Update the block, and the changes apply everywhere it’s used.";
 
 /* Label that describes the download backup action */
 "Create downloadable backup" = "Vytvořte zálohu ke stažení";
@@ -2091,9 +1843,6 @@
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "Aktuálně se obnovuje: %1$@";
 
-/* No comment provided by engineer. */
-"Custom Link" = "Custom Link";
-
 /* Placeholder for Invite People message field. */
 "Custom message…" = "Vlastní zpráva…";
 
@@ -2122,6 +1871,9 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Přizpůsobte si nastavení pro To se mi líbí, Komentáře, Sledování a další.";
+
+/* No comment provided by engineer. */
+"Cut block" = "Vyjmout blok";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Tmavý";
@@ -2161,9 +1913,6 @@
 /* Only December needs to be translated */
 "December 17, 2017" = "17. prosince, 2017";
 
-/* No comment provided by engineer. */
-"December 6, 2018" = "December 6, 2018";
-
 /* Description of the default paragraph formatting style in the editor.
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "Základní";
@@ -2181,9 +1930,6 @@
 
 /* Placeholder for the reader CSS URL */
 "Default URL" = "Výchozí adresa URL";
-
-/* translators: %s: HTML tag based on area. */
-"Default based on area (%s)" = "Default based on area (%s)";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Výchozí pro nové příspěvky";
@@ -2218,14 +1964,8 @@
 /* Title of alert when site deletion fails */
 "Delete Site Error" = "Chyba při mazání webu";
 
-/* No comment provided by engineer. */
-"Delete column" = "Delete column";
-
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "Smazat menu";
-
-/* No comment provided by engineer. */
-"Delete row" = "Delete row";
 
 /* Delete Tag confirmation action title */
 "Delete this tag" = "Odstranit tento štítek";
@@ -2250,17 +1990,11 @@
    Title of section that contains plugins' description */
 "Description" = "Popis";
 
-/* No comment provided by engineer. */
-"Descriptions" = "Popis";
-
 /* Shortened version of the main title to be used in back navigation */
 "Design" = "Vzhled";
 
 /* Title for the desktop web preview */
 "Desktop" = "Plocha počítače";
-
-/* No comment provided by engineer. */
-"Detach blocks from template part" = "Detach blocks from template part";
 
 /* Details button that appears in the Theme Browser Header
    Theme Details action title */
@@ -2355,94 +2089,7 @@
 "Display Name" = "Zobrazované jméno";
 
 /* No comment provided by engineer. */
-"Display a legacy widget." = "Display a legacy widget.";
-
-/* No comment provided by engineer. */
-"Display a list of all categories." = "Display a list of all categories.";
-
-/* No comment provided by engineer. */
-"Display a list of all pages." = "Display a list of all pages.";
-
-/* No comment provided by engineer. */
-"Display a list of your most recent comments." = "Display a list of your most recent comments.";
-
-/* No comment provided by engineer. */
-"Display a list of your most recent posts, excluding sticky posts." = "Display a list of your most recent posts, excluding sticky posts.";
-
-/* No comment provided by engineer. */
-"Display a list of your most recent posts." = "Display a list of your most recent posts.";
-
-/* No comment provided by engineer. */
-"Display a monthly archive of your posts." = "Display a monthly archive of your posts.";
-
-/* No comment provided by engineer. */
-"Display a post's categories." = "Display a post's categories.";
-
-/* No comment provided by engineer. */
-"Display a post's comments count." = "Display a post's comments count.";
-
-/* No comment provided by engineer. */
-"Display a post's comments form." = "Display a post's comments form.";
-
-/* No comment provided by engineer. */
-"Display a post's comments." = "Display a post's comments.";
-
-/* No comment provided by engineer. */
-"Display a post's excerpt." = "Display a post's excerpt.";
-
-/* No comment provided by engineer. */
-"Display a post's featured image." = "Display a post's featured image.";
-
-/* No comment provided by engineer. */
-"Display a post's tags." = "Display a post's tags.";
-
-/* No comment provided by engineer. */
-"Display an icon linking to a social media profile or website." = "Display an icon linking to a social media profile or website.";
-
-/* No comment provided by engineer. */
-"Display as dropdown" = "Display as dropdown";
-
-/* No comment provided by engineer. */
-"Display author" = "Display author";
-
-/* No comment provided by engineer. */
-"Display avatar" = "Display avatar";
-
-/* No comment provided by engineer. */
-"Display code snippets that respect your spacing and tabs." = "Display code snippets that respect your spacing and tabs.";
-
-/* No comment provided by engineer. */
-"Display date" = "Display date";
-
-/* No comment provided by engineer. */
-"Display entries from any RSS or Atom feed." = "Display entries from any RSS or Atom feed.";
-
-/* No comment provided by engineer. */
-"Display excerpt" = "Display excerpt";
-
-/* No comment provided by engineer. */
-"Display icons linking to your social media profiles or websites." = "Display icons linking to your social media profiles or websites.";
-
-/* No comment provided by engineer. */
-"Display login as form" = "Display login as form";
-
-/* No comment provided by engineer. */
-"Display multiple images in a rich gallery." = "Display multiple images in a rich gallery.";
-
-/* No comment provided by engineer. */
-"Display post date" = "Display post date";
-
-/* No comment provided by engineer. */
-"Display the archive title based on the queried object." = "Display the archive title based on the queried object.";
-
-/* No comment provided by engineer. */
-"Display the description of categories, tags and custom taxonomies when viewing an archive." = "Display the description of categories, tags and custom taxonomies when viewing an archive.";
-
-/* No comment provided by engineer. */
-"Display the query title." = "Display the query title.";
-
-/* No comment provided by engineer. */
-"Display the title as a link" = "Display the title as a link";
+"Display post date" = "Zobrazit datum příspěvku";
 
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Zde zobrazte své statistiky všech dob. Nakonfigurujte v aplikaci WordPress ve statistikách svého webu.";
@@ -2452,42 +2099,6 @@
 
 /* Unconfigured stats today widget helper text */
 "Display your site stats for today here. Configure in the WordPress app in your site stats." = "Zde zobrazte statistiky svého webu pro dnešek. Nakonfigurujte v aplikaci WordPress ve statistikách svého webu.";
-
-/* No comment provided by engineer. */
-"Displays a list of page numbers for pagination" = "Displays a list of page numbers for pagination";
-
-/* No comment provided by engineer. */
-"Displays a list of posts as a result of a query." = "Displays a list of posts as a result of a query.";
-
-/* No comment provided by engineer. */
-"Displays a paginated navigation to next\/previous set of posts, when applicable." = "Displays a paginated navigation to next\/previous set of posts, when applicable.";
-
-/* No comment provided by engineer. */
-"Displays and allows editing the name of the site. The site title usually appears in the browser title bar, in search results, and more. Also available in Settings > General." = "Displays and allows editing the name of the site. The site title usually appears in the browser title bar, in search results, and more. Also available in Settings > General.";
-
-/* No comment provided by engineer. */
-"Displays the contents of a post or page." = "Displays the contents of a post or page.";
-
-/* No comment provided by engineer. */
-"Displays the link to the current post comments." = "Displays the link to the current post comments.";
-
-/* No comment provided by engineer. */
-"Displays the next or previous post link that is adjacent to the current post." = "Displays the next or previous post link that is adjacent to the current post.";
-
-/* No comment provided by engineer. */
-"Displays the next posts page link." = "Displays the next posts page link.";
-
-/* No comment provided by engineer. */
-"Displays the post link that follows the current post." = "Displays the post link that follows the current post.";
-
-/* No comment provided by engineer. */
-"Displays the post link that precedes the current post." = "Displays the post link that precedes the current post.";
-
-/* No comment provided by engineer. */
-"Displays the previous posts page link." = "Displays the previous posts page link.";
-
-/* No comment provided by engineer. */
-"Displays the title of a post, page, or any other content-type." = "Displays the title of a post, page, or any other content-type.";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Dokument: %@";
@@ -2525,9 +2136,6 @@
 /* Title for label when there are no threats on the users site */
 "Don’t worry about a thing" = "O nic se nestarejte";
 
-/* No comment provided by engineer. */
-"Dots" = "Dots";
-
 /* Screen reader hint for button that will move the menu item */
 "Double tap and hold to move this menu item up or down" = "Dvojitým klepnutím a podržením přesunete tuto položku nabídky nahoru nebo dolů";
 
@@ -2562,7 +2170,13 @@
 "Double tap to open Action Sheet to edit, replace, or clear the image" = "Dvojitým klepnutím otevřete akční list, kde můžete obrázek upravit, nahradit nebo vymazat";
 
 /* No comment provided by engineer. */
+"Double tap to open Action Sheet with available options" = "Dvojitým klepnutím otevřete akční list s dostupnými možnostmi";
+
+/* No comment provided by engineer. */
 "Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Dvojitým klepnutím otevřete spodní list, kde můžete obrázek upravit, nahradit nebo vymazat";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet with available options" = "Dvojitým klepnutím otevřete spodní list s dostupnými možnostmi";
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "Poslední změnu provedete dvojitým klepnutím";
@@ -2598,17 +2212,8 @@
    Title for button allowing user to backup their Jetpack site */
 "Download backup" = "Stáhnout zálohu";
 
-/* No comment provided by engineer. */
-"Download button settings" = "Download button settings";
-
-/* No comment provided by engineer. */
-"Download button text" = "Download button text";
-
 /* Title for the button that will download the backup file. */
 "Download file" = "Stáhnout soubor";
-
-/* No comment provided by engineer. */
-"Download your templates and template parts." = "Download your templates and template parts.";
 
 /* Label for number of file downloads. */
 "Downloads" = "Stahování";
@@ -2620,15 +2225,12 @@
    Title of the drafts header in search list. */
 "Drafts" = "Koncepty";
 
-/* No comment provided by engineer. */
-"Drop cap" = "Drop cap";
-
 /* Label for page duplicate option. Tapping creates a copy of the page.
    Label for post duplicate option. Tapping creates a copy of the post. */
 "Duplicate" = "Duplikovat";
 
-/* translators: Sample content for the Preformatted block. Can be replaced with a more locale-adequate work. */
-"EXT. XANADU - FAINT DAWN - 1940 (MINIATURE)\nWindow, very small in the distance, illuminated.\nAll around this is an almost totally black screen. Now, as the camera moves slowly towards the window which is almost a postage stamp in the frame, other forms ap" = "EXT. XANADU - FAINT DAWN - 1940 (MINIATURE)\nWindow, very small in the distance, illuminated.\nAll around this is an almost totally black screen. Now, as the camera moves slowly towards the window which is almost a postage stamp in the frame, other forms ap";
+/* No comment provided by engineer. */
+"Duplicate block" = "Duplicitní blok";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Východ";
@@ -2651,9 +2253,6 @@
 /* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
 "Edit %@ block" = "Upravit %@ blok";
 
-/* translators: %s: Label of the video text track e.g: \"French subtitles\" */
-"Edit %s" = "Edit %s";
-
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Upravit seznam zablokovaných slov";
 
@@ -2672,19 +2271,10 @@
 "Edit Post" = "Upravit příspěvek";
 
 /* No comment provided by engineer. */
-"Edit RSS URL" = "Edit RSS URL";
-
-/* No comment provided by engineer. */
-"Edit URL" = "Edit URL";
-
-/* No comment provided by engineer. */
 "Edit file" = "Upravit soubor";
 
 /* No comment provided by engineer. */
 "Edit focal point" = "Změňte zaostřovací pole";
-
-/* No comment provided by engineer. */
-"Edit gallery image" = "Edit gallery image";
 
 /* No comment provided by engineer. */
 "Edit image" = "Upravit obrázek";
@@ -2695,14 +2285,8 @@
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Upravit tlačítka pro sdílení";
 
-/* No comment provided by engineer. */
-"Edit table" = "Edit table";
-
 /* Button title displayed in popup indicating that the user edits the post first */
 "Edit the post first" = "Nejprve upravte příspěvek";
-
-/* No comment provided by engineer. */
-"Edit track" = "Edit track";
 
 /* No comment provided by engineer. */
 "Edit using web editor" = "Upravit pomocí webového editoru";
@@ -2760,132 +2344,12 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-mail poslán!";
 
-/* No comment provided by engineer. */
-"Embed Amazon Kindle content." = "Embed Amazon Kindle content.";
-
-/* No comment provided by engineer. */
-"Embed Cloudup content." = "Embed Cloudup content.";
-
-/* No comment provided by engineer. */
-"Embed CollegeHumor content." = "Embed CollegeHumor content.";
-
-/* No comment provided by engineer. */
-"Embed Crowdsignal (formerly Polldaddy) content." = "Embed Crowdsignal (formerly Polldaddy) content.";
-
-/* No comment provided by engineer. */
-"Embed Flickr content." = "Embed Flickr content.";
-
-/* No comment provided by engineer. */
-"Embed Imgur content." = "Embed Imgur content.";
-
-/* No comment provided by engineer. */
-"Embed Issuu content." = "Embed Issuu content.";
-
-/* No comment provided by engineer. */
-"Embed Kickstarter content." = "Embed Kickstarter content.";
-
-/* No comment provided by engineer. */
-"Embed Meetup.com content." = "Embed Meetup.com content.";
-
-/* No comment provided by engineer. */
-"Embed Mixcloud content." = "Embed Mixcloud content.";
-
-/* No comment provided by engineer. */
-"Embed ReverbNation content." = "Embed ReverbNation content.";
-
-/* No comment provided by engineer. */
-"Embed Screencast content." = "Embed Screencast content.";
-
-/* No comment provided by engineer. */
-"Embed Scribd content." = "Embed Scribd content.";
-
-/* No comment provided by engineer. */
-"Embed Slideshare content." = "Embed Slideshare content.";
-
-/* No comment provided by engineer. */
-"Embed SmugMug content." = "Embed SmugMug content.";
-
-/* No comment provided by engineer. */
-"Embed SoundCloud content." = "Embed SoundCloud content.";
-
-/* No comment provided by engineer. */
-"Embed Speaker Deck content." = "Embed Speaker Deck content.";
-
-/* No comment provided by engineer. */
-"Embed Spotify content." = "Embed Spotify content.";
-
-/* No comment provided by engineer. */
-"Embed a Dailymotion video." = "Embed a Dailymotion video.";
-
-/* No comment provided by engineer. */
-"Embed a Facebook post." = "Embed a Facebook post.";
-
-/* No comment provided by engineer. */
-"Embed a Reddit thread." = "Embed a Reddit thread.";
-
-/* No comment provided by engineer. */
-"Embed a TED video." = "Embed a TED video.";
-
-/* No comment provided by engineer. */
-"Embed a TikTok video." = "Embed a TikTok video.";
-
-/* No comment provided by engineer. */
-"Embed a Tumblr post." = "Embed a Tumblr post.";
-
-/* No comment provided by engineer. */
-"Embed a VideoPress video." = "Embed a VideoPress video.";
-
-/* No comment provided by engineer. */
-"Embed a Vimeo video." = "Embed a Vimeo video.";
-
-/* No comment provided by engineer. */
-"Embed a WordPress post." = "Embed a WordPress post.";
-
-/* No comment provided by engineer. */
-"Embed a WordPress.tv video." = "Embed a WordPress.tv video.";
-
-/* No comment provided by engineer. */
-"Embed a YouTube video." = "Embed a YouTube video.";
-
-/* No comment provided by engineer. */
-"Embed a simple audio player." = "Embed a simple audio player.";
-
-/* No comment provided by engineer. */
-"Embed a tweet." = "Embed a tweet.";
-
-/* No comment provided by engineer. */
-"Embed a video from your media library or upload a new one." = "Embed a video from your media library or upload a new one.";
-
-/* No comment provided by engineer. */
-"Embed an Animoto video." = "Embed an Animoto video.";
-
-/* No comment provided by engineer. */
-"Embed an Instagram post." = "Embed an Instagram post.";
-
-/* translators: %s: filename. */
-"Embed of %s." = "Embed of %s.";
-
-/* No comment provided by engineer. */
-"Embed of the selected PDF file." = "Embed of the selected PDF file.";
-
-/* translators: %s: host providing embed content e.g: www.youtube.com */
-"Embedded content from %s" = "Embedded content from %s";
-
-/* translators: %s: host providing embed content e.g: www.youtube.com */
-"Embedded content from %s can't be previewed in the editor." = "Embedded content from %s can't be previewed in the editor.";
-
-/* No comment provided by engineer. */
-"Embedding…" = "Embedding…";
-
 /* Accessibility value presented in the signup epilogue for an empty value.
    Label for size of media when the cache is empty. */
 "Empty" = "Prázdný";
 
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Prázdná URL";
-
-/* No comment provided by engineer. */
-"Empty block; start writing or type forward slash to choose a block" = "Empty block; start writing or type forward slash to choose a block";
 
 /* Button title for the enable site notifications action. */
 "Enable" = "Aktivovat";
@@ -2908,17 +2372,11 @@
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "Koncové datum";
 
-/* No comment provided by engineer. */
-"English" = "English";
-
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Vstupte na celou obrazovku";
 
 /* No comment provided by engineer. */
-"Enter URL here…" = "Enter URL here…";
-
-/* No comment provided by engineer. */
-"Enter URL to embed here…" = "Enter URL to embed here…";
+"Enter URL to embed here…" = "Zadejte URL adresu pro vložení...";
 
 /* Enter a custom value */
 "Enter a custom value" = "Zadejte vlastní hodnotu";
@@ -2928,9 +2386,6 @@
 
 /* Message explaining why the user might enter a password. */
 "Enter a password to protect this post" = "Chcete-li tento příspěvek chránit, zadejte heslo";
-
-/* No comment provided by engineer. */
-"Enter address" = "Enter address";
 
 /* Secondary message shown when there are no domains that match the user entered text. */
 "Enter different words above and we'll look for an address that matches it." = "Výše zadejte různá slova a my vyhledáme adresu, která jí odpovídá.";
@@ -2969,10 +2424,10 @@
 "Enter your server credentials to enable one click site restores from backups." = "Zadejte přihlašovací údaje k serveru a povolte obnovení stránek ze zálohy jedním kliknutím.";
 
 /* Title for button when a site is missing server credentials */
-"Enter your server credentials to fix threat." = "Enter your server credentials to fix threat.";
+"Enter your server credentials to fix threat." = "Chcete-li opravit hrozbu, zadejte pověření serveru.";
 
 /* Title for button when a site is missing server credentials */
-"Enter your server credentials to fix threats." = "Enter your server credentials to fix threats.";
+"Enter your server credentials to fix threats." = "Chcete-li opravit hrozby, zadejte pověření serveru.";
 
 /* Generic error alert title
    Generic error.
@@ -3064,9 +2519,6 @@
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Chyba při aktualizaci zrychlení webu";
 
-/* translators: example text. */
-"Etiam et egestas lorem. Vivamus sagittis sit amet dolor quis lobortis. Integer sed fermentum arcu, id vulputate lacus. Etiam fermentum sem eu quam hendrerit." = "Etiam et egestas lorem. Vivamus sagittis sit amet dolor quis lobortis. Integer sed fermentum arcu, id vulputate lacus. Etiam fermentum sem eu quam hendrerit.";
-
 /* Title for the activity detail view */
 "Event" = "Událost";
 
@@ -3121,9 +2573,6 @@
 
 /* Title of a Quick Start Tour */
 "Explore plans" = "Prozkoumejte plány";
-
-/* No comment provided by engineer. */
-"Export" = "Export";
 
 /* Export Content confirmation action title
    Label for selecting the Export Content Settings item */
@@ -3197,9 +2646,6 @@
 /* No comment provided by engineer. */
 "Featured Image did not load" = "Doporučené obrázky nenačetl";
 
-/* No comment provided by engineer. */
-"February 21, 2019" = "February 21, 2019";
-
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Načítám šablony...";
 
@@ -3238,9 +2684,6 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Typ souboru";
 
-/* No comment provided by engineer. */
-"Fill" = "Fill";
-
 /* The password manager button in login pages. The button opens a dialog showing which password manager to use (e.g. 1Password, LastPass). */
 "Fill with password manager" = "Vyplňte správce hesel";
 
@@ -3270,9 +2713,6 @@
    User's First Name */
 "First Name" = "Jméno";
 
-/* No comment provided by engineer. */
-"Five." = "Five.";
-
 /* Button title that attempts to fix all fixable threats */
 "Fix All" = "Opravit vše";
 
@@ -3284,9 +2724,6 @@
 
 /* Displays the fixed threats */
 "Fixed" = "Opraveno";
-
-/* No comment provided by engineer. */
-"Fixed width table cells" = "Fixed width table cells";
 
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Oprava hrozby";
@@ -3367,29 +2804,11 @@
 /* An example tag used in the login prologue screens. */
 "Football" = "Fotbal";
 
-/* No comment provided by engineer. */
-"Footer cell text" = "Footer cell text";
-
-/* No comment provided by engineer. */
-"Footer label" = "Footer label";
-
-/* No comment provided by engineer. */
-"Footer section" = "Footer section";
-
-/* No comment provided by engineer. */
-"Footers" = "Footers";
-
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "Pro vaše pohodlí jsme předvyplnili vaše kontaktní informace na WordPress.com. Zkontrolujte prosím, zda jsou to správné informace, které chcete pro tuto doménu použít.";
 
-/* No comment provided by engineer. */
-"Format settings" = "Format settings";
-
 /* Next web page */
 "Forward" = "Vpřed";
-
-/* No comment provided by engineer. */
-"Four." = "Four.";
 
 /* Browse free themes selection title */
 "Free" = "Zdarma";
@@ -3417,9 +2836,6 @@
 
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
-
-/* No comment provided by engineer. */
-"Gallery caption text" = "Gallery caption text";
 
 /* translators: accessibility text. %s: gallery caption. */
 "Gallery caption. %s" = "Titulek galerie. %s";
@@ -3465,7 +2881,7 @@
 "Get your site up and running" = "Zprovozněte svůj web";
 
 /* Example post title used in the login prologue screens. */
-"Getting Inspired" = "Getting Inspired";
+"Getting Inspired" = "Inspirovat se";
 
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Získávám informace o účtu";
@@ -3473,17 +2889,8 @@
 /* Cancel */
 "Give Up" = "Vzdát se";
 
-/* No comment provided by engineer. */
-"Give quoted text visual emphasis. \"In quoting others, we cite ourselves.\" — Julio Cortázar" = "Give quoted text visual emphasis. \"In quoting others, we cite ourselves.\" — Julio Cortázar";
-
-/* No comment provided by engineer. */
-"Give special visual emphasis to a quote from your text." = "Give special visual emphasis to a quote from your text.";
-
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Pojmenujte svůj web podle jeho osobnosti a tématu. Počítají se první dojmy!";
-
-/* No comment provided by engineer. */
-"Global Styles" = "Global Styles";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -3557,9 +2964,6 @@
 /* Post HTML content */
 "HTML Content" = "HTML obsah";
 
-/* No comment provided by engineer. */
-"HTML element" = "HTML element";
-
 /* Accessibility label for selecting h1 paragraph style button on the formatting toolbar. */
 "Header 1" = "Nadpis 1";
 
@@ -3578,23 +2982,8 @@
 /* Accessibility label for selecting h6 paragraph style button on the formatting toolbar. */
 "Header 6" = "Nadpis 6";
 
-/* No comment provided by engineer. */
-"Header cell text" = "Header cell text";
-
-/* No comment provided by engineer. */
-"Header label" = "Header label";
-
-/* No comment provided by engineer. */
-"Header section" = "Header section";
-
-/* No comment provided by engineer. */
-"Headers" = "Headers";
-
-/* No comment provided by engineer. */
-"Heading" = "Heading";
-
 /* translators: %s: heading level e.g: \"1\", \"2\", \"3\" */
-"Heading %d" = "Heading %d";
+"Heading %d" = "Nadpis %d";
 
 /* H1 Aztec Style */
 "Heading 1" = "Nadpis 1";
@@ -3614,12 +3003,6 @@
 /* H6 Aztec Style */
 "Heading 6" = "Nadpis 6";
 
-/* No comment provided by engineer. */
-"Heading text" = "Heading text";
-
-/* No comment provided by engineer. */
-"Height in pixels" = "Height in pixels";
-
 /* Help button */
 "Help" = "Nápověda";
 
@@ -3632,9 +3015,6 @@
 
 /* No comment provided by engineer. */
 "Help icon" = "Ikona nápovědy";
-
-/* No comment provided by engineer. */
-"Help visitors find your content." = "Help visitors find your content.";
 
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Zde je ukázka toho, jak si příspěvek zatím vedl.";
@@ -3656,9 +3036,6 @@
 /* No comment provided by engineer. */
 "Hide keyboard" = "Skrýt klávesnici";
 
-/* No comment provided by engineer. */
-"Hide the excerpt on the full content page" = "Hide the excerpt on the full content page";
-
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
    Title of the post history screen */
@@ -3673,9 +3050,6 @@
 /* Moderation Keys Title
    Settings: Comments Moderation */
 "Hold for Moderation" = "Podržet pro moderaci";
-
-/* translators: 'Home' as in a website's home page. */
-"Home" = "Home";
 
 /* The item to select during a guided tour.
    Title for setting which shows the current page assigned as a site's homepage
@@ -3693,9 +3067,6 @@
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Hooray!\nAlmost done" = "Hurá!\nSkoro hotovo";
 
-/* No comment provided by engineer. */
-"Horizontal" = "Horizontal";
-
 /* Title for the fix section in Threat Details: Threat is fixed */
 "How did Jetpack fix it?" = "Jak to Jetpack opravil?";
 
@@ -3709,7 +3080,7 @@
 "I Like It" = "To se mi líbí";
 
 /* Example post content used in the login prologue screens. */
-"I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next";
+"I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Práce fotografa Camerona Karstena mě tak inspirovala. Tyto techniky budu zkoušet při příštím";
 
 /* Title of a button style */
 "Icon & Text" = "Ikony a text";
@@ -3725,9 +3096,6 @@
 
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Pokud budete pokračovat se společností Apple nebo Google a ještě nemáte účet WordPress.com, vytváříte si účet a souhlasíte s našimi _Smluvními podmínkami_.";
-
-/* No comment provided by engineer. */
-"If you have entered a custom label, it will be prepended before the title." = "If you have entered a custom label, it will be prepended before the title.";
 
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
 "If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "Pokud odstraníte uživatele %1$@, nebude mít přístup k tomuto webu. Ale všechen obsah který vytvořil %2$@, zůstane na webu.";
@@ -3768,26 +3136,17 @@
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Velikost obrázku";
 
-/* No comment provided by engineer. */
-"Image caption text" = "Image caption text";
-
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Titulek obrázku. %s";
 
 /* No comment provided by engineer. */
-"Image settings" = "Image settings";
+"Image settings" = "Nastavení obrázku";
 
 /* Hint for image title on image settings. */
 "Image title" = "Nadpis obrázku";
 
-/* No comment provided by engineer. */
-"Image width" = "Šířka obrázku";
-
 /* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
 "Image, %@" = "Obrázek, %@";
-
-/* No comment provided by engineer. */
-"Image, Date, & Title" = "Image, Date, & Title";
 
 /* Undated post time label */
 "Immediately" = "Okamžitě";
@@ -3797,15 +3156,6 @@
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Několika slovy popište, čím se budete na webu zabývat.";
-
-/* No comment provided by engineer. */
-"In a few words, what this site is about." = "In a few words, what this site is about.";
-
-/* No comment provided by engineer. */
-"In a village of La Mancha, the name of which I have no desire to call to mind, there lived not long since one of those gentlemen that keep a lance in the lance-rack, an old buckler, a lean hack, and a greyhound for coursing." = "In a village of La Mancha, the name of which I have no desire to call to mind, there lived not long since one of those gentlemen that keep a lance in the lance-rack, an old buckler, a lean hack, and a greyhound for coursing.";
-
-/* No comment provided by engineer. */
-"In quoting others, we cite ourselves." = "In quoting others, we cite ourselves.";
 
 /* Describes a status of a plugin */
 "Inactive" = "Neaktivní";
@@ -3824,12 +3174,6 @@
 
 /* An error message shown when a user signed in with incorrect credentials. */
 "Incorrect username or password. Please try entering your login details again." = "Nesprávné uživatelské jméno nebo heslo. Zkuste to znovu a zadejte vaše přihlašovací údaje.";
-
-/* No comment provided by engineer. */
-"Indent" = "Indent";
-
-/* No comment provided by engineer. */
-"Indent list item" = "Indent list item";
 
 /* Title for a threat */
 "Infected core file" = "Infikovaný soubor v jádru";
@@ -3862,35 +3206,8 @@
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "Vložte média";
 
-/* No comment provided by engineer. */
-"Insert a table for sharing data." = "Insert a table for sharing data.";
-
-/* No comment provided by engineer. */
-"Insert a table — perfect for sharing charts and data." = "Insert a table — perfect for sharing charts and data.";
-
-/* No comment provided by engineer. */
-"Insert additional custom elements with a WordPress shortcode." = "Insert additional custom elements with a WordPress shortcode.";
-
-/* No comment provided by engineer. */
-"Insert an image to make a visual statement." = "Insert an image to make a visual statement.";
-
-/* No comment provided by engineer. */
-"Insert column after" = "Insert column after";
-
-/* No comment provided by engineer. */
-"Insert column before" = "Insert column before";
-
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Vložte média";
-
-/* No comment provided by engineer. */
-"Insert poetry. Use special spacing formats. Or quote song lyrics." = "Insert poetry. Use special spacing formats. Or quote song lyrics.";
-
-/* No comment provided by engineer. */
-"Insert row after" = "Insert row after";
-
-/* No comment provided by engineer. */
-"Insert row before" = "Insert row before";
 
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Vložit vybrané";
@@ -3927,9 +3244,6 @@
 
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Instalace prvního pluginu na vaše stránky může trvat až 1 minutu. Během této doby nebudete moci na svém webu provádět žádné změny.";
-
-/* No comment provided by engineer. */
-"Introduce new sections and organize content to help visitors (and search engines) understand the structure of your content." = "Introduce new sections and organize content to help visitors (and search engines) understand the structure of your content.";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Představujeme příběhy";
@@ -3979,9 +3293,6 @@
 /* Accessibility label for italic button on formatting toolbar.
    Discoverability title for italic formatting keyboard shortcut. */
 "Italic" = "Kurzíva";
-
-/* No comment provided by engineer. */
-"Jazz Musician" = "Jazz Musician";
 
 /* Section title for the publish table section in the blog details screen
    Title for the Jetpack Installation
@@ -4057,9 +3368,6 @@
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Mějte aktuální informace o výkonu svého webu.";
 
-/* No comment provided by engineer. */
-"Kind" = "Kind";
-
 /* Autoapprove only from known users */
 "Known Users" = "Známí uživatelé";
 
@@ -4069,16 +3377,10 @@
 /* Noun. Title for the setting to edit the sharing label text. */
 "Label" = "Označení";
 
-/* No comment provided by engineer. */
-"Landscape" = "Na šířku";
-
 /* Label for the privacy setting
    Language of the current blog
    Title for the Language Picker Screen */
 "Language" = "Jazyk";
-
-/* No comment provided by engineer. */
-"Language tag (en, fr, etc.)" = "Language tag (en, fr, etc.)";
 
 /* Large image size. Should be the same as in core WP. */
 "Large" = "Velký obrázek";
@@ -4090,9 +3392,6 @@
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "Přehled posledních příspěvků";
-
-/* No comment provided by engineer. */
-"Latest comments settings" = "Latest comments settings";
 
 /* Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "Dozvědět se více";
@@ -4111,9 +3410,6 @@
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "Další informace o formátování data a času.";
 
-/* No comment provided by engineer. */
-"Learn more about embeds" = "Learn more about embeds";
-
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Další informace o rolích";
 
@@ -4126,20 +3422,11 @@
 /* Title displayed for selection of custom app icons that may be removed in a future release of the app. */
 "Legacy Icons" = "Starší ikony";
 
-/* No comment provided by engineer. */
-"Legacy Widget" = "Legacy Widget";
-
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Pomůžeme";
 
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Po dokončení mi dejte vědět!";
-
-/* translators: accessibility text. 1: heading level. 2: heading content. */
-"Level %1$s. %2$s" = "Úroveň %1$s. %2$s";
-
-/* translators: accessibility text. %s: heading level. */
-"Level %s. Empty." = "Úroveň %s. Prázdná.";
 
 /* Title for the app appearance setting for light mode */
 "Light" = "Světlý";
@@ -4202,19 +3489,7 @@
 "Link To" = "URL odkazu";
 
 /* No comment provided by engineer. */
-"Link color" = "Link color";
-
-/* No comment provided by engineer. */
-"Link label" = "Link label";
-
-/* No comment provided by engineer. */
-"Link rel" = "Link rel";
-
-/* No comment provided by engineer. */
-"Link to" = "Link to";
-
-/* translators: %s: Name of the post type e.g: \"post\". */
-"Link to %s" = "Link to %s";
+"Link to" = "Odkaz na";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Odkaz na existující obsah";
@@ -4224,23 +3499,8 @@
    Settings: Comments Approval settings */
 "Links in comments" = "Odkazy v komentářích";
 
-/* No comment provided by engineer. */
-"Links shown in a column." = "Links shown in a column.";
-
-/* No comment provided by engineer. */
-"Links shown in a row." = "Links shown in a row.";
-
-/* No comment provided by engineer. */
-"List" = "List";
-
-/* No comment provided by engineer. */
-"List of template parts" = "List of template parts";
-
 /* The accessibility label for the list style button in the Post List. */
 "List style" = "Styl seznamu";
-
-/* No comment provided by engineer. */
-"List text" = "Seznam textů";
 
 /* Title of the screen that load selected the revisions. */
 "Load" = "Načítání";
@@ -4311,9 +3571,6 @@
    Text displayed while loading time zones */
 "Loading..." = "Načítání…";
 
-/* No comment provided by engineer. */
-"Loading…" = "Načítání…";
-
 /* Status for Media object that is only exists locally. */
 "Local" = "Místní";
 
@@ -4369,21 +3626,12 @@
 /* Instructions on the WordPress.com username / password log in form. */
 "Log in with your WordPress.com username and password." = "Přihlaste se pomocí svého uživatelského jména a hesla WordPress.com.";
 
-/* No comment provided by engineer. */
-"Log out" = "Log out";
-
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Přejete si odhlásit se?";
 
 /* Error message shown when a user is trying to login.
    Login Request Expired */
 "Login Request Expired" = "Žádost o přihlášení vypršela";
-
-/* No comment provided by engineer. */
-"Login\/out settings" = "Login\/out settings";
-
-/* No comment provided by engineer. */
-"Logos Only" = "Logos Only";
 
 /* No comment provided by engineer. */
 "Logs" = "Logy";
@@ -4395,10 +3643,7 @@
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Na svém webu máte nastavený plugin Jetpack. Gratulujeme!\nPro zpřístupnění statistik a oznámení, se prosím níže přihlaste pomocí účtu WordPress.com";
 
 /* No comment provided by engineer. */
-"Loop" = "Loop";
-
-/* translators: example text. */
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et eros eu felis." = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et eros eu felis.";
+"Loop" = "Opakovat";
 
 /* Title of a button. */
 "Lost your password?" = "Zapomněli jste heslo?";
@@ -4408,15 +3653,6 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Hlavní navigace";
-
-/* No comment provided by engineer. */
-"Main color" = "Main color";
-
-/* No comment provided by engineer. */
-"Make template part" = "Make template part";
-
-/* No comment provided by engineer. */
-"Make title a link" = "Make title a link";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4476,20 +3712,11 @@
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "Přiřaďte účty pomocí e-mailu";
 
-/* No comment provided by engineer. */
-"Matt Mullenweg" = "Matt Mullenweg";
-
 /* Title for the image size settings option. */
 "Max Image Upload Size" = "Maximální velikost nahrávání";
 
 /* Title for the video size settings option. */
 "Max Video Upload Size" = "Maximální velikost nahraného videa";
-
-/* No comment provided by engineer. */
-"Max number of words in excerpt" = "Max number of words in excerpt";
-
-/* No comment provided by engineer. */
-"May 7, 2019" = "May 7, 2019";
 
 /* Accessibility label for the Me button in My Site.
    Label for the post author filter. This filter shows posts only authored by the current user.
@@ -4528,22 +3755,19 @@
 "Media Uploads" = "Nahrávání médií";
 
 /* No comment provided by engineer. */
-"Media area" = "Media area";
+"Media area" = "Oblast média";
 
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "Média nemají přidružený soubor k nahrání.";
 
 /* No comment provided by engineer. */
-"Media file" = "Media file";
+"Media file" = "Mediální soubor";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "Velikost mediálního souboru (%1$@) je příliš velká na nahrání. Maximální povolená hodnota je %2$@";
 
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "Náhled médií selhal.";
-
-/* No comment provided by engineer. */
-"Media settings" = "Media settings";
 
 /* Alert displayed to the user when multiple media items have uploaded successfully. */
 "Media uploaded (%ld files)" = "Nahraná média (%ld soubory)";
@@ -4592,9 +3816,6 @@
 /* Jetpack Monitor Settings: Monitor site's uptime */
 "Monitor your site's uptime" = "Sledovat dobu provozu webu";
 
-/* translators: Caption accompanying an image of the Mont Blanc, which serves as an example for the Image block. */
-"Mont Blanc appears—still, snowy, and serene." = "Mont Blanc appears—still, snowy, and serene.";
-
 /* Title of Months stats filter. */
 "Months" = "Měsíce";
 
@@ -4624,9 +3845,6 @@
 
 /* Section title for global related posts. */
 "More on WordPress.com" = "Více informací o WordPress.com";
-
-/* No comment provided by engineer. */
-"More tools & options" = "More tools & options";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Nejoblíbenější čas";
@@ -4664,12 +3882,6 @@
 /* Option to move Insight down in the view. */
 "Move down" = "Posunout dolů";
 
-/* No comment provided by engineer. */
-"Move image backward" = "Move image backward";
-
-/* No comment provided by engineer. */
-"Move image forward" = "Move image forward";
-
 /* Screen reader text for button that will move the menu item */
 "Move menu item" = "Přesunout položku menu";
 
@@ -4696,13 +3908,10 @@
 "Moves the comment to the Trash." = "Přesunout komentáře do koše";
 
 /* Example post title used in the login prologue screens. */
-"Museums to See In London" = "Museums to See In London";
+"Museums to See In London" = "Muzea k vidění v Londýně";
 
 /* An example tag used in the login prologue screens. */
 "Music" = "Hudba";
-
-/* No comment provided by engineer. */
-"Muted" = "Muted";
 
 /* Link to My Profile section
    My Profile view title */
@@ -4725,10 +3934,7 @@
 "My Tickets" = "Moje vstupenky";
 
 /* Example post title used in the login prologue screens. */
-"My Top Ten Cafes" = "My Top Ten Cafes";
-
-/* translators: example text. */
-"Nam risus massa, ullamcorper consectetur eros fermentum, porta aliquet ligula. Sed vel mauris nec enim." = "Nam risus massa, ullamcorper consectetur eros fermentum, porta aliquet ligula. Sed vel mauris nec enim.";
+"My Top Ten Cafes" = "Moje top desítka kaváren";
 
 /* Accessibility label for the Email text field.
    Name text field placeholder */
@@ -4745,12 +3951,6 @@
 
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Přejde k přizpůsobení přechodu";
-
-/* No comment provided by engineer. */
-"Navigation (horizontal)" = "Navigation (horizontal)";
-
-/* No comment provided by engineer. */
-"Navigation (vertical)" = "Navigation (vertical)";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Potřebujete pomoc?";
@@ -4773,9 +3973,6 @@
 
 /* Blocklist Keyword Insertion Title */
 "New Blocklist Word" = "Nové zablokované slovo";
-
-/* No comment provided by engineer. */
-"New Column" = "New Column";
 
 /* Title of alert informing users about the Reader Save for Later feature. */
 "New Custom App Icons" = "Nová vlastní ikona aplikace";
@@ -4801,9 +3998,6 @@
 /* Noun. The title of an item in a list. */
 "New posts" = "Nové příspěvky";
 
-/* No comment provided by engineer. */
-"New template part" = "New template part";
-
 /* Screen title, where users can see the newest plugins */
 "Newest" = "Nejnovější";
 
@@ -4816,23 +4010,14 @@
    Title of a button. The text should be capitalized. */
 "Next" = "Další";
 
-/* No comment provided by engineer. */
-"Next Page" = "Next Page";
-
 /* Table view title for the quick start section. */
 "Next Steps" = "Další kroky";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "Další notifikace";
 
-/* No comment provided by engineer. */
-"Next page link" = "Next page link";
-
 /* Accessibility label */
 "Next period" = "Další období";
-
-/* No comment provided by engineer. */
-"Next post" = "Next post";
 
 /* Label for a cancel button */
 "No" = "Ne";
@@ -4849,9 +4034,6 @@
 /* Title for the error view when there's no connection
    Title of error prompt when no internet connection is available. */
 "No Connection" = "Bez připojení";
-
-/* No comment provided by engineer. */
-"No Date" = "No Date";
 
 /* List Editor Empty State Message */
 "No Items" = "Žádné položky";
@@ -4904,9 +4086,6 @@
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Zatím nemáte žádné komentáře";
-
-/* No comment provided by engineer. */
-"No comments." = "No comments.";
 
 /* An error message title shown when there is no internet connection.
    Displayed during Site Creation, when searching for Verticals and the network is unavailable.
@@ -5016,9 +4195,6 @@
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "Žádné příspěvky.";
 
-/* No comment provided by engineer. */
-"No preview available." = "No preview available.";
-
 /* A message title */
 "No recent posts" = "Žádné nedávné příspěvky";
 
@@ -5082,16 +4258,7 @@
 "Not seeing the email? Check your Spam or Junk Mail folder." = "Nevidíte e-mail? Zkontrolujte složku spamu nebo nevyžádané pošty.";
 
 /* No comment provided by engineer. */
-"Note: Autoplaying audio may cause usability issues for some visitors." = "Note: Autoplaying audio may cause usability issues for some visitors.";
-
-/* No comment provided by engineer. */
-"Note: Autoplaying videos may cause usability issues for some visitors." = "Note: Autoplaying videos may cause usability issues for some visitors.";
-
-/* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "Poznámka: Rozložení sloupců se může u různých šablon a velikostí obrazovky lišit";
-
-/* No comment provided by engineer. */
-"Note: Most phone and tablet browsers won't display embedded PDFs." = "Note: Most phone and tablet browsers won't display embedded PDFs.";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Nic nenalezeno.";
@@ -5133,9 +4300,6 @@
 
 /* Register Domain - Address information field Number */
 "Number" = "Číslo";
-
-/* No comment provided by engineer. */
-"Number of comments" = "Number of comments";
 
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Číslovaný seznam";
@@ -5193,15 +4357,6 @@
 /* Accessibility label for 1 password button */
 "One Password button" = "Jedno tlačítko hesla";
 
-/* No comment provided by engineer. */
-"One column" = "One column";
-
-/* translators: Quote serving as example for the Pullquote block. Attributed to Matt Mullenweg. */
-"One of the hardest things to do in technology is disrupt yourself." = "One of the hardest things to do in technology is disrupt yourself.";
-
-/* No comment provided by engineer. */
-"One." = "One.";
-
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Zobrazují se pouze nejrelevantnější statistiky. Přidejte statistiky podle svých potřeb.";
 
@@ -5220,6 +4375,9 @@
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Jejda!";
 
+/* No comment provided by engineer. */
+"Open Block Actions Menu" = "Otevřete nabídku blokovat akce";
+
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Otevřít nastavení zařízení";
 
@@ -5232,9 +4390,6 @@
 
 /* Today widget label to launch WP app */
 "Open WordPress" = "Otevřít WordPress";
-
-/* No comment provided by engineer. */
-"Open block navigation" = "Open block navigation";
 
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "Otevřít úplný výběr médií";
@@ -5281,14 +4436,8 @@
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Nebo se přihlaste _zadáním adresy vašeho webu_.";
 
-/* No comment provided by engineer. */
-"Ordered" = "Ordered";
-
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Uspořádaný seznam";
-
-/* No comment provided by engineer. */
-"Ordered list settings" = "Ordered list settings";
 
 /* Register Domain - Domain contact information field Organization */
 "Organization" = "Organizace";
@@ -5321,23 +4470,8 @@
    Other Sites Notification Settings Title */
 "Other Sites" = "Ostatní weby";
 
-/* No comment provided by engineer. */
-"Outdent" = "Outdent";
-
-/* No comment provided by engineer. */
-"Outdent list item" = "Outdent list item";
-
-/* No comment provided by engineer. */
-"Outline" = "Outline";
-
 /* Used to indicate a setting is overridden in debug builds of the app */
 "Overridden" = "Přepsáno";
-
-/* No comment provided by engineer. */
-"PDF embed" = "PDF embed";
-
-/* No comment provided by engineer. */
-"PDF settings" = "PDF settings";
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "Telefon";
@@ -5345,9 +4479,6 @@
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page */
 "Page" = "Stránka";
-
-/* No comment provided by engineer. */
-"Page Link" = "Odkaz stránku";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
 "Page Restored to Drafts" = "Stránka obnovena do konceptů";
@@ -5363,7 +4494,7 @@
 "Page Settings" = "Nastavení stránky";
 
 /* No comment provided by engineer. */
-"Page break" = "Page break";
+"Page break" = "Rozdělení stránky";
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Blok zalomení stránky. %s";
@@ -5407,12 +4538,6 @@
    Settings: Comments Paging preferences */
 "Paging" = "Stránkování";
 
-/* No comment provided by engineer. */
-"Paragraph" = "Odstavec";
-
-/* No comment provided by engineer. */
-"Paragraph block" = "Paragraph block";
-
 /* Placeholder to set a parent category for a new category.
    Title for selecting parent category of a category */
 "Parent Category" = "Nadřazená rubrika";
@@ -5442,7 +4567,7 @@
 "Paste URL" = "Vložit URL";
 
 /* No comment provided by engineer. */
-"Paste a link to the content you want to display on your site." = "Paste a link to the content you want to display on your site.";
+"Paste block after" = "Vložte blok za";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Vložit bez formátování";
@@ -5490,9 +4615,6 @@
 /* Prompt for the screen to pick a design and homepage for a site. */
 "Pick your favorite homepage layout. You can edit and customize it later." = "Vyberte si své oblíbené rozvržení domovské stránky. Později jej můžete upravit a přizpůsobit.";
 
-/* No comment provided by engineer. */
-"Pill Shape" = "Pill Shape";
-
 /* The item to select during a guided tour. */
 "Plan" = "Plán";
 
@@ -5500,14 +4622,8 @@
    Title for the plan selector */
 "Plans" = "Plány";
 
-/* No comment provided by engineer. */
-"Play inline" = "Play inline";
-
 /* User action to play a video on the editor. */
 "Play video" = "Pustit video";
-
-/* No comment provided by engineer. */
-"Playback controls" = "Playback controls";
 
 /* Suggestion to add content before trying to publish post or page */
 "Please add some content before trying to publish." = "Než se pokusíte publikovat, přidejte nějaký obsah.";
@@ -5652,9 +4768,6 @@
 /* Section title for Popular Languages */
 "Popular languages" = "Oblíbené jazyky";
 
-/* No comment provided by engineer. */
-"Portrait" = "Na výšku";
-
 /* Menu item label for linking a post.
    Noun. Type of content being selected is a blog post */
 "Post" = "Příspěvek";
@@ -5662,39 +4775,9 @@
 /* Title for selecting categories for a post */
 "Post Categories" = "Rubriky příspěvku";
 
-/* No comment provided by engineer. */
-"Post Comment" = "Post Comment";
-
-/* No comment provided by engineer. */
-"Post Comment Author" = "Post Comment Author";
-
-/* No comment provided by engineer. */
-"Post Comment Content" = "Post Comment Content";
-
-/* No comment provided by engineer. */
-"Post Comment Date" = "Post Comment Date";
-
-/* No comment provided by engineer. */
-"Post Comments Count block: post not found." = "Post Comments Count block: post not found.";
-
-/* No comment provided by engineer. */
-"Post Comments Form" = "Post Comments Form";
-
-/* No comment provided by engineer. */
-"Post Comments Form block: comments are not enabled for this post type." = "Post Comments Form block: comments are not enabled for this post type.";
-
-/* No comment provided by engineer. */
-"Post Comments Form block: comments to this post are not allowed." = "Post Comments Form block: comments to this post are not allowed.";
-
-/* No comment provided by engineer. */
-"Post Comments Link block: post not found." = "Post Comments Link block: post not found.";
-
 /* For setting the format of a post.
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Formát příspěvku";
-
-/* No comment provided by engineer. */
-"Post Link" = "Odkaz příspěvku";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "Příspěvek byl obnoven jako koncept";
@@ -5716,10 +4799,7 @@
 "Post by %@, from %@" = "Příspěvek od %1$@, z %2$@";
 
 /* No comment provided by engineer. */
-"Post comments block: no post found." = "Post comments block: no post found.";
-
-/* No comment provided by engineer. */
-"Post content settings" = "Post content settings";
+"Post content settings" = "Nastavení obsahu příspěvku";
 
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Příspěvek vytvořen dne %@";
@@ -5731,7 +4811,7 @@
 "Post failed to upload" = "Nahrávání příspěvku se nezdařilo";
 
 /* No comment provided by engineer. */
-"Post meta settings" = "Post meta settings";
+"Post meta settings" = "Nastavení dalších informací příspěvku";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "Příspěvek byl přesunut do koše.";
@@ -5775,9 +4855,6 @@
 /* Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, blog URL, author name */
 "Posted in %@, at %@, by %@." = "Publikováno v %1$@, na %2$@, od %3$@.";
 
-/* No comment provided by engineer. */
-"Poster image" = "Poster image";
-
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Aktivita publikování";
@@ -5787,9 +4864,6 @@
    Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query */
 "Posts" = "Příspěvky";
-
-/* No comment provided by engineer. */
-"Posts List" = "Posts List";
 
 /* Title for setting which shows the current page assigned as a site's posts page */
 "Posts Page" = "Stránka příspěvků";
@@ -5818,10 +4892,7 @@
 "Powered by Tenor" = "Běží na Tenor";
 
 /* No comment provided by engineer. */
-"Preformatted text" = "Preformatted text";
-
-/* No comment provided by engineer. */
-"Preload" = "Preload";
+"Preload" = "Předběžně načítat";
 
 /* Browse premium themes selection title */
 "Premium" = "Premium";
@@ -5855,20 +4926,11 @@
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "Zobrazte náhled svého nového webu, abyste viděli, co uvidí vaši návštěvníci.";
 
-/* No comment provided by engineer. */
-"Previous Page" = "Previous Page";
-
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Předchozí upozornění";
 
-/* No comment provided by engineer. */
-"Previous page link" = "Previous page link";
-
 /* Accessibility label */
 "Previous period" = "Předchozí období";
-
-/* No comment provided by engineer. */
-"Previous post" = "Previous post";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -5921,15 +4983,6 @@
 
 /* Menu item label for linking a project page. */
 "Projects" = "Projekty";
-
-/* No comment provided by engineer. */
-"Prompt visitors to take action with a button-style link." = "Prompt visitors to take action with a button-style link.";
-
-/* No comment provided by engineer. */
-"Prompt visitors to take action with a group of button-style links." = "Prompt visitors to take action with a group of button-style links.";
-
-/* No comment provided by engineer. */
-"Provided type is not supported." = "Provided type is not supported.";
 
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
@@ -6002,12 +5055,6 @@
 /* Text displayed in HUD while a post is being published. */
 "Publishing..." = "Publikování...";
 
-/* No comment provided by engineer. */
-"Pullquote citation text" = "Pullquote citation text";
-
-/* No comment provided by engineer. */
-"Pullquote text" = "Pullquote text";
-
 /* Title of screen showing site purchases */
 "Purchases" = "Nákupy";
 
@@ -6023,29 +5070,14 @@
 /* This is the string we display when asking the user to approve push notifications in the settings app after previously having denied them. */
 "Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on." = "Push oznámení byla vypnuta v nastavení iOS. Přepnutím možnosti „Povolit oznámení“ je znovu zapnete.";
 
-/* No comment provided by engineer. */
-"Query Title" = "Query Title";
-
 /* The menu item to select during a guided tour. */
 "Quick Start" = "Rychlý start";
-
-/* No comment provided by engineer. */
-"Quote citation text" = "Quote citation text";
-
-/* No comment provided by engineer. */
-"Quote text" = "Quote text";
-
-/* No comment provided by engineer. */
-"RSS settings" = "RSS settings";
 
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Ohodnoťte nás na App Store";
 
 /* No comment provided by engineer. */
 "Read more" = "Přečtěte si více";
-
-/* No comment provided by engineer. */
-"Read more link text" = "Read more link text";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Číst dál";
@@ -6100,9 +5132,6 @@
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "Znovu připojeno";
 
-/* No comment provided by engineer. */
-"Redirect to current URL" = "Redirect to current URL";
-
 /* Label for link title in Referrers stat. */
 "Referrer" = "Odkazující";
 
@@ -6141,9 +5170,6 @@
 
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "Podobné příspěvky zobrazí relevantní obsah vašeho webu, přímo pod příspěvky.";
-
-/* No comment provided by engineer. */
-"Release Date" = "Release Date";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -6198,9 +5224,6 @@
 /* Accessibility hint for the 'Save Post' button when a post is already saved. */
 "Remove this post from my saved posts." = "Odebrat tento příspěvek z mých uložených příspěvků.";
 
-/* No comment provided by engineer. */
-"Remove track" = "Remove track";
-
 /* User action to remove video. */
 "Remove video" = "Odstranit video";
 
@@ -6226,7 +5249,7 @@
 "Replace file" = "Nahradit soubor";
 
 /* No comment provided by engineer. */
-"Replace image" = "Replace image";
+"Replace image" = "Nahradit obrázek";
 
 /* No comment provided by engineer. */
 "Replace image or video" = "Vyměňte obrázek nebo video";
@@ -6301,9 +5324,6 @@
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Změnit velikost a oříznutí";
 
-/* No comment provided by engineer. */
-"Resize for smaller devices" = "Resize for smaller devices";
-
 /* The largest resolution allowed for uploading */
 "Resolution" = "Rozlišení";
 
@@ -6327,9 +5347,6 @@
 
 /* Label that describes the restore site action */
 "Restore site" = "Obnovit web";
-
-/* No comment provided by engineer. */
-"Restore template to theme default" = "Restore template to theme default";
 
 /* Button title for restore site action */
 "Restore to this point" = "Obnovte do tohoto bodu";
@@ -6383,9 +5400,6 @@
 /* No comment provided by engineer. */
 "Reusable blocks aren't editable on WordPress for iOS" = "Opakovaně použitelné bloky nelze upravovat na WordPress pro iOS";
 
-/* No comment provided by engineer. */
-"Reverse list numbering" = "Reverse list numbering";
-
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Vrátit čekající změnu";
 
@@ -6408,12 +5422,6 @@
    User Roles Title
    User's Role */
 "Role" = "Role";
-
-/* No comment provided by engineer. */
-"Rotate" = "Rotate";
-
-/* No comment provided by engineer. */
-"Row count" = "Row count";
 
 /* One Time Code has been sent via SMS */
 "SMS Sent" = "SMS byla odeslána";
@@ -6648,9 +5656,6 @@
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Vyberte styl odstavce";
 
-/* No comment provided by engineer. */
-"Select poster image" = "Select poster image";
-
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "Vyberte %@ a přidejte své účty sociálních médií";
 
@@ -6720,9 +5725,6 @@
 /* Jetpack Monitor Settings: Send push notifications */
 "Send push notifications" = "Odesílejte oznámení push";
 
-/* No comment provided by engineer. */
-"Separate your content into a multi-page experience." = "Separate your content into a multi-page experience.";
-
 /* Title for the Serve images from our servers setting */
 "Serve images from our servers" = "Načíst obrázky z našich serverů";
 
@@ -6744,9 +5746,6 @@
 
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "Nastavit jako stránku příspěvků";
-
-/* No comment provided by engineer. */
-"Set media and words side-by-side for a richer layout." = "Set media and words side-by-side for a richer layout.";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "Instalace";
@@ -6819,10 +5818,7 @@
 "Sharing error" = "Chyba sdílení";
 
 /* No comment provided by engineer. */
-"Shortcode" = "Shortcode";
-
-/* No comment provided by engineer. */
-"Shortcode text" = "Shortcode text";
+"Shortcode" = "Zkrácený zápis";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Zobrazit hlavičku";
@@ -6843,13 +5839,7 @@
 "Show Related Posts" = "Zobrazit podobné příspěvky";
 
 /* No comment provided by engineer. */
-"Show download button" = "Show download button";
-
-/* No comment provided by engineer. */
-"Show inline embed" = "Show inline embed";
-
-/* No comment provided by engineer. */
-"Show login & logout links." = "Show login & logout links.";
+"Show download button" = "Zobrazit tlačítko pro stažení";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6857,9 +5847,6 @@
 
 /* No comment provided by engineer. */
 "Show post content" = "Zobrazit obsah příspěvku";
-
-/* No comment provided by engineer. */
-"Show post counts" = "Show post counts";
 
 /* translators: Checkbox toggle label */
 "Show section" = "Zobrazit sekci";
@@ -6872,9 +5859,6 @@
 
 /* Voiceover description for the post list filter which shows posts for just the current user on a site. */
 "Showing just my posts" = "Zobrazují se pouze moje příspěvky";
-
-/* No comment provided by engineer. */
-"Showing large initial letter." = "Showing large initial letter.";
 
 /* Label on Post Stats view indicating which post the stats are for. */
 "Showing stats for:" = "Zobrazeny statistiky pro:";
@@ -6918,9 +5902,6 @@
 /* Accessibility hint for the site name and URL button on Reader's Post Details. */
 "Shows the site's posts." = "Zobrazuje příspěvky webu.";
 
-/* No comment provided by engineer. */
-"Sidebars" = "Sidebars";
-
 /* View title during the sign up process. */
 "Sign Up" = "Zaregistrovat se";
 
@@ -6953,9 +5934,6 @@
 
 /* Title for the Language Picker View */
 "Site Language" = "Jazyk webu";
-
-/* No comment provided by engineer. */
-"Site Logo" = "Logo webu";
 
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
@@ -7004,19 +5982,13 @@
 
 /* Prologue title label, the 
  force splits it into 2 lines. */
-"Site security and performance\nfrom your pocket" = "Site security and performance\nfrom your pocket";
-
-/* No comment provided by engineer. */
-"Site tagline text" = "Site tagline text";
+"Site security and performance\nfrom your pocket" = "Zabezpečení a výkon webu\nv kapse";
 
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Časové pásmo webu (UTC%1$@%2$d%3$@)";
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "Název webu byl úspěšně změněn";
-
-/* No comment provided by engineer. */
-"Site title text" = "Site title text";
 
 /* Sites Filter Tab Title
    Title of a Reader tab showing Sites matching a user's search query */
@@ -7027,9 +5999,6 @@
 
 /* A suggestion of topics the user might */
 "Sites to follow" = "Weby, které je třeba sledovat";
-
-/* No comment provided by engineer. */
-"Six." = "Six.";
 
 /* Image size option title. */
 "Size" = "Velikost";
@@ -7056,12 +6025,6 @@
 
 /* Follower Totals label for social media followers */
 "Social" = "Sociální";
-
-/* No comment provided by engineer. */
-"Social Icon" = "Social Icon";
-
-/* No comment provided by engineer. */
-"Solid color" = "Solid color";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Některá nahrání medií se nezdařila. Tato akce odstraní všechna neúspěšné nahraná média z příspěvku.\nPřesto přepnout?";
@@ -7121,9 +6084,6 @@
 "Sorry, that username is unavailable." = "Zvolené uživatelské jméno už bohužel existuje.";
 
 /* No comment provided by engineer. */
-"Sorry, this content could not be embedded." = "Sorry, this content could not be embedded.";
-
-/* No comment provided by engineer. */
 "Sorry, usernames can only contain lowercase letters (a-z) and numbers." = "Adresa webu může obsahovat pouze malá písmena (a-z) a číslice.";
 
 /* No comment provided by engineer. */
@@ -7152,22 +6112,16 @@
 "Sort By" = "Seřadit podle";
 
 /* No comment provided by engineer. */
-"Sorting and filtering" = "Sorting and filtering";
+"Sorting and filtering" = "Filtry a řazení";
 
 /* Opens the Github Repository Web */
 "Source Code" = "Zdrojový kód";
-
-/* No comment provided by engineer. */
-"Source language" = "Source language";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "South" = "Jih";
 
 /* Label for showing the available disk space quota available for media */
 "Space used" = "Využitý prostor";
-
-/* No comment provided by engineer. */
-"Spacer settings" = "Spacer settings";
 
 /* Marks comment as spam.
    Spam
@@ -7181,9 +6135,6 @@
    Title for the Speed up your site Settings Screen */
 "Speed up your site" = "Zrychlete svůj web";
 
-/* No comment provided by engineer. */
-"Square" = "Square";
-
 /* Standard post format label */
 "Standard" = "Standardní";
 
@@ -7193,12 +6144,6 @@
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
 "Start Over" = "Začít znovu";
-
-/* No comment provided by engineer. */
-"Start value" = "Start value";
-
-/* No comment provided by engineer. */
-"Start with the building block of all narrative." = "Start with the building block of all narrative.";
 
 /* No comment provided by engineer. */
 "Start writing…" = "Začít psát...";
@@ -7258,9 +6203,6 @@
 /* Discoverability title for strikethrough formatting keyboard shortcut. */
 "Strikethrough" = "Přeškrtnutí";
 
-/* No comment provided by engineer. */
-"Stripes" = "Stripes";
-
 /* Status for Media object that is only has the mediaID locally. */
 "Stub" = "Pahýl";
 
@@ -7269,9 +6211,6 @@
 
 /* Text displayed in HUD while a post is being submitted for review. */
 "Submitting for Review..." = "Odesláním ke kontrole...";
-
-/* No comment provided by engineer. */
-"Subtitles" = "Subtitles";
 
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "Index reflektoru byl úspěšně vymazán";
@@ -7302,9 +6241,6 @@
    Theme Support action title
    View title for Support page. */
 "Support" = "Podpora";
-
-/* translators: example text. */
-"Suspendisse commodo neque lacus, a dictum orci interdum et." = "Suspendisse commodo neque lacus, a dictum orci interdum et.";
 
 /* Button used to switch site */
 "Switch Site" = "Přepnout web";
@@ -7349,16 +6285,7 @@
 "System default" = "Výchozí systém";
 
 /* No comment provided by engineer. */
-"Table" = "Table";
-
-/* No comment provided by engineer. */
-"Table caption text" = "Table caption text";
-
-/* No comment provided by engineer. */
 "Table of Contents" = "Tabulka obsahu";
-
-/* No comment provided by engineer. */
-"Table settings" = "Table settings";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "Zobrazení tabulky %@";
@@ -7372,12 +6299,6 @@
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
 "Tag" = "Štítek";
-
-/* No comment provided by engineer. */
-"Tag Cloud settings" = "Tag Cloud settings";
-
-/* No comment provided by engineer. */
-"Tag Link" = "Odkaz štítku";
 
 /* Title of the alert indicating that a tag with that name already exists. */
 "Tag already exists" = "Značka již existuje";
@@ -7475,24 +6396,6 @@
 /* Create site, step 1. Select type of site. Title */
 "Tell us what kind of site you'd like to make" = "Řekněte nám, jakou stránku byste chtěli vytvořit";
 
-/* No comment provided by engineer. */
-"Template Part" = "Template Part";
-
-/* translators: %s: template part title. */
-"Template Part \"%s\" inserted." = "Template Part \"%s\" inserted.";
-
-/* No comment provided by engineer. */
-"Template Parts" = "Template Parts";
-
-/* No comment provided by engineer. */
-"Template part created." = "Template part created.";
-
-/* No comment provided by engineer. */
-"Templates" = "Templates";
-
-/* No comment provided by engineer. */
-"Term description." = "Term description.";
-
 /* The underlined title sentence */
 "Terms and Conditions" = "Pravidla a podmínky";
 
@@ -7505,18 +6408,9 @@
 /* Title of a button style */
 "Text Only" = "Pouze text";
 
-/* No comment provided by engineer. */
-"Text link settings" = "Text link settings";
-
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
 "Text me a code instead" = "Pošlete mi raději kód.";
-
-/* No comment provided by engineer. */
-"Text settings" = "Text settings";
-
-/* No comment provided by engineer. */
-"Text tracks" = "Text tracks";
 
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Děkujeme, že používáte %1$@ od autora %2$@";
@@ -7573,22 +6467,13 @@
 "The WordPress for Android App Gets a Big Facelift" = "Aplikace WordPress pro Android má vylepšený vzhled";
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
-"The World's Best Fans" = "The World's Best Fans";
+"The World's Best Fans" = "Nejlepší fanoušci světa";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Aplikace nemůže rozpoznat odpověď serveru. Zkontrolujte prosím konfiguraci svého webu.";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Certifikát pro tento server je neplatný. Ty by mohly být připojení k serveru, který předstírá, že je \"%@\", což by mohlo ohrozit vaše důvěrné informace.\n\nBudete přesto důvěřovat certifikátu?";
-
-/* translators: %s: poster image URL. */
-"The current poster image url is %s" = "The current poster image url is %s";
-
-/* No comment provided by engineer. */
-"The excerpt is hidden." = "The excerpt is hidden.";
-
-/* No comment provided by engineer. */
-"The excerpt is visible." = "The excerpt is visible.";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "Soubor %1$@ obsahuje vzor škodlivého kódu";
@@ -7678,9 +6563,6 @@
 /* Message shown when a video failed to load while trying to add it to the Media library. */
 "The video could not be added to the Media Library." = "Video nelze přidat do knihovny médií.";
 
-/* No comment provided by engineer. */
-"The wren<br>Earns his living<br>Noiselessly." = "The wren<br>Earns his living<br>Noiselessly.";
-
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Šablona byla aktivována";
 
@@ -7721,9 +6603,6 @@
 
 /* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
 "There is an issue connecting to %@. Reconnect to continue publicizing." = "Je problém připojením k %@. Obnovení připojení k pokračování zveřejnění.";
-
-/* No comment provided by engineer. */
-"There is no poster image currently selected" = "There is no poster image currently selected";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
    No comment (test)
@@ -7822,12 +6701,6 @@
 /* Explaining to the user why the app needs access to the device media library. */
 "This app needs permission to access your device media library in order to add photos and\/or video to your posts. Please change the privacy settings if you wish to allow this." = "Tato aplikace vyžaduje povolení pro přístupu ke knihovnu médií v zařízení, aby bylo možné přidat fotografie a\/nebo videa do příspěvků. Pokud si to přejete, změňte nastavení soukromí";
 
-/* No comment provided by engineer. */
-"This block is deprecated. Please use the Columns block instead." = "This block is deprecated. Please use the Columns block instead.";
-
-/* No comment provided by engineer. */
-"This column count exceeds the recommended amount and may cause visual breakage." = "This column count exceeds the recommended amount and may cause visual breakage.";
-
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
 "This domain is unavailable" = "Tato doména není k dispozici";
 
@@ -7896,15 +6769,6 @@
 /* Message displayed when a threat is ignored successfully. */
 "Threat ignored." = "Hrozba ignorována.";
 
-/* No comment provided by engineer. */
-"Three columns; equal split" = "Three columns; equal split";
-
-/* No comment provided by engineer. */
-"Three columns; wide center column" = "Three columns; wide center column";
-
-/* No comment provided by engineer. */
-"Three." = "Three.";
-
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Náhled";
 
@@ -7934,20 +6798,8 @@
    Title of the new Category being created. */
 "Title" = "Název";
 
-/* No comment provided by engineer. */
-"Title & Date" = "Title & Date";
-
-/* No comment provided by engineer. */
-"Title & Excerpt" = "Title & Excerpt";
-
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Název rubriky je povinný.";
-
-/* No comment provided by engineer. */
-"Title of track" = "Title of track";
-
-/* No comment provided by engineer. */
-"Title, Date, & Excerpt" = "Title, Date, & Excerpt";
 
 /* NSPhotoLibraryAddUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library.
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
@@ -7980,9 +6832,6 @@
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Chcete-li pokračovat v tomto účtu Google, nejprve se přihlaste pomocí svého hesla WordPress.com. Toto bude požádáno pouze jednou.";
 
-/* No comment provided by engineer. */
-"To show a comment, input the comment ID." = "To show a comment, input the comment ID.";
-
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Pořizovat fotky a videa a umožnit použití ve vašich příspěvcích. ";
 
@@ -7999,12 +6848,6 @@
 
 /* Discoverability title for HTML keyboard shortcut. */
 "Toggle HTML Source " = "Přepnout HTML zdroj";
-
-/* No comment provided by engineer. */
-"Toggle navigation" = "Toggle navigation";
-
-/* No comment provided by engineer. */
-"Toggle to show a large initial letter." = "Toggle to show a large initial letter.";
 
 /* Accessibility Identifier for the Aztec Ordered List Style. */
 "Toggles the ordered list style" = "Přepíná styl seřazeného seznamu";
@@ -8051,11 +6894,14 @@
 /* 'This Year' label for total number of words. */
 "Total Words" = "Celkem slov";
 
-/* No comment provided by engineer. */
-"Tracks can be subtitles, captions, chapters, or descriptions. They help make your content more accessible to a wider range of users." = "Tracks can be subtitles, captions, chapters, or descriptions. They help make your content more accessible to a wider range of users.";
-
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Provoz";
+
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Transform %s to" = "Změnit %s na";
+
+/* No comment provided by engineer. */
+"Transform block…" = "Změnit blok...";
 
 /* No comment provided by engineer. */
 "Translate" = "Přeložit";
@@ -8132,18 +6978,6 @@
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter uživatelské jméno";
-
-/* No comment provided by engineer. */
-"Two columns; equal split" = "Two columns; equal split";
-
-/* No comment provided by engineer. */
-"Two columns; one-third, two-thirds split" = "Two columns; one-third, two-thirds split";
-
-/* No comment provided by engineer. */
-"Two columns; two-thirds, one-third split" = "Two columns; two-thirds, one-third split";
-
-/* No comment provided by engineer. */
-"Two." = "Two.";
 
 /* Placeholder text for domain search during site creation. */
 "Type a keyword for more ideas" = "Chcete-li získat více nápadů, zadejte klíčové slovo";
@@ -8372,9 +7206,6 @@
 /* Displayed when a site has no name */
 "Unnamed Site" = "Nepojmenovaný web";
 
-/* No comment provided by engineer. */
-"Unordered" = "Unordered";
-
 /* Accessibility label for unordered list button on formatting toolbar. */
 "Unordered List" = "Neuspořádaný seznam";
 
@@ -8382,7 +7213,7 @@
 "Unread" = "Nepřečtené";
 
 /* Title of unreplied Comments filter. */
-"Unreplied" = "Unreplied";
+"Unreplied" = "Bez odpovědi";
 
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Neuložené změny";
@@ -8395,9 +7226,6 @@
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Bez názvu";
-
-/* No comment provided by engineer. */
-"Untitled Template Part" = "Untitled Template Part";
 
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "Až sedm dní jsou uloženy přihlašovací údaje.";
@@ -8449,14 +7277,8 @@
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Nahrát média";
 
-/* No comment provided by engineer. */
-"Upload a file or pick one from your media library." = "Upload a file or pick one from your media library.";
-
 /* Title of a Quick Start Tour */
 "Upload a site icon" = "Nahrát ikonu webu";
-
-/* No comment provided by engineer. */
-"Upload an image, or pick one from your media library, to be your site logo" = "Upload an image, or pick one from your media library, to be your site logo";
 
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
@@ -8515,23 +7337,14 @@
 /* Label for cell that sets the location of a post to the current location */
 "Use Current Location" = "Použít aktuální polohu";
 
-/* No comment provided by engineer. */
-"Use URL" = "Use URL";
-
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Použijte editor bloků";
-
-/* No comment provided by engineer. */
-"Use the classic WordPress editor." = "Use the classic WordPress editor.";
 
 /* Footer text for Invite Links section of the Invite People screen. */
 "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Pomocí tohoto odkazu můžete připojit členy svého týmu, aniž byste je museli pozvat jeden po druhém. Kdokoli, kdo navštíví tuto adresu URL, se bude moci zaregistrovat do vaší organizace, i když obdržel odkaz od někoho jiného, takže se ujistěte, že jej sdílíte s důvěryhodnými lidmi.";
 
 /* No comment provided by engineer. */
 "Use this site" = "Vybrat tuto stránku";
-
-/* No comment provided by engineer. */
-"Useful for displaying a graphic mark, design, or symbol to represent the site. Once a site logo is set, it can be reused in different places and templates. It should not be confused with the site icon, which is the small image used in the dashboard, brows" = "Useful for displaying a graphic mark, design, or symbol to represent the site. Once a site logo is set, it can be reused in different places and templates. It should not be confused with the site icon, which is the small image used in the dashboard, brows";
 
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
@@ -8569,9 +7382,6 @@
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Ověřte svou e-mailovou adresu - pokyny zaslané na %@";
 
-/* No comment provided by engineer. */
-"Verse text" = "Verse text";
-
 /* Displays the version of the App
    Label in Support view displaying the app version. */
 "Version" = "Verze";
@@ -8589,14 +7399,8 @@
 /* Message to show when a new plugin version is available */
 "Version %@ is available" = "Verze %@ je k dispozici";
 
-/* No comment provided by engineer. */
-"Vertical" = "Vertical";
-
 /* Message shown if a video preview image is unavailable while the video is being uploaded. */
 "Video Preview Unavailable" = "Náhled videa není k dispozici";
-
-/* No comment provided by engineer. */
-"Video caption text" = "Video caption text";
 
 /* translators: accessibility text. %s: video caption. */
 "Video caption. %s" = "Titulek videa. %s";
@@ -8608,7 +7412,7 @@
 "Video export canceled." = "Export videa byl zrušen.";
 
 /* No comment provided by engineer. */
-"Video settings" = "Video settings";
+"Video settings" = "Nastavení videa";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Video, %@";
@@ -8656,9 +7460,6 @@
 
 /* Blog Viewers */
 "Viewers" = "Zobrazení";
-
-/* No comment provided by engineer. */
-"Viewport height (vh)" = "Viewport height (vh)";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Views' label
@@ -8717,9 +7518,6 @@
 
 /* Title for a threat that includes the file name of the theme and the affected version */
 "Vulnerable Theme %1$@ (version %2$@)" = "Zranitelná šablona: %1$@ (verze %2$@)";
-
-/* translators: Sample content for the Verse block. Can be replaced with a more locale-adequate work. */
-"WHAT was he doing, the great god Pan,\n	Down in the reeds by the river?\nSpreading ruin and scattering ban,\nSplashing and paddling with hoofs of a goat,\nAnd breaking the golden lilies afloat\n    With the dragon-fly on the river." = "WHAT was he doing, the great god Pan,\n	Down in the reeds by the river?\nSpreading ruin and scattering ban,\nSplashing and paddling with hoofs of a goat,\nAnd breaking the golden lilies afloat\n    With the dragon-fly on the river.";
 
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "Administrace";
@@ -8988,9 +7786,6 @@
 /* A message title */
 "Welcome to the Reader" = "Vítejte ve čtečce";
 
-/* No comment provided by engineer. */
-"Welcome to the wonderful world of blocks…" = "Welcome to the wonderful world of blocks…";
-
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "Vítejte v nejpopulárnějším nástroji na tvorbu webových stránek na světě.";
 
@@ -9080,14 +7875,8 @@
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Jejda, nejde o platný dvoufaktorový ověřovací kód. Zkontrolujte svůj kód a zkuste to znovu!";
 
-/* No comment provided by engineer. */
-"Wide Line" = "Wide Line";
-
 /* Nav bar button title to set the site used for Stats widgets. */
 "Widgets" = "Widgety";
-
-/* No comment provided by engineer. */
-"Width in pixels" = "Width in pixels";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Nebude veřejně zobrazeno.";
@@ -9095,9 +7884,6 @@
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
 "With this powerful editor you can post on the go." = "S tímto výkonným editorem můžete psát na cestách.";
-
-/* translators: Caption accompanying a video of the wood thrush singing, which serves as an example for the Video block. */
-"Wood thrush singing in Central Park, NYC." = "Wood thrush singing in Central Park, NYC.";
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "Nastavení aplikace WordPress";
@@ -9201,31 +7987,7 @@
 "Write a reply…" = "Odpovědět...";
 
 /* No comment provided by engineer. */
-"Write code…" = "Write code…";
-
-/* No comment provided by engineer. */
-"Write file name…" = "Write file name…";
-
-/* No comment provided by engineer. */
-"Write gallery caption…" = "Write gallery caption…";
-
-/* No comment provided by engineer. */
-"Write preformatted text…" = "Write preformatted text…";
-
-/* No comment provided by engineer. */
-"Write shortcode here…" = "Write shortcode here…";
-
-/* No comment provided by engineer. */
-"Write site tagline…" = "Write site tagline…";
-
-/* No comment provided by engineer. */
-"Write site title…" = "Write site title…";
-
-/* No comment provided by engineer. */
-"Write title…" = "Write title…";
-
-/* No comment provided by engineer. */
-"Write verse…" = "Write verse…";
+"Write code…" = "Napsat kód…";
 
 /* Title for the writing section in site settings screen */
 "Writing" = "Psaní";
@@ -9433,15 +8195,6 @@
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Při návštěvě webu v Safari se na liště v horní části obrazovky zobrazí vaše adresa.";
 
-/* translators: %s: block name */
-"Your site doesn’t include support for the \"%s\" block. You can leave this block intact or remove it entirely." = "Your site doesn’t include support for the \"%s\" block. You can leave this block intact or remove it entirely.";
-
-/* translators: %s: block name */
-"Your site doesn’t include support for the \"%s\" block. You can leave this block intact, convert its content to a Custom HTML block, or remove it entirely." = "Your site doesn’t include support for the \"%s\" block. You can leave this block intact, convert its content to a Custom HTML block, or remove it entirely.";
-
-/* No comment provided by engineer. */
-"Your site doesn’t include support for this block." = "Your site doesn’t include support for this block.";
-
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Váš web byl vytvořen!";
 
@@ -9487,9 +8240,6 @@
 /* Popup content about why this post is being opened in block editor */
 "You’re now using the block editor for new posts — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "Nyní pro nové příspěvky používáte editor bloků - skvělé! Chcete-li přejít na klasický editor, přejděte do části „Můj web“> „Nastavení webu“.";
 
-/* No comment provided by engineer. */
-"Zoom" = "Zoom";
-
 /* Comment Attachment Label */
 "[COMMENT]" = "[KOMENTÁŘ]";
 
@@ -9505,44 +8255,14 @@
 /* Age between dates equaling one hour. */
 "an hour" = "hodina";
 
-/* No comment provided by engineer. */
-"archive" = "archiv";
-
-/* No comment provided by engineer. */
-"atom" = "atom";
-
 /* Label displayed on audio media items. */
 "audio" = "audio";
-
-/* No comment provided by engineer. */
-"blockquote" = "citace";
-
-/* No comment provided by engineer. */
-"blog" = "blog";
-
-/* No comment provided by engineer. */
-"bullet list" = "seznam s odrážkami";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "od %@";
 
-/* No comment provided by engineer. */
-"cite" = "citát";
-
 /* The menu item to select during a guided tour. */
 "connections" = "připojení";
-
-/* No comment provided by engineer. */
-"container" = "kontejner";
-
-/* No comment provided by engineer. */
-"description" = "popis";
-
-/* No comment provided by engineer. */
-"divider" = "divider";
-
-/* No comment provided by engineer. */
-"document" = "document";
 
 /* No comment provided by engineer. */
 "document outline" = "osnova dokumentu";
@@ -9553,55 +8273,28 @@
 /* No comment provided by engineer. */
 "double-tap to change unit" = "dvojitým klepnutím změníte jednotku";
 
-/* No comment provided by engineer. */
-"download" = "download";
-
-/* No comment provided by engineer. */
-"ebook" = "ebook";
-
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "eg. 1122334455";
 
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "eg. 44";
 
-/* No comment provided by engineer. */
-"embed" = "embed";
-
 /* Placeholder for the site url textfield.
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
 "example.com" = "example.com";
 
-/* No comment provided by engineer. */
-"feed" = "feed";
-
-/* No comment provided by engineer. */
-"find" = "find";
-
 /* Noun. Describes a site's follower. */
 "follower" = "fanoušek";
 
-/* No comment provided by engineer. */
-"form" = "form";
-
-/* No comment provided by engineer. */
-"horizontal-line" = "horizontal-line";
-
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/moje-webova-adresa (URL)";
-
-/* No comment provided by engineer. */
-"https:\/\/wordpress.org\/support\/article\/embeds\/" = "https:\/\/wordpress.org\/support\/article\/embeds\/";
 
 /* Label displayed on image media items. */
 "image" = "obrázky";
 
 /* translators: 1: the order number of the image. 2: the total number of images. */
-"image %1$d of %2$d in gallery" = "image %1$d of %2$d in gallery";
-
-/* No comment provided by engineer. */
-"images" = "images";
+"image %1$d of %2$d in gallery" = "%1$d. obrázek z %2$d v galerii";
 
 /* Text for related post cell preview */
 "in \"Apps\"" = "v \"Aplikaci\"";
@@ -9615,119 +8308,23 @@
 /* Later today */
 "later today" = "Dnes později";
 
-/* No comment provided by engineer. */
-"link" = "odkaz";
-
-/* No comment provided by engineer. */
-"links" = "links";
-
-/* No comment provided by engineer. */
-"login" = "login";
-
-/* No comment provided by engineer. */
-"logout" = "logout";
-
-/* No comment provided by engineer. */
-"menu" = "menu";
-
-/* No comment provided by engineer. */
-"movie" = "movie";
-
-/* No comment provided by engineer. */
-"music" = "music";
-
-/* No comment provided by engineer. */
-"navigation" = "navigation";
-
-/* No comment provided by engineer. */
-"next page" = "next page";
-
-/* No comment provided by engineer. */
-"numbered list" = "numbered list";
-
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "z";
-
-/* No comment provided by engineer. */
-"ordered list" = "číslovaný seznam";
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "ostatní";
 
 /* No comment provided by engineer. */
-"pagination" = "pagination";
-
-/* No comment provided by engineer. */
 "password" = "heslo";
-
-/* No comment provided by engineer. */
-"pdf" = "pdf";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "Telefonní číslo";
 
 /* No comment provided by engineer. */
-"photos" = "photos";
-
-/* No comment provided by engineer. */
-"picture" = "picture";
-
-/* No comment provided by engineer. */
-"podcast" = "podcast";
-
-/* No comment provided by engineer. */
-"poem" = "poem";
-
-/* No comment provided by engineer. */
-"poetry" = "poetry";
-
-/* No comment provided by engineer. */
-"post" = "příspěvek";
-
-/* No comment provided by engineer. */
-"posts" = "posts";
-
-/* No comment provided by engineer. */
-"read more" = "Číst dále";
-
-/* No comment provided by engineer. */
-"recent comments" = "recent comments";
-
-/* No comment provided by engineer. */
-"recent posts" = "recent posts";
-
-/* No comment provided by engineer. */
-"recording" = "recording";
-
-/* No comment provided by engineer. */
-"row" = "row";
-
-/* No comment provided by engineer. */
-"section" = "section";
-
-/* No comment provided by engineer. */
-"social" = "social";
-
-/* No comment provided by engineer. */
-"sound" = "sound";
-
-/* No comment provided by engineer. */
-"subtitle" = "subtitle";
-
-/* No comment provided by engineer. */
 "summary" = "souhrn";
-
-/* No comment provided by engineer. */
-"survey" = "survey";
-
-/* No comment provided by engineer. */
-"text" = "text";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "tyto položky budou smazány:";
-
-/* No comment provided by engineer. */
-"title" = "title";
 
 /* Today */
 "today" = "dnes";
@@ -9768,9 +8365,6 @@
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "WordPress, stránky, stránka, blogy, blog";
 
-/* No comment provided by engineer. */
-"wrapper" = "wrapper";
-
 /* Details about recently acquired domain on domain credit redemption success screen */
 "your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "nastavuje se vaše nová doména %@. Váš web vzrušeně dělá kotrmelce!";
 
@@ -9779,9 +8373,6 @@
 
 /* About View's Footer Text. The variable is the current year */
 "© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
-
-/* No comment provided by engineer. */
-"— Kobayashi Issa (一茶)" = "— Kobayashi Issa (一茶)";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Darování";
