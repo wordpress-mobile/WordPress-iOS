@@ -83,9 +83,9 @@ extension Route {
 enum DeepLinkSource {
     case link
     case banner
-    case email
+    case email(campaign: String)
     case widget
-    case inApp(UIViewController?)
+    case inApp(presenter: UIViewController?)
 
     var isInternal: Bool {
         switch self {
@@ -93,6 +93,15 @@ enum DeepLinkSource {
             return true
         default:
             return false
+        }
+    }
+
+    var trackingInfo: Any? {
+        switch self {
+        case .email(let campaign):
+            return campaign
+        default:
+            return nil
         }
     }
 }

@@ -384,11 +384,11 @@ class ReaderDetailCoordinator {
         } else if url.query?.contains("wp-story") ?? false {
             presentWebViewController(url)
         } else if readerLinkRouter.canHandle(url: url) {
-            readerLinkRouter.handle(url: url, shouldTrack: false, source: .inApp(viewController))
+            readerLinkRouter.handle(url: url, shouldTrack: false, source: .inApp(presenter: viewController))
         } else if url.isWordPressDotComPost {
             presentReaderDetail(url)
         } else if url.isLinkProtocol {
-            readerLinkRouter.handle(url: url, shouldTrack: false, source: .inApp(viewController))
+            readerLinkRouter.handle(url: url, shouldTrack: false, source: .inApp(presenter: viewController))
         } else {
             presentWebViewController(url)
         }
