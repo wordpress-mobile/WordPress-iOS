@@ -494,7 +494,22 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self updateFetchRequestPredicate:statusFilter];
     [self saveSelectedFilterToUserDefaults];
     self.currentStatusFilter = statusFilter;
-    [self refreshAndSyncWithInteraction];
+
+    // If the refresh control is already active skip the animation.
+    if (self.tableView.refreshControl.refreshing) {
+        [self refreshAndSyncWithInteraction];
+        return;
+    }
+
+    // Just telling the refreshControl to beginRefreshing can look jarring.
+    // Make it nicer by animating the tableView into position before starting
+    // the spinner and syncing.
+    [UIView animateWithDuration:0.25 animations:^{
+        self.tableView.contentOffset = CGPointMake(0, -60);
+    } completion:^(BOOL finished) {
+        [self.tableView.refreshControl beginRefreshing];
+        [self refreshAndSyncWithInteraction];
+    }];
 }
 
 - (void)refreshInfiniteScroll
