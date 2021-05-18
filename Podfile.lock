@@ -501,7 +501,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.37.0)
   - WordPressKit (~> 4.33.0-beta.1)
   - WordPressMocks (~> 0.0.11)
-  - WordPressShared (from `../WordPress-iOS-Shared`)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `try/fix-font-scaling`)
   - WordPressUI (~> 1.11.0-beta)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.53.0/third-party-podspecs/Yoga.podspec.json`)
@@ -651,7 +651,8 @@ EXTERNAL SOURCES:
     :submodules: true
     :tag: v1.53.0
   WordPressShared:
-    :path: "../WordPress-iOS-Shared"
+    :branch: try/fix-font-scaling
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.53.0/third-party-podspecs/Yoga.podspec.json
 
@@ -667,6 +668,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.53.0
+  WordPressShared:
+    :commit: 5ca880667ff6ad0134e5164ac644c18803f457ff
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -764,6 +768,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 03f89e8641f6e9fb0033e258379ce8ef8aebb16a
+PODFILE CHECKSUM: 6dc2a0313523534b6b2a5ba211541a1a9c9fdf76
 
 COCOAPODS: 1.10.0
