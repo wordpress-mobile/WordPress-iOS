@@ -173,6 +173,7 @@ struct UniversalLinkRouter: LinkRouter {
         let properties: [String: String] = [
             TracksPropertyKeys.url: match.path,
             TracksPropertyKeys.source: source?.tracksValue ?? match.source.tracksValue,
+            TracksPropertyKeys.sourceInfo: source?.trackingInfo ?? match.source.trackingInfo ?? "",
             TracksPropertyKeys.section: match.section?.rawValue ?? "",
         ]
 
@@ -182,6 +183,7 @@ struct UniversalLinkRouter: LinkRouter {
     private enum TracksPropertyKeys {
         static let url = "url"
         static let source = "source"
+        static let sourceInfo = "source_info"
         static let section = "section"
     }
 }

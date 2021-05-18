@@ -108,7 +108,7 @@ class MBarRouteTests: XCTestCase {
 
         router.completion = { url, source in
             if url.lastPathComponent == "start",
-               let trackingInfo = source?.trackingInfo as? String,
+               let trackingInfo = source?.trackingInfo,
                trackingInfo == "user_first_flow" {
                 success.fulfill()
             }

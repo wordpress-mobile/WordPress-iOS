@@ -96,7 +96,7 @@ enum DeepLinkSource {
         }
     }
 
-    var trackingInfo: Any? {
+    var trackingInfo: String? {
         switch self {
         case .email(let campaign):
             return campaign
