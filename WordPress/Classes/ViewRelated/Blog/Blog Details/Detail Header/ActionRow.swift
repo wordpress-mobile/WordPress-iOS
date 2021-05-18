@@ -89,8 +89,25 @@ class ActionRow: UIStackView {
 
         self.init(arrangedSubviews: buttons)
 
+        axis = .horizontal
         distribution = .equalCentering
         spacing = Constants.minimumSpacing
         translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    // MARK: - Accessibility
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        refreshStackViewAxis()
+    }
+
+    private func refreshStackViewAxis() {
+        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+            axis = .vertical
+        } else {
+            axis = .horizontal
+        }
     }
 }

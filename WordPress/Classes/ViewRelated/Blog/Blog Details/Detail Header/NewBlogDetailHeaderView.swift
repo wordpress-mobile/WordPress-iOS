@@ -209,7 +209,38 @@ fileprivate extension NewBlogDetailHeaderView {
             static let rtlSubtitleButtonImageInsets = UIEdgeInsets(top: 1, left: -4, bottom: 0, right: 4)
         }
 
+        // MARK: - Layout
+
+        override func layoutSubviews() {
+            super.layoutSubviews()
+
+            refreshButtonImageToMatchLabelHeight(subtitleButton)
+        }
+
+        /// WORKAROUND: This method offers a compromise solution, to make the subtitle button image resize to match the height of the subtitle label.
+        /// This is necessary to make the UI look good with Large Text enabled.
+        ///
+        private func refreshButtonImageToMatchLabelHeight(_ button: UIButton) {
+            if let xHeight = button.titleLabel?.font.xHeight {
+                button.setImage(UIImage.gridicon(.external, size: CGSize(width: xHeight, height: xHeight)), for: .normal)
+            }
+        }
+
         // MARK: - Child Views
+
+        private lazy var mainStackView: UIStackView = {
+            let stackView = UIStackView(arrangedSubviews: [
+                siteIconView,
+                titleStackView,
+                siteSwitcherButton
+            ])
+
+            stackView.alignment = .center
+            stackView.spacing = LayoutSpacing.betweenSiteIconAndTitle
+            stackView.translatesAutoresizingMaskIntoConstraints = false
+
+            return stackView
+        }()
 
         let siteIconView: SiteIconView = {
             let siteIconView = SiteIconView(frame: .zero)
@@ -222,13 +253,14 @@ fileprivate extension NewBlogDetailHeaderView {
 
             button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
             button.titleLabel?.adjustsFontForContentSizeCategory = true
+            button.titleLabel?.adjustsFontSizeToFitWidth = true
             button.titleLabel?.lineBreakMode = .byTruncatingTail
 
             button.setTitleColor(.primary, for: .normal)
             button.accessibilityHint = NSLocalizedString("Tap to view your site", comment: "Accessibility hint for button used to view the user's site")
 
-            if let pointSize = button.titleLabel?.font.pointSize {
-                button.setImage(UIImage.gridicon(.external, size: CGSize(width: pointSize, height: pointSize)), for: .normal)
+            if let xHeight = button.titleLabel?.font.xHeight {
+                button.setImage(UIImage.gridicon(.external, size: CGSize(width: xHeight, height: xHeight)), for: .normal)
             }
 
             // Align the image to the right
@@ -251,6 +283,7 @@ fileprivate extension NewBlogDetailHeaderView {
             button.contentHorizontalAlignment = .leading
             button.titleLabel?.font = AppStyleGuide.blogDetailHeaderTitleFont
             button.titleLabel?.adjustsFontForContentSizeCategory = true
+            button.titleLabel?.adjustsFontSizeToFitWidth = true
             button.titleLabel?.lineBreakMode = .byTruncatingTail
             button.titleLabel?.numberOfLines = 1
 
@@ -316,52 +349,28 @@ fileprivate extension NewBlogDetailHeaderView {
             subtitleButton.setTitle(url, for: .normal)
         }
 
+        // MARK: - Accessibility
+
+        override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+            super.traitCollectionDidChange(previousTraitCollection)
+
+            refreshMainStackViewAxis()
+        }
+
         // MARK: - Child View Setup
 
         private func setupChildViews() {
-            addSubview(siteIconView)
-            addSubview(titleStackView)
-            addSubview(siteSwitcherButton)
-
-            setupConstraintsForChildViews()
+            refreshMainStackViewAxis()
+            addSubview(mainStackView)
+            pinSubviewToAllEdges(mainStackView)
         }
 
-        // MARK: - Constraints
-
-        private func setupConstraintsForChildViews() {
-            let siteIconConstraints = constraintsForSiteIcon()
-            let titleStackViewConstraints = constraintsForTitleStackView()
-            let siteSwitcherButtonConstraints = constraintsForSiteSwitcherButton()
-
-            NSLayoutConstraint.activate(siteIconConstraints + titleStackViewConstraints + siteSwitcherButtonConstraints)
-        }
-
-        private func constraintsForSiteIcon() -> [NSLayoutConstraint] {
-            [
-                siteIconView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
-                siteIconView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
-                siteIconView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                siteIconView.heightAnchor.constraint(equalToConstant: Dimensions.siteIconHeight),
-                siteIconView.widthAnchor.constraint(equalToConstant: Dimensions.siteIconWidth),
-            ]
-        }
-
-        private func constraintsForSiteSwitcherButton() -> [NSLayoutConstraint] {
-            [
-                siteSwitcherButton.centerYAnchor.constraint(equalTo: siteIconView.centerYAnchor),
-                siteSwitcherButton.leadingAnchor.constraint(equalTo: titleStackView.trailingAnchor, constant: LayoutSpacing.betweenTitleAndSiteSwitcher),
-                siteSwitcherButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutSpacing.betweenSiteSwitcherAndRightPadding),
-                siteSwitcherButton.heightAnchor.constraint(equalToConstant: Dimensions.siteSwitcherHeight),
-                siteSwitcherButton.widthAnchor.constraint(equalToConstant: Dimensions.siteSwitcherWidth),
-            ]
-        }
-
-        private func constraintsForTitleStackView() -> [NSLayoutConstraint] {
-            [
-                titleStackView.leadingAnchor.constraint(equalTo: siteIconView.trailingAnchor, constant: LayoutSpacing.betweenSiteIconAndTitle),
-                titleStackView.centerYAnchor.constraint(equalTo: siteIconView.centerYAnchor),
-                titleButton.trailingAnchor.constraint(equalTo: siteSwitcherButton.leadingAnchor, constant: -LayoutSpacing.betweenTitleAndSiteSwitcher),
-            ]
+        private func refreshMainStackViewAxis() {
+            if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+                mainStackView.axis = .vertical
+            } else {
+                mainStackView.axis = .horizontal
+            }
         }
     }
 }
