@@ -64,7 +64,7 @@ open class SharingService: LocalCoreDataService {
             failure?(SharingServiceError.siteWithNoRemote as NSError)
             return
         }
-                
+
         remote.getPublicizeConnections(blog.dotComID!, success: { remoteConnections in
 
             // Process the results
