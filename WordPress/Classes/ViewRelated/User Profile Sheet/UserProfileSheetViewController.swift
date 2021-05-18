@@ -34,10 +34,16 @@ class UserProfileSheetViewController: UITableViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        preferredContentSize = tableView.contentSize
+
+        var size = tableView.contentSize
+
+        // Apply a slight padding to the bottom of the view to give it some space to breathe
+        // when being presented in a popover or bottom sheet
+        size.height += Constants.tableBottomPadding
+
+        preferredContentSize = size
         presentedVC?.presentedView?.layoutIfNeeded()
     }
-
 }
 
 // MARK: - DrawerPresentable Extension
@@ -197,6 +203,7 @@ private extension UserProfileSheetViewController {
     enum Constants {
         static let userInfoSection = 0
         static let siteSectionTitle = NSLocalizedString("Site", comment: "Header for a single site, shown in Notification user profile.").localizedUppercase
+        static let tableBottomPadding: CGFloat = 10
     }
 
 }

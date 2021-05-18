@@ -412,7 +412,7 @@ PODS:
   - WordPressShared (1.16.0):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (~> 1.8)
-  - WordPressUI (1.11.0-beta.2)
+  - WordPressUI (1.12.0-beta.1)
   - WPMediaPicker (1.7.2)
   - wpxmlrpc (0.9.0)
   - Yoga (1.14.0)
@@ -502,7 +502,7 @@ DEPENDENCIES:
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `feature/likes_endpoint_pagination`)
   - WordPressMocks (~> 0.0.11)
   - WordPressShared (~> 1.16.0)
-  - WordPressUI (~> 1.11.0-beta)
+  - WordPressUI (~> 1.12.0-beta.1)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.53.0/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.2.0)
@@ -511,6 +511,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
+    - WordPressUI
   trunk:
     - 1PasswordExtension
     - Alamofire
@@ -552,7 +553,6 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressMocks
     - WordPressShared
-    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -755,7 +755,7 @@ SPEC CHECKSUMS:
   WordPressKit: b5a404df6c73a58e58d446c81a09eff2754685c7
   WordPressMocks: ff54a0fc44ed8968b5b685c34c6e56318e05dd8b
   WordPressShared: 0f7f10e96f8354d64f951c223ae61e8de7495a46
-  WordPressUI: 82f164f76b97b82a49f16ce5499523c280e295e9
+  WordPressUI: 7152b1a8cdf44b958ceaa8f5bf5428fae9782c49
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
@@ -768,6 +768,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 41a2d312771c192e6186b5b042bb3898ec9b3782
+PODFILE CHECKSUM: 60f71d5a7fd275e1ab8be81a7bfa1bbaae59e0b6
 
 COCOAPODS: 1.10.1

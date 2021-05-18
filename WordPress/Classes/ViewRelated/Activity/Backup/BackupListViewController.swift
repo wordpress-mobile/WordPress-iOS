@@ -43,6 +43,8 @@ class BackupListViewController: BaseActivityListViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.accessibilityIdentifier = "jetpack-backup-table"
+
         WPAnalytics.track(.backupListOpened)
     }
 }
