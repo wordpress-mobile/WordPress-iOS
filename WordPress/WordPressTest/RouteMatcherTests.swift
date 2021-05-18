@@ -3,7 +3,10 @@ import XCTest
 
 private struct TestRoute: Route {
     let path: String
+    let section: DeepLinkSection? = .mySite
+    let source: DeepLinkSource = .link
     let action: NavigationAction = TestAction()
+    let shouldTrack = false
 }
 
 private struct TestAction: NavigationAction {
