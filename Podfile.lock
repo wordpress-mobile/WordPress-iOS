@@ -499,7 +499,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
   - WordPressAuthenticator (~> 1.37.0)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `feature/likes_endpoint_pagination`)
+  - WordPressKit (~> 4.34.0-beta)
   - WordPressMocks (~> 0.0.11)
   - WordPressShared (~> 1.16.0)
   - WordPressUI (~> 1.12.0-beta.1)
@@ -511,6 +511,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
+    - WordPressKit
     - WordPressUI
   trunk:
     - 1PasswordExtension
@@ -650,9 +651,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.53.0
-  WordPressKit:
-    :branch: feature/likes_endpoint_pagination
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.53.0/third-party-podspecs/Yoga.podspec.json
 
@@ -668,9 +666,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.53.0
-  WordPressKit:
-    :commit: d8aee6b38f3b8577c70fa65426791cee4c43d8fd
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -752,7 +747,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
   WordPressAuthenticator: 2674c56cad016118fb4725b866b380b612db66fc
-  WordPressKit: b5a404df6c73a58e58d446c81a09eff2754685c7
+  WordPressKit: 3458e5cc42be650a5fdd5a1b63e7a57cb983abf0
   WordPressMocks: ff54a0fc44ed8968b5b685c34c6e56318e05dd8b
   WordPressShared: 4fd83a8f572dfd8209fa6ca5c891194b29d15961
   WordPressUI: 7152b1a8cdf44b958ceaa8f5bf5428fae9782c49
@@ -768,6 +763,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 60f71d5a7fd275e1ab8be81a7bfa1bbaae59e0b6
+PODFILE CHECKSUM: c88f1f94407897aefeb3a198969226775981a98a
 
 COCOAPODS: 1.10.1
