@@ -14,7 +14,7 @@ import Foundation
         likeUser.userID = remoteUser.userID.int64Value
         likeUser.username = remoteUser.username
         likeUser.displayName = remoteUser.displayName
-        likeUser.primaryBlogID = remoteUser.primaryBlogID.int64Value
+        likeUser.primaryBlogID = remoteUser.primaryBlogID?.int64Value ?? 0
         likeUser.avatarUrl = remoteUser.avatarURL
         likeUser.bio = remoteUser.bio ?? ""
         likeUser.dateLikedString = remoteUser.dateLiked ?? ""
