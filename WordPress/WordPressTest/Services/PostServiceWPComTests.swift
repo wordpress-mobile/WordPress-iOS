@@ -384,7 +384,7 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
         }
     }
 
-    override func autoSave(_ post: RemotePost!, success: ((RemotePost?, String?) -> Void)!, failure: ((Error?) -> Void)!) {
+    override func autoSave(_ post: RemotePost, success: ((RemotePost?, String?) -> Void)!, failure: ((Error?) -> Void)!) {
         DispatchQueue.global().async {
             self.invocationsCountOfAutoSave += 1
 
@@ -397,8 +397,8 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
         }
     }
 
-    override func getLikesForPostID(_ postID: NSNumber!,
-                                    count: NSNumber!,
+    override func getLikesForPostID(_ postID: NSNumber,
+                                    count: NSNumber,
                                     before: String?,
                                     success: (([RemoteLikeUser], NSNumber) -> Void)!,
                                     failure: ((Error?) -> Void)!) {
