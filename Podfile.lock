@@ -669,7 +669,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.53.0
   WordPressShared:
-    :commit: 5e029df3ba2075ae479e877ba602ce6fe2977399
+    :commit: 5ca880667ff6ad0134e5164ac644c18803f457ff
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
