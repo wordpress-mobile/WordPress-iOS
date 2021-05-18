@@ -1,3 +1,7 @@
+17.5
+-----
+* [*] Fixed a crash when rendering the Noticons font in rich notification. [#16525]
+
 17.4
 -----
 * [**] A new author can be chosen for Posts and Pages on multi-author sites. [#16281]
