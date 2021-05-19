@@ -183,6 +183,14 @@ platform :ios do
       "enhanced_app_store_screenshot-6" => {desc: "app_store_screenshot_6.html"}
     }
 
+    download_translated_strings(target_files: files)
+  end
+
+  ########################################################################
+  # Helper Lanes
+  ########################################################################
+  desc "Downloads translated strings from GlotPress"
+  private_lane :download_translated_strings do |options|
     metadata_locales = [
       ["en-gb", "en-US"],
       ["en-gb", "en-GB"],
@@ -208,11 +216,11 @@ platform :ios do
       ["zh-tw", "zh-Hant"],
     ]
 
-    gp_downloadmetadata(project_url: "https://translate.wordpress.org/projects/apps/ios/release-notes/", 
-      target_files: files, 
+    gp_downloadmetadata(project_url: "https://translate.wordpress.org/projects/apps/ios/release-notes/",
+      target_files: options[:target_files],
       locales: metadata_locales,
       source_locale: "en-US",
       download_path: "./fastlane/appstoreres/metadata")
-  end 
+  end
 
 end
