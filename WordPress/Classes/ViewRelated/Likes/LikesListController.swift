@@ -22,7 +22,7 @@ class LikesListController: NSObject {
     private var lastFetchedDate: String?
 
     private var hasMoreLikes: Bool {
-        return totalLikesFetched <= totalLikes
+        return totalLikesFetched < totalLikes
     }
 
     private var likingUsers: [LikeUser] = [] {
