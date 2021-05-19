@@ -34,6 +34,7 @@ extension CommentService {
                                                             commentID: commentID,
                                                             siteID: siteID,
                                                             purgeExisting: purgeExisting) {
+                                            let users = self.likeUsersFor(commentID: commentID, siteID: siteID, before: before)
                                             success(users, totalLikes.intValue)
                                             LikeUserHelper.purgeStaleLikes()
                                         }
@@ -46,12 +47,21 @@ extension CommentService {
     /**
      Fetches a list of users from Core Data that liked the comment with the given IDs.
      
-     @param commentID  The ID of the comment to fetch likes for
-     @param siteID     The ID of the site that contains the post
+     @param commentID   The ID of the comment to fetch likes for.
+     @param siteID      The ID of the site that contains the post.
+     @param before      Filter results to likes before this date/time. Optional.
      */
-    func likeUsersFor(commentID: NSNumber, siteID: NSNumber) -> [LikeUser] {
+    func likeUsersFor(commentID: NSNumber, siteID: NSNumber, before: String? = nil) -> [LikeUser] {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
-        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@", siteID, commentID)
+
+        request.predicate = {
+            if let beforeDate = DateUtils.date(fromISOString: before) {
+                return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@ AND dateLiked < %@", siteID, commentID, beforeDate as CVarArg)
+            }
+
+            return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@", siteID, commentID)
+        }()
+
         request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
 
         if let users = try? managedObjectContext.fetch(request) {

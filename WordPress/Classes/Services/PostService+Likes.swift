@@ -34,6 +34,7 @@ extension PostService {
                                                         postID: postID,
                                                         siteID: siteID,
                                                         purgeExisting: purgeExisting) {
+                                        let users = self.likeUsersFor(postID: postID, siteID: siteID, before: before)
                                         success(users, totalLikes.intValue)
                                         LikeUserHelper.purgeStaleLikes()
                                     }
@@ -46,12 +47,21 @@ extension PostService {
     /**
      Fetches a list of users from Core Data that liked the post with the given IDs.
      
-     @param postID  The ID of the post to fetch likes for
-     @param siteID  The ID of the site that contains the post
+     @param postID  The ID of the post to fetch likes for.
+     @param siteID  The ID of the site that contains the post.
+     @param before  Filter results to likes before this date/time. Optional.
      */
-    func likeUsersFor(postID: NSNumber, siteID: NSNumber) -> [LikeUser] {
+    func likeUsersFor(postID: NSNumber, siteID: NSNumber, before: String? = nil) -> [LikeUser] {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
-        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@", siteID, postID)
+
+        request.predicate = {
+            if let beforeDate = DateUtils.date(fromISOString: before) {
+                return NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@ AND dateLiked < %@", siteID, postID, beforeDate as CVarArg)
+            }
+
+            return NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@", siteID, postID)
+        }()
+
         request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
 
         if let users = try? managedObjectContext.fetch(request) {
