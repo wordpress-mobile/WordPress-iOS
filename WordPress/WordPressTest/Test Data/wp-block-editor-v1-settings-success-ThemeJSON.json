@@ -1,741 +1,585 @@
 {
-  "imageDefaultSize": "large",
-  "__unstableEnableFullSiteEditingBlocks": true,
-  "styles": [
-
-  ],
-  "supportsTemplateMode": true,
-  "supportsLayout": true,
-  "widgetTypesToHideFromLegacyWidgetBlock": [
-    "pages",
-    "calendar",
-    "archives",
-    "media_audio",
-    "media_image",
-    "media_gallery",
-    "media_video",
-    "meta",
-    "search",
-    "text",
-    "categories",
-    "recent-posts",
-    "recent-comments",
-    "rss",
-    "tag_cloud",
-    "nav_menu",
-    "custom_html",
-    "block"
-  ],
-  "__experimentalFeatures": {
-    "defaults": {
-      "color": {
-        "palette": [
-          {
-            "slug": "black",
-            "color": "#000000",
-            "name": "Black"
-          },
-          {
-            "slug": "dark-gray",
-            "color": "#28303D",
-            "name": "Dark Gray"
-          },
-          {
-            "slug": "gray",
-            "color": "#39414D",
-            "name": "Gray"
-          },
-          {
-            "slug": "green",
-            "color": "#D1E4DD",
-            "name": "Green"
-          },
-          {
-            "slug": "blue",
-            "color": "#D1DFE4",
-            "name": "Blue"
-          },
-          {
-            "slug": "purple",
-            "color": "#D1D1E4",
-            "name": "Purple"
-          },
-          {
-            "slug": "red",
-            "color": "#E4D1D1",
-            "name": "Red"
-          },
-          {
-            "slug": "orange",
-            "color": "#E4DAD1",
-            "name": "Orange"
-          },
-          {
-            "slug": "yellow",
-            "color": "#EEEADD",
-            "name": "Yellow"
-          },
-          {
-            "slug": "white",
-            "color": "#FFFFFF",
-            "name": "White"
-          }
-        ],
-        "gradients": [
-          {
-            "slug": "purple-to-yellow",
-            "gradient": "linear-gradient(160deg, var(--wp--preset--color--purple), var(--wp--preset--color--yellow))",
-            "name": "Purple to Yellow"
-          },
-          {
-            "slug": "yellow-to-purple",
-            "gradient": "linear-gradient(160deg, var(--wp--preset--color--yellow), var(--wp--preset--color--purple))",
-            "name": "Yellow to Purple"
-          },
-          {
-            "slug": "green-to-yellow",
-            "gradient": "linear-gradient(160deg, var(--wp--preset--color--green), var(--wp--preset--color--yellow))",
-            "name": "Green to Yellow"
-          },
-          {
-            "slug": "yellow-to-green",
-            "gradient": "linear-gradient(160deg, var(--wp--preset--color--yellow), var(--wp--preset--color--green))",
-            "name": "Yellow to Green"
-          },
-          {
-            "slug": "red-to-yellow",
-            "gradient": "linear-gradient(160deg, var(--wp--preset--color--red), var(--wp--preset--color--yellow))",
-            "name": "Red to Yellow"
-          },
-          {
-            "slug": "yellow-to-red",
-            "gradient": "linear-gradient(160deg, var(--wp--preset--color--yellow), var(--wp--preset--color--red))",
-            "name": "Yellow to Red"
-          },
-          {
-            "slug": "purple-to-red",
-            "gradient": "linear-gradient(160deg, var(--wp--preset--color--purple), var(--wp--preset--color--red))",
-            "name": "Purple to Red"
-          },
-          {
-            "slug": "red-to-purple",
-            "gradient": "linear-gradient(160deg, var(--wp--preset--color--red), var(--wp--preset--color--purple))",
-            "name": "Red to Purple"
-          }
-        ],
-        "custom": true,
-        "link": true,
-        "customGradient": true
-      },
-      "typography": {
-        "dropCap": true,
-        "customFontSize": true,
-        "customLineHeight": true,
-        "customFontStyle": true,
-        "customFontWeight": true,
-        "customTextTransforms": true,
-        "customTextDecorations": true,
-        "fontSizes": [
-          {
-            "slug": "extra-small",
-            "size": "16px",
-            "name": "Extra small"
-          },
-          {
-            "slug": "small",
-            "size": "18px",
-            "name": "Small"
-          },
-          {
-            "slug": "normal",
-            "size": "20px",
-            "name": "Normal"
-          },
-          {
-            "slug": "large",
-            "size": "24px",
-            "name": "Large"
-          },
-          {
-            "slug": "extra-large",
-            "size": "40px",
-            "name": "Extra large"
-          },
-          {
-            "slug": "huge",
-            "size": "96px",
-            "name": "Huge"
-          },
-          {
-            "slug": "gigantic",
-            "size": "144px",
-            "name": "Gigantic"
-          }
-        ],
-        "fontFamilies": [
-          {
-            "fontFamily": "-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Oxygen-Sans,Ubuntu,Cantarell,\"Helvetica Neue\",sans-serif",
-            "slug": "system-font",
-            "name": "System Font"
-          },
-          {
-            "fontFamily": "Helvetica Neue, Helvetica, Arial, sans-serif",
-            "slug": "helvetica-arial"
-          },
-          {
-            "fontFamily": "Geneva, Tahoma, Verdana, sans-serif",
-            "slug": "geneva-verdana"
-          },
-          {
-            "fontFamily": "Cambria, Georgia, serif",
-            "slug": "cambria-georgia"
-          },
-          {
-            "fontFamily": "Hoefler Text, Baskerville Old Face, Garamond, Times New Roman, serif",
-            "slug": "hoefler-times-new-roman"
-          }
-        ]
-      },
-      "spacing": {
-        "customPadding": true,
-        "units": [
-          "px",
-          "em",
-          "rem",
-          "vh",
-          "vw"
-        ]
-      },
-      "border": {
-        "customColor": false,
-        "customRadius": false,
-        "customStyle": false,
-        "customWidth": false
-      },
-      "layout": {
-        "contentSize": "610px",
-        "wideSize": "1240px"
-      },
-      "custom": {
-        "font-primary": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif",
-        "line-height": {
-          "body": 1.7,
-          "heading": 1.3,
-          "page-title": 1.1
-        },
-        "spacing": {
-          "unit": "20px",
-          "horizontal": "25px",
-          "vertical": "30px"
-        },
-        "font-weight": {
-          "light": "300",
-          "normal": "normal"
-        }
-      }
+    "__unstableEnableFullSiteEditingBlocks": true,
+    "alignWide": false,
+    "allowedBlockTypes": true,
+    "allowedMimeTypes": {
+        "jpg|jpeg|jpe": "image/jpeg",
+        "gif": "image/gif",
+        "png": "image/png",
+        "bmp": "image/bmp",
+        "tiff|tif": "image/tiff",
+        "webp": "image/webp",
+        "ico": "image/x-icon",
+        "heic": "image/heic",
+        "asf|asx": "video/x-ms-asf",
+        "wmv": "video/x-ms-wmv",
+        "wmx": "video/x-ms-wmx",
+        "wm": "video/x-ms-wm",
+        "avi": "video/avi",
+        "divx": "video/divx",
+        "flv": "video/x-flv",
+        "mov|qt": "video/quicktime",
+        "mpeg|mpg|mpe": "video/mpeg",
+        "mp4|m4v": "video/mp4",
+        "ogv": "video/ogg",
+        "webm": "video/webm",
+        "mkv": "video/x-matroska",
+        "3gp|3gpp": "video/3gpp",
+        "3g2|3gp2": "video/3gpp2",
+        "txt|asc|c|cc|h|srt": "text/plain",
+        "csv": "text/csv",
+        "tsv": "text/tab-separated-values",
+        "ics": "text/calendar",
+        "rtx": "text/richtext",
+        "css": "text/css",
+        "htm|html": "text/html",
+        "vtt": "text/vtt",
+        "dfxp": "application/ttaf+xml",
+        "mp3|m4a|m4b": "audio/mpeg",
+        "aac": "audio/aac",
+        "ra|ram": "audio/x-realaudio",
+        "wav": "audio/wav",
+        "ogg|oga": "audio/ogg",
+        "flac": "audio/flac",
+        "mid|midi": "audio/midi",
+        "wma": "audio/x-ms-wma",
+        "wax": "audio/x-ms-wax",
+        "mka": "audio/x-matroska",
+        "rtf": "application/rtf",
+        "js": "application/javascript",
+        "pdf": "application/pdf",
+        "class": "application/java",
+        "tar": "application/x-tar",
+        "zip": "application/zip",
+        "gz|gzip": "application/x-gzip",
+        "rar": "application/rar",
+        "7z": "application/x-7z-compressed",
+        "psd": "application/octet-stream",
+        "xcf": "application/octet-stream",
+        "doc": "application/msword",
+        "pot|pps|ppt": "application/vnd.ms-powerpoint",
+        "wri": "application/vnd.ms-write",
+        "xla|xls|xlt|xlw": "application/vnd.ms-excel",
+        "mdb": "application/vnd.ms-access",
+        "mpp": "application/vnd.ms-project",
+        "docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "docm": "application/vnd.ms-word.document.macroEnabled.12",
+        "dotx": "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
+        "dotm": "application/vnd.ms-word.template.macroEnabled.12",
+        "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "xlsm": "application/vnd.ms-excel.sheet.macroEnabled.12",
+        "xlsb": "application/vnd.ms-excel.sheet.binary.macroEnabled.12",
+        "xltx": "application/vnd.openxmlformats-officedocument.spreadsheetml.template",
+        "xltm": "application/vnd.ms-excel.template.macroEnabled.12",
+        "xlam": "application/vnd.ms-excel.addin.macroEnabled.12",
+        "pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "pptm": "application/vnd.ms-powerpoint.presentation.macroEnabled.12",
+        "ppsx": "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
+        "ppsm": "application/vnd.ms-powerpoint.slideshow.macroEnabled.12",
+        "potx": "application/vnd.openxmlformats-officedocument.presentationml.template",
+        "potm": "application/vnd.ms-powerpoint.template.macroEnabled.12",
+        "ppam": "application/vnd.ms-powerpoint.addin.macroEnabled.12",
+        "sldx": "application/vnd.openxmlformats-officedocument.presentationml.slide",
+        "sldm": "application/vnd.ms-powerpoint.slide.macroEnabled.12",
+        "onetoc|onetoc2|onetmp|onepkg": "application/onenote",
+        "oxps": "application/oxps",
+        "xps": "application/vnd.ms-xpsdocument",
+        "odt": "application/vnd.oasis.opendocument.text",
+        "odp": "application/vnd.oasis.opendocument.presentation",
+        "ods": "application/vnd.oasis.opendocument.spreadsheet",
+        "odg": "application/vnd.oasis.opendocument.graphics",
+        "odc": "application/vnd.oasis.opendocument.chart",
+        "odb": "application/vnd.oasis.opendocument.database",
+        "odf": "application/vnd.oasis.opendocument.formula",
+        "wp|wpd": "application/wordperfect",
+        "key": "application/vnd.apple.keynote",
+        "numbers": "application/vnd.apple.numbers",
+        "pages": "application/vnd.apple.pages"
     },
-    "core/button": {
-      "border": {
-        "customRadius": true
-      }
-    }
-  },
-  "__experimentalGlobalStylesUserEntityId": 5,
-  "__experimentalGlobalStylesBaseStyles": {
-    "settings": {
-      "defaults": {
+    "blockCategories": [
+        {
+            "slug": "text",
+            "title": "Text",
+            "icon": null
+        },
+        {
+            "slug": "media",
+            "title": "Media",
+            "icon": null
+        },
+        {
+            "slug": "design",
+            "title": "Design",
+            "icon": null
+        },
+        {
+            "slug": "widgets",
+            "title": "Widgets",
+            "icon": null
+        },
+        {
+            "slug": "theme",
+            "title": "Theme",
+            "icon": null
+        },
+        {
+            "slug": "embed",
+            "title": "Embeds",
+            "icon": null
+        },
+        {
+            "slug": "reusable",
+            "title": "Reusable Blocks",
+            "icon": null
+        }
+    ],
+    "isRTL": false,
+    "imageDefaultSize": "large",
+    "imageDimensions": {
+        "thumbnail": {
+            "width": 150,
+            "height": 150,
+            "crop": true
+        },
+        "medium": {
+            "width": 300,
+            "height": 300,
+            "crop": false
+        },
+        "large": {
+            "width": 1024,
+            "height": 1024,
+            "crop": false
+        }
+    },
+    "imageEditing": true,
+    "imageSizes": [
+        {
+            "slug": "thumbnail",
+            "name": "Thumbnail"
+        },
+        {
+            "slug": "medium",
+            "name": "Medium"
+        },
+        {
+            "slug": "large",
+            "name": "Large"
+        },
+        {
+            "slug": "full",
+            "name": "Full Size"
+        }
+    ],
+    "maxUploadFileSize": 2097152,
+    "defaultTemplatePartAreas": [
+        {
+            "area": "uncategorized",
+            "label": "General",
+            "description": "General templates often perform a specific role like displaying post content, and are not tied to any particular area.",
+            "icon": "layout",
+            "area_tag": "div"
+        },
+        {
+            "area": "header",
+            "label": "Header",
+            "description": "The Header template defines a page area that typically contains a title, logo, and main navigation.",
+            "icon": "header",
+            "area_tag": "header"
+        },
+        {
+            "area": "footer",
+            "label": "Footer",
+            "description": "The Footer template defines a page area that typically contains site credits, social links, or any other combination of blocks.",
+            "icon": "footer",
+            "area_tag": "footer"
+        }
+    ],
+    "styles": [],
+    "supportsTemplateMode": true,
+    "supportsLayout": true,
+    "widgetTypesToHideFromLegacyWidgetBlock": [
+        "pages",
+        "calendar",
+        "archives",
+        "media_audio",
+        "media_image",
+        "media_gallery",
+        "media_video",
+        "meta",
+        "search",
+        "text",
+        "categories",
+        "recent-posts",
+        "recent-comments",
+        "rss",
+        "tag_cloud",
+        "nav_menu",
+        "custom_html",
+        "block"
+    ],
+    "__experimentalStyles": {
         "color": {
-          "palette": [
-            {
-              "slug": "black",
-              "color": "#000000",
-              "name": "Black"
-            },
-            {
-              "slug": "dark-gray",
-              "color": "#28303D",
-              "name": "Dark Gray"
-            },
-            {
-              "slug": "gray",
-              "color": "#39414D",
-              "name": "Gray"
-            },
-            {
-              "slug": "green",
-              "color": "#D1E4DD",
-              "name": "Green"
-            },
-            {
-              "slug": "blue",
-              "color": "#D1DFE4",
-              "name": "Blue"
-            },
-            {
-              "slug": "purple",
-              "color": "#D1D1E4",
-              "name": "Purple"
-            },
-            {
-              "slug": "red",
-              "color": "#E4D1D1",
-              "name": "Red"
-            },
-            {
-              "slug": "orange",
-              "color": "#E4DAD1",
-              "name": "Orange"
-            },
-            {
-              "slug": "yellow",
-              "color": "#EEEADD",
-              "name": "Yellow"
-            },
-            {
-              "slug": "white",
-              "color": "#FFFFFF",
-              "name": "White"
-            }
-          ],
-          "gradients": [
-            {
-              "slug": "purple-to-yellow",
-              "gradient": "linear-gradient(160deg, var(--wp--preset--color--purple), var(--wp--preset--color--yellow))",
-              "name": "Purple to Yellow"
-            },
-            {
-              "slug": "yellow-to-purple",
-              "gradient": "linear-gradient(160deg, var(--wp--preset--color--yellow), var(--wp--preset--color--purple))",
-              "name": "Yellow to Purple"
-            },
-            {
-              "slug": "green-to-yellow",
-              "gradient": "linear-gradient(160deg, var(--wp--preset--color--green), var(--wp--preset--color--yellow))",
-              "name": "Green to Yellow"
-            },
-            {
-              "slug": "yellow-to-green",
-              "gradient": "linear-gradient(160deg, var(--wp--preset--color--yellow), var(--wp--preset--color--green))",
-              "name": "Yellow to Green"
-            },
-            {
-              "slug": "red-to-yellow",
-              "gradient": "linear-gradient(160deg, var(--wp--preset--color--red), var(--wp--preset--color--yellow))",
-              "name": "Red to Yellow"
-            },
-            {
-              "slug": "yellow-to-red",
-              "gradient": "linear-gradient(160deg, var(--wp--preset--color--yellow), var(--wp--preset--color--red))",
-              "name": "Yellow to Red"
-            },
-            {
-              "slug": "purple-to-red",
-              "gradient": "linear-gradient(160deg, var(--wp--preset--color--purple), var(--wp--preset--color--red))",
-              "name": "Purple to Red"
-            },
-            {
-              "slug": "red-to-purple",
-              "gradient": "linear-gradient(160deg, var(--wp--preset--color--red), var(--wp--preset--color--purple))",
-              "name": "Red to Purple"
-            }
-          ],
-          "custom": true,
-          "link": true,
-          "customGradient": true
+            "background": "var(--wp--preset--color--green)",
+            "text": "var(--wp--preset--color--dark-gray)"
         },
         "typography": {
-          "dropCap": true,
-          "customFontSize": true,
-          "customLineHeight": true,
-          "customFontStyle": true,
-          "customFontWeight": true,
-          "customTextTransforms": true,
-          "customTextDecorations": true,
-          "fontSizes": [
-            {
-              "slug": "extra-small",
-              "size": "16px",
-              "name": "Extra small"
+            "fontSize": "var(--wp--preset--font-size--normal)",
+            "lineHeight": "var(--wp--custom--line-height--body)"
+        },
+        "elements": {
+            "link": {
+                "color": {
+                    "text": "var(--wp--preset--color--dark-gray)"
+                }
             },
-            {
-              "slug": "small",
-              "size": "18px",
-              "name": "Small"
+            "h1": {
+                "typography": {
+                    "fontSize": "var(--wp--preset--font-size--gigantic)",
+                    "lineHeight": "var(--wp--custom--line-height--page-title)",
+                    "fontWeight": "var(--wp--custom--font-weight--normal)"
+                }
             },
-            {
-              "slug": "normal",
-              "size": "20px",
-              "name": "Normal"
+            "h2": {
+                "typography": {
+                    "fontSize": "var(--wp--preset--font-size--extra-large)",
+                    "lineHeight": "var(--wp--custom--line-height--heading)",
+                    "fontWeight": "var(--wp--custom--font-weight--normal)"
+                }
             },
-            {
-              "slug": "large",
-              "size": "24px",
-              "name": "Large"
+            "h3": {
+                "typography": {
+                    "fontSize": "calc(1.25 * var(--wp--preset--font-size--large))",
+                    "lineHeight": "var(--wp--custom--line-height--heading)",
+                    "fontWeight": "var(--wp--custom--font-weight--normal)"
+                }
             },
-            {
-              "slug": "extra-large",
-              "size": "40px",
-              "name": "Extra large"
+            "h4": {
+                "typography": {
+                    "fontSize": "var(--wp--preset--font-size--large)",
+                    "lineHeight": "var(--wp--custom--line-height--heading)"
+                }
             },
-            {
-              "slug": "huge",
-              "size": "96px",
-              "name": "Huge"
+            "h5": {
+                "typography": {
+                    "fontSize": "var(--wp--preset--font-size--small)",
+                    "lineHeight": "var(--wp--custom--line-height--heading)"
+                }
             },
-            {
-              "slug": "gigantic",
-              "size": "144px",
-              "name": "Gigantic"
+            "h6": {
+                "typography": {
+                    "fontSize": "var(--wp--preset--font-size--extra-small)",
+                    "lineHeight": "var(--wp--custom--line-height--heading)"
+                }
             }
-          ],
-          "fontFamilies": [
-            {
-              "fontFamily": "-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Oxygen-Sans,Ubuntu,Cantarell,\"Helvetica Neue\",sans-serif",
-              "slug": "system-font",
-              "name": "System Font"
+        },
+        "blocks": {
+            "core/site-tagline": {
+                "typography": {
+                    "fontSize": "var(--wp--preset--font-size--small)",
+                    "lineHeight": 1.4
+                }
             },
-            {
-              "fontFamily": "Helvetica Neue, Helvetica, Arial, sans-serif",
-              "slug": "helvetica-arial"
+            "core/post-author": {
+                "typography": {
+                    "fontSize": "var(--wp--preset--font-size--extra-small)",
+                    "lineHeight": "var(--wp--custom--line-height--body)"
+                }
             },
-            {
-              "fontFamily": "Geneva, Tahoma, Verdana, sans-serif",
-              "slug": "geneva-verdana"
+            "core/post-date": {
+                "typography": {
+                    "fontSize": "var(--wp--preset--font-size--extra-small)",
+                    "lineHeight": "var(--wp--custom--line-height--body)"
+                }
             },
-            {
-              "fontFamily": "Cambria, Georgia, serif",
-              "slug": "cambria-georgia"
-            },
-            {
-              "fontFamily": "Hoefler Text, Baskerville Old Face, Garamond, Times New Roman, serif",
-              "slug": "hoefler-times-new-roman"
+            "core/site-title": {
+                "typography": {
+                    "fontSize": "var(--wp--preset--font-size--large)",
+                    "fontWeight": "var(--wp--custom--font-weight--normal)",
+                    "textTransform": "uppercase"
+                }
             }
-          ]
+        }
+    },
+    "__experimentalFeatures": {
+        "color": {
+            "palette": [
+                {
+                    "slug": "black",
+                    "color": "#000000",
+                    "name": "Black"
+                },
+                {
+                    "slug": "dark-gray",
+                    "color": "#28303D",
+                    "name": "Dark Gray"
+                },
+                {
+                    "slug": "gray",
+                    "color": "#39414D",
+                    "name": "Gray"
+                },
+                {
+                    "slug": "green",
+                    "color": "#D1E4DD",
+                    "name": "Green"
+                },
+                {
+                    "slug": "blue",
+                    "color": "#D1DFE4",
+                    "name": "Blue"
+                },
+                {
+                    "slug": "purple",
+                    "color": "#D1D1E4",
+                    "name": "Purple"
+                },
+                {
+                    "slug": "red",
+                    "color": "#E4D1D1",
+                    "name": "Red"
+                },
+                {
+                    "slug": "orange",
+                    "color": "#E4DAD1",
+                    "name": "Orange"
+                },
+                {
+                    "slug": "yellow",
+                    "color": "#EEEADD",
+                    "name": "Yellow"
+                },
+                {
+                    "slug": "white",
+                    "color": "#FFFFFF",
+                    "name": "White"
+                }
+            ],
+            "gradients": [
+                {
+                    "slug": "purple-to-yellow",
+                    "gradient": "linear-gradient(160deg, var(--wp--preset--color--purple), var(--wp--preset--color--yellow))",
+                    "name": "Purple to Yellow"
+                },
+                {
+                    "slug": "yellow-to-purple",
+                    "gradient": "linear-gradient(160deg, var(--wp--preset--color--yellow), var(--wp--preset--color--purple))",
+                    "name": "Yellow to Purple"
+                },
+                {
+                    "slug": "green-to-yellow",
+                    "gradient": "linear-gradient(160deg, var(--wp--preset--color--green), var(--wp--preset--color--yellow))",
+                    "name": "Green to Yellow"
+                },
+                {
+                    "slug": "yellow-to-green",
+                    "gradient": "linear-gradient(160deg, var(--wp--preset--color--yellow), var(--wp--preset--color--green))",
+                    "name": "Yellow to Green"
+                },
+                {
+                    "slug": "red-to-yellow",
+                    "gradient": "linear-gradient(160deg, var(--wp--preset--color--red), var(--wp--preset--color--yellow))",
+                    "name": "Red to Yellow"
+                },
+                {
+                    "slug": "yellow-to-red",
+                    "gradient": "linear-gradient(160deg, var(--wp--preset--color--yellow), var(--wp--preset--color--red))",
+                    "name": "Yellow to Red"
+                },
+                {
+                    "slug": "purple-to-red",
+                    "gradient": "linear-gradient(160deg, var(--wp--preset--color--purple), var(--wp--preset--color--red))",
+                    "name": "Purple to Red"
+                },
+                {
+                    "slug": "red-to-purple",
+                    "gradient": "linear-gradient(160deg, var(--wp--preset--color--red), var(--wp--preset--color--purple))",
+                    "name": "Red to Purple"
+                }
+            ],
+            "duotone": [
+                {
+                    "name": "Dark grayscale",
+                    "colors": [
+                        "#000000",
+                        "#7f7f7f"
+                    ],
+                    "slug": "dark-grayscale"
+                },
+                {
+                    "name": "Grayscale",
+                    "colors": [
+                        "#000000",
+                        "#ffffff"
+                    ],
+                    "slug": "grayscale"
+                },
+                {
+                    "name": "Purple and yellow",
+                    "colors": [
+                        "#8c00b7",
+                        "#fcff41"
+                    ],
+                    "slug": "purple-yellow"
+                },
+                {
+                    "name": "Blue and red",
+                    "colors": [
+                        "#000097",
+                        "#ff4747"
+                    ],
+                    "slug": "blue-red"
+                },
+                {
+                    "name": "Midnight",
+                    "colors": [
+                        "#000000",
+                        "#00a5ff"
+                    ],
+                    "slug": "midnight"
+                },
+                {
+                    "name": "Magenta and yellow",
+                    "colors": [
+                        "#c7005a",
+                        "#fff278"
+                    ],
+                    "slug": "magenta-yellow"
+                },
+                {
+                    "name": "Purple and green",
+                    "colors": [
+                        "#a60072",
+                        "#67ff66"
+                    ],
+                    "slug": "purple-green"
+                },
+                {
+                    "name": "Blue and orange",
+                    "colors": [
+                        "#1900d8",
+                        "#ffa96b"
+                    ],
+                    "slug": "blue-orange"
+                }
+            ],
+            "custom": true,
+            "link": true,
+            "customGradient": true
+        },
+        "typography": {
+            "dropCap": true,
+            "customFontSize": true,
+            "customLineHeight": true,
+            "customFontStyle": true,
+            "customFontWeight": true,
+            "customTextTransforms": true,
+            "customTextDecorations": true,
+            "fontSizes": [
+                {
+                    "slug": "extra-small",
+                    "size": "16px",
+                    "name": "Extra small"
+                },
+                {
+                    "slug": "small",
+                    "size": "18px",
+                    "name": "Small"
+                },
+                {
+                    "slug": "normal",
+                    "size": "20px",
+                    "name": "Normal"
+                },
+                {
+                    "slug": "large",
+                    "size": "24px",
+                    "name": "Large"
+                },
+                {
+                    "slug": "extra-large",
+                    "size": "40px",
+                    "name": "Extra large"
+                },
+                {
+                    "slug": "huge",
+                    "size": "96px",
+                    "name": "Huge"
+                },
+                {
+                    "slug": "gigantic",
+                    "size": "144px",
+                    "name": "Gigantic"
+                }
+            ],
+            "fontFamilies": [
+                {
+                    "fontFamily": "-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Oxygen-Sans,Ubuntu,Cantarell,\"Helvetica Neue\",sans-serif",
+                    "slug": "system-font",
+                    "name": "System Font"
+                },
+                {
+                    "fontFamily": "Helvetica Neue, Helvetica, Arial, sans-serif",
+                    "slug": "helvetica-arial"
+                },
+                {
+                    "fontFamily": "Geneva, Tahoma, Verdana, sans-serif",
+                    "slug": "geneva-verdana"
+                },
+                {
+                    "fontFamily": "Cambria, Georgia, serif",
+                    "slug": "cambria-georgia"
+                },
+                {
+                    "fontFamily": "Hoefler Text, Baskerville Old Face, Garamond, Times New Roman, serif",
+                    "slug": "hoefler-times-new-roman"
+                }
+            ]
         },
         "spacing": {
-          "customPadding": true,
-          "units": [
-            "px",
-            "em",
-            "rem",
-            "vh",
-            "vw"
-          ]
+            "customMargin": false,
+            "customPadding": true,
+            "units": [
+                "px",
+                "em",
+                "rem",
+                "vh",
+                "vw"
+            ]
         },
         "border": {
-          "customColor": false,
-          "customRadius": false,
-          "customStyle": false,
-          "customWidth": false
+            "customColor": false,
+            "customRadius": false,
+            "customStyle": false,
+            "customWidth": false
+        },
+        "blocks": {
+            "core/button": {
+                "border": {
+                    "customRadius": true
+                }
+            }
         },
         "layout": {
-          "contentSize": "610px",
-          "wideSize": "1240px"
+            "contentSize": "610px",
+            "wideSize": "1240px"
         },
         "custom": {
-          "font-primary": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif",
-          "line-height": {
-            "body": 1.7,
-            "heading": 1.3,
-            "page-title": 1.1
-          },
-          "spacing": {
-            "unit": "20px",
-            "horizontal": "25px",
-            "vertical": "30px"
-          },
-          "font-weight": {
-            "light": "300",
-            "normal": "normal"
-          }
+            "font-primary": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif",
+            "line-height": {
+                "body": 1.7,
+                "heading": 1.3,
+                "page-title": 1.1
+            },
+            "spacing": {
+                "unit": "20px",
+                "horizontal": "25px",
+                "vertical": "30px"
+            },
+            "font-weight": {
+                "light": "300",
+                "normal": "normal"
+            }
         }
-      },
-      "core/button": {
-        "border": {
-          "customRadius": true
-        }
-      }
-    },
-    "templateParts": [
-      {
-        "name": "header",
-        "area": "header"
-      },
-      {
-        "name": "footer",
-        "area": "footer"
-      }
-    ],
-    "styles": {
-      "root": {
-        "color": {
-          "background": "var(--wp--preset--color--green)",
-          "text": "var(--wp--preset--color--dark-gray)",
-          "link": "var(--wp--preset--color--dark-gray)"
-        },
-        "typography": {
-          "fontSize": "var(--wp--preset--font-size--normal)",
-          "lineHeight": "var(--wp--custom--line-height--body)"
-        }
-      },
-      "core/heading/h1": {
-        "typography": {
-          "fontSize": "var(--wp--preset--font-size--gigantic)",
-          "lineHeight": "var(--wp--custom--line-height--page-title)",
-          "fontWeight": "var(--wp--custom--font-weight--normal)"
-        }
-      },
-      "core/heading/h2": {
-        "typography": {
-          "fontSize": "var(--wp--preset--font-size--extra-large)",
-          "lineHeight": "var(--wp--custom--line-height--heading)",
-          "fontWeight": "var(--wp--custom--font-weight--normal)"
-        }
-      },
-      "core/heading/h3": {
-        "typography": {
-          "fontSize": "calc(1.25 * var(--wp--preset--font-size--large))",
-          "lineHeight": "var(--wp--custom--line-height--heading)",
-          "fontWeight": "var(--wp--custom--font-weight--normal)"
-        }
-      },
-      "core/heading/h4": {
-        "typography": {
-          "fontSize": "var(--wp--preset--font-size--large)",
-          "lineHeight": "var(--wp--custom--line-height--heading)"
-        }
-      },
-      "core/heading/h5": {
-        "typography": {
-          "fontSize": "var(--wp--preset--font-size--small)",
-          "lineHeight": "var(--wp--custom--line-height--heading)"
-        }
-      },
-      "core/heading/h6": {
-        "typography": {
-          "fontSize": "var(--wp--preset--font-size--extra-small)",
-          "lineHeight": "var(--wp--custom--line-height--heading)"
-        }
-      },
-      "core/site-tagline": {
-        "typography": {
-          "fontSize": "var(--wp--preset--font-size--small)",
-          "lineHeight": 1.4
-        }
-      },
-      "core/post-author": {
-        "typography": {
-          "fontSize": "var(--wp--preset--font-size--extra-small)",
-          "lineHeight": "var(--wp--custom--line-height--body)"
-        }
-      },
-      "core/post-date": {
-        "typography": {
-          "fontSize": "var(--wp--preset--font-size--extra-small)",
-          "lineHeight": "var(--wp--custom--line-height--body)"
-        }
-      },
-      "core/post-hierarchical-terms": {
-        "typography": {
-          "fontSize": "var(--wp--preset--font-size--extra-small)",
-          "lineHeight": "var(--wp--custom--line-height--body)"
-        }
-      },
-      "core/post-tags": {
-        "typography": {
-          "fontSize": "var(--wp--preset--font-size--extra-small)",
-          "lineHeight": "var(--wp--custom--line-height--body)"
-        }
-      },
-      "core/site-title": {
-        "typography": {
-          "fontSize": "var(--wp--preset--font-size--large)",
-          "fontWeight": "var(--wp--custom--font-weight--normal)",
-          "textTransform": "uppercase"
-        }
-      }
-    },
-    "customTemplates": [
-      {
-        "name": "page-home",
-        "title": "Page without title"
-      }
-    ]
-  },
-  "alignWide": false,
-  "allowedBlockTypes": true,
-  "allowedMimeTypes": {
-    "jpg|jpeg|jpe": "image/jpeg",
-    "gif": "image/gif",
-    "png": "image/png",
-    "bmp": "image/bmp",
-    "tiff|tif": "image/tiff",
-    "ico": "image/x-icon",
-    "heic": "image/heic",
-    "asf|asx": "video/x-ms-asf",
-    "wmv": "video/x-ms-wmv",
-    "wmx": "video/x-ms-wmx",
-    "wm": "video/x-ms-wm",
-    "avi": "video/avi",
-    "divx": "video/divx",
-    "flv": "video/x-flv",
-    "mov|qt": "video/quicktime",
-    "mpeg|mpg|mpe": "video/mpeg",
-    "mp4|m4v": "video/mp4",
-    "ogv": "video/ogg",
-    "webm": "video/webm",
-    "mkv": "video/x-matroska",
-    "3gp|3gpp": "video/3gpp",
-    "3g2|3gp2": "video/3gpp2",
-    "txt|asc|c|cc|h|srt": "text/plain",
-    "csv": "text/csv",
-    "tsv": "text/tab-separated-values",
-    "ics": "text/calendar",
-    "rtx": "text/richtext",
-    "css": "text/css",
-    "htm|html": "text/html",
-    "vtt": "text/vtt",
-    "dfxp": "application/ttaf+xml",
-    "mp3|m4a|m4b": "audio/mpeg",
-    "aac": "audio/aac",
-    "ra|ram": "audio/x-realaudio",
-    "wav": "audio/wav",
-    "ogg|oga": "audio/ogg",
-    "flac": "audio/flac",
-    "mid|midi": "audio/midi",
-    "wma": "audio/x-ms-wma",
-    "wax": "audio/x-ms-wax",
-    "mka": "audio/x-matroska",
-    "rtf": "application/rtf",
-    "js": "application/javascript",
-    "pdf": "application/pdf",
-    "class": "application/java",
-    "tar": "application/x-tar",
-    "zip": "application/zip",
-    "gz|gzip": "application/x-gzip",
-    "rar": "application/rar",
-    "7z": "application/x-7z-compressed",
-    "psd": "application/octet-stream",
-    "xcf": "application/octet-stream",
-    "doc": "application/msword",
-    "pot|pps|ppt": "application/vnd.ms-powerpoint",
-    "wri": "application/vnd.ms-write",
-    "xla|xls|xlt|xlw": "application/vnd.ms-excel",
-    "mdb": "application/vnd.ms-access",
-    "mpp": "application/vnd.ms-project",
-    "docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    "docm": "application/vnd.ms-word.document.macroEnabled.12",
-    "dotx": "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
-    "dotm": "application/vnd.ms-word.template.macroEnabled.12",
-    "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    "xlsm": "application/vnd.ms-excel.sheet.macroEnabled.12",
-    "xlsb": "application/vnd.ms-excel.sheet.binary.macroEnabled.12",
-    "xltx": "application/vnd.openxmlformats-officedocument.spreadsheetml.template",
-    "xltm": "application/vnd.ms-excel.template.macroEnabled.12",
-    "xlam": "application/vnd.ms-excel.addin.macroEnabled.12",
-    "pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-    "pptm": "application/vnd.ms-powerpoint.presentation.macroEnabled.12",
-    "ppsx": "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
-    "ppsm": "application/vnd.ms-powerpoint.slideshow.macroEnabled.12",
-    "potx": "application/vnd.openxmlformats-officedocument.presentationml.template",
-    "potm": "application/vnd.ms-powerpoint.template.macroEnabled.12",
-    "ppam": "application/vnd.ms-powerpoint.addin.macroEnabled.12",
-    "sldx": "application/vnd.openxmlformats-officedocument.presentationml.slide",
-    "sldm": "application/vnd.ms-powerpoint.slide.macroEnabled.12",
-    "onetoc|onetoc2|onetmp|onepkg": "application/onenote",
-    "oxps": "application/oxps",
-    "xps": "application/vnd.ms-xpsdocument",
-    "odt": "application/vnd.oasis.opendocument.text",
-    "odp": "application/vnd.oasis.opendocument.presentation",
-    "ods": "application/vnd.oasis.opendocument.spreadsheet",
-    "odg": "application/vnd.oasis.opendocument.graphics",
-    "odc": "application/vnd.oasis.opendocument.chart",
-    "odb": "application/vnd.oasis.opendocument.database",
-    "odf": "application/vnd.oasis.opendocument.formula",
-    "wp|wpd": "application/wordperfect",
-    "key": "application/vnd.apple.keynote",
-    "numbers": "application/vnd.apple.numbers",
-    "pages": "application/vnd.apple.pages"
-  },
-  "blockCategories": [
-    {
-      "slug": "text",
-      "title": "Text",
-      "icon": null
-    },
-    {
-      "slug": "media",
-      "title": "Media",
-      "icon": null
-    },
-    {
-      "slug": "design",
-      "title": "Design",
-      "icon": null
-    },
-    {
-      "slug": "widgets",
-      "title": "Widgets",
-      "icon": null
-    },
-    {
-      "slug": "theme",
-      "title": "Theme",
-      "icon": null
-    },
-    {
-      "slug": "embed",
-      "title": "Embeds",
-      "icon": null
-    },
-    {
-      "slug": "reusable",
-      "title": "Reusable Blocks",
-      "icon": null
     }
-  ],
-  "disableCustomColors": false,
-  "disableCustomFontSizes": false,
-  "disableCustomGradients": false,
-  "enableCustomLineHeight": false,
-  "enableCustomSpacing": false,
-  "enableCustomUnits": true,
-  "isRTL": false,
-  "imageDimensions": {
-    "thumbnail": {
-      "width": 150,
-      "height": 150,
-      "crop": true
-    },
-    "medium": {
-      "width": 300,
-      "height": 300,
-      "crop": false
-    },
-    "large": {
-      "width": 1024,
-      "height": 1024,
-      "crop": false
-    }
-  },
-  "imageEditing": true,
-  "imageSizes": [
-    {
-      "slug": "thumbnail",
-      "name": "Thumbnail"
-    },
-    {
-      "slug": "medium",
-      "name": "Medium"
-    },
-    {
-      "slug": "large",
-      "name": "Large"
-    },
-    {
-      "slug": "full",
-      "name": "Full Size"
-    }
-  ],
-  "maxUploadFileSize": 2097152
 }
