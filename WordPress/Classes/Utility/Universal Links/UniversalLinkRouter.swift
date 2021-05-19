@@ -12,6 +12,8 @@ protocol LinkRouter {
 struct UniversalLinkRouter: LinkRouter {
     private let matcher: RouteMatcher
 
+    private static let extraLoggingEnabled = BuildConfiguration.current == .localDeveloper
+
     init(routes: [Route]) {
         matcher = RouteMatcher(routes: routes)
     }
@@ -155,7 +157,7 @@ struct UniversalLinkRouter: LinkRouter {
 
     private func trackDeepLinks(with matches: [MatchedRoute], for url: URL, source: DeepLinkSource? = nil) {
         if matches.isEmpty {
-            WPAppAnalytics.track(.deepLinkFailed, withProperties: [TracksPropertyKeys.url: url])
+            WPAppAnalytics.track(.deepLinkFailed, withProperties: [TracksPropertyKeys.url: url.absoluteString])
             return
         }
 
@@ -177,7 +179,21 @@ struct UniversalLinkRouter: LinkRouter {
             TracksPropertyKeys.section: match.section?.rawValue ?? "",
         ]
 
+        if UniversalLinkRouter.extraLoggingEnabled {
+            logDeepLink(with: properties)
+        }
+
         WPAppAnalytics.track(.deepLinked, withProperties: properties)
+    }
+
+    private func logDeepLink(with properties: [String: String]) {
+        let path = properties[TracksPropertyKeys.url] ?? ""
+        let section = properties[TracksPropertyKeys.section] ?? ""
+        let source = properties[TracksPropertyKeys.source] ?? ""
+        let sourceInfo = properties[TracksPropertyKeys.sourceInfo] ?? ""
+        let info = sourceInfo.isEmpty ? "" : " – \(sourceInfo)"
+
+        DDLogInfo("🔗 Deep link: \(path), source: \(source)\(info), section: \(section)")
     }
 
     private enum TracksPropertyKeys {
