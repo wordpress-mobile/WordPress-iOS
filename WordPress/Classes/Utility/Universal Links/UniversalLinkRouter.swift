@@ -215,9 +215,8 @@ extension DeepLinkSource {
             return "email"
         case .widget:
             return "widget"
-        case .inApp(_):
+        case .inApp:
             return "internal"
         }
     }
 }
-

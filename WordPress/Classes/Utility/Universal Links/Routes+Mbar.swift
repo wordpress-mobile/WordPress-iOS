@@ -64,7 +64,7 @@ public struct MbarRoute: Route {
               let campaignValue = redirectComponents.queryItems?.first(where: { $0.name == MbarRoute.campaignURLParameter })?.value?.removingPercentEncoding else {
             return MbarRoute.unknownCampaignValue
         }
-        
+
         return campaignValue
     }
 }

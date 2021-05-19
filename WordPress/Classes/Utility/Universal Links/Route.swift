@@ -100,7 +100,7 @@ enum DeepLinkSource: Equatable {
 
     var isInternal: Bool {
         switch self {
-        case .inApp(_):
+        case .inApp:
             return true
         default:
             return false
