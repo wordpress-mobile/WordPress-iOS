@@ -11,9 +11,9 @@ extension Blog {
     @objc
     func supportsBlockEditorSettings() -> Bool {
         guard FeatureFlag.globalStyleSettings.enabled else { return false }
-        guard let version = version else { return false }
         // This a Placeholder for when we want to enable this for specific .com versions
-//        let isReleased = [.orderedSame, .orderedDescending].contains(version.compare("5.8", options: .numeric))
+        // guard let version = version else { return false }
+        // let isReleased = [.orderedSame, .orderedDescending].contains(version.compare("5.8", options: .numeric))
         return true
     }
 }

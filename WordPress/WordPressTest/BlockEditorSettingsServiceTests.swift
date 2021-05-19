@@ -201,7 +201,8 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         XCTAssertEqual((self.mockRemoteApi.parametersPassedIn as! [String: String])["context"], "site-editor")
 
         if isGlobalStyles {
-            XCTAssertNotNil(self.blog.blockEditorSettings?.rawGlobalStylesBaseStyles)
+            XCTAssertNotNil(self.blog.blockEditorSettings?.rawStyles)
+            XCTAssertNotNil(self.blog.blockEditorSettings?.rawFeatures)
         } else {
             XCTAssertGreaterThan(self.blog.blockEditorSettings!.colors!.count, 0)
             XCTAssertGreaterThan(self.blog.blockEditorSettings!.gradients!.count, 0)
