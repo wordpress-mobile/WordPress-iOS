@@ -80,12 +80,23 @@ extension Route {
 
 /// Where did the deep link originate?
 ///
-enum DeepLinkSource {
+enum DeepLinkSource: Equatable {
     case link
     case banner
     case email(campaign: String)
     case widget
     case inApp(presenter: UIViewController?)
+
+    init?(string: String) {
+        switch string {
+        // We only care about widgets right now, but we could
+        // add others in the future if necessary.
+        case "widget":
+            self = .widget
+        default:
+            return nil
+        }
+    }
 
     var isInternal: Bool {
         switch self {

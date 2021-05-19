@@ -61,7 +61,20 @@ class RouteMatcher {
             values[MatchedRouteURLComponentKey.fragment.rawValue] = fragment
         }
 
+        if let source = sourceQueryItemValue(for: url) {
+            values[MatchedRouteURLComponentKey.source.rawValue] = source
+        }
+
         return values
+    }
+
+    private func sourceQueryItemValue(for url: URL) -> String? {
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+           let urlSource = components.queryItems?.first(where: { $0.name == "source" })?.value?.removingPercentEncoding else {
+            return nil
+        }
+
+        return urlSource
     }
 
     private func isPlaceholder(_ component: String) -> Bool {
@@ -100,9 +113,14 @@ struct MatchedRoute: Route {
     let values: [String: String]
 
     init(from route: Route, with values: [String: String] = [:]) {
+        // Allows optional overriding of source based on the input URL parameters.
+        // Currently used for widget links.
+        let sourceValue = values[MatchedRouteURLComponentKey.source.rawValue] ?? ""
+        let source = DeepLinkSource(string: sourceValue)
+
         self.path = route.path
         self.section = route.section
-        self.source = route.source
+        self.source = source ?? route.source
         self.action = route.action
         self.shouldTrack = route.shouldTrack
         self.values = values
@@ -119,5 +137,6 @@ extension Route {
 
 enum MatchedRouteURLComponentKey: String {
     case fragment = "matched-route-fragment"
+    case source = "matched-route-source"
     case url = "matched-route-url"
 }
