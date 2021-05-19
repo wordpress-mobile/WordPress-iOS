@@ -193,6 +193,11 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 fileprivate extension NewBlogDetailHeaderView {
     class TitleView: UIView {
 
+        private enum LabelMinimumScaleFactor {
+            static let regular: CGFloat = 0.75
+            static let accessibility: CGFloat = 0.5
+        }
+
         private enum Dimensions {
             static let siteIconHeight: CGFloat = 64
             static let siteIconWidth: CGFloat = 64
@@ -254,6 +259,7 @@ fileprivate extension NewBlogDetailHeaderView {
             button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
             button.titleLabel?.adjustsFontForContentSizeCategory = true
             button.titleLabel?.adjustsFontSizeToFitWidth = true
+            button.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.regular
             button.titleLabel?.lineBreakMode = .byTruncatingTail
 
             button.setTitleColor(.primary, for: .normal)
@@ -284,6 +290,7 @@ fileprivate extension NewBlogDetailHeaderView {
             button.titleLabel?.font = AppStyleGuide.blogDetailHeaderTitleFont
             button.titleLabel?.adjustsFontForContentSizeCategory = true
             button.titleLabel?.adjustsFontSizeToFitWidth = true
+            button.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.regular
             button.titleLabel?.lineBreakMode = .byTruncatingTail
             button.titleLabel?.numberOfLines = 1
 
@@ -368,8 +375,14 @@ fileprivate extension NewBlogDetailHeaderView {
         private func refreshMainStackViewAxis() {
             if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
                 mainStackView.axis = .vertical
+
+                titleButton.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.accessibility
+                subtitleButton.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.accessibility
             } else {
                 mainStackView.axis = .horizontal
+
+                titleButton.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.regular
+                subtitleButton.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.regular
             }
         }
     }
