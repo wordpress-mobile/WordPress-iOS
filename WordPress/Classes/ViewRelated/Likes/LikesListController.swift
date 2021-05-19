@@ -13,6 +13,8 @@ class LikesListController: NSObject {
     private let notification: Notification?
     private let tableView: UITableView
     private var likingUsers: [LikeUser] = []
+    private var totalLikes: Int = 0
+    private var totalLikesFetched: Int = 0
     private weak var delegate: LikesListControllerDelegate?
 
     private lazy var postService: PostService = {
@@ -112,8 +114,10 @@ class LikesListController: NSObject {
         // If there are no cached users, continue showing the loading cell.
         isLoadingContent = likingUsers.isEmpty
 
-        fetchLikes(success: { [weak self] users in
+        fetchLikes(success: { [weak self] users, totalLikes in
             self?.likingUsers = users
+            self?.totalLikes = totalLikes
+            self?.totalLikesFetched = users.count
             self?.isLoadingContent = false
         }, failure: { [weak self] _ in
             self?.isLoadingContent = false
@@ -135,7 +139,7 @@ class LikesListController: NSObject {
     /// - Parameters:
     ///   - success: Closure to be called when the fetch is successful.
     ///   - failure: Closure to be called when the fetch failed.
-    private func fetchLikes(success: @escaping ([LikeUser]) -> Void, failure: @escaping (Error?) -> Void) {
+    private func fetchLikes(success: @escaping ([LikeUser], Int) -> Void, failure: @escaping (Error?) -> Void) {
         switch content {
         case .post(let postID):
             postService.getLikesFor(postID: postID, siteID: siteID, success: success, failure: failure)

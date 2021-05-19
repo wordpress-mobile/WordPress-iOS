@@ -266,7 +266,7 @@ class PostServiceWPComTests: XCTestCase {
 
         // Act
         waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
-            self.service.getLikesFor(postID: postID, siteID: siteID, success: { users in
+            self.service.getLikesFor(postID: postID, siteID: siteID, success: { users, totalLikes in
                 // Assert
                 expect(users.count) == 1
                 done()
@@ -286,7 +286,7 @@ class PostServiceWPComTests: XCTestCase {
 
         // Act
         waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
-            self.service.getLikesFor(postID: postID, siteID: siteID, success: { users in
+            self.service.getLikesFor(postID: postID, siteID: siteID, success: { users, totalLikes in
                 fail("this closure should not be called")
             },
             failure: { _ in
@@ -345,7 +345,8 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
 
     // related to fetching likes
     var fetchLikesShouldSucceed: Bool = true
-    var remoteUsersToReturnOnGetLikes: [RemoteLikeUser]? = nil
+    var remoteUsersToReturnOnGetLikes = [RemoteLikeUser]()
+    var totalLikes: NSNumber = 1
 
     private(set) var invocationsCountOfCreatePost = 0
     private(set) var invocationsCountOfAutoSave = 0
@@ -383,7 +384,7 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
         }
     }
 
-    override func autoSave(_ post: RemotePost!, success: ((RemotePost?, String?) -> Void)!, failure: ((Error?) -> Void)!) {
+    override func autoSave(_ post: RemotePost, success: ((RemotePost?, String?) -> Void)!, failure: ((Error?) -> Void)!) {
         DispatchQueue.global().async {
             self.invocationsCountOfAutoSave += 1
 
@@ -396,10 +397,14 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
         }
     }
 
-    override func getLikesForPostID(_ postID: NSNumber!, success: (([RemoteLikeUser]?) -> Void)!, failure: ((Error?) -> Void)!) {
+    override func getLikesForPostID(_ postID: NSNumber,
+                                    count: NSNumber,
+                                    before: String?,
+                                    success: (([RemoteLikeUser], NSNumber) -> Void)!,
+                                    failure: ((Error?) -> Void)!) {
         DispatchQueue.global().async {
             if self.fetchLikesShouldSucceed {
-                success(self.remoteUsersToReturnOnGetLikes)
+                success(self.remoteUsersToReturnOnGetLikes, self.totalLikes)
             } else {
                 failure(nil)
             }
