@@ -14,13 +14,13 @@ platform :ios do
   # is only built once.
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane screenshots 
+  # bundle exec fastlane screenshots
   #
   # Example:
   # bundle exec fastlane screenshots
   #####################################################################################
   desc "Generate localised screenshots"
-  lane :screenshots  do |options| 
+  lane :screenshots  do |options|
 
     sh('bundle exec pod install')
     FileUtils.rm_rf(DERIVED_DATA_PATH)
@@ -97,21 +97,21 @@ platform :ios do
   #####################################################################################
   # create_promo_screenshots
   # -----------------------------------------------------------------------------------
-  # This lane generates the promo screenshots. 
+  # This lane generates the promo screenshots.
   # Source plain screenshots are supposed to be in the screenshots_orig folder
   # If this folder doesn't exist, the system will ask to use the standard screenshot
-  # folder. If the user confirms, the pictures in the screenshots folder will be 
+  # folder. If the user confirms, the pictures in the screenshots folder will be
   # copied to a new screenshots_orig folder.
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane create_promo_screenshots 
+  # bundle exec fastlane create_promo_screenshots
   #
   # Example:
   # bundle exec fastlane create_promo_screenshots
   #####################################################################################
   desc "Creates promo screenshots"
-  lane :create_promo_screenshots do |options| 
- 
+  lane :create_promo_screenshots do |options|
+
     # Run screenshots generator tool
     # All file paths are relative to the `fast file`.
     promo_screenshots(
@@ -154,17 +154,17 @@ platform :ios do
   #####################################################################################
   # download_promo_strings
   # -----------------------------------------------------------------------------------
-  # This lane downloads the promo strings to use for the creation of the enhanced 
+  # This lane downloads the promo strings to use for the creation of the enhanced
   # screenshots.
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane download_promo_strings 
+  # bundle exec fastlane download_promo_strings
   #
   # Example:
   # bundle exec fastlane download_promo_strings
   #####################################################################################
   desc "Downloads translated promo strings from GlotPress"
-  lane :download_promo_strings do |options| 
+  lane :download_promo_strings do |options|
     files = {
       "app_store_screenshot-1" => {desc: "app_store_screenshot_1.txt"},
       "app_store_screenshot-2" => {desc: "app_store_screenshot_2.txt"},
@@ -181,6 +181,32 @@ platform :ios do
       "enhanced_app_store_screenshot-4" => {desc: "app_store_screenshot_4.html"},
       "enhanced_app_store_screenshot-5" => {desc: "app_store_screenshot_5.html"},
       "enhanced_app_store_screenshot-6" => {desc: "app_store_screenshot_6.html"}
+    }
+
+    download_translated_strings(target_files: files)
+  end
+
+  #####################################################################################
+  # download_jetpack_promo_strings
+  # -----------------------------------------------------------------------------------
+  # This lane downloads the Jetpack promo strings to use for the creation of the enhanced
+  # screenshots.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane download_jetpack_promo_strings
+  #
+  # Example:
+  # bundle exec fastlane download_jetpack_promo_strings
+  #####################################################################################
+  desc "Downloads translated Jetpack promo strings from GlotPress"
+  lane :download_jetpack_promo_strings do |options|
+    files = {
+      "app_store_screenshot-1" => {desc: "app_store_screenshot_1.txt"},
+      "app_store_screenshot-2" => {desc: "app_store_screenshot_2.txt"},
+      "app_store_screenshot-3" => {desc: "app_store_screenshot_3.txt"},
+      "app_store_screenshot-4" => {desc: "app_store_screenshot_4.txt"},
+      "app_store_screenshot-5" => {desc: "app_store_screenshot_5.txt"},
+      "app_store_screenshot-6" => {desc: "app_store_screenshot_6.txt"},
     }
 
     download_translated_strings(target_files: files)
