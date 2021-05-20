@@ -20,6 +20,7 @@ class LikesListController: NSObject {
     private var totalLikes = 0
     private var totalLikesFetched = 0
     private var lastFetchedDate: String?
+    private var excludeUserIDs: [NSNumber] = []
 
     private var hasMoreLikes: Bool {
         return totalLikesFetched < totalLikes
@@ -127,10 +128,19 @@ class LikesListController: NSObject {
             self?.lastFetchedDate = users.last?.dateLikedString
             self?.isFirstLoad = false
             self?.isLoadingContent = false
+            self?.trackUsersToExclude()
         }, failure: { [weak self] _ in
             self?.isLoadingContent = false
             self?.delegate?.showErrorView()
         })
+    }
+
+    // There is a scenario where multiple users might like a post/comment at the same time,
+    // and then end up split between pages of results. So we'll track which users we've already
+    // fetched for the lastFetchedDate, and send those to the services to filter out of the response
+    // so we don't get duplicates.
+    private func trackUsersToExclude() {
+        excludeUserIDs = likingUsers.filter { $0.dateLikedString == lastFetchedDate }.map { NSNumber(value: $0.userID) }
     }
 
     /// Fetch Likes from Core Data depending on the notification's content type.
@@ -153,6 +163,7 @@ class LikesListController: NSObject {
             postService.getLikesFor(postID: postID,
                                     siteID: siteID,
                                     before: lastFetchedDate,
+                                    excludingIDs: excludeUserIDs,
                                     purgeExisting: isFirstLoad,
                                     success: success,
                                     failure: failure)
@@ -160,6 +171,7 @@ class LikesListController: NSObject {
             commentService.getLikesFor(commentID: commentID,
                                        siteID: siteID,
                                        before: lastFetchedDate,
+                                       excludingIDs: excludeUserIDs,
                                        purgeExisting: isFirstLoad,
                                        success: success, failure: failure)
         }

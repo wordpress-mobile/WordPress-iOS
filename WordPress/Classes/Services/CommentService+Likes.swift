@@ -7,6 +7,7 @@ extension CommentService {
      @param siteID          The ID of the site that contains the post
      @param count           Number of records to retrieve. Optional. Defaults to the endpoint max of 90.
      @param before          Filter results to likes before this date/time. Optional.
+     @param excludingIDs    An array of user IDs to exclude from the returned results. Optional.
      @param purgeExisting   Indicates if existing Likes for the given post and site should be purged before
                             new ones are created. Defaults to false.
      @param success         A success block
@@ -16,6 +17,7 @@ extension CommentService {
                      siteID: NSNumber,
                      count: Int = 90,
                      before: String? = nil,
+                     excludingIDs: [NSNumber] = [],
                      purgeExisting: Bool = false,
                      success: @escaping (([LikeUser], Int) -> Void),
                      failure: @escaping ((Error?) -> Void)) {
@@ -30,7 +32,9 @@ extension CommentService {
                                     count: NSNumber(value: count),
                                     before: before,
                                     success: { remoteLikeUsers, totalLikes in
-                                        self.createNewUsers(from: remoteLikeUsers,
+                                        let filteredUsers = remoteLikeUsers.filter { !(excludingIDs.contains(($0 as RemoteLikeUser).userID)) }
+
+                                        self.createNewUsers(from: filteredUsers,
                                                             commentID: commentID,
                                                             siteID: siteID,
                                                             purgeExisting: purgeExisting) {
@@ -47,11 +51,12 @@ extension CommentService {
     /**
      Fetches a list of users from Core Data that liked the comment with the given IDs.
      
-     @param commentID   The ID of the comment to fetch likes for.
-     @param siteID      The ID of the site that contains the post.
-     @param before      Filter results to likes before this date/time. Optional.
+     @param commentID       The ID of the comment to fetch likes for.
+     @param siteID          The ID of the site that contains the post.
+     @param before          Filter results to likes before this date/time. Optional.
+     @param excludingIDs    An array of user IDs to exclude from the returned results. Optional.
      */
-    func likeUsersFor(commentID: NSNumber, siteID: NSNumber, before: String? = nil) -> [LikeUser] {
+    func likeUsersFor(commentID: NSNumber, siteID: NSNumber, before: String? = nil, excludingIDs: [NSNumber] = []) -> [LikeUser] {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
 
         request.predicate = {
@@ -65,7 +70,7 @@ extension CommentService {
         request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
 
         if let users = try? managedObjectContext.fetch(request) {
-            return users
+            return users.filter { !excludingIDs.contains(NSNumber(value: ($0 as LikeUser).userID)) }
         }
 
         return [LikeUser]()
