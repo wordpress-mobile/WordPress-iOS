@@ -116,7 +116,7 @@ struct MatchedRoute: Route {
         // Allows optional overriding of source based on the input URL parameters.
         // Currently used for widget links.
         let sourceValue = values[MatchedRouteURLComponentKey.source.rawValue] ?? ""
-        let source = DeepLinkSource(string: sourceValue)
+        let source = DeepLinkSource(sourceName: sourceValue)
 
         self.path = route.path
         self.section = route.section

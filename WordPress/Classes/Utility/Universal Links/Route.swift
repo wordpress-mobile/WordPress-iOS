@@ -87,8 +87,8 @@ enum DeepLinkSource: Equatable {
     case widget
     case inApp(presenter: UIViewController?)
 
-    init?(string: String) {
-        switch string {
+    init?(sourceName: String) {
+        switch sourceName {
         // We only care about widgets right now, but we could
         // add others in the future if necessary.
         case "widget":
