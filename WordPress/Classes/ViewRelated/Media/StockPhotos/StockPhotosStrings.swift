@@ -6,11 +6,7 @@ extension String {
     }
 
     static var otherApps: String {
-        return NSLocalizedString("Choose from device", comment: "Menu option used for adding media from other applications.")
-    }
-
-    static var allFiles: String {
-        return NSLocalizedString("Choose from device", comment: "Menu option used for adding media from other applications.")
+        return NSLocalizedString("Other apps", comment: "Menu option used for adding media from other applications.")
     }
 
     static var closePicker: String {
