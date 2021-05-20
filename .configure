@@ -1,7 +1,7 @@
 {
   "project_name": "WordPress-iOS",
   "branch": "trunk",
-  "pinned_hash": "c7a590de2624e2c433aa78c5a3435fbdba93e519",
+  "pinned_hash": "f0aaaf24805b0aa258e09ec85b6977194e514027",
   "files_to_copy": [
     {
       "file": "shared/google_cloud_keys.json",
