@@ -1,6 +1,7 @@
 17.5
 -----
 
+* [*] Fixed a bug that was causing some fonts to become enormous when large text was enabled.
 
 17.4
 -----
