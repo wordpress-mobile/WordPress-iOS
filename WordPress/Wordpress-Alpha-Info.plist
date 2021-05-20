@@ -452,9 +452,7 @@
 			<key>CFBundleURLName</key>
 			<string>GoogleSignIn</string>
 			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>GOOGLE_LOGIN_SCHEME_ID</string>
-			</array>
+			<array/>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>

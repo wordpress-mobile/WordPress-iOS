@@ -409,7 +409,7 @@ PODS:
     - WordPressShared (~> 1.15-beta)
     - wpxmlrpc (~> 0.9)
   - WordPressMocks (0.0.11)
-  - WordPressShared (1.16.1-beta.2):
+  - WordPressShared (1.16.0):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (~> 1.8)
   - WordPressUI (1.12.0-beta.1)
@@ -511,8 +511,6 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
-    - WordPressKit
-    - WordPressUI
   trunk:
     - 1PasswordExtension
     - Alamofire
@@ -552,8 +550,10 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressKit
     - WordPressMocks
     - WordPressShared
+    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -747,10 +747,10 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
   WordPressAuthenticator: 2674c56cad016118fb4725b866b380b612db66fc
-  WordPressKit: 8e25ef2dd937c622c6590160e5e200e5162fc895
+  WordPressKit: ba0eb047c40b9fa90bf8507b124bd7e92cf13a90
   WordPressMocks: ff54a0fc44ed8968b5b685c34c6e56318e05dd8b
-  WordPressShared: 4fd83a8f572dfd8209fa6ca5c891194b29d15961
-  WordPressUI: 7152b1a8cdf44b958ceaa8f5bf5428fae9782c49
+  WordPressShared: 0f7f10e96f8354d64f951c223ae61e8de7495a46
+  WordPressUI: 82249bccbd68a655ab740925b49f65ce696ec827
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
