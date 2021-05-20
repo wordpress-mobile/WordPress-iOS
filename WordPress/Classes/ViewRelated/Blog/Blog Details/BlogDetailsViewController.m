@@ -664,7 +664,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 
-    if (self.shouldShowBloggingRemindersCard && section == 0) {
+    BlogDetailsSection *currentSection = self.tableSections[section];
+
+    if (self.shouldShowBloggingRemindersCard && currentSection.category == BlogDetailsSectionCategoryReminders) {
         return BlogDetailReminderSectionFooterHeight;
     }
     return UITableViewAutomaticDimension;
@@ -673,7 +675,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)sectionNum {
     BlogDetailsSection *section = self.tableSections[sectionNum];
 
-    if (self.shouldShowBloggingRemindersCard && sectionNum == 0 && section.showQuickStartMenu == false) {
+    if (self.shouldShowBloggingRemindersCard && section.category == BlogDetailsSectionCategoryReminders && section.showQuickStartMenu == false) {
         return BlogDetailReminderSectionHeaderHeight;
     }
 
@@ -1347,6 +1349,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
+    if ([cell isKindOfClass:[BloggingRemindersCell class]]) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.textLabel.text = nil;
+        cell.imageView.image = nil;
+    }
+
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     cell.textLabel.text = row.title;
@@ -1360,14 +1368,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([cell isKindOfClass:[QuickStartListTitleCell class]]) {
         ((QuickStartListTitleCell *) cell).state = row.quickStartTitleState;
     }
-
-    if ([cell isKindOfClass:[BloggingRemindersCell class]]) {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.textLabel.text = nil;
-        cell.imageView.image = nil;
-    }
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
