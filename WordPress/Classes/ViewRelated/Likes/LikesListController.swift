@@ -12,10 +12,10 @@ class LikesListController: NSObject {
     private let siteID: NSNumber
     private let notification: Notification?
     private let tableView: UITableView
+    private var loadingIndicator: UIActivityIndicatorView
     private weak var delegate: LikesListControllerDelegate?
 
     // Used to control pagination.
-    private var isLoadingContent = false
     private var isFirstLoad = true
     private var totalLikes = 0
     private var totalLikesFetched = 0
@@ -23,6 +23,16 @@ class LikesListController: NSObject {
 
     private var hasMoreLikes: Bool {
         return totalLikesFetched < totalLikes
+    }
+
+    private var isLoadingContent = false {
+        didSet {
+            if isLoadingContent != oldValue {
+                isLoadingContent ? loadingIndicator.startAnimating() : loadingIndicator.stopAnimating()
+                // Refresh the footer view's frame
+                tableView.tableFooterView = loadingIndicator
+            }
+        }
     }
 
     private var likingUsers: [LikeUser] = [] {
@@ -72,6 +82,12 @@ class LikesListController: NSObject {
         self.siteID = siteID
         self.tableView = tableView
         self.delegate = delegate
+
+        self.loadingIndicator = {
+            let loadingIndicator = UIActivityIndicatorView(style: .medium)
+            loadingIndicator.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 44)
+            return loadingIndicator
+        }()
     }
 
     // MARK: Methods
@@ -97,8 +113,6 @@ class LikesListController: NSObject {
 
             return
         }
-
-        isLoadingContent = likingUsers.isEmpty
 
         fetchLikes(success: { [weak self] users, totalLikes in
 
