@@ -420,6 +420,8 @@
 		3F170E242655917400F6F670 /* UIView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170E232655917400F6F670 /* UIView+SwiftUI.swift */; };
 		3F170E252655917400F6F670 /* UIView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170E232655917400F6F670 /* UIView+SwiftUI.swift */; };
 		3F170EC32655DD1700F6F670 /* BloggingRemindersCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170EC22655DD1700F6F670 /* BloggingRemindersCard.swift */; };
+		3F170ED62656B80000F6F670 /* BloggingRemindersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170D2B2654618000F6F670 /* BloggingRemindersCell.swift */; };
+		3F170EE92656BD9600F6F670 /* BloggingRemindersCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170EC22655DD1700F6F670 /* BloggingRemindersCard.swift */; };
 		3F1AD48123FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1AD48023FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift */; };
 		3F1B66A323A2F54B0075F09E /* ReaderReblogActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1B66A223A2F54B0075F09E /* ReaderReblogActionTests.swift */; };
 		3F1FD2502548AD8B0060C53A /* TodayWidgetStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E58A2E2360D23400E5534B /* TodayWidgetStats.swift */; };
@@ -19234,6 +19236,7 @@
 				FABB23C92602FC2C00C8785C /* JetpackState.swift in Sources */,
 				FABB23CA2602FC2C00C8785C /* EditPostViewController.swift in Sources */,
 				FABB23CB2602FC2C00C8785C /* PostListFilter.swift in Sources */,
+				3F170EE92656BD9600F6F670 /* BloggingRemindersCard.swift in Sources */,
 				FABB23CC2602FC2C00C8785C /* MediaThumbnailExporter.swift in Sources */,
 				FABB23CD2602FC2C00C8785C /* ReferrerStatsRecordValue+CoreDataClass.swift in Sources */,
 				FABB23CE2602FC2C00C8785C /* NewBlogDetailHeaderView.swift in Sources */,
@@ -19714,6 +19717,7 @@
 				FABB259A2602FC2C00C8785C /* ReaderBlockSiteAction.swift in Sources */,
 				FABB259B2602FC2C00C8785C /* ReaderSiteService.m in Sources */,
 				FABB259C2602FC2C00C8785C /* ReaderPostService+RelatedPosts.swift in Sources */,
+				3F170ED62656B80000F6F670 /* BloggingRemindersCell.swift in Sources */,
 				FABB259D2602FC2C00C8785C /* Blog+Capabilities.swift in Sources */,
 				FABB259E2602FC2C00C8785C /* RestorePostTableViewCell.swift in Sources */,
 				FABB259F2602FC2C00C8785C /* MenuItemCategoriesViewController.m in Sources */,
