@@ -10,48 +10,74 @@ struct BloggingRemindersCard: View {
     var body: some View {
         VStack {
             HStack {
+                // Title
                 Text(TextContent.cardTitle)
                     .font(TextContent.cardTitleFont)
                 Spacer()
-                Button(action: {
+                // Vertical ellipsis button
+                makeEllipsisButton {
                     ellipsisButtonAction()
-                }) {
-                    Image(Images.ellipsisImageName)
-                        .foregroundColor(.black)
                 }
-
             }
+
             HStack {
+                // Calendar Image
                 VStack {
                     Image(Images.calendarImageName)
                         .padding(Metrics.calendarImageInsets)
                     Spacer()
                 }
+
                 Spacer()
+
                 VStack(alignment: .leading) {
+                    // Description
                     Text(TextContent.cardDescription)
                         .font(TextContent.cardDescriptionFont)
                         .lineLimit(nil)
                         .padding()
+
                     Spacer()
-                    Button(action: {
+
+                    // Get Started button
+                    makeGetStartedButton {
                         getStartedButtonAction()
-                    }) {
-                        Text(TextContent.getStartedButtonTitle)
-                            .font(TextContent.getStartedButtonFont)
-                            .padding(Metrics.getStartedButtonTextInsets)
-                            .foregroundColor(.white)
-                            .background(Color(UIColor.muriel(name: .blue, .shade30))
-                                            .clipShape(Capsule())
-                            )
                     }
-                    .fixedSize(horizontal: true, vertical: true)
-                    .padding(Metrics.getStartedButtonInsets)
                 }
                 Spacer()
             }
         }
         .padding()
+    }
+}
+
+// MARK: - UI Factory
+private extension BloggingRemindersCard {
+
+    /// builds the vertical ellipsis button
+    func makeEllipsisButton(action: @escaping () -> Void) -> some View {
+        Button(action: {
+            action()
+        }) {
+            Image(Images.ellipsisImageName)
+                .foregroundColor(.black)
+        }
+    }
+
+    /// builds the get started button
+    func makeGetStartedButton(action: @escaping () -> Void) -> some View {
+        Button(action: {
+            action()
+        }) {
+            Text(TextContent.getStartedButtonTitle)
+                .font(TextContent.getStartedButtonFont)
+                .padding(Metrics.getStartedButtonTextInsets)
+                .foregroundColor(.white)
+                .background(Color(UIColor.muriel(name: .blue, .shade30))
+                                .clipShape(Capsule()))
+        }
+        .fixedSize(horizontal: true, vertical: true)
+        .padding(Metrics.getStartedButtonInsets)
     }
 }
 
