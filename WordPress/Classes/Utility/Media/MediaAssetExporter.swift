@@ -169,10 +169,6 @@ class MediaAssetExporter: MediaExporter {
         // Configure a video exporter to handle an export session.
         var exporterVideoOptions = videoOptions ?? MediaVideoExporter.Options()
 
-        if exporterVideoOptions.preferredExportVideoType == nil {
-            exporterVideoOptions.preferredExportVideoType = videoResource.uniformTypeIdentifier
-        }
-
         let originalFilename = videoResource.originalFilename
 
         // Request an export session, which may take time to download the complete video data.
