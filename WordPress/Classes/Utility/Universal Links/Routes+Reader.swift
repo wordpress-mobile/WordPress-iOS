@@ -14,6 +14,7 @@ enum ReaderRoute {
     case blog
     case feedsPost
     case blogsPost
+    case wpcomPost
 }
 
 extension ReaderRoute: Route {
@@ -45,6 +46,8 @@ extension ReaderRoute: Route {
             return "/read/feeds/:feed_id/posts/:post_id"
         case .blogsPost:
             return "/read/blogs/:blog_id/posts/:post_id"
+        case .wpcomPost:
+            return "/:post_year/:post_month/:post_day/:post_name"
         }
     }
 
@@ -54,7 +57,7 @@ extension ReaderRoute: Route {
 }
 
 extension ReaderRoute: NavigationAction {
-    func perform(_ values: [String: String], source: UIViewController? = nil) {
+    func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
         guard let coordinator = WPTabBarController.sharedInstance().readerCoordinator else {
             return
         }
@@ -106,6 +109,13 @@ extension ReaderRoute: NavigationAction {
             if let (blogID, postID) = blogAndPostID(from: values) {
                 coordinator.showPost(with: postID, for: blogID, isFeed: false)
             }
+        case .wpcomPost:
+            if let urlString = values[MatchedRouteURLComponentKey.url.rawValue],
+               let url = URL(string: urlString),
+               isValidWpcomUrl(values) {
+
+                coordinator.showPost(with: url)
+            }
         }
     }
 
@@ -129,5 +139,26 @@ extension ReaderRoute: NavigationAction {
         }
 
         return (blogID, postID)
+    }
+
+    private func isValidWpcomUrl(_ values: [String: String]) -> Bool {
+        let year = Int(values["post_year"] ?? "") ?? 0
+        let month = Int(values["post_month"] ?? "") ?? 0
+        let day = Int(values["post_day"] ?? "") ?? 0
+
+        // we assume no posts were made in the 1800's or earlier
+        func isYear(_ year: Int) -> Bool {
+            year > 1900
+        }
+
+        func isMonth(_ month: Int) ->  Bool {
+            (1...12).contains(month)
+        }
+
+        func isDay(_ day: Int) -> Bool {
+            (1...31).contains(day)
+        }
+
+        return isYear(year) && isMonth(month) && isDay(day)
     }
 }

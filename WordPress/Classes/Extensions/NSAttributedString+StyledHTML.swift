@@ -115,7 +115,7 @@ public enum HTMLAttributeType: String {
     }
 }
 
-private extension UIFont {
+public extension UIFont {
     var isBold: Bool {
         return fontDescriptor.symbolicTraits.contains(.traitBold)
     }

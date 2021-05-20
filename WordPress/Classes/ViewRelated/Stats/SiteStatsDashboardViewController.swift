@@ -17,6 +17,25 @@ enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
         case .years: return NSLocalizedString("Years", comment: "Title of Years stats filter.")
         }
     }
+
+    init?(from string: String) {
+        switch string {
+        case "day":
+            self = .days
+        case "week":
+            self = .weeks
+        case "month":
+            self = .months
+        case "year":
+            self = .years
+        case "insights":
+            self = .insights
+        default:
+            return nil
+        }
+    }
+
+    static let statsPeriodTypeDefaultsKey = "LastSelectedStatsPeriodType"
 }
 
 fileprivate extension StatsPeriodType {

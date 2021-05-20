@@ -271,8 +271,7 @@
     
     // Retrieve
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *selectedBlog = [service blogByBlogId:self.selectedObjectDotcomID];
+    Blog *selectedBlog = [Blog lookupWithID:self.selectedObjectDotcomID in:context];
     
     // Cache
     _selectedObjectID = selectedBlog.objectID;

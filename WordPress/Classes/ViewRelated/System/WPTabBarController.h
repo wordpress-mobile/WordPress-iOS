@@ -25,9 +25,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 
 @interface WPTabBarController : UITabBarController <UIViewControllerTransitioningDelegate>
 
-@property (nonatomic, strong, readonly) WPSplitViewController *blogListSplitViewController;
-@property (nonatomic, strong, readonly) BlogListViewController *blogListViewController;
-@property (nonatomic, strong, readonly) UINavigationController *blogListNavigationController;
 @property (nonatomic, strong, readonly) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong, readonly) UINavigationController *readerNavigationController;
 @property (nonatomic, strong, readonly) MySitesCoordinator *mySitesCoordinator;
@@ -39,7 +36,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 + (instancetype)sharedInstance;
 
 - (NSString *)currentlySelectedScreen;
-- (BOOL)isNavigatingMySitesTab;
 
 - (void)showMySitesTab;
 - (void)showReaderTab;
@@ -50,9 +46,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 - (void)showNotificationsTab;
 - (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia;
 - (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId;
-- (void)switchMySitesTabToAddNewSite;
-- (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog;
-- (void)switchMySitesTabToMediaForBlog:(Blog *)blog;
 
 - (void)popNotificationsTabToRoot;
 - (void)switchNotificationsTabToNotificationSettings;

@@ -62,6 +62,13 @@ class Page: AbstractPost {
         ]
     }
 
+    override func availableStatusesForEditing() -> [Any] {
+        if isSiteHomepage && isPublished() {
+            return [PostStatusPublish]
+        }
+        return super.availableStatusesForEditing()
+    }
+
     // MARK: - Homepage Settings
 
     @objc var isSiteHomepage: Bool {

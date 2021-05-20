@@ -43,8 +43,9 @@ class StatsWidgetsService {
                 fetchTodayStats(service: service, widgetData: widgetData, completion: completion)
             } else if let widgetData = widgetData as? HomeWidgetAllTimeData {
                 fetchAllTimeStats(service: service, widgetData: widgetData, completion: completion)
+            } else if let widgetData = widgetData as? HomeWidgetThisWeekData {
+                fetchThisWeekStats(service: service, widgetData: widgetData, completion: completion)
             }
-            /// - TODO: STATSWIDGETS - add the other cases corresponding to the other widgets here
         } catch {
             completion(.failure(error))
             self.state = .error
@@ -82,7 +83,7 @@ class StatsWidgetsService {
                                                                             likes: insight.likesCount,
                                                                             comments: insight.commentsCount))
             completion(.success(newWidgetData))
-            DispatchQueue.global().async {
+            DispatchQueue.main.async {
                 // update the item in the local cache
                 HomeWidgetTodayData.setItem(item: newWidgetData)
             }
@@ -117,16 +118,62 @@ class StatsWidgetsService {
                                                                                 posts: insight?.postsCount,
                                                                                 bestViews: insight?.bestViewsPerDayCount))
             completion(.success(newWidgetData))
-            DispatchQueue.global().async {
+            DispatchQueue.main.async {
                 // update the item in the local cache
                 HomeWidgetAllTimeData.setItem(item: newWidgetData)
             }
             self.state = .ready
         }
+    }
 
+    private func fetchThisWeekStats(service: StatsServiceRemoteV2,
+                                    widgetData: HomeWidgetThisWeekData,
+                                    completion: @escaping (Result<HomeWidgetData, Error>) -> Void) {
+
+        // Get the current date in the site's time zone.
+        let siteTimeZone = widgetData.timeZone
+        let weekEndingDate = Date().convert(from: siteTimeZone).normalizedDate()
+
+        // Include an extra day. It's needed to get the dailyChange for the last day.
+        service.getData(for: .day, endingOn: weekEndingDate,
+                        limit: ThisWeekWidgetStats.maxDaysToDisplay + 1) { [weak self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
+
+            guard let self = self else {
+                return
+            }
+
+            if let error = error {
+                DDLogError("This Week Widget: Error fetching summary: \(String(describing: error.localizedDescription))")
+                completion(.failure(error))
+                self.state = .error
+                return
+            }
+
+            let summaryData = summary?.summaryData.reversed() ?? []
+            let newWidgetData = HomeWidgetThisWeekData(siteID: widgetData.siteID,
+                                                       siteName: widgetData.siteName,
+                                                       url: widgetData.url,
+                                                       timeZone: widgetData.timeZone,
+                                                       date: Date(),
+                                                       stats: ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData)))
+            completion(.success(newWidgetData))
+
+            DispatchQueue.global().async {
+                HomeWidgetThisWeekData.setItem(item: newWidgetData)
+            }
+            self.state = .ready
+        }
     }
 }
 
 enum StatsWidgetsError: Error {
     case nilStats
+}
+
+
+private extension Date {
+    func convert(from timeZone: TimeZone, comparedWith target: TimeZone = TimeZone.current) -> Date {
+        let delta = TimeInterval(timeZone.secondsFromGMT(for: self) - target.secondsFromGMT(for: self))
+        return addingTimeInterval(delta)
+    }
 }

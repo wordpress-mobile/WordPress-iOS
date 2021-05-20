@@ -43,41 +43,39 @@ class PostPostViewController: UIViewController {
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return .darkContent
     }
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupActionButtons()
+        setupLabels()
+        setupNavBar()
+    }
+
+    private func setupNavBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        navBar.standardAppearance = appearance
+        navBar.compactAppearance = appearance
+
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneTapped))
+        doneButton.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.barButtonItemTitle], for: .normal)
+        doneButton.accessibilityIdentifier = "doneButton"
+        navBar.topItem?.rightBarButtonItem = doneButton
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        view.backgroundColor = .primary
-
-        if #available(iOS 13.0, *) {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithTransparentBackground()
-            navBar.standardAppearance = appearance
-        } else {
-            navBar.isTranslucent = true
-            navBar.barTintColor = UIColor.clear
-            navBar.tintColor = UIColor.white
-            let clearImage = UIImage(color: UIColor.clear, havingSize: CGSize(width: 1, height: 1))
-            navBar.shadowImage = clearImage
-            navBar.setBackgroundImage(clearImage, for: .default)
-        }
-
-        navBar.topItem?.rightBarButtonItem?.title = NSLocalizedString("Done", comment: "Label on button to dismiss view presented after publishing a post")
-        navBar.topItem?.rightBarButtonItem?.accessibilityIdentifier = "doneButton"
+        view.backgroundColor = .basicBackground
 
         view.alpha = WPAlphaZero
 
         shareButton.setTitle(NSLocalizedString("Share", comment: "Button label to share a post"), for: .normal)
         shareButton.accessibilityIdentifier = "sharePostButton"
         shareButton.setImage(.gridicon(.shareiOS, size: CGSize(width: 18, height: 18)), for: .normal)
+        shareButton.tintColor = .white
+
         shareButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
         editButton.setTitle(NSLocalizedString("Edit Post", comment: "Button label for editing a post"), for: .normal)
         editButton.accessibilityIdentifier = "editPostButton"
@@ -94,18 +92,11 @@ class PostPostViewController: UIViewController {
         }
     }
 
-    private func setupActionButtons() {
-        shareButton.secondaryTitleColor = .primary
-        shareButton.secondaryNormalBackgroundColor = .white
-        shareButton.secondaryHighlightBackgroundColor = .white
-
-        editButton.secondaryTitleColor = .white
-        editButton.secondaryNormalBackgroundColor = .clear
-        editButton.secondaryHighlightBackgroundColor = .clear
-
-        viewButton.secondaryTitleColor = .white
-        viewButton.secondaryNormalBackgroundColor = .clear
-        viewButton.secondaryHighlightBackgroundColor = .clear
+    private func setupLabels() {
+        titleLabel.textColor = .label
+        postStatusLabel.textColor = .secondaryLabel
+        siteNameLabel.textColor = .label
+        siteUrlLabel.textColor = .label
     }
 
     @objc func animatePostPost() {

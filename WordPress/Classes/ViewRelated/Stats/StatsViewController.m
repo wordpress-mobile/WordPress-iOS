@@ -95,20 +95,17 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)initStats
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    SiteStatsInformation.sharedInstance.siteTimeZone = [blogService timeZoneForBlog:self.blog];
-    
+    SiteStatsInformation.sharedInstance.siteTimeZone = [self.blog timeZone];
+
     // WordPress.com + Jetpack REST
     if (self.blog.account) {
         SiteStatsInformation.sharedInstance.oauth2Token = self.blog.account.authToken;
         SiteStatsInformation.sharedInstance.siteID = self.blog.dotComID;
         
         [self addStatsViewControllerToView];
-        
+        [self initializeStatsWidgetsIfNeeded];
         return;
     }
-
     [self refreshStatus];
 }
 

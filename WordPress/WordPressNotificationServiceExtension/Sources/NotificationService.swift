@@ -49,6 +49,11 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
 
+        guard !NotificationKind.isViewMilestone(notificationKind) else {
+            contentHandler(makeViewMilestoneContent(notificationContent))
+            return
+        }
+
         guard NotificationKind.isSupportedByRichNotifications(notificationKind) else {
             tracks.trackNotificationDiscarded(notificationType: notificationType)
 
@@ -204,4 +209,16 @@ private extension NotificationService {
 
         return userID
     }
+}
+
+
+// MARK: - View Milestone notifications support
+private extension NotificationService {
+
+    func makeViewMilestoneContent(_ content: UNMutableNotificationContent) -> UNNotificationContent {
+        content.title = Self.viewMilestoneTitle
+        return content
+    }
+
+    static let viewMilestoneTitle = NSLocalizedString("You hit a milestone 🚀", comment: "Title for a view milestone push notification")
 }

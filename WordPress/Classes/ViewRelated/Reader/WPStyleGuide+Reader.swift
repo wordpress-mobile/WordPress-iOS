@@ -47,11 +47,7 @@ extension WPStyleGuide {
     }
 
     public class func readerCardBlogIconBorderColor() -> UIColor {
-        if #available(iOS 13.0, *) {
-            return UIColor(light: .gray(.shade0), dark: .systemGray5)
-        } else {
-            return .neutral(.shade0)
-        }
+        return UIColor(light: .gray(.shade0), dark: .systemGray5)
     }
 
     public class func readerCardFeaturedMediaBorderColor() -> UIColor {
@@ -343,7 +339,7 @@ extension WPStyleGuide {
 
         button.backgroundColor = .clear
 
-        let tintedFollowIcon = followIcon.imageWithTintColor(.accent(.shade40))
+        let tintedFollowIcon = followIcon.imageWithTintColor(.primary(.shade40))
         let tintedFollowingIcon = followingIcon.imageWithTintColor(.gray(.shade40))
 
         button.setImage(tintedFollowIcon, for: .normal)

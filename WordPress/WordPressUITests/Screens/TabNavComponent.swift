@@ -16,8 +16,7 @@ class TabNavComponent: BaseScreen {
     }
 
     func gotoMeScreen() -> MeTabScreen {
-        gotoMySitesScreen()
-        app.cells[WPUITestCredentials.testWPcomSitePrimaryAddress].tap()
+        gotoMySiteScreen()
         let meButton = app.navigationBars.buttons["meBarButton"]
         meButton.tap()
         return MeTabScreen()
@@ -25,18 +24,8 @@ class TabNavComponent: BaseScreen {
 
     @discardableResult
     func gotoMySiteScreen() -> MySiteScreen {
-        // Avoid transitioning to the sites list if MySites is already on screen
-        if !MySiteScreen.isVisible {
-            gotoMySitesScreen().switchToSite(withTitle: WPUITestCredentials.testWPcomSiteAddress)
-        }
+        mySitesTabButton.tap()
         return MySiteScreen()
-    }
-
-    @discardableResult
-    func gotoMySitesScreen() -> MySitesScreen {
-        mySitesTabButton.tap()
-        mySitesTabButton.tap()
-        return MySitesScreen()
     }
 
     func gotoAztecEditorScreen() -> AztecEditorScreen {

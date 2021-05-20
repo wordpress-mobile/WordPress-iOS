@@ -109,7 +109,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
         view.addSubview(containerStackView)
         containerStackView.axis = .vertical
 
-        if FeatureFlag.activityLogFilters.enabled && site.shouldShowActivityLogFilter() {
+        if site.shouldShowActivityLogFilter() {
             setupFilterBar()
         }
 
@@ -374,7 +374,10 @@ extension BaseActivityListViewController: ActivityPresenter {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
-        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
+
+        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site,
+                                                                   activity: activity,
+                                                                   isAwaitingCredentials: store.isAwaitingCredentials(site: site))
         restoreOptionsVC.restoreStatusDelegate = self
         restoreOptionsVC.presentedFrom = configuration.identifier
         alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
@@ -406,30 +409,10 @@ extension BaseActivityListViewController: ActivityPresenter {
             return
         }
 
-        guard FeatureFlag.jetpackBackupAndRestore.enabled else {
-            let title = NSLocalizedString("Rewind Site",
-                                          comment: "Title displayed in the Restore Site alert, should match Calypso")
-            let rewindDate = viewModel.mediumDateFormatterWithTime.string(from: activity.published)
-            let messageFormat = NSLocalizedString("Are you sure you want to restore your site back to %@?\nAnything you changed since then will be lost.",
-                                                  comment: "Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso.")
-            let message = String(format: messageFormat, rewindDate)
+        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site,
+                                                                   activity: activity,
+                                                                   isAwaitingCredentials: store.isAwaitingCredentials(site: site))
 
-            let alertController = UIAlertController(title: title,
-                                                    message: message,
-                                                    preferredStyle: .alert)
-
-            alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. A button title."))
-            alertController.addDestructiveActionWithTitle(NSLocalizedString("Confirm",
-                                                                            comment: "Confirm Rewind button title"),
-                                                          handler: { action in
-                                                            self.restoreSiteToRewindID(rewindID)
-                                                          })
-            self.present(alertController, animated: true)
-
-            return
-        }
-
-        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site, activity: activity)
         restoreOptionsVC.restoreStatusDelegate = self
         restoreOptionsVC.presentedFrom = from ?? configuration.identifier
         let navigationVC = UINavigationController(rootViewController: restoreOptionsVC)

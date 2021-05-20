@@ -63,27 +63,35 @@ WordPress/Derived Sources/
 WordPress/Images.xcassets/AppIcon-Internal.appiconset
 
 # Bundler
-/vendor/bundle/
-.bundle/
+.bundle
 
 # Dependencies
-/vendor/
+vendor
 
 # Fastlane
-Scripts/fastlane/Preview.html
-Scripts/fastlane/report.xml
-Scripts/fastlane/README.md
-Scripts/Preview.html
-Scripts/fastlane/test_output/
-Scripts/fastlane/google_cloud_keys.json
-Scripts/fastlane/promo_screenshots
-/Scripts/fastlane/metadata/review_information
-/Scripts/default.profraw
+fastlane/Preview.html
+fastlane/report.xml
+fastlane/README.md
+Preview.html
+fastlane/test_output/
+fastlane/google_cloud_keys.json
+fastlane/screenshots
+fastlane/jetpack_screenshots
+fastlane/promo_screenshots
+fastlane/jetpack_promo_screenshots
+fastlane/metadata/review_information
+default.profraw
 derived-data/
 
+# Fastlane former location
+Scripts/fastlane/
+
+# CI Artifacts Location
+Artifacts
+
 # Generated Internal Icons
-/WordPress/Resources/AppImages.xcassets/AppIcon-Internal.appiconset
-/WordPress/Resources/Icons-Internal
+WordPress/Resources/AppImages.xcassets/AppIcon-Internal.appiconset
+WordPress/Resources/Icons-Internal
 
 # All secrets should be stored under .configure-files
 # Everything without a .enc extension is ignored

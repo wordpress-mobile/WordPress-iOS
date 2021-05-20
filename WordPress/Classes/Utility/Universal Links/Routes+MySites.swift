@@ -39,7 +39,7 @@ extension MySitesRoute: Route {
 }
 
 extension MySitesRoute: NavigationAction {
-    func perform(_ values: [String: String], source: UIViewController? = nil) {
+    func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
         guard let coordinator = WPTabBarController.sharedInstance().mySitesCoordinator else {
             return
         }
@@ -48,7 +48,7 @@ extension MySitesRoute: NavigationAction {
             WPAppAnalytics.track(.deepLinkFailed, withProperties: ["route": path])
 
             if failAndBounce(values) == false {
-                coordinator.showMySites()
+                coordinator.showRootViewController()
                 postFailureNotice(title: NSLocalizedString("Site not found",
                                                            comment: "Error notice shown if the app can't find a specific site belonging to the user"))
             }

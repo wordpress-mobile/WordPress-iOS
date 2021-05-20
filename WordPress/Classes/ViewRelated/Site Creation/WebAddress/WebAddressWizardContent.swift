@@ -8,8 +8,11 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     // MARK: Properties
     private struct Metrics {
-        static let maxLabelWidth        = CGFloat(290)
-        static let noResultsTopInset    = CGFloat(64)
+        static let maxLabelWidth            = CGFloat(290)
+        static let noResultsTopInset        = CGFloat(64)
+        static let sitePromptEdgeMargin     = CGFloat(50)
+        static let sitePromptBottomMargin   = CGFloat(10)
+        static let sitePromptTopMargin      = CGFloat(25)
     }
 
     override var seperatorStyle: SeperatorStyle {
@@ -32,6 +35,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     private let table: UITableView
     private let searchHeader: UIView
     private let searchTextField: SearchTextField
+    private var sitePromptView: SitePromptView!
 
     /// The underlying data represented by the provider
     var data: [DomainSuggestion] {
@@ -128,6 +132,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         setupTable()
         WPAnalytics.track(.enhancedSiteCreationDomainsAccessed)
         loadHeaderView()
+        addAddressHintView()
     }
 
     private func loadHeaderView() {
@@ -164,6 +169,17 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         clearContent()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: nil) { [weak self] (_) in
+            guard let `self` = self else { return }
+            if !self.sitePromptView.isHidden {
+                self.updateTitleViewVisibility(true)
+            }
+        }
+    }
+
     override func estimatedContentSize() -> CGSize {
         guard !isShowingError else { return CGSize(width: view.frame.width, height: 44) }
         guard data.count > 0 else { return .zero }
@@ -179,6 +195,8 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         itemSelectionChanged(false)
         data = []
         lastSearchQuery = nil
+        setAddressHintVisibility(isHidden: false)
+        expandHeader()
     }
 
     private func fetchAddresses(_ searchTerm: String) {
@@ -226,6 +244,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
     }
 
     private func handleData(_ data: [DomainSuggestion]) {
+        setAddressHintVisibility(isHidden: true)
         let resultsHavePreviousSelection = data.contains { (suggestion) -> Bool in self.selectedDomain?.domainName == suggestion.domainName }
         if !resultsHavePreviousSelection {
             clearSelectionAndCreateSiteButton()
@@ -372,6 +391,27 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         performSearchIfNeeded(query: query)
     }
 
+    // MARK: - Search logic
+
+    private func setAddressHintVisibility(isHidden: Bool) {
+        sitePromptView.isHidden = isHidden
+        scrollableView.isScrollEnabled = isHidden
+    }
+
+    private func addAddressHintView() {
+        sitePromptView = SitePromptView(frame: .zero)
+        sitePromptView.isUserInteractionEnabled = false
+        sitePromptView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(sitePromptView)
+        NSLayoutConstraint.activate([
+            sitePromptView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Metrics.sitePromptEdgeMargin),
+            sitePromptView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Metrics.sitePromptEdgeMargin),
+            sitePromptView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: Metrics.sitePromptBottomMargin),
+            sitePromptView.topAnchor.constraint(equalTo: searchHeader.bottomAnchor, constant: Metrics.sitePromptTopMargin)
+        ])
+        setAddressHintVisibility(isHidden: true)
+    }
+
     // MARK: - Others
 
     private enum Strings {
@@ -389,7 +429,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
                                                       comment: "Select domain name. Subtitle")
         static let createSite: String = NSLocalizedString("Create Site",
                                                           comment: "Button to progress to the next step")
-        static let searchPlaceholder: String = NSLocalizedString("Search Domains",
+        static let searchPlaceholder: String = NSLocalizedString("Type a name for your site",
                                                                  comment: "Site creation. Seelect a domain, search field placeholder")
         static let searchAccessibility: String = NSLocalizedString("Searches for available domains to use for your site.",
                                                                    comment: "Accessibility hint for the domains search field in Site Creation.")

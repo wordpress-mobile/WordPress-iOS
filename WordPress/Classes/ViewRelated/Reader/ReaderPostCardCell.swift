@@ -192,6 +192,11 @@ protocol ReaderTopicsChipsDelegate: class {
         prepareForVoiceOver()
     }
 
+    func refreshLikeButton() {
+        configureLikeActionButton()
+        configureButtonTitles()
+    }
+
 }
 
 // MARK: - Configuration

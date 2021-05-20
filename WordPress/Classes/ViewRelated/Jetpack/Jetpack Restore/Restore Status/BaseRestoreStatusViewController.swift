@@ -87,15 +87,10 @@ class BaseRestoreStatusViewController: UIViewController {
             iconImage: configuration.iconImage,
             title: configuration.messageTitle,
             description: String(format: configuration.messageDescription, publishedDate),
-            primaryButtonTitle: configuration.primaryButtonTitle,
             hint: configuration.hint
         )
 
         statusView.update(progress: 0, progressTitle: configuration.placeholderProgressTitle, progressDescription: nil)
-
-        statusView.primaryButtonHandler = { [weak self] in
-            self?.primaryButtonTapped()
-        }
 
         view.addSubview(statusView)
         view.pinSubviewToAllEdges(statusView)

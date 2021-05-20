@@ -3,7 +3,6 @@ import CocoaLumberjack
 import WordPressShared
 import WordPressFlux
 
-
 class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
     private struct Constant {
         struct Size {
@@ -20,6 +19,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             static let restorePageCellIdentifier = "RestorePageCellIdentifier"
             static let restorePageCellNibName = "RestorePageTableViewCell"
             static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
+        }
+
+        struct Events {
+            static let source = "page_list"
+            static let pagePostType = "page"
         }
     }
 
@@ -51,9 +55,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }()
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
-        return CreateButtonCoordinator(self, actions: [PageAction(handler: { [weak self] in
+        let action = PageAction(handler: { [weak self] in
             self?.createPost()
-        })])
+        }, source: Constant.Events.source)
+        return CreateButtonCoordinator(self, actions: [action], source: Constant.Events.source)
     }()
 
     // MARK: - GUI
@@ -385,10 +390,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return Constant.Size.pageSectionHeaderHeight
     }
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return Constant.Size.pageCellWithTagEstimatedRowHeight
-    }
-
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard _tableViewHandler.groupResults else {
             return UIView(frame: .zero)
@@ -410,7 +411,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let page = pageAtIndexPath(indexPath)
         if page.isSiteHomepage {
-            QuickStartTourGuide.shared.visited(.editHomepage)
+            let guide = QuickStartTourGuide.shared
+            if guide.isCurrentElement(.editHomepage) {
+                QuickStartTourGuide.shared.visited(.editHomepage)
+            } else {
+                QuickStartTourGuide.shared.complete(tour: QuickStartEditHomepageTour(), silentlyForBlog: blog)
+            }
+
             tableView.reloadRows(at: [indexPath], with: .automatic)
         } else {
             QuickStartTourGuide.shared.endCurrentTour()
@@ -488,7 +495,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Post Actions
 
     override func createPost() {
-        WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: "posts_view", WPAppAnalyticsKeyPostType: "page"], with: blog)
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: Constant.Events.source, WPAppAnalyticsKeyPostType: Constant.Events.pagePostType], with: blog)
 
         PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] (selectedLayout) in
             self?.createPage(selectedLayout)
@@ -606,7 +613,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let indexPath = tableView.indexPath(for: cell)
 
         let filter = filterSettings.currentPostListFilter().filterType
-
+        let isHomepage = ((page as? Page)?.isSiteHomepage ?? false)
         if filter == .trashed {
             alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
                 guard let strongSelf = self,
@@ -652,24 +659,28 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 addSetPostsPageAction(to: alertController, for: page, at: indexPath)
                 addDuplicateAction(to: alertController, for: page)
 
-                alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
-                    guard let strongSelf = self,
-                        let page = strongSelf.pageForObjectID(objectID) else {
+                if !isHomepage {
+                    alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
+                        guard let strongSelf = self,
+                              let page = strongSelf.pageForObjectID(objectID) else {
                             return
-                    }
+                        }
 
-                    strongSelf.draftPage(page, at: indexPath)
-                })
+                        strongSelf.draftPage(page, at: indexPath)
+                    })
+                }
             }
 
-            alertController.addActionWithTitle(trashButtonTitle, style: .destructive, handler: { [weak self] (action) in
-                guard let strongSelf = self,
-                    let page = strongSelf.pageForObjectID(objectID) else {
+            if !isHomepage {
+                alertController.addActionWithTitle(trashButtonTitle, style: .destructive, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                          let page = strongSelf.pageForObjectID(objectID) else {
                         return
-                }
+                    }
 
-                strongSelf.handleTrashPage(page)
-            })
+                    strongSelf.handleTrashPage(page)
+                })
+            }
         } else {
             if page.isFailed {
                 alertController.addActionWithTitle(retryButtonTitle, style: .default, handler: { [weak self] (action) in

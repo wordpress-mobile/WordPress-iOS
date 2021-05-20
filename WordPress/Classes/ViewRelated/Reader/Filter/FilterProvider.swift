@@ -148,10 +148,7 @@ extension ReaderSiteTopic {
                     return TableDataItem(topic: topic, configure: { cell in
                         cell.textLabel?.text = topic.title
                         cell.detailTextLabel?.text = topic.siteURL
-
-                        if FeatureFlag.unseenPosts.enabled {
-                            addUnseenPostCount(topic, with: cell)
-                        }
+                        addUnseenPostCount(topic, with: cell)
                     })
                 }
             }

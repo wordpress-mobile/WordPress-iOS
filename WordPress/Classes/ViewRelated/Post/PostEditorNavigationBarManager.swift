@@ -11,7 +11,7 @@ protocol PostEditorNavigationBarManagerDelegate: class {
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, blogPickerWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton)
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadLeftNavigationItems items: [UIBarButtonItem])
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadTitleView view: UIView)
 }
 
 // A class to share the navigation bar UI of the Post Editor.
@@ -55,6 +55,14 @@ class PostEditorNavigationBarManager {
         return button
     }()
 
+    /// Blog TitleView Label
+    lazy var blogTitleViewLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .appBarText
+        label.font = Fonts.blogTitle
+        return label
+    }()
+
     /// Publish Button
     private(set) lazy var publishButton: UIButton = {
         let button = UIButton(type: .system)
@@ -84,16 +92,6 @@ class PostEditorNavigationBarManager {
         return view
     }()
 
-    /// Draft Saving Button
-    ///
-    private lazy var savingDraftButton: WPUploadStatusButton = {
-        let button = WPUploadStatusButton(frame: CGRect(origin: .zero, size: delegate?.savingDraftButtonSize ?? .zero))
-        button.setTitle(NSLocalizedString("Saving Draft", comment: "Message to indicate progress of saving draft"), for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        return button
-    }()
-
     // MARK: - Bar button items
 
     /// Negative Offset BarButtonItem: Used to fine tune navigationBar Items
@@ -111,39 +109,6 @@ class PostEditorNavigationBarManager {
         cancelItem.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close edior and cancel changes or insertion of post")
         cancelItem.accessibilityIdentifier = "Close"
         return cancelItem
-    }()
-
-
-    /// NavigationBar's Blog Picker Button
-    ///
-    private lazy var blogPickerBarButtonItem: UIBarButtonItem = {
-        let pickerItem = UIBarButtonItem(customView: self.blogPickerButton)
-        pickerItem.accessibilityLabel = NSLocalizedString("Switch Blog", comment: "Action button to switch the blog to which you'll be posting")
-        return pickerItem
-    }()
-
-    /// Media Uploading Status Button
-    ///
-    private lazy var mediaUploadingBarButtonItem: UIBarButtonItem = {
-        let barButton = UIBarButtonItem(customView: self.mediaUploadingButton)
-        barButton.accessibilityLabel = NSLocalizedString("Media Uploading", comment: "Message to indicate progress of uploading media to server")
-        return barButton
-    }()
-
-    /// Preview Generating Status Button
-    ///
-    private lazy var previewGeneratingBarButtonItem: UIBarButtonItem = {
-        let barButton = UIBarButtonItem(customView: self.previewGeneratingView)
-        barButton.accessibilityLabel = NSLocalizedString("Generating Preview", comment: "Message to indicate progress of generating preview")
-        return barButton
-    }()
-
-    /// Saving draft Status Button
-    ///
-    private lazy var savingDraftBarButtonItem: UIBarButtonItem = {
-        let barButton = UIBarButtonItem(customView: self.savingDraftButton)
-        barButton.accessibilityLabel = NSLocalizedString("Saving Draft", comment: "Message to indicate progress of saving draft")
-        return barButton
     }()
 
     /// Publish Button
@@ -185,19 +150,15 @@ class PostEditorNavigationBarManager {
     // MARK: - Public
 
     var leftBarButtonItems: [UIBarButtonItem] {
-        return [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
+        return [separatorButtonItem, closeBarButtonItem]
     }
 
-    var uploadingMediaLeftBarButtonItems: [UIBarButtonItem] {
-        return [separatorButtonItem, closeBarButtonItem, mediaUploadingBarButtonItem]
+    var uploadingMediaTitleView: UIView {
+        mediaUploadingButton
     }
 
-    var generatingPreviewLeftBarButtonItems: [UIBarButtonItem] {
-        return [separatorButtonItem, closeBarButtonItem, previewGeneratingBarButtonItem]
-    }
-
-    var savingDraftLeftBarButtonItems: [UIBarButtonItem] {
-        return [separatorButtonItem, closeBarButtonItem, savingDraftBarButtonItem]
+    var generatingPreviewTitleView: UIView {
+        previewGeneratingView
     }
 
     var rightBarButtonItems: [UIBarButtonItem] {
@@ -210,17 +171,12 @@ class PostEditorNavigationBarManager {
         publishButton.isEnabled = delegate?.isPublishButtonEnabled ?? true
     }
 
-    func reloadBlogPickerButton(with title: String, enabled: Bool) {
-
-        let titleText = NSAttributedString(string: title, attributes: [.font: Fonts.blogPicker])
-
-        blogPickerButton.setAttributedTitle(titleText, for: .normal)
-        blogPickerButton.buttonMode = enabled ? .multipleSite : .singleSite
-        blogPickerButton.isEnabled = enabled
+    func reloadBlogTitleView(text: String) {
+        blogTitleViewLabel.text = text
     }
 
-    func reloadLeftBarButtonItems(_ items: [UIBarButtonItem]) {
-        delegate?.navigationBarManager(self, reloadLeftNavigationItems: items)
+    func reloadTitleView(_ view: UIView) {
+        delegate?.navigationBarManager(self, reloadTitleView: view)
     }
 }
 
@@ -231,7 +187,7 @@ extension PostEditorNavigationBarManager {
 
     private enum Fonts {
         static let semiBold = WPFontManager.systemSemiBoldFont(ofSize: 16)
-        static var blogPicker: UIFont {
+        static var blogTitle: UIFont {
             if FeatureFlag.newNavBarAppearance.enabled {
                 return WPStyleGuide.navigationBarStandardFont
             } else {

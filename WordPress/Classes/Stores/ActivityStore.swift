@@ -281,6 +281,11 @@ extension ActivityStore {
         return currentStatus != nil && (restoreStatus == .running || restoreStatus == .queued)
     }
 
+    func isAwaitingCredentials(site: JetpackSiteRef) -> Bool {
+        let currentStatus = getCurrentRewindStatus(site: site)
+        return currentStatus?.state == .awaitingCredentials
+    }
+
     func fetchRewindStatus(site: JetpackSiteRef) {
         state.fetchingRewindStatus[site] = true
 

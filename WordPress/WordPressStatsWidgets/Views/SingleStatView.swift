@@ -1,21 +1,17 @@
 import SwiftUI
 
 struct SingleStatView: View {
-    let content: HomeWidgetData
-    let widgetTitle: LocalizedStringKey
-    let title: LocalizedStringKey
 
-    private var views: Int {
-        (content as? HomeWidgetTodayData)?.stats.views ?? (content as? HomeWidgetAllTimeData)?.stats.views ?? 0
-    }
+    let viewData: GroupedViewData
+
 
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                FlexibleCard(axis: .vertical, title: widgetTitle, value: .description(content.siteName), lineLimit: 2)
+                FlexibleCard(axis: .vertical, title: viewData.widgetTitle, value: .description(viewData.siteName), lineLimit: 2)
 
                 Spacer()
-                VerticalCard(title: title, value: views, largeText: true)
+                VerticalCard(title: viewData.upperLeftTitle, value: viewData.upperLeftValue, largeText: true)
             }
             Spacer()
         }

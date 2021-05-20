@@ -5,21 +5,17 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackDisconnect
     case debugMenu
     case readerCSS
-    case unifiedAuth
-    case swiftCoreData
     case homepageSettings
     case gutenbergMentions
     case gutenbergXposts
-    case whatIsNew
     case newNavBarAppearance
     case unifiedPrologueCarousel
     case stories
+    case contactInfo
     case siteCreationHomePagePicker
-    case jetpackScan
-    case activityLogFilters
-    case jetpackBackupAndRestore
     case todayWidget
-    case unseenPosts
+    case milestoneNotifications
+    case newLikeNotifications
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -34,44 +30,34 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .readerCSS:
             return false
-        case .unifiedAuth:
-            return true
-        case .swiftCoreData:
-            return BuildConfiguration.current == .localDeveloper
         case .homepageSettings:
             return true
         case .gutenbergMentions:
             return true
         case .gutenbergXposts:
             return true
-        case .whatIsNew:
-            return true
         case .newNavBarAppearance:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .unifiedPrologueCarousel:
-            return false
+            return true
         case .stories:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
+        case .contactInfo:
+            return true
         case .siteCreationHomePagePicker:
-            return true
-        case .jetpackScan:
-            return true
-        case .activityLogFilters:
-            return true
-        case .jetpackBackupAndRestore:
             return true
         case .todayWidget:
             return true
-        case .unseenPosts:
+        case .milestoneNotifications:
             return true
+        case .newLikeNotifications:
+            return false
         }
     }
 
     /// This key must match the server-side one for remote feature flagging
     var remoteKey: String? {
         switch self {
-            case .unifiedAuth:
-                return "wordpress_ios_unified_login_and_signup"
             default:
                 return nil
         }
@@ -98,44 +84,34 @@ extension FeatureFlag {
             return "Debug menu"
         case .readerCSS:
             return "Ignore Reader CSS Cache"
-        case .unifiedAuth:
-            return "Unified Auth"
-        case .swiftCoreData:
-            return "Migrate Core Data Stack to Swift"
         case .homepageSettings:
             return "Homepage Settings"
         case .gutenbergMentions:
             return "Mentions in Gutenberg"
         case .gutenbergXposts:
             return "Xposts in Gutenberg"
-        case .whatIsNew:
-            return "What's New / Feature Announcement"
         case .newNavBarAppearance:
             return "New Navigation Bar Appearance"
         case .unifiedPrologueCarousel:
             return "Unified Prologue Carousel"
         case .stories:
             return "Stories"
+        case .contactInfo:
+            return "Contact Info"
         case .siteCreationHomePagePicker:
             return "Site Creation: Home Page Picker"
-        case .jetpackScan:
-            return "Jetpack Scan"
-        case .activityLogFilters:
-            return "Jetpack's Activity Log Filters"
-        case .jetpackBackupAndRestore:
-            return "Jetpack Backup and Restore"
         case .todayWidget:
             return "iOS 14 Today Widget"
-        case .unseenPosts:
-            return "Unseen Posts in Reader"
+        case .milestoneNotifications:
+            return "Milestone notifications"
+        case .newLikeNotifications:
+            return "New Like Notifications"
         }
     }
 
     var canOverride: Bool {
         switch self {
         case .debugMenu:
-            return false
-        case .swiftCoreData:
             return false
         case .newNavBarAppearance:
             return false

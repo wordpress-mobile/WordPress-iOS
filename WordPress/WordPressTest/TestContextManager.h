@@ -2,6 +2,7 @@
 #import "ContextManagerMock.h"
 #import <XCTest/XCTest.h>
 
+@class MockContext;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -35,6 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)sharedInstance;
 + (void)overrideSharedInstance:(id <CoreDataStack> _Nullable)contextManager;
+
+- (MockContext *)getMockContext;
 
 @end
 

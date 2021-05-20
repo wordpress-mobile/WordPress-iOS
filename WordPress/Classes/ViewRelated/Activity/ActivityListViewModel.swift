@@ -188,11 +188,6 @@ class ActivityListViewModel: Observable {
                     presenter?.presentDetailsFor(activity: formattableActivity)
                 },
                 actionButtonHandler: { [weak presenter] (button) in
-                    if !FeatureFlag.jetpackBackupAndRestore.enabled {
-                        presenter?.presentDetailsFor(activity: formattableActivity)
-                        return
-                    }
-
                     presenter?.presentBackupOrRestoreFor(activity: formattableActivity.activity, from: button)
                 }
             )
@@ -335,14 +330,8 @@ class ActivityListViewModel: Observable {
         if let rewindPoint = store.getActivity(site: site, rewindID: restore.id) {
             let dateString = mediumDateFormatterWithTime.string(from: rewindPoint.published)
 
-            let messageFormat: String
-            if FeatureFlag.jetpackBackupAndRestore.enabled {
-                messageFormat = NSLocalizedString("Restoring to %@",
+            let messageFormat = NSLocalizedString("Restoring to %@",
                                                   comment: "Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date.")
-            } else {
-                messageFormat = NSLocalizedString("Rewinding to %@",
-                                                  comment: "Text showing the point in time the site is being currently rewinded to. %@' is a placeholder that will expand to a date.")
-            }
 
             summary = String(format: messageFormat, dateString)
         } else {
@@ -355,12 +344,7 @@ class ActivityListViewModel: Observable {
             progress: progress
         )
 
-        let headerText: String
-        if FeatureFlag.jetpackBackupAndRestore.enabled {
-            headerText = NSLocalizedString("Restore", comment: "Title of section showing restore status")
-        } else {
-            headerText = NSLocalizedString("Rewind", comment: "Title of section showing rewind status")
-        }
+        let headerText = NSLocalizedString("Restore", comment: "Title of section showing restore status")
 
         return ImmuTableSection(headerText: headerText,
                                 rows: [rewindRow],

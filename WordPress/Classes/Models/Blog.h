@@ -80,6 +80,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureHomepageSettings,
     /// Does the blog support stories?
     BlogFeatureStories,
+    /// Does the blog support Jetpack contact info block?
+    BlogFeatureContactInfo,
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
@@ -102,6 +104,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSSet *tags;
 @property (nonatomic, strong, readwrite, nullable) NSSet *comments;
 @property (nonatomic, strong, readwrite, nullable) NSSet *connections;
+@property (nonatomic, strong, readwrite, nullable) NSSet *inviteLinks;
 @property (nonatomic, strong, readwrite, nullable) NSSet *domains;
 @property (nonatomic, strong, readwrite, nullable) NSSet *themes;
 @property (nonatomic, strong, readwrite, nullable) NSSet *media;
@@ -197,6 +200,9 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (weak, readonly, nullable) NSString *defaultPostFormatText;
 // Used to check if the blog has an icon set up
 @property (readonly) BOOL hasIcon;
+
+/** Determine timezone for blog from blog options.  If no timezone information is stored on the device, then assume GMT+0 is the default. */
+@property (readonly) NSTimeZone *timeZone;
 
 #pragma mark - Blog information
 

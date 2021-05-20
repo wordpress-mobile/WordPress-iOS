@@ -8,8 +8,10 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var descriptionLabel: UILabel!
     @IBOutlet private weak var actionButton: FancyButton!
+    @IBOutlet private weak var warningButton: UIButton!
 
     var actionButtonHandler: (() -> Void)?
+    var warningButtonHandler: (() -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -30,15 +32,24 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
         descriptionLabel.preferredMaxLayoutWidth = descriptionLabel.bounds.width
 
         actionButton.isPrimary = true
+
+        warningButton.titleLabel?.lineBreakMode = .byWordWrapping
     }
 
     // MARK: - Configuration
 
-    func configure(iconImage: UIImage, title: String, description: String, buttonTitle: String) {
+    func configure(iconImage: UIImage, title: String, description: String, buttonTitle: String, warningButtonTitle: String?) {
         icon.image = iconImage
         titleLabel.text = title
         descriptionLabel.text = description
         actionButton.setTitle(buttonTitle, for: .normal)
+
+        if let warningButtonTitle = warningButtonTitle {
+            warningButton.setTitle(warningButtonTitle, for: .normal)
+            warningButton.isHidden = false
+        } else {
+            warningButton.isHidden = true
+        }
     }
 
     // MARK: - Public
@@ -51,5 +62,9 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
 
     @IBAction private func actionButtonTapped(_ sender: UIButton) {
         actionButtonHandler?()
+    }
+
+    @IBAction private func warningButtonTapped(_ sender: UIButton) {
+        warningButtonHandler?()
     }
 }

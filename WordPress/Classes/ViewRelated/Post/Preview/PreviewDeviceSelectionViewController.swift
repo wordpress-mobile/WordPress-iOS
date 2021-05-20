@@ -59,11 +59,7 @@ class PreviewDeviceSelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let blurEffect: UIBlurEffect
-        if #available(iOS 13.0, *) {
-            blurEffect = UIBlurEffect(style: .systemMaterial)
-        } else {
-            blurEffect = UIBlurEffect(style: .light)
-        }
+        blurEffect = UIBlurEffect(style: .systemMaterial)
 
         let effectView = UIVisualEffectView(effect: blurEffect)
 

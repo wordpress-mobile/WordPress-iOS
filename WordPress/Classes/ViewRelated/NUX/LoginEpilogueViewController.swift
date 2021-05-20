@@ -30,11 +30,7 @@ class LoginEpilogueViewController: UIViewController {
     /// Blur effect on button panel
     ///
     private var blurEffect: UIBlurEffect.Style {
-        if #available(iOS 13.0, *) {
-            return .systemChromeMaterial
-        }
-
-        return .regular
+        return .systemChromeMaterial
     }
 
     /// Links to the Epilogue TableViewController
@@ -77,6 +73,9 @@ class LoginEpilogueViewController: UIViewController {
         setTableViewMargins(forWidth: view.frame.width)
         refreshInterface(with: credentials)
         WordPressAuthenticator.track(.loginEpilogueViewed)
+
+        // If the user just signed in, refresh the A/B assignments
+        ABTest.start()
     }
 
     override func viewWillAppear(_ animated: Bool) {

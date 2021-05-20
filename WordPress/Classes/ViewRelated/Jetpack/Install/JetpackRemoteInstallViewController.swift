@@ -74,7 +74,7 @@ private extension JetpackRemoteInstallViewController {
                 WPAnalytics.track(.installJetpackRemoteCompleted)
             case .failure(let error):
                 WPAnalytics.track(.installJetpackRemoteFailed,
-                                  withProperties: ["error": error.type.rawValue,
+                                  withProperties: ["error_type": error.type.rawValue,
                                                    "site_url": self?.blog.url ?? "unknown"])
                 let url = self?.blog.url ?? "unknown"
                 let title = error.title ?? "no error message"

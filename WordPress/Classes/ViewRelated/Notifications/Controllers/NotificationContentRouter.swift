@@ -75,11 +75,10 @@ struct NotificationContentRouter {
         case .stats:
             /// Backup notifications are configured as "stat" notifications
             /// For now this is just a workaround to fix the routing
-            if url.absoluteString.matches(regex: "\\/backup\\/").count > 0 &&
-                FeatureFlag.jetpackBackupAndRestore.enabled {
+            if url.absoluteString.matches(regex: "\\/backup\\/").count > 0 {
                 try coordinator.displayBackupWithSiteID(range.siteID)
             } else {
-                try coordinator.displayStatsWithSiteID(range.siteID)
+                try coordinator.displayStatsWithSiteID(range.siteID, url: url)
             }
         case .follow:
             try coordinator.displayFollowersWithSiteID(range.siteID, expirationTime: expirationFiveMinutes)

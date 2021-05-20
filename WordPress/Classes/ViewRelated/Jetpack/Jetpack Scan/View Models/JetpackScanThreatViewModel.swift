@@ -9,6 +9,7 @@ struct JetpackScanThreatViewModel {
     let title: String
     let description: String?
     let isFixing: Bool
+    private let hasValidCredentials: Bool?
 
     // Threat Details
     let detailIconImage: UIImage?
@@ -26,8 +27,10 @@ struct JetpackScanThreatViewModel {
 
     // Threat Detail Action
     let fixActionTitle: String?
+    let fixActionEnabled: Bool
     let ignoreActionTitle: String?
     let ignoreActionMessage: String
+    let warningActionTitle: String?
 
     // Threat Detail Success
     let fixSuccessTitle: String
@@ -70,8 +73,9 @@ struct JetpackScanThreatViewModel {
         return threat.context?.attributedString(with: contextConfig)
     }()
 
-    init(threat: JetpackScanThreat) {
+    init(threat: JetpackScanThreat, hasValidCredentials: Bool? = nil) {
         self.threat = threat
+        self.hasValidCredentials = hasValidCredentials
 
         let status = threat.status
 
@@ -97,8 +101,10 @@ struct JetpackScanThreatViewModel {
 
         // Threat Details Action
         fixActionTitle = Self.fixActionTitle(for: threat)
+        fixActionEnabled = hasValidCredentials ?? false
         ignoreActionTitle = Self.ignoreActionTitle(for: threat)
         ignoreActionMessage = Strings.details.actions.messages.ignore
+        warningActionTitle = Self.warningActionTitle(for: threat, hasValidCredentials: hasValidCredentials)
 
         // Threat Detail Success
         fixSuccessTitle = Strings.details.success.fix
@@ -270,6 +276,16 @@ struct JetpackScanThreatViewModel {
         return Strings.details.actions.titles.ignore
     }
 
+    private static func warningActionTitle(for threat: JetpackScanThreat, hasValidCredentials: Bool?) -> String? {
+        guard fixActionTitle(for: threat) != nil,
+              let hasValidCredentials = hasValidCredentials,
+              !hasValidCredentials else {
+            return nil
+        }
+
+        return Strings.details.actions.titles.enterServerCredentials
+    }
+
     private struct Strings {
 
         struct details {
@@ -309,10 +325,11 @@ struct JetpackScanThreatViewModel {
                 struct titles {
                     static let ignore = NSLocalizedString("Ignore threat", comment: "Title for button that will ignore the threat")
                     static let fixable = NSLocalizedString("Fix threat", comment: "Title for button that will fix the threat")
+                    static let enterServerCredentials = NSLocalizedString("Enter your server credentials to fix threat.", comment: "Title for button when a site is missing server credentials")
                 }
 
                 struct messages {
-                    static let ignore = NSLocalizedString("You shouldn’t ignore a security unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".", comment: "Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name.")
+                    static let ignore = NSLocalizedString("You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\".", comment: "Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name.")
                 }
             }
 

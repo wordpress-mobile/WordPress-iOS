@@ -77,11 +77,10 @@ import AutomatticTracks
     }
 
     private func handleViewStats(url: URL) -> Bool {
-        let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         guard let params = url.queryItems,
             let siteId = params.intValue(of: "siteId"),
-            let blog = blogService.blog(byBlogId: NSNumber(value: siteId)) else {
+            let blog = try? Blog.lookup(withID: siteId, in: ContextManager.shared.mainContext) else {
             return false
         }
 
@@ -115,7 +114,7 @@ import AutomatticTracks
             return false
         }
 
-        if debugKey == ApiCredentials.debuggingKey(), debugType == "force_crash" {
+        if debugKey == ApiCredentials.debuggingKey, debugType == "force_crash" {
             WordPressAppDelegate.crashLogging?.crash()
         }
 

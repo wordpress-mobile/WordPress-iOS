@@ -101,42 +101,6 @@ extension NSNotification.Name {
 
     // MARK: - Show Zendesk Views
 
-    /// Displays the Zendesk Help Center from the given controller, filtered by the mobile category and articles labelled as iOS.
-    ///
-    func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
-
-        presentInController = controller
-        let haveUserIdentity = ZendeskUtils.sharedInstance.haveUserIdentity && ZendeskUtils.sharedInstance.userNameConfirmed
-
-        // Since user information is not needed to display the Help Center,
-        // if a user identity has not been created, create an empty identity.
-        if !haveUserIdentity {
-            let zendeskIdentity = Identity.createAnonymous()
-            Zendesk.instance?.setIdentity(zendeskIdentity)
-        }
-
-        self.sourceTag = sourceTag
-        WPAnalytics.track(.supportHelpCenterViewed)
-
-        let helpCenterConfig = HelpCenterUiConfiguration()
-        helpCenterConfig.groupType = .category
-        helpCenterConfig.groupIds = [Constants.mobileCategoryID as NSNumber]
-        helpCenterConfig.labels = [Constants.articleLabel]
-
-        // If we don't have the user's information, disable 'Contact Us' via the Help Center and Article view.
-        helpCenterConfig.showContactOptions = haveUserIdentity
-        helpCenterConfig.showContactOptionsOnEmptySearch = haveUserIdentity
-        let articleConfig = ArticleUiConfiguration()
-        articleConfig.showContactOptions = haveUserIdentity
-
-        // Get custom request configuration so new tickets from this path have all the necessary information.
-        let newRequestConfig = self.createRequest()
-
-
-        let helpCenterController = HelpCenterUi.buildHelpCenterOverviewUi(withConfigs: [helpCenterConfig, articleConfig, newRequestConfig])
-        ZendeskUtils.showZendeskView(helpCenterController)
-    }
-
     /// Displays the Zendesk New Request view from the given controller, for users to submit new tickets.
     /// If the user's identity (i.e. contact info) was updated, inform the caller in the `identityUpdated` completion block.
     ///
@@ -337,20 +301,21 @@ extension NSNotification.Name {
 private extension ZendeskUtils {
 
     static func getZendeskCredentials() -> Bool {
-        guard let appId = ApiCredentials.zendeskAppId(),
-            let url = ApiCredentials.zendeskUrl(),
-            let clientId = ApiCredentials.zendeskClientId(),
-            !appId.isEmpty,
-            !url.isEmpty,
-            !clientId.isEmpty else {
-                DDLogInfo("Unable to get Zendesk credentials.")
-                toggleZendesk(enabled: false)
-                return false
+
+        let zdAppID = ApiCredentials.zendeskAppId
+        let zdUrl = ApiCredentials.zendeskUrl
+        let zdClientId = ApiCredentials.zendeskClientId
+
+        guard
+            !zdAppID.isEmpty,
+            !zdUrl.isEmpty,
+            !zdClientId.isEmpty
+        else {
+            DDLogInfo("Unable to get Zendesk credentials.")
+            toggleZendesk(enabled: false)
+            return false
         }
 
-        zdAppID = appId
-        zdUrl = url
-        zdClientId = clientId
         return true
     }
 
@@ -1030,10 +995,8 @@ private extension ZendeskUtils {
     struct Constants {
         static let unknownValue = "unknown"
         static let noValue = "none"
-        static let mobileCategoryID: UInt64 = 360000041586
-        static let articleLabel = "iOS"
         static let platformTag = "iOS"
-        static let ticketSubject = NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
+        static let ticketSubject = AppConstants.ticketSubject
         static let blogSeperator = "\n----------\n"
         static let jetpackTag = "jetpack"
         static let wpComTag = "wpcom"

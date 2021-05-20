@@ -35,13 +35,17 @@ struct WPLoggingStack {
 }
 
 struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
-    let sentryDSN: String = ApiCredentials.sentryDSN()
+    let sentryDSN: String = ApiCredentials.sentryDSN
 
     var userHasOptedOut: Bool {
         return UserSettings.userHasOptedOutOfCrashLogging
     }
 
     var buildType: String = BuildConfiguration.current.rawValue
+
+    var shouldEnableAutomaticSessionTracking: Bool {
+        return !UserSettings.userHasOptedOutOfCrashLogging
+    }
 
     var currentUser: TracksUser? {
         let context = ContextManager.sharedInstance().mainContext

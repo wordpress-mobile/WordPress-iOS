@@ -9,15 +9,30 @@ struct JetpackRestoreOptionsConfiguration {
     let messageDescription: String
     let generalSectionHeaderText: String
     let buttonTitle: String
+    let warningButtonTitle: String?
+    let isRestoreTypesConfigurable: Bool
 }
 
 class BaseRestoreOptionsViewController: UITableViewController {
+
+    // MARK: - Properties
+
+    lazy var restoreTypes: JetpackRestoreTypes = {
+        if configuration.isRestoreTypesConfigurable {
+            return JetpackRestoreTypes()
+        }
+        return JetpackRestoreTypes(themes: false,
+                                   plugins: false,
+                                   uploads: false,
+                                   sqls: false,
+                                   roots: false,
+                                   contents: false)
+    }()
 
     // MARK: - Private Properties
 
     private(set) var site: JetpackSiteRef
     private(set) var activity: Activity
-    private(set) var restoreTypes = JetpackRestoreTypes()
     private let configuration: JetpackRestoreOptionsConfiguration
 
     private lazy var handler: ImmuTableViewHandler = {
@@ -76,6 +91,10 @@ class BaseRestoreOptionsViewController: UITableViewController {
         fatalError("Must override in subclass")
     }
 
+    func detailActionButtonTapped() {
+        fatalError("Must override in subclass")
+    }
+
     // MARK: - Configure
 
     private func configureTitle() {
@@ -100,11 +119,18 @@ class BaseRestoreOptionsViewController: UITableViewController {
             iconImage: configuration.iconImage,
             title: configuration.messageTitle,
             description: String(format: configuration.messageDescription, publishedDate),
-            buttonTitle: configuration.buttonTitle
+            buttonTitle: configuration.buttonTitle,
+            warningButtonTitle: configuration.warningButtonTitle
         )
+
+        headerView.toggleActionButton(isEnabled: configuration.isRestoreTypesConfigurable)
 
         headerView.actionButtonHandler = { [weak self] in
             self?.actionButtonTapped()
+        }
+
+        headerView.warningButtonHandler = { [weak self] in
+            self?.detailActionButtonTapped()
         }
 
         self.tableView.tableHeaderView = headerView
@@ -130,21 +156,25 @@ class BaseRestoreOptionsViewController: UITableViewController {
         let themesRow = SwitchRow(
             title: Strings.themesRowTitle,
             value: restoreTypes.themes,
+            isUserInteractionEnabled: configuration.isRestoreTypesConfigurable,
             onChange: toggleThemes(value:)
         )
         let pluginsRow = SwitchRow(
             title: Strings.pluginsRowTitle,
             value: restoreTypes.plugins,
+            isUserInteractionEnabled: configuration.isRestoreTypesConfigurable,
             onChange: togglePlugins(value:)
         )
         let mediaUploadsRow = SwitchRow(
             title: Strings.mediaUploadsRowTitle,
             value: restoreTypes.uploads,
+            isUserInteractionEnabled: configuration.isRestoreTypesConfigurable,
             onChange: toggleUploads(value:)
         )
         let rootRow = SwitchRow(
             title: Strings.rootRowTitle,
             value: restoreTypes.roots,
+            isUserInteractionEnabled: configuration.isRestoreTypesConfigurable,
             onChange: toggleRoots(value:)
         )
 
@@ -164,6 +194,7 @@ class BaseRestoreOptionsViewController: UITableViewController {
         let contentRow = SwitchRow(
             title: Strings.contentRowTitle,
             value: restoreTypes.contents,
+            isUserInteractionEnabled: configuration.isRestoreTypesConfigurable,
             onChange: toggleContents(value:)
         )
 
@@ -178,6 +209,7 @@ class BaseRestoreOptionsViewController: UITableViewController {
         let databaseRow = SwitchRow(
             title: Strings.databaseRowTitle,
             value: restoreTypes.sqls,
+            isUserInteractionEnabled: configuration.isRestoreTypesConfigurable,
             onChange: toggleSqls(value:)
         )
 
@@ -245,7 +277,7 @@ extension BaseRestoreOptionsViewController {
         static let pluginsRowTitle = NSLocalizedString("WordPress Plugins", comment: "Downloadable/Restorable items: WordPress Plugins")
         static let mediaUploadsRowTitle = NSLocalizedString("Media Uploads", comment: "Downloadable/Restorable items: Media Uploads")
         static let rootRowTitle = NSLocalizedString("WordPress root", comment: "Downloadable/Restorable items: WordPress root")
-        static let generalSectionFooterText = NSLocalizedString("Includes wp-config php and any non WordPress files", comment: "Downloadable/Restorable items: general section footer text")
+        static let generalSectionFooterText = NSLocalizedString("Includes wp-config.php and any non WordPress files", comment: "Downloadable/Restorable items: general section footer text")
         static let contentRowTitle = NSLocalizedString("WP-content directory", comment: "Downloadable/Restorable items: WP-content directory")
         static let contentSectionFooterText = NSLocalizedString("Excludes themes, plugins, and uploads", comment: "Downloadable/Restorable items: content section footer text")
         static let databaseRowTitle = NSLocalizedString("Site database", comment: "Downloadable/Restorable items: Site Database")

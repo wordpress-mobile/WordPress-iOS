@@ -337,13 +337,22 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         return;
     }
 
-    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+
     // If this post belongs to a site topic, let the topic service do the work.
+    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+
     if ([readerPost.topic isKindOfClass:[ReaderSiteTopic class]]) {
         ReaderSiteTopic *siteTopic = (ReaderSiteTopic *)readerPost.topic;
         [topicService toggleFollowingForSite:siteTopic success:success failure:failure];
         return;
     }
+
+    ReaderSiteTopic *feedSiteTopic = [topicService findSiteTopicWithFeedID:post.feedID];
+    if (feedSiteTopic) {
+        [topicService toggleFollowingForSite:feedSiteTopic success:success failure:failure];
+        return;
+    }
+
 
     // Keep previous values in case of failure
     BOOL oldValue = readerPost.isFollowing;

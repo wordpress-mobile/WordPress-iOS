@@ -13,25 +13,12 @@ extension WPStyleGuide {
 
     @objc
     public class var navigationBarStandardFont: UIFont {
-        return WPStyleGuide.fixedSerifFontForTextStyle(.headline, fontWeight: .semibold)
+        return AppStyleGuide.navigationBarStandardFont
     }
 
     @objc
     public class var navigationBarLargeFont: UIFont {
-        return WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold)
-    }
-
-    // MARK: - styles used before Muriel colors are enabled
-    public class func navigationBarBackgroundImage() -> UIImage {
-        return UIImage(color: WPStyleGuide.wordPressBlue())
-    }
-
-    public class func navigationBarBarStyle() -> UIBarStyle {
-        return .black
-    }
-
-    public class func navigationBarShadowImage() -> UIImage {
-        return UIImage(color: UIColor(fromHex: 0x007eb1))
+        return AppStyleGuide.navigationBarLargeFont
     }
 
     class func configureDefaultTint() {
@@ -44,25 +31,36 @@ extension WPStyleGuide {
         navigationAppearance.isTranslucent = false
         navigationAppearance.tintColor = .appBarTint
         navigationAppearance.barTintColor = .appBarBackground
-        navigationAppearance.titleTextAttributes = [.foregroundColor: UIColor.appBarText]
 
         var textAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.appBarText]
+        let largeTitleTextAttributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.navigationBarLargeFont]
+
         if FeatureFlag.newNavBarAppearance.enabled {
             textAttributes[.font] = WPStyleGuide.navigationBarStandardFont
         }
 
         navigationAppearance.titleTextAttributes = textAttributes
+        navigationAppearance.largeTitleTextAttributes = largeTitleTextAttributes
 
-        if #available(iOS 13.0, *) {
-            // Required to fix detail navigation controller appearance due to https://stackoverflow.com/q/56615513
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = .appBarBackground
-            appearance.titleTextAttributes = textAttributes
+        // Required to fix detail navigation controller appearance due to https://stackoverflow.com/q/56615513
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .appBarBackground
+        appearance.titleTextAttributes = textAttributes
+        appearance.largeTitleTextAttributes = largeTitleTextAttributes
 
-            navigationAppearance.standardAppearance = appearance
-            navigationAppearance.scrollEdgeAppearance = navigationAppearance.standardAppearance
+        if FeatureFlag.newNavBarAppearance.enabled {
+            appearance.shadowColor = .separator
+
+            let scrollEdgeAppearance = appearance.copy()
+            scrollEdgeAppearance.shadowColor = .clear
+            navigationAppearance.scrollEdgeAppearance = scrollEdgeAppearance
+        } else {
+            navigationAppearance.scrollEdgeAppearance = appearance
         }
+
+        navigationAppearance.standardAppearance = appearance
+        navigationAppearance.compactAppearance = appearance
 
         // Makes bar buttons visible in "Other Apps" media source picker.
         // Setting title text attributes makes bar button items not go blank when switching between the tabs of the picker.
@@ -89,19 +87,14 @@ extension WPStyleGuide {
 
     /// Style the tab bar using Muriel colors
     class func configureTabBarAppearance() {
-        UITabBar.appearance().tintColor = .primary
+        UITabBar.appearance().tintColor = .tabSelected
         UITabBar.appearance().unselectedItemTintColor = .tabUnselected
     }
 
     /// Style the `LightNavigationController` UINavigationBar and BarButtonItems
     class func configureLightNavigationBarAppearance() {
         let separatorColor: UIColor
-
-        if #available(iOS 13.0, *) {
-            separatorColor = .systemGray4
-        } else {
-            separatorColor = .lightGray
-        }
+        separatorColor = .systemGray4
 
         let navigationBarAppearanceProxy = UINavigationBar.appearance(whenContainedInInstancesOf: [LightNavigationController.self])
         navigationBarAppearanceProxy.backgroundColor = .white // Only used on iOS 12 so doesn't need dark mode support
@@ -112,14 +105,12 @@ extension WPStyleGuide {
             NSAttributedString.Key.foregroundColor: UIColor.text
         ]
 
-        if #available(iOS 13.0, *) {
-            let appearance = UINavigationBarAppearance()
-            appearance.backgroundColor = .systemBackground
-            appearance.shadowColor = separatorColor
-            navigationBarAppearanceProxy.standardAppearance = appearance
-        }
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .systemBackground
+        appearance.shadowColor = separatorColor
+        navigationBarAppearanceProxy.standardAppearance = appearance
 
-        let tintColor = UIColor(light: .brand, dark: .white)
+        let tintColor = UIColor.lightAppBarTint
 
         let buttonBarAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [LightNavigationController.self])
         buttonBarAppearance.tintColor = tintColor
@@ -140,12 +131,14 @@ extension WPStyleGuide {
         configureTableViewColors(view: view)
         configureTableViewColors(tableView: tableView)
     }
+
     class func configureTableViewColors(view: UIView?) {
         guard let view = view else {
             return
         }
         view.backgroundColor = .basicBackground
     }
+
     class func configureTableViewColors(tableView: UITableView?) {
         guard let tableView = tableView else {
             return

@@ -47,6 +47,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     if (self) {
         _contextManager = [TracksContextManager new];
         _tracksService = [[TracksService alloc] initWithContextManager:_contextManager];
+        _tracksService.eventNamePrefix = AppConstants.eventNamePrefix;
     }
     return self;
 }
@@ -534,9 +535,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatEditorSessionTemplateApply:
             eventName = @"editor_session_template_apply";
             break;
-        case WPAnalyticsStatEditorSessionTemplatePreview:
-            eventName = @"editor_session_template_preview";
-            break;
         case WPAnalyticsStatEditorPublishedPost:
             eventName = @"editor_post_published";
             break;
@@ -791,6 +789,27 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatInstallJetpackWebviewFailed:
             eventName = @"connect_jetpack_failed";
+            break;
+        case WPAnalyticsStatLayoutPickerPreviewErrorShown:
+            eventName = @"layout_picker_preview_error_shown";
+            break;
+        case WPAnalyticsStatLayoutPickerPreviewLoaded:
+            eventName = @"layout_picker_preview_loaded";
+            break;
+        case WPAnalyticsStatLayoutPickerPreviewLoading:
+            eventName = @"layout_picker_preview_loading";
+            break;
+        case WPAnalyticsStatLayoutPickerPreviewModeButtonTapped:
+            eventName = @"layout_picker_preview_mode_button_tapped";
+            break;
+        case WPAnalyticsStatLayoutPickerPreviewModeChanged:
+            eventName = @"layout_picker_preview_mode_changed";
+            break;
+        case WPAnalyticsStatLayoutPickerPreviewViewed:
+            eventName = @"layout_picker_preview_viewed";
+            break;
+        case WPAnalyticsStatLayoutPickerThumbnailModeButtonTapped:
+            eventName = @"layout_picker_thumbnail_mode_button_tapped";
             break;
         case WPAnalyticsStatLogSpecialCondition:
             eventName = @"log_special_condition";

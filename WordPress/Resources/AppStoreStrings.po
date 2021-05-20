@@ -15,7 +15,8 @@ msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Manage your website anywhere"
+msgid "Build a website or blog
+"
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
@@ -37,20 +38,18 @@ msgstr ""
 #. translators: Keywords used in the App Store search engine to find the app.
 #. Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
 msgctxt "app_store_keywords"
-msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
+msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v16.6-whats-new"
+msgctxt "v17.3-whats-new"
 msgid ""
-"About this release:\n"
+"What’s new in WordPress release 17.3:\n"
 "\n"
-"Note: This is the last version of the app that will support iOS 12. Starting version 16.7, your app will require iOS 13 or higher.\n"
+"New block alert! With the Search block, you can now add a search function onto any page or post on your site. We’ve also simplified the process for inserting media while using the Image, Video, Gallery, File, and Audio blocks.\n"
 "\n"
-"See stats on your Home Screen: Display your WordPress site stats for the day on your iOS 14 device’s Home Screen with new Today Widgets.\n"
+"We addressed a few issues where your post content was not behaving as expected! Unwanted posts, for example, were sometimes converting into Classic content. This unexpected behavior occurred when deleting a post and then selecting Undo, and also when trashing a post. We also fixed an issue where your restored posts remained in your list of published posts even though they had been converted to drafts. (Apparently, sometimes your posts have minds of their own!) We’re pleased to say that all these issues have been fixed.\n"
 "\n"
-"Track your site activity: Filter and view items in your Activity Log — like backups, plugin updates, and published posts and pages — by date range and activity type.\n"
-"\n"
-"Get to know your app: Learn the features in your app with an improved Quick Start tour, which guides you through steps like reviewing site pages and editing your homepage.\n"
+"Overall, the team kept busy for this release, and we made various other improvements, including a styling fix on the Change Username page so people would no longer be stuck on the screen, and updating the comments experience so you can filter them to show the most recent unreplied comments from other users. We also squashed several translation bugs on various screens, and tweaked colors in the app where necessary.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

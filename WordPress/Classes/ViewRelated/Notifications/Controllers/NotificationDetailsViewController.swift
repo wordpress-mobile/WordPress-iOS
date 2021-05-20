@@ -15,7 +15,7 @@ protocol NotificationsNavigationDataSource: class {
 
 // MARK: - Renders a given Notification entity, onscreen
 //
-class NotificationDetailsViewController: UIViewController {
+class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     // MARK: - Properties
 
     let formatter = FormattableContentFormatter()
@@ -91,12 +91,17 @@ class NotificationDetailsViewController: UIViewController {
             guard oldValue != note && isViewLoaded else {
                 return
             }
-
+            confettiWasShown = false
             router = makeRouter()
+            setupTableDelegates()
             refreshInterface()
             markAsReadIfNeeded()
         }
     }
+
+    /// Wether a confetti animation was presented on this notification or not
+    ///
+    private var confettiWasShown = false
 
     lazy var coordinator: ContentCoordinator = {
         return DefaultContentCoordinator(controller: self, context: mainContext)
@@ -118,6 +123,7 @@ class NotificationDetailsViewController: UIViewController {
     ///
     var onSelectedNoteChange: ((Notification) -> Void)?
 
+    var likesListController: LikesListController?
 
     deinit {
         // Failsafe: Manually nuke the tableView dataSource and delegate. Make sure not to force a loadView event!
@@ -141,6 +147,7 @@ class NotificationDetailsViewController: UIViewController {
         setupMainView()
         setupTableView()
         setupTableViewCells()
+        setupTableDelegates()
         setupReplyTextView()
         setupSuggestionsView()
         setupKeyboardManager()
@@ -150,13 +157,17 @@ class NotificationDetailsViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         tableView.deselectSelectedRowWithAnimation(true)
         keyboardManager?.startListeningToKeyboardNotifications()
 
         refreshInterface()
         markAsReadIfNeeded()
         setupNotificationListeners()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        showConfettiIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -295,7 +306,8 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
         let group = contentGroup(for: indexPath)
         let reuseIdentifier = reuseIdentifierForGroup(group)
         guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? NoteBlockTableViewCell else {
-            fatalError()
+            DDLogError("Failed dequeueing NoteBlockTableViewCell.")
+            return UITableViewCell()
         }
 
         setup(cell, withContentGroupAt: indexPath)
@@ -400,7 +412,8 @@ extension NotificationDetailsViewController {
             NoteBlockActionsTableViewCell.self,
             NoteBlockCommentTableViewCell.self,
             NoteBlockImageTableViewCell.self,
-            NoteBlockUserTableViewCell.self
+            NoteBlockUserTableViewCell.self,
+            NoteBlockButtonTableViewCell.self
         ]
 
         for cellClass in cellClassNames {
@@ -408,6 +421,34 @@ extension NotificationDetailsViewController {
             let nib = UINib(nibName: classname, bundle: Bundle.main)
 
             tableView.register(nib, forCellReuseIdentifier: cellClass.reuseIdentifier())
+        }
+
+        if FeatureFlag.newLikeNotifications.enabled {
+            tableView.register(LikeUserTableViewCell.defaultNib,
+                               forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
+        }
+    }
+
+    /// Configure the delegate and data source for the table view based on notification type.
+    /// This method may be called several times, especially upon previous/next button click
+    /// since notification kind may change.
+    func setupTableDelegates() {
+        guard FeatureFlag.newLikeNotifications.enabled else {
+            return
+        }
+
+        if note.kind == .like || note.kind == .commentLike,
+           let likesListController = LikesListController(tableView: tableView, notification: note, delegate: self) {
+            tableView.delegate = likesListController
+            tableView.dataSource = likesListController
+            self.likesListController = likesListController
+
+            // always call refresh to ensure that the controller fetches the data.
+            likesListController.refresh()
+
+        } else {
+            tableView.delegate = self
+            tableView.dataSource = self
         }
     }
 
@@ -433,7 +474,10 @@ extension NotificationDetailsViewController {
     }
 
     func setupSuggestionsView() {
-        guard let siteID = note.metaSiteID else { return }
+        guard let siteID = note.metaSiteID else {
+            return
+        }
+
         suggestionsTableView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
         suggestionsTableView?.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -544,7 +588,7 @@ private extension NotificationDetailsViewController {
 
     var shouldAttachSuggestionsView: Bool {
         guard let siteID = note.metaSiteID,
-              let blog = SuggestionService.shared.persistedBlog(for: siteID) else {
+              let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
             return false
         }
         return shouldAttachReplyView && SuggestionService.shared.shouldShowSuggestions(for: blog)
@@ -596,6 +640,8 @@ private extension NotificationDetailsViewController {
             return NoteBlockImageTableViewCell.reuseIdentifier()
         case .user:
             return NoteBlockUserTableViewCell.reuseIdentifier()
+        case .button:
+            return NoteBlockButtonTableViewCell.reuseIdentifier()
         default:
             assertionFailure("Unmanaged group kind: \(blockGroup.kind)")
             return NoteBlockTextTableViewCell.reuseIdentifier()
@@ -631,6 +677,8 @@ private extension NotificationDetailsViewController {
             setupImageCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockTextTableViewCell:
             setupTextCell(cell, blockGroup: blockGroup, at: indexPath)
+        case let cell as NoteBlockButtonTableViewCell:
+            setupButtonCell(cell, blockGroup: blockGroup)
         default:
             assertionFailure("NotificationDetails: Please, add support for \(cell)")
         }
@@ -823,6 +871,10 @@ private extension NotificationDetailsViewController {
 
         let mediaURL = imageBlock.media.first?.mediaURL
         cell.downloadImage(mediaURL)
+
+        if note.isViewMilestone {
+            cell.backgroundImage = UIImage(named: Assets.confettiBackground)
+        }
     }
 
     func setupTextCell(_ cell: NoteBlockTextTableViewCell, blockGroup: FormattableContentGroup, at indexPath: IndexPath) {
@@ -836,9 +888,15 @@ private extension NotificationDetailsViewController {
         let mediaRanges = textBlock.buildRangesToImagesMap(mediaMap)
 
         // Load the attributedText
-        let text = note.isBadge ?
-            formatter.render(content: textBlock, with: BadgeContentStyles(cachingKey: "Badge-\(indexPath)")) :
-            formatter.render(content: textBlock, with: RichTextContentStyles(key: "Rich-Text-\(indexPath)"))
+        let text: NSAttributedString
+
+        if note.isBadge {
+            let isFirstTextGroup = indexPath.row == indexOfFirstContentGroup(ofKind: .text)
+            text = formatter.render(content: textBlock, with: BadgeContentStyles(cachingKey: "Badge-\(indexPath)", isTitle: isFirstTextGroup))
+            cell.isTitle = isFirstTextGroup
+        } else {
+            text = formatter.render(content: textBlock, with: RichTextContentStyles(key: "Rich-Text-\(indexPath)"))
+        }
 
         // Setup: Properties
         cell.attributedText = text.stringByEmbeddingImageAttachments(mediaRanges)
@@ -850,6 +908,26 @@ private extension NotificationDetailsViewController {
             }
 
             self.displayURL(url)
+        }
+    }
+
+    func setupButtonCell(_ cell: NoteBlockButtonTableViewCell, blockGroup: FormattableContentGroup) {
+        guard let textBlock = blockGroup.blocks.first as? NotificationTextContent else {
+            assertionFailure("Missing Text Block for Notification \(note.notificationId)")
+            return
+        }
+
+        cell.title = textBlock.text
+
+        if let linkRange = textBlock.ranges.map({ $0 as? LinkContentRange }).first,
+           let url = linkRange?.url {
+            cell.action = { [weak self] in
+                guard let `self` = self, self.isViewOnScreen() else {
+                    return
+                }
+
+                self.displayURL(url)
+            }
         }
     }
 }
@@ -890,6 +968,7 @@ extension NotificationDetailsViewController {
 // MARK: - Resources
 //
 private extension NotificationDetailsViewController {
+
     func displayURL(_ url: URL?) {
         guard let url = url else {
             tableView.deselectSelectedRowWithAnimation(true)
@@ -905,8 +984,18 @@ private extension NotificationDetailsViewController {
             tableView.deselectSelectedRowWithAnimation(true)
         }
     }
-}
 
+    func displayUserProfile(_ user: LikeUser, from indexPath: IndexPath) {
+        let userProfileVC = UserProfileSheetViewController(user: user)
+        let bottomSheet = BottomSheetViewController(childViewController: userProfileVC)
+
+        let sourceView = tableView.cellForRow(at: indexPath) ?? view
+        bottomSheet.show(from: self, sourceView: sourceView)
+
+        WPAnalytics.track(.userProfileSheetShown, properties: ["source": "like_notification_list"])
+    }
+
+}
 
 
 // MARK: - Helpers
@@ -915,6 +1004,10 @@ private extension NotificationDetailsViewController {
 
     func contentGroup(for indexPath: IndexPath) -> FormattableContentGroup {
         return note.headerAndBodyContentGroups[indexPath.row]
+    }
+
+    func indexOfFirstContentGroup(ofKind kind: FormattableContentGroup.Kind) -> Int? {
+        return note.headerAndBodyContentGroups.firstIndex(where: { $0.kind == kind })
     }
 }
 
@@ -1221,7 +1314,31 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate {
     }
 }
 
+// MARK: - Milestone notifications
+//
+private extension NotificationDetailsViewController {
 
+    func showConfettiIfNeeded() {
+        guard FeatureFlag.milestoneNotifications.enabled,
+              note.isViewMilestone,
+              !confettiWasShown,
+              let view = UIApplication.shared.mainWindow,
+              let frame = navigationController?.view.frame else {
+            return
+        }
+        // This method will remove any existing `ConfettiView` before adding a new one
+        // This ensures that when we navigate through notifications, if there is an
+        // ongoging animation, it will be removed and replaced by a new one
+        ConfettiView.cleanupAndAnimate(on: view, frame: frame) { confettiView in
+
+            // removing this instance when the animation completes, will prevent
+            // the animation to suddenly stop if users navigate away from the note
+            confettiView.removeFromSuperview()
+        }
+
+        confettiWasShown = true
+    }
+}
 
 // MARK: - Navigation Helpers
 //
@@ -1231,8 +1348,10 @@ extension NotificationDetailsViewController {
             return
         }
 
+        hideNoResults()
         onSelectedNoteChange?(previous)
         note = previous
+        showConfettiIfNeeded()
     }
 
     @IBAction func nextNotificationWasPressed() {
@@ -1240,8 +1359,10 @@ extension NotificationDetailsViewController {
             return
         }
 
+        hideNoResults()
         onSelectedNoteChange?(next)
         note = next
+        showConfettiIfNeeded()
     }
 
     var shouldEnablePreviousButton: Bool {
@@ -1254,6 +1375,31 @@ extension NotificationDetailsViewController {
 }
 
 
+// MARK: - LikesListController Delegate
+//
+extension NotificationDetailsViewController: LikesListControllerDelegate {
+
+    func didSelectHeader() {
+        displayNotificationSource()
+    }
+
+    func didSelectUser(_ user: LikeUser, at indexPath: IndexPath) {
+        displayUserProfile(user, from: indexPath)
+    }
+
+    func showErrorView() {
+        hideNoResults()
+        configureAndDisplayNoResults(on: tableView,
+                                     title: NoResultsText.errorTitle,
+                                     subtitle: NoResultsText.errorSubtitle,
+                                     image: "wp-illustration-notifications")
+    }
+
+    private struct NoResultsText {
+        static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading notification likes.")
+        static let errorSubtitle = NSLocalizedString("There was an error loading likes", comment: "Text displayed when there is a failure loading notification likes.")
+    }
+}
 
 // MARK: - Private Properties
 //
@@ -1288,5 +1434,9 @@ private extension NotificationDetailsViewController {
         static let numberOfSections         = 1
         static let estimatedRowHeight       = CGFloat(44)
         static let expirationFiveMinutes    = TimeInterval(60 * 5)
+    }
+
+    enum Assets {
+        static let confettiBackground       = "notifications-confetti-background"
     }
 }

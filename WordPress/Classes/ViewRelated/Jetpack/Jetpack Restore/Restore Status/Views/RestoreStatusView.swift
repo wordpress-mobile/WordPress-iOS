@@ -13,10 +13,7 @@ class RestoreStatusView: UIView, NibLoadable {
     @IBOutlet private weak var progressValueLabel: UILabel!
     @IBOutlet private weak var progressView: UIProgressView!
     @IBOutlet private weak var progressDescriptionLabel: UILabel!
-    @IBOutlet private weak var primaryButton: FancyButton!
     @IBOutlet private weak var hintLabel: UILabel!
-
-    var primaryButtonHandler: (() -> Void)?
 
     // MARK: - Initialization
 
@@ -62,17 +59,14 @@ class RestoreStatusView: UIView, NibLoadable {
         hintLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
         hintLabel.textColor = .textSubtle
         hintLabel.numberOfLines = 0
-
-        primaryButton.isPrimary = true
     }
 
     // MARK: - Configuration
 
-    func configure(iconImage: UIImage, title: String, description: String, primaryButtonTitle: String, hint: String) {
+    func configure(iconImage: UIImage, title: String, description: String, hint: String) {
         icon.image = iconImage
         titleLabel.text = title
         descriptionLabel.text = description
-        primaryButton.setTitle(primaryButtonTitle, for: .normal)
         hintLabel.text = hint
     }
 
@@ -97,11 +91,6 @@ class RestoreStatusView: UIView, NibLoadable {
     }
 
     // MARK: - IBAction
-
-    @IBAction private func primaryButtonTapped(_ sender: Any) {
-        primaryButtonHandler?()
-    }
-
     private enum Constants {
         static let progressViewCornerRadius: CGFloat = 4
     }

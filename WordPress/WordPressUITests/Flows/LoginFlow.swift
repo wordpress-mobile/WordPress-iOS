@@ -2,6 +2,17 @@ import XCTest
 
 class LoginFlow {
 
+    @discardableResult
+    static func login(email: String, password: String) -> MySiteScreen {
+        logoutIfNeeded()
+
+        return PrologueScreen().selectContinue()
+            .proceedWith(email: email)
+            .proceedWith(password: password)
+            .continueWithSelectedSite()
+            .dismissNotificationAlertIfNeeded()
+    }
+
     // Login with self-hosted site via Site Address.
     @discardableResult
     static func login(siteUrl: String, username: String, password: String) -> MySiteScreen {
@@ -60,8 +71,7 @@ class LoginFlow {
                 if meScreen.isLoggedInToWpcom() {
                     _ = meScreen.logoutToPrologue()
                 } else {
-                    TabNavComponent().gotoMySiteScreen()
-                        .removeSelfHostedSite()
+                    meScreen.dismiss().removeSelfHostedSite()
                 }
                 return
             }

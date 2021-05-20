@@ -11,6 +11,12 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
         }
     }
 
+    var backgroundImage: UIImage? {
+        didSet {
+            backgroundImageView?.image = backgroundImage
+        }
+    }
+
     // MARK: - Public Methods
 
     /// Downloads a remote image, given it's URL, assuming that we're already not displaying that very same image.
@@ -40,7 +46,9 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
         super.prepareForReuse()
 
         blockImageView.image = nil
+        backgroundImageView.image = nil
         imageURL = nil
+        backgroundImage = nil
     }
 
     // MARK: - Helpers
@@ -48,4 +56,5 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
 
     // MARK: - IBOutlets
     @IBOutlet weak var blockImageView: UIImageView!
+    @IBOutlet weak var backgroundImageView: UIImageView!
 }

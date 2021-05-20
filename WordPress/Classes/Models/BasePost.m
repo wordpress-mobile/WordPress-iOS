@@ -22,6 +22,7 @@
 @dynamic pathForDisplayImage;
 
 @synthesize isFeaturedImageChanged;
+@synthesize isFirstTimePublish;
 
 - (NSDate *)dateCreated
 {

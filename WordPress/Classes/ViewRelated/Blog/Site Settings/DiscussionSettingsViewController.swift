@@ -341,16 +341,16 @@ open class DiscussionSettingsViewController: UITableViewController {
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
 
-    fileprivate func pressedBlacklist(_ payload: AnyObject?) {
-        let blacklistKeys                       = settings.commentsBlacklistKeys
-        let settingsViewController              = SettingsListEditorViewController(collection: blacklistKeys)
-        settingsViewController.title            = NSLocalizedString("Blacklist", comment: "Blacklist Title")
-        settingsViewController.insertTitle      = NSLocalizedString("New Blacklist Word", comment: "Blacklist Keyword Insertion Title")
-        settingsViewController.editTitle        = NSLocalizedString("Edit Blacklist Word", comment: "Blacklist Keyword Edition Title")
+    fileprivate func pressedBlocklist(_ payload: AnyObject?) {
+        let blocklistKeys                       = settings.commentsBlocklistKeys
+        let settingsViewController              = SettingsListEditorViewController(collection: blocklistKeys)
+        settingsViewController.title            = NSLocalizedString("Blocklist", comment: "Blocklist Title")
+        settingsViewController.insertTitle      = NSLocalizedString("New Blocklist Word", comment: "Blocklist Keyword Insertion Title")
+        settingsViewController.editTitle        = NSLocalizedString("Edit Blocklist Word", comment: "Blocklist Keyword Edition Title")
         settingsViewController.footerText       = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\".",
-                                                                    comment: "Text rendered at the bottom of the Discussion Blacklist Keys editor")
+                                                                    comment: "Text rendered at the bottom of the Discussion Blocklist Keys editor")
         settingsViewController.onChange         = { [weak self] (updated: Set<String>) in
-            self?.settings.commentsBlacklistKeys = updated
+            self?.settings.commentsBlocklistKeys = updated
         }
 
         navigationController?.pushViewController(settingsViewController, animated: true)
@@ -462,8 +462,8 @@ open class DiscussionSettingsViewController: UITableViewController {
                 handler: self.pressedModeration),
 
             Row(style: .Value1,
-                title: NSLocalizedString("Blacklist", comment: "Settings: Comments Blacklist"),
-                handler: self.pressedBlacklist)
+                title: NSLocalizedString("Blocklist", comment: "Settings: Comments Blocklist"),
+                handler: self.pressedBlocklist)
         ]
 
         return Section(rows: rows)

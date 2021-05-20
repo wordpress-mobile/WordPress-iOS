@@ -463,7 +463,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     } else {
         // Required Attributes
 
-        BlogService *blogService    = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
         NSString *oauth2Token       = defaultAccount.authToken;
 
         // For the Today Extensions, if the user has set a non-primary site, use that.
@@ -472,14 +471,14 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         NSString *todayExtensionBlogName = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
         NSString *todayExtensionBlogUrl = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteUrlKey];
 
-        Blog *todayExtensionBlog = [blogService blogByBlogId:todayExtensionSiteID];
-        NSTimeZone *timeZone = [blogService timeZoneForBlog:todayExtensionBlog];
+        Blog *todayExtensionBlog = [Blog lookupWithID:todayExtensionSiteID in:self.managedObjectContext];
+        NSTimeZone *timeZone = [todayExtensionBlog timeZone];
 
-        if (todayExtensionSiteID == NULL) {
+        if (todayExtensionSiteID == NULL || todayExtensionBlog == nil) {
             todayExtensionSiteID = siteId;
             todayExtensionBlogName = blogName;
             todayExtensionBlogUrl = blogUrl;
-            timeZone = [blogService timeZoneForBlog:defaultBlog];
+            timeZone = [defaultBlog timeZone];
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{

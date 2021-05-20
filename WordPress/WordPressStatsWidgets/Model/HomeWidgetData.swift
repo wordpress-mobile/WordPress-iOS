@@ -59,6 +59,5 @@ extension HomeWidgetData {
         } catch {
             DDLogError("HomeWidgetToday: Failed writing data item: \(error.localizedDescription)")
         }
-
     }
 }

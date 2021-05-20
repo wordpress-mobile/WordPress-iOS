@@ -114,9 +114,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     private var accentColor: UIColor {
         return UIColor { (traitCollection: UITraitCollection) -> UIColor in
             if traitCollection.userInterfaceStyle == .dark {
-                return UIColor.muriel(color: .accent, .shade40)
+                return UIColor.muriel(color: .primary, .shade40)
             } else {
-                return UIColor.muriel(color: .accent, .shade50)
+                return UIColor.muriel(color: .primary, .shade50)
             }
         }
     }
@@ -466,7 +466,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             })
             return
         }
-
+        guard hasSelectedItem == selectedStateButtonsContainer.isHidden else { return }
         defaultActionButton.isHidden = false
         selectedStateButtonsContainer.isHidden = false
 
@@ -542,7 +542,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         }
     }
 
-    private func updateTitleViewVisibility(_ animated: Bool = true) {
+    internal func updateTitleViewVisibility(_ animated: Bool = true) {
         let shouldHide = shouldUseCompactLayout ? false : (headerHeightConstraint.constant > midHeaderHeight)
         titleView.animatableSetIsHidden(shouldHide, animated: animated)
     }
@@ -592,6 +592,11 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
         } else if headerHeightConstraint.constant != minHeaderHeight {
             snapToHeight(scrollView, height: minHeaderHeight)
         }
+    }
+
+    public func expandHeader() {
+        guard !shouldUseCompactLayout else { return }
+        snapToHeight(scrollableView, height: maxHeaderHeight)
     }
 
     private func snapToHeight(_ scrollView: UIScrollView, height: CGFloat, animated: Bool = true) {

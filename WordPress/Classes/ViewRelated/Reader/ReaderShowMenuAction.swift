@@ -11,7 +11,8 @@ final class ReaderShowMenuAction {
                  siteTopic: ReaderSiteTopic? = nil,
                  readerTopic: ReaderAbstractTopic? = nil,
                  anchor: UIView,
-                 vc: UIViewController) {
+                 vc: UIViewController,
+                 source: ReaderPostMenuSource) {
 
         // Create the action sheet
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -24,9 +25,19 @@ final class ReaderShowMenuAction {
                                                style: .destructive,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                    ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: context, completion: {})
+                                                    ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: context, completion: {
+                                                        ReaderHelpers.dispatchSiteBlockedMessage(post: post, success: true)
+
+                                                        // Notify Reader Cards Stream so the post card is updated.
+                                                        NotificationCenter.default.post(name: .ReaderSiteBlocked,
+                                                                                        object: nil,
+                                                                                        userInfo: [ReaderNotificationKeys.post: post])
+                                                    },
+                                                    failure: { _ in
+                                                        ReaderHelpers.dispatchSiteBlockedMessage(post: post, success: false)
+                                                    })
                                                 }
-            })
+                                               })
         }
 
         // Report button
@@ -83,26 +94,28 @@ final class ReaderShowMenuAction {
         }
 
         // Seen
-        if FeatureFlag.unseenPosts.enabled {
-            if post.isSeenSupported {
-                alertController.addActionWithTitle(post.isSeen ? ReaderPostMenuButtonTitles.markUnseen : ReaderPostMenuButtonTitles.markSeen,
-                                                   style: .default,
-                                                   handler: { (action: UIAlertAction) in
-                                                    if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                        ReaderSeenAction().execute(with: post, context: context, completion: {
-                                                            ReaderHelpers.dispatchToggleSeenMessage(post: post, success: true)
+        if post.isSeenSupported {
+            alertController.addActionWithTitle(post.isSeen ? ReaderPostMenuButtonTitles.markUnseen : ReaderPostMenuButtonTitles.markSeen,
+                                               style: .default,
+                                               handler: { (action: UIAlertAction) in
 
-                                                            // Notify Reader Stream so the post card is updated.
-                                                            NotificationCenter.default.post(name: .ReaderPostSeenToggled,
-                                                                                            object: nil,
-                                                                                            userInfo: [ReaderNotificationKeys.post: post])
-                                                        },
-                                                        failure: { _ in
-                                                            ReaderHelpers.dispatchToggleSeenMessage(post: post, success: false)
-                                                        })
-                                                    }
-                                                   })
-            }
+                                                let event: WPAnalyticsEvent = post.isSeen ? .readerPostMarkUnseen : .readerPostMarkSeen
+                                                WPAnalytics.track(event, properties: ["source": source.description])
+
+                                                if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
+                                                    ReaderSeenAction().execute(with: post, context: context, completion: {
+                                                        ReaderHelpers.dispatchToggleSeenMessage(post: post, success: true)
+
+                                                        // Notify Reader Stream so the post card is updated.
+                                                        NotificationCenter.default.post(name: .ReaderPostSeenToggled,
+                                                                                        object: nil,
+                                                                                        userInfo: [ReaderNotificationKeys.post: post])
+                                                    },
+                                                    failure: { _ in
+                                                        ReaderHelpers.dispatchToggleSeenMessage(post: post, success: false)
+                                                    })
+                                                }
+                                               })
         }
 
         // Visit
@@ -127,12 +140,9 @@ final class ReaderShowMenuAction {
                 presentationController.sourceView = anchor
                 presentationController.sourceRect = anchor.bounds
             }
-
         } else {
             vc.present(alertController, animated: true)
         }
-
-        WPAnalytics.trackReader(.postCardMoreTapped)
     }
 
     private func shouldShowBlockSiteMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {

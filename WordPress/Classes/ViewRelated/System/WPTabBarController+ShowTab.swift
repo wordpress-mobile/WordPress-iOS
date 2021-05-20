@@ -64,15 +64,17 @@ extension WPTabBarController {
                 StoriesIntroViewController.trackShown()
             })
         } else {
-            //TODO: Show the stories feature
             guard let blog = inBlog ?? self.currentOrLastBlog() else { return }
             let blogID = blog.dotComID?.intValue ?? 0 as Any
 
-            WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "story"])
+            WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyEditorSource: "stories", WPAppAnalyticsKeyPostType: "post"])
 
-            let viewController = UIViewController()
-            viewController.view.backgroundColor = .red
-            present(viewController, animated: true)
+            do {
+                let controller = try StoryEditor.editor(blog: blog, context: ContextManager.shared.mainContext, updated: {_ in })
+                present(controller, animated: true, completion: nil)
+            } catch let error {
+                assertionFailure("Story editor should not fail since this button is hidden on iPads.")
+            }
         }
     }
 }

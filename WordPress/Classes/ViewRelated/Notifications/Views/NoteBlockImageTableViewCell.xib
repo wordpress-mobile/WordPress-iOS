@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,14 +13,21 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="ksP-zj-xJe" id="VFE-5W-RpG">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="199"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XVh-J2-FNg" userLabel="Background Image View">
+                        <rect key="frame" x="16" y="11" width="288" height="178"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="288" placeholder="YES" id="1WG-qL-9Ha"/>
+                            <constraint firstAttribute="height" constant="178" placeholder="YES" id="UCI-AF-bdf"/>
+                        </constraints>
+                    </imageView>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="0ai-ZU-3Mq">
-                        <rect key="frame" x="15" y="11" width="290" height="178"/>
+                        <rect key="frame" x="16" y="11" width="288" height="178"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AhG-3g-brM">
-                                <rect key="frame" x="55" y="0.0" width="180" height="178"/>
+                                <rect key="frame" x="54" y="0.0" width="180" height="178"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="180" id="Iwx-yF-VHD"/>
                                     <constraint firstAttribute="height" priority="999" constant="180" id="zb7-mc-OZC"/>
@@ -34,14 +39,18 @@
                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstAttribute="trailingMargin" secondItem="0ai-ZU-3Mq" secondAttribute="trailing" id="Grq-KW-jwk"/>
+                    <constraint firstItem="XVh-J2-FNg" firstAttribute="centerY" secondItem="0ai-ZU-3Mq" secondAttribute="centerY" id="ICu-CY-2QB"/>
+                    <constraint firstItem="XVh-J2-FNg" firstAttribute="centerX" secondItem="0ai-ZU-3Mq" secondAttribute="centerX" id="V63-9b-ZG1"/>
                     <constraint firstItem="0ai-ZU-3Mq" firstAttribute="leading" secondItem="VFE-5W-RpG" secondAttribute="leadingMargin" id="XpY-6Z-eka"/>
                     <constraint firstAttribute="bottomMargin" secondItem="0ai-ZU-3Mq" secondAttribute="bottom" id="cKd-u6-56O"/>
                     <constraint firstItem="0ai-ZU-3Mq" firstAttribute="top" secondItem="VFE-5W-RpG" secondAttribute="topMargin" id="u4H-e4-vsA"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="backgroundImageView" destination="XVh-J2-FNg" id="U85-go-fhS"/>
                 <outlet property="blockImageView" destination="AhG-3g-brM" id="3yg-Cg-uLk"/>
             </connections>
+            <point key="canvasLocation" x="-75.200000000000003" y="149.32533733133434"/>
         </tableViewCell>
     </objects>
 </document>

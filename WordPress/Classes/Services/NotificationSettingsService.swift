@@ -97,7 +97,7 @@ open class NotificationSettingsService: LocalCoreDataService {
         }
 
         notificationsServiceRemote?.registerDeviceForPushNotifications(token,
-                                                                       pushNotificationAppId: WPPushNotificationAppId,
+                                                                       pushNotificationAppId: AppConstants.pushNotificationAppId,
                                                                        success: success,
                                                                        failure: failure)
     }

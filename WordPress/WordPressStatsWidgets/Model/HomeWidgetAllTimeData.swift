@@ -1,5 +1,6 @@
 
 struct HomeWidgetAllTimeData: HomeWidgetData {
+
     let siteID: Int
     let siteName: String
     let url: String

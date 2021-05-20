@@ -5,6 +5,7 @@ extension FormattableContentKind {
     static let image = FormattableContentKind("image")
     static let comment = FormattableContentKind("comment")
     static let user = FormattableContentKind("user")
+    static let button = FormattableContentKind("button")
 }
 
 protocol FormattableMediaContent {
@@ -62,6 +63,13 @@ class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
         if let firstMedia = media.first, (firstMedia.kind == .image || firstMedia.kind == .badge) {
             return .image
         }
+
+        if let meta = meta,
+           let buttonValue = meta[Constants.MetaKeys.Button] as? Bool,
+           buttonValue == true {
+            return .button
+        }
+
         return super.kind
     }
 
@@ -97,5 +105,9 @@ private enum Constants {
         static let Media = "media"
         static let Text = "text"
         static let Meta = "meta"
+    }
+
+    fileprivate enum MetaKeys {
+        static let Button = "is_mobile_button"
     }
 }

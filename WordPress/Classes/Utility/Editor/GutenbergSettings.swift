@@ -12,6 +12,8 @@ class GutenbergSettings {
             let url = urlStringFrom(blog)
             return "kShowGutenbergPhase2Dialog-" + url
         }
+        static let focalPointPickerTooltipShown = "kGutenbergFocalPointPickerTooltipShown"
+        static let hasLaunchedGutenbergEditor = "kHasLaunchedGutenbergEditor"
 
         private static func urlStringFrom(_ blog: Blog) -> String {
             return (blog.url ?? "")
@@ -157,7 +159,38 @@ class GutenbergSettings {
         database.set(true, forKey: Key.enabledOnce(for: blog))
     }
 
+    /// True if it should show the tooltip for the focal point picker
+    var focalPointPickerTooltipShown: Bool {
+        get {
+            database.bool(forKey: Key.focalPointPickerTooltipShown)
+        }
+        set {
+            database.set(newValue, forKey: Key.focalPointPickerTooltipShown)
+        }
+    }
+
+    func canViewEditorOnboarding() -> Bool {
+        guard
+            ReachabilityUtils.isInternetReachable(),
+            let account = AccountService(managedObjectContext: context).defaultWordPressComAccount()
+        else {
+            return false
+        }
+
+        let rollout = GutenbergOnboardingRollout()
+        let hasLaunchedGutenbergEditor = database.bool(forKey: Key.hasLaunchedGutenbergEditor)
+        return rollout.isUserIdInPhaseRolloutPercentage(account.userID.intValue) && !hasLaunchedGutenbergEditor
+    }
+
+    func setHasLaunchedGutenbergEditor(_ hasLaunched: Bool) {
+        database.set(hasLaunched, forKey: Key.hasLaunchedGutenbergEditor)
+    }
+
     // MARK: - Gutenberg Choice Logic
+
+    func isSimpleWPComSite(_ blog: Blog) -> Bool {
+        return !blog.isAtomic() && blog.isHostedAtWPcom
+    }
 
     /// Call this method to know if Gutenberg must be used for the specified post.
     ///
@@ -168,9 +201,8 @@ class GutenbergSettings {
     ///
     func mustUseGutenberg(for post: AbstractPost) -> Bool {
         let blog = post.blog
-
         if post.isContentEmpty() {
-            return blog.isGutenbergEnabled
+            return isSimpleWPComSite(post.blog) || blog.isGutenbergEnabled
         } else {
             // It's an existing post
             return post.containsGutenbergBlocks()
@@ -193,6 +225,11 @@ class GutenbergSettingsBridge: NSObject {
     @objc(postSettingsToRemoteForBlog:)
     static func postSettingsToRemote(for blog: Blog) {
         GutenbergSettings().postSettingsToRemote(for: blog)
+    }
+
+    @objc(isSimpleWPComSite:)
+    static func isSimpleWPComSite(_ blog: Blog) -> Bool {
+        return GutenbergSettings().isSimpleWPComSite(blog)
     }
 }
 

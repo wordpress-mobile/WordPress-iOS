@@ -6,13 +6,16 @@ struct JetpackScanStatusViewModel {
     let description: String
 
     private(set) var primaryButtonTitle: String?
+    private(set) var primaryButtonEnabled: Bool = true
     private(set) var secondaryButtonTitle: String?
+    private(set) var warningButtonTitle: String?
     private(set) var progress: Float?
 
     private let coordinator: JetpackScanCoordinator
 
     private var primaryButtonAction: ButtonAction?
     private var secondaryButtonAction: ButtonAction?
+    private var warningButtonAction: ButtonAction?
 
     init?(coordinator: JetpackScanCoordinator) {
         self.coordinator = coordinator
@@ -74,6 +77,13 @@ struct JetpackScanStatusViewModel {
 
                     secondaryButtonTitle = Strings.scanAgainTitle
                     secondaryButtonAction = .triggerScan
+
+                    if !scan.hasValidCredentials {
+                        warningButtonTitle = Strings.enterServerCredentialsTitle
+                        warningButtonAction = .enterServerCredentials
+
+                        primaryButtonEnabled = false
+                    }
                 }
             }
 
@@ -107,6 +117,7 @@ struct JetpackScanStatusViewModel {
         case triggerScan
         case fixAll
         case contactSupport
+        case enterServerCredentials
     }
 
     func primaryButtonTapped(_ sender: Any) {
@@ -125,6 +136,14 @@ struct JetpackScanStatusViewModel {
         buttonTapped(action: action)
     }
 
+    func warningButtonTapped(_ sender: Any) {
+        guard let action = warningButtonAction else {
+            return
+        }
+
+        buttonTapped(action: action)
+    }
+
     private func buttonTapped(action: ButtonAction) {
         switch action {
         case .fixAll:
@@ -137,6 +156,9 @@ struct JetpackScanStatusViewModel {
 
         case .contactSupport:
             coordinator.openSupport()
+
+        case .enterServerCredentials:
+            coordinator.openJetpackSettings()
         }
     }
 
@@ -189,22 +211,17 @@ struct JetpackScanStatusViewModel {
         let dateString: String
 
         // Temporary check until iOS 13 is the deployment target
-        if #available(iOS 13.0, *) {
-            let formatter = RelativeDateTimeFormatter()
-            formatter.dateTimeStyle = .named
-            formatter.unitsStyle = .full
+        let formatter = RelativeDateTimeFormatter()
+        formatter.dateTimeStyle = .named
+        formatter.unitsStyle = .full
 
-            dateString = formatter.localizedString(for: date, relativeTo: Date())
-        } else {
-            let relativeFormatter = TTTTimeIntervalFormatter()
-            dateString = relativeFormatter.string(forTimeInterval: date.timeIntervalSinceNow)
-        }
-
+        dateString = formatter.localizedString(for: date, relativeTo: Date())
         return dateString
     }
 
     // MARK: - Localized Strings
     private struct Strings {
+        static let enterServerCredentialsTitle = NSLocalizedString("Enter your server credentials to fix threats.", comment: "Title for button when a site is missing server credentials")
         static let noThreatsTitle = NSLocalizedString("Don’t worry about a thing", comment: "Title for label when there are no threats on the users site")
         static let noThreatsDescriptionFormat = NSLocalizedString("The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.", comment: "Description for label when there are no threats on a users site and how long ago the scan ran.")
         static let noThreatsDescription = NSLocalizedString("The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.",

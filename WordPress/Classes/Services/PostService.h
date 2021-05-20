@@ -7,6 +7,7 @@
 @class Post;
 @class Page;
 @class RemotePost;
+@class RemoteUser;
 @class PostServiceRemoteFactory;
 @class PostServiceUploadingList;
 
@@ -23,6 +24,9 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
 
 
 @interface PostService : LocalCoreDataService
+
+// This is public so it can be accessed from Swift extensions.
+@property (nonnull, strong, nonatomic) PostServiceRemoteFactory *postServiceRemoteFactory;
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
                     postServiceRemoteFactory:(PostServiceRemoteFactory *)postServiceRemoteFactory NS_DESIGNATED_INITIALIZER;

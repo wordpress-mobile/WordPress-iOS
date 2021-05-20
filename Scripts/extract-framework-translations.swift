@@ -3,25 +3,33 @@
 import Foundation
 
 let fileManager = FileManager.default
-let cwd = fileManager.currentDirectoryPath
-let script = CommandLine.arguments[0]
 
-let base = cwd
-let projectDir = base.appending("/WordPress")
-let resources = projectDir.appending("/Resources")
+let projectRoot = findProjectRoot()
+let projectDir = projectRoot.appendingPathComponent("WordPress")
+let resources = projectDir.appendingPathComponent("Resources")
 let frameworkRoots = [
     "WordPressTodayWidget",
     "WordPressShareExtension"
-    ].map({ projectDir.appending("/\($0)") })
+].map({ projectDir.appendingPathComponent($0).path })
 
-guard fileManager.fileExists(atPath: projectDir) else {
+guard fileManager.fileExists(atPath: projectDir.path) else {
     print("Must run script from project root folder")
     exit(1)
 }
 
+/// Crawl our way up the project tree until we find the root
+func findProjectRoot() -> URL {
+    var candidate = URL(fileURLWithPath: fileManager.currentDirectoryPath)
+
+    while !fileManager.fileExists(atPath: candidate.appendingPathComponent(".git").path) && candidate.path != "/" {
+        candidate.deleteLastPathComponent()
+    }
+
+    return candidate
+}
 
 func projectLanguages() -> [String] {
-    return (try? fileManager.contentsOfDirectory(atPath: resources)
+    return (try? fileManager.contentsOfDirectory(atPath: resources.path)
         .filter({ $0.hasSuffix(".lproj") })
         .map({ $0.replacingOccurrences(of: ".lproj", with: "") })
         .filter({ $0 != "en" })
@@ -45,7 +53,7 @@ func sourceStrings(framework: String) -> [String: String] {
 }
 
 func readProjectTranslations(for language: String) -> [String: String] {
-    let path = resources.appending("/\(language).lproj/Localizable.strings")
+    let path = resources.appendingPathComponent("\(language).lproj/Localizable.strings").path
     return readStrings(path: path)
 }
 

@@ -152,7 +152,30 @@ open class QuickStartTourGuide: NSObject {
         showCurrentStep()
     }
 
+    // Required for now because obj-c doesn't know about Quick Start tours
+    @objc func completeSiteIconTour(forBlog blog: Blog) {
+        complete(tour: QuickStartSiteIconTour(), silentlyForBlog: blog)
+    }
+
+    @objc func completeViewSiteTour(forBlog blog: Blog) {
+        complete(tour: QuickStartViewTour(), silentlyForBlog: blog)
+    }
+
+    @objc func completeSharingTour(forBlog blog: Blog) {
+        complete(tour: QuickStartShareTour(), silentlyForBlog: blog)
+    }
+
+    /// Complete the specified tour without posting a notification.
+    ///
+    func complete(tour: QuickStartTour, silentlyForBlog blog: Blog) {
+        complete(tour: tour, for: blog, postNotification: false)
+    }
+
     func complete(tour: QuickStartTour, for blog: Blog, postNotification: Bool = true) {
+        guard let tourCount = blog.quickStartTours?.count, tourCount > 0 else {
+            // Tours haven't been set up yet or were skipped. No reason to continue.
+            return
+        }
         completed(tour: tour, for: blog, postNotification: postNotification)
     }
 
@@ -199,11 +222,6 @@ open class QuickStartTourGuide: NSObject {
             return
         }
         currentTourState = nextStep
-
-        // Don't show a notice for the step after readerTab
-        if element == .readerTab {
-            return
-        }
 
         showCurrentStep()
     }

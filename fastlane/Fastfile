@@ -1,0 +1,785 @@
+default_platform(:ios)
+fastlane_require 'xcodeproj'
+fastlane_require 'dotenv'
+fastlane_require 'open-uri'
+
+unless FastlaneCore::Helper.bundler?
+  UI.user_error!('Please run fastlane via `bundle exec`')
+end
+
+# Paths that are re-used across multiple lanes
+PROJECT_ROOT_FOLDER=File.dirname(File.expand_path(__dir__))
+WORKSPACE_PATH=File.join(PROJECT_ROOT_FOLDER, "WordPress.xcworkspace")
+DERIVED_DATA_PATH=File.join(PROJECT_ROOT_FOLDER, "DerivedData")
+BUILD_PRODUCTS_PATH=File.join(PROJECT_ROOT_FOLDER, "Artifacts")
+
+# Env file paths to load
+USER_ENV_FILE_PATH = File.join(Dir.home, '.wpios-env.default')
+PROJECT_ENV_FILE_PATH = File.join(PROJECT_ROOT_FOLDER, '.configure-files', 'project.env')
+
+# Other defines used across multiple lanes
+REPOSITORY_NAME="WordPress-iOS"
+
+import "Jetpack-Fastfile"
+
+ALL_BUNDLE_IDENTIFIERS = [
+      "org.wordpress",
+      "org.wordpress.WordPressShare",
+      "org.wordpress.WordPressDraftAction",
+      "org.wordpress.WordPressTodayWidget",
+      "org.wordpress.WordPressStatsWidgets",
+      "org.wordpress.WordPressNotificationServiceExtension",
+      "org.wordpress.WordPressNotificationContentExtension",
+      "org.wordpress.WordPressAllTimeWidget",
+      "org.wordpress.WordPressThisWeekWidget",
+      "org.wordpress.WordPressIntents",
+    ]
+
+# Use this instead of getting values from ENV directly
+# It will throw an error if the requested value is missing
+def get_required_env(key)
+  unless ENV.key?(key)
+    UI.user_error!("Environment variable '#{key}' is not set. Have you setup #{USER_ENV_FILE_PATH} correctly?")
+  end
+  ENV[key]
+end
+
+before_all do |lane|
+  # Skip these checks/steps for test lane (not needed for testing)
+  unless lane == :test_without_building
+    # Check that the env files exist
+    unless is_ci || File.file?(USER_ENV_FILE_PATH)
+      UI.user_error!("~/.wpios-env.default not found: Please copy fastlane/env/user.env-example to #{USER_ENV_FILE_PATH} and fill in the values")
+    end
+    unless File.file?(PROJECT_ENV_FILE_PATH)
+      UI.user_error!("project.env not found: Make sure your configuration is up to date with `rake dependencies`")
+    end
+
+    # This allows code signing to work on CircleCI
+    # It is skipped if this isn't running on CI
+    # See https://circleci.com/docs/2.0/ios-codesigning/
+    setup_circle_ci
+  end
+end
+
+platform :ios do
+########################################################################
+# Environment
+########################################################################
+Dotenv.load(USER_ENV_FILE_PATH)
+Dotenv.load(PROJECT_ENV_FILE_PATH)
+ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
+ENV["PROJECT_NAME"]="WordPress"
+ENV["PUBLIC_CONFIG_FILE"]=File.join(PROJECT_ROOT_FOLDER, "config", "Version.Public.xcconfig")
+ENV["INTERNAL_CONFIG_FILE"]=File.join(PROJECT_ROOT_FOLDER, "config", "Version.internal.xcconfig")
+ENV["DOWNLOAD_METADATA"]="./fastlane/download_metadata.swift"
+ENV["PROJECT_ROOT_FOLDER"]=PROJECT_ROOT_FOLDER + "/"
+ENV["APP_STORE_STRINGS_FILE_NAME"]="AppStoreStrings.po"
+
+########################################################################
+# Screenshots
+########################################################################
+import "./ScreenshotFastfile"
+
+########################################################################
+# Release Lanes
+########################################################################
+  #####################################################################################
+  # code_freeze
+  # -----------------------------------------------------------------------------------
+  # This lane executes the initial steps planned on code freeze
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane code_freeze [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane code_freeze
+  # bundle exec fastlane code_freeze skip_confirm:true
+  #####################################################################################
+  desc "Creates a new release branch from the current develop"
+  lane :code_freeze do | options |
+    gutenberg_dep_check()
+    old_version = ios_codefreeze_prechecks(options)
+
+    ios_bump_version_release()
+    new_version = ios_get_app_version()
+    ios_update_release_notes(new_version: new_version)
+    setbranchprotection(repository:GHHELPER_REPO, branch: "release/#{new_version}")
+    setfrozentag(repository:GHHELPER_REPO, milestone: new_version)
+    get_prs_list(repository:GHHELPER_REPO, start_tag:"#{old_version}", report_path:"#{File.expand_path('~')}/wpios_prs_list_#{old_version}_#{new_version}.txt")
+    ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, "Podfile"))
+  end
+
+
+  #####################################################################################
+  # complete_code_freeze
+  # -----------------------------------------------------------------------------------
+  # This lane executes the initial steps planned on code freeze
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane complete_code_freeze [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane complete_code_freeze
+  # bundle exec fastlane complete_code_freeze skip_confirm:true
+  #####################################################################################
+  desc "Creates a new release branch from the current develop"
+  lane :complete_code_freeze do | options |
+    ios_completecodefreeze_prechecks(options)
+    ios_localize_project()
+    version = ios_get_app_version()
+    trigger_beta_build(branch_to_build: "release/#{version}")
+  end
+
+  #####################################################################################
+  # update_appstore_strings
+  # -----------------------------------------------------------------------------------
+  # This lane updates the AppStoreStrings.po files with the latest content from
+  # the release_notes.txt file and the other text sources
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane update_appstore_strings version:<release note version>
+  #
+  # Example:
+  # bundle exec fastlane update_appstore_strings version:10.7
+  #####################################################################################
+  desc "Updates the AppStoreStrings.po file with the latest data"
+  lane :update_appstore_strings do | options |
+    source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, "fastlane", "appstoreres", "metadata", "source")
+
+    files = {
+      whats_new: File.join(PROJECT_ROOT_FOLDER, "WordPress", "Resources", "release_notes.txt"),
+      app_store_subtitle: File.join(source_metadata_folder, "subtitle.txt"),
+      app_store_desc: File.join(source_metadata_folder, "description.txt"),
+      app_store_keywords: File.join(source_metadata_folder, "keywords.txt"),
+      "standard-whats-new-1" => File.join(source_metadata_folder, "standard_whats_new_1.txt"),
+      "standard-whats-new-2" => File.join(source_metadata_folder, "standard_whats_new_2.txt"),
+      "standard-whats-new-3" => File.join(source_metadata_folder, "standard_whats_new_3.txt"),
+      "standard-whats-new-4" => File.join(source_metadata_folder, "standard_whats_new_4.txt"),
+      "app_store_screenshot-1" => File.join(source_metadata_folder, "promo_screenshot_1.txt"),
+      "app_store_screenshot-2" => File.join(source_metadata_folder, "promo_screenshot_2.txt"),
+      "app_store_screenshot-3" => File.join(source_metadata_folder, "promo_screenshot_3.txt"),
+      "app_store_screenshot-4" => File.join(source_metadata_folder, "promo_screenshot_4.txt"),
+      "app_store_screenshot-5" => File.join(source_metadata_folder, "promo_screenshot_5.txt"),
+      "app_store_screenshot-6" => File.join(source_metadata_folder, "promo_screenshot_6.txt"),
+      "app_store_screenshot-7" => File.join(source_metadata_folder, "promo_screenshot_7.txt"),
+    }
+
+    ios_update_metadata_source(
+      po_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'AppStoreStrings.po'),
+      source_files: files,
+      release_version: options[:version]
+    )
+  end
+
+  #####################################################################################
+  # new_beta_release
+  # -----------------------------------------------------------------------------------
+  # This lane updates the release branch for a new beta release. It will update the
+  # current release branch by default. If you want to update a different branch
+  # (i.e. hotfix branch) pass the related version with the 'base_version' param
+  # (example: base_version:10.6.1 will work on the 10.6.1 branch)
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane new_beta_release [skip_confirm:<skip confirm>] [base_version:<version>]
+  #
+  # Example:
+  # bundle exec fastlane new_beta_release
+  # bundle exec fastlane new_beta_release skip_confirm:true
+  # bundle exec fastlane new_beta_release base_version:10.6.1
+  #####################################################################################
+  desc "Updates a release branch for a new beta release"
+  lane :new_beta_release do | options |
+    ios_betabuild_prechecks(options)
+    ios_update_metadata(options)
+    # This is disabled due to GlotPress outputting an invalid `.strings` file for some locales
+    #ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
+    ios_bump_version_beta()
+    version = ios_get_app_version()
+    trigger_beta_build(branch_to_build: "release/#{version}")
+  end
+
+  #####################################################################################
+  # new_hotfix_release
+  # -----------------------------------------------------------------------------------
+  # This lane creates the release branch for a new hotix release.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane new_hotfix_release [skip_confirm:<skip confirm>] [version:<version>]
+  #
+  # Example:
+  # bundle exec fastlane new_hotfix_release version:10.6.1
+  # bundle exec fastlane new_hotfix_release skip_confirm:true version:10.6.1
+  #####################################################################################
+  desc "Creates a new hotfix branch from the given tag"
+  lane :new_hotfix_release do | options |
+    prev_ver = ios_hotfix_prechecks(options)
+    ios_bump_version_hotfix(previous_version: prev_ver, version: options[:version])
+  end
+
+  #####################################################################################
+  # finalize_release
+  # -----------------------------------------------------------------------------------
+  # This lane finalize a release: updates store metadata, pushes the final tag and
+  # cleans all the temp ones
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane finalize_release [skip_confirm:<skip confirm>] [version:<version>]
+  #
+  # Example:
+  # bundle exec fastlane finalize_release
+  # bundle exec fastlane finalize_release skip_confirm:true
+  #####################################################################################
+  desc "Removes all the temp tags and puts the final one"
+  lane :finalize_release do | options |
+    ios_finalize_prechecks(options)
+    unless ios_current_branch_is_hotfix
+      ios_update_metadata(options)
+      #ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
+      ios_bump_version_beta()
+    end
+
+    # Wrap up
+    version = ios_get_app_version()
+    #ios_clear_intermediate_tags(version: version)
+    removebranchprotection(repository: GHHELPER_REPO, branch: "release/#{version}")
+    setfrozentag(repository: GHHELPER_REPO, milestone: version, freeze: false)
+    create_new_milestone(repository: GHHELPER_REPO)
+    close_milestone(repository: GHHELPER_REPO, milestone: version)
+
+    # Start the build
+    trigger_release_build(branch_to_build: "release/#{version}")
+  end
+
+  #####################################################################################
+  # finalize_hotfix_release
+  # -----------------------------------------------------------------------------------
+  # This lane finalizes the hotfix branch.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane finalize_hotfix_release [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane finalize_hotfix_release skip_confirm:true
+  #####################################################################################
+  desc "Performs the final checks and tags the hotfix in the current branch"
+  lane :finalize_hotfix_release do | options |
+    ios_finalize_prechecks(options)
+    version = ios_get_app_version()
+    trigger_release_build(branch_to_build: "release/#{version}")
+  end
+
+  #####################################################################################
+  # build_and_upload_beta_release
+  # -----------------------------------------------------------------------------------
+  # This lane builds a beta release of the app and optionally uploads
+  # it for both internal and external distribution
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_beta_release [skip_confirm:<skip confirm>]
+  #   [create_gh_release:<create release on GH>]
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_beta_release
+  # bundle exec fastlane build_and_upload_beta_release skip_confirm:true
+  # bundle exec fastlane build_and_upload_beta_release create_gh_release:true
+  #####################################################################################
+  desc "Builds and uploads a beta release for distribution"
+  lane :build_and_upload_beta_release do | options |
+    build_and_upload_release(
+      skip_confirm: options[:skip_confirm],
+      create_gh_release: options[:create_gh_release],
+      beta_release: true)
+  end
+
+  #####################################################################################
+  # build_and_upload_stable_release
+  # -----------------------------------------------------------------------------------
+  # This lane builds a stable release of the app and optionally uploads
+  # it for distribution
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_stable_release [skip_confirm:<skip confirm>]
+  #   [create_gh_release:<create release on GH>]
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_stable_release
+  # bundle exec fastlane build_and_upload_stable_release skip_confirm:true
+  # bundle exec fastlane build_and_upload_stable_release create_gh_release:true
+  #####################################################################################
+  desc "Builds and uploads a stable release for distribution"
+  lane :build_and_upload_stable_release do | options |
+    build_and_upload_release(
+      skip_confirm: options[:skip_confirm],
+      create_gh_release: options[:create_gh_release],
+      beta_release: false)
+  end
+
+  #####################################################################################
+  # build_and_upload_release
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app and uploads it for both internal and external distribution
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_release [skip_confirm:<skip confirm>]
+  #  [create_gh_release:<create release on GH>] [beta_release:<is a beta release>]
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_release
+  # bundle exec fastlane build_and_upload_release skip_confirm:true
+  # bundle exec fastlane build_and_upload_release create_gh_release:true
+  # bundle exec fastlane build_and_upload_release beta_release:true
+  #####################################################################################
+  desc "Builds and uploads for distribution"
+  lane :build_and_upload_release do | options |
+    ios_build_prechecks(skip_confirm: options[:skip_confirm],
+      internal: options[:beta_release],
+      external: true)
+    ios_build_preflight()
+
+    build_and_upload_internal(skip_prechecks: true, skip_confirm: options[:skip_confirm]) if options[:beta_release]
+    build_and_upload_itc(skip_prechecks: true, skip_confirm: options[:skip_confirm], create_release: options[:create_gh_release])
+  end
+
+  #####################################################################################
+  # build_and_upload_installable_build
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app and upload it for adhoc testing
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_installable_build [version_long:<version_long>]
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_installable_build
+  # bundle exec fastlane build_and_upload_installable_build build_number:123
+  #####################################################################################
+  desc "Builds and uploads an installable build"
+  lane :build_and_upload_installable_build do | options |
+    alpha_code_signing
+
+    # Get the current build version, and update it if needed
+    version_config_path = File.join(PROJECT_ROOT_FOLDER, "config", "Version.internal.xcconfig")
+    versions = Xcodeproj::Config.new(File.new(version_config_path)).to_hash
+    build_number = versions["VERSION_LONG"]
+
+    if options.key?(:build_number)
+      build_number = options[:build_number]
+
+      UI.message("Updating build version to #{build_number}")
+
+      versions["VERSION_LONG"] = build_number
+      new_config = Xcodeproj::Config.new(versions)
+      new_config.save_as(Pathname.new(version_config_path))
+    end
+
+    gym(
+      scheme: "WordPress Alpha",
+      workspace: WORKSPACE_PATH,
+      export_method: "enterprise",
+      clean: true,
+      output_directory: BUILD_PRODUCTS_PATH,
+      output_name: "WordPress Alpha",
+      derived_data_path: DERIVED_DATA_PATH,
+      export_team_id: ENV["INT_EXPORT_TEAM_ID"],
+      export_options: { method: "enterprise" }
+    )
+
+    appcenter_upload(
+      api_token: get_required_env("APPCENTER_API_TOKEN"),
+      owner_name: "automattic",
+      owner_type: "organization",
+      app_name: "WPiOS-One-Offs",
+      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
+      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
+      destinations: "All-users-of-WPiOS-One-Offs",
+      notify_testers: false
+    )
+
+    # Install SentryCLI prior to trying to upload dSYMs
+    sh("curl -sL https://sentry.io/get-cli/ | bash")
+
+    sentry_upload_dsym(
+      auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
+      org_slug: 'a8c',
+      project_slug: 'wordpress-ios',
+      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH],
+    )
+
+    download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
+    UI.message("Successfully built and uploaded installable build here: #{download_url}")
+    install_url = "https://install.appcenter.ms/orgs/automattic/apps/WPiOS-One-Offs/"
+
+    # Create a comment.json file so that Peril to comment with the build details, if this is running on CI
+    comment_body = "You can test the changes on this Pull Request by downloading it from AppCenter [here](#{install_url}) with build number: #{build_number}. IPA is available [here](#{download_url}). If you need access to this, you can ask a maintainer to add you."
+    File.write("comment.json", { body: comment_body }.to_json)
+  end
+
+  #####################################################################################
+  # build_and_upload_internal
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app and upload it for internal testing
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_internal [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_internal
+  # bundle exec fastlane build_and_upload_internal skip_confirm:true
+  #####################################################################################
+  desc "Builds and uploads for distribution"
+  lane :build_and_upload_internal do | options |
+    ios_build_prechecks(skip_confirm: options[:skip_confirm], internal: true) unless (options[:skip_prechecks])
+    ios_build_preflight() unless (options[:skip_prechecks])
+
+    internal_code_signing
+
+    gym(
+      scheme: "WordPress Internal",
+      workspace: WORKSPACE_PATH,
+      export_method: "enterprise",
+      clean: true,
+      output_directory: BUILD_PRODUCTS_PATH,
+      output_name: "WordPress Internal",
+      derived_data_path: DERIVED_DATA_PATH,
+      export_team_id: get_required_env("INT_EXPORT_TEAM_ID"),
+      export_options: { method: "enterprise" }
+    )
+
+    appcenter_upload(
+      api_token: ENV["APPCENTER_API_TOKEN"],
+      owner_name: "automattic",
+      owner_type: "organization",
+      app_name: "WP-Internal",
+      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
+      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
+      notify_testers: false
+    )
+
+    sentry_upload_dsym(
+      auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
+      org_slug: 'a8c',
+      project_slug: 'wordpress-ios',
+      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH],
+    )
+
+  end
+
+  #####################################################################################
+  # build_and_upload_itc
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app and upload it for external distribution
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_itc [skip_confirm:<skip confirm>] [create_release:<Create release on GH> ]
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_itc
+  # bundle exec fastlane build_and_upload_itc skip_confirm:true
+  # bundle exec fastlane build_and_upload_itc create_release:true
+  #####################################################################################
+  desc "Builds and uploads for distribution"
+  lane :build_and_upload_itc do | options |
+    ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true) unless (options[:skip_prechecks])
+    ios_build_preflight() unless (options[:skip_prechecks])
+
+    appstore_code_signing
+
+    gym(
+      scheme: "WordPress",
+      workspace: WORKSPACE_PATH,
+      clean: true,
+      export_team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
+      output_directory: BUILD_PRODUCTS_PATH,
+      derived_data_path: DERIVED_DATA_PATH,
+      export_options: { method: "app-store" }
+    )
+
+    testflight(
+      skip_waiting_for_build_processing: true,
+      team_id: "299112",
+    )
+
+    sentry_upload_dsym(
+      auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
+      org_slug: 'a8c',
+      project_slug: 'wordpress-ios',
+      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    )
+
+    if (options[:create_release])
+      archive_zip_path = File.join(PROJECT_ROOT_FOLDER, "WordPress.xarchive.zip")
+      zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
+
+      version = ios_get_app_version()
+      create_release(
+        repository:GHHELPER_REPO,
+        version: version,
+        release_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
+        release_assets:"#{archive_zip_path}"
+      )
+
+      FileUtils.rm_rf(archive_zip_path)
+    end
+  end
+
+  #####################################################################################
+  # build_for_translation_review
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app with pending translations for reviewers
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_for_translation_review version_name:1234
+  #
+  # Example:
+  # bundle exec fastlane build_for_translation_review version_name:1234
+  #####################################################################################
+  desc "Builds and uploads for translation review"
+  lane :build_for_translation_review do | options |
+    ios_build_preflight() unless (options[:skip_prechecks])
+
+    puts "Building version: #{options[:version_name]}"
+
+    update_translations_script_path = File.join( PROJECT_ROOT_FOLDER, 'Scripts', 'update-translations.rb' )
+    sh(update_translations_script_path, "review", "current")
+    sh(update_translations_script_path, "review", "waiting")
+    sh(update_translations_script_path, "review", "fuzzy")
+
+    ios_merge_translators_strings(strings_folder: File.join( PROJECT_ROOT_FOLDER, "WordPress", "Resources"))
+
+    extract_framework_translations_script_path = File.join( File.join( PROJECT_ROOT_FOLDER, "Scripts", "extract-framework-translations.swift"))
+    sh(extract_framework_translations_script_path)
+
+    gym(
+      clean: true,
+      workspace: WORKSPACE_PATH,
+      scheme: "WordPress",
+      configuration: "Debug",
+      derived_data_path: DERIVED_DATA_PATH,
+      skip_package_ipa: true,
+      skip_archive: true,
+      destination: "generic/platform=iOS Simulator",
+    )
+
+    FileUtils.mkdir_p(File.join(PROJECT_ROOT_FOLDER, "Artifacts"))
+
+    build_path = File.join(DERIVED_DATA_PATH, "Build", "Products", "Debug-iphonesimulator", "WordPress.app")
+    output_path = File.join(PROJECT_ROOT_FOLDER, "Artifacts", "WordPress-#{options[:version_name]}.zip")
+
+    # Appetize.io expects the `.app` bundle to be wrapped in a `.zip` file
+    zip(path: build_path, output_path: output_path)
+
+    # Upload the app to Appetize.io
+    appetize(
+      path: output_path,
+      api_token: ENV["APPET_TOKEN"],
+      public_key: "u33365457th0bw8wga7x856a8r"
+    )
+  end
+
+  desc "Build for Testing"
+  lane :build_for_testing do | options |
+    run_tests(
+      workspace: WORKSPACE_PATH,
+      scheme: "WordPress",
+      derived_data_path: DERIVED_DATA_PATH,
+      build_for_testing: true,
+      device: options[:device],
+      deployment_target_version: options[:ios_version],
+    )
+  end
+  #####################################################################################
+  # register_new_device
+  # -----------------------------------------------------------------------------------
+  # This lane helps a developer register a new device in the App Store Portal
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane register_new_device
+  #
+  # Example:
+  # bundle exec fastlane register_new_device
+  #####################################################################################
+  desc "Registers a Device in the developer console"
+  lane :register_new_device do | options |
+
+    device_name = UI.input("Device Name: ") unless options[:device_name] != nil
+    device_id = UI.input("Device ID: ") unless options[:device_id] != nil
+    UI.message "Registering #{device_name} with ID #{device_id} and registering it with any provisioning profiles associated with these bundle identifiers:"
+    ALL_BUNDLE_IDENTIFIERS.each { |identifier|
+      puts "\t#{identifier}"
+    }
+
+    # Register the user's device
+    register_device(
+      name: device_name,
+      udid: device_id,
+      team_id: get_required_env("EXT_EXPORT_TEAM_ID")
+    )
+
+    # Add all development certificates to the provisioning profiles (just in case – this is an easy step to miss)
+    add_development_certificates_to_provisioning_profiles(
+      team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
+      app_identifier: ALL_BUNDLE_IDENTIFIERS
+    )
+
+    # Add all devices to the provisioning profiles
+    add_all_devices_to_provisioning_profiles(
+      team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
+      app_identifier: ALL_BUNDLE_IDENTIFIERS
+    )
+  end
+
+  #####################################################################################
+  # trigger_beta_build
+  # -----------------------------------------------------------------------------------
+  # This lane triggers a beta build on CI
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane trigger_beta_build [branch_to_build:<branch_name>]
+  #
+  #####################################################################################
+  lane :trigger_beta_build do | options |
+    circleci_trigger_job(
+      circle_ci_token: ENV["CIRCLE_CI_AUTH_TOKEN"],
+      repository: REPOSITORY_NAME,
+      branch: options[:branch_to_build],
+      job_params: {"beta_build" => true}
+    )
+  end
+
+  #####################################################################################
+  # trigger_release_build
+  # -----------------------------------------------------------------------------------
+  # This lane triggers a stable release build on CI
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane trigger_release_build [branch_to_build:<branch_name>]
+  #
+  #####################################################################################
+  lane :trigger_release_build do | options |
+    circleci_trigger_job(
+      circle_ci_token: ENV["CIRCLE_CI_AUTH_TOKEN"],
+      repository: REPOSITORY_NAME,
+      branch: options[:branch_to_build],
+      job_params: {"release_build" => true}
+    )
+  end
+
+########################################################################
+# Configure Lanes
+########################################################################
+  #####################################################################################
+  # update_certs_and_profiles
+  # -----------------------------------------------------------------------------------
+  # This lane downloads all the required certs and profiles and,
+  # if not run on CI it creates the missing ones.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane update_certs_and_profiles
+  #
+  # Example:
+  # bundle exec fastlane update_certs_and_profiles
+  #####################################################################################
+  lane :update_certs_and_profiles do | options |
+    alpha_code_signing
+    internal_code_signing
+    appstore_code_signing
+  end
+
+  ########################################################################
+  # Fastlane match code signing
+  ########################################################################
+  private_lane :alpha_code_signing do |options|
+    match(
+      type: "enterprise",
+      team_id: get_required_env("INT_EXPORT_TEAM_ID"),
+      readonly: true,
+      app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub('org.wordpress', 'org.wordpress.alpha') }
+    )
+  end
+
+  private_lane :internal_code_signing do |options|
+    match(
+      type: "enterprise",
+      team_id: get_required_env("INT_EXPORT_TEAM_ID"),
+      readonly: true,
+      app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub('org.wordpress', 'org.wordpress.internal') }
+    )
+  end
+
+  private_lane :appstore_code_signing do |options|
+    match(
+      type: "appstore",
+      team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
+      readonly: true,
+      app_identifier: ALL_BUNDLE_IDENTIFIERS
+    )
+  end
+
+########################################################################
+# Test Lanes
+########################################################################
+  #####################################################################################
+  # test_without_building
+  # -----------------------------------------------------------------------------------
+  # This lane runs tests without building the app.
+  # It requires a prebuilt xctestrun file and simulator destination where the tests will be run.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane test_without_building [name:<Partial name of the .xctestrun file>] [try_count:<Number of times to try tests>]
+  #
+  # Example:
+  # bundle exec fastlane test_without_building name:UITests try_count:3
+  #####################################################################################
+  desc "Run tests without building"
+  lane :test_without_building do | options |
+
+    # Find the referenced .xctestrun file based on its name
+    buildProductsPath = File.join(DERIVED_DATA_PATH, "Build", "Products")
+
+    testPlanPath = Dir.glob(File.join(buildProductsPath, '*.xctestrun') ).select { |e|
+      e.include?(options[:name])
+    }.first
+
+    UI.user_error!("Unable to find .xctestrun file at #{buildProductsPath}") unless testPlanPath != nil and File.exists? (testPlanPath)
+
+    multi_scan(
+      workspace: WORKSPACE_PATH,
+      scheme: "WordPress",
+      device: options[:device],
+      deployment_target_version: options[:ios_version],
+      test_without_building: true,
+      xctestrun: testPlanPath,
+      try_count: options[:try_count],
+      output_directory: File.join(PROJECT_ROOT_FOLDER, "build", "results"),
+      result_bundle: true
+    )
+  end
+
+########################################################################
+# Helper Lanes
+########################################################################
+  desc "Get a list of pull request from `start_tag` to the current state"
+  lane :get_pullrequests_list do | options |
+    get_prs_list(repository: GHHELPER_REPO, start_tag:"#{options[:start_tag]}", report_path:"#{File.expand_path('~')}/wpios_prs_list.txt")
+  end
+
+  desc "Verifies that Gutenberg is referenced by release version and not by commit"
+  lane :gutenberg_dep_check do | options |
+    res = ''
+
+    File.open File.join(PROJECT_ROOT_FOLDER, 'Podfile') do |file|
+      res = file.find { |line| line =~ /^(?!\s*#)(?=.*\bgutenberg\b).*(\bcommit|tag\b){1}.+/ }
+    end
+
+    UI.user_error!("Can't find any reference to Gutenberg!") unless (res.length != 0)
+    if res.include?("commit")
+      UI.user_error!("Gutenberg referenced by commit!\n#{res}") unless UI.interactive?
+
+      if (!UI.confirm("Gutenberg referenced by commit!\n#{res}\nDo you want to continue anyway?"))
+        UI.user_error!("Aborted by user request. Please fix Gutenberg reference and try again.")
+      end
+    end
+
+    UI.message("Gutenberg version: #{(res.scan(/'([^']*)'/))[0][0]}")
+  end
+end

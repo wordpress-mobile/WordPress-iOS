@@ -205,13 +205,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     [super traitCollectionDidChange:previousTraitCollection];
 
-    if (@available(iOS 13.0, *)) {
-        // Update cached attributed strings when toggling light/dark mode.
-        self.userInterfaceStyleChanged = self.traitCollection.userInterfaceStyle != previousTraitCollection.userInterfaceStyle;
-        [self refreshTableViewAndNoResultsView];
-    } else {
-        self.userInterfaceStyleChanged = NO;
-    }
+    // Update cached attributed strings when toggling light/dark mode.
+    self.userInterfaceStyleChanged = self.traitCollection.userInterfaceStyle != previousTraitCollection.userInterfaceStyle;
+    [self refreshTableViewAndNoResultsView];
 }
 
 #pragma mark - Split View Support
@@ -276,6 +272,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.navigationItem.backBarButtonItem = backButton;
 
     self.title = NSLocalizedString(@"Comments", @"Title of the reader's comments screen");
+    self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
 }
 
 - (void)configurePostHeader
@@ -752,8 +749,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         [self updateCachedContent];
     }];
 
+    [self navigateToCommentIDIfNeeded];
 }
-
 
 - (void)updateCachedContent
 {
@@ -774,6 +771,37 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     return attrStr;
 }
 
+/// If we've been provided with a comment ID on initialization, then this
+/// method locates that comment and scrolls the tableview to display it.
+- (void)navigateToCommentIDIfNeeded
+{
+    if (self.navigateToCommentID != nil) {
+        // Find the comment if it exists
+        NSArray<Comment *> *comments = [self.tableViewHandler.resultsController fetchedObjects];
+        NSArray<Comment *> *filteredComments = [comments filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"commentID == %@", self.navigateToCommentID]];
+        Comment *comment = [filteredComments firstObject];
+
+        if (!comment) {
+            return;
+        }
+
+        NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
+
+        // Dispatch to ensure the tableview has reloaded before we scroll
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            // Yes, calling this twice is horrible.
+            // Our row heights are dynamically calculated, and the first time we perform a scroll it
+            // seems that we may end up in slightly the wrong position.
+            // If we then immediately scroll again, everything has been laid out, and we should end up
+            // at the correct row. @frosty 2021-05-06
+            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES ];
+        });
+
+        // Reset the commentID so we don't do this again.
+        self.navigateToCommentID = nil;
+    }
+}
 
 #pragma mark - Actions
 
@@ -872,6 +900,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         self.needsRefreshTableViewAfterScrolling = YES;
         return;
     }
+
     [self refreshTableViewAndNoResultsView];
 }
 
@@ -1219,15 +1248,30 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.postHeaderView.isSubscribedToPost = newIsSubscribed;
 
     // Define success block
-    void (^successBlock)(void) = ^void() {
-        NSString *title = newIsSubscribed
-            ? NSLocalizedString(@"Successfully subscribed to the comments", @"The app successfully subscribed to the comments for the post")
-            : NSLocalizedString(@"Successfully unsubscribed from the comments", @"The app successfully unsubscribed from the comments for the post");
+    void (^successBlock)(BOOL taskSucceeded) = ^void(BOOL taskSucceeded) {
+        if (taskSucceeded == NO) {
+            NSString *title = newIsSubscribed
+                ? NSLocalizedString(@"Unable to follow conversation", @"The app failed to subscribe to the comments for the post")
+                : NSLocalizedString(@"Failed to unfollow conversation", @"The app failed to unsubscribe from the comments for the post");
 
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
-            [weakSelf displayNoticeWithTitle:title message:nil];
-        });
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
+                [weakSelf displayNoticeWithTitle:title message:nil];
+
+                // The task failed, fall back to the old subscription status
+                self.postHeaderView.isSubscribedToPost = oldIsSubscribed;
+            });
+        } else {
+            NSString *title = newIsSubscribed
+                ? NSLocalizedString(@"Successfully followed conversation", @"The app successfully subscribed to the comments for the post")
+                : NSLocalizedString(@"Successfully unfollowed conversation", @"The app successfully unsubscribed from the comments for the post");
+
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
+                [weakSelf displayNoticeWithTitle:title message:nil];
+            });
+        }
     };
 
     // Define failure block

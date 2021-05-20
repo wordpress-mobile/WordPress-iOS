@@ -19,8 +19,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 
 @interface PostService ()
 
-@property (nonnull, strong, nonatomic) PostServiceRemoteFactory *postServiceRemoteFactory;
-
 @end
 
 @implementation PostService
@@ -55,8 +53,13 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.postFormat = blog.settings.defaultPostFormat;
     post.postType = Post.typeDefaultIdentifier;
 
-    [[ContextManager sharedInstance] obtainPermanentIDForObject:post];
-    
+    BlogAuthor *author = [blog getAuthorWithId:blog.userID];
+    post.authorID = author.userID ?: blog.account.userID;
+    post.author = author.displayName ?: blog.account.displayName;
+
+    [blog.managedObjectContext obtainPermanentIDsForObjects:@[post] error:nil];
+    NSAssert(![post.objectID isTemporaryID], @"The new post for this blog must have a permanent ObjectID");
+
     return post;
 }
 
@@ -73,7 +76,12 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     page.date_created_gmt = [NSDate date];
     page.remoteStatus = AbstractPostRemoteStatusSync;
 
-    [[ContextManager sharedInstance] obtainPermanentIDForObject:page];
+    BlogAuthor *author = [blog getAuthorWithId:blog.userID];
+    page.authorID = author.userID ?: blog.account.userID;
+    page.author = author.displayName ?: blog.account.displayName;
+
+    [blog.managedObjectContext obtainPermanentIDsForObjects:@[page] error:nil];
+    NSAssert(![page.objectID isTemporaryID], @"The new page for this blog must have a permanent ObjectID");
 
     return page;
 }
@@ -260,6 +268,8 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
 
     // Add the post to the uploading queue list
     [self.uploadingList uploading:postObjectID];
+    
+    BOOL isFirstTimePublish = post.isFirstTimePublish;
 
     void (^successBlock)(RemotePost *post) = ^(RemotePost *post) {
         [self.managedObjectContext performBlock:^{
@@ -277,6 +287,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
                     }
                 }
                 
+                postInContext.isFirstTimePublish = isFirstTimePublish;
                 [self updatePost:postInContext withRemotePost:post];
                 postInContext.remoteStatus = AbstractPostRemoteStatusSync;
 
@@ -777,7 +788,10 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 - (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost {
     NSNumber *previousPostID = post.postID;
     post.postID = remotePost.postID;
-    post.author = remotePost.authorDisplayName;
+    // Used to populate author information for self-hosted sites.
+    BlogAuthor *author = [post.blog getAuthorWithId:remotePost.authorID];
+
+    post.author = remotePost.authorDisplayName ?: author.displayName;
     post.authorID = remotePost.authorID;
     post.date_created_gmt = remotePost.date;
     post.dateModified = remotePost.dateModified;
@@ -797,7 +811,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     if (post.pathForDisplayImage.length == 0) {
         [post updatePathForDisplayImageBasedOnContent];
     }
-    post.authorAvatarURL = remotePost.authorAvatarURL;
+    post.authorAvatarURL = remotePost.authorAvatarURL ?: author.avatarURL;
     post.mt_excerpt = remotePost.excerpt;
     post.wp_slug = remotePost.slug;
     post.suggested_slug = remotePost.suggestedSlug;
@@ -894,6 +908,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     remotePost.password = post.password;
     remotePost.type = @"post";
     remotePost.authorAvatarURL = post.authorAvatarURL;
+    remotePost.authorID = post.authorID;
     remotePost.excerpt = post.mt_excerpt;
     remotePost.slug = post.wp_slug;
 

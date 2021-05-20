@@ -476,6 +476,12 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         // If the app is open, and a Zendesk view is being shown, Zendesk will display an alert allowing the user to view the updated ticket.
         handleZendeskNotification(userInfo: userInfo)
 
+        // Otherwise see if it's an auth notification
+        if PushNotificationsManager.shared.handleAuthenticationNotification(userInfo, userInteraction: true, completionHandler: nil) {
+            return
+        }
+
+        // Otherwise a share notification
         let category = notification.request.content.categoryIdentifier
 
         guard (category == ShareNoticeConstants.categorySuccessIdentifier || category == ShareNoticeConstants.categoryFailureIdentifier),
@@ -532,6 +538,6 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
-        MeNavigationAction.notificationSettings.perform()
+        MeNavigationAction.notificationSettings.perform(router: UniversalLinkRouter.shared)
     }
 }

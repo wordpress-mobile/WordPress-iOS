@@ -37,7 +37,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testShowImageWhenAvailable() {
-        let post = PostBuilder().withImage().build()
+        let post = PostBuilder(context).withImage().build()
 
         postCell.configure(with: post)
 
@@ -45,7 +45,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testHideImageWhenNotAvailable() {
-        let post = PostBuilder().build()
+        let post = PostBuilder(context).build()
 
         postCell.configure(with: post)
 
@@ -53,7 +53,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testShowPostTitle() {
-        let post = PostBuilder().with(title: "Foo bar").build()
+        let post = PostBuilder(context).with(title: "Foo bar").build()
 
         postCell.configure(with: post)
 
@@ -61,7 +61,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testShowPostSnippet() {
-        let post = PostBuilder().with(snippet: "Post content").build()
+        let post = PostBuilder(context).with(snippet: "Post content").build()
 
         postCell.configure(with: post)
 
@@ -70,7 +70,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testHidePostSnippet() {
-        let post = PostBuilder().with(snippet: "").build()
+        let post = PostBuilder(context).with(snippet: "").build()
 
         postCell.configure(with: post)
 
@@ -78,7 +78,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testShowDate() {
-        let post = PostBuilder().with(dateModified: Date()).drafted().build()
+        let post = PostBuilder(context).with(dateModified: Date()).drafted().build()
 
         postCell.configure(with: post)
 
@@ -86,7 +86,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testShowAuthor() {
-        let post = PostBuilder().with(author: "John Doe").build()
+        let post = PostBuilder(context).with(author: "John Doe").build()
 
         postCell.configure(with: post)
 
@@ -94,7 +94,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testShowStickyLabelWhenPostIsSticky() {
-        let post = PostBuilder().is(sticked: true).with(remoteStatus: .sync).build()
+        let post = PostBuilder(context).is(sticked: true).with(remoteStatus: .sync).build()
 
         postCell.configure(with: post)
 
@@ -102,7 +102,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testHideStickyLabelWhenPostIsntSticky() {
-        let post = PostBuilder().is(sticked: false).with(remoteStatus: .sync).build()
+        let post = PostBuilder(context).is(sticked: false).with(remoteStatus: .sync).build()
 
         postCell.configure(with: post)
 
@@ -110,7 +110,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testHideStickyLabelWhenPostIsUploading() {
-        let post = PostBuilder().is(sticked: true).with(remoteStatus: .pushing).build()
+        let post = PostBuilder(context).is(sticked: true).with(remoteStatus: .pushing).build()
 
         postCell.configure(with: post)
 
@@ -118,7 +118,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testHideStickyLabelWhenPostIsFailed() {
-        let post = PostBuilder().is(sticked: true).with(remoteStatus: .failed).build()
+        let post = PostBuilder(context).is(sticked: true).with(remoteStatus: .failed).build()
 
         postCell.configure(with: post)
 
@@ -126,7 +126,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testShowPrivateLabelWhenPostIsPrivate() {
-        let post = PostBuilder().with(remoteStatus: .sync).private().build()
+        let post = PostBuilder(context).with(remoteStatus: .sync).private().build()
 
         postCell.configure(with: post)
 
@@ -134,7 +134,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testDoNotShowTrashedLabel() {
-        let post = PostBuilder().with(remoteStatus: .sync).trashed().build()
+        let post = PostBuilder(context).with(remoteStatus: .sync).trashed().build()
 
         postCell.configure(with: post)
 
@@ -142,7 +142,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testDoNotShowScheduledLabel() {
-        let post = PostBuilder().with(remoteStatus: .sync).scheduled().build()
+        let post = PostBuilder(context).with(remoteStatus: .sync).scheduled().build()
 
         postCell.configure(with: post)
 
@@ -150,7 +150,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testHideHideStatusView() {
-        let post = PostBuilder()
+        let post = PostBuilder(context)
             .with(remoteStatus: .sync)
             .published().build()
 
@@ -160,7 +160,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testShowStatusView() {
-        let post = PostBuilder()
+        let post = PostBuilder(context)
             .with(remoteStatus: .failed)
             .published().build()
 
@@ -170,7 +170,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testShowProgressView() {
-        let post = PostBuilder()
+        let post = PostBuilder(context)
             .with(remoteStatus: .pushing)
             .published().build()
 
@@ -180,7 +180,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testHideProgressView() {
-        let post = PostBuilder()
+        let post = PostBuilder(context)
             .with(remoteStatus: .sync)
             .published().build()
 
@@ -190,7 +190,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testIsUserInteractionEnabled() {
-        let post = PostBuilder().withImage().build()
+        let post = PostBuilder(context).withImage().build()
         postCell.isUserInteractionEnabled = false
 
         postCell.configure(with: post)
@@ -199,7 +199,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testEditAction() {
-        let post = PostBuilder().published().build()
+        let post = PostBuilder(context).published().build()
         postCell.configure(with: post)
 
         postCell.edit()
@@ -208,7 +208,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testViewAction() {
-        let post = PostBuilder().published().build()
+        let post = PostBuilder(context).published().build()
         postCell.configure(with: post)
 
         postCell.view()
@@ -218,7 +218,7 @@ class PostCardCellTests: XCTestCase {
 
     func testMoreAction() {
         let button = UIButton()
-        let post = PostBuilder().published().build()
+        let post = PostBuilder(context).published().build()
         postCell.configure(with: post)
 
         postCell.more(button)
@@ -228,7 +228,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testRetryAction() {
-        let post = PostBuilder().published().build()
+        let post = PostBuilder(context).published().build()
         postCell.configure(with: post)
 
         postCell.retry()
@@ -237,7 +237,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testShowPublishButtonAndHideViewButton() {
-        let post = PostBuilder().private().with(remoteStatus: .failed).build()
+        let post = PostBuilder(context).private().with(remoteStatus: .failed).build()
 
         postCell.configure(with: post)
 
@@ -246,23 +246,33 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testHideAuthorAndSeparator() {
-        let post = PostBuilder().with(author: "John Doe").build()
+        let post = PostBuilder(context).with(author: "John Doe").build()
         postCell.configure(with: post)
 
-        postCell.isAuthorHidden = true
+        postCell.shouldHideAuthor = true
 
         XCTAssertTrue(postCell.authorLabel.isHidden)
         XCTAssertTrue(postCell.separatorLabel.isHidden)
     }
 
     func testDoesNotHideAuthorAndSeparator() {
-        let post = PostBuilder().with(author: "John Doe").build()
+        let post = PostBuilder(context).with(author: "John Doe").build()
         postCell.configure(with: post)
 
-        postCell.isAuthorHidden = false
+        postCell.shouldHideAuthor = false
 
         XCTAssertFalse(postCell.authorLabel.isHidden)
         XCTAssertFalse(postCell.separatorLabel.isHidden)
+    }
+
+    func testHidesAuthorSeparatorWhenAuthorEmpty() {
+        let post = PostBuilder(context).with(author: "").build()
+        postCell.configure(with: post)
+
+        postCell.shouldHideAuthor = false
+
+        XCTAssertTrue(postCell.authorLabel.isHidden)
+        XCTAssertTrue(postCell.separatorLabel.isHidden)
     }
 
     func testShowsPostWillBePublishedWarningForFailedPublishedPostsWithRemote() {
@@ -291,7 +301,7 @@ class PostCardCellTests: XCTestCase {
 
     func testShowsCancelButtonForUserConfirmedFailedPublishedPosts() {
         // Given
-        let post = PostBuilder().published().with(remoteStatus: .failed).confirmedAutoUpload().build()
+        let post = PostBuilder(context).published().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
         // When
         postCell.configure(with: post)
@@ -325,7 +335,7 @@ class PostCardCellTests: XCTestCase {
 
     func testDoesntShowFailedForCancelledAutoUploads() {
         // Given
-        let post = PostBuilder()
+        let post = PostBuilder(context)
             .published()
             .with(remoteStatus: .failed)
             .confirmedAutoUpload()

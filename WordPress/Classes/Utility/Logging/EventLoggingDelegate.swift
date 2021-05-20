@@ -13,7 +13,11 @@ struct EventLoggingDelegate: AutomatticTracks.EventLoggingDelegate {
         NotificationCenter.default.post(name: WPLoggingStack.QueuedLogsDidChangeNotification, object: log)
         DDLogDebug("📜 Added log to queue: \(log.uuid)")
 
-        if let eventLogging = WordPressAppDelegate.eventLogging {
+        DispatchQueue.main.async {
+            guard let eventLogging = WordPressAppDelegate.eventLogging else {
+                return
+            }
+
             DDLogDebug("📜\t There are \(eventLogging.queuedLogFiles.count) logs in the queue.")
         }
     }
@@ -26,7 +30,12 @@ struct EventLoggingDelegate: AutomatticTracks.EventLoggingDelegate {
     func didFinishUploadingLog(_ log: LogFile) {
         NotificationCenter.default.post(name: WPLoggingStack.QueuedLogsDidChangeNotification, object: log)
         DDLogDebug("📜 Finished uploading encrypted log: \(log.uuid)")
-        if let eventLogging = WordPressAppDelegate.eventLogging {
+
+        DispatchQueue.main.async {
+            guard let eventLogging = WordPressAppDelegate.eventLogging else {
+                return
+            }
+
             DDLogDebug("📜\t There are \(eventLogging.queuedLogFiles.count) logs remaining in the queue.")
         }
     }

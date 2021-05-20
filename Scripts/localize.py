@@ -134,9 +134,9 @@ def localize(path, language, include_pods_and_frameworks):
 
     # TODO: This is super ugly, we have to come up with a better way of doing it
     if include_pods_and_frameworks:
-        find_cmd = 'find . ../Pods/WordPress* ../Pods/WPMediaPicker ../WordPressShared/WordPressShared ../Pods/Gutenberg -name "*.m" -o -name "*.swift" | grep -v Vendor | grep -v ./WordPressTest/I18n.swift'
+        find_cmd = 'find . ../Pods/WordPress* ../Pods/WPMediaPicker ../WordPressShared/WordPressShared ../Pods/Gutenberg -name "*.m" -o -name "*.swift" | grep -v Vendor | grep -v ./WordPressTest/I18n.swift | grep -v ./WordPressStatsWidgets/Views/Localization/LocalizedStringKey+extension.swift'
     else:
-        find_cmd = 'find . -name "*.m" -o -name "*.swift" | grep -v Vendor | grep -v ./WordPressTest/I18n.swift'
+        find_cmd = 'find . -name "*.m" -o -name "*.swift" | grep -v Vendor | grep -v ./WordPressTest/I18n.swift | grep -v ./WordPressStatsWidgets/Views/Localization/LocalizedStringKey+extension.swift'
     filelist = os.popen(find_cmd).read().strip().split('\n')
     filelist = '"{0}"'.format('" "'.join(filelist))
 

@@ -4,6 +4,38 @@ import WordPressShared
 
 @objc open class HomepageSettingsViewController: UITableViewController {
 
+    fileprivate enum PageSelectionType {
+        case homepage
+        case postsPage
+
+        var title: String {
+            switch self {
+            case .homepage:
+                return Strings.homepage
+            case .postsPage:
+                return Strings.postsPage
+            }
+        }
+
+        var pickerTitle: String {
+            switch self {
+            case .homepage:
+                return Strings.homepagePicker
+            case .postsPage:
+                return Strings.postsPagePicker
+            }
+        }
+
+        var publishedPostsOnly: Bool {
+            switch self {
+            case .homepage:
+                return true
+            case .postsPage:
+                return false
+            }
+        }
+    }
+
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
     }()
@@ -65,7 +97,7 @@ import WordPressShared
         }
 
         let homepageRows: [ImmuTableRow]
-        if case .homepageType(_) = inProgressChange {
+        if case .homepageType = inProgressChange {
             homepageRows = updatingHomepageTypeRows
         } else {
             homepageRows = homepageTypeRows
@@ -126,13 +158,13 @@ import WordPressShared
         let postsPage = postsPageID.flatMap { postService.findPost(withID: NSNumber(value: $0), in: blog) }
         let postsPageTitle = postsPage?.titleForDisplay() ?? ""
 
-        let homepageRow = pageSelectionRow(title: Strings.homepage,
+        let homepageRow = pageSelectionRow(selectionType: .homepage,
                                                       detail: homepageTitle,
                                                       selectedPostID: blog?.homepagePageID,
                                                       hiddenPostID: blog?.homepagePostsPageID,
                                                       isInProgress: HomepageChange.isSelectedHomepage,
                                                       changeForPost: { .selectedHomepage($0) })
-        let postsPageRow = pageSelectionRow(title: Strings.postsPage,
+        let postsPageRow = pageSelectionRow(selectionType: .postsPage,
                                                        detail: postsPageTitle,
                                                        selectedPostID: blog?.homepagePostsPageID,
                                                        hiddenPostID: blog?.homepagePageID,
@@ -141,32 +173,32 @@ import WordPressShared
         return [homepageRow, postsPageRow]
     }
 
-    private func pageSelectionRow(title: String,
+    private func pageSelectionRow(selectionType: PageSelectionType,
                                           detail: String,
                                           selectedPostID: Int?,
                                           hiddenPostID: Int?,
                                           isInProgress: (HomepageChange) -> Bool,
                                           changeForPost: @escaping (Int) -> HomepageChange) -> ImmuTableRow {
         if let inProgressChange = inProgressChange, isInProgress(inProgressChange) {
-            return ActivityIndicatorRow(title: title, animating: true, action: nil)
+            return ActivityIndicatorRow(title: selectionType.title, animating: true, action: nil)
         } else {
-            return NavigationItemRow(title: title, detail: detail, action: { [weak self] _ in
-                self?.showPageSelection(selectedPostID: selectedPostID, hiddenPostID: hiddenPostID, change: changeForPost)
+            return NavigationItemRow(title: selectionType.title, detail: detail, action: { [weak self] _ in
+                self?.showPageSelection(selectionType: selectionType, selectedPostID: selectedPostID, hiddenPostID: hiddenPostID, change: changeForPost)
             })
         }
     }
 
     // MARK: - Page Selection Navigation
 
-    private func showPageSelection(selectedPostID: Int?, hiddenPostID: Int?, change: @escaping (Int) -> HomepageChange) {
-        pushPageSelection(selectedPostID: selectedPostID, hiddenPostID: hiddenPostID) { [weak self] selected in
+    private func showPageSelection(selectionType: PageSelectionType, selectedPostID: Int?, hiddenPostID: Int?, change: @escaping (Int) -> HomepageChange) {
+        pushPageSelection(selectionType: selectionType, selectedPostID: selectedPostID, hiddenPostID: hiddenPostID) { [weak self] selected in
             if let postID = selected.postID?.intValue {
                 self?.update(with: change(postID))
             }
         }
     }
 
-    fileprivate func pushPageSelection(selectedPostID: Int?, hiddenPostID: Int?, _ completion: @escaping (Page) -> Void) {
+    fileprivate func pushPageSelection(selectionType: PageSelectionType, selectedPostID: Int?, hiddenPostID: Int?, _ completion: @escaping (Page) -> Void) {
         let hiddenPosts: [Int]
         if let postID = hiddenPostID {
             hiddenPosts = [postID]
@@ -178,13 +210,14 @@ import WordPressShared
                                                       showsPostType: false,
                                                       entityName: Page.entityName(),
                                                       hiddenPosts: hiddenPosts,
+                                                      publishedOnly: selectionType.publishedPostsOnly,
                                                       callback: { [weak self] (post) in
             if let page = post as? Page {
                 completion(page)
             }
             self?.navigationController?.popViewController(animated: true)
         })
-        viewController.title = NSLocalizedString("Choose Posts Page", comment: "Title for selecting a new home page")
+        viewController.title = selectionType.pickerTitle
         navigationController?.pushViewController(viewController, animated: true)
     }
 
@@ -278,7 +311,9 @@ import WordPressShared
         static let title = NSLocalizedString("Homepage Settings", comment: "Title for the Homepage Settings screen")
         static let footerText = NSLocalizedString("Choose from a homepage that displays your latest posts (classic blog) or a fixed / static page.", comment: "Explanatory text for Homepage Settings homepage type selection.")
         static let homepage = NSLocalizedString("Homepage", comment: "Title for setting which shows the current page assigned as a site's homepage")
+        static let homepagePicker = NSLocalizedString("Choose Homepage", comment: "Title for selecting a new homepage")
         static let postsPage = NSLocalizedString("Posts Page", comment: "Title for setting which shows the current page assigned as a site's posts page")
+        static let postsPagePicker = NSLocalizedString("Choose Posts Page", comment: "Title for selecting a new posts page")
         static let choosePagesHeaderText = NSLocalizedString("Choose Pages", comment: "Title for settings section which allows user to select their home page and posts page")
         static let updateErrorTitle = NSLocalizedString("Unable to update homepage settings", comment: "Error informing the user that their homepage settings could not be updated")
         static let updateErrorMessage = NSLocalizedString("Please try again later.", comment: "Prompt for the user to retry a failed action again later")

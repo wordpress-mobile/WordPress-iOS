@@ -85,7 +85,7 @@ class FollowCommentsServiceTests: XCTestCase {
         let isSubscribed = true
 
         // Act
-        followCommentsService.toggleSubscribed(isSubscribed, success: {}, failure: { _ in })
+        followCommentsService.toggleSubscribed(isSubscribed, success: {_ in }, failure: { _ in })
 
         // Assert
         XCTAssertFalse(remoteMock.subscribeToPostCalled, "subscribeToPost should not be called")
@@ -101,7 +101,7 @@ class FollowCommentsServiceTests: XCTestCase {
         let isSubscribed = false
 
         // Act
-        followCommentsService.toggleSubscribed(isSubscribed, success: {}, failure: { _ in })
+        followCommentsService.toggleSubscribed(isSubscribed, success: {_ in }, failure: { _ in })
 
         // Assert
         XCTAssertTrue(remoteMock.subscribeToPostCalled, "subscribeToPost should be called")
@@ -117,14 +117,14 @@ class FollowCommentsServiceTests: XCTestCase {
 
         override func subscribeToPost(with postID: Int,
                                       for siteID: Int,
-                                      success: @escaping () -> Void,
+                                      success: @escaping (Bool) -> Void,
                                       failure: @escaping (Error?) -> Void) {
             subscribeToPostCalled = true
         }
 
         override func unsubscribeFromPost(with postID: Int,
                                           for siteID: Int,
-                                          success: @escaping () -> Void,
+                                          success: @escaping (Bool) -> Void,
                                           failure: @escaping (Error) -> Void) {
             unsubscribeFromPostCalled = true
         }

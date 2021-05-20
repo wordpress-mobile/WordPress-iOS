@@ -173,7 +173,6 @@ extension NSPersistentStoreCoordinator {
 
 
 // MARK: - ContextManager Helpers
-// TODO: - COREDATA - These helpers are here to support Swift Migration. Will be removed once it's stable
 extension ContextManager {
     static var overrideInstance: CoreDataStack?
 
@@ -182,9 +181,7 @@ extension ContextManager {
             return overrideInstance
         }
 
-        return FeatureFlag.swiftCoreData.enabled ?
-            CoreDataManager.shared :
-            ContextManager.internalSharedInstance()
+        return ContextManager.internalSharedInstance()
     }
 
     static var shared: CoreDataStack {

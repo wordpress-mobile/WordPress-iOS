@@ -135,4 +135,9 @@
     static func murielAppBarText() -> UIColor {
         return .appBarText
     }
+
+    @available(swift, obsoleted: 1.0)
+    static func murielAppBarBackground() -> UIColor {
+        return .appBarBackground
+    }
 }

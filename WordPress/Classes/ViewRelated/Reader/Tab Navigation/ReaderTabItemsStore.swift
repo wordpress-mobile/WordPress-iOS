@@ -56,8 +56,8 @@ class ReaderTabItemsStore: ItemsStore {
 extension ReaderTabItemsStore {
 
     /// Fetch request to extract reader menu topics from Core Data
-    private var topicsFetchRequest: NSFetchRequest<NSFetchRequestResult> {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderTopicsConstants.entityName)
+    private var topicsFetchRequest: NSFetchRequest<ReaderAbstractTopic> {
+        let fetchRequest = NSFetchRequest<ReaderAbstractTopic>(entityName: ReaderTopicsConstants.entityName)
         fetchRequest.predicate = NSPredicate(format: ReaderTopicsConstants.predicateFormat, NSNumber(value: ReaderHelpers.isLoggedIn()))
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: ReaderTopicsConstants.sortByKey, ascending: true)]
         return fetchRequest
@@ -66,14 +66,9 @@ extension ReaderTabItemsStore {
     /// Fetches items from the Core Data cache, if they exist, and updates the state accordingly
     private func fetchTabBarItems() {
         do {
-            guard let topics = try context.fetch(topicsFetchRequest) as? [ReaderAbstractTopic] else {
-                self.state = .error(ReaderTopicsConstants.objectTypeError)
-                DDLogError(ReaderTopicsConstants.fetchRequestError + ReaderTopicsConstants.objectTypeError.localizedDescription)
-                return
-            }
+            let topics = try context.fetch(topicsFetchRequest)
             let items = ReaderHelpers.rearrange(items: topics.map { ReaderTabItem(ReaderContent(topic: $0)) })
             self.state = .ready(items)
-
         } catch {
             DDLogError(ReaderTopicsConstants.fetchRequestError + error.localizedDescription)
             self.state = .error(error)
@@ -120,7 +115,6 @@ extension ReaderTabItemsStore {
         static let entityName = "ReaderAbstractTopic"
         static let sortByKey = "type"
         static let fetchRequestError = "There was a problem fetching topics for the menu. "
-        static let objectTypeError = NSError(domain: "ReaderTabItemsStoreDomain", code: -1, userInfo: nil)
         static let remoteServiceError = NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
     }
 }

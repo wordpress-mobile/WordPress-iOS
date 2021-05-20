@@ -125,22 +125,20 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
     @objc func configureSearchBar() {
         let placeholderText = NSLocalizedString("Enter the URL of a site to follow", comment: "Placeholder text prompting the user to type the name of the URL they would like to follow.")
-        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(.shade30))
-        let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).attributedPlaceholder = attributedPlaceholder
-        let textAttributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(.shade60))
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).defaultTextAttributes = textAttributes
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).placeholder = placeholderText
         WPStyleGuide.configureSearchBar(searchBar)
+
+        let iconSizes = CGSize(width: 20, height: 20)
+        let clearImage = UIImage.gridicon(.crossCircle, size: iconSizes).withTintColor(.searchFieldIcons).withRenderingMode(.alwaysOriginal)
+        let addOutline = UIImage.gridicon(.addOutline, size: iconSizes).withTintColor(.searchFieldIcons).withRenderingMode(.alwaysOriginal)
 
         searchBar.autocapitalizationType = .none
         searchBar.keyboardType = .URL
-        searchBar.setImage(UIImage(named: "icon-clear-textfield"), for: .clear, state: UIControl.State())
-        searchBar.setImage(UIImage(named: "icon-reader-search-plus"), for: .search, state: UIControl.State())
-        if #available(iOS 13.0, *) {
-            searchBar.searchTextField.accessibilityLabel = NSLocalizedString("Site URL", comment: "The accessibility label for the followed sites search field")
-            searchBar.searchTextField.accessibilityValue = nil
-            searchBar.searchTextField.accessibilityHint = placeholderText
-        }
+        searchBar.setImage(clearImage, for: .clear, state: UIControl.State())
+        searchBar.setImage(addOutline, for: .search, state: UIControl.State())
+        searchBar.searchTextField.accessibilityLabel = NSLocalizedString("Site URL", comment: "The accessibility label for the followed sites search field")
+        searchBar.searchTextField.accessibilityValue = nil
+        searchBar.searchTextField.accessibilityHint = placeholderText
     }
 
     func setupBackgroundTapGestureRecognizer() {

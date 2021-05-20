@@ -7,6 +7,13 @@ protocol Spotlightable: UIView {
 class SpotlightableButton: UIButton, Spotlightable {
 
     var spotlight: QuickStartSpotlightView?
+    var originalTitle: String?
+
+    /// If this property is set, the default offset will be overridden.
+    ///
+    var spotlightOffset: UIOffset?
+    private var spotlightXConstraint: NSLayoutConstraint?
+    private var spotlightYConstraint: NSLayoutConstraint?
 
     var shouldShowSpotlight: Bool {
         get {
@@ -23,6 +30,30 @@ class SpotlightableButton: UIButton, Spotlightable {
         }
     }
 
+    func startLoading() {
+        originalTitle = titleLabel?.text
+        setTitle("", for: .normal)
+        activityIndicator.startAnimating()
+    }
+
+    func stopLoading() {
+        activityIndicator.stopAnimating()
+        setTitle(originalTitle, for: .normal)
+    }
+
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(activityIndicator)
+
+        NSLayoutConstraint.activate([
+            activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+        ])
+
+        return activityIndicator
+    }()
+
     private func setupSpotlight() {
         spotlight?.removeFromSuperview()
 
@@ -30,17 +61,35 @@ class SpotlightableButton: UIButton, Spotlightable {
         addSubview(spotlightView)
         spotlightView.translatesAutoresizingMaskIntoConstraints = false
 
-        let newSpotlightCenterX = spotlightView.centerXAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.leftOffset)
-        let newSpotlightCenterY = spotlightView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        let spotlightXConstraint = spotlightView.centerXAnchor.constraint(equalTo: leadingAnchor)
+        let spotlightYConstraint = spotlightView.centerYAnchor.constraint(equalTo: centerYAnchor)
+
+        self.spotlightXConstraint = spotlightXConstraint
+        self.spotlightYConstraint = spotlightYConstraint
+        updateConstraintConstants()
+
         let newSpotlightWidth = spotlightView.widthAnchor.constraint(equalToConstant: Constants.spotlightDiameter)
         let newSpotlightHeight = spotlightView.heightAnchor.constraint(equalToConstant: Constants.spotlightDiameter)
 
-        NSLayoutConstraint.activate([newSpotlightCenterX, newSpotlightCenterY, newSpotlightWidth, newSpotlightHeight])
+        NSLayoutConstraint.activate([
+            spotlightXConstraint,
+            spotlightYConstraint,
+            newSpotlightWidth,
+            newSpotlightHeight
+        ])
+
         spotlight = spotlightView
+    }
+
+    private func updateConstraintConstants() {
+        let offset = spotlightOffset ?? Constants.defaultOffset
+
+        spotlightXConstraint?.constant = offset.horizontal
+        spotlightYConstraint?.constant = offset.vertical
     }
 
     private enum Constants {
         static let spotlightDiameter: CGFloat = 40
-        static let leftOffset: CGFloat = -10
+        static let defaultOffset = UIOffset(horizontal: -10, vertical: 0)
     }
 }

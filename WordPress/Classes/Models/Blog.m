@@ -52,6 +52,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic comments;
 @dynamic connections;
 @dynamic domains;
+@dynamic inviteLinks;
 @dynamic themes;
 @dynamic media;
 @dynamic userSuggestions;
@@ -320,6 +321,36 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     return self.icon.length > 0 ? [NSURL URLWithString:self.icon].pathComponents.count > 1 : NO;
 }
 
+- (NSTimeZone *)timeZone
+{
+    CGFloat const OneHourInSeconds = 60.0 * 60.0;
+
+    NSString *timeZoneName = [self getOptionValue:@"timezone"];
+    NSNumber *gmtOffSet = [self getOptionValue:@"gmt_offset"];
+    id optionValue = [self getOptionValue:@"time_zone"];
+
+    NSTimeZone *timeZone = nil;
+    if (timeZoneName.length > 0) {
+        timeZone = [NSTimeZone timeZoneWithName:timeZoneName];
+    }
+
+    if (!timeZone && gmtOffSet != nil) {
+        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:(gmtOffSet.floatValue * OneHourInSeconds)];
+    }
+
+    if (!timeZone && optionValue != nil) {
+        NSInteger timeZoneOffsetSeconds = [optionValue floatValue] * OneHourInSeconds;
+        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:timeZoneOffsetSeconds];
+    }
+
+    if (!timeZone) {
+        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    }
+
+    return timeZone;
+
+}
+
 - (NSString *)postFormatTextFromSlug:(NSString *)postFormatSlug
 {
     NSDictionary *allFormats = self.postFormats;
@@ -534,6 +565,8 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self supportsRestApi] && [self isAdmin];
         case BlogFeatureStories:
             return [self supportsStories];
+        case BlogFeatureContactInfo:
+            return [self supportsContactInfo];
     }
 }
 
@@ -606,6 +639,11 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 {
     BOOL hasRequiredJetpack = [self hasRequiredJetpackVersion:@"9.1"];
     return hasRequiredJetpack || self.isHostedAtWPcom;
+}
+
+- (BOOL)supportsContactInfo
+{
+    return [self hasRequiredJetpackVersion:@"8.5"] || self.isHostedAtWPcom;
 }
 
 - (BOOL)accountIsDefaultAccount

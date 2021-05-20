@@ -29,7 +29,9 @@ class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
             messageTitle: NSLocalizedString("Create downloadable backup", comment: "Label that describes the download backup action"),
             messageDescription: NSLocalizedString("%1$@ is the selected point to create a downloadable backup.", comment: "Description for the download backup action. $1$@ is a placeholder for the selected date."),
             generalSectionHeaderText: NSLocalizedString("Choose the items to download", comment: "Downloadable items: general section title"),
-            buttonTitle: NSLocalizedString("Create downloadable file", comment: "Button title for download backup action")
+            buttonTitle: NSLocalizedString("Create downloadable file", comment: "Button title for download backup action"),
+            warningButtonTitle: nil,
+            isRestoreTypesConfigurable: true
         )
         super.init(site: site, activity: activity, configuration: restoreOptionsConfiguration)
     }

@@ -24,7 +24,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             fatalError("The App cannot run without a window.")
         }
 
-        return WindowManager(window: window)
+        return AppDependency.windowManager(window: window)
     }()
 
     var analytics: WPAppAnalytics?
@@ -77,6 +77,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     @objc class var shared: WordPressAppDelegate? {
+        assert(Thread.isMainThread, "WordPressAppDelegate.shared can only be accessed from the main thread")
         return UIApplication.shared.delegate as? WordPressAppDelegate
     }
 
@@ -84,11 +85,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-
-        if #available(iOS 13.0, *) {
-            // Overrides the current user interface appearance
-            AppAppearance.overrideAppearance()
-        }
+        AppAppearance.overrideAppearance()
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
         try? loggingStack.start()
@@ -138,11 +135,15 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         setupComponentsAppearance()
         disableAnimationsForUITests(application)
 
+        // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
+        let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
+        fonts?.forEach({ url in
+            CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
+        })
+
         PushNotificationsManager.shared.deletePendingLocalNotifications()
 
-        if #available(iOS 13, *) {
-            startObservingAppleIDCredentialRevoked()
-        }
+        startObservingAppleIDCredentialRevoked()
 
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
         return true
@@ -189,9 +190,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         DDLogInfo("\(self) \(#function)")
 
         // This is done here so the check is done on app launch and app switching.
-        if #available(iOS 13, *) {
-            checkAppleIDCredentialState()
-        }
+        checkAppleIDCredentialState()
+
         GutenbergSettings().performGutenbergPhase2MigrationIfNeeded()
     }
 
@@ -400,8 +400,7 @@ extension WordPressAppDelegate {
 
     @objc func configureAppCenterSDK() {
         #if APPCENTER_ENABLED
-        MSAppCenter.start(ApiCredentials.appCenterAppId(), withServices: [MSDistribute.self])
-        MSDistribute.setEnabled(true)
+        AppCenter.start(withAppSecret: ApiCredentials.appCenterAppId(), services: [Distribute.self])
         #endif
     }
 
@@ -448,7 +447,7 @@ extension WordPressAppDelegate {
     }
 
     @objc func configureWordPressAuthenticator() {
-        let authManager = WordPressAuthenticationManager(windowManager: windowManager)
+        let authManager = AppDependency.authenticationManager(windowManager: windowManager)
 
         authManager.initializeWordPressAuthenticator()
         authManager.startRelayingSupportNotifications()
@@ -532,7 +531,7 @@ extension WordPressAppDelegate {
 
         appearance.actionFont = WPStyleGuide.fontForTextStyle(.headline)
         appearance.infoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
-        appearance.infoTintColor = WPStyleGuide.wordPressBlue()
+        appearance.infoTintColor = .primary
 
         appearance.topDividerColor = .neutral(.shade5)
         appearance.bottomDividerColor = .neutral(.shade0)
@@ -709,20 +708,14 @@ extension WordPressAppDelegate {
         if notification.object != nil {
             setupShareExtensionToken()
             configureNotificationExtension()
-
-            if #available(iOS 13, *) {
-                startObservingAppleIDCredentialRevoked()
-            }
+            startObservingAppleIDCredentialRevoked()
         } else {
             trackLogoutIfNeeded()
             removeTodayWidgetConfiguration()
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()
             windowManager.showFullscreenSignIn()
-
-            if #available(iOS 13, *) {
-                stopObservingAppleIDCredentialRevoked()
-            }
+            stopObservingAppleIDCredentialRevoked()
         }
 
         toggleExtraDebuggingIfNeeded()
@@ -805,7 +798,7 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
     func customizeAppearance() {
         window?.backgroundColor = .black
-        window?.tintColor = WPStyleGuide.wordPressBlue()
+        window?.tintColor = .primary
 
         // iOS 14 started rendering backgrounds for stack views, when previous versions
         // of iOS didn't show them. This is a little hacky, but ensures things keep
@@ -853,7 +846,6 @@ extension WordPressAppDelegate {
 
 // MARK: - Apple Account Handling
 
-@available(iOS 13.0, *)
 extension WordPressAppDelegate {
 
     func checkAppleIDCredentialState() {

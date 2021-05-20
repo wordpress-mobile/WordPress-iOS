@@ -28,13 +28,13 @@ class CircularProgressView: UIView {
 
     @objc(CircularProgressViewStyle)
     enum Style: Int {
-        case wordPressBlue
+        case primary
         case white
         case mediaCell
 
         fileprivate var appearance: Appearance {
             switch self {
-            case .wordPressBlue:
+            case .primary:
                 return Appearance(
                     progressIndicatorAppearance: ProgressIndicatorView.Appearance(lineColor: .primary(.shade40)),
                     backgroundColor: .clear,
