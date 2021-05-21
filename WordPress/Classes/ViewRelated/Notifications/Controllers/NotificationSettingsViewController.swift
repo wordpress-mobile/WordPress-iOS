@@ -70,13 +70,15 @@ open class NotificationSettingsViewController: UIViewController {
 
         activityIndicatorView.startAnimating()
 
-        dispatchGroup.enter()
-        siteService.fetchFollowedSites(success: {
-            dispatchGroup.leave()
-        }, failure: { (error) in
-            dispatchGroup.leave()
-            DDLogError("Could not sync sites: \(String(describing: error))")
-        })
+        if AppConfiguration.showsFollowedSites {
+            dispatchGroup.enter()
+            siteService.fetchFollowedSites(success: {
+                dispatchGroup.leave()
+            }, failure: { (error) in
+                dispatchGroup.leave()
+                DDLogError("Could not sync sites: \(String(describing: error))")
+            })
+        }
 
         dispatchGroup.enter()
         service.getAllSettings({ [weak self] (settings: [NotificationSettings]) in
