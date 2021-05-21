@@ -1351,8 +1351,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     if ([cell isKindOfClass:[BloggingRemindersCell class]]) {
         cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.textLabel.text = nil;
-        cell.imageView.image = nil;
     }
 
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
