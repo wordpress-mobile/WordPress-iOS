@@ -151,11 +151,19 @@ class LikesListController: NSObject {
     ///   - failure: Closure to be called when the fetch failed.
     private func fetchLikes(success: @escaping ([LikeUser], Int) -> Void, failure: @escaping (Error?) -> Void) {
 
+        var beforeStr = lastFetchedDate
+
+        if beforeStr != nil,
+           let modifiedDate = modifiedBeforeDate() {
+            // The endpoints expect a format like YYYY-MM-DD HH:MM:SS. It isn't expecting the T or Z, hence the replacingMatches calls.
+            beforeStr = ISO8601DateFormatter().string(from: modifiedDate).replacingMatches(of: "T", with: " ").replacingMatches(of: "Z", with: "")
+        }
+
         switch content {
         case .post(let postID):
             postService.getLikesFor(postID: postID,
                                     siteID: siteID,
-                                    before: lastFetchedDate,
+                                    before: beforeStr,
                                     excludingIDs: excludeUserIDs,
                                     purgeExisting: isFirstLoad,
                                     success: success,
@@ -163,7 +171,7 @@ class LikesListController: NSObject {
         case .comment(let commentID):
             commentService.getLikesFor(commentID: commentID,
                                        siteID: siteID,
-                                       before: lastFetchedDate,
+                                       before: beforeStr,
                                        excludingIDs: excludeUserIDs,
                                        purgeExisting: isFirstLoad,
                                        success: success, failure: failure)
@@ -175,8 +183,7 @@ class LikesListController: NSObject {
     // fetched for the lastFetchedDate, and send those to the endpoints to filter out of the response
     // so we don't get duplicates or gaps.
     private func trackUsersToExclude() {
-        guard let lastDate = likingUsers.last?.dateLiked,
-              let modifiedDate = Calendar.current.date(byAdding: .second, value: -1, to: lastDate) else {
+        guard let modifiedDate = modifiedBeforeDate() else {
             return
         }
 
@@ -188,7 +195,15 @@ class LikesListController: NSObject {
             fetchedUsers = commentService.likeUsersFor(commentID: commentID, siteID: siteID, after: modifiedDate)
         }
 
-        excludeUserIDs = fetchedUsers.filter { $0.dateLiked > lastDate }.map { NSNumber(value: $0.userID) }
+        excludeUserIDs = fetchedUsers.map { NSNumber(value: $0.userID) }
+    }
+
+    private func modifiedBeforeDate() -> Date? {
+        guard let lastDate = likingUsers.last?.dateLiked else {
+            return nil
+        }
+
+        return Calendar.current.date(byAdding: .second, value: -1, to: lastDate)
     }
 
 }
