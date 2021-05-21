@@ -1,7 +1,9 @@
 17.5
 -----
+
 * [*] Fixed a bug that was causing some fonts to become enormous when large text was enabled.
 * [*] Fixed scrolling and item selection in the Plugins directory. [#16087]
+* [*] Improved large text support in the blog details header in My Sites. [#16521]
 
 17.4
 -----
