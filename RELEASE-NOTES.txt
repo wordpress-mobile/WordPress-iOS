@@ -1,6 +1,6 @@
 17.5
 -----
-
+* [**] Like Notifications: now displays all users who liked a post or comment. [#15662]
 * [*] Fixed a bug that was causing some fonts to become enormous when large text was enabled.
 
 17.4
