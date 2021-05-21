@@ -2,7 +2,7 @@ import Foundation
 import XCTest
 
 private struct ElementStringIDs {
-    static let navBarTitle = "My Site"
+    static let navBarTitle = "my-site-navigation-bar"
     static let blogTable = "Blog Details Table"
     static let removeSiteButton = "BlogDetailsRemoveSiteCell"
     static let activityLogButton = "Activity Log Row"
@@ -20,6 +20,7 @@ private struct ElementStringIDs {
 
 class MySiteScreen: BaseScreen {
     let tabBar: TabNavComponent
+    let navBar: XCUIElement
     let removeSiteButton: XCUIElement
     let removeSiteSheet: XCUIElement
     let removeSiteAlert: XCUIElement
@@ -57,8 +58,9 @@ class MySiteScreen: BaseScreen {
         createButton = app.buttons[ElementStringIDs.createButton]
         readerButton = app.buttons[ElementStringIDs.ReaderButton]
         switchSiteButton = app.buttons[ElementStringIDs.switchSiteButton]
+        navBar = app.navigationBars[ElementStringIDs.navBarTitle]
 
-        super.init(element: switchSiteButton)
+        super.init(element: navBar)
     }
 
     func showSiteSwitcher() -> MySitesScreen {

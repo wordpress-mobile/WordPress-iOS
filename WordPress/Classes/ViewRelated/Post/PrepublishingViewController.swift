@@ -92,8 +92,6 @@ class PrepublishingViewController: UITableViewController {
         updatePublishButtonLabel()
         announcePublishButton()
 
-        calculatePreferredContentSize()
-
         configureKeyboardToggle()
     }
 
@@ -110,16 +108,10 @@ class PrepublishingViewController: UITableViewController {
             .store(in: &cancellables)
     }
 
-    private func calculatePreferredContentSize() {
-        // Apply additional padding to take into account the navbar / status bar height
-        let safeAreaTop = UIApplication.shared.mainWindow?.safeAreaInsets.top ?? 0
-        let navBarHeight = navigationController?.navigationBar.frame.height ?? 0
-        let offset = navBarHeight - safeAreaTop
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
 
-        var size = tableView.contentSize
-        size.height += offset
-
-        preferredContentSize = size
+        preferredContentSize = tableView.contentSize
     }
 
     override func viewWillAppear(_ animated: Bool) {

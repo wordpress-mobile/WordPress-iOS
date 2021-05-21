@@ -12,8 +12,34 @@ class LikesListController: NSObject {
     private let siteID: NSNumber
     private let notification: Notification?
     private let tableView: UITableView
-    private var likingUsers: [LikeUser] = []
+    private var loadingIndicator: UIActivityIndicatorView
     private weak var delegate: LikesListControllerDelegate?
+
+    // Used to control pagination.
+    private var isFirstLoad = true
+    private var totalLikes = 0
+    private var totalLikesFetched = 0
+    private var lastFetchedDate: String?
+
+    private var hasMoreLikes: Bool {
+        return totalLikesFetched < totalLikes
+    }
+
+    private var isLoadingContent = false {
+        didSet {
+            if isLoadingContent != oldValue {
+                isLoadingContent ? loadingIndicator.startAnimating() : loadingIndicator.stopAnimating()
+                // Refresh the footer view's frame
+                tableView.tableFooterView = loadingIndicator
+            }
+        }
+    }
+
+    private var likingUsers: [LikeUser] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
 
     private lazy var postService: PostService = {
         PostService(managedObjectContext: ContextManager.shared.mainContext)
@@ -21,34 +47,6 @@ class LikesListController: NSObject {
 
     private lazy var commentService: CommentService = {
         CommentService(managedObjectContext: ContextManager.shared.mainContext)
-    }()
-
-    private var isLoadingContent: Bool = false {
-        didSet {
-            isLoadingContent ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
-            tableView.reloadData()
-        }
-    }
-
-    // MARK: Views
-
-    private lazy var activityIndicator: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(style: .medium)
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        return view
-    }()
-
-    private lazy var loadingCell: UITableViewCell = {
-        let cell = UITableViewCell()
-
-        cell.addSubview(activityIndicator)
-        NSLayoutConstraint.activate([
-            activityIndicator.safeCenterXAnchor.constraint(equalTo: cell.safeCenterXAnchor),
-            activityIndicator.safeCenterYAnchor.constraint(equalTo: cell.safeCenterYAnchor)
-        ])
-
-        return cell
     }()
 
     // MARK: Lifecycle
@@ -84,6 +82,12 @@ class LikesListController: NSObject {
         self.siteID = siteID
         self.tableView = tableView
         self.delegate = delegate
+
+        self.loadingIndicator = {
+            let loadingIndicator = UIActivityIndicatorView(style: .medium)
+            loadingIndicator.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 44)
+            return loadingIndicator
+        }()
     }
 
     // MARK: Methods
@@ -94,20 +98,38 @@ class LikesListController: NSObject {
             return
         }
 
-        // shows the loading cell and prevents double refresh.
         isLoadingContent = true
 
-        fetchStoredLikes()
+        if isFirstLoad {
+            fetchStoredLikes()
+        }
 
-        // If there are no cached users, continue showing the loading cell.
-        isLoadingContent = likingUsers.isEmpty
+        guard ReachabilityUtils.isInternetReachable() else {
+            isLoadingContent = false
 
-        fetchLikes(success: { [weak self] users in
-            self?.likingUsers = users
+            if likingUsers.isEmpty {
+                delegate?.showErrorView()
+            }
+
+            return
+        }
+
+        fetchLikes(success: { [weak self] users, totalLikes in
+
+            // Remove cached users as they'll be replaced by the first fetch.
+            if self?.isFirstLoad == true {
+                self?.likingUsers = []
+            }
+
+            self?.likingUsers.append(contentsOf: users)
+            self?.totalLikes = totalLikes
+            self?.totalLikesFetched += users.count
+            self?.lastFetchedDate = users.last?.dateLikedString
+            self?.isFirstLoad = false
             self?.isLoadingContent = false
         }, failure: { [weak self] _ in
-            // TODO: Handle error state
             self?.isLoadingContent = false
+            self?.delegate?.showErrorView()
         })
     }
 
@@ -125,12 +147,21 @@ class LikesListController: NSObject {
     /// - Parameters:
     ///   - success: Closure to be called when the fetch is successful.
     ///   - failure: Closure to be called when the fetch failed.
-    private func fetchLikes(success: @escaping ([LikeUser]) -> Void, failure: @escaping (Error?) -> Void) {
+    private func fetchLikes(success: @escaping ([LikeUser], Int) -> Void, failure: @escaping (Error?) -> Void) {
         switch content {
         case .post(let postID):
-            postService.getLikesFor(postID: postID, siteID: siteID, success: success, failure: failure)
+            postService.getLikesFor(postID: postID,
+                                    siteID: siteID,
+                                    before: lastFetchedDate,
+                                    purgeExisting: isFirstLoad,
+                                    success: success,
+                                    failure: failure)
         case .comment(let commentID):
-            commentService.getLikesFor(commentID: commentID, siteID: siteID, success: success, failure: failure)
+            commentService.getLikesFor(commentID: commentID,
+                                       siteID: siteID,
+                                       before: lastFetchedDate,
+                                       purgeExisting: isFirstLoad,
+                                       success: success, failure: failure)
         }
     }
 }
@@ -144,13 +175,13 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // header section
+        // Header section
         if section == Constants.headerSectionIndex {
             return Constants.numberOfHeaderRows
         }
 
-        // users section
-        return isLoadingContent ? Constants.numberOfLoadingRows : likingUsers.count
+        // Users section
+        return likingUsers.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -158,11 +189,19 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
             return headerCell()
         }
 
-        if isLoadingContent {
-            return loadingCell
+        return userCell(for: indexPath)
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+
+        let isUsersSection = indexPath.section == Constants.usersSectionIndex
+        let isLastRow = indexPath.row == totalLikesFetched - 1
+
+        guard !isLoadingContent && hasMoreLikes && isUsersSection && isLastRow else {
+            return
         }
 
-        return userCell(for: indexPath)
+        refresh()
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -245,6 +284,9 @@ protocol LikesListControllerDelegate: class {
     /// Reports to the delegate that the user cell has been tapped.
     /// - Parameter user: A LikeUser instance representing the user at the selected row.
     func didSelectUser(_ user: LikeUser, at indexPath: IndexPath)
+
+    /// Ask the delegate to show an error view when fetching fails or there is no connection.
+    func showErrorView()
 }
 
 // MARK: - Private Definitions
@@ -260,9 +302,9 @@ private extension LikesListController {
     struct Constants {
         static let numberOfSections = 2
         static let headerSectionIndex = 0
+        static let usersSectionIndex = 1
         static let headerRowIndex = 0
         static let numberOfHeaderRows = 1
-        static let numberOfLoadingRows = 1
     }
 
 }
