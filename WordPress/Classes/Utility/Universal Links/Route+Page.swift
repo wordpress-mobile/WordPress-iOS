@@ -2,11 +2,13 @@ import Foundation
 
 struct NewPageRoute: Route {
     let path = "/page"
+    let section: DeepLinkSection? = .editor
     let action: NavigationAction = NewPageNavigationAction()
 }
 
 struct NewPageForSiteRoute: Route {
     let path = "/page/:domain"
+    let section: DeepLinkSection? = .editor
     let action: NavigationAction = NewPageNavigationAction()
 }
 
