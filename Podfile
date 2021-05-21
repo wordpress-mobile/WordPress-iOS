@@ -421,15 +421,6 @@ post_install do |installer|
     %x(patch "#{project_root}/Pods/React-Core/React/CxxBridge/RCTCxxBridge.mm" < "#{project_root}/patches/RCTCxxBridge.patch")
     %x(patch "#{project_root}/Pods/ReactCommon/turbomodule/core/platform/ios/RCTTurboModuleManager.mm" < "#{project_root}/patches/RCTTurboModuleManager.patch")
 
-    puts 'Patching RCTShadowView to fix nested group block - it could be removed after upgrade to 0.62'
-    %x(patch "#{project_root}/Pods/React-Core/React/Views/RCTShadowView.m" < "#{project_root}/patches/RN-RCTShadowView.patch")
-    puts 'Patching RCTActionSheet to add possibility to disable action sheet buttons -
-    it could be removed once PR with that functionality will be merged into RN'
-    %x(patch "#{project_root}/Pods/React-RCTActionSheet/RCTActionSheetManager.m" < "#{project_root}/patches/RN-RCTActionSheetManager.patch")
-    puts 'Patching RCTUIImageViewAnimated to fix a problem where images will not load when built using the iOS 14 SDK (Xcode 12) -
-    it can be removed once we upgrade Gutenberg to use RN 0.63 or later'
-    %x(patch "#{project_root}/Pods/React-RCTImage/RCTUIImageViewAnimated.m" < "#{project_root}/patches/RN-RCTUIImageViewAnimated.patch")
-
     ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
     require 'commonmarker'
 
