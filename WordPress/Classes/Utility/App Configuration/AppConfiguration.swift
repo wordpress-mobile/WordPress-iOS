@@ -13,4 +13,5 @@ import Foundation
     @objc static let showsReader: Bool = true
     @objc static let showsCreateButton: Bool = true
     @objc static let showsQuickActions: Bool = true
+    @objc static let showsFollowedSites: Bool = true
 }
