@@ -123,6 +123,35 @@ platform :ios do
   end
 
   #####################################################################################
+  # create_jetpack_promo_screenshots
+  # -----------------------------------------------------------------------------------
+  # This lane generates the Jetpack promo screenshots.
+  # Source plain screenshots are supposed to be in the screenshots_orig folder
+  # If this folder doesn't exist, the system will ask to use the standard screenshot
+  # folder. If the user confirms, the pictures in the screenshots folder will be
+  # copied to a new screenshots_orig folder.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane create_jetpack_promo_screenshots
+  #
+  # Example:
+  # bundle exec fastlane create_jetpack_promo_screenshots
+  #####################################################################################
+  desc "Creates Jetpack promo screenshots"
+  lane :create_jetpack_promo_screenshots do |options|
+
+    # Run screenshots generator tool
+    # All file paths are relative to the `fast file`.
+    promo_screenshots(
+      orig_folder: "jetpack_screenshots",
+      metadata_folder: "appstoreres/metadata",
+      config_file: "jetpack_screenshots.json",
+      output_folder: File.join(Dir.pwd, "/jetpack_promo_screenshots"),
+      force: options[:force],
+    )
+  end
+
+  #####################################################################################
   # download_promo_strings
   # -----------------------------------------------------------------------------------
   # This lane downloads the promo strings to use for the creation of the enhanced 

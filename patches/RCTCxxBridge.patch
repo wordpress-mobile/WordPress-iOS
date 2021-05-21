@@ -1,0 +1,4 @@
+770c770
+< - (NSArray<RCTModuleData *> *)_initializeModules:(NSArray<id<RCTBridgeModule>> *)modules
+---
+> - (NSArray<RCTModuleData *> *)_initializeModules:(NSArray<Class> *)modules

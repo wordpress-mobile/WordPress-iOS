@@ -52,7 +52,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .milestoneNotifications:
             return true
         case .newLikeNotifications:
-            return false
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .bloggingReminders:
             return BuildConfiguration.current == .localDeveloper
         }
