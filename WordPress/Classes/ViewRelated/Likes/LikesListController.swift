@@ -203,7 +203,7 @@ class LikesListController: NSObject {
             return nil
         }
 
-        return Calendar.current.date(byAdding: .second, value: -1, to: lastDate)
+        return Calendar.current.date(byAdding: .second, value: 1, to: lastDate)
     }
 
 }

@@ -83,7 +83,7 @@ extension CommentService {
      */
     func likeUsersFor(commentID: NSNumber, siteID: NSNumber, after: Date) -> [LikeUser] {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
-        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@ AND dateLiked > %@", siteID, commentID, after as CVarArg)
+        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@ AND dateLiked < %@", siteID, commentID, after as CVarArg)
         request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
 
         if let users = try? managedObjectContext.fetch(request) {
