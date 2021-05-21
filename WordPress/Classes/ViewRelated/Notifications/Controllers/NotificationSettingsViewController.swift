@@ -135,9 +135,9 @@ open class NotificationSettingsViewController: UIViewController {
     //
     fileprivate func setupSections() {
         var section: [Section] = groupedSettings.isEmpty ? [] : [.blog, .other, .wordPressCom]
-        if !followedSites.isEmpty && !section.isEmpty {
+        if !followedSites.isEmpty && !section.isEmpty && AppConfiguration.showsFollowedSites {
             section.insert(.followedSites, at: 1)
-        } else if !followedSites.isEmpty && section.isEmpty {
+        } else if !followedSites.isEmpty && section.isEmpty && AppConfiguration.showsFollowedSites {
             section.append(.followedSites)
         }
 
