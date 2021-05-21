@@ -396,7 +396,7 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
             }
         }
     }
-    
+
     override func getLikesForPostID(_ postID: NSNumber,
                                     count: NSNumber,
                                     before: String?,

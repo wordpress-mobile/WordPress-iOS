@@ -111,7 +111,7 @@ private class CommentServiceRemoteRESTMock: CommentServiceRemoteREST {
     var fetchLikesShouldSucceed: Bool = true
     var remoteUsersToReturnOnGetLikes = [RemoteLikeUser]()
     var totalLikes: NSNumber = 3
-    
+
     override func getLikesForCommentID(_ commentID: NSNumber,
                                        count: NSNumber,
                                        before: String?,
