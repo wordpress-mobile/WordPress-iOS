@@ -60,7 +60,8 @@ private extension BloggingRemindersCard {
             action()
         }) {
             Image(Images.ellipsisImageName)
-                .foregroundColor(.black)
+                .foregroundColor(Color(UIColor(light: .muriel(color: .gray, .shade50),
+                                               dark: .textSubtle)))
         }
     }
 
@@ -87,17 +88,17 @@ private enum TextContent {
     static let cardTitle = NSLocalizedString("Set your blogging goals",
                                              comment: "Title of the Blogging Reminders card in My Site.")
 
-    static let cardTitleFont = Font.system(size: 22, weight: .regular, design: .serif)
+    static let cardTitleFont = Font(WPStyleGuide.serifFontForTextStyle(.title3) as CTFont)
 
     static let cardDescription = NSLocalizedString("Make the most of your site by setting goals and tracking your progress.",
                                                    comment: "Description of the Blogging Reminders card in My Site.")
 
-    static let cardDescriptionFont = Font.system(size: 16, weight: .regular, design: .default)
+    static let cardDescriptionFont = Font.subheadline
 
     static let getStartedButtonTitle = NSLocalizedString("Get Started",
                                                          comment: "Title of the Get Started button of the Blogging Reminders card in My Site.")
 
-    static let getStartedButtonFont = Font.system(size: 16, weight: .regular, design: .default)
+    static let getStartedButtonFont = Font.subheadline
 }
 
 private enum Images {
