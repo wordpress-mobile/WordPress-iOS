@@ -9,7 +9,24 @@ import Foundation
 ///
 protocol Route {
     var path: String { get }
+    var section: DeepLinkSection? { get }
+    var source: DeepLinkSource { get }
     var action: NavigationAction { get }
+    var shouldTrack: Bool { get }
+}
+
+extension Route {
+    // Default routes to handling links rather than other source types
+    var source: DeepLinkSource {
+        return .link
+    }
+
+    // By default, we'll track all routes, but certain routes can override this.
+    // Routes like banner and email routes may not want to track their original
+    // link, but will instead just track any redirect that they contain.
+    var shouldTrack: Bool {
+        return true
+    }
 }
 
 protocol NavigationAction {
@@ -57,4 +74,57 @@ extension Route {
     func isEqual(to route: Route) -> Bool {
         return path == route.path
     }
+}
+
+// MARK: - Tracking
+
+/// Where did the deep link originate?
+///
+enum DeepLinkSource: Equatable {
+    case link
+    case banner
+    case email(campaign: String)
+    case widget
+    case inApp(presenter: UIViewController?)
+
+    init?(sourceName: String) {
+        switch sourceName {
+        // We only care about widgets right now, but we could
+        // add others in the future if necessary.
+        case "widget":
+            self = .widget
+        default:
+            return nil
+        }
+    }
+
+    var isInternal: Bool {
+        switch self {
+        case .inApp:
+            return true
+        default:
+            return false
+        }
+    }
+
+    var trackingInfo: String? {
+        switch self {
+        case .email(let campaign):
+            return campaign
+        default:
+            return nil
+        }
+    }
+}
+
+/// Which broad section of the app is being linked to?
+///
+enum DeepLinkSection: String {
+    case editor
+    case me
+    case mySite = "my_site"
+    case notifications
+    case reader
+    case siteCreation = "site_creation"
+    case stats
 }

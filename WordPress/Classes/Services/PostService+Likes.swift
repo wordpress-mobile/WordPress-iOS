@@ -3,14 +3,21 @@ extension PostService {
     /**
      Fetches a list of users from remote that liked the post with the given IDs.
      
-     @param postID  The ID of the post to fetch likes for
-     @param siteID  The ID of the site that contains the post
-     @param success A success block
-     @param failure A failure block
+     @param postID          The ID of the post to fetch likes for
+     @param siteID          The ID of the site that contains the post
+     @param count           Number of records to retrieve. Optional. Defaults to the endpoint max of 90.
+     @param before          Filter results to likes before this date/time. Optional.
+     @param purgeExisting   Indicates if existing Likes for the given post and site should be purged before
+                            new ones are created. Defaults to false.
+     @param success         A success block
+     @param failure         A failure block
      */
     func getLikesFor(postID: NSNumber,
                      siteID: NSNumber,
-                     success: @escaping (([LikeUser]) -> Void),
+                     count: Int = 90,
+                     before: String? = nil,
+                     purgeExisting: Bool = false,
+                     success: @escaping (([LikeUser], Int) -> Void),
                      failure: @escaping ((Error?) -> Void)) {
 
         guard let remote = postServiceRemoteFactory.restRemoteFor(siteID: siteID, context: managedObjectContext) else {
@@ -19,27 +26,42 @@ extension PostService {
             return
         }
 
-        remote.getLikesForPostID(postID) { remoteLikeUsers in
-            self.createNewUsers(from: remoteLikeUsers, postID: postID, siteID: siteID) {
-                let users = self.likeUsersFor(postID: postID, siteID: siteID)
-                success(users)
-                LikeUserHelper.purgeStaleLikes()
-            }
-        } failure: { error in
-            DDLogError(String(describing: error))
-            failure(error)
-        }
+        remote.getLikesForPostID(postID,
+                                 count: NSNumber(value: count),
+                                 before: before,
+                                 success: { remoteLikeUsers, totalLikes in
+                                    self.createNewUsers(from: remoteLikeUsers,
+                                                        postID: postID,
+                                                        siteID: siteID,
+                                                        purgeExisting: purgeExisting) {
+                                        let users = self.likeUsersFor(postID: postID, siteID: siteID, before: before)
+                                        success(users, totalLikes.intValue)
+                                        LikeUserHelper.purgeStaleLikes()
+                                    }
+                                 }, failure: { error in
+                                    DDLogError(String(describing: error))
+                                    failure(error)
+                                 })
     }
 
     /**
      Fetches a list of users from Core Data that liked the post with the given IDs.
      
-     @param postID  The ID of the post to fetch likes for
-     @param siteID  The ID of the site that contains the post
+     @param postID  The ID of the post to fetch likes for.
+     @param siteID  The ID of the site that contains the post.
+     @param before  Filter results to likes before this date/time. Optional.
      */
-    func likeUsersFor(postID: NSNumber, siteID: NSNumber) -> [LikeUser] {
+    func likeUsersFor(postID: NSNumber, siteID: NSNumber, before: String? = nil) -> [LikeUser] {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
-        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@", siteID, postID)
+
+        request.predicate = {
+            if let beforeDate = DateUtils.date(fromISOString: before) {
+                return NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@ AND dateLiked < %@", siteID, postID, beforeDate as CVarArg)
+            }
+
+            return NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@", siteID, postID)
+        }()
+
         request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
 
         if let users = try? managedObjectContext.fetch(request) {
@@ -56,6 +78,7 @@ private extension PostService {
     func createNewUsers(from remoteLikeUsers: [RemoteLikeUser]?,
                         postID: NSNumber,
                         siteID: NSNumber,
+                        purgeExisting: Bool,
                         onComplete: @escaping (() -> Void)) {
 
         guard let remoteLikeUsers = remoteLikeUsers,
@@ -68,7 +91,9 @@ private extension PostService {
 
         derivedContext.perform {
 
-            self.deleteExistingUsersFor(postID: postID, siteID: siteID, from: derivedContext)
+            if purgeExisting {
+                self.deleteExistingUsersFor(postID: postID, siteID: siteID, from: derivedContext)
+            }
 
             remoteLikeUsers.forEach {
                 LikeUserHelper.createUserFrom(remoteUser: $0, context: derivedContext)
