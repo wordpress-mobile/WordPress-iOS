@@ -230,7 +230,7 @@ fileprivate extension NewBlogDetailHeaderView {
                 // Not much we can do if we can't retrieve the font.
                 return
             }
-            
+
             let imageSize: CGFloat
 
             if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
