@@ -1141,6 +1141,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     [self showInitialDetailsForBlog];
     [self.tableView reloadData];
+    [self preloadMetadata];
 }
 
 - (void)showInitialDetailsForBlog
