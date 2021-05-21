@@ -6,7 +6,6 @@ import UIKit
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        accessoryType = .none
         selectionStyle = .none
 
         /// - TODO: inject actions here
