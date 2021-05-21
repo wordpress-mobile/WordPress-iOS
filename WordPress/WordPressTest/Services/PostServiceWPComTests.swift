@@ -396,10 +396,11 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
             }
         }
     }
-
+    
     override func getLikesForPostID(_ postID: NSNumber,
                                     count: NSNumber,
                                     before: String?,
+                                    excludeUserIDs: [NSNumber]?,
                                     success: (([RemoteLikeUser], NSNumber) -> Void)!,
                                     failure: ((Error?) -> Void)!) {
         DispatchQueue.global().async {

@@ -20,7 +20,7 @@ class LikesListController: NSObject {
     private var totalLikes = 0
     private var totalLikesFetched = 0
     private var lastFetchedDate: String?
-    private var excludeUserIDs: [NSNumber] = []
+    private var excludeUserIDs: [NSNumber]?
 
     private var hasMoreLikes: Bool {
         return totalLikesFetched < totalLikes
@@ -135,14 +135,6 @@ class LikesListController: NSObject {
         })
     }
 
-    // There is a scenario where multiple users might like a post/comment at the same time,
-    // and then end up split between pages of results. So we'll track which users we've already
-    // fetched for the lastFetchedDate, and send those to the services to filter out of the response
-    // so we don't get duplicates.
-    private func trackUsersToExclude() {
-        excludeUserIDs = likingUsers.filter { $0.dateLikedString == lastFetchedDate }.map { NSNumber(value: $0.userID) }
-    }
-
     /// Fetch Likes from Core Data depending on the notification's content type.
     private func fetchStoredLikes() {
         switch content {
@@ -158,6 +150,7 @@ class LikesListController: NSObject {
     ///   - success: Closure to be called when the fetch is successful.
     ///   - failure: Closure to be called when the fetch failed.
     private func fetchLikes(success: @escaping ([LikeUser], Int) -> Void, failure: @escaping (Error?) -> Void) {
+
         switch content {
         case .post(let postID):
             postService.getLikesFor(postID: postID,
@@ -176,6 +169,28 @@ class LikesListController: NSObject {
                                        success: success, failure: failure)
         }
     }
+
+    // There is a scenario where multiple users might like a post/comment at the same time,
+    // and then end up split between pages of results. So we'll track which users we've already
+    // fetched for the lastFetchedDate, and send those to the endpoints to filter out of the response
+    // so we don't get duplicates or gaps.
+    private func trackUsersToExclude() {
+        guard let lastDate = likingUsers.last?.dateLiked,
+              let modifiedDate = Calendar.current.date(byAdding: .second, value: -1, to: lastDate) else {
+            return
+        }
+
+        var fetchedUsers = [LikeUser]()
+        switch content {
+        case .post(let postID):
+            fetchedUsers = postService.likeUsersFor(postID: postID, siteID: siteID, after: modifiedDate)
+        case .comment(let commentID):
+            fetchedUsers = commentService.likeUsersFor(commentID: commentID, siteID: siteID, after: modifiedDate)
+        }
+
+        excludeUserIDs = fetchedUsers.filter { $0.dateLiked > lastDate }.map { NSNumber(value: $0.userID) }
+    }
+
 }
 
 // MARK: - Table View Related
