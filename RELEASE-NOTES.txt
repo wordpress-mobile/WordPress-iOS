@@ -8,6 +8,7 @@
 * [*] Fixed the Follow Sites Quick Start Tour so that Reader Search is highlighted. [#16391]
 * [*] Enabled approving login authentication requests via push notification while the app is in the foreground. [#16075] 
 * [**] Added pull-to-refresh to the My Site screen when a user has no sites. [#16241]
+* [***] Fixed a bug that was causing uploaded videos to not be viewable in other platforms. [#16548]
 
 17.3
 -----
