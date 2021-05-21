@@ -214,23 +214,6 @@ fileprivate extension NewBlogDetailHeaderView {
             static let rtlSubtitleButtonImageInsets = UIEdgeInsets(top: 1, left: -4, bottom: 0, right: 4)
         }
 
-        // MARK: - Layout
-
-        override func layoutSubviews() {
-            super.layoutSubviews()
-
-            refreshButtonImageToMatchLabelHeight(subtitleButton)
-        }
-
-        /// WORKAROUND: This method offers a compromise solution, to make the subtitle button image resize to match the height of the subtitle label.
-        /// This is necessary to make the UI look good with Large Text enabled.
-        ///
-        private func refreshButtonImageToMatchLabelHeight(_ button: UIButton) {
-            if let xHeight = button.titleLabel?.font.xHeight {
-                button.setImage(UIImage.gridicon(.external, size: CGSize(width: xHeight, height: xHeight)), for: .normal)
-            }
-        }
-
         // MARK: - Child Views
 
         private lazy var mainStackView: UIStackView = {
@@ -265,8 +248,8 @@ fileprivate extension NewBlogDetailHeaderView {
             button.setTitleColor(.primary, for: .normal)
             button.accessibilityHint = NSLocalizedString("Tap to view your site", comment: "Accessibility hint for button used to view the user's site")
 
-            if let xHeight = button.titleLabel?.font.xHeight {
-                button.setImage(UIImage.gridicon(.external, size: CGSize(width: xHeight, height: xHeight)), for: .normal)
+            if let pointSize = button.titleLabel?.font.pointSize {
+                button.setImage(UIImage.gridicon(.external, size: CGSize(width: pointSize, height: pointSize)), for: .normal)
             }
 
             // Align the image to the right
