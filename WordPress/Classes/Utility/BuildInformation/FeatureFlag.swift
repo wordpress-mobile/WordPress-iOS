@@ -16,6 +16,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case todayWidget
     case milestoneNotifications
     case newLikeNotifications
+    case bloggingReminders
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -52,6 +53,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .newLikeNotifications:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .bloggingReminders:
+            return false
         }
     }
 
@@ -106,6 +109,8 @@ extension FeatureFlag {
             return "Milestone notifications"
         case .newLikeNotifications:
             return "New Like Notifications"
+        case .bloggingReminders:
+            return "Blogging Reminders"
         }
     }
 
