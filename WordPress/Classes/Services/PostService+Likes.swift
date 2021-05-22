@@ -7,6 +7,7 @@ extension PostService {
      @param siteID          The ID of the site that contains the post
      @param count           Number of records to retrieve. Optional. Defaults to the endpoint max of 90.
      @param before          Filter results to likes before this date/time. Optional.
+     @param excludingIDs    An array of user IDs to exclude from the returned results. Optional.
      @param purgeExisting   Indicates if existing Likes for the given post and site should be purged before
                             new ones are created. Defaults to false.
      @param success         A success block
@@ -16,6 +17,7 @@ extension PostService {
                      siteID: NSNumber,
                      count: Int = 90,
                      before: String? = nil,
+                     excludingIDs: [NSNumber]? = nil,
                      purgeExisting: Bool = false,
                      success: @escaping (([LikeUser], Int) -> Void),
                      failure: @escaping ((Error?) -> Void)) {
@@ -29,6 +31,7 @@ extension PostService {
         remote.getLikesForPostID(postID,
                                  count: NSNumber(value: count),
                                  before: before,
+                                 excludeUserIDs: excludingIDs,
                                  success: { remoteLikeUsers, totalLikes in
                                     self.createNewUsers(from: remoteLikeUsers,
                                                         postID: postID,
@@ -62,6 +65,25 @@ extension PostService {
             return NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@", siteID, postID)
         }()
 
+        request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
+
+        if let users = try? managedObjectContext.fetch(request) {
+            return users
+        }
+
+        return [LikeUser]()
+    }
+
+    /**
+     Fetches a list of users from Core Data that liked the post with the given IDs after the given Date.
+     
+     @param postID  The ID of the post to fetch likes for.
+     @param siteID  The ID of the site that contains the post.
+     @param after   Filter results to likes after this Date.
+     */
+    func likeUsersFor(postID: NSNumber, siteID: NSNumber, after: Date) -> [LikeUser] {
+        let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
+        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@ AND dateLiked < %@", siteID, postID, after as CVarArg)
         request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
 
         if let users = try? managedObjectContext.fetch(request) {
