@@ -416,6 +416,12 @@
 		3F09CCA82428FF3300D00A8C /* ReaderTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CCA72428FF3300D00A8C /* ReaderTabViewController.swift */; };
 		3F09CCAA2428FF8300D00A8C /* ReaderTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CCA92428FF8300D00A8C /* ReaderTabView.swift */; };
 		3F09CCAE24292EFD00D00A8C /* ReaderTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CCAD24292EFD00D00A8C /* ReaderTabItem.swift */; };
+		3F170D2C2654618000F6F670 /* BloggingRemindersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170D2B2654618000F6F670 /* BloggingRemindersCell.swift */; };
+		3F170E242655917400F6F670 /* UIView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170E232655917400F6F670 /* UIView+SwiftUI.swift */; };
+		3F170E252655917400F6F670 /* UIView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170E232655917400F6F670 /* UIView+SwiftUI.swift */; };
+		3F170EC32655DD1700F6F670 /* BloggingRemindersCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170EC22655DD1700F6F670 /* BloggingRemindersCard.swift */; };
+		3F170ED62656B80000F6F670 /* BloggingRemindersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170D2B2654618000F6F670 /* BloggingRemindersCell.swift */; };
+		3F170EE92656BD9600F6F670 /* BloggingRemindersCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170EC22655DD1700F6F670 /* BloggingRemindersCard.swift */; };
 		3F1AD48123FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1AD48023FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift */; };
 		3F1B66A323A2F54B0075F09E /* ReaderReblogActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1B66A223A2F54B0075F09E /* ReaderReblogActionTests.swift */; };
 		3F1FD2502548AD8B0060C53A /* TodayWidgetStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E58A2E2360D23400E5534B /* TodayWidgetStats.swift */; };
@@ -4911,6 +4917,9 @@
 		3F09CCA72428FF3300D00A8C /* ReaderTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewController.swift; sourceTree = "<group>"; };
 		3F09CCA92428FF8300D00A8C /* ReaderTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabView.swift; sourceTree = "<group>"; };
 		3F09CCAD24292EFD00D00A8C /* ReaderTabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabItem.swift; sourceTree = "<group>"; };
+		3F170D2B2654618000F6F670 /* BloggingRemindersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingRemindersCell.swift; sourceTree = "<group>"; };
+		3F170E232655917400F6F670 /* UIView+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+SwiftUI.swift"; sourceTree = "<group>"; };
+		3F170EC22655DD1700F6F670 /* BloggingRemindersCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingRemindersCard.swift; sourceTree = "<group>"; };
 		3F1AD48023FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+MeButtonTests.swift"; sourceTree = "<group>"; };
 		3F1B66A223A2F54B0075F09E /* ReaderReblogActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogActionTests.swift; sourceTree = "<group>"; };
 		3F1FD31C2548B30D0060C53A /* WordPressStatsWidgets-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPressStatsWidgets-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -8642,6 +8651,15 @@
 			path = "Tab Navigation";
 			sourceTree = "<group>";
 		};
+		3F170D2A2654615900F6F670 /* Blogging Reminders */ = {
+			isa = PBXGroup;
+			children = (
+				3F170D2B2654618000F6F670 /* BloggingRemindersCell.swift */,
+				3F170EC22655DD1700F6F670 /* BloggingRemindersCard.swift */,
+			);
+			path = "Blogging Reminders";
+			sourceTree = "<group>";
+		};
 		3F1B66A123A2F52A0075F09E /* ReaderPostActions */ = {
 			isa = PBXGroup;
 			children = (
@@ -11784,6 +11802,7 @@
 		AC34397B0E11443300E5D79B /* Blog */ = {
 			isa = PBXGroup;
 			children = (
+				3F170D2A2654615900F6F670 /* Blogging Reminders */,
 				1716AEFA25F2926C00CF49EC /* My Site */,
 				F1863714253E49B8003D4BEF /* Add Site */,
 				3F43603423F368BF001DEE70 /* Blog Details */,
@@ -11947,6 +11966,7 @@
 				B53AD9B91BE95687009AB87E /* SettingsTextViewController.m */,
 				E15632CB1EB9ECF40035A099 /* TableViewKeyboardObserver.swift */,
 				E1CB6DA6200F661900945457 /* TimeZoneSelectorViewController.swift */,
+				3F170E232655917400F6F670 /* UIView+SwiftUI.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -16494,6 +16514,7 @@
 				9A38DC6B218899FB006A409B /* DiffContentValue.swift in Sources */,
 				7E4123C020F4097B00DF8486 /* FormattableTextContent.swift in Sources */,
 				E10520581F2B1CC900A948F6 /* WordPress-61-62.xcmappingmodel in Sources */,
+				3F170E242655917400F6F670 /* UIView+SwiftUI.swift in Sources */,
 				3F73BE5F24EB3B4400BE99FF /* WhatIsNewView.swift in Sources */,
 				B5772AC41C9C7A070031F97E /* GravatarService.swift in Sources */,
 				981676D6221B7A4300B81C3F /* CountriesCell.swift in Sources */,
@@ -16683,6 +16704,7 @@
 				F913BB0E24B3C58B00C19032 /* EventLoggingDelegate.swift in Sources */,
 				4089C51022371B120031CE78 /* TodayStatsRecordValue+CoreDataClass.swift in Sources */,
 				988F073523D0CE8800AC67A6 /* WidgetUrlCell.swift in Sources */,
+				3F170EC32655DD1700F6F670 /* BloggingRemindersCard.swift in Sources */,
 				74729CAE205722E300D1394D /* AbstractPost+Searchable.swift in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
 				98F93182239AF64800E4E96E /* ThisWeekWidgetStats.swift in Sources */,
@@ -17112,6 +17134,7 @@
 				17D9362724769579008B2205 /* HomepageSettingsService.swift in Sources */,
 				E6DAABDD1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift in Sources */,
 				8B3DECAB2388506400A459C2 /* SentryStartupEvent.swift in Sources */,
+				3F170D2C2654618000F6F670 /* BloggingRemindersCell.swift in Sources */,
 				C700FAB2258020DB0090938E /* JetpackScanThreatCell.swift in Sources */,
 				D8C31CC62188490000A33B35 /* SiteSegmentsCell.swift in Sources */,
 				E6431DE51C4E892900FD8D90 /* SharingConnectionsViewController.m in Sources */,
@@ -18807,6 +18830,7 @@
 				FABB223F2602FC2C00C8785C /* GutenbergMediaPickerHelper.swift in Sources */,
 				FABB22402602FC2C00C8785C /* FeatureFlag.swift in Sources */,
 				FABB22412602FC2C00C8785C /* QuickStartSkipAllCell.swift in Sources */,
+				3F170E252655917400F6F670 /* UIView+SwiftUI.swift in Sources */,
 				FABB22422602FC2C00C8785C /* BlogDetailsViewController+Activity.swift in Sources */,
 				FABB22432602FC2C00C8785C /* NoteBlockTableViewCell.swift in Sources */,
 				FABB22442602FC2C00C8785C /* WPTabBarController+QuickStart.swift in Sources */,
@@ -19212,6 +19236,7 @@
 				FABB23C92602FC2C00C8785C /* JetpackState.swift in Sources */,
 				FABB23CA2602FC2C00C8785C /* EditPostViewController.swift in Sources */,
 				FABB23CB2602FC2C00C8785C /* PostListFilter.swift in Sources */,
+				3F170EE92656BD9600F6F670 /* BloggingRemindersCard.swift in Sources */,
 				FABB23CC2602FC2C00C8785C /* MediaThumbnailExporter.swift in Sources */,
 				FABB23CD2602FC2C00C8785C /* ReferrerStatsRecordValue+CoreDataClass.swift in Sources */,
 				FABB23CE2602FC2C00C8785C /* NewBlogDetailHeaderView.swift in Sources */,
@@ -19692,6 +19717,7 @@
 				FABB259A2602FC2C00C8785C /* ReaderBlockSiteAction.swift in Sources */,
 				FABB259B2602FC2C00C8785C /* ReaderSiteService.m in Sources */,
 				FABB259C2602FC2C00C8785C /* ReaderPostService+RelatedPosts.swift in Sources */,
+				3F170ED62656B80000F6F670 /* BloggingRemindersCell.swift in Sources */,
 				FABB259D2602FC2C00C8785C /* Blog+Capabilities.swift in Sources */,
 				FABB259E2602FC2C00C8785C /* RestorePostTableViewCell.swift in Sources */,
 				FABB259F2602FC2C00C8785C /* MenuItemCategoriesViewController.m in Sources */,
