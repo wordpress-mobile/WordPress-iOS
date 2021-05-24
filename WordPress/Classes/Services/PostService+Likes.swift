@@ -37,7 +37,7 @@ extension PostService {
                                                         postID: postID,
                                                         siteID: siteID,
                                                         purgeExisting: purgeExisting) {
-                                        let users = self.likeUsersFor(postID: postID, siteID: siteID, before: before)
+                                        let users = self.likeUsersFor(postID: postID, siteID: siteID)
                                         success(users, totalLikes.intValue)
                                         LikeUserHelper.purgeStaleLikes()
                                     }
@@ -52,19 +52,10 @@ extension PostService {
      
      @param postID  The ID of the post to fetch likes for.
      @param siteID  The ID of the site that contains the post.
-     @param before  Filter results to likes before this date/time. Optional.
      */
-    func likeUsersFor(postID: NSNumber, siteID: NSNumber, before: String? = nil) -> [LikeUser] {
+    func likeUsersFor(postID: NSNumber, siteID: NSNumber) -> [LikeUser] {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
-
-        request.predicate = {
-            if let beforeDate = DateUtils.date(fromISOString: before) {
-                return NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@ AND dateLiked < %@", siteID, postID, beforeDate as CVarArg)
-            }
-
-            return NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@", siteID, postID)
-        }()
-
+        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@", siteID, postID)
         request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
 
         if let users = try? managedObjectContext.fetch(request) {
@@ -83,6 +74,7 @@ extension PostService {
      */
     func likeUsersFor(postID: NSNumber, siteID: NSNumber, after: Date) -> [LikeUser] {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
+        // The date comparison is 'less than' because Likes are in descending order.
         request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@ AND dateLiked < %@", siteID, postID, after as CVarArg)
         request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
 
