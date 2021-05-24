@@ -116,15 +116,9 @@ class LikesListController: NSObject {
         }
 
         fetchLikes(success: { [weak self] users, totalLikes in
-
-            // Remove cached users as they'll be replaced by the first fetch.
-            if self?.isFirstLoad == true {
-                self?.likingUsers = []
-            }
-
-            self?.likingUsers.append(contentsOf: users)
+            self?.likingUsers = users
             self?.totalLikes = totalLikes
-            self?.totalLikesFetched += users.count
+            self?.totalLikesFetched = users.count
             self?.lastFetchedDate = users.last?.dateLikedString
             self?.isFirstLoad = false
             self?.isLoadingContent = false
@@ -174,7 +168,8 @@ class LikesListController: NSObject {
                                        before: beforeStr,
                                        excludingIDs: excludeUserIDs,
                                        purgeExisting: isFirstLoad,
-                                       success: success, failure: failure)
+                                       success: success,
+                                       failure: failure)
         }
     }
 
