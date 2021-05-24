@@ -70,7 +70,7 @@ open class NotificationSettingsViewController: UIViewController {
 
         activityIndicatorView.startAnimating()
 
-        if AppConfiguration.showsFollowedSites {
+        if AppConfiguration.showsFollowedSitesSettings {
             dispatchGroup.enter()
             siteService.fetchFollowedSites(success: {
                 dispatchGroup.leave()
@@ -135,9 +135,9 @@ open class NotificationSettingsViewController: UIViewController {
     //
     fileprivate func setupSections() {
         var section: [Section] = groupedSettings.isEmpty ? [] : [.blog, .other, .wordPressCom]
-        if !followedSites.isEmpty && !section.isEmpty && AppConfiguration.showsFollowedSites {
+        if !followedSites.isEmpty && !section.isEmpty && AppConfiguration.showsFollowedSitesSettings {
             section.insert(.followedSites, at: 1)
-        } else if !followedSites.isEmpty && section.isEmpty && AppConfiguration.showsFollowedSites {
+        } else if !followedSites.isEmpty && section.isEmpty && AppConfiguration.showsFollowedSitesSettings {
             section.append(.followedSites)
         }
 
