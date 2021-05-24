@@ -52,30 +52,20 @@ extension PostService {
      
      @param postID  The ID of the post to fetch likes for.
      @param siteID  The ID of the site that contains the post.
-     */
-    func likeUsersFor(postID: NSNumber, siteID: NSNumber) -> [LikeUser] {
-        let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
-        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@", siteID, postID)
-        request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
-
-        if let users = try? managedObjectContext.fetch(request) {
-            return users
-        }
-
-        return [LikeUser]()
-    }
-
-    /**
-     Fetches a list of users from Core Data that liked the post with the given IDs after the given Date.
-     
-     @param postID  The ID of the post to fetch likes for.
-     @param siteID  The ID of the site that contains the post.
      @param after   Filter results to likes after this Date.
      */
-    func likeUsersFor(postID: NSNumber, siteID: NSNumber, after: Date) -> [LikeUser] {
+    func likeUsersFor(postID: NSNumber, siteID: NSNumber, after: Date? = nil) -> [LikeUser] {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
-        // The date comparison is 'less than' because Likes are in descending order.
-        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@ AND dateLiked < %@", siteID, postID, after as CVarArg)
+
+        request.predicate = {
+            if let after = after {
+                // The date comparison is 'less than' because Likes are in descending order.
+                return NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@ AND dateLiked < %@", siteID, postID, after as CVarArg)
+            }
+
+            return NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@", siteID, postID)
+        }()
+
         request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
 
         if let users = try? managedObjectContext.fetch(request) {
