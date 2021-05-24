@@ -111,6 +111,9 @@ open class NotificationSettingsViewController: UIViewController {
         for setting in settings {
             switch setting.channel {
             case let .blog(blogId):
+                guard setting.blog != nil else {
+                    continue
+                }
                 // Make sure that the Primary Blog is the first one in its category
                 if blogId == primaryBlogId {
                     blogSettings.insert(setting, at: 0)
