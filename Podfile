@@ -165,7 +165,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.54.0-alpha1'
+    gutenberg :commit => '9ad755ff9810dc41111ccce1f5f89fda1d925716'
 
 
     ## Third party libraries
@@ -421,7 +421,7 @@ end
 post_install do |installer|
     project_root = File.dirname(__FILE__)
 
-    puts 'Patching RTCxxBridge and RTCTurboModuleManager for Xcode 12.5'
+    puts 'Patching RTCxxBridge and RTCTurboModuleManager for Xcode 12.5, can be removed after RN 0.64.1 upgrade'
     %x(patch "#{project_root}/Pods/React-Core/React/CxxBridge/RCTCxxBridge.mm" < "#{project_root}/patches/RCTCxxBridge.patch")
     %x(patch "#{project_root}/Pods/ReactCommon/turbomodule/core/platform/ios/RCTTurboModuleManager.mm" < "#{project_root}/patches/RCTTurboModuleManager.patch")
 
