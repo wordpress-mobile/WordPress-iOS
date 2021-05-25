@@ -23,7 +23,8 @@ class BloggingRemindersStore {
         let notificationID: String
     }
 
-    private let dataFileURL: URL?
+    private let fileManager: FileManager
+    private let dataFileURL: URL
 
     var scheduledReminders: ScheduledReminders {
         didSet {
@@ -31,45 +32,17 @@ class BloggingRemindersStore {
         }
     }
 
-    // MARK: - Default Singleton
-
-    static let `default`: BloggingRemindersStore = {
-        guard let dataFileURL = defaultDataFileURL else {
-            // In this scenario, nothing will be persisted, but at least the App won't crash due to
-            // blogging reminders.  We raise an assertion failure so that if this is failing in developer
-            // builds we'll spot the issue.
-            assertionFailure()
-            return BloggingRemindersStore(scheduledReminders: .none)
-        }
-
-        return BloggingRemindersStore(dataFileURL: dataFileURL)
-    }()
-
-    private static var defaultDataFileName = "BloggingReminders.plist"
-
-    private static var defaultDataFileURL: URL? {
-        guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {
-            // In this scenario, nothing will be persisted, but at least the App won't crash due to
-            // blogging reminders.  We raise an assertion failure so that if this is failing in developer
-            // builds we'll spot the issue.
-            DDLogError("BloggingRemindersStore: unable to get file URL for \(WPAppGroupName).")
-            assertionFailure()
-            return nil
-        }
-
-        return url.appendingPathComponent(defaultDataFileName)
-    }
-
     // MARK: - Initializers
 
-    private init(scheduledReminders: ScheduledReminders, dataFileURL: URL? = nil) {
+    private init(fileManager: FileManager, scheduledReminders: ScheduledReminders, dataFileURL: URL) {
         self.dataFileURL = dataFileURL
+        self.fileManager = fileManager
         self.scheduledReminders = scheduledReminders
     }
 
     convenience init(fileManager: FileManager = .default, dataFileURL url: URL) {
-        guard FileManager.default.fileExists(atPath: url.path) else {
-            self.init(scheduledReminders: .none, dataFileURL: url)
+        guard fileManager.fileExists(atPath: url.path) else {
+            self.init(fileManager: fileManager, scheduledReminders: .none, dataFileURL: url)
             persistChanges()
             return
         }
@@ -78,24 +51,16 @@ class BloggingRemindersStore {
         do {
             let data = try Data(contentsOf: url)
             let schedule = try decoder.decode(ScheduledReminders.self, from: data)
-            self.init(scheduledReminders: schedule, dataFileURL: url)
+            self.init(fileManager: fileManager, scheduledReminders: schedule, dataFileURL: url)
         } catch {
             DDLogError("Error: \(error)")
-            self.init(scheduledReminders: .none, dataFileURL: url)
+            self.init(fileManager: fileManager, scheduledReminders: .none, dataFileURL: url)
         }
     }
 
     // MARK: - Persistance Logic
 
     private func persistChanges() {
-        guard let url = dataFileURL ?? Self.defaultDataFileURL else {
-            // In this scenario, nothing will be persisted, but at least the App won't crash due to
-            // blogging reminders.  We raise an assertion failure so that if this is failing in developer
-            // builds we'll spot the issue.
-            assertionFailure()
-            return
-        }
-
         let data: Data
 
         do {
@@ -105,7 +70,7 @@ class BloggingRemindersStore {
             return
         }
 
-        guard FileManager.default.createFile(atPath: url.path, contents: data, attributes: nil) else {
+        guard fileManager.createFile(atPath: dataFileURL.path, contents: data, attributes: nil) else {
             DDLogError("Error!")
             return
         }
