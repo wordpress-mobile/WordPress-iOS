@@ -3,6 +3,8 @@ import Foundation
 /// Main interface for scheduling blogging reminders
 ///
 class BloggingReminders {
+    typealias ScheduledReminders = BloggingRemindersStore.ScheduledReminders
+    typealias ScheduledWeekday = BloggingRemindersStore.ScheduledWeekday
 
     enum Schedule {
         /// No reminder schedule.
@@ -14,7 +16,7 @@ class BloggingReminders {
         case weekdays(_ days: [Weekday])
     }
 
-    enum Weekday: Int {
+    enum Weekday: Int, Codable {
         case sunday = 1 // Keep this at 1 to match Apple's `DateComponents`' weekday number.
         case monday
         case tuesday
@@ -43,11 +45,11 @@ class BloggingReminders {
     /// Active schedule.
     ///
     var schedule: Schedule {
-        switch store.schedule {
+        switch store.scheduledReminders {
         case .none:
             return .none
         case .weekdays(let days):
-            return .weekdays(days.map({ $0.identifier }))
+            return .weekdays(days.map({ $0.weekday }))
         }
     }
 
@@ -69,13 +71,13 @@ class BloggingReminders {
     ///     - schedule: the blogging reminders schedule.
     ///
     func schedule(_ schedule: Schedule) {
-        unschedule(store.schedule)
+        unschedule(store.scheduledReminders)
 
         switch schedule {
         case .none:
-            store.schedule = .none
+            store.scheduledReminders = .none
         case .weekdays(let days):
-            store.schedule = .weekdays(scheduled(days))
+            store.scheduledReminders = .weekdays(scheduled(days))
         }
     }
 
@@ -87,7 +89,7 @@ class BloggingReminders {
     ///
     /// - Returns: the weekdays with the associated notification IDs.
     ///
-    private func scheduled(_ weekdays: [Weekday]) -> [BloggingRemindersStore.Weekday] {
+    private func scheduled(_ weekdays: [Weekday]) -> [ScheduledWeekday] {
         weekdays.map { scheduled($0) }
     }
 
@@ -98,24 +100,9 @@ class BloggingReminders {
     ///
     /// - Returns: the weekday with the associated notification ID.
     ///
-    private func scheduled(_ weekday: Weekday) -> BloggingRemindersStore.Weekday {
+    private func scheduled(_ weekday: Weekday) -> ScheduledWeekday {
         let notificationID = scheduleNotification(for: weekday)
-        switch weekday {
-        case .monday:
-            return .monday(notificationID: notificationID)
-        case .tuesday:
-            return .tuesday(notificationID: notificationID)
-        case .wednesday:
-            return .wednesday(notificationID: notificationID)
-        case .thursday:
-            return .thursday(notificationID: notificationID)
-        case .friday:
-            return .friday(notificationID: notificationID)
-        case .saturday:
-            return .saturday(notificationID: notificationID)
-        case .sunday:
-            return .sunday(notificationID: notificationID)
-        }
+        return ScheduledWeekday(weekday: weekday, notificationID: notificationID)
     }
 
     /// Schedules a notification for the specified weekday.
@@ -149,7 +136,7 @@ class BloggingReminders {
 
     /// Unschedules all notifications for the passed schedule.
     ///
-    private func unschedule(_ schedule: BloggingRemindersStore.Schedule) {
+    private func unschedule(_ schedule: ScheduledReminders) {
         switch schedule {
         case .none:
             return
@@ -160,7 +147,7 @@ class BloggingReminders {
 
     /// Unschedules all notiication for the specified days.
     ///
-    private func unschedule(_ days: [BloggingRemindersStore.Weekday]) {
+    private func unschedule(_ days: [ScheduledWeekday]) {
         let notificationIDs = days.map { $0.notificationID }
 
         notificationCenter.removePendingNotificationRequests(withIdentifiers: notificationIDs)

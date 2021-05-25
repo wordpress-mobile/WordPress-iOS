@@ -15,13 +15,13 @@ class BloggingRemindersStoreTests: XCTestCase {
         let store = BloggingRemindersStore(dataFileURL: tempFile)
 
         let days: [BloggingRemindersStore.Weekday] = [
-            .monday(notificationID: UUID().uuidString),
-            .tuesday(notificationID: UUID().uuidString),
-            .wednesday(notificationID: UUID().uuidString),
-            .thursday(notificationID: UUID().uuidString),
-            .friday(notificationID: UUID().uuidString),
-            .saturday(notificationID: UUID().uuidString),
-            .sunday(notificationID: UUID().uuidString),
+            .init(weekday: .monday, notificationID: UUID().uuidString),
+            .init(weekday: .tuesday, notificationID: UUID().uuidString),
+            .init(weekday: .wednesday, notificationID: UUID().uuidString),
+            .init(weekday: .thursday, notificationID: UUID().uuidString),
+            .init(weekday: .friday, notificationID: UUID().uuidString),
+            .init(weekday: .saturday, notificationID: UUID().uuidString),
+            .init(weekday: .sunday, notificationID: UUID().uuidString),
         ]
         store.schedule = .weekdays(days)
 
