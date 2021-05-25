@@ -1,6 +1,6 @@
 import Combine
 
-/// Store for the blogging reminders.
+/// Store for the blogging reminders.  This class should not be used directly.  Please refer to `BloggingReminders` instead.
 ///
 class BloggingRemindersStore {
     /// An enum that describes a user-defined reminder schedule.

@@ -40,6 +40,17 @@ class BloggingReminders {
     ///
     private let notificationCenter: UNUserNotificationCenter
 
+    /// Active schedule.
+    ///
+    var schedule: Schedule {
+        switch store.schedule {
+        case .none:
+            return .none
+        case .weekdays(let days):
+            return .weekdays(days.map({ $0.identifier }))
+        }
+    }
+
     // MARK: - Initializers
 
     /// Default initializer.  Allows overriding the blogging reminders store and the notification center for testing purposes.
