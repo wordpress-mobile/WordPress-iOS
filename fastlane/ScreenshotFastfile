@@ -184,6 +184,7 @@ platform :ios do
     }
 
     download_translated_strings(
+      project_url: "https://translate.wordpress.org/projects/apps/ios/release-notes/",
       target_files: files,
       download_path: "./fastlane/appstoreres/metadata"
     )
@@ -213,6 +214,7 @@ platform :ios do
     }
 
     download_translated_strings(
+      project_url: "https://translate.wordpress.com/projects/jetpack/apps/ios/release-notes/",
       target_files: files,
       download_path: "./fastlane/appstoreres/jetpack_metadata"
     )
@@ -248,7 +250,8 @@ platform :ios do
       ["zh-tw", "zh-Hant"],
     ]
 
-    gp_downloadmetadata(project_url: "https://translate.wordpress.org/projects/apps/ios/release-notes/",
+    gp_downloadmetadata(
+      project_url: options[:project_url],
       target_files: options[:target_files],
       locales: metadata_locales,
       source_locale: "en-US",
