@@ -7,14 +7,14 @@ class BloggingRemindersStoreTests: XCTestCase {
         let tempFile = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("testBlogReminders_" + UUID().uuidString + ".plist")
         let store = BloggingRemindersStore(dataFileURL: tempFile)
 
-        XCTAssertEqual(store.schedule, .none)
+        XCTAssertEqual(store.scheduledReminders, .none)
     }
 
     func testPreexistingBloggingReminderStoreMaintainsSchedule() {
         let tempFile = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("testBlogReminders_" + UUID().uuidString + ".plist")
         let store = BloggingRemindersStore(dataFileURL: tempFile)
 
-        let days: [BloggingRemindersStore.Weekday] = [
+        let days: [BloggingRemindersStore.ScheduledWeekday] = [
             .init(weekday: .monday, notificationID: UUID().uuidString),
             .init(weekday: .tuesday, notificationID: UUID().uuidString),
             .init(weekday: .wednesday, notificationID: UUID().uuidString),
@@ -23,11 +23,11 @@ class BloggingRemindersStoreTests: XCTestCase {
             .init(weekday: .saturday, notificationID: UUID().uuidString),
             .init(weekday: .sunday, notificationID: UUID().uuidString),
         ]
-        store.schedule = .weekdays(days)
+        store.scheduledReminders = .weekdays(days)
 
         // To simulate another launch of the app, we just create another store and compare the schedules
 
         let secondLaunchStore = BloggingRemindersStore(dataFileURL: tempFile)
-        XCTAssertEqual(secondLaunchStore.schedule, store.schedule)
+        XCTAssertEqual(secondLaunchStore.scheduledReminders, store.scheduledReminders)
     }
 }

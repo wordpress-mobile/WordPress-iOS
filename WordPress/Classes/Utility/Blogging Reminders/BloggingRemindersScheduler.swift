@@ -3,8 +3,19 @@ import Foundation
 /// Main interface for scheduling blogging reminders
 ///
 class BloggingRemindersScheduler {
+
+    // MARK: - Convenience Typealiases
+
     typealias ScheduledReminders = BloggingRemindersStore.ScheduledReminders
     typealias ScheduledWeekday = BloggingRemindersStore.ScheduledWeekday
+
+    // MARK: - Error Handling
+
+    enum Error: Swift.Error {
+        case cantRetrieveContainerForAppGroup(appGroupName: String)
+    }
+
+    // MARK: - Schedule Data Containers
 
     enum Schedule {
         /// No reminder schedule.
@@ -30,9 +41,7 @@ class BloggingRemindersScheduler {
         static let defaultHour = 10
     }
 
-    /// Singleton for use in the App.
-    ///
-    static let `shared` = BloggingRemindersScheduler()
+    // MARK: - Scheduler State
 
     /// The store for persisting our schedule.
     ///
@@ -53,12 +62,29 @@ class BloggingRemindersScheduler {
         }
     }
 
+    // MARK: - Default Store
+
+    private static func defaultStore() throws -> BloggingRemindersStore {
+        let url = try defaultDataFileURL()
+        return BloggingRemindersStore(dataFileURL: url)
+    }
+
+    private static var defaultDataFileName = "BloggingReminders.plist"
+
+    private static func defaultDataFileURL() throws -> URL {
+        guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {
+            throw Error.cantRetrieveContainerForAppGroup(appGroupName: WPAppGroupName)
+        }
+
+        return url.appendingPathComponent(defaultDataFileName)
+    }
+
     // MARK: - Initializers
 
     /// Default initializer.  Allows overriding the blogging reminders store and the notification center for testing purposes.
     ///
-    init(store: BloggingRemindersStore = .default, notificationCenter: UNUserNotificationCenter = .current()) {
-        self.store = store
+    init(store: BloggingRemindersStore? = nil, notificationCenter: UNUserNotificationCenter = .current()) throws {
+        self.store = try (store ?? Self.defaultStore())
         self.notificationCenter = notificationCenter
     }
 

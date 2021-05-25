@@ -1,6 +1,7 @@
 import Foundation
 
-/// Store for the blogging reminders.  This class should not be used directly.  Please refer to `BloggingReminders` instead.
+/// Store for the blogging reminders.  This class should not be interacted with directly other than to pass
+/// to the initializer of `BloggingRemindersScheduler`.
 ///
 class BloggingRemindersStore {
     /// Represents user-defined reminders for which notifications have been scheduled.
