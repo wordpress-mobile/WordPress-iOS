@@ -70,13 +70,15 @@ open class NotificationSettingsViewController: UIViewController {
 
         activityIndicatorView.startAnimating()
 
-        dispatchGroup.enter()
-        siteService.fetchFollowedSites(success: {
-            dispatchGroup.leave()
-        }, failure: { (error) in
-            dispatchGroup.leave()
-            DDLogError("Could not sync sites: \(String(describing: error))")
-        })
+        if AppConfiguration.showsFollowedSitesSettings {
+            dispatchGroup.enter()
+            siteService.fetchFollowedSites(success: {
+                dispatchGroup.leave()
+            }, failure: { (error) in
+                dispatchGroup.leave()
+                DDLogError("Could not sync sites: \(String(describing: error))")
+            })
+        }
 
         dispatchGroup.enter()
         service.getAllSettings({ [weak self] (settings: [NotificationSettings]) in
@@ -109,6 +111,9 @@ open class NotificationSettingsViewController: UIViewController {
         for setting in settings {
             switch setting.channel {
             case let .blog(blogId):
+                guard setting.blog != nil else {
+                    continue
+                }
                 // Make sure that the Primary Blog is the first one in its category
                 if blogId == primaryBlogId {
                     blogSettings.insert(setting, at: 0)
@@ -133,9 +138,9 @@ open class NotificationSettingsViewController: UIViewController {
     //
     fileprivate func setupSections() {
         var section: [Section] = groupedSettings.isEmpty ? [] : [.blog, .other, .wordPressCom]
-        if !followedSites.isEmpty && !section.isEmpty {
+        if !followedSites.isEmpty && !section.isEmpty && AppConfiguration.showsFollowedSitesSettings {
             section.insert(.followedSites, at: 1)
-        } else if !followedSites.isEmpty && section.isEmpty {
+        } else if !followedSites.isEmpty && section.isEmpty && AppConfiguration.showsFollowedSitesSettings {
             section.append(.followedSites)
         }
 
