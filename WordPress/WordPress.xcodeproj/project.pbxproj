@@ -1584,6 +1584,10 @@
 		98E082A02637545C00537BF1 /* PostService+Likes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E0829E2637545C00537BF1 /* PostService+Likes.swift */; };
 		98E419DE2399B5A700D8C822 /* Tracks+ThisWeekWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E419DD2399B5A700D8C822 /* Tracks+ThisWeekWidget.swift */; };
 		98E419DF2399B62A00D8C822 /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
+		98E54FF2265C972900B4BE9A /* ReaderDetailLikesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E54FF1265C972900B4BE9A /* ReaderDetailLikesView.swift */; };
+		98E54FF3265C972900B4BE9A /* ReaderDetailLikesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E54FF1265C972900B4BE9A /* ReaderDetailLikesView.swift */; };
+		98E55019265C977E00B4BE9A /* ReaderDetailLikesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98E55018265C977E00B4BE9A /* ReaderDetailLikesView.xib */; };
+		98E5501A265C977E00B4BE9A /* ReaderDetailLikesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98E55018265C977E00B4BE9A /* ReaderDetailLikesView.xib */; };
 		98E58A2F2360D23400E5534B /* TodayWidgetStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E58A2E2360D23400E5534B /* TodayWidgetStats.swift */; };
 		98E58A302360D23400E5534B /* TodayWidgetStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E58A2E2360D23400E5534B /* TodayWidgetStats.swift */; };
 		98E58A442361019300E5534B /* Pods_WordPressTodayWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98E58A432361019300E5534B /* Pods_WordPressTodayWidget.framework */; };
@@ -6143,6 +6147,8 @@
 		98E0829E2637545C00537BF1 /* PostService+Likes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PostService+Likes.swift"; sourceTree = "<group>"; };
 		98E419DD2399B5A700D8C822 /* Tracks+ThisWeekWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Tracks+ThisWeekWidget.swift"; sourceTree = "<group>"; };
 		98E419E02399B6C300D8C822 /* ThisWeekWidgetPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThisWeekWidgetPrefix.pch; sourceTree = "<group>"; };
+		98E54FF1265C972900B4BE9A /* ReaderDetailLikesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderDetailLikesView.swift; sourceTree = "<group>"; };
+		98E55018265C977E00B4BE9A /* ReaderDetailLikesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderDetailLikesView.xib; sourceTree = "<group>"; };
 		98E58A2E2360D23400E5534B /* TodayWidgetStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayWidgetStats.swift; sourceTree = "<group>"; };
 		98E58A412361017500E5534B /* Pods_WordPressTodayWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_WordPressTodayWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98E58A432361019300E5534B /* Pods_WordPressTodayWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_WordPressTodayWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -10922,12 +10928,14 @@
 		8BD89F2C24D9E73600341C90 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				8B0CE7D02481CFE8004C4799 /* ReaderDetailHeaderView.swift */,
-				8B0CE7D22481CFF8004C4799 /* ReaderDetailHeaderView.xib */,
-				8BA77BCE2483415400E1EBBF /* ReaderDetailToolbar.swift */,
-				8BA77BCC248340CE00E1EBBF /* ReaderDetailToolbar.xib */,
 				3223393B24FEC18000BDD4BF /* ReaderDetailFeaturedImageView.swift */,
 				3223393D24FEC2A700BDD4BF /* ReaderDetailFeaturedImageView.xib */,
+				8B0CE7D02481CFE8004C4799 /* ReaderDetailHeaderView.swift */,
+				8B0CE7D22481CFF8004C4799 /* ReaderDetailHeaderView.xib */,
+				98E54FF1265C972900B4BE9A /* ReaderDetailLikesView.swift */,
+				98E55018265C977E00B4BE9A /* ReaderDetailLikesView.xib */,
+				8BA77BCE2483415400E1EBBF /* ReaderDetailToolbar.swift */,
+				8BA77BCC248340CE00E1EBBF /* ReaderDetailToolbar.xib */,
 				FAC086D525EDFB1E00B94F2A /* ReaderRelatedPostsCell.swift */,
 				FAC086D625EDFB1E00B94F2A /* ReaderRelatedPostsCell.xib */,
 				FA6FAB3425EF7C5700666CED /* ReaderRelatedPostsSectionHeaderView.swift */,
@@ -14886,6 +14894,7 @@
 				9A76C32F22AFDA2100F5D819 /* world-map.svg in Resources */,
 				17222DAC261DDDF90047B163 /* blue-icon-app-60x60@2x.png in Resources */,
 				B5C66B721ACF071100F68370 /* NoteBlockTextTableViewCell.xib in Resources */,
+				98E55019265C977E00B4BE9A /* ReaderDetailLikesView.xib in Resources */,
 				E60C2ED51DE5048200488630 /* ReaderCommentCell.xib in Resources */,
 				FF37F90922385CA000AFA3DB /* RELEASE-NOTES.txt in Resources */,
 				9808655A203D075E00D58786 /* EpilogueUserInfoCell.xib in Resources */,
@@ -15334,6 +15343,7 @@
 				FABB20972602FC2C00C8785C /* RestoreCompleteView.xib in Resources */,
 				FABB20992602FC2C00C8785C /* RegisterDomain.storyboard in Resources */,
 				FABB209A2602FC2C00C8785C /* PostListFooterView.xib in Resources */,
+				98E5501A265C977E00B4BE9A /* ReaderDetailLikesView.xib in Resources */,
 				FABB209B2602FC2C00C8785C /* acknowledgements.html in Resources */,
 				FABB209C2602FC2C00C8785C /* ReaderDetailViewController.storyboard in Resources */,
 				FABB209D2602FC2C00C8785C /* EditCommentViewController.xib in Resources */,
@@ -17619,6 +17629,7 @@
 				241E60B325CA0D2900912CEB /* UserSettings.swift in Sources */,
 				0815CF461E96F22600069916 /* MediaImportService.swift in Sources */,
 				B56F25881FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift in Sources */,
+				98E54FF2265C972900B4BE9A /* ReaderDetailLikesView.swift in Sources */,
 				FFABD80821370496003C65B6 /* SelectPostViewController.swift in Sources */,
 				D8212CBD20AA7A7A008E8AE8 /* ReaderVisitSiteAction.swift in Sources */,
 				8BB185D524B66FE600A4CCE8 /* ReaderCard+CoreDataProperties.swift in Sources */,
@@ -18483,6 +18494,7 @@
 				FABB20F62602FC2C00C8785C /* WPStyleGuide+ReaderComments.swift in Sources */,
 				FABB20F72602FC2C00C8785C /* TopViewedPostStatsRecordValue+CoreDataProperties.swift in Sources */,
 				FABB20F82602FC2C00C8785C /* BaseActivityListViewController.swift in Sources */,
+				98E54FF3265C972900B4BE9A /* ReaderDetailLikesView.swift in Sources */,
 				FABB20F92602FC2C00C8785C /* RequestAuthenticator.swift in Sources */,
 				FABB20FA2602FC2C00C8785C /* SettingsTitleSubtitleController.swift in Sources */,
 				FABB20FB2602FC2C00C8785C /* WebViewControllerFactory.swift in Sources */,
