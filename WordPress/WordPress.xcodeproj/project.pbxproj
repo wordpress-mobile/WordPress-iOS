@@ -2332,7 +2332,7 @@
 		F111B87826580FCE00057942 /* BloggingRemindersStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F111B87726580FCE00057942 /* BloggingRemindersStore.swift */; };
 		F111B88D2658103C00057942 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F111B88B2658102700057942 /* Combine.framework */; };
 		F115308121B17E66002F1D65 /* EditorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F115308021B17E65002F1D65 /* EditorFactory.swift */; };
-		F117B120265C53AB00D2CAA9 /* BloggingReminders.swift in Sources */ = {isa = PBXBuildFile; fileRef = F117B11F265C53AB00D2CAA9 /* BloggingReminders.swift */; };
+		F117B120265C53AB00D2CAA9 /* BloggingRemindersScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F117B11F265C53AB00D2CAA9 /* BloggingRemindersScheduler.swift */; };
 		F11C9F74243B3C3E00921DDC /* MediaHost+Blog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11C9F73243B3C3E00921DDC /* MediaHost+Blog.swift */; };
 		F11C9F76243B3C5E00921DDC /* MediaHost+AbstractPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11C9F75243B3C5E00921DDC /* MediaHost+AbstractPost.swift */; };
 		F11C9F78243B3C9600921DDC /* MediaHost+ReaderPostContentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11C9F77243B3C9600921DDC /* MediaHost+ReaderPostContentProvider.swift */; };
@@ -7101,7 +7101,7 @@
 		F111B87726580FCE00057942 /* BloggingRemindersStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingRemindersStore.swift; sourceTree = "<group>"; };
 		F111B88B2658102700057942 /* Combine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Combine.framework; path = System/Library/Frameworks/Combine.framework; sourceTree = SDKROOT; };
 		F115308021B17E65002F1D65 /* EditorFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorFactory.swift; sourceTree = "<group>"; };
-		F117B11F265C53AB00D2CAA9 /* BloggingReminders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingReminders.swift; sourceTree = "<group>"; };
+		F117B11F265C53AB00D2CAA9 /* BloggingRemindersScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingRemindersScheduler.swift; sourceTree = "<group>"; };
 		F117E5841F7AA8BF003D9ACB /* WordPress 67.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 67.xcdatamodel"; sourceTree = "<group>"; };
 		F11C9F73243B3C3E00921DDC /* MediaHost+Blog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaHost+Blog.swift"; sourceTree = "<group>"; };
 		F11C9F75243B3C5E00921DDC /* MediaHost+AbstractPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaHost+AbstractPost.swift"; sourceTree = "<group>"; };
@@ -13636,7 +13636,7 @@
 		F15D1FB7265C40C300854EE5 /* Blogging Reminders */ = {
 			isa = PBXGroup;
 			children = (
-				F117B11F265C53AB00D2CAA9 /* BloggingReminders.swift */,
+				F117B11F265C53AB00D2CAA9 /* BloggingRemindersScheduler.swift */,
 				F111B87726580FCE00057942 /* BloggingRemindersStore.swift */,
 			);
 			path = "Blogging Reminders";
@@ -16968,7 +16968,7 @@
 				17D975AF1EF7F6F100303D63 /* WPStyleGuide+Aztec.swift in Sources */,
 				E14B40FF1C58B93F005046F6 /* SettingsCommon.swift in Sources */,
 				B50C0C661EF42B6400372C65 /* FormatBarItemProviders.swift in Sources */,
-				F117B120265C53AB00D2CAA9 /* BloggingReminders.swift in Sources */,
+				F117B120265C53AB00D2CAA9 /* BloggingRemindersScheduler.swift in Sources */,
 				439F4F352196537500F8D0C7 /* RevisionDiffViewController.swift in Sources */,
 				02D75D9922793EA2003FF09A /* BlogDetailsSectionFooterView.swift in Sources */,
 				432A5AE021F9222A00603959 /* QuickStartListTitleCell.swift in Sources */,

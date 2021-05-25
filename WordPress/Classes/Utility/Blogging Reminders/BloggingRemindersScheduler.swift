@@ -2,7 +2,7 @@ import Foundation
 
 /// Main interface for scheduling blogging reminders
 ///
-class BloggingReminders {
+class BloggingRemindersScheduler {
     typealias ScheduledReminders = BloggingRemindersStore.ScheduledReminders
     typealias ScheduledWeekday = BloggingRemindersStore.ScheduledWeekday
 
@@ -32,7 +32,7 @@ class BloggingReminders {
 
     /// Singleton for use in the App.
     ///
-    static let `shared` = BloggingReminders()
+    static let `shared` = BloggingRemindersScheduler()
 
     /// The store for persisting our schedule.
     ///

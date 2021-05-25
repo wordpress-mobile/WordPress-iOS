@@ -1,4 +1,4 @@
-import Combine
+import Foundation
 
 /// Store for the blogging reminders.  This class should not be used directly.  Please refer to `BloggingReminders` instead.
 ///
@@ -18,7 +18,7 @@ class BloggingRemindersStore {
     /// A weekday with an associated notification that has already been scheduled.
     ///
     struct ScheduledWeekday: Codable {
-        let weekday: BloggingReminders.Weekday
+        let weekday: BloggingRemindersScheduler.Weekday
         let notificationID: String
     }
 
