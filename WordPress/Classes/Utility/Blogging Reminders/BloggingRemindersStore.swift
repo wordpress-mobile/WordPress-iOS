@@ -44,7 +44,7 @@ class BloggingRemindersStore {
         return BloggingRemindersStore(dataFileURL: dataFileURL)
     }()
 
-    private static var dataFileName = "BloggingReminders.plist"
+    private static var defaultDataFileName = "BloggingReminders.plist"
 
     private static var defaultDataFileURL: URL? {
         guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {
@@ -56,7 +56,7 @@ class BloggingRemindersStore {
             return nil
         }
 
-        return url.appendingPathComponent(dataFileName)
+        return url.appendingPathComponent(defaultDataFileName)
     }
 
     // MARK: - Initializers
