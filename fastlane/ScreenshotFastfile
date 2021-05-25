@@ -183,7 +183,10 @@ platform :ios do
       "enhanced_app_store_screenshot-6" => {desc: "app_store_screenshot_6.html"}
     }
 
-    download_translated_strings(target_files: files)
+    download_translated_strings(
+      target_files: files,
+      download_path: "./fastlane/appstoreres/metadata"
+    )
   end
 
   #####################################################################################
@@ -209,7 +212,10 @@ platform :ios do
       "app_store_screenshot-6" => {desc: "app_store_screenshot_6.txt"},
     }
 
-    download_translated_strings(target_files: files)
+    download_translated_strings(
+      target_files: files,
+      download_path: "./fastlane/appstoreres/jetpack_metadata"
+    )
   end
 
   ########################################################################
@@ -246,7 +252,7 @@ platform :ios do
       target_files: options[:target_files],
       locales: metadata_locales,
       source_locale: "en-US",
-      download_path: "./fastlane/appstoreres/metadata")
+      download_path: options[:download_path])
   end
 
 end
