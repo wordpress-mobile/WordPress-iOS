@@ -18,17 +18,17 @@ struct PostEditorAnalyticsSession {
         contentType = ContentType(post: post).rawValue
     }
 
-    mutating func start(unsupportedBlocks: [String] = []) {
+    mutating func start(unsupportedBlocks: [String] = [], capabilities: [String: Bool] = [:]) {
         assert(!started, "An editor session was attempted to start more than once")
         hasUnsupportedBlocks = !unsupportedBlocks.isEmpty
 
-        let properties = startEventProperties(with: unsupportedBlocks)
+        let properties = startEventProperties(with: unsupportedBlocks, capabilities: capabilities)
 
         WPAppAnalytics.track(.editorSessionStart, withProperties: properties)
         started = true
     }
 
-    private func startEventProperties(with unsupportedBlocks: [String]) -> [String: Any] {
+    private func startEventProperties(with unsupportedBlocks: [String], capabilities: [String: Bool]) -> [String: Any] {
         // On Android, we are tracking this in milliseconds, which seems like a good enough time scale
         // Let's make sure to round the value and send an integer for consistency
         let startupTimeNanoseconds = DispatchTime.now().uptimeNanoseconds - startTime
@@ -40,6 +40,13 @@ struct PostEditorAnalyticsSession {
             let blocksJSON = String(data: data, encoding: .utf8)
             properties[Property.unsupportedBlocks] = blocksJSON
         }
+
+        // Tracks custom event types can't be dictionaries so we need to convert this to JSON
+        if let data = try? JSONSerialization.data(withJSONObject: capabilities, options: .fragmentsAllowed) {
+            let capabilitiesJSON = String(data: data, encoding: .utf8)
+            properties[Property.capabilities] = capabilitiesJSON
+        }
+
         return properties.merging(commonProperties, uniquingKeysWith: { $1 })
     }
 
@@ -81,6 +88,7 @@ private extension PostEditorAnalyticsSession {
         static let sessionId = "session_id"
         static let template = "template"
         static let startupTime = "startup_time_ms"
+        static let capabilities = "capabilities"
     }
 
     var commonProperties: [String: String] {
