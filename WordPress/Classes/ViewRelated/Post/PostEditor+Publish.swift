@@ -47,11 +47,17 @@ protocol PublishingEditor where Self: UIViewController {
     var debouncer: Debouncer { get }
 
     var prepublishingIdentifiers: [PrepublishingIdentifier] { get }
+
+    func editorCapabilities() -> [String: Bool]
 }
 
 var postPublishedReceipt: Receipt?
 
 extension PublishingEditor where Self: UIViewController {
+
+    func editorCapabilities() -> [String: Bool] {
+        return [:]
+    }
 
     func publishingDismissed() {
 

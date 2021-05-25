@@ -1061,6 +1061,14 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         ]
     }
 
+    func editorCapabilities() -> [String : Bool] {
+        var capabilities = [String: Bool]()
+        for (key, value) in gutenbergCapabilities() {
+            capabilities[key.rawValue] = value
+        }
+        return capabilities
+    }
+
     private var isUnsupportedBlockEditorEnabled: Bool {
         // The Unsupported Block Editor is disabled for all self-hosted non-jetpack sites.
         // This is because they can have their web editor to be set to classic and then the fallback will not work.
