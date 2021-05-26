@@ -57,6 +57,9 @@ class ReaderDetailCoordinator {
     /// Reader Topic Service
     private let topicService: ReaderTopicService
 
+    /// Post Service
+    private let postService: PostService
+
     /// Post Sharing Controller
     private let sharingController: PostSharingController
 
@@ -95,12 +98,14 @@ class ReaderDetailCoordinator {
     init(coreDataStack: CoreDataStack = ContextManager.shared,
          service: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          topicService: ReaderTopicService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext),
+         postService: PostService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          sharingController: PostSharingController = PostSharingController(),
          readerLinkRouter: UniversalLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes),
          view: ReaderDetailView) {
         self.coreDataStack = coreDataStack
         self.service = service
         self.topicService = topicService
+        self.postService = postService
         self.sharingController = sharingController
         self.readerLinkRouter = readerLinkRouter
         self.view = view
@@ -132,6 +137,26 @@ class ReaderDetailCoordinator {
         } failure: { error in
             DDLogError("Error fetching related posts for detail: \(String(describing: error?.localizedDescription))")
         }
+    }
+
+    /// Fetch Likes for the current post.
+    /// Returns `ReaderDetailLikesView.maxAvatarsDisplayed` number of Likes.
+    ///
+    func fetchLikes(for post: ReaderPost) {
+        guard let postID = post.postID else {
+            return
+        }
+
+        // Fetch a full page of Likes but only return the `maxAvatarsDisplayed` number.
+        // That way the first page will already be cached if the user displays the full Likes list.
+        postService.getLikesFor(postID: postID,
+                                siteID: post.siteID,
+                                success: { [weak self] users, totalLikes in
+                                    self?.view?.updateLikes(users: Array(users.prefix(ReaderDetailLikesView.maxAvatarsDisplayed)), totalLikes: totalLikes)
+                                }, failure: { [weak self] error in
+                                    self?.view?.updateLikes(users: [LikeUser](), totalLikes: 0)
+                                    DDLogError("Error fetching Likes for post detail: \(String(describing: error?.localizedDescription))")
+                                })
     }
 
     /// Share the current post
