@@ -411,10 +411,13 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         likesContainerView.addSubview(likesSummary)
         likesContainerView.translatesAutoresizingMaskIntoConstraints = false
-        likesSummary.topAnchor.constraint(equalTo: likesContainerView.topAnchor).isActive = true
-        likesSummary.bottomAnchor.constraint(equalTo: likesContainerView.bottomAnchor).isActive = true
-        likesSummary.leadingAnchor.constraint(equalTo: likesContainerView.leadingAnchor).isActive = true
-        likesSummary.trailingAnchor.constraint(lessThanOrEqualTo: likesContainerView.trailingAnchor).isActive = true
+
+        NSLayoutConstraint.activate([
+            likesSummary.topAnchor.constraint(equalTo: likesContainerView.topAnchor),
+            likesSummary.bottomAnchor.constraint(equalTo: likesContainerView.bottomAnchor),
+            likesSummary.leadingAnchor.constraint(equalTo: likesContainerView.leadingAnchor),
+            likesSummary.trailingAnchor.constraint(lessThanOrEqualTo: likesContainerView.trailingAnchor)
+        ])
     }
 
     private func configureRelatedPosts() {
