@@ -352,6 +352,10 @@ private extension ZendeskUtils {
             return false
         }
 
+        self.zdAppID = zdAppID
+        self.zdUrl = zdUrl
+        self.zdClientId = zdClientId
+
         return true
     }
 
