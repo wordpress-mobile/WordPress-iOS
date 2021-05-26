@@ -41,10 +41,8 @@ struct PostEditorAnalyticsSession {
             properties[Property.unsupportedBlocks] = blocksJSON
         }
 
-        // Tracks custom event types can't be dictionaries so we need to convert this to JSON
-        if let data = try? JSONSerialization.data(withJSONObject: capabilities, options: .fragmentsAllowed) {
-            let capabilitiesJSON = String(data: data, encoding: .utf8)
-            properties[Property.capabilities] = capabilitiesJSON
+        if let canViewEditorOnboarding = capabilities["canViewEditorOnboarding"] {
+            properties[Property.canViewEditorOnboarding] = canViewEditorOnboarding
         }
 
         return properties.merging(commonProperties, uniquingKeysWith: { $1 })
@@ -70,12 +68,10 @@ struct PostEditorAnalyticsSession {
 
     func end(outcome endOutcome: Outcome, capabilities: [String: Bool] = [:]) {
         let outcome = self.outcome ?? endOutcome
-        var properties = [ Property.outcome: outcome.rawValue].merging(commonProperties, uniquingKeysWith: { $1 })
+        var properties: [String: Any] = [ Property.outcome: outcome.rawValue ].merging(commonProperties, uniquingKeysWith: { $1 })
 
-        // Tracks custom event types can't be dictionaries so we need to convert this to JSON
-        if let data = try? JSONSerialization.data(withJSONObject: capabilities, options: .fragmentsAllowed) {
-            let capabilitiesJSON = String(data: data, encoding: .utf8)
-            properties[Property.capabilities] = capabilitiesJSON
+        if let canViewEditorOnboarding = capabilities["canViewEditorOnboarding"] {
+            properties[Property.canViewEditorOnboarding] = canViewEditorOnboarding
         }
 
         WPAppAnalytics.track(.editorSessionEnd, withProperties: properties)
@@ -94,7 +90,7 @@ private extension PostEditorAnalyticsSession {
         static let sessionId = "session_id"
         static let template = "template"
         static let startupTime = "startup_time_ms"
-        static let capabilities = "capabilities"
+        static let canViewEditorOnboarding = "can_view_editor_onboarding"
     }
 
     var commonProperties: [String: String] {
