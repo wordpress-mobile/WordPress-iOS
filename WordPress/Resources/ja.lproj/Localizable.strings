@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-05 01:52:24+0000 */
+/* Translation-Revision-Date: 2021-05-21 00:12:37+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -314,6 +314,9 @@
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "画像または動画を追加";
+
+/* No comment provided by engineer. */
+"ADD LINK" = "リンクを追加";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "動画を追加";
@@ -801,7 +804,9 @@
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "ホストに必要な認証:%@";
 
-/* Label for list of stats by content author. */
+/* Author label.
+   Label for list of stats by content author.
+   The author of the post or page. */
 "Author" = "投稿者";
 
 /* Voiceover description of a button that allows the user to filter posts by author. */
@@ -2142,6 +2147,9 @@
 /* No comment provided by engineer. */
 "Double tap to add a block" = "ダブルタップしてブロックを追加";
 
+/* No comment provided by engineer. */
+"Double tap to add a link." = "ダブルタップしてリンクを追加。";
+
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "ダブルタップして非表示";
 
@@ -3094,6 +3102,9 @@
 /* First line of remove follower warning in confirmation dialog. */
 "If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "削除すると、このフォロワーが再度フォローしない限り、このサイトの通知を受け取れなくなります。";
 
+/* Message explaining that they will need to install Jetpack on one of their sites. */
+"If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "すでにサイトがある場合は、無料の Jetpack プラグインをインストールし、WordPress.com アカウントに接続する必要があります。";
+
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Apple または Google を引き続き使用し、WordPress.com アカウントをまだお持ちでない場合は、アカウントを作成して WordPress.com の利用規約に同意します。";
 
@@ -3627,6 +3638,9 @@
 "Log in with your WordPress.com username and password." = "WordPress.com のユーザー名とパスワードでログインしてください。";
 
 /* LogOut confirmation text, whenever there are no local changes */
+"Log out of Jetpack?" = "Jetpack からログアウトしますか ?";
+
+/* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "WordPress からログアウトしますか ?";
 
 /* Error message shown when a user is trying to login.
@@ -3967,8 +3981,7 @@
 /* Describes a status of a plugin */
 "Needs Update" = "更新が必要";
 
-/* Header of section in Plugin Directory showing newest plugins
-   New button badge on Stories Post button */
+/* Header of section in Plugin Directory showing newest plugins */
 "New" = "新規";
 
 /* Blocklist Keyword Insertion Title */
@@ -4365,6 +4378,7 @@
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading notification likes.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -5586,6 +5600,9 @@
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "すべて表示";
 
+/* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
+"See Instructions" = "手順を参照してください";
+
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "コメントと通知をリアルタイムで表示します。";
@@ -6647,6 +6664,9 @@
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "アクティビティを読み込み中にエラーが発生しました";
 
+/* Text displayed when there is a failure loading notification likes. */
+"There was an error loading likes" = "「いいね」読み込みエラー";
+
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "プラン読み込みエラー";
 
@@ -6838,6 +6858,9 @@
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "サイト上で統計情報を使用するには、Jetpack プラグインをインストールする必要があります。";
 
+/* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
+"To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "﻿%@ にこのアプリを使用するには、Jetpack プラグインをインストールして有効化する必要があります。";
+
 /* Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
@@ -6934,6 +6957,9 @@
    Try Again. Action
    Try to load the list of interests again. */
 "Try Again" = "もう一度お試しください";
+
+/* Action button that will restart the login flow.Presented when logging in with a site address that does not have a valid Jetpack installation */
+"Try With Another Account" = "別のアカウントで試行";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
 "Try adjusting your date range filter" = "データ範囲フィルターを調整してみてください";
@@ -7674,6 +7700,9 @@
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "サードパーティのものを含め、他の追跡ツールを使用します。それらについての詳細と設定方法についてお読みください。";
 
+/* Message explaining that WordPress was not detected. */
+"We were not able to detect a WordPress site at the address you entered. Please make sure WordPress is installed and that you are running the latest available version." = "入力されたアドレスでは、WordPress サイトを検出できませんでした。 WordPress がインストールされていて、入手可能な最新のバージョンで実行されていることを確認してください。";
+
 /* Error message displayed when an error occurred sending the magic link email. */
 "We were unable to send you an email at this time. Please try again later." = "メールを送信できませんでした。後ほど、もう一度お試しください。";
 
@@ -8367,6 +8396,9 @@
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "新しいドメイン %@ の設定中です。サイトをアップグレード中です。";
+
+/* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
+"your site" = "あなたのサイト";
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Google アカウントでログイン。";

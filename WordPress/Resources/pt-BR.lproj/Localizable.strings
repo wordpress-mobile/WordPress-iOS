@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-12 14:51:18+0000 */
+/* Translation-Revision-Date: 2021-05-26 19:59:12+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pt_BR */
@@ -314,6 +314,9 @@
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "Adicionar imagem ou vídeo";
+
+/* No comment provided by engineer. */
+"ADD LINK" = "ADICIONAR LINK";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "Adicionar vídeo";
@@ -801,7 +804,9 @@
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Autenticação requerida pelo host: %@";
 
-/* Label for list of stats by content author. */
+/* Author label.
+   Label for list of stats by content author.
+   The author of the post or page. */
 "Author" = "Autor";
 
 /* Voiceover description of a button that allows the user to filter posts by author. */
@@ -2142,6 +2147,9 @@
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Toque duas vezes para adicionar um bloco";
 
+/* No comment provided by engineer. */
+"Double tap to add a link." = "Toque duas vezes para adicionar um link.";
+
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "Toque duas vezes para dispensar";
 
@@ -3094,6 +3102,9 @@
 /* First line of remove follower warning in confirmation dialog. */
 "If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "Se removido, este seguidor irá parar de receber notificações sobre este site, a menos que voltar a seguir.";
 
+/* Message explaining that they will need to install Jetpack on one of their sites. */
+"If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "Se você já tiver um site, precisará instalar o plugin gratuito Jetpack e conectá-lo à sua conta do WordPress.com.";
+
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Se você continuar com o Google ou Apple e ainda não tiver uma conta no WordPress.com, você criará uma conta e concordará com nossos _Termos de Serviços_.";
 
@@ -3627,6 +3638,9 @@
 "Log in with your WordPress.com username and password." = "Faça login com seu nome de usuário e sua senha do WordPress.com.";
 
 /* LogOut confirmation text, whenever there are no local changes */
+"Log out of Jetpack?" = "Sair do Jetpack?";
+
+/* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Fazer logout do WordPress?";
 
 /* Error message shown when a user is trying to login.
@@ -3967,8 +3981,7 @@
 /* Describes a status of a plugin */
 "Needs Update" = "Precisa de atualização";
 
-/* Header of section in Plugin Directory showing newest plugins
-   New button badge on Stories Post button */
+/* Header of section in Plugin Directory showing newest plugins */
 "New" = "Novos";
 
 /* Blocklist Keyword Insertion Title */
@@ -4365,6 +4378,7 @@
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading notification likes.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -5586,6 +5600,9 @@
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "Ver todos";
 
+/* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
+"See Instructions" = "Acessar as instruções";
+
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "Veja comentários e notificações em tempo real.";
@@ -6647,6 +6664,9 @@
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Houve um erro ao carregar as atividades";
 
+/* Text displayed when there is a failure loading notification likes. */
+"There was an error loading likes" = "Houve um erro ao carregar as curtidas";
+
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "Ocorreu um erro ao carregar os planos";
 
@@ -6838,6 +6858,9 @@
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "Para usar as estatísticas em seu site, é necessário instalar o plugin Jetpack.";
 
+/* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
+"To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "Para usar esse aplicativo com %@, é necessário ter o plugin do Jetpack instalado e ativo.";
+
 /* Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
@@ -6934,6 +6957,9 @@
    Try Again. Action
    Try to load the list of interests again. */
 "Try Again" = "Tente novamente";
+
+/* Action button that will restart the login flow.Presented when logging in with a site address that does not have a valid Jetpack installation */
+"Try With Another Account" = "Tentar com outra conta";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
 "Try adjusting your date range filter" = "Tente ajustar o intervalo de datas no filtro";
@@ -7674,6 +7700,9 @@
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "Nós usamos outras ferramentas de acompanhamento, inclusive algumas de terceiros. Leia mais sobre elas e como controlá-las.";
 
+/* Message explaining that WordPress was not detected. */
+"We were not able to detect a WordPress site at the address you entered. Please make sure WordPress is installed and that you are running the latest available version." = "Não foi possível detectar um site do WordPress no endereço inserido. Certifique-se de que o WordPress esteja instalado e a versão sendo executada seja a mais recente disponível.";
+
 /* Error message displayed when an error occurred sending the magic link email. */
 "We were unable to send you an email at this time. Please try again later." = "Não foi possível enviar um e-mail para você no momento. Tente novamente mais tarde.";
 
@@ -8367,6 +8396,9 @@
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "seu novo domínio %@ está sendo configurado. Seu site está dando saltos de alegria!";
+
+/* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
+"your site" = "seu site";
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Acessar com o Google.";

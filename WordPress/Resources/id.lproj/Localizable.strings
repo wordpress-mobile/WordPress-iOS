@@ -316,6 +316,9 @@
 "ADD IMAGE OR VIDEO" = "TAMBAHKAN GAMBAR ATAU VIDEO";
 
 /* No comment provided by engineer. */
+"ADD LINK" = "ADD LINK";
+
+/* No comment provided by engineer. */
 "ADD VIDEO" = "TAMBAHKAN VIDEO";
 
 /* Register Domain - Address information field section header title */
@@ -801,7 +804,9 @@
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Autentikasi diperlukan untuk host: %@";
 
-/* Label for list of stats by content author. */
+/* Author label.
+   Label for list of stats by content author.
+   The author of the post or page. */
 "Author" = "Penulis";
 
 /* Voiceover description of a button that allows the user to filter posts by author. */
@@ -2142,6 +2147,9 @@
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Ketuk dua kali untuk menambahkan blok";
 
+/* No comment provided by engineer. */
+"Double tap to add a link." = "Double tap to add a link.";
+
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "Ketuk dua kali untuk menutup";
 
@@ -3094,6 +3102,9 @@
 /* First line of remove follower warning in confirmation dialog. */
 "If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "Jika dihapus, pengikut ini akan berhenti menerima pemberitahuan tentang situs ini, kecuali jika mereka kembali mengikuti.";
 
+/* Message explaining that they will need to install Jetpack on one of their sites. */
+"If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account.";
+
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Jika Anda melanjutkan dengan Apple atau Google dan belum memiliki akun WordPress.com, Anda akan membuat akun dan menyetujui _Ketentuan Layanan_ kami.";
 
@@ -3627,6 +3638,9 @@
 "Log in with your WordPress.com username and password." = "Login dengan nama pengguna dan kata sandi WordPress.com Anda.";
 
 /* LogOut confirmation text, whenever there are no local changes */
+"Log out of Jetpack?" = "Log out of Jetpack?";
+
+/* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Logout dari WordPress?";
 
 /* Error message shown when a user is trying to login.
@@ -3967,8 +3981,7 @@
 /* Describes a status of a plugin */
 "Needs Update" = "Perlu Pembaruan";
 
-/* Header of section in Plugin Directory showing newest plugins
-   New button badge on Stories Post button */
+/* Header of section in Plugin Directory showing newest plugins */
 "New" = "Baru";
 
 /* Blocklist Keyword Insertion Title */
@@ -4365,6 +4378,7 @@
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading notification likes.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -5586,6 +5600,9 @@
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "Lihat Semuanya";
 
+/* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
+"See Instructions" = "See Instructions";
+
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "Lihat komentar dan pemberitahuan secara real-time.";
@@ -6647,6 +6664,9 @@
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Ada error saat memuat aktivitas";
 
+/* Text displayed when there is a failure loading notification likes. */
+"There was an error loading likes" = "There was an error loading likes";
+
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "Ada masalah memuat paket";
 
@@ -6838,6 +6858,9 @@
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "Untuk menggunakan statistik di situs, Anda perlu menginstal plugin Jetpack.";
 
+/* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
+"To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "To use this app for %@ you'll need to have the Jetpack plugin installed and activated.";
+
 /* Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
@@ -6934,6 +6957,9 @@
    Try Again. Action
    Try to load the list of interests again. */
 "Try Again" = "Coba Lagi";
+
+/* Action button that will restart the login flow.Presented when logging in with a site address that does not have a valid Jetpack installation */
+"Try With Another Account" = "Try With Another Account";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
 "Try adjusting your date range filter" = "Coba sesuaikan penyaring rentang tanggal";
@@ -7674,6 +7700,9 @@
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "Kami menggunakan alat pelacakan lainnya, termasuk beberapa dari pihak ketiga. Baca tentang hal ini dan cara mengontrolnya.";
 
+/* Message explaining that WordPress was not detected. */
+"We were not able to detect a WordPress site at the address you entered. Please make sure WordPress is installed and that you are running the latest available version." = "We were not able to detect a WordPress site at the address you entered. Please make sure WordPress is installed and that you are running the latest available version.";
+
 /* Error message displayed when an error occurred sending the magic link email. */
 "We were unable to send you an email at this time. Please try again later." = "Kami tidak dapat mengirimkan email kepada Anda. Coba lagi nanti.";
 
@@ -8367,6 +8396,9 @@
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "domain baru Anda %@ sedang disiapkan. Situs Anda melakukan perubahan dalam keseruan!";
+
+/* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
+"your site" = "your site";
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Login dengan Google.";
