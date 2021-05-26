@@ -9,7 +9,7 @@ extension PostService {
      @param before          Filter results to likes before this date/time. Optional.
      @param excludingIDs    An array of user IDs to exclude from the returned results. Optional.
      @param purgeExisting   Indicates if existing Likes for the given post and site should be purged before
-                            new ones are created. Defaults to false.
+                            new ones are created. Defaults to true.
      @param success         A success block
      @param failure         A failure block
      */
@@ -18,7 +18,7 @@ extension PostService {
                      count: Int = 90,
                      before: String? = nil,
                      excludingIDs: [NSNumber]? = nil,
-                     purgeExisting: Bool = false,
+                     purgeExisting: Bool = true,
                      success: @escaping (([LikeUser], Int) -> Void),
                      failure: @escaping ((Error?) -> Void)) {
 

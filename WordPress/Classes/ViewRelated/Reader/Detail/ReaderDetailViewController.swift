@@ -10,6 +10,7 @@ protocol ReaderDetailView: class {
     func showErrorWithWebAction()
     func scroll(to: String)
     func updateHeader()
+    func updateLikes(users: [LikeUser], totalLikes: Int)
 }
 
 class ReaderDetailViewController: UIViewController, ReaderDetailView {
@@ -285,6 +286,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         coordinator?.fetchRelatedPosts(for: post)
+
+        if FeatureFlag.readerPostLikes.enabled {
+            coordinator?.fetchLikes(for: post)
+        }
     }
 
     /// Shown an error
@@ -322,6 +327,15 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     func updateHeader() {
         header.refreshFollowButton()
+    }
+
+    func updateLikes(users: [LikeUser], totalLikes: Int) {
+        guard !users.isEmpty else {
+            hideLikesView()
+            return
+        }
+
+        likesSummary.configure(users: users, totalLikes: totalLikes)
     }
 
     deinit {
@@ -405,7 +419,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private func configureLikesSummary() {
         guard FeatureFlag.readerPostLikes.enabled else {
-            likesContainerView.frame.size.height = 0
+            hideLikesView()
             return
         }
 
@@ -418,6 +432,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             likesSummary.leadingAnchor.constraint(equalTo: likesContainerView.leadingAnchor),
             likesSummary.trailingAnchor.constraint(lessThanOrEqualTo: likesContainerView.trailingAnchor)
         ])
+    }
+
+    private func hideLikesView() {
+        // Because the Related Posts table is constrained to the likesContainerView, simply hiding it leaves a gap.
+        likesSummary.removeFromSuperview()
+        likesContainerView.frame.size.height = 0
     }
 
     private func configureRelatedPosts() {

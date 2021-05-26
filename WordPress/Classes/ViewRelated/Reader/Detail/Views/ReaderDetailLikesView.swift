@@ -5,9 +5,16 @@ class ReaderDetailLikesView: UIView, NibLoadable {
     @IBOutlet weak var avatarStackView: UIStackView!
     @IBOutlet weak var summaryLabel: UILabel!
 
+    static let maxAvatarsDisplayed = 5
+
     override func awakeFromNib() {
         super.awakeFromNib()
         applyStyles()
+    }
+
+    func configure(users: [LikeUser], totalLikes: Int) {
+        updateSummaryLabel(totalLikes: totalLikes)
+        updateAvatars(users: users)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -29,4 +36,43 @@ private extension ReaderDetailLikesView {
         summaryLabel.textColor = .secondaryLabel
     }
 
+    func updateSummaryLabel(totalLikes: Int) {
+        let summaryFormat = totalLikes == 1 ? SummaryLabelFormats.singular : SummaryLabelFormats.plural
+        summaryLabel.text = String(format: summaryFormat, totalLikes)
+    }
+
+    func updateAvatars(users: [LikeUser]) {
+        for (index, subView) in avatarStackView.subviews.enumerated() {
+            guard let avatarImageView = subView as? UIImageView else {
+                return
+            }
+
+            if let user = users[safe: index] {
+                downloadGravatar(for: avatarImageView, withURL: user.avatarUrl)
+            } else {
+                avatarImageView.isHidden = true
+            }
+        }
+    }
+
+    func downloadGravatar(for avatarImageView: UIImageView, withURL url: String?) {
+        // Always reset gravatar
+        avatarImageView.cancelImageDownload()
+        avatarImageView.image = .gravatarPlaceholderImage
+
+        guard let url = url,
+              let gravatarURL = URL(string: url) else {
+            return
+        }
+
+        avatarImageView.downloadImage(from: gravatarURL, placeholderImage: .gravatarPlaceholderImage)
+    }
+
+    struct SummaryLabelFormats {
+        static let singular = NSLocalizedString("%1$d blogger likes this.",
+                                                comment: "Singular format string for displaying the number of post likes. %1$d is the number of likes.")
+        static let plural = NSLocalizedString("%1$d bloggers like this.",
+                                              comment: "Plural format string for displaying the number of post likes. %1$d is the number of likes.")
+
+    }
 }
