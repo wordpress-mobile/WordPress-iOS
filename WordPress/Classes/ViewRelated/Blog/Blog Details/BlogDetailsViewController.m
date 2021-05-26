@@ -1111,10 +1111,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconTapped];
     
-    if(!self.blog.hasIcon) {
-        [self updateSiteIcon];
-        return;
-    }
+    
     [self showUpdateSiteIconAlert];
 }
 
@@ -1189,9 +1186,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     
     
-    UIAlertController *updateIconAlertController = [UIAlertController alertControllerWithTitle:@"Site Icon"
+    UIAlertController *updateIconAlertController = [UIAlertController alertControllerWithTitle:nil
                                                                                        message:nil
-                                                                                preferredStyle:UIAlertControllerStyleAlert];
+                                                                                preferredStyle:UIAlertControllerStyleActionSheet];
 
     updateIconAlertController.popoverPresentationController.sourceView = self.headerView.blavatarImageView.superview;
     updateIconAlertController.popoverPresentationController.sourceRect = self.headerView.blavatarImageView.frame;
