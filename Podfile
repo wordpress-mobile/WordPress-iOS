@@ -421,10 +421,6 @@ end
 post_install do |installer|
     project_root = File.dirname(__FILE__)
 
-    puts 'Patching RTCxxBridge and RTCTurboModuleManager for Xcode 12.5, can be removed after RN 0.64.1 upgrade'
-    %x(patch "#{project_root}/Pods/React-Core/React/CxxBridge/RCTCxxBridge.mm" < "#{project_root}/patches/RCTCxxBridge.patch")
-    %x(patch "#{project_root}/Pods/ReactCommon/turbomodule/core/platform/ios/RCTTurboModuleManager.mm" < "#{project_root}/patches/RCTTurboModuleManager.patch")
-
     ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
     require 'commonmarker'
 
