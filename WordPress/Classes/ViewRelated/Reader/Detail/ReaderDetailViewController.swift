@@ -32,6 +32,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Wrapper for the toolbar
     @IBOutlet weak var toolbarContainerView: UIView!
 
+    /// Wrapper for the Likes summary view
+    @IBOutlet weak var likesContainerView: UIView!
+
     /// The loading view, which contains all the ghost views
     @IBOutlet weak var loadingView: UIView!
 
@@ -49,6 +52,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Bottom toolbar
     private let toolbar: ReaderDetailToolbar = .loadFromNib()
+
+    /// Likes summary view
+     private let likesSummary: ReaderDetailLikesView = .loadFromNib()
 
     /// A view that fills the bottom portion outside of the safe area
     @IBOutlet weak var toolbarSafeAreaView: UIView!
@@ -125,6 +131,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureWebView()
         configureFeaturedImage()
         configureHeader()
+        configureLikesSummary()
         configureRelatedPosts()
         configureToolbar()
         configureNoResultsViewController()
@@ -394,6 +401,23 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         headerContainerView.pinSubviewToAllEdges(header)
         headerContainerView.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true
+    }
+
+    private func configureLikesSummary() {
+        guard FeatureFlag.readerPostLikes.enabled else {
+            likesContainerView.frame.size.height = 0
+            return
+        }
+
+        likesContainerView.addSubview(likesSummary)
+        likesContainerView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            likesSummary.topAnchor.constraint(equalTo: likesContainerView.topAnchor),
+            likesSummary.bottomAnchor.constraint(equalTo: likesContainerView.bottomAnchor),
+            likesSummary.leadingAnchor.constraint(equalTo: likesContainerView.leadingAnchor),
+            likesSummary.trailingAnchor.constraint(lessThanOrEqualTo: likesContainerView.trailingAnchor)
+        ])
     }
 
     private func configureRelatedPosts() {
