@@ -53,7 +53,6 @@ private extension ReaderDetailLikesView {
                 subView.isHidden = true
             }
         }
-
     }
 
     func downloadGravatar(for avatarImageView: UIImageView, withURL url: String?) {
