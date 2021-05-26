@@ -1061,7 +1061,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         ]
     }
 
-    func editorCapabilities() -> [String : Bool] {
+    func editorCapabilities() -> [String: Bool] {
         var capabilities = [String: Bool]()
         for (key, value) in gutenbergCapabilities() {
             capabilities[key.rawValue] = value
