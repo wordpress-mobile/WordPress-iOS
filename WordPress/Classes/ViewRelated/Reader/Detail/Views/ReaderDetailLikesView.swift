@@ -10,6 +10,11 @@ class ReaderDetailLikesView: UIView, NibLoadable {
         applyStyles()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        applyStyles()
+    }
+
 }
 
 private extension ReaderDetailLikesView {
@@ -18,7 +23,7 @@ private extension ReaderDetailLikesView {
         // Set border on all the avatar views
         for subView in avatarStackView.subviews {
             subView.layer.borderWidth = 1
-            subView.layer.borderColor = UIColor.white.cgColor
+            subView.layer.borderColor = UIColor.basicBackground.cgColor
         }
 
         summaryLabel.textColor = .secondaryLabel
