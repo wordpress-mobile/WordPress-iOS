@@ -1046,7 +1046,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .contactInfoBlock: post.blog.supports(.contactInfo) && FeatureFlag.contactInfo.enabled,
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
-            .audioBlock: !isFreeWPCom,
+            .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
             .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories) && !UIDevice.isPad(),
             .canViewEditorOnboarding: gutenbergSettings.canViewEditorOnboarding()
         ]
