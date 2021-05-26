@@ -68,9 +68,15 @@ struct PostEditorAnalyticsSession {
         }
     }
 
-    func end(outcome endOutcome: Outcome) {
+    func end(outcome endOutcome: Outcome, capabilities: [String: Bool] = [:]) {
         let outcome = self.outcome ?? endOutcome
-        let properties = [ Property.outcome: outcome.rawValue].merging(commonProperties, uniquingKeysWith: { $1 })
+        var properties = [ Property.outcome: outcome.rawValue].merging(commonProperties, uniquingKeysWith: { $1 })
+
+        // Tracks custom event types can't be dictionaries so we need to convert this to JSON
+        if let data = try? JSONSerialization.data(withJSONObject: capabilities, options: .fragmentsAllowed) {
+            let capabilitiesJSON = String(data: data, encoding: .utf8)
+            properties[Property.capabilities] = capabilitiesJSON
+        }
 
         WPAppAnalytics.track(.editorSessionEnd, withProperties: properties)
     }

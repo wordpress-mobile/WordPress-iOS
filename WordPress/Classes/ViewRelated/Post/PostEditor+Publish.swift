@@ -170,7 +170,7 @@ extension PublishingEditor where Self: UIViewController {
             }
 
             if dismissWhenDone {
-                self.editorSession.end(outcome: action.analyticsEndOutcome)
+                self.editorSession.end(outcome: action.analyticsEndOutcome, capabilities: self.editorCapabilities())
             } else {
                 self.editorSession.forceOutcome(action.analyticsEndOutcome)
             }
@@ -316,7 +316,7 @@ extension PublishingEditor where Self: UIViewController {
         /// had been already confirmed by the user. In this case, we just close the editor.
         /// Otherwise, we'll show an Action Sheet with options.
         if post.shouldAttemptAutoUpload && post.canSave() {
-            editorSession.end(outcome: .cancel)
+            editorSession.end(outcome: .cancel, capabilities: self.editorCapabilities())
             /// If there are ongoing media uploads, save with completion processing
             if MediaCoordinator.shared.isUploadingMedia(for: post) {
                 resumeSaving()
@@ -326,7 +326,7 @@ extension PublishingEditor where Self: UIViewController {
         } else if post.canSave() {
             showPostHasChangesAlert()
         } else {
-            editorSession.end(outcome: .cancel)
+            editorSession.end(outcome: .cancel, capabilities: self.editorCapabilities())
             discardUnsavedChangesAndUpdateGUI()
         }
     }
@@ -431,7 +431,7 @@ extension PublishingEditor where Self: UIViewController {
 
         // Button: Discard
         alertController.addDestructiveActionWithTitle(discardTitle) { _ in
-            self.editorSession.end(outcome: .discard)
+            self.editorSession.end(outcome: .discard, capabilities: self.editorCapabilities())
             self.discardUnsavedChangesAndUpdateGUI()
         }
 
