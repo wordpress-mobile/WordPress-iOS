@@ -50,7 +50,7 @@ private extension ReaderDetailLikesView {
             if let user = users[safe: index] {
                 downloadGravatar(for: avatarImageView, withURL: user.avatarUrl)
             } else {
-                subView.isHidden = true
+                avatarImageView.isHidden = true
             }
         }
     }
