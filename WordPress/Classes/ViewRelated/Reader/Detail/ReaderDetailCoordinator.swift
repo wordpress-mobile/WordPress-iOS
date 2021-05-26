@@ -52,7 +52,7 @@ class ReaderDetailCoordinator {
     private let coreDataStack: CoreDataStack
 
     /// Reader Post Service
-    private let service: ReaderPostService
+    private let readerPostService: ReaderPostService
 
     /// Reader Topic Service
     private let topicService: ReaderTopicService
@@ -96,14 +96,14 @@ class ReaderDetailCoordinator {
     ///
     /// - Parameter service: a Reader Post Service
     init(coreDataStack: CoreDataStack = ContextManager.shared,
-         service: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
+         readerPostService: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          topicService: ReaderTopicService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          postService: PostService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          sharingController: PostSharingController = PostSharingController(),
          readerLinkRouter: UniversalLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes),
          view: ReaderDetailView) {
         self.coreDataStack = coreDataStack
-        self.service = service
+        self.readerPostService = readerPostService
         self.topicService = topicService
         self.postService = postService
         self.sharingController = sharingController
@@ -132,7 +132,7 @@ class ReaderDetailCoordinator {
     /// Fetch related posts for the current post
     ///
     func fetchRelatedPosts(for post: ReaderPost) {
-        service.fetchRelatedPosts(for: post) { [weak self] relatedPosts in
+        readerPostService.fetchRelatedPosts(for: post) { [weak self] relatedPosts in
             self?.view?.renderRelatedPosts(relatedPosts)
         } failure: { error in
             DDLogError("Error fetching related posts for detail: \(String(describing: error?.localizedDescription))")
@@ -264,16 +264,16 @@ class ReaderDetailCoordinator {
     /// - Parameter siteID: a site identification
     /// - Parameter isFeed: a Boolean indicating if the site is an external feed (not hosted at WPcom and not using Jetpack)
     private func fetch(postID: NSNumber, siteID: NSNumber, isFeed: Bool) {
-        service.fetchPost(postID.uintValue,
-                          forSite: siteID.uintValue,
-                          isFeed: isFeed,
-                          success: { [weak self] post in
-                            self?.post = post
-                            self?.renderPostAndBumpStats()
-        }, failure: { [weak self] _ in
-            self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
-            self?.reportPostLoadFailure()
-        })
+        readerPostService.fetchPost(postID.uintValue,
+                                    forSite: siteID.uintValue,
+                                    isFeed: isFeed,
+                                    success: { [weak self] post in
+                                        self?.post = post
+                                        self?.renderPostAndBumpStats()
+                                    }, failure: { [weak self] _ in
+                                        self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
+                                        self?.reportPostLoadFailure()
+                                    })
     }
 
 
@@ -282,15 +282,15 @@ class ReaderDetailCoordinator {
     /// Use this method to fetch a ReaderPost from a URL.
     /// - Parameter url: a post URL
     private func fetch(_ url: URL) {
-        service.fetchPost(at: url,
-                          success: { [weak self] post in
-                            self?.post = post
-                            self?.renderPostAndBumpStats()
-        }, failure: { [weak self] error in
-            DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
-            self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
-            self?.reportPostLoadFailure()
-        })
+        readerPostService.fetchPost(at: url,
+                                    success: { [weak self] post in
+                                        self?.post = post
+                                        self?.renderPostAndBumpStats()
+                                    }, failure: { [weak self] error in
+                                        DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
+                                        self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
+                                        self?.reportPostLoadFailure()
+                                    })
     }
 
     private func renderPostAndBumpStats() {
