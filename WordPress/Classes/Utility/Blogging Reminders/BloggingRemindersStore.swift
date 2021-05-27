@@ -5,6 +5,11 @@ import Foundation
 ///
 class BloggingRemindersStore {
 
+    /// I'm intentionally making the naming and definition of the blog identifier a bit generic because right now we're using
+    /// a `URIRepresentation`, but I'm not sure this is going to stay this way.
+    ///
+    typealias BlogIdentifier = URL
+
     enum Error: Swift.Error {
         case configurationDecodingFailed(error: Swift.Error)
         case configurationEncodingFailed(error: Swift.Error)
@@ -32,8 +37,6 @@ class BloggingRemindersStore {
 
     private let fileManager: FileManager
     private let dataFileURL: URL
-
-    typealias BlogIdentifier = URL
 
     /// The blogging reminders configuration for all blogs.
     ///

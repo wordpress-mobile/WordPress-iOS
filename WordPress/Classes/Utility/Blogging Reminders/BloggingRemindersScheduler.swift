@@ -6,6 +6,7 @@ class BloggingRemindersScheduler {
 
     // MARK: - Convenience Typealiases
 
+    typealias BlogIdentifier = BloggingRemindersStore.BlogIdentifier
     typealias ScheduledReminders = BloggingRemindersStore.ScheduledReminders
     typealias ScheduledWeekday = BloggingRemindersStore.ScheduledWeekday
 
@@ -43,7 +44,9 @@ class BloggingRemindersScheduler {
 
     // MARK: - Scheduler State
 
-    let blogURIRepresentation: URL
+    /// The identifier for the blog this scheduler is working on.
+    ///
+    let blogIdentifier: URL
 
     /// The store for persisting our schedule.
     ///
@@ -53,8 +56,8 @@ class BloggingRemindersScheduler {
     ///
     private let notificationCenter: UNUserNotificationCenter
 
-    private var scheduledReminders: BloggingRemindersStore.ScheduledReminders {
-        store.scheduledReminders(for: blogURIRepresentation)
+    private var scheduledReminders: ScheduledReminders {
+        store.scheduledReminders(for: blogIdentifier)
     }
 
     /// Active schedule.
@@ -90,12 +93,16 @@ class BloggingRemindersScheduler {
     /// Default initializer.  Allows overriding the blogging reminders store and the notification center for testing purposes.
     ///
     ///  - Parameters:
-    ///     - blogURIRepresentation, the URI representation of the blog the schedule applies to.  This is used for persisting the schedule.
+    ///     - blogIdentifier, the blog identifier.  This is necessary since we support blogging reminders for multiple blogs.
     ///     - store: The `BloggingRemindersStore` to use for persisting the reminders schedule.
     ///     - notificationCenter: The `UNUserNotificationCenter` to use for the notification requests.
     ///
-    init(blogURIRepresentation: URL, store: BloggingRemindersStore? = nil, notificationCenter: UNUserNotificationCenter = .current()) throws {
-        self.blogURIRepresentation = blogURIRepresentation
+    init(
+        blogIdentifier: BlogIdentifier,
+        store: BloggingRemindersStore? = nil,
+        notificationCenter: UNUserNotificationCenter = .current()) throws {
+
+        self.blogIdentifier = blogIdentifier
         self.store = try (store ?? Self.defaultStore())
         self.notificationCenter = notificationCenter
     }
@@ -120,7 +127,7 @@ class BloggingRemindersScheduler {
             scheduledReminders = .weekdays(scheduled(days))
         }
 
-        try store.save(scheduledReminders: scheduledReminders, for: blogURIRepresentation)
+        try store.save(scheduledReminders: scheduledReminders, for: blogIdentifier)
     }
 
     /// Schedules a notifications for the passed days, and returns another array with the days and their
