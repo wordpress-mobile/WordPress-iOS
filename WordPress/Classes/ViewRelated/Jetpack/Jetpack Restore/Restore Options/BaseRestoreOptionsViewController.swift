@@ -2,6 +2,8 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared
 
+typealias HighlightedText = (substring: String, string: String)
+
 struct JetpackRestoreOptionsConfiguration {
     let title: String
     let iconImage: UIImage
