@@ -11,6 +11,9 @@ import Foundation
 ///
 struct AppBannerRoute: Route {
     let path = "/get"
+    let section: DeepLinkSection? = nil
+    let source: DeepLinkSource = .banner
+    let shouldTrack: Bool = false
 
     var action: NavigationAction {
         return self
@@ -32,9 +35,7 @@ extension AppBannerRoute: NavigationAction {
         components.path = fragment
 
         if let url = components.url {
-            // We disable tracking when passing the URL back through the router,
-            // otherwise we'd be posting two stats events.
-            router.handle(url: url, shouldTrack: false, source: source)
+            router.handle(url: url, shouldTrack: true, source: .banner)
         }
     }
 }

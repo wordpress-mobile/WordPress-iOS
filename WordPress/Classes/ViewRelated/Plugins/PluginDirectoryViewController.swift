@@ -83,7 +83,6 @@ class PluginDirectoryViewController: UITableViewController {
 
         let controller = UISearchController(searchResultsController: resultsController)
         controller.obscuresBackgroundDuringPresentation = false
-        controller.obscuresBackgroundDuringPresentation = false
         controller.searchResultsUpdater = self
         controller.delegate = self
 

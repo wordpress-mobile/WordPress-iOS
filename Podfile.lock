@@ -401,7 +401,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.33.0-beta.1):
+  - WordPressKit (4.34.0-beta.3):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -412,7 +412,7 @@ PODS:
   - WordPressShared (1.16.0):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (~> 1.8)
-  - WordPressUI (1.11.0-beta.2)
+  - WordPressUI (1.12.0-beta.1)
   - WPMediaPicker (1.7.2)
   - wpxmlrpc (0.9.0)
   - Yoga (1.14.0)
@@ -502,7 +502,7 @@ DEPENDENCIES:
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `gutenberg/issue/3163-gss`)
   - WordPressMocks (~> 0.0.11)
   - WordPressShared (~> 1.16.0)
-  - WordPressUI (~> 1.11.0-beta)
+  - WordPressUI (~> 1.12.0-beta.1)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/d1d19f07d1cb9e08ea86fdc0d18103849bba6147/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.2.0)
@@ -511,6 +511,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
+    - WordPressKit
   trunk:
     - 1PasswordExtension
     - Alamofire
@@ -752,10 +753,10 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
   WordPressAuthenticator: 2674c56cad016118fb4725b866b380b612db66fc
-  WordPressKit: a98ea46a711a1c5091a18c559eed67486ba62d52
+  WordPressKit: f57a22133b93d1cec58f5fb32d75ad232e070367
   WordPressMocks: ff54a0fc44ed8968b5b685c34c6e56318e05dd8b
   WordPressShared: 0f7f10e96f8354d64f951c223ae61e8de7495a46
-  WordPressUI: 82f164f76b97b82a49f16ce5499523c280e295e9
+  WordPressUI: 82249bccbd68a655ab740925b49f65ce696ec827
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
@@ -770,4 +771,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 7ca9a40a897f68614a68b45636f82527c7a7ddc4
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.10.1
