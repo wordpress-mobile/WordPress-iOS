@@ -4,6 +4,13 @@ import Foundation
 /// to the initializer of `BloggingRemindersScheduler`.
 ///
 class BloggingRemindersStore {
+
+    enum Error: Swift.Error {
+        case configurationDecodingFailed(error: Swift.Error)
+        case configurationEncodingFailed(error: Swift.Error)
+        case configurationFileCreationFailed(url: URL, data: Data)
+    }
+
     /// Represents user-defined reminders for which notifications have been scheduled.
     ///
     enum ScheduledReminders {
@@ -26,53 +33,64 @@ class BloggingRemindersStore {
     private let fileManager: FileManager
     private let dataFileURL: URL
 
-    var scheduledReminders: ScheduledReminders {
-        didSet {
-            persistChanges()
-        }
-    }
+    typealias BlogIdentifier = URL
+
+    /// The blogging reminders configuration for all blogs.
+    ///
+    private(set) var configuration: [BlogIdentifier: ScheduledReminders]
 
     // MARK: - Initializers
 
-    private init(fileManager: FileManager, scheduledReminders: ScheduledReminders, dataFileURL: URL) {
+    private init(
+        fileManager: FileManager,
+        configuration: [BlogIdentifier: ScheduledReminders],
+        dataFileURL: URL) {
+
         self.dataFileURL = dataFileURL
+        self.configuration = configuration
         self.fileManager = fileManager
-        self.scheduledReminders = scheduledReminders
     }
 
-    convenience init(fileManager: FileManager = .default, dataFileURL url: URL) {
+    convenience init(fileManager: FileManager = .default, dataFileURL url: URL) throws {
         guard fileManager.fileExists(atPath: url.path) else {
-            self.init(fileManager: fileManager, scheduledReminders: .none, dataFileURL: url)
-            persistChanges()
+            self.init(fileManager: fileManager, configuration: [:], dataFileURL: url)
+            try save()
             return
         }
 
         let decoder = PropertyListDecoder()
         do {
             let data = try Data(contentsOf: url)
-            let schedule = try decoder.decode(ScheduledReminders.self, from: data)
-            self.init(fileManager: fileManager, scheduledReminders: schedule, dataFileURL: url)
+            let configuration = try decoder.decode([BlogIdentifier: ScheduledReminders].self, from: data)
+            self.init(fileManager: fileManager, configuration: configuration, dataFileURL: url)
         } catch {
-            DDLogError("Error: \(error)")
-            self.init(fileManager: fileManager, scheduledReminders: .none, dataFileURL: url)
+            throw Error.configurationDecodingFailed(error: error)
+            self.init(fileManager: fileManager, configuration: [:], dataFileURL: url)
         }
     }
 
-    // MARK: - Persistance Logic
+    // MARK: - Configurations
 
-    private func persistChanges() {
+    func scheduledReminders(for blogIdentifier: BlogIdentifier) -> ScheduledReminders {
+        return configuration[blogIdentifier] ?? .none
+    }
+
+    func save(scheduledReminders: ScheduledReminders, for blogIdentifier: BlogIdentifier) throws {
+        configuration[blogIdentifier] = scheduledReminders
+        try save()
+    }
+
+    private func save() throws {
         let data: Data
 
         do {
-            data = try PropertyListEncoder().encode(scheduledReminders)
+            data = try PropertyListEncoder().encode(configuration)
         } catch {
-            DDLogError("Error!")
-            return
+            throw Error.configurationEncodingFailed(error: error)
         }
 
         guard fileManager.createFile(atPath: dataFileURL.path, contents: data, attributes: nil) else {
-            DDLogError("Error!")
-            return
+            throw Error.configurationFileCreationFailed(url: dataFileURL, data: data)
         }
     }
 }

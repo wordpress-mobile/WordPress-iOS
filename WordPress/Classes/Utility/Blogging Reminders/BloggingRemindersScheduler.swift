@@ -43,6 +43,8 @@ class BloggingRemindersScheduler {
 
     // MARK: - Scheduler State
 
+    let blogURIRepresentation: URL
+
     /// The store for persisting our schedule.
     ///
     private let store: BloggingRemindersStore
@@ -51,10 +53,14 @@ class BloggingRemindersScheduler {
     ///
     private let notificationCenter: UNUserNotificationCenter
 
+    private var scheduledReminders: BloggingRemindersStore.ScheduledReminders {
+        store.scheduledReminders(for: blogURIRepresentation)
+    }
+
     /// Active schedule.
     ///
-    var schedule: Schedule {
-        switch store.scheduledReminders {
+    func schedule() -> Schedule {
+        switch scheduledReminders {
         case .none:
             return .none
         case .weekdays(let days):
@@ -66,7 +72,7 @@ class BloggingRemindersScheduler {
 
     private static func defaultStore() throws -> BloggingRemindersStore {
         let url = try defaultDataFileURL()
-        return BloggingRemindersStore(dataFileURL: url)
+        return try BloggingRemindersStore(dataFileURL: url)
     }
 
     private static var defaultDataFileName = "BloggingReminders.plist"
@@ -83,7 +89,13 @@ class BloggingRemindersScheduler {
 
     /// Default initializer.  Allows overriding the blogging reminders store and the notification center for testing purposes.
     ///
-    init(store: BloggingRemindersStore? = nil, notificationCenter: UNUserNotificationCenter = .current()) throws {
+    ///  - Parameters:
+    ///     - blogURIRepresentation, the URI representation of the blog the schedule applies to.  This is used for persisting the schedule.
+    ///     - store: The `BloggingRemindersStore` to use for persisting the reminders schedule.
+    ///     - notificationCenter: The `UNUserNotificationCenter` to use for the notification requests.
+    ///
+    init(blogURIRepresentation: URL, store: BloggingRemindersStore? = nil, notificationCenter: UNUserNotificationCenter = .current()) throws {
+        self.blogURIRepresentation = blogURIRepresentation
         self.store = try (store ?? Self.defaultStore())
         self.notificationCenter = notificationCenter
     }
@@ -96,15 +108,19 @@ class BloggingRemindersScheduler {
     /// - Parameters:
     ///     - schedule: the blogging reminders schedule.
     ///
-    func schedule(_ schedule: Schedule) {
-        unschedule(store.scheduledReminders)
+    func schedule(_ schedule: Schedule) throws {
+        unschedule(scheduledReminders)
+
+        let scheduledReminders: BloggingRemindersStore.ScheduledReminders
 
         switch schedule {
         case .none:
-            store.scheduledReminders = .none
+            scheduledReminders = .none
         case .weekdays(let days):
-            store.scheduledReminders = .weekdays(scheduled(days))
+            scheduledReminders = .weekdays(scheduled(days))
         }
+
+        try store.save(scheduledReminders: scheduledReminders, for: blogURIRepresentation)
     }
 
     /// Schedules a notifications for the passed days, and returns another array with the days and their

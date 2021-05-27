@@ -3,31 +3,62 @@ import XCTest
 
 class BloggingRemindersStoreTests: XCTestCase {
 
-    func testNewlyCreatedBloggingReminderStoreHasNoSchedule() {
+    func testNewlyCreatedBloggingReminderStoreHasNoScheduleForUnscheduledBlog() {
         let tempFile = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("testBlogReminders_" + UUID().uuidString + ".plist")
-        let store = BloggingRemindersStore(dataFileURL: tempFile)
+        let blogIdentifier = URL(string: "someBlog")!
+        let store: BloggingRemindersStore
 
-        XCTAssertEqual(store.scheduledReminders, .none)
+        do {
+            store = try BloggingRemindersStore(dataFileURL: tempFile)
+        } catch {
+            XCTFail(error.localizedDescription)
+            return
+        }
+
+        XCTAssertEqual(store.scheduledReminders(for: blogIdentifier), .none)
     }
 
     func testPreexistingBloggingReminderStoreMaintainsSchedule() {
         let tempFile = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("testBlogReminders_" + UUID().uuidString + ".plist")
-        let store = BloggingRemindersStore(dataFileURL: tempFile)
-
-        let days: [BloggingRemindersStore.ScheduledWeekday] = [
-            .init(weekday: .monday, notificationID: UUID().uuidString),
-            .init(weekday: .tuesday, notificationID: UUID().uuidString),
-            .init(weekday: .wednesday, notificationID: UUID().uuidString),
-            .init(weekday: .thursday, notificationID: UUID().uuidString),
-            .init(weekday: .friday, notificationID: UUID().uuidString),
-            .init(weekday: .saturday, notificationID: UUID().uuidString),
-            .init(weekday: .sunday, notificationID: UUID().uuidString),
+        let configuration = [
+            URL(string: "someBlog")!: BloggingRemindersStore.ScheduledReminders.weekdays([
+                .init(weekday: .monday, notificationID: UUID().uuidString),
+                .init(weekday: .tuesday, notificationID: UUID().uuidString),
+            ]),
+            URL(string: "someBlog2")!: BloggingRemindersStore.ScheduledReminders.weekdays([
+                .init(weekday: .monday, notificationID: UUID().uuidString),
+                .init(weekday: .wednesday, notificationID: UUID().uuidString),
+            ]),
+            URL(string: "someBlog3")!: BloggingRemindersStore.ScheduledReminders.weekdays([
+                .init(weekday: .saturday, notificationID: UUID().uuidString),
+                .init(weekday: .sunday, notificationID: UUID().uuidString),
+            ]),
         ]
-        store.scheduledReminders = .weekdays(days)
+        let store: BloggingRemindersStore
 
-        // To simulate another launch of the app, we just create another store and compare the schedules
+        do {
+            store = try BloggingRemindersStore(dataFileURL: tempFile)
 
-        let secondLaunchStore = BloggingRemindersStore(dataFileURL: tempFile)
-        XCTAssertEqual(secondLaunchStore.scheduledReminders, store.scheduledReminders)
+            for (blogIdentifier, scheduledReminders) in configuration {
+                try store.save(scheduledReminders: scheduledReminders, for: blogIdentifier)
+            }
+        } catch {
+            XCTFail(error.localizedDescription)
+            return
+        }
+
+        // To simulate another launch of the app, we just create another store using
+        // the same data file, and compare the schedules.
+
+        let secondLaunchStore: BloggingRemindersStore
+
+        do {
+            secondLaunchStore = try BloggingRemindersStore(dataFileURL: tempFile)
+        } catch {
+            XCTFail(error.localizedDescription)
+            return
+        }
+
+        XCTAssertEqual(secondLaunchStore.configuration, store.configuration)
     }
 }
