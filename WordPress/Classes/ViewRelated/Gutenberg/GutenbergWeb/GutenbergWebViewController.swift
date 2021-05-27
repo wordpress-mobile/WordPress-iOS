@@ -2,7 +2,7 @@ import UIKit
 import WebKit
 import Gutenberg
 
-class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitAuthenticatable {
+class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitAuthenticatable, NoResultsViewHost {
     enum GutenbergWebError: Error {
         case wrongEditorUrl(String?)
     }
@@ -11,6 +11,7 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
     private let url: URL
     private let progressView = WebProgressView()
     private let userId: String
+    let gutenbergReadySemaphore = DispatchSemaphore(value: 0)
 
     init(with post: AbstractPost, block: Block) throws {
         authenticator = GutenbergRequestAuthenticator(blog: post.blog)
@@ -35,8 +36,10 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
     override func viewDidLoad() {
         super.viewDidLoad()
         addNavigationBarElements()
+        showLoadingMessage()
         addProgressView()
         startObservingWebView()
+        waitForGutenbergToLoad(fallback: showTroubleshootingInstructions)
     }
 
     deinit {
@@ -82,6 +85,10 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
     override func onGutenbergReady() {
         super.onGutenbergReady()
         navigationItem.rightBarButtonItem?.isEnabled = true
+        DispatchQueue.main.async { [weak self] in
+            self?.hideNoResults()
+            self?.gutenbergReadySemaphore.signal()
+        }
     }
 
     private func loadCustomScript(named name: String, with argument: String? = nil) -> WKUserScript? {
@@ -102,6 +109,30 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
             action: #selector(onSaveButtonPressed)
         )
         navigationItem.rightBarButtonItem?.isEnabled = false
+    }
+
+    private func showLoadingMessage() {
+        let title = NSLocalizedString("Loading the block editor.", comment: "Loading message shown while the Unsupported Block Editor is loading.")
+        let subtitle = NSLocalizedString("Please ensure the block editor is enabled on your site. If it is not enabled, it will not load.", comment: "Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly.")
+        configureAndDisplayNoResults(on: view, title: title, subtitle: subtitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+    }
+
+    private func waitForGutenbergToLoad(fallback: @escaping () -> Void) {
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            let timeout: TimeInterval = 15
+            // blocking call
+            if self?.gutenbergReadySemaphore.wait(timeout: .now() + timeout) == .timedOut {
+                DispatchQueue.main.async {
+                    fallback()
+                }
+            }
+        }
+    }
+
+    private func showTroubleshootingInstructions() {
+        let title = NSLocalizedString("Unable to load the block editor right now.", comment: "Title message shown when the Unsupported Block Editor fails to load.")
+        let subtitle = NSLocalizedString("Please ensure the block editor is enabled on your site and try again.", comment: "Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again.")
+        self.updateNoResults(title: title, subtitle: subtitle, image: "cloud")
     }
 
     private func startObservingWebView() {

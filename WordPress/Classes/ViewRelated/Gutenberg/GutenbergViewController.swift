@@ -1063,7 +1063,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         let blog = post.blog
         let isJetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
 
-        return blog.isHostedAtWPcom || (isJetpackSSOEnabled && blog.webEditor == .gutenberg)
+        return blog.isHostedAtWPcom || isJetpackSSOEnabled
     }
 }
 
