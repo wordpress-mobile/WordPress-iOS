@@ -332,7 +332,7 @@ struct JetpackScanThreatViewModel {
                     static let ignore = NSLocalizedString("Ignore threat", comment: "Title for button that will ignore the threat")
                     static let fixable = NSLocalizedString("Fix threat", comment: "Title for button that will fix the threat")
                     static let enterServerCredentialsSubstring = NSLocalizedString("Enter your server credentials", comment: "Error message displayed when site credentials aren't configured.")
-                    static let enterServerCredentialsFormat = NSLocalizedString("%1$@ to fix threat.", comment: "Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'.")
+                    static let enterServerCredentialsFormat = NSLocalizedString("%1$@ to fix this threat.", comment: "Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'.")
                 }
 
                 struct messages {
