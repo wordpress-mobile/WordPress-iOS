@@ -47,14 +47,14 @@
                                 </constraints>
                             </progressView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="749" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0Y-0s-mES">
-                                <rect key="frame" x="10" y="116.5" width="425" height="31.5"/>
+                                <rect key="frame" x="10" y="116.5" width="425" height="21.5"/>
                                 <string key="text">We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.</string>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="hhh-D4-rZn">
-                                <rect key="frame" x="10" y="158" width="425" height="132"/>
+                                <rect key="frame" x="10" y="148" width="425" height="142"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UhM-1P-HcV" customClass="FancyButton" customModule="WordPressUI">
                                         <rect key="frame" x="0.0" y="0.0" width="425" height="44"/>
@@ -73,8 +73,8 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="top" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="BEu-Yz-3GU" customClass="MultilineButton" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="54" width="425" height="24"/>
-                                        <inset key="contentEdgeInsets" minX="-4" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <rect key="frame" x="0.0" y="54" width="425" height="34"/>
+                                        <inset key="contentEdgeInsets" minX="-4" minY="0.0" maxX="0.0" maxY="10"/>
                                         <inset key="titleEdgeInsets" minX="2" minY="2" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Button" image="plus-small"/>
                                         <connections>
@@ -82,7 +82,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="749" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gTh-o0-42f" customClass="FancyButton" customModule="WordPressUI">
-                                        <rect key="frame" x="0.0" y="88" width="425" height="44"/>
+                                        <rect key="frame" x="0.0" y="98" width="425" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="tnl-xQ-FTS"/>
                                         </constraints>
