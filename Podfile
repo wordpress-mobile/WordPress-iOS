@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 4.34.0-beta'
+    pod 'WordPressKit', '~> 4.34.0-beta'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -161,7 +161,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '3a7ec29196c4afadc6f5897b1ed2fe131b6f155f'
+    gutenberg :tag => 'v1.54.0-alpha1'
 
 
     ## Third party libraries
@@ -416,6 +416,10 @@ end
 
 post_install do |installer|
     project_root = File.dirname(__FILE__)
+
+    puts 'Patching RTCxxBridge and RTCTurboModuleManager for Xcode 12.5'
+    %x(patch "#{project_root}/Pods/React-Core/React/CxxBridge/RCTCxxBridge.mm" < "#{project_root}/patches/RCTCxxBridge.patch")
+    %x(patch "#{project_root}/Pods/ReactCommon/turbomodule/core/platform/ios/RCTTurboModuleManager.mm" < "#{project_root}/patches/RCTTurboModuleManager.patch")
 
     puts 'Patching RCTShadowView to fix nested group block - it could be removed after upgrade to 0.62'
     %x(patch "#{project_root}/Pods/React-Core/React/Views/RCTShadowView.m" < "#{project_root}/patches/RN-RCTShadowView.patch")

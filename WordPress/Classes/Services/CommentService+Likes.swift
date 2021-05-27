@@ -3,17 +3,22 @@ extension CommentService {
     /**
      Fetches a list of users from remote that liked the comment with the given IDs.
      
-     @param commentID   The ID of the comment to fetch likes for
-     @param siteID      The ID of the site that contains the post
-     @param count       Number of records to retrieve. Optional. Defaults to the endpoint max of 90.
-     @param before      Filter results to likes before this date/time. Optional.
-     @param success     A success block
-     @param failure     A failure block
+     @param commentID       The ID of the comment to fetch likes for
+     @param siteID          The ID of the site that contains the post
+     @param count           Number of records to retrieve. Optional. Defaults to the endpoint max of 90.
+     @param before          Filter results to likes before this date/time. Optional.
+     @param excludingIDs    An array of user IDs to exclude from the returned results. Optional.
+     @param purgeExisting   Indicates if existing Likes for the given post and site should be purged before
+                            new ones are created. Defaults to false.
+     @param success         A success block
+     @param failure         A failure block
      */
     func getLikesFor(commentID: NSNumber,
                      siteID: NSNumber,
                      count: Int = 90,
                      before: String? = nil,
+                     excludingIDs: [NSNumber]? = nil,
+                     purgeExisting: Bool = false,
                      success: @escaping (([LikeUser], Int) -> Void),
                      failure: @escaping ((Error?) -> Void)) {
 
@@ -23,12 +28,15 @@ extension CommentService {
             return
         }
 
-
         remote.getLikesForCommentID(commentID,
                                     count: NSNumber(value: count),
                                     before: before,
+                                    excludeUserIDs: excludingIDs,
                                     success: { remoteLikeUsers, totalLikes in
-                                        self.createNewUsers(from: remoteLikeUsers, commentID: commentID, siteID: siteID) {
+                                        self.createNewUsers(from: remoteLikeUsers,
+                                                            commentID: commentID,
+                                                            siteID: siteID,
+                                                            purgeExisting: purgeExisting) {
                                             let users = self.likeUsersFor(commentID: commentID, siteID: siteID)
                                             success(users, totalLikes.intValue)
                                             LikeUserHelper.purgeStaleLikes()
@@ -42,12 +50,22 @@ extension CommentService {
     /**
      Fetches a list of users from Core Data that liked the comment with the given IDs.
      
-     @param commentID  The ID of the comment to fetch likes for
-     @param siteID     The ID of the site that contains the post
+     @param commentID   The ID of the comment to fetch likes for.
+     @param siteID      The ID of the site that contains the post.
+     @param after       Filter results to likes after this Date. Optional.
      */
-    func likeUsersFor(commentID: NSNumber, siteID: NSNumber) -> [LikeUser] {
+    func likeUsersFor(commentID: NSNumber, siteID: NSNumber, after: Date? = nil) -> [LikeUser] {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
-        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@", siteID, commentID)
+
+        request.predicate = {
+            if let after = after {
+                // The date comparison is 'less than' because Likes are in descending order.
+                return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@ AND dateLiked < %@", siteID, commentID, after as CVarArg)
+            }
+
+            return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@", siteID, commentID)
+        }()
+
         request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
 
         if let users = try? managedObjectContext.fetch(request) {
@@ -64,6 +82,7 @@ private extension CommentService {
     func createNewUsers(from remoteLikeUsers: [RemoteLikeUser]?,
                         commentID: NSNumber,
                         siteID: NSNumber,
+                        purgeExisting: Bool,
                         onComplete: @escaping (() -> Void)) {
 
         guard let remoteLikeUsers = remoteLikeUsers,
@@ -76,7 +95,9 @@ private extension CommentService {
 
         derivedContext.perform {
 
-            self.deleteExistingUsersFor(commentID: commentID, siteID: siteID, from: derivedContext)
+            if purgeExisting {
+                self.deleteExistingUsersFor(commentID: commentID, siteID: siteID, from: derivedContext)
+            }
 
             remoteLikeUsers.forEach {
                 LikeUserHelper.createUserFrom(remoteUser: $0, context: derivedContext)

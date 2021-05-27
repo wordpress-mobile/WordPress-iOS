@@ -12,10 +12,35 @@ class LikesListController: NSObject {
     private let siteID: NSNumber
     private let notification: Notification?
     private let tableView: UITableView
-    private var likingUsers: [LikeUser] = []
-    private var totalLikes: Int = 0
-    private var totalLikesFetched: Int = 0
+    private var loadingIndicator: UIActivityIndicatorView
     private weak var delegate: LikesListControllerDelegate?
+
+    // Used to control pagination.
+    private var isFirstLoad = true
+    private var totalLikes = 0
+    private var totalLikesFetched = 0
+    private var lastFetchedDate: String?
+    private var excludeUserIDs: [NSNumber]?
+
+    private var hasMoreLikes: Bool {
+        return totalLikesFetched < totalLikes
+    }
+
+    private var isLoadingContent = false {
+        didSet {
+            if isLoadingContent != oldValue {
+                isLoadingContent ? loadingIndicator.startAnimating() : loadingIndicator.stopAnimating()
+                // Refresh the footer view's frame
+                tableView.tableFooterView = loadingIndicator
+            }
+        }
+    }
+
+    private var likingUsers: [LikeUser] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
 
     private lazy var postService: PostService = {
         PostService(managedObjectContext: ContextManager.shared.mainContext)
@@ -23,34 +48,6 @@ class LikesListController: NSObject {
 
     private lazy var commentService: CommentService = {
         CommentService(managedObjectContext: ContextManager.shared.mainContext)
-    }()
-
-    private var isLoadingContent: Bool = false {
-        didSet {
-            isLoadingContent ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
-            tableView.reloadData()
-        }
-    }
-
-    // MARK: Views
-
-    private lazy var activityIndicator: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(style: .medium)
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        return view
-    }()
-
-    private lazy var loadingCell: UITableViewCell = {
-        let cell = UITableViewCell()
-
-        cell.addSubview(activityIndicator)
-        NSLayoutConstraint.activate([
-            activityIndicator.safeCenterXAnchor.constraint(equalTo: cell.safeCenterXAnchor),
-            activityIndicator.safeCenterYAnchor.constraint(equalTo: cell.safeCenterYAnchor)
-        ])
-
-        return cell
     }()
 
     // MARK: Lifecycle
@@ -86,6 +83,12 @@ class LikesListController: NSObject {
         self.siteID = siteID
         self.tableView = tableView
         self.delegate = delegate
+
+        self.loadingIndicator = {
+            let loadingIndicator = UIActivityIndicatorView(style: .medium)
+            loadingIndicator.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 44)
+            return loadingIndicator
+        }()
     }
 
     // MARK: Methods
@@ -96,10 +99,11 @@ class LikesListController: NSObject {
             return
         }
 
-        // shows the loading cell and prevents double refresh.
         isLoadingContent = true
 
-        fetchStoredLikes()
+        if isFirstLoad {
+            fetchStoredLikes()
+        }
 
         guard ReachabilityUtils.isInternetReachable() else {
             isLoadingContent = false
@@ -111,14 +115,14 @@ class LikesListController: NSObject {
             return
         }
 
-        // If there are no cached users, continue showing the loading cell.
-        isLoadingContent = likingUsers.isEmpty
-
         fetchLikes(success: { [weak self] users, totalLikes in
             self?.likingUsers = users
             self?.totalLikes = totalLikes
             self?.totalLikesFetched = users.count
+            self?.lastFetchedDate = users.last?.dateLikedString
+            self?.isFirstLoad = false
             self?.isLoadingContent = false
+            self?.trackUsersToExclude()
         }, failure: { [weak self] _ in
             self?.isLoadingContent = false
             self?.delegate?.showErrorView()
@@ -140,13 +144,63 @@ class LikesListController: NSObject {
     ///   - success: Closure to be called when the fetch is successful.
     ///   - failure: Closure to be called when the fetch failed.
     private func fetchLikes(success: @escaping ([LikeUser], Int) -> Void, failure: @escaping (Error?) -> Void) {
+
+        var beforeStr = lastFetchedDate
+
+        if beforeStr != nil,
+           let modifiedDate = modifiedBeforeDate() {
+            // The endpoints expect a format like YYYY-MM-DD HH:MM:SS. It isn't expecting the T or Z, hence the replacingMatches calls.
+            beforeStr = ISO8601DateFormatter().string(from: modifiedDate).replacingMatches(of: "T", with: " ").replacingMatches(of: "Z", with: "")
+        }
+
         switch content {
         case .post(let postID):
-            postService.getLikesFor(postID: postID, siteID: siteID, success: success, failure: failure)
+            postService.getLikesFor(postID: postID,
+                                    siteID: siteID,
+                                    before: beforeStr,
+                                    excludingIDs: excludeUserIDs,
+                                    purgeExisting: isFirstLoad,
+                                    success: success,
+                                    failure: failure)
         case .comment(let commentID):
-            commentService.getLikesFor(commentID: commentID, siteID: siteID, success: success, failure: failure)
+            commentService.getLikesFor(commentID: commentID,
+                                       siteID: siteID,
+                                       before: beforeStr,
+                                       excludingIDs: excludeUserIDs,
+                                       purgeExisting: isFirstLoad,
+                                       success: success,
+                                       failure: failure)
         }
     }
+
+    // There is a scenario where multiple users might like a post/comment at the same time,
+    // and then end up split between pages of results. So we'll track which users we've already
+    // fetched for the lastFetchedDate, and send those to the endpoints to filter out of the response
+    // so we don't get duplicates or gaps.
+    private func trackUsersToExclude() {
+        guard let modifiedDate = modifiedBeforeDate() else {
+            return
+        }
+
+        var fetchedUsers = [LikeUser]()
+        switch content {
+        case .post(let postID):
+            fetchedUsers = postService.likeUsersFor(postID: postID, siteID: siteID, after: modifiedDate)
+        case .comment(let commentID):
+            fetchedUsers = commentService.likeUsersFor(commentID: commentID, siteID: siteID, after: modifiedDate)
+        }
+
+        excludeUserIDs = fetchedUsers.map { NSNumber(value: $0.userID) }
+    }
+
+    private func modifiedBeforeDate() -> Date? {
+        guard let lastDate = likingUsers.last?.dateLiked else {
+            return nil
+        }
+
+        return Calendar.current.date(byAdding: .second, value: 1, to: lastDate)
+    }
+
 }
 
 // MARK: - Table View Related
@@ -158,13 +212,13 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // header section
+        // Header section
         if section == Constants.headerSectionIndex {
             return Constants.numberOfHeaderRows
         }
 
-        // users section
-        return isLoadingContent ? Constants.numberOfLoadingRows : likingUsers.count
+        // Users section
+        return likingUsers.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -172,11 +226,19 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
             return headerCell()
         }
 
-        if isLoadingContent {
-            return loadingCell
+        return userCell(for: indexPath)
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+
+        let isUsersSection = indexPath.section == Constants.usersSectionIndex
+        let isLastRow = indexPath.row == totalLikesFetched - 1
+
+        guard !isLoadingContent && hasMoreLikes && isUsersSection && isLastRow else {
+            return
         }
 
-        return userCell(for: indexPath)
+        refresh()
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -277,9 +339,9 @@ private extension LikesListController {
     struct Constants {
         static let numberOfSections = 2
         static let headerSectionIndex = 0
+        static let usersSectionIndex = 1
         static let headerRowIndex = 0
         static let numberOfHeaderRows = 1
-        static let numberOfLoadingRows = 1
     }
 
 }
