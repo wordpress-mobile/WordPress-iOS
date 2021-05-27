@@ -46,6 +46,16 @@ extension BlockEditorSettings {
         self.lastUpdated = Date()
         self.checksum = remoteSettings.checksum
         self.rawStyles = remoteSettings.rawStyles
-        self.rawFeatures = remoteSettings.rawFeatures
+        var parsedElements = Set<BlockEditorSettingElement>()
+
+        remoteSettings.colors?.forEach({ (color) in
+            parsedElements.insert(BlockEditorSettingElement(fromRawRepresentation: color, type: .color, context: context))
+        })
+
+        remoteSettings.gradients?.forEach({ (gradient) in
+            parsedElements.insert(BlockEditorSettingElement(fromRawRepresentation: gradient, type: .gradient, context: context))
+        })
+
+        self.elements = parsedElements
     }
 }

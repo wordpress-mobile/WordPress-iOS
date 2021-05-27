@@ -9,7 +9,6 @@ data model as well as any custom migrations.
 
 - `BlockEditorSettings`: added the attribute
     - `rawStyles` (optional, no default, `String`)
-    - `rawFeatures` (optional, no default, `String`)
 
 ## WordPress 124
 

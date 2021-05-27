@@ -200,7 +200,8 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         } else {
             XCTAssertNil(self.blog.blockEditorSettings?.rawStyles)
         }
-        XCTAssertNotNil(self.blog.blockEditorSettings?.rawFeatures)
+        XCTAssertGreaterThan(self.blog.blockEditorSettings!.colors!.count, 0)
+        XCTAssertGreaterThan(self.blog.blockEditorSettings!.gradients!.count, 0)
     }
 }
 

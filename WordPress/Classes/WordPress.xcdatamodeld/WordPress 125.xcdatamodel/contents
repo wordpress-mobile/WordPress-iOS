@@ -126,7 +126,6 @@
         <attribute name="checksum" attributeType="String" syncable="YES"/>
         <attribute name="isFSETheme" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="lastUpdated" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="rawFeatures" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="rawStyles" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="blockEditorSettings" inverseEntity="Blog" syncable="YES"/>
         <relationship name="elements" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="BlockEditorSettingElement" inverseName="settings" inverseEntity="BlockEditorSettingElement" syncable="YES"/>
@@ -970,7 +969,7 @@
         <element name="AnnualAndMostPopularTimeStatsRecordValue" positionX="5.7890625" positionY="1972.53515625" width="128" height="253"/>
         <element name="BasePost" positionX="-1100.31640625" positionY="-317.4140625" width="128" height="285"/>
         <element name="BlockEditorSettingElement" positionX="-1620" positionY="-432" width="128" height="104"/>
-        <element name="BlockEditorSettings" positionX="-1629" positionY="-441" width="128" height="134"/>
+        <element name="BlockEditorSettings" positionX="-1629" positionY="-441" width="128" height="119"/>
         <element name="Blog" positionX="315.19921875" positionY="-178.44921875" width="188.421875" height="854"/>
         <element name="BlogAuthor" positionX="564.83203125" positionY="-385.12109375" width="128" height="164"/>
         <element name="BlogSettings" positionX="1056.86328125" positionY="236.3984375" width="128" height="853"/>
