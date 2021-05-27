@@ -6,6 +6,7 @@
 * [*] Improved large text support in the blog details header in My Sites. [#16521]
 * [***] Block Editor: New Block: Reusable block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3490]
 * [***] Block Editor: Add reusable blocks to the block inserter menu. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3054]
+* [*] Fixed a bug where the web version of the editor did not load when using an account created before December 2018. [#16586]
 
 17.4
 -----
