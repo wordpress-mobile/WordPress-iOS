@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-12 15:01:37+0000 */
+/* Translation-Revision-Date: 2021-05-18 16:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -3340,7 +3340,7 @@
 "Jetpack Scan will update to a newer version." = "Jetpack Scan zal worden geüpdatet naar een nieuwere versie.";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Jetpack Settings" = "Jetpack Instellingen";
+"Jetpack Settings" = "Jetpack-instellingen";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack kan momenteel niet geïnstalleerd worden.";
@@ -6133,7 +6133,7 @@
 
 /* Label for selecting the Speed up your site Settings section
    Title for the Speed up your site Settings Screen */
-"Speed up your site" = "Versnel jouw site";
+"Speed up your site" = "Versnel je site";
 
 /* Standard post format label */
 "Standard" = "Standaard";

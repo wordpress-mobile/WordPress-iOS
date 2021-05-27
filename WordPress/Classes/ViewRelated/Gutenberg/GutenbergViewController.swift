@@ -1040,6 +1040,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
 
     func gutenbergCapabilities() -> [Capabilities: Bool] {
         let isFreeWPCom = post.blog.isHostedAtWPcom && !post.blog.hasPaidPlan
+        let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
         return [
             .mentions: FeatureFlag.gutenbergMentions.enabled && SuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .xposts: FeatureFlag.gutenbergXposts.enabled && SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
@@ -1048,6 +1049,9 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .audioBlock: !isFreeWPCom, // Disable audio block until it's usable on free sites via "Insert from URL" capability
             .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories) && !UIDevice.isPad(),
+            // Only enable reusable block in WP.com sites until the issue
+            // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
+            .reusableBlock: isWPComSite,
             .canViewEditorOnboarding: gutenbergSettings.canViewEditorOnboarding()
         ]
     }
@@ -1157,7 +1161,7 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 extension Gutenberg.MediaSource {
     static let stockPhotos = Gutenberg.MediaSource(id: "wpios-stock-photo-library", label: .freePhotosLibrary, types: [.image])
     static let otherApps = Gutenberg.MediaSource(id: "wpios-other-files", label: .otherApps, types: [.image, .video, .audio, .other])
-    static let allFiles = Gutenberg.MediaSource(id: "wpios-all-files", label: .allFiles, types: [.any])
+    static let allFiles = Gutenberg.MediaSource(id: "wpios-all-files", label: .otherApps, types: [.any])
     static let tenor = Gutenberg.MediaSource(id: "wpios-tenor", label: .tenor, types: [.image])
 }
 

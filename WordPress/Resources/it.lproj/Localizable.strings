@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-12 10:54:09+0000 */
+/* Translation-Revision-Date: 2021-05-19 17:29:36+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -1998,7 +1998,7 @@
 
 /* Details button that appears in the Theme Browser Header
    Theme Details action title */
-"Details" = "Detagli";
+"Details" = "Dettagli";
 
 /* Instructions after a Magic Link was sent, but email is incorrect. */
 "Didn't mean to create a new account? Go back to re-enter your email address." = "Non volevi creare un nuovo account? Torna indietro per inserire nuovamente l'indirizzo e-mail.";

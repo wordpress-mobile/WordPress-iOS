@@ -193,6 +193,11 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 fileprivate extension NewBlogDetailHeaderView {
     class TitleView: UIView {
 
+        private enum LabelMinimumScaleFactor {
+            static let regular: CGFloat = 0.75
+            static let accessibility: CGFloat = 0.5
+        }
+
         private enum Dimensions {
             static let siteIconHeight: CGFloat = 64
             static let siteIconWidth: CGFloat = 64
@@ -211,6 +216,20 @@ fileprivate extension NewBlogDetailHeaderView {
 
         // MARK: - Child Views
 
+        private lazy var mainStackView: UIStackView = {
+            let stackView = UIStackView(arrangedSubviews: [
+                siteIconView,
+                titleStackView,
+                siteSwitcherButton
+            ])
+
+            stackView.alignment = .center
+            stackView.spacing = LayoutSpacing.betweenSiteIconAndTitle
+            stackView.translatesAutoresizingMaskIntoConstraints = false
+
+            return stackView
+        }()
+
         let siteIconView: SiteIconView = {
             let siteIconView = SiteIconView(frame: .zero)
             siteIconView.translatesAutoresizingMaskIntoConstraints = false
@@ -222,6 +241,8 @@ fileprivate extension NewBlogDetailHeaderView {
 
             button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
             button.titleLabel?.adjustsFontForContentSizeCategory = true
+            button.titleLabel?.adjustsFontSizeToFitWidth = true
+            button.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.regular
             button.titleLabel?.lineBreakMode = .byTruncatingTail
 
             button.setTitleColor(.primary, for: .normal)
@@ -251,6 +272,8 @@ fileprivate extension NewBlogDetailHeaderView {
             button.contentHorizontalAlignment = .leading
             button.titleLabel?.font = AppStyleGuide.blogDetailHeaderTitleFont
             button.titleLabel?.adjustsFontForContentSizeCategory = true
+            button.titleLabel?.adjustsFontSizeToFitWidth = true
+            button.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.regular
             button.titleLabel?.lineBreakMode = .byTruncatingTail
             button.titleLabel?.numberOfLines = 1
 
@@ -316,52 +339,34 @@ fileprivate extension NewBlogDetailHeaderView {
             subtitleButton.setTitle(url, for: .normal)
         }
 
+        // MARK: - Accessibility
+
+        override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+            super.traitCollectionDidChange(previousTraitCollection)
+
+            refreshMainStackViewAxis()
+        }
+
         // MARK: - Child View Setup
 
         private func setupChildViews() {
-            addSubview(siteIconView)
-            addSubview(titleStackView)
-            addSubview(siteSwitcherButton)
-
-            setupConstraintsForChildViews()
+            refreshMainStackViewAxis()
+            addSubview(mainStackView)
+            pinSubviewToAllEdges(mainStackView)
         }
 
-        // MARK: - Constraints
+        private func refreshMainStackViewAxis() {
+            if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+                mainStackView.axis = .vertical
 
-        private func setupConstraintsForChildViews() {
-            let siteIconConstraints = constraintsForSiteIcon()
-            let titleStackViewConstraints = constraintsForTitleStackView()
-            let siteSwitcherButtonConstraints = constraintsForSiteSwitcherButton()
+                titleButton.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.accessibility
+                subtitleButton.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.accessibility
+            } else {
+                mainStackView.axis = .horizontal
 
-            NSLayoutConstraint.activate(siteIconConstraints + titleStackViewConstraints + siteSwitcherButtonConstraints)
-        }
-
-        private func constraintsForSiteIcon() -> [NSLayoutConstraint] {
-            [
-                siteIconView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
-                siteIconView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
-                siteIconView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                siteIconView.heightAnchor.constraint(equalToConstant: Dimensions.siteIconHeight),
-                siteIconView.widthAnchor.constraint(equalToConstant: Dimensions.siteIconWidth),
-            ]
-        }
-
-        private func constraintsForSiteSwitcherButton() -> [NSLayoutConstraint] {
-            [
-                siteSwitcherButton.centerYAnchor.constraint(equalTo: siteIconView.centerYAnchor),
-                siteSwitcherButton.leadingAnchor.constraint(equalTo: titleStackView.trailingAnchor, constant: LayoutSpacing.betweenTitleAndSiteSwitcher),
-                siteSwitcherButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutSpacing.betweenSiteSwitcherAndRightPadding),
-                siteSwitcherButton.heightAnchor.constraint(equalToConstant: Dimensions.siteSwitcherHeight),
-                siteSwitcherButton.widthAnchor.constraint(equalToConstant: Dimensions.siteSwitcherWidth),
-            ]
-        }
-
-        private func constraintsForTitleStackView() -> [NSLayoutConstraint] {
-            [
-                titleStackView.leadingAnchor.constraint(equalTo: siteIconView.trailingAnchor, constant: LayoutSpacing.betweenSiteIconAndTitle),
-                titleStackView.centerYAnchor.constraint(equalTo: siteIconView.centerYAnchor),
-                titleButton.trailingAnchor.constraint(equalTo: siteSwitcherButton.leadingAnchor, constant: -LayoutSpacing.betweenTitleAndSiteSwitcher),
-            ]
+                titleButton.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.regular
+                subtitleButton.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.regular
+            }
         }
     }
 }

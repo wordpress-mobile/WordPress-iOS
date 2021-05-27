@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-12 10:54:09+0000 */
+/* Translation-Revision-Date: 2021-05-19 15:29:48+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -2277,7 +2277,7 @@
 "Edit focal point" = "초점 편집하기";
 
 /* No comment provided by engineer. */
-"Edit image" = "Edit image";
+"Edit image" = "이미지 편집";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "블록 편집기에서 새 글과 페이지를 편집하세요.";
