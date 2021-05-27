@@ -132,7 +132,8 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
     private func showTroubleshootingInstructions() {
         let title = NSLocalizedString("Unable to load the block editor right now.", comment: "Title message shown when the Unsupported Block Editor fails to load.")
         let subtitle = NSLocalizedString("Please ensure the block editor is enabled on your site and try again.", comment: "Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again.")
-        self.updateNoResults(title: title, subtitle: subtitle, image: "cloud")
+        // This does nothing if the "no results" screen is not currently displayed, which is the intended behavior
+        updateNoResults(title: title, subtitle: subtitle, image: "cloud")
     }
 
     private func startObservingWebView() {
@@ -154,6 +155,7 @@ extension GutenbergWebViewController {
     override func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         super.webView(webView, didCommit: navigation)
         if webView.url?.absoluteString.contains("reauth=1") ?? false {
+            hideNoResults()
             removeCoverViewAnimated()
         }
     }
