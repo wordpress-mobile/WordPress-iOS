@@ -11,7 +11,7 @@ struct JetpackRestoreOptionsConfiguration {
     let messageDescription: String
     let generalSectionHeaderText: String
     let buttonTitle: String
-    let warningButtonTitle: String?
+    let warningButtonTitle: HighlightedText?
     let isRestoreTypesConfigurable: Bool
 }
 
