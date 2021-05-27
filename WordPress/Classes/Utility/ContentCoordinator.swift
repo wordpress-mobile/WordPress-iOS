@@ -130,7 +130,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
 
     func displayWebViewWithURL(_ url: URL) {
         if UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes).canHandle(url: url) {
-            UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes).handle(url: url, source: controller)
+            UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes).handle(url: url, source: .inApp(presenter: controller))
             return
         }
 

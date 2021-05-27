@@ -15,7 +15,7 @@ protocol NotificationsNavigationDataSource: class {
 
 // MARK: - Renders a given Notification entity, onscreen
 //
-class NotificationDetailsViewController: UIViewController {
+class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     // MARK: - Properties
 
     let formatter = FormattableContentFormatter()
@@ -474,7 +474,10 @@ extension NotificationDetailsViewController {
     }
 
     func setupSuggestionsView() {
-        guard let siteID = note.metaSiteID else { return }
+        guard let siteID = note.metaSiteID else {
+            return
+        }
+
         suggestionsTableView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
         suggestionsTableView?.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -1345,6 +1348,7 @@ extension NotificationDetailsViewController {
             return
         }
 
+        hideNoResults()
         onSelectedNoteChange?(previous)
         note = previous
         showConfettiIfNeeded()
@@ -1355,6 +1359,7 @@ extension NotificationDetailsViewController {
             return
         }
 
+        hideNoResults()
         onSelectedNoteChange?(next)
         note = next
         showConfettiIfNeeded()
@@ -1382,8 +1387,19 @@ extension NotificationDetailsViewController: LikesListControllerDelegate {
         displayUserProfile(user, from: indexPath)
     }
 
-}
+    func showErrorView() {
+        hideNoResults()
+        configureAndDisplayNoResults(on: tableView,
+                                     title: NoResultsText.errorTitle,
+                                     subtitle: NoResultsText.errorSubtitle,
+                                     image: "wp-illustration-notifications")
+    }
 
+    private struct NoResultsText {
+        static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading notification likes.")
+        static let errorSubtitle = NSLocalizedString("There was an error loading likes", comment: "Text displayed when there is a failure loading notification likes.")
+    }
+}
 
 // MARK: - Private Properties
 //

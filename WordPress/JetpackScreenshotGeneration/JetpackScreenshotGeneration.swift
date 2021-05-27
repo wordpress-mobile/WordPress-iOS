@@ -34,6 +34,8 @@ class JetpackScreenshotGeneration: XCTestCase {
 
         // Get My Site screenshot
         let mySite = MySiteScreen()
+            .showSiteSwitcher()
+            .switchToSite(withTitle: "yourjetpack.blog")
             .thenTakeScreenshot(1, named: "MySite")
 
         // Get Activity Log screenshot
@@ -41,14 +43,18 @@ class JetpackScreenshotGeneration: XCTestCase {
             .gotoActivityLog()
             .thenTakeScreenshot(2, named: "ActivityLog")
 
-        activityLog.pop()
+        if !isIpad {
+            activityLog.pop()
+        }
 
         // Get Scan screenshot
         let jetpackScan = mySite
             .gotoJetpackScan()
             .thenTakeScreenshot(3, named: "JetpackScan")
 
-        jetpackScan.pop()
+        if !isIpad {
+            jetpackScan.pop()
+        }
 
         // Get Backup screenshot
         let jetpackBackup = mySite
@@ -59,7 +65,10 @@ class JetpackScreenshotGeneration: XCTestCase {
             .thenTakeScreenshot(4, named: "JetpackBackup")
 
         jetpackBackupOptions.pop()
-        jetpackBackup.pop()
+
+        if !isIpad {
+            jetpackBackup.pop()
+        }
 
         // Get Stats screenshot
         let statsScreen = mySite.gotoStatsScreen()

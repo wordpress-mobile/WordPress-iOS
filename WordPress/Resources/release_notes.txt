@@ -1,7 +1,9 @@
-What’s new in WordPress release 17.3:
+What’s new in this update?
 
-New block alert! With the Search block, you can now add a search function onto any page or post on your site. We’ve also simplified the process for inserting media while using the Image, Video, Gallery, File, and Audio blocks.
+Keep up-to-date on any sites you’ve recently been added to by pulling down to refresh on the New Sites screen.
 
-We addressed a few issues where your post content was not behaving as expected! Unwanted posts, for example, were sometimes converting into Classic content. This unexpected behavior occurred when deleting a post and then selecting Undo, and also when trashing a post. We also fixed an issue where your restored posts remained in your list of published posts even though they had been converted to drafts. (Apparently, sometimes your posts have minds of their own!) We’re pleased to say that all these issues have been fixed.
+On sites with more than one author, you’ll now be able to switch the author assigned to any Post or Page.
 
-Overall, the team kept busy for this release, and we made various other improvements, including a styling fix on the Change Username page so people would no longer be stuck on the screen, and updating the comments experience so you can filter them to show the most recent unreplied comments from other users. We also squashed several translation bugs on various screens, and tweaked colors in the app where necessary.
+You can now authenticate login requests while you're using the app.
+
+Finally, we fixed a bug with the Quick Start tour. When you follow a site from the reader, the Quick Start checklist will now update your progress (instead of remaining unchecked.)

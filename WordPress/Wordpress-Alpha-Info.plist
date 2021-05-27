@@ -453,7 +453,7 @@
 			<string>GoogleSignIn</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>GOOGLE_LOGIN_SCHEME_ID</string>
+				<string>com.googleusercontent.apps.108380595987-ujhrhknecrqli756i72gkcs4aaia6nhb</string>
 			</array>
 		</dict>
 	</array>
