@@ -1278,9 +1278,7 @@ private extension AztecPostViewController {
             }
         }
 
-        if post.blog.isGutenbergEnabled,
-            let postContent = post.content,
-            postContent.count > 0 && post.containsGutenbergBlocks() {
+        if post.blog.isGutenbergEnabled, post.isContentEmpty() || post.containsGutenbergBlocks() {
 
             alert.addDefaultActionWithTitle(MoreSheetAlert.gutenbergTitle) { [unowned self] _ in
                 self.editorSession.switch(editor: .gutenberg)
