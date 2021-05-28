@@ -1,0 +1,9 @@
+Apa yang baru pada pembaruan ini?
+
+Ketahui di situs apa saja Anda telah ditambahkan dengan menarik ke bawah untuk menyegarkan layar Situs Baru.
+
+Di situs dengan penulis lebih dari satu, Anda kini bisa mengganti penulis yang tercantum di Pos atau Halaman.
+
+Anda kini dapat mengauntentikasi permintaan login sembari membuka aplikasi.
+
+Akhirnya, kami berhasil mengatasi bug pada tur Mulai Cepat. Jika Anda mengikuti situs dari pembaca, daftar periksa Mulai Cepat kini akan mengikuti progres Anda (alih-alih tetap tidak tercentang.)
