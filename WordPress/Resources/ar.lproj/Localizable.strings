@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-12 22:54:09+0000 */
+/* Translation-Revision-Date: 2021-05-27 17:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -316,7 +316,7 @@
 "ADD IMAGE OR VIDEO" = "إضافة صورة أو فيديو";
 
 /* No comment provided by engineer. */
-"ADD LINK" = "ADD LINK";
+"ADD LINK" = "إضافة رابط";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "إضافة فيديو";
@@ -2148,7 +2148,7 @@
 "Double tap to add a block" = "الضغط المزدوج لإضافة مكوِّن";
 
 /* No comment provided by engineer. */
-"Double tap to add a link." = "Double tap to add a link.";
+"Double tap to add a link." = "انقر نقرًا مزدوجًا لإضافة رابط.";
 
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "اضغط ضغطًا مزدوجًا للتجاهل";
@@ -3103,7 +3103,7 @@
 "If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "في حال إزالة هذا المتابع، سيتم وقف إرسال تنبيهات إليه عن هذا الموقع، ما لم يتابع مرة أخرى.";
 
 /* Message explaining that they will need to install Jetpack on one of their sites. */
-"If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account.";
+"If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "إذا كان لديك موقع بالفعل، فسيتعيَّن عليك تثبيت إضافة Jetpack المجانية وربطها بحسابك على ووردبريس.كوم.";
 
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "إذا قمت بالمتابعة مع Apple أو Google وليس لديك حساب WordPress.com بالفعل، فأنت تقوم بإنشاء حساب وتوافق على _شروط الخدمة_.";
@@ -3638,7 +3638,7 @@
 "Log in with your WordPress.com username and password." = "سجِّل الدخول من خلال اسم المستخدم وكلمة المرور الخاصين بحسابك على WordPress.com.";
 
 /* LogOut confirmation text, whenever there are no local changes */
-"Log out of Jetpack?" = "Log out of Jetpack?";
+"Log out of Jetpack?" = "هل ترغب في تسجيل الخروج من Jetpack؟";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "هل ترغب في تسجيل الخروج من ووردبريس؟";
@@ -5601,7 +5601,7 @@
 "See All" = "مشاهدة الكل";
 
 /* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
-"See Instructions" = "See Instructions";
+"See Instructions" = "الاطلاع على الإرشادات";
 
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
@@ -6665,7 +6665,7 @@
 "There was an error loading activities" = "حدث خطأ أثناء تحميل الأنشطة";
 
 /* Text displayed when there is a failure loading notification likes. */
-"There was an error loading likes" = "There was an error loading likes";
+"There was an error loading likes" = "حدث خطأ في أثناء تحميل الإعجابات";
 
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "حدث خطأ أثناء تحميل الخطط";
@@ -6859,7 +6859,7 @@
 "To use stats on your site, you'll need to install the Jetpack plugin." = "لاستخدام الإحصاءات على موقعك، سيتعين عليك تنصيب إضافة Jetpack.";
 
 /* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
-"To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "To use this app for %@ you'll need to have the Jetpack plugin installed and activated.";
+"To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "لاستخدام هذا التطبيق لـ %@، سيتعيَّن عليك تثبيت إضافة Jetpack وتفعيلها.";
 
 /* Insights 'Today' header
    Label for most recent stat row.
@@ -6959,7 +6959,7 @@
 "Try Again" = "حاول مرّة اخرى";
 
 /* Action button that will restart the login flow.Presented when logging in with a site address that does not have a valid Jetpack installation */
-"Try With Another Account" = "Try With Another Account";
+"Try With Another Account" = "المحاولة باستخدام حساب آخر";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
 "Try adjusting your date range filter" = "محاولة ضبط عامل تصفية مدى التاريخ الخاص بك";
@@ -7701,7 +7701,7 @@
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "نستخدم أدوات تتبع أخرى، بما في ذلك بعض الأدوات التي تنتمي إلى أطراف ثالثة. اقرأ عن هذه الأدوات وكيفية التحكم فيها.";
 
 /* Message explaining that WordPress was not detected. */
-"We were not able to detect a WordPress site at the address you entered. Please make sure WordPress is installed and that you are running the latest available version." = "We were not able to detect a WordPress site at the address you entered. Please make sure WordPress is installed and that you are running the latest available version.";
+"We were not able to detect a WordPress site at the address you entered. Please make sure WordPress is installed and that you are running the latest available version." = "لم نتمكن من اكتشاف موقع ووردبريس على العنوان الذي أدخلته. يرجى التأكُّد من تثبيت ووردبريس، وأنك تقوم بتشغيل أحدث إصدار متاح.";
 
 /* Error message displayed when an error occurred sending the magic link email. */
 "We were unable to send you an email at this time. Please try again later." = "يتعذر علينا إرسال بريد إلكتروني في هذا الوقت. يُرجى المحاولة مرة أخرى لاحقًا.";
@@ -8398,7 +8398,7 @@
 "your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "يجري إعداد نطاقك الجديد %@. يقوم موقعك ببعض الحركات البهلوانية من أجل الإثارة!";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
-"your site" = "your site";
+"your site" = "موقعك";
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} تسجيل الدخول باستخدام Google.";
