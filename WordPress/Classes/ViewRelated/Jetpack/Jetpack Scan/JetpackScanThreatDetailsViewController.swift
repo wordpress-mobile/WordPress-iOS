@@ -38,7 +38,7 @@ class JetpackScanThreatDetailsViewController: UIViewController {
     @IBOutlet private weak var buttonsStackView: UIStackView!
     @IBOutlet private weak var fixThreatButton: FancyButton!
     @IBOutlet private weak var ignoreThreatButton: FancyButton!
-    @IBOutlet private weak var warningButton: UIButton!
+    @IBOutlet private weak var warningButton: MultilineButton!
     @IBOutlet weak var ignoreActivityIndicatorView: UIActivityIndicatorView!
 
     // MARK: - Properties
@@ -183,8 +183,14 @@ extension JetpackScanThreatDetailsViewController {
         }
 
         if let warningActionTitle = viewModel.warningActionTitle {
+
+            let attributedTitle = WPStyleGuide.Jetpack.highlightString(warningActionTitle.substring,
+                                                                       inString: warningActionTitle.string)
+
+            warningButton.setAttributedTitle(attributedTitle, for: .normal)
+
             warningButton.isHidden = false
-            warningButton.setTitle(warningActionTitle, for: .normal)
+
         } else {
             warningButton.isHidden = true
         }
@@ -255,6 +261,11 @@ extension JetpackScanThreatDetailsViewController {
         fixThreatButton.isPrimary = true
 
         ignoreThreatButton.isPrimary = false
+
+        warningButton.setTitleColor(.text, for: .normal)
+        warningButton.titleLabel?.lineBreakMode = .byWordWrapping
+        warningButton.titleLabel?.numberOfLines = 0
+        warningButton.setImage(.gridicon(.plusSmall), for: .normal)
     }
 }
 

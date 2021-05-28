@@ -30,7 +30,7 @@ struct JetpackScanThreatViewModel {
     let fixActionEnabled: Bool
     let ignoreActionTitle: String?
     let ignoreActionMessage: String
-    let warningActionTitle: String?
+    let warningActionTitle: HighlightedText?
 
     // Threat Detail Success
     let fixSuccessTitle: String
@@ -276,14 +276,20 @@ struct JetpackScanThreatViewModel {
         return Strings.details.actions.titles.ignore
     }
 
-    private static func warningActionTitle(for threat: JetpackScanThreat, hasValidCredentials: Bool?) -> String? {
+    private static func warningActionTitle(for threat: JetpackScanThreat, hasValidCredentials: Bool?) -> HighlightedText? {
         guard fixActionTitle(for: threat) != nil,
               let hasValidCredentials = hasValidCredentials,
               !hasValidCredentials else {
             return nil
         }
 
-        return Strings.details.actions.titles.enterServerCredentials
+        let warningString = String(format: Strings.details.actions.titles.enterServerCredentialsFormat,
+                                   Strings.details.actions.titles.enterServerCredentialsSubstring)
+
+        let warningActionTitle = HighlightedText(substring: Strings.details.actions.titles.enterServerCredentialsSubstring,
+                                                 string: warningString)
+
+        return warningActionTitle
     }
 
     private struct Strings {
@@ -325,7 +331,8 @@ struct JetpackScanThreatViewModel {
                 struct titles {
                     static let ignore = NSLocalizedString("Ignore threat", comment: "Title for button that will ignore the threat")
                     static let fixable = NSLocalizedString("Fix threat", comment: "Title for button that will fix the threat")
-                    static let enterServerCredentials = NSLocalizedString("Enter your server credentials to fix threat.", comment: "Title for button when a site is missing server credentials")
+                    static let enterServerCredentialsSubstring = NSLocalizedString("Enter your server credentials", comment: "Error message displayed when site credentials aren't configured.")
+                    static let enterServerCredentialsFormat = NSLocalizedString("%1$@ to fix this threat.", comment: "Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'.")
                 }
 
                 struct messages {
