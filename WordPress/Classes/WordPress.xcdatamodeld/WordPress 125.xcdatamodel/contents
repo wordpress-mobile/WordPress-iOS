@@ -117,6 +117,7 @@
     </entity>
     <entity name="BlockEditorSettingElement" representedClassName="BlockEditorSettingElement" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="order" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="slug" attributeType="String" syncable="YES"/>
         <attribute name="type" attributeType="String" syncable="YES"/>
         <attribute name="value" attributeType="String" syncable="YES"/>
@@ -968,7 +969,7 @@
         <element name="AllTimeStatsRecordValue" positionX="323.8671875" positionY="1792.16015625" width="128" height="118"/>
         <element name="AnnualAndMostPopularTimeStatsRecordValue" positionX="5.7890625" positionY="1972.53515625" width="128" height="253"/>
         <element name="BasePost" positionX="-1100.31640625" positionY="-317.4140625" width="128" height="285"/>
-        <element name="BlockEditorSettingElement" positionX="-1620" positionY="-432" width="128" height="104"/>
+        <element name="BlockEditorSettingElement" positionX="-1620" positionY="-432" width="128" height="119"/>
         <element name="BlockEditorSettings" positionX="-1629" positionY="-441" width="128" height="119"/>
         <element name="Blog" positionX="315.19921875" positionY="-178.44921875" width="188.421875" height="854"/>
         <element name="BlogAuthor" positionX="564.83203125" positionY="-385.12109375" width="128" height="164"/>

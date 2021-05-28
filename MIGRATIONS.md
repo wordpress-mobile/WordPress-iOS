@@ -9,6 +9,9 @@ data model as well as any custom migrations.
 
 - `BlockEditorSettings`: added the attribute
     - `rawStyles` (optional, no default, `String`)
+    
+- `BlockEditorSettingElement`: added the attribute
+    - `order` (required, 0, `Int`)
 
 ## WordPress 124
 
