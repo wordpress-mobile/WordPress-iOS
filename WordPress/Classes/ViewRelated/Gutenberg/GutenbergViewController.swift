@@ -1051,7 +1051,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories) && !UIDevice.isPad(),
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
-            .reusableBlock: isWPComSite,
+            .reusableBlock: false,
             .canViewEditorOnboarding: gutenbergSettings.canViewEditorOnboarding()
         ]
     }
