@@ -44,6 +44,8 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         }
         return BlogJetpackSettingsService(managedObjectContext: context)
     }()
+    
+    let mediaIdNoFeaturedImageSet = 0
 
     // MARK: - Aztec
 
@@ -663,7 +665,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             return;
         }
         
-        if (mediaID == 0) {
+        if (mediaID == mediaIdNoFeaturedImageSet) {
             // user tries to clear the featured image setting
             featuredImageHelper.setFeaturedImage(mediaID: mediaID)
             return

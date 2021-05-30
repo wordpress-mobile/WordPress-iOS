@@ -5,6 +5,8 @@ class GutenbergFeaturedImageHelper: NSObject {
     fileprivate let post: AbstractPost
     fileprivate let gutenberg: Gutenberg
     
+    let mediaIdNoFeaturedImageSet = 0
+    
     init(post: AbstractPost, gutenberg: Gutenberg) {
         self.post = post
         self.gutenberg = gutenberg
@@ -15,7 +17,7 @@ class GutenbergFeaturedImageHelper: NSObject {
         let media = Media.existingMediaWith(mediaID: NSNumber(value: mediaID), inBlog: post.blog)
         post.featuredImage = media
 
-        if mediaID == 0 {
+        if mediaID == mediaIdNoFeaturedImageSet {
             gutenberg.showNotice(NSLocalizedString("Removed as Featured Image", comment: "Featured image removed confirmation message"))
 
         } else {
