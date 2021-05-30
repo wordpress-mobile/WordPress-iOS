@@ -4,9 +4,9 @@ import Gutenberg
 class GutenbergFeaturedImageHelper: NSObject {
     fileprivate let post: AbstractPost
     fileprivate let gutenberg: Gutenberg
-    
+
     let mediaIdNoFeaturedImageSet = 0
-    
+
     init(post: AbstractPost, gutenberg: Gutenberg) {
         self.post = post
         self.gutenberg = gutenberg

@@ -44,7 +44,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         }
         return BlogJetpackSettingsService(managedObjectContext: context)
     }()
-    
+
     let mediaIdNoFeaturedImageSet = 0
 
     // MARK: - Aztec
@@ -236,8 +236,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     lazy var mediaInserterHelper: GutenbergMediaInserterHelper = {
         return GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
     }()
-    
-    
+
     lazy var featuredImageHelper: GutenbergFeaturedImageHelper = {
         return GutenbergFeaturedImageHelper(post: post, gutenberg: gutenberg)
     }()
@@ -660,23 +659,23 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         // Dismiss controller behind settings modal to enable the alert controller to be presented.
         presentedViewController?.dismiss(animated: false, completion: nil)
 
-        if (mediaID == post.featuredImage?.mediaID as! Int32) {
+        if mediaID == post.featuredImage?.mediaID as! Int32 {
             // nothing special to do, trying to set the image that's already set as featured
-            return;
+            return
         }
-        
-        if (mediaID == mediaIdNoFeaturedImageSet) {
+
+        if mediaID == mediaIdNoFeaturedImageSet {
             // user tries to clear the featured image setting
             featuredImageHelper.setFeaturedImage(mediaID: mediaID)
             return
         }
-        
-        if (post.featuredImage?.mediaID == nil) {
+
+        if post.featuredImage?.mediaID == nil {
             // current featured image is not set so, go ahead and set it to the provided one
             featuredImageHelper.setFeaturedImage(mediaID: mediaID)
             return
         }
-        
+
         // ask the user to confirm changing the featured image since there's already one set
         showAlertForReplacingFeaturedImage(mediaID: mediaID)
     }
