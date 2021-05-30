@@ -210,6 +210,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
             attachmentDelegate = AztecAttachmentDelegate(post: post)
             mediaPickerHelper = GutenbergMediaPickerHelper(context: self, post: post)
             mediaInserterHelper = GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
+            featuredImageHelper = GutenbergFeaturedImageHelper(post: post, gutenberg: gutenberg)
             stockPhotos = GutenbergStockPhotos(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
             filesAppMediaPicker = GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
             tenorMediaPicker = GutenbergTenorMediaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
@@ -232,6 +233,11 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     lazy var mediaInserterHelper: GutenbergMediaInserterHelper = {
         return GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
+    }()
+    
+    
+    lazy var featuredImageHelper: GutenbergFeaturedImageHelper = {
+        return GutenbergFeaturedImageHelper(post: post, gutenberg: gutenberg)
     }()
 
     /// For autosaving - The debouncer will execute local saving every defined number of seconds.
@@ -653,7 +659,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         presentedViewController?.dismiss(animated: false, completion: nil)
 
         if (mediaID == 0 || post.featuredImage?.mediaID == nil) {
-            mediaInserterHelper.setFeaturedImage(mediaID: mediaID)
+            featuredImageHelper.setFeaturedImage(mediaID: mediaID)
         } else {
             showAlertForReplacingFeaturedImage(mediaID: mediaID)
         }
@@ -665,7 +671,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                 preferredStyle: .actionSheet)
 
         let replaceAction = UIAlertAction(title: "Replace", style: .default) { (action) in
-            self.mediaInserterHelper.setFeaturedImage(mediaID: mediaID)
+            self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
         }
 
         alertController.addAction(replaceAction)
