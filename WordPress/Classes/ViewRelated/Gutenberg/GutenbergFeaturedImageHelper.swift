@@ -19,13 +19,13 @@ class GutenbergFeaturedImageHelper: NSObject {
         post.featuredImage = media
 
         if mediaID == mediaIdNoFeaturedImageSet {
-            gutenberg.showNotice(NSLocalizedString("Removed as Featured Image", comment: "Featured image removed confirmation message"))
+            gutenberg.showNotice(NSLocalizedString("Removed as Featured Image", comment: "Notice confirming that an image has been remove as the post's featured image."))
             WPAnalytics.track(event, properties: [
                 "via": "gutenberg",
                 "action": "removed"
             ])
         } else {
-            gutenberg.showNotice(NSLocalizedString("Set as Featured Image", comment: "Featured image set confirmation message"))
+            gutenberg.showNotice(NSLocalizedString("Set as Featured Image", comment: "Notice confirming that an image has been set as the post's featured image."))
             WPAnalytics.track(event, properties: [
                 "via": "gutenberg",
                 "action": "added"

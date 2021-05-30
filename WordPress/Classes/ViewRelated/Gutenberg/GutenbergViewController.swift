@@ -682,16 +682,16 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func showAlertForReplacingFeaturedImage(mediaID: Int32) {
-        let alertController = UIAlertController(title: NSLocalizedString("Replace current?", comment: "Replace current featured image title"),
-                                                message: NSLocalizedString("You already have a featured image set. Do you want to replace it?", comment: "Replace current featured image confirmation message"),
+        let alertController = UIAlertController(title: NSLocalizedString("Replace?", comment: "Title message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
+                                                message: NSLocalizedString("You already have a featured image set. Do you want to replace it?", comment: "Main message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
                                                 preferredStyle: .actionSheet)
 
-        let replaceAction = UIAlertAction(title: "Replace", style: .default) { (action) in
+        let replaceAction = UIAlertAction(title: NSLocalizedString("Replace", comment: "Button to confirm the replacement of a featured image."), style: .default) { (action) in
             self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
         }
 
         alertController.addAction(replaceAction)
-        alertController.addCancelActionWithTitle("Cancel")
+        alertController.addCancelActionWithTitle(NSLocalizedString("Replace", comment: "Button to cancel the replacement of a featured image."))
 
         present(alertController, animated: true, completion: nil)
     }
