@@ -45,8 +45,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         return BlogJetpackSettingsService(managedObjectContext: context)
     }()
 
-    let mediaIdNoFeaturedImageSet = 0
-
     // MARK: - Aztec
 
     var replaceEditor: (EditorViewController, EditorViewController) -> ()
@@ -660,6 +658,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         presentedViewController?.dismiss(animated: false, completion: nil)
 
         let featuredImageId = post.featuredImage?.mediaID
+        let mediaIdNoFeaturedImageSet = 0
 
         if featuredImageId != nil && mediaID == featuredImageId as! Int32 {
             // nothing special to do, trying to set the image that's already set as featured
