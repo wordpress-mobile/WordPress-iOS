@@ -658,11 +658,25 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         // Dismiss controller behind settings modal to enable the alert controller to be presented.
         presentedViewController?.dismiss(animated: false, completion: nil)
 
-        if (mediaID == 0 || post.featuredImage?.mediaID == nil) {
-            featuredImageHelper.setFeaturedImage(mediaID: mediaID)
-        } else {
-            showAlertForReplacingFeaturedImage(mediaID: mediaID)
+        if (mediaID == post.featuredImage?.mediaID as! Int32) {
+            // nothing special to do, trying to set the image that's already set as featured
+            return;
         }
+        
+        if (mediaID == 0) {
+            // user tries to clear the featured image setting
+            featuredImageHelper.setFeaturedImage(mediaID: mediaID)
+            return
+        }
+        
+        if (post.featuredImage?.mediaID == nil) {
+            // current featured image is not set so, go ahead and set it to the provided one
+            featuredImageHelper.setFeaturedImage(mediaID: mediaID)
+            return
+        }
+        
+        // ask the user to confirm changing the featured image since there's already one set
+        showAlertForReplacingFeaturedImage(mediaID: mediaID)
     }
 
     func showAlertForReplacingFeaturedImage(mediaID: Int32) {
