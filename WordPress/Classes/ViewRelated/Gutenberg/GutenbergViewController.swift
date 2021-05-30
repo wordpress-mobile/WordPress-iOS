@@ -654,7 +654,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestToSetFeaturedImage(for mediaID: Int32) {
-        // Dismiss controller behind settings modal to enable the alert controller to be presented.
+        // dismiss current controller in order to allow the new alert controller to be presented
         presentedViewController?.dismiss(animated: false, completion: nil)
 
         let featuredImageId = post.featuredImage?.mediaID
