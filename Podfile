@@ -163,7 +163,6 @@ abstract_target 'Apps' do
     ##
     gutenberg :tag => 'v1.54.0'
 
-
     ## Third party libraries
     ## =====================
     ##
