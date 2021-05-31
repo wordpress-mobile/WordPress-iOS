@@ -778,7 +778,7 @@ platform :ios do
       res = file.find { |line| line =~ /^(?!\s*#)(?=.*\bgutenberg\b).*(\bcommit|tag\b){1}.+/ }
     end
 
-    UI.user_error!("Can't find any reference to Gutenberg!") unless res.length != 0
+    UI.user_error!("Can't find any reference to Gutenberg!") if res.empty?
     if res.include?('commit')
       UI.user_error!("Gutenberg referenced by commit!\n#{res}") unless UI.interactive?
 
