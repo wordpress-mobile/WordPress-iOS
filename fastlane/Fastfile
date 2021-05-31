@@ -735,14 +735,14 @@ platform :ios do
   desc 'Run tests without building'
   lane :test_without_building do |options|
     # Find the referenced .xctestrun file based on its name
-    buildProductsPath = File.join(DERIVED_DATA_PATH, 'Build', 'Products')
+    build_products_path = File.join(DERIVED_DATA_PATH, 'Build', 'Products')
 
-    testPlanPath = Dir.glob(File.join(buildProductsPath, '*.xctestrun')).select do |e|
+    test_plan_path = Dir.glob(File.join(build_products_path, '*.xctestrun')).select do |e|
       e.include?(options[:name])
     end.first
 
-    unless !testPlanPath.nil? && File.exist?((testPlanPath))
-      UI.user_error!("Unable to find .xctestrun file at #{buildProductsPath}")
+    unless !test_plan_path.nil? && File.exist?((test_plan_path))
+      UI.user_error!("Unable to find .xctestrun file at #{build_products_path}")
     end
 
     multi_scan(
@@ -751,7 +751,7 @@ platform :ios do
       device: options[:device],
       deployment_target_version: options[:ios_version],
       test_without_building: true,
-      xctestrun: testPlanPath,
+      xctestrun: test_plan_path,
       try_count: options[:try_count],
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       result_bundle: true
