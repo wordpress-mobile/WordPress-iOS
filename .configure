@@ -5,7 +5,7 @@
   "files_to_copy": [
     {
       "file": "shared/google_cloud_keys.json",
-      "destination": ".configure-files/google_cloud_keys.json",
+      "destination": "~/.configure/wordpress-ios/secrets/google_cloud_keys.json",
       "encrypt": true
     },
     {
