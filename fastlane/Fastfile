@@ -14,7 +14,8 @@ DERIVED_DATA_PATH = File.join(PROJECT_ROOT_FOLDER, 'DerivedData')
 BUILD_PRODUCTS_PATH = File.join(PROJECT_ROOT_FOLDER, 'Artifacts')
 
 # Env file paths to load
-USER_ENV_FILE_PATH = File.join(Dir.home, '.wpios-env.default')
+ENV_FILE_NAME = '.wpios-env.default'
+USER_ENV_FILE_PATH = File.join(Dir.home, ENV_FILE_NAME)
 PROJECT_ENV_FILE_PATH = File.join(PROJECT_ROOT_FOLDER, '.configure-files', 'project.env')
 
 # Other defines used across multiple lanes
@@ -49,7 +50,9 @@ before_all do |lane|
   unless lane == :test_without_building
     # Check that the env files exist
     unless is_ci || File.file?(USER_ENV_FILE_PATH)
-      UI.user_error!("~/.wpios-env.default not found: Please copy fastlane/env/user.env-example to #{USER_ENV_FILE_PATH} and fill in the values")
+      example_path = 'fastlane/env/user.env-example '
+      msg = "#{ENV_FILE_NAME} not found: Please copy #{example_path} to #{USER_ENV_FILE_PATH} and fill in the values"
+      UI.user_error!(msg)
     end
     unless File.file?(PROJECT_ENV_FILE_PATH)
       UI.user_error!('project.env not found: Make sure your configuration is up to date with `rake dependencies`')
