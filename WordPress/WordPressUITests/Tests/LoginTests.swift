@@ -68,7 +68,6 @@ class LoginTests: XCTestCase {
     func testWPcomLogin() {
         _ = PrologueScreen().selectSiteAddress()
             .proceedWithWP(siteUrl: "https://wordpress.com")
-            .proceedWithWP(siteUrl: "https://wordpress.com") // this shouldn't be here. the new login flow goes straight to email.
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWith(password: WPUITestCredentials.testWPcomPassword)
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
