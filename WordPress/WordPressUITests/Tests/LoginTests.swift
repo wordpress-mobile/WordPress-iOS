@@ -118,9 +118,9 @@ class LoginTests: XCTestCase {
         XCTAssert(WelcomeScreen().isLoaded())
     }
 
-    // Unified email login fail
+    // Unified WordPress.com email login fail due to incorrect password
     // Replaces testUnsuccessfulLogin
-    func testWordPressUnsuccessfulLogin() {
+    func testWPcomInvalidPassword() {
         _ = PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .tryProceed(password: "invalidPswd")
