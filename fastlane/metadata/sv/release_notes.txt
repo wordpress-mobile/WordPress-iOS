@@ -1,0 +1,9 @@
+Nyheter i denna utgåva?
+
+Du kan hålla dig uppdaterad kring alla webbplatser där du nyligen lagts till genom att dra nedåt för att uppdatera sidan för nya webbplatser.
+
+För webbplatser som har mer än en författare kan du nu ändra vilken författare som är kopplad till ett inlägg eller en sida.
+
+Nu kan du autentisera begäran om inloggning medan du använder appen.
+
+Slutligen har vi rättat ett fel i snabbstartsguiden. Om du följer någon webbplats inifrån läsaren kommer checklistan i snabbstartsguiden att uppdatera din progress (i stället för att fortsätta vara omarkerad).

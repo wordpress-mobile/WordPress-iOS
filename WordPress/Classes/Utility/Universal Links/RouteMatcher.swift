@@ -61,7 +61,20 @@ class RouteMatcher {
             values[MatchedRouteURLComponentKey.fragment.rawValue] = fragment
         }
 
+        if let source = sourceQueryItemValue(for: url) {
+            values[MatchedRouteURLComponentKey.source.rawValue] = source
+        }
+
         return values
+    }
+
+    private func sourceQueryItemValue(for url: URL) -> String? {
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+           let urlSource = components.queryItems?.first(where: { $0.name == "source" })?.value?.removingPercentEncoding else {
+            return nil
+        }
+
+        return urlSource
     }
 
     private func isPlaceholder(_ component: String) -> Bool {
@@ -93,12 +106,23 @@ class RouteMatcher {
 ///
 struct MatchedRoute: Route {
     let path: String
+    let section: DeepLinkSection?
+    let source: DeepLinkSource
     let action: NavigationAction
+    let shouldTrack: Bool
     let values: [String: String]
 
-    init(path: String, action: NavigationAction, values: [String: String] = [:]) {
-        self.path = path
-        self.action = action
+    init(from route: Route, with values: [String: String] = [:]) {
+        // Allows optional overriding of source based on the input URL parameters.
+        // Currently used for widget links.
+        let sourceValue = values[MatchedRouteURLComponentKey.source.rawValue] ?? ""
+        let source = DeepLinkSource(sourceName: sourceValue)
+
+        self.path = route.path
+        self.section = route.section
+        self.source = source ?? route.source
+        self.action = route.action
+        self.shouldTrack = route.shouldTrack
         self.values = values
     }
 }
@@ -107,11 +131,12 @@ extension Route {
     /// - returns: A MatchedRoute for the current path, with optional values
     ///            extracted from the resolved path.
     fileprivate func matched(with values: [String: String] = [:]) -> MatchedRoute {
-        return MatchedRoute(path: path, action: action, values: values)
+        return MatchedRoute(from: self, with: values)
     }
 }
 
 enum MatchedRouteURLComponentKey: String {
     case fragment = "matched-route-fragment"
+    case source = "matched-route-source"
     case url = "matched-route-url"
 }

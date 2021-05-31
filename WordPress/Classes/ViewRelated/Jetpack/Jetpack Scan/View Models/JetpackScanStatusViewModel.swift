@@ -8,7 +8,7 @@ struct JetpackScanStatusViewModel {
     private(set) var primaryButtonTitle: String?
     private(set) var primaryButtonEnabled: Bool = true
     private(set) var secondaryButtonTitle: String?
-    private(set) var warningButtonTitle: String?
+    private(set) var warningButtonTitle: HighlightedText?
     private(set) var progress: Float?
 
     private let coordinator: JetpackScanCoordinator
@@ -79,7 +79,10 @@ struct JetpackScanStatusViewModel {
                     secondaryButtonAction = .triggerScan
 
                     if !scan.hasValidCredentials {
-                        warningButtonTitle = Strings.enterServerCredentialsTitle
+                        let warningString = String(format: Strings.enterServerCredentialsFormat,
+                                                   Strings.enterServerCredentialsSubstring)
+                        warningButtonTitle = HighlightedText(substring: Strings.enterServerCredentialsSubstring,
+                                                             string: warningString)
                         warningButtonAction = .enterServerCredentials
 
                         primaryButtonEnabled = false
@@ -221,7 +224,8 @@ struct JetpackScanStatusViewModel {
 
     // MARK: - Localized Strings
     private struct Strings {
-        static let enterServerCredentialsTitle = NSLocalizedString("Enter your server credentials to fix threats.", comment: "Title for button when a site is missing server credentials")
+        static let enterServerCredentialsSubstring = NSLocalizedString("Enter your server credentials", comment: "Error message displayed when site credentials aren't configured.")
+        static let enterServerCredentialsFormat = NSLocalizedString("%1$@ to fix threats.", comment: "Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'.")
         static let noThreatsTitle = NSLocalizedString("Don’t worry about a thing", comment: "Title for label when there are no threats on the users site")
         static let noThreatsDescriptionFormat = NSLocalizedString("The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.", comment: "Description for label when there are no threats on a users site and how long ago the scan ran.")
         static let noThreatsDescription = NSLocalizedString("The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.",

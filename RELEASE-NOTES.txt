@@ -1,6 +1,15 @@
 17.5
 -----
 * [*] Fixed a crash when rendering the Noticons font in rich notification. [#16525]
+* [**] Block Editor:a11y: Bug fix: Allow stepper cell to be selected by screenreader [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3362]
+* [**] Block Editor: Audio block: Add Insert from URL functionality. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3031]
+* [***] Block Editor: Slash command to insert new blocks. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3250]
+* [**] Like Notifications: now displays all users who liked a post or comment. [#15662]
+* [*] Fixed a bug that was causing some fonts to become enormous when large text was enabled.
+* [*] Fixed scrolling and item selection in the Plugins directory. [#16087]
+* [*] Improved large text support in the blog details header in My Sites. [#16521]
+* [***] Block Editor: New Block: Reusable block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3490]
+* [***] Block Editor: Add reusable blocks to the block inserter menu. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3054]
 
 17.4
 -----
@@ -8,6 +17,7 @@
 * [*] Fixed the Follow Sites Quick Start Tour so that Reader Search is highlighted. [#16391]
 * [*] Enabled approving login authentication requests via push notification while the app is in the foreground. [#16075] 
 * [**] Added pull-to-refresh to the My Site screen when a user has no sites. [#16241]
+* [***] Fixed a bug that was causing uploaded videos to not be viewable in other platforms. [#16548]
 
 17.3
 -----

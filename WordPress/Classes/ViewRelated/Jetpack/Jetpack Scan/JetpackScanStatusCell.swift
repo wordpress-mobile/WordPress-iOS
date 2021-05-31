@@ -7,7 +7,7 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var primaryButton: FancyButton!
     @IBOutlet weak var secondaryButton: FancyButton!
-    @IBOutlet weak var warningButton: UIButton!
+    @IBOutlet weak var warningButton: MultilineButton!
     @IBOutlet weak var progressView: UIProgressView!
 
     private var model: JetpackScanStatusViewModel?
@@ -60,7 +60,15 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
             return
         }
 
-        warningButton.setTitle(warningButtonTitle, for: .normal)
+        let attributedTitle = WPStyleGuide.Jetpack.highlightString(warningButtonTitle.substring,
+                                                                   inString: warningButtonTitle.string)
+
+        warningButton.setAttributedTitle(attributedTitle, for: .normal)
+        warningButton.setImage(.gridicon(.plusSmall), for: .normal)
+        warningButton.setTitleColor(.text, for: .normal)
+        warningButton.titleLabel?.numberOfLines = 0
+        warningButton.titleLabel?.lineBreakMode = .byWordWrapping
+
         warningButton.isHidden = false
     }
 

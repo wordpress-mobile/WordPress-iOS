@@ -225,7 +225,6 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
 
     @IBAction
     func refresh() {
-        resetManagedPeople()
         refreshPeople()
     }
 

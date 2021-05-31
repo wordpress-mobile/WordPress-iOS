@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-12 15:01:37+0000 */
+/* Translation-Revision-Date: 2021-05-23 07:53:46+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -314,6 +314,9 @@
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "AFBEELDING OF VIDEO TOEVOEGEN";
+
+/* No comment provided by engineer. */
+"ADD LINK" = "VOEG EEN LINK TOE";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "VIDEO TOEVOEGEN";
@@ -801,7 +804,9 @@
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Authenticatie vereist voor host: %@";
 
-/* Label for list of stats by content author. */
+/* Author label.
+   Label for list of stats by content author.
+   The author of the post or page. */
 "Author" = "Auteur";
 
 /* Voiceover description of a button that allows the user to filter posts by author. */
@@ -2142,6 +2147,9 @@
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Tik tweemaal om een blok toe te voegen";
 
+/* No comment provided by engineer. */
+"Double tap to add a link." = "Dubbeltik om een link toe te voegen.";
+
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "Dubbel klikken om te negeren";
 
@@ -3094,6 +3102,9 @@
 /* First line of remove follower warning in confirmation dialog. */
 "If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "Indien verwijderd, deze volger zal geen meldingen meer krijgen over deze site, tenzij deze weer gaat volgen.";
 
+/* Message explaining that they will need to install Jetpack on one of their sites. */
+"If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "Als je al een site hebt, zul je de gratis Jetpack plugin moeten installeren en deze verbinden met je WordPress.com account.";
+
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Als je doorgaat met een Apple of Google account en je hebt nog geen WordPress.com account, dan maak je een account aan en ga je akkoord met onze _algemene voorwaarden_.";
 
@@ -3340,7 +3351,7 @@
 "Jetpack Scan will update to a newer version." = "Jetpack Scan zal worden geüpdatet naar een nieuwere versie.";
 
 /* Noun. Title. Links to the blog's Settings screen. */
-"Jetpack Settings" = "Jetpack Instellingen";
+"Jetpack Settings" = "Jetpack-instellingen";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack kan momenteel niet geïnstalleerd worden.";
@@ -3625,6 +3636,9 @@
 
 /* Instructions on the WordPress.com username / password log in form. */
 "Log in with your WordPress.com username and password." = "Log in met je WordPress.com gebruikersnaam en wachtwoord.";
+
+/* LogOut confirmation text, whenever there are no local changes */
+"Log out of Jetpack?" = "Uitloggen bij Jetpack?";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Uitloggen van WordPress?";
@@ -3934,7 +3948,7 @@
 "My Tickets" = "Mijn tickets";
 
 /* Example post title used in the login prologue screens. */
-"My Top Ten Cafes" = "Mijn toptien café's";
+"My Top Ten Cafes" = "Mijn toptien cafés";
 
 /* Accessibility label for the Email text field.
    Name text field placeholder */
@@ -3967,8 +3981,7 @@
 /* Describes a status of a plugin */
 "Needs Update" = "Heeft update nodig";
 
-/* Header of section in Plugin Directory showing newest plugins
-   New button badge on Stories Post button */
+/* Header of section in Plugin Directory showing newest plugins */
 "New" = "Nieuw";
 
 /* Blocklist Keyword Insertion Title */
@@ -4365,6 +4378,7 @@
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading notification likes.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -5586,6 +5600,9 @@
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "Toon alles";
 
+/* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
+"See Instructions" = "Bekijk de instructies";
+
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "Lees opmerkingen en ontvang meldingen in realtime.";
@@ -6133,7 +6150,7 @@
 
 /* Label for selecting the Speed up your site Settings section
    Title for the Speed up your site Settings Screen */
-"Speed up your site" = "Versnel jouw site";
+"Speed up your site" = "Versnel je site";
 
 /* Standard post format label */
 "Standard" = "Standaard";
@@ -6467,7 +6484,7 @@
 "The WordPress for Android App Gets a Big Facelift" = "De WordPress voor Android-app krijgt een grote update";
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
-"The World's Best Fans" = "The World's Best Fans";
+"The World's Best Fans" = "De beste fans ter wereld";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "De app herkent het antwoord van de server niet. Controleer de configuratie van je site.";
@@ -6646,6 +6663,9 @@
 
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Er is iets fout gegaan tijdens laden activiteiten";
+
+/* Text displayed when there is a failure loading notification likes. */
+"There was an error loading likes" = "Er is een fout opgetreden bij het laden van likes";
 
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "Er is een fout opgetreden bij het laden van abonnementen";
@@ -6838,6 +6858,9 @@
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "Installeer de Jetpack-plugin om statistieken voor je site te gebruiken.";
 
+/* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
+"To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "Om deze app te gebruiken voor %@, moet de Jetpack plugin geïnstalleerd en geactiveerd zijn.";
+
 /* Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
@@ -6934,6 +6957,9 @@
    Try Again. Action
    Try to load the list of interests again. */
 "Try Again" = "Probeer opnieuw";
+
+/* Action button that will restart the login flow.Presented when logging in with a site address that does not have a valid Jetpack installation */
+"Try With Another Account" = "Probeer het met een ander account";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
 "Try adjusting your date range filter" = "Probeer het met aanpassen van je datumbereik filter";
@@ -7674,6 +7700,9 @@
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "We gebruiken ook andere tracking-tools, waaronder een aantal van derden. Bekijk meer informatie over deze tools en hoe je ze kunt beheren.";
 
+/* Message explaining that WordPress was not detected. */
+"We were not able to detect a WordPress site at the address you entered. Please make sure WordPress is installed and that you are running the latest available version." = "We konden geen WordPress site vinden op het adres dat je hebt ingegeven. Zorg ervoor dat WordPress is geïnstalleerd en dat je beschikt over de meest recente versie.";
+
 /* Error message displayed when an error occurred sending the magic link email. */
 "We were unable to send you an email at this time. Please try again later." = "We konden je op dit moment geen e-mail sturen. Probeer het later nogmaals.";
 
@@ -8367,6 +8396,9 @@
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "je nieuwe domein %@ wordt ingesteld. Je site maakt salto's van opwinding!";
+
+/* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
+"your site" = "je site";
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Inloggen met Google.";

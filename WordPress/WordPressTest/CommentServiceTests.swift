@@ -62,7 +62,7 @@ extension CommentServiceTests {
 
         // Act
         waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
-            self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users in
+            self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users, totalLikes in
                 // Assert
                 expect(users).toNot(beNil())
                 expect(users.count) == 1
@@ -83,7 +83,7 @@ extension CommentServiceTests {
 
         // Act
         waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
-            self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users in
+            self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users, totalLikes in
                 fail("this closure should not be called")
             },
             failure: { _ in
@@ -109,12 +109,18 @@ private class CommentServiceRemoteRESTMock: CommentServiceRemoteREST {
 
     // related to fetching likes
     var fetchLikesShouldSucceed: Bool = true
-    var remoteUsersToReturnOnGetLikes: [RemoteLikeUser]? = nil
+    var remoteUsersToReturnOnGetLikes = [RemoteLikeUser]()
+    var totalLikes: NSNumber = 3
 
-    override func getLikesForCommentID(_ commentID: NSNumber!, success: (([RemoteLikeUser]?) -> Void)!, failure: ((Error?) -> Void)!) {
+    override func getLikesForCommentID(_ commentID: NSNumber,
+                                       count: NSNumber,
+                                       before: String?,
+                                       excludeUserIDs: [NSNumber]?,
+                                       success: (([RemoteLikeUser], NSNumber) -> Void)!,
+                                       failure: ((Error?) -> Void)!) {
         DispatchQueue.global().async {
             if self.fetchLikesShouldSucceed {
-                success(self.remoteUsersToReturnOnGetLikes)
+                success(self.remoteUsersToReturnOnGetLikes, self.totalLikes)
             } else {
                 failure(nil)
             }
