@@ -100,7 +100,6 @@ end
 
 def gutenberg_dependencies(options)
     dependencies = [
-        'FBReactNativeSpec',
         'FBLazyVector',
         'React',
         'ReactCommon',
@@ -149,6 +148,9 @@ def gutenberg_dependencies(options)
         tag_or_commit = options[:tag] || options[:commit]
         podspec_prefix = "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}"
     end
+    
+    # FBReactNativeSpec needs special treatment because of react-native-codegen code generation
+    pod 'FBReactNativeSpec', :podspec => "#{podspec_prefix}/third-party-podspecs/FBReactNativeSpec/FBReactNativeSpec.podspec.json"
 
     for pod_name in dependencies do
         pod pod_name, :podspec => "#{podspec_prefix}/third-party-podspecs/#{pod_name}.podspec.json"
