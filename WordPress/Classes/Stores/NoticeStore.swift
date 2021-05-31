@@ -167,7 +167,7 @@ struct NoticeStoreState {
 /// - SeeAlso: `NoticeAction`
 class NoticeStore: StatefulStore<NoticeStoreState> {
     private var pending = Queue<Notice>()
-    private var noticeLock = Bool()
+    private var storeLocked = false
 
     init(dispatcher: ActionDispatcher = .global) {
         super.init(initialState: NoticeStoreState(), dispatcher: dispatcher)
@@ -205,27 +205,33 @@ class NoticeStore: StatefulStore<NoticeStoreState> {
     // MARK: - Action handlers
 
     private func enqueueNotice(_ notice: Notice) {
-        if state.notice == nil && !noticeLock {
+        if state.notice == nil && !storeLocked {
             state.notice = notice
         } else {
             pending.push(notice)
         }
     }
 
+    private func dequeueNotice() {
+        if !storeLocked {
+            state.notice = pending.pop()
+        }
+    }
+
     private func lock() {
+        if storeLocked {
+            return
+        }
         state.notice = nil
-        noticeLock = true
+        storeLocked = true
     }
 
     private func unlock() {
-        noticeLock = false
-        dequeueNotice()
-    }
-
-    private func dequeueNotice() {
-        if !noticeLock {
-            state.notice = pending.pop()
+        if !storeLocked {
+            return
         }
+        storeLocked = false
+        dequeueNotice()
     }
 
     private func clear(notice: Notice) {
