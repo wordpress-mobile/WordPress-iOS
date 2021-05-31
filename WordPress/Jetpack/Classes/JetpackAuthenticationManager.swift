@@ -12,7 +12,7 @@ struct JetpackAuthenticationManager: AuthenticationHandler {
     func shouldPresentUsernamePasswordController(for siteInfo: WordPressComSiteInfo?, onCompletion: @escaping (WordPressAuthenticatorResult) -> Void) {
         /// Jetpack is required. Present an error if we don't detect a valid installation.
         guard let site = siteInfo, isValidJetpack(for: site) else {
-            let viewModel = JetpackErrorViewModel(title: "Jetpack Not Found")
+            let viewModel = JetpackNotFoundErrorViewModel(with: siteInfo?.url)
             let controller = errorViewController(with: viewModel)
 
             let authenticationResult: WordPressAuthenticatorResult = .injectViewController(value: controller)
@@ -23,7 +23,7 @@ struct JetpackAuthenticationManager: AuthenticationHandler {
 
         /// WordPress must be present.
         guard site.isWP else {
-            let viewModel = JetpackErrorViewModel(title: "WordPress Not Installed")
+            let viewModel = JetpackNotWPErrorViewModel()
             let controller = errorViewController(with: viewModel)
 
             let authenticationResult: WordPressAuthenticatorResult = .injectViewController(value: controller)
@@ -48,14 +48,19 @@ struct JetpackAuthenticationManager: AuthenticationHandler {
         onCompletion(authenticationResult)
     }
 
-    func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) -> Bool {
-        if hasJetpackSites() {
+    func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, windowManager: WindowManager, onDismiss: @escaping () -> Void) -> Bool {
+        if AccountHelper.hasBlogs {
             return false
         }
 
-        let viewModel = JetpackErrorViewModel(title: "No Jetpack Sites")
+        // Exit out of the sign in process, if we don't do this we later can't
+        // display the sign in again
+        windowManager.dismissFullscreenSignIn()
+
+        // Display the no sites view
+        let viewModel = JetpackNoSitesErrorViewModel()
         let controller = errorViewController(with: viewModel)
-        navigationController.pushViewController(controller, animated: true)
+        windowManager.show(controller, completion: nil)
 
         return true
     }
@@ -65,13 +70,6 @@ struct JetpackAuthenticationManager: AuthenticationHandler {
         return site.hasJetpack &&
             site.isJetpackConnected &&
             site.isJetpackActive
-    }
-
-    private func hasJetpackSites() -> Bool {
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-
-        return blogService.blogCountForAllAccounts() > 0
     }
 
     private func errorViewController(with model: JetpackErrorViewModel) -> JetpackLoginErrorViewController {

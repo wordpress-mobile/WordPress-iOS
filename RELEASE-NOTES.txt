@@ -1,6 +1,14 @@
-17.4
+17.5
 -----
 
+
+17.4
+-----
+* [**] A new author can be chosen for Posts and Pages on multi-author sites. [#16281]
+* [*] Fixed the Follow Sites Quick Start Tour so that Reader Search is highlighted. [#16391]
+* [*] Enabled approving login authentication requests via push notification while the app is in the foreground. [#16075] 
+* [**] Added pull-to-refresh to the My Site screen when a user has no sites. [#16241]
+* [***] Fixed a bug that was causing uploaded videos to not be viewable in other platforms. [#16548]
 
 17.3
 -----
@@ -24,6 +32,7 @@
 17.2
 -----
 
+* [**] Added transform block capability [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3321]
 * [*] Fixed an issue where some author display names weren't visible for self-hosted sites. [#16297]
 * [***] Updated custom app icons. [#16261]
 * [**] Removed Site Switcher in the Editor

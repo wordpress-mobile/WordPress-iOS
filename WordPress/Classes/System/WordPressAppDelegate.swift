@@ -24,7 +24,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             fatalError("The App cannot run without a window.")
         }
 
-        return WindowManager(window: window)
+        return AppDependency.windowManager(window: window)
     }()
 
     var analytics: WPAppAnalytics?
@@ -400,7 +400,7 @@ extension WordPressAppDelegate {
 
     @objc func configureAppCenterSDK() {
         #if APPCENTER_ENABLED
-        AppCenter.start(withAppSecret: ApiCredentials.appCenterAppId(), services: [Distribute.self])
+        AppCenter.start(withAppSecret: ApiCredentials.appCenterAppId, services: [Distribute.self])
         #endif
     }
 

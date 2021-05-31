@@ -24,15 +24,11 @@ platform :ios do
     fastlane_directory = File.expand_path File.dirname(__FILE__)
     derived_data_path = File.join(fastlane_directory, "DerivedData")
 
-    Dir.chdir("../../") do
-      FileUtils.rm_rf('Pods')
-    end
-
     sh('bundle exec pod install')
     FileUtils.rm_rf(derived_data_path)
 
     scan(
-      workspace: File.join(fastlane_directory, "../../WordPress.xcworkspace"),
+      workspace: WORKSPACE_PATH,
       scheme: "WordPressScreenshotGeneration",
       build_for_testing: true,
       derived_data_path: derived_data_path,
@@ -51,11 +47,25 @@ platform :ios do
 
     [true, false].each { | dark_mode_enabled |
       capture_ios_screenshots(
+        workspace: WORKSPACE_PATH,
+        scheme: "WordPressScreenshotGeneration",
         test_without_building: true,
         derived_data_path: derived_data_path,
         languages: languages,
         dark_mode: dark_mode_enabled,
         override_status_bar: true,
+
+        reinstall_app: true,
+        erase_simulator: true,
+        localize_simulator: true,
+        concurrent_simulators: true,
+
+        devices: [
+          "iPhone Xs Max",
+          "iPhone 8 Plus",
+          "iPad Pro (12.9-inch) (2nd generation)",
+          "iPad Pro (12.9-inch) (3rd generation)",
+        ],
       )
     }
   end

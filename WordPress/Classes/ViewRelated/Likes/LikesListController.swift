@@ -97,16 +97,41 @@ class LikesListController: NSObject {
         // shows the loading cell and prevents double refresh.
         isLoadingContent = true
 
+        fetchStoredLikes()
+
+        guard ReachabilityUtils.isInternetReachable() else {
+            isLoadingContent = false
+
+            if likingUsers.isEmpty {
+                delegate?.showErrorView()
+            }
+
+            return
+        }
+
+        // If there are no cached users, continue showing the loading cell.
+        isLoadingContent = likingUsers.isEmpty
+
         fetchLikes(success: { [weak self] users in
             self?.likingUsers = users
             self?.isLoadingContent = false
         }, failure: { [weak self] _ in
-            // TODO: Handle error state
             self?.isLoadingContent = false
+            self?.delegate?.showErrorView()
         })
     }
 
-    /// Convenient method that fetches likes data depending on the notification's content type.
+    /// Fetch Likes from Core Data depending on the notification's content type.
+    private func fetchStoredLikes() {
+        switch content {
+        case .post(let postID):
+            likingUsers = postService.likeUsersFor(postID: postID, siteID: siteID)
+        case .comment(let commentID):
+            likingUsers = commentService.likeUsersFor(commentID: commentID, siteID: siteID)
+        }
+    }
+
+    /// Fetch Likes depending on the notification's content type.
     /// - Parameters:
     ///   - success: Closure to be called when the fetch is successful.
     ///   - failure: Closure to be called when the fetch failed.
@@ -230,6 +255,9 @@ protocol LikesListControllerDelegate: class {
     /// Reports to the delegate that the user cell has been tapped.
     /// - Parameter user: A LikeUser instance representing the user at the selected row.
     func didSelectUser(_ user: LikeUser, at indexPath: IndexPath)
+
+    /// Ask the delegate to show an error view when fetching fails or there is no connection.
+    func showErrorView()
 }
 
 // MARK: - Private Definitions

@@ -3,7 +3,10 @@ import XCTest
 
 private struct TestRoute: Route {
     let path: String
+    let section: DeepLinkSection? = .mySite
+    let source: DeepLinkSource = .link
     let action: NavigationAction = TestAction()
+    let shouldTrack = false
 }
 
 private struct TestAction: NavigationAction {
@@ -118,5 +121,29 @@ class RouteMatcherTests: XCTestCase {
         XCTAssertEqual(values1["type"], "group")
         XCTAssertEqual(values2["account"], "bobsmith")
         XCTAssertEqual(values2["test"], "group")
+    }
+
+    // MARK: - Source query item
+
+    func testRouteWithNoSourceQueryItem() {
+        routes = [ TestRoute(path: "/stats") ]
+        matcher = RouteMatcher(routes: routes)
+
+        let matches = matcher.routesMatching(URL(string: "https://wordpress.com/stats")!)
+        let values = matches.first!.values
+        XCTAssert(values.count == 1)
+        XCTAssertEqual(values[MatchedRouteURLComponentKey.url.rawValue], "https://wordpress.com/stats")
+        XCTAssertNil(values[MatchedRouteURLComponentKey.source.rawValue])
+    }
+
+    func testRouteWithSourceQueryItem() {
+        routes = [ TestRoute(path: "/stats") ]
+        matcher = RouteMatcher(routes: routes)
+
+        let matches = matcher.routesMatching(URL(string: "https://wordpress.com/stats?source=widget")!)
+        let match = matches.first!
+        XCTAssert(match.values.count == 2)
+        XCTAssertEqual(match.values[MatchedRouteURLComponentKey.source.rawValue], "widget")
+        XCTAssertEqual(match.source, DeepLinkSource.widget)
     }
 }
