@@ -76,7 +76,9 @@ Preview.html
 fastlane/test_output/
 fastlane/google_cloud_keys.json
 fastlane/screenshots
+fastlane/jetpack_screenshots
 fastlane/promo_screenshots
+fastlane/jetpack_promo_screenshots
 fastlane/metadata/review_information
 default.profraw
 derived-data/
