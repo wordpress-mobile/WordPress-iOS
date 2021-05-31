@@ -66,8 +66,7 @@ class LoginTests: XCTestCase {
     // Unified WordPress.com login/out
     // Replaces testWpcomUsernamePasswordLogin
     func testWPcomLogin() {
-        _ = PrologueScreen().selectSiteAddress()
-            .proceedWithWP(siteUrl: "https://wordpress.com")
+        _ = PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWith(password: WPUITestCredentials.testWPcomPassword)
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
