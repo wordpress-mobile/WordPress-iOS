@@ -246,8 +246,15 @@ CGFloat const STVSeparatorHeight = 1.f;
         self.searchText = word;
         if (self.searchText.length > 1) {
             NSString *searchQuery = [word substringFromIndex:1];
-            NSPredicate *predicate = [self predicateFor: searchQuery];
-            self.searchResults = [[self.suggestions filteredArrayUsingPredicate:predicate] mutableCopy];
+
+            // Users type a space after a trigger character to dismiss the suggestions UI
+            if ([searchQuery isEqualToString:@" "]) {
+                self.searchText = @"";
+                [self.searchResults removeAllObjects];
+            } else {
+                NSPredicate *predicate = [self predicateFor: searchQuery];
+                self.searchResults = [[self.suggestions filteredArrayUsingPredicate:predicate] mutableCopy];
+            }
         } else {
             self.searchResults = [self.suggestions mutableCopy];
         }
