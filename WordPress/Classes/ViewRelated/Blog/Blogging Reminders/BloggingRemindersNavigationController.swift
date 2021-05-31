@@ -49,7 +49,7 @@ class BloggingRemindersNavigationController: LightNavigationController {
         if let viewController = viewControllers.last {
             preferredContentSize = viewController.preferredContentSize
         }
-        
+
         if let bottomSheet = self.parent as? BottomSheetViewController, let presentedVC = bottomSheet.presentedVC {
             presentedVC.transition(to: newPosition)
         }

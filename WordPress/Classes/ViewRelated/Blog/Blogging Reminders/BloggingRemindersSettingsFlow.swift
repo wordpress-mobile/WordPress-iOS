@@ -109,7 +109,6 @@ struct BloggingRemindersSettingsView: View {
                 }
             }
             Spacer()
-                .frame(maxHeight: .infinity)
             NavigationLink(destination: BloggingRemindersSettingsCompletionView().environmentObject(coordinator)) {
                 Text(TextContent.nextButtonTitle)
                     .primaryButtonStyle()
