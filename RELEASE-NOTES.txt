@@ -1,3 +1,7 @@
+17.6
+-----
+
+
 17.5
 -----
 * [*] Fixed a crash when rendering the Noticons font in rich notification. [#16525]
