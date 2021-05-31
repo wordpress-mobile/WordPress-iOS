@@ -16,7 +16,7 @@ BUILD_PRODUCTS_PATH = File.join(PROJECT_ROOT_FOLDER, 'Artifacts')
 # Env file paths to load
 ENV_FILE_NAME = '.wpios-env.default'
 USER_ENV_FILE_PATH = File.join(Dir.home, ENV_FILE_NAME)
-PROJECT_ENV_FILE_PATH = File.join(PROJECT_ROOT_FOLDER, '.configure-files', 'project.env')
+PROJECT_ENV_FILE_PATH = File.join(Dir.home, '.configure', 'wordpress-ios', 'secrets', 'project.env')
 
 # Other defines used across multiple lanes
 REPOSITORY_NAME = 'WordPress-iOS'

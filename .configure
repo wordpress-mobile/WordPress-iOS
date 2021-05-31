@@ -10,7 +10,7 @@
     },
     {
       "file": "iOS/WPiOS/project.env",
-      "destination": ".configure-files/project.env",
+      "destination": "~/.configure/wordpress-ios/secrets/project.env",
       "encrypt": true
     },
     {
