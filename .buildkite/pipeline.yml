@@ -14,7 +14,7 @@ steps:
       echo "--- 🔨 Setting up Pods"
       bundle exec pod install --repo-update
       echo "--- ✍️ Copy Files"
-      cp fastlane/env/project.env-example .configure-files/project.env
+      bundle exec fastlane run configure_apply
       echo "--- 🛠 Building"
       bundle exec fastlane build_for_testing
       echo "--- 🗜 Zip Build Products"
