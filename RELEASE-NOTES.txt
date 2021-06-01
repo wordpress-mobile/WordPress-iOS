@@ -1,6 +1,6 @@
 17.6
 -----
-
+* [*] Fix notice overlapping the ActionSheet that displays the Site Icon controls. [#16579]
 
 17.5
 -----
