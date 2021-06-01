@@ -755,7 +755,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func addEditAction(to controller: UIAlertController, for page: AbstractPost) {
-        if page.status == .trash {
+        guard let page = page as? Page else { return }
+
+        if page.status == .trash || page.isSitePostsPage {
             return
         }
 
