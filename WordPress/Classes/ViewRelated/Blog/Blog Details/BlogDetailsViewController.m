@@ -1185,8 +1185,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showUpdateSiteIconAlert
 {
-    
-    
     UIAlertController *updateIconAlertController = [UIAlertController alertControllerWithTitle:nil
                                                                                        message:nil
                                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
@@ -1205,7 +1203,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                          handler:^(UIAlertAction *action) {
                                                              [NoticesDispatch unlock];
                                                              [self removeSiteIcon];
-            
                                                          }];
     }
     [updateIconAlertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")

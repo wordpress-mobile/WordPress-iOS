@@ -115,7 +115,6 @@ class NoticesDispatch: NSObject {
     }
 }
 
-
 /// NoticeActions can be posted to control or report the display of notices.
 ///
 enum NoticeAction: Action {

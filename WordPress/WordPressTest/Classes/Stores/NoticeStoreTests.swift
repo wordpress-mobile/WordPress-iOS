@@ -169,7 +169,7 @@ class NoticeStoreTests: XCTestCase {
         let alpha = Notice(title: "Alpha")
         let bravo = Notice(title: "Bravo")
         [alpha, bravo].forEach { dispatch(.post($0)) }
-        dispatch(.dismiss) // You can't dismiss notices in the locked store. Since that would send
+        dispatch(.dismiss) // You can't dismiss notices in the locked store. Since that would removed notices without showing them to the user.
         dispatch(.unlock)
         XCTAssertEqual(alpha, store.currentNotice)
     }
