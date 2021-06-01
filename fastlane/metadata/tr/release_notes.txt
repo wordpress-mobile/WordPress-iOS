@@ -1,0 +1,9 @@
+Bu güncellemedeki yenilikler neler? 
+
+Yeni Siteler ekranını yenilemek için aşağı çekerek yakın zamanda eklediğiniz tüm sitelerden haberdar olun.
+
+Birden fazla yazarı olan sitelerde, artık herhangi bir Yayına veya Sayfaya atanan yazarı değiştirebilirsiniz.
+
+Artık uygulamayı kullanırken giriş istekleri için kimlik doğrulama yapabilirsiniz.
+
+Son olarak, Hızlı Başlangıç turuyla ilgili bir hatayı düzelttik. Okuyucudan bir siteyi takip ettiğinizde, Hızlı Başlangıç kontrol listesi artık ilerleme durumunuzu günceller, işaretsiz halde kalmaz.
