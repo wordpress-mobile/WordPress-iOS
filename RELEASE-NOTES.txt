@@ -1,3 +1,8 @@
+
+17.6
+-----
+* [*] Fix notice overlapping the ActionSheet that displays the Site Icon controls. [#16579]
+
 17.5
 -----
 * [**] Like Notifications: now displays all users who liked a post or comment. [#15662]
