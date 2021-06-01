@@ -114,6 +114,13 @@ extension GutenbergSuggestionsViewController: UITextFieldDelegate {
             return true
         }
         let searchWord = nsString.replacingCharacters(in: range, with: string)
+
+        let dismissSequence = suggestionType.trigger + " "
+        guard searchWord != dismissSequence else {
+            onCompletion?(.success(""))
+            return true
+        }
+
         if searchWord.hasPrefix(suggestionType.trigger) {
             suggestionsView.showSuggestions(forWord: searchWord)
         } else {
