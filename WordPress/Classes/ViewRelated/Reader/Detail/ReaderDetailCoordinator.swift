@@ -92,6 +92,10 @@ class ReaderDetailCoordinator {
         return URL(string: postURLString)
     }
 
+    /// The total number of Likes for the post.
+    /// Passed to ReaderDetailLikesListController to display in the view title.
+    private var totalLikes = 0
+
     /// Initialize the Reader Detail Coordinator
     ///
     /// - Parameter service: a Reader Post Service
@@ -152,6 +156,7 @@ class ReaderDetailCoordinator {
         postService.getLikesFor(postID: postID,
                                 siteID: post.siteID,
                                 success: { [weak self] users, totalLikes in
+                                    self?.totalLikes = totalLikes
                                     self?.view?.updateLikes(users: Array(users.prefix(ReaderDetailLikesView.maxAvatarsDisplayed)), totalLikes: totalLikes)
                                 }, failure: { [weak self] error in
                                     self?.view?.updateLikes(users: [LikeUser](), totalLikes: 0)
@@ -506,6 +511,15 @@ class ReaderDetailCoordinator {
         coreDataStack.save(context)
     }
 
+    private func showLikesList() {
+        guard let post = post else {
+            return
+        }
+
+        let controller = ReaderDetailLikesListController(post: post, totalLikes: totalLikes)
+        viewController?.navigationController?.pushViewController(controller, animated: true)
+    }
+
     /// Index the post in Spotlight
     private func indexReaderPostInSpotlight() {
         guard let post = post else {
@@ -603,6 +617,13 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
 extension ReaderDetailCoordinator: ReaderDetailFeaturedImageViewDelegate {
     func didTapFeaturedImage(_ sender: CachedAnimatedImageView) {
         showFeaturedImage(sender)
+    }
+}
+
+// MARK: - ReaderDetailLikesViewDelegate
+extension ReaderDetailCoordinator: ReaderDetailLikesViewDelegate {
+    func didTapLikesView() {
+        showLikesList()
     }
 }
 
