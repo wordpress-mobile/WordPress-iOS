@@ -54,10 +54,12 @@ before_all do |lane|
 
   # Check that the env files exist
   unless is_ci || File.file?(USER_ENV_FILE_PATH)
-    UI.user_error!("~/.wpios-env.default not found: Please copy fastlane/env/user.env-example to #{USER_ENV_FILE_PATH} and fill in the values")
+    example_path = 'fastlane/env/user.env-example '
+    msg = "#{ENV_FILE_NAME} not found: Please copy #{example_path} to #{USER_ENV_FILE_PATH} and fill in the values"
+    UI.user_error!(msg)
   end
   unless File.file?(PROJECT_ENV_FILE_PATH)
-    UI.user_error!("project.env not found: Make sure your configuration is up to date with `rake dependencies`")
+    UI.user_error!("project.env not found at #{PROJECT_ENV_FILE_PATH}: Make sure your configuration is up to date with `rake dependencies`")
   end
 
   # This allows code signing to work on CircleCI
