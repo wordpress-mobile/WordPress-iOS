@@ -134,7 +134,7 @@ def gutenberg_dependencies(options)
         'RNSVG',
         'ReactNativeDarkMode',
         'react-native-slider',
-        'react-native-linear-gradient',
+        'BVLinearGradient',
         'react-native-get-random-values',
         'react-native-blur',
         'RNScreens',
