@@ -45,6 +45,13 @@ private extension ReaderDetailLikesListController {
         likesListController?.refresh()
     }
 
+    func displayUserProfile(_ user: LikeUser, from indexPath: IndexPath) {
+        let userProfileVC = UserProfileSheetViewController(user: user)
+        let bottomSheet = BottomSheetViewController(childViewController: userProfileVC)
+        let sourceView = tableView.cellForRow(at: indexPath) ?? view
+        bottomSheet.show(from: self, sourceView: sourceView)
+    }
+
     struct TitleFormats {
         static let singular = NSLocalizedString("%1$d Like",
                                                 comment: "Singular format string for view title displaying the number of post likes. %1$d is the number of likes.")
@@ -63,7 +70,7 @@ private extension ReaderDetailLikesListController {
 extension ReaderDetailLikesListController: LikesListControllerDelegate {
 
     func didSelectUser(_ user: LikeUser, at indexPath: IndexPath) {
-        // TODO: show user profile
+        displayUserProfile(user, from: indexPath)
     }
 
     func showErrorView() {
