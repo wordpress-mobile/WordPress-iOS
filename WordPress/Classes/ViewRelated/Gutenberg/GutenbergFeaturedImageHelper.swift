@@ -5,7 +5,8 @@ class GutenbergFeaturedImageHelper: NSObject {
     fileprivate let post: AbstractPost
     fileprivate let gutenberg: Gutenberg
 
-    let mediaIdNoFeaturedImageSet = 0
+    static let mediaIdNoFeaturedImageSet = 0
+    
     let event: WPAnalyticsEvent = .editorPostFeaturedImageChanged
 
     init(post: AbstractPost, gutenberg: Gutenberg) {
@@ -18,7 +19,7 @@ class GutenbergFeaturedImageHelper: NSObject {
         let media = Media.existingMediaWith(mediaID: NSNumber(value: mediaID), inBlog: post.blog)
         post.featuredImage = media
 
-        if mediaID == mediaIdNoFeaturedImageSet {
+        if mediaID == GutenbergFeaturedImageHelper.mediaIdNoFeaturedImageSet {
             gutenberg.showNotice(NSLocalizedString("Removed as Featured Image", comment: "Notice confirming that an image has been removed as the post's featured image."))
             WPAnalytics.track(event, properties: [
                 "via": "gutenberg",
