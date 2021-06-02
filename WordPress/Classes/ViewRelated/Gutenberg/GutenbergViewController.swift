@@ -663,7 +663,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             // nothing special to do, trying to set the image that's already set as featured
             return
         }
-        
+
         guard mediaID != GutenbergFeaturedImageHelper.mediaIdNoFeaturedImageSet else {
             // user tries to clear the featured image setting
             featuredImageHelper.setFeaturedImage(mediaID: mediaID)
