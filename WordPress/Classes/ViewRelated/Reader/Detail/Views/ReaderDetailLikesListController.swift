@@ -80,4 +80,8 @@ extension ReaderDetailLikesListController: LikesListControllerDelegate {
                                      image: "wp-illustration-reader-empty")
     }
 
+    func updatedTotalLikes(_ totalLikes: Int) {
+        self.totalLikes = totalLikes
+        configureViewTitle()
+    }
 }
