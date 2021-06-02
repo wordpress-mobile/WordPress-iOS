@@ -52,7 +52,7 @@ class StoryEditor: CameraController {
         return StoryMediaLoader()
     }()
 
-    private static let useMetal = false
+    private static let useMetal = true
 
     static var cameraSettings: CameraSettings {
         let settings = CameraSettings()
