@@ -659,18 +659,18 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
         let featuredImageId = post.featuredImage?.mediaID
 
-        if featuredImageId != nil && mediaID == featuredImageId as! Int32 {
+        guard featuredImageId as? Int32 != mediaID else {
             // nothing special to do, trying to set the image that's already set as featured
             return
         }
-
-        if mediaID == GutenbergFeaturedImageHelper.mediaIdNoFeaturedImageSet {
+        
+        guard mediaID != GutenbergFeaturedImageHelper.mediaIdNoFeaturedImageSet else {
             // user tries to clear the featured image setting
             featuredImageHelper.setFeaturedImage(mediaID: mediaID)
             return
         }
 
-        if featuredImageId == nil {
+        guard featuredImageId != nil else {
             // current featured image is not set so, go ahead and set it to the provided one
             featuredImageHelper.setFeaturedImage(mediaID: mediaID)
             return
