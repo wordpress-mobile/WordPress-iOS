@@ -1110,6 +1110,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         return;
     }
     [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconTapped];
+    
+    [NoticesDispatch lock];
+    
     [self showUpdateSiteIconAlert];
 }
 
@@ -1192,16 +1195,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [updateIconAlertController addDefaultActionWithTitle:NSLocalizedString(@"Change Site Icon", @"Change site icon button")
                                                  handler:^(UIAlertAction *action) {
+                                                     [NoticesDispatch unlock];
                                                      [self updateSiteIcon];
                                                  }];
     if (self.blog.hasIcon) {
         [updateIconAlertController addDestructiveActionWithTitle:NSLocalizedString(@"Remove Site Icon", @"Remove site icon button")
                                                          handler:^(UIAlertAction *action) {
+                                                             [NoticesDispatch unlock];
                                                              [self removeSiteIcon];
                                                          }];
     }
     [updateIconAlertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                 handler:^(UIAlertAction *action) {
+                                                    [NoticesDispatch unlock];
                                                     [self startAlertTimer];
                                                 }];
 

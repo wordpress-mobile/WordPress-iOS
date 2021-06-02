@@ -37,7 +37,7 @@ extension CommentService {
                                                             commentID: commentID,
                                                             siteID: siteID,
                                                             purgeExisting: purgeExisting) {
-                                            let users = self.likeUsersFor(commentID: commentID, siteID: siteID, before: before)
+                                            let users = self.likeUsersFor(commentID: commentID, siteID: siteID)
                                             success(users, totalLikes.intValue)
                                             LikeUserHelper.purgeStaleLikes()
                                         }
@@ -52,38 +52,20 @@ extension CommentService {
      
      @param commentID   The ID of the comment to fetch likes for.
      @param siteID      The ID of the site that contains the post.
-     @param before      Filter results to likes before this date/time. Optional.
+     @param after       Filter results to likes after this Date. Optional.
      */
-    func likeUsersFor(commentID: NSNumber, siteID: NSNumber, before: String? = nil) -> [LikeUser] {
+    func likeUsersFor(commentID: NSNumber, siteID: NSNumber, after: Date? = nil) -> [LikeUser] {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
 
         request.predicate = {
-            if let beforeDate = DateUtils.date(fromISOString: before) {
-                return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@ AND dateLiked < %@", siteID, commentID, beforeDate as CVarArg)
+            if let after = after {
+                // The date comparison is 'less than' because Likes are in descending order.
+                return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@ AND dateLiked < %@", siteID, commentID, after as CVarArg)
             }
 
             return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@", siteID, commentID)
         }()
 
-        request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
-
-        if let users = try? managedObjectContext.fetch(request) {
-            return users
-        }
-
-        return [LikeUser]()
-    }
-
-    /**
-     Fetches a list of users from Core Data that liked the post with the given IDs after the given Date.
-     
-     @param commentID   The ID of the comment to fetch likes for.
-     @param siteID      The ID of the site that contains the post.
-     @param after       Filter results to likes after this Date.
-     */
-    func likeUsersFor(commentID: NSNumber, siteID: NSNumber, after: Date) -> [LikeUser] {
-        let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
-        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@ AND dateLiked < %@", siteID, commentID, after as CVarArg)
         request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
 
         if let users = try? managedObjectContext.fetch(request) {

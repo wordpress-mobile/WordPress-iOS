@@ -1,0 +1,9 @@
+What’s new in this update?
+
+Keep up to date on any sites to which you’ve recently been added by pulling down to refresh on the New Sites screen.
+
+On sites with more than one author, you’ll now be able to switch the author assigned to any Post or Page.
+
+You can now authenticate login requests while you're using the app.
+
+Finally, we fixed a bug with the Quick Start tour. When you follow a site from the reader, the Quick Start checklist will now update your progress (instead of remaining unchecked).
