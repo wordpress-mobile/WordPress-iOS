@@ -47,15 +47,6 @@ PODS:
     - React-Core (= 0.64.0)
     - React-jsi (= 0.64.0)
     - ReactCommon/turbomodule/core (= 0.64.0)
-  - Folly (2018.10.22.00):
-    - boost-for-react-native
-    - DoubleConversion
-    - Folly/Default (= 2018.10.22.00)
-    - glog
-  - Folly/Default (2018.10.22.00):
-    - boost-for-react-native
-    - DoubleConversion
-    - glog
   - FormatterKit/Resources (1.9.0)
   - FormatterKit/TimeIntervalFormatter (1.9.0):
     - FormatterKit/Resources
@@ -506,7 +497,6 @@ DEPENDENCIES:
   - Down (~> 0.6.6)
   - FBLazyVector (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/5bbfc23e7226daa10951650fdb758cb4b2705844/third-party-podspecs/FBLazyVector.podspec.json`)
   - FBReactNativeSpec (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/5bbfc23e7226daa10951650fdb758cb4b2705844/third-party-podspecs/FBReactNativeSpec/FBReactNativeSpec.podspec.json`)
-  - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/5bbfc23e7226daa10951650fdb758cb4b2705844/third-party-podspecs/Folly.podspec.json`)
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.2.0)
   - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/5bbfc23e7226daa10951650fdb758cb4b2705844/third-party-podspecs/glog.podspec.json`)
@@ -636,8 +626,6 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/5bbfc23e7226daa10951650fdb758cb4b2705844/third-party-podspecs/FBLazyVector.podspec.json
   FBReactNativeSpec:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/5bbfc23e7226daa10951650fdb758cb4b2705844/third-party-podspecs/FBReactNativeSpec/FBReactNativeSpec.podspec.json
-  Folly:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/5bbfc23e7226daa10951650fdb758cb4b2705844/third-party-podspecs/Folly.podspec.json
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
@@ -760,7 +748,6 @@ SPEC CHECKSUMS:
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   FBLazyVector: 147a40a9699bb23458c8d9f266b5c8dfc0d2d6d8
   FBReactNativeSpec: 1a547b294eea8b85d017e8206dc68a8a334dbcb6
-  Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
@@ -842,6 +829,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 91301710fb64090b7fd152c9a4a6045a132dfaa4
+PODFILE CHECKSUM: fb624330f91d929a63475addc535c9002b26eb4c
 
 COCOAPODS: 1.10.1

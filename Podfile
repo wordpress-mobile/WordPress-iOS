@@ -124,7 +124,6 @@ def gutenberg_dependencies(options)
         'React-perflogger',
         'React-runtimeexecutor',
         'Yoga',
-        'Folly',
         'RCT-Folly',
         'glog',
         'react-native-keyboard-aware-scroll-view',
