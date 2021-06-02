@@ -115,6 +115,7 @@ private class CommentServiceRemoteRESTMock: CommentServiceRemoteREST {
     override func getLikesForCommentID(_ commentID: NSNumber,
                                        count: NSNumber,
                                        before: String?,
+                                       excludeUserIDs: [NSNumber]?,
                                        success: (([RemoteLikeUser], NSNumber) -> Void)!,
                                        failure: ((Error?) -> Void)!) {
         DispatchQueue.global().async {

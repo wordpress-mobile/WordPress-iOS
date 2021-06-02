@@ -210,12 +210,15 @@ class CollectionViewContainerCell: UITableViewCell {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
 
-        self.addSubview(collectionView)
+        contentView.addSubview(collectionView)
 
         collectionView.topAnchor.constraint(equalTo: titleLabel.lastBaselineAnchor, constant: Constants.labelVerticalSpacing).isActive = true
-        collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+
+        contentView.clipsToBounds = false
+        collectionView.clipsToBounds = false
     }
 
     override func prepareForReuse() {

@@ -8,7 +8,7 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var descriptionLabel: UILabel!
     @IBOutlet private weak var actionButton: FancyButton!
-    @IBOutlet private weak var warningButton: UIButton!
+    @IBOutlet private weak var warningButton: MultilineButton!
 
     var actionButtonHandler: (() -> Void)?
     var warningButtonHandler: (() -> Void)?
@@ -33,19 +33,30 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
 
         actionButton.isPrimary = true
 
+        warningButton.setTitleColor(.text, for: .normal)
         warningButton.titleLabel?.lineBreakMode = .byWordWrapping
+        warningButton.titleLabel?.numberOfLines = 0
     }
 
     // MARK: - Configuration
 
-    func configure(iconImage: UIImage, title: String, description: String, buttonTitle: String, warningButtonTitle: String?) {
+    func configure(iconImage: UIImage,
+                   title: String,
+                   description: String,
+                   buttonTitle: String,
+                   warningButtonTitle: HighlightedText?) {
         icon.image = iconImage
         titleLabel.text = title
         descriptionLabel.text = description
         actionButton.setTitle(buttonTitle, for: .normal)
 
         if let warningButtonTitle = warningButtonTitle {
-            warningButton.setTitle(warningButtonTitle, for: .normal)
+            let attributedTitle = WPStyleGuide.Jetpack.highlightString(warningButtonTitle.substring,
+                                                                       inString: warningButtonTitle.string)
+            warningButton.setAttributedTitle(attributedTitle, for: .normal)
+
+            warningButton.setImage(.gridicon(.plusSmall), for: .normal)
+
             warningButton.isHidden = false
         } else {
             warningButton.isHidden = true

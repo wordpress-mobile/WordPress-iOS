@@ -36,6 +36,9 @@ CGFloat const BlogDetailQuickStartSectionHeight = 35.0;
 NSTimeInterval const PreloadingCacheTimeout = 60.0 * 5; // 5 minutes
 NSString * const HideWPAdminDate = @"2015-09-07T00:00:00Z";
 
+CGFloat const BlogDetailReminderSectionHeaderHeight = 8.0;
+CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
+
 // NOTE: Currently "stats" acts as the calypso dashboard with a redirect to
 // stats/insights. Per @mtias, if the dashboard should change at some point the
 // redirect will be updated to point to new content, eventhough the path is still
@@ -344,6 +347,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UINib *qsTitleCellNib = [UINib nibWithNibName:QuickStartListTitleCellNibName bundle:[NSBundle bundleForClass:[QuickStartListTitleCell class]]];
     [self.tableView registerNib:qsTitleCellNib forCellReuseIdentifier:[QuickStartListTitleCell reuseIdentifier]];
     [self.tableView registerClass:[BlogDetailsSectionFooterView class] forHeaderFooterViewReuseIdentifier:BlogDetailsSectionFooterIdentifier];
+    [self.tableView registerClass:[BloggingRemindersCell class] forCellReuseIdentifier:[BloggingRemindersCell reuseIdentifier]];
 
     self.hasLoggedDomainCreditPromptShownEvent = NO;
 
@@ -473,6 +477,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSIndexPath *indexPath = [self indexPathForSubsection:section];
 
     switch (section) {
+        case BlogDetailsSubsectionReminders:
         case BlogDetailsSubsectionDomainCredit:
         case BlogDetailsSubsectionQuickStart:
             self.restorableSelectedIndexPath = indexPath;
@@ -579,6 +584,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsSectionCategory sectionCategory = [self sectionCategoryWithSubsection:subsection];
     NSInteger section = [self findSectionIndexWithSections:self.tableSections category:sectionCategory];
     switch (subsection) {
+        case BlogDetailsSubsectionReminders:
         case BlogDetailsSubsectionDomainCredit:
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionQuickStart:
@@ -657,11 +663,26 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 #pragma mark - iOS 10 bottom padding
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+
+    BlogDetailsSection *currentSection = self.tableSections[section];
+
+    if (self.shouldShowBloggingRemindersCard && currentSection.category == BlogDetailsSectionCategoryReminders) {
+        return BlogDetailReminderSectionFooterHeight;
+    }
     return UITableViewAutomaticDimension;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)sectionNum {
     BlogDetailsSection *section = self.tableSections[sectionNum];
+
+    if (self.shouldShowBloggingRemindersCard && section.category == BlogDetailsSectionCategoryReminders && section.showQuickStartMenu == false) {
+        return BlogDetailReminderSectionHeaderHeight;
+    }
+
+    if (self.shouldShowBloggingRemindersCard && sectionNum == 1 && section.showQuickStartMenu == false) {
+        return BlogDetailReminderSectionHeaderHeight - BlogDetailReminderSectionFooterHeight;
+    }
+
     if (section.showQuickStartMenu == true || (sectionNum == 0 && [Feature enabled:FeatureFlagNewNavBarAppearance])) {
         return BlogDetailQuickStartSectionHeight;
     } else if (([section.title isEmpty] || section.title == nil) && sectionNum == 0) {
@@ -739,6 +760,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)configureTableViewData
 {
     NSMutableArray *marr = [NSMutableArray array];
+
+    if ([Feature enabled:FeatureFlagBloggingReminders]) {
+        [marr addObject:[self bloggingRemindersSectionViewModel]];
+    }
     if ([DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
         if (!self.hasLoggedDomainCreditPromptShownEvent) {
             [WPAnalytics track:WPAnalyticsStatDomainCreditPromptShown];
@@ -1085,6 +1110,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         return;
     }
     [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconTapped];
+    
+    [NoticesDispatch lock];
+    
     [self showUpdateSiteIconAlert];
 }
 
@@ -1141,6 +1169,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     [self showInitialDetailsForBlog];
     [self.tableView reloadData];
+    [self preloadMetadata];
 }
 
 - (void)showInitialDetailsForBlog
@@ -1166,16 +1195,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [updateIconAlertController addDefaultActionWithTitle:NSLocalizedString(@"Change Site Icon", @"Change site icon button")
                                                  handler:^(UIAlertAction *action) {
+                                                     [NoticesDispatch unlock];
                                                      [self updateSiteIcon];
                                                  }];
     if (self.blog.hasIcon) {
         [updateIconAlertController addDestructiveActionWithTitle:NSLocalizedString(@"Remove Site Icon", @"Remove site icon button")
                                                          handler:^(UIAlertAction *action) {
+                                                             [NoticesDispatch unlock];
                                                              [self removeSiteIcon];
                                                          }];
     }
     [updateIconAlertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                 handler:^(UIAlertAction *action) {
+                                                    [NoticesDispatch unlock];
                                                     [self startAlertTimer];
                                                 }];
 
@@ -1324,6 +1356,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
+    if ([cell isKindOfClass:[BloggingRemindersCell class]]) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     cell.textLabel.text = row.title;
