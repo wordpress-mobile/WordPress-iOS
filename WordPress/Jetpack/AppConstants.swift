@@ -5,6 +5,7 @@ import Foundation
     static let productTwitterURL = "https://twitter.com/jetpack"
     static let productBlogURL = "https://jetpack.com/blog"
     static let ticketSubject = "Jetpack for iOS Support"
+    static let zendeskSourcePlatform = "mobile_-_jp_ios"
     static let logOutAlert = NSLocalizedString("Log out of Jetpack?", comment: "LogOut confirmation text, whenever there are no local changes")
     @objc static let eventNamePrefix = "jpios"
 
