@@ -67,7 +67,6 @@ extension ReaderDetailLikesListController: LikesListControllerDelegate {
     }
 
     func showErrorView() {
-        hideNoResults()
         configureAndDisplayNoResults(on: tableView,
                                      title: NoResultsText.errorTitle,
                                      subtitle: NoResultsText.errorSubtitle,
