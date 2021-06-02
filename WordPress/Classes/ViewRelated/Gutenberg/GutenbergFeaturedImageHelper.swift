@@ -6,7 +6,7 @@ class GutenbergFeaturedImageHelper: NSObject {
     fileprivate let gutenberg: Gutenberg
 
     static let mediaIdNoFeaturedImageSet = 0
-    
+
     let event: WPAnalyticsEvent = .editorPostFeaturedImageChanged
 
     init(post: AbstractPost, gutenberg: Gutenberg) {
