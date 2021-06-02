@@ -691,7 +691,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
 
         alertController.addAction(replaceAction)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Replace", comment: "Button to cancel the replacement of a featured image."))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Button to cancel the replacement of a featured image."))
 
         present(alertController, animated: true, completion: nil)
     }
