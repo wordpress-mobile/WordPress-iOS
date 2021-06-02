@@ -681,7 +681,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func showAlertForReplacingFeaturedImage(mediaID: Int32) {
-        let alertController = UIAlertController(title: NSLocalizedString("Replace?", comment: "Title message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
+        let alertController = UIAlertController(title: NSLocalizedString("Featured Image Already Set", comment: "Title message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
                                                 message: NSLocalizedString("You already have a featured image set. Do you want to replace it?", comment: "Main message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
                                                 preferredStyle: .actionSheet)
 
