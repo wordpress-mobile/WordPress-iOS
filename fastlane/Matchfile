@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This Matchfile has the shared properties used for all signing types
 
 # Store certs/profiles encrypted in Google Cloud

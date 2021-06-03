@@ -10,3 +10,6 @@ Layout/LineLength:
   Exclude:
     - fastlane/Fastfile
 
+Naming/FileName:
+  Exclude:
+    - fastlane/Matchfile
