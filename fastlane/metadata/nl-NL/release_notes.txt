@@ -1,0 +1,9 @@
+Wat is er nieuw in deze update?
+
+Blijf op de hoogte van sites waaraan je onlangs bent toegevoegd door omlaag te trekken om te vernieuwen op het scherm Nieuwe sites.
+
+Op sites met meer dan één auteur kun je nu de auteur wijzigen die aan een bericht of pagina is toegewezen.
+
+Je kunt nu login aanvragen verifiëren terwijl je de app gebruikt.
+
+Ten slotte hebben we een bug opgelost met de Quick Start tour. Wanneer je een site van de reader volgt, zal de Quick Start-checklist nu je voortgang updaten (in plaats van niet aangevinkt te blijven).

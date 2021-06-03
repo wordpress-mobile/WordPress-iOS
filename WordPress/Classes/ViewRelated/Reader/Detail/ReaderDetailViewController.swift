@@ -423,6 +423,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             return
         }
 
+        likesSummary.delegate = coordinator
         likesContainerView.addSubview(likesSummary)
         likesContainerView.translatesAutoresizingMaskIntoConstraints = false
 
