@@ -191,7 +191,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (BOOL)textPassesValidation
 {
     BOOL isEmail = (self.mode == SettingsTextModesEmail);
-    return (self.validatesInput == false || isEmail == false || (isEmail && self.textField.text.isValidEmail));
+    return ([self.textField hasText] && (self.validatesInput == false || isEmail == false || (isEmail && self.textField.text.isValidEmail)));
 }
 
 - (void)validateTextInput:(id)sender
