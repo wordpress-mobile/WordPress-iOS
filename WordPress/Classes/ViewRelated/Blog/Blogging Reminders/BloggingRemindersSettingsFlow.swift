@@ -1,6 +1,91 @@
 import SwiftUI
 import UIKit
 
+
+class BloggingRemindersFlowIntroViewController: UIViewController, DrawerPresentable {
+    private let stackView = UIStackView()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .basicBackground
+
+        stackView.spacing = 20.0
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+
+        let imageView = UIImageView(image: UIImage(systemName: "star.circle"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.tintColor = .systemYellow
+
+        let titleLabel = UILabel()
+        titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
+        titleLabel.numberOfLines = 0
+        titleLabel.textAlignment = .center
+
+        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext),
+           let name = account.settings?.firstName,
+           name.isEmpty == false {
+            titleLabel.text = String(format: NSLocalizedString("%@, set your blogging goals", comment: ""), name)
+        }
+
+        if (titleLabel.text ?? "").isEmpty {
+            titleLabel.text = "Set your blogging goals"
+        }
+
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .body)
+        label.text = TextContent.introDescription
+        label.numberOfLines = 0
+        label.textAlignment = .center
+
+        let button = FancyButton()
+        button.isPrimary = true
+        button.setTitle(TextContent.getStartedButtonTitle, for: .normal)
+
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stackView)
+
+        stackView.addArrangedSubviews([
+            imageView,
+            titleLabel,
+            label,
+            button,
+            UIView()
+        ])
+
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16.0),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16.0),
+            stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16.0),
+            stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeBottomAnchor, constant: -16.0),
+            imageView.heightAnchor.constraint(equalToConstant: 44.0),
+            imageView.widthAnchor.constraint(equalToConstant: 44.0),
+            button.heightAnchor.constraint(equalToConstant: 44.0),
+            button.widthAnchor.constraint(equalTo: stackView.widthAnchor)
+        ])
+
+        view.layoutIfNeeded()
+        calculatePreferredContentSize()
+
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        calculatePreferredContentSize()
+    }
+
+    func calculatePreferredContentSize() {
+        let size = CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height)
+        preferredContentSize = stackView.systemLayoutSizeFitting(size)
+    }
+
+    var collapsedHeight: DrawerHeight {
+        return .intrinsicHeight
+    }
+}
+
 /// This allows us to dismiss the UIKit-presented SwiftUI flow.
 /// We'll pass it through the screens as an environment object.
 ///

@@ -7,7 +7,7 @@ extension BlogDetailsViewController {
         let coordinator = BlogRemindersCoordinator()
         coordinator.presenter = self
 
-        let navigationController = BloggingRemindersNavigationController(rootViewController: BloggingRemindersSettingsContainerViewController(coordinator: coordinator),
+        let navigationController = BloggingRemindersNavigationController(rootViewController: BloggingRemindersFlowIntroViewController(),
                                                                          viewControllerDrawerPositions: [.collapsed, .expanded, .collapsed])
 
         let bottomSheet = BottomSheetViewController(childViewController: navigationController,
