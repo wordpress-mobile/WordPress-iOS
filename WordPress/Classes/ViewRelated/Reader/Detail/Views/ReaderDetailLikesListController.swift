@@ -22,6 +22,7 @@ class ReaderDetailLikesListController: UITableViewController, NoResultsViewHost 
     override func viewDidLoad() {
         configureViewTitle()
         configureTable()
+        WPAnalytics.track(.likeListOpened, properties: ["list_type": "post", "source": "like_reader_list"])
     }
 
 }
@@ -47,9 +48,11 @@ private extension ReaderDetailLikesListController {
 
     func displayUserProfile(_ user: LikeUser, from indexPath: IndexPath) {
         let userProfileVC = UserProfileSheetViewController(user: user)
+        userProfileVC.blogUrlPreviewedSource = "reader_like_list_user_profile"
         let bottomSheet = BottomSheetViewController(childViewController: userProfileVC)
         let sourceView = tableView.cellForRow(at: indexPath) ?? view
         bottomSheet.show(from: self, sourceView: sourceView)
+        WPAnalytics.track(.userProfileSheetShown, properties: ["source": "like_reader_list"])
     }
 
     struct TitleFormats {
