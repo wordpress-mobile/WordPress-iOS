@@ -675,11 +675,11 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
                 return
             }
-            
+
             // ask the user to confirm changing the featured image since there's already one set
             self.showAlertForReplacingFeaturedImage(mediaID: mediaID)
         }
-                
+
         if presentedViewController != nil {
             dismiss(animated: false, completion: presentAlert)
         } else {
