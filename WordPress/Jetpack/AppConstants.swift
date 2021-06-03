@@ -4,7 +4,6 @@ import Foundation
     static let productTwitterHandle = "@jetpack"
     static let productTwitterURL = "https://twitter.com/jetpack"
     static let productBlogURL = "https://jetpack.com/blog"
-    static let ticketSubject = "Jetpack for iOS Support"
     static let logOutAlert = NSLocalizedString("Log out of Jetpack?", comment: "LogOut confirmation text, whenever there are no local changes")
     @objc static let eventNamePrefix = "jpios"
 
@@ -33,5 +32,9 @@ extension AppConstants {
             "Continue With WordPress.com",
             comment: "Button title. Takes the user to the login with WordPress.com flow."
         )
+    }
+
+    struct Zendesk {
+        static let ticketSubject = NSLocalizedString("Jetpack for iOS Support", comment: "Subject of new Zendesk ticket.")
     }
 }
