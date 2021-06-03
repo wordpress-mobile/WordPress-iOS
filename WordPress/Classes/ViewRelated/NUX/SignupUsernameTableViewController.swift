@@ -1,7 +1,6 @@
 import SVProgressHUD
 import WordPressAuthenticator
 
-
 class SignupUsernameTableViewController: UITableViewController, SearchTableViewCellDelegate {
     open var currentUsername: String?
     open var displayName: String?
@@ -223,7 +222,8 @@ extension SignupUsernameTableViewController {
             let api = account.wordPressComRestApi else {
                 return
         }
-        SVProgressHUD.show(withStatus: NSLocalizedString("Loading usernames", comment: "Shown while the app waits for the username suggestions web service to return during the site creation process."))
+        let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? SearchTableViewCell
+        cell?.showLoader()
 
         let service = AccountSettingsService(userID: account.userID.intValue, api: api)
         service.suggestUsernames(base: searchTerm) { [weak self] (newSuggestions) in
@@ -231,7 +231,8 @@ extension SignupUsernameTableViewController {
                 WordPressAuthenticator.track(.signupEpilogueUsernameSuggestionsFailed)
             }
             self?.isSearching = false
-            SVProgressHUD.dismiss()
+            let cell = self?.tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? SearchTableViewCell
+            cell?.hideLoader()
             addSuggestions(newSuggestions)
         }
     }
