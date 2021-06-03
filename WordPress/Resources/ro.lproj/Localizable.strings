@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-06 10:37:03+0000 */
+/* Translation-Revision-Date: 2021-05-21 05:45:45+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -314,6 +314,9 @@
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "ADAUGĂ IMAGINE SAU VIDEO";
+
+/* No comment provided by engineer. */
+"ADD LINK" = "ADAUGĂ LEGĂTURĂ";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "ADAUGĂ VIDEO";
@@ -801,7 +804,9 @@
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Autentificare necesară pentru gazda: %@";
 
-/* Label for list of stats by content author. */
+/* Author label.
+   Label for list of stats by content author.
+   The author of the post or page. */
 "Author" = "Autor";
 
 /* Voiceover description of a button that allows the user to filter posts by author. */
@@ -2142,6 +2147,9 @@
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Atinge de două ori pentru a adăuga un bloc";
 
+/* No comment provided by engineer. */
+"Double tap to add a link." = "Atinge de două ori pentru a adăuga o legătură.";
+
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "Atinge de două ori pentru a renunța";
 
@@ -3097,6 +3105,9 @@
 /* First line of remove follower warning in confirmation dialog. */
 "If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "Dacă-i înlăturat, acest urmăritor nu va mai primi notificări despre sit, decât dacă îl reurmărește.";
 
+/* Message explaining that they will need to install Jetpack on one of their sites. */
+"If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "Dacă ai deja un sit, va trebui să instalezi modulul gratuit Jetpack și să îl conectezi la contul tău WordPress.com.";
+
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Dacă continui cu Apple sau Google și nu ai deja un cont WordPress.com, îți creezi un cont și ești de acord cu _Termenii de utilizare ai serviciului_ nostru.";
 
@@ -3630,6 +3641,9 @@
 "Log in with your WordPress.com username and password." = "Autentifică-te cu numele de utilizator și parola WordPress.com.";
 
 /* LogOut confirmation text, whenever there are no local changes */
+"Log out of Jetpack?" = "Te dezautentifici de pe Jetpack?";
+
+/* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Te dezautentifici de pe WordPress?";
 
 /* Error message shown when a user is trying to login.
@@ -3970,8 +3984,7 @@
 /* Describes a status of a plugin */
 "Needs Update" = "Necesită actualizare";
 
-/* Header of section in Plugin Directory showing newest plugins
-   New button badge on Stories Post button */
+/* Header of section in Plugin Directory showing newest plugins */
 "New" = "Noi";
 
 /* Blocklist Keyword Insertion Title */
@@ -4368,6 +4381,7 @@
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading notification likes.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -5589,6 +5603,9 @@
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "Vezi toate modulele";
 
+/* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
+"See Instructions" = "Vezi instrucțiunile";
+
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "Vezi comentariile și notificările în timp real.";
@@ -6650,6 +6667,9 @@
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "A fost o eroare la încărcarea activităților";
 
+/* Text displayed when there is a failure loading notification likes. */
+"There was an error loading likes" = "A fost o eroare la încărcarea aprecierilor";
+
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "A fost o eroare la încărcarea planurilor";
 
@@ -6841,6 +6861,9 @@
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "Pentru a folosi statisticile de pe situl tău, va trebui să instalezi modulul Jetpack.";
 
+/* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
+"To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "Ca să utilizezi această aplicație pentru %@, va trebui să ai instalat modulul Jetpack și să fie conectat la contul tău WordPress.com.";
+
 /* Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
@@ -6937,6 +6960,9 @@
    Try Again. Action
    Try to load the list of interests again. */
 "Try Again" = "Încearcă din nou";
+
+/* Action button that will restart the login flow.Presented when logging in with a site address that does not have a valid Jetpack installation */
+"Try With Another Account" = "Încearcă cu un alt cont";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
 "Try adjusting your date range filter" = "Încearcă să ajustezi filtrul pentru intervalul de timp";
@@ -7677,6 +7703,9 @@
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "Folosim și alte instrumente de urmărire, inclusiv unele de la terți. Citește despre ele și despre cum le controlăm.";
 
+/* Message explaining that WordPress was not detected. */
+"We were not able to detect a WordPress site at the address you entered. Please make sure WordPress is installed and that you are running the latest available version." = "Nu am putut detecta un sit WordPress la adresa pe care ai introdus-o. Te rog să te asiguri că WordPress este instalat și că rulează cea mai recentă versiune disponibilă.";
+
 /* Error message displayed when an error occurred sending the magic link email. */
 "We were unable to send you an email at this time. Please try again later." = "N-am putut să-ți trimitem un email acum. Te rog reîncearcă mai târziu.";
 
@@ -8370,6 +8399,9 @@
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "domeniul tău %@ este inițializat acum. Situl tău face tumbe de bucurie!";
+
+/* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
+"your site" = "situl tău";
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Autentifică-te cu Google.";
