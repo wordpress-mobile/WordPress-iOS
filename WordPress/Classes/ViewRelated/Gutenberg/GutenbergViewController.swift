@@ -654,30 +654,37 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestToSetFeaturedImage(for mediaID: Int32) {
-        // dismiss current controller in order to allow the new alert controller to be presented
-        presentedViewController?.dismiss(animated: false, completion: nil)
-
         let featuredImageId = post.featuredImage?.mediaID
 
-        guard featuredImageId as? Int32 != mediaID else {
-            // nothing special to do, trying to set the image that's already set as featured
-            return
-        }
+        let presentAlert = { [weak self] in
+            guard let `self` = self else { return }
 
-        guard mediaID != GutenbergFeaturedImageHelper.mediaIdNoFeaturedImageSet else {
-            // user tries to clear the featured image setting
-            featuredImageHelper.setFeaturedImage(mediaID: mediaID)
-            return
-        }
+            guard featuredImageId as? Int32 != mediaID else {
+                // nothing special to do, trying to set the image that's already set as featured
+                return
+            }
 
-        guard featuredImageId != nil else {
-            // current featured image is not set so, go ahead and set it to the provided one
-            featuredImageHelper.setFeaturedImage(mediaID: mediaID)
-            return
-        }
+            guard mediaID != GutenbergFeaturedImageHelper.mediaIdNoFeaturedImageSet else {
+                // user tries to clear the featured image setting
+                self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
+                return
+            }
 
-        // ask the user to confirm changing the featured image since there's already one set
-        showAlertForReplacingFeaturedImage(mediaID: mediaID)
+            guard featuredImageId != nil else {
+                // current featured image is not set so, go ahead and set it to the provided one
+                self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
+                return
+            }
+            
+            // ask the user to confirm changing the featured image since there's already one set
+            self.showAlertForReplacingFeaturedImage(mediaID: mediaID)
+        }
+                
+        if presentedViewController != nil {
+            dismiss(animated: false, completion: presentAlert)
+        } else {
+            presentAlert()
+        }
     }
 
     func showAlertForReplacingFeaturedImage(mediaID: Int32) {
