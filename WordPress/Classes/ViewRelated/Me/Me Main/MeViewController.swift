@@ -458,7 +458,7 @@ private extension MeViewController {
     }
 
     enum LogoutAlert {
-        static let defaultTitle = AppConstants.logOutAlert
+        static let defaultTitle = AppConstants.Logout.alertTitle
         static let unsavedTitleSingular = NSLocalizedString("You have changes to %d post that hasn't been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
                                                             comment: "Warning displayed before logging out. The %d placeholder will contain the number of local posts (SINGULAR!)")
         static let unsavedTitlePlural = NSLocalizedString("You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?",

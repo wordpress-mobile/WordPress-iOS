@@ -5,7 +5,6 @@ import WordPressAuthenticator
     static let productTwitterHandle = "@WordPressiOS"
     static let productTwitterURL = "https://twitter.com/WordPressiOS"
     static let productBlogURL = "https://blog.wordpress.com"
-    static let logOutAlert = NSLocalizedString("Log out of WordPress?", comment: "LogOut confirmation text, whenever there are no local changes")
     @objc static let eventNamePrefix = "wpios"
 
     /// Notifications Constants
@@ -30,6 +29,10 @@ extension AppConstants {
 
     struct Login {
         static let continueButtonTitle = WordPressAuthenticatorDisplayStrings.defaultStrings.continueWithWPButtonTitle
+    }
+
+    struct Logout {
+        static let alertTitle = NSLocalizedString("Log out of WordPress?", comment: "LogOut confirmation text, whenever there are no local changes")
     }
 
     struct Zendesk {
