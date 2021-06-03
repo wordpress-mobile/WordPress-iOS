@@ -1102,7 +1102,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .contactInfoBlock: post.blog.supports(.contactInfo) && FeatureFlag.contactInfo.enabled,
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
-            .audioBlock: !isFreeWPCom, // Disable audio block until it's usable on free sites via "Insert from URL" capability
+            .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
             .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories) && !UIDevice.isPad(),
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
