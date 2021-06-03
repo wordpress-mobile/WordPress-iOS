@@ -17,6 +17,9 @@ import WordPressKit
 
     /// Ask the delegate to show an error view when fetching fails or there is no connection.
     func showErrorView()
+
+    /// Send likes count to delegate.
+    @objc optional func updatedTotalLikes(_ totalLikes: Int)
 }
 
 class LikesListController: NSObject {
@@ -157,6 +160,10 @@ class LikesListController: NSObject {
         }
 
         fetchLikes(success: { [weak self] users, totalLikes in
+            if self?.isFirstLoad == true {
+                self?.delegate?.updatedTotalLikes?(totalLikes)
+            }
+
             self?.likingUsers = users
             self?.totalLikes = totalLikes
             self?.totalLikesFetched = users.count
