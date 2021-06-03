@@ -197,12 +197,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (void)validateTextInput:(id)sender
 {
     self.doneButtonEnabled = [self textPassesValidation];
-
-    if (self.doneButtonEnabled) {
-        [_actionCell enable];
-    } else {
-        [_actionCell disable];
-    }
+    [self setEnabledStateForCell:_actionCell value:self.doneButtonEnabled];
 }
 
 
@@ -246,12 +241,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     _actionCell.textLabel.textAlignment = NSTextAlignmentCenter;
     
     [WPStyleGuide configureTableViewActionCell:_actionCell];
-
-    if (self.doneButtonEnabled) {
-        [_actionCell enable];
-    } else {
-        [_actionCell disable];
-    }
+    [self setEnabledStateForCell:_actionCell value:self.doneButtonEnabled];
 
     return _actionCell;
 }
@@ -407,6 +397,14 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     self.textField.autocorrectionType = autocorrectionType;
 }
 
+- (void)setEnabledStateForCell:(UITableViewCell *)ActionCell value:(BOOL)value
+{
+    if (value) {
+        [_actionCell enable];
+    } else {
+        [_actionCell disable];
+    }
+}
 
 #pragma mark - UITextFieldDelegate Methods
 
