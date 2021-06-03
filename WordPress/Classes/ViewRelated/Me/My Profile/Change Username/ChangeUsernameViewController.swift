@@ -1,3 +1,5 @@
+import WordPressAuthenticator
+
 class ChangeUsernameViewController: SignupUsernameTableViewController {
     typealias CompletionBlock = (String?) -> Void
 
@@ -55,12 +57,14 @@ private extension ChangeUsernameViewController {
         viewModel.suggestionsListener = { [weak self] state, suggestions, reloadAllSections in
             switch state {
             case .loading:
-                SVProgressHUD.show(withStatus: Constants.Alert.loading)
+                let cell = self?.tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? SearchTableViewCell
+                cell?.showLoader()
             case .success:
                 if suggestions.isEmpty {
                     WPAppAnalytics.track(.accountSettingsChangeUsernameSuggestionsFailed)
                 }
-                SVProgressHUD.dismiss()
+                let cell = self?.tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? SearchTableViewCell
+                cell?.hideLoader()
                 self?.suggestions = suggestions
                 self?.reloadSections(includingAllSections: reloadAllSections)
             default:
