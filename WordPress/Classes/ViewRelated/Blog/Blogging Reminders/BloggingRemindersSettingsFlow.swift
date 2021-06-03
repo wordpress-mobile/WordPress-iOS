@@ -5,7 +5,7 @@ import UIKit
 /// We'll pass it through the screens as an environment object.
 ///
 final class BlogRemindersCoordinator: ObservableObject {
-    var presenter: UIViewController?
+    weak var presenter: UIViewController?
 
     func dismiss() {
         presenter?.dismiss(animated: true)
@@ -15,25 +15,44 @@ final class BlogRemindersCoordinator: ObservableObject {
 /// UIKit container for the SwiftUI-based reminders setting flow.
 ///
 class BloggingRemindersSettingsContainerViewController: UIViewController, DrawerPresentable {
+    var coordinator: BlogRemindersCoordinator
+
+    init(coordinator: BlogRemindersCoordinator) {
+        self.coordinator = coordinator
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .basicBackground
 
-        let rootView = BloggingRemindersSettingsIntroView().environmentObject(makeCoordinator())
+        let rootView = BloggingRemindersSettingsIntroView().environmentObject(self.coordinator)
         let host = UIHostingController(rootView: rootView)
-
         host.view.translatesAutoresizingMaskIntoConstraints = false
         addChild(host)
         view.addSubview(host.view)
-        view.pinSubviewToAllEdges(host.view)
+
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: host.view.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: host.view.trailingAnchor),
+            view.topAnchor.constraint(equalTo: host.view.topAnchor),
+            view.bottomAnchor.constraint(greaterThanOrEqualTo: host.view.bottomAnchor),
+            ])
+
         host.didMove(toParent: self)
     }
 
-    func makeCoordinator() -> BlogRemindersCoordinator {
-        let coordinator = BlogRemindersCoordinator()
-        coordinator.presenter = self
-        return coordinator
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if let hostView = view.subviews.first {
+            preferredContentSize = hostView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        }
     }
 
     var collapsedHeight: DrawerHeight {
@@ -49,20 +68,21 @@ struct BloggingRemindersSettingsIntroView: View {
     @EnvironmentObject var coordinator: BlogRemindersCoordinator
 
     var body: some View {
-        VStack(spacing: Metrics.introStackSpacing) {
-            Image(systemName: Images.starImageName)
-                .resizable().frame(width: Metrics.topImageSize.width, height: Metrics.topImageSize.height, alignment: .center)
-            Text(TextContent.introTitle)
-                .font(TextContent.introTitleFont)
-            Text(TextContent.introDescription)
-            NavigationLink(destination: BloggingRemindersSettingsView().environmentObject(coordinator)) {
-                Text(TextContent.getStartedButtonTitle)
-                    .primaryButtonStyle()
+            VStack(spacing: Metrics.introStackSpacing) {
+                Image(systemName: Images.starImageName)
+                    .resizable().frame(width: Metrics.topImageSize.width, height: Metrics.topImageSize.height, alignment: .center)
+                Text(TextContent.introTitle)
+                    .font(TextContent.introTitleFont)
+                Text(TextContent.introDescription)
+                Spacer()
+                    .frame(height: 200)
+                NavigationLink(destination: BloggingRemindersSettingsView().environmentObject(coordinator)) {
+                    Text(TextContent.getStartedButtonTitle)
+                        .primaryButtonStyle()
+                }
             }
-            Spacer()
-        }
+            .fixedSize(horizontal: false, vertical: true)
         .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationBarHidden(true)
     }
 }
@@ -135,16 +155,17 @@ struct BloggingRemindersSettingsCompletionView: View {
             Text(TextContent.completionUpdatePrompt)
                 .foregroundColor(.gray)
                 .lineLimit(2)
+            Spacer()
+                .frame(height: 50)
             Button(action: {
                 coordinator.dismiss()
             }) {
                 Text(TextContent.doneButtonTitle)
                     .primaryButtonStyle()
             }
-            Spacer()
         }
+        .fixedSize(horizontal: false, vertical: true)
         .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationBarHidden(true)
     }
 }

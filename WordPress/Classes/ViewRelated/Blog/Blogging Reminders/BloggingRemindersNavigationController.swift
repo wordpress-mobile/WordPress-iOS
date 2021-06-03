@@ -46,12 +46,33 @@ class BloggingRemindersNavigationController: LightNavigationController {
         let index = max(min(viewControllers.count-1, viewControllerDrawerPositions.count-1), 0)
         let newPosition = viewControllerDrawerPositions[index]
 
-        if let viewController = viewControllers.last {
-            preferredContentSize = viewController.preferredContentSize
-        }
+        updateHostedViewPreferredContentSize()
 
         if let bottomSheet = self.parent as? BottomSheetViewController, let presentedVC = bottomSheet.presentedVC {
             presentedVC.transition(to: newPosition)
+        }
+    }
+
+    private func updateHostedViewPreferredContentSize() {
+        if let viewController = viewControllers.last {
+            preferredContentSize = preferredContentSizeForHostedView
+            viewController.preferredContentSize = preferredContentSizeForHostedView
+            viewController.view.frame = CGRect(origin: .zero, size: preferredContentSize)
+            view.frame = CGRect(origin: .zero, size: preferredContentSize)
+        }
+    }
+
+    private var preferredContentSizeForHostedView: CGSize {
+        guard let viewController = viewControllers.last else {
+            return preferredContentSize
+        }
+
+        if let hostView = viewController.view {
+            let size = CGSize(width: view.bounds.width,
+                              height: UIView.layoutFittingCompressedSize.height)
+            return  hostView.systemLayoutSizeFitting(size)
+        } else {
+            return viewController.preferredContentSize
         }
     }
 }
@@ -81,6 +102,6 @@ extension BloggingRemindersNavigationController: DrawerPresentable {
             return viewController.collapsedHeight
         }
 
-        return .intrinsicHeight
+        return .contentHeight(preferredContentSizeForHostedView.height)
     }
 }
