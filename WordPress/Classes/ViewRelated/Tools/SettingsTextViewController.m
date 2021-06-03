@@ -197,6 +197,12 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (void)validateTextInput:(id)sender
 {
     self.doneButtonEnabled = [self textPassesValidation];
+
+    if (self.doneButtonEnabled) {
+        [_actionCell enable];
+    } else {
+        [_actionCell disable];
+    }
 }
 
 
@@ -240,7 +246,13 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     _actionCell.textLabel.textAlignment = NSTextAlignmentCenter;
     
     [WPStyleGuide configureTableViewActionCell:_actionCell];
-    
+
+    if (self.doneButtonEnabled) {
+        [_actionCell enable];
+    } else {
+        [_actionCell disable];
+    }
+
     return _actionCell;
 }
 
