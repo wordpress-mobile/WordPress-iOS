@@ -187,6 +187,7 @@ extension SignupUsernameTableViewController {
         cell.placeholder = NSLocalizedString("Type a keyword for more ideas", comment: "Placeholder text for domain search during site creation.")
         cell.delegate = self
         cell.selectionStyle = .none
+        cell.textField.leftViewImage = UIImage(named: "icon-post-search-highlight")
 
         return cell
     }
