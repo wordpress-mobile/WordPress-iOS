@@ -1,5 +1,6 @@
 17.6
 -----
+* [**] Reader Post details: now shows a summary of Likes for the post. Tapping it displays the full list of Likes. [#16628]
 * [*] Fix notice overlapping the ActionSheet that displays the Site Icon controls. [#16579]
 
 17.5
