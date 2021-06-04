@@ -46,20 +46,23 @@ end
 
 before_all do |lane|
   # Skip these checks/steps for test lane (not needed for testing)
-  unless lane == :test_without_building
-    # Check that the env files exist
-    unless is_ci || File.file?(USER_ENV_FILE_PATH)
-      UI.user_error!("~/.wpios-env.default not found: Please copy fastlane/env/user.env-example to #{USER_ENV_FILE_PATH} and fill in the values")
-    end
-    unless File.file?(PROJECT_ENV_FILE_PATH)
-      UI.user_error!("project.env not found: Make sure your configuration is up to date with `rake dependencies`")
-    end
+  next if lane == :test_without_building
 
-    # This allows code signing to work on CircleCI
-    # It is skipped if this isn't running on CI
-    # See https://circleci.com/docs/2.0/ios-codesigning/
-    setup_circle_ci
+  # Ensure we use the latest version of the toolkit
+  check_for_toolkit_updates unless is_ci || ENV['FASTLANE_SKIP_TOOLKIT_UPDATE_CHECK']
+
+  # Check that the env files exist
+  unless is_ci || File.file?(USER_ENV_FILE_PATH)
+    UI.user_error!("~/.wpios-env.default not found: Please copy fastlane/env/user.env-example to #{USER_ENV_FILE_PATH} and fill in the values")
   end
+  unless File.file?(PROJECT_ENV_FILE_PATH)
+    UI.user_error!("project.env not found: Make sure your configuration is up to date with `rake dependencies`")
+  end
+
+  # This allows code signing to work on CircleCI
+  # It is skipped if this isn't running on CI
+  # See https://circleci.com/docs/2.0/ios-codesigning/
+  setup_circle_ci
 end
 
 platform :ios do
