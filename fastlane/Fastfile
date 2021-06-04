@@ -761,9 +761,9 @@ import "./ScreenshotFastfile"
 ########################################################################
 # Helper Lanes
 ########################################################################
-  desc "Get a list of pull request from `start_tag` to the current state"
+  desc "Get a list of pull request for a given `milestone`"
   lane :get_pullrequests_list do | options |
-    get_prs_list(repository: GHHELPER_REPO, start_tag:"#{options[:start_tag]}", report_path:"#{File.expand_path('~')}/wpios_prs_list.txt")
+    get_prs_list(repository: GHHELPER_REPO, milestone:"#{options[:milestone]}", report_path:"#{File.expand_path('~')}/wpios_prs_list.txt")
   end
 
   desc "Verifies that Gutenberg is referenced by release version and not by commit"
