@@ -94,7 +94,7 @@ APP_IDENTIFIER = 'com.automattic.jetpack'
     testflight(
       skip_waiting_for_build_processing: true,
       team_id: "299112",
-      api_key_path: File.join(PROJECT_ROOT_FOLDER, '.configure-files', 'app_store_connect_fastlane_api_key.json'),
+      api_key_path: File.join(SECRETS_DIR, 'app_store_connect_fastlane_api_key.json')
     )
 
     sentry_upload_dsym(
