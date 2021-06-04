@@ -1,10 +1,13 @@
 #!/bin/sh
 
 # The Secrets File Sources
-PRODUCTION_SECRETS_FILE="${PROJECT_ROOT}/.configure-files/WordPress-Secrets.swift"
-INTERNAL_SECRETS_FILE="${PROJECT_ROOT}/.configure-files/WordPress-Secrets-Internal.swift"
-ALPHA_SECRETS_FILE="${PROJECT_ROOT}/.configure-files/WordPress-Secrets-Alpha.swift"
-JETPACK_SECRETS_FILE="${PROJECT_ROOT}/.configure-files/Jetpack-Secrets.swift"
+SECRETS_ROOT="${PROJECT_ROOT}/.configure-files"
+
+PRODUCTION_SECRETS_FILE="${SECRETS_ROOT}/WordPress-Secrets.swift"
+INTERNAL_SECRETS_FILE="${SECRETS_ROOT}/WordPress-Secrets-Internal.swift"
+ALPHA_SECRETS_FILE="${SECRETS_ROOT}/WordPress-Secrets-Alpha.swift"
+JETPACK_SECRETS_FILE="${SECRETS_ROOT}/Jetpack-Secrets.swift"
+
 LOCAL_SECRETS_FILE="${SRCROOT}/Credentials/Secrets.swift"
 EXAMPLE_SECRETS_FILE="${SRCROOT}/Credentials/Secrets-example.swift"
 
