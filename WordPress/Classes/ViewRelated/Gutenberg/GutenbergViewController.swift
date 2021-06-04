@@ -827,7 +827,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             // It assumes this is being called when the editor has finished loading
             // If you need to refactor this, please ensure that the startup_time_ms property
             // is still reflecting the actual startup time of the editor
-            editorSession.start(unsupportedBlocks: unsupportedBlockNames, canViewEditorOnboarding: self.canViewEditorOnboarding())
+            editorSession.start(unsupportedBlocks: unsupportedBlockNames, canViewEditorOnboarding: canViewEditorOnboarding())
         }
 
         gutenbergSettings.hasLaunchedGutenbergEditor = true
@@ -1052,7 +1052,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
             .reusableBlock: isWPComSite,
-            .canViewEditorOnboarding: self.canViewEditorOnboarding() && !gutenbergSettings.hasLaunchedGutenbergEditor
+            .canViewEditorOnboarding: canViewEditorOnboarding() && !gutenbergSettings.hasLaunchedGutenbergEditor
         ]
     }
 
