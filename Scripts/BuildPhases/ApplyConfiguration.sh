@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 # The Secrets File Sources
 SECRETS_ROOT="${PROJECT_ROOT}/.configure-files"
 
