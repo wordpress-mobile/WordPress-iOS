@@ -498,25 +498,40 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Delete", @"Delete")
                                                            style:UIAlertActionStyleDestructive
                                                          handler:^(UIAlertAction *action) {
-                                                             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-                                                             CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
-                                                             
-                                                             NSError *error = nil;
-                                                             Comment *reloadedComment = (Comment *)[context existingObjectWithID:weakSelf.comment.objectID error:&error];
-                                                             
-                                                             if (error) {
-                                                                 DDLogError(@"Comment was deleted while awaiting for alertView confirmation");
-                                                                 return;
-                                                             }
-
-                                                             [CommentAnalytics trackCommentTrashedWithComment:[weakSelf comment]];
-                                                             [commentService deleteComment:reloadedComment success:nil failure:nil];
-                                                             
-                                                             // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
-                                                         }];
+                                                            [weakSelf deleteAction];
+                                                            // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
+                                                        }];
     [alertController addAction:cancelAction];
     [alertController addAction:deleteAction];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void) deleteAction
+{
+    __typeof(self) __weak weakSelf = self;
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    
+    NSError *error = nil;
+    Comment *reloadedComment = (Comment *)[context existingObjectWithID:self.comment.objectID error:&error];
+    
+    if (error) {
+        DDLogError(@"Comment was deleted while awaiting for alertView confirmation");
+        return;
+    }
+    
+    [CommentAnalytics trackCommentTrashedWithComment:[self comment]];
+    
+    [commentService deleteComment:reloadedComment success:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf displayNoticeWithTitle:NSLocalizedString(@"Successfully deleted comment", @"Message shown when a Comment is successfully deleted.") message:nil];
+        });
+    } failure:^(NSError *error) {
+        DDLogError(@"Error deleting comment: %@", error);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf displayNoticeWithTitle:NSLocalizedString(@"Error deleting comment", @"Message shown when a Comment deletion fails.") message:nil];
+        });
+    }];
 }
 
 - (void)spamComment
