@@ -3,7 +3,7 @@
 set -e
 
 # The Secrets File Sources
-SECRETS_ROOT="${PROJECT_ROOT}/.configure-files"
+SECRETS_ROOT="${HOME}/.configure/wordpress-ios/secrets"
 
 PRODUCTION_SECRETS_FILE="${SECRETS_ROOT}/WordPress-Secrets.swift"
 INTERNAL_SECRETS_FILE="${SECRETS_ROOT}/WordPress-Secrets-Internal.swift"
