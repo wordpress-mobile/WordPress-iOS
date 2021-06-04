@@ -15764,10 +15764,8 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$(SRCROOT)/Credentials/secrets-manifest.xcfilelist",
 			);
 			inputPaths = (
-				"$(SRCROOT)/../Scripts/BuildPhases/ApplyConfiguration.sh",
 			);
 			name = "Apply Configuration Secrets";
 			outputFileListPaths = (
