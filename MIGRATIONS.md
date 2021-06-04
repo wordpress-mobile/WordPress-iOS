@@ -3,6 +3,13 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 125
+
+@aerych 2021-06-04
+
+- `ReaderPost`: added  `canSubscribeComments` attribute. (required, default `false`, `Boolean`)
+- `ReaderPost`: added  `isSubscribedComments` attribute. (required, default `false`, `Boolean`)
+
 ## WordPress 124
 
 @scoutharris 2021-05-07
