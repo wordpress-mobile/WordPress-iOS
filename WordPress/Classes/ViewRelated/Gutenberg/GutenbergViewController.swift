@@ -699,6 +699,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         alertController.addAction(replaceAction)
         alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Button to cancel the replacement of a featured image."))
 
+        // iPad specific code
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+
         present(alertController, animated: true, completion: nil)
     }
 
