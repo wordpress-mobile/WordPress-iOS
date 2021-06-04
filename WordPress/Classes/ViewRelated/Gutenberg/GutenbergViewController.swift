@@ -827,10 +827,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             // It assumes this is being called when the editor has finished loading
             // If you need to refactor this, please ensure that the startup_time_ms property
             // is still reflecting the actual startup time of the editor
-            editorSession.start(unsupportedBlocks: unsupportedBlockNames, capabilities: self.editorCapabilities())
+            editorSession.start(unsupportedBlocks: unsupportedBlockNames, canViewEditorOnboarding: self.canViewEditorOnboarding())
         }
 
-        gutenbergSettings.setHasLaunchedGutenbergEditor(true)
+        gutenbergSettings.hasLaunchedGutenbergEditor = true
     }
 
     func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
@@ -1052,16 +1052,12 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
             .reusableBlock: isWPComSite,
-            .canViewEditorOnboarding: gutenbergSettings.canViewEditorOnboarding()
+            .canViewEditorOnboarding: self.canViewEditorOnboarding() && !gutenbergSettings.hasLaunchedGutenbergEditor
         ]
     }
 
-    func editorCapabilities() -> [String: Bool] {
-        var capabilities = [String: Bool]()
-        for (key, value) in gutenbergCapabilities() {
-            capabilities[key.rawValue] = value
-        }
-        return capabilities
+    func canViewEditorOnboarding() -> Bool {
+        gutenbergSettings.canViewEditorOnboarding()
     }
 
     private var isUnsupportedBlockEditorEnabled: Bool {

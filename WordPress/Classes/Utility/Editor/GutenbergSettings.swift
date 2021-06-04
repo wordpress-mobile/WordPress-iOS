@@ -178,12 +178,21 @@ class GutenbergSettings {
         }
 
         let rollout = GutenbergOnboardingRollout()
-        let hasLaunchedGutenbergEditor = database.bool(forKey: Key.hasLaunchedGutenbergEditor)
-        return rollout.isUserIdInPhaseRolloutPercentage(account.userID.intValue) && !hasLaunchedGutenbergEditor
+        return rollout.isUserIdInPhaseRolloutPercentage(account.userID.intValue)
     }
 
     func setHasLaunchedGutenbergEditor(_ hasLaunched: Bool) {
         database.set(hasLaunched, forKey: Key.hasLaunchedGutenbergEditor)
+    }
+
+    /// True if the user has previously launched the Gutenberg editor
+    var hasLaunchedGutenbergEditor: Bool {
+        get {
+            database.bool(forKey: Key.hasLaunchedGutenbergEditor)
+        }
+        set {
+            database.set(newValue, forKey: Key.hasLaunchedGutenbergEditor)
+        }
     }
 
     // MARK: - Gutenberg Choice Logic

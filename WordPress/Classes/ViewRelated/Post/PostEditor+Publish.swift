@@ -48,15 +48,15 @@ protocol PublishingEditor where Self: UIViewController {
 
     var prepublishingIdentifiers: [PrepublishingIdentifier] { get }
 
-    func editorCapabilities() -> [String: Bool]
+    func canViewEditorOnboarding() -> Bool
 }
 
 var postPublishedReceipt: Receipt?
 
 extension PublishingEditor where Self: UIViewController {
 
-    func editorCapabilities() -> [String: Bool] {
-        return [:]
+    func canViewEditorOnboarding() -> Bool {
+        return false
     }
 
     func publishingDismissed() {
@@ -170,7 +170,7 @@ extension PublishingEditor where Self: UIViewController {
             }
 
             if dismissWhenDone {
-                self.editorSession.end(outcome: action.analyticsEndOutcome, capabilities: self.editorCapabilities())
+                self.editorSession.end(outcome: action.analyticsEndOutcome, canViewEditorOnboarding: self.canViewEditorOnboarding())
             } else {
                 self.editorSession.forceOutcome(action.analyticsEndOutcome)
             }
@@ -316,7 +316,7 @@ extension PublishingEditor where Self: UIViewController {
         /// had been already confirmed by the user. In this case, we just close the editor.
         /// Otherwise, we'll show an Action Sheet with options.
         if post.shouldAttemptAutoUpload && post.canSave() {
-            editorSession.end(outcome: .cancel, capabilities: self.editorCapabilities())
+            editorSession.end(outcome: .cancel, canViewEditorOnboarding: self.canViewEditorOnboarding())
             /// If there are ongoing media uploads, save with completion processing
             if MediaCoordinator.shared.isUploadingMedia(for: post) {
                 resumeSaving()
@@ -326,7 +326,7 @@ extension PublishingEditor where Self: UIViewController {
         } else if post.canSave() {
             showPostHasChangesAlert()
         } else {
-            editorSession.end(outcome: .cancel, capabilities: self.editorCapabilities())
+            editorSession.end(outcome: .cancel, canViewEditorOnboarding: self.canViewEditorOnboarding())
             discardUnsavedChangesAndUpdateGUI()
         }
     }
@@ -431,7 +431,7 @@ extension PublishingEditor where Self: UIViewController {
 
         // Button: Discard
         alertController.addDestructiveActionWithTitle(discardTitle) { _ in
-            self.editorSession.end(outcome: .discard, capabilities: self.editorCapabilities())
+            self.editorSession.end(outcome: .discard, canViewEditorOnboarding: self.canViewEditorOnboarding())
             self.discardUnsavedChangesAndUpdateGUI()
         }
 

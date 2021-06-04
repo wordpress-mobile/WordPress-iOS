@@ -18,17 +18,17 @@ struct PostEditorAnalyticsSession {
         contentType = ContentType(post: post).rawValue
     }
 
-    mutating func start(unsupportedBlocks: [String] = [], capabilities: [String: Bool] = [:]) {
+    mutating func start(unsupportedBlocks: [String] = [], canViewEditorOnboarding: Bool = false) {
         assert(!started, "An editor session was attempted to start more than once")
         hasUnsupportedBlocks = !unsupportedBlocks.isEmpty
 
-        let properties = startEventProperties(with: unsupportedBlocks, capabilities: capabilities)
+        let properties = startEventProperties(with: unsupportedBlocks, canViewEditorOnboarding: canViewEditorOnboarding)
 
         WPAppAnalytics.track(.editorSessionStart, withProperties: properties)
         started = true
     }
 
-    private func startEventProperties(with unsupportedBlocks: [String], capabilities: [String: Bool]) -> [String: Any] {
+    private func startEventProperties(with unsupportedBlocks: [String], canViewEditorOnboarding: Bool) -> [String: Any] {
         // On Android, we are tracking this in milliseconds, which seems like a good enough time scale
         // Let's make sure to round the value and send an integer for consistency
         let startupTimeNanoseconds = DispatchTime.now().uptimeNanoseconds - startTime
@@ -41,9 +41,7 @@ struct PostEditorAnalyticsSession {
             properties[Property.unsupportedBlocks] = blocksJSON
         }
 
-        if let canViewEditorOnboarding = capabilities["canViewEditorOnboarding"] {
-            properties[Property.canViewEditorOnboarding] = canViewEditorOnboarding
-        }
+        properties[Property.canViewEditorOnboarding] = canViewEditorOnboarding
 
         return properties.merging(commonProperties, uniquingKeysWith: { $1 })
     }
@@ -66,13 +64,11 @@ struct PostEditorAnalyticsSession {
         }
     }
 
-    func end(outcome endOutcome: Outcome, capabilities: [String: Bool] = [:]) {
+    func end(outcome endOutcome: Outcome, canViewEditorOnboarding: Bool = false) {
         let outcome = self.outcome ?? endOutcome
         var properties: [String: Any] = [ Property.outcome: outcome.rawValue ].merging(commonProperties, uniquingKeysWith: { $1 })
 
-        if let canViewEditorOnboarding = capabilities["canViewEditorOnboarding"] {
-            properties[Property.canViewEditorOnboarding] = canViewEditorOnboarding
-        }
+        properties[Property.canViewEditorOnboarding] = canViewEditorOnboarding
 
         WPAppAnalytics.track(.editorSessionEnd, withProperties: properties)
     }
