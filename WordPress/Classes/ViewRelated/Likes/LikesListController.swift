@@ -5,14 +5,32 @@ import WordPressKit
 
 /// Convenience class that manages the data and display logic for likes.
 /// This is intended to be used as replacement for table view delegate and data source.
+
+
+@objc protocol LikesListControllerDelegate: class {
+    /// Reports to the delegate that the header cell has been tapped.
+    @objc optional func didSelectHeader()
+
+    /// Reports to the delegate that the user cell has been tapped.
+    /// - Parameter user: A LikeUser instance representing the user at the selected row.
+    func didSelectUser(_ user: LikeUser, at indexPath: IndexPath)
+
+    /// Ask the delegate to show an error view when fetching fails or there is no connection.
+    func showErrorView()
+
+    /// Send likes count to delegate.
+    @objc optional func updatedTotalLikes(_ totalLikes: Int)
+}
+
 class LikesListController: NSObject {
 
     private let formatter = FormattableContentFormatter()
     private let content: ContentIdentifier
     private let siteID: NSNumber
-    private let notification: Notification?
+    private var notification: Notification? = nil
+    private var readerPost: ReaderPost? = nil
     private let tableView: UITableView
-    private var loadingIndicator: UIActivityIndicatorView
+    private var loadingIndicator = UIActivityIndicatorView()
     private weak var delegate: LikesListControllerDelegate?
 
     // Used to control pagination.
@@ -50,11 +68,26 @@ class LikesListController: NSObject {
         CommentService(managedObjectContext: ContextManager.shared.mainContext)
     }()
 
-    // MARK: Lifecycle
+    // Notification Likes has a table header. Post Likes does not.
+    // Thus this is used to determine table layout depending on which is being shown.
+    private var showingNotificationLikes: Bool {
+        return notification != nil
+    }
 
-    init?(tableView: UITableView,
-          notification: Notification,
-          delegate: LikesListControllerDelegate? = nil) {
+    private var usersSectionIndex: Int {
+        return showingNotificationLikes ? 1 : 0
+    }
+
+    private var numberOfSections: Int {
+        return showingNotificationLikes ? 2 : 1
+    }
+
+    // MARK: Init
+
+    /// Init with Notification
+    ///
+    init?(tableView: UITableView, notification: Notification, delegate: LikesListControllerDelegate? = nil) {
+
         guard let siteID = notification.metaSiteID else {
             return nil
         }
@@ -84,17 +117,38 @@ class LikesListController: NSObject {
         self.tableView = tableView
         self.delegate = delegate
 
-        self.loadingIndicator = {
-            let loadingIndicator = UIActivityIndicatorView(style: .medium)
-            loadingIndicator.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 44)
-            return loadingIndicator
-        }()
+        super.init()
+        configureLoadingIndicator()
+    }
+
+    /// Init with ReaderPost
+    ///
+    init?(tableView: UITableView, post: ReaderPost, delegate: LikesListControllerDelegate? = nil) {
+
+        guard let postID = post.postID else {
+            return nil
+        }
+
+        content = .post(id: postID)
+        readerPost = post
+        siteID = post.siteID
+        self.tableView = tableView
+        self.delegate = delegate
+
+        super.init()
+        configureLoadingIndicator()
+    }
+
+    private func configureLoadingIndicator() {
+        loadingIndicator = UIActivityIndicatorView(style: .medium)
+        loadingIndicator.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 44)
     }
 
     // MARK: Methods
 
     /// Load likes data from remote, and display it in the table view.
     func refresh() {
+
         guard !isLoadingContent else {
             return
         }
@@ -116,6 +170,10 @@ class LikesListController: NSObject {
         }
 
         fetchLikes(success: { [weak self] users, totalLikes in
+            if self?.isFirstLoad == true {
+                self?.delegate?.updatedTotalLikes?(totalLikes)
+            }
+
             self?.likingUsers = users
             self?.totalLikes = totalLikes
             self?.totalLikesFetched = users.count
@@ -208,12 +266,12 @@ class LikesListController: NSObject {
 extension LikesListController: UITableViewDataSource, UITableViewDelegate {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return Constants.numberOfSections
+        return numberOfSections
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Header section
-        if section == Constants.headerSectionIndex {
+        if showingNotificationLikes && section == Constants.headerSectionIndex {
             return Constants.numberOfHeaderRows
         }
 
@@ -222,7 +280,7 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == Constants.headerSectionIndex {
+        if showingNotificationLikes && indexPath.section == Constants.headerSectionIndex {
             return headerCell()
         }
 
@@ -230,8 +288,7 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-
-        let isUsersSection = indexPath.section == Constants.usersSectionIndex
+        let isUsersSection = indexPath.section == usersSectionIndex
         let isLastRow = indexPath.row == totalLikesFetched - 1
 
         guard !isLoadingContent && hasMoreLikes && isUsersSection && isLastRow else {
@@ -252,8 +309,8 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        if indexPath.section == Constants.headerSectionIndex {
-            delegate?.didSelectHeader()
+        if showingNotificationLikes && indexPath.section == Constants.headerSectionIndex {
+            delegate?.didSelectHeader?()
             return
         }
 
@@ -312,20 +369,6 @@ private extension LikesListController {
 
 }
 
-// MARK: - Delegate Definitions
-
-protocol LikesListControllerDelegate: class {
-    /// Reports to the delegate that the header cell has been tapped.
-    func didSelectHeader()
-
-    /// Reports to the delegate that the user cell has been tapped.
-    /// - Parameter user: A LikeUser instance representing the user at the selected row.
-    func didSelectUser(_ user: LikeUser, at indexPath: IndexPath)
-
-    /// Ask the delegate to show an error view when fetching fails or there is no connection.
-    func showErrorView()
-}
-
 // MARK: - Private Definitions
 
 private extension LikesListController {
@@ -337,9 +380,7 @@ private extension LikesListController {
     }
 
     struct Constants {
-        static let numberOfSections = 2
         static let headerSectionIndex = 0
-        static let usersSectionIndex = 1
         static let headerRowIndex = 0
         static let numberOfHeaderRows = 1
     }
