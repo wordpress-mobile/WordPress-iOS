@@ -13,7 +13,7 @@ EXAMPLE_SECRETS_FILE="${SRCROOT}/Credentials/Secrets-example.swift"
 
 # The Secrets file destination
 SECRETS_DESTINATION_FILE="${BUILD_DIR}/Secrets/Secrets.swift"
-mkdir -p "basename $SECRETS_DESTINATION_FILE"
+mkdir -p $(dirname $SECRETS_DESTINATION_FILE)
 
 # If the WordPress Production Secrets are available for WordPress, use them
 if [ -f "$PRODUCTION_SECRETS_FILE" ] && [ "$BUILD_SCHEME" == "WordPress" ]; then
