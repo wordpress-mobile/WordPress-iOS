@@ -75,7 +75,7 @@ jobs:
           command: rake dependencies
       - run:
           name: TEST LANE
-          comman: bundle exec fastlane test_lane
+          command: bundle exec fastlane test_lane
       - run:
           name: Build for Testing
           command: bundle exec fastlane build_for_testing device:'<< parameters.device >>' ios-version:'<< parameters.ios-version >>'
