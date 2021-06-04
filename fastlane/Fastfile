@@ -16,7 +16,8 @@ BUILD_PRODUCTS_PATH = File.join(PROJECT_ROOT_FOLDER, 'Artifacts')
 # Env file paths to load
 ENV_FILE_NAME = '.wpios-env.default'
 USER_ENV_FILE_PATH = File.join(Dir.home, ENV_FILE_NAME)
-PROJECT_ENV_FILE_PATH = File.join(Dir.home, '.configure', 'wordpress-ios', 'secrets', 'project.env')
+SECRETS_DIR = File.join(Dir.home, '.configure', 'wordpress-ios', 'secrets')
+PROJECT_ENV_FILE_PATH = File.join(SECRETS_DIR, 'project.env')
 
 # Other defines used across multiple lanes
 REPOSITORY_NAME = 'WordPress-iOS'
@@ -549,7 +550,8 @@ platform :ios do
 
     testflight(
       skip_waiting_for_build_processing: true,
-      team_id: '299112'
+      team_id: '299112',
+      api_key_path: File.join(SECRETS_DIR, 'app_store_connect_fastlane_api_key.json')
     )
 
     sentry_upload_dsym(
