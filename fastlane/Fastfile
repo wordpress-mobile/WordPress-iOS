@@ -94,6 +94,12 @@ platform :ios do
 
   lane :test_lane do
     alpha_code_signing
+    # This should fail because the binary exists already
+    build_and_upload_itc(
+      skip_prechecks: true,
+      skip_confirm: true,
+      create_release: false
+    )
     UI.success('Test lane completed')
   end
 
