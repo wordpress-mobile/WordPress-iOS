@@ -331,7 +331,7 @@ DEPENDENCIES
   fastlane-plugin-appcenter (~> 1.8)
   fastlane-plugin-sentry
   fastlane-plugin-test_center
-  fastlane-plugin-wpmreleasetoolkit (~> 1.0)
+  fastlane-plugin-wpmreleasetoolkit (~> 1.1)
   octokit (~> 4.0)
   rake
   rmagick (~> 3.2.0)
