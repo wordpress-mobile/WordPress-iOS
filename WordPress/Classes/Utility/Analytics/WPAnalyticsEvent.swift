@@ -170,6 +170,9 @@ import Foundation
     // Blog preview by URL (that is, in a WebView)
     case blogUrlPreviewed
 
+    // Likes list shown from Reader Post details
+    case likeListOpened
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -464,6 +467,10 @@ import Foundation
         // Blog preview by URL (that is, in a WebView)
         case .blogUrlPreviewed:
             return "blog_url_previewed"
+
+        // Likes list shown from Reader Post details
+        case .likeListOpened:
+            return "like_list_opened"
         }
     }
 

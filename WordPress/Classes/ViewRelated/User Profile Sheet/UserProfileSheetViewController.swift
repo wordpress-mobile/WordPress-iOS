@@ -3,7 +3,9 @@ class UserProfileSheetViewController: UITableViewController {
     // MARK: - Properties
 
     private let user: LikeUser
-    private let statSource = ReaderStreamViewController.StatSource.notif_like_list_user_profile
+
+    // Used for the `source` property in Stats when a Blog is previewed by URL (that is, in a WebView).
+    var blogUrlPreviewedSource: String?
 
     private lazy var mainContext = {
         return ContextManager.sharedInstance().mainContext
@@ -148,7 +150,7 @@ private extension UserProfileSheetViewController {
 
     func showSiteTopicWithID(_ siteID: NSNumber) {
         let controller = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: false)
-        controller.statSource = statSource
+        controller.statSource = ReaderStreamViewController.StatSource.notif_like_list_user_profile
         let navController = UINavigationController(rootViewController: controller)
         present(navController, animated: true)
     }
@@ -161,7 +163,7 @@ private extension UserProfileSheetViewController {
             return
         }
 
-        WPAnalytics.track(.blogUrlPreviewed, properties: ["source": statSource.rawValue])
+        WPAnalytics.track(.blogUrlPreviewed, properties: ["source": blogUrlPreviewedSource as Any])
         contentCoordinator.displayWebViewWithURL(siteURL)
     }
 

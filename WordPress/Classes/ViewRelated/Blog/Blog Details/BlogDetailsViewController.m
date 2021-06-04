@@ -430,7 +430,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self scrollToElement:QuickStartTourElementViewSite];
         self.shouldScrollToViewSite = NO;
     }
-    if (![Feature enabled:FeatureFlagNewNavBarAppearance]) {
+    if (![Feature enabled:FeatureFlagNewNavBarAppearance] &&
+        [AppConfiguration showsWhatIsNew]) {
         [WPTabBarController.sharedInstance presentWhatIsNewOn:self];
     }
 }

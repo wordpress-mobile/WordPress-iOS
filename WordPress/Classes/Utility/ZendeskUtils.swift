@@ -1000,7 +1000,7 @@ private extension ZendeskUtils {
         static let unknownValue = "unknown"
         static let noValue = "none"
         static let platformTag = "iOS"
-        static let ticketSubject = AppConstants.ticketSubject
+        static let ticketSubject = AppConstants.Zendesk.ticketSubject
         static let blogSeperator = "\n----------\n"
         static let jetpackTag = "jetpack"
         static let wpComTag = "wpcom"
