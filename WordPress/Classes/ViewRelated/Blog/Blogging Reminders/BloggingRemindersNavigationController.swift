@@ -1,17 +1,13 @@
 import UIKit
 
+protocol ChildDrawerPositionable {
+    var preferredDrawerPosition: DrawerPosition { get }
+}
+
 class BloggingRemindersNavigationController: LightNavigationController {
 
-    private let viewControllerDrawerPositions: [DrawerPosition]
-
-    init(rootViewController: UIViewController, viewControllerDrawerPositions: [DrawerPosition]) {
-        self.viewControllerDrawerPositions = viewControllerDrawerPositions
-
-        super.init(rootViewController: rootViewController)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
     }
 
     override public var preferredContentSize: CGSize {
@@ -43,41 +39,13 @@ class BloggingRemindersNavigationController: LightNavigationController {
     }
 
     private func updateDrawerPosition() {
-        let index = max(min(viewControllers.count-1, viewControllerDrawerPositions.count-1), 0)
-        let newPosition = viewControllerDrawerPositions[index]
-
-//        updateHostedViewPreferredContentSize()
-
-        if let bottomSheet = self.parent as? BottomSheetViewController, let presentedVC = bottomSheet.presentedVC {
-            presentedVC.transition(to: newPosition)
+        if let bottomSheet = self.parent as? BottomSheetViewController,
+           let presentedVC = bottomSheet.presentedVC,
+           let currentVC = topViewController as? ChildDrawerPositionable {
+            presentedVC.transition(to: currentVC.preferredDrawerPosition)
         }
     }
-
-//    private func updateHostedViewPreferredContentSize() {
-//        if let viewController = viewControllers.last {
-//            preferredContentSize = preferredContentSizeForHostedView
-//            viewController.preferredContentSize = preferredContentSizeForHostedView
-//            viewController.view.frame = CGRect(origin: .zero, size: preferredContentSize)
-//            view.frame = CGRect(origin: .zero, size: preferredContentSize)
-//        }
-//    }
-    
-
-//    private var preferredContentSizeForHostedView: CGSize {
-//        guard let viewController = viewControllers.last else {
-//            return preferredContentSize
-//        }
-//
-//        if let hostView = viewController.view {
-//            let size = CGSize(width: view.bounds.width,
-//                              height: UIView.layoutFittingCompressedSize.height)
-//            return  hostView.systemLayoutSizeFitting(size)
-//        } else {
-//            return viewController.preferredContentSize
-//        }
-//    }
 }
-
 
 // MARK: - DrawerPresentable
 
