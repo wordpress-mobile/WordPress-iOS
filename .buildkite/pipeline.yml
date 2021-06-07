@@ -39,3 +39,30 @@ steps:
     depends_on: "build"
     agents:
       os: "macOS"
+
+  #################
+  # UI Tests
+  #################
+  - label: "🧪 UI Tests (iPhone)"
+    command: |
+      buildkite-agent artifact download build-products.tar .
+      tar -xf build-products.tar
+      bundle install
+      bundle exec pod install
+      rake mocks &
+      bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPhone 11" ios-version:"14.1"
+    depends_on: "build"
+    agents:
+      os: "macOS"
+
+  - label: "🧪 UI Tests (iPad)"
+    command: |
+      buildkite-agent artifact download build-products.tar .
+      tar -xf build-products.tar
+      bundle install
+      bundle exec pod install
+      rake mocks &
+      bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPad Air (4th generation)" ios-version:"14.1"
+    depends_on: "build"
+    agents:
+      os: "macOS"
