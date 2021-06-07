@@ -4,7 +4,7 @@ import UIKit
 class BloggingRemindersFlowIntroViewController: UIViewController {
 
     // MARK: - Subviews
-    
+
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
