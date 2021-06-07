@@ -353,6 +353,7 @@ fileprivate extension NewBlogDetailHeaderView {
             refreshMainStackViewAxis()
             addSubview(mainStackView)
             pinSubviewToAllEdges(mainStackView)
+            setupConstraintsForSiteSwitcher()
         }
 
         private func refreshMainStackViewAxis() {
@@ -367,6 +368,15 @@ fileprivate extension NewBlogDetailHeaderView {
                 titleButton.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.regular
                 subtitleButton.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.regular
             }
+        }
+
+        // MARK: - Constraints
+
+        private func setupConstraintsForSiteSwitcher() {
+            NSLayoutConstraint.activate([
+                siteSwitcherButton.heightAnchor.constraint(equalToConstant: Dimensions.siteSwitcherHeight),
+                siteSwitcherButton.widthAnchor.constraint(equalToConstant: Dimensions.siteSwitcherWidth)
+            ])
         }
     }
 }
