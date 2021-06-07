@@ -72,6 +72,49 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return stackView
     }()
 
+    lazy var bottomTipPanel: UIView = {
+        let view = UIView()
+        view.backgroundColor = .quaternaryBackground
+        view.layer.cornerRadius = Metrics.tipPanelCornerRadius
+
+        self.populateTipPanel(view)
+
+        return view
+    }()
+
+    func populateTipPanel(_ panel: UIView) {
+        let innerStack = UIStackView()
+        innerStack.spacing = Metrics.tipPanelHorizontalStackSpacing
+        innerStack.translatesAutoresizingMaskIntoConstraints = false
+        innerStack.axis = .horizontal
+        innerStack.alignment = .top
+        panel.addSubview(innerStack)
+        panel.pinSubviewToAllEdges(innerStack, insets: Metrics.tipPanelMargins)
+
+        let trophy = UIImageView(image: .gridicon(.trophy, size: Metrics.tipsTrophyImageSize))
+        trophy.tintColor = .secondaryLabel
+
+        let rightStack = UIStackView()
+        rightStack.spacing = Metrics.tipPanelVerticalStackSpacing
+        rightStack.axis = .vertical
+        rightStack.alignment = .leading
+
+        innerStack.addArrangedSubviews([trophy, rightStack])
+
+        let tipLabel = UILabel()
+        tipLabel.textColor = .secondaryLabel
+        tipLabel.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold)
+        tipLabel.text = TextContent.tipPanelTitle
+
+        let tipDescriptionLabel = UILabel()
+        tipDescriptionLabel.textColor = .secondaryLabel
+        tipDescriptionLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
+        tipDescriptionLabel.text = TextContent.tipPanelDescription
+        tipDescriptionLabel.numberOfLines = 0
+
+        rightStack.addArrangedSubviews([tipLabel, tipDescriptionLabel])
+    }
+
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
@@ -113,6 +156,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             promptLabel,
             daysOuterStackView,
             fillerView,
+            bottomTipPanel,
             bottomPadding,
             button,
             UIView()
@@ -183,6 +227,10 @@ private enum TextContent {
                                                         comment: "Prompt shown on the Blogging Reminders Settings screen.")
 
     static let nextButtonTitle = NSLocalizedString("Next", comment: "Title of button to navigate to the next screen.")
+
+    static let tipPanelTitle = NSLocalizedString("Tip", comment: "Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip.")
+
+    static let tipPanelDescription = NSLocalizedString("People who post at least twice weekly get 87% more views on their site.", comment: "Informative tip shown to user in the Blogging Reminders Settings screen.")
 }
 
 private enum Images {
@@ -190,10 +238,17 @@ private enum Images {
 }
 
 private enum Metrics {
-    static let stackSpacing: CGFloat = 24.0
     static let edgeMargins = UIEdgeInsets(top: 46, left: 20, bottom: 56, right: 20)
+    static let tipPanelMargins = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+
+    static let stackSpacing: CGFloat = 24.0
     static let innerStackSpacing: CGFloat = 8.0
     static let afterTitleLabelSpacing: CGFloat = 16.0
     static let afterPromptLabelSpacing: CGFloat = 40.0
+    static let tipPanelHorizontalStackSpacing: CGFloat = 12.0
+    static let tipPanelVerticalStackSpacing: CGFloat = 8.0
+
     static let buttonHeight: CGFloat = 44.0
+    static let tipPanelCornerRadius: CGFloat = 12.0
+    static let tipsTrophyImageSize = CGSize(width: 20, height: 20)
 }
