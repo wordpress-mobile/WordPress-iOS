@@ -8,13 +8,6 @@ protocol NotificationScheduler {
 extension UNUserNotificationCenter: NotificationScheduler {
 }
 
-/*
-class Test: UNUserNotificationCenter {
-    override func removePendingNotificationRequests(withIdentifiers identifiers: [String]) {
-        <#code#>
-    }
-}*/
-
 /// Main interface for scheduling blogging reminders
 ///
 class BloggingRemindersScheduler {
@@ -82,7 +75,7 @@ class BloggingRemindersScheduler {
     ///
     private let store: BloggingRemindersStore
 
-    /// The notification center
+    /// The notification scheduler
     ///
     private let notificationScheduler: NotificationScheduler
 
