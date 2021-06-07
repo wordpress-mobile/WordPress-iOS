@@ -1001,7 +1001,7 @@ extension NotificationsViewController {
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         selectedNotification = nil
 
-        let properties = [Stats.selectedFilter: filter.title]
+        let properties = [Stats.selectedFilter: filter.analyticsTitle]
         WPAnalytics.track(.notificationsTappedSegmentedControl, withProperties: properties)
 
         updateUnreadNotificationsForFilterTabChange()
@@ -1635,6 +1635,16 @@ private extension NotificationsViewController {
             case .comment:  return NSLocalizedString("Comments", comment: "Filters Comments Notifications")
             case .follow:   return NSLocalizedString("Follows", comment: "Filters Follows Notifications")
             case .like:     return NSLocalizedString("Likes", comment: "Filters Likes Notifications")
+            }
+        }
+
+        var analyticsTitle: String {
+            switch self {
+            case .none:     return "All"
+            case .unread:   return "Unread"
+            case .comment:  return "Comments"
+            case .follow:   return "Follows"
+            case .like:     return "Likes"
             }
         }
 
