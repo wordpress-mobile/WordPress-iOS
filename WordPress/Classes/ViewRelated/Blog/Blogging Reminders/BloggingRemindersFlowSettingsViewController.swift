@@ -115,12 +115,22 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         rightStack.addArrangedSubviews([tipLabel, tipDescriptionLabel])
     }
 
+    private let dismissButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(.gridicon(.cross), for: .normal)
+        button.tintColor = .secondaryLabel
+        button.addTarget(self, action: #selector(dismissTapped), for: .touchUpInside)
+        return button
+    }()
+
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .basicBackground
+        view.addSubview(dismissButton)
 
         configureStackView()
         configureConstraints()
@@ -134,7 +144,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     private func calculatePreferredContentSize() {
         let size = CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height)
-        preferredContentSize = stackView.systemLayoutSizeFitting(size)
+        preferredContentSize = view.systemLayoutSizeFitting(size)
     }
 
     // MARK: - View Configuration
@@ -172,8 +182,12 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
             stackView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
+
             button.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
-            button.widthAnchor.constraint(equalTo: stackView.widthAnchor)
+            button.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+
+            dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
+            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.right)
         ])
     }
 
@@ -204,6 +218,10 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     @objc private func notifyMeButtonTapped() {
         navigationController?.pushViewController(BloggingRemindersFlowCompletionViewController(), animated: true)
+    }
+
+    @objc private func dismissTapped() {
+        dismiss(animated: true, completion: nil)
     }
 }
 

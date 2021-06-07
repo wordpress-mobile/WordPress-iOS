@@ -48,12 +48,22 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         return button
     }()
 
+    private let dismissButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(.gridicon(.cross), for: .normal)
+        button.tintColor = .secondaryLabel
+        button.addTarget(self, action: #selector(dismissTapped), for: .touchUpInside)
+        return button
+    }()
+
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .basicBackground
+        view.addSubview(dismissButton)
 
         configureStackView()
         configureConstraints()
@@ -68,7 +78,7 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
 
     private func calculatePreferredContentSize() {
         let size = CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height)
-        preferredContentSize = stackView.systemLayoutSizeFitting(size)
+        preferredContentSize = view.systemLayoutSizeFitting(size)
     }
 
     // MARK: - View Configuration
@@ -79,26 +89,32 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
             imageView,
             titleLabel,
             promptLabel,
-            getStartedButton,
-            UIView()
+            getStartedButton
         ])
         stackView.setCustomSpacing(Metrics.afterPromptSpacing, after: promptLabel)
     }
 
     private func configureConstraints() {
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.edgeMarginSize),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMarginSize),
-            stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMarginSize),
-            stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeBottomAnchor, constant: -Metrics.edgeMarginSize),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.edgeMargins.left),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
+            stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
+            stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
 
             getStartedButton.heightAnchor.constraint(equalToConstant: Metrics.getStartedButtonHeight),
-            getStartedButton.widthAnchor.constraint(equalTo: stackView.widthAnchor)
+            getStartedButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+
+            dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
+            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.right)
         ])
     }
 
-    @objc func getStartedTapped() {
+    @objc private func getStartedTapped() {
         navigationController?.pushViewController(BloggingRemindersFlowSettingsViewController(), animated: true)
+    }
+
+    @objc private func dismissTapped() {
+        dismiss(animated: true, completion: nil)
     }
 }
 
@@ -136,8 +152,8 @@ private enum Images {
 }
 
 private enum Metrics {
+    static let edgeMargins = UIEdgeInsets(top: 46, left: 20, bottom: 20, right: 20)
     static let stackSpacing: CGFloat = 20.0
     static let afterPromptSpacing: CGFloat = 24.0
-    static let edgeMarginSize: CGFloat = 16.0
     static let getStartedButtonHeight: CGFloat = 44.0
 }
