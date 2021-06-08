@@ -1,5 +1,4 @@
 import UIKit
-import SwiftUI
 
 extension BlogDetailsViewController {
     func presentBloggingRemindersSettingsFlow() {
