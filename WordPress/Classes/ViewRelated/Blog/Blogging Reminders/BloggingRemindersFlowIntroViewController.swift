@@ -64,7 +64,7 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
     init(tracker: BloggingRemindersTracker) {
         self.tracker = tracker
 
-        super.init()
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -92,14 +92,6 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         tracker.screenShown(.main)
 
         super.viewDidAppear(animated)
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-
-        if isBeingDismissed {
-            tracker.flowDismissed(source: .main)
-        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -149,6 +141,7 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
 
     @objc private func dismissTapped() {
         tracker.buttonPressed(button: .dismiss, screen: .main)
+        tracker.flowDismissed(source: .main)
 
         dismiss(animated: true, completion: nil)
     }
@@ -159,6 +152,10 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
 extension BloggingRemindersFlowIntroViewController: DrawerPresentable {
     var collapsedHeight: DrawerHeight {
         return .intrinsicHeight
+    }
+
+    func handleDismiss() {
+        tracker.flowDismissed(source: .main)
     }
 }
 

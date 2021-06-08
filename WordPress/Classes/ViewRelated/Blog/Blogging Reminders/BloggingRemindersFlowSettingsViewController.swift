@@ -131,7 +131,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     init(tracker: BloggingRemindersTracker) {
         self.tracker = tracker
 
-        super.init()
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -158,14 +158,6 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         tracker.screenShown(.dayPicker)
 
         super.viewDidAppear(animated)
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-
-        if isBeingDismissed {
-            tracker.flowDismissed(source: .dayPicker)
-        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -256,6 +248,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     @objc private func dismissTapped() {
         tracker.buttonPressed(button: .dismiss, screen: .dayPicker)
+        tracker.flowDismissed(source: .dayPicker)
 
         dismiss(animated: true, completion: nil)
     }
@@ -264,6 +257,10 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 extension BloggingRemindersFlowSettingsViewController: DrawerPresentable {
     var collapsedHeight: DrawerHeight {
         return .maxHeight
+    }
+
+    func handleDismiss() {
+        tracker.flowDismissed(source: .dayPicker)
     }
 }
 

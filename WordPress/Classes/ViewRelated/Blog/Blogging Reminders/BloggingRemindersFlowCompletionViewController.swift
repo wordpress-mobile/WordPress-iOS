@@ -74,7 +74,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
     init(tracker: BloggingRemindersTracker) {
         self.tracker = tracker
 
-        super.init()
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {

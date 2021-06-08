@@ -73,4 +73,8 @@ extension BloggingRemindersNavigationController: DrawerPresentable {
 
         return .intrinsicHeight
     }
+
+    func handleDismiss() {
+        (children.last as? DrawerPresentable)?.handleDismiss()
+    }
 }
