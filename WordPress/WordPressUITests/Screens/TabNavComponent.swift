@@ -19,7 +19,7 @@ class TabNavComponent: BaseScreen {
         gotoMySiteScreen()
         let meButton = app.navigationBars.buttons["meBarButton"]
         meButton.tap()
-        return MeTabScreen()
+        return try! MeTabScreen()
     }
 
     @discardableResult
