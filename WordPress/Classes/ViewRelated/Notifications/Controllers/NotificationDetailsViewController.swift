@@ -987,6 +987,7 @@ private extension NotificationDetailsViewController {
 
     func displayUserProfile(_ user: LikeUser, from indexPath: IndexPath) {
         let userProfileVC = UserProfileSheetViewController(user: user)
+        userProfileVC.blogUrlPreviewedSource = "notif_like_list_user_profile"
         let bottomSheet = BottomSheetViewController(childViewController: userProfileVC)
 
         let sourceView = tableView.cellForRow(at: indexPath) ?? view

@@ -419,6 +419,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             }
 
             tableView.reloadRows(at: [indexPath], with: .automatic)
+        } else if page.isSitePostsPage {
+            showSitePostPageUneditableNotice()
+            return
         } else {
             QuickStartTourGuide.shared.endCurrentTour()
             tableView.reloadData()
@@ -429,6 +432,12 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         editPage(page)
+    }
+
+    private func showSitePostPageUneditableNotice() {
+        let sitePostPageUneditableNotice =  NSLocalizedString("The content of your latest posts page is automatically generated and cannot be edited.", comment: "Message informing the user that posts page cannot be edited")
+        let notice = Notice(title: sitePostPageUneditableNotice, feedbackType: .warning)
+        ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
 
     @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
@@ -755,7 +764,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func addEditAction(to controller: UIAlertController, for page: AbstractPost) {
-        if page.status == .trash {
+        guard let page = page as? Page else { return }
+
+        if page.status == .trash || page.isSitePostsPage {
             return
         }
 

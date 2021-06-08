@@ -132,7 +132,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureWebView()
         configureFeaturedImage()
         configureHeader()
-        configureLikesSummary()
         configureRelatedPosts()
         configureToolbar()
         configureNoResultsViewController()
@@ -147,6 +146,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        fetchLikes()
+
         configureFeaturedImage()
 
         featuredImage.configure(scrollView: scrollView,
@@ -286,10 +288,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         coordinator?.fetchRelatedPosts(for: post)
-
-        if FeatureFlag.readerPostLikes.enabled {
-            coordinator?.fetchLikes(for: post)
-        }
     }
 
     /// Shown an error
@@ -330,9 +328,13 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func updateLikes(users: [LikeUser], totalLikes: Int) {
-        guard !users.isEmpty else {
+        guard totalLikes > 0 else {
             hideLikesView()
             return
+        }
+
+        if likesSummary.superview == nil {
+            configureLikesSummary()
         }
 
         likesSummary.configure(users: users, totalLikes: totalLikes)
@@ -417,12 +419,22 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         headerContainerView.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true
     }
 
+    private func fetchLikes() {
+        guard FeatureFlag.readerPostLikes.enabled,
+              let post = post else {
+            return
+        }
+
+        coordinator?.fetchLikes(for: post)
+    }
+
     private func configureLikesSummary() {
         guard FeatureFlag.readerPostLikes.enabled else {
             hideLikesView()
             return
         }
 
+        likesSummary.delegate = coordinator
         likesContainerView.addSubview(likesSummary)
         likesContainerView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -438,6 +450,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         // Because the Related Posts table is constrained to the likesContainerView, simply hiding it leaves a gap.
         likesSummary.removeFromSuperview()
         likesContainerView.frame.size.height = 0
+        view.setNeedsDisplay()
     }
 
     private func configureRelatedPosts() {

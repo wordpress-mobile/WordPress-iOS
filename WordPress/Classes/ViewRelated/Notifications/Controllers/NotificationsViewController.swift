@@ -164,6 +164,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         }
 
         showNoResultsViewIfNeeded()
+        selectFirstNotificationIfAppropriate()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -188,7 +189,9 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         showNotificationPrimerAlertIfNeeded()
         showSecondNotificationsAlertIfNeeded()
 
-        WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+        if AppConfiguration.showsWhatIsNew {
+            WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -699,8 +702,11 @@ extension NotificationsViewController {
     /// Tracks: Details Event!
     ///
     private func trackWillPushDetails(for note: Notification) {
-        let properties = [Stats.noteTypeKey: note.type ?? Stats.noteTypeUnknown]
-        WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
+        // Ensure we don't track if the app has been launched by a push notification in the background
+        if UIApplication.shared.applicationState != .background {
+            let properties = [Stats.noteTypeKey: note.type ?? Stats.noteTypeUnknown]
+            WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
+        }
     }
 
     /// Failsafe: Make sure the Notifications List is onscreen!
@@ -995,7 +1001,7 @@ extension NotificationsViewController {
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         selectedNotification = nil
 
-        let properties = [Stats.selectedFilter: filter.title]
+        let properties = [Stats.selectedFilter: filter.analyticsTitle]
         WPAnalytics.track(.notificationsTappedSegmentedControl, withProperties: properties)
 
         updateUnreadNotificationsForFilterTabChange()
@@ -1513,28 +1519,11 @@ private extension NotificationsViewController {
 //
 extension NotificationsViewController: WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
-        guard let note = selectedNotification ?? fetchFirstNotification() else {
-            let controller = UIViewController()
-            controller.view.backgroundColor = .basicBackground
-            return controller
-
-        }
-
-        selectedNotification = note
-
-        trackWillPushDetails(for: note)
-        ensureNotificationsListIsOnscreen()
-
-        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .matcher || note.kind == .newPost {
-            return ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
-        }
-
-        if let detailsViewController = storyboard?.instantiateViewController(withIdentifier: "NotificationDetailsViewController") as? NotificationDetailsViewController {
-            configureDetailsViewController(detailsViewController, withNote: note)
-            return detailsViewController
-        }
-
-        return nil
+        // The first notification view will be populated by `selectFirstNotificationIfAppropriate`
+        // on viewWillAppear, so we'll just return an empty view here.
+        let controller = UIViewController()
+        controller.view.backgroundColor = .basicBackground
+        return controller
     }
 
     private func fetchFirstNotification() -> Notification? {
@@ -1646,6 +1635,16 @@ private extension NotificationsViewController {
             case .comment:  return NSLocalizedString("Comments", comment: "Filters Comments Notifications")
             case .follow:   return NSLocalizedString("Follows", comment: "Filters Follows Notifications")
             case .like:     return NSLocalizedString("Likes", comment: "Filters Likes Notifications")
+            }
+        }
+
+        var analyticsTitle: String {
+            switch self {
+            case .none:     return "All"
+            case .unread:   return "Unread"
+            case .comment:  return "Comments"
+            case .follow:   return "Follows"
+            case .like:     return "Likes"
             }
         }
 
