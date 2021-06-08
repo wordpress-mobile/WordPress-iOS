@@ -551,8 +551,7 @@ platform :ios do
 
     ios_merge_translators_strings(strings_folder: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources'))
 
-    extract_framework_translations_script_path = File.join(File.join(PROJECT_ROOT_FOLDER, 'Scripts',
-                                                                     'extract-framework-translations.swift'))
+    extract_framework_translations_script_path = File.join(PROJECT_ROOT_FOLDER, 'Scripts', 'extract-framework-translations.swift')
     sh(extract_framework_translations_script_path)
 
     gym(
