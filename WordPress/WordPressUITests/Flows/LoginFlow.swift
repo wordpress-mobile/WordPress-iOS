@@ -5,7 +5,7 @@ class LoginFlow {
 
     @discardableResult
     static func login(email: String, password: String) -> MySiteScreen {
-        logoutIfNeeded()
+        try! logoutIfNeeded()
 
         return PrologueScreen().selectContinue()
             .proceedWith(email: email)
@@ -17,7 +17,7 @@ class LoginFlow {
     // Login with self-hosted site via Site Address.
     @discardableResult
     static func login(siteUrl: String, username: String, password: String) -> MySiteScreen {
-        logoutIfNeeded()
+        try! logoutIfNeeded()
 
         return PrologueScreen().selectSiteAddress()
             .proceedWith(siteUrl: siteUrl)
@@ -38,7 +38,7 @@ class LoginFlow {
     // Login with WP site via Site Address.
     @discardableResult
     static func login(siteUrl: String, email: String, password: String) -> MySiteScreen {
-        logoutIfNeeded()
+        try! logoutIfNeeded()
 
         return PrologueScreen().selectSiteAddress()
             .proceedWithWP(siteUrl: siteUrl)
@@ -64,11 +64,11 @@ class LoginFlow {
         return TabNavComponent()
     }
 
-    static func logoutIfNeeded() {
-        XCTContext.runActivity(named: "Log out of app if currently logged in") { (activity) in
+    static func logoutIfNeeded() throws {
+        try XCTContext.runActivity(named: "Log out of app if currently logged in") { (activity) in
             if TabNavComponent.isLoaded() {
                 Logger.log(message: "Logging out...", event: .i)
-                let meScreen = try! TabNavComponent().gotoMeScreen()
+                let meScreen = try TabNavComponent().gotoMeScreen()
                 if meScreen.isLoggedInToWpcom() {
                     _ = meScreen.logoutToPrologue()
                 } else {

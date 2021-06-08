@@ -14,14 +14,14 @@ class EditorAztecTests: XCTestCase {
             .dismissNotificationAlertIfNeeded(.accept)
     }
 
-    override func tearDown() {
+    override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
         if editorScreen != nil && !TabNavComponent.isVisible() {
             EditorFlow.returnToMainEditorScreen()
             editorScreen.closeEditor()
         }
-        LoginFlow.logoutIfNeeded()
-        super.tearDown()
+        try LoginFlow.logoutIfNeeded()
+        try super.tearDownWithError()
     }
 
     // TODO: Re-enable Aztec tests but for editing an existing Aztec post.
