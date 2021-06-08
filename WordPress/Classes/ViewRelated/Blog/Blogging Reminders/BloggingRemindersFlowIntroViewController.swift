@@ -57,6 +57,23 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         return button
     }()
 
+    // MARK: - Initializers
+
+    private let tracker: BloggingRemindersTracker
+
+    init(tracker: BloggingRemindersTracker) {
+        self.tracker = tracker
+
+        super.init()
+    }
+
+    required init?(coder: NSCoder) {
+        // This VC is designed to be instantiated programmatically.  If we ever need to initialize this VC
+        // from a coder, we can implement support for it - but I don't think it's necessary right now.
+        // - diegoreymendez
+        fatalError("Use init(tracker:) instead")
+    }
+
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
@@ -69,6 +86,20 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         configureConstraints()
 
         navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        tracker.screenShown(.main)
+
+        super.viewDidAppear(animated)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        if isBeingDismissed {
+            tracker.flowDismissed(source: .main)
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -110,10 +141,15 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
     }
 
     @objc private func getStartedTapped() {
-        navigationController?.pushViewController(BloggingRemindersFlowSettingsViewController(), animated: true)
+        tracker.buttonPressed(button: .continue, screen: .main)
+
+        let flowSettingsViewController = BloggingRemindersFlowSettingsViewController(tracker: tracker)
+        navigationController?.pushViewController(flowSettingsViewController, animated: true)
     }
 
     @objc private func dismissTapped() {
+        tracker.buttonPressed(button: .dismiss, screen: .main)
+
         dismiss(animated: true, completion: nil)
     }
 }
