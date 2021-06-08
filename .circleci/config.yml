@@ -317,6 +317,7 @@ jobs:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
       - fix-image
+      - fix-swift-packages-ssh-github-fetching
       - git/shallow-checkout
       - ios/install-dependencies:
             bundle-install: true
