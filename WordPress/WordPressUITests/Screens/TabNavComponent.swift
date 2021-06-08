@@ -15,11 +15,11 @@ class TabNavComponent: BaseScreen {
         super.init(element: mySitesTabButton)
     }
 
-    func gotoMeScreen() -> MeTabScreen {
+    func gotoMeScreen() throws -> MeTabScreen {
         gotoMySiteScreen()
         let meButton = app.navigationBars.buttons["meBarButton"]
         meButton.tap()
-        return try! MeTabScreen()
+        return try MeTabScreen()
     }
 
     @discardableResult

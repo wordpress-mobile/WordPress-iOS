@@ -68,7 +68,7 @@ class LoginFlow {
         XCTContext.runActivity(named: "Log out of app if currently logged in") { (activity) in
             if TabNavComponent.isLoaded() {
                 Logger.log(message: "Logging out...", event: .i)
-                let meScreen = TabNavComponent().gotoMeScreen()
+                let meScreen = try! TabNavComponent().gotoMeScreen()
                 if meScreen.isLoggedInToWpcom() {
                     _ = meScreen.logoutToPrologue()
                 } else {

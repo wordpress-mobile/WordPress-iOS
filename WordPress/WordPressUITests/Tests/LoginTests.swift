@@ -16,8 +16,8 @@ class LoginTests: XCTestCase {
 
     // Unified email login/out
     // Replaces testEmailPasswordLoginLogout
-    func testWordPressLoginLogout() {
-        let prologueScreen = PrologueScreen().selectContinue()
+    func testWordPressLoginLogout() throws {
+        let prologueScreen = try PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWith(password: WPUITestCredentials.testWPcomPassword)
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
@@ -31,8 +31,8 @@ class LoginTests: XCTestCase {
 
     // Old email login/out
     // TODO: remove when unifiedAuth is permanent.
-    func testEmailPasswordLoginLogout() {
-        let welcomeScreen = WelcomeScreen().selectLogin()
+    func testEmailPasswordLoginLogout() throws {
+        let welcomeScreen = try WelcomeScreen().selectLogin()
             .selectEmailLogin()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithPassword()
@@ -49,8 +49,8 @@ class LoginTests: XCTestCase {
     /**
      This test opens safari to trigger the mocked magic link redirect
      */
-    func testEmailMagicLinkLogin() {
-        let welcomeScreen = WelcomeScreen().selectLogin()
+    func testEmailMagicLinkLogin() throws {
+        let welcomeScreen = try WelcomeScreen().selectLogin()
             .selectEmailLogin()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithLink()
