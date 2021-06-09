@@ -17,6 +17,9 @@ import WordPressKit
 
     /// Ask the delegate to show an error view when fetching fails or there is no connection.
     func showErrorView()
+
+    /// Send likes count to delegate.
+    @objc optional func updatedTotalLikes(_ totalLikes: Int)
 }
 
 class LikesListController: NSObject {
@@ -39,10 +42,6 @@ class LikesListController: NSObject {
 
     private var hasMoreLikes: Bool {
         return totalLikesFetched < totalLikes
-    }
-
-    private var showingNotificationLikes: Bool {
-        return notification != nil
     }
 
     private var isLoadingContent = false {
@@ -68,6 +67,20 @@ class LikesListController: NSObject {
     private lazy var commentService: CommentService = {
         CommentService(managedObjectContext: ContextManager.shared.mainContext)
     }()
+
+    // Notification Likes has a table header. Post Likes does not.
+    // Thus this is used to determine table layout depending on which is being shown.
+    private var showingNotificationLikes: Bool {
+        return notification != nil
+    }
+
+    private var usersSectionIndex: Int {
+        return showingNotificationLikes ? 1 : 0
+    }
+
+    private var numberOfSections: Int {
+        return showingNotificationLikes ? 2 : 1
+    }
 
     // MARK: Init
 
@@ -157,6 +170,10 @@ class LikesListController: NSObject {
         }
 
         fetchLikes(success: { [weak self] users, totalLikes in
+            if self?.isFirstLoad == true {
+                self?.delegate?.updatedTotalLikes?(totalLikes)
+            }
+
             self?.likingUsers = users
             self?.totalLikes = totalLikes
             self?.totalLikesFetched = users.count
@@ -249,7 +266,7 @@ class LikesListController: NSObject {
 extension LikesListController: UITableViewDataSource, UITableViewDelegate {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return showingNotificationLikes ? 2 : 1
+        return numberOfSections
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -271,9 +288,6 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-
-        let usersSectionIndex = showingNotificationLikes ? 1 : 0
-
         let isUsersSection = indexPath.section == usersSectionIndex
         let isLastRow = indexPath.row == totalLikesFetched - 1
 

@@ -57,7 +57,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .bloggingReminders:
             return true
         case .readerPostLikes:
-            return false
+            return true
         }
     }
 

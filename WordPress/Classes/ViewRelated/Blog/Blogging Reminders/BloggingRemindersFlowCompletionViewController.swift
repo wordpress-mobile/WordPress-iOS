@@ -103,12 +103,6 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
         super.viewDidAppear(animated)
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        tracker.flowCompleted()
-
-        super.viewDidDisappear(animated)
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         calculatePreferredContentSize()
@@ -153,12 +147,14 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
 
     @objc func doneButtonTapped() {
         tracker.buttonPressed(button: .continue, screen: .allSet)
+        tracker.flowCompleted()
 
         dismiss(animated: true, completion: nil)
     }
 
     @objc private func dismissTapped() {
         tracker.buttonPressed(button: .dismiss, screen: .allSet)
+        tracker.flowCompleted()
 
         dismiss(animated: true, completion: nil)
     }
@@ -169,6 +165,10 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
 extension BloggingRemindersFlowCompletionViewController: DrawerPresentable {
     var collapsedHeight: DrawerHeight {
         return .intrinsicHeight
+    }
+
+    func handleDismiss() {
+        tracker.flowCompleted()
     }
 }
 

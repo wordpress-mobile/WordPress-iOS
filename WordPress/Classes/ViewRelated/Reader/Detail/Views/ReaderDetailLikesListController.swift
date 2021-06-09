@@ -22,6 +22,7 @@ class ReaderDetailLikesListController: UITableViewController, NoResultsViewHost 
     override func viewDidLoad() {
         configureViewTitle()
         configureTable()
+        WPAnalytics.track(.likeListOpened, properties: ["list_type": "post", "source": "like_reader_list"])
     }
 
 }
@@ -41,8 +42,20 @@ private extension ReaderDetailLikesListController {
         tableView.delegate = likesListController
         tableView.dataSource = likesListController
 
+        // The separator is controlled by LikeUserTableViewCell
+        tableView.separatorStyle = .none
+
         // Call refresh to ensure that the controller fetches the data.
         likesListController?.refresh()
+    }
+
+    func displayUserProfile(_ user: LikeUser, from indexPath: IndexPath) {
+        let userProfileVC = UserProfileSheetViewController(user: user)
+        userProfileVC.blogUrlPreviewedSource = "reader_like_list_user_profile"
+        let bottomSheet = BottomSheetViewController(childViewController: userProfileVC)
+        let sourceView = tableView.cellForRow(at: indexPath) ?? view
+        bottomSheet.show(from: self, sourceView: sourceView)
+        WPAnalytics.track(.userProfileSheetShown, properties: ["source": "like_reader_list"])
     }
 
     struct TitleFormats {
@@ -63,7 +76,7 @@ private extension ReaderDetailLikesListController {
 extension ReaderDetailLikesListController: LikesListControllerDelegate {
 
     func didSelectUser(_ user: LikeUser, at indexPath: IndexPath) {
-        // TODO: show user profile
+        displayUserProfile(user, from: indexPath)
     }
 
     func showErrorView() {
@@ -73,4 +86,8 @@ extension ReaderDetailLikesListController: LikesListControllerDelegate {
                                      image: "wp-illustration-reader-empty")
     }
 
+    func updatedTotalLikes(_ totalLikes: Int) {
+        self.totalLikes = totalLikes
+        configureViewTitle()
+    }
 }
