@@ -1,6 +1,7 @@
 import Foundation
 import CoreTelephony
 import WordPressAuthenticator
+import WordPressKit
 
 import SupportSDK
 import ZendeskCoreSDK
@@ -191,8 +192,17 @@ extension NSNotification.Name {
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.currentSite, value: ZendeskUtils.getCurrentSiteDescription()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.appLanguage, value: ZendeskUtils.appLanguage))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.plan, value: ZendeskUtils.getHighestPriorityPlan(planService: planService)))
         requestConfig.customFields = ticketFields
+        ZendeskUtils.getZendeskMetadata() { result in
+            switch result {
+            case .success(let metadata):
+                ticketFields.append(CustomField(fieldId: TicketFieldIDs.plan, value: metadata.plan))
+                ticketFields.append(CustomField(fieldId: TicketFieldIDs.addOns, value: metadata.jetpackAddons))
+            case .failure(let error):
+                DDLogError("Unable to fetch zendesk plan - \(error.localizedDescription)")
+            }
+
+        }
 
         // Set tags
         requestConfig.tags = ZendeskUtils.getTags()
@@ -972,6 +982,21 @@ private extension ZendeskUtils {
         .sorted { $0.priority > $1.priority }
     }
 
+    static func getZendeskMetadata(completion: @escaping (Result<ZendeskMetadata, Error>) -> Void) {
+        let context = ContextManager.shared.mainContext
+        let accountService = AccountService(managedObjectContext: context)
+        let blogService = BlogService(managedObjectContext: context)
+        guard let account = accountService.defaultWordPressComAccount(),
+              let api = account.wordPressComRestApi,
+              let siteID = blogService.lastUsedOrFirstBlog()?.dotComID else {
+            return
+        }
+
+        let service = PlanServiceRemote(wordPressComRestApi: api)
+
+        service.getZendeskMetadata(siteID: Int(truncating: siteID), completion: completion)
+    }
+
     struct SupportPlan {
         let priority: Int
         let name: String
@@ -1031,6 +1056,7 @@ private extension ZendeskUtils {
         static let currentSite: Int64 = 360000103103
         static let sourcePlatform: Int64 = 360009311651
         static let appLanguage: Int64 = 360008583691
+        static let addOns: Int64 = 360025010672
     }
 
     struct LocalizedText {
