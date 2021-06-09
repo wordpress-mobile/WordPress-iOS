@@ -57,14 +57,12 @@ private extension ChangeUsernameViewController {
         viewModel.suggestionsListener = { [weak self] state, suggestions, reloadAllSections in
             switch state {
             case .loading:
-                let cell = self?.tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? SearchTableViewCell
-                cell?.showLoader()
+                self?.showLoader(true)
             case .success:
                 if suggestions.isEmpty {
                     WPAppAnalytics.track(.accountSettingsChangeUsernameSuggestionsFailed)
                 }
-                let cell = self?.tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? SearchTableViewCell
-                cell?.hideLoader()
+                self?.showLoader(false)
                 self?.suggestions = suggestions
                 self?.reloadSections(includingAllSections: reloadAllSections)
             default:
