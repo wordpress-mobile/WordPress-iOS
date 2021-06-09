@@ -1,7 +1,7 @@
 import UIKit
 
 extension BlogDetailsViewController {
-    func presentBloggingRemindersSettingsFlow(for blog: Blog, source: BloggingRemindersTracker.FlowStartSource) {
+    static func presentBloggingRemindersSettingsFlow(for blog: Blog, source: BloggingRemindersTracker.FlowStartSource, viewController: UIViewController) {
         let tracker = BloggingRemindersTracker(for: blog)
         tracker.flowStarted(source: source)
 
@@ -11,6 +11,6 @@ extension BlogDetailsViewController {
 
         let bottomSheet = BottomSheetViewController(childViewController: navigationController,
                                                     customHeaderSpacing: 0)
-        bottomSheet.show(from: self)
+        bottomSheet.show(from: viewController)
     }
 }

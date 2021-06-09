@@ -9,7 +9,13 @@ import UIKit
         selectionStyle = .none
 
         /// - TODO: inject actions here
-        let bloggingRemindersCardView = UIView.embedSwiftUIView(BloggingRemindersCard(getStartedButtonAction: {}, ellipsisButtonAction: {}))
+        let bloggingRemindersCardView = UIView.embedSwiftUIView(BloggingRemindersCard(getStartedButtonAction: {
+            let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+            guard let blog = blogService.lastUsedOrFirstBlog(), let controller = self.window?.rootViewController else {
+                return
+            }
+            BlogDetailsViewController.presentBloggingRemindersSettingsFlow(for: blog, source: .blogSettings, viewController: controller)
+        }, ellipsisButtonAction: {}))
         bloggingRemindersCardView.translatesAutoresizingMaskIntoConstraints = false
 
         contentView.addSubview(bloggingRemindersCardView)
