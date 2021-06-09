@@ -1,6 +1,3 @@
-# By default, run on macOS agents
-agents:
-  os: "macOS"
 
 # This is the default pipeline – it will build and test the app
 steps:
@@ -22,8 +19,6 @@ steps:
       bundle exec fastlane build_for_testing
       echo "--- 🗜 Zip Build Products"
       tar -cf build-products.tar DerivedData/Build/Products/
-    agents:
-      os: "macOS"
     artifact_paths:
       - build-products.tar
 
@@ -36,6 +31,42 @@ steps:
       tar -xf build-products.tar
       bundle install
       bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3
+    depends_on: "build"
+
+  #################
+  # Lint Translations
+  #################
+  - label: "🧹 Lint Translations"
+    command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
+    plugins:
+      - docker#v3.8.0:
+          image: "jkmassel/glotpress-linter:latest"
+    agents:
+      queue: "default"
+
+  #################
+  # UI Tests
+  #################
+  - label: "🧪 UI Tests (iPhone)"
+    command: |
+      buildkite-agent artifact download build-products.tar .
+      tar -xf build-products.tar
+      bundle install
+      bundle exec pod install
+      rake mocks &
+      bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPhone 11" ios-version:"14.1"
+    depends_on: "build"
+    agents:
+      os: "macOS"
+
+  - label: "🧪 UI Tests (iPad)"
+    command: |
+      buildkite-agent artifact download build-products.tar .
+      tar -xf build-products.tar
+      bundle install
+      bundle exec pod install
+      rake mocks &
+      bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPad Air (4th generation)" ios-version:"14.1"
     depends_on: "build"
     agents:
       os: "macOS"
