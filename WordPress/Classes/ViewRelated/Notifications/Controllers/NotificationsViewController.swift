@@ -164,6 +164,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         }
 
         showNoResultsViewIfNeeded()
+        selectFirstNotificationIfAppropriate()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -699,8 +700,11 @@ extension NotificationsViewController {
     /// Tracks: Details Event!
     ///
     private func trackWillPushDetails(for note: Notification) {
-        let properties = [Stats.noteTypeKey: note.type ?? Stats.noteTypeUnknown]
-        WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
+        // Ensure we don't track if the app has been launched by a push notification in the background
+        if UIApplication.shared.applicationState != .background {
+            let properties = [Stats.noteTypeKey: note.type ?? Stats.noteTypeUnknown]
+            WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
+        }
     }
 
     /// Failsafe: Make sure the Notifications List is onscreen!
@@ -1513,28 +1517,11 @@ private extension NotificationsViewController {
 //
 extension NotificationsViewController: WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
-        guard let note = selectedNotification ?? fetchFirstNotification() else {
-            let controller = UIViewController()
-            controller.view.backgroundColor = .basicBackground
-            return controller
-
-        }
-
-        selectedNotification = note
-
-        trackWillPushDetails(for: note)
-        ensureNotificationsListIsOnscreen()
-
-        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .matcher || note.kind == .newPost {
-            return ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
-        }
-
-        if let detailsViewController = storyboard?.instantiateViewController(withIdentifier: "NotificationDetailsViewController") as? NotificationDetailsViewController {
-            configureDetailsViewController(detailsViewController, withNote: note)
-            return detailsViewController
-        }
-
-        return nil
+        // The first notification view will be populated by `selectFirstNotificationIfAppropriate`
+        // on viewWillAppear, so we'll just return an empty view here.
+        let controller = UIViewController()
+        controller.view.backgroundColor = .basicBackground
+        return controller
     }
 
     private func fetchFirstNotification() -> Notification? {
