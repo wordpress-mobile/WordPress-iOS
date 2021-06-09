@@ -1,45 +1,7 @@
-import Foundation
+import UITestsFoundation
 import XCTest
 
-class BaseScreen {
-    enum UITestError: Error {
-        case unableToLocateElement
-    }
-
-    var app: XCUIApplication!
-    var expectedElement: XCUIElement!
-    var waitTimeout: Double!
-
-    init(element: XCUIElement) {
-        app = XCUIApplication()
-        expectedElement = element
-        waitTimeout = 20
-        try! waitForPage()
-    }
-
-    @discardableResult
-    func waitForPage() throws -> BaseScreen {
-        XCTContext.runActivity(named: "Confirm page \(self) is loaded") { (activity) in
-            let result = waitFor(element: expectedElement, predicate: "isEnabled == true", timeout: 20)
-            XCTAssert(result, "Page \(self) is not loaded.")
-            Logger.log(message: "Page \(self) is loaded", event: .i)
-        }
-        return self
-    }
-
-    @discardableResult
-    func waitFor(element: XCUIElement, predicate: String, timeout: Int? = nil) -> Bool {
-        let timeoutValue = timeout ?? 5
-
-        let elementPredicate = XCTNSPredicateExpectation(predicate: NSPredicate(format: predicate), object: element)
-        let result = XCTWaiter.wait(for: [elementPredicate], timeout: TimeInterval(timeoutValue))
-
-        return result == .completed
-    }
-
-    func isLoaded() -> Bool {
-        return expectedElement.exists
-    }
+extension BaseScreen {
 
     class func waitForLoadingIndicatorToDisappear(within timeout: TimeInterval) {
         let networkLoadingIndicator = XCUIApplication().otherElements.deviceStatusBars.networkLoadingIndicators.element

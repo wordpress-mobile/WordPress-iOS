@@ -530,6 +530,7 @@
 		3FA6405B2670CCD40064401E /* UITestsFoundation.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FA640592670CCD40064401E /* UITestsFoundation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3FA640612670CE210064401E /* UITestsFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA640572670CCD40064401E /* UITestsFoundation.framework */; };
 		3FA640622670CE260064401E /* UITestsFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA640572670CCD40064401E /* UITestsFoundation.framework */; };
+		3FA640642670CED80064401E /* BaseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA640632670CED80064401E /* BaseScreen.swift */; };
 		3FA640662670CEFF0064401E /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA640652670CEFE0064401E /* XCTest.framework */; };
 		3FA640672670D1290064401E /* UITestsFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA640572670CCD40064401E /* UITestsFoundation.framework */; };
 		3FAA18CC25797B85002B1911 /* UnconfiguredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAA18CB25797B85002B1911 /* UnconfiguredView.swift */; };
@@ -5086,6 +5087,7 @@
 		3FA640572670CCD40064401E /* UITestsFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UITestsFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA640592670CCD40064401E /* UITestsFoundation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UITestsFoundation.h; sourceTree = "<group>"; };
 		3FA6405A2670CCD40064401E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3FA640632670CED80064401E /* BaseScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseScreen.swift; sourceTree = "<group>"; };
 		3FA640652670CEFE0064401E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		3FAA18CB25797B85002B1911 /* UnconfiguredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconfiguredView.swift; sourceTree = "<group>"; };
 		3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetTodayData.swift; sourceTree = "<group>"; };
@@ -9186,8 +9188,9 @@
 		3FA640582670CCD40064401E /* UITestsFoundation */ = {
 			isa = PBXGroup;
 			children = (
-				3FA640592670CCD40064401E /* UITestsFoundation.h */,
+				3FA640632670CED80064401E /* BaseScreen.swift */,
 				3FA6405A2670CCD40064401E /* Info.plist */,
+				3FA640592670CCD40064401E /* UITestsFoundation.h */,
 			);
 			path = UITestsFoundation;
 			sourceTree = "<group>";
@@ -17993,6 +17996,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FA640642670CED80064401E /* BaseScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
