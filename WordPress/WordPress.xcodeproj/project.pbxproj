@@ -528,6 +528,8 @@
 		3FA53ED62565860900F4D9A2 /* HomeWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6DA04025646F96002AB88F /* HomeWidgetData.swift */; };
 		3FA59B9A258289E30073772F /* StatsValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA59B99258289E30073772F /* StatsValueView.swift */; };
 		3FA6405B2670CCD40064401E /* UITestsFoundation.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FA640592670CCD40064401E /* UITestsFoundation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3FA640612670CE210064401E /* UITestsFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA640572670CCD40064401E /* UITestsFoundation.framework */; };
+		3FA640622670CE260064401E /* UITestsFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA640572670CCD40064401E /* UITestsFoundation.framework */; };
 		3FAA18CC25797B85002B1911 /* UnconfiguredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAA18CB25797B85002B1911 /* UnconfiguredView.swift */; };
 		3FB34ACB25672A90001A74A6 /* HomeWidgetTodayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */; };
 		3FB34ADA25672AA5001A74A6 /* HomeWidgetTodayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */; };
@@ -7581,6 +7583,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FA640622670CE260064401E /* UITestsFoundation.framework in Frameworks */,
 				2611CC62A62F9E6BC25350FE /* Pods_WordPressScreenshotGeneration.framework in Frameworks */,
 				976E325EAC3B33524407BFC0 /* Pods_WordPressScreenshotGeneration.framework in Frameworks */,
 			);
@@ -7687,6 +7690,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FA640612670CE210064401E /* UITestsFoundation.framework in Frameworks */,
 				4B2DD0F29CD6AC353C056D41 /* Pods_WordPressUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
