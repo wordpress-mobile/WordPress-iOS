@@ -57,12 +57,12 @@ private extension ChangeUsernameViewController {
         viewModel.suggestionsListener = { [weak self] state, suggestions, reloadAllSections in
             switch state {
             case .loading:
-                self?.showLoader(true)
+                self?.showLoader()
             case .success:
                 if suggestions.isEmpty {
                     WPAppAnalytics.track(.accountSettingsChangeUsernameSuggestionsFailed)
                 }
-                self?.showLoader(false)
+                self?.hideLoader()
                 self?.suggestions = suggestions
                 self?.reloadSections(includingAllSections: reloadAllSections)
             default:

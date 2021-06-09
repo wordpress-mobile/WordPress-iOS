@@ -85,18 +85,6 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
         return description
     }
 
-    func showLoader(_ value: Bool) {
-        guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? SearchTableViewCell else {
-            return
-        }
-
-        if value {
-            cell.showLoader()
-        } else {
-            cell.hideLoader()
-        }
-    }
-
     // MARK: - SearchTableViewCellDelegate
 
     func startSearch(for searchTerm: String) {
@@ -235,7 +223,7 @@ extension SignupUsernameTableViewController {
             let api = account.wordPressComRestApi else {
                 return
         }
-        showLoader(true)
+        showLoader()
 
         let service = AccountSettingsService(userID: account.userID.intValue, api: api)
         service.suggestUsernames(base: searchTerm) { [weak self] (newSuggestions) in
@@ -243,9 +231,25 @@ extension SignupUsernameTableViewController {
                 WordPressAuthenticator.track(.signupEpilogueUsernameSuggestionsFailed)
             }
             self?.isSearching = false
-            self?.showLoader(false)
+            self?.hideLoader()
             addSuggestions(newSuggestions)
         }
+    }
+}
+
+// MARK: - Loader
+
+extension SignupUsernameTableViewController {
+    func showLoader() {
+        searchCell?.showLoader()
+    }
+
+    func hideLoader() {
+        searchCell?.hideLoader()
+    }
+
+    private var searchCell: SearchTableViewCell? {
+        tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? SearchTableViewCell
     }
 }
 
