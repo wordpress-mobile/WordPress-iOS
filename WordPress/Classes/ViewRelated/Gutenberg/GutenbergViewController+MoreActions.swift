@@ -1,5 +1,6 @@
 import Foundation
 import AutomatticTracks
+import WordPressFlux
 
 /// This extension handles the "more" actions triggered by the top right
 /// navigation bar button of Gutenberg editor.
@@ -24,6 +25,7 @@ extension GutenbergViewController {
 
             alert.addDefaultActionWithTitle(buttonTitle) { _ in
                 self.secondaryPublishButtonTapped()
+                ActionDispatcher.dispatch(NoticeAction.unlock)
             }
         }
 
@@ -37,15 +39,18 @@ extension GutenbergViewController {
 
         alert.addDefaultActionWithTitle(toggleModeTitle) { [unowned self] _ in
             self.toggleEditingMode()
+            ActionDispatcher.dispatch(NoticeAction.unlock)
         }
 
         alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [weak self] _ in
             self?.displayPreview()
+            ActionDispatcher.dispatch(NoticeAction.unlock)
         }
 
         if (post.revisions ?? []).count > 0 {
             alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [weak self] _ in
                 self?.displayHistory()
+                ActionDispatcher.dispatch(NoticeAction.unlock)
             }
         }
 
@@ -54,9 +59,12 @@ extension GutenbergViewController {
 
         alert.addDefaultActionWithTitle(settingsTitle) { [weak self] _ in
             self?.displayPostSettings()
+            ActionDispatcher.dispatch(NoticeAction.unlock)
         }
 
-        alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
+        alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle) { _ in
+            ActionDispatcher.dispatch(NoticeAction.unlock)
+        }
 
         if #available(iOS 14.0, *),
             let button = navigationBarManager.moreBarButtonItem.customView {
