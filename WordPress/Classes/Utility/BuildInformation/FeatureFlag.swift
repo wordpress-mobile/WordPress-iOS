@@ -18,7 +18,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case newLikeNotifications
     case bloggingReminders
     case readerPostLikes
-
+    case siteIconCreator
+    
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
         if let overriddenValue = FeatureFlagOverrideStore().overriddenValue(for: self) {
@@ -58,6 +59,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .readerPostLikes:
             return true
+        case .siteIconCreator:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 
@@ -116,6 +119,8 @@ extension FeatureFlag {
             return "Blogging Reminders"
         case .readerPostLikes:
             return "Reader Post Likes"
+        case .siteIconCreator:
+            return "Site Icon Creator"
         }
     }
 
