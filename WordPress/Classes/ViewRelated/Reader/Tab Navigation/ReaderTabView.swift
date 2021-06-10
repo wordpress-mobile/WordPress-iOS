@@ -197,7 +197,6 @@ private extension ReaderTabView {
             resetFilterButton.isHidden = false
             setFilterButtonTitle(existingFilter.topic.title)
         } else {
-            didTapResetFilterButton()
             addContentToContainerView()
         }
 
