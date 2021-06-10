@@ -19,17 +19,6 @@
 #import "AccountService.h"
 @import WordPressKit;
 
-
-NS_ENUM(NSInteger, SiteSettingsGeneral) {
-    SiteSettingsGeneralTitle = 0,
-    SiteSettingsGeneralTagline,
-    SiteSettingsGeneralURL,
-    SiteSettingsGeneralTimezone,
-    SiteSettingsGeneralLanguage,
-    SiteSettingsGeneralPrivacy,
-    SiteSettingsGeneralCount,
-};
-
 NS_ENUM(NSInteger, SiteSettingsAccount) {
     SiteSettingsAccountUsername = 0,
     SiteSettingsAccountPassword,
@@ -87,13 +76,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
 @interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, JetpackConnectionDelegate, PostCategoriesViewControllerDelegate>
 
-#pragma mark - General Section
-@property (nonatomic, strong) SettingTableViewCell *siteTitleCell;
-@property (nonatomic, strong) SettingTableViewCell *siteTaglineCell;
-@property (nonatomic, strong) SettingTableViewCell *addressTextCell;
-@property (nonatomic, strong) SettingTableViewCell *privacyTextCell;
-@property (nonatomic, strong) SettingTableViewCell *languageTextCell;
-@property (nonatomic, strong) SettingTableViewCell *timezoneTextCell;
 #pragma mark - Account Section
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
@@ -147,6 +129,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 {
     DDLogMethod();
     [super viewDidLoad];
+    [self.tableView registerClass:[SettingTableViewCell class] forCellReuseIdentifier:SettingsTableViewCellReuseIdentifier];
     [self.tableView registerNib:MediaQuotaCell.nib forCellReuseIdentifier:MediaQuotaCell.defaultReuseIdentifier];
 
     self.navigationItem.title = NSLocalizedString(@"Settings", @"Title for screen that allows configuration of your blog/site settings.");
@@ -212,14 +195,13 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             [sections addObject:@(SiteSettingsSectionJetpackSettings)];
         }
     }
-
+    
     if ([self.blog supports:BlogFeatureSiteManagement]) {
         [sections addObject:@(SiteSettingsSectionAdvanced)];
     }
 
     return sections;
 }
-
 
 #pragma mark - UITableViewDataSource
 
@@ -234,19 +216,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     switch (settingsSection) {
         case SiteSettingsSectionGeneral:
         {
-            NSInteger rowCount = SiteSettingsGeneralCount;
-            
-            // NOTE: Jorge Bernal (2018-01-16)
-            // Privacy and Language are only available for WordPress.com admins
-            if (!self.blog.supportsSiteManagementServices) {
-                rowCount -= 2;
-            }
-            // Timezone is only available for WordPress.com and Jetpack sites
-            if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
-                rowCount--;
-            }
-
-            return rowCount;
+            return [self generalSettingsVisibleRowCount];
         }
         case SiteSettingsSectionHomepage:
         {
@@ -653,53 +623,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return _timezoneTextCell;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForGeneralSettingsInRow:(NSInteger)row
-{
-    switch (row) {
-        case SiteSettingsGeneralTitle:
-        {
-            NSString *name = self.blog.settings.name ?: NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site");
-            [self.siteTitleCell setTextValue:name];
-            return self.siteTitleCell;
-        }
-        case SiteSettingsGeneralTagline:
-        {
-            NSString *tagline = self.blog.settings.tagline ?: NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site");
-            [self.siteTaglineCell setTextValue:tagline];
-            return self.siteTaglineCell;
-        }
-        case SiteSettingsGeneralURL:
-        {
-            if (self.blog.url) {
-                [self.addressTextCell setTextValue:self.blog.url];
-            } else {
-                [self.addressTextCell setTextValue:NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field")];
-            }
-            return self.addressTextCell;
-        }
-        case SiteSettingsGeneralPrivacy:
-        {
-            [self.privacyTextCell setTextValue:[BlogSiteVisibilityHelper titleForCurrentSiteVisibilityOfBlog:self.blog]];
-            return self.privacyTextCell;
-        }
-        case SiteSettingsGeneralLanguage:
-        {
-            NSInteger languageId = self.blog.settings.languageID.integerValue;
-            NSString *name = [[WordPressComLanguageDatabase new] nameForLanguageWithId:languageId];
-            
-            [self.languageTextCell setTextValue:name];
-            return self.languageTextCell;
-        }
-        case SiteSettingsGeneralTimezone:
-        {
-            [self.timezoneTextCell setTextValue:[self timezoneLabel]];
-            return self.timezoneTextCell;
-        }
-    }
-
-    return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
-}
-
 - (SettingTableViewCell *)startOverCell
 {
     if (_startOverCell) {
@@ -920,35 +843,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     };
     
     [self.navigationController pushViewController:languageViewController animated:YES];
-}
-
-- (void)tableView:(UITableView *)tableView didSelectInGeneralSectionRow:(NSInteger)row
-{
-    if (!self.blog.isAdmin) {
-        return;
-    }
-
-    switch (row) {
-        case SiteSettingsGeneralTitle:
-            [self showEditSiteTitleController];
-            break;
-
-        case SiteSettingsGeneralTagline:
-            [self showEditSiteTaglineController];
-            break;
-
-        case SiteSettingsGeneralPrivacy:
-            [self showPrivacySelector];
-            break;
-            
-        case SiteSettingsGeneralLanguage:
-            [self showLanguageSelectorForBlog:self.blog];
-            break;
-
-        case SiteSettingsGeneralTimezone:
-            [self showTimezoneSelector];
-            break;
-    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectInAccountSectionRow:(NSInteger)row

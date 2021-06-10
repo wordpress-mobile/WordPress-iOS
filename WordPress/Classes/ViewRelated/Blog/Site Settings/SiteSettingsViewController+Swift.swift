@@ -168,3 +168,117 @@ extension SiteSettingsViewController {
     fileprivate var ampSupportURL: String { return "https://support.wordpress.com/amp-accelerated-mobile-pages/" }
 
 }
+
+// MARK: - General Settings Table Section Management
+
+extension SiteSettingsViewController {
+
+    enum GeneralSettings {
+        case title
+        case tagline
+        case url
+        case privacy
+        case language
+        case timezone
+        case bloggingGoals
+    }
+
+    func generalSettingsVisibleRows() -> [GeneralSettings] {
+        var visibleRows: [GeneralSettings] = [.title, .tagline, .url]
+
+        if blog.supportsSiteManagementServices() {
+            visibleRows.append(contentsOf: [.privacy, .language])
+        }
+
+        if blog.supports(.wpComRESTAPI) {
+            visibleRows.append(.timezone)
+        }
+
+        return visibleRows
+    }
+
+    @objc
+    func generalSettingsVisibleRowCount() -> Int {
+        return generalSettingsVisibleRows().count
+    }
+
+    @objc
+    func tableView(_ tableView: UITableView, cellForGeneralSettingsInRow row: Int) -> UITableViewCell {
+        let visibleRows = generalSettingsVisibleRows()
+
+        switch visibleRows[row] {
+        case .title:
+            let name = blog.settings?.name ?? NSLocalizedString("A title for the site", comment: "Placeholder text for the title of a site")
+            siteTitleCell.textValue = name
+            return siteTitleCell
+        case .tagline:
+            let tagline = blog.settings?.tagline ?? NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site")
+            siteTaglineCell.textValue = tagline
+            return siteTaglineCell
+        case .url:
+            if let url = blog.url {
+                addressTextCell.textValue = url
+            } else {
+                addressTextCell.textValue = NSLocalizedString("http://my-site-address (URL)", comment: "(placeholder) Help the user enter a URL into the field")
+            }
+            return addressTextCell
+        case .privacy:
+            privacyTextCell.textValue = BlogSiteVisibilityHelper.titleForCurrentSiteVisibility(of: blog)
+            return privacyTextCell
+        case .language:
+            let name: String
+
+            if let languageId = blog.settings?.languageID.intValue {
+                name = WordPressComLanguageDatabase().nameForLanguageWithId(languageId)
+            } else {
+                // Since the settings can be nil, we need to handle the scenario... but it
+                // really should not be possible to reach this line.
+                name = NSLocalizedString("Undefined", comment: "When the App can't figure out what language a blog is configured to use.")
+            }
+
+            languageTextCell.textValue = name
+            return languageTextCell
+        case .timezone:
+            timezoneTextCell.textValue = timezoneLabel()
+            return timezoneTextCell
+        case .bloggingGoals:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCellReuseIdentifier) as! SettingTableViewCell
+
+            return cell
+        }
+    }
+
+    @objc
+    func tableView(_ tableView: UITableView, didSelectInGeneralSectionRow row: Int) {
+        guard blog.isAdmin else {
+            // For context about these lines of code, this was the result of a migration from ObjC to Swift.
+            // It's not entirely clear to me why we are showing these options to a non admin, and then bailing
+            // out when the user selects these options.  I'm pretty sure we need to review this, but it's beyond
+            // the scope of my current work, and I don't want to go down the rabbit hole.  For these reasons I'm
+            // maintaining the original logic in my migration.
+            //
+            // - diegoreymendez
+            return
+        }
+
+        let visibleRows = generalSettingsVisibleRows()
+
+        switch visibleRows[row] {
+        case .title:
+            showEditSiteTitleController()
+        case .tagline:
+            showEditSiteTaglineController()
+        case .privacy:
+            showPrivacySelector()
+        case .language:
+            showLanguageSelector(for: blog)
+        case .timezone:
+            showTimezoneSelector()
+        case .bloggingGoals:
+            // Do something
+            break
+        default:
+            break
+        }
+    }
+}
