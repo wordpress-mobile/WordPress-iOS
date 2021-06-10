@@ -17,15 +17,22 @@ NSString * const SettingsTableViewCellReuseIdentifier = @"org.wordpress.SettingT
         self.textLabel.text = label;
         [WPStyleGuide configureTableViewCell:self];
         self.detailTextLabel.textColor = [UIColor murielTextSubtle];
-        if (editable) {
-            self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            self.selectionStyle = UITableViewCellSelectionStyleDefault;
-        } else {
-            self.accessoryType = UITableViewCellAccessoryNone;
-            self.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
+        [self setEditable:editable];
     }
     return self;
+}
+
+- (void)setEditable:(BOOL)editable
+{
+    _editable = editable;
+    
+    if (editable) {
+        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        self.selectionStyle = UITableViewCellSelectionStyleDefault;
+    } else {
+        self.accessoryType = UITableViewCellAccessoryNone;
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
 }
 
 - (void)setTextValue:(NSString *)value

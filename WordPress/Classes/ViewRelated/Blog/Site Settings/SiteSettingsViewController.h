@@ -4,6 +4,19 @@
 @class SettingTableViewCell;
 @class TimeZoneObserver;
 
+typedef NS_ENUM(NSInteger, SiteSettingsSection) {
+    SiteSettingsSectionGeneral = 0,
+    SiteSettingsSectionHomepage,
+    SiteSettingsSectionAccount,
+    SiteSettingsSectionEditor,
+    SiteSettingsSectionWriting,
+    SiteSettingsSectionMedia,
+    SiteSettingsSectionDiscussion,
+    SiteSettingsSectionTraffic,
+    SiteSettingsSectionJetpackSettings,
+    SiteSettingsSectionAdvanced,
+};
+
 @interface SiteSettingsViewController : UITableViewController
 
 @property (nonatomic, strong,  readonly) Blog *blog;
@@ -14,17 +27,7 @@
 - (void)saveSettings;
 
 // General Settings: These were made available here to help with the transition to Swift.
-#pragma mark - General Settings Section
 
-@property (nonatomic, strong) SettingTableViewCell *siteTitleCell;
-@property (nonatomic, strong) SettingTableViewCell *siteTaglineCell;
-@property (nonatomic, strong) SettingTableViewCell *addressTextCell;
-@property (nonatomic, strong) SettingTableViewCell *privacyTextCell;
-@property (nonatomic, strong) SettingTableViewCell *languageTextCell;
-@property (nonatomic, strong) SettingTableViewCell *timezoneTextCell;
-
-- (void)showEditSiteTitleController;
-- (void)showEditSiteTaglineController;
 - (void)showPrivacySelector;
 - (void)showLanguageSelectorForBlog:(Blog *)blog;
 

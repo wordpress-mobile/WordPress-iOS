@@ -59,19 +59,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     SiteSettingsJetpackCount,
 };
 
-NS_ENUM(NSInteger, SiteSettingsSection) {
-    SiteSettingsSectionGeneral = 0,
-    SiteSettingsSectionHomepage,
-    SiteSettingsSectionAccount,
-    SiteSettingsSectionEditor,
-    SiteSettingsSectionWriting,
-    SiteSettingsSectionMedia,
-    SiteSettingsSectionDiscussion,
-    SiteSettingsSectionTraffic,
-    SiteSettingsSectionJetpackSettings,
-    SiteSettingsSectionAdvanced,
-};
-
 static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/empty-site";
 
 @interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, JetpackConnectionDelegate, PostCategoriesViewControllerDelegate>
@@ -557,72 +544,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return nil;
 }
 
-- (SettingTableViewCell *)siteTitleCell
-{
-    if (_siteTitleCell) {
-        return _siteTitleCell;
-    }
-    _siteTitleCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Site Title", @"Label for site title blog setting")
-                                                          editable:self.blog.isAdmin
-                                                   reuseIdentifier:nil];
-    return _siteTitleCell;
-}
-
-- (SettingTableViewCell *)siteTaglineCell
-{
-    if (_siteTaglineCell) {
-        return _siteTaglineCell;
-    }
-    _siteTaglineCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Tagline", @"Label for tagline blog setting")
-                                                          editable:self.blog.isAdmin
-                                                   reuseIdentifier:nil];
-    return _siteTaglineCell;
-}
-
-- (SettingTableViewCell *)addressTextCell
-{
-    if (_addressTextCell) {
-        return _addressTextCell;
-    }
-    _addressTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Address", @"Label for url blog setting")
-                                                          editable:NO
-                                                   reuseIdentifier:nil];
-    return _addressTextCell;
-}
-
-- (SettingTableViewCell *)privacyTextCell
-{
-    if (_privacyTextCell) {
-        return _privacyTextCell;
-    }
-    _privacyTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Privacy", @"Label for the privacy setting")
-                                                          editable:self.blog.isAdmin
-                                                   reuseIdentifier:nil];
-    return _privacyTextCell;
-}
-
-- (SettingTableViewCell *)languageTextCell
-{
-    if (_languageTextCell) {
-        return _languageTextCell;
-    }
-    _languageTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Language", @"Label for the privacy setting")
-                                                           editable:self.blog.isAdmin
-                                                    reuseIdentifier:nil];
-    return _languageTextCell;
-}
-
-- (SettingTableViewCell *)timezoneTextCell
-{
-    if (_timezoneTextCell) {
-        return _timezoneTextCell;
-    }
-    _timezoneTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Time Zone", @"Label for the timezone setting")
-                                                           editable:self.blog.isAdmin
-                                                    reuseIdentifier:nil];
-    return _timezoneTextCell;
-}
-
 - (SettingTableViewCell *)startOverCell
 {
     if (_startOverCell) {
@@ -864,47 +785,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     [self.navigationController pushViewController:siteTitleViewController animated:YES];
 }
 
-- (void)showEditSiteTitleController
-{
-    if (!self.blog.isAdmin) {
-        return;
-    }
-
-    SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.settings.name
-                                                                                               placeholder:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")
-                                                                                                      hint:@""];
-    siteTitleViewController.title = NSLocalizedString(@"Site Title", @"Title for screen that show site title editor");
-    siteTitleViewController.onValueChanged = ^(NSString *value) {
-        self.siteTitleCell.detailTextLabel.text = value;
-        if (![value isEqualToString:self.blog.settings.name]){
-            self.blog.settings.name = value;
-            [self saveSettings];
-        }
-    };
-    [self.navigationController pushViewController:siteTitleViewController animated:YES];
-}
-
-- (void)showEditSiteTaglineController
-{
-    if (!self.blog.isAdmin) {
-        return;
-    }
-
-    SettingsTextViewController *siteTaglineViewController = [[SettingsTextViewController alloc] initWithText:self.blog.settings.tagline
-                                                                                                           placeholder:NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site")
-                                                                                                        hint:NSLocalizedString(@"In a few words, explain what this site is about.",@"Explain what is the purpose of the tagline")];
-    siteTaglineViewController.title = NSLocalizedString(@"Tagline", @"Title for screen that show tagline editor");
-    siteTaglineViewController.onValueChanged = ^(NSString *value) {
-        NSString *normalizedTagline = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        self.siteTaglineCell.detailTextLabel.text = normalizedTagline;
-        if (![normalizedTagline isEqualToString:self.blog.settings.tagline]) {
-            self.blog.settings.tagline = normalizedTagline;
-            [self saveSettings];
-        }
-    };
-    [self.navigationController pushViewController:siteTaglineViewController animated:YES];
-}
-
 - (void)showDefaultCategorySelector
 {
     PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
@@ -1054,7 +934,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     NSInteger settingsSection = [self.tableSections[indexPath.section] intValue];
     switch (settingsSection) {
         case SiteSettingsSectionGeneral:
-            [self tableView:tableView didSelectInGeneralSectionRow:indexPath.row];
+            [self tableView:tableView didSelectInGeneralSettingsAt:indexPath];
             break;
 
         case SiteSettingsSectionHomepage:

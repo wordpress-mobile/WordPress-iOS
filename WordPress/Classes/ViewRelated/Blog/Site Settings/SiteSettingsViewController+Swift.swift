@@ -173,7 +173,7 @@ extension SiteSettingsViewController {
 
 extension SiteSettingsViewController {
 
-    enum GeneralSettings {
+    enum GeneralSettingsRow {
         case title
         case tagline
         case url
@@ -183,8 +183,8 @@ extension SiteSettingsViewController {
         case bloggingGoals
     }
 
-    func generalSettingsVisibleRows() -> [GeneralSettings] {
-        var visibleRows: [GeneralSettings] = [.title, .tagline, .url]
+    func generalSettingsVisibleRows() -> [GeneralSettingsRow] {
+        var visibleRows: [GeneralSettingsRow] = [.title, .tagline, .url]
 
         if blog.supportsSiteManagementServices() {
             visibleRows.append(contentsOf: [.privacy, .language])
@@ -192,6 +192,10 @@ extension SiteSettingsViewController {
 
         if blog.supports(.wpComRESTAPI) {
             visibleRows.append(.timezone)
+        }
+
+        if Feature.enabled(.bloggingReminders) {
+            visibleRows.append(.bloggingGoals)
         }
 
         return visibleRows
@@ -205,51 +209,30 @@ extension SiteSettingsViewController {
     @objc
     func tableView(_ tableView: UITableView, cellForGeneralSettingsInRow row: Int) -> UITableViewCell {
         let visibleRows = generalSettingsVisibleRows()
+        let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCellReuseIdentifier) as! SettingTableViewCell
 
         switch visibleRows[row] {
         case .title:
-            let name = blog.settings?.name ?? NSLocalizedString("A title for the site", comment: "Placeholder text for the title of a site")
-            siteTitleCell.textValue = name
-            return siteTitleCell
+            configureForTitle(cell)
         case .tagline:
-            let tagline = blog.settings?.tagline ?? NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site")
-            siteTaglineCell.textValue = tagline
-            return siteTaglineCell
+            configureForTagline(cell)
         case .url:
-            if let url = blog.url {
-                addressTextCell.textValue = url
-            } else {
-                addressTextCell.textValue = NSLocalizedString("http://my-site-address (URL)", comment: "(placeholder) Help the user enter a URL into the field")
-            }
-            return addressTextCell
+            configureForURL(cell)
         case .privacy:
-            privacyTextCell.textValue = BlogSiteVisibilityHelper.titleForCurrentSiteVisibility(of: blog)
-            return privacyTextCell
+            configureForPrivacy(cell)
         case .language:
-            let name: String
-
-            if let languageId = blog.settings?.languageID.intValue {
-                name = WordPressComLanguageDatabase().nameForLanguageWithId(languageId)
-            } else {
-                // Since the settings can be nil, we need to handle the scenario... but it
-                // really should not be possible to reach this line.
-                name = NSLocalizedString("Undefined", comment: "When the App can't figure out what language a blog is configured to use.")
-            }
-
-            languageTextCell.textValue = name
-            return languageTextCell
+            configureForLanguage(cell)
         case .timezone:
-            timezoneTextCell.textValue = timezoneLabel()
-            return timezoneTextCell
+            configureForTimezone(cell)
         case .bloggingGoals:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCellReuseIdentifier) as! SettingTableViewCell
-
-            return cell
+            configureForBloggingGoals(cell)
         }
+
+        return cell
     }
 
     @objc
-    func tableView(_ tableView: UITableView, didSelectInGeneralSectionRow row: Int) {
+    func tableView(_ tableView: UITableView, didSelectInGeneralSettingsAt indexPath: IndexPath) {
         guard blog.isAdmin else {
             // For context about these lines of code, this was the result of a migration from ObjC to Swift.
             // It's not entirely clear to me why we are showing these options to a non admin, and then bailing
@@ -263,11 +246,11 @@ extension SiteSettingsViewController {
 
         let visibleRows = generalSettingsVisibleRows()
 
-        switch visibleRows[row] {
+        switch visibleRows[indexPath.row] {
         case .title:
-            showEditSiteTitleController()
+            showEditSiteTitleController(indexPath: indexPath)
         case .tagline:
-            showEditSiteTaglineController()
+            showEditSiteTaglineController(indexPath: indexPath)
         case .privacy:
             showPrivacySelector()
         case .language:
@@ -280,5 +263,132 @@ extension SiteSettingsViewController {
         default:
             break
         }
+    }
+
+    // MARK: - Cell Configuration
+
+    private func configureForTitle(_ cell: SettingTableViewCell) {
+        let name = blog.settings?.name ?? NSLocalizedString("A title for the site", comment: "Placeholder text for the title of a site")
+
+        cell.editable = blog.isAdmin
+        cell.textLabel?.text = NSLocalizedString("Site Title", comment: "Label for site title blog setting")
+        cell.textValue = name
+    }
+
+    private func configureForTagline(_ cell: SettingTableViewCell) {
+        let tagline = blog.settings?.tagline ?? NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site")
+
+        cell.editable = blog.isAdmin
+        cell.textLabel?.text = NSLocalizedString("Tagline", comment: "Label for tagline blog setting")
+        cell.textValue = tagline
+    }
+
+    private func configureForURL(_ cell: SettingTableViewCell) {
+        let url: String = {
+            guard let url = blog.url else {
+                return NSLocalizedString("http://my-site-address (URL)", comment: "(placeholder) Help the user enter a URL into the field")
+            }
+
+            return url
+        }()
+
+        cell.editable = false
+        cell.textLabel?.text = NSLocalizedString("Address", comment: "Label for url blog setting")
+        cell.textValue = url
+    }
+
+    private func configureForPrivacy(_ cell: SettingTableViewCell) {
+        cell.editable = blog.isAdmin
+        cell.textLabel?.text = NSLocalizedString("Privacy", comment: "Label for the privacy setting")
+        cell.textValue = BlogSiteVisibilityHelper.titleForCurrentSiteVisibility(of: blog)
+    }
+
+    private func configureForLanguage(_ cell: SettingTableViewCell) {
+        let name: String
+
+        if let languageId = blog.settings?.languageID.intValue {
+            name = WordPressComLanguageDatabase().nameForLanguageWithId(languageId)
+        } else {
+            // Since the settings can be nil, we need to handle the scenario... but it
+            // really should not be possible to reach this line.
+            name = NSLocalizedString("Undefined", comment: "When the App can't figure out what language a blog is configured to use.")
+        }
+
+        cell.editable = blog.isAdmin
+        cell.textLabel?.text = NSLocalizedString("Language", comment: "Label for the privacy setting")
+        cell.textValue = name
+    }
+
+    private func configureForTimezone(_ cell: SettingTableViewCell) {
+        cell.editable = blog.isAdmin
+        cell.textLabel?.text = NSLocalizedString("Time Zone", comment: "Label for the timezone setting")
+        cell.textValue = timezoneLabel()
+    }
+
+    private func configureForBloggingGoals(_ cell: SettingTableViewCell) {
+        cell.editable = true
+        cell.textLabel?.text = "Blogging Goals"
+        cell.textValue = "Undefined"
+    }
+
+    // MARK: - Handling General Setting Cell Taps
+
+    private func showEditSiteTitleController(indexPath: IndexPath) {
+        guard blog.isAdmin else {
+            return
+        }
+
+        let siteTitleViewController = SettingsTextViewController(
+            text: blog.settings?.name ?? "",
+            placeholder: NSLocalizedString("A title for the site", comment: "Placeholder text for the title of a site"),
+            hint: "")
+
+        siteTitleViewController.title = NSLocalizedString("Site Title", comment: "Title for screen that show site title editor")
+        siteTitleViewController.onValueChanged = { [weak self] value in
+            guard let self = self,
+                  let cell = self.tableView.cellForRow(at: indexPath) else {
+                // No need to update anything if the cell doesn't exist.
+                return
+            }
+
+            cell.detailTextLabel?.text = value
+
+            if value != self.blog.settings?.name {
+                self.blog.settings?.name = value
+                self.saveSettings()
+            }
+        }
+
+        self.navigationController?.pushViewController(siteTitleViewController, animated: true)
+    }
+
+    private func showEditSiteTaglineController(indexPath: IndexPath) {
+        guard blog.isAdmin else {
+            return
+        }
+
+        let siteTaglineViewController = SettingsTextViewController(
+            text: blog.settings?.tagline ?? "",
+            placeholder: NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site"),
+            hint: NSLocalizedString("In a few words, explain what this site is about.", comment: "Explain what is the purpose of the tagline"))
+
+        siteTaglineViewController.title = NSLocalizedString("Tagline", comment: "Title for screen that show tagline editor")
+        siteTaglineViewController.onValueChanged = { [weak self] value in
+            guard let self = self,
+                  let cell = self.tableView.cellForRow(at: indexPath) else {
+                // No need to update anything if the cell doesn't exist.
+                return
+            }
+
+            let normalizedTagline = value.trimmingCharacters(in: .whitespacesAndNewlines)
+            cell.detailTextLabel?.text = normalizedTagline
+
+            if normalizedTagline != self.blog.settings?.tagline {
+                self.blog.settings?.tagline = normalizedTagline
+                self.saveSettings()
+            }
+        }
+
+        self.navigationController?.pushViewController(siteTaglineViewController, animated: true)
     }
 }
