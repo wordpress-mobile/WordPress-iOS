@@ -798,7 +798,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             case .close:
                 cancelEditing()
             case .more:
-                ActionDispatcher.dispatch(NoticeAction.lock)
                 displayMoreSheet()
             case .switchBlog:
                 blogPickerWasPressed()

@@ -11,6 +11,8 @@ extension GutenbergViewController {
     }
 
     func displayMoreSheet() {
+        // Dismisses and locks the Notices Store from displaying any new notices.
+        ActionDispatcher.dispatch(NoticeAction.lock)
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         if mode == .richText, let contentInfo = contentInfo {
