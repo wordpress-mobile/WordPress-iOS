@@ -237,7 +237,7 @@ import "./ScreenshotFastfile"
       check_translation_progress(
         glotpress_url: 'https://translate.wordpress.org/projects/apps/ios/dev/',
         abort_on_violations: false
-        )
+      )
       ios_update_metadata(options)
       #ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
       ios_bump_version_beta()
