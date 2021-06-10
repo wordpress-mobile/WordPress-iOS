@@ -491,18 +491,27 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 {
     __typeof(self) __weak weakSelf = self;
 
-    NSString *message = NSLocalizedString(@"Are you sure you want to delete this comment?",
-                                          @"Message asking for confirmation on comment deletion");
+    // If the Comment is currently Spam or Trash, the Trash action will permanently delete the Comment.
+    // Set the displayed messages accordingly.
+    BOOL willBePermanentlyDeleted = [self.comment.status isEqualToString:CommentStatusSpam] ||
+                                    [self.comment.status isEqualToString:CommentStatusUnapproved];
+    
+    NSString *trashMessage = NSLocalizedString(@"Are you sure you want to mark this comment as Trash?",
+                                               @"Message asking for confirmation before marking a comment as trash");
+    NSString *deleteMessage = NSLocalizedString(@"Are you sure you want to permanently delete this comment?",
+                                                @"Message asking for confirmation on comment deletion");
+    NSString *trashTitle = NSLocalizedString(@"Trash", @"Trash button title");
+    NSString *deleteTitle = NSLocalizedString(@"Delete", @"Delete button title");
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Confirm", @"Confirm")
-                                                                             message:message
+                                                                             message:willBePermanentlyDeleted ? deleteMessage : trashMessage
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
                                                            style:UIAlertActionStyleCancel
                                                          handler:nil];
     
-    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Delete", @"Delete")
+    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:willBePermanentlyDeleted ? deleteTitle : trashTitle
                                                            style:UIAlertActionStyleDestructive
                                                          handler:^(UIAlertAction *action) {
                                                             [weakSelf deleteAction];

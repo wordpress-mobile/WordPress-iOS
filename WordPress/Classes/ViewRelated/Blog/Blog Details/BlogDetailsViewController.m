@@ -1457,6 +1457,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsSectionHeaderView *view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:BlogDetailsSectionHeaderViewIdentifier];
     [view setTitle:title];
     view.ellipsisButtonDidTouch = ^(BlogDetailsSectionHeaderView *header) {
+        [NoticesDispatch lock];
         [weakSelf removeQuickStartSection:header];
     };
     return view;
@@ -1472,11 +1473,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UIAlertController *removeConfirmation = [UIAlertController alertControllerWithTitle:removeTitle message:removeMessage preferredStyle:UIAlertControllerStyleAlert];
     [removeConfirmation addCancelActionWithTitle:cancelTitle handler:^(UIAlertAction * _Nonnull action) {
         [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonCancelTapped];
+        [NoticesDispatch unlock];
     }];
     [removeConfirmation addDefaultActionWithTitle:confirmationTitle handler:^(UIAlertAction * _Nonnull action) {
         [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonRemoveTapped];
-        
         [[QuickStartTourGuide shared] removeFrom:self.blog];
+        [NoticesDispatch unlock];
     }];
     
     UIAlertController *removeSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -1485,7 +1487,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [removeSheet addDestructiveActionWithTitle:removeTitle handler:^(UIAlertAction * _Nonnull action) {
         [self presentViewController:removeConfirmation animated:YES completion:nil];
     }];
-    [removeSheet addCancelActionWithTitle:cancelTitle handler:nil];
+    [removeSheet addCancelActionWithTitle:cancelTitle handler:^(UIAlertAction * _Nonnull action) {
+        [NoticesDispatch unlock];
+    }];
     
     [self presentViewController:removeSheet animated:YES completion:nil];
 }
