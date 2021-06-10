@@ -1,17 +1,13 @@
 import UIKit
 
+protocol ChildDrawerPositionable {
+    var preferredDrawerPosition: DrawerPosition { get }
+}
+
 class BloggingRemindersNavigationController: LightNavigationController {
 
-    private let viewControllerDrawerPositions: [DrawerPosition]
-
-    init(rootViewController: UIViewController, viewControllerDrawerPositions: [DrawerPosition]) {
-        self.viewControllerDrawerPositions = viewControllerDrawerPositions
-
-        super.init(rootViewController: rootViewController)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
     }
 
     override public var preferredContentSize: CGSize {
@@ -43,19 +39,13 @@ class BloggingRemindersNavigationController: LightNavigationController {
     }
 
     private func updateDrawerPosition() {
-        let index = max(min(viewControllers.count-1, viewControllerDrawerPositions.count-1), 0)
-        let newPosition = viewControllerDrawerPositions[index]
-
-        if let viewController = viewControllers.last {
-            preferredContentSize = viewController.preferredContentSize
-        }
-
-        if let bottomSheet = self.parent as? BottomSheetViewController, let presentedVC = bottomSheet.presentedVC {
-            presentedVC.transition(to: newPosition)
+        if let bottomSheet = self.parent as? BottomSheetViewController,
+           let presentedVC = bottomSheet.presentedVC,
+           let currentVC = topViewController as? ChildDrawerPositionable {
+            presentedVC.transition(to: currentVC.preferredDrawerPosition)
         }
     }
 }
-
 
 // MARK: - DrawerPresentable
 
@@ -82,5 +72,9 @@ extension BloggingRemindersNavigationController: DrawerPresentable {
         }
 
         return .intrinsicHeight
+    }
+
+    func handleDismiss() {
+        (children.last as? DrawerPresentable)?.handleDismiss()
     }
 }

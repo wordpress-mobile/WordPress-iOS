@@ -430,7 +430,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self scrollToElement:QuickStartTourElementViewSite];
         self.shouldScrollToViewSite = NO;
     }
-    if (![Feature enabled:FeatureFlagNewNavBarAppearance]) {
+    if (![Feature enabled:FeatureFlagNewNavBarAppearance] &&
+        [AppConfiguration showsWhatIsNew]) {
         [WPTabBarController.sharedInstance presentWhatIsNewOn:self];
     }
 }
@@ -1110,6 +1111,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         return;
     }
     [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconTapped];
+    
+    [NoticesDispatch lock];
+    
     [self showUpdateSiteIconAlert];
 }
 
@@ -1192,16 +1196,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [updateIconAlertController addDefaultActionWithTitle:NSLocalizedString(@"Change Site Icon", @"Change site icon button")
                                                  handler:^(UIAlertAction *action) {
+                                                     [NoticesDispatch unlock];
                                                      [self updateSiteIcon];
                                                  }];
     if (self.blog.hasIcon) {
         [updateIconAlertController addDestructiveActionWithTitle:NSLocalizedString(@"Remove Site Icon", @"Remove site icon button")
                                                          handler:^(UIAlertAction *action) {
+                                                             [NoticesDispatch unlock];
                                                              [self removeSiteIcon];
                                                          }];
     }
     [updateIconAlertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                 handler:^(UIAlertAction *action) {
+                                                    [NoticesDispatch unlock];
                                                     [self startAlertTimer];
                                                 }];
 
@@ -1450,6 +1457,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsSectionHeaderView *view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:BlogDetailsSectionHeaderViewIdentifier];
     [view setTitle:title];
     view.ellipsisButtonDidTouch = ^(BlogDetailsSectionHeaderView *header) {
+        [NoticesDispatch lock];
         [weakSelf removeQuickStartSection:header];
     };
     return view;
@@ -1465,11 +1473,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UIAlertController *removeConfirmation = [UIAlertController alertControllerWithTitle:removeTitle message:removeMessage preferredStyle:UIAlertControllerStyleAlert];
     [removeConfirmation addCancelActionWithTitle:cancelTitle handler:^(UIAlertAction * _Nonnull action) {
         [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonCancelTapped];
+        [NoticesDispatch unlock];
     }];
     [removeConfirmation addDefaultActionWithTitle:confirmationTitle handler:^(UIAlertAction * _Nonnull action) {
         [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonRemoveTapped];
-        
         [[QuickStartTourGuide shared] removeFrom:self.blog];
+        [NoticesDispatch unlock];
     }];
     
     UIAlertController *removeSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -1478,7 +1487,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [removeSheet addDestructiveActionWithTitle:removeTitle handler:^(UIAlertAction * _Nonnull action) {
         [self presentViewController:removeConfirmation animated:YES completion:nil];
     }];
-    [removeSheet addCancelActionWithTitle:cancelTitle handler:nil];
+    [removeSheet addCancelActionWithTitle:cancelTitle handler:^(UIAlertAction * _Nonnull action) {
+        [NoticesDispatch unlock];
+    }];
     
     [self presentViewController:removeSheet animated:YES completion:nil];
 }
@@ -1737,7 +1748,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 }
 
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source
-{
+{    
     [self trackEvent:WPAnalyticsStatStatsAccessed fromSource:source];
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = self.blog;

@@ -1,6 +1,11 @@
 17.6
 -----
-
+* [**] Reader Post details: now shows a summary of Likes for the post. Tapping it displays the full list of Likes. [#16628]
+* [*] Fix notice overlapping the ActionSheet that displays the Site Icon controls. [#16579]
+* [*] Fix login error for WordPress.org sites to show inline. [#16614]
+* [*] Disables the ability to open the editor for Post Pages [#16369]
+* [*] Fixed an issue that could cause a crash when moderating Comments. [#16645]
+* [*] Fix notice overlapping the ActionSheet that displays the QuickStart Removal. [#16609]
 
 17.5
 -----

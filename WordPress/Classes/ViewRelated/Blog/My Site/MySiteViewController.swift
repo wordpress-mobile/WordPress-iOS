@@ -71,7 +71,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         guard FeatureFlag.newNavBarAppearance.enabled else {
             return
         }
-        WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+
+        if AppConfiguration.showsWhatIsNew {
+            WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+        }
 
         FancyAlertViewController.presentCustomAppIconUpgradeAlertIfNecessary(from: self)
     }

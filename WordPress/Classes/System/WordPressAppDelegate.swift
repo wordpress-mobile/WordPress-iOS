@@ -612,10 +612,12 @@ extension WordPressAppDelegate {
 
         let extraDebug = UserDefaults.standard.bool(forKey: "extra_debug")
 
-        let detailedVersionNumber = Bundle(for: type(of: self)).detailedVersionNumber() ?? unknown
+        let bundle = Bundle.main
+        let detailedVersionNumber = bundle.detailedVersionNumber() ?? unknown
+        let appName = bundle.object(forInfoDictionaryKey: "CFBundleName") as? String ?? unknown
 
         DDLogInfo("===========================================================================")
-        DDLogInfo("Launching WordPress for iOS \(detailedVersionNumber)...")
+        DDLogInfo("Launching \(appName) for iOS \(detailedVersionNumber)...")
         DDLogInfo("Crash count: \(crashCount)")
 
         #if DEBUG

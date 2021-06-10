@@ -40,8 +40,15 @@ extension BlogDetailsViewController {
 
         let actionItems: [ActionRow.Item] = [
             .init(image: .gridicon(.statsAlt), title: NSLocalizedString("Stats", comment: "Noun. Abbv. of Statistics. Links to a blog's Stats screen.")) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                BlogDetailsViewController.presentBloggingRemindersSettingsFlow(from: self, for: self.blog, source: .blogSettings)
+                return/*
                 self?.tableView.deselectSelectedRowWithAnimation(false)
                 self?.showStats(from: .button)
+ */
             },
             .init(image: .gridicon(.posts), title: NSLocalizedString("Posts", comment: "Noun. Title. Links to the blog's Posts screen.")) { [weak self] in
                 self?.tableView.deselectSelectedRowWithAnimation(false)
