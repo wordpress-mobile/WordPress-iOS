@@ -1,7 +1,7 @@
 import UIKit
 
 extension BlogDetailsViewController {
-    static func presentBloggingRemindersSettingsFlow(for blog: Blog, source: BloggingRemindersTracker.FlowStartSource, viewController: UIViewController) {
+    static func presentBloggingRemindersSettingsFlow(from viewController: UIViewController, for blog: Blog, source: BloggingRemindersTracker.FlowStartSource) {
         let tracker = BloggingRemindersTracker(for: blog)
         tracker.flowStarted(source: source)
 

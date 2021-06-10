@@ -141,7 +141,6 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
 
     @objc private func dismissTapped() {
         tracker.buttonPressed(button: .dismiss, screen: .main)
-        tracker.flowDismissed(source: .main)
 
         dismiss(animated: true, completion: nil)
     }

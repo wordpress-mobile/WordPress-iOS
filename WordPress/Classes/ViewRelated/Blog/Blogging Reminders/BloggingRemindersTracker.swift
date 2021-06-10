@@ -134,15 +134,6 @@ class BloggingRemindersTracker {
     /// Returns the parameters that should be present for all events tracked by this tracker.
     ///
     private func sharedProperties() -> [String: String] {
-        var properties = [
-            SharedPropertyName.blogType.rawValue: self.blogType.rawValue,
-            SharedPropertyName.blogURL.rawValue: self.blogURL
-        ]
-
-        if let blogID = blogID {
-            properties[SharedPropertyName.blogID.rawValue] = "\(blogID)"
-        }
-
-        return properties
+        [SharedPropertyName.blogType.rawValue: self.blogType.rawValue]
     }
 }

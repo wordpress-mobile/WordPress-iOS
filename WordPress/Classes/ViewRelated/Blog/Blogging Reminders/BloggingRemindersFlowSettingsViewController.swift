@@ -248,7 +248,6 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     @objc private func dismissTapped() {
         tracker.buttonPressed(button: .dismiss, screen: .dayPicker)
-        tracker.flowDismissed(source: .dayPicker)
 
         dismiss(animated: true, completion: nil)
     }

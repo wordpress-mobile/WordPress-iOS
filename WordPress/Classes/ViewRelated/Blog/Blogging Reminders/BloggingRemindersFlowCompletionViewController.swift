@@ -154,7 +154,6 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
 
     @objc private func dismissTapped() {
         tracker.buttonPressed(button: .dismiss, screen: .allSet)
-        tracker.flowCompleted()
 
         dismiss(animated: true, completion: nil)
     }
