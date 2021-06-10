@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-04 10:25:31+0000 */
+/* Translation-Revision-Date: 2021-06-04 18:18:27+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -1529,7 +1529,7 @@
 "Complete (%i)" = "Afgerond (%i)";
 
 /* The action is completed */
-"Completed" = "Voltooid";
+"Completed" = "Afgerond";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Check your site stats" = "Afgerond: Kies je site statistieken";
@@ -2136,7 +2136,7 @@
 /* Title for button that disconnects Jetpack from the site
    Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.
    Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog. */
-"Disconnect" = "Verbinding verbreken";
+"Disconnect" = "Verbreken";
 
 /* Message to show when Publicize disconnect failed */
 "Disconnect failed" = "Loskoppelen mislukt";
@@ -3588,7 +3588,7 @@
 "Like" = "Vind ik leuk";
 
 /* A comment is marked as liked */
-"Liked" = "Leuk gevonden";
+"Liked" = "Liked";
 
 /* Filters Likes Notifications
    Label for Period Overview likes
@@ -5888,7 +5888,7 @@
 "Select to show everyone's posts." = "Selecteer om berichten van iedereen te tonen.";
 
 /* Blog list page edit mode header label */
-"Select which sites will be shown in the site picker." = "Selecteer welke sites worden getoond in de sitepicker.";
+"Select which sites will be shown in the site picker." = "Selecteer welke sites worden weergegeven in de site kiezer.";
 
 /* Screen reader text to represent the selected state of a button */
 "Selected" = "Geselecteerd";
@@ -5939,7 +5939,7 @@
 "Serve images from our servers" = "Serveer afbeeldingen van onze servers";
 
 /* Label for connected service in Publicize stat. */
-"Service" = "Service";
+"Service" = "Dienst";
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "Stel uitgelichte afbeelding in";
@@ -6810,7 +6810,7 @@
 "There has been an unexpected error while updating your Notification Settings" = "Er is een onverwachte fout opgetreden bij het bijwerken van je meldingsinstellingen";
 
 /* Displayed whenever a Comment Update Fails */
-"There has been an unexpected error while updating your comment" = "Er is een onverwachte fout opgetreden bij het bijwerken van je reactie";
+"There has been an unexpected error while updating your comment" = "Er is een onverwachte fout opgetreden bij het updaten van je reactie";
 
 /* Generic error alert message */
 "There has been an unexpected error." = "Er was een onverwachte fout.";
@@ -6990,7 +6990,7 @@
 "Threat ignored." = "Bedreiging genegeerd.";
 
 /* Thumbnail image size. Should be the same as in core WP. */
-"Thumbnail" = "Miniatuur";
+"Thumbnail" = "Thumbnail";
 
 /* Message shown if a thumbnail preview of a media item unavailable. */
 "Thumbnail unavailable." = "Thumbnail niet beschikbaar.";
@@ -7998,7 +7998,7 @@
 "Web Address" = "Web adres";
 
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
-"Web Display Settings" = "Webweergave-instellingen";
+"Web Display Settings" = "Web weergave instellingen";
 
 /* Example Reader feed title */
 "Web News" = "Webnieuws";
@@ -8282,7 +8282,7 @@
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Je kunt altijd inloggen met een link zoals degene die je zojuist hebt gebruikt, maar kunt ook een wachtwoord instellen, als je wilt.";
 
 /* Action sheet title for setting Today Widget site to the current one */
-"You can display a single site's stats in the iOS Today\/Notification Center view." = "Je kunt de statistieken van één site weergeven in de weergave iOS Vandaag\/Berichtencentrum.";
+"You can display a single site's stats in the iOS Today\/Notification Center view." = "Je kunt de statistieken van één site weergeven in de weergave iOS Vandaag\/Kennisgeving centrum.";
 
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "Je kunt berichten op een bepaalde site volgen door deze te volgen.";

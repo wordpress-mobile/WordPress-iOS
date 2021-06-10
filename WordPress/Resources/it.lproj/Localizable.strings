@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-28 15:54:08+0000 */
+/* Translation-Revision-Date: 2021-06-10 18:32:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -28,19 +28,19 @@
 "%1$@ on %2$@" = "%1$@ su %2$@";
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. %1$@ is a placeholder for the string 'Enter your server credentials'. */
-"%1$@ to enable one click site restores from backups." = "%1$@ to enable one click site restores from backups.";
+"%1$@ to enable one click site restores from backups." = "%1$@ per abilitare i ripristini del sito con un clic dai backup.";
 
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
-"%1$@ to fix this threat." = "%1$@ to fix this threat.";
+"%1$@ to fix this threat." = "%1$@ per risolvere questa minaccia.";
 
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
-"%1$@ to fix threats." = "%1$@ to fix threats.";
+"%1$@ to fix threats." = "%1$@ per risolvere le minacce.";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d blogger likes this." = "%1$d blogger likes this.";
+"%1$d blogger likes this." = "Piace a %1$d blogger.";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d bloggers like this." = "%1$d bloggers like this.";
+"%1$d bloggers like this." = "Piace a %1$d blogger.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d di %2$d completati";
@@ -52,7 +52,7 @@
 "%1$d unseen posts" = "%1$d articoli non letti";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
-"%1$s transformed to %2$s" = "%1$s transformed to %2$s";
+"%1$s transformed to %2$s" = "%1$s trasformato in %2$s";
 
 /* translators: accessibility text. Inform about current value. %1$s: Control label %2$s: setting label (example: width), %3$s: Current value. %4$s: value measurement unit (example: pixels) */
 "%1$s. %2$s is %3$s %4$s." = "%1$s. %2$s è %3$s %4$s.";
@@ -209,7 +209,7 @@
 "%li words, %li characters" = "%1$li parole, %2$li caratteri";
 
 /* translators: %s: Block name e.g. \"Image block\" */
-"%s block" = "%s block";
+"%s block" = "Blocco %s";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s opzioni blocco";
@@ -221,16 +221,16 @@
 "%s block. This block has invalid content" = "Blocco %s. Questo blocco ha contenuti non validi";
 
 /* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "%s converted to regular blocks";
+"%s converted to regular blocks" = "%s convertito in blocchi regolari";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"%s has URL set" = "%s has URL set";
+"%s has URL set" = "%s ha un URL impostato";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"%s has no URL set" = "%s has no URL set";
+"%s has no URL set" = "%s non ha un URL impostato";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"%s social icon" = "%s social icon";
+"%s social icon" = "Icona social %s";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "'%s' non è pienamente supportato";
@@ -358,7 +358,7 @@
 "About" = "Info";
 
 /* Link to About screen for Jetpack for iOS */
-"About Jetpack for iOS" = "About Jetpack for iOS";
+"About Jetpack for iOS" = "Informazioni su Jetpack per iOS";
 
 /* My Profile 'About me' label */
 "About Me" = "Su di me";
@@ -492,19 +492,19 @@
 "Add caption" = "Aggiungi didascalia";
 
 /* No comment provided by engineer. */
-"Add image or video" = "Add image or video";
+"Add image or video" = "Aggiungi immagine o video";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Aggiungi un'immagine, o un avatar, per rappresentare questo nuovo account.";
 
 /* No comment provided by engineer. */
-"Add label…" = "Add label…";
+"Add label…" = "Aggiungi etichetta...";
 
 /* No comment provided by engineer. */
 "Add link text" = "Aggiungi testo del link";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"Add link to %s" = "Add link to %s";
+"Add link to %s" = "Aggiungi il link a %s";
 
 /* No comment provided by engineer. */
 "Add menu item above" = "Aggiungi voce di menu sopra";
@@ -598,7 +598,7 @@
 "All of your selected items are now restored back to %1$@." = "Tutti gli elementi selezionati sono ora ripristinati al giorno %1$@.";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen. */
-"All set!" = "All set!";
+"All set!" = "Tutto impostato.";
 
 /* Title of the congratulation screen that appears when all the tasks are completed */
 "All tasks complete" = "Tutte le attività completate";
@@ -816,7 +816,7 @@
 "Are you sure you want to update?" = "Desideri aggiornare?";
 
 /* An example tag used in the login prologue screens. */
-"Art" = "Art";
+"Art" = "Arte";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "A partire dal 1 agosto 2018, Facebook non consente più la condivisione diretta degli articoli sui profili di Facebook. Le connessioni alle pagine di Facebook restano invariate.";
@@ -1048,7 +1048,7 @@
 "Break comment threads into multiple pages." = "Suddividi i commenti su più pagine.";
 
 /* No comment provided by engineer. */
-"Briefly describe the link to help screen reader user" = "Briefly describe the link to help screen reader user";
+"Briefly describe the link to help screen reader user" = "Descrivi brevemente il link per aiutare l'utente del lettore di schermo";
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Sfoglia tutti i nostri temi per trovare quello perfetto per te.";
@@ -1072,16 +1072,16 @@
 "Button Style" = "Stile del pulsante";
 
 /* No comment provided by engineer. */
-"Button inside" = "Button inside";
+"Button inside" = "Pulsante interno";
 
 /* No comment provided by engineer. */
-"Button outside" = "Button outside";
+"Button outside" = "Pulsante esterno";
 
 /* No comment provided by engineer. */
-"Button position" = "Button position";
+"Button position" = "Posizione pulsante";
 
 /* No comment provided by engineer. */
-"Button width" = "Button width";
+"Button width" = "Larghezza pulsante";
 
 /* Label for the post author in the post detail. */
 "By " = "Di";
@@ -1189,7 +1189,7 @@
 "Cancel media uploads" = "Annulla caricamenti multimediali";
 
 /* No comment provided by engineer. */
-"Cancel search" = "Cancel search";
+"Cancel search" = "Annulla ricerca";
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Annulla condivisione";
@@ -1400,7 +1400,7 @@
 "Clear Device Media Cache" = "Cancella cache file multimediali sul dispositivo";
 
 /* No comment provided by engineer. */
-"Clear Media" = "Clear Media";
+"Clear Media" = "Cancella file multimediale";
 
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "Elimina i log delle vecchie attività";
@@ -1469,10 +1469,10 @@
 "Colorful backgrounds" = "Sfondi colorati";
 
 /* No comment provided by engineer. */
-"Column settings" = "Column settings";
+"Column settings" = "Impostazioni colonna";
 
 /* No comment provided by engineer. */
-"Columns Settings" = "Columns Settings";
+"Columns Settings" = "Impostazioni delle colonne";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combina foto, video e testo per creare articoli della storia coinvolgenti e che si possono toccare che i visitatori ameranno.";
@@ -1682,7 +1682,7 @@
 "Continue" = "Prosegui";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
-"Continue With WordPress.com" = "Continue With WordPress.com";
+"Continue With WordPress.com" = "Continua con WordPress.com";
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "Continua a lavorare";
@@ -1703,10 +1703,10 @@
 "Continuing with Apple" = "Continua con Apple";
 
 /* No comment provided by engineer. */
-"Convert to regular blocks" = "Convert to regular blocks";
+"Convert to regular blocks" = "Converti in blocchi regolari";
 
 /* An example tag used in the login prologue screens. */
-"Cooking" = "Cooking";
+"Cooking" = "Cucina";
 
 /* No comment provided by engineer. */
 "Copied block" = "Blocco copiato";
@@ -1815,7 +1815,7 @@
 "Country Code" = "Prefisso internazionale";
 
 /* No comment provided by engineer. */
-"Cover" = "Cover";
+"Cover" = "Copertina";
 
 /* Title of a section on the debug screen that shows a list of actions related to crash logging */
 "Crash Logging" = "Registrazione crash";
@@ -1903,10 +1903,10 @@
 "Creating downloadable backup" = "Creazione di un backup scaricabile in corso";
 
 /* No comment provided by engineer. */
-"Crop image to fill entire column" = "Crop image to fill entire column";
+"Crop image to fill entire column" = "Ritaglia l'immagine per riempire l'intera colonna";
 
 /* No comment provided by engineer. */
-"Crosspost" = "Crosspost";
+"Crosspost" = "Pubblicazione incrociata";
 
 /* No comment provided by engineer. */
 "Current" = "Corrente";
@@ -1924,10 +1924,10 @@
 "Current period: %@ to %@" = "Periodo attuale: dal giorno %1$@ al giorno %2$@";
 
 /* No comment provided by engineer. */
-"Current placeholder text is" = "Current placeholder text is";
+"Current placeholder text is" = "Il testo del segnaposto attuale è";
 
 /* translators: accessibility text. Inform about current unit value. %s: Current unit value. */
-"Current unit is %s" = "Current unit is %s";
+"Current unit is %s" = "L'unità corrente è %s";
 
 /* translators: %s: current cell value. */
 "Current value is %s" = "Il valore attuale è %s";
@@ -2254,13 +2254,13 @@
 "Double tap to dismiss" = "Doppio tocco per ignorare";
 
 /* No comment provided by engineer. */
-"Double tap to edit button text" = "Double tap to edit button text";
+"Double tap to edit button text" = "Tocca due volte per modificare il testo del pulsante";
 
 /* No comment provided by engineer. */
-"Double tap to edit label text" = "Double tap to edit label text";
+"Double tap to edit label text" = "Tocca due volte per modificare il testo dell'etichetta";
 
 /* No comment provided by engineer. */
-"Double tap to edit placeholder text" = "Double tap to edit placeholder text";
+"Double tap to edit placeholder text" = "Tocca due volte per modificare il testo del segnaposto";
 
 /* translators: accessibility text */
 "Double tap to edit this value" = "Tocca due volte per modificare questo valore";
@@ -2284,7 +2284,7 @@
 "Double tap to move the block up" = "Tocca due volte per spostare il blocco in alto";
 
 /* No comment provided by engineer. */
-"Double tap to open Action Sheet to add image or video" = "Double tap to open Action Sheet to add image or video";
+"Double tap to open Action Sheet to add image or video" = "Tocca due volte per aprire il foglio delle azioni per aggiungere l'immagine o il video";
 
 /* No comment provided by engineer. */
 "Double tap to open Action Sheet to edit, replace, or clear the image" = "Tocca due volte per aprire il foglio delle azioni per modificare, sostituire o cancellare l'immagine";
@@ -2293,7 +2293,7 @@
 "Double tap to open Action Sheet with available options" = "Tocca due volte per aprire il foglio delle azioni con le opzioni disponibili";
 
 /* No comment provided by engineer. */
-"Double tap to open Bottom Sheet to add image or video" = "Double tap to open Bottom Sheet to add image or video";
+"Double tap to open Bottom Sheet to add image or video" = "Tocca due volte per aprire il foglio in basso per aggiungere l'immagine o il video";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Tocca due volte per aprire il foglio nella parte inferiore per modificare, sostituire o cancellare l'immagine";
@@ -2349,7 +2349,7 @@
 "Drafts" = "Bozze";
 
 /* No comment provided by engineer. */
-"Drag to adjust focal point" = "Drag to adjust focal point";
+"Drag to adjust focal point" = "Trascina per regolare il punto focale";
 
 /* Label for page duplicate option. Tapping creates a copy of the page.
    Label for post duplicate option. Tapping creates a copy of the post. */
@@ -2406,7 +2406,7 @@
 "Edit focal point" = "Modifica il punto focale";
 
 /* No comment provided by engineer. */
-"Edit image" = "Edit image";
+"Edit image" = "Modifica immagine";
 
 /* No comment provided by engineer. */
 "Edit media" = "Modifica elemento multimediale";
@@ -2550,7 +2550,7 @@
 "Enter your password instead." = "Immetti la password.";
 
 /* Error message displayed when site credentials aren't configured. */
-"Enter your server credentials" = "Enter your server credentials";
+"Enter your server credentials" = "Inserisci le tue credenziali del server";
 
 /* Generic error alert title
    Generic error.
@@ -2724,7 +2724,7 @@
 "Failed Media Export" = "Esportazione file multimediali non riuscita";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "Failed to insert audio file.";
+"Failed to insert audio file." = "Impossibile inserire il file audio.";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Inserimento del file audio non riuscito Tocca per le opzioni.";
@@ -2849,7 +2849,7 @@
 "Fixed" = "Risolta";
 
 /* No comment provided by engineer. */
-"Fixed background" = "Fixed background";
+"Fixed background" = "Sfondo fisso";
 
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Risoluzione delle minacce";
@@ -2967,7 +2967,7 @@
 "Gallery caption. %s" = "Didascalia della galleria. %s";
 
 /* An example tag used in the login prologue screens. */
-"Gardening" = "Gardening";
+"Gardening" = "Giardinaggio";
 
 /* Add New Stats Card category title
    Title for the general section in site settings screen */
@@ -3165,7 +3165,7 @@
 "Hide keyboard" = "Nascondi la tastiera";
 
 /* No comment provided by engineer. */
-"Hide search heading" = "Hide search heading";
+"Hide search heading" = "Nascondi titolo della ricerca";
 
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
@@ -3341,7 +3341,7 @@
 "Insert Media" = "Inserisci media";
 
 /* No comment provided by engineer. */
-"Insert crosspost" = "Insert crosspost";
+"Insert crosspost" = "Inserisci pubblicazione incrociata";
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Inserisci media";
@@ -3353,7 +3353,7 @@
 "Insert selected" = "Inserisci elemento selezionato";
 
 /* No comment provided by engineer. */
-"Inside" = "Inside";
+"Inside" = "Interno";
 
 /* Title of Insights stats filter. */
 "Insights" = "Approfondimenti";
@@ -3404,7 +3404,7 @@
 "Invalid URL, please check if you wrote a valid site address." = "URL non valida, verifica di aver scritto un indirizzo valido per il sito.";
 
 /* No comment provided by engineer. */
-"Invalid URL. Audio file not found." = "Invalid URL. Audio file not found.";
+"Invalid URL. Audio file not found." = "URL non valido. File audio non trovato.";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Endpoint non valido";
@@ -3638,10 +3638,10 @@
 "Link inserted" = "Link inserito";
 
 /* No comment provided by engineer. */
-"Link label" = "Link label";
+"Link label" = "Etichetta del link";
 
 /* No comment provided by engineer. */
-"Link text" = "Link text";
+"Link text" = "Testo del link";
 
 /* No comment provided by engineer. */
 "Link to" = "Link a";
@@ -3813,7 +3813,7 @@
 "Main Navigation" = "Navigazione principale";
 
 /* Description of the Blogging Reminders card in My Site. */
-"Make the most of your site by setting goals and tracking your progress." = "Make the most of your site by setting goals and tracking your progress.";
+"Make the most of your site by setting goals and tracking your progress." = "Ottieni il massimo dal tuo sito fissando obiettivi e monitorando i tuoi progressi.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -3893,7 +3893,7 @@
 "Media" = "Media";
 
 /* No comment provided by engineer. */
-"Media & Text settings" = "Media & Text settings";
+"Media & Text settings" = "Impostazioni Media e testo";
 
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "Dimensioni cache contenuti multimediali";
@@ -3931,7 +3931,7 @@
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "La dimensione del file multimediale (%1$@) è eccessiva per il caricamento. Il massimo consentito è %2$@";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"Media options" = "Media options";
+"Media options" = "Opzioni media";
 
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "Anteprima dei contenuti multimediali non riuscita.";
@@ -3946,7 +3946,7 @@
 "Medium" = "Media";
 
 /* No comment provided by engineer. */
-"Mention" = "Mention";
+"Mention" = "Riferimento";
 
 /* The default text used for filling the name of a menu when creating it. */
 "Menu" = "Menu";
@@ -3978,7 +3978,7 @@
 "Microsoft Outlook" = "Microsoft Outlook";
 
 /* No comment provided by engineer. */
-"Minimum height" = "Minimum height";
+"Minimum height" = "Altezza minima";
 
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Varie vulnerabilità";
@@ -4084,7 +4084,7 @@
 "Museums to See In London" = "Musei da vedere a Londra";
 
 /* An example tag used in the login prologue screens. */
-"Music" = "Music";
+"Music" = "Musica";
 
 /* Link to My Profile section
    My Profile view title */
@@ -4254,7 +4254,7 @@
 "No available sites" = "Nessun sito disponibile";
 
 /* No comment provided by engineer. */
-"No button" = "No button";
+"No button" = "Nessun pulsante";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Nessun commento";
@@ -4272,7 +4272,7 @@
 "No connections found for %@" = "Nessuna connessione a %@ trovata";
 
 /* No comment provided by engineer. */
-"No custom placeholder set" = "No custom placeholder set";
+"No custom placeholder set" = "Nessun set di segnaposto personalizzato";
 
 /* Text displayed when Period stat section has no data. */
 "No data for this period" = "Nessun dato per questo periodo";
@@ -4559,7 +4559,7 @@
 "Oops!" = "Oops!";
 
 /* No comment provided by engineer. */
-"Opacity" = "Opacity";
+"Opacity" = "Opacità";
 
 /* No comment provided by engineer. */
 "Open Block Actions Menu" = "Apri menu azioni del blocco";
@@ -4614,7 +4614,7 @@
 "Optional message up to %1$d characters to be included in the invitation." = "Il messaggio opzionale contenente fino a %1$d caratteri da includere nell'invito.";
 
 /* No comment provided by engineer. */
-"Optional placeholder…" = "Optional placeholder…";
+"Optional placeholder…" = "Segnaposto facoltativo…";
 
 /* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
 "Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "Opzionale: inserisci un messaggio personalizzato contenente fino a %1$d caratteri da inviare con l'invito.";
@@ -4660,10 +4660,10 @@
 "Other Sites" = "Altri siti";
 
 /* No comment provided by engineer. */
-"Outside" = "Outside";
+"Outside" = "Esterno";
 
 /* No comment provided by engineer. */
-"Overlay" = "Overlay";
+"Overlay" = "Sovrapposizione";
 
 /* Used to indicate a setting is overridden in debug builds of the app */
 "Overridden" = "Sovrascritta";
@@ -4954,7 +4954,7 @@
 "Plugins" = "Plugin";
 
 /* An example tag used in the login prologue screens. */
-"Politics" = "Politics";
+"Politics" = "Politica";
 
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
@@ -5749,16 +5749,16 @@
 "Search block" = "Cerca blocco";
 
 /* No comment provided by engineer. */
-"Search block label. Current text is" = "Search block label. Current text is";
+"Search block label. Current text is" = "Cerca etichetta del blocco. Il testo attuale è";
 
 /* No comment provided by engineer. */
 "Search blocks" = "Cerca blocchi";
 
 /* No comment provided by engineer. */
-"Search button. Current button text is" = "Search button. Current button text is";
+"Search button. Current button text is" = "Pulsante di ricerca. Il testo del pulsante attuale è";
 
 /* No comment provided by engineer. */
-"Search input field." = "Search input field.";
+"Search input field." = "Cerca campo di immissione.";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "Cerca o digita URL";
@@ -5770,7 +5770,7 @@
 "Search posts" = "Cerca articoli";
 
 /* No comment provided by engineer. */
-"Search settings" = "Search settings";
+"Search settings" = "Impostazioni di ricerca";
 
 /* Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "Cerca per trovare GIF da aggiungere alla tua Libreria multimediale!";
@@ -5870,7 +5870,7 @@
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Seleziona l'account che desideri autorizzare. Nota che i tuoi articoli saranno condivisi automaticamente con l'account selezionato.";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"Select the days you want to blog on" = "Select the days you want to blog on";
+"Select the days you want to blog on" = "Seleziona i giorni in cui vuoi lavorare sul blog";
 
 /* Accessibility hint for stat available to add to Insights. */
 "Select to add this stat to Insights." = "Seleziona per aggiungere questa statistica alla panoramica.";
@@ -5965,7 +5965,7 @@
 
 /* Title of the Blogging Reminders card in My Site.
    Title of the Blogging Reminders Settings screen. */
-"Set your blogging goals" = "Set your blogging goals";
+"Set your blogging goals" = "Imposta gli obiettivi per la creazione del blog";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "Imposta il titolo del sito";
@@ -6056,10 +6056,10 @@
 "Show download button" = "Mostra il pulsante di scaricamento";
 
 /* No comment provided by engineer. */
-"Show media on left" = "Show media on left";
+"Show media on left" = "Mostra contenuti multimediali a sinistra";
 
 /* No comment provided by engineer. */
-"Show media on right" = "Show media on right";
+"Show media on right" = "Mostra contenuti multimediali a destra";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6232,7 +6232,7 @@
 "Skip Quick Start" = "Salta il tour iniziale";
 
 /* translators: Slash inserter autocomplete results */
-"Slash inserter results" = "Slash inserter results";
+"Slash inserter results" = "Risultati dello strumento per l'inserimento della barra";
 
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Slug";
@@ -6560,7 +6560,7 @@
 "Tap here to show help" = "Tocca qui per mostrare la guida in linea";
 
 /* No comment provided by engineer. */
-"Tap to add content" = "Tap to add content";
+"Tap to add content" = "Tocca per aggiungere il contenuto";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Fai tap per cancellare il caricamento.";
@@ -7203,7 +7203,7 @@
 "Twitter Username" = "Nome utente su Twitter";
 
 /* No comment provided by engineer. */
-"Type a URL" = "Type a URL";
+"Type a URL" = "Digita un URL";
 
 /* Placeholder text for domain search during site creation. */
 "Type a keyword for more ideas" = "Digita una parola chiave per ulteriori idee";
@@ -7567,7 +7567,7 @@
 "Use block editor" = "Usa editor a blocchi";
 
 /* No comment provided by engineer. */
-"Use icon button" = "Use icon button";
+"Use icon button" = "Usa pulsante icona";
 
 /* Footer text for Invite Links section of the Invite People screen. */
 "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Usa questo link per accettare i membri del team senza doverli invitare uno per uno. Chiunque visiti questo URL potrà iscriversi alla tua organizzazione, anche se ha ricevuto un link da qualcun altro, quindi assicurati di condividerlo con le persone fidate.";
@@ -8025,7 +8025,7 @@
 "Welcome to the world’s most popular website builder." = "Benvenuto nel costruttore di siti web più popolare del mondo.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow. */
-"Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress." = "Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress.";
+"Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress." = "Ben fatto con il tuo primo articolo. Continua così. Ora puoi fissare gli obiettivi per la creazione del tuo blog, ricevere promemoria e tenere traccia dei tuoi progressi.";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "Ovest";
@@ -8114,7 +8114,7 @@
 "Widgets" = "Widget";
 
 /* No comment provided by engineer. */
-"Width Settings" = "Width Settings";
+"Width Settings" = "Impostazioni larghezza";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Non sarà mostrato pubblicamente.";
@@ -8228,16 +8228,16 @@
 "Write code…" = "Scrivi codice...";
 
 /* No comment provided by engineer. */
-"Write title…" = "Write title…";
+"Write title…" = "Scrivi il titolo...";
 
 /* Title for the writing section in site settings screen */
 "Writing" = "Scrittura";
 
 /* No comment provided by engineer. */
-"X-Axis Position" = "X-Axis Position";
+"X-Axis Position" = "Posizione asse X";
 
 /* No comment provided by engineer. */
-"Y-Axis Position" = "Y-Axis Position";
+"Y-Axis Position" = "Posizione asse Y";
 
 /* Option to select the Yahoo Mail app when logging in with magic links */
 "Yahoo Mail" = "Yahoo Mail";
@@ -8294,10 +8294,10 @@
 "You can override these settings for individual posts." = "Puoi forzare queste impostazioni per i singoli articoli.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
-"You can update this any time via My Site > Site Settings" = "You can update this any time via My Site > Site Settings";
+"You can update this any time via My Site > Site Settings" = "Puoi aggiornare in qualsiasi momento tramite Il mio sito > Impostazioni del sito";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this any time." = "You can update this any time.";
+"You can update this any time." = "Puoi aggiornare in qualsiasi momento.";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "L'indirizzo email che hai inserito non può essere usato per creare l'account. Stiamo avendo problemi con il tuo provider di posta elettronica che blocca le nostre email di attivazione. Si prega di riprovare con un altro indirizzo email.";
@@ -8512,7 +8512,7 @@
 "audio" = "audio";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
-"audio file" = "audio file";
+"audio file" = "file audio";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "di %@";
@@ -8524,7 +8524,7 @@
 "doesn’t it feel good to cross things off a list?" = "Non è bello spuntare le cose su una lista?";
 
 /* No comment provided by engineer. */
-"double-tap to change unit" = "double-tap to change unit";
+"double-tap to change unit" = "tocca due volte per modificare l'unità";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "ad esempio 1122334455";

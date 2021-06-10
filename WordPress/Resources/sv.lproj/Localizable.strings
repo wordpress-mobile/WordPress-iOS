@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-01 11:09:08+0000 */
+/* Translation-Revision-Date: 2021-06-04 21:14:37+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -28,7 +28,7 @@
 "%1$@ on %2$@" = "%1$@ på %2$@";
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. %1$@ is a placeholder for the string 'Enter your server credentials'. */
-"%1$@ to enable one click site restores from backups." = "%1$@ to enable one click site restores from backups.";
+"%1$@ to enable one click site restores from backups." = "%1$@ för att aktivera återställning av webbplatsen från säkerhetskopior med ett tryck.";
 
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix this threat." = "%1$@ för att åtgärda detta hot.";
@@ -37,10 +37,10 @@
 "%1$@ to fix threats." = "%1$@ för att åtgärda hoten.";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d blogger likes this." = "%1$d blogger likes this.";
+"%1$d blogger likes this." = "%1$d bloggare gillar detta.";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d bloggers like this." = "%1$d bloggers like this.";
+"%1$d bloggers like this." = "%1$d bloggare gillar detta.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d av %2$d är klara";
@@ -224,13 +224,13 @@
 "%s converted to regular blocks" = "%s konverterades till vanliga block";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"%s has URL set" = "%s has URL set";
+"%s has URL set" = "URL angiven för %s";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"%s has no URL set" = "%s has no URL set";
+"%s has no URL set" = "Ingen URL angiven för %s";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"%s social icon" = "%s social icon";
+"%s social icon" = "Social ikon för %s";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "”%s” stöds inte fullt ut";
@@ -598,7 +598,7 @@
 "All of your selected items are now restored back to %1$@." = "Alla dina valda objekt har nu återställts till läget för %1$@.";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen. */
-"All set!" = "All set!";
+"All set!" = "Allt klart!";
 
 /* Title of the congratulation screen that appears when all the tasks are completed */
 "All tasks complete" = "Alla uppgifter har slutförts";
@@ -1048,7 +1048,7 @@
 "Break comment threads into multiple pages." = "Dela upp kommentarstrådar i flera sidor.";
 
 /* No comment provided by engineer. */
-"Briefly describe the link to help screen reader user" = "Briefly describe the link to help screen reader user";
+"Briefly describe the link to help screen reader user" = "Beskriv kortfattat länken för den som använder skärmläsare.";
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Bläddra bland alla teman för att hitta det som passar dig perfekt.";
@@ -1072,10 +1072,10 @@
 "Button Style" = "Knappstil";
 
 /* No comment provided by engineer. */
-"Button inside" = "Button inside";
+"Button inside" = "Knapp på insidan";
 
 /* No comment provided by engineer. */
-"Button outside" = "Button outside";
+"Button outside" = "Knapp på utsidan";
 
 /* No comment provided by engineer. */
 "Button position" = "Knapposition";
@@ -1815,7 +1815,7 @@
 "Country Code" = "Landskod";
 
 /* No comment provided by engineer. */
-"Cover" = "Cover";
+"Cover" = "Omslag";
 
 /* Title of a section on the debug screen that shows a list of actions related to crash logging */
 "Crash Logging" = "Loggning av krascher";
@@ -1906,7 +1906,7 @@
 "Crop image to fill entire column" = "Beskär bilden så att den fyller hela kolumnen";
 
 /* No comment provided by engineer. */
-"Crosspost" = "Crosspost";
+"Crosspost" = "Korspublicera";
 
 /* No comment provided by engineer. */
 "Current" = "Nuvarande";
@@ -1924,10 +1924,10 @@
 "Current period: %@ to %@" = "Aktuell period: från %1$@ till %2$@";
 
 /* No comment provided by engineer. */
-"Current placeholder text is" = "Current placeholder text is";
+"Current placeholder text is" = "Den nuvarande platshållartexten är";
 
 /* translators: accessibility text. Inform about current unit value. %s: Current unit value. */
-"Current unit is %s" = "Current unit is %s";
+"Current unit is %s" = "Aktuell enhet är %s";
 
 /* translators: %s: current cell value. */
 "Current value is %s" = "Nuvarande värde är %s";
@@ -2254,13 +2254,13 @@
 "Double tap to dismiss" = "Dubbelknacka för att stänga";
 
 /* No comment provided by engineer. */
-"Double tap to edit button text" = "Double tap to edit button text";
+"Double tap to edit button text" = "Dubbeltryck för att redigera knapptexten";
 
 /* No comment provided by engineer. */
-"Double tap to edit label text" = "Double tap to edit label text";
+"Double tap to edit label text" = "Dubbeltryck för att redigera etikettens text";
 
 /* No comment provided by engineer. */
-"Double tap to edit placeholder text" = "Double tap to edit placeholder text";
+"Double tap to edit placeholder text" = "Dubbeltryck för att redigera platshållartexten";
 
 /* translators: accessibility text */
 "Double tap to edit this value" = "Dubbeltryck för att redigera detta värde";
@@ -2284,7 +2284,7 @@
 "Double tap to move the block up" = "Dubbeltryck för att flytta blocket uppåt";
 
 /* No comment provided by engineer. */
-"Double tap to open Action Sheet to add image or video" = "Double tap to open Action Sheet to add image or video";
+"Double tap to open Action Sheet to add image or video" = "Dubbeltryck för att öppna åtgärdsbladet och lägga till bild eller video";
 
 /* No comment provided by engineer. */
 "Double tap to open Action Sheet to edit, replace, or clear the image" = "Dubbeltryck för att öppna åtgärdsbladet där du kan redigera, ersätta eller ta bort bilden";
@@ -2293,7 +2293,7 @@
 "Double tap to open Action Sheet with available options" = "Dubbeltryck för att öppna åtgärdsbladet med tillgängliga alternativ";
 
 /* No comment provided by engineer. */
-"Double tap to open Bottom Sheet to add image or video" = "Double tap to open Bottom Sheet to add image or video";
+"Double tap to open Bottom Sheet to add image or video" = "Dubbeltryck för att öppna det nedre arket och lägga till bild eller video";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Dubbeltryck för att öppna nedre bladet där du kan redigera, ersätta eller ta bort bilden";
@@ -2349,7 +2349,7 @@
 "Drafts" = "Utkast";
 
 /* No comment provided by engineer. */
-"Drag to adjust focal point" = "Drag to adjust focal point";
+"Drag to adjust focal point" = "Dra för att flytta bildfokus";
 
 /* Label for page duplicate option. Tapping creates a copy of the page.
    Label for post duplicate option. Tapping creates a copy of the post. */
@@ -2550,7 +2550,7 @@
 "Enter your password instead." = "Skriv in ditt lösenord istället.";
 
 /* Error message displayed when site credentials aren't configured. */
-"Enter your server credentials" = "Enter your server credentials";
+"Enter your server credentials" = "Ange dina inloggningsuppgifter till servern";
 
 /* Generic error alert title
    Generic error.
@@ -3165,7 +3165,7 @@
 "Hide keyboard" = "Göm tangentbord";
 
 /* No comment provided by engineer. */
-"Hide search heading" = "Hide search heading";
+"Hide search heading" = "Dölj sökrubrik";
 
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
@@ -3341,7 +3341,7 @@
 "Insert Media" = "Infoga media";
 
 /* No comment provided by engineer. */
-"Insert crosspost" = "Insert crosspost";
+"Insert crosspost" = "Infoga korspublicering";
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Placera in mediafil";
@@ -3353,7 +3353,7 @@
 "Insert selected" = "Infoga det markerade";
 
 /* No comment provided by engineer. */
-"Inside" = "Inside";
+"Inside" = "På insidan";
 
 /* Title of Insights stats filter. */
 "Insights" = "Insikter";
@@ -3813,7 +3813,7 @@
 "Main Navigation" = "Huvudmeny";
 
 /* Description of the Blogging Reminders card in My Site. */
-"Make the most of your site by setting goals and tracking your progress." = "Make the most of your site by setting goals and tracking your progress.";
+"Make the most of your site by setting goals and tracking your progress." = "Få ut det mesta av din webbplats genom att sätta upp mål och följa upp dina framsteg.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4272,7 +4272,7 @@
 "No connections found for %@" = "Inga anslutningar funna för %@";
 
 /* No comment provided by engineer. */
-"No custom placeholder set" = "No custom placeholder set";
+"No custom placeholder set" = "Ingen anpassad platshållare angiven";
 
 /* Text displayed when Period stat section has no data. */
 "No data for this period" = "Ingen data för denna period";
@@ -4614,7 +4614,7 @@
 "Optional message up to %1$d characters to be included in the invitation." = "Valfritt meddelande på högst %1$d tecken som skickas tillsammans med inbjudan.";
 
 /* No comment provided by engineer. */
-"Optional placeholder…" = "Optional placeholder…";
+"Optional placeholder…" = "Platsmarkör (valfri) …";
 
 /* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
 "Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "Valfritt: Ange ett eget meddelande på högst %1$d tecken som skickas tillsammans med din inbjudan.";
@@ -4660,7 +4660,7 @@
 "Other Sites" = "Andra webbplatser";
 
 /* No comment provided by engineer. */
-"Outside" = "Utsida";
+"Outside" = "På utsidan";
 
 /* No comment provided by engineer. */
 "Overlay" = "Överlägg";
@@ -5749,7 +5749,7 @@
 "Search block" = "Sök block";
 
 /* No comment provided by engineer. */
-"Search block label. Current text is" = "Search block label. Current text is";
+"Search block label. Current text is" = "Etikett för sökblock. Aktuell text är";
 
 /* No comment provided by engineer. */
 "Search blocks" = "Sök block";
@@ -5758,7 +5758,7 @@
 "Search button. Current button text is" = "Sökknapp. Den nuvarande knapptexten är";
 
 /* No comment provided by engineer. */
-"Search input field." = "Search input field.";
+"Search input field." = "Inmatningsfält för sökning.";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "Sök eller skriv URL";
@@ -5870,7 +5870,7 @@
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Välj det konto som du vill auktorisera. Observera att dina inlägg automatiskt kommer att delas med det valda kontot.";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"Select the days you want to blog on" = "Select the days you want to blog on";
+"Select the days you want to blog on" = "Välj på vilka dagar du publicera inlägg";
 
 /* Accessibility hint for stat available to add to Insights. */
 "Select to add this stat to Insights." = "Välj för att lägga till denna datapunkt i insikterna.";
@@ -5965,7 +5965,7 @@
 
 /* Title of the Blogging Reminders card in My Site.
    Title of the Blogging Reminders Settings screen. */
-"Set your blogging goals" = "Set your blogging goals";
+"Set your blogging goals" = "Sätt mål för din bloggning";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "Ange webbplatsens rubrik";
@@ -6232,7 +6232,7 @@
 "Skip Quick Start" = "Hoppa över snabbstarten";
 
 /* translators: Slash inserter autocomplete results */
-"Slash inserter results" = "Slash inserter results";
+"Slash inserter results" = "Resultat från ”snedstrecksinfogaren”";
 
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Permalänk";
@@ -8025,7 +8025,7 @@
 "Welcome to the world’s most popular website builder." = "Välkommen till världens populäraste webbplatsbyggare.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow. */
-"Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress." = "Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress.";
+"Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress." = "Grattis till ditt första inlägg! Stanna inte upp. Nu kan du sätta mål för din bloggning, få påminnelser och följa upp dina framsteg.*";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "Väster";
@@ -8114,7 +8114,7 @@
 "Widgets" = "Widgetar";
 
 /* No comment provided by engineer. */
-"Width Settings" = "Width Settings";
+"Width Settings" = "Breddinställningar";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Visas ej offentligt.";
@@ -8234,10 +8234,10 @@
 "Writing" = "Skriva";
 
 /* No comment provided by engineer. */
-"X-Axis Position" = "X-Axis Position";
+"X-Axis Position" = "Läge på X-axeln";
 
 /* No comment provided by engineer. */
-"Y-Axis Position" = "Y-Axis Position";
+"Y-Axis Position" = "Läge på Y-axeln";
 
 /* Option to select the Yahoo Mail app when logging in with magic links */
 "Yahoo Mail" = "Yahoo Mail";

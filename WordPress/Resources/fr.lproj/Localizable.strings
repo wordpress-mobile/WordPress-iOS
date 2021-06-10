@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-26 14:54:09+0000 */
+/* Translation-Revision-Date: 2021-06-10 19:40:22+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -976,7 +976,7 @@
 "Block Quote" = "Bloquer les citations";
 
 /* No comment provided by engineer. */
-"Block cannot be rendered inside itself." = "Impossible d’effectuer le rendu d’un bloc à l’intérieur de ce même bloc.";
+"Block cannot be rendered inside itself." = "Impossible d’afficher le rendu d’un bloc à l’intérieur du bloc proprement dit.";
 
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Bloc copié";
