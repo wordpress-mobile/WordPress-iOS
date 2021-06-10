@@ -258,6 +258,7 @@ extension SiteSettingsViewController {
         case .timezone:
             showTimezoneSelector()
         case .bloggingGoals:
+
             // Do something
             break
         default:
