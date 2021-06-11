@@ -116,3 +116,24 @@ var isIPhone: Bool {
 // TODO: This should maybe go in an `XCUIApplication` extension? Also, should it be computed rather
 // than stored as a reference? 🤔
 let navBackButton = XCUIApplication().navigationBars.element(boundBy: 0).buttons.element(boundBy: 0)
+
+// TODO: This should go XCUITestHelpers if not there already
+public extension XCUIElement {
+
+    /**
+     Pastes text from clipboard to the field
+     Useful for scenarios where typing is problematic, e.g. secure text fields in Russian.
+     - Parameter text: the text to paste into the field
+     */
+    func pasteText(_ text: String) -> Void {
+        let previousPasteboardContents = UIPasteboard.general.string
+        UIPasteboard.general.string = text
+
+        press(forDuration: 1.2)
+        XCUIApplication().menuItems.firstMatch.tap()
+
+        if let string = previousPasteboardContents {
+            UIPasteboard.general.string = string
+        }
+    }
+}
