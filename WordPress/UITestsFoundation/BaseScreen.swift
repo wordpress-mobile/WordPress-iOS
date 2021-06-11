@@ -77,3 +77,12 @@ public extension XCUIElementQuery {
         return Set(elementXPositions).count == 1
     }
 }
+
+// TODO: This should go into a UIDevice extension (eg: `UIDevice.current.isPad`)
+public var isIpad: Bool {
+    return UIDevice.current.userInterfaceIdiom == .pad
+}
+// TODO: This should go into a UIDevice extension (eg: `UIDevice.current.isPhone`)
+var isIPhone: Bool {
+    return UIDevice.current.userInterfaceIdiom == .phone
+}

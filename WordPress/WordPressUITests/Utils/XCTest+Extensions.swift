@@ -1,13 +1,5 @@
 import XCTest
 
-var isIPhone: Bool {
-    return UIDevice.current.userInterfaceIdiom == .phone
-}
-
-var isIpad: Bool {
-    return UIDevice.current.userInterfaceIdiom == .pad
-}
-
 var isDarkMode: Bool {
     if #available(iOS 12.0, *) {
         return UIViewController().traitCollection.userInterfaceStyle == .dark
