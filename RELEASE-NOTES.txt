@@ -6,6 +6,7 @@
 * [*] Disables the ability to open the editor for Post Pages [#16369]
 * [*] Fixed an issue that could cause a crash when moderating Comments. [#16645]
 * [*] Fix notice overlapping the ActionSheet that displays the QuickStart Removal. [#16609]
+* [**] Self hosted sites that do not use Jetpack can now manage (install, modify active, uninstall) their plugins [TBD]
 
 17.5
 -----
