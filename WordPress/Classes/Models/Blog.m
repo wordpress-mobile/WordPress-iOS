@@ -625,14 +625,24 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (BOOL)supportsPluginManagement
 {
-    BOOL hasRequiredJetpack = [self hasRequiredJetpackVersion:@"5.6"];
+    BOOL supports;
 
-    BOOL isTransferrable = self.isHostedAtWPcom
-        && self.hasBusinessPlan
+    if(self.isHostedAtWPcom){
+        BOOL hasRequiredJetpack = [self hasRequiredJetpackVersion:@"5.6"];
+
+        BOOL isTransferrable = self.hasBusinessPlan
         && self.siteVisibility != SiteVisibilityPrivate
         && self.isAdmin;
 
-    return isTransferrable || hasRequiredJetpack;
+        supports = isTransferrable || hasRequiredJetpack;
+    }
+    // If the site is not hosted on WP.com we can still manage plugins directly using the WP.org rest API
+    // Reference: https://make.wordpress.org/core/2020/07/16/new-and-modified-rest-api-endpoints-in-wordpress-5-5/
+    else {
+        supports = self.wordPressOrgRestApi && [self hasRequiredWordPressVersion:@"5.5"] && self.isAdmin;
+    }
+
+    return supports;
 }
 
 - (BOOL)supportsStories
@@ -851,6 +861,13 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     return [self supportsRestApi]
     && ![self isHostedAtWPcom]
     && [self.jetpack.version compare:requiredJetpackVersion options:NSNumericSearch] != NSOrderedAscending;
+}
+
+/// Checks the blogs installed WordPress version is more than or equal to the requiredVersion
+/// @param requiredVersion The minimum version to check for
+- (BOOL)hasRequiredWordPressVersion:(NSString *)requiredVersion
+{
+    return [self.version compare:requiredVersion options:NSNumericSearch] != NSOrderedAscending;
 }
 
 #pragma mark - Private Methods
