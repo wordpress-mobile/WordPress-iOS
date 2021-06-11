@@ -97,6 +97,19 @@ extension BaseScreen {
             XCTFail("Unable to scroll element into view")
         }
     }
+
+    @discardableResult
+    func dismissNotificationAlertIfNeeded(_ action: FancyAlertComponent.Action = .cancel) -> Self {
+        if FancyAlertComponent.isLoaded() {
+            switch action {
+            case .accept:
+                FancyAlertComponent().acceptAlert()
+            case .cancel:
+                FancyAlertComponent().cancelAlert()
+            }
+        }
+        return self
+    }
 }
 
 class WireMock {
@@ -236,6 +249,45 @@ class Logger {
 extension Date {
     func toString() -> String {
         return Logger.dateFormatter.string(from: self as Date)
+    }
+}
+// MARK: - FancyAlertComponent
+
+class FancyAlertComponent: BaseScreen {
+    let defaultAlertButton: XCUIElement
+    let cancelAlertButton: XCUIElement
+
+    enum Action {
+        case accept
+        case cancel
+    }
+
+    struct ElementIDs {
+        static let defaultButton = "fancy-alert-view-default-button"
+        static let cancelButton = "fancy-alert-view-cancel-button"
+    }
+
+    init() {
+        defaultAlertButton = XCUIApplication().buttons[ElementIDs.defaultButton]
+        cancelAlertButton = XCUIApplication().buttons[ElementIDs.cancelButton]
+
+        super.init(element: defaultAlertButton)
+    }
+
+    func acceptAlert() {
+        XCTAssert(defaultAlertButton.waitForExistence(timeout: 3))
+        XCTAssert(defaultAlertButton.waitForHittability(timeout: 3))
+
+        XCTAssert(defaultAlertButton.isHittable)
+        defaultAlertButton.tap()
+    }
+
+    func cancelAlert() {
+        cancelAlertButton.tap()
+    }
+
+    static func isLoaded() -> Bool {
+        return XCUIApplication().buttons[ElementIDs.defaultButton].waitForExistence(timeout: 3)
     }
 }
 // MARK: -
