@@ -4,6 +4,10 @@ import SwiftUI
 extension BlogDetailsViewController {
     @objc
     func showEmojiPicker() {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+
         var pickerView = SiteIconPickerView()
 
         pickerView.onCompletion = { [weak self] image in

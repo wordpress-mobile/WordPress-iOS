@@ -307,6 +307,8 @@
 		17C1D6CF26711BB3006C8970 /* BlogDetailsViewController+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C1D6CD26711BB2006C8970 /* BlogDetailsViewController+Swift.swift */; };
 		17C1D6F526711ED0006C8970 /* Emoji.txt in Resources */ = {isa = PBXBuildFile; fileRef = 17C1D6F426711ED0006C8970 /* Emoji.txt */; };
 		17C1D6F626711ED0006C8970 /* Emoji.txt in Resources */ = {isa = PBXBuildFile; fileRef = 17C1D6F426711ED0006C8970 /* Emoji.txt */; };
+		17C1D7DC26735631006C8970 /* EmojiRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C1D7DB26735631006C8970 /* EmojiRenderer.swift */; };
+		17C1D7DD26735631006C8970 /* EmojiRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C1D7DB26735631006C8970 /* EmojiRenderer.swift */; };
 		17C2FF0925D4852400CDB712 /* UnifiedProloguePages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C2FF0825D4852400CDB712 /* UnifiedProloguePages.swift */; };
 		17C3F8BF25E4438200EFFE12 /* notifications-button-text-content.json in Resources */ = {isa = PBXBuildFile; fileRef = 17C3F8BE25E4438100EFFE12 /* notifications-button-text-content.json */; };
 		17C3FA6F25E591D200EFFE12 /* UIFont+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C3FA6E25E591D200EFFE12 /* UIFont+Styles.swift */; };
@@ -4767,6 +4769,7 @@
 		17C1D6902670E4A2006C8970 /* UIFont+Fitting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Fitting.swift"; sourceTree = "<group>"; };
 		17C1D6CD26711BB2006C8970 /* BlogDetailsViewController+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+Swift.swift"; sourceTree = "<group>"; };
 		17C1D6F426711ED0006C8970 /* Emoji.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Emoji.txt; sourceTree = "<group>"; };
+		17C1D7DB26735631006C8970 /* EmojiRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiRenderer.swift; sourceTree = "<group>"; };
 		17C2FF0825D4852400CDB712 /* UnifiedProloguePages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedProloguePages.swift; sourceTree = "<group>"; };
 		17C3F8BE25E4438100EFFE12 /* notifications-button-text-content.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-button-text-content.json"; sourceTree = "<group>"; };
 		17C3FA6E25E591D200EFFE12 /* UIFont+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Styles.swift"; sourceTree = "<group>"; };
@@ -7901,6 +7904,7 @@
 			children = (
 				1716AEFB25F2927600CF49EC /* MySiteViewController.swift */,
 				17C1D67B2670E3DC006C8970 /* SiteIconPickerView.swift */,
+				17C1D7DB26735631006C8970 /* EmojiRenderer.swift */,
 			);
 			path = "My Site";
 			sourceTree = "<group>";
@@ -16962,6 +16966,7 @@
 				93414DE51E2D25AE003143A3 /* PostEditorState.swift in Sources */,
 				1707CE421F3121750020B7FE /* UICollectionViewCell+Tint.swift in Sources */,
 				B5176CC31CDCE1C30083CF2D /* ManagedPerson+CoreDataProperties.swift in Sources */,
+				17C1D7DC26735631006C8970 /* EmojiRenderer.swift in Sources */,
 				C81CCD7B243BF7A600A83E27 /* TenorStrings.swift in Sources */,
 				91DCE84621A6A7F50062F134 /* PostEditor+MoreOptions.swift in Sources */,
 				178DDD57266E4165006C68C4 /* CalendarDayToggleButton.swift in Sources */,
@@ -19141,6 +19146,7 @@
 				FABB22FC2602FC2C00C8785C /* SheetActions.swift in Sources */,
 				FABB22FD2602FC2C00C8785C /* ReaderTracker.swift in Sources */,
 				FABB22FE2602FC2C00C8785C /* PlanFeature.swift in Sources */,
+				17C1D7DD26735631006C8970 /* EmojiRenderer.swift in Sources */,
 				FABB22FF2602FC2C00C8785C /* Spotlightable.swift in Sources */,
 				FABB23002602FC2C00C8785C /* StockPhotosDataSource.swift in Sources */,
 				FABB23012602FC2C00C8785C /* BlogDetailsViewController+Header.swift in Sources */,
