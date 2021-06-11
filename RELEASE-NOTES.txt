@@ -9,6 +9,7 @@
 * [*] Site Pages: when setting a parent, placeholder text is now displayed for pages with blank titles. [#16661]
 * [***] Block Editor: Audio block now available on WP.com sites on the free plan. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3523]
 * [**] You can now create a Site Icon for your site using an emoji. [#16670] 
+* [*] Fix notice overlapping the ActionSheet that displays the More Actions in the Editor. [#16658]
 
 17.5
 -----
