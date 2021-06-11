@@ -78,7 +78,6 @@ class SelfHostedPluginManagementClient: PluginManagementClient {
                     }
 
                     success(plugin)
-
                 case .failure(let error):
                     failure(error)
             }
@@ -110,19 +109,15 @@ class SelfHostedPluginManagementClient: PluginManagementClient {
         return returnPath
     }
 
-    private func encoded(pluginID: String) -> String? {
-        let allowedCharacters = CharacterSet.urlPathAllowed.subtracting(CharacterSet(charactersIn: "/"))
-        guard let escapedPluginID = pluginID.addingPercentEncoding(withAllowedCharacters: allowedCharacters) else {
-            assertionFailure("Can't escape plugin ID: \(pluginID)")
-            return nil
-        }
-        return escapedPluginID
-    }
     /// Converts an incoming dictionary response to a PluginState struct
     /// - Returns: Returns nil if the dictionary does not pass validation
     private func pluginState(with obj: [String: AnyObject]) -> PluginState? {
         guard
             let slug = obj["plugin"] as? String,
+            // The slugs returned are in the form of XXX/YYY
+            // The plugin store uses an ID that is just the first part of that
+            // So pull that out for the ID
+            let id = slug.components(separatedBy: "/").first,
             let active = obj["status"] as? String,
             let name = obj["name"] as? String,
             let author = obj["author"] as? String,
@@ -136,7 +131,7 @@ class SelfHostedPluginManagementClient: PluginManagementClient {
         // Find the URL
         let url = URL(string: (obj["plugin_uri"] as? String) ?? "")
 
-        return PluginState(id: slug,
+        return PluginState(id: id,
                            slug: slug,
                            active: isActive,
                            name: name,

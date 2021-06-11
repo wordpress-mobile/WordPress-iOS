@@ -439,7 +439,7 @@ private extension PluginStore {
         track(.pluginDeactivated, with: site)
 
         remote(site: site)?.deactivatePlugin(
-            pluginID: pluginID,
+            pluginID: plugin.state.slug,
             success: {},
             failure: { [weak self] (error) in
                 let message = String(format: NSLocalizedString("Error deactivating %@.", comment: "There was an error deactivating a plugin, placeholder is the plugin name"), plugin.name)
@@ -495,14 +495,14 @@ private extension PluginStore {
     }
 
     func activateAndEnableAutoupdatesPlugin(pluginID: String, site: JetpackSiteRef) {
-        guard getPlugin(id: pluginID, site: site) != nil else {
+        guard let plugin = getPlugin(id: pluginID, site: site) else {
             return
         }
         state.modifyPlugin(id: pluginID, site: site) { plugin in
             plugin.autoupdate = true
             plugin.active = true
         }
-        remote(site: site)?.activateAndEnableAutoupdates(pluginID: pluginID,
+        remote(site: site)?.activateAndEnableAutoupdates(pluginID: plugin.state.slug,
                                                          success: {},
                                                          failure: { [weak self] error in
                                                             self?.state.modifyPlugin(id: pluginID, site: site) { plugin in
@@ -525,7 +525,7 @@ private extension PluginStore {
             success: { [weak self] installedPlugin in
                 self?.transaction { state in
                     state.upsertPlugin(id: installedPlugin.id, site: site, newPlugin: installedPlugin)
-                    state.updatesInProgress[site]?.remove(installedPlugin.slug)
+                    state.updatesInProgress[site]?.remove(installedPlugin.id)
                 }
 
                 let message = String(format: NSLocalizedString("Successfully installed %@.", comment: "Notice displayed after installing a plug-in."), installedPlugin.name)
@@ -597,13 +597,13 @@ private extension PluginStore {
 
         let remove = {
             remote.remove(
-                pluginID: pluginID,
+                pluginID: plugin.state.slug,
                 success: {},
                 failure: failure)
         }
 
         if plugin.state.active {
-            remote.deactivatePlugin(pluginID: pluginID,
+            remote.deactivatePlugin(pluginID: plugin.state.slug,
                                     success: remove,
                                     failure: failure)
         } else {
