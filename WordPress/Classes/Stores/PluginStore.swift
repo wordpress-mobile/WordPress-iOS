@@ -414,7 +414,7 @@ private extension PluginStore {
             plugin.active = true
         }
 
-        WPAppAnalytics.track(.pluginActivated, withBlogID: site.siteID as NSNumber)
+        track(.pluginActivated, with: site)
 
         remote(site: site)?.activatePlugin(
             pluginID: pluginID,
@@ -437,7 +437,7 @@ private extension PluginStore {
             plugin.active = false
         }
 
-        WPAppAnalytics.track(.pluginDeactivated, withBlogID: site.siteID as NSNumber)
+        track(.pluginDeactivated, with: site)
 
         remote(site: site)?.deactivatePlugin(
             pluginID: pluginID,
@@ -460,7 +460,7 @@ private extension PluginStore {
             plugin.autoupdate = true
         }
 
-        WPAppAnalytics.track(.pluginAutoupdateEnabled, withBlogID: site.siteID as NSNumber)
+        track(.pluginAutoupdateEnabled, with: site)
 
         remote(site: site)?.enableAutoupdates(
             pluginID: pluginID,
@@ -483,7 +483,7 @@ private extension PluginStore {
             plugin.autoupdate = false
         }
 
-        WPAppAnalytics.track(.pluginAutoupdateDisabled, withBlogID: site.siteID as NSNumber)
+        track(.pluginAutoupdateDisabled, with: site)
 
         remote(site: site)?.disableAutoupdates(
             pluginID: pluginID,
@@ -559,7 +559,8 @@ private extension PluginStore {
                 plugin.updateState = .updating(version)
             })
         }
-        WPAppAnalytics.track(.pluginUpdated, withBlogID: site.siteID as NSNumber)
+        track(.pluginUpdated, with: site)
+
         remote(site: site)?.updatePlugin(
             pluginID: pluginID,
             siteID: site.siteID,
@@ -590,7 +591,7 @@ private extension PluginStore {
                 return
         }
         state.plugins[site]?.plugins.remove(at: index)
-        WPAppAnalytics.track(.pluginRemoved, withBlogID: site.siteID as NSNumber)
+        track(.pluginRemoved, with: site)
 
         guard let remote = self.remote(site: site) else {
             return
@@ -803,5 +804,9 @@ private extension PluginStore {
         let api = WordPressComRestApi.defaultApi(oAuthToken: token, userAgent: WPUserAgent.wordPress())
 
         return PluginServiceRemote(wordPressComRestApi: api)
+    func track(_ statName: WPAnalyticsStat, with site: JetpackSiteRef) {
+        let siteID: NSNumber? = (site.isSelfHostedWithoutJetpack ? nil : site.siteID) as NSNumber?
+
+        WPAppAnalytics.track(statName, withBlogID: siteID)
     }
 }

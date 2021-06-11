@@ -224,7 +224,9 @@ extension PluginDirectoryViewController: PluginListPresenter {
 
         if let listType = listType {
             let properties = ["type": listType]
-            WPAppAnalytics.track(.openedPluginList, withProperties: properties, withBlogID: site.siteID as NSNumber)
+            let siteID: NSNumber? = (site.isSelfHostedWithoutJetpack ? nil : site.siteID) as NSNumber?
+
+            WPAppAnalytics.track(.openedPluginList, withProperties: properties, withBlogID: siteID)
         }
 
         let listVC = PluginListViewController(site: site, query: query)
