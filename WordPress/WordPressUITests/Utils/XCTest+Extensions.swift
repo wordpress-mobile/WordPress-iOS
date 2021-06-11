@@ -185,11 +185,4 @@ extension XCUIElementQuery {
     var lastMatch: XCUIElement? {
         return self.allElementsBoundByIndex.last
     }
-
-    var allElementsShareCommonXAxis: Bool {
-        let elementXPositions = allElementsBoundByIndex.map { $0.frame.minX }
-
-        // Use a set to remove duplicates – if all elements are the same, only one should remain
-        return Set(elementXPositions).count == 1
-    }
 }
