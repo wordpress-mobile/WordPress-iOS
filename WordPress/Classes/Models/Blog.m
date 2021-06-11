@@ -625,21 +625,22 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (BOOL)supportsPluginManagement
 {
-    BOOL supports;
+    BOOL hasRequiredJetpack = [self hasRequiredJetpackVersion:@"5.6"];
 
-    if(self.isHostedAtWPcom){
-        BOOL hasRequiredJetpack = [self hasRequiredJetpackVersion:@"5.6"];
+    BOOL isTransferrable = self.isHostedAtWPcom
+    && self.hasBusinessPlan
+    && self.siteVisibility != SiteVisibilityPrivate
+    && self.isAdmin;
 
-        BOOL isTransferrable = self.hasBusinessPlan
-        && self.siteVisibility != SiteVisibilityPrivate
-        && self.isAdmin;
+    BOOL supports = isTransferrable || hasRequiredJetpack;
 
-        supports = isTransferrable || hasRequiredJetpack;
-    }
     // If the site is not hosted on WP.com we can still manage plugins directly using the WP.org rest API
     // Reference: https://make.wordpress.org/core/2020/07/16/new-and-modified-rest-api-endpoints-in-wordpress-5-5/
-    else {
-        supports = self.wordPressOrgRestApi && [self hasRequiredWordPressVersion:@"5.5"] && self.isAdmin;
+    if(!supports){
+        supports = !self.isHostedAtWPcom
+        && self.wordPressOrgRestApi
+        && [self hasRequiredWordPressVersion:@"5.5"]
+        && self.isAdmin;
     }
 
     return supports;
