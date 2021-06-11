@@ -53,7 +53,7 @@ import Foundation
 
 extension BaseScreen {
 
-    func openMagicLink() {
+    public func openMagicLink() {
         XCTContext.runActivity(named: "Open magic link in Safari") { (activity) in
             let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
             safari.launch()
@@ -99,7 +99,7 @@ extension BaseScreen {
     }
 
     @discardableResult
-    func dismissNotificationAlertIfNeeded(_ action: FancyAlertComponent.Action = .cancel) -> Self {
+    public func dismissNotificationAlertIfNeeded(_ action: FancyAlertComponent.Action = .cancel) -> Self {
         if FancyAlertComponent.isLoaded() {
             switch action {
             case .accept:
@@ -112,11 +112,11 @@ extension BaseScreen {
     }
 }
 
-class WireMock {
+public class WireMock {
     private static let hostInfoPlistKey = "WIREMOCK_HOST"
     private static let portInfoPlistKey = "WIREMOCK_PORT"
 
-    static func URL() -> Foundation.URL {
+    public static func URL() -> Foundation.URL {
         let host = infoPlistEntry(key: hostInfoPlistKey)
         let port = infoPlistEntry(key: portInfoPlistKey)
         return Foundation.URL(string: "http://\(host):\(port)/")!
@@ -148,13 +148,13 @@ public var isIpad: Bool {
     return UIDevice.current.userInterfaceIdiom == .pad
 }
 // TODO: This should go into a UIDevice extension (eg: `UIDevice.current.isPhone`)
-var isIPhone: Bool {
+public var isIPhone: Bool {
     return UIDevice.current.userInterfaceIdiom == .phone
 }
 
 // TODO: This should maybe go in an `XCUIApplication` extension? Also, should it be computed rather
 // than stored as a reference? 🤔
-let navBackButton = XCUIApplication().navigationBars.element(boundBy: 0).buttons.element(boundBy: 0)
+public let navBackButton = XCUIApplication().navigationBars.element(boundBy: 0).buttons.element(boundBy: 0)
 
 // TODO: This should go XCUITestHelpers if not there already
 public extension XCUIElement {
@@ -213,7 +213,7 @@ public extension XCUIElement {
 
 // MARK: - Logger
 
-enum LogEvent: String {
+public enum LogEvent: String {
     case e = "[‼️]" // error
     case i = "[ℹ️]" // info
     case d = "[💬]" // debug
@@ -227,7 +227,7 @@ enum LogEvent: String {
 //  Logger.log(message: "Hey ho, lets go!", event: .v)
 // Output example:
 //  2017-11-23 03:16:32025 [ℹ️][BasePage.swift]:18 19 waitForPage() -> Page AztecUITests.BlogsPage is loaded
-class Logger {
+public class Logger {
     // 1. The date formatter
     static var dateFormat = "yyyy-MM-dd hh:mm:ssSSS" // Use your own
     static var dateFormatter: DateFormatter {
@@ -243,7 +243,7 @@ class Logger {
         return components.isEmpty ? "" : components.last!
     }
 
-    class func log(message: String, event: LogEvent,
+    public class func log(message: String, event: LogEvent,
                    fileName: String = #file, line: Int = #line,
                    column: Int = #column, funcName: String = #function) {
         #if DEBUG // 7.
@@ -254,18 +254,18 @@ class Logger {
 
 
 // 2. The Date to String extension
-extension Date {
+public extension Date {
     func toString() -> String {
         return Logger.dateFormatter.string(from: self as Date)
     }
 }
 // MARK: - FancyAlertComponent
 
-class FancyAlertComponent: BaseScreen {
+public class FancyAlertComponent: BaseScreen {
     let defaultAlertButton: XCUIElement
     let cancelAlertButton: XCUIElement
 
-    enum Action {
+    public enum Action {
         case accept
         case cancel
     }
@@ -275,14 +275,14 @@ class FancyAlertComponent: BaseScreen {
         static let cancelButton = "fancy-alert-view-cancel-button"
     }
 
-    init() {
+    public init() {
         defaultAlertButton = XCUIApplication().buttons[ElementIDs.defaultButton]
         cancelAlertButton = XCUIApplication().buttons[ElementIDs.cancelButton]
 
         super.init(element: defaultAlertButton)
     }
 
-    func acceptAlert() {
+    public func acceptAlert() {
         XCTAssert(defaultAlertButton.waitForExistence(timeout: 3))
         XCTAssert(defaultAlertButton.waitForHittability(timeout: 3))
 
@@ -294,7 +294,7 @@ class FancyAlertComponent: BaseScreen {
         cancelAlertButton.tap()
     }
 
-    static func isLoaded() -> Bool {
+    public static func isLoaded() -> Bool {
         return XCUIApplication().buttons[ElementIDs.defaultButton].waitForExistence(timeout: 3)
     }
 }
