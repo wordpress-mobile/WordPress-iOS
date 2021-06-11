@@ -54,7 +54,7 @@ class SelfHostedPluginManagementClient: PluginManagementClient {
         let path = self.path(with: pluginID)
         remote.request(method: .put, path: path, parameters: parameters) { (result, _) in
             switch result {
-                case .success(let responseObject):
+                case .success:
                     success()
 
                 case .failure(let error):
