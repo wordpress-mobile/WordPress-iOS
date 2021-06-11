@@ -8,8 +8,6 @@ var isDarkMode: Bool {
     }
 }
 
-let navBackButton = XCUIApplication().navigationBars.element(boundBy: 0).buttons.element(boundBy: 0)
-
 extension XCUIElement {
     /**
      Removes any current text in the field

@@ -112,3 +112,7 @@ public var isIpad: Bool {
 var isIPhone: Bool {
     return UIDevice.current.userInterfaceIdiom == .phone
 }
+
+// TODO: This should maybe go in an `XCUIApplication` extension? Also, should it be computed rather
+// than stored as a reference? 🤔
+let navBackButton = XCUIApplication().navigationBars.element(boundBy: 0).buttons.element(boundBy: 0)
