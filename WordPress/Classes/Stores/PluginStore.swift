@@ -418,7 +418,6 @@ private extension PluginStore {
 
         remote(site: site)?.activatePlugin(
             pluginID: pluginID,
-            siteID: site.siteID,
             success: {},
             failure: { [weak self] (error) in
                 let message = String(format: NSLocalizedString("Error activating %@.", comment: "There was an error activating a plugin, placeholder is the plugin name"), plugin.name)
@@ -441,7 +440,6 @@ private extension PluginStore {
 
         remote(site: site)?.deactivatePlugin(
             pluginID: pluginID,
-            siteID: site.siteID,
             success: {},
             failure: { [weak self] (error) in
                 let message = String(format: NSLocalizedString("Error deactivating %@.", comment: "There was an error deactivating a plugin, placeholder is the plugin name"), plugin.name)
@@ -464,7 +462,6 @@ private extension PluginStore {
 
         remote(site: site)?.enableAutoupdates(
             pluginID: pluginID,
-            siteID: site.siteID,
             success: {},
             failure: { [weak self] (error) in
                 let message = String(format: NSLocalizedString("Error enabling autoupdates for %@.", comment: "There was an error enabling autoupdates for a plugin, placeholder is the plugin name"), plugin.name)
@@ -487,7 +484,6 @@ private extension PluginStore {
 
         remote(site: site)?.disableAutoupdates(
             pluginID: pluginID,
-            siteID: site.siteID,
             success: {},
             failure: { [weak self] (error) in
                 let message = String(format: NSLocalizedString("Error disabling autoupdates for %@.", comment: "There was an error disabling autoupdates for a plugin, placeholder is the plugin name"), plugin.name)
@@ -506,8 +502,7 @@ private extension PluginStore {
             plugin.autoupdate = true
             plugin.active = true
         }
-        remote(site: site)?.activateAndEnableAutoupdated(pluginID: pluginID,
-                                                         siteID: site.siteID,
+        remote(site: site)?.activateAndEnableAutoupdates(pluginID: pluginID,
                                                          success: {},
                                                          failure: { [weak self] error in
                                                             self?.state.modifyPlugin(id: pluginID, site: site) { plugin in
@@ -524,11 +519,9 @@ private extension PluginStore {
         }
 
         state.updatesInProgress[site, default: Set()].insert(plugin.slug)
-        WPAppAnalytics.track(.pluginInstalled, withBlogID: site.siteID as NSNumber)
-
+        track(.pluginInstalled, with: site)
         remote.install(
             pluginSlug: plugin.slug,
-            siteID: site.siteID,
             success: { [weak self] installedPlugin in
                 self?.transaction { state in
                     state.upsertPlugin(id: installedPlugin.id, site: site, newPlugin: installedPlugin)
@@ -563,7 +556,6 @@ private extension PluginStore {
 
         remote(site: site)?.updatePlugin(
             pluginID: pluginID,
-            siteID: site.siteID,
             success: { [weak self] (plugin) in
                 self?.transaction({ (state) in
                     state.modifyPlugin(id: pluginID, site: site, change: { (updatedPlugin) in
@@ -606,14 +598,12 @@ private extension PluginStore {
         let remove = {
             remote.remove(
                 pluginID: pluginID,
-                siteID: site.siteID,
                 success: {},
                 failure: failure)
         }
 
         if plugin.state.active {
             remote.deactivatePlugin(pluginID: pluginID,
-                                    siteID: site.siteID,
                                     success: remove,
                                     failure: failure)
         } else {
@@ -651,7 +641,6 @@ private extension PluginStore {
         }
         state.fetching[site] = true
         remote.getPlugins(
-            siteID: site.siteID,
             success: { [actionDispatcher] (plugins) in
                 actionDispatcher.dispatch(PluginAction.receivePlugins(site: site, plugins: plugins))
             },
@@ -797,13 +786,14 @@ private extension PluginStore {
         ActionDispatcher.dispatch(NoticeAction.post(Notice(title: message)))
     }
 
-    func remote(site: JetpackSiteRef) -> PluginServiceRemote? {
-        guard let token = CredentialsService().getOAuthToken(site: site) else {
-            return nil
+    func remote(site: JetpackSiteRef) -> PluginManagementClient? {
+        guard site.isSelfHostedWithoutJetpack else {
+            return JetpackPluginManagementClient(with: site)
         }
-        let api = WordPressComRestApi.defaultApi(oAuthToken: token, userAgent: WPUserAgent.wordPress())
 
-        return PluginServiceRemote(wordPressComRestApi: api)
+        return SelfHostedPluginManagementClient(with: site)
+    }
+
     func track(_ statName: WPAnalyticsStat, with site: JetpackSiteRef) {
         let siteID: NSNumber? = (site.isSelfHostedWithoutJetpack ? nil : site.siteID) as NSNumber?
 
