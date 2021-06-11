@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-27 17:54:08+0000 */
+/* Translation-Revision-Date: 2021-06-11 08:54:47+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -28,19 +28,19 @@
 "%1$@ on %2$@" = "%1$@ על %2$@";
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. %1$@ is a placeholder for the string 'Enter your server credentials'. */
-"%1$@ to enable one click site restores from backups." = "%1$@ to enable one click site restores from backups.";
+"%1$@ to enable one click site restores from backups." = "%1$@ כדי להפעיל שחזורים בלחיצה אחת מגיבויים.";
 
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
-"%1$@ to fix this threat." = "%1$@ to fix this threat.";
+"%1$@ to fix this threat." = "%1$@ כדי לתקן את האיום.";
 
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
-"%1$@ to fix threats." = "%1$@ to fix threats.";
+"%1$@ to fix threats." = "%1$@ כדי לתקן את האיומים.";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d blogger likes this." = "%1$d blogger likes this.";
+"%1$d blogger likes this." = "בלוגר ⁦%1$d⁩ סימן לייק על זה.";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d bloggers like this." = "%1$d bloggers like this.";
+"%1$d bloggers like this." = "⁦%1$d⁩ בלוגרים סימנו לזה לייק.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d מתוך %2$d הושלמו";
@@ -209,7 +209,7 @@
 "%li words, %li characters" = "%1$li מילים, %2$li תווים";
 
 /* translators: %s: Block name e.g. \"Image block\" */
-"%s block" = "%s block";
+"%s block" = "בלוק %s";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s אפשרויות הבלוק";
@@ -221,16 +221,16 @@
 "%s block. This block has invalid content" = "הבלוק %s. בלוק זה כולל תוכן לא חוקי";
 
 /* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "%s converted to regular blocks";
+"%s converted to regular blocks" = "התוכן של %s הומר לבלוקים רגילים";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"%s has URL set" = "%s has URL set";
+"%s has URL set" = "ב-%s הוגדרה כתובת URL";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"%s has no URL set" = "%s has no URL set";
+"%s has no URL set" = "ב-%s לא הוגדרה כתובת URL";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"%s social icon" = "%s social icon";
+"%s social icon" = "סמל של הרשת החברתית %s";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "'%s' לא נתמך באופן מלא";
@@ -492,19 +492,19 @@
 "Add caption" = "להוסיף כיתוב";
 
 /* No comment provided by engineer. */
-"Add image or video" = "Add image or video";
+"Add image or video" = "להוסיף תמונה או וידאו";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "להוסיף תמונה או תמונת פרופיל שתייצג את החשבון חדש.";
 
 /* No comment provided by engineer. */
-"Add label…" = "Add label…";
+"Add label…" = "להוסיף תווית...";
 
 /* No comment provided by engineer. */
 "Add link text" = "להוסיף טקסט לקישור";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"Add link to %s" = "Add link to %s";
+"Add link to %s" = "להוסיף קישור אל %s";
 
 /* No comment provided by engineer. */
 "Add menu item above" = "הוספת פריט תפריט למעלה";
@@ -598,7 +598,7 @@
 "All of your selected items are now restored back to %1$@." = "כל הפריטים שבחרת שוחזרו לגרסה מתאריך %1$@.";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen. */
-"All set!" = "All set!";
+"All set!" = "הכול מוכן!";
 
 /* Title of the congratulation screen that appears when all the tasks are completed */
 "All tasks complete" = "כל המשימות הושלמו";
@@ -1048,7 +1048,7 @@
 "Break comment threads into multiple pages." = "חלוקת שרשורי תגובות למספר עמודים.";
 
 /* No comment provided by engineer. */
-"Briefly describe the link to help screen reader user" = "Briefly describe the link to help screen reader user";
+"Briefly describe the link to help screen reader user" = "יש לתאר בקצרה את הקישור כדי לסייע למשתמשים בקוראי מסכים";
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "עיון בכל ערכות העיצוב שלנו כדי למצוא את ההתאמה המושלמת.";
@@ -1072,16 +1072,16 @@
 "Button Style" = "סגנון הכפתור";
 
 /* No comment provided by engineer. */
-"Button inside" = "Button inside";
+"Button inside" = "כפתור בפנים";
 
 /* No comment provided by engineer. */
-"Button outside" = "Button outside";
+"Button outside" = "כפתור בחוץ";
 
 /* No comment provided by engineer. */
-"Button position" = "Button position";
+"Button position" = "מיקום הכפתור";
 
 /* No comment provided by engineer. */
-"Button width" = "Button width";
+"Button width" = "הרוחב של הכפתור";
 
 /* Label for the post author in the post detail. */
 "By " = "לפי";
@@ -1400,7 +1400,7 @@
 "Clear Device Media Cache" = "מחיקה של מטמון המדיה במכשיר";
 
 /* No comment provided by engineer. */
-"Clear Media" = "Clear Media";
+"Clear Media" = "למחוק את המדיה";
 
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "נקה פעילויות ישנות";
@@ -1469,7 +1469,7 @@
 "Colorful backgrounds" = "רקעים צבעוניים";
 
 /* No comment provided by engineer. */
-"Column settings" = "Column settings";
+"Column settings" = "הגדרות טור";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "Columns Settings";
@@ -1703,7 +1703,7 @@
 "Continuing with Apple" = "להמשיך עם Apple";
 
 /* No comment provided by engineer. */
-"Convert to regular blocks" = "Convert to regular blocks";
+"Convert to regular blocks" = "להמיר לבלוקים רגילים";
 
 /* An example tag used in the login prologue screens. */
 "Cooking" = "בישול";
@@ -1815,7 +1815,7 @@
 "Country Code" = "קידומת טלפון בינלאומית";
 
 /* No comment provided by engineer. */
-"Cover" = "Cover";
+"Cover" = "כיסוי";
 
 /* Title of a section on the debug screen that shows a list of actions related to crash logging */
 "Crash Logging" = "ליצור דוח קריסה";
@@ -1903,10 +1903,10 @@
 "Creating downloadable backup" = "יוצר גיבוי להורדה";
 
 /* No comment provided by engineer. */
-"Crop image to fill entire column" = "Crop image to fill entire column";
+"Crop image to fill entire column" = "לחתוך את התמונה כדי למלא את הטור";
 
 /* No comment provided by engineer. */
-"Crosspost" = "Crosspost";
+"Crosspost" = "במספר פוסטים";
 
 /* No comment provided by engineer. */
 "Current" = "נוכחי";
@@ -1924,10 +1924,10 @@
 "Current period: %@ to %@" = "התקופה הנוכחית: %1$@ עד %2$@";
 
 /* No comment provided by engineer. */
-"Current placeholder text is" = "Current placeholder text is";
+"Current placeholder text is" = "הטקסט הנוכחי של מציין מיקום הוא";
 
 /* translators: accessibility text. Inform about current unit value. %s: Current unit value. */
-"Current unit is %s" = "Current unit is %s";
+"Current unit is %s" = "היחידה הנוכחית היא %s";
 
 /* translators: %s: current cell value. */
 "Current value is %s" = "הערך הנוכחי הוא %s";
@@ -2254,13 +2254,13 @@
 "Double tap to dismiss" = "יש להקיש פעמיים כדי להתעלם";
 
 /* No comment provided by engineer. */
-"Double tap to edit button text" = "Double tap to edit button text";
+"Double tap to edit button text" = "יש להקיש פעמיים כדי לערוך את הטקסט של הכפתור";
 
 /* No comment provided by engineer. */
-"Double tap to edit label text" = "Double tap to edit label text";
+"Double tap to edit label text" = "יש להקיש פעמיים כדי לערוך את הטקסט של התווית";
 
 /* No comment provided by engineer. */
-"Double tap to edit placeholder text" = "Double tap to edit placeholder text";
+"Double tap to edit placeholder text" = "יש להקיש פעמיים כדי לערוך את הטקסט של מציין המיקום";
 
 /* translators: accessibility text */
 "Double tap to edit this value" = "יש להקיש פעמיים כדי לערוך את הערך הזה";
@@ -2284,7 +2284,7 @@
 "Double tap to move the block up" = "יש להקיש פעמיים כדי להזיז את הבלוק למעלה";
 
 /* No comment provided by engineer. */
-"Double tap to open Action Sheet to add image or video" = "Double tap to open Action Sheet to add image or video";
+"Double tap to open Action Sheet to add image or video" = "יש להקיש פעמיים כדי לפתוח את גיליון הפעולות ולהוסיף תמונה או סרטון";
 
 /* No comment provided by engineer. */
 "Double tap to open Action Sheet to edit, replace, or clear the image" = "יש להקיש פעמיים כדי לפתוח את גיליון הפעולה ולערוך, להחליף או למחוק את התמונה";
@@ -2293,7 +2293,7 @@
 "Double tap to open Action Sheet with available options" = "יש להקיש פעמיים כדי לפתוח את גיליון הפעולות עם האפשרויות הזמינות";
 
 /* No comment provided by engineer. */
-"Double tap to open Bottom Sheet to add image or video" = "Double tap to open Bottom Sheet to add image or video";
+"Double tap to open Bottom Sheet to add image or video" = "יש להקיש פעמיים כדי לפתוח את הגיליון התחתון ולהוסיף תמונה או סרטון";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet to edit, replace, or clear the image" = "יש להקיש פעמיים כדי לפתוח את הגיליון התחתון ולערוך, להחליף או למחוק את התמונה";
@@ -2349,7 +2349,7 @@
 "Drafts" = "טיוטות";
 
 /* No comment provided by engineer. */
-"Drag to adjust focal point" = "Drag to adjust focal point";
+"Drag to adjust focal point" = "יש לגרור כדי להתאים את נקודת המוקד";
 
 /* Label for page duplicate option. Tapping creates a copy of the page.
    Label for post duplicate option. Tapping creates a copy of the post. */
@@ -2550,7 +2550,7 @@
 "Enter your password instead." = "במקום זאת יש להזין סיסמה.";
 
 /* Error message displayed when site credentials aren't configured. */
-"Enter your server credentials" = "Enter your server credentials";
+"Enter your server credentials" = "יש להזין את פרטי הכניסה של השרת";
 
 /* Generic error alert title
    Generic error.
@@ -2849,7 +2849,7 @@
 "Fixed" = "תוקן";
 
 /* No comment provided by engineer. */
-"Fixed background" = "Fixed background";
+"Fixed background" = "רקע קבוע";
 
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "מתקן את האיומים";
@@ -3165,7 +3165,7 @@
 "Hide keyboard" = "הסתר מקלדת";
 
 /* No comment provided by engineer. */
-"Hide search heading" = "Hide search heading";
+"Hide search heading" = "להסתיר את כותרת החיפוש";
 
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
@@ -3341,7 +3341,7 @@
 "Insert Media" = "הוספת מדיה";
 
 /* No comment provided by engineer. */
-"Insert crosspost" = "Insert crosspost";
+"Insert crosspost" = "להוסיף למספר פוסטים";
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "הוספת פריטי מדיה";
@@ -3353,7 +3353,7 @@
 "Insert selected" = "להוסיף את הפריטים שנבחרו";
 
 /* No comment provided by engineer. */
-"Inside" = "Inside";
+"Inside" = "פנימי";
 
 /* Title of Insights stats filter. */
 "Insights" = "תובנות";
@@ -3404,7 +3404,7 @@
 "Invalid URL, please check if you wrote a valid site address." = "כתובת אתר לא תקפה, יש לבדוק שהזנת כתובת אתר תקפה.";
 
 /* No comment provided by engineer. */
-"Invalid URL. Audio file not found." = "Invalid URL. Audio file not found.";
+"Invalid URL. Audio file not found." = "כתובת URL לא תקינה. לא נמצא קובץ אודיו.";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "נקודת קצה לא חוקית";
@@ -3638,7 +3638,7 @@
 "Link inserted" = "הקישור הוכנס";
 
 /* No comment provided by engineer. */
-"Link label" = "Link label";
+"Link label" = "תווית הקישור";
 
 /* No comment provided by engineer. */
 "Link text" = "Link text";
@@ -3813,7 +3813,7 @@
 "Main Navigation" = "ניווט ראשי";
 
 /* Description of the Blogging Reminders card in My Site. */
-"Make the most of your site by setting goals and tracking your progress." = "Make the most of your site by setting goals and tracking your progress.";
+"Make the most of your site by setting goals and tracking your progress." = "קביעת המטרות ומעקב אחר ההתקדמות יכולים לעזור לך להפיק את המרב מהאתר שלך.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -3893,7 +3893,7 @@
 "Media" = "מדיה";
 
 /* No comment provided by engineer. */
-"Media & Text settings" = "Media & Text settings";
+"Media & Text settings" = "הגדרות מדיה וטקסט";
 
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "גודל מטמון של פריט מדיה";
@@ -3931,7 +3931,7 @@
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "גודל הקובץ (%1$@) חורג מהגודל האפשרי להעלאה. גודל ההעלאה המקסימלי הוא %2$@";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"Media options" = "Media options";
+"Media options" = "אפשרויות מדיה";
 
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "תצוגה מקדימה של פריט מדיה נכשלה.";
@@ -3946,7 +3946,7 @@
 "Medium" = "בינוני";
 
 /* No comment provided by engineer. */
-"Mention" = "Mention";
+"Mention" = "אזכור";
 
 /* The default text used for filling the name of a menu when creating it. */
 "Menu" = "תפריט";
@@ -3978,7 +3978,7 @@
 "Microsoft Outlook" = "Microsoft Outlook";
 
 /* No comment provided by engineer. */
-"Minimum height" = "Minimum height";
+"Minimum height" = "גובה מינימלי";
 
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "מאפיינים פגיעים שונים";
@@ -4254,7 +4254,7 @@
 "No available sites" = "לא נמצאו אתרים זמינים";
 
 /* No comment provided by engineer. */
-"No button" = "No button";
+"No button" = "ללא כפתור";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "אין תגובות";
@@ -4272,7 +4272,7 @@
 "No connections found for %@" = "לא נמצאו חיבורים עבור %@";
 
 /* No comment provided by engineer. */
-"No custom placeholder set" = "No custom placeholder set";
+"No custom placeholder set" = "לא הוגדר מציין מיקום מותאם";
 
 /* Text displayed when Period stat section has no data. */
 "No data for this period" = "אין נתונים לתקופה זו";
@@ -4559,7 +4559,7 @@
 "Oops!" = "אופפפס!";
 
 /* No comment provided by engineer. */
-"Opacity" = "Opacity";
+"Opacity" = "שקיפות";
 
 /* No comment provided by engineer. */
 "Open Block Actions Menu" = "לפתוח את התפריט של פעולות הבלוק";
@@ -4614,7 +4614,7 @@
 "Optional message up to %1$d characters to be included in the invitation." = "הודעה אופציונלית של עד ⁦%1$d⁩ תווים שתישלח עם ההזמנה.";
 
 /* No comment provided by engineer. */
-"Optional placeholder…" = "Optional placeholder…";
+"Optional placeholder…" = "מציין מיקום אופציונלי...";
 
 /* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
 "Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "אופציונלי: ניתן להזין הודעה מותאמת אישית של עד ⁦%1$d⁩ תווים שתישלח עם ההזמנה.";
@@ -4660,10 +4660,10 @@
 "Other Sites" = "אתרים אחרים";
 
 /* No comment provided by engineer. */
-"Outside" = "Outside";
+"Outside" = "חיצוני";
 
 /* No comment provided by engineer. */
-"Overlay" = "Overlay";
+"Overlay" = "שכבת רקע";
 
 /* Used to indicate a setting is overridden in debug builds of the app */
 "Overridden" = "נדרס";
@@ -5749,16 +5749,16 @@
 "Search block" = "בלוק החיפוש";
 
 /* No comment provided by engineer. */
-"Search block label. Current text is" = "Search block label. Current text is";
+"Search block label. Current text is" = "תווית של בלוק החיפוש. הטקסט הנוכחי הוא";
 
 /* No comment provided by engineer. */
 "Search blocks" = "בלוקים של חיפוש";
 
 /* No comment provided by engineer. */
-"Search button. Current button text is" = "Search button. Current button text is";
+"Search button. Current button text is" = "הכפתור 'חיפוש'. הטקסט הנוכחי של הכפתור הוא";
 
 /* No comment provided by engineer. */
-"Search input field." = "Search input field.";
+"Search input field." = "שדה להזנת חיפוש.";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "לחפש או להקליד כתובת URL";
@@ -5870,7 +5870,7 @@
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "יש לבחור בחשבון שברצונך לאשר. יש לשים לב שהפוסטים שלך ישותפו באופן אוטומטי לחשבון שנבחר.";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"Select the days you want to blog on" = "Select the days you want to blog on";
+"Select the days you want to blog on" = "לבחור את הימים שבהם ברצונך לכתוב את הבלוג";
 
 /* Accessibility hint for stat available to add to Insights. */
 "Select to add this stat to Insights." = "יש לבחור כדי להוסיף את הנתונים הסטטיסטיים האלה לתובנות.";
@@ -5965,7 +5965,7 @@
 
 /* Title of the Blogging Reminders card in My Site.
    Title of the Blogging Reminders Settings screen. */
-"Set your blogging goals" = "Set your blogging goals";
+"Set your blogging goals" = "להגדיר את המטרות שלך לבלוג";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "להגדיר את שם האתר שלך";
@@ -6056,10 +6056,10 @@
 "Show download button" = "להציג את כפתור ההורדה";
 
 /* No comment provided by engineer. */
-"Show media on left" = "Show media on left";
+"Show media on left" = "להציג את המדיה משמאל";
 
 /* No comment provided by engineer. */
-"Show media on right" = "Show media on right";
+"Show media on right" = "להציג את המדיה מימין";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6232,7 +6232,7 @@
 "Skip Quick Start" = "דילוג על ההתחלה המהירה";
 
 /* translators: Slash inserter autocomplete results */
-"Slash inserter results" = "Slash inserter results";
+"Slash inserter results" = "תוצאות להוספה של קו נטוי";
 
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "מזהה לכתובת";
@@ -6560,7 +6560,7 @@
 "Tap here to show help" = "יש להקיש כאן כי להציג את העזרה";
 
 /* No comment provided by engineer. */
-"Tap to add content" = "Tap to add content";
+"Tap to add content" = "יש להקיש כדי להוסיף תוכן";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "יש להקיש כדי לבטל את ההעלאה.";
@@ -7203,7 +7203,7 @@
 "Twitter Username" = "שם המשתמש בטוויטר";
 
 /* No comment provided by engineer. */
-"Type a URL" = "Type a URL";
+"Type a URL" = "יש להקליד כתובת URL";
 
 /* Placeholder text for domain search during site creation. */
 "Type a keyword for more ideas" = "יש להקליד מילת מפתח לרעיונות נוספים";
@@ -7567,7 +7567,7 @@
 "Use block editor" = "להשתמש בעורך הבלוקים";
 
 /* No comment provided by engineer. */
-"Use icon button" = "Use icon button";
+"Use icon button" = "הכפתור 'להשתמש בסמל'";
 
 /* Footer text for Invite Links section of the Invite People screen. */
 "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "ניתן להשתמש בקישור זה כדי להזמין את כל חברי הצוות שלך במקביל, במקום לשלוח הזמנות אישיות. לכל אדם שמבקר בכתובת ה-URL הזאת תהיה אפשרות להירשם לארגון שלך, גם אם הוא מקבל את הקישור מאדם אחר ולכן, חשוב לוודא שהקישור נשלח לאנשים מהימנים בלבד.";
@@ -8025,7 +8025,7 @@
 "Welcome to the world’s most popular website builder." = "ברוך בואך לכלי הפופולרי ביותר בעולם לבניית אתרי אינטרנט.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow. */
-"Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress." = "Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress.";
+"Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress." = "פרסמת את הפוסט הראשון שלך, כל הכבוד! ההתמדה משתלמת. כעת אפשר להגדיר את המטרות שלך לבלוג, לקבל תזכורות ולעקוב אחר ההתקדמות שלך.";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "מערב";
@@ -8114,7 +8114,7 @@
 "Widgets" = "וידג'טים";
 
 /* No comment provided by engineer. */
-"Width Settings" = "Width Settings";
+"Width Settings" = "הגדרות רוחב";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "לא תוצג בפומבי.";
@@ -8228,16 +8228,16 @@
 "Write code…" = "לכתוב קוד...";
 
 /* No comment provided by engineer. */
-"Write title…" = "Write title…";
+"Write title…" = "לכתוב כותרת…";
 
 /* Title for the writing section in site settings screen */
 "Writing" = "כתיבה";
 
 /* No comment provided by engineer. */
-"X-Axis Position" = "X-Axis Position";
+"X-Axis Position" = "מיקום של ציר Y";
 
 /* No comment provided by engineer. */
-"Y-Axis Position" = "Y-Axis Position";
+"Y-Axis Position" = "מיקום של ציר Y";
 
 /* Option to select the Yahoo Mail app when logging in with magic links */
 "Yahoo Mail" = "Yahoo Mail";
@@ -8294,10 +8294,10 @@
 "You can override these settings for individual posts." = "אפשר לעקוף הגדרות אלה בפוסטים נפרדים.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
-"You can update this any time via My Site > Site Settings" = "You can update this any time via My Site > Site Settings";
+"You can update this any time via My Site > Site Settings" = "אפשר לעדכן את ההגדרה הזאת בכל עת דרך 'האתר שלי' > 'הגדרות אתר'";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this any time." = "You can update this any time.";
+"You can update this any time." = "אפשר לעדכן את ההגדרה הזאת בכל עת.";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "לא ניתן להשתמש בכתובת אימייל זו להרשמה. ספק זה חוסם חלק מהאימיילים שלנו. יש להשתמש בספק אימייל אחר.";
@@ -8512,7 +8512,7 @@
 "audio" = "אודיו";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
-"audio file" = "audio file";
+"audio file" = "קובץ אודיו";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "מאת %@";
