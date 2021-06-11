@@ -12,22 +12,34 @@ struct SiteIconPickerView: View {
     @SwiftUI.State private var currentBackgroundColor = UIColor(hex: "#969CA1")
     @SwiftUI.State private var scrollOffsetColumn: Int? = nil
 
+    private var hasMadeSelection: Bool {
+        currentIcon != nil
+    }
+
     var body: some View {
-        ScrollView {
-            VStack {
-                titleText
-                subtitleText
-                iconPreview
-                VStack(alignment: .leading) {
-                    emojiSection
-                    colorSection
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(spacing: Metrics.mainStackSpacing) {
+                    titleText
+                    subtitleText
+                    iconPreview
+                    VStack(alignment: .leading, spacing: Metrics.mainStackSpacing) {
+                        emojiSection
+                        colorSection
+                    }
                 }
-                Spacer()
+                .padding()
+            }
+            ZStack {
+                Color(UIColor.basicBackground)
                 Button(action: { saveIcon() }) {
                     saveButton
                 }
+                .padding()
+                .disabled(!hasMadeSelection)
             }
-            .padding()
+            .fixedSize(horizontal: false, vertical: true)
+            .overlay(saveButtonTopShadow, alignment: .top)
         }
         .overlay(dismissButton, alignment: .topTrailing)
     }
@@ -179,10 +191,22 @@ struct SiteIconPickerView: View {
     private var saveButton: some View {
         Text(TextContent.saveButtonTitle)
             .font(.body)
-            .foregroundColor(.white)
+            .foregroundColor(hasMadeSelection ? .white : .secondary)
             .frame(maxWidth: .infinity)
             .frame(height: Metrics.saveButtonHeight)
-            .background(RoundedRectangle(cornerRadius: Metrics.cornerRadius).fill(Color(.primary)))
+            .background(
+                RoundedRectangle(cornerRadius: Metrics.cornerRadius)
+                    .fill(hasMadeSelection ? Color(.primary) : Colors.disabledButton)
+            )
+    }
+
+    private var saveButtonTopShadow: some View {
+        LinearGradient(gradient: Gradient(colors: [
+            Color(.sRGB, white: 0.0, opacity: 0.1),
+            .clear
+        ]),startPoint: .bottom, endPoint: .top)
+        .frame(height: Metrics.saveButtonTopShadowHeight)
+        .offset(x: 0, y: -Metrics.saveButtonTopShadowHeight)
     }
 
     // MARK: - Actions
@@ -260,6 +284,7 @@ struct SiteIconPickerView: View {
     private enum Metrics {
         static let titleTopPadding: CGFloat = 20
 
+        static let mainStackSpacing: CGFloat = 10.0
         static let cornerRadius: CGFloat = 8.0
 
         static let previewSize: CGFloat = 80.0
@@ -279,11 +304,13 @@ struct SiteIconPickerView: View {
         static let colorColumnCount = 5
 
         static let saveButtonHeight: CGFloat = 44.0
+        static let saveButtonTopShadowHeight: CGFloat = 6.0
     }
 
     private enum Colors {
         static let emojiGroupPickerForeground = Color(white: 0.5)
         static let emojiGroupPickerBackground = Color(white: 0.95)
+        static let disabledButton = Color(white: 0.95)
     }
 
     private static let backgroundColors = [
