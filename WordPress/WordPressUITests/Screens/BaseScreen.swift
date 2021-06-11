@@ -16,27 +16,6 @@ extension BaseScreen {
         }
     }
 
-    /// Scroll an element into view within another element.
-    /// scrollView can be a UIScrollView, or anything that subclasses it like UITableView
-    ///
-    /// TODO: The implementation of this could use work:
-    /// - What happens if the element is above the current scroll view position?
-    /// - What happens if it's a really long scroll view?
-
-    public func scrollElementIntoView(element: XCUIElement, within scrollView: XCUIElement, threshold: Int = 1000) {
-
-        var iteration = 0
-
-        while !element.isFullyVisibleOnScreen && iteration < threshold {
-            scrollView.scroll(byDeltaX: 0, deltaY: 100)
-            iteration += 1
-        }
-
-        if !element.isFullyVisibleOnScreen {
-            XCTFail("Unable to scroll element into view")
-        }
-    }
-
     // Pops the navigation stack, returning to the item above the current one
     func pop() {
         navBackButton.tap()
@@ -53,13 +32,6 @@ extension BaseScreen {
             }
         }
         return self
-    }
-}
-
-private extension XCUIElement {
-    var isFullyVisibleOnScreen: Bool {
-        guard self.exists && !self.frame.isEmpty && self.isHittable else { return false }
-        return XCUIApplication().windows.element(boundBy: 0).frame.contains(self.frame)
     }
 }
 

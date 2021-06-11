@@ -75,6 +75,28 @@ extension BaseScreen {
             safari.scrollViews.element(boundBy: 0).buttons.element(boundBy: 1).tap()
         }
     }
+
+    /// Scroll an element into view within another element.
+    /// scrollView can be a UIScrollView, or anything that subclasses it like UITableView
+    ///
+    /// TODO: The implementation of this could use work:
+    /// - What happens if the element is above the current scroll view position?
+    /// - What happens if it's a really long scroll view?
+    //
+    // FIXME: This is already part of XCUITestHelpers
+    public func scrollElementIntoView(element: XCUIElement, within scrollView: XCUIElement, threshold: Int = 1000) {
+
+        var iteration = 0
+
+        while !element.isFullyVisibleOnScreen && iteration < threshold {
+            scrollView.scroll(byDeltaX: 0, deltaY: 100)
+            iteration += 1
+        }
+
+        if !element.isFullyVisibleOnScreen {
+            XCTFail("Unable to scroll element into view")
+        }
+    }
 }
 
 class WireMock {
@@ -146,5 +168,20 @@ public extension XCUIElement {
         let result = XCTWaiter.wait(for: [elementPredicate], timeout: timeout)
 
         return result == .completed
+    }
+
+    // This was `private` in the file it came from. We need `fileprivate` in this configuration in
+    // this particular file. It's likely we can changed the access control, but I want to keep
+    // things as similar as the previous setup while moving files around.
+    fileprivate var isFullyVisibleOnScreen: Bool {
+        guard self.exists && !self.frame.isEmpty && self.isHittable else { return false }
+        return XCUIApplication().windows.element(boundBy: 0).frame.contains(self.frame)
+    }
+
+    func scroll(byDeltaX deltaX: CGFloat, deltaY: CGFloat) {
+        let startCoordinate = self.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
+        let destination = startCoordinate.withOffset(CGVector(dx: deltaX, dy: deltaY * -1))
+
+        startCoordinate.press(forDuration: 0.01, thenDragTo: destination)
     }
 }
