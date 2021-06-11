@@ -6,6 +6,7 @@
 * [*] Disables the ability to open the editor for Post Pages [#16369]
 * [*] Fixed an issue that could cause a crash when moderating Comments. [#16645]
 * [*] Fix notice overlapping the ActionSheet that displays the QuickStart Removal. [#16609]
+* [*] Site Pages: when setting a parent, placeholder text is now displayed for pages with blank titles. [#16661]
 * [***] Block Editor: Audio block now available on WP.com sites on the free plan. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3523]
 * [**] You can now create a Site Icon for your site using an emoji. [#16670] 
 
