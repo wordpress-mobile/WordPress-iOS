@@ -204,7 +204,7 @@ struct SiteIconPickerView: View {
         LinearGradient(gradient: Gradient(colors: [
             Color(.sRGB, white: 0.0, opacity: 0.1),
             .clear
-        ]),startPoint: .bottom, endPoint: .top)
+        ]), startPoint: .bottom, endPoint: .top)
         .frame(height: Metrics.saveButtonTopShadowHeight)
         .offset(x: 0, y: -Metrics.saveButtonTopShadowHeight)
     }

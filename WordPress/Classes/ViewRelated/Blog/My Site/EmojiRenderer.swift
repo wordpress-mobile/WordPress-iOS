@@ -33,7 +33,7 @@ struct EmojiRenderer {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.alignment = .center
 
-            let attrs: [NSAttributedString.Key : Any] = [.font: font, .paragraphStyle: paragraphStyle]
+            let attrs: [NSAttributedString.Key: Any] = [.font: font, .paragraphStyle: paragraphStyle]
             emoji.draw(with: insetRect, options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
         }
 

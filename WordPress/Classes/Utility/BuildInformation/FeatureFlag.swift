@@ -19,7 +19,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case bloggingReminders
     case readerPostLikes
     case siteIconCreator
-    
+
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
         if let overriddenValue = FeatureFlagOverrideStore().overriddenValue(for: self) {
