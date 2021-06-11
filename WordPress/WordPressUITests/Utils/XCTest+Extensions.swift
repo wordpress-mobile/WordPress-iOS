@@ -132,9 +132,3 @@ extension XCTestCase {
         XCUIApplication().statusBars.firstMatch.tap()
     }
 }
-
-extension XCUIElementQuery {
-    var lastMatch: XCUIElement? {
-        return self.allElementsBoundByIndex.last
-    }
-}
