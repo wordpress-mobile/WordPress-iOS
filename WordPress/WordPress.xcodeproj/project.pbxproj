@@ -299,6 +299,9 @@
 		17C64BD2248E26A200AF09D7 /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C64BD1248E26A200AF09D7 /* AppAppearance.swift */; };
 		17CE77ED20C6C2F3001DEA5A /* ReaderSiteSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE77EC20C6C2F3001DEA5A /* ReaderSiteSearchService.swift */; };
 		17CE77EF20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE77EE20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift */; };
+		17CFE1532673C11600C251CF /* blue-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17CFE1502673C11500C251CF /* blue-icon-app-76x76@2x.png */; };
+		17CFE1542673C11600C251CF /* blue-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17CFE1512673C11600C251CF /* blue-icon-app-83.5x83.5@2x.png */; };
+		17CFE1552673C11600C251CF /* blue-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 17CFE1522673C11600C251CF /* blue-icon-app-76x76.png */; };
 		17D2FDC21C6A468A00944265 /* PlanComparisonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D2FDC11C6A468A00944265 /* PlanComparisonViewController.swift */; };
 		17D4153C22C2308D006378EF /* StatsPeriodHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D4153B22C2308D006378EF /* StatsPeriodHelper.swift */; };
 		17D5C3F71FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D5C3F61FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift */; };
@@ -4749,6 +4752,9 @@
 		17C64BD1248E26A200AF09D7 /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
 		17CE77EC20C6C2F3001DEA5A /* ReaderSiteSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSiteSearchService.swift; sourceTree = "<group>"; };
 		17CE77EE20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSiteSearchViewController.swift; sourceTree = "<group>"; };
+		17CFE1502673C11500C251CF /* blue-icon-app-76x76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-icon-app-76x76@2x.png"; sourceTree = "<group>"; };
+		17CFE1512673C11600C251CF /* blue-icon-app-83.5x83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-icon-app-83.5x83.5@2x.png"; sourceTree = "<group>"; };
+		17CFE1522673C11600C251CF /* blue-icon-app-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-icon-app-76x76.png"; sourceTree = "<group>"; };
 		17D2FDC11C6A468A00944265 /* PlanComparisonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanComparisonViewController.swift; sourceTree = "<group>"; };
 		17D4153B22C2308D006378EF /* StatsPeriodHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPeriodHelper.swift; sourceTree = "<group>"; };
 		17D5C3F61FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaProgressCoordinatorNoticeViewModel.swift; sourceTree = "<group>"; };
@@ -7994,6 +8000,9 @@
 		17222D74261DDDF70047B163 /* blue */ = {
 			isa = PBXGroup;
 			children = (
+				17CFE1522673C11600C251CF /* blue-icon-app-76x76.png */,
+				17CFE1502673C11500C251CF /* blue-icon-app-76x76@2x.png */,
+				17CFE1512673C11600C251CF /* blue-icon-app-83.5x83.5@2x.png */,
 				17222D78261DDDF70047B163 /* blue-icon-app-60x60@3x.png */,
 				17222D79261DDDF70047B163 /* blue-icon-app-60x60@2x.png */,
 			);
@@ -14816,6 +14825,7 @@
 				E66E2A6A1FE432BC00788F22 /* TitleBadgeDisclosureCell.xib in Resources */,
 				17222D87261DDDF90047B163 /* celadon-icon-app-76x76@2x.png in Resources */,
 				40640046200ED30300106789 /* TextWithAccessoryButtonCell.xib in Resources */,
+				17CFE1542673C11600C251CF /* blue-icon-app-83.5x83.5@2x.png in Resources */,
 				17222D99261DDDF90047B163 /* black-icon-app-60x60@2x.png in Resources */,
 				9856A389261FC206008D6354 /* UserProfileUserInfoCell.xib in Resources */,
 				98B88466261E4E4E007ED7F8 /* LikeUserTableViewCell.xib in Resources */,
@@ -14857,6 +14867,7 @@
 				D82253E6219956540014D0E2 /* AddressCell.xib in Resources */,
 				9895B6E021ED49160053D370 /* TopTotalsCell.xib in Resources */,
 				430693741DD25F31009398A2 /* PostPost.storyboard in Resources */,
+				17CFE1552673C11600C251CF /* blue-icon-app-76x76.png in Resources */,
 				17222DA3261DDDF90047B163 /* spectrum-icon-app-76x76@2x.png in Resources */,
 				1761F18726209AEE000815EF /* pride-icon-app-83.5x83.5@2x.png in Resources */,
 				F5A34D0E25DF2F7F00C9654B /* SpaceMono-Bold.ttf in Resources */,
@@ -15017,6 +15028,7 @@
 				9A9E3FB2230EB74300909BC4 /* StatsGhostTabbedCell.xib in Resources */,
 				469CE06E24BCED75003BDC8B /* CategorySectionTableViewCell.xib in Resources */,
 				4034FDEE2007D4F700153B87 /* ExpandableCell.xib in Resources */,
+				17CFE1532673C11600C251CF /* blue-icon-app-76x76@2x.png in Resources */,
 				1761F18026209AEE000815EF /* jetpack-green-icon-app-76x76.png in Resources */,
 				988F073623D0CE8800AC67A6 /* WidgetUrlCell.xib in Resources */,
 				E61507E42220A13B00213D33 /* richEmbedScript.js in Resources */,
@@ -20467,7 +20479,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconSpectrum;
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
@@ -20536,7 +20548,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconSpectrum;
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
@@ -21671,7 +21683,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconSpectrum;
 				CLANG_ENABLE_MODULES = "$(inherited)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
