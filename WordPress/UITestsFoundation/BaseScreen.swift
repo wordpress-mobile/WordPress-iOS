@@ -201,6 +201,14 @@ public extension XCUIElement {
 
         startCoordinate.press(forDuration: 0.01, thenDragTo: destination)
     }
+
+    /// Removes any current text in the field
+    func clearTextIfNeeded() -> Void {
+        let app = XCUIApplication()
+
+        self.press(forDuration: 1.2)
+        app.keys["delete"].tap()
+    }
 }
 
 // MARK: - Logger
