@@ -142,16 +142,6 @@ extension XCUIElement {
 
         startCoordinate.press(forDuration: 0.01, thenDragTo: destination)
     }
-
-    @discardableResult
-    func waitForHittability(timeout: TimeInterval) -> Bool {
-
-        let predicate = NSPredicate(format: "isHittable == true")
-        let elementPredicate = XCTNSPredicateExpectation(predicate: predicate, object: self)
-        let result = XCTWaiter.wait(for: [elementPredicate], timeout: timeout)
-
-        return result == .completed
-    }
 }
 
 extension XCUIElementQuery {

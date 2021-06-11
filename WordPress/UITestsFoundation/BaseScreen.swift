@@ -136,4 +136,15 @@ public extension XCUIElement {
             UIPasteboard.general.string = string
         }
     }
+
+    @discardableResult
+    // TODO: When moving to framework, find name that doesn't trigger grammar warning
+    func waitForHittability(timeout: TimeInterval) -> Bool {
+
+        let predicate = NSPredicate(format: "isHittable == true")
+        let elementPredicate = XCTNSPredicateExpectation(predicate: predicate, object: self)
+        let result = XCTWaiter.wait(for: [elementPredicate], timeout: timeout)
+
+        return result == .completed
+    }
 }
