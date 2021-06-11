@@ -60,7 +60,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .readerPostLikes:
             return true
         case .siteIconCreator:
-            return BuildConfiguration.current == .localDeveloper
+            return BuildConfiguration.current != .appStore
         }
     }
 
