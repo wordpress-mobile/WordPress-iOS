@@ -346,7 +346,7 @@ platform :ios do
 
     build_and_upload_internal(skip_prechecks: true, skip_confirm: options[:skip_confirm]) if options[:beta_release]
     build_and_upload_itc(skip_prechecks: true, skip_confirm: options[:skip_confirm],
-                         final: !options[:beta_release], create_release: options[:create_gh_release])
+                         beta_release: options[:beta_release], create_release: options[:create_gh_release])
   end
 
   #####################################################################################
@@ -477,13 +477,13 @@ platform :ios do
   # This lane builds the app and upload it for external distribution
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane build_and_upload_itc [skip_confirm:<skip confirm>] [create_release:<Create release on GH> ]
+  # bundle exec fastlane build_and_upload_itc [skip_confirm:<skip confirm>] [create_release:<Create release on GH>] [beta_release:<intermediate beta?>]
   #
   # Example:
   # bundle exec fastlane build_and_upload_itc
   # bundle exec fastlane build_and_upload_itc skip_confirm:true
   # bundle exec fastlane build_and_upload_itc create_release:true
-  # bundle exec fastlane build_and_upload_itc create_release:true final:true
+  # bundle exec fastlane build_and_upload_itc create_release:true beta_release:true
   #####################################################################################
   desc 'Builds and uploads for distribution'
   lane :build_and_upload_itc do |options|
@@ -518,13 +518,13 @@ platform :ios do
       archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
       zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
 
-      version = options[:final] ? ios_get_app_version : ios_get_build_version
+      version = options[:beta_release] ? ios_get_build_version : ios_get_app_version
       create_release(
         repository: GHHELPER_REPO,
         version: version,
         release_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
         release_assets: archive_zip_path.to_s,
-        prerelease: !options[:final]
+        prerelease: options[:beta_release]
       )
 
       FileUtils.rm_rf(archive_zip_path)
