@@ -404,9 +404,12 @@ private extension StatsTotalRow {
         }
 
         if hasChildRows {
-            expanded.toggle()
-            prepareForVoiceOver()
-            delegate?.toggleChildRows?(for: self, didSelectRow: true)
+            if let section = rowData?.statSection,
+               section == .periodReferrers {
+                didTapReferrerCell()
+            } else {
+                toggleExpandedState()
+            }
             return
         }
 
@@ -418,6 +421,9 @@ private extension StatsTotalRow {
                     return
                 }
                 delegate?.showPostStats?(postID: postID, postTitle: rowData?.name, postURL: rowData?.disclosureURL)
+            } else if let section = rowData?.statSection,
+                      section == .periodReferrers {
+                didTapReferrerCell()
             } else {
                 delegate?.displayWebViewWithURL?(disclosureURL)
             }
@@ -433,9 +439,41 @@ private extension StatsTotalRow {
     }
 
     @objc func didTapMoreButton() {
-
+        if parentRow == nil, hasChildRows {
+            toggleExpandedState()
+        } else if let disclosureURL = rowData?.disclosureURL {
+            delegate?.displayWebViewWithURL?(disclosureURL)
+        }
     }
-    
+
+    func didTapReferrerCell() {
+        if parentRow == nil {
+            let referrerDomain: String?
+            let isReferrerSpam = rowData?.isReferrerSpam
+
+            if hasChildRows {
+                referrerDomain = rowData?.childRows?.first?.disclosureURL?.host
+            } else {
+                referrerDomain = rowData?.disclosureURL?.host
+            }
+
+            guard let domain = referrerDomain,
+                  let isSpam = isReferrerSpam else {
+                return
+            }
+
+            // TODO: toggle spam state
+        } else if let disclosureURL = rowData?.disclosureURL {
+            delegate?.displayWebViewWithURL?(disclosureURL)
+        }
+    }
+
+    func toggleExpandedState() {
+        expanded.toggle()
+        prepareForVoiceOver()
+        delegate?.toggleChildRows?(for: self, didSelectRow: true)
+    }
+
     func captureAnalyticsEventsFor(_ statSection: StatSection) {
         guard let event = statSection.analyticsItemTappedEvent else {
             return
