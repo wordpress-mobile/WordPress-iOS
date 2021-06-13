@@ -228,6 +228,16 @@ private extension StatsTotalRow {
         Style.configureViewAsSeparator(separatorLine)
         Style.configureViewAsSeparator(topExpandedSeparatorLine)
         Style.configureViewAsDataBar(dataBar)
+
+        if let data = rowData, data.statSection == .periodReferrers {
+            if parentRow == nil {
+                itemLabel.textColor = .systemBlue
+            }
+
+            if data.isReferrerSpam {
+                Style.configureLabelAsNoData(itemLabel)
+            }
+        }
     }
 
     func configureDisclosureButton() {
