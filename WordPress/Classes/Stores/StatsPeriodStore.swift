@@ -1343,6 +1343,45 @@ extension StatsPeriodStore {
         }
         return status
     }
+
+    func toggleSpamState(for referrerDomain: String) {
+        guard state.topReferrers != nil else {
+            return
+        }
+
+        for (i, r) in state.topReferrers!.referrers.enumerated() {
+            if r.children.isEmpty {
+                if r.url?.host == referrerDomain {
+                    let currentValue = state.topReferrers!.referrers[i].isSpam
+                    statsServiceRemote?.toggleSpamState(for: referrerDomain, currentValue: currentValue, success: { [weak self] in
+                        guard let self = self else {
+                            return
+                        }
+                        self.state.topReferrers!.referrers[i].isSpam.toggle()
+                        DDLogInfo("Stats Period: Referrer \(r.title) isSpam set to \(self.state.topReferrers!.referrers[i].isSpam)")
+                    }, failure: { error in
+                        DDLogInfo("Stats Period: Couldn't toggle spam state for referrer \(r.title), reason: \(error.localizedDescription)")
+                    })
+                    break
+                }
+            } else if r.children.first?.url?.host == referrerDomain {
+                let currentValue = state.topReferrers!.referrers[i].isSpam
+                statsServiceRemote?.toggleSpamState(for: referrerDomain, currentValue: currentValue, success: { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+                    self.state.topReferrers?.referrers[i].isSpam.toggle()
+                    for (j, _) in r.children.enumerated() {
+                        self.state.topReferrers!.referrers[i].children[j].isSpam.toggle()
+                    }
+                    DDLogInfo("Stats Period: Referrer \(r.title) isSpam set to \(self.state.topReferrers!.referrers[i].isSpam)")
+                }, failure: { error in
+                    DDLogInfo("Stats Period: Couldn't toggle spam state for referrer \(r.title), reason: \(error.localizedDescription)")
+                })
+                break
+            }
+        }
+    }
 }
 
 // MARK: - Widget Data
