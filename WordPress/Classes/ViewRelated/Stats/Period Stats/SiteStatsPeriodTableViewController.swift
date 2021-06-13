@@ -78,6 +78,17 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         tableView.estimatedRowHeight = 500
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if !isMovingToParent {
+            guard let date = selectedDate, let period = selectedPeriod else {
+                return
+            }
+            addViewModelListeners()
+            viewModel?.refreshPeriodOverviewData(withDate: date, forPeriod: period, resetOverviewCache: false)
+        }
+    }
+
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SiteStatsTableHeaderView.defaultNibName) as? SiteStatsTableHeaderView else {
             return nil
