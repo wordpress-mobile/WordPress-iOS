@@ -14,6 +14,7 @@ struct StatsTotalRowData {
     var disclosureURL: URL?
     var childRows: [StatsTotalRowData]?
     var statSection: StatSection?
+    var isReferrerSpam: Bool
 
     init(name: String,
          data: String,
@@ -27,7 +28,8 @@ struct StatsTotalRowData {
          showDisclosure: Bool = false,
          disclosureURL: URL? = nil,
          childRows: [StatsTotalRowData]? = [StatsTotalRowData](),
-         statSection: StatSection? = nil) {
+         statSection: StatSection? = nil,
+         isReferrerSpam: Bool = false) {
         self.name = name
         self.data = data
         self.mediaID = mediaID
@@ -41,6 +43,7 @@ struct StatsTotalRowData {
         self.disclosureURL = disclosureURL
         self.childRows = childRows
         self.statSection = statSection
+        self.isReferrerSpam = isReferrerSpam
     }
 
     var hasIcon: Bool {

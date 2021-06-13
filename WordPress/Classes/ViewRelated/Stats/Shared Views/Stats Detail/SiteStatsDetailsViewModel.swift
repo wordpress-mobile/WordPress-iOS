@@ -739,7 +739,8 @@ private extension SiteStatsDetailsViewModel {
                                      showDisclosure: true,
                                      disclosureURL: referrer.url,
                                      childRows: referrer.children.map { rowDataFromReferrer(referrer: $0) },
-                                     statSection: .periodReferrers)
+                                     statSection: .periodReferrers,
+                                     isReferrerSpam: referrer.isSpam)
         }
 
         return referrers.map { rowDataFromReferrer(referrer: $0) }
