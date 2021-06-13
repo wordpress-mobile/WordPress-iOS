@@ -57,6 +57,7 @@ struct StatsTotalRowData {
     @objc optional func toggleChildRows(for row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
     @objc optional func showAddInsight()
+    @objc optional func toggleSpamState(for referrerDomain: String, currentValue: Bool)
 }
 
 class StatsTotalRow: UIView, NibLoadable, Accessible {
@@ -462,7 +463,7 @@ private extension StatsTotalRow {
                 return
             }
 
-            // TODO: toggle spam state
+            delegate?.toggleSpamState?(for: domain, currentValue: isSpam)
         } else if let disclosureURL = rowData?.disclosureURL {
             delegate?.displayWebViewWithURL?(disclosureURL)
         }

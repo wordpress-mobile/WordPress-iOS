@@ -8,6 +8,7 @@ import WordPressFlux
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
+    @objc func toggleSpamState(for referrerDomain: String, currentValue: Bool)
 }
 
 
@@ -197,6 +198,11 @@ private extension SiteStatsPeriodTableViewController {
         return isViewLoaded && view.window != nil
     }
 
+    // MARK: - Action Sheet
+
+    func showSpamActionSheet(for referrerDomain: String, isSpam: Bool) {
+        // TODO: implement
+    }
 }
 
 // MARK: - NoResultsViewHost
@@ -288,6 +294,9 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
+        showSpamActionSheet(for: referrerDomain, isSpam: currentValue)
+    }
 }
 
 // MARK: - SiteStatsTableHeaderDelegate Methods

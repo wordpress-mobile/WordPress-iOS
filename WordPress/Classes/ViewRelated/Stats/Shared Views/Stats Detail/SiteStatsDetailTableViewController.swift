@@ -7,6 +7,7 @@ import WordPressFlux
     @objc optional func toggleChildRowsForRow(_ row: StatsTotalRow)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
+    @objc func toggleSpamState(for referrerDomain: String, currentValue: Bool)
 }
 
 class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoadable {
@@ -308,6 +309,9 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
         })
     }
 
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
+        showSpamActionSheet(for: referrerDomain, isSpam: currentValue)
+    }
 }
 
 // MARK: - NoResultsViewHost
@@ -362,4 +366,12 @@ extension SiteStatsDetailTableViewController: SiteStatsTableHeaderDelegate {
         refreshTableView()
     }
 
+}
+
+// MARK: - Action Sheet
+
+private extension SiteStatsDetailTableViewController {
+    func showSpamActionSheet(for referrerDomain: String, isSpam: Bool) {
+        // TODO: implement
+    }
 }

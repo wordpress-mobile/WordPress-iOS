@@ -309,6 +309,9 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         siteStatsInsightsDelegate?.showAddInsight?()
     }
 
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
+        siteStatsPeriodDelegate?.toggleSpamState(for: referrerDomain, currentValue: currentValue)
+    }
 }
 
 // MARK: - ViewMoreRowDelegate
