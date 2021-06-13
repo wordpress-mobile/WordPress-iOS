@@ -241,6 +241,10 @@ class SiteStatsPeriodViewModel: Observable {
         }
         return chartDate(for: currentEntryIndex)
     }
+
+    func toggleSpamState(for referrerDomain: String) {
+        store.toggleSpamState(for: referrerDomain)
+    }
 }
 
 // MARK: - Private Extension

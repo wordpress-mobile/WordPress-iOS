@@ -400,6 +400,9 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
     }
 
+    func toggleSpamState(for referrerDomain: String) {
+        periodStore.toggleSpamState(for: referrerDomain)
+    }
 }
 
 // MARK: - Private Extension
