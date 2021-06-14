@@ -258,8 +258,7 @@ extension SiteSettingsViewController {
         case .timezone:
             showTimezoneSelector()
         case .bloggingGoals:
-
-            // Do something
+            presentBloggingGoalsFlow()
             break
         default:
             break
@@ -328,7 +327,7 @@ extension SiteSettingsViewController {
 
     private func configureForBloggingGoals(_ cell: SettingTableViewCell) {
         cell.editable = true
-        cell.textLabel?.text = "Blogging Goals"
+        cell.textLabel?.text = NSLocalizedString("Blogging Goals", comment: "Label for the blogging goals setting")
         cell.textValue = "Undefined"
     }
 
@@ -391,5 +390,9 @@ extension SiteSettingsViewController {
         }
 
         self.navigationController?.pushViewController(siteTaglineViewController, animated: true)
+    }
+    
+    private func presentBloggingGoalsFlow() {
+        BlogDetailsViewController.presentBloggingRemindersSettingsFlow(from: self, for: blog, source: .blogSettings)
     }
 }
