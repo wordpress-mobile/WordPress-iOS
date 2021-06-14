@@ -118,11 +118,12 @@ extension NSNotification.Name {
             self.sourceTag = sourceTag
             WPAnalytics.track(.supportNewRequestViewed)
 
-            let newRequestConfig = self.createRequest()
-            let newRequestController = RequestUi.buildRequestUi(with: [newRequestConfig])
-            ZendeskUtils.showZendeskView(newRequestController)
+            self.createRequest() { requestConfig in
+                let newRequestController = RequestUi.buildRequestUi(with: [requestConfig])
+                ZendeskUtils.showZendeskView(newRequestController)
 
-            identityUpdated?(newIdentity)
+                identityUpdated?(newIdentity)
+            }
         }
     }
 
@@ -143,12 +144,12 @@ extension NSNotification.Name {
             WPAnalytics.track(.supportTicketListViewed)
 
             // Get custom request configuration so new tickets from this path have all the necessary information.
-            let newRequestConfig = self.createRequest()
+            self.createRequest() { requestConfig in
+                let requestListController = RequestUi.buildRequestList(with: [requestConfig])
+                ZendeskUtils.showZendeskView(requestListController)
 
-            let requestListController = RequestUi.buildRequestList(with: [newRequestConfig])
-            ZendeskUtils.showZendeskView(requestListController)
-
-            identityUpdated?(newIdentity)
+                identityUpdated?(newIdentity)
+            }
         }
     }
 
@@ -175,7 +176,7 @@ extension NSNotification.Name {
         }, failure: { error in })
     }
 
-    func createRequest(planService: PlanService? = nil) -> RequestUiConfiguration {
+    func createRequest(planService: PlanService? = nil, completion: @escaping (RequestUiConfiguration) -> Void) {
 
         let requestConfig = RequestUiConfiguration()
 
@@ -192,25 +193,25 @@ extension NSNotification.Name {
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.currentSite, value: ZendeskUtils.getCurrentSiteDescription()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.appLanguage, value: ZendeskUtils.appLanguage))
-        requestConfig.customFields = ticketFields
+
         ZendeskUtils.getZendeskMetadata() { result in
+            var tags = ZendeskUtils.getTags()
             switch result {
             case .success(let metadata):
                 ticketFields.append(CustomField(fieldId: TicketFieldIDs.plan, value: metadata.plan))
                 ticketFields.append(CustomField(fieldId: TicketFieldIDs.addOns, value: metadata.jetpackAddons))
+                tags.append(contentsOf: metadata.jetpackAddons)
             case .failure(let error):
-                DDLogError("Unable to fetch zendesk plan - \(error.localizedDescription)")
+                DDLogError("Unable to fetch zendesk metadata - \(error.localizedDescription)")
             }
+            requestConfig.customFields = ticketFields
+            // Set tags
+            requestConfig.tags = tags
 
+            // Set the ticket subject
+            requestConfig.subject = Constants.ticketSubject
+            completion(requestConfig)
         }
-
-        // Set tags
-        requestConfig.tags = ZendeskUtils.getTags()
-
-        // Set the ticket subject
-        requestConfig.subject = Constants.ticketSubject
-
-        return requestConfig
     }
 
     // MARK: - Device Registration
@@ -942,7 +943,7 @@ private extension ZendeskUtils {
     // MARK: - Plans
 
     /// Retrieves the highest priority plan, if it exists
-    /// - Returns: the highest priority plan found, or an empty string if none was foundq
+    /// - Returns: the highest priority plan found, or an empty string if none was found
     static func getHighestPriorityPlan(planService: PlanService? = nil) -> String {
 
         let availablePlans = getAvailablePlansWithPriority(planService: planService)
