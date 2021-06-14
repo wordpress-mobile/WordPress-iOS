@@ -722,6 +722,9 @@ CHECKOUT OPTIONS:
     :commit: 23fc6626260a2baaa25130c199f34abe36a3cac4
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
+  react-native-blur:
+    :commit: 9d2d744a5171f3a77564a43f87c2cfb3fbcf597e
+    :git: https://github.com/react-native-community/react-native-blur.git
   RNTAztecView:
     :commit: 23fc6626260a2baaa25130c199f34abe36a3cac4
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
