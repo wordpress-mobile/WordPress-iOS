@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-27 17:54:08+0000 */
+/* Translation-Revision-Date: 2021-06-11 14:25:10+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -26,6 +26,21 @@
 
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@ في %2$@";
+
+/* Error message displayed when restoring a site fails due to credentials not being configured. %1$@ is a placeholder for the string 'Enter your server credentials'. */
+"%1$@ to enable one click site restores from backups." = "%1$@ لتمكين استعادة الموقع بنقرة واحدة من النُسخ الاحتياطية.";
+
+/* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
+"%1$@ to fix this threat." = "%1$@ لإصلاح هذا التهديد.";
+
+/* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
+"%1$@ to fix threats." = "%1$@ لإصلاح التهديدات.";
+
+/* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
+"%1$d blogger likes this." = "%1$d مدوّن معجب بهذا.";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
+"%1$d bloggers like this." = "%1$d مدوِّنون معجبون بهذا.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "تم استكمال %1$d من %2$d";
@@ -193,6 +208,9 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li كلمات، %2$li أحرف";
 
+/* translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "مكوّن %s";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s خيارات المكوِّن";
 
@@ -201,6 +219,18 @@
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "مكوِّن %s. يحتوي هذا المكوِّن على محتوى غير صالح";
+
+/* translators: %s: name of the reusable block */
+"%s converted to regular blocks" = "تم تحويل %s إلى مكوِّنات عادية";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"%s has URL set" = "لدى %s عنوان URL معين";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"%s has no URL set" = "ليس لدى %s عنوان URL معين";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"%s social icon" = "أيقونة %s الاجتماعية";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "لم يتم دعم \"%s\" بالكامل";
@@ -456,10 +486,25 @@
 "Add any topic" = "إضافة أي موضوع";
 
 /* No comment provided by engineer. */
+"Add button text" = "إضافة نصّ للزر";
+
+/* No comment provided by engineer. */
 "Add caption" = "إضاقة تسمية توضيحية";
+
+/* No comment provided by engineer. */
+"Add image or video" = "إضافة صورة أو فيديو";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "أضف صورة أو أفاتار لتمثيل هذا الحساب الجديد.";
+
+/* No comment provided by engineer. */
+"Add label…" = "إضافة تسمية…";
+
+/* No comment provided by engineer. */
+"Add link text" = "إضافة نصّ للرابط";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"Add link to %s" = "إضافة رابط إلى %s";
 
 /* No comment provided by engineer. */
 "Add menu item above" = "إضافة عنصر قائمة أعلاه";
@@ -551,6 +596,9 @@
 
 /* Description for the Jetpack Backup Restore message. %1$@ is a placeholder for the selected date. */
 "All of your selected items are now restored back to %1$@." = "تمت الآن استعادة كافة العناصر التي قمت بتحديدها إلى %1$@.";
+
+/* Title of the completion screen of the Blogging Reminders Settings screen. */
+"All set!" = "كل شيء جاهز!";
 
 /* Title of the congratulation screen that appears when all the tasks are completed */
 "All tasks complete" = "جميع المهام مكتملة";
@@ -990,8 +1038,17 @@
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "عريض";
 
+/* No comment provided by engineer. */
+"Border Radius" = "زوايا الحدود";
+
+/* No comment provided by engineer. */
+"Border Settings" = "إعدادات الحدود";
+
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "تحديد مناقشات التعليقات في صفحات متعددة.";
+
+/* No comment provided by engineer. */
+"Briefly describe the link to help screen reader user" = "قدّم وصفاً موجزًا للرابط لمساعدة مستخدم قارئ الشاشة";
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "تصفّح جميع قوالبنا للعثور على ما يناسبك.";
@@ -1008,11 +1065,23 @@
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "مشغول";
 
+/* No comment provided by engineer. */
+"Button Link URL" = "رابط الزر URL";
+
 /* Title for a list of different button styles. */
 "Button Style" = "نمط الزر";
 
 /* No comment provided by engineer. */
-"ButtonGroup" = "مجموعة أزرار";
+"Button inside" = "زر داخلي";
+
+/* No comment provided by engineer. */
+"Button outside" = "زر خارجي";
+
+/* No comment provided by engineer. */
+"Button position" = "موضع الزر";
+
+/* No comment provided by engineer. */
+"Button width" = "عرض الزر";
 
 /* Label for the post author in the post detail. */
 "By " = "بواسطة ";
@@ -1291,7 +1360,7 @@
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "اختر من صفحة رئيسية تعرض أحدث مقالاتك (مدونة تقليدية) أو صفحة ثابتة\/ساكنة.";
 
-/* Menu option used for adding media from other applications. */
+/* No comment provided by engineer. */
 "Choose from device" = "الاختيار من الجهاز";
 
 /* No comment provided by engineer. */
@@ -1329,6 +1398,9 @@
 
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "مسح ذاكرة التخزين المؤقت لوسائط الجهاز";
+
+/* No comment provided by engineer. */
+"Clear Media" = "مسح الوسائط";
 
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "مسح سجلات النشاط القديمة";
@@ -1395,6 +1467,12 @@
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "خلفيات ملونة";
+
+/* No comment provided by engineer. */
+"Column settings" = "إعدادات العمود";
+
+/* No comment provided by engineer. */
+"Columns Settings" = "إعدادات الأعمدة";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "اجمع بين الصور ومقاطع الفيديو والنصوص لإنشاء مقالات قصة جذابة وقابلة للنقر سيحبها زائروك.";
@@ -1624,6 +1702,9 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "المتابعة عبر Apple";
 
+/* No comment provided by engineer. */
+"Convert to regular blocks" = "تحويل إلى مكوّنات عادية";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "الطهي";
 
@@ -1733,6 +1814,9 @@
 /* Register Domain - Address information field Country Code */
 "Country Code" = "رمز البلد";
 
+/* No comment provided by engineer. */
+"Cover" = "غلاف";
+
 /* Title of a section on the debug screen that shows a list of actions related to crash logging */
 "Crash Logging" = "تسجيل الأعطال";
 
@@ -1819,6 +1903,12 @@
 "Creating downloadable backup" = "جاري إنشاء نسخة احتياطية قابلة للتنزيل";
 
 /* No comment provided by engineer. */
+"Crop image to fill entire column" = "قص الصورة لملء العمود بالكامل";
+
+/* No comment provided by engineer. */
+"Crosspost" = "النشر المتعدد";
+
+/* No comment provided by engineer. */
 "Current" = "الحالي";
 
 /* Label title. Refers to the current WordPress.com plan for a user's site. */
@@ -1832,6 +1922,12 @@
 
 /* Week Period Accessibility label. Prefix the current selected period. Ex. Current period: Jan 6 to Jan 12. */
 "Current period: %@ to %@" = "الفترة الحالية: %1$@ إلى %2$@";
+
+/* No comment provided by engineer. */
+"Current placeholder text is" = "نص العنصر النائب الحالي هو";
+
+/* translators: accessibility text. Inform about current unit value. %s: Current unit value. */
+"Current unit is %s" = "الوحدة الحالية هي %s";
 
 /* translators: %s: current cell value. */
 "Current value is %s" = "القيمة الحالية هي %s";
@@ -2133,6 +2229,7 @@
    Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
+   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
    Title of the Done button on the me page */
@@ -2141,6 +2238,9 @@
 /* Title for label when there are no threats on the users site */
 "Don’t worry about a thing" = "لا داعي للقلق تجاه أي شيء";
 
+/* No comment provided by engineer. */
+"Double tap and hold to edit" = "الضغط المزدوج مع الاستمرار للتحرير";
+
 /* Screen reader hint for button that will move the menu item */
 "Double tap and hold to move this menu item up or down" = "الضغط المزدوج مع الاستمرار لنقل عنصر القائمة هذا للأعلى أو أسفل";
 
@@ -2148,10 +2248,19 @@
 "Double tap to add a block" = "الضغط المزدوج لإضافة مكوِّن";
 
 /* No comment provided by engineer. */
-"Double tap to add a link." = "انقر نقرًا مزدوجًا لإضافة رابط.";
+"Double tap to add a link." = "أنقر نقرًا مزدوجًا لإضافة رابط.";
 
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "اضغط ضغطًا مزدوجًا للتجاهل";
+
+/* No comment provided by engineer. */
+"Double tap to edit button text" = "أنقر نقرًا مزدوجًا لتحرير نص الزر";
+
+/* No comment provided by engineer. */
+"Double tap to edit label text" = "أنقر نقرًا مزدوجًا لتحرير نص التسمية";
+
+/* No comment provided by engineer. */
+"Double tap to edit placeholder text" = "أنقر نقرًا مزدوجًا لتحرير نص العنصر النائب";
 
 /* translators: accessibility text */
 "Double tap to edit this value" = "الضغط المزدوج لتحرير هذه القيمة";
@@ -2175,10 +2284,16 @@
 "Double tap to move the block up" = "الضغط المزدوج لنقل المكوِّن إلى أعلى";
 
 /* No comment provided by engineer. */
+"Double tap to open Action Sheet to add image or video" = "الضغط المزدوج لفتح ورقة الإجراءات لإضافة صورة أو مقطع فيديو";
+
+/* No comment provided by engineer. */
 "Double tap to open Action Sheet to edit, replace, or clear the image" = "Double tap to open Action Sheet to edit, replace, or clear the image";
 
 /* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "النقر المزدوج لفتح ورقة الإجراءات التي تحتوي على خيارات متوافرة";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet to add image or video" = "الضغط المزدوج لفتح الورقة السفلية لإضافة صورة أو مقطع فيديو";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Double tap to open Bottom Sheet to edit, replace, or clear the image";
@@ -2233,6 +2348,9 @@
    Title of the drafts header in search list. */
 "Drafts" = "المسودات";
 
+/* No comment provided by engineer. */
+"Drag to adjust focal point" = "السحب لضبط نقطة التركيز";
+
 /* Label for page duplicate option. Tapping creates a copy of the page.
    Label for post duplicate option. Tapping creates a copy of the post. */
 "Duplicate" = "تكرار";
@@ -2279,6 +2397,9 @@
 "Edit Post" = "تحرير المقالة";
 
 /* No comment provided by engineer. */
+"Edit cover media" = "تحرير غلاف الوسائط";
+
+/* No comment provided by engineer. */
 "Edit file" = "تحرير الملف";
 
 /* No comment provided by engineer. */
@@ -2286,6 +2407,9 @@
 
 /* No comment provided by engineer. */
 "Edit image" = "تحرير الصورة";
+
+/* No comment provided by engineer. */
+"Edit media" = "تحرير الوسائط";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "تحرير المقالات والصفحات الجديدة باستخدام مُحرّر المكوّنات.";
@@ -2383,9 +2507,6 @@
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "الدخول إلى وضع ملء الشاشة";
 
-/* No comment provided by engineer. */
-"Enter URL to embed here…" = "إدخال عنوان URL لتضمينه هنا...";
-
 /* Enter a custom value */
 "Enter a custom value" = "أدخل قيمة مخصصة";
 
@@ -2428,14 +2549,8 @@
    Title of a button. */
 "Enter your password instead." = "بدلاً من ذلك، أدخل كلمة المرور.";
 
-/* Error message displayed when restoring a site fails due to credentials not being configured. */
-"Enter your server credentials to enable one click site restores from backups." = "أدخل بيانات اعتماد الخادم الخاص بك لتمكين استعادة الموقع بنقرة واحدة من النُسخ الاحتياطية.";
-
-/* Title for button when a site is missing server credentials */
-"Enter your server credentials to fix threat." = "أدخل بيانات اعتماد خادمك لإصلاح التهديد.";
-
-/* Title for button when a site is missing server credentials */
-"Enter your server credentials to fix threats." = "أدخل بيانات اعتماد خادمك لإصلاح التهديدات.";
+/* Error message displayed when site credentials aren't configured. */
+"Enter your server credentials" = "إدخال بيانات اعتماد الخادم الخاصة بك";
 
 /* Generic error alert title
    Generic error.
@@ -2733,6 +2848,9 @@
 /* Displays the fixed threats */
 "Fixed" = "تمت المعالجة";
 
+/* No comment provided by engineer. */
+"Fixed background" = "خلفية ثابتة";
+
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "جاري معالجة التهديدات";
 
@@ -2861,7 +2979,9 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "تجهيز المعاينة";
 
-/* View title for initial auth views. */
+/* Title of the Get Started button in the Blogging Reminders Settings flow.
+   Title of the Get Started button of the Blogging Reminders card in My Site.
+   View title for initial auth views. */
 "Get Started" = "البدء";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
@@ -3044,6 +3164,9 @@
 /* No comment provided by engineer. */
 "Hide keyboard" = "إخفاء لوحة المفاتيح";
 
+/* No comment provided by engineer. */
+"Hide search heading" = "إخفاء عنوان البحث";
+
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
    Title of the post history screen */
@@ -3103,7 +3226,7 @@
 "If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "في حال إزالة هذا المتابع، سيتم وقف إرسال تنبيهات إليه عن هذا الموقع، ما لم يتابع مرة أخرى.";
 
 /* Message explaining that they will need to install Jetpack on one of their sites. */
-"If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "إذا كان لديك موقع بالفعل، فسيتعيَّن عليك تثبيت إضافة Jetpack المجانية وربطها بحسابك على ووردبريس.كوم.";
+"If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "إذا كان لديك موقع بالفعل، فسيتعيَّن عليك تثبيت إضافة Jetpack المجانية وربطها بحسابك على WordPress.com.";
 
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "إذا قمت بالمتابعة مع Apple أو Google وليس لديك حساب WordPress.com بالفعل، فأنت تقوم بإنشاء حساب وتوافق على _شروط الخدمة_.";
@@ -3217,11 +3340,20 @@
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "أضف وسائط";
 
+/* No comment provided by engineer. */
+"Insert crosspost" = "إدراج مقالة في عدد من المجموعات الإخبارية في وقت واحد";
+
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "إدراج وسائط";
 
+/* No comment provided by engineer. */
+"Insert mention" = "إدراج إشارة";
+
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "إدراج المحدَّد";
+
+/* No comment provided by engineer. */
+"Inside" = "داخلي";
 
 /* Title of Insights stats filter. */
 "Insights" = "الرؤى";
@@ -3270,6 +3402,9 @@
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
 "Invalid URL, please check if you wrote a valid site address." = "عنوان URL غير صالح، الرجاء التحقق من كتابة عنوان الموقع الصالح.";
+
+/* No comment provided by engineer. */
+"Invalid URL. Audio file not found." = "رابط غير صالح. لم يتم العثور على ملف صوت.";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "نقطة نهاية غير صالحة";
@@ -3500,6 +3635,15 @@
 "Link To" = "رابط لـ";
 
 /* No comment provided by engineer. */
+"Link inserted" = "تمّ إدراج الرابط";
+
+/* No comment provided by engineer. */
+"Link label" = "تسمية الرابط";
+
+/* No comment provided by engineer. */
+"Link text" = "نص الرابط";
+
+/* No comment provided by engineer. */
 "Link to" = "رابط لـ";
 
 /* Action. Label for navigate and display links to other posts on the site */
@@ -3668,6 +3812,9 @@
 /* No comment provided by engineer. */
 "Main Navigation" = "التنقل الرئيسي";
 
+/* Description of the Blogging Reminders card in My Site. */
+"Make the most of your site by setting goals and tracking your progress." = "حقق أقصى استفادة من موقعك عن طريق تعيين الأهداف وتعقُّب تقدمك.";
+
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -3745,6 +3892,9 @@
    Title label for the media settings section in the app settings */
 "Media" = "وسائط";
 
+/* No comment provided by engineer. */
+"Media & Text settings" = "إعدادات وسائط مع نصّ";
+
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "حجم ذاكرة التخزين المؤقت للوسائط";
 
@@ -3780,6 +3930,9 @@
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "حجم ملف الوسائط (%1$@) كبير لدرجة يتعذر معها رفعه. الحد الأقصى المسموح به هو %2$@";
 
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Media options" = "خيارات الوسائط";
+
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "فشل معاينة الوسائط.";
 
@@ -3791,6 +3944,9 @@
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "متوسط";
+
+/* No comment provided by engineer. */
+"Mention" = "الإشارة";
 
 /* The default text used for filling the name of a menu when creating it. */
 "Menu" = "القائمة";
@@ -3820,6 +3976,9 @@
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
+
+/* No comment provided by engineer. */
+"Minimum height" = "أدنى ارتفاع";
 
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "ثغرات أمنية متنوعة";
@@ -4020,7 +4179,8 @@
 /* Next action on share extension editor screen.
    Next screen button title
    Title of a button.
-   Title of a button. The text should be capitalized. */
+   Title of a button. The text should be capitalized.
+   Title of button to navigate to the next screen. */
 "Next" = "التالي";
 
 /* Table view title for the quick start section. */
@@ -4093,6 +4253,9 @@
 /* A short message that informs the user no sites could be loaded in the share extension. */
 "No available sites" = "لا توجد مواقع متاحة";
 
+/* No comment provided by engineer. */
+"No button" = "بدون زر";
+
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "لا توجد تعليقات";
 
@@ -4107,6 +4270,9 @@
 
 /* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
 "No connections found for %@" = "لم يتم العثور على اتصالات لـ %@";
+
+/* No comment provided by engineer. */
+"No custom placeholder set" = "لم يتم تعيين عنصر نائب مخصص";
 
 /* Text displayed when Period stat section has no data. */
 "No data for this period" = "لا توجد بيانات لهذه الفترة";
@@ -4314,6 +4480,9 @@
 /* Register Domain - Address information field Number */
 "Number" = "رقم";
 
+/* No comment provided by engineer. */
+"Number of columns" = "عدد الأعمدة";
+
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "قائمة مرقّمة";
 
@@ -4390,6 +4559,9 @@
 "Oops!" = "عفوًا!";
 
 /* No comment provided by engineer. */
+"Opacity" = "الشفافية";
+
+/* No comment provided by engineer. */
 "Open Block Actions Menu" = "فتح قائمة إجراءات المكوِّن";
 
 /* Opens iOS's Device Settings for WordPress App */
@@ -4441,6 +4613,9 @@
 /* Invite: Message Hint. %1$d is the maximum number of characters allowed. */
 "Optional message up to %1$d characters to be included in the invitation." = "رسالة اختيارية تصل إلى ⁦%1$d⁩ من الأحرف ليتم تضمينها في دعوتك.";
 
+/* No comment provided by engineer. */
+"Optional placeholder…" = "عنصر نائب اختياري…";
+
 /* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
 "Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "اختياري: أدخل رسالة مخصصة تصل إلى ⁦%1$d⁩ من الأحرف ليتم إرسالها مع دعوتك.";
 
@@ -4483,6 +4658,12 @@
 /* Other Notifications Streams Title
    Other Sites Notification Settings Title */
 "Other Sites" = "مواقع أخرى";
+
+/* No comment provided by engineer. */
+"Outside" = "خارجي";
+
+/* No comment provided by engineer. */
+"Overlay" = "غطاء Overlay";
 
 /* Used to indicate a setting is overridden in debug builds of the app */
 "Overridden" = "تم التجاوز";
@@ -5568,7 +5749,16 @@
 "Search block" = "مكوّن بحث";
 
 /* No comment provided by engineer. */
+"Search block label. Current text is" = "تسمية مكون البحث. النص الحالي هو";
+
+/* No comment provided by engineer. */
 "Search blocks" = "البحث في المكوّنات";
+
+/* No comment provided by engineer. */
+"Search button. Current button text is" = "زر البحث. نص الزر الحالي هو";
+
+/* No comment provided by engineer. */
+"Search input field." = "حقل إدخال البحث.";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "ابحث أو اكتب رابطًا";
@@ -5578,6 +5768,9 @@
 
 /* Text displayed when the search controller will be presented */
 "Search posts" = "بحث في المقالات";
+
+/* No comment provided by engineer. */
+"Search settings" = "إعدادات البحث";
 
 /* Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "ابحث للعثور على صور GIF لإضافتها إلى مكتبة الوسائط الخاصة بك!";
@@ -5664,9 +5857,6 @@
 /* No comment provided by engineer. */
 "Select a layout" = "اختيار تخطيط";
 
-/* No comment provided by engineer. */
-"Select item" = "تحديد عنصر";
-
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "تحديد الوسائط.";
 
@@ -5678,6 +5868,9 @@
 
 /* Instructional text about the Sharing feature. */
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "حدد الحساب الذي ترغب في اعتماده. لاحظ أن مقالاتك ستتم مشاركتها مع الحساب المحدد تلقائيًا.";
+
+/* Prompt shown on the Blogging Reminders Settings screen. */
+"Select the days you want to blog on" = "تحديد الأيام التي ترغب في التدوين بها";
 
 /* Accessibility hint for stat available to add to Insights. */
 "Select to add this stat to Insights." = "تحديد لإضافة هذه الإحصائية إلى الرؤى.";
@@ -5770,6 +5963,10 @@
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "إعداد Jetpack";
 
+/* Title of the Blogging Reminders card in My Site.
+   Title of the Blogging Reminders Settings screen. */
+"Set your blogging goals" = "تعيين أهداف التدوين الخاصة بك";
+
 /* Title of a Quick Start Tour */
 "Set your site title" = "تعيين عنوان موقعك";
 
@@ -5858,15 +6055,18 @@
 /* No comment provided by engineer. */
 "Show download button" = "إظهار زر التنزيل";
 
+/* No comment provided by engineer. */
+"Show media on left" = "عرض الوسائط بالجهة اليسرى";
+
+/* No comment provided by engineer. */
+"Show media on right" = "عرض الوسائط بالجهة اليمنى";
+
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "عرض كلمة المرور";
 
 /* No comment provided by engineer. */
 "Show post content" = "إظهار محتوى المقالة";
-
-/* translators: Checkbox toggle label */
-"Show section" = "إظهار القسم";
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "عرض القوالب:";
@@ -6030,6 +6230,9 @@
 
 /* Title shown in alert to confirm skipping all quick start items */
 "Skip Quick Start" = "تخطي البدء السريع";
+
+/* translators: Slash inserter autocomplete results */
+"Slash inserter results" = "نتائج أداة إدراج الشرطة المائلة";
 
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "الاسم اللطيف";
@@ -6248,9 +6451,6 @@
 /* Announced by VoiceOver when new domains suggestions are shown in Site Creation. */
 "Suggestions updated" = "تم تحديث الاقتراحات";
 
-/* No comment provided by engineer. */
-"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "تلخيص مقالتك بقائمة من العناوين. أضف روابط القفز HTML إلى مكوّنات العناوين لربطها هنا.";
-
 /* User role badge */
 "Super Admin" = "مسؤول فائق";
 
@@ -6300,9 +6500,6 @@
 
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "النظام الافتراضي";
-
-/* No comment provided by engineer. */
-"Table of Contents" = "جدول المحتويات";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "جدول يعرض %@";
@@ -6361,6 +6558,9 @@
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "أنقر هنا لإظهار المساعدة";
+
+/* No comment provided by engineer. */
+"Tap to add content" = "أنقر لإضافة محتوى";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "انقر لإلغاء الرفع.";
@@ -6926,9 +7126,6 @@
 /* No comment provided by engineer. */
 "Transform block…" = "تحويل مكوّن…";
 
-/* No comment provided by engineer. */
-"Translate" = "الترجمة";
-
 /* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
@@ -7004,6 +7201,9 @@
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "اسم مستخدم تويتر";
+
+/* No comment provided by engineer. */
+"Type a URL" = "اكتب رابط URL";
 
 /* Placeholder text for domain search during site creation. */
 "Type a keyword for more ideas" = "كتابة كلمة أساسية لمزيد من الأفكار";
@@ -7365,6 +7565,9 @@
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "استخدام مُحرر المكوّنات";
+
+/* No comment provided by engineer. */
+"Use icon button" = "استخدام زر الأيقونة";
 
 /* Footer text for Invite Links section of the Invite People screen. */
 "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "استخدم هذا الرابط لضمّ أعضاء فريقك دون الحاجة إلى دعوتهم واحدًا تلو الآخر. سيتمكن أي شخص يزور عنوان الموقع هذا من الاشتراك في مؤسستك، حتى إذا تلقى الرابط من شخص آخر، لذا تأكد من مشاركته مع أشخاص موثوق بهم.";
@@ -7821,6 +8024,9 @@
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "مرحبًا بك في أداة إنشاء مواقع الويب الأكثر رواجًا في العالم.";
 
+/* Description on the first screen of the Blogging Reminders Settings flow. */
+"Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress." = "أبليت حسنًا في مقالتك الأولى! استمر. يمكنك الآن تعيين أهداف التدوين الخاصة بك، والحصول على تذكيرات وتعقُّب تقدمك.";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "الغرب";
 
@@ -7906,6 +8112,9 @@
 
 /* Nav bar button title to set the site used for Stats widgets. */
 "Widgets" = "المربعات الجانبية";
+
+/* No comment provided by engineer. */
+"Width Settings" = "إعدادات العرض";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "لن تكون مرئية للجميع.";
@@ -8018,8 +8227,17 @@
 /* No comment provided by engineer. */
 "Write code…" = "كتابة الكود…";
 
+/* No comment provided by engineer. */
+"Write title…" = "كتابة عنوان…";
+
 /* Title for the writing section in site settings screen */
 "Writing" = "الكتابة";
+
+/* No comment provided by engineer. */
+"X-Axis Position" = "موضع المحور السيني";
+
+/* No comment provided by engineer. */
+"Y-Axis Position" = "موضع المحور الصادي";
 
 /* Option to select the Yahoo Mail app when logging in with magic links */
 "Yahoo Mail" = "Yahoo Mail";
@@ -8074,6 +8292,12 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "يمكنك تجاوز هذه الإعدادات للمقالات الفردية.";
+
+/* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
+"You can update this any time via My Site > Site Settings" = "يمكن تحديث هذا في أي وقت من خلال موقعي > إعدادات الموقع";
+
+/* Prompt shown on the Blogging Reminders Settings screen. */
+"You can update this any time." = "يمكنك تحديث هذا في أي وقت.";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "لا يمكنك استخدام عنوان البريد الإلكتروني هذا للتسجيل. تواجهنا مشكلات مع العناوين التي تحظر البريد الإلكتروني لدينا. يُرجى استخدام مزود بريد إلكتروني آخر.";
@@ -8287,14 +8511,14 @@
 /* Label displayed on audio media items. */
 "audio" = "صوت";
 
+/* translators: displays audio file extension. e.g. MP3 audio file */
+"audio file" = "ملف صوت";
+
 /* Used when displaying author of a plugin. */
 "by %@" = "بواسطة %@";
 
 /* The menu item to select during a guided tour. */
 "connections" = "الاتصالات";
-
-/* No comment provided by engineer. */
-"document outline" = "ملخص عناوين المستند";
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "أليس من الأفضل حذف أشياء من القائمة؟";
@@ -8348,9 +8572,6 @@
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "رقم الهاتف";
-
-/* No comment provided by engineer. */
-"summary" = "ملخّص (موجز)";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "سيتم حذف هذه العناصر:";

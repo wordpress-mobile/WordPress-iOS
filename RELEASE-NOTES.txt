@@ -6,11 +6,14 @@
 * [*] Disables the ability to open the editor for Post Pages [#16369]
 * [*] Fixed an issue that could cause a crash when moderating Comments. [#16645]
 * [*] Fix notice overlapping the ActionSheet that displays the QuickStart Removal. [#16609]
+* [*] Site Pages: when setting a parent, placeholder text is now displayed for pages with blank titles. [#16661]
+* [***] Block Editor: Audio block now available on WP.com sites on the free plan. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3523]
+* [**] You can now create a Site Icon for your site using an emoji. [#16670] 
+* [*] Fix notice overlapping the ActionSheet that displays the More Actions in the Editor. [#16658]
 
 17.5
 -----
 * [*] Fixed a crash when rendering the Noticons font in rich notification. [#16525]
-* [**] Block Editor:a11y: Bug fix: Allow stepper cell to be selected by screenreader [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3362]
 * [**] Block Editor: Audio block: Add Insert from URL functionality. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3031]
 * [***] Block Editor: Slash command to insert new blocks. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3250]
 * [**] Like Notifications: now displays all users who liked a post or comment. [#15662]
