@@ -103,6 +103,17 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
         super.viewDidAppear(animated)
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        // If a parent VC is being dismissed, and this is the last view shown in its navigation controller, we'll assume
+        // the flow was completed.
+        if isBeingDismissedDirectlyOrByAncestor() && navigationController?.viewControllers.last == self {
+            tracker.flowCompleted()
+        }
+
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         calculatePreferredContentSize()
@@ -147,7 +158,6 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
 
     @objc func doneButtonTapped() {
         tracker.buttonPressed(button: .continue, screen: .allSet)
-        tracker.flowCompleted()
 
         dismiss(animated: true, completion: nil)
     }
@@ -164,10 +174,6 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
 extension BloggingRemindersFlowCompletionViewController: DrawerPresentable {
     var collapsedHeight: DrawerHeight {
         return .intrinsicHeight
-    }
-
-    func handleDismiss() {
-        tracker.flowCompleted()
     }
 }
 
