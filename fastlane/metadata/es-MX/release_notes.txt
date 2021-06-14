@@ -1,9 +1,17 @@
-¿Qué novedades hay en esta actualización?
+¿Qué novedades hay en la versión 17.5 de WordPress?
 
-Mantente al día sobre cualquier sitio al que has sido añadido recientemente tirando hacia abajo para actualizar la pantalla de nuevos sitios.
+¡Los bloques reutilizables están aquí! Crea contenido una vez, guarda tu bloque y reutilízalo una y otra vez en cualquier entrada o página. En la versión 17.5, encontrarás bloques reutilizables listos para usar en el menú del insertador de bloques.
 
-En los sitios con más de un autor, ahora podrás cambiar el autor asignado a cualquier entrada o página.
+Si tocar para añadir nuevos bloques es un toque de menú demasiado lejano, la versión 17.5 te permite añadirlos con un comando de barra diagonal directamente desde el editor. Añade una barra oblicua mientras creas tu entrada o página, empieza a tocar el nombre del bloque y ya está. Sin necesidad de menús.
 
-Ahora puedes identificar las solicitudes de acceso mientras estás usando la aplicación.
+El audio también recibe un poco de cariño. ¿Tienes un enlace para ese archivo de audio? En la versión 17.5 solo tienes que pegar tu URL en el bloque de audio y WordPress lo incluirá en tu entrada.
 
-Por último, hemos corregido un fallo en el recorrido de inicio rápido. Cuando sigues un sitio desde el lector, la lista de verificación del inicio rápido ahora actualizará tu progreso (en lugar de permanecer sin comprobar).
+Los avisos de "Me gusta" también tienen un poco más de brillo en la versión 17.5. Ahora podrás ver exactamente a quién le ha gustado cada entrada y comentario en tu sitio tan pronto como lleguen.
+
+También hemos trabajado duro en la corrección de fallos. Esto es lo que hemos corregido:
+
+Los lectores de pantalla ahora pueden seleccionar la celda de paso en el editor de bloques.
+
+Nos hemos asegurado de que el texto grande no se convierta en un texto ENORME, sea cual sea la fuente que uses. También se ha mejorado la compatibilidad con el texto grande en la cabecera de los detalles del blog de la pantalla "Mis sitios".
+
+Por último, la selección de elementos y corregido el scroll en el directorio de plugins se comportan ahora como deben y la fuente Noticons ya no romperá la aplicación en los avisos enriquecidos.

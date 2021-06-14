@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-21 09:21:35+0000 */
+/* Translation-Revision-Date: 2021-06-02 18:06:26+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -26,6 +26,21 @@
 
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@（位于 %2$@）";
+
+/* Error message displayed when restoring a site fails due to credentials not being configured. %1$@ is a placeholder for the string 'Enter your server credentials'. */
+"%1$@ to enable one click site restores from backups." = "启用 %1$@，以便从备份中一键恢复站点。";
+
+/* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
+"%1$@ to fix this threat." = "%1$@修复此威胁。";
+
+/* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
+"%1$@ to fix threats." = "%1$@修复威胁。";
+
+/* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
+"%1$d blogger likes this." = "%1$d 位博主喜欢了。";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
+"%1$d bloggers like this." = "%1$d 位博主喜欢了。";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "已完成 %1$d 个（共 %2$d 个）";
@@ -193,6 +208,9 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li 个字词，%2$li 个字符";
 
+/* translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "%s 区块";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s区块选项";
 
@@ -201,6 +219,18 @@
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s 区块。此区块包含无效内容";
+
+/* translators: %s: name of the reusable block */
+"%s converted to regular blocks" = "%s 已转换为常规区块";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"%s has URL set" = "%s已设置URL";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"%s has no URL set" = "%s没有URL集";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"%s social icon" = "%s 社交图标";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "不完全支持 '%s'";
@@ -456,10 +486,25 @@
 "Add any topic" = "添加任何主题";
 
 /* No comment provided by engineer. */
+"Add button text" = "添加按钮文字";
+
+/* No comment provided by engineer. */
 "Add caption" = "添加说明";
+
+/* No comment provided by engineer. */
+"Add image or video" = "添加图片或视频";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "添加图像或头像以表示此新帐户。";
+
+/* No comment provided by engineer. */
+"Add label…" = "添加标签…";
+
+/* No comment provided by engineer. */
+"Add link text" = "添加链接文字";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"Add link to %s" = "添加链接到 %s";
 
 /* No comment provided by engineer. */
 "Add menu item above" = "添加以上菜单项";
@@ -551,6 +596,9 @@
 
 /* Description for the Jetpack Backup Restore message. %1$@ is a placeholder for the selected date. */
 "All of your selected items are now restored back to %1$@." = "您所选择的所有项目现均已恢复到 %1$@ 时的样子。";
+
+/* Title of the completion screen of the Blogging Reminders Settings screen. */
+"All set!" = "准备就绪！";
 
 /* Title of the congratulation screen that appears when all the tasks are completed */
 "All tasks complete" = "已完成所有任务";
@@ -990,8 +1038,17 @@
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "粗体";
 
+/* No comment provided by engineer. */
+"Border Radius" = "边框半径";
+
+/* No comment provided by engineer. */
+"Border Settings" = "边框设置";
+
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "将评论线程划分到多个页面。";
+
+/* No comment provided by engineer. */
+"Briefly describe the link to help screen reader user" = "简要描述该链接以帮助屏幕阅读器用户。";
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "浏览我们所有的主题，寻找最适合您的主题。";
@@ -1008,11 +1065,23 @@
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "忙碌";
 
+/* No comment provided by engineer. */
+"Button Link URL" = "按钮链接 URL";
+
 /* Title for a list of different button styles. */
 "Button Style" = "按钮风格";
 
 /* No comment provided by engineer. */
-"ButtonGroup" = "按钮分组";
+"Button inside" = "内部按钮";
+
+/* No comment provided by engineer. */
+"Button outside" = "外部按钮";
+
+/* No comment provided by engineer. */
+"Button position" = "按钮位置";
+
+/* No comment provided by engineer. */
+"Button width" = "按钮宽度";
 
 /* Label for the post author in the post detail. */
 "By " = "作者";
@@ -1291,7 +1360,7 @@
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "选择显示您的近期文章（经典博客）的主页或固定\/静态页面。";
 
-/* Menu option used for adding media from other applications. */
+/* No comment provided by engineer. */
 "Choose from device" = "从设备中选择";
 
 /* No comment provided by engineer. */
@@ -1329,6 +1398,9 @@
 
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "清除设备媒体缓存";
+
+/* No comment provided by engineer. */
+"Clear Media" = "清除媒体";
 
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "清除旧活动日志";
@@ -1395,6 +1467,12 @@
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "丰富多彩的背景";
+
+/* No comment provided by engineer. */
+"Column settings" = "列设置";
+
+/* No comment provided by engineer. */
+"Columns Settings" = "列设置";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "结合使用照片、视频和文字，创作您的访客一定会喜欢的引人入胜、吸引点击量的故事文章。";
@@ -1624,6 +1702,9 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "继续使用 Apple";
 
+/* No comment provided by engineer. */
+"Convert to regular blocks" = "转换为常规区块";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "烹饪";
 
@@ -1733,6 +1814,9 @@
 /* Register Domain - Address information field Country Code */
 "Country Code" = "国家\/地区代码";
 
+/* No comment provided by engineer. */
+"Cover" = "覆盖";
+
 /* Title of a section on the debug screen that shows a list of actions related to crash logging */
 "Crash Logging" = "崩溃记录";
 
@@ -1819,6 +1903,12 @@
 "Creating downloadable backup" = "创建可下载备份";
 
 /* No comment provided by engineer. */
+"Crop image to fill entire column" = "裁剪图像以填充整个列";
+
+/* No comment provided by engineer. */
+"Crosspost" = "交叉发表";
+
+/* No comment provided by engineer. */
 "Current" = "当前";
 
 /* Label title. Refers to the current WordPress.com plan for a user's site. */
@@ -1832,6 +1922,12 @@
 
 /* Week Period Accessibility label. Prefix the current selected period. Ex. Current period: Jan 6 to Jan 12. */
 "Current period: %@ to %@" = "当前周期：%1$@ 至 %2$@";
+
+/* No comment provided by engineer. */
+"Current placeholder text is" = "当前占位符文本";
+
+/* translators: accessibility text. Inform about current unit value. %s: Current unit value. */
+"Current unit is %s" = "当前单位为%s";
 
 /* translators: %s: current cell value. */
 "Current value is %s" = "当前值为 %s";
@@ -2133,6 +2229,7 @@
    Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
+   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
    Title of the Done button on the me page */
@@ -2140,6 +2237,9 @@
 
 /* Title for label when there are no threats on the users site */
 "Don’t worry about a thing" = "不必担心";
+
+/* No comment provided by engineer. */
+"Double tap and hold to edit" = "轻点两次并按住以进行编辑";
 
 /* Screen reader hint for button that will move the menu item */
 "Double tap and hold to move this menu item up or down" = "双击并按住可向上或向下移动此菜单项";
@@ -2152,6 +2252,15 @@
 
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "轻点两次即可退出";
+
+/* No comment provided by engineer. */
+"Double tap to edit button text" = "双击编辑按钮文字";
+
+/* No comment provided by engineer. */
+"Double tap to edit label text" = "双击可编辑标签文字";
+
+/* No comment provided by engineer. */
+"Double tap to edit placeholder text" = "双击可编辑占位符文字";
 
 /* translators: accessibility text */
 "Double tap to edit this value" = "轻点两次以编辑此值";
@@ -2175,10 +2284,16 @@
 "Double tap to move the block up" = "轻点两次以向上移动区块";
 
 /* No comment provided by engineer. */
+"Double tap to open Action Sheet to add image or video" = "双击打开操作表以添加图像或视频";
+
+/* No comment provided by engineer. */
 "Double tap to open Action Sheet to edit, replace, or clear the image" = "双击打开操作表以编辑、替换或清除图像";
 
 /* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "双击以打开带有可用选项的操作表页";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet to add image or video" = "双击打开底页以添加图像或视频";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet to edit, replace, or clear the image" = "双击可打开底片以编辑、替换或清除图像";
@@ -2233,6 +2348,9 @@
    Title of the drafts header in search list. */
 "Drafts" = "草稿";
 
+/* No comment provided by engineer. */
+"Drag to adjust focal point" = "拖动以调整焦点";
+
 /* Label for page duplicate option. Tapping creates a copy of the page.
    Label for post duplicate option. Tapping creates a copy of the post. */
 "Duplicate" = "复制";
@@ -2279,6 +2397,9 @@
 "Edit Post" = "编辑文章";
 
 /* No comment provided by engineer. */
+"Edit cover media" = "编辑封面媒体文件";
+
+/* No comment provided by engineer. */
 "Edit file" = "编辑文件";
 
 /* No comment provided by engineer. */
@@ -2286,6 +2407,9 @@
 
 /* No comment provided by engineer. */
 "Edit image" = "编辑图像";
+
+/* No comment provided by engineer. */
+"Edit media" = "编辑媒体";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "使用区块编辑器编辑新文章和页面。";
@@ -2383,9 +2507,6 @@
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "进入全屏";
 
-/* No comment provided by engineer. */
-"Enter URL to embed here…" = "键入要在此嵌入的URL…";
-
 /* Enter a custom value */
 "Enter a custom value" = "输入自定义值";
 
@@ -2428,14 +2549,8 @@
    Title of a button. */
 "Enter your password instead." = "改为输入密码。";
 
-/* Error message displayed when restoring a site fails due to credentials not being configured. */
-"Enter your server credentials to enable one click site restores from backups." = "输入您的服务器凭据以启用从备份中一键恢复站点的功能。";
-
-/* Title for button when a site is missing server credentials */
-"Enter your server credentials to fix threat." = "输入您的服务器凭据以修复威胁。";
-
-/* Title for button when a site is missing server credentials */
-"Enter your server credentials to fix threats." = "输入您的服务器凭据以修复威胁。";
+/* Error message displayed when site credentials aren't configured. */
+"Enter your server credentials" = "输入您的服务器凭据";
 
 /* Generic error alert title
    Generic error.
@@ -2733,6 +2848,9 @@
 /* Displays the fixed threats */
 "Fixed" = "已修复";
 
+/* No comment provided by engineer. */
+"Fixed background" = "固定背景";
+
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "修复威胁";
 
@@ -2861,7 +2979,9 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "正在生成预览";
 
-/* View title for initial auth views. */
+/* Title of the Get Started button in the Blogging Reminders Settings flow.
+   Title of the Get Started button of the Blogging Reminders card in My Site.
+   View title for initial auth views. */
 "Get Started" = "开始";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
@@ -3044,6 +3164,9 @@
 /* No comment provided by engineer. */
 "Hide keyboard" = "隐藏键盘";
 
+/* No comment provided by engineer. */
+"Hide search heading" = "隐藏搜索标题";
+
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
    Title of the post history screen */
@@ -3217,11 +3340,20 @@
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "插入多媒体";
 
+/* No comment provided by engineer. */
+"Insert crosspost" = "插入交叉发表";
+
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "插入媒体";
 
+/* No comment provided by engineer. */
+"Insert mention" = "插入提及";
+
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "插入所选内容";
+
+/* No comment provided by engineer. */
+"Inside" = "内";
 
 /* Title of Insights stats filter. */
 "Insights" = "见解";
@@ -3270,6 +3402,9 @@
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
 "Invalid URL, please check if you wrote a valid site address." = "URL 无效，请检查您输入的网址是否有效。";
+
+/* No comment provided by engineer. */
+"Invalid URL. Audio file not found." = "无效的URL。找不到音频文件。";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "端点无效";
@@ -3500,6 +3635,15 @@
 "Link To" = "链接到";
 
 /* No comment provided by engineer. */
+"Link inserted" = "已插入链接";
+
+/* No comment provided by engineer. */
+"Link label" = "链接标签";
+
+/* No comment provided by engineer. */
+"Link text" = "链接文字";
+
+/* No comment provided by engineer. */
 "Link to" = "链接到";
 
 /* Action. Label for navigate and display links to other posts on the site */
@@ -3668,6 +3812,9 @@
 /* No comment provided by engineer. */
 "Main Navigation" = "主要导航";
 
+/* Description of the Blogging Reminders card in My Site. */
+"Make the most of your site by setting goals and tracking your progress." = "通过设定目标和跟踪进度，充分利用您的站点。";
+
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -3745,6 +3892,9 @@
    Title label for the media settings section in the app settings */
 "Media" = "媒体";
 
+/* No comment provided by engineer. */
+"Media & Text settings" = "媒体和文本设置";
+
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "媒体缓存大小";
 
@@ -3780,6 +3930,9 @@
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "媒体文件 (%1$@) 过大，无法上传。大小上限为 %2$@";
 
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Media options" = "媒体选项";
+
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "媒体预览加载失败。";
 
@@ -3791,6 +3944,9 @@
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "中";
+
+/* No comment provided by engineer. */
+"Mention" = "提及";
 
 /* The default text used for filling the name of a menu when creating it. */
 "Menu" = "菜单";
@@ -3820,6 +3976,9 @@
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
+
+/* No comment provided by engineer. */
+"Minimum height" = "最低高度";
 
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "其他漏洞";
@@ -4020,7 +4179,8 @@
 /* Next action on share extension editor screen.
    Next screen button title
    Title of a button.
-   Title of a button. The text should be capitalized. */
+   Title of a button. The text should be capitalized.
+   Title of button to navigate to the next screen. */
 "Next" = "继续";
 
 /* Table view title for the quick start section. */
@@ -4093,6 +4253,9 @@
 /* A short message that informs the user no sites could be loaded in the share extension. */
 "No available sites" = "无可用站点";
 
+/* No comment provided by engineer. */
+"No button" = "无按钮";
+
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "没有评论";
 
@@ -4107,6 +4270,9 @@
 
 /* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
 "No connections found for %@" = "未找到 %@ 的连接";
+
+/* No comment provided by engineer. */
+"No custom placeholder set" = "未设置自定义占位符";
 
 /* Text displayed when Period stat section has no data. */
 "No data for this period" = "没有此时间段的数据";
@@ -4314,6 +4480,9 @@
 /* Register Domain - Address information field Number */
 "Number" = "号码";
 
+/* No comment provided by engineer. */
+"Number of columns" = "栏目数";
+
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "编号列表";
 
@@ -4390,6 +4559,9 @@
 "Oops!" = "糟糕！";
 
 /* No comment provided by engineer. */
+"Opacity" = "不透明度";
+
+/* No comment provided by engineer. */
 "Open Block Actions Menu" = "打开区块操作菜单";
 
 /* Opens iOS's Device Settings for WordPress App */
@@ -4441,6 +4613,9 @@
 /* Invite: Message Hint. %1$d is the maximum number of characters allowed. */
 "Optional message up to %1$d characters to be included in the invitation." = "要包括在邀请中的可选消息，最多包含 %1$d 个字符。";
 
+/* No comment provided by engineer. */
+"Optional placeholder…" = "可选占位符…";
+
 /* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
 "Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "可选：输入一条最多包含 %1$d 个字符的自定义消息，与您的邀请一起发送。";
 
@@ -4483,6 +4658,12 @@
 /* Other Notifications Streams Title
    Other Sites Notification Settings Title */
 "Other Sites" = "其他站点";
+
+/* No comment provided by engineer. */
+"Outside" = "外部";
+
+/* No comment provided by engineer. */
+"Overlay" = "叠加";
 
 /* Used to indicate a setting is overridden in debug builds of the app */
 "Overridden" = "已覆盖";
@@ -5568,7 +5749,16 @@
 "Search block" = "搜索区块";
 
 /* No comment provided by engineer. */
+"Search block label. Current text is" = "搜索区块标签。当前文字为";
+
+/* No comment provided by engineer. */
 "Search blocks" = "搜索区块";
+
+/* No comment provided by engineer. */
+"Search button. Current button text is" = "搜索按钮。当前按钮文字为";
+
+/* No comment provided by engineer. */
+"Search input field." = "搜索输入字段。";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "搜索或键入 URL";
@@ -5578,6 +5768,9 @@
 
 /* Text displayed when the search controller will be presented */
 "Search posts" = "搜索文章";
+
+/* No comment provided by engineer. */
+"Search settings" = "搜索设置";
 
 /* Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "搜索查找要添加到您的媒体库中的 GIF！";
@@ -5664,9 +5857,6 @@
 /* No comment provided by engineer. */
 "Select a layout" = "选择布局";
 
-/* No comment provided by engineer. */
-"Select item" = "选择项目";
-
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "选择媒体。";
 
@@ -5678,6 +5868,9 @@
 
 /* Instructional text about the Sharing feature. */
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "选择您要授权的帐户。请注意，您的文章将会自动分享至已选帐户。";
+
+/* Prompt shown on the Blogging Reminders Settings screen. */
+"Select the days you want to blog on" = "选择您想写博客的日子";
 
 /* Accessibility hint for stat available to add to Insights. */
 "Select to add this stat to Insights." = "选择以将此统计信息添加到“数据分析”中。";
@@ -5770,6 +5963,10 @@
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "设置 Jetpack";
 
+/* Title of the Blogging Reminders card in My Site.
+   Title of the Blogging Reminders Settings screen. */
+"Set your blogging goals" = "设定你您的博客目标";
+
 /* Title of a Quick Start Tour */
 "Set your site title" = "设置您的站点标题";
 
@@ -5858,15 +6055,18 @@
 /* No comment provided by engineer. */
 "Show download button" = "显示下载按钮";
 
+/* No comment provided by engineer. */
+"Show media on left" = "在左边显示媒体";
+
+/* No comment provided by engineer. */
+"Show media on right" = "在右边显示媒体";
+
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "显示密码";
 
 /* No comment provided by engineer. */
 "Show post content" = "显示文章内容";
-
-/* translators: Checkbox toggle label */
-"Show section" = "显示分区";
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "显示主题：";
@@ -6030,6 +6230,9 @@
 
 /* Title shown in alert to confirm skipping all quick start items */
 "Skip Quick Start" = "跳过“快速启动”";
+
+/* translators: Slash inserter autocomplete results */
+"Slash inserter results" = "斜杠插入器结果";
 
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Slug";
@@ -6248,9 +6451,6 @@
 /* Announced by VoiceOver when new domains suggestions are shown in Site Creation. */
 "Suggestions updated" = "已更新建议";
 
-/* No comment provided by engineer. */
-"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "用一个标题列表来总结您的文章。在标题区块中添加HTML锚点，将其链接到这里。";
-
 /* User role badge */
 "Super Admin" = "超级管理员";
 
@@ -6300,9 +6500,6 @@
 
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "系统默认";
-
-/* No comment provided by engineer. */
-"Table of Contents" = "目录";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "显示 %@ 的表格";
@@ -6361,6 +6558,9 @@
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "轻点此处以显示帮助";
+
+/* No comment provided by engineer. */
+"Tap to add content" = "点击以添加内容";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "点按即可取消上传。";
@@ -6926,9 +7126,6 @@
 /* No comment provided by engineer. */
 "Transform block…" = "转换区块…";
 
-/* No comment provided by engineer. */
-"Translate" = "翻译";
-
 /* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
@@ -7004,6 +7201,9 @@
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter 用户名";
+
+/* No comment provided by engineer. */
+"Type a URL" = "键入URL";
 
 /* Placeholder text for domain search during site creation. */
 "Type a keyword for more ideas" = "请输入关键字以获取更多想法";
@@ -7365,6 +7565,9 @@
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "使用区块编辑器";
+
+/* No comment provided by engineer. */
+"Use icon button" = "使用图标按钮";
 
 /* Footer text for Invite Links section of the Invite People screen. */
 "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "使用此链接来邀请成员加入您的团队，而不必逐一邀请。任何访问此链接的人都能轻松加入到您的组织，即使他们是从别处收到的链接，因此请确保您与可信的人分享此链接。";
@@ -7821,6 +8024,9 @@
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "欢迎使用全球最热门的网站生成器。";
 
+/* Description on the first screen of the Blogging Reminders Settings flow. */
+"Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress." = "您的第一篇文章做得很好! 继续努力吧。您现在可以设定您的博客目标以得到提醒并跟踪进展。";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "西";
 
@@ -7906,6 +8112,9 @@
 
 /* Nav bar button title to set the site used for Stats widgets. */
 "Widgets" = "小组件";
+
+/* No comment provided by engineer. */
+"Width Settings" = "宽度设置";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "不会公开显示。";
@@ -8018,8 +8227,17 @@
 /* No comment provided by engineer. */
 "Write code…" = "编写代码…";
 
+/* No comment provided by engineer. */
+"Write title…" = "编写标题…";
+
 /* Title for the writing section in site settings screen */
 "Writing" = "撰写";
+
+/* No comment provided by engineer. */
+"X-Axis Position" = "X轴位置";
+
+/* No comment provided by engineer. */
+"Y-Axis Position" = "Y轴位置";
 
 /* Option to select the Yahoo Mail app when logging in with magic links */
 "Yahoo Mail" = "Yahoo 邮箱";
@@ -8074,6 +8292,12 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "您可以为各篇文章覆盖这些设置。";
+
+/* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
+"You can update this any time via My Site > Site Settings" = "您可以随时通过“我的站点”>“站点设置”更新此设置";
+
+/* Prompt shown on the Blogging Reminders Settings screen. */
+"You can update this any time." = "您可以随时更新。";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "这个 E-mail 地址不可用。我们发现这个 E-mail 提供商会屏蔽我们的邮件，请更换一个。";
@@ -8287,14 +8511,14 @@
 /* Label displayed on audio media items. */
 "audio" = "音频";
 
+/* translators: displays audio file extension. e.g. MP3 audio file */
+"audio file" = "音频文件";
+
 /* Used when displaying author of a plugin. */
 "by %@" = "作者：%@";
 
 /* The menu item to select during a guided tour. */
 "connections" = "连接";
-
-/* No comment provided by engineer. */
-"document outline" = "文档大纲";
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "从列表中划掉内容的感觉是不是很棒？";
@@ -8348,9 +8572,6 @@
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "电话号码";
-
-/* No comment provided by engineer. */
-"summary" = "总结";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "即将删除以下项目：";
