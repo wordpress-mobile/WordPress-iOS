@@ -6,6 +6,7 @@
 * [*] Disables the ability to open the editor for Post Pages [#16369]
 * [*] Fixed an issue that could cause a crash when moderating Comments. [#16645]
 * [*] Fix notice overlapping the ActionSheet that displays the QuickStart Removal. [#16609]
+* [**] You can now create a Site Icon for your site using an emoji. [#16670] 
 
 17.5
 -----

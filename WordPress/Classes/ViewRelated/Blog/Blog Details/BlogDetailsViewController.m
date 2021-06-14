@@ -1113,8 +1113,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconTapped];
     
     [NoticesDispatch lock];
+
+    if (![Feature enabled:FeatureFlagSiteIconCreator]) {
+        [self showUpdateSiteIconAlert];
+    }
     
-    [self showUpdateSiteIconAlert];
+    if (@available(iOS 14.0, *)) {
+        [self showSiteIconSelectionAlert];
+    } else {
+        [self showUpdateSiteIconAlert];
+    }
 }
 
 - (void)siteIconReceivedDroppedImage:(UIImage *)image
@@ -1213,6 +1221,45 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                 }];
 
     [self presentViewController:updateIconAlertController animated:YES completion:nil];
+}
+
+- (void)showSiteIconSelectionAlert
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                       message:nil
+                                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+
+    alertController.popoverPresentationController.sourceView = self.headerView.blavatarImageView.superview;
+    alertController.popoverPresentationController.sourceRect = self.headerView.blavatarImageView.frame;
+    alertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+
+    [alertController setTitle:NSLocalizedString(@"Update Site Icon", @"Title for sheet displayed allowing user to update their site icon")];
+
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Choose Image From My Device", @"Button allowing the user to choose an image from their device to use as their site icon")
+                                       handler:^(UIAlertAction *action) {
+        [NoticesDispatch unlock];
+        [self updateSiteIcon];
+    }];
+
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Create With Emoji", @"Button allowing the user to create a site icon by choosing an emoji character")
+                                       handler:^(UIAlertAction *action) {
+        [NoticesDispatch unlock];
+        [self showEmojiPicker];
+    }];
+
+    [alertController addDestructiveActionWithTitle:NSLocalizedString(@"Remove Site Icon", @"Remove site icon button")
+                                           handler:^(UIAlertAction *action) {
+        [NoticesDispatch unlock];
+        [self removeSiteIcon];
+    }];
+
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                      handler:^(UIAlertAction *action) {
+        [NoticesDispatch unlock];
+        [self startAlertTimer];
+    }];
+
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)presentCropViewControllerForDroppedSiteIcon:(UIImage *)image
