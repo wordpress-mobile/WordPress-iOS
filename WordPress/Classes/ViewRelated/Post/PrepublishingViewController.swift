@@ -59,6 +59,8 @@ class PrepublishingViewController: UITableViewController {
         return nuxButton
     }()
 
+    private weak var titleField: UITextField?
+
     /// Determines whether the text has been first responder already. If it has, don't force it back on the user unless it's been selected by them.
     private var hasSelectedText: Bool = false
 
@@ -92,8 +94,6 @@ class PrepublishingViewController: UITableViewController {
         updatePublishButtonLabel()
         announcePublishButton()
 
-        calculatePreferredContentSize()
-
         configureKeyboardToggle()
     }
 
@@ -110,21 +110,23 @@ class PrepublishingViewController: UITableViewController {
             .store(in: &cancellables)
     }
 
-    private func calculatePreferredContentSize() {
-        // Apply additional padding to take into account the navbar / status bar height
-        let safeAreaTop = UIApplication.shared.mainWindow?.safeAreaInsets.top ?? 0
-        let navBarHeight = navigationController?.navigationBar.frame.height ?? 0
-        let offset = navBarHeight - safeAreaTop
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
 
-        var size = tableView.contentSize
-        size.height += offset
-
-        preferredContentSize = size
+        preferredContentSize = tableView.contentSize
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+
+        // Setting titleField first resonder alongside our transition to avoid layout issues.
+        transitionCoordinator?.animateAlongsideTransition(in: nil, animation: { [weak self] _ in
+            if self?.hasSelectedText == false {
+                self?.titleField?.becomeFirstResponder()
+                self?.hasSelectedText = true
+            }
+        })
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -247,10 +249,7 @@ class PrepublishingViewController: UITableViewController {
         cell.textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         cell.textField.autocorrectionType = .yes
         cell.textField.autocapitalizationType = .sentences
-        if !hasSelectedText {
-            cell.textField.becomeFirstResponder()
-            hasSelectedText = true
-        }
+        titleField = cell.textField
     }
 
     // MARK: - Tags

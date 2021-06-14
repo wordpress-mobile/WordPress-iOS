@@ -1,9 +1,17 @@
-Nyheter i denna utgåva?
+Vad är nytt i WordPress-utgåvan 17.5?
 
-Du kan hålla dig uppdaterad kring alla webbplatser där du nyligen lagts till genom att dra nedåt för att uppdatera sidan för nya webbplatser.
+Nu har vi återanvändbara block! Skapa innehåll en gång, spara ditt block och använd det sedan gång på gång i alla sidor och inlägg du vill. I version 17.5 finns nu återanvändbara block klara att användas via menyn för infogning av block.
 
-För webbplatser som har mer än en författare kan du nu ändra vilken författare som är kopplad till ett inlägg eller en sida.
+Om du upplever det lite för avlägset att lägga till nya block genom att trycka på en meny kan du också lägga till dem direkt inifrån redigeraren med ett snedstreck. I version 17.5 kan du lägga till dem med ett snedstreckskommando direkt i redigeraren: Skriv in ett snedstreck medan du skapar ditt inlägg eller din sida och börja skriva namnet på blocket, så är det klart. Du behöver ingen meny för detta.
 
-Nu kan du autentisera begäran om inloggning medan du använder appen.
+Vi har tänkt på ljudfiler också. Om du har en länk till en ljudfil kan du i version 17.5 helt enkelt klistra in URL:en i ett ljudblock, så kommer WordPress att infoga den i ditt inlägg.
 
-Slutligen har vi rättat ett fel i snabbstartsguiden. Om du följer någon webbplats inifrån läsaren kommer checklistan i snabbstartsguiden att uppdatera din progress (i stället för att fortsätta vara omarkerad).
+Aviseringar om gilla-markeringar har också blivit lite bättre i version 17.5. Nu kommer du att kunna se exakt vem som gillade varje inlägg och kommenterade på webbplatsen direkt när det händer.
+
+Samtidigt har vi jobbat hårt med att rätta olika programfel. Följande saker är nu korrigerade:
+
+I skärmläsare går det nu att markera stegningscellen i blockredigeraren.
+
+Vi ser till att stor text inte råkar bli ENORM text, oavsett vilket typsnitt du använder. Vi har även förbättrat stödet för stor text i blogginformationshuvudet på sidan ”mina webbplatser”.
+
+Slutligen fungerar nu val av objekt och fast rullning i inläggskatalogen. Dessutom kommer typsnittet Noticons inte längre att krascha appen i formaterade aviseringar.

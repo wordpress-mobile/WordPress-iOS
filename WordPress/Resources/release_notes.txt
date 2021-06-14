@@ -1,7 +1,17 @@
-What’s new in WordPress release 17.3:
+What’s new in WordPress release 17.5?
 
-New block alert! With the Search block, you can now add a search function onto any page or post on your site. We’ve also simplified the process for inserting media while using the Image, Video, Gallery, File, and Audio blocks.
+Reusable blocks are here! Create content once, save your block, and reuse it over and over again in any posts or pages. In 17.5, you’ll find reusable blocks ready to go in the block inserter menu.
 
-We addressed a few issues where your post content was not behaving as expected! Unwanted posts, for example, were sometimes converting into Classic content. This unexpected behavior occurred when deleting a post and then selecting Undo, and also when trashing a post. We also fixed an issue where your restored posts remained in your list of published posts even though they had been converted to drafts. (Apparently, sometimes your posts have minds of their own!) We’re pleased to say that all these issues have been fixed.
+If tapping to add new blocks is a menu tap too far, 17.5 lets you add them with a slash command right from the editor. Add a forward slash as you’re crafting your post or page, start tapping in the name of the block, and you’re all set. No menus necessary.
 
-Overall, the team kept busy for this release, and we made various other improvements, including a styling fix on the Change Username page so people would no longer be stuck on the screen, and updating the comments experience so you can filter them to show the most recent unreplied comments from other users. We also squashed several translation bugs on various screens, and tweaked colors in the app where necessary.
+Audio gets some love, too. Got a link for that audio file? In 17.5 just paste your URL into the Audio Block, and WordPress will pull it into your post.
+
+Like notifications also got some extra sparkle in 17.5. You’ll now be able to see exactly who liked every post and comment on your site as soon as they roll in.
+
+We’ve also been hard at work bug-wrangling. Here’s what we fixed:
+
+Screen readers can now select the stepper cell in the block editor.
+
+We made sure that large text doesn’t become ENORMOUS text, whatever font you’re using. Large text support in the blog details header of the My Sites screen has also been improved.
+
+Finally, item selection and fixed scrolling in the Plugins directory are now behaving themselves, and the Noticons font will no longer crash the app in rich notifications.

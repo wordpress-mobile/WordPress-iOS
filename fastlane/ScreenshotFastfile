@@ -21,17 +21,19 @@ platform :ios do
   #####################################################################################
   desc "Generate localised screenshots"
   lane :screenshots  do |options| 
-    fastlane_directory = File.expand_path File.dirname(__FILE__)
-    derived_data_path = File.join(fastlane_directory, "DerivedData")
 
     sh('bundle exec pod install')
-    FileUtils.rm_rf(derived_data_path)
+    FileUtils.rm_rf(DERIVED_DATA_PATH)
+
+    scheme = options[:scheme] || "WordPressScreenshotGeneration"
+
+    output_directory = options[:output_directory] || File.join(Dir.pwd, "/screenshots")
 
     scan(
       workspace: WORKSPACE_PATH,
-      scheme: "WordPressScreenshotGeneration",
+      scheme: scheme,
       build_for_testing: true,
-      derived_data_path: derived_data_path,
+      derived_data_path: DERIVED_DATA_PATH,
     )
 
     languages = "da de-DE en-AU en-CA en-GB es-ES fr-FR id it ja ko no nl-NL pt-BR pt-PT ru sv th tr zh-Hans zh-Hant en-US".split(" ")
@@ -48,9 +50,10 @@ platform :ios do
     [true, false].each { | dark_mode_enabled |
       capture_ios_screenshots(
         workspace: WORKSPACE_PATH,
-        scheme: "WordPressScreenshotGeneration",
+        scheme: scheme,
         test_without_building: true,
-        derived_data_path: derived_data_path,
+        derived_data_path: DERIVED_DATA_PATH,
+        output_directory: output_directory,
         languages: languages,
         dark_mode: dark_mode_enabled,
         override_status_bar: true,
@@ -68,6 +71,27 @@ platform :ios do
         ],
       )
     }
+  end
+
+  #####################################################################################
+  # jetpack_screenshots
+  # -----------------------------------------------------------------------------------
+  # This lane generates the localised Jetpack screenshots.
+  # It is the same as running bundle exec fastlane snapshot, but ensures that the app
+  # is only built once.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane jetpack_screenshots
+  #
+  # Example:
+  # bundle exec fastlane jetpack_screenshots
+  #####################################################################################
+  desc "Generate localised Jetpack screenshots"
+  lane :jetpack_screenshots do |options|
+    screenshots(
+      scheme: "JetpackScreenshotGeneration",
+      output_directory: File.join(Dir.pwd, "/jetpack_screenshots")
+    )
   end
 
   #####################################################################################
@@ -94,6 +118,35 @@ platform :ios do
       orig_folder: "screenshots",
       metadata_folder: "appstoreres/metadata",
       output_folder: File.join(Dir.pwd, "/promo_screenshots"),
+      force: options[:force],
+    )
+  end
+
+  #####################################################################################
+  # create_jetpack_promo_screenshots
+  # -----------------------------------------------------------------------------------
+  # This lane generates the Jetpack promo screenshots.
+  # Source plain screenshots are supposed to be in the screenshots_orig folder
+  # If this folder doesn't exist, the system will ask to use the standard screenshot
+  # folder. If the user confirms, the pictures in the screenshots folder will be
+  # copied to a new screenshots_orig folder.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane create_jetpack_promo_screenshots
+  #
+  # Example:
+  # bundle exec fastlane create_jetpack_promo_screenshots
+  #####################################################################################
+  desc "Creates Jetpack promo screenshots"
+  lane :create_jetpack_promo_screenshots do |options|
+
+    # Run screenshots generator tool
+    # All file paths are relative to the `fast file`.
+    promo_screenshots(
+      orig_folder: "jetpack_screenshots",
+      metadata_folder: "appstoreres/metadata",
+      config_file: "jetpack_screenshots.json",
+      output_folder: File.join(Dir.pwd, "/jetpack_promo_screenshots"),
       force: options[:force],
     )
   end

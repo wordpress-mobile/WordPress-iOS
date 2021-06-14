@@ -494,7 +494,34 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self updateFetchRequestPredicate:statusFilter];
     [self saveSelectedFilterToUserDefaults];
     self.currentStatusFilter = statusFilter;
-    [self refreshAndSyncWithInteraction];
+    [self refreshWithAnimationIfNeeded];
+}
+
+- (void)refreshWithAnimationIfNeeded
+{
+    // If the refresh control is already active skip the animation.
+    if (self.tableView.refreshControl.refreshing) {
+        [self refreshAndSyncWithInteraction];
+        return;
+    }
+
+    // If the tableView is scrolled down skip the animation.
+    if (self.tableView.contentOffset.y > 60) {
+        [self.tableView.refreshControl beginRefreshing];
+        [self refreshAndSyncWithInteraction];
+        return;
+    }
+
+    // Just telling the refreshControl to beginRefreshing can look jarring.
+    // Make it nicer by animating the tableView into position before starting
+    // the spinner and syncing.
+    [self.tableView layoutIfNeeded]; // Necessary to ensure a smooth start.
+    [UIView animateWithDuration:0.25 animations:^{
+        self.tableView.contentOffset = CGPointMake(0, -60);
+    } completion:^(BOOL finished) {
+        [self.tableView.refreshControl beginRefreshing];
+        [self refreshAndSyncWithInteraction];
+    }];
 }
 
 - (void)refreshInfiniteScroll
@@ -532,20 +559,29 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
         [self.noResultsViewController removeFromView];
         return;
     }
-    
+
+    if (self.noResultsViewController.view.window) {
+        // The view is already visible.  Nothing more to do.
+        [self adjustNoResultViewPlacement];
+        return;
+    }
+
     [self.noResultsViewController removeFromView];
     [self configureNoResults:self.noResultsViewController forNoConnection:NO];
     
     [self addChildViewController:self.noResultsViewController];
+    [self adjustNoResultViewPlacement];
     [self.tableView addSubviewWithFadeAnimation:self.noResultsViewController.view];
-    self.noResultsViewController.view.frame = self.tableView.frame;
-
-    // Adjust the NRV placement to accommodate for the filterTabBar.
-    CGRect noResultsFrame = self.noResultsViewController.view.frame;
-    noResultsFrame.origin.y -= self.filterTabBar.frame.size.height;
-    self.noResultsViewController.view.frame = noResultsFrame;
     
     [self.noResultsViewController didMoveToParentViewController:self];
+}
+
+- (void)adjustNoResultViewPlacement
+{
+    // Adjust the NRV placement to accommodate for the filterTabBar.
+    CGRect noResultsFrame = self.tableView.frame;
+    noResultsFrame.origin.y -= self.filterTabBar.frame.size.height;
+    self.noResultsViewController.view.frame = noResultsFrame;
 }
 
 - (void)refreshNoConnectionView
