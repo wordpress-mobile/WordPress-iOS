@@ -11,10 +11,10 @@ class MainNavigationTests: XCTestCase {
          .gotoMySiteScreen()
     }
 
-    override func tearDown() {
+    override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        LoginFlow.logoutIfNeeded()
-        super.tearDown()
+        try LoginFlow.logoutIfNeeded()
+        try super.tearDownWithError()
     }
 
     func testTabBarNavigation() {

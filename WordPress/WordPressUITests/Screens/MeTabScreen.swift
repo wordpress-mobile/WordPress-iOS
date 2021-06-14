@@ -1,7 +1,7 @@
-import Foundation
+import ScreenObject
 import XCTest
 
-class MeTabScreen: BaseScreen {
+class MeTabScreen: ScreenObject {
     let logOutButton: XCUIElement
     let logOutAlert: XCUIElement
     let appSettingsButton: XCUIElement
@@ -10,8 +10,11 @@ class MeTabScreen: BaseScreen {
     let notificationSettingsButton: XCUIElement
     let doneButton: XCUIElement
 
-    init() {
-        let app = XCUIApplication()
+    // TODO: Make this public in ScreenObject
+    let app: XCUIApplication
+
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        self.app = app
         logOutButton = app.cells["logOutFromWPcomButton"]
         logOutAlert = app.alerts.element(boundBy: 0)
         appSettingsButton = app.cells["appSettings"]
@@ -20,7 +23,7 @@ class MeTabScreen: BaseScreen {
         notificationSettingsButton = app.cells["notificationSettings"]
         doneButton = app.navigationBars.buttons["doneBarButton"]
 
-        super.init(element: appSettingsButton)
+        try super.init(element: appSettingsButton)
     }
 
     func isLoggedInToWpcom() -> Bool {

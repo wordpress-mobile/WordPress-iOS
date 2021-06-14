@@ -50,6 +50,10 @@ commands:
 
             # Prevent fastlane from checking for updates, also removing the verbose fastlane changelog at the end of each invocation.
             echo "export FASTLANE_SKIP_UPDATE_CHECK=1" >> $BASH_ENV
+      - run:
+          name: Fix SSH setup to fetch Swift packages from GitHub
+          command: |
+            for ip in $(dig @8.8.8.8 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts || true
 
 jobs:
   Build Tests:

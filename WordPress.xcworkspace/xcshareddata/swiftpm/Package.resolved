@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "ScreenObject",
+        "repositoryURL": "https://github.com/Automattic/ScreenObject",
+        "state": {
+          "branch": "trunk",
+          "revision": "201ace5a0e5eb7ed2005a34763041b7022625f43",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
