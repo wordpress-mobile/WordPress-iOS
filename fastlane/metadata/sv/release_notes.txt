@@ -1,0 +1,17 @@
+Vad är nytt i WordPress-utgåvan 17.5?
+
+Nu har vi återanvändbara block! Skapa innehåll en gång, spara ditt block och använd det sedan gång på gång i alla sidor och inlägg du vill. I version 17.5 finns nu återanvändbara block klara att användas via menyn för infogning av block.
+
+Om du upplever det lite för avlägset att lägga till nya block genom att trycka på en meny kan du också lägga till dem direkt inifrån redigeraren med ett snedstreck. I version 17.5 kan du lägga till dem med ett snedstreckskommando direkt i redigeraren: Skriv in ett snedstreck medan du skapar ditt inlägg eller din sida och börja skriva namnet på blocket, så är det klart. Du behöver ingen meny för detta.
+
+Vi har tänkt på ljudfiler också. Om du har en länk till en ljudfil kan du i version 17.5 helt enkelt klistra in URL:en i ett ljudblock, så kommer WordPress att infoga den i ditt inlägg.
+
+Aviseringar om gilla-markeringar har också blivit lite bättre i version 17.5. Nu kommer du att kunna se exakt vem som gillade varje inlägg och kommenterade på webbplatsen direkt när det händer.
+
+Samtidigt har vi jobbat hårt med att rätta olika programfel. Följande saker är nu korrigerade:
+
+I skärmläsare går det nu att markera stegningscellen i blockredigeraren.
+
+Vi ser till att stor text inte råkar bli ENORM text, oavsett vilket typsnitt du använder. Vi har även förbättrat stödet för stor text i blogginformationshuvudet på sidan ”mina webbplatser”.
+
+Slutligen fungerar nu val av objekt och fast rullning i inläggskatalogen. Dessutom kommer typsnittet Noticons inte längre att krascha appen i formaterade aviseringar.

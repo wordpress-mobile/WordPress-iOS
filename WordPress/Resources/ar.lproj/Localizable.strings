@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-02 11:07:40+0000 */
+/* Translation-Revision-Date: 2021-06-11 14:25:10+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -28,13 +28,13 @@
 "%1$@ on %2$@" = "%1$@ في %2$@";
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. %1$@ is a placeholder for the string 'Enter your server credentials'. */
-"%1$@ to enable one click site restores from backups." = "%1$@ to enable one click site restores from backups.";
+"%1$@ to enable one click site restores from backups." = "%1$@ لتمكين استعادة الموقع بنقرة واحدة من النُسخ الاحتياطية.";
 
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
-"%1$@ to fix this threat." = "%1$@ to fix this threat.";
+"%1$@ to fix this threat." = "%1$@ لإصلاح هذا التهديد.";
 
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
-"%1$@ to fix threats." = "%1$@ to fix threats.";
+"%1$@ to fix threats." = "%1$@ لإصلاح التهديدات.";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
 "%1$d blogger likes this." = "%1$d مدوّن معجب بهذا.";
@@ -221,13 +221,13 @@
 "%s block. This block has invalid content" = "مكوِّن %s. يحتوي هذا المكوِّن على محتوى غير صالح";
 
 /* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "%s converted to regular blocks";
+"%s converted to regular blocks" = "تم تحويل %s إلى مكوِّنات عادية";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"%s has URL set" = "%s has URL set";
+"%s has URL set" = "لدى %s عنوان URL معين";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"%s has no URL set" = "%s has no URL set";
+"%s has no URL set" = "ليس لدى %s عنوان URL معين";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "أيقونة %s الاجتماعية";
@@ -598,7 +598,7 @@
 "All of your selected items are now restored back to %1$@." = "تمت الآن استعادة كافة العناصر التي قمت بتحديدها إلى %1$@.";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen. */
-"All set!" = "All set!";
+"All set!" = "كل شيء جاهز!";
 
 /* Title of the congratulation screen that appears when all the tasks are completed */
 "All tasks complete" = "جميع المهام مكتملة";
@@ -1903,10 +1903,10 @@
 "Creating downloadable backup" = "جاري إنشاء نسخة احتياطية قابلة للتنزيل";
 
 /* No comment provided by engineer. */
-"Crop image to fill entire column" = "Crop image to fill entire column";
+"Crop image to fill entire column" = "قص الصورة لملء العمود بالكامل";
 
 /* No comment provided by engineer. */
-"Crosspost" = "Crosspost";
+"Crosspost" = "النشر المتعدد";
 
 /* No comment provided by engineer. */
 "Current" = "الحالي";
@@ -2284,7 +2284,7 @@
 "Double tap to move the block up" = "الضغط المزدوج لنقل المكوِّن إلى أعلى";
 
 /* No comment provided by engineer. */
-"Double tap to open Action Sheet to add image or video" = "Double tap to open Action Sheet to add image or video";
+"Double tap to open Action Sheet to add image or video" = "الضغط المزدوج لفتح ورقة الإجراءات لإضافة صورة أو مقطع فيديو";
 
 /* No comment provided by engineer. */
 "Double tap to open Action Sheet to edit, replace, or clear the image" = "Double tap to open Action Sheet to edit, replace, or clear the image";
@@ -2293,7 +2293,7 @@
 "Double tap to open Action Sheet with available options" = "النقر المزدوج لفتح ورقة الإجراءات التي تحتوي على خيارات متوافرة";
 
 /* No comment provided by engineer. */
-"Double tap to open Bottom Sheet to add image or video" = "Double tap to open Bottom Sheet to add image or video";
+"Double tap to open Bottom Sheet to add image or video" = "الضغط المزدوج لفتح الورقة السفلية لإضافة صورة أو مقطع فيديو";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Double tap to open Bottom Sheet to edit, replace, or clear the image";
@@ -2349,7 +2349,7 @@
 "Drafts" = "المسودات";
 
 /* No comment provided by engineer. */
-"Drag to adjust focal point" = "Drag to adjust focal point";
+"Drag to adjust focal point" = "السحب لضبط نقطة التركيز";
 
 /* Label for page duplicate option. Tapping creates a copy of the page.
    Label for post duplicate option. Tapping creates a copy of the post. */
@@ -3341,7 +3341,7 @@
 "Insert Media" = "أضف وسائط";
 
 /* No comment provided by engineer. */
-"Insert crosspost" = "Insert crosspost";
+"Insert crosspost" = "إدراج مقالة في عدد من المجموعات الإخبارية في وقت واحد";
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "إدراج وسائط";
@@ -3404,7 +3404,7 @@
 "Invalid URL, please check if you wrote a valid site address." = "عنوان URL غير صالح، الرجاء التحقق من كتابة عنوان الموقع الصالح.";
 
 /* No comment provided by engineer. */
-"Invalid URL. Audio file not found." = "Invalid URL. Audio file not found.";
+"Invalid URL. Audio file not found." = "رابط غير صالح. لم يتم العثور على ملف صوت.";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "نقطة نهاية غير صالحة";
@@ -3813,7 +3813,7 @@
 "Main Navigation" = "التنقل الرئيسي";
 
 /* Description of the Blogging Reminders card in My Site. */
-"Make the most of your site by setting goals and tracking your progress." = "Make the most of your site by setting goals and tracking your progress.";
+"Make the most of your site by setting goals and tracking your progress." = "حقق أقصى استفادة من موقعك عن طريق تعيين الأهداف وتعقُّب تقدمك.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -5870,7 +5870,7 @@
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "حدد الحساب الذي ترغب في اعتماده. لاحظ أن مقالاتك ستتم مشاركتها مع الحساب المحدد تلقائيًا.";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"Select the days you want to blog on" = "Select the days you want to blog on";
+"Select the days you want to blog on" = "تحديد الأيام التي ترغب في التدوين بها";
 
 /* Accessibility hint for stat available to add to Insights. */
 "Select to add this stat to Insights." = "تحديد لإضافة هذه الإحصائية إلى الرؤى.";
@@ -5965,7 +5965,7 @@
 
 /* Title of the Blogging Reminders card in My Site.
    Title of the Blogging Reminders Settings screen. */
-"Set your blogging goals" = "Set your blogging goals";
+"Set your blogging goals" = "تعيين أهداف التدوين الخاصة بك";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "تعيين عنوان موقعك";
@@ -6232,7 +6232,7 @@
 "Skip Quick Start" = "تخطي البدء السريع";
 
 /* translators: Slash inserter autocomplete results */
-"Slash inserter results" = "Slash inserter results";
+"Slash inserter results" = "نتائج أداة إدراج الشرطة المائلة";
 
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "الاسم اللطيف";
@@ -8025,7 +8025,7 @@
 "Welcome to the world’s most popular website builder." = "مرحبًا بك في أداة إنشاء مواقع الويب الأكثر رواجًا في العالم.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow. */
-"Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress." = "Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress.";
+"Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress." = "أبليت حسنًا في مقالتك الأولى! استمر. يمكنك الآن تعيين أهداف التدوين الخاصة بك، والحصول على تذكيرات وتعقُّب تقدمك.";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "الغرب";
@@ -8234,10 +8234,10 @@
 "Writing" = "الكتابة";
 
 /* No comment provided by engineer. */
-"X-Axis Position" = "X-Axis Position";
+"X-Axis Position" = "موضع المحور السيني";
 
 /* No comment provided by engineer. */
-"Y-Axis Position" = "Y-Axis Position";
+"Y-Axis Position" = "موضع المحور الصادي";
 
 /* Option to select the Yahoo Mail app when logging in with magic links */
 "Yahoo Mail" = "Yahoo Mail";
@@ -8294,7 +8294,7 @@
 "You can override these settings for individual posts." = "يمكنك تجاوز هذه الإعدادات للمقالات الفردية.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
-"You can update this any time via My Site > Site Settings" = "You can update this any time via My Site > Site Settings";
+"You can update this any time via My Site > Site Settings" = "يمكن تحديث هذا في أي وقت من خلال موقعي > إعدادات الموقع";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
 "You can update this any time." = "يمكنك تحديث هذا في أي وقت.";

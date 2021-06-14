@@ -14,3 +14,4 @@ precheck_include_in_app_purchases false
 
 api_key_path ".configure-files/app_store_connect_fastlane_api_key.json"
 
+app_rating_config_path "./fastlane/metadata/ratings_config.json"

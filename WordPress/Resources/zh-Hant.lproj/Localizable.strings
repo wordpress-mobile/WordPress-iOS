@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-28 09:54:08+0000 */
+/* Translation-Revision-Date: 2021-06-10 20:33:30+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -28,19 +28,19 @@
 "%1$@ on %2$@" = "%2$@ 上的 %1$@";
 
 /* Error message displayed when restoring a site fails due to credentials not being configured. %1$@ is a placeholder for the string 'Enter your server credentials'. */
-"%1$@ to enable one click site restores from backups." = "%1$@ to enable one click site restores from backups.";
+"%1$@ to enable one click site restores from backups." = "%1$@，啟用從備份一鍵還原網站的功能。";
 
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
-"%1$@ to fix this threat." = "%1$@ to fix this threat.";
+"%1$@ to fix this threat." = "%1$@以修正此威脅。";
 
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
-"%1$@ to fix threats." = "%1$@ to fix threats.";
+"%1$@ to fix threats." = "%1$@以修正威脅。";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d blogger likes this." = "%1$d blogger likes this.";
+"%1$d blogger likes this." = "%1$d 位部落客說這個讚。";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d bloggers like this." = "%1$d bloggers like this.";
+"%1$d bloggers like this." = "%1$d 位部落客說這個讚。";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "已完成 %2$d 個，共 %1$d 個";
@@ -221,16 +221,16 @@
 "%s block. This block has invalid content" = "%s 區塊含有無效內容";
 
 /* translators: %s: name of the reusable block */
-"%s converted to regular blocks" = "%s converted to regular blocks";
+"%s converted to regular blocks" = "%s 已轉換為一般區塊";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"%s has URL set" = "%s has URL set";
+"%s has URL set" = "%s 有 URL 集";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"%s has no URL set" = "%s has no URL set";
+"%s has no URL set" = "%s 沒有 URL 集";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"%s social icon" = "%s social icon";
+"%s social icon" = "%s 社交圖示";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "系統不完全支援「%s」";
@@ -310,7 +310,7 @@
 "A list of sites on this account." = "此帳號的網站清單。";
 
 /* Story Intro welcome title */
-"A new way to create and publish engaging content on your site." = "在網站上建立及發布吸睛內容的新方法。";
+"A new way to create and publish engaging content on your site." = "使用全新方式在網站上建立及發佈吸睛內容。";
 
 /* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
 "A series of steps showing you how to add a theme, site icon and more." = "提供一系列步驟，說明如何新增佈景主題、網站圖示等其他項目。";
@@ -492,19 +492,19 @@
 "Add caption" = "Add caption";
 
 /* No comment provided by engineer. */
-"Add image or video" = "Add image or video";
+"Add image or video" = "新增圖片或視訊";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "新增圖片或大頭貼來代表這個新帳號。";
 
 /* No comment provided by engineer. */
-"Add label…" = "Add label…";
+"Add label…" = "新增標籤…";
 
 /* No comment provided by engineer. */
 "Add link text" = "Add link text";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"Add link to %s" = "Add link to %s";
+"Add link to %s" = "新增連結至 %s";
 
 /* No comment provided by engineer. */
 "Add menu item above" = "新增上方的選單項目";
@@ -598,7 +598,7 @@
 "All of your selected items are now restored back to %1$@." = "你選取的所有項目現在都已還原至 %1$@。";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen. */
-"All set!" = "All set!";
+"All set!" = "一切就緒！";
 
 /* Title of the congratulation screen that appears when all the tasks are completed */
 "All tasks complete" = "所有任務都已完成";
@@ -616,7 +616,7 @@
 "Allow WordPress.com login" = "允許 WordPress.com 登入";
 
 /* Message on camera permissions screen to explain why the app needs camera and microphone permissions */
-"Allow access so you can start taking photos and videos." = "允許存取，以開始拍攝相片和影片。";
+"Allow access so you can start taking photos and videos." = "允許存取以開始拍攝照片和影片。";
 
 /* A short description of the comment like sharing setting. */
 "Allow all comments to be Liked by you and your readers" = "允許你和你的讀者對所有留言按讚";
@@ -1048,7 +1048,7 @@
 "Break comment threads into multiple pages." = "將留言串分為數頁。";
 
 /* No comment provided by engineer. */
-"Briefly describe the link to help screen reader user" = "Briefly describe the link to help screen reader user";
+"Briefly describe the link to help screen reader user" = "簡述連結以協助螢幕閱讀器使用者";
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "瀏覽所有佈景主題，尋找最適合你的一個。";
@@ -1072,16 +1072,16 @@
 "Button Style" = "按鈕樣式";
 
 /* No comment provided by engineer. */
-"Button inside" = "Button inside";
+"Button inside" = "按鈕內部";
 
 /* No comment provided by engineer. */
-"Button outside" = "Button outside";
+"Button outside" = "按鈕外部";
 
 /* No comment provided by engineer. */
-"Button position" = "Button position";
+"Button position" = "按鈕位置";
 
 /* No comment provided by engineer. */
-"Button width" = "Button width";
+"Button width" = "按鈕寬度";
 
 /* Label for the post author in the post detail. */
 "By " = "By ";
@@ -1400,7 +1400,7 @@
 "Clear Device Media Cache" = "清除裝置媒體快取";
 
 /* No comment provided by engineer. */
-"Clear Media" = "Clear Media";
+"Clear Media" = "清除媒體";
 
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "清除舊活動記錄";
@@ -1469,7 +1469,7 @@
 "Colorful backgrounds" = "彩色背景";
 
 /* No comment provided by engineer. */
-"Column settings" = "Column settings";
+"Column settings" = "欄位設定";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "Columns Settings";
@@ -1703,7 +1703,7 @@
 "Continuing with Apple" = "繼續使用 Apple";
 
 /* No comment provided by engineer. */
-"Convert to regular blocks" = "Convert to regular blocks";
+"Convert to regular blocks" = "轉換為一般區塊";
 
 /* An example tag used in the login prologue screens. */
 "Cooking" = "烹飪";
@@ -1815,7 +1815,7 @@
 "Country Code" = "國家\/地區代碼";
 
 /* No comment provided by engineer. */
-"Cover" = "Cover";
+"Cover" = "封面";
 
 /* Title of a section on the debug screen that shows a list of actions related to crash logging */
 "Crash Logging" = "故障記錄";
@@ -1903,10 +1903,10 @@
 "Creating downloadable backup" = "正在建立可下載的備份";
 
 /* No comment provided by engineer. */
-"Crop image to fill entire column" = "Crop image to fill entire column";
+"Crop image to fill entire column" = "裁切圖片以填滿整欄";
 
 /* No comment provided by engineer. */
-"Crosspost" = "Crosspost";
+"Crosspost" = "多重發佈";
 
 /* No comment provided by engineer. */
 "Current" = "目前記錄";
@@ -1924,10 +1924,10 @@
 "Current period: %@ to %@" = "目前的期間：%1$@ 至 %2$@";
 
 /* No comment provided by engineer. */
-"Current placeholder text is" = "Current placeholder text is";
+"Current placeholder text is" = "目前的預留位置文字是";
 
 /* translators: accessibility text. Inform about current unit value. %s: Current unit value. */
-"Current unit is %s" = "Current unit is %s";
+"Current unit is %s" = "目前的單位為 %s";
 
 /* translators: %s: current cell value. */
 "Current value is %s" = "目前的值是 %s";
@@ -2254,13 +2254,13 @@
 "Double tap to dismiss" = "點選兩下將其關閉";
 
 /* No comment provided by engineer. */
-"Double tap to edit button text" = "Double tap to edit button text";
+"Double tap to edit button text" = "按兩下以編輯按鈕文字";
 
 /* No comment provided by engineer. */
-"Double tap to edit label text" = "Double tap to edit label text";
+"Double tap to edit label text" = "按兩下以編輯標籤文字";
 
 /* No comment provided by engineer. */
-"Double tap to edit placeholder text" = "Double tap to edit placeholder text";
+"Double tap to edit placeholder text" = "按兩下以編輯預留位置文字";
 
 /* translators: accessibility text */
 "Double tap to edit this value" = "按兩下以編輯此數值";
@@ -2284,7 +2284,7 @@
 "Double tap to move the block up" = "按兩下將區塊向上移";
 
 /* No comment provided by engineer. */
-"Double tap to open Action Sheet to add image or video" = "Double tap to open Action Sheet to add image or video";
+"Double tap to open Action Sheet to add image or video" = "按兩下開啟操作工作表以新增圖片或視訊";
 
 /* No comment provided by engineer. */
 "Double tap to open Action Sheet to edit, replace, or clear the image" = "點兩下開啟動作工作表，然後編輯、取代或清除圖片";
@@ -2293,7 +2293,7 @@
 "Double tap to open Action Sheet with available options" = "按兩下以開啟含有可用選項的操作工作表";
 
 /* No comment provided by engineer. */
-"Double tap to open Bottom Sheet to add image or video" = "Double tap to open Bottom Sheet to add image or video";
+"Double tap to open Bottom Sheet to add image or video" = "按兩下開啟底部工作表以新增圖片或視訊";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet to edit, replace, or clear the image" = "點兩下開啟底部工作表，然後編輯、取代或清除圖片";
@@ -2349,7 +2349,7 @@
 "Drafts" = "草稿";
 
 /* No comment provided by engineer. */
-"Drag to adjust focal point" = "Drag to adjust focal point";
+"Drag to adjust focal point" = "拖曳以調整焦點";
 
 /* Label for page duplicate option. Tapping creates a copy of the page.
    Label for post duplicate option. Tapping creates a copy of the post. */
@@ -2550,7 +2550,7 @@
 "Enter your password instead." = "請改為輸入你的密碼。";
 
 /* Error message displayed when site credentials aren't configured. */
-"Enter your server credentials" = "Enter your server credentials";
+"Enter your server credentials" = "輸入伺服器憑證";
 
 /* Generic error alert title
    Generic error.
@@ -2849,7 +2849,7 @@
 "Fixed" = "固定";
 
 /* No comment provided by engineer. */
-"Fixed background" = "Fixed background";
+"Fixed background" = "背景固定位置";
 
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "正在修正威脅";
@@ -3165,7 +3165,7 @@
 "Hide keyboard" = "隱藏鍵盤";
 
 /* No comment provided by engineer. */
-"Hide search heading" = "Hide search heading";
+"Hide search heading" = "隱藏搜尋標題";
 
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
@@ -3341,7 +3341,7 @@
 "Insert Media" = "插入媒體";
 
 /* No comment provided by engineer. */
-"Insert crosspost" = "Insert crosspost";
+"Insert crosspost" = "插入多重發佈";
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "插入媒體";
@@ -3353,7 +3353,7 @@
 "Insert selected" = "插入選取的項目";
 
 /* No comment provided by engineer. */
-"Inside" = "Inside";
+"Inside" = "內部";
 
 /* Title of Insights stats filter. */
 "Insights" = "Insights";
@@ -3404,7 +3404,7 @@
 "Invalid URL, please check if you wrote a valid site address." = "無效的 URL，請檢查你輸入的網站位址是否有效。";
 
 /* No comment provided by engineer. */
-"Invalid URL. Audio file not found." = "Invalid URL. Audio file not found.";
+"Invalid URL. Audio file not found." = "無效網址。 找不到音訊檔案。";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "無效端點";
@@ -3638,7 +3638,7 @@
 "Link inserted" = "連結已插入";
 
 /* No comment provided by engineer. */
-"Link label" = "Link label";
+"Link label" = "連結標籤";
 
 /* No comment provided by engineer. */
 "Link text" = "Link text";
@@ -3813,7 +3813,7 @@
 "Main Navigation" = "主導覽";
 
 /* Description of the Blogging Reminders card in My Site. */
-"Make the most of your site by setting goals and tracking your progress." = "Make the most of your site by setting goals and tracking your progress.";
+"Make the most of your site by setting goals and tracking your progress." = "設定目標並追蹤進度，充分運用你的網站。";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -3893,7 +3893,7 @@
 "Media" = "多媒體內容";
 
 /* No comment provided by engineer. */
-"Media & Text settings" = "Media & Text settings";
+"Media & Text settings" = "媒體及文字設定";
 
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "媒體快取大小";
@@ -3931,7 +3931,7 @@
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "媒體檔案大小 (%1$@) 太大，無法上傳。檔案大小上限為 %2$@";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"Media options" = "Media options";
+"Media options" = "媒體選項";
 
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "媒體預覽失敗。";
@@ -3946,7 +3946,7 @@
 "Medium" = "中";
 
 /* No comment provided by engineer. */
-"Mention" = "Mention";
+"Mention" = "標記";
 
 /* The default text used for filling the name of a menu when creating it. */
 "Menu" = "選單";
@@ -3978,7 +3978,7 @@
 "Microsoft Outlook" = "Microsoft Outlook";
 
 /* No comment provided by engineer. */
-"Minimum height" = "Minimum height";
+"Minimum height" = "最小高度";
 
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "其他安全漏洞";
@@ -4014,10 +4014,10 @@
 "More Posts" = "更多文章";
 
 /* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
-"More from %1$@" = "如需更多資訊，請瀏覽 %1$@";
+"More from %1$@" = "若要閱讀更多內容，請瀏覽 %1$@";
 
 /* Section title for global related posts. */
-"More on WordPress.com" = "如要瞭解更多資訊，請前往 WordPress.com";
+"More on WordPress.com" = "如需瞭解更多資訊，請前往 WordPress.com";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "最熱門的時間";
@@ -4254,7 +4254,7 @@
 "No available sites" = "無可用網站";
 
 /* No comment provided by engineer. */
-"No button" = "No button";
+"No button" = "沒有按鈕";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "無留言";
@@ -4272,7 +4272,7 @@
 "No connections found for %@" = "找不到 %@ 的連結";
 
 /* No comment provided by engineer. */
-"No custom placeholder set" = "No custom placeholder set";
+"No custom placeholder set" = "未設定自訂預留位置";
 
 /* Text displayed when Period stat section has no data. */
 "No data for this period" = "此期間沒有任何資料";
@@ -4559,7 +4559,7 @@
 "Oops!" = "糟糕！";
 
 /* No comment provided by engineer. */
-"Opacity" = "Opacity";
+"Opacity" = "不透明度";
 
 /* No comment provided by engineer. */
 "Open Block Actions Menu" = "開啟區塊操作選單";
@@ -4614,7 +4614,7 @@
 "Optional message up to %1$d characters to be included in the invitation." = "要加入至邀請中的選填訊息 (上限 %1$d 個字元)。";
 
 /* No comment provided by engineer. */
-"Optional placeholder…" = "Optional placeholder…";
+"Optional placeholder…" = "可選的預留位置…";
 
 /* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
 "Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "選填：輸入自訂訊息 (上限 %1$d 個字元)，連同你的邀請一併傳送。";
@@ -4660,10 +4660,10 @@
 "Other Sites" = "其他網站";
 
 /* No comment provided by engineer. */
-"Outside" = "Outside";
+"Outside" = "外部";
 
 /* No comment provided by engineer. */
-"Overlay" = "Overlay";
+"Overlay" = "覆疊";
 
 /* Used to indicate a setting is overridden in debug builds of the app */
 "Overridden" = "已覆寫";
@@ -5688,7 +5688,7 @@
 "Scan Again" = "重新掃瞄";
 
 /* Title for a notice informing the user their scan has completed */
-"Scan Finished" = "掃描完成";
+"Scan Finished" = "掃瞄完成";
 
 /* Title of the view */
 "Scan History" = "掃描記錄";
@@ -5749,16 +5749,16 @@
 "Search block" = "搜尋區塊";
 
 /* No comment provided by engineer. */
-"Search block label. Current text is" = "Search block label. Current text is";
+"Search block label. Current text is" = "搜尋區塊標籤。 目前的文字是";
 
 /* No comment provided by engineer. */
 "Search blocks" = "搜尋區塊";
 
 /* No comment provided by engineer. */
-"Search button. Current button text is" = "Search button. Current button text is";
+"Search button. Current button text is" = "搜尋按鈕。 目前的按鈕文字是";
 
 /* No comment provided by engineer. */
-"Search input field." = "Search input field.";
+"Search input field." = "搜尋意見回饋欄位。";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "搜尋或輸入 URL";
@@ -5870,7 +5870,7 @@
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "選取你要授權的帳號。請注意，你的文章將自動分享至你所選取的帳號。";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"Select the days you want to blog on" = "Select the days you want to blog on";
+"Select the days you want to blog on" = "選取希望公開網誌的日期";
 
 /* Accessibility hint for stat available to add to Insights. */
 "Select to add this stat to Insights." = "選取此項目可將統計資料新增至洞察報告。";
@@ -5965,7 +5965,7 @@
 
 /* Title of the Blogging Reminders card in My Site.
    Title of the Blogging Reminders Settings screen. */
-"Set your blogging goals" = "Set your blogging goals";
+"Set your blogging goals" = "設定你的網誌目標";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "設定你的網站標題";
@@ -6056,10 +6056,10 @@
 "Show download button" = "顯示下載按鈕";
 
 /* No comment provided by engineer. */
-"Show media on left" = "Show media on left";
+"Show media on left" = "媒體顯示於內容左側";
 
 /* No comment provided by engineer. */
-"Show media on right" = "Show media on right";
+"Show media on right" = "媒體顯示於內容右側";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6232,7 +6232,7 @@
 "Skip Quick Start" = "略過快速入門";
 
 /* translators: Slash inserter autocomplete results */
-"Slash inserter results" = "Slash inserter results";
+"Slash inserter results" = "斜線插入工具結果";
 
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "代稱";
@@ -6560,13 +6560,13 @@
 "Tap here to show help" = "點選此處顯示說明";
 
 /* No comment provided by engineer. */
-"Tap to add content" = "Tap to add content";
+"Tap to add content" = "點選以新增內容";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "點選以取消上傳";
 
 /* Accessibility hint for button used to change site title */
-"Tap to change the site's title" = "輕觸即可變更網站標題";
+"Tap to change the site's title" = "點選即可變更網站標題";
 
 /* Accessibility hint to inform the user what action the hide button performs */
 "Tap to collapse the post tags" = "點選以收合文章標籤";
@@ -6596,13 +6596,13 @@
 "Tap to select which blog to post to" = "點選以選取要發佈文章的目標網誌";
 
 /* Accessibility hint for button used to switch site */
-"Tap to switch to another site, or add a new site" = "輕觸即可切換到其他網站或新增網站";
+"Tap to switch to another site, or add a new site" = "點選即可切換到其他網站或新增網站";
 
 /* Accessibility hint to inform the user what action the post tag chip performs */
 "Tap to view posts for this tag" = "點選以檢視有此標籤的文章";
 
 /* Accessibility hint for button used to view the user's site */
-"Tap to view your site" = "輕觸即可檢視你的網站";
+"Tap to view your site" = "點選即可檢視你的網站";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "分類法";
@@ -6675,7 +6675,7 @@
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "網站標題會顯示在網頁瀏覽器的標題列中，且會顯示在大部分佈景主題的頁首中。";
 
 /* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "你的 iPad 目前無法使用 Stories 編輯器。 請改為在 iPhone 上使用 Stories。";
+"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "你的 iPad 目前無法使用限時動態編輯器。 請嘗試在 iPhone 上使用限時動態功能。";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "網址缺少有效的主機。";
@@ -6855,7 +6855,7 @@
 "There was a problem when trying to access your media. Please try again later." = "嘗試存取你的媒體時發生問題。請稍後再試一次。";
 
 /* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Stories 編輯器發生問題。  如果問題持續發生，請透過畫面上的「我 > 說明&客戶服務」與我們聯絡。";
+"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "限時動態編輯器發生問題。  如果問題持續發生，請透過「我」> 「說明與支援」畫面聯絡我們。";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -7203,7 +7203,7 @@
 "Twitter Username" = "Twitter 使用者名稱";
 
 /* No comment provided by engineer. */
-"Type a URL" = "Type a URL";
+"Type a URL" = "輸入 URL";
 
 /* Placeholder text for domain search during site creation. */
 "Type a keyword for more ideas" = "輸入一個關鍵字以獲得更多構想";
@@ -7230,7 +7230,7 @@
 "Unable to Connect" = "無法連結";
 
 /* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "無法建立 Stories 編輯器";
+"Unable to Create Stories Editor" = "無法建立限時動態編輯器";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "無法載入文章";
@@ -7352,7 +7352,7 @@
 "Unable to verify the email address. Please try again later." = "無法驗證電子郵件地址。請稍後再試一次。";
 
 /* Message displayed when visiting the Jetpack settings page fails. */
-"Unable to visit Jetpack settings for site" = "無法前往 Jetpack 的網站設定";
+"Unable to visit Jetpack settings for site" = "無法前往網站的 Jetpack 設定";
 
 /* Message displayed when visiting a site fails. */
 "Unable to visit site" = "無法造訪網站";
@@ -7388,7 +7388,7 @@
 "Unfollow %@" = "取消關注 %@";
 
 /* Verb. An option to unfollow a site. */
-"Unfollow site" = "停止追蹤網站";
+"Unfollow site" = "停止關注網站";
 
 /* Notice title when unfollowing a site succeeds.
    User unfollowed a site. */
@@ -7567,10 +7567,10 @@
 "Use block editor" = "Use block editor";
 
 /* No comment provided by engineer. */
-"Use icon button" = "Use icon button";
+"Use icon button" = "使用圖示按鈕";
 
 /* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "你可以用這個連結一口氣加入所有團隊成員，無須逐一邀請。 凡是造訪這個 URL 的人，不管是以何種方式取得連結，都可以申請加入貴機構，因此在分享網址前，請確認對方值得信任。";
+"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "你可以使用此連結一次加入所有團隊成員，無須逐一邀請。 凡是造訪這個 URL 的人，不論以何種方式取得連結，都可以註冊加入貴機構，因此分享網址前，請確認對方值得信任。";
 
 /* No comment provided by engineer. */
 "Use this site" = "使用此網站";
@@ -8025,7 +8025,7 @@
 "Welcome to the world’s most popular website builder." = "歡迎使用全球最受歡迎的網站建置工具。";
 
 /* Description on the first screen of the Blogging Reminders Settings flow. */
-"Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress." = "Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress.";
+"Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress." = "恭喜發表第一篇文章！ 請再接再厲。 你現在可以設定網誌目標、取得提醒及追蹤進度。";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "西";
@@ -8034,7 +8034,7 @@
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "我們會隨時傳送與帳號資訊相關的重要電子郵件，除此之外，你也能獲得實用的額外內容。";
 
 /* The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
-"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "我們即將為新文章移除傳統編輯器，但這不會影響你編輯任何現有文章或頁面。 在網站設定中啟用區塊編輯器，搶先體驗。";
+"We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "我們即將為新文章移除傳統編輯器，但這不會影響你編輯任何現有文章或頁面。 在網站設定中啟用區塊編輯器，即可搶先體驗。";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress.
    Hint displayed when we fail to fetch the status of the restore in progress. */
@@ -8114,7 +8114,7 @@
 "Widgets" = "小工具";
 
 /* No comment provided by engineer. */
-"Width Settings" = "Width Settings";
+"Width Settings" = "寬度設定";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "不會被公開。";
@@ -8228,16 +8228,16 @@
 "Write code…" = "撰寫程式碼…";
 
 /* No comment provided by engineer. */
-"Write title…" = "Write title…";
+"Write title…" = "撰寫標題…";
 
 /* Title for the writing section in site settings screen */
 "Writing" = "撰寫";
 
 /* No comment provided by engineer. */
-"X-Axis Position" = "X-Axis Position";
+"X-Axis Position" = "X 軸位置";
 
 /* No comment provided by engineer. */
-"Y-Axis Position" = "Y-Axis Position";
+"Y-Axis Position" = "Y 軸位置";
 
 /* Option to select the Yahoo Mail app when logging in with magic links */
 "Yahoo Mail" = "Yahoo奇摩電子信箱";
@@ -8294,10 +8294,10 @@
 "You can override these settings for individual posts." = "你可以針對不同的文章覆寫這些設定。";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
-"You can update this any time via My Site > Site Settings" = "You can update this any time via My Site > Site Settings";
+"You can update this any time via My Site > Site Settings" = "你可以隨時前往「我的網站」>「網站設定」更新此設定。";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this any time." = "You can update this any time.";
+"You can update this any time." = "你可以隨時更新此設定。";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "你無法使用該電子郵件地址註冊。我們無法使用這些電子郵件地址，因為它們會阻擋我們的某些郵件。請使用其他電子郵件供應商。";
@@ -8358,7 +8358,7 @@
 "You hit a milestone 🚀" = "你已達到里程碑 🚀 ";
 
 /* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
-"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "你可在允許清單中新增 IP 位址或一系列的位址，避免這些位址遭到 Jetpack 封鎖。 可接受 IPv4 和 IPv6。 若要指定範圍，請輸入最低值及最高值，並以破折號分隔。 例如：12.12.12.1-12.12.12.100。";
+"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "你可將一或多個 IP 位址加入允許清單中，避免這些位址遭到 Jetpack 封鎖。 可接受 IPv4 和 IPv6。 若要指定範圍，請輸入最低值及最高值，並以破折號分隔。 例如：12.12.12.1-12.12.12.100。";
 
 /* A suggestion of topics the user might like */
 "You might like" = "你可能會喜歡";
@@ -8383,7 +8383,7 @@
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "你似乎安裝了 DudaMobile 的行動版外掛程式，導致應用程式無法連接至你的網誌";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
-"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "除非你十分確定其安全無害，否則不應忽略安全性問題。 若你選擇忽略此威脅，該威脅會繼續存在於你的網站 「%1$@」。";
+"You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "除非完全確定其安全無害，否則不應忽略安全性問題。 若你選擇忽略此威脅，該威脅會繼續存在於你的網站 「%1$@」。";
 
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "一旦變更使用者名稱就無法復原。";
@@ -8428,7 +8428,7 @@
 "Your first backup will be ready soon" = "第一次備份即將準備就緒";
 
 /* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "無法匯出你的媒體. If the problem persists you can contact us via the Me > 說明與支援畫面。";
+"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "無法匯出你的媒體. If the problem persists you can contact us via the Me >「說明與支援」畫面。";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "你走到哪，通知就到哪，第一時間查看留言和讚。";
@@ -8512,7 +8512,7 @@
 "audio" = "音訊";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
-"audio file" = "audio file";
+"audio file" = "音訊檔案";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "作者：%@";

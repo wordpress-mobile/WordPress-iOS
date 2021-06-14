@@ -1,0 +1,17 @@
+Quelles sont les nouveautés de WordPress version 17.5 ?
+
+Les blocs réutilisables sont disponibles ! Créez du contenu une fois, enregistrez votre bloc et réutilisez-le encore et encore dans n’importe quel article ou page. Dans la version 17.5, des blocs réutilisables prêts à utiliser sont disponibles dans le menu de l’outil d’insertion de bloc.
+
+Si appuyer pour ajouter de nouveaux blocs est trop long, la version 17.5 vous permet de les ajouter avec une commande de barre oblique directement à partir de l’éditeur. Ajoutez une barre oblique lorsque vous créez votre article ou votre page, commencez à saisir le nom du bloc et c’est tout. Aucun menu nécessaire.
+
+On apprécie aussi le son. Vous avez un lien pour ce fichier audio ? Dans la version 17.5, collez simplement votre URL dans le bloc son et WordPress l’intégrera dans votre article.
+
+Les notifications des likes ont également été améliorées dans la version 17.5. Vous pouvez désormais voir précisément qui a aimé chaque article et commentaire sur votre site instantanément.
+
+Nous avons également travaillé dur pour résoudre les bogues. Voici ce que nous avons résolu :
+
+Les lecteurs d’écran peuvent désormais sélectionner la cellule d’exécution pas à pas dans l’éditeur de blocs.
+
+Nous avons veillé à ce qu’un texte de grande taille ne devienne pas ÉNORME, quelle que soit la police que vous utilisez. La prise en charge des textes de grande taille dans l’en-tête des détails du blog de l’écran Mes sites a également été améliorée.
+
+Enfin, la sélection d’éléments et le défilement fixe dans le répertoire des extensions sont désormais autonomes et la police Noticons ne bloquera plus l’application dans les notifications riches.
