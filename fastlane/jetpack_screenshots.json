@@ -198,21 +198,21 @@
 		{
 			"device": "iPad X",
 			"filename": "iPad Pro (12.9-inch) (3rd generation)-3-JetpackScan.png",
-			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_5.txt",
+			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_4.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackSpace.png",
 			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-3-light-JetpackScan.png"
 		},
 		{
 			"device": "iPad X",
 			"filename": "iPad Pro (12.9-inch) (3rd generation)-4-JetpackBackup.png",
-			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_6.txt",
+			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_5.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackSpace.png",
 			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-4-light-JetpackBackup.png"
 		},
 		{
 			"device": "iPad X",
 			"filename": "iPad Pro (12.9-inch) (3rd generation)-5-Stats.png",
-			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_7.txt",
+			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_6.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackSpace.png",
 			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-5-light-Stats.png"
 		},
@@ -252,21 +252,21 @@
 		{
 			"device": "iPad Pro",
 			"filename": "iPad Pro (12.9-inch) (2nd generation)-3-JetpackScan.png",
-			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_5.txt",
+			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_4.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackSpace.png",
 			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-3-light-JetpackScan.png"
 		},
 		{
 			"device": "iPad Pro",
 			"filename": "iPad Pro (12.9-inch) (2nd generation)-4-JetpackBackup.png",
-			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_6.txt",
+			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_5.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackSpace.png",
 			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-4-light-JetpackBackup.png"
 		},
 		{
 			"device": "iPad Pro",
 			"filename": "iPad Pro (12.9-inch) (2nd generation)-5-Stats.png",
-			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_7.txt",
+			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_6.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackSpace.png",
 			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-5-light-Stats.png"
 		}
