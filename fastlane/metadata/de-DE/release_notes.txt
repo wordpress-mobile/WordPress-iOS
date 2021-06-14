@@ -1,9 +1,17 @@
-Was gibt's Neues bei diesem Update?
+Was ist neu in WordPress 17.5?
 
-Bleibe auf dem Laufenden über die Websites, zu denen du kürzlich hinzugefügt wurdest, indem du den Bildschirm „Neue Websites“ hinunterziehst, um ihn zu aktualisieren.
+Es gibt jetzt wiederverwendbare Blöcke! Damit musst du Inhalte nur noch einmal erstellen. Speichere deinen Block und schon kannst du ihn in Beiträgen und auf Seiten immer wieder verwenden. In 17.5 findest du wiederverwendbare Blöcke im Menü „Block-Inserter“ und kannst sie sofort nutzen.
 
-Auf Websites mit mehr als einem Autor, kannst du nun den Autor wechseln, der einem Beitrag oder einer Seite zugewiesen ist.
+Wenn du den Menü-Tab zum Hinzufügen neuer Blöcke antippen willst und er zu weit weg ist, kannst du in 17.5. neue Blöcke direkt im Editor mit einem Schrägstrichbefehl hinzufügen. Füge einen Schrägstrich ein, wenn du einen Beitrag oder eine Seite entwirfst, und gib dann den Namen des Blocks ein. Das war’s! So kommst du ganz ohne Menüs aus.
 
-Du kannst jetzt Anmeldeanfragen authentifizieren, während du die App verwendest.
+Auch den Audiodateien haben wir uns gewidmet. Du hast einen Link zu einer Audiodatei? In 17.5 kannst du deine URL einfach in den Audioblock eingeben. WordPress bettet die Datei dann in deinen Beitrag ein.
 
-Zu guter Letzt haben wir noch einen Fehler in der Schnellstart-Tour behoben. Wenn du einer Website im Reader folgst, aktualisiert die Schnellstart-Checkliste deinen Fortschritt (anstatt nicht abgehakt zu bleiben).
+„Gefällt mir“-Benachrichtigungen sind jetzt noch detaillierter. Nun kannst du ohne Verzögerung und genau sehen, wem einzelne Beiträge gefallen und wer deine Website kommentiert hat.
+
+Außerdem sind wir einigen Fehlern an den Kragen gegangen. Diese Probleme haben wir beseitigt:
+
+Screenreader können nun im Block-Editor die Stepper-Zelle auswählen.
+
+Großer Text wird nicht mehr zu RIESIGEM Text – egal, welche Schriftart du nutzt. Wir haben die Unterstützung von großem Text im Header mit den Bloginformationen auf der Seite „Meine Websites“ verbessert.
+
+Und schließlich funktionieren auch das Auswählen von Elementen und das fixierte Scrollen im Plugin-Verzeichnis wieder richtig. Und die Schriftart Noticons bringt die App bei ausführlichen Benachrichtigungen nicht mehr zum Absturz.

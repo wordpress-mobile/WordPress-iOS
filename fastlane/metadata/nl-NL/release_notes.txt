@@ -1,9 +1,17 @@
-Wat is er nieuw in deze update?
+Wat is er nieuw in WordPress release 17.5?
 
-Blijf op de hoogte van sites waaraan je onlangs bent toegevoegd door omlaag te trekken om te vernieuwen op het scherm Nieuwe sites.
+Herbruikbare blokken zijn er! Maak eenmaal inhoud, sla je blok op en hergebruik het keer op keer in berichten of pagina's. In 17.5 vind je herbruikbare blokken klaar om te gaan in het menu blok inserter.
 
-Op sites met meer dan één auteur kun je nu de auteur wijzigen die aan een bericht of pagina is toegewezen.
+Als tikken om nieuwe blokken toe te voegen een menu tik te ver is, 17.5 laat je ze toevoegen met een slash rechtstreeks vanuit de editor. Voeg een voorwaartse schuine streep toe terwijl je je bericht of pagina maakt, begin op de naam van het blok te tikken en je bent helemaal klaar. Geen menu's nodig.
 
-Je kunt nu login aanvragen verifiëren terwijl je de app gebruikt.
+Audio krijgt ook wat liefde. Heb je een link voor dat audiobestand? In 17.5 plak je gewoon je URL in het audioblok en WordPress trekt het in je bericht.
 
-Ten slotte hebben we een bug opgelost met de Quick Start tour. Wanneer je een site van de reader volgt, zal de Quick Start-checklist nu je voortgang updaten (in plaats van niet aangevinkt te blijven).
+Like kennisgevingen kregen ook wat extra schittering in 17.5. Je kunt nu precies zien wie elk bericht leuk vond en reageren op je site zodra ze binnenkomen.
+
+We zijn ook hard aan het werk geweest om met bugs te stoeien. Dit is wat we hebben opgelost:
+
+Scherm readers kunnen nu de stepper cel in de blok-editor selecteren.
+
+We hebben ervoor gezorgd dat grote tekst geen ENORME tekst wordt, welk lettertype je ook gebruikt. De ondersteuning voor grote tekst in de header met blogdetails van het scherm Mijn sites is ook verbeterd.
+
+Ten slotte gedragen item selectie en gefixeerd scrollen in de Plugins directory zich nu, en zal het noticons-lettertype de app niet langer laten crashen in uitgebreide kennisgevingen.

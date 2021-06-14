@@ -47,22 +47,23 @@ end
 
 before_all do |lane|
   # Skip these checks/steps for test lane (not needed for testing)
-  unless lane == :test_without_building
-    # Check that the env files exist
-    unless is_ci || File.file?(USER_ENV_FILE_PATH)
-      example_path = 'fastlane/env/user.env-example '
-      msg = "#{ENV_FILE_NAME} not found: Please copy #{example_path} to #{USER_ENV_FILE_PATH} and fill in the values"
-      UI.user_error!(msg)
-    end
-    unless File.file?(PROJECT_ENV_FILE_PATH)
-      UI.user_error!('project.env not found: Make sure your configuration is up to date with `rake dependencies`')
-    end
+  next if lane == :test_without_building
 
-    # This allows code signing to work on CircleCI
-    # It is skipped if this isn't running on CI
-    # See https://circleci.com/docs/2.0/ios-codesigning/
-    setup_circle_ci
+  # Ensure we use the latest version of the toolkit
+  check_for_toolkit_updates unless is_ci || ENV['FASTLANE_SKIP_TOOLKIT_UPDATE_CHECK']
+
+  # Check that the env files exist
+  unless is_ci || File.file?(USER_ENV_FILE_PATH)
+    UI.user_error!("~/.wpios-env.default not found: Please copy fastlane/env/user.env-example to #{USER_ENV_FILE_PATH} and fill in the values")
   end
+  unless File.file?(PROJECT_ENV_FILE_PATH)
+    UI.user_error!("project.env not found: Make sure your configuration is up to date with `rake dependencies`")
+  end
+
+  # This allows code signing to work on CircleCI
+  # It is skipped if this isn't running on CI
+  # See https://circleci.com/docs/2.0/ios-codesigning/
+  setup_circle_ci
 end
 
 platform :ios do
@@ -106,6 +107,9 @@ platform :ios do
 
     ios_bump_version_release
     new_version = ios_get_app_version
+    extract_release_notes_for_version(version: new_version,
+      release_notes_file_path: File.join(ENV["PROJECT_ROOT_FOLDER"], 'RELEASE-NOTES.txt'),
+      extracted_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'))
     ios_update_release_notes(new_version: new_version)
     get_prs_list(repository: GHHELPER_REPO, milestone: new_version.to_s,
                  report_path: "#{File.expand_path('~')}/wpios_prs_list_#{old_version}_#{new_version}.txt")
@@ -223,8 +227,8 @@ platform :ios do
   #####################################################################################
   # finalize_release
   # -----------------------------------------------------------------------------------
-  # This lane finalize a release: updates store metadata, pushes the final tag and
-  # cleans all the temp ones
+  # This lane finalize a release: updates store metadata, bump final version number,
+  # remove branch protection and close milestone, then trigger the final release on CI
   # -----------------------------------------------------------------------------------
   # Usage:
   # bundle exec fastlane finalize_release [skip_confirm:<skip confirm>] [version:<version>]
@@ -233,10 +237,14 @@ platform :ios do
   # bundle exec fastlane finalize_release
   # bundle exec fastlane finalize_release skip_confirm:true
   #####################################################################################
-  desc 'Removes all the temp tags and puts the final one'
+  desc 'Trigger the final release build on CI'
   lane :finalize_release do |options|
     ios_finalize_prechecks(options)
     unless ios_current_branch_is_hotfix
+      check_translation_progress(
+        glotpress_url: 'https://translate.wordpress.org/projects/apps/ios/dev/',
+        abort_on_violations: false
+      )
       ios_update_metadata(options)
       # ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
       ios_bump_version_beta
@@ -244,7 +252,6 @@ platform :ios do
 
     # Wrap up
     version = ios_get_app_version
-    # ios_clear_intermediate_tags(version: version)
     removebranchprotection(repository: GHHELPER_REPO, branch: "release/#{version}")
     setfrozentag(repository: GHHELPER_REPO, milestone: version, freeze: false)
     create_new_milestone(repository: GHHELPER_REPO)
@@ -344,7 +351,7 @@ platform :ios do
 
     build_and_upload_internal(skip_prechecks: true, skip_confirm: options[:skip_confirm]) if options[:beta_release]
     build_and_upload_itc(skip_prechecks: true, skip_confirm: options[:skip_confirm],
-                         create_release: options[:create_gh_release])
+                         beta_release: options[:beta_release], create_release: options[:create_gh_release])
   end
 
   #####################################################################################
@@ -475,12 +482,13 @@ platform :ios do
   # This lane builds the app and upload it for external distribution
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane build_and_upload_itc [skip_confirm:<skip confirm>] [create_release:<Create release on GH> ]
+  # bundle exec fastlane build_and_upload_itc [skip_confirm:<skip confirm>] [create_release:<Create release on GH>] [beta_release:<intermediate beta?>]
   #
   # Example:
   # bundle exec fastlane build_and_upload_itc
   # bundle exec fastlane build_and_upload_itc skip_confirm:true
   # bundle exec fastlane build_and_upload_itc create_release:true
+  # bundle exec fastlane build_and_upload_itc create_release:true beta_release:true
   #####################################################################################
   desc 'Builds and uploads for distribution'
   lane :build_and_upload_itc do |options|
@@ -515,12 +523,13 @@ platform :ios do
       archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
       zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
 
-      version = ios_get_app_version
+      version = options[:beta_release] ? ios_get_build_version : ios_get_app_version
       create_release(
         repository: GHHELPER_REPO,
         version: version,
         release_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
-        release_assets: archive_zip_path.to_s
+        release_assets: archive_zip_path.to_s,
+        prerelease: options[:beta_release]
       )
 
       FileUtils.rm_rf(archive_zip_path)
@@ -760,13 +769,12 @@ platform :ios do
     )
   end
 
-  ########################################################################
-  # Helper Lanes
-  ########################################################################
-  desc 'Get a list of pull request from `start_tag` to the current state'
-  lane :get_pullrequests_list do |options|
-    get_prs_list(repository: GHHELPER_REPO, start_tag: (options[:start_tag]).to_s,
-                 report_path: "#{File.expand_path('~')}/wpios_prs_list.txt")
+########################################################################
+# Helper Lanes
+########################################################################
+  desc "Get a list of pull request for a given `milestone`"
+  lane :get_pullrequests_list do | options |
+    get_prs_list(repository: GHHELPER_REPO, milestone:"#{options[:milestone]}", report_path:"#{File.expand_path('~')}/wpios_prs_list.txt")
   end
 
   desc 'Verifies that Gutenberg is referenced by release version and not by commit'

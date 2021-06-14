@@ -1,9 +1,17 @@
-Apa yang baru pada pembaruan ini?
+Apa yang baru dari rilis WordPress 17.5?
 
-Ketahui di situs apa saja Anda telah ditambahkan dengan menarik ke bawah untuk menyegarkan layar Situs Baru.
+Telah hadir blok pakai ulang! Buat konten sekali, simpan blok Anda, dan gunakan blok kembali untuk semua pos dan halaman. Pada versi 17.5 Anda dapat menemukan blok pakai ulang di menu penyisip blok. 
 
-Di situs dengan penulis lebih dari satu, Anda kini bisa mengganti penulis yang tercantum di Pos atau Halaman.
+Jika mengetuk tambah blok baru terlalu merepotkan, di versi 17.5 Anda dapat menambahkan blok baru dengan perintah garis miring langsung dari editor. Tambahkan garis miring saat menyusun pos atau halaman, lalu ikuti dengan nama blok. Blok ditambahkan dengan mudah. Tidak perlu utak-atik menu.
 
-Anda kini dapat mengauntentikasi permintaan login sembari membuka aplikasi.
+Audio adalah konten yang juga memikat. Punya tautan file audio yang Anda mau? Di versi 17.5, cukup tempelkan URL audio  ke Blok Audio, lalu WordPress akan menampilkannya di pos Anda.
 
-Akhirnya, kami berhasil mengatasi bug pada tur Mulai Cepat. Jika Anda mengikuti situs dari pembaca, daftar periksa Mulai Cepat kini akan mengikuti progres Anda (alih-alih tetap tidak tercentang.)
+Pemberitahuan suka juga diperbarui di versi 17.5 ini. Anda akan bisa melihat siapa saja yang menyukai dan berkomentar di situs Anda segera setelah interaksi dilakukan.
+
+Kami juga telah bekerja keras untuk mengatasi bug. Berikut sejumlah bug yang kami perbaiki:
+
+Sekarang pembaca layar dapat memilih sel yang lebih rumit di editor blok.
+
+Kami menjamin teks yang berukuran besar tidak akan menjadi lebih besar, apa pun jenis fon yang digunakan. Teks berukuran besar di header detail blog pada layar Situs Saya juga telah ditingkatkan.
+
+Terakhir, pemilihan item dan pengguliran macet pada direktori Plugin telah berfungsi normal. Selain itu, fon Noticons tidak lagi menghentikan aplikasi saat banyak notifikasi masuk.
