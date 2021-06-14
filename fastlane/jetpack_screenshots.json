@@ -137,7 +137,7 @@
 		{
 			"device": "iPhone 8",
 			"filename": "iPhone 8 Plus-2-ActivityLog.png",
-			"text": "appstoreres//%s/app_store_screenshot_3.txt",
+			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_3.txt",
 			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/JetpackSpace.png",
 			"screenshot": "iPhone 8 Plus-2-light-ActivityLog.png"
 		},
