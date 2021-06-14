@@ -14,7 +14,6 @@
 17.5
 -----
 * [*] Fixed a crash when rendering the Noticons font in rich notification. [#16525]
-* [**] Block Editor:a11y: Bug fix: Allow stepper cell to be selected by screenreader [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3362]
 * [**] Block Editor: Audio block: Add Insert from URL functionality. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3031]
 * [***] Block Editor: Slash command to insert new blocks. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3250]
 * [**] Like Notifications: now displays all users who liked a post or comment. [#15662]
