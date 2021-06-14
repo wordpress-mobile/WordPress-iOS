@@ -636,7 +636,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
     // If the site is not hosted on WP.com we can still manage plugins directly using the WP.org rest API
     // Reference: https://make.wordpress.org/core/2020/07/16/new-and-modified-rest-api-endpoints-in-wordpress-5-5/
-    if(!supports){
+    if(!supports && !self.account){
         supports = !self.isHostedAtWPcom
         && self.wordPressOrgRestApi
         && [self hasRequiredWordPressVersion:@"5.5"]
