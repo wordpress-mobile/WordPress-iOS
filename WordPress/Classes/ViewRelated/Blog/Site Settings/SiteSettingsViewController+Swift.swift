@@ -180,7 +180,7 @@ extension SiteSettingsViewController {
         case privacy
         case language
         case timezone
-        case bloggingGoals
+        case bloggingReminders
     }
 
     func generalSettingsVisibleRows() -> [GeneralSettingsRow] {
@@ -195,7 +195,7 @@ extension SiteSettingsViewController {
         }
 
         if Feature.enabled(.bloggingReminders) {
-            visibleRows.append(.bloggingGoals)
+            visibleRows.append(.bloggingReminders)
         }
 
         return visibleRows
@@ -224,8 +224,8 @@ extension SiteSettingsViewController {
             configureForLanguage(cell)
         case .timezone:
             configureForTimezone(cell)
-        case .bloggingGoals:
-            configureForBloggingGoals(cell)
+        case .bloggingReminders:
+            configureForBloggingReminders(cell)
         }
 
         return cell
@@ -257,8 +257,8 @@ extension SiteSettingsViewController {
             showLanguageSelector(for: blog)
         case .timezone:
             showTimezoneSelector()
-        case .bloggingGoals:
-            presentBloggingGoalsFlow()
+        case .bloggingReminders:
+            presentBloggingRemindersFlow(indexPath: indexPath)
             break
         default:
             break
@@ -325,7 +325,7 @@ extension SiteSettingsViewController {
         cell.textValue = timezoneLabel()
     }
 
-    private func configureForBloggingGoals(_ cell: SettingTableViewCell) {
+    private func configureForBloggingReminders(_ cell: SettingTableViewCell) {
         cell.editable = true
         cell.textLabel?.text = NSLocalizedString("Blogging Goals", comment: "Label for the blogging goals setting")
         cell.textValue = "Undefined"
@@ -391,8 +391,10 @@ extension SiteSettingsViewController {
 
         self.navigationController?.pushViewController(siteTaglineViewController, animated: true)
     }
-    
-    private func presentBloggingGoalsFlow() {
+
+    private func presentBloggingRemindersFlow(indexPath: IndexPath) {
         BlogDetailsViewController.presentBloggingRemindersSettingsFlow(from: self, for: blog, source: .blogSettings)
+
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
