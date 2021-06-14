@@ -1,9 +1,17 @@
-Quali sono le novità in questo aggiornamento?
+Quali sono le novità nel rilascio 17.5 di WordPress?
 
-Resta aggiornato sui siti che hai aggiunto di recente scorrendo il dito verso il basso per ricaricare la schermata Nuovi siti.
+I blocchi Riutilizzabili sono presenti. Crea il contenuto una volta, salva il tuo blocco e riutilizzalo più e più volte in qualsiasi articolo o pagina. Nella versione 17.5, troverai i blocchi Riutilizzabili pronti per essere usati nel menu per l'inserimento dei blocchi.
 
-Sui siti con più di un autore, ora sarai in grado di cambiare l'autore assegnato a ogni articolo o pagina.
+Se per aggiungere nuovi blocchi tramite touch devi effettuare troppe selezioni, la versione 17.5 ti permette di aggiungerli con un comando slash direttamente dall'editor. Aggiungi una barra durante la creazione del tuo articolo o della tua pagina, inizia toccando il nome del blocco e sei pronto. Non è necessario alcun menu.
 
-Ora puoi autenticare le richieste di accesso mentre utilizzi l'app.
+Inoltre, ci si è focalizzati sull'audio. Hai un link per quel file audio? Nella versione 17.5 basta incollare il tuo URL nel blocco Audio e WordPress lo inserirà nel tuo articolo.
 
-Infine, abbiamo corretto un bug relativo al tour di avvio rapido. Quando segui un sito dal Reader, la checklist per l'avvio rapido aggiornerà i tuoi progressi (anziché rimanere deselezionata).
+Anche alle notifiche dei Mi piace è stato apportato qualche miglioramento in più nella versione 17.5. Ora sei in grado di vedere esattamente chi ha messo Mi piace a ogni articolo e ogni commento sul tuo sito non appena accade.
+
+Abbiamo anche lavorato sodo per risolvere i bug. Ecco cosa abbiamo corretto:
+
+I lettori di schermo possono ora selezionare la casella passo passo nell'editor a blocchi.
+
+Ci siamo assicurati che il testo di grandi dimensioni non diventi ENORME, qualunque sia il carattere che stai utilizzando. È stato anche migliorato il supporto del testo di grandi dimensioni nell'intestazione dei dettagli del blog della schermata I miei siti.
+
+Infine, la selezione degli elementi e lo scorrimento fisso nella directory Plugin ora funzionano bene e il carattere Noticons non arresterà più l'app in modo anomalo nelle notifiche avanzate.

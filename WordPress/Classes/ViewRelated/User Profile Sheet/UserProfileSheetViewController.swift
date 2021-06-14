@@ -41,7 +41,8 @@ class UserProfileSheetViewController: UITableViewController {
 
         // Apply a slight padding to the bottom of the view to give it some space to breathe
         // when being presented in a popover or bottom sheet
-        size.height += Constants.tableBottomPadding
+        let bottomPadding = WPDeviceIdentification.isiPad() ? Constants.iPadBottomPadding : Constants.iPhoneBottomPadding
+        size.height += bottomPadding
 
         preferredContentSize = size
         presentedVC?.presentedView?.layoutIfNeeded()
@@ -205,7 +206,8 @@ private extension UserProfileSheetViewController {
     enum Constants {
         static let userInfoSection = 0
         static let siteSectionTitle = NSLocalizedString("Site", comment: "Header for a single site, shown in Notification user profile.").localizedUppercase
-        static let tableBottomPadding: CGFloat = 10
+        static let iPadBottomPadding: CGFloat = 10
+        static let iPhoneBottomPadding: CGFloat = 40
     }
 
 }
