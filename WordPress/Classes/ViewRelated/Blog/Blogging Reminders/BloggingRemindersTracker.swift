@@ -58,31 +58,14 @@ class BloggingRemindersTracker {
         static let propertyName = "button"
     }
 
-    let blogID: Int?
+    /// The type of blog.
+    ///
     let blogType: BlogType
-    let blogURL: String
 
     // MARK: - Initializers
 
-    convenience init(for blog: Blog) {
-        let blogType: BloggingRemindersTracker.BlogType = blog.isHostedAtWPcom ? .wpcom : .selfHosted
-        // This isn't great but if we don't have a blog URL at this point there isn't much we can do.
-        let blogURL = blog.url ?? ""
-        let blogID: Int? = {
-            guard let blogID = blog.dotComID else {
-                return nil
-            }
-
-            return blogID.intValue
-        }()
-
-        self.init(blogType: blogType, blogURL: blogURL, blogID: blogID)
-    }
-
-    init(blogType: BlogType, blogURL: String, blogID: Int?) {
-        self.blogID = blogID
+    init(blogType: BlogType) {
         self.blogType = blogType
-        self.blogURL = blogURL
     }
 
     private func track(_ event: AnalyticsEvent) {
