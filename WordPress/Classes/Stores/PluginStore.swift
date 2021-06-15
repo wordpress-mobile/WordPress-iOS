@@ -340,7 +340,7 @@ extension PluginStore {
     }
 
     func getPlugin(slug: String, site: JetpackSiteRef) -> Plugin? {
-        return getPlugins(site: site)?.plugins.first(where: { $0.state.slug == slug })
+        return getPlugins(site: site)?.plugins.first(where: { $0.state.slug.hasPrefix(slug) })
     }
 
     func getFeaturedPlugins() -> [PluginDirectoryEntry]? {
