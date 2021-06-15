@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WordPressKit
 
 enum PluginAction: Action {
     case activate(id: String, site: JetpackSiteRef)
@@ -417,7 +418,7 @@ private extension PluginStore {
         track(.pluginActivated, with: site)
 
         remote(site: site)?.activatePlugin(
-            pluginID: pluginID,
+            pluginID: plugin.state.id,
             success: {},
             failure: { [weak self] (error) in
                 let message = String(format: NSLocalizedString("Error activating %@.", comment: "There was an error activating a plugin, placeholder is the plugin name"), plugin.name)
@@ -439,7 +440,7 @@ private extension PluginStore {
         track(.pluginDeactivated, with: site)
 
         remote(site: site)?.deactivatePlugin(
-            pluginID: plugin.state.slug,
+            pluginID: plugin.state.id,
             success: {},
             failure: { [weak self] (error) in
                 let message = String(format: NSLocalizedString("Error deactivating %@.", comment: "There was an error deactivating a plugin, placeholder is the plugin name"), plugin.name)
@@ -461,7 +462,7 @@ private extension PluginStore {
         track(.pluginAutoupdateEnabled, with: site)
 
         remote(site: site)?.enableAutoupdates(
-            pluginID: pluginID,
+            pluginID: plugin.state.id,
             success: {},
             failure: { [weak self] (error) in
                 let message = String(format: NSLocalizedString("Error enabling autoupdates for %@.", comment: "There was an error enabling autoupdates for a plugin, placeholder is the plugin name"), plugin.name)
@@ -483,7 +484,7 @@ private extension PluginStore {
         track(.pluginAutoupdateDisabled, with: site)
 
         remote(site: site)?.disableAutoupdates(
-            pluginID: pluginID,
+            pluginID: plugin.state.id,
             success: {},
             failure: { [weak self] (error) in
                 let message = String(format: NSLocalizedString("Error disabling autoupdates for %@.", comment: "There was an error disabling autoupdates for a plugin, placeholder is the plugin name"), plugin.name)
@@ -502,7 +503,7 @@ private extension PluginStore {
             plugin.autoupdate = true
             plugin.active = true
         }
-        remote(site: site)?.activateAndEnableAutoupdates(pluginID: plugin.state.slug,
+        remote(site: site)?.activateAndEnableAutoupdates(pluginID: plugin.state.id,
                                                          success: {},
                                                          failure: { [weak self] error in
                                                             self?.state.modifyPlugin(id: pluginID, site: site) { plugin in
@@ -555,7 +556,7 @@ private extension PluginStore {
         track(.pluginUpdated, with: site)
 
         remote(site: site)?.updatePlugin(
-            pluginID: pluginID,
+            pluginID: plugin.state.id,
             success: { [weak self] (plugin) in
                 self?.transaction({ (state) in
                     state.modifyPlugin(id: pluginID, site: site, change: { (updatedPlugin) in
@@ -597,13 +598,13 @@ private extension PluginStore {
 
         let remove = {
             remote.remove(
-                pluginID: plugin.state.slug,
+                pluginID: plugin.state.id,
                 success: {},
                 failure: failure)
         }
 
         if plugin.state.active {
-            remote.deactivatePlugin(pluginID: plugin.state.slug,
+            remote.deactivatePlugin(pluginID: plugin.state.id,
                                     success: remove,
                                     failure: failure)
         } else {
