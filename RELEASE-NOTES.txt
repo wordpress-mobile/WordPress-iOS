@@ -1,3 +1,7 @@
+17.7
+-----
+
+
 17.6
 -----
 * [**] Reader Post details: now shows a summary of Likes for the post. Tapping it displays the full list of Likes. [#16628]
