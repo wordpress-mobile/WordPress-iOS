@@ -501,6 +501,7 @@
 		3F758FD524F6FB4900BBA2FC /* AnnouncementsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */; };
 		3F762E9326784A950088CD45 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F762E9226784A950088CD45 /* Logger.swift */; };
 		3F762E9526784B540088CD45 /* WireMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F762E9426784B540088CD45 /* WireMock.swift */; };
+		3F762E9726784BED0088CD45 /* FancyAlertComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F762E9626784BED0088CD45 /* FancyAlertComponent.swift */; };
 		3F810A5A2616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F810A592616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift */; };
 		3F810A5B2616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F810A592616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift */; };
 		3F82310F24564A870086E9B8 /* ReaderTabViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F82310E24564A870086E9B8 /* ReaderTabViewTests.swift */; };
@@ -1986,7 +1987,6 @@
 		CC8498D32241477F00DB490A /* TagsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8498D22241477F00DB490A /* TagsComponent.swift */; };
 		CC8A5EAB22159FA6001B7874 /* WPUITestCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8A5EAA22159FA6001B7874 /* WPUITestCredentials.swift */; };
 		CC94FC68221452A4002E5825 /* EditorNoticeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC94FC67221452A4002E5825 /* EditorNoticeComponent.swift */; };
-		CC94FC6A2214532D002E5825 /* FancyAlertComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC94FC692214532D002E5825 /* FancyAlertComponent.swift */; };
 		CCBC9EAF2512446A008E1D5F /* PrologueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AA22BC25082A86005CCC13 /* PrologueScreen.swift */; };
 		CCBC9EB02512446F008E1D5F /* GetStartedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AA22BE25082B1E005CCC13 /* GetStartedScreen.swift */; };
 		CCBC9EB225124474008E1D5F /* PasswordScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98ADDDD925083CA9008FF6EE /* PasswordScreen.swift */; };
@@ -2539,7 +2539,6 @@
 		F9C47A7A238C7DAC00AAD9ED /* ReaderScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8707182006E48E004FB5A4 /* ReaderScreen.swift */; };
 		F9C47A7B238C7DAC00AAD9ED /* SiteSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF9F65622F03C9200F79BBF /* SiteSettingsScreen.swift */; };
 		F9C47A7C238C7DAC00AAD9ED /* NotificationsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87071A2006E65C004FB5A4 /* NotificationsScreen.swift */; };
-		F9C47A7D238C7DAC00AAD9ED /* FancyAlertComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC94FC692214532D002E5825 /* FancyAlertComponent.swift */; };
 		F9C47A7E238C7DC100AAD9ED /* EditorPublishEpilogueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */; };
 		F9C47A7F238C7DC100AAD9ED /* AztecEditorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8341FF1208400A11345 /* AztecEditorScreen.swift */; };
 		F9C47A80238C7DC100AAD9ED /* BlockEditorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0C92289CC3B0034F9AB /* BlockEditorScreen.swift */; };
@@ -4236,7 +4235,6 @@
 		FAE4327425874D140039EB8C /* ReaderSavedPostCellActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE4327325874D140039EB8C /* ReaderSavedPostCellActions.swift */; };
 		FAF13C5325A57ABD003EE470 /* JetpackRestoreWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF13C5225A57ABD003EE470 /* JetpackRestoreWarningViewController.swift */; };
 		FAF13E3025A59240003EE470 /* JetpackRestoreStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF13E2F25A59240003EE470 /* JetpackRestoreStatusViewController.swift */; };
-		FAF64B6B2637DEEC00E8A1DF /* FancyAlertComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC94FC692214532D002E5825 /* FancyAlertComponent.swift */; };
 		FAF64B6C2637DEEC00E8A1DF /* LoginEmailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4EA31FD6659B007AE3E4 /* LoginEmailScreen.swift */; };
 		FAF64B6D2637DEEC00E8A1DF /* PrologueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AA22BC25082A86005CCC13 /* PrologueScreen.swift */; };
 		FAF64B6F2637DEEC00E8A1DF /* BaseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */; };
@@ -5031,6 +5029,7 @@
 		3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnouncementsStore.swift; sourceTree = "<group>"; };
 		3F762E9226784A950088CD45 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		3F762E9426784B540088CD45 /* WireMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WireMock.swift; sourceTree = "<group>"; };
+		3F762E9626784BED0088CD45 /* FancyAlertComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyAlertComponent.swift; sourceTree = "<group>"; };
 		3F7646F625AE1C5200FBA98C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3F810A592616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedPrologueIntroContentView.swift; sourceTree = "<group>"; };
 		3F82310E24564A870086E9B8 /* ReaderTabViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewTests.swift; sourceTree = "<group>"; };
@@ -6634,7 +6633,6 @@
 		CC8498D22241477F00DB490A /* TagsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsComponent.swift; sourceTree = "<group>"; };
 		CC8A5EAA22159FA6001B7874 /* WPUITestCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPUITestCredentials.swift; sourceTree = "<group>"; };
 		CC94FC67221452A4002E5825 /* EditorNoticeComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorNoticeComponent.swift; sourceTree = "<group>"; };
-		CC94FC692214532D002E5825 /* FancyAlertComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyAlertComponent.swift; sourceTree = "<group>"; };
 		CCA44DF422C4C4D6006E294F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		CCCF53BC237B13760035E9CA /* WordPressUnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = WordPressUnitTests.xctestplan; sourceTree = "<group>"; };
 		CCCF53BD237B13EA0035E9CA /* WordPressUITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = WordPressUITests.xctestplan; sourceTree = "<group>"; };
@@ -9185,6 +9183,7 @@
 			isa = PBXGroup;
 			children = (
 				3FA640632670CED80064401E /* BaseScreen.swift */,
+				3F762E9626784BED0088CD45 /* FancyAlertComponent.swift */,
 				3FA6405A2670CCD40064401E /* Info.plist */,
 				3F762E9226784A950088CD45 /* Logger.swift */,
 				3FA640592670CCD40064401E /* UITestsFoundation.h */,
@@ -12699,7 +12698,6 @@
 				BE8707182006E48E004FB5A4 /* ReaderScreen.swift */,
 				7EF9F65622F03C9200F79BBF /* SiteSettingsScreen.swift */,
 				BE87071A2006E65C004FB5A4 /* NotificationsScreen.swift */,
-				CC94FC692214532D002E5825 /* FancyAlertComponent.swift */,
 				F5E032EB240D49FF003AF350 /* ActionSheetComponent.swift */,
 				F9C47A8B238C801600AAD9ED /* PostsScreen.swift */,
 				F97DA41F23D67B820050E791 /* MediaScreen.swift */,
@@ -17992,6 +17990,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F762E9726784BED0088CD45 /* FancyAlertComponent.swift in Sources */,
 				3F762E9526784B540088CD45 /* WireMock.swift in Sources */,
 				3FA640642670CED80064401E /* BaseScreen.swift in Sources */,
 				3F762E9326784A950088CD45 /* Logger.swift in Sources */,
@@ -18137,7 +18136,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F9C47A7D238C7DAC00AAD9ED /* FancyAlertComponent.swift in Sources */,
 				F9C47A71238C7D8800AAD9ED /* LoginEmailScreen.swift in Sources */,
 				CCBC9EAF2512446A008E1D5F /* PrologueScreen.swift in Sources */,
 				F9C47A78238C7DAC00AAD9ED /* BaseScreen.swift in Sources */,
@@ -20096,7 +20094,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FAF64B6B2637DEEC00E8A1DF /* FancyAlertComponent.swift in Sources */,
 				FAF64B6C2637DEEC00E8A1DF /* LoginEmailScreen.swift in Sources */,
 				FAF64B6D2637DEEC00E8A1DF /* PrologueScreen.swift in Sources */,
 				FAF64B6F2637DEEC00E8A1DF /* BaseScreen.swift in Sources */,
@@ -20154,7 +20151,6 @@
 			files = (
 				FA4104BF26393F1A00E90EBF /* JetpackBackupScreen.swift in Sources */,
 				CC52189A2279CF3B008998CE /* MediaPickerAlbumListScreen.swift in Sources */,
-				CC94FC6A2214532D002E5825 /* FancyAlertComponent.swift in Sources */,
 				98ADDDDA25083CA9008FF6EE /* PasswordScreen.swift in Sources */,
 				BE2B4E9B1FD66423007AE3E4 /* WelcomeScreen.swift in Sources */,
 				CCE911BC221D8497007E1D4E /* LoginSiteAddressScreen.swift in Sources */,
