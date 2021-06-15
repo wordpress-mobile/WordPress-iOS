@@ -15,6 +15,6 @@ extension BlogDetailsViewController {
         let bottomSheet = BottomSheetViewController(childViewController: navigationController,
                                                     customHeaderSpacing: 0)
 
-        bottomSheet.show(from: viewController, useFormSheet: true)
+        bottomSheet.show(from: viewController)
     }
 }
