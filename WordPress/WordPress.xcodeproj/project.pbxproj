@@ -335,7 +335,6 @@
 		17FC0032264D728E00FCBD37 /* SharingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FC0031264D728E00FCBD37 /* SharingServiceTests.swift */; };
 		17FCA6811FD84B4600DBA9C8 /* NoticeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FCA6801FD84B4600DBA9C8 /* NoticeStore.swift */; };
 		1A433B1D2254CBEE00AE7910 /* WordPressComRestApi+Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A433B1C2254CBEE00AE7910 /* WordPressComRestApi+Defaults.swift */; };
-		1A82EC9F229EBAFB000F141E /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4EA11FD6654A007AE3E4 /* Logger.swift */; };
 		1ABA150822AE5F870039311A /* WordPressUIBundleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA150722AE5F870039311A /* WordPressUIBundleTests.swift */; };
 		1AE0F2B12297F7E9000BDD7F /* WireMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE0F2B02297F7E9000BDD7F /* WireMock.swift */; };
 		1AED7239229D2E260036C5B8 /* WireMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE0F2B02297F7E9000BDD7F /* WireMock.swift */; };
@@ -502,6 +501,7 @@
 		3F73BE5F24EB3B4400BE99FF /* WhatIsNewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F73BE5E24EB3B4400BE99FF /* WhatIsNewView.swift */; };
 		3F751D462491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */; };
 		3F758FD524F6FB4900BBA2FC /* AnnouncementsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */; };
+		3F762E9326784A950088CD45 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F762E9226784A950088CD45 /* Logger.swift */; };
 		3F810A5A2616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F810A592616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift */; };
 		3F810A5B2616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F810A592616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift */; };
 		3F82310F24564A870086E9B8 /* ReaderTabViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F82310E24564A870086E9B8 /* ReaderTabViewTests.swift */; };
@@ -1889,7 +1889,6 @@
 		BE13B3E71B2B58D800A4211D /* BlogListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13B3E51B2B58D800A4211D /* BlogListViewController.m */; };
 		BE2B4E9B1FD66423007AE3E4 /* WelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9A1FD66423007AE3E4 /* WelcomeScreen.swift */; };
 		BE2B4E9F1FD664F5007AE3E4 /* BaseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */; };
-		BE2B4EA21FD6654A007AE3E4 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4EA11FD6654A007AE3E4 /* Logger.swift */; };
 		BE2B4EA41FD6659B007AE3E4 /* LoginEmailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4EA31FD6659B007AE3E4 /* LoginEmailScreen.swift */; };
 		BE6787F51FFF2886005D9F01 /* ShareModularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6787F41FFF2886005D9F01 /* ShareModularViewController.swift */; };
 		BE6DD3281FD6705200E55192 /* LoginPasswordScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD3271FD6705200E55192 /* LoginPasswordScreen.swift */; };
@@ -4241,7 +4240,6 @@
 		FAF64B6B2637DEEC00E8A1DF /* FancyAlertComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC94FC692214532D002E5825 /* FancyAlertComponent.swift */; };
 		FAF64B6C2637DEEC00E8A1DF /* LoginEmailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4EA31FD6659B007AE3E4 /* LoginEmailScreen.swift */; };
 		FAF64B6D2637DEEC00E8A1DF /* PrologueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AA22BC25082A86005CCC13 /* PrologueScreen.swift */; };
-		FAF64B6E2637DEEC00E8A1DF /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4EA11FD6654A007AE3E4 /* Logger.swift */; };
 		FAF64B6F2637DEEC00E8A1DF /* BaseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */; };
 		FAF64B702637DEEC00E8A1DF /* BlockEditorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0C92289CC3B0034F9AB /* BlockEditorScreen.swift */; };
 		FAF64B712637DEEC00E8A1DF /* EditorPostSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC19BE05223FECAC00CAB3E1 /* EditorPostSettings.swift */; };
@@ -5034,6 +5032,7 @@
 		3F73BE5E24EB3B4400BE99FF /* WhatIsNewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewView.swift; sourceTree = "<group>"; };
 		3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZendeskUtilsTests+Plans.swift"; sourceTree = "<group>"; };
 		3F758FD424F6FB4900BBA2FC /* AnnouncementsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnouncementsStore.swift; sourceTree = "<group>"; };
+		3F762E9226784A950088CD45 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		3F7646F625AE1C5200FBA98C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3F810A592616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedPrologueIntroContentView.swift; sourceTree = "<group>"; };
 		3F82310E24564A870086E9B8 /* ReaderTabViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewTests.swift; sourceTree = "<group>"; };
@@ -6528,7 +6527,6 @@
 		BE13B3E51B2B58D800A4211D /* BlogListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogListViewController.m; sourceTree = "<group>"; };
 		BE2B4E9A1FD66423007AE3E4 /* WelcomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeScreen.swift; sourceTree = "<group>"; };
 		BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseScreen.swift; sourceTree = "<group>"; };
-		BE2B4EA11FD6654A007AE3E4 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		BE2B4EA31FD6659B007AE3E4 /* LoginEmailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginEmailScreen.swift; sourceTree = "<group>"; };
 		BE6787F41FFF2886005D9F01 /* ShareModularViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareModularViewController.swift; sourceTree = "<group>"; };
 		BE6DD3271FD6705200E55192 /* LoginPasswordScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordScreen.swift; sourceTree = "<group>"; };
@@ -9191,6 +9189,7 @@
 				3FA640632670CED80064401E /* BaseScreen.swift */,
 				3FA6405A2670CCD40064401E /* Info.plist */,
 				3FA640592670CCD40064401E /* UITestsFoundation.h */,
+				3F762E9226784A950088CD45 /* Logger.swift */,
 			);
 			path = UITestsFoundation;
 			sourceTree = "<group>";
@@ -12718,7 +12717,6 @@
 			isa = PBXGroup;
 			children = (
 				FF2716A01CABC7D40006E2D4 /* XCTest+Extensions.swift */,
-				BE2B4EA11FD6654A007AE3E4 /* Logger.swift */,
 				1AE0F2B02297F7E9000BDD7F /* WireMock.swift */,
 			);
 			path = Utils;
@@ -17997,6 +17995,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FA640642670CED80064401E /* BaseScreen.swift in Sources */,
+				3F762E9326784A950088CD45 /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -18142,7 +18141,6 @@
 				F9C47A7D238C7DAC00AAD9ED /* FancyAlertComponent.swift in Sources */,
 				F9C47A71238C7D8800AAD9ED /* LoginEmailScreen.swift in Sources */,
 				CCBC9EAF2512446A008E1D5F /* PrologueScreen.swift in Sources */,
-				1A82EC9F229EBAFB000F141E /* Logger.swift in Sources */,
 				F9C47A78238C7DAC00AAD9ED /* BaseScreen.swift in Sources */,
 				F9C47A80238C7DC100AAD9ED /* BlockEditorScreen.swift in Sources */,
 				F9C47A82238C7DC100AAD9ED /* EditorPostSettings.swift in Sources */,
@@ -20103,7 +20101,6 @@
 				FAF64B6B2637DEEC00E8A1DF /* FancyAlertComponent.swift in Sources */,
 				FAF64B6C2637DEEC00E8A1DF /* LoginEmailScreen.swift in Sources */,
 				FAF64B6D2637DEEC00E8A1DF /* PrologueScreen.swift in Sources */,
-				FAF64B6E2637DEEC00E8A1DF /* Logger.swift in Sources */,
 				FAF64B6F2637DEEC00E8A1DF /* BaseScreen.swift in Sources */,
 				FAF64B702637DEEC00E8A1DF /* BlockEditorScreen.swift in Sources */,
 				FAF64B712637DEEC00E8A1DF /* EditorPostSettings.swift in Sources */,
@@ -20180,7 +20177,6 @@
 				BE8707172006B774004FB5A4 /* MySiteScreen.swift in Sources */,
 				CCE55E992242715C002A9634 /* CategoriesComponent.swift in Sources */,
 				7EF9F65722F03C9200F79BBF /* SiteSettingsScreen.swift in Sources */,
-				BE2B4EA21FD6654A007AE3E4 /* Logger.swift in Sources */,
 				CCF6ACE7221ED73900D0C5BE /* LoginCheckMagicLinkScreen.swift in Sources */,
 				FF2716921CAAC87B0006E2D4 /* LoginTests.swift in Sources */,
 				F97DA42023D67B820050E791 /* MediaScreen.swift in Sources */,
