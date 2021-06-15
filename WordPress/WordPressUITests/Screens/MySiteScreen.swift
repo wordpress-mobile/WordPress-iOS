@@ -43,7 +43,6 @@ class MySiteScreen: BaseScreen {
 
     init() {
         let app = XCUIApplication()
-        let blogTable = app.tables[ElementStringIDs.blogTable]
         tabBar = TabNavComponent()
         removeSiteButton = app.cells[ElementStringIDs.removeSiteButton]
         removeSiteSheet = app.sheets.buttons.element(boundBy: 0)
