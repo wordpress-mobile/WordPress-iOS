@@ -183,49 +183,48 @@ extension SiteSettingsViewController {
         case bloggingReminders
     }
 
-    func generalSettingsVisibleRows() -> [GeneralSettingsRow] {
-        var visibleRows: [GeneralSettingsRow] = [.title, .tagline, .url]
+    var generalSettingsRows: [GeneralSettingsRow] {
+        var rows: [GeneralSettingsRow] = [.title, .tagline, .url]
 
         if blog.supportsSiteManagementServices() {
-            visibleRows.append(contentsOf: [.privacy, .language])
+            rows.append(contentsOf: [.privacy, .language])
         }
 
         if blog.supports(.wpComRESTAPI) {
-            visibleRows.append(.timezone)
+            rows.append(.timezone)
         }
 
         if Feature.enabled(.bloggingReminders) {
-            visibleRows.append(.bloggingReminders)
+            rows.append(.bloggingReminders)
         }
 
-        return visibleRows
+        return rows
     }
 
     @objc
-    func generalSettingsVisibleRowCount() -> Int {
-        return generalSettingsVisibleRows().count
+    var generalSettingsRowCount: Int {
+        generalSettingsRows.count
     }
 
     @objc
     func tableView(_ tableView: UITableView, cellForGeneralSettingsInRow row: Int) -> UITableViewCell {
-        let visibleRows = generalSettingsVisibleRows()
         let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCellReuseIdentifier) as! SettingTableViewCell
 
-        switch visibleRows[row] {
+        switch generalSettingsRows[row] {
         case .title:
-            configureForTitle(cell)
+            configureCellForTitle(cell)
         case .tagline:
-            configureForTagline(cell)
+            configureCellForTagline(cell)
         case .url:
-            configureForURL(cell)
+            configureCellForURL(cell)
         case .privacy:
-            configureForPrivacy(cell)
+            configureCellForPrivacy(cell)
         case .language:
-            configureForLanguage(cell)
+            configureCellForLanguage(cell)
         case .timezone:
-            configureForTimezone(cell)
+            configureCellForTimezone(cell)
         case .bloggingReminders:
-            configureForBloggingReminders(cell)
+            configureCellForBloggingReminders(cell)
         }
 
         return cell
@@ -244,9 +243,7 @@ extension SiteSettingsViewController {
             return
         }
 
-        let visibleRows = generalSettingsVisibleRows()
-
-        switch visibleRows[indexPath.row] {
+        switch generalSettingsRows[indexPath.row] {
         case .title:
             showEditSiteTitleController(indexPath: indexPath)
         case .tagline:
@@ -267,7 +264,7 @@ extension SiteSettingsViewController {
 
     // MARK: - Cell Configuration
 
-    private func configureForTitle(_ cell: SettingTableViewCell) {
+    private func configureCellForTitle(_ cell: SettingTableViewCell) {
         let name = blog.settings?.name ?? NSLocalizedString("A title for the site", comment: "Placeholder text for the title of a site")
 
         cell.editable = blog.isAdmin
@@ -275,7 +272,7 @@ extension SiteSettingsViewController {
         cell.textValue = name
     }
 
-    private func configureForTagline(_ cell: SettingTableViewCell) {
+    private func configureCellForTagline(_ cell: SettingTableViewCell) {
         let tagline = blog.settings?.tagline ?? NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site")
 
         cell.editable = blog.isAdmin
@@ -283,7 +280,7 @@ extension SiteSettingsViewController {
         cell.textValue = tagline
     }
 
-    private func configureForURL(_ cell: SettingTableViewCell) {
+    private func configureCellForURL(_ cell: SettingTableViewCell) {
         let url: String = {
             guard let url = blog.url else {
                 return NSLocalizedString("http://my-site-address (URL)", comment: "(placeholder) Help the user enter a URL into the field")
@@ -297,13 +294,13 @@ extension SiteSettingsViewController {
         cell.textValue = url
     }
 
-    private func configureForPrivacy(_ cell: SettingTableViewCell) {
+    private func configureCellForPrivacy(_ cell: SettingTableViewCell) {
         cell.editable = blog.isAdmin
         cell.textLabel?.text = NSLocalizedString("Privacy", comment: "Label for the privacy setting")
         cell.textValue = BlogSiteVisibilityHelper.titleForCurrentSiteVisibility(of: blog)
     }
 
-    private func configureForLanguage(_ cell: SettingTableViewCell) {
+    private func configureCellForLanguage(_ cell: SettingTableViewCell) {
         let name: String
 
         if let languageId = blog.settings?.languageID.intValue {
@@ -319,13 +316,13 @@ extension SiteSettingsViewController {
         cell.textValue = name
     }
 
-    private func configureForTimezone(_ cell: SettingTableViewCell) {
+    private func configureCellForTimezone(_ cell: SettingTableViewCell) {
         cell.editable = blog.isAdmin
         cell.textLabel?.text = NSLocalizedString("Time Zone", comment: "Label for the timezone setting")
         cell.textValue = timezoneLabel()
     }
 
-    private func configureForBloggingReminders(_ cell: SettingTableViewCell) {
+    private func configureCellForBloggingReminders(_ cell: SettingTableViewCell) {
         cell.editable = true
         cell.textLabel?.text = NSLocalizedString("Blogging Goals", comment: "Label for the blogging goals setting")
         cell.textValue = "Undefined"

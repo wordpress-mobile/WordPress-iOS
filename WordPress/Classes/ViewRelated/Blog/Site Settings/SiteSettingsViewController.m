@@ -203,7 +203,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     switch (settingsSection) {
         case SiteSettingsSectionGeneral:
         {
-            return [self generalSettingsVisibleRowCount];
+            return self.generalSettingsRowCount;
         }
         case SiteSettingsSectionHomepage:
         {
