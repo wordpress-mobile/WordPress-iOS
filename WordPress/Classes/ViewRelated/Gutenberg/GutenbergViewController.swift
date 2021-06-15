@@ -930,7 +930,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 handleMissingBlockAlertButtonPressed()
         }
     }
-    
+
     func gutenbergDidLogSentryEnvelope(_ envelope: [String: Any]) {
         DispatchQueue.main.async {
             WordPressAppDelegate.crashLogging?.logEnvelope(envelope)
@@ -1047,15 +1047,15 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     func attachScopeToSentryEvent(_ event: [String: Any]) -> [String: Any]? {
         return WordPressAppDelegate.crashLogging?.attachScopeToEvent(event)
     }
-    
+
     func getSentryOptions() -> [String: Any]? {
         return WordPressAppDelegate.crashLogging?.getOptionsDict()
     }
-    
+
     func shouldSendSentryEvent() -> Bool? {
         return WordPressAppDelegate.crashLogging?.shouldSendEvent()
     }
-    
+
     func gutenbergCapabilities() -> [Capabilities: Bool] {
         let isFreeWPCom = post.blog.isHostedAtWPcom && !post.blog.hasPaidPlan
         let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
