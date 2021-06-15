@@ -498,8 +498,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
-  - WordPressAuthenticator (~> 1.38.0-beta)
-  - WordPressKit (~> 4.35.0-beta.1)
+  - WordPressAuthenticator (~> 1.38.0)
+  - WordPressKit (~> 4.35.0)
   - WordPressMocks (~> 0.0.12)
   - WordPressShared (~> 1.16.0)
   - WordPressUI (~> 1.12.1-beta)
@@ -511,7 +511,6 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
-    - WordPressUI
   trunk:
     - 1PasswordExtension
     - Alamofire
@@ -554,6 +553,7 @@ SPEC REPOS:
     - WordPressKit
     - WordPressMocks
     - WordPressShared
+    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -750,7 +750,7 @@ SPEC CHECKSUMS:
   WordPressKit: 95b870401414cfc7facbad08f3d83b507f7169cc
   WordPressMocks: 2783c51aaa34eca64d6ebbad13837951c374baf2
   WordPressShared: 0f7f10e96f8354d64f951c223ae61e8de7495a46
-  WordPressUI: 72e3590e2078cecbcfe96b74970787b12bde3a57
+  WordPressUI: cf3b3ef744663811a8d8a9844f42386e1826f512
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
@@ -763,6 +763,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: f7f4f2c65e783b0179359225cf9232394157b8ae
+PODFILE CHECKSUM: 10d48d1328e506b24e3cec2af838925ffaeff051
 
 COCOAPODS: 1.10.1
