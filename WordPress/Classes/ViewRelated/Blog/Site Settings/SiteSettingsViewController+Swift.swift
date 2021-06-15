@@ -256,7 +256,6 @@ extension SiteSettingsViewController {
             showTimezoneSelector()
         case .bloggingReminders:
             presentBloggingRemindersFlow(indexPath: indexPath)
-            break
         default:
             break
         }
