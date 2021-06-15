@@ -1,17 +1,10 @@
 import Foundation
 
 public class WireMock {
-    private static let hostInfoPlistKey = "WIREMOCK_HOST"
-    private static let portInfoPlistKey = "WIREMOCK_PORT"
 
     public static func URL() -> Foundation.URL {
-        let host = infoPlistEntry(key: hostInfoPlistKey)
-        let port = infoPlistEntry(key: portInfoPlistKey)
+        let host = ProcessInfo().environment["WIREMOCK_HOST"] ?? "localhost"
+        let port = ProcessInfo().environment["WIREMOCK_PORT"] ?? "8282"
         return Foundation.URL(string: "http://\(host):\(port)/")!
-    }
-
-    private static func infoPlistEntry(key: String) -> String {
-        let plistUrl = Bundle(for: WireMock.self).url(forResource: "Info", withExtension: "plist")!
-        return NSDictionary(contentsOf: plistUrl)![key] as! String
     }
 }

@@ -21824,8 +21824,6 @@
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
-				WIREMOCK_HOST = localhost;
-				WIREMOCK_PORT = 8282;
 			};
 			name = Debug;
 		};
@@ -21871,8 +21869,6 @@
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
-				WIREMOCK_HOST = localhost;
-				WIREMOCK_PORT = 8282;
 			};
 			name = Release;
 		};
@@ -21918,8 +21914,6 @@
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
-				WIREMOCK_HOST = localhost;
-				WIREMOCK_PORT = 8282;
 			};
 			name = "Release-Internal";
 		};
@@ -21966,8 +21960,6 @@
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
-				WIREMOCK_HOST = localhost;
-				WIREMOCK_PORT = 8282;
 			};
 			name = "Release-Alpha";
 		};
@@ -23960,8 +23952,6 @@
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = Jetpack;
 				USES_XCTRUNNER = YES;
-				WIREMOCK_HOST = localhost;
-				WIREMOCK_PORT = 8282;
 			};
 			name = Debug;
 		};
@@ -24007,8 +23997,6 @@
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = Jetpack;
 				USES_XCTRUNNER = YES;
-				WIREMOCK_HOST = localhost;
-				WIREMOCK_PORT = 8282;
 			};
 			name = Release;
 		};
@@ -24054,8 +24042,6 @@
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = Jetpack;
 				USES_XCTRUNNER = YES;
-				WIREMOCK_HOST = localhost;
-				WIREMOCK_PORT = 8282;
 			};
 			name = "Release-Internal";
 		};
@@ -24102,8 +24088,6 @@
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = Jetpack;
 				USES_XCTRUNNER = YES;
-				WIREMOCK_HOST = localhost;
-				WIREMOCK_PORT = 8282;
 			};
 			name = "Release-Alpha";
 		};
@@ -24155,8 +24139,6 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = WordPress;
-				WIREMOCK_HOST = localhost;
-				WIREMOCK_PORT = 8282;
 			};
 			name = Debug;
 		};
@@ -24202,8 +24184,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = WordPress;
-				WIREMOCK_HOST = localhost;
-				WIREMOCK_PORT = 8282;
 			};
 			name = Release;
 		};
@@ -24249,8 +24229,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = WordPress;
-				WIREMOCK_HOST = localhost;
-				WIREMOCK_PORT = 8282;
 			};
 			name = "Release-Internal";
 		};
@@ -24296,8 +24274,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = WordPress;
-				WIREMOCK_HOST = localhost;
-				WIREMOCK_PORT = 8282;
 			};
 			name = "Release-Alpha";
 		};
