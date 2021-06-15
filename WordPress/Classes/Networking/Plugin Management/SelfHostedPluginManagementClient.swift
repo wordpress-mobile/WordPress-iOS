@@ -2,11 +2,7 @@
 class SelfHostedPluginManagementClient: PluginManagementClient {
     private let remote: WordPressOrgRestApi
 
-    required init?(with site: JetpackSiteRef) {
-        guard let remote = BlogService.blog(with: site)?.wordPressOrgRestApi else {
-            return nil
-        }
-
+    required init?(with remote: WordPressOrgRestApi) {
         self.remote = remote
     }
 

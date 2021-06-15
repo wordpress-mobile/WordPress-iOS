@@ -788,10 +788,28 @@ private extension PluginStore {
 
     func remote(site: JetpackSiteRef) -> PluginManagementClient? {
         guard site.isSelfHostedWithoutJetpack else {
-            return JetpackPluginManagementClient(with: site)
+            return jetpackRemoteClient(site: site)
         }
 
-        return SelfHostedPluginManagementClient(with: site)
+        return selfHostedRemoteClient(site: site)
+    }
+
+    private func jetpackRemoteClient(site: JetpackSiteRef) -> PluginManagementClient? {
+        guard let token = CredentialsService().getOAuthToken(site: site) else {
+            return nil
+        }
+
+        let api = WordPressComRestApi.defaultApi(oAuthToken: token, userAgent: WPUserAgent.wordPress())
+        let pluginRemote = PluginServiceRemote(wordPressComRestApi: api)
+
+        return JetpackPluginManagementClient(with: site.siteID, remote: pluginRemote)
+    }
+
+    private func selfHostedRemoteClient(site: JetpackSiteRef) -> PluginManagementClient? {
+        guard let remote = BlogService.blog(with: site)?.wordPressOrgRestApi else {
+            return nil
+        }
+
     }
 
     func track(_ statName: WPAnalyticsStat, with site: JetpackSiteRef) {

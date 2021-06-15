@@ -5,15 +5,9 @@ class JetpackPluginManagementClient: PluginManagementClient {
     private let siteID: Int
     private let remote: PluginServiceRemote
 
-    required init?(with site: JetpackSiteRef) {
-        guard let token = CredentialsService().getOAuthToken(site: site) else {
-            return nil
-        }
-
-        siteID = site.siteID
-
-        let api = WordPressComRestApi.defaultApi(oAuthToken: token, userAgent: WPUserAgent.wordPress())
-        remote = PluginServiceRemote(wordPressComRestApi: api)
+    required init?(with siteID: Int, remote: PluginServiceRemote) {
+        self.siteID = siteID
+        self.remote = remote
     }
 
     func getPlugins(success: @escaping (SitePlugins) -> Void, failure: @escaping (Error) -> Void) {

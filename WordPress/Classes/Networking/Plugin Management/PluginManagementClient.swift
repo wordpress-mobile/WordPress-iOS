@@ -1,8 +1,6 @@
 import Foundation
 
 protocol PluginManagementClient {
-    init?(with site: JetpackSiteRef)
-
     func getPlugins(success: @escaping (SitePlugins) -> Void, failure: @escaping (Error) -> Void)
     func updatePlugin(pluginID: String, success: @escaping (PluginState) -> Void, failure: @escaping (Error) -> Void)
     func activatePlugin(pluginID: String, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
