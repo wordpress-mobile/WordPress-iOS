@@ -810,6 +810,7 @@ private extension PluginStore {
             return nil
         }
 
+        return SelfHostedPluginManagementClient(with: remote)
     }
 
     func track(_ statName: WPAnalyticsStat, with site: JetpackSiteRef) {
