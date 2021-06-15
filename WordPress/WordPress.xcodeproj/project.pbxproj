@@ -1922,12 +1922,6 @@
 		C72A4F8E26408C73009CA633 /* JetpackNoSitesErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72A4F8D26408C73009CA633 /* JetpackNoSitesErrorViewModel.swift */; };
 		C72A52CF2649B158009CA633 /* JetpackWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72A52CE2649B157009CA633 /* JetpackWindowManager.swift */; };
 		C73868C525C9F9820072532C /* JetpackScanThreatSectionGrouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73868C425C9F9820072532C /* JetpackScanThreatSectionGrouping.swift */; };
-		C765445B2673F8A50063E101 /* PluginManagementClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76544582673F8A50063E101 /* PluginManagementClient.swift */; };
-		C765445C2673F8A50063E101 /* PluginManagementClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76544582673F8A50063E101 /* PluginManagementClient.swift */; };
-		C765445D2673F8A50063E101 /* JetpackPluginManagementClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76544592673F8A50063E101 /* JetpackPluginManagementClient.swift */; };
-		C765445E2673F8A50063E101 /* JetpackPluginManagementClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76544592673F8A50063E101 /* JetpackPluginManagementClient.swift */; };
-		C765445F2673F8A50063E101 /* SelfHostedPluginManagementClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C765445A2673F8A50063E101 /* SelfHostedPluginManagementClient.swift */; };
-		C76544602673F8A50063E101 /* SelfHostedPluginManagementClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C765445A2673F8A50063E101 /* SelfHostedPluginManagementClient.swift */; };
 		C768B5B425828A5D00556E75 /* JetpackScanStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C768B5B225828A5D00556E75 /* JetpackScanStatusCell.swift */; };
 		C768B5B525828A5D00556E75 /* JetpackScanStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C768B5B325828A5D00556E75 /* JetpackScanStatusCell.xib */; };
 		C76F48DC25BA202600BFEC87 /* JetpackScanHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76F48DB25BA202600BFEC87 /* JetpackScanHistoryViewController.swift */; };
@@ -6563,9 +6557,6 @@
 		C72A4F8D26408C73009CA633 /* JetpackNoSitesErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackNoSitesErrorViewModel.swift; sourceTree = "<group>"; };
 		C72A52CE2649B157009CA633 /* JetpackWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackWindowManager.swift; sourceTree = "<group>"; };
 		C73868C425C9F9820072532C /* JetpackScanThreatSectionGrouping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatSectionGrouping.swift; sourceTree = "<group>"; };
-		C76544582673F8A50063E101 /* PluginManagementClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginManagementClient.swift; sourceTree = "<group>"; };
-		C76544592673F8A50063E101 /* JetpackPluginManagementClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackPluginManagementClient.swift; sourceTree = "<group>"; };
-		C765445A2673F8A50063E101 /* SelfHostedPluginManagementClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfHostedPluginManagementClient.swift; sourceTree = "<group>"; };
 		C768B5B225828A5D00556E75 /* JetpackScanStatusCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanStatusCell.swift; sourceTree = "<group>"; };
 		C768B5B325828A5D00556E75 /* JetpackScanStatusCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackScanStatusCell.xib; sourceTree = "<group>"; };
 		C76F48DB25BA202600BFEC87 /* JetpackScanHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanHistoryViewController.swift; sourceTree = "<group>"; };
@@ -10678,7 +10669,6 @@
 				F1450CF22437DA3E00A28BFE /* MediaRequestAuthenticator.swift */,
 				E11DA4921E03E03F00CF07A8 /* Pinghub.swift */,
 				E1C2260623901AAD0021D03C /* WordPressOrgRestApi+WordPress.swift */,
-				C76544572673F8A50063E101 /* Plugin Management */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -12894,16 +12884,6 @@
 				C72A52CE2649B157009CA633 /* JetpackWindowManager.swift */,
 			);
 			path = System;
-			sourceTree = "<group>";
-		};
-		C76544572673F8A50063E101 /* Plugin Management */ = {
-			isa = PBXGroup;
-			children = (
-				C76544582673F8A50063E101 /* PluginManagementClient.swift */,
-				C76544592673F8A50063E101 /* JetpackPluginManagementClient.swift */,
-				C765445A2673F8A50063E101 /* SelfHostedPluginManagementClient.swift */,
-			);
-			path = "Plugin Management";
 			sourceTree = "<group>";
 		};
 		C7F7AC71261CF1BD00CE547F /* Classes */ = {
@@ -16604,7 +16584,6 @@
 				3F662C4A24DC9FAC00CAEA95 /* WhatIsNewViewController.swift in Sources */,
 				7EFF208C20EADF68009C4699 /* FormattableCommentContent.swift in Sources */,
 				17EFD3742578201100AB753C /* ValueTransformers.swift in Sources */,
-				C765445B2673F8A50063E101 /* PluginManagementClient.swift in Sources */,
 				8B85AEDA259230FC00ADBEC9 /* ABTest.swift in Sources */,
 				178DDD06266D68A3006C68C4 /* BloggingRemindersFlowIntroViewController.swift in Sources */,
 				E1E5EE37231E47A80018E9E3 /* ContextManager+ErrorHandling.swift in Sources */,
@@ -17353,7 +17332,6 @@
 				5D6C4B081B603E03005E3C43 /* WPContentSyncHelper.swift in Sources */,
 				73C8F06021BEED9100DDDF7E /* SiteAssemblyStep.swift in Sources */,
 				82C420761FE44BD900CFB15B /* SiteSettingsViewController+Swift.swift in Sources */,
-				C765445D2673F8A50063E101 /* JetpackPluginManagementClient.swift in Sources */,
 				F5E29038243FAB0300C19CA5 /* FilterTableData.swift in Sources */,
 				E6A3384C1BB08E3F00371587 /* ReaderGapMarker.m in Sources */,
 				E1CFC1571E0AC8FF001DF9E9 /* Pattern.swift in Sources */,
@@ -17535,7 +17513,6 @@
 				7E3E7A5320E44B260075D159 /* SubjectContentStyles.swift in Sources */,
 				5D42A3DF175E7452005CFF05 /* AbstractPost.m in Sources */,
 				986C908422319EFF00FC31E1 /* PostStatsTableViewController.swift in Sources */,
-				C765445F2673F8A50063E101 /* SelfHostedPluginManagementClient.swift in Sources */,
 				E18549D9230EED73003C620E /* BlogService+Deduplicate.swift in Sources */,
 				C81CCD82243BF7A600A83E27 /* TenorResultsPage.swift in Sources */,
 				FACB36F11C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift in Sources */,
@@ -18845,7 +18822,6 @@
 				FABB21BD2602FC2C00C8785C /* ReaderPostToReaderPost37to38.swift in Sources */,
 				FABB21BE2602FC2C00C8785C /* ReaderRelatedPostsSectionHeaderView.swift in Sources */,
 				FABB21BF2602FC2C00C8785C /* WidgetNoConnectionCell.swift in Sources */,
-				C76544602673F8A50063E101 /* SelfHostedPluginManagementClient.swift in Sources */,
 				9804A098263780B500354097 /* LikeUserHelpers.swift in Sources */,
 				FABB21C02602FC2C00C8785C /* AppRatingUtilityType.swift in Sources */,
 				FABB21C12602FC2C00C8785C /* MenuItemSourceFooterView.m in Sources */,
@@ -19700,7 +19676,6 @@
 				FABB24EA2602FC2C00C8785C /* PageTemplateLayout+CoreDataClass.swift in Sources */,
 				FABB24EB2602FC2C00C8785C /* NoResultsViewController.swift in Sources */,
 				FABB24EC2602FC2C00C8785C /* ActionDispatcherFacade.swift in Sources */,
-				C765445C2673F8A50063E101 /* PluginManagementClient.swift in Sources */,
 				FABB24ED2602FC2C00C8785C /* ReaderSavedPostUndoCell.swift in Sources */,
 				FABB24EE2602FC2C00C8785C /* Suggestion.swift in Sources */,
 				FABB24EF2602FC2C00C8785C /* ShareNoticeConstants.swift in Sources */,
@@ -19876,7 +19851,6 @@
 				FABB25922602FC2C00C8785C /* RevisionPreviewTextViewManager.swift in Sources */,
 				FABB25932602FC2C00C8785C /* StatsChartLegendView.swift in Sources */,
 				FABB25942602FC2C00C8785C /* FindOutMoreCell.swift in Sources */,
-				C765445E2673F8A50063E101 /* JetpackPluginManagementClient.swift in Sources */,
 				FABB25952602FC2C00C8785C /* NSURL+Exporters.swift in Sources */,
 				FABB25962602FC2C00C8785C /* FileDownloadsStatsRecordValue+CoreDataProperties.swift in Sources */,
 				FABB25972602FC2C00C8785C /* BlogToAccount.m in Sources */,
