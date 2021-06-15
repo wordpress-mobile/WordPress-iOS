@@ -502,6 +502,7 @@
 		3F762E9326784A950088CD45 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F762E9226784A950088CD45 /* Logger.swift */; };
 		3F762E9526784B540088CD45 /* WireMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F762E9426784B540088CD45 /* WireMock.swift */; };
 		3F762E9726784BED0088CD45 /* FancyAlertComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F762E9626784BED0088CD45 /* FancyAlertComponent.swift */; };
+		3F762E9926784CC90088CD45 /* XCUIElementQuery+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F762E9826784CC90088CD45 /* XCUIElementQuery+Utils.swift */; };
 		3F810A5A2616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F810A592616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift */; };
 		3F810A5B2616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F810A592616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift */; };
 		3F82310F24564A870086E9B8 /* ReaderTabViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F82310E24564A870086E9B8 /* ReaderTabViewTests.swift */; };
@@ -5030,6 +5031,7 @@
 		3F762E9226784A950088CD45 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		3F762E9426784B540088CD45 /* WireMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WireMock.swift; sourceTree = "<group>"; };
 		3F762E9626784BED0088CD45 /* FancyAlertComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyAlertComponent.swift; sourceTree = "<group>"; };
+		3F762E9826784CC90088CD45 /* XCUIElementQuery+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElementQuery+Utils.swift"; sourceTree = "<group>"; };
 		3F7646F625AE1C5200FBA98C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3F810A592616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedPrologueIntroContentView.swift; sourceTree = "<group>"; };
 		3F82310E24564A870086E9B8 /* ReaderTabViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewTests.swift; sourceTree = "<group>"; };
@@ -9183,6 +9185,7 @@
 			isa = PBXGroup;
 			children = (
 				3FA640632670CED80064401E /* BaseScreen.swift */,
+				3F762E9826784CC90088CD45 /* XCUIElementQuery+Utils.swift */,
 				3F762E9626784BED0088CD45 /* FancyAlertComponent.swift */,
 				3FA6405A2670CCD40064401E /* Info.plist */,
 				3F762E9226784A950088CD45 /* Logger.swift */,
@@ -17993,6 +17996,7 @@
 				3F762E9726784BED0088CD45 /* FancyAlertComponent.swift in Sources */,
 				3F762E9526784B540088CD45 /* WireMock.swift in Sources */,
 				3FA640642670CED80064401E /* BaseScreen.swift in Sources */,
+				3F762E9926784CC90088CD45 /* XCUIElementQuery+Utils.swift in Sources */,
 				3F762E9326784A950088CD45 /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
