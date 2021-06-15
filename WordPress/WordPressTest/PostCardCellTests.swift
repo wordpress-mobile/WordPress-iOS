@@ -82,7 +82,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        XCTAssertEqual(postCell.dateLabel.text, "just now")
+        XCTAssert(postCell.dateLabel.text?.isEmpty == false)
     }
 
     func testShowAuthor() {
