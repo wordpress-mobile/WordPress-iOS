@@ -118,7 +118,7 @@ class LoginTests: XCTestCase {
         XCTAssert(WelcomeScreen().isLoaded())
     }
 
-    // Unified WordPress.com email login fail due to incorrect password
+    // Unified WordPress.com email login failure due to incorrect password
     // Replaces testUnsuccessfulLogin
     func testWPcomInvalidPassword() {
         _ = PrologueScreen().selectContinue()
