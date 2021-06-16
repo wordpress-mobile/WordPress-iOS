@@ -252,18 +252,18 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     private func populateCalendarDays() {
         daysOuterStackView.addArrangedSubviews([daysTopInnerStackView, daysBottomInnerStackView])
 
-        let createButton: (Int) -> CalendarDayToggleButton = { [unowned self] calendarWeekday in
+        let createButton: (Int) -> CalendarDayToggleButton = { [unowned self] dayIndex in
             let isSelected: Bool
-            let rawValue = (calendarWeekday + calendar.firstWeekday) % calendar.shortWeekdaySymbols.count
+            let localizedDayIndex = (dayIndex + calendar.firstWeekday - 1) % calendar.shortWeekdaySymbols.count
 
-            let weekday = BloggingRemindersScheduler.Weekday(rawValue: rawValue) ?? {
+            let weekday = BloggingRemindersScheduler.Weekday(rawValue: localizedDayIndex) ?? {
                 // The rawValue above should always fall within 0 ..< 7 and this case
                 // should not be possible.  We're still going to handle it by logging
                 // an error and returning .monday so that the app keeps running.
                 //
                 // Is there any other sensible approach to handle this?
                 //
-                DDLogError("Cannot initialize BloggingRemindersScheduler.Weekday with rawValue: \(rawValue)")
+                DDLogError("Cannot initialize BloggingRemindersScheduler.Weekday with rawValue: \(localizedDayIndex)")
                 return .monday
             }()
 
@@ -271,7 +271,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
             return CalendarDayToggleButton(
                 weekday: weekday,
-                dayName: self.calendar.shortWeekdaySymbols[calendarWeekday],
+                dayName: self.calendar.shortWeekdaySymbols[localizedDayIndex],
                 isSelected: isSelected) { button in
 
                 if button.isSelected {
