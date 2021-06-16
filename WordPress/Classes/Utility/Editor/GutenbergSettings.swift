@@ -181,10 +181,6 @@ class GutenbergSettings {
         return rollout.isUserIdInPhaseRolloutPercentage(account.userID.intValue)
     }
 
-    func setHasLaunchedGutenbergEditor(_ hasLaunched: Bool) {
-        database.set(hasLaunched, forKey: Key.hasLaunchedGutenbergEditor)
-    }
-
     /// True if the user has previously launched the Gutenberg editor
     var hasLaunchedGutenbergEditor: Bool {
         get {
