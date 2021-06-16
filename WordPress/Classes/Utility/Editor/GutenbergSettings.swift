@@ -181,7 +181,7 @@ class GutenbergSettings {
         return rollout.isUserIdInPhaseRolloutPercentage(account.userID.intValue)
     }
 
-    /// True if the user has previously launched the Gutenberg editor
+    /// True if the Gutenberg editor has previously launched from this app installation
     var hasLaunchedGutenbergEditor: Bool {
         get {
             database.bool(forKey: Key.hasLaunchedGutenbergEditor)
