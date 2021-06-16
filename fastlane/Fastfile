@@ -405,6 +405,9 @@ import "./ScreenshotFastfile"
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH],
     )
 
+    # Upload Gutenberg source maps
+    upload_gutenberg_sourcemaps(internal: true)
+
     download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
     UI.message("Successfully built and uploaded installable build here: #{download_url}")
     install_url = "https://install.appcenter.ms/orgs/automattic/apps/WPiOS-One-Offs/"
@@ -462,6 +465,9 @@ import "./ScreenshotFastfile"
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH],
     )
 
+    # Upload Gutenberg source maps
+    upload_gutenberg_sourcemaps(internal: false)
+
   end
 
   #####################################################################################
@@ -505,6 +511,9 @@ import "./ScreenshotFastfile"
       project_slug: 'wordpress-ios',
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
+
+    # Upload Gutenberg source maps
+    upload_gutenberg_sourcemaps(internal: false)
 
     if (options[:create_release])
       archive_zip_path = File.join(PROJECT_ROOT_FOLDER, "WordPress.xarchive.zip")
@@ -662,6 +671,41 @@ import "./ScreenshotFastfile"
       branch: options[:branch_to_build],
       job_params: {"release_build" => true}
     )
+  end
+
+  #####################################################################################
+  # upload_gutenberg_sourcemaps
+  # -----------------------------------------------------------------------------------
+  # This lane uploads the Gutenberg source maps
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane upload_gutenberg_sourcemaps [internal:<internal>]
+  #
+  # Example:
+  # bundle exec fastlane upload_gutenberg_sourcemaps internal:true
+  #####################################################################################
+  lane :upload_gutenberg_sourcemaps do | options |
+    build_version = ios_get_build_version(internal: options[:internal])
+    
+    gutenberg_bundle = File.join(PROJECT_ROOT_FOLDER, "Pods/Gutenberg/bundle/ios")
+    sourcemaps_folder = File.join(gutenberg_bundle, "sourcemaps")
+    FileUtils.mkdir_p(sourcemaps_folder)
+    # Name of bundle file must be set to main.jsbundle
+    FileUtils.cp(File.join(gutenberg_bundle, 'App.js'), File.join(sourcemaps_folder, 'main.jsbundle'))
+    FileUtils.cp(File.join(gutenberg_bundle, 'App.js.map'), File.join(sourcemaps_folder, 'main.jsbundle.map'))
+
+    sentry_upload_sourcemap(
+      auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
+      org_slug: 'a8c',
+      project_slug: 'wordpress-ios',
+      version: build_version,
+      dist: build_version,
+      rewrite: true,
+      strip_common_prefix: true,
+      sourcemap: sourcemaps_folder
+    )
+
+    FileUtils.rm_rf(sourcemaps_folder)
   end
 
 ########################################################################
