@@ -6,6 +6,15 @@ protocol ChildDrawerPositionable {
 
 class BloggingRemindersNavigationController: LightNavigationController {
 
+    override init(rootViewController: UIViewController) {
+        super.init(rootViewController: rootViewController)
+        delegate = self
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
     }
@@ -76,5 +85,19 @@ extension BloggingRemindersNavigationController: DrawerPresentable {
 
     func handleDismiss() {
         (children.last as? DrawerPresentable)?.handleDismiss()
+    }
+}
+
+// MARK: - NavigationControllerDelegate
+
+extension BloggingRemindersNavigationController: UINavigationControllerDelegate {
+
+    /// This implementation uses the custom `BloggingRemindersAnimator` to improve screen transitions
+    /// in the blogging reminders setup flow.
+    func navigationController(_ navigationController: UINavigationController,
+                              animationControllerFor operation: UINavigationController.Operation,
+                              from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+
+        return BloggingRemindersAnimator()
     }
 }
