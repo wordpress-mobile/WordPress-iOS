@@ -124,12 +124,37 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return button
     }()
 
+    // MARK: - Properties
+
+    let calendar: Calendar
+    private let scheduler: BloggingRemindersScheduler
+    private var weekdays: [BloggingRemindersScheduler.Weekday]
+
     // MARK: - Initializers
 
     let tracker: BloggingRemindersTracker
 
-    init(tracker: BloggingRemindersTracker) {
+    init(
+        blogURIRepresentation: URL,
+        tracker: BloggingRemindersTracker,
+        calendar: Calendar? = nil) throws {
+
         self.tracker = tracker
+        self.calendar = calendar ?? {
+            var calendar = Calendar.current
+            calendar.locale = Locale.autoupdatingCurrent
+
+            return calendar
+        }()
+
+        scheduler = try BloggingRemindersScheduler(blogIdentifier: blogURIRepresentation)
+
+        switch self.scheduler.schedule() {
+        case .none:
+            weekdays = []
+        case .weekdays(let scheduledWeekdays):
+            weekdays = scheduledWeekdays
+        }
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -227,30 +252,66 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     private func populateCalendarDays() {
         daysOuterStackView.addArrangedSubviews([daysTopInnerStackView, daysBottomInnerStackView])
 
-        let topRow = days[0..<4]    // First 4 days
-        let bottomRow = days[4..<days.count]    // Last 3 days
-        daysTopInnerStackView.addArrangedSubviews(topRow.map({ CalendarDayToggleButton(weekday: $0) }))
-        daysBottomInnerStackView.addArrangedSubviews(bottomRow.map({ CalendarDayToggleButton(weekday: $0) }))
+        let createButton: (Int) -> CalendarDayToggleButton = { [unowned self] calendarWeekday in
+            let isSelected: Bool
+            let rawValue = (calendarWeekday + calendar.firstWeekday) % calendar.shortWeekdaySymbols.count
+
+            let weekday = BloggingRemindersScheduler.Weekday(rawValue: rawValue) ?? {
+                // The rawValue above should always fall within 0 ..< 7 and this case
+                // should not be possible.  We're still going to handle it by logging
+                // an error and returning .monday so that the app keeps running.
+                //
+                // Is there any other sensible approach to handle this?
+                //
+                DDLogError("Cannot initialize BloggingRemindersScheduler.Weekday with rawValue: \(rawValue)")
+                return .monday
+            }()
+
+            isSelected = weekdays.contains(weekday)
+
+            return CalendarDayToggleButton(
+                weekday: weekday,
+                dayName: self.calendar.shortWeekdaySymbols[calendarWeekday],
+                isSelected: isSelected) { button in
+
+                if button.isSelected {
+                    self.weekdays.append(button.weekday)
+                } else {
+                    self.weekdays.removeAll { weekday in
+                        weekday == button.weekday
+                    }
+                }
+            }
+        }
+
+        let topRow = 0 ..< 4
+        let bottomRow = 4 ..< calendar.shortWeekdaySymbols.count
+
+        daysTopInnerStackView.addArrangedSubviews(topRow.map({ createButton($0) }))
+        daysBottomInnerStackView.addArrangedSubviews(bottomRow.map({ createButton($0) }))
     }
-
-    /// Localized short weekday names, starting at the correct weekday for the current calendar
-    private let days: [String] = {
-        var calendar = Calendar.current
-        calendar.locale = Locale.autoupdatingCurrent
-        let firstWeekday = calendar.firstWeekday
-        var symbols = calendar.shortWeekdaySymbols
-
-        // Switch around the order of days so that the correct day is at the beginning
-        let firstWeekdayToEnd = symbols[firstWeekday-1 ..< Calendar.current.shortWeekdaySymbols.count]
-        let beginningToFirstWeekday = symbols[0 ..< firstWeekday - 1]
-
-        return Array(firstWeekdayToEnd + beginningToFirstWeekday)
-    }()
 
     // MARK: - Actions
 
     @objc private func notifyMeButtonTapped() {
         tracker.buttonPressed(button: .continue, screen: .dayPicker)
+
+        do {
+            try scheduler.schedule(.weekdays(weekdays))
+        } catch {
+            DDLogError("Error scheduling notifications: \(error)")
+
+            // TODO: Properly handle error situation.
+            //
+            // For now I'm dismissing the flow in this scenario, although I think showing an inline
+            // error message would be best (an error that's informative and non-blocking, that lets
+            // the user decide if to dismiss or continue).
+            //
+            // I've pinged @osullivanchris about this and will update when I get feedback.
+            //
+            dismiss(animated: true, completion: nil)
+            return
+        }
 
         let flowCompletionVC = BloggingRemindersFlowCompletionViewController(tracker: tracker)
         navigationController?.pushViewController(flowCompletionVC, animated: true)

@@ -59,9 +59,11 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
 
     // MARK: - Initializers
 
+    private let blogURIRepresentation: URL
     private let tracker: BloggingRemindersTracker
 
-    init(tracker: BloggingRemindersTracker) {
+    init(blogURIRepresentation: URL, tracker: BloggingRemindersTracker) {
+        self.blogURIRepresentation = blogURIRepresentation
         self.tracker = tracker
 
         super.init(nibName: nil, bundle: nil)
@@ -145,8 +147,14 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
     @objc private func getStartedTapped() {
         tracker.buttonPressed(button: .continue, screen: .main)
 
-        let flowSettingsViewController = BloggingRemindersFlowSettingsViewController(tracker: tracker)
-        navigationController?.pushViewController(flowSettingsViewController, animated: true)
+        do {
+            let flowSettingsViewController = try BloggingRemindersFlowSettingsViewController(blogURIRepresentation: blogURIRepresentation, tracker: tracker)
+
+            navigationController?.pushViewController(flowSettingsViewController, animated: true)
+        } catch {
+            DDLogError("Could not instantiate the blogging reminders settings VC: \(error.localizedDescription)")
+            dismiss(animated: true, completion: nil)
+        }
     }
 
     @objc private func dismissTapped() {
