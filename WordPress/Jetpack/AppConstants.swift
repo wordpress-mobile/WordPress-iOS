@@ -4,6 +4,7 @@ import Foundation
     static let productTwitterHandle = "@jetpack"
     static let productTwitterURL = "https://twitter.com/jetpack"
     static let productBlogURL = "https://jetpack.com/blog"
+    static let zendeskSourcePlatform = "mobile_-_jp_ios"
     @objc static let eventNamePrefix = "jpios"
 
     /// Notifications Constants

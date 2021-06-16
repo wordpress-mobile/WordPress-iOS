@@ -1,3 +1,5 @@
+import UITestsFoundation
+
 // These are fake credentials used for the mocked UI tests
 struct WPUITestCredentials {
     static let testWPcomUserEmail: String = "e2eflowtestingmobile@example.com"
