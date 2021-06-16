@@ -48,6 +48,8 @@ extension BlockEditorSettings {
         self.lastUpdated = Date()
         self.checksum = remoteSettings.checksum
         self.rawStyles = remoteSettings.rawStyles
+        self.rawFeatures = remoteSettings.rawFeatures
+
         var parsedElements = Set<BlockEditorSettingElement>()
 
         remoteSettings.colors?.enumerated().forEach({ (index, color) in
