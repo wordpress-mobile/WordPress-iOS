@@ -412,7 +412,7 @@ PODS:
   - WordPressShared (1.16.0):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (~> 1.8)
-  - WordPressUI (1.12.1-beta.2)
+  - WordPressUI (1.12.1-beta.3)
   - WPMediaPicker (1.7.2)
   - wpxmlrpc (0.9.0)
   - Yoga (1.14.0)
@@ -750,7 +750,7 @@ SPEC CHECKSUMS:
   WordPressKit: 95b870401414cfc7facbad08f3d83b507f7169cc
   WordPressMocks: dfac50a938ac74dddf5f7cce5a9110126408dd19
   WordPressShared: 0f7f10e96f8354d64f951c223ae61e8de7495a46
-  WordPressUI: 9ed70a170f9b041d40d01452f6ab572b4982b142
+  WordPressUI: cf3b3ef744663811a8d8a9844f42386e1826f512
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
