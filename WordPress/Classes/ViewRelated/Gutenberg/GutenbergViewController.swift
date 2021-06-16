@@ -1052,6 +1052,10 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return WordPressAppDelegate.crashLogging?.getOptionsDict()
     }
 
+    func getSentryUser() -> [String: Any]? {
+        return WordPressAppDelegate.crashLogging?.getSentryUserDict()
+    }
+
     func shouldSendSentryEvent() -> Bool? {
         return WordPressAppDelegate.crashLogging?.shouldSendEvent()
     }
