@@ -286,7 +286,7 @@ private enum TextContent {
 
     static let tipPanelTitle = NSLocalizedString("Tip", comment: "Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip.")
 
-    static let tipPanelDescription = NSLocalizedString("People who post at least twice weekly get 87% more views on their site.", comment: "Informative tip shown to user in the Blogging Reminders Settings screen.")
+    static let tipPanelDescription = NSLocalizedString("Posting regularly can help keep your readers engaged, and attract new visitors to your site.", comment: "Informative tip shown to user in the Blogging Reminders Settings screen.")
 }
 
 private enum Images {
