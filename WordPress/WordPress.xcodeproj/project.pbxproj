@@ -539,6 +539,8 @@
 		3FAA18CC25797B85002B1911 /* UnconfiguredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAA18CB25797B85002B1911 /* UnconfiguredView.swift */; };
 		3FB34ACB25672A90001A74A6 /* HomeWidgetTodayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */; };
 		3FB34ADA25672AA5001A74A6 /* HomeWidgetTodayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */; };
+		3FBF21B7267AA17A0098335F /* BloggingRemindersAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBF21B6267AA17A0098335F /* BloggingRemindersAnimator.swift */; };
+		3FBF21B8267AA17A0098335F /* BloggingRemindersAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBF21B6267AA17A0098335F /* BloggingRemindersAnimator.swift */; };
 		3FC7F89E2612341900FD8728 /* UnifiedPrologueStatsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC7F89D2612341900FD8728 /* UnifiedPrologueStatsContentView.swift */; };
 		3FC8D19B244F43B500495820 /* ReaderTabItemsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8D19A244F43B500495820 /* ReaderTabItemsStore.swift */; };
 		3FCC8FD9256C911300810295 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -5093,6 +5095,7 @@
 		3FA640652670CEFE0064401E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		3FAA18CB25797B85002B1911 /* UnconfiguredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconfiguredView.swift; sourceTree = "<group>"; };
 		3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetTodayData.swift; sourceTree = "<group>"; };
+		3FBF21B6267AA17A0098335F /* BloggingRemindersAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingRemindersAnimator.swift; sourceTree = "<group>"; };
 		3FC7F89D2612341900FD8728 /* UnifiedPrologueStatsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedPrologueStatsContentView.swift; sourceTree = "<group>"; };
 		3FC8D19A244F43B500495820 /* ReaderTabItemsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabItemsStore.swift; sourceTree = "<group>"; };
 		3FCCAA1423F4A1A3004064C0 /* UIBarButtonItem+MeBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+MeBarButton.swift"; sourceTree = "<group>"; };
@@ -8772,6 +8775,7 @@
 		3F170D2A2654615900F6F670 /* Blogging Reminders */ = {
 			isa = PBXGroup;
 			children = (
+				3FBF21B6267AA17A0098335F /* BloggingRemindersAnimator.swift */,
 				3F170D2B2654618000F6F670 /* BloggingRemindersCell.swift */,
 				3F170EC22655DD1700F6F670 /* BloggingRemindersCard.swift */,
 				17171373265FAA8A00F3A022 /* BloggingRemindersNavigationController.swift */,
@@ -17343,6 +17347,7 @@
 				E6DAABDD1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift in Sources */,
 				8B3DECAB2388506400A459C2 /* SentryStartupEvent.swift in Sources */,
 				3F170D2C2654618000F6F670 /* BloggingRemindersCell.swift in Sources */,
+				3FBF21B7267AA17A0098335F /* BloggingRemindersAnimator.swift in Sources */,
 				C700FAB2258020DB0090938E /* JetpackScanThreatCell.swift in Sources */,
 				D8C31CC62188490000A33B35 /* SiteSegmentsCell.swift in Sources */,
 				E6431DE51C4E892900FD8D90 /* SharingConnectionsViewController.m in Sources */,
@@ -20008,6 +20013,7 @@
 				FABB25C72602FC2C00C8785C /* WPStyleGuide+Gridicon.swift in Sources */,
 				FABB25C82602FC2C00C8785C /* RelatedPostsSettingsViewController.m in Sources */,
 				FABB25C92602FC2C00C8785C /* CreateButtonCoordinator.swift in Sources */,
+				3FBF21B8267AA17A0098335F /* BloggingRemindersAnimator.swift in Sources */,
 				FABB25CA2602FC2C00C8785C /* SearchManager.swift in Sources */,
 				FABB25CB2602FC2C00C8785C /* BlogToBlogMigration87to88.swift in Sources */,
 				FABB25CC2602FC2C00C8785C /* WPStyleGuide+Themes.swift in Sources */,
