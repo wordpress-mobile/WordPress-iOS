@@ -3,15 +3,23 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 125
+## WordPress 126
 
-@chipsnyder 2021-05-14
+@chipsnyder 2021-06-146
 
 - `BlockEditorSettings`: added the attribute
     - `rawStyles` (optional, no default, `String`)
+    - `rawFeatures` (optional, no default, `String`)
     
 - `BlockEditorSettingElement`: added the attribute
     - `order` (required, 0, `Int`)
+
+## WordPress 125
+
+@aerych 2021-06-04
+
+- `ReaderPost`: added  `canSubscribeComments` attribute. (required, default `false`, `Boolean`)
+- `ReaderPost`: added  `isSubscribedComments` attribute. (required, default `false`, `Boolean`)
 
 ## WordPress 124
 

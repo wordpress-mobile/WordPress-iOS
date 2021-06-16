@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-12 14:51:18+0000 */
+/* Translation-Revision-Date: 2021-06-10 20:20:43+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pt_BR */
@@ -26,6 +26,21 @@
 
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@ em %2$@";
+
+/* Error message displayed when restoring a site fails due to credentials not being configured. %1$@ is a placeholder for the string 'Enter your server credentials'. */
+"%1$@ to enable one click site restores from backups." = "%1$@ para ativar a restauração de backups do site com um clique.";
+
+/* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
+"%1$@ to fix this threat." = "%1$@ para corrigir ameaça.";
+
+/* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
+"%1$@ to fix threats." = "%1$@ para corrigir ameaças.";
+
+/* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
+"%1$d blogger likes this." = "%1$d blogueiro curtiu isso.";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
+"%1$d bloggers like this." = "%1$d blogueiros curtiram isso.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d de %2$d concluídas";
@@ -193,6 +208,9 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li palavras, %2$li caracteres";
 
+/* translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "Bloco %s";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "Opções do bloco %s";
 
@@ -201,6 +219,18 @@
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "Bloco %s. Este bloco tem conteúdo inválido.";
+
+/* translators: %s: name of the reusable block */
+"%s converted to regular blocks" = "%s convertido para blocos normais";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"%s has URL set" = "URL já definido para %s";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"%s has no URL set" = "URL não definido para %s";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"%s social icon" = "Ícone do %s";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "'%s' não é totalmente suportado";
@@ -314,6 +344,9 @@
 
 /* No comment provided by engineer. */
 "ADD IMAGE OR VIDEO" = "Adicionar imagem ou vídeo";
+
+/* No comment provided by engineer. */
+"ADD LINK" = "ADICIONAR LINK";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "Adicionar vídeo";
@@ -453,10 +486,25 @@
 "Add any topic" = "Adicionar novo tópico";
 
 /* No comment provided by engineer. */
+"Add button text" = "Adicionar texto do botão";
+
+/* No comment provided by engineer. */
 "Add caption" = "Adicione uma legenda";
+
+/* No comment provided by engineer. */
+"Add image or video" = "Adicionar imagem ou vídeo";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Adicionar uma imagem ou avatar para representar essa nova conta.";
+
+/* No comment provided by engineer. */
+"Add label…" = "Adicionar rótulo…";
+
+/* No comment provided by engineer. */
+"Add link text" = "Adicionar texto do link";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"Add link to %s" = "Adicionar link para %s";
 
 /* No comment provided by engineer. */
 "Add menu item above" = "Adicionar um item de menu acima";
@@ -548,6 +596,9 @@
 
 /* Description for the Jetpack Backup Restore message. %1$@ is a placeholder for the selected date. */
 "All of your selected items are now restored back to %1$@." = "Todos os itens selecionados foram retrocedidos para %1$@.";
+
+/* Title of the completion screen of the Blogging Reminders Settings screen. */
+"All set!" = "Tudo pronto!";
 
 /* Title of the congratulation screen that appears when all the tasks are completed */
 "All tasks complete" = "Todas as tarefas concluídas";
@@ -801,7 +852,9 @@
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Autenticação requerida pelo host: %@";
 
-/* Label for list of stats by content author. */
+/* Author label.
+   Label for list of stats by content author.
+   The author of the post or page. */
 "Author" = "Autor";
 
 /* Voiceover description of a button that allows the user to filter posts by author. */
@@ -985,8 +1038,17 @@
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Negrito";
 
+/* No comment provided by engineer. */
+"Border Radius" = "Raio da borda";
+
+/* No comment provided by engineer. */
+"Border Settings" = "Configurações da borda";
+
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "Dividir threads de comentários em várias páginas.";
+
+/* No comment provided by engineer. */
+"Briefly describe the link to help screen reader user" = "Descreva brevemente o link para ajudar pessoas que usam leitores de tela";
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Procurar em todos os nossos temas para encontrar um perfeito para você.";
@@ -1003,11 +1065,23 @@
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "Ocupado";
 
+/* No comment provided by engineer. */
+"Button Link URL" = "URL do link do botão";
+
 /* Title for a list of different button styles. */
 "Button Style" = "Estilo do botão";
 
 /* No comment provided by engineer. */
-"ButtonGroup" = "Grupo de botões";
+"Button inside" = "Botão interno";
+
+/* No comment provided by engineer. */
+"Button outside" = "Botão externo";
+
+/* No comment provided by engineer. */
+"Button position" = "Posição do botão";
+
+/* No comment provided by engineer. */
+"Button width" = "Largura do botão";
 
 /* Label for the post author in the post detail. */
 "By " = "Por";
@@ -1286,7 +1360,7 @@
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Escolha entre uma página inicial que exiba seus posts mais recentes (blog clássico) ou uma página estática\/fixa.";
 
-/* Menu option used for adding media from other applications. */
+/* No comment provided by engineer. */
 "Choose from device" = "Escolher no dispositivo";
 
 /* No comment provided by engineer. */
@@ -1324,6 +1398,9 @@
 
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Liberar cache de arquivos do dispositivo";
+
+/* No comment provided by engineer. */
+"Clear Media" = "Liberar mídia";
 
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "Limpar logs de atividades antigos";
@@ -1390,6 +1467,12 @@
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "Fundos coloridos";
+
+/* No comment provided by engineer. */
+"Column settings" = "Configurações da coluna";
+
+/* No comment provided by engineer. */
+"Columns Settings" = "Configurações de colunas";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combine fotos, vídeos e texto para criar stories clicáveis e com alto engajamento que seus visitantes vão adorar.";
@@ -1619,6 +1702,9 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Prosseguindo with Apple";
 
+/* No comment provided by engineer. */
+"Convert to regular blocks" = "Converter para blocos normais";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Culinária";
 
@@ -1728,6 +1814,9 @@
 /* Register Domain - Address information field Country Code */
 "Country Code" = "Código do país";
 
+/* No comment provided by engineer. */
+"Cover" = "Cobertura";
+
 /* Title of a section on the debug screen that shows a list of actions related to crash logging */
 "Crash Logging" = "Resumo de falhas";
 
@@ -1814,6 +1903,12 @@
 "Creating downloadable backup" = "Criando um arquivo de backup para baixar";
 
 /* No comment provided by engineer. */
+"Crop image to fill entire column" = "Recortar a imagem para preencher toda a coluna";
+
+/* No comment provided by engineer. */
+"Crosspost" = "Post cruzado";
+
+/* No comment provided by engineer. */
 "Current" = "Atual";
 
 /* Label title. Refers to the current WordPress.com plan for a user's site. */
@@ -1827,6 +1922,12 @@
 
 /* Week Period Accessibility label. Prefix the current selected period. Ex. Current period: Jan 6 to Jan 12. */
 "Current period: %@ to %@" = "Período atual: %1$@ até %2$@";
+
+/* No comment provided by engineer. */
+"Current placeholder text is" = "O texto do marcador de posição atual é";
+
+/* translators: accessibility text. Inform about current unit value. %s: Current unit value. */
+"Current unit is %s" = "A unidade atual é %s";
 
 /* translators: %s: current cell value. */
 "Current value is %s" = "O valor atual é %s";
@@ -2128,6 +2229,7 @@
    Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
+   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
    Title of the Done button on the me page */
@@ -2136,14 +2238,29 @@
 /* Title for label when there are no threats on the users site */
 "Don’t worry about a thing" = "Não se preocupe";
 
+/* No comment provided by engineer. */
+"Double tap and hold to edit" = "Toque duas vezes e segure para editar";
+
 /* Screen reader hint for button that will move the menu item */
 "Double tap and hold to move this menu item up or down" = "Toque duas vezes e segure para mover este item para cima ou para baixo";
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Toque duas vezes para adicionar um bloco";
 
+/* No comment provided by engineer. */
+"Double tap to add a link." = "Toque duas vezes para adicionar um link.";
+
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "Toque duas vezes para dispensar";
+
+/* No comment provided by engineer. */
+"Double tap to edit button text" = "Toque duas vezes para editar o texto do botão";
+
+/* No comment provided by engineer. */
+"Double tap to edit label text" = "Toque duas vezes para editar o texto do rótulo";
+
+/* No comment provided by engineer. */
+"Double tap to edit placeholder text" = "Toque duas vezes para editar o texto de marcação";
 
 /* translators: accessibility text */
 "Double tap to edit this value" = "Toque duas vezes para editar essa informação";
@@ -2167,10 +2284,16 @@
 "Double tap to move the block up" = "Toque duas vezes para mover o bloco para cima";
 
 /* No comment provided by engineer. */
+"Double tap to open Action Sheet to add image or video" = "Toque duas vezes para abrir a janela de ações para adicionar uma imagem ou vídeo";
+
+/* No comment provided by engineer. */
 "Double tap to open Action Sheet to edit, replace, or clear the image" = "Toque duas vezes para abrir a janela de ações para editar, substituir ou remover a imagem";
 
 /* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "Toque duas vezes para abrir a janela de ações com as opções disponíveis";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet to add image or video" = "Toque duas vezes para abrir a janela inferior para adicionar uma imagem ou vídeo";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Toque duas vezes para abrir a janela inferior para editar, substituir ou remover a imagem";
@@ -2225,6 +2348,9 @@
    Title of the drafts header in search list. */
 "Drafts" = "Rascunhos";
 
+/* No comment provided by engineer. */
+"Drag to adjust focal point" = "Arraste para ajustar o ponto focal";
+
 /* Label for page duplicate option. Tapping creates a copy of the page.
    Label for post duplicate option. Tapping creates a copy of the post. */
 "Duplicate" = "Duplicar";
@@ -2271,6 +2397,9 @@
 "Edit Post" = "Editar post";
 
 /* No comment provided by engineer. */
+"Edit cover media" = "Editar mídia de cobertura";
+
+/* No comment provided by engineer. */
 "Edit file" = "Editar arquivo";
 
 /* No comment provided by engineer. */
@@ -2278,6 +2407,9 @@
 
 /* No comment provided by engineer. */
 "Edit image" = "Editar imagem";
+
+/* No comment provided by engineer. */
+"Edit media" = "Editar mídia";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Editar novos posts e páginas com o editor de blocos.";
@@ -2375,9 +2507,6 @@
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Entrar no modo de tela cheia";
 
-/* No comment provided by engineer. */
-"Enter URL to embed here…" = "Digite aqui o URL da mídia a ser incorporada…";
-
 /* Enter a custom value */
 "Enter a custom value" = "Digite um valor personalizado";
 
@@ -2420,14 +2549,8 @@
    Title of a button. */
 "Enter your password instead." = "Digitar sua senha.";
 
-/* Error message displayed when restoring a site fails due to credentials not being configured. */
-"Enter your server credentials to enable one click site restores from backups." = "Digite as credenciais do seu servidor para ativar a restauração de sites em um clique através de backups.";
-
-/* Title for button when a site is missing server credentials */
-"Enter your server credentials to fix threat." = "Digite as credenciais de seu servidor para corrigir a ameaça.";
-
-/* Title for button when a site is missing server credentials */
-"Enter your server credentials to fix threats." = "Digite as credenciais de seu servidor para corrigir ameaças.";
+/* Error message displayed when site credentials aren't configured. */
+"Enter your server credentials" = "Insira as credenciais do servidor";
 
 /* Generic error alert title
    Generic error.
@@ -2725,6 +2848,9 @@
 /* Displays the fixed threats */
 "Fixed" = "Corrigido";
 
+/* No comment provided by engineer. */
+"Fixed background" = "Fundo fixo";
+
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Corrigindo ameaças";
 
@@ -2853,7 +2979,9 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Gerando visualização...";
 
-/* View title for initial auth views. */
+/* Title of the Get Started button in the Blogging Reminders Settings flow.
+   Title of the Get Started button of the Blogging Reminders card in My Site.
+   View title for initial auth views. */
 "Get Started" = "Comece agora";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
@@ -3036,6 +3164,9 @@
 /* No comment provided by engineer. */
 "Hide keyboard" = "Ocultar teclado";
 
+/* No comment provided by engineer. */
+"Hide search heading" = "Ocultar título da pesquisa";
+
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
    Title of the post history screen */
@@ -3093,6 +3224,9 @@
 
 /* First line of remove follower warning in confirmation dialog. */
 "If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "Se removido, este seguidor irá parar de receber notificações sobre este site, a menos que voltar a seguir.";
+
+/* Message explaining that they will need to install Jetpack on one of their sites. */
+"If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "Se você já tiver um site, precisará instalar o plugin gratuito Jetpack e conectá-lo à sua conta do WordPress.com.";
 
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Se você continuar com o Google ou Apple e ainda não tiver uma conta no WordPress.com, você criará uma conta e concordará com nossos _Termos de Serviços_.";
@@ -3206,11 +3340,20 @@
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "Inserir mídia";
 
+/* No comment provided by engineer. */
+"Insert crosspost" = "Inserir post cruzado";
+
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Adicionar mídia";
 
+/* No comment provided by engineer. */
+"Insert mention" = "Inserir menção";
+
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Inserir selecionada";
+
+/* No comment provided by engineer. */
+"Inside" = "Dentro";
 
 /* Title of Insights stats filter. */
 "Insights" = "Resumo";
@@ -3259,6 +3402,9 @@
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
 "Invalid URL, please check if you wrote a valid site address." = "URL inválida. Verifique se você escreveu um endereço de site válido.";
+
+/* No comment provided by engineer. */
+"Invalid URL. Audio file not found." = "URL inválido. Arquivo de áudio não encontrado.";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Endpoint inválido";
@@ -3489,6 +3635,15 @@
 "Link To" = "Link para";
 
 /* No comment provided by engineer. */
+"Link inserted" = "Link inserido";
+
+/* No comment provided by engineer. */
+"Link label" = "Rótulo do link";
+
+/* No comment provided by engineer. */
+"Link text" = "Texto do link";
+
+/* No comment provided by engineer. */
 "Link to" = "Apontar para";
 
 /* Action. Label for navigate and display links to other posts on the site */
@@ -3627,6 +3782,9 @@
 "Log in with your WordPress.com username and password." = "Faça login com seu nome de usuário e sua senha do WordPress.com.";
 
 /* LogOut confirmation text, whenever there are no local changes */
+"Log out of Jetpack?" = "Sair do Jetpack?";
+
+/* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Fazer logout do WordPress?";
 
 /* Error message shown when a user is trying to login.
@@ -3653,6 +3811,9 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Navegação principal";
+
+/* Description of the Blogging Reminders card in My Site. */
+"Make the most of your site by setting goals and tracking your progress." = "Aproveite seu site ao máximo definindo objetivos e acompanhando seu progresso.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -3731,6 +3892,9 @@
    Title label for the media settings section in the app settings */
 "Media" = "Mídia";
 
+/* No comment provided by engineer. */
+"Media & Text settings" = "Configurações de mídia e texto";
+
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "Tamanho do cache de mídia";
 
@@ -3766,6 +3930,9 @@
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "O tamanho da mídia (%1$@) é muito grande para enviar. O máximo permitido é de %2$@";
 
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Media options" = "Opções de mídia";
+
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "Falha ao visualizar mídia.";
 
@@ -3777,6 +3944,9 @@
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Média";
+
+/* No comment provided by engineer. */
+"Mention" = "Menção";
 
 /* The default text used for filling the name of a menu when creating it. */
 "Menu" = "Menu";
@@ -3806,6 +3976,9 @@
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
+
+/* No comment provided by engineer. */
+"Minimum height" = "Altura mínima";
 
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Diversas vulnerabilidades";
@@ -3967,8 +4140,7 @@
 /* Describes a status of a plugin */
 "Needs Update" = "Precisa de atualização";
 
-/* Header of section in Plugin Directory showing newest plugins
-   New button badge on Stories Post button */
+/* Header of section in Plugin Directory showing newest plugins */
 "New" = "Novos";
 
 /* Blocklist Keyword Insertion Title */
@@ -4007,7 +4179,8 @@
 /* Next action on share extension editor screen.
    Next screen button title
    Title of a button.
-   Title of a button. The text should be capitalized. */
+   Title of a button. The text should be capitalized.
+   Title of button to navigate to the next screen. */
 "Next" = "Próximo";
 
 /* Table view title for the quick start section. */
@@ -4080,6 +4253,9 @@
 /* A short message that informs the user no sites could be loaded in the share extension. */
 "No available sites" = "Nenhum site disponível";
 
+/* No comment provided by engineer. */
+"No button" = "Sem botão";
+
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Sem comentários";
 
@@ -4094,6 +4270,9 @@
 
 /* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
 "No connections found for %@" = "Não foram encontradas conexões para %@";
+
+/* No comment provided by engineer. */
+"No custom placeholder set" = "Nenhum texto de marcação definido";
 
 /* Text displayed when Period stat section has no data. */
 "No data for this period" = "Nenhum dado para esse período";
@@ -4301,6 +4480,9 @@
 /* Register Domain - Address information field Number */
 "Number" = "Número";
 
+/* No comment provided by engineer. */
+"Number of columns" = "Número de colunas";
+
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Lista numerada";
 
@@ -4365,6 +4547,7 @@
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading notification likes.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -4374,6 +4557,9 @@
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Opa!";
+
+/* No comment provided by engineer. */
+"Opacity" = "Opacidade";
 
 /* No comment provided by engineer. */
 "Open Block Actions Menu" = "Abrir menu de ações do bloco";
@@ -4427,6 +4613,9 @@
 /* Invite: Message Hint. %1$d is the maximum number of characters allowed. */
 "Optional message up to %1$d characters to be included in the invitation." = "Mensagem opcional com até %1$d caracteres a ser incluída ao seu convite.";
 
+/* No comment provided by engineer. */
+"Optional placeholder…" = "Texto de marcação opcional...";
+
 /* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
 "Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "Opcional: digite uma mensagem personalizada com até %1$d caracteres para enviar com seu convite.";
 
@@ -4469,6 +4658,12 @@
 /* Other Notifications Streams Title
    Other Sites Notification Settings Title */
 "Other Sites" = "Outros sites";
+
+/* No comment provided by engineer. */
+"Outside" = "Externo";
+
+/* No comment provided by engineer. */
+"Overlay" = "Sobreposição";
 
 /* Used to indicate a setting is overridden in debug builds of the app */
 "Overridden" = "Substituído";
@@ -5554,7 +5749,16 @@
 "Search block" = "Pesquisar bloco";
 
 /* No comment provided by engineer. */
+"Search block label. Current text is" = "Rótulo do bloco de pesquisa. O texto atual é";
+
+/* No comment provided by engineer. */
 "Search blocks" = "Pesquisar blocos";
+
+/* No comment provided by engineer. */
+"Search button. Current button text is" = "Botão de pesquisa. O texto atual do botão é";
+
+/* No comment provided by engineer. */
+"Search input field." = "Campo de pesquisa.";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "Pesquisar ou digitar o URL";
@@ -5564,6 +5768,9 @@
 
 /* Text displayed when the search controller will be presented */
 "Search posts" = "Pesquisar posts";
+
+/* No comment provided by engineer. */
+"Search settings" = "Configurações de pesquisa";
 
 /* Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "Pesquise por gifs para adicionar em sua biblioteca de arquivos.";
@@ -5585,6 +5792,9 @@
 
 /* Button in Plugin Directory letting users see more plugins */
 "See All" = "Ver todos";
+
+/* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
+"See Instructions" = "Acessar as instruções";
 
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
@@ -5647,9 +5857,6 @@
 /* No comment provided by engineer. */
 "Select a layout" = "Selecionar um modelo";
 
-/* No comment provided by engineer. */
-"Select item" = "Selecionar item";
-
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Selecione a mídia.";
 
@@ -5661,6 +5868,9 @@
 
 /* Instructional text about the Sharing feature. */
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Selecione a conta que você deseja autorizar. Seus posts serão compartilhados automaticamente na conta selecionada.";
+
+/* Prompt shown on the Blogging Reminders Settings screen. */
+"Select the days you want to blog on" = "Selecione os dias nos quais deseja publicar";
 
 /* Accessibility hint for stat available to add to Insights. */
 "Select to add this stat to Insights." = "Selecione para adicionar esta estatística ao resumo.";
@@ -5753,6 +5963,10 @@
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Configurar Jetpack";
 
+/* Title of the Blogging Reminders card in My Site.
+   Title of the Blogging Reminders Settings screen. */
+"Set your blogging goals" = "Defina seus objetivos ao publicar";
+
 /* Title of a Quick Start Tour */
 "Set your site title" = "Defina o título do seu site";
 
@@ -5841,15 +6055,18 @@
 /* No comment provided by engineer. */
 "Show download button" = "Mostrar botão de download";
 
+/* No comment provided by engineer. */
+"Show media on left" = "Mostrar mídia à esquerda";
+
+/* No comment provided by engineer. */
+"Show media on right" = "Mostrar mídia à direita";
+
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "Mostrar senha";
 
 /* No comment provided by engineer. */
 "Show post content" = "Mostrar conteúdo do post";
-
-/* translators: Checkbox toggle label */
-"Show section" = "Mostrar seção";
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "Mostrar temas:";
@@ -6013,6 +6230,9 @@
 
 /* Title shown in alert to confirm skipping all quick start items */
 "Skip Quick Start" = "Pular o início rápido";
+
+/* translators: Slash inserter autocomplete results */
+"Slash inserter results" = "Resultados do adicionador com barra";
 
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Slug";
@@ -6231,9 +6451,6 @@
 /* Announced by VoiceOver when new domains suggestions are shown in Site Creation. */
 "Suggestions updated" = "Sugestões atualizadas";
 
-/* No comment provided by engineer. */
-"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Exiba uma lista resumida com os títulos de seu post. Adicione âncoras HTML aos blocos de Título para adicionar links aqui.";
-
 /* User role badge */
 "Super Admin" = "Superadministrador";
 
@@ -6283,9 +6500,6 @@
 
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "Padrão do sistema";
-
-/* No comment provided by engineer. */
-"Table of Contents" = "Sumário";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "Tabela exibindo %@";
@@ -6344,6 +6558,9 @@
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Toque aqui para mostrar ajuda";
+
+/* No comment provided by engineer. */
+"Tap to add content" = "Toque para adicionar conteúdo";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Toque para cancelar o upload.";
@@ -6647,6 +6864,9 @@
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Houve um erro ao carregar as atividades";
 
+/* Text displayed when there is a failure loading notification likes. */
+"There was an error loading likes" = "Houve um erro ao carregar as curtidas";
+
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "Ocorreu um erro ao carregar os planos";
 
@@ -6838,6 +7058,9 @@
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "Para usar as estatísticas em seu site, é necessário instalar o plugin Jetpack.";
 
+/* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
+"To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "Para usar esse aplicativo com %@, é necessário ter o plugin do Jetpack instalado e ativo.";
+
 /* Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
@@ -6903,9 +7126,6 @@
 /* No comment provided by engineer. */
 "Transform block…" = "Transformar bloco...";
 
-/* No comment provided by engineer. */
-"Translate" = "Traduzir";
-
 /* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
@@ -6934,6 +7154,9 @@
    Try Again. Action
    Try to load the list of interests again. */
 "Try Again" = "Tente novamente";
+
+/* Action button that will restart the login flow.Presented when logging in with a site address that does not have a valid Jetpack installation */
+"Try With Another Account" = "Tentar com outra conta";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
 "Try adjusting your date range filter" = "Tente ajustar o intervalo de datas no filtro";
@@ -6978,6 +7201,9 @@
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Nome de usuário do Twitter";
+
+/* No comment provided by engineer. */
+"Type a URL" = "Informe um URL";
 
 /* Placeholder text for domain search during site creation. */
 "Type a keyword for more ideas" = "Digite uma palavra-chave para mais ideias";
@@ -7340,6 +7566,9 @@
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Usar o editor de blocos";
 
+/* No comment provided by engineer. */
+"Use icon button" = "Usar ícone de botão";
+
 /* Footer text for Invite Links section of the Invite People screen. */
 "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Use este link para integrar os membros da sua equipe sem ter que convidá-los um por um. Qualquer pessoa que visitar este URL poderá se inscrever em sua organização, mesmo que tenha recebido o link de outra pessoa, então certifique-se de compartilhá-lo com pessoas de confiança.";
 
@@ -7674,6 +7903,9 @@
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "Nós usamos outras ferramentas de acompanhamento, inclusive algumas de terceiros. Leia mais sobre elas e como controlá-las.";
 
+/* Message explaining that WordPress was not detected. */
+"We were not able to detect a WordPress site at the address you entered. Please make sure WordPress is installed and that you are running the latest available version." = "Não foi possível detectar um site do WordPress no endereço inserido. Certifique-se de que o WordPress esteja instalado e a versão sendo executada seja a mais recente disponível.";
+
 /* Error message displayed when an error occurred sending the magic link email. */
 "We were unable to send you an email at this time. Please try again later." = "Não foi possível enviar um e-mail para você no momento. Tente novamente mais tarde.";
 
@@ -7792,6 +8024,9 @@
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "Desejamos boas-vindas ao criador de sites mais popular do mundo.";
 
+/* Description on the first screen of the Blogging Reminders Settings flow. */
+"Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress." = "Parabéns pelo seu primeiro post! Continue assim. Agora você pode definir os objetivos de seu site, receber lembretes e acompanhar seu progresso.";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "Oeste";
 
@@ -7877,6 +8112,9 @@
 
 /* Nav bar button title to set the site used for Stats widgets. */
 "Widgets" = "Widgets";
+
+/* No comment provided by engineer. */
+"Width Settings" = "Configurações de largura";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Não será exibido publicamente.";
@@ -7989,8 +8227,17 @@
 /* No comment provided by engineer. */
 "Write code…" = "Insira o código...";
 
+/* No comment provided by engineer. */
+"Write title…" = "Insira o título...";
+
 /* Title for the writing section in site settings screen */
 "Writing" = "Escrita";
+
+/* No comment provided by engineer. */
+"X-Axis Position" = "Posição eixo X";
+
+/* No comment provided by engineer. */
+"Y-Axis Position" = "Posição eixo Y";
 
 /* Option to select the Yahoo Mail app when logging in with magic links */
 "Yahoo Mail" = "Yahoo Mail";
@@ -8045,6 +8292,12 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "É possível substituir essas configurações para posts individuais.";
+
+/* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
+"You can update this any time via My Site > Site Settings" = "Você pode atualizar isso a qualquer momento em Meu site > Configurações do site";
+
+/* Prompt shown on the Blogging Reminders Settings screen. */
+"You can update this any time." = "Você pode atualizar isso a qualquer momento.";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Você não pode usar este endereço de e-mail para se inscrever. Esse provedor bloqueia alguns de nossos e-mails. Use outro provedor de e-mail.";
@@ -8258,14 +8511,14 @@
 /* Label displayed on audio media items. */
 "audio" = "áudio";
 
+/* translators: displays audio file extension. e.g. MP3 audio file */
+"audio file" = "arquivo de áudio";
+
 /* Used when displaying author of a plugin. */
 "by %@" = "por %@";
 
 /* The menu item to select during a guided tour. */
 "connections" = "conexões";
-
-/* No comment provided by engineer. */
-"document outline" = "visão geral do documento";
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "Não é ótimo riscar os itens da lista?";
@@ -8320,9 +8573,6 @@
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "número de telefone";
 
-/* No comment provided by engineer. */
-"summary" = "sumário";
-
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "estes itens serão excluídos:";
 
@@ -8367,6 +8617,9 @@
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "seu novo domínio %@ está sendo configurado. Seu site está dando saltos de alegria!";
+
+/* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
+"your site" = "seu site";
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Acessar com o Google.";

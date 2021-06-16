@@ -1,9 +1,11 @@
-What’s new in this update?
+* [**] Reader Post details: now shows a summary of Likes for the post. Tapping it displays the full list of Likes. [#16628]
+* [*] Fix notice overlapping the ActionSheet that displays the Site Icon controls. [#16579]
+* [*] Fix login error for WordPress.org sites to show inline. [#16614]
+* [*] Disables the ability to open the editor for Post Pages [#16369]
+* [*] Fixed an issue that could cause a crash when moderating Comments. [#16645]
+* [*] Fix notice overlapping the ActionSheet that displays the QuickStart Removal. [#16609]
+* [*] Site Pages: when setting a parent, placeholder text is now displayed for pages with blank titles. [#16661]
+* [***] Block Editor: Audio block now available on WP.com sites on the free plan. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3523]
+* [**] You can now create a Site Icon for your site using an emoji. [#16670] 
+* [*] Fix notice overlapping the ActionSheet that displays the More Actions in the Editor. [#16658]
 
-Keep up-to-date on any sites you’ve recently been added to by pulling down to refresh on the New Sites screen.
-
-On sites with more than one author, you’ll now be able to switch the author assigned to any Post or Page.
-
-You can now authenticate login requests while you're using the app.
-
-Finally, we fixed a bug with the Quick Start tour. When you follow a site from the reader, the Quick Start checklist will now update your progress (instead of remaining unchecked.)

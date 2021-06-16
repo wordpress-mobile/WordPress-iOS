@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20E232" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19G2021" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="autosaveContent" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="autosaveExcerpt" optional="YES" attributeType="String" syncable="YES"/>
@@ -117,7 +117,6 @@
     </entity>
     <entity name="BlockEditorSettingElement" representedClassName="BlockEditorSettingElement" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="order" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="slug" attributeType="String" syncable="YES"/>
         <attribute name="type" attributeType="String" syncable="YES"/>
         <attribute name="value" attributeType="String" syncable="YES"/>
@@ -127,7 +126,6 @@
         <attribute name="checksum" attributeType="String" syncable="YES"/>
         <attribute name="isFSETheme" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="lastUpdated" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="rawStyles" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="blockEditorSettings" inverseEntity="Blog" syncable="YES"/>
         <relationship name="elements" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="BlockEditorSettingElement" inverseName="settings" inverseEntity="BlockEditorSettingElement" syncable="YES"/>
     </entity>
@@ -671,6 +669,7 @@
         <attribute name="blogDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="blogName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="blogURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="canSubscribeComments" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="commentCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsOpen" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dateSynced" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -692,6 +691,7 @@
         <attribute name="isSeenSupported" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isSharingEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isSiteBlocked" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isSubscribedComments" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isWPCom" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="likeCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="organizationID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -969,8 +969,8 @@
         <element name="AllTimeStatsRecordValue" positionX="323.8671875" positionY="1792.16015625" width="128" height="118"/>
         <element name="AnnualAndMostPopularTimeStatsRecordValue" positionX="5.7890625" positionY="1972.53515625" width="128" height="253"/>
         <element name="BasePost" positionX="-1100.31640625" positionY="-317.4140625" width="128" height="285"/>
-        <element name="BlockEditorSettingElement" positionX="-1620" positionY="-432" width="128" height="119"/>
-        <element name="BlockEditorSettings" positionX="-1629" positionY="-441" width="128" height="119"/>
+        <element name="BlockEditorSettingElement" positionX="-1620" positionY="-432" width="128" height="104"/>
+        <element name="BlockEditorSettings" positionX="-1629" positionY="-441" width="128" height="104"/>
         <element name="Blog" positionX="315.19921875" positionY="-178.44921875" width="188.421875" height="854"/>
         <element name="BlogAuthor" positionX="564.83203125" positionY="-385.12109375" width="128" height="164"/>
         <element name="BlogSettings" positionX="1056.86328125" positionY="236.3984375" width="128" height="853"/>
@@ -1015,7 +1015,7 @@
         <element name="ReaderDefaultTopic" positionX="-1651.8125" positionY="578.61328125" width="128" height="45"/>
         <element name="ReaderGapMarker" positionX="-1092.98828125" positionY="814.5703125" width="128" height="45"/>
         <element name="ReaderListTopic" positionX="-1500.2890625" positionY="932.5703125" width="128" height="135"/>
-        <element name="ReaderPost" positionX="-1102" positionY="72.3046875" width="128" height="734"/>
+        <element name="ReaderPost" positionX="-1102" positionY="72.3046875" width="128" height="28"/>
         <element name="ReaderSearchSuggestion" positionX="-1292.68359375" positionY="211.44921875" width="128" height="75"/>
         <element name="ReaderSearchTopic" positionX="-1657.08984375" positionY="930.36328125" width="128" height="45"/>
         <element name="ReaderSiteInfoSubscriptionEmail" positionX="-1832.21875" positionY="567.79296875" width="128" height="105"/>

@@ -86,6 +86,7 @@ class MediaVideoExporter: MediaExporter {
             onError(exporterErrorWith(error: VideoExportError.videoAssetWasDetectedAsNotExportable))
             return Progress.discreteCompletedProgress()
         }
+
         guard let session = AVAssetExportSession(asset: asset, presetName: options.exportPreset) else {
             onError(exporterErrorWith(error: VideoExportError.failedToInitializeVideoExportSession))
             return Progress.discreteCompletedProgress()

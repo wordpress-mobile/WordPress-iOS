@@ -1,5 +1,25 @@
+17.7
+-----
+
+
+17.6
+-----
+* [**] Reader Post details: now shows a summary of Likes for the post. Tapping it displays the full list of Likes. [#16628]
+* [*] Fix notice overlapping the ActionSheet that displays the Site Icon controls. [#16579]
+* [*] Fix login error for WordPress.org sites to show inline. [#16614]
+* [*] Disables the ability to open the editor for Post Pages [#16369]
+* [*] Fixed an issue that could cause a crash when moderating Comments. [#16645]
+* [*] Fix notice overlapping the ActionSheet that displays the QuickStart Removal. [#16609]
+* [*] Site Pages: when setting a parent, placeholder text is now displayed for pages with blank titles. [#16661]
+* [***] Block Editor: Audio block now available on WP.com sites on the free plan. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3523]
+* [**] You can now create a Site Icon for your site using an emoji. [#16670] 
+* [*] Fix notice overlapping the ActionSheet that displays the More Actions in the Editor. [#16658]
+
 17.5
 -----
+* [*] Fixed a crash when rendering the Noticons font in rich notification. [#16525]
+* [**] Block Editor: Audio block: Add Insert from URL functionality. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3031]
+* [***] Block Editor: Slash command to insert new blocks. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3250]
 * [**] Like Notifications: now displays all users who liked a post or comment. [#15662]
 * [*] Fixed a bug that was causing some fonts to become enormous when large text was enabled.
 * [*] Fixed scrolling and item selection in the Plugins directory. [#16087]
@@ -13,6 +33,7 @@
 * [*] Fixed the Follow Sites Quick Start Tour so that Reader Search is highlighted. [#16391]
 * [*] Enabled approving login authentication requests via push notification while the app is in the foreground. [#16075] 
 * [**] Added pull-to-refresh to the My Site screen when a user has no sites. [#16241]
+* [***] Fixed a bug that was causing uploaded videos to not be viewable in other platforms. [#16548]
 
 17.3
 -----

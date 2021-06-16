@@ -1,0 +1,17 @@
+WordPress 17.5 sürümündeki yenilikler neler?
+
+Yeniden kullanılabilir bloklar burada! İçeriği bir kez oluşturun, blokunuzu kaydedin ve herhangi bir gönderi veya sayfada tekrar tekrar kullanın. 17.5 sürümünde blok yerleştirici menüsünde yeniden kullanılabilir blokları kullanıma hazır bulacaksınız.
+
+Yeni bloklar eklemek için menülerle uğraşmak istemeyenler için, 17.5 bunların doğrudan düzenleyiciden bir eğik çizgi komutuyla eklenmesine izin verir. Gönderinizi veya sayfanızı oluştururken bir eğik çizgi ekleyin ve blokun adına dokunmaya başlayın. Her şey hazır. Artık menü gerekmez.
+
+Ses konusuyla da ilgilendik. İstediğiniz ses dosyasının bağlantısı mı var? 17.5 sürümünde URL'nizi Ses Blokuna yapıştırmanız yeterlidir, WordPress onu gönderinize yerleştirir.
+
+Beğeni bildirimleri de 17.5 sürümünde ekstra bir parıltı kazandı. Artık sitenizdeki her gönderiyi ve yorumu kimin beğendiğini, anında görebilirsiniz.
+
+Ayrıca hatayla mücadele konusunda da çok uğraştık. İşte düzelttiklerimiz:
+
+Ekran okuyucular artık blok düzenleyicide adım hücresini seçebilir.
+
+Kullandığınız yazı tipi ne olursa olsun, büyük metnin ÇOK BÜYÜK hale gelmemesini sağladık. Sitelerim ekranının blog ayrıntıları üst bilgisindeki büyük metin desteği de iyileştirildi.
+
+Son olarak, Eklentiler dizininde öğe seçimi ve sabit kaydırma artık kendi kendine çalışıyor ve Noticons yazı tipi artık zengin bildirimlerde uygulamayı kilitlemiyor.
