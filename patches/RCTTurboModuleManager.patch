@@ -1,4 +1,0 @@
-300c300
-<           RCTBridgeModuleNameForClass(module));
----
->           RCTBridgeModuleNameForClass(Class(module)));
