@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-21 05:45:45+0000 */
+/* Translation-Revision-Date: 2021-06-01 17:52:07+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -26,6 +26,21 @@
 
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@ pe %2$@";
+
+/* Error message displayed when restoring a site fails due to credentials not being configured. %1$@ is a placeholder for the string 'Enter your server credentials'. */
+"%1$@ to enable one click site restores from backups." = "%1$@ pentru a activa restaurarea sitului din copiile de siguranță cu un singur clic.";
+
+/* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
+"%1$@ to fix this threat." = "%1$@ pentru a înlătura această amenințare.";
+
+/* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
+"%1$@ to fix threats." = "%1$@ pentru a înlătura amenințările.";
+
+/* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
+"%1$d blogger likes this." = "%1$d bloger apreciază asta.";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
+"%1$d bloggers like this." = "%1$d blogeri apreciază asta.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d din %2$d finalizate";
@@ -193,6 +208,9 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li cuvinte, %2$li de caractere";
 
+/* translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "Bloc %s";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "Opțiuni bloc %s";
 
@@ -201,6 +219,18 @@
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "Bloc %s. Acest bloc are conținut invalid";
+
+/* translators: %s: name of the reusable block */
+"%s converted to regular blocks" = "%s a fost convertit în blocuri normale";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"%s has URL set" = "%s are setat un URL";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"%s has no URL set" = "%s nu are setat un URL";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"%s social icon" = "Icon social %s";
 
 /* translators: Missing block alert title. %s: The localized block name */
 "'%s' is not fully-supported" = "„%s” nu este acceptat în totalitate";
@@ -456,10 +486,25 @@
 "Add any topic" = "Adaugă orice subiect";
 
 /* No comment provided by engineer. */
+"Add button text" = "Adaugă text în buton";
+
+/* No comment provided by engineer. */
 "Add caption" = "Adaugă text imaginii";
+
+/* No comment provided by engineer. */
+"Add image or video" = "Adaugă o imagine sau un video";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Adaugă o imagine sau un avatar care să reprezinte acest cont nou.";
+
+/* No comment provided by engineer. */
+"Add label…" = "Adaugă etichetă...";
+
+/* No comment provided by engineer. */
+"Add link text" = "Adaugă text la legătură";
+
+/* translators: %s: social link name e.g: \"Instagram\". */
+"Add link to %s" = "Adaugă o legătură la %s";
 
 /* No comment provided by engineer. */
 "Add menu item above" = "Adaugă element meniu deasupra";
@@ -551,6 +596,9 @@
 
 /* Description for the Jetpack Backup Restore message. %1$@ is a placeholder for the selected date. */
 "All of your selected items are now restored back to %1$@." = "Toate elementele selectate sunt restaurate acum înapoi la %1$@.";
+
+/* Title of the completion screen of the Blogging Reminders Settings screen. */
+"All set!" = "Gata!";
 
 /* Title of the congratulation screen that appears when all the tasks are completed */
 "All tasks complete" = "Toate sarcinile sunt finalizate";
@@ -990,8 +1038,17 @@
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Bold";
 
+/* No comment provided by engineer. */
+"Border Radius" = "Rotunjire chenar";
+
+/* No comment provided by engineer. */
+"Border Settings" = "Setări chenar";
+
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "Împarte firele de discuție pe mai multe pagini.";
+
+/* No comment provided by engineer. */
+"Briefly describe the link to help screen reader user" = "Descrie pe scurt legătura pentru a ajuta utilizatorii care folosesc cititorul de ecran";
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Răsfoiește toate temele pentru a o găsi pe cea care ți se potrivește perfect.";
@@ -1008,11 +1065,23 @@
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "Ocupat";
 
+/* No comment provided by engineer. */
+"Button Link URL" = "URL legătură buton";
+
 /* Title for a list of different button styles. */
 "Button Style" = "Stil buton";
 
 /* No comment provided by engineer. */
-"ButtonGroup" = "ButtonGroup";
+"Button inside" = "Buton în interior";
+
+/* No comment provided by engineer. */
+"Button outside" = "Buton în exterior";
+
+/* No comment provided by engineer. */
+"Button position" = "Poziție buton";
+
+/* No comment provided by engineer. */
+"Button width" = "Lățime buton";
 
 /* Label for the post author in the post detail. */
 "By " = "De";
@@ -1291,7 +1360,7 @@
 /* Explanatory text for Homepage Settings homepage type selection. */
 "Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Alege o primă pagină care să afișeze ultimele articole (blog clasic) sau o pagină fixă\/statică.";
 
-/* Menu option used for adding media from other applications. */
+/* No comment provided by engineer. */
 "Choose from device" = "Alege de pe dispozitiv";
 
 /* No comment provided by engineer. */
@@ -1329,6 +1398,9 @@
 
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Șterge cache-ul fișierelor media din dispozitiv";
+
+/* No comment provided by engineer. */
+"Clear Media" = "Șterge media";
 
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "Șterge jurnalele vechi de activitate";
@@ -1395,6 +1467,12 @@
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "Fundaluri pline de culoare";
+
+/* No comment provided by engineer. */
+"Column settings" = "Setări coloană";
+
+/* No comment provided by engineer. */
+"Columns Settings" = "Setări coloane";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combini fotografii, videouri și text pentru a crea articole narațiune captivante pe care vizitatorii tăi le pot citi și cu siguranță le vor îndrăgi.";
@@ -1624,6 +1702,9 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Continui cu Apple";
 
+/* No comment provided by engineer. */
+"Convert to regular blocks" = "Convertește în blocuri normale";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Bucătărie";
 
@@ -1733,6 +1814,9 @@
 /* Register Domain - Address information field Country Code */
 "Country Code" = "Cod de țară";
 
+/* No comment provided by engineer. */
+"Cover" = "Copertă";
+
 /* Title of a section on the debug screen that shows a list of actions related to crash logging */
 "Crash Logging" = "Jurnalizare erori fatale";
 
@@ -1819,6 +1903,12 @@
 "Creating downloadable backup" = "Creez copia de siguranță care se poate descărca";
 
 /* No comment provided by engineer. */
+"Crop image to fill entire column" = "Decupează imaginea pentru a umple întreaga coloană";
+
+/* No comment provided by engineer. */
+"Crosspost" = "Crosspost";
+
+/* No comment provided by engineer. */
 "Current" = "Curent";
 
 /* Label title. Refers to the current WordPress.com plan for a user's site. */
@@ -1832,6 +1922,12 @@
 
 /* Week Period Accessibility label. Prefix the current selected period. Ex. Current period: Jan 6 to Jan 12. */
 "Current period: %@ to %@" = "Perioada curentă: %1$@ la %2$@";
+
+/* No comment provided by engineer. */
+"Current placeholder text is" = "Textul actual pentru substituent este";
+
+/* translators: accessibility text. Inform about current unit value. %s: Current unit value. */
+"Current unit is %s" = "Unitatea curentă este %s";
 
 /* translators: %s: current cell value. */
 "Current value is %s" = "Valoarea curentă este %s";
@@ -2133,6 +2229,7 @@
    Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
    Text displayed by the right navigation button title
+   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
    Title of the Done button on the me page */
@@ -2140,6 +2237,9 @@
 
 /* Title for label when there are no threats on the users site */
 "Don’t worry about a thing" = "Nu-ți faci griji pentru nimic";
+
+/* No comment provided by engineer. */
+"Double tap and hold to edit" = "Atinge de două ori și ține apăsat pentru a edita";
 
 /* Screen reader hint for button that will move the menu item */
 "Double tap and hold to move this menu item up or down" = "Atinge de două ori și ține apăsat pentru a muta acest element de meniu în sus sau în jos";
@@ -2152,6 +2252,15 @@
 
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "Atinge de două ori pentru a renunța";
+
+/* No comment provided by engineer. */
+"Double tap to edit button text" = "Atinge de două ori pentru a edita textul butonului";
+
+/* No comment provided by engineer. */
+"Double tap to edit label text" = "Atinge de două ori pentru a edita textul etichetei";
+
+/* No comment provided by engineer. */
+"Double tap to edit placeholder text" = "Atinge de două ori pentru a edita textul substituentului";
 
 /* translators: accessibility text */
 "Double tap to edit this value" = "Atinge de două ori pentru a edita această valoare";
@@ -2175,10 +2284,16 @@
 "Double tap to move the block up" = "Atinge de două ori pentru a muta blocul în sus";
 
 /* No comment provided by engineer. */
+"Double tap to open Action Sheet to add image or video" = "Atinge de două ori pentru a deschide foaia Acțiuni ca să adaugi o imagine sau un video";
+
+/* No comment provided by engineer. */
 "Double tap to open Action Sheet to edit, replace, or clear the image" = "Atinge de două ori pentru a deschide foaia Acțiuni pentru a edita, înlocui sau șterge imaginea";
 
 /* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "Atinge de două ori pentru a deschide Foaia acțiuni cu opțiunile disponibile";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet to add image or video" = "Atinge de două ori pentru a deschide foaia de jos ca să adaugi o imagine sau un video";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Atinge de două ori pentru a deschide foaia Jos pentru a edita, înlocui sau șterge imaginea";
@@ -2233,6 +2348,9 @@
    Title of the drafts header in search list. */
 "Drafts" = "Ciorne";
 
+/* No comment provided by engineer. */
+"Drag to adjust focal point" = "Trage pentru a regla punctul de focalizare";
+
 /* Label for page duplicate option. Tapping creates a copy of the page.
    Label for post duplicate option. Tapping creates a copy of the post. */
 "Duplicate" = "Fă duplicat";
@@ -2279,6 +2397,9 @@
 "Edit Post" = "Editează articolul";
 
 /* No comment provided by engineer. */
+"Edit cover media" = "Editează elementul media pentru copertă";
+
+/* No comment provided by engineer. */
 "Edit file" = "Editează fișierul";
 
 /* No comment provided by engineer. */
@@ -2286,6 +2407,9 @@
 
 /* No comment provided by engineer. */
 "Edit image" = "Editează imaginea";
+
+/* No comment provided by engineer. */
+"Edit media" = "Editează media";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Editează articole și pagini noi cu editorul de blocuri.";
@@ -2386,9 +2510,6 @@
 /* Accessibility Label for the enter full screen button on the comment reply text view */
 "Enter Full Screen" = "Intră pe ecran complet";
 
-/* No comment provided by engineer. */
-"Enter URL to embed here…" = "Introdu URL-ul pentru a îngloba aici...";
-
 /* Enter a custom value */
 "Enter a custom value" = "Introdu o valoare  personalizată";
 
@@ -2431,14 +2552,8 @@
    Title of a button. */
 "Enter your password instead." = "În schimb, introdu parola.";
 
-/* Error message displayed when restoring a site fails due to credentials not being configured. */
-"Enter your server credentials to enable one click site restores from backups." = "Introdu datele de conectare la server pentru a activa pe sit restaurările cu un singur clic din copiile tale de siguranță.";
-
-/* Title for button when a site is missing server credentials */
-"Enter your server credentials to fix threat." = "Pentru a înlătura amenințarea, introdu datele de conectare la server.";
-
-/* Title for button when a site is missing server credentials */
-"Enter your server credentials to fix threats." = "Pentru a înlătura amenințările, introdu datele de conectare la server.";
+/* Error message displayed when site credentials aren't configured. */
+"Enter your server credentials" = "Introdu datele de conectare la server";
 
 /* Generic error alert title
    Generic error.
@@ -2736,6 +2851,9 @@
 /* Displays the fixed threats */
 "Fixed" = "Înlăturate";
 
+/* No comment provided by engineer. */
+"Fixed background" = "Fundal fix";
+
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Înlătur amenințările...";
 
@@ -2864,7 +2982,9 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Generez previzualizarea";
 
-/* View title for initial auth views. */
+/* Title of the Get Started button in the Blogging Reminders Settings flow.
+   Title of the Get Started button of the Blogging Reminders card in My Site.
+   View title for initial auth views. */
 "Get Started" = "Începe";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
@@ -3047,6 +3167,9 @@
 /* No comment provided by engineer. */
 "Hide keyboard" = "Ascunde tastatura";
 
+/* No comment provided by engineer. */
+"Hide search heading" = "Ascunde subtitlul de căutare";
+
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
    Title of the post history screen */
@@ -3220,11 +3343,20 @@
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "Inserare media";
 
+/* No comment provided by engineer. */
+"Insert crosspost" = "Inserează crosspost";
+
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Inserează media";
 
+/* No comment provided by engineer. */
+"Insert mention" = "Inserează mențiunea";
+
 /* Default accessibility label for the media picker insert button. */
 "Insert selected" = "Inserează cele selectate";
+
+/* No comment provided by engineer. */
+"Inside" = "În interior";
 
 /* Title of Insights stats filter. */
 "Insights" = "Perspective";
@@ -3273,6 +3405,9 @@
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
 "Invalid URL, please check if you wrote a valid site address." = "URL invalid, te rog verifică dacă ai scris o adresă de sit validă.";
+
+/* No comment provided by engineer. */
+"Invalid URL. Audio file not found." = "URL invalid. Nu am găsit fișierul audio.";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Punct-final invalid";
@@ -3503,6 +3638,15 @@
 "Link To" = "Legătură la";
 
 /* No comment provided by engineer. */
+"Link inserted" = "Legătură inserată";
+
+/* No comment provided by engineer. */
+"Link label" = "Etichetă legătură";
+
+/* No comment provided by engineer. */
+"Link text" = "Text legătură";
+
+/* No comment provided by engineer. */
 "Link to" = "Legătură la";
 
 /* Action. Label for navigate and display links to other posts on the site */
@@ -3671,6 +3815,9 @@
 /* No comment provided by engineer. */
 "Main Navigation" = "Navigare principală";
 
+/* Description of the Blogging Reminders card in My Site. */
+"Make the most of your site by setting goals and tracking your progress." = "Beneficiază la maxim de situl tău, îți stabilești obiectivele și urmărești progresul în atingerea lor.";
+
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -3748,6 +3895,9 @@
    Title label for the media settings section in the app settings */
 "Media" = "Media";
 
+/* No comment provided by engineer. */
+"Media & Text settings" = "Setări media și text";
+
 /* Label for size of media cache in the app. */
 "Media Cache Size" = " Dimensiune cache media";
 
@@ -3783,6 +3933,9 @@
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "Dimensiunea fișierului media (%1$@) este prea mare pentru încărcare. Dimensiunea maximă permisă este de %2$@";
 
+/* translators: %s: block title e.g: \"Paragraph\". */
+"Media options" = "Opțiuni media";
+
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "Previzualizarea media a eșuat.";
 
@@ -3794,6 +3947,9 @@
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Medie";
+
+/* No comment provided by engineer. */
+"Mention" = "Mențiune";
 
 /* The default text used for filling the name of a menu when creating it. */
 "Menu" = "Meniu";
@@ -3823,6 +3979,9 @@
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
+
+/* No comment provided by engineer. */
+"Minimum height" = "Înălțime minimă";
 
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Vulnerabilități diverse";
@@ -4023,7 +4182,8 @@
 /* Next action on share extension editor screen.
    Next screen button title
    Title of a button.
-   Title of a button. The text should be capitalized. */
+   Title of a button. The text should be capitalized.
+   Title of button to navigate to the next screen. */
 "Next" = "Următorul";
 
 /* Table view title for the quick start section. */
@@ -4096,6 +4256,9 @@
 /* A short message that informs the user no sites could be loaded in the share extension. */
 "No available sites" = "Niciun sit disponibil";
 
+/* No comment provided by engineer. */
+"No button" = "Niciun buton";
+
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Niciun comentariu";
 
@@ -4110,6 +4273,9 @@
 
 /* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
 "No connections found for %@" = "Nicio conexiune găsită pentru %@";
+
+/* No comment provided by engineer. */
+"No custom placeholder set" = "Nu ai setat niciun substituent personalizat";
 
 /* Text displayed when Period stat section has no data. */
 "No data for this period" = "Nu există date pentru această perioadă";
@@ -4317,6 +4483,9 @@
 /* Register Domain - Address information field Number */
 "Number" = "Număr";
 
+/* No comment provided by engineer. */
+"Number of columns" = "Număr de coloane";
+
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Listă numerotată";
 
@@ -4393,6 +4562,9 @@
 "Oops!" = "Hopa!";
 
 /* No comment provided by engineer. */
+"Opacity" = "Opacitate";
+
+/* No comment provided by engineer. */
 "Open Block Actions Menu" = "Deschide meniul acțiuni blocuri";
 
 /* Opens iOS's Device Settings for WordPress App */
@@ -4444,6 +4616,9 @@
 /* Invite: Message Hint. %1$d is the maximum number of characters allowed. */
 "Optional message up to %1$d characters to be included in the invitation." = "Mesaj opțional conținând până la %1$d de caractere care să fi inclus în invitație.";
 
+/* No comment provided by engineer. */
+"Optional placeholder…" = "Substituent opțional...";
+
 /* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
 "Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "Opțional: introdu un mesaj personalizat care să conțină până la %1$d de caractere pentru a fi trimis împreună cu invitația ta.";
 
@@ -4486,6 +4661,12 @@
 /* Other Notifications Streams Title
    Other Sites Notification Settings Title */
 "Other Sites" = "Alte situri";
+
+/* No comment provided by engineer. */
+"Outside" = "În exterior";
+
+/* No comment provided by engineer. */
+"Overlay" = "Suprapune";
 
 /* Used to indicate a setting is overridden in debug builds of the app */
 "Overridden" = "Contramandată";
@@ -5571,7 +5752,16 @@
 "Search block" = "Bloc Căutare";
 
 /* No comment provided by engineer. */
+"Search block label. Current text is" = "Etichetă buton Căutare. Textul actual este";
+
+/* No comment provided by engineer. */
 "Search blocks" = "Caută blocuri";
+
+/* No comment provided by engineer. */
+"Search button. Current button text is" = "Buton Căutare. Textul actual al butonului este";
+
+/* No comment provided by engineer. */
+"Search input field." = "Câmp de intrare pentru căutare.";
 
 /* No comment provided by engineer. */
 "Search or type URL" = "Caută sau tastează URL-ul";
@@ -5581,6 +5771,9 @@
 
 /* Text displayed when the search controller will be presented */
 "Search posts" = "Caută articole";
+
+/* No comment provided by engineer. */
+"Search settings" = "Setări căutare";
 
 /* Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "Caută pentru a găsi imagini GIF pe care să le adaugi în biblioteca ta Media!";
@@ -5667,9 +5860,6 @@
 /* No comment provided by engineer. */
 "Select a layout" = "Setează un aranjament";
 
-/* No comment provided by engineer. */
-"Select item" = "Selectează un element";
-
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Selectează media.";
 
@@ -5681,6 +5871,9 @@
 
 /* Instructional text about the Sharing feature. */
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Selectează contul pe care vrei să-l autorizezi. Reține că articolele tale vor fi automat partajate pe contul respectiv.";
+
+/* Prompt shown on the Blogging Reminders Settings screen. */
+"Select the days you want to blog on" = "Selectează zilele în care vrei să scrii pe blog";
 
 /* Accessibility hint for stat available to add to Insights. */
 "Select to add this stat to Insights." = "Selectează pentru a adăuga aceste statistici în Perspective.";
@@ -5773,6 +5966,10 @@
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Inițializează Jetpack";
 
+/* Title of the Blogging Reminders card in My Site.
+   Title of the Blogging Reminders Settings screen. */
+"Set your blogging goals" = "Stabilește-ți obiectivele de blogging";
+
 /* Title of a Quick Start Tour */
 "Set your site title" = "Setează titlul sitului";
 
@@ -5861,15 +6058,18 @@
 /* No comment provided by engineer. */
 "Show download button" = "Arată butonul de descărcare";
 
+/* No comment provided by engineer. */
+"Show media on left" = "Arată media în stânga";
+
+/* No comment provided by engineer. */
+"Show media on right" = "Arată media în dreapta";
+
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
 "Show password" = "Arată parola";
 
 /* No comment provided by engineer. */
 "Show post content" = "Arată conținutul articolului";
-
-/* translators: Checkbox toggle label */
-"Show section" = "Arată secțiunea";
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "Arată temele:";
@@ -6033,6 +6233,9 @@
 
 /* Title shown in alert to confirm skipping all quick start items */
 "Skip Quick Start" = "Sari peste Inițierea rapidă";
+
+/* translators: Slash inserter autocomplete results */
+"Slash inserter results" = "Rezultatele dispozitivului de inserare „\/”";
 
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Descriptor";
@@ -6251,9 +6454,6 @@
 /* Announced by VoiceOver when new domains suggestions are shown in Site Creation. */
 "Suggestions updated" = "Sugestiile au fost actualizate";
 
-/* No comment provided by engineer. */
-"Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here." = "Face un rezumat al articolului folosind o listă de subtitluri. Adaugă ancore HTML la blocurile Subtitlu pentru a le lega aici.";
-
 /* User role badge */
 "Super Admin" = "Super-administrator";
 
@@ -6303,9 +6503,6 @@
 
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "Defecțiune în sistem";
-
-/* No comment provided by engineer. */
-"Table of Contents" = "Cuprins";
 
 /* Accessibility of stats table. Placeholder will be populated with name of data shown in table. */
 "Table showing %@" = "Tabel arătând %@";
@@ -6364,6 +6561,9 @@
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Atinge aici pentru a afișa ajutorul";
+
+/* No comment provided by engineer. */
+"Tap to add content" = "Atinge pentru a adăuga conținut";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Atinge pentru anularea încărcării.";
@@ -6929,9 +7129,6 @@
 /* No comment provided by engineer. */
 "Transform block…" = "Transformă blocul...";
 
-/* No comment provided by engineer. */
-"Translate" = "Tradu";
-
 /* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
@@ -7007,6 +7204,9 @@
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Nume utilizator Twitter";
+
+/* No comment provided by engineer. */
+"Type a URL" = "Introdu un URL";
 
 /* Placeholder text for domain search during site creation. */
 "Type a keyword for more ideas" = "Introdu un cuvânt cheie pentru mai multe idei";
@@ -7368,6 +7568,9 @@
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Folosește editorul de blocuri";
+
+/* No comment provided by engineer. */
+"Use icon button" = "Folosește butonul icon";
 
 /* Footer text for Invite Links section of the Invite People screen. */
 "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Folosește această legătură pentru a mării numărul de membri din echipa ta fără a fi nevoie să-i inviți individual. Oricine vizitează acest URL va putea să se înscrie în organizația ta, chiar dacă a primit o invitație de la altcineva, deci asigură-te că partajezi legătura cu persoane de încredere.";
@@ -7824,6 +8027,9 @@
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "Bine ai venit la cel mai popular constructor de situri web din lume.";
 
+/* Description on the first screen of the Blogging Reminders Settings flow. */
+"Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress." = "Bravo, pentru primul tău articol! Ține-o tot așa. Acum îți poți stabili obiectivele și să urmărești progresul în atingerea lor și poți primi reamintiri.";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "Vest";
 
@@ -7909,6 +8115,9 @@
 
 /* Nav bar button title to set the site used for Stats widgets. */
 "Widgets" = "Piese";
+
+/* No comment provided by engineer. */
+"Width Settings" = "Setări lățime";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Nu vor fi afișate public.";
@@ -8021,8 +8230,17 @@
 /* No comment provided by engineer. */
 "Write code…" = "Scrie codul...";
 
+/* No comment provided by engineer. */
+"Write title…" = "Scrie titlul...";
+
 /* Title for the writing section in site settings screen */
 "Writing" = "Scriere";
+
+/* No comment provided by engineer. */
+"X-Axis Position" = "Poziție pe axa X";
+
+/* No comment provided by engineer. */
+"Y-Axis Position" = "Poziție pe axa Y";
 
 /* Option to select the Yahoo Mail app when logging in with magic links */
 "Yahoo Mail" = "Yahoo Mail";
@@ -8077,6 +8295,12 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Poți suprascrie aceste setări pentru articole indiviluale.";
+
+/* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
+"You can update this any time via My Site > Site Settings" = "Poți actualiza oricând mergând la Situl meu > Setări sit";
+
+/* Prompt shown on the Blogging Reminders Settings screen. */
+"You can update this any time." = "Poți actualiza oricând.";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Nu poți folosi acea adresă de email pentru înregistrare. Avem probleme cu ele blocându-ne unele din emailurile noastre. Te rog folosește un alt furnizor de email.";
@@ -8290,14 +8514,14 @@
 /* Label displayed on audio media items. */
 "audio" = "audio";
 
+/* translators: displays audio file extension. e.g. MP3 audio file */
+"audio file" = "fișier audio";
+
 /* Used when displaying author of a plugin. */
 "by %@" = "de %@";
 
 /* The menu item to select during a guided tour. */
 "connections" = "conexiuni";
-
-/* No comment provided by engineer. */
-"document outline" = "schiță document";
 
 /* subhead shown to users when they complete all Quick Start items */
 "doesn’t it feel good to cross things off a list?" = "nu te simți bine când bifezi lucrurile dintr-o listă?";
@@ -8351,9 +8575,6 @@
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "număr de telefon";
-
-/* No comment provided by engineer. */
-"summary" = "rezumat";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "aceste elemente vor fi șterse:";
