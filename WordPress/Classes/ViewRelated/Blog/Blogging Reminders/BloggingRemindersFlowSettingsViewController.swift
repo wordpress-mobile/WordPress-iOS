@@ -252,8 +252,21 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     @objc private func notifyMeButtonTapped() {
         tracker.buttonPressed(button: .continue, screen: .dayPicker)
 
-        let flowCompletionVC = BloggingRemindersFlowCompletionViewController(tracker: tracker)
-        navigationController?.pushViewController(flowCompletionVC, animated: true)
+        InteractiveNotificationsManager.shared.requestAuthorization { [weak self] allowed in
+            guard let self = self else {
+                return
+            }
+
+            DispatchQueue.main.async {
+                if allowed {
+                    let flowCompletionVC = BloggingRemindersFlowCompletionViewController(tracker: self.tracker)
+                    self.navigationController?.pushViewController(flowCompletionVC, animated: true)
+                } else {
+                    let pushPromptVC = BloggingRemindersPushPromptViewController(tracker: self.tracker)
+                    self.navigationController?.pushViewController(pushPromptVC, animated: true)
+                }
+            }
+        }
     }
 
     @objc private func dismissTapped() {
