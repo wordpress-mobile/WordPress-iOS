@@ -2,8 +2,11 @@
 /// Does not handle the pop animation since the BloggingReminders setup flow does not allow to navigate back.
 class BloggingRemindersAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 
+    private static let animationDuration: TimeInterval = 0.2
+    private static let sourceEndFrameOffset: CGFloat = -60.0
+
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.2
+        return Self.animationDuration
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -16,18 +19,20 @@ class BloggingRemindersAnimator: NSObject, UIViewControllerAnimatedTransitioning
             return
         }
         // final position of the destination view
-        let endFrame = transitionContext.finalFrame(for: destinationViewController)
+        let destinationEndFrame = transitionContext.finalFrame(for: destinationViewController)
+        // final position of the source view
+        let sourceEndFrame = transitionContext.initialFrame(for: sourceViewController).offsetBy(dx: Self.sourceEndFrameOffset, dy: .zero)
 
         // initial position of the destination view
-        let startFrame = endFrame.offsetBy(dx: endFrame.width, dy: .zero)
-        destinationViewController.view.frame = startFrame
+        let destinationStartFrame = destinationEndFrame.offsetBy(dx: destinationEndFrame.width, dy: .zero)
+        destinationViewController.view.frame = destinationStartFrame
 
-        sourceViewController.view.alpha = .zero
         transitionContext.containerView.insertSubview(destinationViewController.view, aboveSubview: sourceViewController.view)
 
         UIView.animate(withDuration: transitionDuration(using: transitionContext),
                        animations: {
-                        destinationViewController.view.frame = endFrame
+                        destinationViewController.view.frame = destinationEndFrame
+                        sourceViewController.view.frame = sourceEndFrame
                        }, completion: {_ in
                         transitionContext.completeTransition(true)
                        })
