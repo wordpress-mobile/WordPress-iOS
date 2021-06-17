@@ -467,19 +467,19 @@ PODS:
   - WPMediaPicker (1.7.2)
   - wpxmlrpc (0.9.0)
   - Yoga (1.14.0)
-  - ZendeskCommonUISDK (6.1.0)
-  - ZendeskCoreSDK (2.5.0)
-  - ZendeskMessagingAPISDK (3.8.1):
-    - ZendeskSDKConfigurationsSDK (~> 1.1.7)
-  - ZendeskMessagingSDK (3.8.1):
-    - ZendeskCommonUISDK (~> 6.1.0)
-    - ZendeskMessagingAPISDK (~> 3.8.1)
-  - ZendeskSDKConfigurationsSDK (1.1.7)
-  - ZendeskSupportProvidersSDK (5.2.0):
-    - ZendeskCoreSDK (~> 2.5.0)
-  - ZendeskSupportSDK (5.2.0):
-    - ZendeskMessagingSDK (~> 3.8.1)
-    - ZendeskSupportProvidersSDK (~> 5.2.0)
+  - ZendeskCommonUISDK (6.1.1)
+  - ZendeskCoreSDK (2.5.1)
+  - ZendeskMessagingAPISDK (3.8.2):
+    - ZendeskSDKConfigurationsSDK (~> 1.1.8)
+  - ZendeskMessagingSDK (3.8.2):
+    - ZendeskCommonUISDK (~> 6.1.1)
+    - ZendeskMessagingAPISDK (~> 3.8.2)
+  - ZendeskSDKConfigurationsSDK (1.1.8)
+  - ZendeskSupportProvidersSDK (5.3.0):
+    - ZendeskCoreSDK (~> 2.5.1)
+  - ZendeskSupportSDK (5.3.0):
+    - ZendeskMessagingSDK (~> 3.8.2)
+    - ZendeskSupportProvidersSDK (~> 5.3.0)
   - ZIPFoundation (0.9.12)
 
 DEPENDENCIES:
@@ -559,7 +559,7 @@ DEPENDENCIES:
   - WordPressUI (~> 1.12.1-beta)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.56.0-alpha1/third-party-podspecs/Yoga.podspec.json`)
-  - ZendeskSupportSDK (= 5.2.0)
+  - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
@@ -820,15 +820,15 @@ SPEC CHECKSUMS:
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: 982b1e7bf7c0873643955853293b269e4487890e
-  ZendeskCommonUISDK: 92ca6b16956430a2cb61c89aeaa6ca123d1f81fd
-  ZendeskCoreSDK: f3d5dcd6a18186dcecbecd56f66296c40fb2fcb4
-  ZendeskMessagingAPISDK: 986919a8f6f11a7019660d1ff798f1efb42fa572
-  ZendeskMessagingSDK: bf9a06f0cbb219617d9cf60a46aba1b68c8f3b30
-  ZendeskSDKConfigurationsSDK: 45fa87ec8418697f7fce5e56bec472052f0aedb5
-  ZendeskSupportProvidersSDK: 5221df6ca45e0b6f12470a5e8e65ccf3ccca17fa
-  ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
+  ZendeskCommonUISDK: 5808802951ad2bb424f0bed4259dc3c0ce9b52ec
+  ZendeskCoreSDK: 19a18e5ef2edcb18f4dbc0ea0d12bd31f515712a
+  ZendeskMessagingAPISDK: 144e0fb0e633a3c4e73149b781ab65338938d5a8
+  ZendeskMessagingSDK: 500e83d9413481e95180c37ddca0d4ef9d515600
+  ZendeskSDKConfigurationsSDK: 8371b468db0d09e9198f6c5a97818826943ee1ee
+  ZendeskSupportProvidersSDK: 2bdf8544f7cd0fd4c002546f5704b813845beb2a
+  ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 06e96ab71c38e95d03feab07db771d7b6e457616
+PODFILE CHECKSUM: 1c05dc7895c6918ca8cd9f5c49c49912f62e7c5c
 
 COCOAPODS: 1.10.1
