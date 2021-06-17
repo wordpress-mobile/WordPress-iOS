@@ -48,7 +48,7 @@ class BloggingRemindersScheduler {
     }
 
     enum Weekday: Int, Codable, Comparable {
-        case sunday = 0 // Keep this at 1 to match Apple's `DateComponents`' weekday number.
+        case sunday = 0
         case monday
         case tuesday
         case wednesday

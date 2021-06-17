@@ -9,7 +9,7 @@ class BloggingRemindersFlow {
         tracker.flowStarted(source: source)
 
         // TODO: Check whether we've already presented this flow to the user. @frosty
-        let flowIntroViewController = BloggingRemindersFlowIntroViewController(blogURIRepresentation: blog.objectID.uriRepresentation(), tracker: tracker)
+        let flowIntroViewController = BloggingRemindersFlowIntroViewController(for: blog, tracker: tracker)
         let navigationController = BloggingRemindersNavigationController(rootViewController: flowIntroViewController)
 
         let bottomSheet = BottomSheetViewController(childViewController: navigationController,

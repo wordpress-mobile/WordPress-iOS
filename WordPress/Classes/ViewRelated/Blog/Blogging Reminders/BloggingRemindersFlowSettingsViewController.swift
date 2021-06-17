@@ -135,7 +135,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     let tracker: BloggingRemindersTracker
 
     init(
-        blogURIRepresentation: URL,
+        for blog: Blog,
         tracker: BloggingRemindersTracker,
         calendar: Calendar? = nil) throws {
 
@@ -147,7 +147,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             return calendar
         }()
 
-        scheduler = try BloggingRemindersScheduler(blogIdentifier: blogURIRepresentation)
+        scheduler = try BloggingRemindersScheduler(blogIdentifier: blog.objectID.uriRepresentation())
 
         switch self.scheduler.schedule() {
         case .none:

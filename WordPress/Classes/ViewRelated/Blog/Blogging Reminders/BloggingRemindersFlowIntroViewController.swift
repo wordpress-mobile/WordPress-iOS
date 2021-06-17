@@ -59,11 +59,11 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
 
     // MARK: - Initializers
 
-    private let blogURIRepresentation: URL
+    private let blog: Blog
     private let tracker: BloggingRemindersTracker
 
-    init(blogURIRepresentation: URL, tracker: BloggingRemindersTracker) {
-        self.blogURIRepresentation = blogURIRepresentation
+    init(for blog: Blog, tracker: BloggingRemindersTracker) {
+        self.blog = blog
         self.tracker = tracker
 
         super.init(nibName: nil, bundle: nil)
@@ -148,7 +148,7 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         tracker.buttonPressed(button: .continue, screen: .main)
 
         do {
-            let flowSettingsViewController = try BloggingRemindersFlowSettingsViewController(blogURIRepresentation: blogURIRepresentation, tracker: tracker)
+            let flowSettingsViewController = try BloggingRemindersFlowSettingsViewController(for: blog, tracker: tracker)
 
             navigationController?.pushViewController(flowSettingsViewController, animated: true)
         } catch {
