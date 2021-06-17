@@ -172,6 +172,21 @@ struct PeriodStoreState {
     var postStatsFetchingStatuses = [Int: StoreFetchingStatus]()
 }
 
+protocol StatsPeriodStoreDelegate: AnyObject {
+    func didChangeSpamState(for referrerDomain: String, isSpam: Bool)
+    func chagingSpamStateForReferrerDomainFailed(oldValue: Bool)
+}
+
+extension StatsPeriodStoreDelegate where Self: UIViewController {
+    func didChangeSpamState(for referrerDomain: String, isSpam: Bool) {
+        // TODO:
+    }
+
+    func chagingSpamStateForReferrerDomainFailed(oldValue: Bool) {
+        // TODO:
+    }
+}
+
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
     private typealias PeriodOperation = StatsPeriodAsyncOperation
     private typealias PublishedPostOperation = StatsPublishedPostsAsyncOperation
@@ -180,6 +195,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
     private var statsServiceRemote: StatsServiceRemoteV2?
     private var operationQueue = OperationQueue()
     private let scheduler = Scheduler(seconds: 0.3)
+
+    weak var delegate: StatsPeriodStoreDelegate?
 
     init() {
         super.init(initialState: PeriodStoreState())
@@ -1357,9 +1374,9 @@ extension StatsPeriodStore {
                             hasChildren: !referrer.children.isEmpty) { [weak self] in
                 switch $0 {
                 case .success:
-                    break
+                    self?.delegate?.didChangeSpamState(for: referrerDomain, isSpam: !currentValue)
                 case .failure:
-                    break
+                    self?.delegate?.chagingSpamStateForReferrerDomainFailed(oldValue: currentValue)
                 }
             }
             break

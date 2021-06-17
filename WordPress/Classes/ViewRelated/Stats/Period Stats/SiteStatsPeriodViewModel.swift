@@ -41,9 +41,11 @@ class SiteStatsPeriodViewModel: Observable {
     init(store: StatsPeriodStore = StoreContainer.shared.statsPeriod,
          selectedDate: Date,
          selectedPeriod: StatsPeriodUnit,
-         periodDelegate: SiteStatsPeriodDelegate) {
+         periodDelegate: SiteStatsPeriodDelegate,
+         storeDelegate: StatsPeriodStoreDelegate) {
         self.periodDelegate = periodDelegate
         self.store = store
+        self.store.delegate = storeDelegate
         self.lastRequestedDate = selectedDate
         self.lastRequestedPeriod = selectedPeriod
 

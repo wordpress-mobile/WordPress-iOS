@@ -31,8 +31,10 @@ class SiteStatsDetailsViewModel: Observable {
 
     // MARK: - Init
 
-    init(detailsDelegate: SiteStatsDetailsDelegate) {
+    init(detailsDelegate: SiteStatsDetailsDelegate,
+         storeDelegate: StatsPeriodStoreDelegate) {
         self.detailsDelegate = detailsDelegate
+        self.periodStore.delegate = storeDelegate
     }
 
     // MARK: - Data Fetching

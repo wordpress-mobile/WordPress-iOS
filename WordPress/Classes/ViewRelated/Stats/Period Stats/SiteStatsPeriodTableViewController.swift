@@ -11,7 +11,6 @@ import WordPressFlux
     @objc func toggleSpamState(for referrerDomain: String, currentValue: Bool)
 }
 
-
 class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoadable {
     static var defaultStoryboardName: String = "SiteStatsDashboard"
 
@@ -129,7 +128,8 @@ private extension SiteStatsPeriodTableViewController {
         viewModel = SiteStatsPeriodViewModel(store: store,
                                              selectedDate: selectedDate,
                                              selectedPeriod: selectedPeriod,
-                                             periodDelegate: self)
+                                             periodDelegate: self,
+                                             storeDelegate: self)
         viewModel?.statsBarChartViewDelegate = self
         addViewModelListeners()
         viewModel?.startFetchingOverview()
@@ -208,6 +208,12 @@ private extension SiteStatsPeriodTableViewController {
     func viewIsVisible() -> Bool {
         return isViewLoaded && view.window != nil
     }
+}
+
+// MARK: - StatsPeriodStoreDelegate
+
+extension SiteStatsPeriodTableViewController: StatsPeriodStoreDelegate {
+    /* using default implementtion in protocol extension */
 }
 
 // MARK: - NoResultsViewHost

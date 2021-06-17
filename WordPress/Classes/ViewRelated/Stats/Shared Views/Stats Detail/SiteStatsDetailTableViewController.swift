@@ -146,7 +146,7 @@ extension SiteStatsDetailTableViewController: StatsForegroundObservable {
 private extension SiteStatsDetailTableViewController {
 
     func initViewModel() {
-        viewModel = SiteStatsDetailsViewModel(detailsDelegate: self)
+        viewModel = SiteStatsDetailsViewModel(detailsDelegate: self, storeDelegate: self)
 
         guard let statSection = statSection else {
             return
@@ -266,6 +266,12 @@ private extension SiteStatsDetailTableViewController {
         initViewModel()
     }
 
+}
+
+// MARK: - StatsPeriodStoreDelegate
+
+extension SiteStatsDetailTableViewController: StatsPeriodStoreDelegate {
+    /* using default implementtion in protocol extension */
 }
 
 // MARK: - SiteStatsDetailsDelegate Methods
