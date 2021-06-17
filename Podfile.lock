@@ -68,7 +68,7 @@ PODS:
     - React-RCTImage (= 0.64.0)
     - RNTAztecView
   - JTAppleCalendar (8.0.3)
-  - Kanvas (1.2.7)
+  - Kanvas (1.2.8)
   - lottie-ios (3.1.9)
   - MediaEditor (1.2.1):
     - CropViewController (~> 2.5.3)
@@ -452,7 +452,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.35.0):
+  - WordPressKit (4.36.0-beta.1):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -460,7 +460,7 @@ PODS:
     - WordPressShared (~> 1.15-beta)
     - wpxmlrpc (~> 0.9)
   - WordPressMocks (0.0.13)
-  - WordPressShared (1.16.0):
+  - WordPressShared (1.16.1-beta.2):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (~> 1.8)
   - WordPressUI (1.12.1-beta.3)
@@ -553,7 +553,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
   - WordPressAuthenticator (~> 1.38.0)
-  - WordPressKit (~> 4.35.0)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `issues/16599-add-new-reader-post-fields`)
   - WordPressMocks (~> 0.0.13)
   - WordPressShared (~> 1.16.0)
   - WordPressUI (~> 1.12.1-beta)
@@ -604,7 +604,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -711,6 +710,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.56.0-alpha1
+  WordPressKit:
+    :branch: issues/16599-add-new-reader-post-fields
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.56.0-alpha1/third-party-podspecs/Yoga.podspec.json
 
@@ -722,13 +724,13 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.56.0-alpha1
-  react-native-blur:
-    :commit: 9d2d744a5171f3a77564a43f87c2cfb3fbcf597e
-    :git: https://github.com/react-native-community/react-native-blur.git
   RNTAztecView:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.56.0-alpha1
+  WordPressKit:
+    :commit: d1cb217c01768fc84b2c286ad9e66f475a1cde90
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -758,7 +760,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Gutenberg: b006168d978485727686c197107e6109b50b8829
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
-  Kanvas: 7ef6614513c4f44ffc248225cefda0de1d4cf571
+  Kanvas: 9eab00cc89669b38858d42d5f30c810876b31344
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
@@ -813,9 +815,9 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
   WordPressAuthenticator: 4ccd7f41bae37247883922ad92a14f18cc759bf3
-  WordPressKit: 95b870401414cfc7facbad08f3d83b507f7169cc
+  WordPressKit: 6f06aa3ee71817b27b1b1b3f3d3a728623385790
   WordPressMocks: dfac50a938ac74dddf5f7cce5a9110126408dd19
-  WordPressShared: 0f7f10e96f8354d64f951c223ae61e8de7495a46
+  WordPressShared: 4fd83a8f572dfd8209fa6ca5c891194b29d15961
   WordPressUI: cf3b3ef744663811a8d8a9844f42386e1826f512
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
@@ -829,6 +831,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 1c05dc7895c6918ca8cd9f5c49c49912f62e7c5c
+PODFILE CHECKSUM: 478b72e596aae116639a4e22f22f9696663be4c8
 
 COCOAPODS: 1.10.1
