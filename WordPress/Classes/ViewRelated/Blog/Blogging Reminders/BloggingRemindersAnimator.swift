@@ -9,11 +9,9 @@ class BloggingRemindersAnimator: NSObject, UIViewControllerAnimatedTransitioning
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
 
         guard let sourceViewController =
-                transitionContext
-                .viewController(forKey: UITransitionContextViewControllerKey.from),
+                transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from),
               let destinationViewController =
-                transitionContext
-                .viewController(forKey: UITransitionContextViewControllerKey.to) else {
+                transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) else {
 
             return
         }
