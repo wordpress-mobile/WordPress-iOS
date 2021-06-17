@@ -242,8 +242,8 @@ class SiteStatsPeriodViewModel: Observable {
         return chartDate(for: currentEntryIndex)
     }
 
-    func toggleSpamState(for referrerDomain: String) {
-        store.toggleSpamState(for: referrerDomain)
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
+        store.toggleSpamState(for: referrerDomain, currentValue: currentValue)
     }
 }
 

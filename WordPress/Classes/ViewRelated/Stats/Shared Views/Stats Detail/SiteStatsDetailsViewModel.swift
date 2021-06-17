@@ -400,8 +400,8 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
     }
 
-    func toggleSpamState(for referrerDomain: String) {
-        periodStore.toggleSpamState(for: referrerDomain)
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
+        periodStore.toggleSpamState(for: referrerDomain, currentValue: currentValue)
     }
 }
 

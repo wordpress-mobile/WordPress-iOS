@@ -1344,42 +1344,25 @@ extension StatsPeriodStore {
         return status
     }
 
-    func toggleSpamState(for referrerDomain: String) {
-        guard state.topReferrers != nil else {
-            return
-        }
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
+        for (index, referrer) in (state.topReferrers?.referrers ?? []).enumerated() {
+            guard (referrer.children.isEmpty && referrer.url?.host == referrerDomain) ||
+                    referrer.children.first?.url?.host == referrerDomain else {
+                continue
+            }
 
-        for (i, r) in state.topReferrers!.referrers.enumerated() {
-            if r.children.isEmpty {
-                if r.url?.host == referrerDomain {
-                    let currentValue = state.topReferrers!.referrers[i].isSpam
-                    statsServiceRemote?.toggleSpamState(for: referrerDomain, currentValue: currentValue, success: { [weak self] in
-                        guard let self = self else {
-                            return
-                        }
-                        self.state.topReferrers!.referrers[i].isSpam.toggle()
-                        DDLogInfo("Stats Period: Referrer \(r.title) isSpam set to \(self.state.topReferrers!.referrers[i].isSpam)")
-                    }, failure: { error in
-                        DDLogInfo("Stats Period: Couldn't toggle spam state for referrer \(r.title), reason: \(error.localizedDescription)")
-                    })
+            toggleSpamState(for: referrerDomain,
+                            currentValue: currentValue,
+                            referrerIndex: index,
+                            hasChildren: !referrer.children.isEmpty) { [weak self] in
+                switch $0 {
+                case .success:
+                    break
+                case .failure:
                     break
                 }
-            } else if r.children.first?.url?.host == referrerDomain {
-                let currentValue = state.topReferrers!.referrers[i].isSpam
-                statsServiceRemote?.toggleSpamState(for: referrerDomain, currentValue: currentValue, success: { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-                    self.state.topReferrers?.referrers[i].isSpam.toggle()
-                    for (j, _) in r.children.enumerated() {
-                        self.state.topReferrers!.referrers[i].children[j].isSpam.toggle()
-                    }
-                    DDLogInfo("Stats Period: Referrer \(r.title) isSpam set to \(self.state.topReferrers!.referrers[i].isSpam)")
-                }, failure: { error in
-                    DDLogInfo("Stats Period: Couldn't toggle spam state for referrer \(r.title), reason: \(error.localizedDescription)")
-                })
-                break
             }
+            break
         }
     }
 }
@@ -1430,5 +1413,36 @@ private extension PeriodStoreState {
                 return false
         }
         return true
+    }
+}
+
+// MARK: - Toggle referrer spam state helper
+
+private extension StatsPeriodStore {
+    func toggleSpamState(for referrerDomain: String,
+                         currentValue: Bool,
+                         referrerIndex: Int,
+                         hasChildren: Bool,
+                         completion: @escaping (Result<Void, Error>) -> Void) {
+        statsServiceRemote?.toggleSpamState(for: referrerDomain, currentValue: currentValue, success: { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.state.topReferrers?.referrers[referrerIndex].isSpam.toggle()
+            DDLogInfo("Stats Period: Referrer \(referrerDomain) isSpam set to \(self.state.topReferrers?.referrers[referrerIndex].isSpam ?? false)")
+
+            guard hasChildren else {
+                completion(.success(()))
+                return
+            }
+            for (childIndex, _) in (self.state.topReferrers?.referrers[referrerIndex].children ?? []).enumerated() {
+                self.state.topReferrers?.referrers[referrerIndex].children[childIndex].isSpam.toggle()
+            }
+
+            completion(.success(()))
+        }, failure: { error in
+            DDLogInfo("Stats Period: Couldn't toggle spam state for referrer \(referrerDomain), reason: \(error.localizedDescription)")
+            completion(.failure(error))
+        })
     }
 }
