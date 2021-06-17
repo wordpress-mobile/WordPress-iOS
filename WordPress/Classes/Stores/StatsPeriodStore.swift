@@ -179,11 +179,17 @@ protocol StatsPeriodStoreDelegate: AnyObject {
 
 extension StatsPeriodStoreDelegate where Self: UIViewController {
     func didChangeSpamState(for referrerDomain: String, isSpam: Bool) {
-        // TODO:
+        let markedText = NSLocalizedString("Marked as spam", comment: "Indicating that referrer was marked as spam").lowercased()
+        let unmarkedText = NSLocalizedString("Unmarked as spam", comment: "Indicating that referrer was unmarked as spam").lowercased()
+        let text = isSpam ? markedText : unmarkedText
+        displayNotice(title: "\(referrerDomain) \(text)")
     }
 
     func chagingSpamStateForReferrerDomainFailed(oldValue: Bool) {
-        // TODO:
+        let markText = NSLocalizedString("Couldn't mark as spam", comment: "Indicating that referrer couldn't be marked as spam")
+        let unmarkText = NSLocalizedString("Couldn't unmark as spam", comment: "Indicating that referrer couldn't be unmarked as spam")
+        let text = oldValue ? unmarkText : markText
+        displayNotice(title: text)
     }
 }
 
