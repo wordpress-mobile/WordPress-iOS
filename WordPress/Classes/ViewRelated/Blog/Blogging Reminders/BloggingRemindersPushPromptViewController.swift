@@ -125,7 +125,7 @@ class BloggingRemindersPushPromptViewController: UIViewController {
         // If a parent VC is being dismissed, and this is the last view shown in its navigation controller, we'll assume
         // the flow was completed.
         if isBeingDismissedDirectlyOrByAncestor() && navigationController?.viewControllers.last == self {
-            tracker.flowCompleted()
+            tracker.flowDismissed(source: .enableNotifications)
         }
 
     }

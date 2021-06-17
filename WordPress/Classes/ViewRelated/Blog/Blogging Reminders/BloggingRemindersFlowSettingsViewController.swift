@@ -258,13 +258,13 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             }
 
             DispatchQueue.main.async {
+                let targetVC: UIViewController
                 if allowed {
-                    let flowCompletionVC = BloggingRemindersFlowCompletionViewController(tracker: self.tracker)
-                    self.navigationController?.pushViewController(flowCompletionVC, animated: true)
+                    targetVC = BloggingRemindersFlowCompletionViewController(tracker: self.tracker)
                 } else {
-                    let pushPromptVC = BloggingRemindersPushPromptViewController(tracker: self.tracker)
-                    self.navigationController?.pushViewController(pushPromptVC, animated: true)
+                    targetVC = BloggingRemindersPushPromptViewController(tracker: self.tracker)
                 }
+                self.navigationController?.pushViewController(targetVC, animated: true)
             }
         }
     }
