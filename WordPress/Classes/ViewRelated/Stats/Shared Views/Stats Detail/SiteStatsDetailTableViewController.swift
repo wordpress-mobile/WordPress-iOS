@@ -310,7 +310,9 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
     }
 
     func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
-        showSpamActionSheet(for: referrerDomain, isSpam: currentValue)
+        showSpamActionSheet(for: referrerDomain, isSpam: currentValue) { [weak self] in
+            self?.viewModel?.toggleSpamState(for: referrerDomain, currentValue: currentValue)
+        }
     }
 }
 
@@ -366,25 +368,4 @@ extension SiteStatsDetailTableViewController: SiteStatsTableHeaderDelegate {
         refreshTableView()
     }
 
-}
-
-// MARK: - Action Sheet
-
-private extension SiteStatsDetailTableViewController {
-    func showSpamActionSheet(for referrerDomain: String, isSpam: Bool) {
-        let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        let markTitle = NSLocalizedString("Mark as spam", comment: "Action title for marking referrer as spam")
-        let unmarkTitle = NSLocalizedString("Unmark as spam", comment: "Action title for unmarking referrer as spam")
-
-        let title = isSpam ? unmarkTitle : markTitle
-        let toggleSpamAction = UIAlertAction(title: title, style: .default) { [weak self] _ in
-            self?.viewModel?.toggleSpamState(for: referrerDomain)
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        [toggleSpamAction, cancelAction].forEach {
-            sheet.addAction($0)
-        }
-        present(sheet, animated: true)
-    }
 }
