@@ -198,7 +198,7 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
     private typealias PublishedPostOperation = StatsPublishedPostsAsyncOperation
     private typealias PostDetailOperation = StatsPostDetailAsyncOperation
 
-    private var statsServiceRemote: StatsServiceRemoteV2?
+    var statsServiceRemote: StatsServiceRemoteV2?
     private var operationQueue = OperationQueue()
     private let scheduler = Scheduler(seconds: 0.3)
 
