@@ -312,22 +312,22 @@ PODS:
     - React-perflogger (= 0.64.0)
   - React-jsinspector (0.64.0)
   - react-native-blur (3.6.1):
-    - React-Core
+    - React
   - react-native-get-random-values (1.4.0):
-    - React-Core
+    - React
   - react-native-keyboard-aware-scroll-view (0.8.8):
-    - React-Core
+    - React
   - react-native-safe-area (0.5.1):
-    - React-Core
+    - React
   - react-native-safe-area-context (3.2.0):
     - React-Core
   - react-native-slider (3.0.2):
-    - React-Core
+    - React
   - react-native-video (5.0.2):
-    - React-Core
+    - React
     - react-native-video/Video (= 5.0.2)
   - react-native-video/Video (5.0.2):
-    - React-Core
+    - React
   - React-perflogger (0.64.0)
   - React-RCTActionSheet (0.64.0):
     - React-Core/RCTActionSheetHeaders (= 0.64.0)
@@ -416,17 +416,17 @@ PODS:
     - React-perflogger (= 0.64.0)
     - ReactCommon/turbomodule/core (= 0.64.0)
   - ReactNativeDarkMode (0.0.10):
-    - React-Core
+    - React
   - RNCMaskedView (0.1.10-wp):
-    - React-Core
+    - React
   - RNGestureHandler (1.10.1):
     - React-Core
   - RNReanimated (1.9.0):
-    - React-Core
+    - React
   - RNScreens (2.9.0):
     - React-Core
   - RNSVG (9.13.6-gb):
-    - React-Core
+    - React
   - RNTAztecView (1.55.0):
     - React-Core
     - WordPress-Aztec-iOS (~> 1.19.4)
@@ -751,7 +751,7 @@ SPEC CHECKSUMS:
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
-  glog: 6c71c0b92004b27010953ece976816563b29b769
+  glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   Gridicons: 17d660b97ce4231d582101b02f8280628b141c9a
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
@@ -779,13 +779,13 @@ SPEC CHECKSUMS:
   React-jsi: 158a4172abc0bd55b8a4320cb6957a35e1b59f1f
   React-jsiexecutor: ca987eb608fdaad2a5bec9beb4f61436cbbd2299
   React-jsinspector: dce15903df657a565e1f753e20b0864ceab7a181
-  react-native-blur: 7f21bce1eeae924f28a4cefc7b23ce035c015ea5
-  react-native-get-random-values: 9c625d343481d0d4553b8e11a7edaf8995be3a07
-  react-native-keyboard-aware-scroll-view: a7d3f19afe82242a839de99c0245b654758f644a
-  react-native-safe-area: e3de9e959c7baaae8db9bcb015d99ed1da25c9d5
+  react-native-blur: 4568dd93d1d82748c180df8beb2d929c97b13b47
+  react-native-get-random-values: 8940331a943a46c165d3ed05802c09c392f8dd46
+  react-native-keyboard-aware-scroll-view: ffa9152671fec9a571197ed2d02e0fcb90206e60
+  react-native-safe-area: e8230b0017d76c00de6b01e2412dcf86b127c6a3
   react-native-safe-area-context: 1e501ec30c260422def56e95e11edb103caa5bf2
-  react-native-slider: 7c3e22b6612b0443224d543dffac1a0f238da2a6
-  react-native-video: 76654aa0de8bd57a6d6a647b631e438d5d6da692
+  react-native-slider: 2f186719b7ada773b78141b8dae62081d819b206
+  react-native-video: d01ed7ff1e38fa7dcc6c15c94cf505e661b7bfd0
   React-perflogger: 1b191be4af85b046824841466b530926af106423
   React-RCTActionSheet: 6381fffb79f8574784be60e06b8a196ea31b694d
   React-RCTAnimation: 342a55b7d70b9f70dc3fa7cf9dcf0c2638c58cf4
@@ -798,12 +798,12 @@ SPEC CHECKSUMS:
   React-RCTVibration: 464cbf174f0c11d4853401fefe2627a3e648714d
   React-runtimeexecutor: 86375fe8e12dd6927345c677081b512d603d8adc
   ReactCommon: 05f421bbdca720b5706a988729512f0a482140eb
-  ReactNativeDarkMode: faf7e20d217b2b437e596d1869990264f2c7a239
-  RNCMaskedView: 3d849f89313f2f21fb8b35d901c1082b8da187db
+  ReactNativeDarkMode: f61376360c5d983907e5c316e8e1c853a8c2f348
+  RNCMaskedView: 744eb642f5d96bd670ea93f59e7a1346ea50976a
   RNGestureHandler: 87fb38122c34468820465b20c32bc5fe4d1f147c
-  RNReanimated: 5d94111694aeadd5668f967873f7289a06fde289
+  RNReanimated: 13f7a6a22667c4f00aac217bc66f94e8560b3d59
   RNScreens: bd1f43d7dfcd435bc11d4ee5c60086717c45a113
-  RNSVG: 0df105803980a68d31e3537e22bf19b372d9abee
+  RNSVG: 68a534a5db06dcbdaebfd5079349191598caef7b
   RNTAztecView: 075d68e3c705cb77ad449ec2fe328ce80510b94b
   Sentry: 9b922b396b0e0bca8516a10e36b0ea3ebea5faf7
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
@@ -819,7 +819,7 @@ SPEC CHECKSUMS:
   WordPressUI: cf3b3ef744663811a8d8a9844f42386e1826f512
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
-  Yoga: 982b1e7bf7c0873643955853293b269e4487890e
+  Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
   ZendeskCommonUISDK: 92ca6b16956430a2cb61c89aeaa6ca123d1f81fd
   ZendeskCoreSDK: f3d5dcd6a18186dcecbecd56f66296c40fb2fcb4
   ZendeskMessagingAPISDK: 986919a8f6f11a7019660d1ff798f1efb42fa572
