@@ -73,7 +73,7 @@
   end
 
   desc "Build for TestFlight"
-  lane :build_jetpack_for_app_store do |options|
+  lane :build_and_upload_jetpack_for_app_store do |options|
 
     jetpack_appstore_code_signing
 

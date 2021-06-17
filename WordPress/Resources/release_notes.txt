@@ -1,17 +1,11 @@
-What’s new in WordPress release 17.5?
+* [**] Reader Post details: now shows a summary of Likes for the post. Tapping it displays the full list of Likes. [#16628]
+* [*] Fix notice overlapping the ActionSheet that displays the Site Icon controls. [#16579]
+* [*] Fix login error for WordPress.org sites to show inline. [#16614]
+* [*] Disables the ability to open the editor for Post Pages [#16369]
+* [*] Fixed an issue that could cause a crash when moderating Comments. [#16645]
+* [*] Fix notice overlapping the ActionSheet that displays the QuickStart Removal. [#16609]
+* [*] Site Pages: when setting a parent, placeholder text is now displayed for pages with blank titles. [#16661]
+* [***] Block Editor: Audio block now available on WP.com sites on the free plan. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3523]
+* [**] You can now create a Site Icon for your site using an emoji. [#16670] 
+* [*] Fix notice overlapping the ActionSheet that displays the More Actions in the Editor. [#16658]
 
-Reusable blocks are here! Create content once, save your block, and reuse it over and over again in any posts or pages. In 17.5, you’ll find reusable blocks ready to go in the block inserter menu.
-
-If tapping to add new blocks is a menu tap too far, 17.5 lets you add them with a slash command right from the editor. Add a forward slash as you’re crafting your post or page, start tapping in the name of the block, and you’re all set. No menus necessary.
-
-Audio gets some love, too. Got a link for that audio file? In 17.5 just paste your URL into the Audio Block, and WordPress will pull it into your post.
-
-Like notifications also got some extra sparkle in 17.5. You’ll now be able to see exactly who liked every post and comment on your site as soon as they roll in.
-
-We’ve also been hard at work bug-wrangling. Here’s what we fixed:
-
-Screen readers can now select the stepper cell in the block editor.
-
-We made sure that large text doesn’t become ENORMOUS text, whatever font you’re using. Large text support in the blog details header of the My Sites screen has also been improved.
-
-Finally, item selection and fixed scrolling in the Plugins directory are now behaving themselves, and the Noticons font will no longer crash the app in rich notifications.

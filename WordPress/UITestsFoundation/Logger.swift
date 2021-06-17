@@ -1,6 +1,4 @@
-import Foundation
-
-enum LogEvent: String {
+public enum LogEvent: String {
     case e = "[‼️]" // error
     case i = "[ℹ️]" // info
     case d = "[💬]" // debug
@@ -14,7 +12,7 @@ enum LogEvent: String {
 //  Logger.log(message: "Hey ho, lets go!", event: .v)
 // Output example:
 //  2017-11-23 03:16:32025 [ℹ️][BasePage.swift]:18 19 waitForPage() -> Page AztecUITests.BlogsPage is loaded
-class Logger {
+public class Logger {
     // 1. The date formatter
     static var dateFormat = "yyyy-MM-dd hh:mm:ssSSS" // Use your own
     static var dateFormatter: DateFormatter {
@@ -30,7 +28,7 @@ class Logger {
         return components.isEmpty ? "" : components.last!
     }
 
-    class func log(message: String, event: LogEvent,
+    public class func log(message: String, event: LogEvent,
                    fileName: String = #file, line: Int = #line,
                    column: Int = #column, funcName: String = #function) {
         #if DEBUG // 7.
@@ -39,9 +37,8 @@ class Logger {
     }
 }
 
-
 // 2. The Date to String extension
-extension Date {
+public extension Date {
     func toString() -> String {
         return Logger.dateFormatter.string(from: self as Date)
     }
