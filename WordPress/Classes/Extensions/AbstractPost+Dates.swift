@@ -14,7 +14,7 @@ extension AbstractPost {
 
         // Unpublished post shows relative or date string
         if originalIsDraft() || status == .pending {
-            return dateModified?.mediumString(timeZone: timeZone)
+            return dateModified?.toMediumString(inTimeZone: timeZone)
         }
 
         // Scheduled Post shows date with time to be clear about when it goes live
@@ -27,6 +27,6 @@ extension AbstractPost {
             return NSLocalizedString("Publish Immediately", comment: "A short phrase indicating a post is due to be immedately published.")
         }
 
-        return dateCreated?.mediumString(timeZone: timeZone)
+        return dateCreated?.toMediumString(inTimeZone: timeZone)
     }
 }
