@@ -49,6 +49,11 @@ struct StatsTotalRowData {
     var hasIcon: Bool {
         return self.icon != nil || self.socialIconURL != nil || self.userIconURL != nil
     }
+
+    var canMarkReferrerAsSpam: Bool {
+        disclosureURL != nil && disclosureURL!.absoluteString.contains(name) ||
+            disclosureURL == nil && name.contains(".")
+    }
 }
 
 @objc protocol StatsTotalRowDelegate {
@@ -231,7 +236,7 @@ private extension StatsTotalRow {
         Style.configureViewAsDataBar(dataBar)
 
         if let data = rowData, data.statSection == .periodReferrers {
-            if parentRow == nil {
+            if parentRow == nil && data.canMarkReferrerAsSpam {
                 itemLabel.textColor = .systemBlue
             }
 
@@ -445,23 +450,34 @@ private extension StatsTotalRow {
     }
 
     func didTapReferrerCell() {
+        guard let data = rowData else {
+            return
+        }
+
         if parentRow == nil {
-            let referrerDomain: String?
-            let isReferrerSpam = rowData?.isReferrerSpam
+            if data.canMarkReferrerAsSpam {
+                let referrerDomain: String?
+                let isSpam = data.isReferrerSpam
 
-            if hasChildRows {
-                referrerDomain = rowData?.childRows?.first?.disclosureURL?.host
+                if hasChildRows {
+                    referrerDomain = data.childRows?.first?.disclosureURL?.host
+                } else {
+                    referrerDomain = data.disclosureURL?.host
+                }
+
+                guard let domain = referrerDomain else {
+                    return
+                }
+
+                delegate?.toggleSpamState?(for: domain, currentValue: isSpam)
             } else {
-                referrerDomain = rowData?.disclosureURL?.host
+                if hasChildRows {
+                    toggleExpandedState()
+                } else if let disclosureURL = data.disclosureURL {
+                    delegate?.displayWebViewWithURL?(disclosureURL)
+                }
             }
-
-            guard let domain = referrerDomain,
-                  let isSpam = isReferrerSpam else {
-                return
-            }
-
-            delegate?.toggleSpamState?(for: domain, currentValue: isSpam)
-        } else if let disclosureURL = rowData?.disclosureURL {
+        } else if let disclosureURL = data.disclosureURL {
             delegate?.displayWebViewWithURL?(disclosureURL)
         }
     }
