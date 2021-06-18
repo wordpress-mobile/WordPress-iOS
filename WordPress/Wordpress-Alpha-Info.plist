@@ -34,17 +34,6 @@
 				<key>WPRequiresBorder</key>
 				<true/>
 			</dict>
-			<key>Blue</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>blue-icon-app-60x60</string>
-					<string>blue-icon-app-76x76</string>
-					<string>blue-icon-app-83.5x83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
 			<key>Blue Classic</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -215,7 +204,7 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>AppIconSpectrum</string>
+				<string>AppIcon</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>
@@ -249,17 +238,6 @@
 				<key>WPRequiresBorder</key>
 				<true/>
 			</dict>
-			<key>Blue</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>blue-icon-app-60x60</string>
-					<string>blue-icon-app-76x76</string>
-					<string>blue-icon-app-83.5x83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
 			<key>Blue Classic</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -430,7 +408,7 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>AppIconSpectrum</string>
+				<string>AppIcon</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>
