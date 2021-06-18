@@ -15,6 +15,7 @@
 * [**] You can now create a Site Icon for your site using an emoji. [#16670] 
 * [*] Fix notice overlapping the ActionSheet that displays the More Actions in the Editor. [#16658]
 * [*] The quick action buttons will be hidden when iOS is using a accessibility font sizes. [#16701]
+* [*] Block Editor: Improve unsupported block message for reusable block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3621]
 
 17.5
 -----
