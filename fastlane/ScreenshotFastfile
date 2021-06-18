@@ -226,6 +226,7 @@ platform :ios do
   desc "Downloads translated strings from GlotPress"
   private_lane :download_translated_strings do |options|
     metadata_locales = [
+      ["ar", "ar-SA"],
       ["en-gb", "en-US"],
       ["en-gb", "en-GB"],
       ["en-ca", "en-CA"],
@@ -234,6 +235,7 @@ platform :ios do
       ["de", "de-DE"],
       ["es", "es-ES"],
       ["fr", "fr-FR"],
+      ["he", "he"],
       ["id", "id"],
       ["it", "it"],
       ["ja", "ja"],
