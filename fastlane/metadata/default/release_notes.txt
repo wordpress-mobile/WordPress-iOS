@@ -1,17 +1,17 @@
-What’s new in WordPress release 17.5?
+With 17.6, you can add the Audio Block to any WordPress.com site, whatever plan you’re on – including the Free Plan. The Audio Block makes it easy to add podcasts, music, and sound files to your posts and pages.
 
-Reusable blocks are here! Create content once, save your block, and reuse it over and over again in any posts or pages. In 17.5, you’ll find reusable blocks ready to go in the block inserter menu.
+In the Reader, you’ll now see a count and summary of Likes added to every post. If that’s not enough Likes in your life, tap the summary and you’ll be able to see the full list.
 
-If tapping to add new blocks is a menu tap too far, 17.5 lets you add them with a slash command right from the editor. Add a forward slash as you’re crafting your post or page, start tapping in the name of the block, and you’re all set. No menus necessary.
+We’ve been hard at work wrangling UX improvements, too:
 
-Audio gets some love, too. Got a link for that audio file? In 17.5 just paste your URL into the Audio Block, and WordPress will pull it into your post.
+When you assign a parent page to a page without a title, you’ll now see a ‘(no title)’ placeholder instead of a blank line, giving you a gentle nudge to name the page.
 
-Like notifications also got some extra sparkle in 17.5. You’ll now be able to see exactly who liked every post and comment on your site as soon as they roll in.
+You’ve never been able to edit Post Archive pages because they’re automatically generated. In 17.6, you won’t be able to open them in the editor, either, saving you a wasted trip.
 
-We’ve also been hard at work bug-wrangling. Here’s what we fixed:
+We’ve also been working on fixing things:
 
-Screen readers can now select the stepper cell in the block editor.
+We took care of some notices that had been overlapping the ActionSheet, including one that displays Site Icon controls, another displaying the QuickStart Removal, and a third that displays More Actions in the editor.
 
-We made sure that large text doesn’t become ENORMOUS text, whatever font you’re using. Large text support in the blog details header of the My Sites screen has also been improved.
+Last up, we squashed a bug that sometimes caused the app to crash during comment moderation and another to fix a login error for WordPress.org sites to show inline.
 
-Finally, item selection and fixed scrolling in the Plugins directory are now behaving themselves, and the Noticons font will no longer crash the app in rich notifications.
+That’s all for 17.6. See you in 17.7!
