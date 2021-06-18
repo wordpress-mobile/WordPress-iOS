@@ -268,13 +268,10 @@
 		178810B52611D25600A98BD8 /* Text+BoldSubString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178810B42611D25600A98BD8 /* Text+BoldSubString.swift */; };
 		178810D92612037900A98BD8 /* UnifiedPrologueReaderContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178810D82612037800A98BD8 /* UnifiedPrologueReaderContentView.swift */; };
 		178DDD06266D68A3006C68C4 /* BloggingRemindersFlowIntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178DDD05266D68A3006C68C4 /* BloggingRemindersFlowIntroViewController.swift */; };
-		178DDD07266D68A3006C68C4 /* BloggingRemindersFlowIntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178DDD05266D68A3006C68C4 /* BloggingRemindersFlowIntroViewController.swift */; };
 		178DDD1B266D7523006C68C4 /* BloggingRemindersFlowSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178DDD1A266D7523006C68C4 /* BloggingRemindersFlowSettingsViewController.swift */; };
-		178DDD1C266D7523006C68C4 /* BloggingRemindersFlowSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178DDD1A266D7523006C68C4 /* BloggingRemindersFlowSettingsViewController.swift */; };
 		178DDD30266D7576006C68C4 /* BloggingRemindersFlowCompletionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178DDD2F266D7576006C68C4 /* BloggingRemindersFlowCompletionViewController.swift */; };
 		178DDD31266D7576006C68C4 /* BloggingRemindersFlowCompletionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178DDD2F266D7576006C68C4 /* BloggingRemindersFlowCompletionViewController.swift */; };
 		178DDD57266E4165006C68C4 /* CalendarDayToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178DDD56266E4165006C68C4 /* CalendarDayToggleButton.swift */; };
-		178DDD58266E4165006C68C4 /* CalendarDayToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178DDD56266E4165006C68C4 /* CalendarDayToggleButton.swift */; };
 		1790A4531E28F0ED00AE54C2 /* UINavigationController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1790A4521E28F0ED00AE54C2 /* UINavigationController+Helpers.swift */; };
 		1797373720EBAA4100377B4E /* RouteMatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1797373620EBAA4100377B4E /* RouteMatcherTests.swift */; };
 		17A09B99238FE13B0022AE0D /* FeatureFlagOverrideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A09B98238FE13B0022AE0D /* FeatureFlagOverrideStore.swift */; };
@@ -2399,6 +2396,11 @@
 		F15272FD243B27BC00C8DC7A /* AbstractPost+Local.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15272FC243B27BC00C8DC7A /* AbstractPost+Local.swift */; };
 		F15272FF243B28B700C8DC7A /* RequestAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15272FE243B28B600C8DC7A /* RequestAuthenticator.swift */; };
 		F1527301243B290E00C8DC7A /* AbstractPost+Autosave.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1527300243B290D00C8DC7A /* AbstractPost+Autosave.swift */; };
+		F1585405267D3B5000A2E966 /* BloggingRemindersFlowIntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178DDD05266D68A3006C68C4 /* BloggingRemindersFlowIntroViewController.swift */; };
+		F1585419267D3B5700A2E966 /* BloggingRemindersScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F117B11F265C53AB00D2CAA9 /* BloggingRemindersScheduler.swift */; };
+		F158541A267D3B6000A2E966 /* BloggingRemindersStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F111B87726580FCE00057942 /* BloggingRemindersStore.swift */; };
+		F158542E267D3B8A00A2E966 /* BloggingRemindersFlowSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178DDD1A266D7523006C68C4 /* BloggingRemindersFlowSettingsViewController.swift */; };
+		F1585442267D3BF900A2E966 /* CalendarDayToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178DDD56266E4165006C68C4 /* CalendarDayToggleButton.swift */; };
 		F15A230420A3EBE300625EA2 /* ImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFE20A33BDB0010EB6E /* ImgUploadProcessor.swift */; };
 		F15A230520A3ECC500625EA2 /* ImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFE20A33BDB0010EB6E /* ImgUploadProcessor.swift */; };
 		F15D1FBA265C41A900854EE5 /* BloggingRemindersStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15D1FB9265C41A900854EE5 /* BloggingRemindersStoreTests.swift */; };
@@ -18871,6 +18873,7 @@
 				FABB217E2602FC2C00C8785C /* JetpackInstallError+Blocking.swift in Sources */,
 				FABB217F2602FC2C00C8785C /* QuickStartTourState.swift in Sources */,
 				FABB21802602FC2C00C8785C /* ReaderPostCardCell.swift in Sources */,
+				F1585419267D3B5700A2E966 /* BloggingRemindersScheduler.swift in Sources */,
 				FABB21812602FC2C00C8785C /* DiffContentValue.swift in Sources */,
 				FABB21822602FC2C00C8785C /* FormattableTextContent.swift in Sources */,
 				FABB21832602FC2C00C8785C /* WordPress-61-62.xcmappingmodel in Sources */,
@@ -18881,6 +18884,7 @@
 				FABB21882602FC2C00C8785C /* ReaderTopicsCardCell.swift in Sources */,
 				FA25FA342609AAAA0005E08F /* AppConfiguration.swift in Sources */,
 				FABB21892602FC2C00C8785C /* PostService+RefreshStatus.swift in Sources */,
+				F1585405267D3B5000A2E966 /* BloggingRemindersFlowIntroViewController.swift in Sources */,
 				FABB218A2602FC2C00C8785C /* ImageDimensionParser.swift in Sources */,
 				FABB218B2602FC2C00C8785C /* FollowersCountStatsRecordValue+CoreDataClass.swift in Sources */,
 				FABB218C2602FC2C00C8785C /* DocumentUploadProcessor.swift in Sources */,
@@ -18893,6 +18897,7 @@
 				8B55F9EE2614D977007D618E /* UnifiedPrologueStatsContentView.swift in Sources */,
 				FABB21932602FC2C00C8785C /* GutenbergTenorMediaPicker.swift in Sources */,
 				FABB21942602FC2C00C8785C /* AztecPostViewController.swift in Sources */,
+				F1585442267D3BF900A2E966 /* CalendarDayToggleButton.swift in Sources */,
 				FABB21952602FC2C00C8785C /* InfoPListTranslator.m in Sources */,
 				FABB21962602FC2C00C8785C /* CommentViewController.swift in Sources */,
 				FABB21972602FC2C00C8785C /* MenusViewController.m in Sources */,
@@ -18931,6 +18936,7 @@
 				FABB21B82602FC2C00C8785C /* SiteSegmentsService.swift in Sources */,
 				FABB21B92602FC2C00C8785C /* BlogListDataSource.swift in Sources */,
 				FABB21BA2602FC2C00C8785C /* MediaItemTableViewCells.swift in Sources */,
+				F158541A267D3B6000A2E966 /* BloggingRemindersStore.swift in Sources */,
 				FABB21BB2602FC2C00C8785C /* AbstractPost+fixLocalMediaURLs.swift in Sources */,
 				FABB21BC2602FC2C00C8785C /* MediaNoticeNavigationCoordinator.swift in Sources */,
 				FABB21BD2602FC2C00C8785C /* ReaderPostToReaderPost37to38.swift in Sources */,
@@ -19356,6 +19362,7 @@
 				FABB234A2602FC2C00C8785C /* BlogDetailsViewController.m in Sources */,
 				FABB234B2602FC2C00C8785C /* UIBarButtonItem+MeBarButton.swift in Sources */,
 				FABB234C2602FC2C00C8785C /* PostSettingsViewController+FeaturedImageUpload.swift in Sources */,
+				F158542E267D3B8A00A2E966 /* BloggingRemindersFlowSettingsViewController.swift in Sources */,
 				FABB234D2602FC2C00C8785C /* ReaderLikeAction.swift in Sources */,
 				FABB234E2602FC2C00C8785C /* ReaderMenuAction.swift in Sources */,
 				FABB234F2602FC2C00C8785C /* PostSharingController.swift in Sources */,
@@ -19448,7 +19455,6 @@
 				FABB23A52602FC2C00C8785C /* PluginDirectoryViewModel.swift in Sources */,
 				FABB23A62602FC2C00C8785C /* AbstractPost+Autosave.swift in Sources */,
 				FABB23A72602FC2C00C8785C /* ReaderPost+Searchable.swift in Sources */,
-				178DDD58266E4165006C68C4 /* CalendarDayToggleButton.swift in Sources */,
 				FABB23A82602FC2C00C8785C /* MeViewController.swift in Sources */,
 				FABB23A92602FC2C00C8785C /* BlogService+BlogAuthors.swift in Sources */,
 				FABB23AA2602FC2C00C8785C /* AuthorFilterButton.swift in Sources */,
@@ -19639,7 +19645,6 @@
 				FABB245D2602FC2C00C8785C /* ResultsPage.swift in Sources */,
 				FABB245E2602FC2C00C8785C /* FormattableRangesFactory.swift in Sources */,
 				FABB245F2602FC2C00C8785C /* Menu+ViewDesign.m in Sources */,
-				178DDD07266D68A3006C68C4 /* BloggingRemindersFlowIntroViewController.swift in Sources */,
 				FABB24602602FC2C00C8785C /* BlogDetailsViewController+DomainCredit.swift in Sources */,
 				17C1D67D2670E3DC006C8970 /* SiteIconPickerView.swift in Sources */,
 				FABB24612602FC2C00C8785C /* KeyringAccountHelper.swift in Sources */,
@@ -19998,7 +20003,6 @@
 				FABB25AE2602FC2C00C8785C /* SearchWrapperView.swift in Sources */,
 				FABB25AF2602FC2C00C8785C /* UserSettings.swift in Sources */,
 				FABB25B02602FC2C00C8785C /* MediaImportService.swift in Sources */,
-				178DDD1C266D7523006C68C4 /* BloggingRemindersFlowSettingsViewController.swift in Sources */,
 				FABB25B12602FC2C00C8785C /* NSAttributedStringKey+Conversion.swift in Sources */,
 				FABB25B22602FC2C00C8785C /* SelectPostViewController.swift in Sources */,
 				FABB25B32602FC2C00C8785C /* ReaderVisitSiteAction.swift in Sources */,
