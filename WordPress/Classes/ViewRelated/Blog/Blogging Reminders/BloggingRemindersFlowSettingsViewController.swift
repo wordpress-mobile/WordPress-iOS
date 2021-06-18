@@ -126,7 +126,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     // MARK: - Properties
 
-    let calendar: Calendar
+    private let calendar: Calendar
     private let scheduler: BloggingRemindersScheduler
     private var weekdays: [BloggingRemindersScheduler.Weekday]
 
@@ -308,8 +308,6 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             // For now I'm dismissing the flow in this scenario, although I think showing an inline
             // error message would be best (an error that's informative and non-blocking, that lets
             // the user decide if to dismiss or continue).
-            //
-            // I've pinged @osullivanchris about this and will update when I get feedback.
             //
             dismiss(animated: true, completion: nil)
             return
