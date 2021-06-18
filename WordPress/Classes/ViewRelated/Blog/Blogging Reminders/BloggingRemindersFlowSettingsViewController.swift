@@ -124,6 +124,23 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return button
     }()
 
+    // MARK: - Initializers
+
+    let tracker: BloggingRemindersTracker
+
+    init(tracker: BloggingRemindersTracker) {
+        self.tracker = tracker
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        // This VC is designed to be instantiated programmatically.  If we ever need to initialize this VC
+        // from a coder, we can implement support for it - but I don't think it's necessary right now.
+        // - diegoreymendez
+        fatalError("Use init(tracker:) instead")
+    }
+
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
@@ -135,6 +152,22 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         configureStackView()
         configureConstraints()
         populateCalendarDays()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        tracker.screenShown(.dayPicker)
+
+        super.viewDidAppear(animated)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        // If a parent VC is being dismissed, and this is the last view shown in its navigation controller, we'll assume
+        // the flow was interrupted.
+        if isBeingDismissedDirectlyOrByAncestor() && navigationController?.viewControllers.last == self {
+            tracker.flowDismissed(source: .dayPicker)
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -217,10 +250,15 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     // MARK: - Actions
 
     @objc private func notifyMeButtonTapped() {
-        navigationController?.pushViewController(BloggingRemindersFlowCompletionViewController(), animated: true)
+        tracker.buttonPressed(button: .continue, screen: .dayPicker)
+
+        let flowCompletionVC = BloggingRemindersFlowCompletionViewController(tracker: tracker)
+        navigationController?.pushViewController(flowCompletionVC, animated: true)
     }
 
     @objc private func dismissTapped() {
+        tracker.buttonPressed(button: .dismiss, screen: .dayPicker)
+
         dismiss(animated: true, completion: nil)
     }
 }
@@ -248,7 +286,7 @@ private enum TextContent {
 
     static let tipPanelTitle = NSLocalizedString("Tip", comment: "Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip.")
 
-    static let tipPanelDescription = NSLocalizedString("People who post at least twice weekly get 87% more views on their site.", comment: "Informative tip shown to user in the Blogging Reminders Settings screen.")
+    static let tipPanelDescription = NSLocalizedString("Posting regularly can help keep your readers engaged, and attract new visitors to your site.", comment: "Informative tip shown to user in the Blogging Reminders Settings screen.")
 }
 
 private enum Images {
