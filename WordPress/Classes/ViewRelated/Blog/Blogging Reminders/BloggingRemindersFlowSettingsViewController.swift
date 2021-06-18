@@ -260,7 +260,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     /// - Returns: the requested toggle button.
     ///
     private func createCalendarDayToggleButton(dayIndex: Int) -> CalendarDayToggleButton? {
-        let localizedDayIndex = (dayIndex + calendar.firstWeekday - 1) % calendar.shortWeekdaySymbols.count
+        let localizedDayIndex = calendar.localizedDayIndex(dayIndex)
 
         guard let weekday = BloggingRemindersScheduler.Weekday(rawValue: localizedDayIndex) else {
             return nil
@@ -344,7 +344,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     // MARK: - Completion Paths
 
     private func presentCompletionViewController() {
-        let viewController = BloggingRemindersFlowCompletionViewController(tracker: tracker)
+        let viewController = BloggingRemindersFlowCompletionViewController(selectedDays: weekdays, tracker: tracker, calendar: calendar)
         navigationController?.pushViewController(viewController, animated: true)
     }
 
