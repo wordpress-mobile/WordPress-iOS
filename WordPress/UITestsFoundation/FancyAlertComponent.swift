@@ -1,11 +1,10 @@
-import Foundation
 import XCTest
 
-class FancyAlertComponent: BaseScreen {
+public class FancyAlertComponent: BaseScreen {
     let defaultAlertButton: XCUIElement
     let cancelAlertButton: XCUIElement
 
-    enum Action {
+    public enum Action {
         case accept
         case cancel
     }
@@ -15,14 +14,14 @@ class FancyAlertComponent: BaseScreen {
         static let cancelButton = "fancy-alert-view-cancel-button"
     }
 
-    init() {
+    public init() {
         defaultAlertButton = XCUIApplication().buttons[ElementIDs.defaultButton]
         cancelAlertButton = XCUIApplication().buttons[ElementIDs.cancelButton]
 
         super.init(element: defaultAlertButton)
     }
 
-    func acceptAlert() {
+    public func acceptAlert() {
         XCTAssert(defaultAlertButton.waitForExistence(timeout: 3))
         XCTAssert(defaultAlertButton.waitForHittability(timeout: 3))
 
@@ -34,7 +33,7 @@ class FancyAlertComponent: BaseScreen {
         cancelAlertButton.tap()
     }
 
-    static func isLoaded() -> Bool {
+    public static func isLoaded() -> Bool {
         return XCUIApplication().buttons[ElementIDs.defaultButton].waitForExistence(timeout: 3)
     }
 }

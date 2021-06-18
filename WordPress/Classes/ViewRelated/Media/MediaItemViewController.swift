@@ -114,7 +114,7 @@ class MediaItemViewController: UITableViewController {
         default: break
         }
 
-        rows.append(TextRow(title: NSLocalizedString("Uploaded", comment: "Label for the date a media asset (image / video) was uploaded"), value: media.creationDate?.mediumString() ?? ""))
+        rows.append(TextRow(title: NSLocalizedString("Uploaded", comment: "Label for the date a media asset (image / video) was uploaded"), value: media.creationDate?.toMediumString() ?? ""))
 
         return rows
     }

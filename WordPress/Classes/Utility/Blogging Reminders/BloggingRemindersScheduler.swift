@@ -22,6 +22,8 @@ class BloggingRemindersScheduler {
 
     enum Error: Swift.Error {
         case cantRetrieveContainerForAppGroup(appGroupName: String)
+        case needsPermissionForPushNotifications
+        case noPreviousScheduleAttempt
     }
 
     // MARK: - Schedule Data Containers
@@ -83,6 +85,10 @@ class BloggingRemindersScheduler {
         store.scheduledReminders(for: blogIdentifier)
     }
 
+    /// Interactive notifications manager
+    ///
+    private let interactiveNotificationsManager: InteractiveNotificationsManager
+
     /// Active schedule.
     ///
     func schedule() -> Schedule {
@@ -123,11 +129,13 @@ class BloggingRemindersScheduler {
     init(
         blogIdentifier: BlogIdentifier,
         store: BloggingRemindersStore,
-        notificationCenter: NotificationScheduler = UNUserNotificationCenter.current()) {
+        notificationCenter: NotificationScheduler = UNUserNotificationCenter.current(),
+        interactiveNotificationsManager: InteractiveNotificationsManager = .shared) {
 
         self.blogIdentifier = blogIdentifier
         self.store = store
         self.notificationScheduler = notificationCenter
+        self.interactiveNotificationsManager = interactiveNotificationsManager
     }
 
     /// Default initializer.  Allows overriding the blogging reminders store and the notification center for testing purposes.
@@ -138,11 +146,13 @@ class BloggingRemindersScheduler {
     ///
     init(
         blogIdentifier: BlogIdentifier,
-        notificationCenter: NotificationScheduler = UNUserNotificationCenter.current()) throws {
+        notificationCenter: NotificationScheduler = UNUserNotificationCenter.current(),
+        interactiveNotificationsManager: InteractiveNotificationsManager = .shared) throws {
 
         self.blogIdentifier = blogIdentifier
         self.store = try Self.defaultStore()
         self.notificationScheduler = notificationCenter
+        self.interactiveNotificationsManager = interactiveNotificationsManager
     }
 
     // MARK: - Scheduling
@@ -153,7 +163,24 @@ class BloggingRemindersScheduler {
     /// - Parameters:
     ///     - schedule: the blogging reminders schedule.
     ///
-    func schedule(_ schedule: Schedule) throws {
+    func schedule(_ schedule: Schedule, completion: @escaping (Result<Void, Swift.Error>) -> ()) {
+        interactiveNotificationsManager.requestAuthorization { [weak self] allowed in
+            guard let self = self else {
+                return
+            }
+
+            guard allowed else {
+                completion(.failure(Error.needsPermissionForPushNotifications))
+                return
+            }
+
+            self.pushAuthorizationReceived(for: schedule, completion: completion)
+        }
+    }
+
+    /// You should not be calling this method directly.  Instead, make sure to use `schedule(_:completion:)`.
+    ///
+    private func pushAuthorizationReceived(for schedule: Schedule, completion: (Result<Void, Swift.Error>) -> ()) {
         unschedule(scheduledReminders)
 
         let scheduledReminders: BloggingRemindersStore.ScheduledReminders
@@ -165,7 +192,14 @@ class BloggingRemindersScheduler {
             scheduledReminders = .weekdays(scheduled(days))
         }
 
-        try store.save(scheduledReminders: scheduledReminders, for: blogIdentifier)
+        do {
+            try store.save(scheduledReminders: scheduledReminders, for: blogIdentifier)
+        } catch {
+            completion(.failure(error))
+            return
+        }
+
+        completion(.success(()))
     }
 
     /// Schedules a notifications for the passed days, and returns another array with the days and their

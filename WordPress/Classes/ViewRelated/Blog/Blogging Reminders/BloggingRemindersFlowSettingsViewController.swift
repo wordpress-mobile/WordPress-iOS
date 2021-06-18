@@ -298,29 +298,57 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     @objc private func notifyMeButtonTapped() {
         tracker.buttonPressed(button: .continue, screen: .dayPicker)
 
-        do {
-            try scheduler.schedule(.weekdays(weekdays))
-        } catch {
-            DDLogError("Error scheduling notifications: \(error)")
+        scheduleReminders()
+    }
 
-            // TODO: Properly handle error situation.
-            //
-            // For now I'm dismissing the flow in this scenario, although I think showing an inline
-            // error message would be best (an error that's informative and non-blocking, that lets
-            // the user decide if to dismiss or continue).
-            //
-            dismiss(animated: true, completion: nil)
-            return
+    /// Schedules the reminders and shows a VC that requests PN authorization, if necessary.
+    ///
+    /// - Parameters:
+    ///     - showPushPrompt: if `true` the PN authorization prompt VC will be shown.
+    ///         When `false`, the VC won't be shown.  This is useful because this method
+    ///         can also be called when the refrenced VC is already on-screen.
+    ///
+    private func scheduleReminders(showPushPrompt: Bool = true) {
+        scheduler.schedule(.weekdays(weekdays)) { [weak self] result in
+            switch result {
+            case .success:
+                DispatchQueue.main.async { [weak self] in
+                    self?.presentCompletionViewController()
+                }
+            case .failure(let error):
+                switch error {
+                case BloggingRemindersScheduler.Error.needsPermissionForPushNotifications where showPushPrompt == true:
+                    DispatchQueue.main.async { [weak self] in
+                        self?.presentPushPromptViewController()
+                    }
+                default:
+                    // The scheduler should normally not fail unless it's because of having no push permissions.
+                    // As a simple solution for now, we'll just avoid taking any action if the scheduler did fail.
+                    DDLogError("Error scheduling blogging reminders: \(error)")
+                    break
+                }
+            }
         }
-
-        let flowCompletionVC = BloggingRemindersFlowCompletionViewController(tracker: tracker)
-        navigationController?.pushViewController(flowCompletionVC, animated: true)
     }
 
     @objc private func dismissTapped() {
         tracker.buttonPressed(button: .dismiss, screen: .dayPicker)
 
         dismiss(animated: true, completion: nil)
+    }
+
+    // MARK: - Completion Paths
+
+    private func presentCompletionViewController() {
+        let viewController = BloggingRemindersFlowCompletionViewController(tracker: self.tracker)
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    private func presentPushPromptViewController() {
+        let viewController = BloggingRemindersPushPromptViewController(tracker: self.tracker) { [weak self] in
+            self?.scheduleReminders(showPushPrompt: false)
+        }
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
@@ -347,7 +375,7 @@ private enum TextContent {
 
     static let tipPanelTitle = NSLocalizedString("Tip", comment: "Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip.")
 
-    static let tipPanelDescription = NSLocalizedString("People who post at least twice weekly get 87% more views on their site.", comment: "Informative tip shown to user in the Blogging Reminders Settings screen.")
+    static let tipPanelDescription = NSLocalizedString("Posting regularly can help keep your readers engaged, and attract new visitors to your site.", comment: "Informative tip shown to user in the Blogging Reminders Settings screen.")
 }
 
 private enum Images {

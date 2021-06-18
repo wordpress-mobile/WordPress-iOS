@@ -39,6 +39,7 @@ class BloggingRemindersTracker {
     enum FlowDismissSource: String {
         case main
         case dayPicker = "day_picker"
+        case enableNotifications = "enable_notifications"
 
         static let propertyName = "source"
     }
@@ -47,6 +48,7 @@ class BloggingRemindersTracker {
         case main
         case dayPicker = "day_picker"
         case allSet = "all_set"
+        case enableNotifications = "enable_notifications"
 
         static let propertyName = "screen"
     }
@@ -54,6 +56,7 @@ class BloggingRemindersTracker {
     enum Button: String {
         case `continue`
         case dismiss
+        case notificationSettings
 
         static let propertyName = "button"
     }
