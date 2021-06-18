@@ -2,6 +2,8 @@
 -----
 * [**] (Don't apply to Jetpack app): Self hosted sites that do not use Jetpack can now manage (install, uninstall, activate, and deactivate) their plugins [#16675]
 
+* [*] Upgraded the Zendesk SDK to version 5.3.0
+
 17.6
 -----
 * [**] Reader Post details: now shows a summary of Likes for the post. Tapping it displays the full list of Likes. [#16628]
@@ -12,7 +14,7 @@
 * [*] Fix notice overlapping the ActionSheet that displays the QuickStart Removal. [#16609]
 * [*] Site Pages: when setting a parent, placeholder text is now displayed for pages with blank titles. [#16661]
 * [***] Block Editor: Audio block now available on WP.com sites on the free plan. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3523]
-* [**] You can now create a Site Icon for your site using an emoji. [#16670] 
+* [**] You can now create a Site Icon for your site using an emoji. [#16670]
 * [*] Fix notice overlapping the ActionSheet that displays the More Actions in the Editor. [#16658]
 
 17.5
@@ -31,7 +33,7 @@
 -----
 * [**] A new author can be chosen for Posts and Pages on multi-author sites. [#16281]
 * [*] Fixed the Follow Sites Quick Start Tour so that Reader Search is highlighted. [#16391]
-* [*] Enabled approving login authentication requests via push notification while the app is in the foreground. [#16075] 
+* [*] Enabled approving login authentication requests via push notification while the app is in the foreground. [#16075]
 * [**] Added pull-to-refresh to the My Site screen when a user has no sites. [#16241]
 * [***] Fixed a bug that was causing uploaded videos to not be viewable in other platforms. [#16548]
 
@@ -74,7 +76,7 @@
 * [**] Block Editor: Added Contact Info block to sites on WPcom or with Jetpack version >= 8.5.
 * [**] We updated the app's color scheme with a brighter new blue used throughout. [#16213, #16207]
 * [**] We updated the login prologue with brand new content and graphics. [#16159, #16177, #16185, #16187, #16200, #16217, #16219, #16221, #16222]
-* [**] We updated the app's color scheme with a brighter new blue used throughout. [#16213, #16207] 
+* [**] We updated the app's color scheme with a brighter new blue used throughout. [#16213, #16207]
 * [**] Updated the app icon to match the new color scheme within the app. [#16220]
 * [*] Fixed an issue where some webview navigation bar controls weren't visible. [#16257]
 
@@ -87,7 +89,7 @@
 * [*] Added a thumbnail device mode selector in the page layout, and use a default setting based on the current device. [#16019]
 * [**] Comments can now be filtered by status (All, Pending, Approved, Trashed, or Spam). [#15955, #16110]
 * [*] Notifications: Enabled the new view milestone notifications [#16144]
-* [***] We updated the app's design, with fresh new headers throughout and a new site switcher in My Site. [#15750] 
+* [***] We updated the app's design, with fresh new headers throughout and a new site switcher in My Site. [#15750]
 
 16.9
 -----
@@ -106,7 +108,7 @@
 -----
 
 * [**] Stories: Fixed an issue which could remove content from a post when a new Story block was edited. [#16059]
- 
+
 16.8
 -----
 * [**] Prevent deleting published homepages which would have the effect of breaking a site. [#15797]
