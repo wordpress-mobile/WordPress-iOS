@@ -271,7 +271,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
             return CalendarDayToggleButton(
                 weekday: weekday,
-                dayName: self.calendar.shortWeekdaySymbols[localizedDayIndex],
+                dayName: self.calendar.shortWeekdaySymbols[localizedDayIndex].uppercased(),
                 isSelected: isSelected) { button in
 
                 if button.isSelected {
