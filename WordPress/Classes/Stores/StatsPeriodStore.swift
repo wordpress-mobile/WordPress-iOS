@@ -179,8 +179,8 @@ protocol StatsPeriodStoreDelegate: AnyObject {
 
 extension StatsPeriodStoreDelegate where Self: UIViewController {
     func didChangeSpamState(for referrerDomain: String, isSpam: Bool) {
-        let markedText = NSLocalizedString("Marked as spam", comment: "Indicating that referrer was marked as spam").lowercased()
-        let unmarkedText = NSLocalizedString("Unmarked as spam", comment: "Indicating that referrer was unmarked as spam").lowercased()
+        let markedText = NSLocalizedString("marked as spam", comment: "Indicating that referrer was marked as spam")
+        let unmarkedText = NSLocalizedString("unmarked as spam", comment: "Indicating that referrer was unmarked as spam")
         let text = isSpam ? markedText : unmarkedText
         displayNotice(title: "\(referrerDomain) \(text)")
     }
