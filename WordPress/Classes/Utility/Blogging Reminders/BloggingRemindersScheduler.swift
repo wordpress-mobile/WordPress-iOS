@@ -8,6 +8,13 @@ protocol NotificationScheduler {
 extension UNUserNotificationCenter: NotificationScheduler {
 }
 
+protocol PushNotificationAuthorizer {
+    func requestAuthorization(completion: @escaping (_ allowed: Bool) -> Void)
+}
+
+extension InteractiveNotificationsManager: PushNotificationAuthorizer {
+}
+
 /// Main interface for scheduling blogging reminders
 ///
 class BloggingRemindersScheduler {
@@ -85,9 +92,9 @@ class BloggingRemindersScheduler {
         store.scheduledReminders(for: blogIdentifier)
     }
 
-    /// Interactive notifications manager
+    /// Push notifications authorizer
     ///
-    private let interactiveNotificationsManager: InteractiveNotificationsManager
+    private let pushNotificationAuthorizer: PushNotificationAuthorizer
 
     /// Active schedule.
     ///
@@ -124,35 +131,37 @@ class BloggingRemindersScheduler {
     ///  - Parameters:
     ///     - blogIdentifier, the blog identifier.  This is necessary since we support blogging reminders for multiple blogs.
     ///     - store: The `BloggingRemindersStore` to use for persisting the reminders schedule.
-    ///     - notificationCenter: The `UNUserNotificationCenter` to use for the notification requests.
+    ///     - notificationCenter: The `NotificationScheduler` to use for the notification requests.
+    ///     - pushNotificationAuthorizer: The `PushNotificationAuthorizer` to use for push notification authorization.
     ///
     init(
         blogIdentifier: BlogIdentifier,
         store: BloggingRemindersStore,
         notificationCenter: NotificationScheduler = UNUserNotificationCenter.current(),
-        interactiveNotificationsManager: InteractiveNotificationsManager = .shared) {
+        pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared) {
 
         self.blogIdentifier = blogIdentifier
         self.store = store
         self.notificationScheduler = notificationCenter
-        self.interactiveNotificationsManager = interactiveNotificationsManager
+        self.pushNotificationAuthorizer = pushNotificationAuthorizer
     }
 
     /// Default initializer.  Allows overriding the blogging reminders store and the notification center for testing purposes.
     ///
     ///  - Parameters:
     ///     - blogIdentifier, the blog identifier.  This is necessary since we support blogging reminders for multiple blogs.
-    ///     - notificationCenter: The `UNUserNotificationCenter` to use for the notification requests.
+    ///     - notificationCenter: The `NotificationScheduler` to use for the notification requests.
+    ///     - pushNotificationAuthorizer: The `PushNotificationAuthorizer` to use for push notification authorization.
     ///
     init(
         blogIdentifier: BlogIdentifier,
         notificationCenter: NotificationScheduler = UNUserNotificationCenter.current(),
-        interactiveNotificationsManager: InteractiveNotificationsManager = .shared) throws {
+        pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared) throws {
 
         self.blogIdentifier = blogIdentifier
         self.store = try Self.defaultStore()
         self.notificationScheduler = notificationCenter
-        self.interactiveNotificationsManager = interactiveNotificationsManager
+        self.pushNotificationAuthorizer = pushNotificationAuthorizer
     }
 
     // MARK: - Scheduling
@@ -164,7 +173,7 @@ class BloggingRemindersScheduler {
     ///     - schedule: the blogging reminders schedule.
     ///
     func schedule(_ schedule: Schedule, completion: @escaping (Result<Void, Swift.Error>) -> ()) {
-        interactiveNotificationsManager.requestAuthorization { [weak self] allowed in
+        pushNotificationAuthorizer.requestAuthorization { [weak self] allowed in
             guard let self = self else {
                 return
             }
