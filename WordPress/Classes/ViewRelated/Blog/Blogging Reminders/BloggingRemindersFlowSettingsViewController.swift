@@ -271,7 +271,11 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return CalendarDayToggleButton(
             weekday: weekday,
             dayName: self.calendar.shortWeekdaySymbols[localizedDayIndex].uppercased(),
-            isSelected: isSelected) { button in
+            isSelected: isSelected) { [weak self] button in
+
+            guard let self = self else {
+                return
+            }
 
             if button.isSelected {
                 self.weekdays.append(button.weekday)
@@ -340,15 +344,15 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     // MARK: - Completion Paths
 
     private func presentCompletionViewController() {
-        let viewController = BloggingRemindersFlowCompletionViewController(tracker: self.tracker)
-        self.navigationController?.pushViewController(viewController, animated: true)
+        let viewController = BloggingRemindersFlowCompletionViewController(tracker: tracker)
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     private func presentPushPromptViewController() {
-        let viewController = BloggingRemindersPushPromptViewController(tracker: self.tracker) { [weak self] in
+        let viewController = BloggingRemindersPushPromptViewController(tracker: tracker) { [weak self] in
             self?.scheduleReminders(showPushPrompt: false)
         }
-        self.navigationController?.pushViewController(viewController, animated: true)
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
