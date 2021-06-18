@@ -213,7 +213,7 @@ private extension SiteStatsPeriodTableViewController {
 // MARK: - StatsPeriodStoreDelegate
 
 extension SiteStatsPeriodTableViewController: StatsPeriodStoreDelegate {
-    /* using default implementtion in protocol extension */
+    /* using default implementation in protocol extension */
 }
 
 // MARK: - NoResultsViewHost

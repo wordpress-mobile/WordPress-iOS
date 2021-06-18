@@ -174,7 +174,7 @@ struct PeriodStoreState {
 
 protocol StatsPeriodStoreDelegate: AnyObject {
     func didChangeSpamState(for referrerDomain: String, isSpam: Bool)
-    func chagingSpamStateForReferrerDomainFailed(oldValue: Bool)
+    func changingSpamStateForReferrerDomainFailed(oldValue: Bool)
 }
 
 extension StatsPeriodStoreDelegate where Self: UIViewController {
@@ -185,7 +185,7 @@ extension StatsPeriodStoreDelegate where Self: UIViewController {
         displayNotice(title: "\(referrerDomain) \(text)")
     }
 
-    func chagingSpamStateForReferrerDomainFailed(oldValue: Bool) {
+    func changingSpamStateForReferrerDomainFailed(oldValue: Bool) {
         let markText = NSLocalizedString("Couldn't mark as spam", comment: "Indicating that referrer couldn't be marked as spam")
         let unmarkText = NSLocalizedString("Couldn't unmark as spam", comment: "Indicating that referrer couldn't be unmarked as spam")
         let text = oldValue ? unmarkText : markText
@@ -1382,7 +1382,7 @@ extension StatsPeriodStore {
                 case .success:
                     self?.delegate?.didChangeSpamState(for: referrerDomain, isSpam: !currentValue)
                 case .failure:
-                    self?.delegate?.chagingSpamStateForReferrerDomainFailed(oldValue: currentValue)
+                    self?.delegate?.changingSpamStateForReferrerDomainFailed(oldValue: currentValue)
                 }
             }
             break

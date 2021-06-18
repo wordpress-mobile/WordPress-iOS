@@ -271,7 +271,7 @@ private extension SiteStatsDetailTableViewController {
 // MARK: - StatsPeriodStoreDelegate
 
 extension SiteStatsDetailTableViewController: StatsPeriodStoreDelegate {
-    /* using default implementtion in protocol extension */
+    /* using default implementation in protocol extension */
 }
 
 // MARK: - SiteStatsDetailsDelegate Methods
