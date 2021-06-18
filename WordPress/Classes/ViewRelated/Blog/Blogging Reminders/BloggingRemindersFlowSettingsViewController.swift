@@ -284,8 +284,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             }
         }
 
-        let topRow = 0 ..< 4
-        let bottomRow = 4 ..< calendar.shortWeekdaySymbols.count
+        let topRow = 0 ..< Metrics.topRowDayCount
+        let bottomRow = Metrics.topRowDayCount ..< calendar.shortWeekdaySymbols.count
 
         daysTopInnerStackView.addArrangedSubviews(topRow.map({ createButton($0) }))
         daysBottomInnerStackView.addArrangedSubviews(bottomRow.map({ createButton($0) }))
@@ -368,4 +368,6 @@ private enum Metrics {
     static let buttonHeight: CGFloat = 44.0
     static let tipPanelCornerRadius: CGFloat = 12.0
     static let tipsTrophyImageSize = CGSize(width: 20, height: 20)
+
+    static let topRowDayCount = 4
 }
