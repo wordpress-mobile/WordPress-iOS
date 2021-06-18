@@ -8,6 +8,13 @@ protocol NotificationScheduler {
 extension UNUserNotificationCenter: NotificationScheduler {
 }
 
+protocol PushNotificationAuthorizer {
+    func requestAuthorization(completion: @escaping (_ allowed: Bool) -> Void)
+}
+
+extension InteractiveNotificationsManager: PushNotificationAuthorizer {
+}
+
 /// Main interface for scheduling blogging reminders
 ///
 class BloggingRemindersScheduler {
@@ -22,6 +29,8 @@ class BloggingRemindersScheduler {
 
     enum Error: Swift.Error {
         case cantRetrieveContainerForAppGroup(appGroupName: String)
+        case needsPermissionForPushNotifications
+        case noPreviousScheduleAttempt
     }
 
     // MARK: - Schedule Data Containers
@@ -48,7 +57,7 @@ class BloggingRemindersScheduler {
     }
 
     enum Weekday: Int, Codable, Comparable {
-        case sunday = 1 // Keep this at 1 to match Apple's `DateComponents`' weekday number.
+        case sunday = 0
         case monday
         case tuesday
         case wednesday
@@ -82,6 +91,10 @@ class BloggingRemindersScheduler {
     private var scheduledReminders: ScheduledReminders {
         store.scheduledReminders(for: blogIdentifier)
     }
+
+    /// Push notifications authorizer
+    ///
+    private let pushNotificationAuthorizer: PushNotificationAuthorizer
 
     /// Active schedule.
     ///
@@ -118,31 +131,37 @@ class BloggingRemindersScheduler {
     ///  - Parameters:
     ///     - blogIdentifier, the blog identifier.  This is necessary since we support blogging reminders for multiple blogs.
     ///     - store: The `BloggingRemindersStore` to use for persisting the reminders schedule.
-    ///     - notificationCenter: The `UNUserNotificationCenter` to use for the notification requests.
+    ///     - notificationCenter: The `NotificationScheduler` to use for the notification requests.
+    ///     - pushNotificationAuthorizer: The `PushNotificationAuthorizer` to use for push notification authorization.
     ///
     init(
         blogIdentifier: BlogIdentifier,
         store: BloggingRemindersStore,
-        notificationCenter: NotificationScheduler = UNUserNotificationCenter.current()) {
+        notificationCenter: NotificationScheduler = UNUserNotificationCenter.current(),
+        pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared) {
 
         self.blogIdentifier = blogIdentifier
         self.store = store
         self.notificationScheduler = notificationCenter
+        self.pushNotificationAuthorizer = pushNotificationAuthorizer
     }
 
     /// Default initializer.  Allows overriding the blogging reminders store and the notification center for testing purposes.
     ///
     ///  - Parameters:
     ///     - blogIdentifier, the blog identifier.  This is necessary since we support blogging reminders for multiple blogs.
-    ///     - notificationCenter: The `UNUserNotificationCenter` to use for the notification requests.
+    ///     - notificationCenter: The `NotificationScheduler` to use for the notification requests.
+    ///     - pushNotificationAuthorizer: The `PushNotificationAuthorizer` to use for push notification authorization.
     ///
     init(
         blogIdentifier: BlogIdentifier,
-        notificationCenter: NotificationScheduler = UNUserNotificationCenter.current()) throws {
+        notificationCenter: NotificationScheduler = UNUserNotificationCenter.current(),
+        pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared) throws {
 
         self.blogIdentifier = blogIdentifier
         self.store = try Self.defaultStore()
         self.notificationScheduler = notificationCenter
+        self.pushNotificationAuthorizer = pushNotificationAuthorizer
     }
 
     // MARK: - Scheduling
@@ -153,7 +172,24 @@ class BloggingRemindersScheduler {
     /// - Parameters:
     ///     - schedule: the blogging reminders schedule.
     ///
-    func schedule(_ schedule: Schedule) throws {
+    func schedule(_ schedule: Schedule, completion: @escaping (Result<Void, Swift.Error>) -> ()) {
+        pushNotificationAuthorizer.requestAuthorization { [weak self] allowed in
+            guard let self = self else {
+                return
+            }
+
+            guard allowed else {
+                completion(.failure(Error.needsPermissionForPushNotifications))
+                return
+            }
+
+            self.pushAuthorizationReceived(for: schedule, completion: completion)
+        }
+    }
+
+    /// You should not be calling this method directly.  Instead, make sure to use `schedule(_:completion:)`.
+    ///
+    private func pushAuthorizationReceived(for schedule: Schedule, completion: (Result<Void, Swift.Error>) -> ()) {
         unschedule(scheduledReminders)
 
         let scheduledReminders: BloggingRemindersStore.ScheduledReminders
@@ -165,7 +201,14 @@ class BloggingRemindersScheduler {
             scheduledReminders = .weekdays(scheduled(days))
         }
 
-        try store.save(scheduledReminders: scheduledReminders, for: blogIdentifier)
+        do {
+            try store.save(scheduledReminders: scheduledReminders, for: blogIdentifier)
+        } catch {
+            completion(.failure(error))
+            return
+        }
+
+        completion(.success(()))
     }
 
     /// Schedules a notifications for the passed days, and returns another array with the days and their

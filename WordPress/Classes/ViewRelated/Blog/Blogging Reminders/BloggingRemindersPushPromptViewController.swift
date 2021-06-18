@@ -81,12 +81,20 @@ class BloggingRemindersPushPromptViewController: UIViewController {
 
     /// Analytics tracker
     ///
-    let tracker: BloggingRemindersTracker
+    private let tracker: BloggingRemindersTracker
+
+    /// The closure that will be called once push notifications have been authorized.
+    ///
+    private let onAuthorized: () -> ()
 
     // MARK: - Initializers
 
-    init(tracker: BloggingRemindersTracker) {
+    init(
+        tracker: BloggingRemindersTracker,
+        onAuthorized: @escaping () -> ()) {
+
         self.tracker = tracker
+        self.onAuthorized = onAuthorized
 
         super.init(nibName: nil, bundle: nil)
 
@@ -202,8 +210,7 @@ class BloggingRemindersPushPromptViewController: UIViewController {
     func navigateIfNecessary() {
         // If push has been authorized, continue the flow
         if pushNotificationsAuthorized == .authorized {
-            let flowCompletionVC = BloggingRemindersFlowCompletionViewController(tracker: tracker)
-            navigationController?.pushViewController(flowCompletionVC, animated: true)
+            onAuthorized()
         }
     }
 }

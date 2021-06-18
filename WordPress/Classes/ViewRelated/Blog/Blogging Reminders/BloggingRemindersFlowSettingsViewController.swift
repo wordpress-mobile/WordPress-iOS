@@ -124,12 +124,37 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return button
     }()
 
+    // MARK: - Properties
+
+    private let calendar: Calendar
+    private let scheduler: BloggingRemindersScheduler
+    private var weekdays: [BloggingRemindersScheduler.Weekday]
+
     // MARK: - Initializers
 
     let tracker: BloggingRemindersTracker
 
-    init(tracker: BloggingRemindersTracker) {
+    init(
+        for blog: Blog,
+        tracker: BloggingRemindersTracker,
+        calendar: Calendar? = nil) throws {
+
         self.tracker = tracker
+        self.calendar = calendar ?? {
+            var calendar = Calendar.current
+            calendar.locale = Locale.autoupdatingCurrent
+
+            return calendar
+        }()
+
+        scheduler = try BloggingRemindersScheduler(blogIdentifier: blog.objectID.uriRepresentation())
+
+        switch self.scheduler.schedule() {
+        case .none:
+            weekdays = []
+        case .weekdays(let scheduledWeekdays):
+            weekdays = scheduledWeekdays
+        }
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -224,47 +249,88 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         ])
     }
 
+    // MARK: - Calendar Days Buttons
+
+    /// Creates the calendar day toggle buttons.  This is a convenience method to take care of the mapping of the day index, from Apple's calendar, to
+    /// our `BloggingRemindersScheduler.Weekday`.  In theory this should never return `nil`, but we're allowing it to avoid possible crashes.
+    ///
+    /// - Parameters:
+    ///     - weekday: the weekday the button is for.
+    ///
+    /// - Returns: the requested toggle button.
+    ///
+    private func createCalendarDayToggleButton(dayIndex: Int) -> CalendarDayToggleButton? {
+        let localizedDayIndex = (dayIndex + calendar.firstWeekday - 1) % calendar.shortWeekdaySymbols.count
+
+        guard let weekday = BloggingRemindersScheduler.Weekday(rawValue: localizedDayIndex) else {
+            return nil
+        }
+
+        let isSelected = weekdays.contains(weekday)
+
+        return CalendarDayToggleButton(
+            weekday: weekday,
+            dayName: self.calendar.shortWeekdaySymbols[localizedDayIndex].uppercased(),
+            isSelected: isSelected) { [weak self] button in
+
+            guard let self = self else {
+                return
+            }
+
+            if button.isSelected {
+                self.weekdays.append(button.weekday)
+            } else {
+                self.weekdays.removeAll { weekday in
+                    weekday == button.weekday
+                }
+            }
+        }
+    }
+
     private func populateCalendarDays() {
         daysOuterStackView.addArrangedSubviews([daysTopInnerStackView, daysBottomInnerStackView])
 
-        let topRow = days[0..<4]    // First 4 days
-        let bottomRow = days[4..<days.count]    // Last 3 days
-        daysTopInnerStackView.addArrangedSubviews(topRow.map({ CalendarDayToggleButton(weekday: $0) }))
-        daysBottomInnerStackView.addArrangedSubviews(bottomRow.map({ CalendarDayToggleButton(weekday: $0) }))
+        let topRow = 0 ..< Metrics.topRowDayCount
+        let bottomRow = Metrics.topRowDayCount ..< calendar.shortWeekdaySymbols.count
+
+        daysTopInnerStackView.addArrangedSubviews(topRow.compactMap({ createCalendarDayToggleButton(dayIndex: $0) }))
+        daysBottomInnerStackView.addArrangedSubviews(bottomRow.compactMap({ createCalendarDayToggleButton(dayIndex: $0) }))
     }
-
-    /// Localized short weekday names, starting at the correct weekday for the current calendar
-    private let days: [String] = {
-        var calendar = Calendar.current
-        calendar.locale = Locale.autoupdatingCurrent
-        let firstWeekday = calendar.firstWeekday
-        var symbols = calendar.shortWeekdaySymbols
-
-        // Switch around the order of days so that the correct day is at the beginning
-        let firstWeekdayToEnd = symbols[firstWeekday-1 ..< Calendar.current.shortWeekdaySymbols.count]
-        let beginningToFirstWeekday = symbols[0 ..< firstWeekday - 1]
-
-        return Array(firstWeekdayToEnd + beginningToFirstWeekday)
-    }()
 
     // MARK: - Actions
 
     @objc private func notifyMeButtonTapped() {
         tracker.buttonPressed(button: .continue, screen: .dayPicker)
 
-        InteractiveNotificationsManager.shared.requestAuthorization { [weak self] allowed in
-            guard let self = self else {
-                return
-            }
+        scheduleReminders()
+    }
 
-            DispatchQueue.main.async {
-                let targetVC: UIViewController
-                if allowed {
-                    targetVC = BloggingRemindersFlowCompletionViewController(tracker: self.tracker)
-                } else {
-                    targetVC = BloggingRemindersPushPromptViewController(tracker: self.tracker)
+    /// Schedules the reminders and shows a VC that requests PN authorization, if necessary.
+    ///
+    /// - Parameters:
+    ///     - showPushPrompt: if `true` the PN authorization prompt VC will be shown.
+    ///         When `false`, the VC won't be shown.  This is useful because this method
+    ///         can also be called when the refrenced VC is already on-screen.
+    ///
+    private func scheduleReminders(showPushPrompt: Bool = true) {
+        scheduler.schedule(.weekdays(weekdays)) { [weak self] result in
+            switch result {
+            case .success:
+                DispatchQueue.main.async { [weak self] in
+                    self?.presentCompletionViewController()
                 }
-                self.navigationController?.pushViewController(targetVC, animated: true)
+            case .failure(let error):
+                switch error {
+                case BloggingRemindersScheduler.Error.needsPermissionForPushNotifications where showPushPrompt == true:
+                    DispatchQueue.main.async { [weak self] in
+                        self?.presentPushPromptViewController()
+                    }
+                default:
+                    // The scheduler should normally not fail unless it's because of having no push permissions.
+                    // As a simple solution for now, we'll just avoid taking any action if the scheduler did fail.
+                    DDLogError("Error scheduling blogging reminders: \(error)")
+                    break
+                }
             }
         }
     }
@@ -273,6 +339,20 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         tracker.buttonPressed(button: .dismiss, screen: .dayPicker)
 
         dismiss(animated: true, completion: nil)
+    }
+
+    // MARK: - Completion Paths
+
+    private func presentCompletionViewController() {
+        let viewController = BloggingRemindersFlowCompletionViewController(tracker: tracker)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    private func presentPushPromptViewController() {
+        let viewController = BloggingRemindersPushPromptViewController(tracker: tracker) { [weak self] in
+            self?.scheduleReminders(showPushPrompt: false)
+        }
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
@@ -320,4 +400,6 @@ private enum Metrics {
     static let buttonHeight: CGFloat = 44.0
     static let tipPanelCornerRadius: CGFloat = 12.0
     static let tipsTrophyImageSize = CGSize(width: 20, height: 20)
+
+    static let topRowDayCount = 4
 }
