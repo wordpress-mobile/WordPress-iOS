@@ -251,22 +251,22 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     // MARK: - Calendar Days Buttons
 
-    private func createCalendarDayToggleButton(dayIndex: Int) -> CalendarDayToggleButton {
-        let isSelected: Bool
+    /// Creates the calendar day toggle buttons.  This is a convenience method to take care of the mapping of the day index, from Apple's calendar, to
+    /// our `BloggingRemindersScheduler.Weekday`.  In theory this should never return `nil`, but we're allowing it to avoid possible crashes.
+    ///
+    /// - Parameters:
+    ///     - weekday: the weekday the button is for.
+    ///
+    /// - Returns: the requested toggle button.
+    ///
+    private func createCalendarDayToggleButton(dayIndex: Int) -> CalendarDayToggleButton? {
         let localizedDayIndex = (dayIndex + calendar.firstWeekday - 1) % calendar.shortWeekdaySymbols.count
 
-        let weekday = BloggingRemindersScheduler.Weekday(rawValue: localizedDayIndex) ?? {
-            // The rawValue above should always fall within 0 ..< 7 and this case
-            // should not be possible.  We're still going to handle it by logging
-            // an error and returning .monday so that the app keeps running.
-            //
-            // Is there any other sensible approach to handle this?
-            //
-            DDLogError("Cannot initialize BloggingRemindersScheduler.Weekday with rawValue: \(localizedDayIndex)")
-            return .monday
-        }()
+        guard let weekday = BloggingRemindersScheduler.Weekday(rawValue: localizedDayIndex) else {
+            return nil
+        }
 
-        isSelected = weekdays.contains(weekday)
+        let isSelected = weekdays.contains(weekday)
 
         return CalendarDayToggleButton(
             weekday: weekday,
@@ -289,8 +289,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         let topRow = 0 ..< Metrics.topRowDayCount
         let bottomRow = Metrics.topRowDayCount ..< calendar.shortWeekdaySymbols.count
 
-        daysTopInnerStackView.addArrangedSubviews(topRow.map({ createCalendarDayToggleButton($0) }))
-        daysBottomInnerStackView.addArrangedSubviews(bottomRow.map({ createCalendarDayToggleButton($0) }))
+        daysTopInnerStackView.addArrangedSubviews(topRow.compactMap({ createCalendarDayToggleButton(dayIndex: $0) }))
+        daysBottomInnerStackView.addArrangedSubviews(bottomRow.compactMap({ createCalendarDayToggleButton(dayIndex: $0) }))
     }
 
     // MARK: - Actions
