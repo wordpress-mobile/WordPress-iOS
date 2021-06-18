@@ -249,46 +249,48 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         ])
     }
 
-    private func populateCalendarDays() {
-        daysOuterStackView.addArrangedSubviews([daysTopInnerStackView, daysBottomInnerStackView])
+    // MARK: - Calendar Days Buttons
 
-        let createButton: (Int) -> CalendarDayToggleButton = { [unowned self] dayIndex in
-            let isSelected: Bool
-            let localizedDayIndex = (dayIndex + calendar.firstWeekday - 1) % calendar.shortWeekdaySymbols.count
+    private func createCalendarDayToggleButton(dayIndex: Int) -> CalendarDayToggleButton {
+        let isSelected: Bool
+        let localizedDayIndex = (dayIndex + calendar.firstWeekday - 1) % calendar.shortWeekdaySymbols.count
 
-            let weekday = BloggingRemindersScheduler.Weekday(rawValue: localizedDayIndex) ?? {
-                // The rawValue above should always fall within 0 ..< 7 and this case
-                // should not be possible.  We're still going to handle it by logging
-                // an error and returning .monday so that the app keeps running.
-                //
-                // Is there any other sensible approach to handle this?
-                //
-                DDLogError("Cannot initialize BloggingRemindersScheduler.Weekday with rawValue: \(localizedDayIndex)")
-                return .monday
-            }()
+        let weekday = BloggingRemindersScheduler.Weekday(rawValue: localizedDayIndex) ?? {
+            // The rawValue above should always fall within 0 ..< 7 and this case
+            // should not be possible.  We're still going to handle it by logging
+            // an error and returning .monday so that the app keeps running.
+            //
+            // Is there any other sensible approach to handle this?
+            //
+            DDLogError("Cannot initialize BloggingRemindersScheduler.Weekday with rawValue: \(localizedDayIndex)")
+            return .monday
+        }()
 
-            isSelected = weekdays.contains(weekday)
+        isSelected = weekdays.contains(weekday)
 
-            return CalendarDayToggleButton(
-                weekday: weekday,
-                dayName: self.calendar.shortWeekdaySymbols[localizedDayIndex].uppercased(),
-                isSelected: isSelected) { button in
+        return CalendarDayToggleButton(
+            weekday: weekday,
+            dayName: self.calendar.shortWeekdaySymbols[localizedDayIndex].uppercased(),
+            isSelected: isSelected) { button in
 
-                if button.isSelected {
-                    self.weekdays.append(button.weekday)
-                } else {
-                    self.weekdays.removeAll { weekday in
-                        weekday == button.weekday
-                    }
+            if button.isSelected {
+                self.weekdays.append(button.weekday)
+            } else {
+                self.weekdays.removeAll { weekday in
+                    weekday == button.weekday
                 }
             }
         }
+    }
+
+    private func populateCalendarDays() {
+        daysOuterStackView.addArrangedSubviews([daysTopInnerStackView, daysBottomInnerStackView])
 
         let topRow = 0 ..< Metrics.topRowDayCount
         let bottomRow = Metrics.topRowDayCount ..< calendar.shortWeekdaySymbols.count
 
-        daysTopInnerStackView.addArrangedSubviews(topRow.map({ createButton($0) }))
-        daysBottomInnerStackView.addArrangedSubviews(bottomRow.map({ createButton($0) }))
+        daysTopInnerStackView.addArrangedSubviews(topRow.map({ createCalendarDayToggleButton($0) }))
+        daysBottomInnerStackView.addArrangedSubviews(bottomRow.map({ createCalendarDayToggleButton($0) }))
     }
 
     // MARK: - Actions
