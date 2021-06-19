@@ -234,16 +234,6 @@ private extension StatsTotalRow {
         Style.configureViewAsSeparator(separatorLine)
         Style.configureViewAsSeparator(topExpandedSeparatorLine)
         Style.configureViewAsDataBar(dataBar)
-
-        if let data = rowData, data.statSection == .periodReferrers {
-            if parentRow == nil && data.canMarkReferrerAsSpam {
-                itemLabel.textColor = .systemBlue
-            }
-
-            if data.isReferrerSpam {
-                Style.configureLabelAsNoData(itemLabel)
-            }
-        }
     }
 
     func configureDisclosureButton() {
@@ -297,7 +287,6 @@ private extension StatsTotalRow {
     }
 
     func configureIcon() {
-
         guard let rowData = rowData else {
             return
         }
@@ -350,7 +339,6 @@ private extension StatsTotalRow {
     }
 
     func configureDataBar() {
-
         guard let dataBarPercent = rowData?.dataBarPercent else {
             dataBarView.isHidden = true
             return
@@ -382,7 +370,6 @@ private extension StatsTotalRow {
     }
 
     @IBAction func didTapDisclosureButton(_ sender: UIButton) {
-
         if let statSection = rowData?.statSection {
             captureAnalyticsEventsFor(statSection)
         }
