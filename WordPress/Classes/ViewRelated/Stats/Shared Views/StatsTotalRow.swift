@@ -51,8 +51,11 @@ struct StatsTotalRowData {
     }
 
     var canMarkReferrerAsSpam: Bool {
-        disclosureURL != nil && disclosureURL!.absoluteString.contains(name) ||
-            disclosureURL == nil && name.contains(".")
+        if let url = disclosureURL {
+            return url.absoluteString.contains(name)
+        } else {
+            return name.contains(".")
+        }
     }
 }
 
