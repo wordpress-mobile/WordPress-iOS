@@ -133,7 +133,7 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
 
     var expanded: Bool = false {
         didSet {
-            guard hasChildRows else {
+            guard hasChildRows, rowData?.statSection != .periodReferrers else {
                 return
             }
 
@@ -271,7 +271,7 @@ private extension StatsTotalRow {
     }
 
     func configureDetailDisclosure() {
-        guard hasChildRows, forDetails else {
+        guard hasChildRows, forDetails, rowData?.statSection != .periodReferrers else {
             return
         }
 
@@ -392,27 +392,24 @@ private extension StatsTotalRow {
             return
         }
 
+        if rowData?.statSection == .periodReferrers {
+            // TODO: implement delegate
+            return
+        }
+
         if hasChildRows {
-            if let section = rowData?.statSection,
-               section == .periodReferrers {
-                didTapReferrerCell()
-            } else {
-                toggleExpandedState()
-            }
+            toggleExpandedState()
             return
         }
 
         if let disclosureURL = rowData?.disclosureURL {
             if let statSection = rowData?.statSection,
-                statSection == .periodPostsAndPages {
+               statSection == .periodPostsAndPages {
                 guard let postID = rowData?.postID else {
                     DDLogInfo("No postID available to show Post Stats.")
                     return
                 }
                 delegate?.showPostStats?(postID: postID, postTitle: rowData?.name, postURL: rowData?.disclosureURL)
-            } else if let section = rowData?.statSection,
-                      section == .periodReferrers {
-                didTapReferrerCell()
             } else {
                 delegate?.displayWebViewWithURL?(disclosureURL)
             }
