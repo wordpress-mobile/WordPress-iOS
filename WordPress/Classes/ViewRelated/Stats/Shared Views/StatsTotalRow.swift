@@ -65,7 +65,10 @@ struct StatsTotalRowData {
     @objc optional func toggleChildRows(for row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
     @objc optional func showAddInsight()
-    @objc optional func toggleSpamState(for referrerDomain: String, currentValue: Bool)
+}
+
+protocol StatsTotalRowReferrerDelegate: AnyObject {
+    func showReferrerDetails(_ data: StatsTotalRowData)
 }
 
 class StatsTotalRow: UIView, NibLoadable, Accessible {
@@ -104,6 +107,7 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
     private var dataBarMaxTrailing: Float = 0.0
     private typealias Style = WPStyleGuide.Stats
     private weak var delegate: StatsTotalRowDelegate?
+    private weak var referrerDelegate: StatsTotalRowReferrerDelegate?
     private var forDetails = false
     private(set) weak var parentRow: StatsTotalRow?
 
@@ -157,10 +161,12 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
 
     func configure(rowData: StatsTotalRowData,
                    delegate: StatsTotalRowDelegate? = nil,
+                   referrerDelegate: StatsTotalRowReferrerDelegate? = nil,
                    forDetails: Bool = false,
                    parentRow: StatsTotalRow? = nil) {
         self.rowData = rowData
         self.delegate = delegate
+        self.referrerDelegate = referrerDelegate
         self.forDetails = forDetails
         self.parentRow = parentRow
 
@@ -379,8 +385,8 @@ private extension StatsTotalRow {
             return
         }
 
-        if rowData?.statSection == .periodReferrers {
-            // TODO: implement delegate
+        if rowData?.statSection == .periodReferrers, let data = rowData {
+            referrerDelegate?.showReferrerDetails(data)
             return
         }
 

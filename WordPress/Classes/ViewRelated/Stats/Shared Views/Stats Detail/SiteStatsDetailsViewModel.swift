@@ -14,6 +14,7 @@ class SiteStatsDetailsViewModel: Observable {
 
     private var statSection: StatSection?
     private weak var detailsDelegate: SiteStatsDetailsDelegate?
+    private weak var referrerDelegate: SiteStatsReferrerDelegate?
 
     private let insightsStore = StoreContainer.shared.statsInsights
     private var insightsReceipt: Receipt?
@@ -32,8 +33,10 @@ class SiteStatsDetailsViewModel: Observable {
     // MARK: - Init
 
     init(detailsDelegate: SiteStatsDetailsDelegate,
+         referrerDelegate: SiteStatsReferrerDelegate,
          storeDelegate: StatsPeriodStoreDelegate) {
         self.detailsDelegate = detailsDelegate
+        self.referrerDelegate = referrerDelegate
         self.periodStore.delegate = storeDelegate
     }
 
@@ -969,6 +972,7 @@ private extension SiteStatsDetailsViewModel {
     func parentRow(rowData: StatsTotalRowData, hideIndentedSeparator: Bool, hideFullSeparator: Bool, expanded: Bool) -> DetailExpandableRow {
         return DetailExpandableRow(rowData: rowData,
                                    detailsDelegate: detailsDelegate,
+                                   referrerDelegate: referrerDelegate,
                                    hideIndentedSeparator: hideIndentedSeparator,
                                    hideFullSeparator: hideFullSeparator,
                                    expanded: expanded)

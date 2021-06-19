@@ -11,6 +11,7 @@ class SiteStatsPeriodViewModel: Observable {
     let changeDispatcher = Dispatcher<Void>()
 
     private weak var periodDelegate: SiteStatsPeriodDelegate?
+    private weak var referrerDelegate: SiteStatsReferrerDelegate?
     private let store: StatsPeriodStore
     private var lastRequestedDate: Date
     private var lastRequestedPeriod: StatsPeriodUnit {
@@ -42,8 +43,10 @@ class SiteStatsPeriodViewModel: Observable {
          selectedDate: Date,
          selectedPeriod: StatsPeriodUnit,
          periodDelegate: SiteStatsPeriodDelegate,
+         referrerDelegate: SiteStatsReferrerDelegate,
          storeDelegate: StatsPeriodStoreDelegate) {
         self.periodDelegate = periodDelegate
+        self.referrerDelegate = referrerDelegate
         self.store = store
         self.store.delegate = storeDelegate
         self.lastRequestedDate = selectedDate
@@ -422,7 +425,8 @@ private extension SiteStatsPeriodViewModel {
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
                                                  dataSubtitle: StatSection.periodReferrers.dataSubtitle,
                                                  dataRows: referrersDataRows(),
-                                                 siteStatsPeriodDelegate: periodDelegate))
+                                                 siteStatsPeriodDelegate: periodDelegate,
+                                                 siteStatsReferrerDelegate: referrerDelegate))
 
         return tableRows
     }

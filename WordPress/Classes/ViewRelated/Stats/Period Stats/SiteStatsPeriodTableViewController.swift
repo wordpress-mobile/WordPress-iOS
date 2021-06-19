@@ -8,7 +8,10 @@ import WordPressFlux
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
-    @objc func toggleSpamState(for referrerDomain: String, currentValue: Bool)
+}
+
+protocol SiteStatsReferrerDelegate: AnyObject {
+    func showReferrerDetails(_ data: StatsTotalRowData)
 }
 
 class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoadable {
@@ -129,6 +132,7 @@ private extension SiteStatsPeriodTableViewController {
                                              selectedDate: selectedDate,
                                              selectedPeriod: selectedPeriod,
                                              periodDelegate: self,
+                                             referrerDelegate: self,
                                              storeDelegate: self)
         viewModel?.statsBarChartViewDelegate = self
         addViewModelListeners()
@@ -304,11 +308,13 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
+}
 
-    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
-        showSpamActionSheet(for: referrerDomain, isSpam: currentValue) { [weak self] in
-            self?.viewModel?.toggleSpamState(for: referrerDomain, currentValue: currentValue)
-        }
+// MARK: - SiteStatsReferrerDelegate
+
+extension SiteStatsPeriodTableViewController: SiteStatsReferrerDelegate {
+    func showReferrerDetails(_ data: StatsTotalRowData) {
+        // TODO: implement
     }
 }
 
