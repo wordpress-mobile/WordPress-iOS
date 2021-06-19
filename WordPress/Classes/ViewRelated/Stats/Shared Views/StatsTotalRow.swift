@@ -107,9 +107,6 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
     private var forDetails = false
     private(set) weak var parentRow: StatsTotalRow?
 
-    // NOTE: temporary implementation, until design is defined
-    private let moreButton = UIButton()
-
     // This view is modified by the containing cell, to show/hide
     // child rows when a parent row is selected.
     weak var childRowsView: StatsChildRowsView?
@@ -260,20 +257,6 @@ private extension StatsTotalRow {
         // Add Insight doesn't have a disclosure icon, but it needs a tap action.
         if rowData.statSection == .insightsAddInsight {
             disclosureButton.isEnabled = true
-        }
-
-        // NOTE: temporary implementation, until design is defined
-        if rowData.statSection == .periodReferrers {
-            moreButton.addTarget(self, action: #selector(didTapMoreButton), for: .touchUpInside)
-            moreButton.translatesAutoresizingMaskIntoConstraints = false
-            addSubview(moreButton)
-
-            NSLayoutConstraint.activate([
-                moreButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
-                moreButton.topAnchor.constraint(equalTo: topAnchor, constant: 4),
-                moreButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
-                moreButton.widthAnchor.constraint(equalTo: moreButton.heightAnchor)
-            ])
         }
     }
 
@@ -442,47 +425,6 @@ private extension StatsTotalRow {
         }
 
         DDLogInfo("Stat row selection action not supported.")
-    }
-
-    @objc func didTapMoreButton() {
-        if parentRow == nil, hasChildRows {
-            toggleExpandedState()
-        } else if let disclosureURL = rowData?.disclosureURL {
-            delegate?.displayWebViewWithURL?(disclosureURL)
-        }
-    }
-
-    func didTapReferrerCell() {
-        guard let data = rowData else {
-            return
-        }
-
-        if parentRow == nil {
-            if data.canMarkReferrerAsSpam {
-                let referrerDomain: String?
-                let isSpam = data.isReferrerSpam
-
-                if hasChildRows {
-                    referrerDomain = data.childRows?.first?.disclosureURL?.host
-                } else {
-                    referrerDomain = data.disclosureURL?.host
-                }
-
-                guard let domain = referrerDomain else {
-                    return
-                }
-
-                delegate?.toggleSpamState?(for: domain, currentValue: isSpam)
-            } else {
-                if hasChildRows {
-                    toggleExpandedState()
-                } else if let disclosureURL = data.disclosureURL {
-                    delegate?.displayWebViewWithURL?(disclosureURL)
-                }
-            }
-        } else if let disclosureURL = data.disclosureURL {
-            delegate?.displayWebViewWithURL?(disclosureURL)
-        }
     }
 
     func toggleExpandedState() {
