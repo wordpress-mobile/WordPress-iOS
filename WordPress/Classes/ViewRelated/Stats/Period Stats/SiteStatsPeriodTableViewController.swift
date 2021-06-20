@@ -314,7 +314,7 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
 
 extension SiteStatsPeriodTableViewController: SiteStatsReferrerDelegate {
     func showReferrerDetails(_ data: StatsTotalRowData) {
-        // TODO: implement
+        show(ReferrerDetailsTableViewController(), sender: nil)
     }
 }
 
