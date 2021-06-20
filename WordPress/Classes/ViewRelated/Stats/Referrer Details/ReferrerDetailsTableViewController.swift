@@ -18,7 +18,21 @@ extension ReferrerDetailsTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        .zero
+        switch section {
+        case tableView.numberOfSections - 1:
+            return .zero
+        default:
+            return UITableView.automaticDimension
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        switch section {
+        case tableView.numberOfSections - 1:
+            return nil
+        default:
+            return UIView()
+        }
     }
 }
 

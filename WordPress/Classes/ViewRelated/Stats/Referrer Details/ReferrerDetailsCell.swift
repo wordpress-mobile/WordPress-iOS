@@ -3,6 +3,7 @@ import UIKit
 final class ReferrerDetailsCell: UITableViewCell {
     private let referrerLabel = UILabel()
     private let viewsLabel = UILabel()
+    private let separatorView = UIView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -19,9 +20,7 @@ extension ReferrerDetailsCell {
     func configure(isLast: Bool) {
         referrerLabel.text = "Test"
         viewsLabel.text = "123"
-        if isLast {
-            separatorInset = .zero
-        }
+        separatorView.isHidden = !isLast
     }
 }
 
@@ -30,6 +29,7 @@ private extension ReferrerDetailsCell {
     func setupViews() {
         setupReferrerLabel()
         setupViewsLabel()
+        setupSeparatorView()
     }
 
     func setupReferrerLabel() {
@@ -50,6 +50,18 @@ private extension ReferrerDetailsCell {
             viewsLabel.leadingAnchor.constraint(greaterThanOrEqualTo: referrerLabel.trailingAnchor, constant: 16),
             viewsLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             viewsLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+    }
+
+    func setupSeparatorView() {
+        separatorView.backgroundColor = WPStyleGuide.Stats.separatorColor
+        separatorView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(separatorView)
+        NSLayoutConstraint.activate([
+            separatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            separatorView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            separatorView.heightAnchor.constraint(equalToConstant: WPStyleGuide.Stats.separatorHeight)
         ])
     }
 }

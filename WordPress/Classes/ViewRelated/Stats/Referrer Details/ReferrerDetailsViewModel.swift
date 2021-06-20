@@ -16,10 +16,9 @@ extension ReferrerDetailsViewModel {
         rows.append(ReferrerDetailsRow())
         rows.append(ReferrerDetailsRow(action: nil, isLast: true))
 
-        rows.append(ReferrerDetailsSpamActionRow(action: nil, isSpam: false))
-
         return ImmuTable(sections: [
-            ImmuTableSection(rows: rows)
+            ImmuTableSection(rows: rows),
+            ImmuTableSection(rows: [ReferrerDetailsSpamActionRow(action: nil, isSpam: false)])
         ])
     }
 }
