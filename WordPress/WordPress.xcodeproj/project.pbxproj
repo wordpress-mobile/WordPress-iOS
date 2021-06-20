@@ -1373,6 +1373,8 @@
 		931215EA267F59CB008C3B69 /* ReferrerDetailsHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215E9267F59CB008C3B69 /* ReferrerDetailsHeaderCell.swift */; };
 		931215EC267F5F45008C3B69 /* ReferrerDetailsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215EB267F5F45008C3B69 /* ReferrerDetailsRow.swift */; };
 		931215EE267F6799008C3B69 /* ReferrerDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215ED267F6799008C3B69 /* ReferrerDetailsCell.swift */; };
+		931215F2267FE162008C3B69 /* ReferrerDetailsSpamActionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215F1267FE162008C3B69 /* ReferrerDetailsSpamActionRow.swift */; };
+		931215F4267FE177008C3B69 /* ReferrerDetailsSpamActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215F3267FE177008C3B69 /* ReferrerDetailsSpamActionCell.swift */; };
 		931430201E68B9C50014B6C6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1C5B2131E54C28C00052319 /* Localizable.strings */; };
 		931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */; };
 		931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 930FD0A519882742000CC81D /* BlogServiceTest.m */; };
@@ -5995,6 +5997,8 @@
 		931215E9267F59CB008C3B69 /* ReferrerDetailsHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferrerDetailsHeaderCell.swift; sourceTree = "<group>"; };
 		931215EB267F5F45008C3B69 /* ReferrerDetailsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferrerDetailsRow.swift; sourceTree = "<group>"; };
 		931215ED267F6799008C3B69 /* ReferrerDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferrerDetailsCell.swift; sourceTree = "<group>"; };
+		931215F1267FE162008C3B69 /* ReferrerDetailsSpamActionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferrerDetailsSpamActionRow.swift; sourceTree = "<group>"; };
+		931215F3267FE177008C3B69 /* ReferrerDetailsSpamActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferrerDetailsSpamActionCell.swift; sourceTree = "<group>"; };
 		931D26FF19EDAE8600114F17 /* CoreDataMigrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataMigrationTests.m; sourceTree = "<group>"; };
 		931DF4D718D09A2F00540BDD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		931DF4D918D09A9B00540BDD /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -11120,6 +11124,8 @@
 				931215E9267F59CB008C3B69 /* ReferrerDetailsHeaderCell.swift */,
 				931215E7267F52A6008C3B69 /* ReferrerDetailsHeaderRow.swift */,
 				931215EB267F5F45008C3B69 /* ReferrerDetailsRow.swift */,
+				931215F3267FE177008C3B69 /* ReferrerDetailsSpamActionCell.swift */,
+				931215F1267FE162008C3B69 /* ReferrerDetailsSpamActionRow.swift */,
 				931215E3267F5003008C3B69 /* ReferrerDetailsTableViewController.swift */,
 				931215E5267F5192008C3B69 /* ReferrerDetailsViewModel.swift */,
 			);
@@ -17297,6 +17303,7 @@
 				E678FC151C76241000F55F55 /* WPStyleGuide+ApplicationStyles.swift in Sources */,
 				7EFF208620EAD918009C4699 /* FormattableUserContent.swift in Sources */,
 				436D56262117312700CEAA33 /* RegisterDomainDetailsViewController+HeaderFooter.swift in Sources */,
+				931215F2267FE162008C3B69 /* ReferrerDetailsSpamActionRow.swift in Sources */,
 				E66EB6F91C1B7A76003DABC5 /* ReaderSpacerView.swift in Sources */,
 				B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */,
 				B560914C208A671F00399AE4 /* WPStyleGuide+SiteCreation.swift in Sources */,
@@ -17565,6 +17572,7 @@
 				E14694071F3459E2004052C8 /* PluginListViewController.swift in Sources */,
 				FF0D8146205809C8000EE505 /* PostCoordinator.swift in Sources */,
 				7EA30DB621ADA20F0092F894 /* AztecAttachmentDelegate.swift in Sources */,
+				931215F4267FE177008C3B69 /* ReferrerDetailsSpamActionCell.swift in Sources */,
 				82B67B361FC726CD006FB593 /* Memoize.swift in Sources */,
 				9AA0ADB3235F11DC0027AB5D /* StatsPeriodAsyncOperation.swift in Sources */,
 				B5DBE4FE1D21A700002E81D3 /* NotificationsViewController.swift in Sources */,

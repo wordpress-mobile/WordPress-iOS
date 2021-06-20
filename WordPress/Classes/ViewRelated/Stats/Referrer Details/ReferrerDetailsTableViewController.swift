@@ -39,6 +39,7 @@ private extension ReferrerDetailsTableViewController {
 private extension ReferrerDetailsTableViewController {
     var rows: [ImmuTableRow.Type] {
         [ReferrerDetailsHeaderRow.self,
-         ReferrerDetailsRow.self]
+         ReferrerDetailsRow.self,
+         ReferrerDetailsSpamActionRow.self]
     }
 }
