@@ -22,6 +22,7 @@ private extension ReferrerDetailsTableViewController {
 // MARK: - Private Computed Properties
 private extension ReferrerDetailsTableViewController {
     var rows: [ImmuTableRow.Type] {
-        [ReferrerDetailsHeaderRow.self]
+        [ReferrerDetailsHeaderRow.self,
+         ReferrerDetailsRow.self]
     }
 }

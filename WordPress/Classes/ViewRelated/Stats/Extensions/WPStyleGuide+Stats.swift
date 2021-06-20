@@ -73,6 +73,10 @@ extension WPStyleGuide {
             label.font = subTitleFont
         }
 
+        static func configureLabelAsLink(_ label: UILabel) {
+            label.textColor = actionTextColor
+        }
+
         static func configureLabelItemDetail(_ label: UILabel) {
             label.textColor = itemDetailTextColor
         }

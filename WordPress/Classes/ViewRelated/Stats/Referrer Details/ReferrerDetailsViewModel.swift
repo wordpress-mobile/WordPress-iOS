@@ -10,6 +10,7 @@ extension ReferrerDetailsViewModel {
         var rows = [ImmuTableRow]()
 
         rows.append(ReferrerDetailsHeaderRow())
+        rows.append(ReferrerDetailsRow())
 
         return ImmuTable(sections: [
             ImmuTableSection(rows: rows)

@@ -1367,6 +1367,12 @@
 		930F09171C7D110E00995926 /* ShareExtensionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F09161C7D110E00995926 /* ShareExtensionService.swift */; };
 		930F09191C7E1C1E00995926 /* ShareExtensionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F09161C7D110E00995926 /* ShareExtensionService.swift */; };
 		931215E1267DE1C0008C3B69 /* StatsTotalRowDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215E0267DE1C0008C3B69 /* StatsTotalRowDataTests.swift */; };
+		931215E4267F5003008C3B69 /* ReferrerDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215E3267F5003008C3B69 /* ReferrerDetailsTableViewController.swift */; };
+		931215E6267F5192008C3B69 /* ReferrerDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215E5267F5192008C3B69 /* ReferrerDetailsViewModel.swift */; };
+		931215E8267F52A6008C3B69 /* ReferrerDetailsHeaderRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215E7267F52A6008C3B69 /* ReferrerDetailsHeaderRow.swift */; };
+		931215EA267F59CB008C3B69 /* ReferrerDetailsHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215E9267F59CB008C3B69 /* ReferrerDetailsHeaderCell.swift */; };
+		931215EC267F5F45008C3B69 /* ReferrerDetailsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215EB267F5F45008C3B69 /* ReferrerDetailsRow.swift */; };
+		931215EE267F6799008C3B69 /* ReferrerDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215ED267F6799008C3B69 /* ReferrerDetailsCell.swift */; };
 		931430201E68B9C50014B6C6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1C5B2131E54C28C00052319 /* Localizable.strings */; };
 		931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */; };
 		931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 930FD0A519882742000CC81D /* BlogServiceTest.m */; };
@@ -5983,6 +5989,12 @@
 		930F09161C7D110E00995926 /* ShareExtensionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareExtensionService.swift; sourceTree = "<group>"; };
 		930FD0A519882742000CC81D /* BlogServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogServiceTest.m; sourceTree = "<group>"; };
 		931215E0267DE1C0008C3B69 /* StatsTotalRowDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTotalRowDataTests.swift; sourceTree = "<group>"; };
+		931215E3267F5003008C3B69 /* ReferrerDetailsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferrerDetailsTableViewController.swift; sourceTree = "<group>"; };
+		931215E5267F5192008C3B69 /* ReferrerDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferrerDetailsViewModel.swift; sourceTree = "<group>"; };
+		931215E7267F52A6008C3B69 /* ReferrerDetailsHeaderRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferrerDetailsHeaderRow.swift; sourceTree = "<group>"; };
+		931215E9267F59CB008C3B69 /* ReferrerDetailsHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferrerDetailsHeaderCell.swift; sourceTree = "<group>"; };
+		931215EB267F5F45008C3B69 /* ReferrerDetailsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferrerDetailsRow.swift; sourceTree = "<group>"; };
+		931215ED267F6799008C3B69 /* ReferrerDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferrerDetailsCell.swift; sourceTree = "<group>"; };
 		931D26FF19EDAE8600114F17 /* CoreDataMigrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataMigrationTests.m; sourceTree = "<group>"; };
 		931DF4D718D09A2F00540BDD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		931DF4D918D09A9B00540BDD /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -8746,6 +8758,7 @@
 				98747674219644E40080967F /* Helpers */,
 				98747671219638BF0080967F /* Insights */,
 				984B138C21F65F680004B6A2 /* Period Stats */,
+				931215E2267F4F92008C3B69 /* Referrer Details */,
 				98F89D47219E008600190EE6 /* Shared Views */,
 				98E58A2D2360D1FD00E5534B /* Today Widgets */,
 				981C348F2183871100FC2683 /* SiteStatsDashboard.storyboard */,
@@ -11098,6 +11111,19 @@
 				8BE69511243E674300FF492F /* PrepublishingHeaderViewTests.swift */,
 			);
 			name = "Prepublishing Nudges";
+			sourceTree = "<group>";
+		};
+		931215E2267F4F92008C3B69 /* Referrer Details */ = {
+			isa = PBXGroup;
+			children = (
+				931215ED267F6799008C3B69 /* ReferrerDetailsCell.swift */,
+				931215E9267F59CB008C3B69 /* ReferrerDetailsHeaderCell.swift */,
+				931215E7267F52A6008C3B69 /* ReferrerDetailsHeaderRow.swift */,
+				931215EB267F5F45008C3B69 /* ReferrerDetailsRow.swift */,
+				931215E3267F5003008C3B69 /* ReferrerDetailsTableViewController.swift */,
+				931215E5267F5192008C3B69 /* ReferrerDetailsViewModel.swift */,
+			);
+			path = "Referrer Details";
 			sourceTree = "<group>";
 		};
 		932225A81C7CE50300443B02 /* WordPressShareExtension */ = {
@@ -17121,10 +17147,12 @@
 				F5D399302541F25B0058D0AB /* SheetActions.swift in Sources */,
 				8B7F51C924EED804008CF5B5 /* ReaderTracker.swift in Sources */,
 				E6F2788421BC1A4A008B4DB5 /* PlanFeature.swift in Sources */,
+				931215E4267F5003008C3B69 /* ReferrerDetailsTableViewController.swift in Sources */,
 				3F421DF524A3EC2B00CA9B9E /* Spotlightable.swift in Sources */,
 				D8A3A5AF206A442800992576 /* StockPhotosDataSource.swift in Sources */,
 				F53FF3A323EA3E45001AD596 /* BlogDetailsViewController+Header.swift in Sources */,
 				8B24C4E3249A4C3E0005E8A5 /* OfflineReaderWebView.swift in Sources */,
+				931215E6267F5192008C3B69 /* ReferrerDetailsViewModel.swift in Sources */,
 				9A5C854822B3E42800BEE7A3 /* CountriesMapCell.swift in Sources */,
 				B5B410B61B1772B000CFCF8D /* NavigationTitleView.swift in Sources */,
 				8BAD53D6241922B900230F4B /* WPAnalyticsEvent.swift in Sources */,
@@ -17657,6 +17685,7 @@
 				9A4E271A22EF0C78001F6A6B /* ChangeUsernameViewModel.swift in Sources */,
 				172797D91CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift in Sources */,
 				FA7AA45325BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift in Sources */,
+				931215EA267F59CB008C3B69 /* ReferrerDetailsHeaderCell.swift in Sources */,
 				7EFF208A20EADCB6009C4699 /* NotificationTextContent.swift in Sources */,
 				F1A38F212678C4DA00849843 /* BloggingRemindersFlow.swift in Sources */,
 				91DCE84821A6C58C0062F134 /* PostEditor+Publish.swift in Sources */,
@@ -17668,6 +17697,7 @@
 				F59AAC10235E430F00385EE6 /* ChosenValueRow.swift in Sources */,
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
 				40EE94802213213F00CD264F /* PublicizeConnectionStatsRecordValue+CoreDataProperties.swift in Sources */,
+				931215EE267F6799008C3B69 /* ReferrerDetailsCell.swift in Sources */,
 				08216FCA1CDBF96000304BA7 /* MenuItemEditingFooterView.m in Sources */,
 				E6D3E8491BEBD871002692E8 /* ReaderCrossPostCell.swift in Sources */,
 				E10290741F30615A00DAC588 /* Role.swift in Sources */,
@@ -17685,9 +17715,11 @@
 				7E3E7A5720E44D130075D159 /* HeaderContentStyles.swift in Sources */,
 				9A38DC69218899FB006A409B /* Revision.swift in Sources */,
 				403269922027719C00608441 /* PluginDirectoryAccessoryItem.swift in Sources */,
+				931215EC267F5F45008C3B69 /* ReferrerDetailsRow.swift in Sources */,
 				FFB1FAA01BF0EC4E0090C761 /* PHAsset+Exporters.swift in Sources */,
 				465B097A24C877E500336B6C /* GutenbergLightNavigationController.swift in Sources */,
 				8298F38F1EEF2B15008EB7F0 /* AppFeedbackPromptView.swift in Sources */,
+				931215E8267F52A6008C3B69 /* ReferrerDetailsHeaderRow.swift in Sources */,
 				F17A2A1E23BFBD72001E96AC /* UIView+ExistingConstraints.swift in Sources */,
 				400A2C892217A985000A8A59 /* CountryStatsRecordValue+CoreDataProperties.swift in Sources */,
 				F1450CF32437DA3E00A28BFE /* MediaRequestAuthenticator.swift in Sources */,
