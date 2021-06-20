@@ -7,6 +7,7 @@ final class ReferrerDetailsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         WPStyleGuide.Stats.configureTable(tableView)
+        ImmuTable.registerRows(rows, tableView: tableView)
         buildViewModel()
     }
 }
@@ -14,6 +15,13 @@ final class ReferrerDetailsTableViewController: UITableViewController {
 // MARK: - Private Methods
 private extension ReferrerDetailsTableViewController {
     func buildViewModel() {
+        tableHandler.viewModel = viewModel.tableViewModel
+    }
+}
 
+// MARK: - Private Computed Properties
+private extension ReferrerDetailsTableViewController {
+    var rows: [ImmuTableRow.Type] {
+        [ReferrerDetailsHeaderRow.self]
     }
 }
