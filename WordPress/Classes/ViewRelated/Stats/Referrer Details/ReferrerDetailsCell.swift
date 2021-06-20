@@ -16,9 +16,12 @@ final class ReferrerDetailsCell: UITableViewCell {
 
 // MARK: - Public Methods
 extension ReferrerDetailsCell {
-    func configure() {
+    func configure(isLast: Bool) {
         referrerLabel.text = "Test"
         viewsLabel.text = "123"
+        if isLast {
+            separatorInset = .zero
+        }
     }
 }
 

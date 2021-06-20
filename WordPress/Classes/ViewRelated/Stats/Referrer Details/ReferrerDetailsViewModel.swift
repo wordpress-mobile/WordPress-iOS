@@ -11,6 +11,9 @@ extension ReferrerDetailsViewModel {
 
         rows.append(ReferrerDetailsHeaderRow())
         rows.append(ReferrerDetailsRow())
+        rows.append(ReferrerDetailsRow())
+        rows.append(ReferrerDetailsRow())
+        rows.append(ReferrerDetailsRow(action: nil, isLast: true))
 
         return ImmuTable(sections: [
             ImmuTableSection(rows: rows)

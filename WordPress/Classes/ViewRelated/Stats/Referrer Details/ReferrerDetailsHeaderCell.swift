@@ -26,6 +26,7 @@ extension ReferrerDetailsHeaderCell {
 private extension ReferrerDetailsHeaderCell {
     func setupViews() {
         isUserInteractionEnabled = false
+        separatorInset = .zero
         setupReferrerLabel()
         setupViewsLabel()
     }
