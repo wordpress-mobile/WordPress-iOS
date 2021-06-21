@@ -50,7 +50,7 @@ class BloggingRemindersTracker {
         case dismiss
         case notificationSettings
     }
-    
+
     enum Property: String {
         case button = "button"
         case daysOfWeek = "days_of_week"
@@ -95,17 +95,17 @@ class BloggingRemindersTracker {
         track(event(.flowStart, properties: [Property.flowStartSource.rawValue: source.rawValue]))
 
     }
-    
+
     func scheduled(_ schedule: BloggingRemindersScheduler.Schedule) {
         let event: AnalyticsEvent
-        
+
         switch schedule {
         case .none:
             event = self.event(.remindersCancelled, properties: [:])
         case .weekdays(let days):
             event = self.event(.remindersScheduled, properties: [Property.daysOfWeek.rawValue: "\(days.count)"])
         }
-        
+
         track(event)
     }
 

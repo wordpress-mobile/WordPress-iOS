@@ -314,13 +314,13 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     ///
     private func scheduleReminders(showPushPrompt: Bool = true) {
         let schedule: BloggingRemindersScheduler.Schedule = .weekdays(weekdays)
-        
+
         scheduler.schedule(schedule) { [weak self] result in
             switch result {
             case .success:
                 // Track day selection
                 self?.tracker.scheduled(schedule)
-                
+
                 DispatchQueue.main.async { [weak self] in
                     self?.presentCompletionViewController()
                 }
