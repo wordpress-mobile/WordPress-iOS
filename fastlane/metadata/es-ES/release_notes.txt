@@ -1,9 +1,0 @@
-¿Qué novedades hay en esta actualización?
-
-Mantente al día sobre cualquier sitio al que has sido añadido recientemente tirando hacia abajo para actualizar la pantalla de nuevos sitios.
-
-En los sitios con más de un autor, ahora podrás cambiar el autor asignado a cualquier entrada o página.
-
-Ahora puedes identificar las solicitudes de acceso mientras estás usando la aplicación.
-
-Por último, hemos corregido un fallo en el recorrido de inicio rápido. Cuando sigues un sitio desde el lector, la lista de verificación del inicio rápido ahora actualizará tu progreso (en lugar de permanecer sin comprobar).
