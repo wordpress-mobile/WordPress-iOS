@@ -5,12 +5,22 @@ struct ReferrerDetailsRow: ImmuTableRow {
 
     static var cell = ImmuTableCell.class(CellType.self)
     var action: ImmuTableAction?
-    var isLast = false
+    let isLast: Bool
+    let data: DetailsData
 
     func configureCell(_ cell: UITableViewCell) {
         guard let cell = cell as? CellType else {
             return
         }
-        cell.configure(isLast: isLast)
+        cell.configure(data: data, isLast: isLast)
+    }
+}
+
+// MARK: - Types
+extension ReferrerDetailsRow {
+    struct DetailsData {
+        let name: String
+        let url: URL
+        let views: String
     }
 }

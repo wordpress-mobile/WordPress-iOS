@@ -50,6 +50,7 @@ private extension ReferrerDetailsTableViewController {
     func setupViews() {
         tableView.backgroundColor = WPStyleGuide.Stats.tableBackgroundColor
         tableView.tableFooterView = UIView()
+        title = viewModel.title
         ImmuTable.registerRows(rows, tableView: tableView)
     }
 

@@ -18,9 +18,9 @@ final class ReferrerDetailsCell: UITableViewCell {
 
 // MARK: - Public Methods
 extension ReferrerDetailsCell {
-    func configure(isLast: Bool) {
-        referrerLabel.text = "Test"
-        viewsLabel.text = "123"
+    func configure(data: ReferrerDetailsRow.DetailsData, isLast: Bool) {
+        referrerLabel.text = data.name
+        viewsLabel.text = data.views
         separatorView.isHidden = !isLast
     }
 }
