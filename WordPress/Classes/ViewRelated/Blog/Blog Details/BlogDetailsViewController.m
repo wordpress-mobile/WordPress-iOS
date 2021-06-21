@@ -430,7 +430,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self scrollToElement:QuickStartTourElementViewSite];
         self.shouldScrollToViewSite = NO;
     }
-    if (![Feature enabled:FeatureFlagNewNavBarAppearance]) {
+    if (![Feature enabled:FeatureFlagNewNavBarAppearance] &&
+        [AppConfiguration showsWhatIsNew]) {
         [WPTabBarController.sharedInstance presentWhatIsNewOn:self];
     }
 }
@@ -1112,8 +1113,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconTapped];
     
     [NoticesDispatch lock];
+
+    if (![Feature enabled:FeatureFlagSiteIconCreator]) {
+        [self showUpdateSiteIconAlert];
+    }
     
-    [self showUpdateSiteIconAlert];
+    if (@available(iOS 14.0, *)) {
+        [self showSiteIconSelectionAlert];
+    } else {
+        [self showUpdateSiteIconAlert];
+    }
 }
 
 - (void)siteIconReceivedDroppedImage:(UIImage *)image
@@ -1212,6 +1221,45 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                 }];
 
     [self presentViewController:updateIconAlertController animated:YES completion:nil];
+}
+
+- (void)showSiteIconSelectionAlert
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                       message:nil
+                                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+
+    alertController.popoverPresentationController.sourceView = self.headerView.blavatarImageView.superview;
+    alertController.popoverPresentationController.sourceRect = self.headerView.blavatarImageView.frame;
+    alertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+
+    [alertController setTitle:NSLocalizedString(@"Update Site Icon", @"Title for sheet displayed allowing user to update their site icon")];
+
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Choose Image From My Device", @"Button allowing the user to choose an image from their device to use as their site icon")
+                                       handler:^(UIAlertAction *action) {
+        [NoticesDispatch unlock];
+        [self updateSiteIcon];
+    }];
+
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Create With Emoji", @"Button allowing the user to create a site icon by choosing an emoji character")
+                                       handler:^(UIAlertAction *action) {
+        [NoticesDispatch unlock];
+        [self showEmojiPicker];
+    }];
+
+    [alertController addDestructiveActionWithTitle:NSLocalizedString(@"Remove Site Icon", @"Remove site icon button")
+                                           handler:^(UIAlertAction *action) {
+        [NoticesDispatch unlock];
+        [self removeSiteIcon];
+    }];
+
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                      handler:^(UIAlertAction *action) {
+        [NoticesDispatch unlock];
+        [self startAlertTimer];
+    }];
+
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)presentCropViewControllerForDroppedSiteIcon:(UIImage *)image
@@ -1456,6 +1504,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsSectionHeaderView *view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:BlogDetailsSectionHeaderViewIdentifier];
     [view setTitle:title];
     view.ellipsisButtonDidTouch = ^(BlogDetailsSectionHeaderView *header) {
+        [NoticesDispatch lock];
         [weakSelf removeQuickStartSection:header];
     };
     return view;
@@ -1471,11 +1520,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UIAlertController *removeConfirmation = [UIAlertController alertControllerWithTitle:removeTitle message:removeMessage preferredStyle:UIAlertControllerStyleAlert];
     [removeConfirmation addCancelActionWithTitle:cancelTitle handler:^(UIAlertAction * _Nonnull action) {
         [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonCancelTapped];
+        [NoticesDispatch unlock];
     }];
     [removeConfirmation addDefaultActionWithTitle:confirmationTitle handler:^(UIAlertAction * _Nonnull action) {
         [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonRemoveTapped];
-        
         [[QuickStartTourGuide shared] removeFrom:self.blog];
+        [NoticesDispatch unlock];
     }];
     
     UIAlertController *removeSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -1484,7 +1534,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [removeSheet addDestructiveActionWithTitle:removeTitle handler:^(UIAlertAction * _Nonnull action) {
         [self presentViewController:removeConfirmation animated:YES completion:nil];
     }];
-    [removeSheet addCancelActionWithTitle:cancelTitle handler:nil];
+    [removeSheet addCancelActionWithTitle:cancelTitle handler:^(UIAlertAction * _Nonnull action) {
+        [NoticesDispatch unlock];
+    }];
     
     [self presentViewController:removeSheet animated:YES completion:nil];
 }
@@ -1743,7 +1795,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 }
 
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source
-{
+{    
     [self trackEvent:WPAnalyticsStatStatsAccessed fromSource:source];
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = self.blog;

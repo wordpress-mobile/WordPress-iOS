@@ -55,6 +55,8 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 @dynamic isSavedForLater;
 @dynamic isSeen;
 @dynamic isSeenSupported;
+@dynamic isSubscribedComments;
+@dynamic canSubscribeComments;
 
 @dynamic primaryTag;
 @dynamic primaryTagSlug;

@@ -65,9 +65,8 @@ class LoginTests: XCTestCase {
 
     // Unified WordPress.com login/out
     // Replaces testWpcomUsernamePasswordLogin
-    func testWpcomLogin() {
-        _ = PrologueScreen().selectSiteAddress()
-            .proceedWithWP(siteUrl: "https://wordpress.com")
+    func testWPcomLogin() {
+        _ = PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWith(password: WPUITestCredentials.testWPcomPassword)
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
@@ -119,9 +118,9 @@ class LoginTests: XCTestCase {
         XCTAssert(WelcomeScreen().isLoaded())
     }
 
-    // Unified email login fail
+    // Unified WordPress.com email login failure due to incorrect password
     // Replaces testUnsuccessfulLogin
-    func testWordPressUnsuccessfulLogin() {
+    func testWPcomInvalidPassword() {
         _ = PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .tryProceed(password: "invalidPswd")

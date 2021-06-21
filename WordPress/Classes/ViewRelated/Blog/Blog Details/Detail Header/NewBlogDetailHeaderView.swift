@@ -140,6 +140,8 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
     // MARK: - Constraints
 
+    private var topActionRowConstraint: NSLayoutConstraint?
+
     private func setupConstraintsForChildViews(_ showsActionRow: Bool) {
         let actionRowConstraints = constraintsForActionRow(showsActionRow)
         let titleViewContraints = constraintsForTitleView()
@@ -151,8 +153,11 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         let widthConstraint = actionRow.widthAnchor.constraint(equalToConstant: LayoutSpacing.maxButtonWidth)
         widthConstraint.priority = .defaultHigh
 
+        let topActionRowConstraint = actionRow.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: LayoutSpacing.betweenTitleViewAndActionRow(showsActionRow))
+        self.topActionRowConstraint = topActionRowConstraint
+
         return [
-            actionRow.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: LayoutSpacing.betweenTitleViewAndActionRow(showsActionRow)),
+            topActionRowConstraint,
             actionRow.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -LayoutSpacing.belowActionRow),
             actionRow.leadingAnchor.constraint(greaterThanOrEqualTo: titleView.leadingAnchor),
             actionRow.trailingAnchor.constraint(lessThanOrEqualTo: titleView.trailingAnchor),
@@ -187,6 +192,20 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
     @objc
     private func subtitleButtonTapped() {
         delegate?.visitSiteTapped()
+    }
+
+    // MARK: - Accessibility
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        refreshStackViewVisibility()
+    }
+
+    private func refreshStackViewVisibility() {
+        let showsActionRow = !traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+
+        topActionRowConstraint?.constant = LayoutSpacing.betweenTitleViewAndActionRow(showsActionRow)
     }
 }
 
@@ -353,6 +372,7 @@ fileprivate extension NewBlogDetailHeaderView {
             refreshMainStackViewAxis()
             addSubview(mainStackView)
             pinSubviewToAllEdges(mainStackView)
+            setupConstraintsForSiteSwitcher()
         }
 
         private func refreshMainStackViewAxis() {
@@ -367,6 +387,15 @@ fileprivate extension NewBlogDetailHeaderView {
                 titleButton.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.regular
                 subtitleButton.titleLabel?.minimumScaleFactor = LabelMinimumScaleFactor.regular
             }
+        }
+
+        // MARK: - Constraints
+
+        private func setupConstraintsForSiteSwitcher() {
+            NSLayoutConstraint.activate([
+                siteSwitcherButton.heightAnchor.constraint(equalToConstant: Dimensions.siteSwitcherHeight),
+                siteSwitcherButton.widthAnchor.constraint(equalToConstant: Dimensions.siteSwitcherWidth)
+            ])
         }
     }
 }

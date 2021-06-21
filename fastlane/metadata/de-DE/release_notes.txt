@@ -1,9 +1,0 @@
-Was gibt's Neues bei diesem Update?
-
-Bleibe auf dem Laufenden über die Websites, zu denen du kürzlich hinzugefügt wurdest, indem du den Bildschirm „Neue Websites“ hinunterziehst, um ihn zu aktualisieren.
-
-Auf Websites mit mehr als einem Autor, kannst du nun den Autor wechseln, der einem Beitrag oder einer Seite zugewiesen ist.
-
-Du kannst jetzt Anmeldeanfragen authentifizieren, während du die App verwendest.
-
-Zu guter Letzt haben wir noch einen Fehler in der Schnellstart-Tour behoben. Wenn du einer Website im Reader folgst, aktualisiert die Schnellstart-Checkliste deinen Fortschritt (anstatt nicht abgehakt zu bleiben).

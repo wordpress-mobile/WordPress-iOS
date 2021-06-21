@@ -1000,7 +1000,7 @@ private extension ZendeskUtils {
         static let unknownValue = "unknown"
         static let noValue = "none"
         static let platformTag = "iOS"
-        static let ticketSubject = AppConstants.ticketSubject
+        static let ticketSubject = AppConstants.Zendesk.ticketSubject
         static let blogSeperator = "\n----------\n"
         static let jetpackTag = "jetpack"
         static let wpComTag = "wpcom"
@@ -1014,7 +1014,7 @@ private extension ZendeskUtils {
         static let profileNameKey = "name"
         static let userDefaultsZendeskUnreadNotifications = "wp_zendesk_unread_notifications"
         static let nameFieldCharacterLimit = 50
-        static let sourcePlatform = "mobile_-_ios"
+        static let sourcePlatform = AppConstants.zendeskSourcePlatform
         static let gutenbergIsDefault = "mobile_gutenberg_is_default"
     }
 
