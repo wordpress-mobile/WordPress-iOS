@@ -42,6 +42,9 @@ private extension ReaderDetailLikesListController {
         tableView.delegate = likesListController
         tableView.dataSource = likesListController
 
+        // The separator is controlled by LikeUserTableViewCell
+        tableView.separatorStyle = .none
+
         // Call refresh to ensure that the controller fetches the data.
         likesListController?.refresh()
     }

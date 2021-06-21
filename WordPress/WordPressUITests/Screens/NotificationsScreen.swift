@@ -1,4 +1,4 @@
-import Foundation
+import UITestsFoundation
 import XCTest
 
 class NotificationsScreen: BaseScreen {

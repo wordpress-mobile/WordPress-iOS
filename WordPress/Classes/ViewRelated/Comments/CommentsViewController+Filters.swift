@@ -19,6 +19,17 @@ extension CommentsViewController {
             }
         }
 
+        var analyticsTitle: String {
+            switch self {
+            case .all: return "All"
+            case .pending: return "Pending"
+            case .unreplied: return "Unreplied"
+            case .approved: return "Approved"
+            case .spam: return "Spam"
+            case .trashed: return "Trashed"
+            }
+        }
+
         var statusFilter: CommentStatusFilter {
             switch self {
             case .all: return CommentStatusFilterAll
@@ -42,7 +53,7 @@ extension CommentsViewController {
             return
         }
 
-        WPAnalytics.track(.commentFilterChanged, properties: ["selected_filter": filter.title])
+        WPAnalytics.track(.commentFilterChanged, properties: ["selected_filter": filter.analyticsTitle])
         refresh(with: filter.statusFilter)
     }
 

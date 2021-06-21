@@ -22,11 +22,50 @@ final class BlogBuilder {
     }
 
     func with(atomic: Bool) -> Self {
-        var options = blog.options ?? [AnyHashable: Any]()
-        options["is_wpcom_atomic"] = [
-            "value": atomic ? 1 : 0
-        ]
-        blog.options = options
+        return set(blogOption: "is_wpcom_atomic", value: atomic ? 1 : 0)
+    }
+
+    func with(isHostedAtWPCom: Bool) -> Self {
+        blog.isHostedAtWPcom = isHostedAtWPCom
+        return self
+    }
+
+    func with(planID: Int) -> Self {
+        blog.planID = planID as NSNumber
+        return self
+    }
+
+    func withJetpack(version: String? = nil, username: String? = nil, email: String? = nil) -> Self {
+        set(blogOption: "jetpack_client_id", value: 1)
+        set(blogOption: "jetpack_version", value: version)
+        set(blogOption: "jetpack_user_login", value: username)
+        set(blogOption: "jetpack_user_email", value: email)
+        return set(blogOption: "is_automated_transfer", value: false)
+    }
+
+    func with(wordPressVersion: String) -> Self {
+        return set(blogOption: "software_version", value: wordPressVersion)
+    }
+
+    func with(username: String) -> Self {
+        blog.username = username
+        return self
+    }
+
+    func with(password: String) -> Self {
+        blog.password = password
+
+        return self
+    }
+
+    func with(isAdmin: Bool) -> Self {
+        blog.isAdmin = isAdmin
+
+        return self
+    }
+
+    func with(siteVisibility: SiteVisibility) -> Self {
+        blog.siteVisibility = siteVisibility
 
         return self
     }
@@ -42,6 +81,17 @@ final class BlogBuilder {
 
     func build() -> Blog {
         return blog
+    }
+
+    @discardableResult
+    private func set(blogOption key: String, value: Any) -> Self {
+        var options = blog.options ?? [AnyHashable: Any]()
+        options[key] = [
+            "value": value
+        ]
+
+        blog.options = options
+        return self
     }
 }
 

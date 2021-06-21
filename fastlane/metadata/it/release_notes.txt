@@ -1,9 +1,0 @@
-Quali sono le novità in questo aggiornamento?
-
-Resta aggiornato sui siti che hai aggiunto di recente scorrendo il dito verso il basso per ricaricare la schermata Nuovi siti.
-
-Sui siti con più di un autore, ora sarai in grado di cambiare l'autore assegnato a ogni articolo o pagina.
-
-Ora puoi autenticare le richieste di accesso mentre utilizzi l'app.
-
-Infine, abbiamo corretto un bug relativo al tour di avvio rapido. Quando segui un sito dal Reader, la checklist per l'avvio rapido aggiornerà i tuoi progressi (anziché rimanere deselezionata).
