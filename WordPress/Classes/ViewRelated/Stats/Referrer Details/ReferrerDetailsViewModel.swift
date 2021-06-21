@@ -1,7 +1,7 @@
 import Foundation
 
 final class ReferrerDetailsViewModel {
-    
+    // TODO: implement
 }
 
 // MARK: - Public Computed Properties
