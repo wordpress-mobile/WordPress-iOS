@@ -53,7 +53,7 @@ class BloggingRemindersTracker {
 
     enum Property: String {
         case button = "button"
-        case daysOfWeek = "days_of_week"
+        case daysOfWeek = "days_of_week_count"
         case flowDismissSource, flowStartSource = "source"
         case screen = "screen"
     }
