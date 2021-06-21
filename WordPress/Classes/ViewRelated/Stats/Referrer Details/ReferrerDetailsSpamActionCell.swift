@@ -32,6 +32,7 @@ extension ReferrerDetailsSpamActionCell {
 private extension ReferrerDetailsSpamActionCell {
     func setupViews() {
         separatorInset = .zero
+        selectionStyle = .none
         setupActionLabel()
         setupSeparatorView()
     }

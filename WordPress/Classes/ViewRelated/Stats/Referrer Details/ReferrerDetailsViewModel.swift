@@ -19,14 +19,14 @@ extension ReferrerDetailsViewModel {
         firstSectionRows.append(ReferrerDetailsHeaderRow())
         firstSectionRows.append(contentsOf: buildDetailsRows(data: data))
 
-        var seconSectionRows = [ImmuTableRow]()
-        seconSectionRows.append(ReferrerDetailsSpamActionRow(action: nil, isSpam: data.isReferrerSpam))
+        var secondSectionRows = [ImmuTableRow]()
+        secondSectionRows.append(ReferrerDetailsSpamActionRow(action: action, isSpam: data.isReferrerSpam))
 
         switch data.canMarkReferrerAsSpam {
         case true:
             return ImmuTable(sections: [
                 ImmuTableSection(rows: firstSectionRows),
-                ImmuTableSection(rows: seconSectionRows)
+                ImmuTableSection(rows: secondSectionRows)
             ])
         case false:
             return ImmuTable(sections: [
@@ -46,7 +46,7 @@ private extension ReferrerDetailsViewModel {
                 guard let url = child.disclosureURL else {
                     continue
                 }
-                rows.append(ReferrerDetailsRow(action: nil,
+                rows.append(ReferrerDetailsRow(action: action,
                                                isLast: index == children.count - 1,
                                                data: .init(name: child.name,
                                                            url: url,
@@ -56,7 +56,7 @@ private extension ReferrerDetailsViewModel {
             guard let url = data.disclosureURL else {
                 return []
             }
-            rows.append(ReferrerDetailsRow(action: nil,
+            rows.append(ReferrerDetailsRow(action: action,
                                            isLast: true,
                                            data: .init(name: data.name,
                                                        url: url,
@@ -67,3 +67,18 @@ private extension ReferrerDetailsViewModel {
     }
 }
 
+// MARK: - Private Computed Properties
+private extension ReferrerDetailsViewModel {
+    var action: ((ImmuTableRow) -> Void) {
+        return { [unowned self] row in
+            switch row {
+            case is ReferrerDetailsRow:
+                print("details, \(row), \(self)")
+            case is ReferrerDetailsSpamActionRow:
+                print("action, \(row), \(self)")
+            default:
+                break
+            }
+        }
+    }
+}

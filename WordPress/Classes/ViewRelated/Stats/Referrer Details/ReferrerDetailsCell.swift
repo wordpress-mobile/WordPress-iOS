@@ -28,6 +28,7 @@ extension ReferrerDetailsCell {
 // MARK: - Private methods
 private extension ReferrerDetailsCell {
     func setupViews() {
+        selectionStyle = .none
         setupReferrerLabel()
         setupViewsLabel()
         setupSeparatorView()
