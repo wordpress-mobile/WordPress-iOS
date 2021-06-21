@@ -1,11 +1,12 @@
 import UIKit
 
 final class ReferrerDetailsTableViewController: UITableViewController {
+    private let data: StatsTotalRowData
     private lazy var tableHandler = ImmuTableViewHandler(takeOver: self)
-    private let viewModel: ReferrerDetailsViewModel
+    private lazy var viewModel = ReferrerDetailsViewModel(data: data, delegate: self)
 
     init(data: StatsTotalRowData) {
-        self.viewModel = ReferrerDetailsViewModel(data: data)
+        self.data = data
         super.init(style: .plain)
     }
 
@@ -42,6 +43,17 @@ extension ReferrerDetailsTableViewController {
         default:
             return UIView()
         }
+    }
+}
+
+// MARK: - ReferrerDetailsViewModelDelegate
+extension ReferrerDetailsTableViewController: ReferrerDetailsViewModelDelegate {
+    func displayWebViewWithURL(_ url: URL) {
+        // TODO: implement
+    }
+
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
+        // TODO: implement
     }
 }
 

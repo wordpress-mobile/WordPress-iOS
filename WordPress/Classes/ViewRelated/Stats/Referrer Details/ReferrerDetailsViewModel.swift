@@ -1,10 +1,17 @@
 import Foundation
 
+protocol ReferrerDetailsViewModelDelegate: AnyObject {
+    func displayWebViewWithURL(_ url: URL)
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool)
+}
+
 final class ReferrerDetailsViewModel {
     private let data: StatsTotalRowData
+    private weak var delegate: ReferrerDetailsViewModelDelegate?
 
-    init(data: StatsTotalRowData) {
+    init(data: StatsTotalRowData, delegate: ReferrerDetailsViewModelDelegate) {
         self.data = data
+        self.delegate = delegate
     }
 }
 
