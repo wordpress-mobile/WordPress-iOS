@@ -12,9 +12,16 @@ extension BlogDetailsViewController {
         }
 
         let newPost = { [weak self] in
-            let controller = self?.tabBarController as? WPTabBarController
+
+            guard let self = self else {
+                return
+            }
+
+            let controller = self.tabBarController as? WPTabBarController
             controller?.showPostTab(completion: {
-                self?.startAlertTimer()
+                self.startAlertTimer()
+
+                BloggingRemindersFlow.present(from: self, for: self.blog, source: .publishFlow, alwaysShow: false)
             })
         }
 

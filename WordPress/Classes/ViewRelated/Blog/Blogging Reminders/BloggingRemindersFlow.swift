@@ -1,7 +1,14 @@
 import Foundation
 
 class BloggingRemindersFlow {
-    static func present(from viewController: UIViewController, for blog: Blog, source: BloggingRemindersTracker.FlowStartSource) {
+    static func present(from viewController: UIViewController,
+                        for blog: Blog,
+                        source: BloggingRemindersTracker.FlowStartSource,
+                        alwaysShow: Bool = true) {
+
+        guard alwaysShow || !UserDefaults.standard.bool(forKey: blog.objectID.uriRepresentation().absoluteString) else {
+            return
+        }
 
         let blogType: BloggingRemindersTracker.BlogType = blog.isHostedAtWPcom ? .wpcom : .selfHosted
 
@@ -16,6 +23,7 @@ class BloggingRemindersFlow {
                                                     customHeaderSpacing: 0)
 
         bottomSheet.show(from: viewController)
+        UserDefaults.standard.setValue(true, forKey: blog.objectID.uriRepresentation().absoluteString)
     }
 
     /// By making this private we ensure this can't be instantiated.
