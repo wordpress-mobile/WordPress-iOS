@@ -192,7 +192,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
         }
 
         let style = NSMutableParagraphStyle()
-        style.lineSpacing = 1.5
+        style.lineSpacing = Metrics.promptTextLineSpacing
         style.alignment = .center
 
         promptLabel.attributedText = NSAttributedString.attributedStringWithHTML(promptText,
@@ -259,4 +259,5 @@ private enum Metrics {
     static let stackSpacing: CGFloat = 20.0
     static let doneButtonHeight: CGFloat = 44.0
     static let afterHintSpacing: CGFloat = 24.0
+    static let promptTextLineSpacing: CGFloat = 1.5
 }
