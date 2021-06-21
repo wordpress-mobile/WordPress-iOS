@@ -36,6 +36,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
         label.font = .preferredFont(forTextStyle: .body)
         label.numberOfLines = 0
         label.textAlignment = .center
+        label.textColor = .text
         return label
     }()
 
@@ -196,7 +197,8 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
 
         promptLabel.attributedText = NSAttributedString.attributedStringWithHTML(promptText,
                                                                                  attributes: [ .BodyAttribute: [ .font: UIFont.preferredFont(forTextStyle: .body),
-                                                                                                                 .paragraphStyle: style ] ])
+                                                                                                                 .paragraphStyle: style,
+                                                                                                                 .foregroundColor: UIColor.text ] ])
     }
 
     // MARK: - Actions
