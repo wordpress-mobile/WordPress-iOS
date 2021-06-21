@@ -313,13 +313,22 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     ///         can also be called when the refrenced VC is already on-screen.
     ///
     private func scheduleReminders(showPushPrompt: Bool = true) {
-        let schedule: BloggingRemindersScheduler.Schedule = .weekdays(weekdays)
+        let schedule: BloggingRemindersScheduler.Schedule
+
+        if weekdays.count > 0 {
+            schedule = .weekdays(weekdays)
+        } else {
+            schedule = .none
+        }
 
         scheduler.schedule(schedule) { [weak self] result in
+            guard let self = self else {
+                return
+            }
+
             switch result {
             case .success:
-                // Track day selection
-                self?.tracker.scheduled(schedule)
+                self.tracker.scheduled(schedule)
 
                 DispatchQueue.main.async { [weak self] in
                     self?.presentCompletionViewController()
