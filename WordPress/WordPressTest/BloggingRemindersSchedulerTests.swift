@@ -27,6 +27,12 @@ class NotificationSchedulerMock: NotificationScheduler {
     }
 }
 
+class PushNotificationsAuthorizerMock: PushNotificationAuthorizer {
+    func requestAuthorization(completion: @escaping (Bool) -> Void) {
+        completion(true)
+    }
+}
+
 class BloggingRemindersSchedulerTests: XCTestCase {
 
     func dataFileURL() -> URL {
@@ -61,13 +67,13 @@ class BloggingRemindersSchedulerTests: XCTestCase {
         } removeNotificationMock: { identifier in
         }
 
-        let scheduler = BloggingRemindersScheduler(blogIdentifier: blogIdentifier, store: store, notificationCenter: notificationCenter)
+        let scheduler = BloggingRemindersScheduler(
+            blogIdentifier: blogIdentifier,
+            store: store,
+            notificationCenter: notificationCenter,
+            pushNotificationAuthorizer: PushNotificationsAuthorizerMock())
 
-        do {
-            try scheduler.schedule(schedule)
-        } catch {
-            XCTFail(error.localizedDescription)
-            return
+        scheduler.schedule(schedule) { _ in
         }
 
         XCTAssertEqual(scheduler.schedule(), schedule)
@@ -101,14 +107,16 @@ class BloggingRemindersSchedulerTests: XCTestCase {
             cancelExpectation.fulfill()
         }
 
-        let scheduler = BloggingRemindersScheduler(blogIdentifier: blogIdentifier, store: store, notificationCenter: notificationCenter)
+        let scheduler = BloggingRemindersScheduler(
+            blogIdentifier: blogIdentifier,
+            store: store,
+            notificationCenter: notificationCenter,
+            pushNotificationAuthorizer: PushNotificationsAuthorizerMock())
 
-        do {
-            try scheduler.schedule(.weekdays(days))
-            try scheduler.schedule(.none)
-        } catch {
-            XCTFail(error.localizedDescription)
-            return
+        scheduler.schedule(.weekdays(days)) { _ in
+        }
+
+        scheduler.schedule(.none) { _ in
         }
 
         waitForExpectations(timeout: 0.1) { error in
