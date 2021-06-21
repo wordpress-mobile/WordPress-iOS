@@ -79,9 +79,9 @@ private extension ReferrerDetailsViewModel {
     var action: ((ImmuTableRow) -> Void) {
         return { [unowned self] row in
             switch row {
-            case is ReferrerDetailsRow:
-                print("details, \(row), \(self)")
-            case is ReferrerDetailsSpamActionRow:
+            case let row as ReferrerDetailsRow:
+                self.delegate?.displayWebViewWithURL(row.data.url)
+            case let row as ReferrerDetailsSpamActionRow:
                 print("action, \(row), \(self)")
             default:
                 break

@@ -49,7 +49,9 @@ extension ReferrerDetailsTableViewController {
 // MARK: - ReferrerDetailsViewModelDelegate
 extension ReferrerDetailsTableViewController: ReferrerDetailsViewModelDelegate {
     func displayWebViewWithURL(_ url: URL) {
-        // TODO: implement
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let navController = UINavigationController(rootViewController: webViewController)
+        present(navController, animated: true)
     }
 
     func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
