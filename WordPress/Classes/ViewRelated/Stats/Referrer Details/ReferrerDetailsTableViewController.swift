@@ -4,6 +4,7 @@ final class ReferrerDetailsTableViewController: UITableViewController {
     private let data: StatsTotalRowData
     private lazy var tableHandler = ImmuTableViewHandler(takeOver: self)
     private lazy var viewModel = ReferrerDetailsViewModel(data: data, delegate: self)
+    private let periodStore = StoreContainer.shared.statsPeriod
 
     init(data: StatsTotalRowData) {
         self.data = data
@@ -55,7 +56,9 @@ extension ReferrerDetailsTableViewController: ReferrerDetailsViewModelDelegate {
     }
 
     func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
-        // TODO: implement
+        showSpamActionSheet(for: referrerDomain, isSpam: currentValue) { [weak self] in
+            self?.periodStore.toggleSpamState(for: referrerDomain, currentValue: currentValue)
+        }
     }
 }
 
@@ -70,6 +73,23 @@ private extension ReferrerDetailsTableViewController {
 
     func buildViewModel() {
         tableHandler.viewModel = viewModel.tableViewModel
+    }
+
+    func showSpamActionSheet(for referrerDomain: String, isSpam: Bool, action: @escaping () -> Void) {
+        let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        let markTitle = NSLocalizedString("Mark as spam", comment: "Action title for marking referrer as spam")
+        let unmarkTitle = NSLocalizedString("Unmark as spam", comment: "Action title for unmarking referrer as spam")
+
+        let title = isSpam ? unmarkTitle : markTitle
+        let toggleSpamAction = UIAlertAction(title: title, style: .default) { _ in
+            action()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        [toggleSpamAction, cancelAction].forEach {
+            sheet.addAction($0)
+        }
+        present(sheet, animated: true)
     }
 }
 

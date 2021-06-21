@@ -82,7 +82,10 @@ private extension ReferrerDetailsViewModel {
             case let row as ReferrerDetailsRow:
                 self.delegate?.displayWebViewWithURL(row.data.url)
             case let row as ReferrerDetailsSpamActionRow:
-                print("action, \(row), \(self)")
+                guard let referrerDomain = self.data.disclosureURL?.host ?? self.data.childRows?.first?.disclosureURL?.host else {
+                    return
+                }
+                self.delegate?.toggleSpamState(for: referrerDomain, currentValue: row.isSpam)
             default:
                 break
             }
