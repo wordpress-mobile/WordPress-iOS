@@ -31,8 +31,10 @@ class SiteStatsDetailsViewModel: Observable {
 
     // MARK: - Init
 
-    init(detailsDelegate: SiteStatsDetailsDelegate) {
+    init(detailsDelegate: SiteStatsDetailsDelegate,
+         storeDelegate: StatsPeriodStoreDelegate) {
         self.detailsDelegate = detailsDelegate
+        self.periodStore.delegate = storeDelegate
     }
 
     // MARK: - Data Fetching
@@ -400,6 +402,9 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
     }
 
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
+        periodStore.toggleSpamState(for: referrerDomain, currentValue: currentValue)
+    }
 }
 
 // MARK: - Private Extension
@@ -739,7 +744,8 @@ private extension SiteStatsDetailsViewModel {
                                      showDisclosure: true,
                                      disclosureURL: referrer.url,
                                      childRows: referrer.children.map { rowDataFromReferrer(referrer: $0) },
-                                     statSection: .periodReferrers)
+                                     statSection: .periodReferrers,
+                                     isReferrerSpam: referrer.isSpam)
         }
 
         return referrers.map { rowDataFromReferrer(referrer: $0) }

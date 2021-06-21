@@ -41,9 +41,11 @@ class SiteStatsPeriodViewModel: Observable {
     init(store: StatsPeriodStore = StoreContainer.shared.statsPeriod,
          selectedDate: Date,
          selectedPeriod: StatsPeriodUnit,
-         periodDelegate: SiteStatsPeriodDelegate) {
+         periodDelegate: SiteStatsPeriodDelegate,
+         storeDelegate: StatsPeriodStoreDelegate) {
         self.periodDelegate = periodDelegate
         self.store = store
+        self.store.delegate = storeDelegate
         self.lastRequestedDate = selectedDate
         self.lastRequestedPeriod = selectedPeriod
 
@@ -240,6 +242,10 @@ class SiteStatsPeriodViewModel: Observable {
             currentEntryIndex -= 1
         }
         return chartDate(for: currentEntryIndex)
+    }
+
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
+        store.toggleSpamState(for: referrerDomain, currentValue: currentValue)
     }
 }
 
@@ -444,7 +450,8 @@ private extension SiteStatsPeriodViewModel {
                                      showDisclosure: true,
                                      disclosureURL: referrer.url,
                                      childRows: referrer.children.map { rowDataFromReferrer(referrer: $0) },
-                                     statSection: .periodReferrers)
+                                     statSection: .periodReferrers,
+                                     isReferrerSpam: referrer.isSpam)
         }
 
         return referrers.map { rowDataFromReferrer(referrer: $0) }

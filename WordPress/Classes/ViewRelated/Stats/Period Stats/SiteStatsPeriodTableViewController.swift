@@ -8,8 +8,8 @@ import WordPressFlux
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
+    @objc func toggleSpamState(for referrerDomain: String, currentValue: Bool)
 }
-
 
 class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoadable {
     static var defaultStoryboardName: String = "SiteStatsDashboard"
@@ -77,6 +77,17 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         tableView.estimatedRowHeight = 500
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if !isMovingToParent {
+            guard let date = selectedDate, let period = selectedPeriod else {
+                return
+            }
+            addViewModelListeners()
+            viewModel?.refreshPeriodOverviewData(withDate: date, forPeriod: period, resetOverviewCache: false)
+        }
+    }
+
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SiteStatsTableHeaderView.defaultNibName) as? SiteStatsTableHeaderView else {
             return nil
@@ -117,7 +128,8 @@ private extension SiteStatsPeriodTableViewController {
         viewModel = SiteStatsPeriodViewModel(store: store,
                                              selectedDate: selectedDate,
                                              selectedPeriod: selectedPeriod,
-                                             periodDelegate: self)
+                                             periodDelegate: self,
+                                             storeDelegate: self)
         viewModel?.statsBarChartViewDelegate = self
         addViewModelListeners()
         viewModel?.startFetchingOverview()
@@ -196,7 +208,12 @@ private extension SiteStatsPeriodTableViewController {
     func viewIsVisible() -> Bool {
         return isViewLoaded && view.window != nil
     }
+}
 
+// MARK: - StatsPeriodStoreDelegate
+
+extension SiteStatsPeriodTableViewController: StatsPeriodStoreDelegate {
+    /* using default implementation in protocol extension */
 }
 
 // MARK: - NoResultsViewHost
@@ -288,6 +305,11 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
+        showSpamActionSheet(for: referrerDomain, isSpam: currentValue) { [weak self] in
+            self?.viewModel?.toggleSpamState(for: referrerDomain, currentValue: currentValue)
+        }
+    }
 }
 
 // MARK: - SiteStatsTableHeaderDelegate Methods
@@ -302,5 +324,26 @@ extension SiteStatsPeriodTableViewController: SiteStatsTableHeaderDateButtonDele
         if let intervalDate = viewModel?.updateDate(forward: forward) {
             tableHeaderView?.updateDate(with: intervalDate)
         }
+    }
+}
+
+// MARK: - Mark referrer as spam action sheet
+
+extension UIViewController {
+    func showSpamActionSheet(for referrerDomain: String, isSpam: Bool, action: @escaping () -> Void) {
+        let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        let markTitle = NSLocalizedString("Mark as spam", comment: "Action title for marking referrer as spam")
+        let unmarkTitle = NSLocalizedString("Unmark as spam", comment: "Action title for unmarking referrer as spam")
+
+        let title = isSpam ? unmarkTitle : markTitle
+        let toggleSpamAction = UIAlertAction(title: title, style: .default) { _ in
+            action()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        [toggleSpamAction, cancelAction].forEach {
+            sheet.addAction($0)
+        }
+        present(sheet, animated: true)
     }
 }

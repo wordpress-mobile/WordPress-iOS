@@ -7,6 +7,7 @@ import WordPressFlux
     @objc optional func toggleChildRowsForRow(_ row: StatsTotalRow)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
+    @objc func toggleSpamState(for referrerDomain: String, currentValue: Bool)
 }
 
 class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoadable {
@@ -145,7 +146,7 @@ extension SiteStatsDetailTableViewController: StatsForegroundObservable {
 private extension SiteStatsDetailTableViewController {
 
     func initViewModel() {
-        viewModel = SiteStatsDetailsViewModel(detailsDelegate: self)
+        viewModel = SiteStatsDetailsViewModel(detailsDelegate: self, storeDelegate: self)
 
         guard let statSection = statSection else {
             return
@@ -267,6 +268,12 @@ private extension SiteStatsDetailTableViewController {
 
 }
 
+// MARK: - StatsPeriodStoreDelegate
+
+extension SiteStatsDetailTableViewController: StatsPeriodStoreDelegate {
+    /* using default implementation in protocol extension */
+}
+
 // MARK: - SiteStatsDetailsDelegate Methods
 
 extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
@@ -308,6 +315,11 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
         })
     }
 
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
+        showSpamActionSheet(for: referrerDomain, isSpam: currentValue) { [weak self] in
+            self?.viewModel?.toggleSpamState(for: referrerDomain, currentValue: currentValue)
+        }
+    }
 }
 
 // MARK: - NoResultsViewHost

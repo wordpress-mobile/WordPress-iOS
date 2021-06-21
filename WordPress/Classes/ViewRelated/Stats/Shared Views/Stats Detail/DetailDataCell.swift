@@ -96,4 +96,7 @@ extension DetailDataCell: StatsTotalRowDelegate {
         detailsDelegate?.toggleChildRowsForRow?(row)
     }
 
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
+        detailsDelegate?.toggleSpamState(for: referrerDomain, currentValue: currentValue)
+    }
 }

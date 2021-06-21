@@ -14,6 +14,7 @@ struct StatsTotalRowData {
     var disclosureURL: URL?
     var childRows: [StatsTotalRowData]?
     var statSection: StatSection?
+    var isReferrerSpam: Bool
 
     init(name: String,
          data: String,
@@ -27,7 +28,8 @@ struct StatsTotalRowData {
          showDisclosure: Bool = false,
          disclosureURL: URL? = nil,
          childRows: [StatsTotalRowData]? = [StatsTotalRowData](),
-         statSection: StatSection? = nil) {
+         statSection: StatSection? = nil,
+         isReferrerSpam: Bool = false) {
         self.name = name
         self.data = data
         self.mediaID = mediaID
@@ -41,10 +43,19 @@ struct StatsTotalRowData {
         self.disclosureURL = disclosureURL
         self.childRows = childRows
         self.statSection = statSection
+        self.isReferrerSpam = isReferrerSpam
     }
 
     var hasIcon: Bool {
         return self.icon != nil || self.socialIconURL != nil || self.userIconURL != nil
+    }
+
+    var canMarkReferrerAsSpam: Bool {
+        if let url = disclosureURL {
+            return url.absoluteString.contains(name)
+        } else {
+            return name.contains(".")
+        }
     }
 }
 
@@ -54,6 +65,7 @@ struct StatsTotalRowData {
     @objc optional func toggleChildRows(for row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
     @objc optional func showAddInsight()
+    @objc optional func toggleSpamState(for referrerDomain: String, currentValue: Bool)
 }
 
 class StatsTotalRow: UIView, NibLoadable, Accessible {
@@ -94,6 +106,9 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
     private weak var delegate: StatsTotalRowDelegate?
     private var forDetails = false
     private(set) weak var parentRow: StatsTotalRow?
+
+    // NOTE: temporary implementation, until design is defined
+    private let moreButton = UIButton()
 
     // This view is modified by the containing cell, to show/hide
     // child rows when a parent row is selected.
@@ -222,6 +237,16 @@ private extension StatsTotalRow {
         Style.configureViewAsSeparator(separatorLine)
         Style.configureViewAsSeparator(topExpandedSeparatorLine)
         Style.configureViewAsDataBar(dataBar)
+
+        if let data = rowData, data.statSection == .periodReferrers {
+            if parentRow == nil && data.canMarkReferrerAsSpam {
+                itemLabel.textColor = .systemBlue
+            }
+
+            if data.isReferrerSpam {
+                Style.configureLabelAsNoData(itemLabel)
+            }
+        }
     }
 
     func configureDisclosureButton() {
@@ -235,6 +260,20 @@ private extension StatsTotalRow {
         // Add Insight doesn't have a disclosure icon, but it needs a tap action.
         if rowData.statSection == .insightsAddInsight {
             disclosureButton.isEnabled = true
+        }
+
+        // NOTE: temporary implementation, until design is defined
+        if rowData.statSection == .periodReferrers {
+            moreButton.addTarget(self, action: #selector(didTapMoreButton), for: .touchUpInside)
+            moreButton.translatesAutoresizingMaskIntoConstraints = false
+            addSubview(moreButton)
+
+            NSLayoutConstraint.activate([
+                moreButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
+                moreButton.topAnchor.constraint(equalTo: topAnchor, constant: 4),
+                moreButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
+                moreButton.widthAnchor.constraint(equalTo: moreButton.heightAnchor)
+            ])
         }
     }
 
@@ -371,9 +410,12 @@ private extension StatsTotalRow {
         }
 
         if hasChildRows {
-            expanded.toggle()
-            prepareForVoiceOver()
-            delegate?.toggleChildRows?(for: self, didSelectRow: true)
+            if let section = rowData?.statSection,
+               section == .periodReferrers {
+                didTapReferrerCell()
+            } else {
+                toggleExpandedState()
+            }
             return
         }
 
@@ -385,6 +427,9 @@ private extension StatsTotalRow {
                     return
                 }
                 delegate?.showPostStats?(postID: postID, postTitle: rowData?.name, postURL: rowData?.disclosureURL)
+            } else if let section = rowData?.statSection,
+                      section == .periodReferrers {
+                didTapReferrerCell()
             } else {
                 delegate?.displayWebViewWithURL?(disclosureURL)
             }
@@ -397,6 +442,53 @@ private extension StatsTotalRow {
         }
 
         DDLogInfo("Stat row selection action not supported.")
+    }
+
+    @objc func didTapMoreButton() {
+        if parentRow == nil, hasChildRows {
+            toggleExpandedState()
+        } else if let disclosureURL = rowData?.disclosureURL {
+            delegate?.displayWebViewWithURL?(disclosureURL)
+        }
+    }
+
+    func didTapReferrerCell() {
+        guard let data = rowData else {
+            return
+        }
+
+        if parentRow == nil {
+            if data.canMarkReferrerAsSpam {
+                let referrerDomain: String?
+                let isSpam = data.isReferrerSpam
+
+                if hasChildRows {
+                    referrerDomain = data.childRows?.first?.disclosureURL?.host
+                } else {
+                    referrerDomain = data.disclosureURL?.host
+                }
+
+                guard let domain = referrerDomain else {
+                    return
+                }
+
+                delegate?.toggleSpamState?(for: domain, currentValue: isSpam)
+            } else {
+                if hasChildRows {
+                    toggleExpandedState()
+                } else if let disclosureURL = data.disclosureURL {
+                    delegate?.displayWebViewWithURL?(disclosureURL)
+                }
+            }
+        } else if let disclosureURL = data.disclosureURL {
+            delegate?.displayWebViewWithURL?(disclosureURL)
+        }
+    }
+
+    func toggleExpandedState() {
+        expanded.toggle()
+        prepareForVoiceOver()
+        delegate?.toggleChildRows?(for: self, didSelectRow: true)
     }
 
     func captureAnalyticsEventsFor(_ statSection: StatSection) {
