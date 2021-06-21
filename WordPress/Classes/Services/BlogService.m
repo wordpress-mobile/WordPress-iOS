@@ -600,6 +600,8 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 {
     DDLogInfo(@"<Blog:%@> remove", blog.hostURL);
     [blog.xmlrpcApi invalidateAndCancelTasks];
+    [self unscheduleBloggingRemindersFor:blog];
+
     WPAccount *account = blog.account;
 
     [self.managedObjectContext deleteObject:blog];
