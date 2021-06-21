@@ -1,7 +1,7 @@
 import UIKit
 
 final class ReferrerDetailsTableViewController: UITableViewController {
-    private let data: StatsTotalRowData
+    private var data: StatsTotalRowData
     private lazy var tableHandler = ImmuTableViewHandler(takeOver: self)
     private lazy var viewModel = ReferrerDetailsViewModel(data: data, delegate: self)
     private let periodStore = StoreContainer.shared.statsPeriod
@@ -66,6 +66,9 @@ extension ReferrerDetailsTableViewController: ReferrerDetailsViewModelDelegate {
 // MARK: - StatsPeriodStoreDelegate
 extension ReferrerDetailsTableViewController: StatsPeriodStoreDelegate {
     func didChangeSpamState(for referrerDomain: String, isSpam: Bool) {
+        data.isReferrerSpam = isSpam
+        updateViewModel()
+
         let markedText = NSLocalizedString("marked as spam", comment: "Indicating that referrer was marked as spam")
         let unmarkedText = NSLocalizedString("unmarked as spam", comment: "Indicating that referrer was unmarked as spam")
         let text = isSpam ? markedText : unmarkedText
@@ -93,11 +96,16 @@ private extension ReferrerDetailsTableViewController {
         tableHandler.viewModel = viewModel.tableViewModel
     }
 
+    func updateViewModel() {
+        viewModel.update(with: data)
+        buildViewModel()
+    }
+
     func showSpamActionSheet(for referrerDomain: String, isSpam: Bool, action: @escaping () -> Void) {
         let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let markTitle = NSLocalizedString("Mark as spam", comment: "Action title for marking referrer as spam")
-        let unmarkTitle = NSLocalizedString("Unmark as spam", comment: "Action title for unmarking referrer as spam")
+        let unmarkTitle = NSLocalizedString("Mark as not spam", comment: "Action title for unmarking referrer as spam")
 
         let title = isSpam ? unmarkTitle : markTitle
         let toggleSpamAction = UIAlertAction(title: title, style: .default) { _ in

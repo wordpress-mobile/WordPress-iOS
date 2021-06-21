@@ -6,12 +6,19 @@ protocol ReferrerDetailsViewModelDelegate: AnyObject {
 }
 
 final class ReferrerDetailsViewModel {
-    private let data: StatsTotalRowData
+    private var data: StatsTotalRowData
     private weak var delegate: ReferrerDetailsViewModelDelegate?
 
     init(data: StatsTotalRowData, delegate: ReferrerDetailsViewModelDelegate) {
         self.data = data
         self.delegate = delegate
+    }
+}
+
+// MARK: - Public Methods
+extension ReferrerDetailsViewModel {
+    func update(with data: StatsTotalRowData) {
+        self.data = data
     }
 }
 
