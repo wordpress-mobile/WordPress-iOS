@@ -10,6 +10,8 @@ extension JetpackSiteRef {
             "homeURL": "url",
             "hasBackup": true,
             "hasPaidPlan": true,
+            "isSelfHostedWithoutJetpack": false,
+            "xmlRPC": null,
         }
         """ as NSString
 
