@@ -14,6 +14,7 @@ class BloggingRemindersStore {
         case configurationDecodingFailed(error: Swift.Error)
         case configurationEncodingFailed(error: Swift.Error)
         case configurationFileCreationFailed(url: URL, data: Data)
+        case removingConfigurationFileFailed(url: URL)
     }
 
     /// Represents user-defined reminders for which notifications have been scheduled.
@@ -78,6 +79,10 @@ class BloggingRemindersStore {
         return configuration[blogIdentifier] ?? .none
     }
 
+    func allScheduledReminders() -> [ScheduledReminders] {
+        return Array(configuration.values)
+    }
+
     func save(scheduledReminders: ScheduledReminders, for blogIdentifier: BlogIdentifier) throws {
         configuration[blogIdentifier] = scheduledReminders
         try save()
@@ -94,6 +99,17 @@ class BloggingRemindersStore {
 
         guard fileManager.createFile(atPath: dataFileURL.path, contents: data, attributes: nil) else {
             throw Error.configurationFileCreationFailed(url: dataFileURL, data: data)
+        }
+    }
+
+    /// Deletes all current reminders permanently from the system.
+    ///
+    func deleteAllReminders() throws {
+        do {
+            try fileManager.removeItem(at: dataFileURL)
+            configuration = [:]
+        } catch {
+            throw Error.removingConfigurationFileFailed(url: dataFileURL)
         }
     }
 }

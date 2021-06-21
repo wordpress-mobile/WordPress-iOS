@@ -74,6 +74,9 @@ import Foundation
         let service = AccountService(managedObjectContext: context)
         service.removeDefaultWordPressComAccount()
 
+        // Unschedule any scheduled blogging reminders
+        BloggingRemindersScheduler.unscheduleAllReminders()
+
         // Delete local notification on logout
         PushNotificationsManager.shared.deletePendingLocalNotifications()
 
