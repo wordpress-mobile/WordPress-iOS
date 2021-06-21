@@ -173,6 +173,11 @@ class BloggingRemindersScheduler {
     ///     - schedule: the blogging reminders schedule.
     ///
     func schedule(_ schedule: Schedule, completion: @escaping (Result<Void, Swift.Error>) -> ()) {
+        guard schedule != .none else {
+            pushAuthorizationReceived(for: schedule, completion: completion)
+            return
+        }
+
         pushNotificationAuthorizer.requestAuthorization { [weak self] allowed in
             guard let self = self else {
                 return
