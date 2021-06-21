@@ -2,7 +2,16 @@ import UIKit
 
 final class ReferrerDetailsTableViewController: UITableViewController {
     private lazy var tableHandler = ImmuTableViewHandler(takeOver: self)
-    private let viewModel = ReferrerDetailsViewModel()
+    private let viewModel: ReferrerDetailsViewModel
+
+    init(data: StatsTotalRowData) {
+        self.viewModel = ReferrerDetailsViewModel(data: data)
+        super.init(style: .plain)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

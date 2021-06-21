@@ -321,7 +321,7 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
 
 extension SiteStatsDetailTableViewController: SiteStatsReferrerDelegate {
     func showReferrerDetails(_ data: StatsTotalRowData) {
-        show(ReferrerDetailsTableViewController(), sender: nil)
+        show(ReferrerDetailsTableViewController(data: data), sender: nil)
     }
 }
 

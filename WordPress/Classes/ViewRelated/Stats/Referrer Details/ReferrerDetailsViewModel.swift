@@ -1,7 +1,11 @@
 import Foundation
 
 final class ReferrerDetailsViewModel {
-    // TODO: implement
+    private let data: StatsTotalRowData
+
+    init(data: StatsTotalRowData) {
+        self.data = data
+    }
 }
 
 // MARK: - Public Computed Properties
