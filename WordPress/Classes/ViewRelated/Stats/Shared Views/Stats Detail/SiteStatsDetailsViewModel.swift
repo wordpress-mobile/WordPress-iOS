@@ -33,11 +33,9 @@ class SiteStatsDetailsViewModel: Observable {
     // MARK: - Init
 
     init(detailsDelegate: SiteStatsDetailsDelegate,
-         referrerDelegate: SiteStatsReferrerDelegate,
-         storeDelegate: StatsPeriodStoreDelegate) {
+         referrerDelegate: SiteStatsReferrerDelegate) {
         self.detailsDelegate = detailsDelegate
         self.referrerDelegate = referrerDelegate
-        self.periodStore.delegate = storeDelegate
     }
 
     // MARK: - Data Fetching
@@ -403,10 +401,6 @@ class SiteStatsDetailsViewModel: Observable {
         }
 
         ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
-    }
-
-    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
-        periodStore.toggleSpamState(for: referrerDomain, currentValue: currentValue)
     }
 }
 

@@ -132,8 +132,7 @@ private extension SiteStatsPeriodTableViewController {
                                              selectedDate: selectedDate,
                                              selectedPeriod: selectedPeriod,
                                              periodDelegate: self,
-                                             referrerDelegate: self,
-                                             storeDelegate: self)
+                                             referrerDelegate: self)
         viewModel?.statsBarChartViewDelegate = self
         addViewModelListeners()
         viewModel?.startFetchingOverview()
@@ -212,12 +211,6 @@ private extension SiteStatsPeriodTableViewController {
     func viewIsVisible() -> Bool {
         return isViewLoaded && view.window != nil
     }
-}
-
-// MARK: - StatsPeriodStoreDelegate
-
-extension SiteStatsPeriodTableViewController: StatsPeriodStoreDelegate {
-    /* using default implementation in protocol extension */
 }
 
 // MARK: - NoResultsViewHost

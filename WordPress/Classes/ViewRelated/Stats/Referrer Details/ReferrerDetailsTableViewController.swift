@@ -9,6 +9,7 @@ final class ReferrerDetailsTableViewController: UITableViewController {
     init(data: StatsTotalRowData) {
         self.data = data
         super.init(style: .plain)
+        periodStore.delegate = self
     }
 
     required init?(coder: NSCoder) {
@@ -59,6 +60,23 @@ extension ReferrerDetailsTableViewController: ReferrerDetailsViewModelDelegate {
         showSpamActionSheet(for: referrerDomain, isSpam: currentValue) { [weak self] in
             self?.periodStore.toggleSpamState(for: referrerDomain, currentValue: currentValue)
         }
+    }
+}
+
+// MARK: - StatsPeriodStoreDelegate
+extension ReferrerDetailsTableViewController: StatsPeriodStoreDelegate {
+    func didChangeSpamState(for referrerDomain: String, isSpam: Bool) {
+        let markedText = NSLocalizedString("marked as spam", comment: "Indicating that referrer was marked as spam")
+        let unmarkedText = NSLocalizedString("unmarked as spam", comment: "Indicating that referrer was unmarked as spam")
+        let text = isSpam ? markedText : unmarkedText
+        displayNotice(title: "\(referrerDomain) \(text)")
+    }
+
+    func changingSpamStateForReferrerDomainFailed(oldValue: Bool) {
+        let markText = NSLocalizedString("Couldn't mark as spam", comment: "Indicating that referrer couldn't be marked as spam")
+        let unmarkText = NSLocalizedString("Couldn't unmark as spam", comment: "Indicating that referrer couldn't be unmarked as spam")
+        let text = oldValue ? unmarkText : markText
+        displayNotice(title: text)
     }
 }
 

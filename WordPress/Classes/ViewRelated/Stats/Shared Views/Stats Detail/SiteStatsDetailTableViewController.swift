@@ -146,8 +146,7 @@ private extension SiteStatsDetailTableViewController {
 
     func initViewModel() {
         viewModel = SiteStatsDetailsViewModel(detailsDelegate: self,
-                                              referrerDelegate: self,
-                                              storeDelegate: self)
+                                              referrerDelegate: self)
 
         guard let statSection = statSection else {
             return
@@ -267,12 +266,6 @@ private extension SiteStatsDetailTableViewController {
         initViewModel()
     }
 
-}
-
-// MARK: - StatsPeriodStoreDelegate
-
-extension SiteStatsDetailTableViewController: StatsPeriodStoreDelegate {
-    /* using default implementation in protocol extension */
 }
 
 // MARK: - SiteStatsDetailsDelegate Methods
