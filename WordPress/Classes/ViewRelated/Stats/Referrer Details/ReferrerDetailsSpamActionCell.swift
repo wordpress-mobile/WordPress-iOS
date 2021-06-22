@@ -18,10 +18,10 @@ final class ReferrerDetailsSpamActionCell: UITableViewCell {
 extension ReferrerDetailsSpamActionCell {
     func configure(markAsSpam: Bool) {
         if markAsSpam {
-            actionLabel.text = "Mark as spam"
+            actionLabel.text = NSLocalizedString("Mark as spam", comment: "Action title for marking referrer as spam")
             actionLabel.textColor = WPStyleGuide.Stats.negativeColor
         } else {
-            actionLabel.text = "Mark as not spam"
+            actionLabel.text = NSLocalizedString("Mark as not spam", comment: "Action title for unmarking referrer as spam")
             actionLabel.textColor = WPStyleGuide.Stats.positiveColor
         }
     }
