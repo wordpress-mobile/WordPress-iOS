@@ -144,6 +144,45 @@ lane :update_jetpack_appstore_strings do |options|
   )
 end
 
+#####################################################################################
+# update_jetpack_metadata_on_app_store_connect
+# -----------------------------------------------------------------------------------
+# This lane reads the information from `fastlane/jetpack_metadata/` and uploads it to
+# App Store Connect for the version specified in the version xcconfig file.
+#
+# Optionally, it can also upload new screenshots, overriding the existing ones.
+# -----------------------------------------------------------------------------------
+# Usage:
+# bundle exec fastlane update_jetpack_metadata_on_app_store_connect
+#
+# Example:
+# bundle exec fastlane update_jetpack_metadata_on_app_store_connect
+# bundle exec fastlane update_jetpack_metadata_on_app_store_connect with_screenshots:true
+#####################################################################################
+desc 'Uploads the Jetpack metadata to App Store Connect, localized, and optionally including screenshots.'
+lane :update_jetpack_metadata_on_app_store_connect do |options|
+  # Skip screenshots by default. The naming is "with" to make it clear that
+  # callers need to opt-in to adding screenshots. The naming of the deliver
+  # parameter, on the other hand, uses the skip verb.
+  with_screenshots = options.fetch(:with_screenshots, false)
+  skip_screenshots = with_screenshots == false
+
+  deliver(
+    app_identifier: APP_IDENTIFIER,
+    app_version: read_version_from_config,
+    api_key_path: File.join(PROJECT_ROOT_FOLDER, '.configure-files', 'app_store_connect_fastlane_api_key.json'),
+    metadata_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata'),
+    skip_screenshots: skip_screenshots,
+    screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_promo_screenshots'),
+    overwrite_screenshots: true, # if skip_screenshots true, this is ignored
+    skip_binary_upload: true,
+    phased_release: true,
+    precheck_include_in_app_purchases: false,
+    # Reusing the WordPress one here, the values are the same after all
+    app_rating_config_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'ratings_config.json')
+  )
+end
+
 ########################################################################
 # Jetpack Fastlane match code signing
 ########################################################################
@@ -174,3 +213,14 @@ private_lane :jetpack_appstore_code_signing do |options|
   )
 end
 
+def read_version_from_config
+  fastlane_require 'Xcodeproj'
+  version = ''
+  # If the file is not available, the method will raise so we should be fine
+  # not handling that case. We'll never return an empty string.
+  File.open(File.join(PROJECT_ROOT_FOLDER, 'Config', 'Version.public.xcconfig')) do |config|
+    configuration = Xcodeproj::Config.new(config)
+    version = configuration.attributes['VERSION_SHORT']
+  end
+  return version
+end
