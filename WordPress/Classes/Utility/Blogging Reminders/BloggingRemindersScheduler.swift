@@ -255,33 +255,14 @@ class BloggingRemindersScheduler {
     }
 
     // MARK: - Unscheduling
-
-    static func unscheduleAllReminders(store: BloggingRemindersStore? = nil,
-                                       notificationScheduler: NotificationScheduler = UNUserNotificationCenter.current()) {
-        do {
-            let remindersStore: BloggingRemindersStore
-            if let store = store {
-                remindersStore = store
-            } else {
-                remindersStore = try Self.defaultStore()
-            }
-
-            // First unschedule all reminders from the scheduler
-            for reminder in remindersStore.allScheduledReminders() {
-                switch reminder {
-                case .weekdays(let days):
-                    let notificationIDs = days.map { $0.notificationID }
-                    notificationScheduler.removePendingNotificationRequests(withIdentifiers: notificationIDs)
-                default:
-                    break
-                }
-            }
-
-            // Then delete from the store
-            try remindersStore.deleteAllReminders()
-        } catch {
-            DDLogError(error.localizedDescription)
+    func unschedule(for blogs: [Blog]) {
+        for blog in blogs {
+            unschedule(for: blog)
         }
+    }
+
+    func unschedule(for blog: Blog) {
+        schedule(.none, for: blog, completion: { _ in })
     }
 
     /// Unschedules all notifications for the passed schedule.

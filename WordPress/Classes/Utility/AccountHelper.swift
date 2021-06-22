@@ -70,12 +70,17 @@ import Foundation
     }
 
     static func logOutDefaultWordPressComAccount() {
+        // Unschedule any scheduled blogging reminders
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
-        service.removeDefaultWordPressComAccount()
 
         // Unschedule any scheduled blogging reminders
-        BloggingRemindersScheduler.unscheduleAllReminders()
+        if let account = service.defaultWordPressComAccount() {
+            let scheduler = try? BloggingRemindersScheduler()
+            scheduler?.unschedule(for: Array(account.blogs))
+        }
+
+        service.removeDefaultWordPressComAccount()
 
         // Delete local notification on logout
         PushNotificationsManager.shared.deletePendingLocalNotifications()

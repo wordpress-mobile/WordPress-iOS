@@ -84,7 +84,12 @@ class BloggingRemindersStore {
     }
 
     func save(scheduledReminders: ScheduledReminders, for blogIdentifier: BlogIdentifier) throws {
-        configuration[blogIdentifier] = scheduledReminders
+        switch scheduledReminders {
+        case .none:
+            configuration.removeValue(forKey: blogIdentifier)
+        case .weekdays:
+            configuration[blogIdentifier] = scheduledReminders
+        }
         try save()
     }
 
