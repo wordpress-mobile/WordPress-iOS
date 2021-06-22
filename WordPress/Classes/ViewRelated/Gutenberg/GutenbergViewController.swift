@@ -361,6 +361,10 @@ class GutenbergViewController: UIViewController, PostEditor {
         editorContentWasUpdated()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        gutenbergSettings.hasLaunchedGutenbergEditor = true
+    }
+
     override func viewLayoutMarginsDidChange() {
         super.viewLayoutMarginsDidChange()
         ghostView.frame = view.frame
@@ -829,8 +833,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             // is still reflecting the actual startup time of the editor
             editorSession.start(unsupportedBlocks: unsupportedBlockNames, canViewEditorOnboarding: canViewEditorOnboarding())
         }
-
-        gutenbergSettings.hasLaunchedGutenbergEditor = true
     }
 
     func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
