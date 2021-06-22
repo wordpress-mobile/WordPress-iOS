@@ -131,7 +131,6 @@ def gutenberg_dependencies(options)
         'react-native-safe-area-context',
         'react-native-video',
         'RNSVG',
-        'ReactNativeDarkMode',
         'react-native-slider',
         'BVLinearGradient',
         'react-native-get-random-values',
@@ -166,7 +165,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.56.0-alpha3'
+    gutenberg :commit => '12dcaa4eed6a5eefb5e75e51f60b9200dc0cf61a'
 
     ## Third party libraries
     ## =====================
