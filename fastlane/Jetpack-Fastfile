@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+APP_IDENTIFIER = 'com.automattic.jetpack'
+
   #####################################################################################
   # build_and_upload_installable_build
   # -----------------------------------------------------------------------------------
@@ -166,7 +170,7 @@ private_lane :jetpack_appstore_code_signing do |options|
     type: "appstore",
     team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
     readonly: true,
-    app_identifier: "com.automattic.jetpack"
+    app_identifier: APP_IDENTIFIER
   )
 end
 
