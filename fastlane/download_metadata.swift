@@ -6,7 +6,16 @@ let glotPressSubtitleKey = "app_store_subtitle"
 let glotPressWhatsNewKey = "v17.7-whats-new"
 let glotPressDescriptionKey = "app_store_desc"
 let glotPressKeywordsKey = "app_store_keywords"
-let baseFolder = "./metadata"
+
+struct Config {
+    let baseFolder: String
+    let baseURLString: String
+
+    static let wordPress = Config(
+        baseFolder: "./metadata",
+        baseURLString: "https://translate.wordpress.org/projects/apps/ios/release-notes/"
+    )
+}
 
 // iTunes Connect language code: GlotPress code
 let languages = [
@@ -37,9 +46,9 @@ let languages = [
     "zh-Hant": "zh-tw",
 ]
 
-func downloadTranslation(languageCode: String, folderName: String) {
+func downloadTranslation(config: Config = .wordPress, languageCode: String, folderName: String) {
     let languageCodeOverride = languageCode == "en-us" ? "en-gb" : languageCode
-    let glotPressURL = "https://translate.wordpress.org/projects/apps/ios/release-notes/\(languageCodeOverride)/default/export-translations?format=json"
+    let glotPressURL = "\(config.baseURLString)\(languageCodeOverride)/default/export-translations?format=json"
     let requestURL: URL = URL(string: glotPressURL)!
     let urlRequest: URLRequest = URLRequest(url: requestURL)
     let session = URLSession.shared
@@ -103,7 +112,7 @@ func downloadTranslation(languageCode: String, folderName: String) {
             }
         })
 
-        let languageFolder = "\(baseFolder)/\(folderName)"
+        let languageFolder = "\(config.baseFolder)/\(folderName)"
 
         let fileManager = FileManager.default
         try? fileManager.createDirectory(atPath: languageFolder, withIntermediateDirectories: true, attributes: nil)
