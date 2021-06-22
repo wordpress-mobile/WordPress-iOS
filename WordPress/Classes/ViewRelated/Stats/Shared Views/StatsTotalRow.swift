@@ -386,7 +386,11 @@ private extension StatsTotalRow {
         }
 
         if rowData?.statSection == .periodReferrers, let data = rowData {
-            referrerDelegate?.showReferrerDetails(data)
+            if !data.canMarkReferrerAsSpam, !hasChildRows, let url = data.disclosureURL {
+                delegate?.displayWebViewWithURL?(url)
+            } else {
+                referrerDelegate?.showReferrerDetails(data)
+            }
             return
         }
 
