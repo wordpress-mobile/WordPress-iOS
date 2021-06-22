@@ -927,6 +927,9 @@
 		660A036E6EE9D353F2712081 /* Pods_WordPressNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2A297CCB53FCF6851D79331 /* Pods_WordPressNotificationServiceExtension.framework */; };
 		6867C0633E597372235CB5E0 /* Pods_WordPressDraftActionExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7E3CC306AECBBCB71D2E19C /* Pods_WordPressDraftActionExtension.framework */; };
 		6E98F0F62682120F00F796BE /* SupportScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E98F0F52682120F00F796BE /* SupportScreen.swift */; };
+		6E98F11D2682174C00F796BE /* SupportScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E98F0F52682120F00F796BE /* SupportScreen.swift */; };
+		6E98F1312682174D00F796BE /* SupportScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E98F0F52682120F00F796BE /* SupportScreen.swift */; };
+		6E98F1452682175F00F796BE /* SupportScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E98F0F52682120F00F796BE /* SupportScreen.swift */; };
 		730354BA21C867E500CD18C2 /* SiteCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730354B921C867E500CD18C2 /* SiteCreatorTests.swift */; };
 		7305138321C031FC006BD0A1 /* AssembledSiteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7305138221C031FC006BD0A1 /* AssembledSiteView.swift */; };
 		730D290F22976F1A0004BB1E /* BottomScrollAnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730D290E22976F1A0004BB1E /* BottomScrollAnalyticsTracker.swift */; };
@@ -18160,6 +18163,7 @@
 				CCBC9EAF2512446A008E1D5F /* PrologueScreen.swift in Sources */,
 				F9C47A78238C7DAC00AAD9ED /* BaseScreen.swift in Sources */,
 				F9C47A80238C7DC100AAD9ED /* BlockEditorScreen.swift in Sources */,
+				6E98F1312682174D00F796BE /* SupportScreen.swift in Sources */,
 				F9C47A82238C7DC100AAD9ED /* EditorPostSettings.swift in Sources */,
 				FA4108FB263A2D2200E90EBF /* JetpackBackupOptionsScreen.swift in Sources */,
 				F98C58192228849E0073D752 /* XCTest+Extensions.swift in Sources */,
@@ -20122,6 +20126,7 @@
 				FAF64B6D2637DEEC00E8A1DF /* PrologueScreen.swift in Sources */,
 				FAF64B6F2637DEEC00E8A1DF /* BaseScreen.swift in Sources */,
 				FAF64B702637DEEC00E8A1DF /* BlockEditorScreen.swift in Sources */,
+				6E98F1452682175F00F796BE /* SupportScreen.swift in Sources */,
 				FAF64B712637DEEC00E8A1DF /* EditorPostSettings.swift in Sources */,
 				FA4107212639581C00E90EBF /* JetpackBackupOptionsScreen.swift in Sources */,
 				FAF64B722637DEEC00E8A1DF /* XCTest+Extensions.swift in Sources */,
@@ -20186,6 +20191,7 @@
 				FA41070E263957C000E90EBF /* JetpackBackupOptionsScreen.swift in Sources */,
 				BE6DD32E1FD67EDA00E55192 /* MySitesScreen.swift in Sources */,
 				BED4D8351FF1208400A11345 /* AztecEditorScreen.swift in Sources */,
+				6E98F11D2682174C00F796BE /* SupportScreen.swift in Sources */,
 				BE6DD32C1FD6782A00E55192 /* LoginEpilogueScreen.swift in Sources */,
 				FA41044D263932AC00E90EBF /* ActivityLogScreen.swift in Sources */,
 				BE87071B2006E65C004FB5A4 /* NotificationsScreen.swift in Sources */,
