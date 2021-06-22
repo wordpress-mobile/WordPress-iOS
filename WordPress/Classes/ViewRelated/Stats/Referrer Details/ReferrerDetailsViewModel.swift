@@ -8,6 +8,7 @@ protocol ReferrerDetailsViewModelDelegate: AnyObject {
 final class ReferrerDetailsViewModel {
     private var data: StatsTotalRowData
     private weak var delegate: ReferrerDetailsViewModelDelegate?
+    private var isLoading = false
 
     init(data: StatsTotalRowData, delegate: ReferrerDetailsViewModelDelegate) {
         self.data = data
@@ -19,6 +20,10 @@ final class ReferrerDetailsViewModel {
 extension ReferrerDetailsViewModel {
     func update(with data: StatsTotalRowData) {
         self.data = data
+    }
+
+    func setLoadingState(_ value: Bool) {
+        isLoading = value
     }
 }
 
@@ -34,7 +39,7 @@ extension ReferrerDetailsViewModel {
         firstSectionRows.append(contentsOf: buildDetailsRows(data: data))
 
         var secondSectionRows = [ImmuTableRow]()
-        secondSectionRows.append(ReferrerDetailsSpamActionRow(action: action, isSpam: data.isReferrerSpam))
+        secondSectionRows.append(ReferrerDetailsSpamActionRow(action: action, isSpam: data.isReferrerSpam, isLoading: isLoading))
 
         switch data.canMarkReferrerAsSpam {
         case true:

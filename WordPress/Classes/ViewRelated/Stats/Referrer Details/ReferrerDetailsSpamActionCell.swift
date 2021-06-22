@@ -18,7 +18,10 @@ final class ReferrerDetailsSpamActionCell: UITableViewCell {
 
 // MARK: - Public Methods
 extension ReferrerDetailsSpamActionCell {
-    func configure(markAsSpam: Bool) {
+    func configure(markAsSpam: Bool, isLoading: Bool) {
+        isLoading ? loader.startAnimating() : loader.stopAnimating()
+        actionLabel.isHidden = isLoading
+
         if markAsSpam {
             actionLabel.text = NSLocalizedString("Mark as spam", comment: "Action title for marking referrer as spam")
             actionLabel.textColor = Style.negativeColor
