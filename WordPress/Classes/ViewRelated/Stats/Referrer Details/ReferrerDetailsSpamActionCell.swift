@@ -3,6 +3,7 @@ import UIKit
 final class ReferrerDetailsSpamActionCell: UITableViewCell {
     private let actionLabel = UILabel()
     private let separatorView = UIView()
+    private let loader = UIActivityIndicatorView(style: .medium)
     private typealias Style = WPStyleGuide.Stats
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -34,6 +35,7 @@ private extension ReferrerDetailsSpamActionCell {
         separatorInset = .zero
         selectionStyle = .none
         setupActionLabel()
+        setupLoader()
         setupSeparatorView()
     }
 
@@ -45,6 +47,15 @@ private extension ReferrerDetailsSpamActionCell {
             actionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
             actionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Style.ReferrerDetails.standardCellSpacing),
             actionLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+    }
+
+    func setupLoader() {
+        loader.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(loader)
+        NSLayoutConstraint.activate([
+            loader.centerXAnchor.constraint(equalTo: centerXAnchor),
+            loader.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 
