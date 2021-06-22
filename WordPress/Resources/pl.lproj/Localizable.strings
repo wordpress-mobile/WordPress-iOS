@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-17 18:20:24+0000 */
+/* Translation-Revision-Date: 2021-06-18 11:06:06+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pl */
@@ -2144,7 +2144,7 @@
    Verb. Button title. Tapping dismisses a prmopt.
    Verb. User action to dismiss error alert when failing to load media item.
    Verb. User action to dismiss error alert when failing to share media. */
-"Dismiss" = "Anuluj";
+"Dismiss" = "Odrzuć";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "Dismiss %@ Quick Start step";
@@ -3694,7 +3694,7 @@
    Text displayed in HUD while a media item is being loaded.
    Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
-"Loading..." = "Ładowanie...";
+"Loading..." = "Wczytywanie…";
 
 /* Status for Media object that is only exists locally. */
 "Local" = "Lokalny";

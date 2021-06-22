@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-16 02:53:34+0000 */
+/* Translation-Revision-Date: 2021-06-21 09:06:23+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -758,13 +758,13 @@
 "Are you sure you want to mark this comment as Spam?" = "このコメントをスパムとしてマークしてもよいですか ?";
 
 /* Message asking for confirmation before marking a comment as trash */
-"Are you sure you want to mark this comment as Trash?" = "Are you sure you want to mark this comment as Trash?";
+"Are you sure you want to mark this comment as Trash?" = "このコメントをスパムとしてマークしてもよいですか ?";
 
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
 "Are you sure you want to permanently delete these items?" = "本当にこれらの項目を永久に削除しますか ?";
 
 /* Message asking for confirmation on comment deletion */
-"Are you sure you want to permanently delete this comment?" = "Are you sure you want to permanently delete this comment?";
+"Are you sure you want to permanently delete this comment?" = "このコメントを完全に削除しますか ?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "この項目を完全に削除してもよいですか ?";
@@ -2572,7 +2572,7 @@
 "Error loading plugins" = "プラグイン読み込みエラー";
 
 /* Message shown when marking a Comment as spam fails. */
-"Error marking comment as spam" = "Error marking comment as spam";
+"Error marking comment as spam" = "スパムコメントマーキングエラー";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "読み込み中にエラーが\n発生しました";
@@ -2608,7 +2608,7 @@
 "Error sending verification email. Check your connection and try again." = "認証メールの送信中にエラーが発生しました。接続を確認して、もう一度お試しください。";
 
 /* Message shown when unapproving a Comment fails. */
-"Error unapproving comment" = "Error unapproving comment";
+"Error unapproving comment" = "コメント承認エラー";
 
 /* There was an error updating a plugin, placeholder is the plugin name */
 "Error updating %@." = "%@ の更新中にエラーが発生しました。";
@@ -4730,7 +4730,7 @@
 "People" = "人";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "People who post at least twice weekly get 87% more views on their site.";
+"People who post at least twice weekly get 87% more views on their site." = "週に2回以上投稿している人は、閲覧数が87%向上しています。";
 
 /* Label for date periods. */
 "Period" = "期間";
@@ -6630,7 +6630,7 @@
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "このサーバーの証明書が無効です。「%@」を偽装しているサーバーに接続中の可能性があるため、機密情報が危険にさらされる恐れがあります。\n\nこの証明書をそのまま信頼しますか ?";
 
 /* Message informing the user that posts page cannot be edited */
-"The content of your latest posts page is automatically generated and cannot be edited." = "The content of your latest posts page is automatically generated and cannot be edited.";
+"The content of your latest posts page is automatically generated and cannot be edited." = "最新の投稿ページのコンテンツは自動的に生成され、編集することはできません。";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "ファイル %1$@ には悪意のあるコードパターンが含まれています";
@@ -8324,7 +8324,7 @@
 "You will not be able to change your username back." = "ユーザー名を元に戻すことはできません。";
 
 /* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "You'll get reminders to blog X times a week on DAY and DAY.";
+"You'll get reminders to blog X times a week on DAY and DAY." = "DAYとDAYに週にX回ブログを書くようにリマインダーが表示されます。";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "すべて最新版です。";
@@ -8378,7 +8378,7 @@
 "Your post is currently being uploaded. Please wait until this completes." = "現在投稿をアップロードしています。 完了するまで、しばらくお待ちください。";
 
 /* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress.";
+"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "投稿を公開中です... その間に、ブログの目標を設定してリマインダーを受け取ったり、進捗を確認したりしましょう。";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "投稿、ページ、および設定は %@ にメールで送信されます。";
@@ -8399,7 +8399,7 @@
 "Your site has been succesfully restored" = "サイトが正常に復元されました";
 
 /* No comment provided by engineer. */
-"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader.";
+"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "サイトのアイコンは、ブラウザのタブや SNS でのサイトプレビュー、WordPress.com Reader などのウェブ上で利用されます。";
 
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "現在サイトを復元中です";
