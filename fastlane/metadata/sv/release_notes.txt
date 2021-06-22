@@ -1,0 +1,17 @@
+Med version 17.6 kan du lägga in ett ljudblock på valfri WordPress.com-webbplats, oavsett vilket paket du har, inklusive gratispaketet. Ljudblocket låter dig enkelt lägga in podcast-, musik- och ljudfiler i dina inlägg och sidor.
+
+I läsaren visas nu antal och sammanfattande information om gillamarkeringar för varje inlägg. Om du vill ha mer gillande i din tillvaro kan du trycka på sammanfattningen, så visas en fullständig lista.
+
+Vi har inte heller legat på latsidan när det gäller förbättring av användarupplevelsen:
+
+Om du kopplar en överordnad sida till en sida utan rubrik kommer du nu att se en platshållare ‘(ingen rubrik)’ i stället för en tom rad, så att du får en försiktig påminnelse om att namnge sidan.
+
+Du har aldrig kunnat redigera sidor med inläggsarkiv, eftersom de genereras automatiskt. I version 17.6 kan du nu inte heller öppna sidan i redigeraren, så slipper du försöka göra något som ändå inte är möjligt.
+
+Sen har vi rättat några saker, också:
+
+Vi har åtgärdat några aviseringar som dubblerat åtgärdsbladet, inklusive en som visar reglage för webbplatsikonen, en som visar borttagning av QuickStart och en tredje som visar fler åtgärder i redigeraren.
+
+Slutligen har vi rättat ett programfel som ibland fick appen att krascha vid moderering av kommentarre och ett annat fel som berörde infogad visning av inloggning till WordPress.org-webbplatser.
+
+Det var allt för version 17.6. Vi ses igen när det är dags för 17.7!
