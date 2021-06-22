@@ -283,6 +283,7 @@ class BloggingRemindersScheduler {
         let notificationIDs = days.map { $0.notificationID }
 
         notificationScheduler.removePendingNotificationRequests(withIdentifiers: notificationIDs)
+    }
 
     // MARK: - Scheduled Reminders
 
