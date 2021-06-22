@@ -56,6 +56,9 @@ class BloggingRemindersScheduler {
         }
     }
 
+    /// The raw values have been selected for convenience, so that they perfectly match Apple's
+    /// index for weekday symbol methods, such as `Calendar.weekdaySymbols`.
+    ///
     enum Weekday: Int, Codable, Comparable {
         case sunday = 0
         case monday
@@ -230,9 +233,11 @@ class BloggingRemindersScheduler {
         content.body = "It's time to post!"
 
         var dateComponents = DateComponents()
-        dateComponents.calendar = Calendar.current
+        let calendar = Calendar.current
+        dateComponents.calendar = calendar
 
-        dateComponents.weekday = weekday.rawValue
+        // `DateComponent`'s weekday uses a 1-based index.
+        dateComponents.weekday = weekday.rawValue + 1
         dateComponents.hour = Weekday.defaultHour
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
