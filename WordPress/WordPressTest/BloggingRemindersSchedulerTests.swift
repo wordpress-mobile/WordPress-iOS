@@ -55,6 +55,9 @@ class BloggingRemindersSchedulerTests: XCTestCase {
         let schedule = BloggingRemindersScheduler.Schedule.weekdays(days)
         let store: BloggingRemindersStore
 
+        let context = TestContextManager().mainContext
+        let blog = BlogBuilder(context).build()
+
         do {
             store = try BloggingRemindersStore(dataFileURL: dataFileURL())
         } catch {
@@ -68,23 +71,20 @@ class BloggingRemindersSchedulerTests: XCTestCase {
         }
 
         let scheduler = BloggingRemindersScheduler(
-            blogIdentifier: blogIdentifier,
             store: store,
             notificationCenter: notificationCenter,
             pushNotificationAuthorizer: PushNotificationsAuthorizerMock())
 
-        scheduler.schedule(schedule) { _ in
+        scheduler.schedule(schedule, for: blog) { _ in
         }
 
-        XCTAssertEqual(scheduler.schedule(), schedule)
+        XCTAssertEqual(scheduler.schedule(for: blog), schedule)
     }
 
     /// Tests that the scheduler does schedule and cancel local notifications.
     ///
     func testLocalNotificationsSchedulingAndCancelling() {
-        let blogIdentifier = URL(fileURLWithPath: "some_blog")
         let store: BloggingRemindersStore
-
         let days = [BloggingRemindersScheduler.Weekday]([.monday, .tuesday, .saturday])
 
         let scheduleExpectation = expectation(description: "The notification is scheduled")
@@ -92,6 +92,9 @@ class BloggingRemindersSchedulerTests: XCTestCase {
 
         let cancelExpectation = expectation(description: "The notification is cancelled")
         cancelExpectation.expectedFulfillmentCount = days.count
+
+        let context = TestContextManager().mainContext
+        let blog = BlogBuilder(context).build()
 
         do {
             store = try BloggingRemindersStore(dataFileURL: dataFileURL())
@@ -108,15 +111,14 @@ class BloggingRemindersSchedulerTests: XCTestCase {
         }
 
         let scheduler = BloggingRemindersScheduler(
-            blogIdentifier: blogIdentifier,
             store: store,
             notificationCenter: notificationCenter,
             pushNotificationAuthorizer: PushNotificationsAuthorizerMock())
 
-        scheduler.schedule(.weekdays(days)) { _ in
+        scheduler.schedule(.weekdays(days), for: blog) { _ in
         }
 
-        scheduler.schedule(.none) { _ in
+        scheduler.schedule(.none, for: blog) { _ in
         }
 
         waitForExpectations(timeout: 0.1) { error in

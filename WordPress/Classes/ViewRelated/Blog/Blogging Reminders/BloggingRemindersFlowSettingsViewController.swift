@@ -45,7 +45,6 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     let button: UIButton = {
         let button = FancyButton()
         button.isPrimary = true
-        button.setTitle(TextContent.nextButtonTitle, for: .normal)
         button.addTarget(self, action: #selector(notifyMeButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -128,17 +127,26 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     private let calendar: Calendar
     private let scheduler: BloggingRemindersScheduler
-    private var weekdays: [BloggingRemindersScheduler.Weekday]
+    private var weekdays: [BloggingRemindersScheduler.Weekday] {
+        didSet {
+            // If this is a new configuration, only enable the button once days have been selected
+            if button.title(for: .normal) == TextContent.nextButtonTitle {
+                button.isEnabled = !weekdays.isEmpty
+            }
+        }
+    }
 
     // MARK: - Initializers
 
-    let tracker: BloggingRemindersTracker
+    private let blog: Blog
+    private let tracker: BloggingRemindersTracker
 
     init(
         for blog: Blog,
         tracker: BloggingRemindersTracker,
         calendar: Calendar? = nil) throws {
 
+        self.blog = blog
         self.tracker = tracker
         self.calendar = calendar ?? {
             var calendar = Calendar.current
@@ -147,9 +155,9 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             return calendar
         }()
 
-        scheduler = try BloggingRemindersScheduler(blogIdentifier: blog.objectID.uriRepresentation())
+        scheduler = try BloggingRemindersScheduler()
 
-        switch self.scheduler.schedule() {
+        switch self.scheduler.schedule(for: blog) {
         case .none:
             weekdays = []
         case .weekdays(let scheduledWeekdays):
@@ -177,6 +185,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         configureStackView()
         configureConstraints()
         populateCalendarDays()
+        configureNextButton()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -260,7 +269,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     /// - Returns: the requested toggle button.
     ///
     private func createCalendarDayToggleButton(dayIndex: Int) -> CalendarDayToggleButton? {
-        let localizedDayIndex = (dayIndex + calendar.firstWeekday - 1) % calendar.shortWeekdaySymbols.count
+        let localizedDayIndex = calendar.localizedDayIndex(dayIndex)
 
         guard let weekday = BloggingRemindersScheduler.Weekday(rawValue: localizedDayIndex) else {
             return nil
@@ -297,6 +306,15 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         daysBottomInnerStackView.addArrangedSubviews(bottomRow.compactMap({ createCalendarDayToggleButton(dayIndex: $0) }))
     }
 
+    private func configureNextButton() {
+        if weekdays.isEmpty {
+            button.setTitle(TextContent.nextButtonTitle, for: .normal)
+            button.isEnabled = false
+        } else {
+            button.setTitle(TextContent.updateButtonTitle, for: .normal)
+        }
+    }
+
     // MARK: - Actions
 
     @objc private func notifyMeButtonTapped() {
@@ -321,11 +339,11 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             schedule = .none
         }
 
-        scheduler.schedule(schedule) { [weak self] result in
+        scheduler.schedule(schedule, for: blog) { [weak self] result in
             guard let self = self else {
                 return
             }
-
+            
             switch result {
             case .success:
                 self.tracker.scheduled(schedule)
@@ -358,7 +376,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     // MARK: - Completion Paths
 
     private func presentCompletionViewController() {
-        let viewController = BloggingRemindersFlowCompletionViewController(tracker: tracker)
+        let viewController = BloggingRemindersFlowCompletionViewController(selectedDays: weekdays, tracker: tracker, calendar: calendar)
         navigationController?.pushViewController(viewController, animated: true)
     }
 
@@ -389,7 +407,8 @@ private enum TextContent {
     static let settingsUpdatePrompt = NSLocalizedString("You can update this anytime",
                                                         comment: "Prompt shown on the Blogging Reminders Settings screen.")
 
-    static let nextButtonTitle = NSLocalizedString("Next", comment: "Title of button to navigate to the next screen.")
+    static let nextButtonTitle = NSLocalizedString("Notify me", comment: "Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications.")
+    static let updateButtonTitle = NSLocalizedString("Update", comment: "(Verb) Title of button confirming updating settings for blogging reminders.")
 
     static let tipPanelTitle = NSLocalizedString("Tip", comment: "Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip.")
 

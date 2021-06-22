@@ -505,9 +505,7 @@ namespace :credentials do
 
   #user given app id and secret and create a new wpcom_app_credentials file
   task :set_app_secrets do
-    create_secrets_file
     set_app_secrets(get_client_id, get_client_secret)
-    remove_temp_file
   end
 
   def get_client_id
@@ -520,30 +518,18 @@ namespace :credentials do
     STDIN.gets.strip
   end
 
-  #create temporary secrets file from example file
-  def create_secrets_file
-    sh "cp WordPress/Credentials/wpcom_app_credentials-example .configure-files/temp_wpcom_app_credentials", verbose: false
-  end
-
-  #create a new wpcom_app_credentials file combining the app secret and app id
+  # Duplicate the example file and add the new app secret and app id
   def set_app_secrets(id, secret)
-    puts "Creating credentials file"
-    new_file = File.new(".configure-files/wpcom_app_credentials", "w")
-    File.open(".configure-files/temp_wpcom_app_credentials") do |file|
-      file.each_line do |line|
-        if line.include? "WPCOM_APP_ID="
-          new_file.puts("WPCOM_APP_ID=#{id}")
-        elsif line.include? "WPCOM_APP_SECRET="
-          new_file.puts("WPCOM_APP_SECRET=#{secret}")
-        else
-          new_file.write(line)
-        end
-      end
-    end
-  end
+    puts 'Writing App ID and App Secret to secrets file'
 
-  def remove_temp_file
-    sh "rm .configure-files/temp_wpcom_app_credentials", verbose: false
+    replaced_text = File.read('WordPress/Credentials/Secrets-example.swift')
+      .gsub('let client = "0"', "let client=\"#{id}\"")
+      .gsub('let secret = "your-secret-here"', "let secret=\"#{secret}\"")
+
+    File.open('.configure-files/WordPress-Secrets.swift', 'w') { |file| 
+      file.puts replaced_text
+    }
+
   end
 end
 

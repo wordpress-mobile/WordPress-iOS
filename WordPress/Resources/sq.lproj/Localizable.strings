@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-04 11:11:02+0000 */
+/* Translation-Revision-Date: 2021-06-18 11:23:02+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -34,10 +34,10 @@
 "%1$@ to fix threats." = "Që të zgjidhen kërcënimet, %1$@.";
 
 /* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Like" = "%1$d Like";
+"%1$d Like" = "%1$d Pëlqim";
 
 /* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Likes" = "%1$d Likes";
+"%1$d Likes" = "%1$d Pëlqime";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
 "%1$d blogger likes this." = "Këtë e pëlqen %1$d blogues.";
@@ -758,13 +758,13 @@
 "Are you sure you want to mark this comment as Spam?" = "Jeni i sigurt se doni t’i vihet shenjë këtij komenti si i Padëshiruar?";
 
 /* Message asking for confirmation before marking a comment as trash */
-"Are you sure you want to mark this comment as Trash?" = "Are you sure you want to mark this comment as Trash?";
+"Are you sure you want to mark this comment as Trash?" = "Jeni i sigurt se doni t’i vihet shenjë këtij komenti si Hedhurinë?";
 
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
 "Are you sure you want to permanently delete these items?" = "Jeni i sigurt që doni të fshihen përgjithmonë këto objekte?";
 
 /* Message asking for confirmation on comment deletion */
-"Are you sure you want to permanently delete this comment?" = "Are you sure you want to permanently delete this comment?";
+"Are you sure you want to permanently delete this comment?" = "Jeni i sigurt se doni të fshihet përgjithmonë ky koment?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Jeni i sigurt që doni të fshihet përgjithmonë ky objekt?";
@@ -906,7 +906,7 @@
 "Back" = "Mbrapsht";
 
 /* No comment provided by engineer. */
-"Background Color" = "Background Color";
+"Background Color" = "Ngjyrë Sfondi";
 
 /* Title of the cell displaying status of a backup in progress */
 "Backing up site" = "Kopjeruajtje sajti";
@@ -1289,7 +1289,7 @@
 "Choose Homepage" = "Zgjidhni Faqe Hyrëse";
 
 /* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Choose Image From My Device";
+"Choose Image From My Device" = "Zgjedhje Figure Nga Pajisja Ime";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Zgjidhni Faqe";
@@ -1819,7 +1819,7 @@
 "Create Story Post" = "Krijoni Postim Shkrimi";
 
 /* Button allowing the user to create a site icon by choosing an emoji character */
-"Create With Emoji" = "Create With Emoji";
+"Create With Emoji" = "Krijoje Me Emoji";
 
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "Krijo sajt WordPress.com";
@@ -1843,7 +1843,7 @@
 "Create a post, page, or story" = "Krijoni një postim, faqe ose shkrim";
 
 /* No comment provided by engineer. */
-"Create a site icon" = "Create a site icon";
+"Create a site icon" = "Krijoni një ikonë sajti";
 
 /* Label that describes the download backup action */
 "Create downloadable backup" = "Krijoni kopjeruajtje të shkarkueshme";
@@ -2538,7 +2538,7 @@
 "Error activating %@." = "Gabim gjatë aktivizimit të %@.";
 
 /* Message shown when approving a Comment fails. */
-"Error approving comment" = "Error approving comment";
+"Error approving comment" = "Gabim në miratim komenti";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2548,7 +2548,7 @@
 "Error deactivating %@." = "Gabim gjatë çaktivizimit të %@.";
 
 /* Message shown when deleting a Comment fails. */
-"Error deleting comment" = "Error deleting comment";
+"Error deleting comment" = "Gabim në fshirje komenti";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "Gabim në çaktivizimin e vetëpërditësimeve për %@.";
@@ -2572,7 +2572,7 @@
 "Error loading plugins" = "Gabim në ngarkim shtojcash";
 
 /* Message shown when marking a Comment as spam fails. */
-"Error marking comment as spam" = "Error marking comment as spam";
+"Error marking comment as spam" = "Gabim në vënie shenje komenti si i padëshiruar";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Ndodhi një gabim\ngjatë ngarkimit";
@@ -2608,7 +2608,7 @@
 "Error sending verification email. Check your connection and try again." = "Gabim në dërgimin e email-it të verifikimit. Kontrolloni lidhjen tuaj dhe riprovoni.";
 
 /* Message shown when unapproving a Comment fails. */
-"Error unapproving comment" = "Error unapproving comment";
+"Error unapproving comment" = "Gabim në shmiratim komenti";
 
 /* There was an error updating a plugin, placeholder is the plugin name */
 "Error updating %@." = "Gabim gjatë përditësimit të %@.";
@@ -3465,7 +3465,7 @@
 "Jetpack could not be installed at this time." = "Jetpack-u s’u instalua dot këtë herë.";
 
 /* Subject of new Zendesk ticket. */
-"Jetpack for iOS Support" = "Jetpack for iOS Support";
+"Jetpack for iOS Support" = "Asistencë për Jetpack për iOS";
 
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack-u u instalua";
@@ -4730,7 +4730,7 @@
 "People" = "Persona";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "People who post at least twice weekly get 87% more views on their site.";
+"People who post at least twice weekly get 87% more views on their site." = "Personat që postojnë të paktën dy herë në javë, kapin 87% më tepër parje në sajtet e tyre.";
 
 /* Label for date periods. */
 "Period" = "Periudhë";
@@ -5351,7 +5351,7 @@
 "Remove Site Icon" = "Hiqe Ikonën e Sajtit";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image " = "Remove as Featured Image ";
+"Remove as Featured Image " = "Hiqe si Figurë të Zgjedhur ";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Hiqe nga Prirjet";
@@ -5895,7 +5895,7 @@
 "Set Parent" = "Caktojeni Mëmë";
 
 /* No comment provided by engineer. */
-"Set as Featured Image " = "Set as Featured Image ";
+"Set as Featured Image " = "Vëre Si Figurë të Zgjedhur";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "Caktojeni si Faqen hyrëse";
@@ -5904,7 +5904,7 @@
 "Set as Posts Page" = "Caktojeni Faqe Postimesh";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set goals" = "Set goals";
+"Set goals" = "Caktoni objektiva";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "U ujdis";
@@ -6630,7 +6630,7 @@
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Dëshmia për këtë shërbyes është e pavlefshme. Mund të jeni duke u lidhur te një shërbyes që pretendon të jetë “%@”, gjë që do t’i vinte në rrezik të dhënat tuaja rezervat.\n\nDo të donit të besohej kjo dëshmi, sido që të jetë?";
 
 /* Message informing the user that posts page cannot be edited */
-"The content of your latest posts page is automatically generated and cannot be edited." = "The content of your latest posts page is automatically generated and cannot be edited.";
+"The content of your latest posts page is automatically generated and cannot be edited." = "Lënda e faqes tuaj të postimeve më të reja prodhohet automatikisht dhe s’mund të përpunohet.";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "Kartela %1$@ përmban rregullsi kodi dashakeq";
@@ -6947,7 +6947,7 @@
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Erdhi koha të përfundohet rregullimi i sajtit tuaj! Lista jonë e hapave ju udhëheq nëpër ata vijuesit.";
 
 /* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Tip";
+"Tip" = "Ndihmëz";
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Këshilla për të përfituar maksimumin nga WordPress.com.";
@@ -7421,7 +7421,7 @@
 "Update Profile Photo" = "Përditësoni Foto Profili";
 
 /* Title for sheet displayed allowing user to update their site icon */
-"Update Site Icon" = "Update Site Icon";
+"Update Site Icon" = "Përditësoni Ikonën e Sajtit";
 
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "Përditëson grafikun me vija që të shfaqë komente.";
@@ -8232,7 +8232,7 @@
 "You can update this any time via My Site > Site Settings" = "Këtë mund ta përditësoni në çfarëdo kohe që nga Sajti Im > Rregullime Sajti";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this anytime" = "You can update this anytime";
+"You can update this anytime" = "Këtë mund ta përditësoni në çfarëdo kohe.";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "S’mund të përdorni për regjistrim atë adresë email. Kemi probleme me ta, se bllokojnë disa nga email-et tanë. Ju lutemi, përdorni një shërbims tjetër email-esh.";
@@ -8324,7 +8324,7 @@
 "You will not be able to change your username back." = "S'do të jeni në gjendje të ndryshoni prapë emrin tuaj të përdoruesit.";
 
 /* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "You'll get reminders to blog X times a week on DAY and DAY.";
+"You'll get reminders to blog X times a week on DAY and DAY." = "Do të merrni kujtues për të postuar në blog X herë në javë në DITËN dhe DITËN.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Gjithçka e përditësuar!";
@@ -8378,7 +8378,7 @@
 "Your post is currently being uploaded. Please wait until this completes." = "Postimi juaj po ngarkohet. Ju lutemi, prisni deri sa të plotësohet kjo.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress.";
+"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Postimi juaj po botohet… ndërkohë, caktoni objektivat tuaja të blogimit, që të merrni kujtues, dhe të ndiqni ecurinë tuaj.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Postimet, faqet dhe rregullimet tuaja do t’ju dërgohen me email te %@.";
@@ -8399,7 +8399,7 @@
 "Your site has been succesfully restored" = "Sajti juaj u rikthye me sukses";
 
 /* No comment provided by engineer. */
-"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader.";
+"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Ikona e sajtit tuaj përdoret nëpër internet: në skeda shfletuesi, paraparje sajti në media shoqërore, dhe te WordPress.com Reader.";
 
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Sajti juaj po rikthehet";

@@ -1,0 +1,17 @@
+Con la versión 17.6 puedes añadir el bloque de audio a cualquier sitio WordPress.com, da igual en qué plan estés – incluido el plan gratuito. El bloque de audio facilita añadir podcast, música y archivos de audio a tus entradas y páginas.
+
+En el lector ahora verás un contador y un resumen de los «Me gusta» añadidos a cada entrada. Si no hay suficientes «Me gusta» en tu vida toca en el resumen y porás ver la lista completa.
+
+Estos estado también trabajando duro añadiendo mejoras de usabilidad:
+
+Cuando asignas una página supereior a una página sin título, ahora verás un marcador de '(sin título)' en vez de una linea blanca, dándote un amable consejo para que nombres la página.
+
+Nunca has podido editar las páginas del archivo de entradas porque se generan automáticamente. En 17.6 tampoco podrás abrirlas en el editor, lo que te ahorrará un viaje inútil.
+
+También hemos estado trabajando en arreglar cosas:
+
+Nos ocupamos de algunos avisos que se habían superpuesto a la hoja de acciones, incluyendo uno que muestra los controles de los iconos del sitio, otro que muestra la eliminación del inicio rápido y un tercero que muestra más acciones en el editor.
+
+Por último, hemos resuelto un error que a veces hacía que la aplicación se bloqueara durante la moderación de comentarios y otro para corregir un error de acceso en los sitios de WordPress.org para mostrarlos online.
+
+¡Eso es todo para la 17.6. Nos vemos en la 17.7!

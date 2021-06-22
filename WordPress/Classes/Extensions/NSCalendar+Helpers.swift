@@ -9,4 +9,8 @@ extension Calendar {
         let components = dateComponents([.day], from: fromDate, to: toDate)
         return components.day!
     }
+
+    public func localizedDayIndex(_ index: Int) -> Int {
+        return (index + firstWeekday - 1) % weekdaySymbols.count
+    }
 }

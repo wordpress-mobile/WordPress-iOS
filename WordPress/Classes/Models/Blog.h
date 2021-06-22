@@ -82,6 +82,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureStories,
     /// Does the blog support Jetpack contact info block?
     BlogFeatureContactInfo,
+    /// Does the blog support the Layout grid block?
+    BlogFeatureLayoutGrid,
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
