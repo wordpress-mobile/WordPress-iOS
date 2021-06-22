@@ -362,6 +362,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         gutenbergSettings.hasLaunchedGutenbergEditor = true
     }
 
