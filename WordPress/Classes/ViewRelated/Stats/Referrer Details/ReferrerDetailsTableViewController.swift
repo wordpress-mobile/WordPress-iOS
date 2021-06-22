@@ -57,6 +57,7 @@ extension ReferrerDetailsTableViewController: ReferrerDetailsViewModelDelegate {
     }
 
     func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
+        setLoadingState(true)
         periodStore.toggleSpamState(for: referrerDomain, currentValue: currentValue)
     }
 }
@@ -64,6 +65,7 @@ extension ReferrerDetailsTableViewController: ReferrerDetailsViewModelDelegate {
 // MARK: - StatsPeriodStoreDelegate
 extension ReferrerDetailsTableViewController: StatsPeriodStoreDelegate {
     func didChangeSpamState(for referrerDomain: String, isSpam: Bool) {
+        setLoadingState(false)
         data.isReferrerSpam = isSpam
         updateViewModel()
 
@@ -74,6 +76,8 @@ extension ReferrerDetailsTableViewController: StatsPeriodStoreDelegate {
     }
 
     func changingSpamStateForReferrerDomainFailed(oldValue: Bool) {
+        setLoadingState(false)
+
         let markText = NSLocalizedString("Couldn't mark as spam", comment: "Indicating that referrer couldn't be marked as spam")
         let unmarkText = NSLocalizedString("Couldn't unmark as spam", comment: "Indicating that referrer couldn't be unmarked as spam")
         let text = oldValue ? unmarkText : markText
@@ -96,6 +100,11 @@ private extension ReferrerDetailsTableViewController {
 
     func updateViewModel() {
         viewModel.update(with: data)
+        buildViewModel()
+    }
+
+    func setLoadingState(_ value: Bool) {
+        viewModel.setLoadingState(value)
         buildViewModel()
     }
 }
