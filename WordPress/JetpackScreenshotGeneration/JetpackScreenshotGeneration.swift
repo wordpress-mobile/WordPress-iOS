@@ -2,7 +2,7 @@ import UIKit
 import XCTest
 
 class JetpackScreenshotGeneration: XCTestCase {
-    let imagesWaitTime: UInt32 = 10
+    let scanWaitTime: UInt32 = 5
 
     override func setUp() {
         super.setUp()
@@ -50,6 +50,10 @@ class JetpackScreenshotGeneration: XCTestCase {
         // Get Scan screenshot
         let jetpackScan = mySite
             .gotoJetpackScan()
+
+        sleep(scanWaitTime)
+
+        jetpackScan
             .thenTakeScreenshot(3, named: "JetpackScan")
 
         if !isIpad {
