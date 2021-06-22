@@ -1,9 +1,0 @@
-O que há de novo nessa atualização?
-
-Acesse uma lista dos sites em que sua conta foi adicionada puxando a tela de Novos Sites para baixo para atualizá-la.
-
-Em sites com mais de um autor, agora é possível trocar o autor de qualquer post ou página.
-
-Agora você pode autenticar solicitações de acesso enquanto estiver usando o aplicativo.
-
-Por fim, corrigimos um erro na introdução Início Rápido. Ao seguir um site no leitor, a lista Início Rápido agora atualizará seu progresso ao invés de permanecer desmarcada.

@@ -1,1 +1,1 @@
-social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal
+소셜,노트,젯팩,쓰기,위치 태그,미디어,블로그,웹사이트,블로깅,저널

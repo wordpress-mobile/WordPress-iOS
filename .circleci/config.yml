@@ -21,15 +21,15 @@ parameters:
     default: false
 
 xcode_version: &xcode_version
-  xcode-version: "12.1.0"
+  xcode-version: "12.5.0"
 
 iphone_test_device: &iphone_test_device
   device: iPhone 11
-  ios-version: "14.1"
+  ios-version: "14.4"
 
 ipad_test_device: &ipad_test_device
   device: iPad Air (4th generation)
-  ios-version: "14.1"
+  ios-version: "14.4"
 
 commands:
   fix-image:
@@ -217,6 +217,7 @@ jobs:
                 name: Build
                 command: |
                   bundle exec fastlane build_and_upload_beta_release skip_confirm:true create_gh_release:true
+                  bundle exec fastlane build_and_upload_jetpack_for_app_store
                 no_output_timeout: 60m
       - when:
           condition: << pipeline.parameters.release_build >>
@@ -225,6 +226,7 @@ jobs:
                 name: Build
                 command: |
                   bundle exec fastlane build_and_upload_stable_release skip_confirm:true create_gh_release:true
+                  bundle exec fastlane build_and_upload_jetpack_for_app_store
                 no_output_timeout: 60m
       - slack/status:
           include_job_number_field: false

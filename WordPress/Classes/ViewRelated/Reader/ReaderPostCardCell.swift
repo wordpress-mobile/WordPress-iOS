@@ -926,7 +926,7 @@ private extension ReaderPostCardCell {
     }
 
     func datePublished() -> String {
-        return contentProvider?.dateForDisplay()?.mediumString() ?? ""
+        return contentProvider?.dateForDisplay()?.toMediumString() ?? ""
     }
 }
 

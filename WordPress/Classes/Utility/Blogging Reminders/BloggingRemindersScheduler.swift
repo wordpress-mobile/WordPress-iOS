@@ -1,5 +1,20 @@
 import Foundation
 
+protocol NotificationScheduler {
+    func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?)
+    func removePendingNotificationRequests(withIdentifiers identifiers: [String])
+}
+
+extension UNUserNotificationCenter: NotificationScheduler {
+}
+
+protocol PushNotificationAuthorizer {
+    func requestAuthorization(completion: @escaping (_ allowed: Bool) -> Void)
+}
+
+extension InteractiveNotificationsManager: PushNotificationAuthorizer {
+}
+
 /// Main interface for scheduling blogging reminders
 ///
 class BloggingRemindersScheduler {
@@ -14,11 +29,13 @@ class BloggingRemindersScheduler {
 
     enum Error: Swift.Error {
         case cantRetrieveContainerForAppGroup(appGroupName: String)
+        case needsPermissionForPushNotifications
+        case noPreviousScheduleAttempt
     }
 
     // MARK: - Schedule Data Containers
 
-    enum Schedule {
+    enum Schedule: Equatable {
         /// No reminder schedule.
         ///
         case none
@@ -26,10 +43,24 @@ class BloggingRemindersScheduler {
         /// Weekdays reminders
         ///
         case weekdays(_ days: [Weekday])
+
+        static func == (lhs: Self, rhs: Self) -> Bool {
+            switch (lhs, rhs) {
+            case (.none, .none):
+                return true
+            case (.weekdays(let leftArray), .weekdays(let rightArray)):
+                return leftArray.count == rightArray.count && leftArray.sorted() == rightArray.sorted()
+            default:
+                return false
+            }
+        }
     }
 
-    enum Weekday: Int, Codable {
-        case sunday = 1 // Keep this at 1 to match Apple's `DateComponents`' weekday number.
+    /// The raw values have been selected for convenience, so that they perfectly match Apple's
+    /// index for weekday symbol methods, such as `Calendar.weekdaySymbols`.
+    ///
+    enum Weekday: Int, Codable, Comparable {
+        case sunday = 0
         case monday
         case tuesday
         case wednesday
@@ -40,30 +71,30 @@ class BloggingRemindersScheduler {
         /// The default reminder hour.  In the future we may want to replace this constant with a more customizable approach.
         ///
         static let defaultHour = 10
+
+        static func < (lhs: BloggingRemindersScheduler.Weekday, rhs: BloggingRemindersScheduler.Weekday) -> Bool {
+            lhs.rawValue < rhs.rawValue
+        }
     }
 
     // MARK: - Scheduler State
-
-    /// The identifier for the blog this scheduler is working on.
-    ///
-    let blogIdentifier: URL
 
     /// The store for persisting our schedule.
     ///
     private let store: BloggingRemindersStore
 
-    /// The notification center
+    /// The notification scheduler
     ///
-    private let notificationCenter: UNUserNotificationCenter
+    private let notificationScheduler: NotificationScheduler
 
-    private var scheduledReminders: ScheduledReminders {
-        store.scheduledReminders(for: blogIdentifier)
-    }
+    /// Push notifications authorizer
+    ///
+    private let pushNotificationAuthorizer: PushNotificationAuthorizer
 
     /// Active schedule.
     ///
-    func schedule() -> Schedule {
-        switch scheduledReminders {
+    func schedule(for blog: Blog) -> Schedule {
+        switch scheduledReminders(for: blog) {
         case .none:
             return .none
         case .weekdays(let days):
@@ -93,18 +124,34 @@ class BloggingRemindersScheduler {
     /// Default initializer.  Allows overriding the blogging reminders store and the notification center for testing purposes.
     ///
     ///  - Parameters:
-    ///     - blogIdentifier, the blog identifier.  This is necessary since we support blogging reminders for multiple blogs.
     ///     - store: The `BloggingRemindersStore` to use for persisting the reminders schedule.
-    ///     - notificationCenter: The `UNUserNotificationCenter` to use for the notification requests.
+    ///     - notificationCenter: The `NotificationScheduler` to use for the notification requests.
+    ///     - pushNotificationAuthorizer: The `PushNotificationAuthorizer` to use for push notification authorization.
     ///
     init(
-        blogIdentifier: BlogIdentifier,
-        store: BloggingRemindersStore? = nil,
-        notificationCenter: UNUserNotificationCenter = .current()) throws {
+        store: BloggingRemindersStore,
+        notificationCenter: NotificationScheduler = UNUserNotificationCenter.current(),
+        pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared) {
 
-        self.blogIdentifier = blogIdentifier
-        self.store = try (store ?? Self.defaultStore())
-        self.notificationCenter = notificationCenter
+        self.store = store
+        self.notificationScheduler = notificationCenter
+        self.pushNotificationAuthorizer = pushNotificationAuthorizer
+    }
+
+    /// Default initializer.  Allows overriding the blogging reminders store and the notification center for testing purposes.
+    ///
+    ///  - Parameters:
+    ///     - blogIdentifier, the blog identifier.  This is necessary since we support blogging reminders for multiple blogs.
+    ///     - notificationCenter: The `NotificationScheduler` to use for the notification requests.
+    ///     - pushNotificationAuthorizer: The `PushNotificationAuthorizer` to use for push notification authorization.
+    ///
+    init(
+        notificationCenter: NotificationScheduler = UNUserNotificationCenter.current(),
+        pushNotificationAuthorizer: PushNotificationAuthorizer = InteractiveNotificationsManager.shared) throws {
+
+        self.store = try Self.defaultStore()
+        self.notificationScheduler = notificationCenter
+        self.pushNotificationAuthorizer = pushNotificationAuthorizer
     }
 
     // MARK: - Scheduling
@@ -115,8 +162,25 @@ class BloggingRemindersScheduler {
     /// - Parameters:
     ///     - schedule: the blogging reminders schedule.
     ///
-    func schedule(_ schedule: Schedule) throws {
-        unschedule(scheduledReminders)
+    func schedule(_ schedule: Schedule, for blog: Blog, completion: @escaping (Result<Void, Swift.Error>) -> ()) {
+        pushNotificationAuthorizer.requestAuthorization { [weak self] allowed in
+            guard let self = self else {
+                return
+            }
+
+            guard allowed else {
+                completion(.failure(Error.needsPermissionForPushNotifications))
+                return
+            }
+
+            self.pushAuthorizationReceived(blog: blog, schedule: schedule, completion: completion)
+        }
+    }
+
+    /// You should not be calling this method directly.  Instead, make sure to use `schedule(_:completion:)`.
+    ///
+    private func pushAuthorizationReceived(blog: Blog, schedule: Schedule, completion: (Result<Void, Swift.Error>) -> ()) {
+        unschedule(scheduledReminders(for: blog))
 
         let scheduledReminders: BloggingRemindersStore.ScheduledReminders
 
@@ -127,7 +191,14 @@ class BloggingRemindersScheduler {
             scheduledReminders = .weekdays(scheduled(days))
         }
 
-        try store.save(scheduledReminders: scheduledReminders, for: blogIdentifier)
+        do {
+            try store.save(scheduledReminders: scheduledReminders, for: blog.objectID.uriRepresentation())
+        } catch {
+            completion(.failure(error))
+            return
+        }
+
+        completion(.success(()))
     }
 
     /// Schedules a notifications for the passed days, and returns another array with the days and their
@@ -162,9 +233,11 @@ class BloggingRemindersScheduler {
         content.body = "It's time to post!"
 
         var dateComponents = DateComponents()
-        dateComponents.calendar = Calendar.current
+        let calendar = Calendar.current
+        dateComponents.calendar = calendar
 
-        dateComponents.weekday = weekday.rawValue
+        // `DateComponent`'s weekday uses a 1-based index.
+        dateComponents.weekday = weekday.rawValue + 1
         dateComponents.hour = Weekday.defaultHour
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
@@ -172,7 +245,7 @@ class BloggingRemindersScheduler {
         let uuidString = UUID().uuidString
         let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
 
-        notificationCenter.add(request) { (error) in
+        notificationScheduler.add(request) { (error) in
             if let error = error {
                 DDLogError(error.localizedDescription)
             }
@@ -182,6 +255,16 @@ class BloggingRemindersScheduler {
     }
 
     // MARK: - Unscheduling
+
+    func unschedule(for blogs: [Blog]) {
+        for blog in blogs {
+            unschedule(for: blog)
+        }
+    }
+
+    func unschedule(for blog: Blog) {
+        unschedule(scheduledReminders(for: blog))
+    }
 
     /// Unschedules all notifications for the passed schedule.
     ///
@@ -199,6 +282,12 @@ class BloggingRemindersScheduler {
     private func unschedule(_ days: [ScheduledWeekday]) {
         let notificationIDs = days.map { $0.notificationID }
 
-        notificationCenter.removePendingNotificationRequests(withIdentifiers: notificationIDs)
+        notificationScheduler.removePendingNotificationRequests(withIdentifiers: notificationIDs)
+    }
+
+    // MARK: - Scheduled Reminders
+
+    private func scheduledReminders(for blog: Blog) -> ScheduledReminders {
+        store.scheduledReminders(for: blog.objectID.uriRepresentation())
     }
 }

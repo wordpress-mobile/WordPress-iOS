@@ -168,3 +168,229 @@ extension SiteSettingsViewController {
     fileprivate var ampSupportURL: String { return "https://support.wordpress.com/amp-accelerated-mobile-pages/" }
 
 }
+
+// MARK: - General Settings Table Section Management
+
+extension SiteSettingsViewController {
+
+    enum GeneralSettingsRow {
+        case title
+        case tagline
+        case url
+        case privacy
+        case language
+        case timezone
+        case bloggingReminders
+    }
+
+    var generalSettingsRows: [GeneralSettingsRow] {
+        var rows: [GeneralSettingsRow] = [.title, .tagline, .url]
+
+        if blog.supportsSiteManagementServices() {
+            rows.append(contentsOf: [.privacy, .language])
+        }
+
+        if blog.supports(.wpComRESTAPI) {
+            rows.append(.timezone)
+        }
+
+        if Feature.enabled(.bloggingReminders) {
+            rows.append(.bloggingReminders)
+        }
+
+        return rows
+    }
+
+    @objc
+    var generalSettingsRowCount: Int {
+        generalSettingsRows.count
+    }
+
+    @objc
+    func tableView(_ tableView: UITableView, cellForGeneralSettingsInRow row: Int) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCellReuseIdentifier) as! SettingTableViewCell
+
+        switch generalSettingsRows[row] {
+        case .title:
+            configureCellForTitle(cell)
+        case .tagline:
+            configureCellForTagline(cell)
+        case .url:
+            configureCellForURL(cell)
+        case .privacy:
+            configureCellForPrivacy(cell)
+        case .language:
+            configureCellForLanguage(cell)
+        case .timezone:
+            configureCellForTimezone(cell)
+        case .bloggingReminders:
+            configureCellForBloggingReminders(cell)
+        }
+
+        return cell
+    }
+
+    @objc
+    func tableView(_ tableView: UITableView, didSelectInGeneralSettingsAt indexPath: IndexPath) {
+        guard blog.isAdmin else {
+            // For context about these lines of code, this was the result of a migration from ObjC to Swift.
+            // It's not entirely clear to me why we are showing these options to a non admin, and then bailing
+            // out when the user selects these options.  I'm pretty sure we need to review this, but it's beyond
+            // the scope of my current work, and I don't want to go down the rabbit hole.  For these reasons I'm
+            // maintaining the original logic in my migration.
+            //
+            // - diegoreymendez
+            return
+        }
+
+        switch generalSettingsRows[indexPath.row] {
+        case .title:
+            showEditSiteTitleController(indexPath: indexPath)
+        case .tagline:
+            showEditSiteTaglineController(indexPath: indexPath)
+        case .privacy:
+            showPrivacySelector()
+        case .language:
+            showLanguageSelector(for: blog)
+        case .timezone:
+            showTimezoneSelector()
+        case .bloggingReminders:
+            presentBloggingRemindersFlow(indexPath: indexPath)
+        default:
+            break
+        }
+    }
+
+    // MARK: - Cell Configuration
+
+    private func configureCellForTitle(_ cell: SettingTableViewCell) {
+        let name = blog.settings?.name ?? NSLocalizedString("A title for the site", comment: "Placeholder text for the title of a site")
+
+        cell.editable = blog.isAdmin
+        cell.textLabel?.text = NSLocalizedString("Site Title", comment: "Label for site title blog setting")
+        cell.textValue = name
+    }
+
+    private func configureCellForTagline(_ cell: SettingTableViewCell) {
+        let tagline = blog.settings?.tagline ?? NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site")
+
+        cell.editable = blog.isAdmin
+        cell.textLabel?.text = NSLocalizedString("Tagline", comment: "Label for tagline blog setting")
+        cell.textValue = tagline
+    }
+
+    private func configureCellForURL(_ cell: SettingTableViewCell) {
+        let url: String = {
+            guard let url = blog.url else {
+                return NSLocalizedString("http://my-site-address (URL)", comment: "(placeholder) Help the user enter a URL into the field")
+            }
+
+            return url
+        }()
+
+        cell.editable = false
+        cell.textLabel?.text = NSLocalizedString("Address", comment: "Label for url blog setting")
+        cell.textValue = url
+    }
+
+    private func configureCellForPrivacy(_ cell: SettingTableViewCell) {
+        cell.editable = blog.isAdmin
+        cell.textLabel?.text = NSLocalizedString("Privacy", comment: "Label for the privacy setting")
+        cell.textValue = BlogSiteVisibilityHelper.titleForCurrentSiteVisibility(of: blog)
+    }
+
+    private func configureCellForLanguage(_ cell: SettingTableViewCell) {
+        let name: String
+
+        if let languageId = blog.settings?.languageID.intValue {
+            name = WordPressComLanguageDatabase().nameForLanguageWithId(languageId)
+        } else {
+            // Since the settings can be nil, we need to handle the scenario... but it
+            // really should not be possible to reach this line.
+            name = NSLocalizedString("Undefined", comment: "When the App can't figure out what language a blog is configured to use.")
+        }
+
+        cell.editable = blog.isAdmin
+        cell.textLabel?.text = NSLocalizedString("Language", comment: "Label for the privacy setting")
+        cell.textValue = name
+    }
+
+    private func configureCellForTimezone(_ cell: SettingTableViewCell) {
+        cell.editable = blog.isAdmin
+        cell.textLabel?.text = NSLocalizedString("Time Zone", comment: "Label for the timezone setting")
+        cell.textValue = timezoneLabel()
+    }
+
+    private func configureCellForBloggingReminders(_ cell: SettingTableViewCell) {
+        cell.editable = true
+        cell.textLabel?.text = NSLocalizedString("Blogging Goals", comment: "Label for the blogging goals setting")
+        cell.textValue = "Undefined"
+    }
+
+    // MARK: - Handling General Setting Cell Taps
+
+    private func showEditSiteTitleController(indexPath: IndexPath) {
+        guard blog.isAdmin else {
+            return
+        }
+
+        let siteTitleViewController = SettingsTextViewController(
+            text: blog.settings?.name ?? "",
+            placeholder: NSLocalizedString("A title for the site", comment: "Placeholder text for the title of a site"),
+            hint: "")
+
+        siteTitleViewController.title = NSLocalizedString("Site Title", comment: "Title for screen that show site title editor")
+        siteTitleViewController.onValueChanged = { [weak self] value in
+            guard let self = self,
+                  let cell = self.tableView.cellForRow(at: indexPath) else {
+                // No need to update anything if the cell doesn't exist.
+                return
+            }
+
+            cell.detailTextLabel?.text = value
+
+            if value != self.blog.settings?.name {
+                self.blog.settings?.name = value
+                self.saveSettings()
+            }
+        }
+
+        self.navigationController?.pushViewController(siteTitleViewController, animated: true)
+    }
+
+    private func showEditSiteTaglineController(indexPath: IndexPath) {
+        guard blog.isAdmin else {
+            return
+        }
+
+        let siteTaglineViewController = SettingsTextViewController(
+            text: blog.settings?.tagline ?? "",
+            placeholder: NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site"),
+            hint: NSLocalizedString("In a few words, explain what this site is about.", comment: "Explain what is the purpose of the tagline"))
+
+        siteTaglineViewController.title = NSLocalizedString("Tagline", comment: "Title for screen that show tagline editor")
+        siteTaglineViewController.onValueChanged = { [weak self] value in
+            guard let self = self,
+                  let cell = self.tableView.cellForRow(at: indexPath) else {
+                // No need to update anything if the cell doesn't exist.
+                return
+            }
+
+            let normalizedTagline = value.trimmingCharacters(in: .whitespacesAndNewlines)
+            cell.detailTextLabel?.text = normalizedTagline
+
+            if normalizedTagline != self.blog.settings?.tagline {
+                self.blog.settings?.tagline = normalizedTagline
+                self.saveSettings()
+            }
+        }
+
+        self.navigationController?.pushViewController(siteTaglineViewController, animated: true)
+    }
+
+    private func presentBloggingRemindersFlow(indexPath: IndexPath) {
+        BloggingRemindersFlow.present(from: self, for: blog, source: .blogSettings)
+
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}

@@ -1001,7 +1001,7 @@ extension NotificationsViewController {
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         selectedNotification = nil
 
-        let properties = [Stats.selectedFilter: filter.title]
+        let properties = [Stats.selectedFilter: filter.analyticsTitle]
         WPAnalytics.track(.notificationsTappedSegmentedControl, withProperties: properties)
 
         updateUnreadNotificationsForFilterTabChange()
@@ -1638,6 +1638,16 @@ private extension NotificationsViewController {
             }
         }
 
+        var analyticsTitle: String {
+            switch self {
+            case .none:     return "All"
+            case .unread:   return "Unread"
+            case .comment:  return "Comments"
+            case .follow:   return "Follows"
+            case .like:     return "Likes"
+            }
+        }
+
         var noResultsTitle: String {
             switch self {
             case .none:     return NSLocalizedString("No notifications yet",
@@ -1731,7 +1741,7 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
     }
 
     private func notificationAlertApproveAction(_ controller: FancyAlertViewController) {
-        InteractiveNotificationsManager.shared.requestAuthorization {
+        InteractiveNotificationsManager.shared.requestAuthorization { _ in
             DispatchQueue.main.async {
                 controller.dismiss(animated: true)
             }
