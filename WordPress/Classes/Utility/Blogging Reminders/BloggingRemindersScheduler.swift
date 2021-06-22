@@ -161,6 +161,7 @@ class BloggingRemindersScheduler {
     ///
     func schedule(_ schedule: Schedule, for blog: Blog, completion: @escaping (Result<Void, Swift.Error>) -> ()) {
         guard schedule != .none else {
+            // If there's no schedule, then we don't need to request authorization
             pushAuthorizationReceived(blog: blog, schedule: schedule, completion: completion)
             return
         }
