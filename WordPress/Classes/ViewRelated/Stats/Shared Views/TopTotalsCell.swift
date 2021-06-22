@@ -27,6 +27,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     private var subtitlesProvided = true
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
+    private weak var siteStatsReferrerDelegate: SiteStatsReferrerDelegate?
     private weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
     private weak var postStatsDelegate: PostStatsDelegate?
     private typealias Style = WPStyleGuide.Stats
@@ -38,6 +39,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
                    dataRows: [StatsTotalRowData],
                    siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
                    siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
+                   siteStatsReferrerDelegate: SiteStatsReferrerDelegate? = nil,
                    siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
                    postStatsDelegate: PostStatsDelegate? = nil,
                    limitRowsDisplayed: Bool = true,
@@ -48,6 +50,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
         self.dataRows = dataRows
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
+        self.siteStatsReferrerDelegate = siteStatsReferrerDelegate
         self.siteStatsDetailsDelegate = siteStatsDetailsDelegate
         self.postStatsDelegate = postStatsDelegate
         self.limitRowsDisplayed = limitRowsDisplayed
@@ -59,6 +62,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
                     forType: siteStatsPeriodDelegate != nil ? .period : .insights,
                     limitRowsDisplayed: limitRowsDisplayed,
                     rowDelegate: self,
+                    referrerDelegate: self,
                     viewMoreDelegate: self)
 
             initChildRows()
@@ -308,9 +312,13 @@ extension TopTotalsCell: StatsTotalRowDelegate {
     func showAddInsight() {
         siteStatsInsightsDelegate?.showAddInsight?()
     }
+}
 
-    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
-        siteStatsPeriodDelegate?.toggleSpamState(for: referrerDomain, currentValue: currentValue)
+// MARK: - StatsTotalRowReferrerDelegate
+
+extension TopTotalsCell: StatsTotalRowReferrerDelegate {
+    func showReferrerDetails(_ data: StatsTotalRowData) {
+        siteStatsReferrerDelegate?.showReferrerDetails(data)
     }
 }
 

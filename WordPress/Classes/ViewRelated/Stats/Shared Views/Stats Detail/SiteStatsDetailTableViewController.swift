@@ -7,7 +7,6 @@ import WordPressFlux
     @objc optional func toggleChildRowsForRow(_ row: StatsTotalRow)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
-    @objc func toggleSpamState(for referrerDomain: String, currentValue: Bool)
 }
 
 class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoadable {
@@ -146,7 +145,9 @@ extension SiteStatsDetailTableViewController: StatsForegroundObservable {
 private extension SiteStatsDetailTableViewController {
 
     func initViewModel() {
-        viewModel = SiteStatsDetailsViewModel(detailsDelegate: self, storeDelegate: self)
+        viewModel = SiteStatsDetailsViewModel(detailsDelegate: self,
+                                              referrerDelegate: self,
+                                              storeDelegate: self)
 
         guard let statSection = statSection else {
             return
@@ -314,11 +315,13 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
             DDLogInfo("Unable to get media when trying to show from Stats details: \(error.localizedDescription)")
         })
     }
+}
 
-    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
-        showSpamActionSheet(for: referrerDomain, isSpam: currentValue) { [weak self] in
-            self?.viewModel?.toggleSpamState(for: referrerDomain, currentValue: currentValue)
-        }
+// MARK: - SiteStatsReferrerDelegate
+
+extension SiteStatsDetailTableViewController: SiteStatsReferrerDelegate {
+    func showReferrerDetails(_ data: StatsTotalRowData) {
+        // TODO: implement
     }
 }
 
