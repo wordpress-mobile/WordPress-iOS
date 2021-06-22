@@ -21,15 +21,15 @@ parameters:
     default: false
 
 xcode_version: &xcode_version
-  xcode-version: "12.1.0"
+  xcode-version: "12.5.0"
 
 iphone_test_device: &iphone_test_device
   device: iPhone 11
-  ios-version: "14.1"
+  ios-version: "14.4"
 
 ipad_test_device: &ipad_test_device
   device: iPad Air (4th generation)
-  ios-version: "14.1"
+  ios-version: "14.4"
 
 commands:
   fix-image:

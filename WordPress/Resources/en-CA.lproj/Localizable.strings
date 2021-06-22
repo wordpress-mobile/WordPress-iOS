@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-05-20 23:33:22+0000 */
+/* Translation-Revision-Date: 2021-06-19 09:54:52+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: en_CA */
@@ -906,7 +906,7 @@
 "Back" = "Back";
 
 /* No comment provided by engineer. */
-"Background Color" = "Background Color";
+"Background Color" = "Background Colour";
 
 /* Title of the cell displaying status of a backup in progress */
 "Backing up site" = "Backing up site";
@@ -1289,7 +1289,7 @@
 "Choose Homepage" = "Choose Homepage";
 
 /* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Choose Image From My Device";
+"Choose Image From My Device" = "Choose image from my device";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Choose Pages";
@@ -1442,7 +1442,7 @@
 "Colorful backgrounds" = "Colourful backgrounds";
 
 /* No comment provided by engineer. */
-"Columns Settings" = "Columns Settings";
+"Columns Settings" = "Columns settings";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love.";
@@ -1819,7 +1819,7 @@
 "Create Story Post" = "Create Story Post";
 
 /* Button allowing the user to create a site icon by choosing an emoji character */
-"Create With Emoji" = "Create With Emoji";
+"Create With Emoji" = "Create with emoji";
 
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "Create WordPress.com site";
@@ -5351,7 +5351,7 @@
 "Remove Site Icon" = "Remove Site Icon";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image " = "Remove as Featured Image ";
+"Remove as Featured Image " = "Remove as featured image ";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Remove from insights";
@@ -5895,7 +5895,7 @@
 "Set Parent" = "Set Parent";
 
 /* No comment provided by engineer. */
-"Set as Featured Image " = "Set as Featured Image ";
+"Set as Featured Image " = "Set as featured image";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "Set as Homepage";
@@ -7421,7 +7421,7 @@
 "Update Profile Photo" = "Update Profile Photo";
 
 /* Title for sheet displayed allowing user to update their site icon */
-"Update Site Icon" = "Update Site Icon";
+"Update Site Icon" = "Update site icon";
 
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "Updates the bar chart to show comments.";
@@ -8055,7 +8055,7 @@
 "Widgets" = "Widgets";
 
 /* No comment provided by engineer. */
-"Width Settings" = "Width Settings";
+"Width Settings" = "Width settings";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Will not be publicly displayed.";
@@ -8169,10 +8169,10 @@
 "Writing" = "Writing";
 
 /* No comment provided by engineer. */
-"X-Axis Position" = "X-Axis Position";
+"X-Axis Position" = "X-axis position";
 
 /* No comment provided by engineer. */
-"Y-Axis Position" = "Y-Axis Position";
+"Y-Axis Position" = "Y-axis position";
 
 /* Option to select the Yahoo Mail app when logging in with magic links */
 "Yahoo Mail" = "Yahoo Mail";

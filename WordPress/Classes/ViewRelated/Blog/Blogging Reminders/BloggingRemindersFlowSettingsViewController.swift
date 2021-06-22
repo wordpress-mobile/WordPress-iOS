@@ -138,13 +138,15 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     // MARK: - Initializers
 
-    let tracker: BloggingRemindersTracker
+    private let blog: Blog
+    private let tracker: BloggingRemindersTracker
 
     init(
         for blog: Blog,
         tracker: BloggingRemindersTracker,
         calendar: Calendar? = nil) throws {
 
+        self.blog = blog
         self.tracker = tracker
         self.calendar = calendar ?? {
             var calendar = Calendar.current
@@ -153,9 +155,9 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             return calendar
         }()
 
-        scheduler = try BloggingRemindersScheduler(blogIdentifier: blog.objectID.uriRepresentation())
+        scheduler = try BloggingRemindersScheduler()
 
-        switch self.scheduler.schedule() {
+        switch self.scheduler.schedule(for: blog) {
         case .none:
             weekdays = []
         case .weekdays(let scheduledWeekdays):
@@ -329,7 +331,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     ///         can also be called when the refrenced VC is already on-screen.
     ///
     private func scheduleReminders(showPushPrompt: Bool = true) {
-        scheduler.schedule(.weekdays(weekdays)) { [weak self] result in
+        scheduler.schedule(.weekdays(weekdays), for: blog) { [weak self] result in
             switch result {
             case .success:
                 DispatchQueue.main.async { [weak self] in
