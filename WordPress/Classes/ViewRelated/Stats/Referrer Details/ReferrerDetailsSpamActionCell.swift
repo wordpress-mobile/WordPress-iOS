@@ -3,6 +3,7 @@ import UIKit
 final class ReferrerDetailsSpamActionCell: UITableViewCell {
     private let actionLabel = UILabel()
     private let separatorView = UIView()
+    private typealias Constants = ReferrerDetailsTableViewController.Constants
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -40,8 +41,8 @@ private extension ReferrerDetailsSpamActionCell {
         actionLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(actionLabel)
         NSLayoutConstraint.activate([
-            actionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            actionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            actionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.standardCellSpacing),
+            actionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.standardCellSpacing),
             actionLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }

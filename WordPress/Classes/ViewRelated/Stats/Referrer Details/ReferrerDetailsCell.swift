@@ -4,6 +4,7 @@ final class ReferrerDetailsCell: UITableViewCell {
     private let referrerLabel = UILabel()
     private let viewsLabel = UILabel()
     private let separatorView = UIView()
+    private typealias Constants = ReferrerDetailsTableViewController.Constants
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -37,7 +38,7 @@ private extension ReferrerDetailsCell {
         referrerLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(referrerLabel)
         NSLayoutConstraint.activate([
-            referrerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            referrerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.standardCellSpacing),
             referrerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
@@ -47,8 +48,8 @@ private extension ReferrerDetailsCell {
         viewsLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(viewsLabel)
         NSLayoutConstraint.activate([
-            viewsLabel.leadingAnchor.constraint(greaterThanOrEqualTo: referrerLabel.trailingAnchor, constant: 16),
-            viewsLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            viewsLabel.leadingAnchor.constraint(greaterThanOrEqualTo: referrerLabel.trailingAnchor, constant: Constants.standardCellSpacing),
+            viewsLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.standardCellSpacing),
             viewsLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }

@@ -3,6 +3,7 @@ import UIKit
 final class ReferrerDetailsHeaderCell: UITableViewCell {
     private let referrerLabel = UILabel()
     private let viewsLabel = UILabel()
+    private typealias Constants = ReferrerDetailsTableViewController.Constants
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -36,7 +37,7 @@ private extension ReferrerDetailsHeaderCell {
         referrerLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(referrerLabel)
         NSLayoutConstraint.activate([
-            referrerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            referrerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.standardCellSpacing),
             referrerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
@@ -46,7 +47,7 @@ private extension ReferrerDetailsHeaderCell {
         viewsLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(viewsLabel)
         NSLayoutConstraint.activate([
-            viewsLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            viewsLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.standardCellSpacing),
             viewsLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
