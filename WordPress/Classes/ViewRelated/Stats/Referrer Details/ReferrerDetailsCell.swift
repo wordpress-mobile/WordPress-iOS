@@ -40,7 +40,7 @@ private extension ReferrerDetailsCell {
         referrerLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(referrerLabel)
         NSLayoutConstraint.activate([
-            referrerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
+            referrerLabel.leadingAnchor.constraint(equalTo: safeLeadingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
             referrerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
@@ -51,7 +51,7 @@ private extension ReferrerDetailsCell {
         addSubview(viewsLabel)
         NSLayoutConstraint.activate([
             viewsLabel.leadingAnchor.constraint(greaterThanOrEqualTo: referrerLabel.trailingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
-            viewsLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Style.ReferrerDetails.standardCellSpacing),
+            viewsLabel.trailingAnchor.constraint(equalTo: safeTrailingAnchor, constant: -Style.ReferrerDetails.standardCellSpacing),
             viewsLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
