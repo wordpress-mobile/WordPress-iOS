@@ -22,6 +22,20 @@ extension ReferrerDetailsCell {
         referrerLabel.text = data.name
         viewsLabel.text = data.views
         separatorView.isHidden = !isLast
+        prepareForVoiceOver()
+    }
+}
+
+// MARK: - Accessible
+extension ReferrerDetailsCell: Accessible {
+    func prepareForVoiceOver() {
+        isAccessibilityElement = true
+        if let referrer = referrerLabel.text,
+           let views = viewsLabel.text {
+            accessibilityLabel = "\(referrer), \(views)"
+        }
+        accessibilityTraits = [.staticText, .button]
+        accessibilityHint = NSLocalizedString("Tap to display referrer web page.", comment: "Accessibility hint for referrer details row.")
     }
 }
 
