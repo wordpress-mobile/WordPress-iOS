@@ -31,9 +31,6 @@ open class SiteManagementService: LocalCoreDataService {
                     let blogService = BlogService(managedObjectContext: self.managedObjectContext)
                     blogService.remove(blog)
 
-                    let scheduler = try? BloggingRemindersScheduler()
-                    scheduler?.unschedule(for: blog)
-
                     ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
                         success?()
                     })
