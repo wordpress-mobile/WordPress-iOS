@@ -39,7 +39,7 @@ def aztec
 end
 
 def wordpress_ui
-    pod 'WordPressUI', '~> 1.12.0'
+    pod 'WordPressUI', '~> 1.12.1-beta'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => ''
@@ -47,9 +47,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.35.0-beta.1'
+    pod 'WordPressKit', '~> 4.36.0-beta'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'fix/response-code-for-org-failed-login'
+    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -100,7 +100,6 @@ end
 
 def gutenberg_dependencies(options)
     dependencies = [
-        'FBReactNativeSpec',
         'FBLazyVector',
         'React',
         'ReactCommon',
@@ -117,12 +116,15 @@ def gutenberg_dependencies(options)
         'React-RCTSettings',
         'React-RCTText',
         'React-RCTVibration',
+        'React-callinvoker',
         'React-cxxreact',
         'React-jsinspector',
         'React-jsi',
         'React-jsiexecutor',
+        'React-perflogger',
+        'React-runtimeexecutor',
         'Yoga',
-        'Folly',
+        'RCT-Folly',
         'glog',
         'react-native-keyboard-aware-scroll-view',
         'react-native-safe-area',
@@ -131,7 +133,7 @@ def gutenberg_dependencies(options)
         'RNSVG',
         'ReactNativeDarkMode',
         'react-native-slider',
-        'react-native-linear-gradient',
+        'BVLinearGradient',
         'react-native-get-random-values',
         'react-native-blur',
         'RNScreens',
@@ -145,6 +147,9 @@ def gutenberg_dependencies(options)
         tag_or_commit = options[:tag] || options[:commit]
         podspec_prefix = "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}"
     end
+
+    # FBReactNativeSpec needs special treatment because of react-native-codegen code generation
+    pod 'FBReactNativeSpec', :podspec => "#{podspec_prefix}/third-party-podspecs/FBReactNativeSpec/FBReactNativeSpec.podspec.json"
 
     for pod_name in dependencies do
         pod pod_name, :podspec => "#{podspec_prefix}/third-party-podspecs/#{pod_name}.podspec.json"
@@ -161,7 +166,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'beb2691e4cbaab080591e8c55e2e92dab64f2ab1'
+    gutenberg :commit => '3ec0b6e777fcc02b604d9aa56a88650f4228c502'
 
     ## Third party libraries
     ## =====================
@@ -173,7 +178,7 @@ abstract_target 'Apps' do
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
-    pod 'ZendeskSupportSDK', '5.2.0'
+    pod 'ZendeskSupportSDK', '5.3.0'
     pod 'AlamofireImage', '3.5.2'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
@@ -206,7 +211,7 @@ abstract_target 'Apps' do
 
     pod 'Gridicons', '~> 1.1.0'
 
-     pod 'WordPressAuthenticator', '~> 1.37.0'
+    pod 'WordPressAuthenticator', '~> 1.38.0'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
@@ -357,9 +362,9 @@ end
 ## ===================
 ##
 def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.12'
+  pod 'WordPressMocks', '~> 0.0.13'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
-  # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :branch => ''
+  # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :branch => 'task/jetpack-screenshots-dynamic-dates'
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end
 
@@ -415,19 +420,6 @@ end
 
 post_install do |installer|
     project_root = File.dirname(__FILE__)
-
-    puts 'Patching RTCxxBridge and RTCTurboModuleManager for Xcode 12.5'
-    %x(patch "#{project_root}/Pods/React-Core/React/CxxBridge/RCTCxxBridge.mm" < "#{project_root}/patches/RCTCxxBridge.patch")
-    %x(patch "#{project_root}/Pods/ReactCommon/turbomodule/core/platform/ios/RCTTurboModuleManager.mm" < "#{project_root}/patches/RCTTurboModuleManager.patch")
-
-    puts 'Patching RCTShadowView to fix nested group block - it could be removed after upgrade to 0.62'
-    %x(patch "#{project_root}/Pods/React-Core/React/Views/RCTShadowView.m" < "#{project_root}/patches/RN-RCTShadowView.patch")
-    puts 'Patching RCTActionSheet to add possibility to disable action sheet buttons -
-    it could be removed once PR with that functionality will be merged into RN'
-    %x(patch "#{project_root}/Pods/React-RCTActionSheet/RCTActionSheetManager.m" < "#{project_root}/patches/RN-RCTActionSheetManager.patch")
-    puts 'Patching RCTUIImageViewAnimated to fix a problem where images will not load when built using the iOS 14 SDK (Xcode 12) -
-    it can be removed once we upgrade Gutenberg to use RN 0.63 or later'
-    %x(patch "#{project_root}/Pods/React-RCTImage/RCTUIImageViewAnimated.m" < "#{project_root}/patches/RN-RCTUIImageViewAnimated.patch")
 
     ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
     require 'commonmarker'

@@ -12,12 +12,14 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case unifiedPrologueCarousel
     case stories
     case contactInfo
+    case layoutGrid
     case siteCreationHomePagePicker
     case todayWidget
     case milestoneNotifications
     case newLikeNotifications
     case bloggingReminders
     case readerPostLikes
+    case siteIconCreator
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -46,6 +48,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .contactInfo:
             return true
+        case .layoutGrid:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .siteCreationHomePagePicker:
             return true
         case .todayWidget:
@@ -55,9 +59,11 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .newLikeNotifications:
             return true
         case .bloggingReminders:
-            return false
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .readerPostLikes:
             return true
+        case .siteIconCreator:
+            return BuildConfiguration.current != .appStore
         }
     }
 
@@ -104,6 +110,8 @@ extension FeatureFlag {
             return "Stories"
         case .contactInfo:
             return "Contact Info"
+        case .layoutGrid:
+            return "Layout Grid"
         case .siteCreationHomePagePicker:
             return "Site Creation: Home Page Picker"
         case .todayWidget:
@@ -116,6 +124,8 @@ extension FeatureFlag {
             return "Blogging Reminders"
         case .readerPostLikes:
             return "Reader Post Likes"
+        case .siteIconCreator:
+            return "Site Icon Creator"
         }
     }
 

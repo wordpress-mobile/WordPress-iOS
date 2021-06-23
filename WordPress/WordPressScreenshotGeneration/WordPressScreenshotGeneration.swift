@@ -1,4 +1,5 @@
 import UIKit
+import UITestsFoundation
 import XCTest
 
 class WordPressScreenshotGeneration: XCTestCase {

@@ -1,9 +1,17 @@
-Wat is er nieuw in deze update?
+Met 17.6 kun je het audioblok toevoegen aan elke WordPress.com site, ongeacht het abonnement dat je hebt - inclusief het gratis abonnement. Het audioblok maakt het gemakkelijk om podcasts, muziek en geluidsbestanden toe te voegen aan je berichten en pagina's.
 
-Blijf op de hoogte van sites waaraan je onlangs bent toegevoegd door omlaag te trekken om te vernieuwen op het scherm Nieuwe sites.
+In de Reader zie je nu een telling en samenvatting van Vind-ik-leuks toegevoegd aan elk bericht. Als dat niet genoeg Likes in je leven is, tik je op de samenvatting en kun je de volledige lijst zien.
 
-Op sites met meer dan één auteur kun je nu de auteur wijzigen die aan een bericht of pagina is toegewezen.
+We hebben ook hard gewerkt aan het maken van UX verbeteringen:
 
-Je kunt nu login aanvragen verifiëren terwijl je de app gebruikt.
+Wanneer je een hoofdpagina toewijst aan een pagina zonder titel, zie je nu een plaatshouder ‘(geen titel)’ in plaats van een lege regel, waardoor je een zacht duwtje krijgt om de pagina een naam te geven.
 
-Ten slotte hebben we een bug opgelost met de Quick Start tour. Wanneer je een site van de reader volgt, zal de Quick Start-checklist nu je voortgang updaten (in plaats van niet aangevinkt te blijven).
+Je hebt nooit bericht archiefpagina's kunnen bewerken omdat ze automatisch worden gegenereerd. In 17.6, zal je ook niet in staat zijn om ze te openen in de editor, het red je van een verspilde reis.
+
+We hebben ook gewerkt aan het oplossen van dingen:
+
+We hebben gezorgd voor enkele berichten die het Actieblad overlappen, waaronder een met besturingselementen voor site pictogrammen, een andere waarin de QuickStart verwijdering wordt weergegeven, en een derde die Meer acties in de editor weergeeft.
+
+Ten slotte hebben we een bug geplet, die er soms voor zorgde dat de app crashte tijdens het modereren van reacties, en een andere om een login fout op te lossen voor WordPress.org sites om inline te tonen.
+
+Dat is alles voor 17,6. Zie je in 17.7!
