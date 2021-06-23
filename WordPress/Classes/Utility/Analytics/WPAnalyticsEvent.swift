@@ -173,6 +173,9 @@ import Foundation
     // Likes list shown from Reader Post details
     case likeListOpened
 
+    // When Likes list is scrolled
+    case likeListFetchedMore
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -471,6 +474,10 @@ import Foundation
         // Likes list shown from Reader Post details
         case .likeListOpened:
             return "like_list_opened"
+
+        // When Likes list is scrolled
+        case .likeListFetchedMore:
+            return "like_list_fetched_more"
         }
     }
 
