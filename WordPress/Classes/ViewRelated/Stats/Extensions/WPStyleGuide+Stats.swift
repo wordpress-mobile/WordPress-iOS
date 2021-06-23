@@ -231,7 +231,6 @@ extension WPStyleGuide {
         static let negativeColor = UIColor.error
 
         static let gridiconSize = CGSize(width: 24, height: 24)
-        static let standardCellSpacing: CGFloat = 16
 
         struct PostingActivityColors {
             static let range1 = UIColor(light: .neutral(.shade5), dark: .neutral(.shade10))
@@ -265,6 +264,11 @@ extension WPStyleGuide {
             let numberOfColumns = max(1, trunc(width / minimumColumnWidth))
             let columnWidth = trunc(width / numberOfColumns)
             return columnWidth
+        }
+
+        // MARK: - Referrer Details
+        struct ReferrerDetails {
+            static let standardCellSpacing: CGFloat = 16
         }
     }
 

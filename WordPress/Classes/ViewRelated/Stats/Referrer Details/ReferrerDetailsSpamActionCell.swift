@@ -41,8 +41,8 @@ private extension ReferrerDetailsSpamActionCell {
         actionLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(actionLabel)
         NSLayoutConstraint.activate([
-            actionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Style.standardCellSpacing),
-            actionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Style.standardCellSpacing),
+            actionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
+            actionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Style.ReferrerDetails.standardCellSpacing),
             actionLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
