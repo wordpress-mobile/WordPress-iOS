@@ -28,6 +28,7 @@ private extension ReferrerDetailsHeaderCell {
     func setupViews() {
         isUserInteractionEnabled = false
         separatorInset = .zero
+        backgroundColor = .listForeground
         setupReferrerLabel()
         setupViewsLabel()
     }

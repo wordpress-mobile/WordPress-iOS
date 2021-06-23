@@ -29,6 +29,7 @@ extension ReferrerDetailsCell {
 private extension ReferrerDetailsCell {
     func setupViews() {
         selectionStyle = .none
+        backgroundColor = .listForeground
         setupReferrerLabel()
         setupViewsLabel()
         setupSeparatorView()

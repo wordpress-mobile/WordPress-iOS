@@ -37,6 +37,7 @@ private extension ReferrerDetailsSpamActionCell {
     func setupViews() {
         separatorInset = .zero
         selectionStyle = .none
+        backgroundColor = .listForeground
         setupActionLabel()
         setupLoader()
         setupSeparatorView()
