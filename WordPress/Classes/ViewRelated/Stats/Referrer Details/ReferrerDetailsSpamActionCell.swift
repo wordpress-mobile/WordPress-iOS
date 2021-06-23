@@ -5,6 +5,7 @@ final class ReferrerDetailsSpamActionCell: UITableViewCell {
     private let separatorView = UIView()
     private let loader = UIActivityIndicatorView(style: .medium)
     private typealias Style = WPStyleGuide.Stats
+    private var markAsSpam: Bool = false
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -29,6 +30,24 @@ extension ReferrerDetailsSpamActionCell {
             actionLabel.text = NSLocalizedString("Mark as not spam", comment: "Action title for unmarking referrer as spam")
             actionLabel.textColor = Style.positiveColor
         }
+
+        self.markAsSpam = markAsSpam
+        prepareForVoiceOver()
+    }
+}
+
+// MARK: - Accessible
+extension ReferrerDetailsSpamActionCell: Accessible {
+    func prepareForVoiceOver() {
+        isAccessibilityElement = true
+        if let text = actionLabel.text {
+            accessibilityLabel = text
+        }
+        accessibilityTraits = [.button]
+
+        let markHint = NSLocalizedString("Tap to mark referrer as spam.", comment: "Accessibility hint for referrer action row.")
+        let unmarkHint = NSLocalizedString("Tap to mark referrer as not spam.", comment: "Accessibility hint for referrer action row.")
+        accessibilityHint = markAsSpam ? markHint : unmarkHint
     }
 }
 
@@ -45,12 +64,14 @@ private extension ReferrerDetailsSpamActionCell {
 
     func setupActionLabel() {
         actionLabel.textAlignment = .center
+        actionLabel.font = WPStyleGuide.tableviewTextFont()
         actionLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(actionLabel)
         NSLayoutConstraint.activate([
             actionLabel.leadingAnchor.constraint(equalTo: safeLeadingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
             actionLabel.trailingAnchor.constraint(equalTo: safeTrailingAnchor, constant: -Style.ReferrerDetails.standardCellSpacing),
-            actionLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+            actionLabel.topAnchor.constraint(equalTo: topAnchor, constant: Style.ReferrerDetails.standardCellVerticalPadding),
+            actionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Style.ReferrerDetails.standardCellVerticalPadding)
         ])
     }
 

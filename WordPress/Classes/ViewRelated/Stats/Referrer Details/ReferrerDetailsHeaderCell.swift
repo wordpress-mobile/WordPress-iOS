@@ -39,7 +39,8 @@ private extension ReferrerDetailsHeaderCell {
         addSubview(referrerLabel)
         NSLayoutConstraint.activate([
             referrerLabel.leadingAnchor.constraint(equalTo: safeLeadingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
-            referrerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+            referrerLabel.topAnchor.constraint(equalTo: topAnchor, constant: Style.ReferrerDetails.headerCellVerticalPadding),
+            referrerLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Style.ReferrerDetails.headerCellVerticalPadding)
         ])
     }
 

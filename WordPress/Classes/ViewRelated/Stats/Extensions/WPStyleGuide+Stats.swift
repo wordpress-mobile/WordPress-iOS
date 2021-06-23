@@ -269,6 +269,8 @@ extension WPStyleGuide {
         // MARK: - Referrer Details
         struct ReferrerDetails {
             static let standardCellSpacing: CGFloat = 16
+            static let headerCellVerticalPadding: CGFloat = 7
+            static let standardCellVerticalPadding: CGFloat = 11
         }
     }
 
