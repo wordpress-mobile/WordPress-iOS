@@ -10,14 +10,34 @@ extension Calendar {
         return components.day!
     }
 
-    /// Maps a zero-based index number that represents the ordered day of the week,
-    /// to a localized index that can be used to access day information from
-    /// calendar properties such as `shortWeekdaySymbols`.
-    /// 
-    /// This is used to take into account different starting days of the week
-    /// depending on the device's current locale.
+    /// Converts a localized weekday index (where 0 can be either Sunday or Monday depending on the locale settings)
+    /// into an unlocalized weekday index (where 0 is always Sunday).
     ///
-    public func localizedDayIndex(_ index: Int) -> Int {
-        return (index + firstWeekday - 1) % weekdaySymbols.count
+    /// - Parameters:
+    ///     - localizedWeekdayIndex: a localized weekday index representing the desired day of
+    ///         the week.  0 could either be Sunday or Monday depending on the `Calendar`'s locale settings.
+    ///
+    /// - Returns: an index where 0 is always Sunday.  This index can be used with methods such as `Calendar.weekdaySymbol`
+    ///     to obtain the name of the day.
+    ///
+    public func unlocalizedWeekdayIndex(localizedWeekdayIndex: Int) -> Int {
+        return (localizedWeekdayIndex + firstWeekday - 1) % weekdaySymbols.count
+    }
+
+    /// Converts an unlocalized weekday index (where 0 is always Sunday)
+    /// into a localized weekday index (where 0 can be either Sunday or Monday depending on the locale settings).
+    ///
+    /// - Parameters:
+    ///     - unlocalizedWeekdayIndex: an unlocalized weekday index representing the desired day of
+    ///         the week.  0 is always Sunday.
+    ///
+    /// - Returns: an index where 0 can be either Sunday or Monday depending on locale settings.
+    ///
+    public func localizedWeekdayIndex(unlocalizedWeekdayIndex: Int) -> Int {
+        let firstZeroBasedWeekday = firstWeekday - 1
+
+        return unlocalizedWeekdayIndex >= firstZeroBasedWeekday
+            ? unlocalizedWeekdayIndex - firstZeroBasedWeekday
+            : unlocalizedWeekdayIndex + weekdaySymbols.count - firstZeroBasedWeekday
     }
 }
