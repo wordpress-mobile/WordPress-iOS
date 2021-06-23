@@ -252,7 +252,21 @@ class EditPostViewController: UIViewController {
     @objc func closePostPost(animated: Bool) {
         // will dismiss self
         dismiss(animated: animated) { [weak self] in
-            self?.afterDismiss?()
+            guard let self = self else {
+                return
+            }
+            self.afterDismiss?()
+            guard let post = self.post,
+                  post.isPublished(),
+                  !self.editingExistingPost,
+                  let presentingViewController = UIApplication.shared.mainWindow?.rootViewController else {
+                return
+            }
+
+            BloggingRemindersFlow.present(from: presentingViewController,
+                                          for: self.blog,
+                                          source: .publishFlow,
+                                          alwaysShow: false)
         }
     }
 }
