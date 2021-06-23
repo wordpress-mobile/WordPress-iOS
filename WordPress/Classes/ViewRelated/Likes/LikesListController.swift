@@ -83,7 +83,7 @@ class LikesListController: NSObject {
     }
 
     private var analyticsProperties: [String: Any] {
-        return showingNotificationLikes ? ["source": "like_notification_list"] : ["source": "like_reader_list"]
+        return showingNotificationLikes ? ["source": "notifications"] : ["source": "reader"]
     }
 
     // MARK: Init
