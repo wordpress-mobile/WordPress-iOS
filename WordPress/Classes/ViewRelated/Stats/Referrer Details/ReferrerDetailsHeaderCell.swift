@@ -28,6 +28,7 @@ private extension ReferrerDetailsHeaderCell {
     func setupViews() {
         isUserInteractionEnabled = false
         separatorInset = .zero
+        backgroundColor = Style.cellBackgroundColor
         setupReferrerLabel()
         setupViewsLabel()
     }
@@ -37,7 +38,7 @@ private extension ReferrerDetailsHeaderCell {
         referrerLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(referrerLabel)
         NSLayoutConstraint.activate([
-            referrerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
+            referrerLabel.leadingAnchor.constraint(equalTo: safeLeadingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
             referrerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
@@ -47,7 +48,7 @@ private extension ReferrerDetailsHeaderCell {
         viewsLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(viewsLabel)
         NSLayoutConstraint.activate([
-            viewsLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Style.ReferrerDetails.standardCellSpacing),
+            viewsLabel.trailingAnchor.constraint(equalTo: safeTrailingAnchor, constant: -Style.ReferrerDetails.standardCellSpacing),
             viewsLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }

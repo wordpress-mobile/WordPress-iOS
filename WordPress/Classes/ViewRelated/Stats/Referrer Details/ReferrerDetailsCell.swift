@@ -18,9 +18,9 @@ final class ReferrerDetailsCell: UITableViewCell {
 
 // MARK: - Public Methods
 extension ReferrerDetailsCell {
-    func configure(isLast: Bool) {
-        referrerLabel.text = "Test"
-        viewsLabel.text = "123"
+    func configure(data: ReferrerDetailsRow.DetailsData, isLast: Bool) {
+        referrerLabel.text = data.name
+        viewsLabel.text = data.views
         separatorView.isHidden = !isLast
     }
 }
@@ -28,6 +28,8 @@ extension ReferrerDetailsCell {
 // MARK: - Private methods
 private extension ReferrerDetailsCell {
     func setupViews() {
+        selectionStyle = .none
+        backgroundColor = Style.cellBackgroundColor
         setupReferrerLabel()
         setupViewsLabel()
         setupSeparatorView()
@@ -38,7 +40,7 @@ private extension ReferrerDetailsCell {
         referrerLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(referrerLabel)
         NSLayoutConstraint.activate([
-            referrerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
+            referrerLabel.leadingAnchor.constraint(equalTo: safeLeadingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
             referrerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
@@ -49,7 +51,7 @@ private extension ReferrerDetailsCell {
         addSubview(viewsLabel)
         NSLayoutConstraint.activate([
             viewsLabel.leadingAnchor.constraint(greaterThanOrEqualTo: referrerLabel.trailingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
-            viewsLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Style.ReferrerDetails.standardCellSpacing),
+            viewsLabel.trailingAnchor.constraint(equalTo: safeTrailingAnchor, constant: -Style.ReferrerDetails.standardCellSpacing),
             viewsLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }

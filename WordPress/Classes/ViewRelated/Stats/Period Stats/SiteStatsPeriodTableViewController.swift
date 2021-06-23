@@ -132,8 +132,7 @@ private extension SiteStatsPeriodTableViewController {
                                              selectedDate: selectedDate,
                                              selectedPeriod: selectedPeriod,
                                              periodDelegate: self,
-                                             referrerDelegate: self,
-                                             storeDelegate: self)
+                                             referrerDelegate: self)
         viewModel?.statsBarChartViewDelegate = self
         addViewModelListeners()
         viewModel?.startFetchingOverview()
@@ -212,12 +211,6 @@ private extension SiteStatsPeriodTableViewController {
     func viewIsVisible() -> Bool {
         return isViewLoaded && view.window != nil
     }
-}
-
-// MARK: - StatsPeriodStoreDelegate
-
-extension SiteStatsPeriodTableViewController: StatsPeriodStoreDelegate {
-    /* using default implementation in protocol extension */
 }
 
 // MARK: - NoResultsViewHost
@@ -314,7 +307,7 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
 
 extension SiteStatsPeriodTableViewController: SiteStatsReferrerDelegate {
     func showReferrerDetails(_ data: StatsTotalRowData) {
-        show(ReferrerDetailsTableViewController(), sender: nil)
+        show(ReferrerDetailsTableViewController(data: data), sender: nil)
     }
 }
 
@@ -330,26 +323,5 @@ extension SiteStatsPeriodTableViewController: SiteStatsTableHeaderDateButtonDele
         if let intervalDate = viewModel?.updateDate(forward: forward) {
             tableHeaderView?.updateDate(with: intervalDate)
         }
-    }
-}
-
-// MARK: - Mark referrer as spam action sheet
-
-extension UIViewController {
-    func showSpamActionSheet(for referrerDomain: String, isSpam: Bool, action: @escaping () -> Void) {
-        let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        let markTitle = NSLocalizedString("Mark as spam", comment: "Action title for marking referrer as spam")
-        let unmarkTitle = NSLocalizedString("Unmark as spam", comment: "Action title for unmarking referrer as spam")
-
-        let title = isSpam ? unmarkTitle : markTitle
-        let toggleSpamAction = UIAlertAction(title: title, style: .default) { _ in
-            action()
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        [toggleSpamAction, cancelAction].forEach {
-            sheet.addAction($0)
-        }
-        present(sheet, animated: true)
     }
 }

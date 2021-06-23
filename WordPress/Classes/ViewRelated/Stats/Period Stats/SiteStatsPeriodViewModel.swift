@@ -43,12 +43,10 @@ class SiteStatsPeriodViewModel: Observable {
          selectedDate: Date,
          selectedPeriod: StatsPeriodUnit,
          periodDelegate: SiteStatsPeriodDelegate,
-         referrerDelegate: SiteStatsReferrerDelegate,
-         storeDelegate: StatsPeriodStoreDelegate) {
+         referrerDelegate: SiteStatsReferrerDelegate) {
         self.periodDelegate = periodDelegate
         self.referrerDelegate = referrerDelegate
         self.store = store
-        self.store.delegate = storeDelegate
         self.lastRequestedDate = selectedDate
         self.lastRequestedPeriod = selectedPeriod
 
@@ -245,10 +243,6 @@ class SiteStatsPeriodViewModel: Observable {
             currentEntryIndex -= 1
         }
         return chartDate(for: currentEntryIndex)
-    }
-
-    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
-        store.toggleSpamState(for: referrerDomain, currentValue: currentValue)
     }
 }
 
