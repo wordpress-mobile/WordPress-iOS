@@ -3,7 +3,7 @@ import UIKit
 final class ReferrerDetailsHeaderCell: UITableViewCell {
     private let referrerLabel = UILabel()
     private let viewsLabel = UILabel()
-    private typealias Constants = ReferrerDetailsTableViewController.Constants
+    private typealias Style = WPStyleGuide.Stats
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -33,21 +33,21 @@ private extension ReferrerDetailsHeaderCell {
     }
 
     func setupReferrerLabel() {
-        WPStyleGuide.Stats.configureLabelAsSubtitle(referrerLabel)
+        Style.configureLabelAsSubtitle(referrerLabel)
         referrerLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(referrerLabel)
         NSLayoutConstraint.activate([
-            referrerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.standardCellSpacing),
+            referrerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Style.standardCellSpacing),
             referrerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 
     func setupViewsLabel() {
-        WPStyleGuide.Stats.configureLabelAsSubtitle(viewsLabel)
+        Style.configureLabelAsSubtitle(viewsLabel)
         viewsLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(viewsLabel)
         NSLayoutConstraint.activate([
-            viewsLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.standardCellSpacing),
+            viewsLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Style.standardCellSpacing),
             viewsLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }

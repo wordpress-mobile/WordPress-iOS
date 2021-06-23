@@ -3,7 +3,7 @@ import UIKit
 final class ReferrerDetailsSpamActionCell: UITableViewCell {
     private let actionLabel = UILabel()
     private let separatorView = UIView()
-    private typealias Constants = ReferrerDetailsTableViewController.Constants
+    private typealias Style = WPStyleGuide.Stats
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -20,10 +20,10 @@ extension ReferrerDetailsSpamActionCell {
     func configure(markAsSpam: Bool) {
         if markAsSpam {
             actionLabel.text = NSLocalizedString("Mark as spam", comment: "Action title for marking referrer as spam")
-            actionLabel.textColor = WPStyleGuide.Stats.negativeColor
+            actionLabel.textColor = Style.negativeColor
         } else {
             actionLabel.text = NSLocalizedString("Mark as not spam", comment: "Action title for unmarking referrer as spam")
-            actionLabel.textColor = WPStyleGuide.Stats.positiveColor
+            actionLabel.textColor = Style.positiveColor
         }
     }
 }
@@ -41,21 +41,21 @@ private extension ReferrerDetailsSpamActionCell {
         actionLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(actionLabel)
         NSLayoutConstraint.activate([
-            actionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.standardCellSpacing),
-            actionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.standardCellSpacing),
+            actionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Style.standardCellSpacing),
+            actionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Style.standardCellSpacing),
             actionLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 
     func setupSeparatorView() {
-        separatorView.backgroundColor = WPStyleGuide.Stats.separatorColor
+        separatorView.backgroundColor = Style.separatorColor
         separatorView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(separatorView)
         NSLayoutConstraint.activate([
             separatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
             separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
             separatorView.topAnchor.constraint(equalTo: topAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: WPStyleGuide.Stats.separatorHeight)
+            separatorView.heightAnchor.constraint(equalToConstant: Style.separatorHeight)
         ])
     }
 }

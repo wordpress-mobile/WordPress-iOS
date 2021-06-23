@@ -57,10 +57,3 @@ private extension ReferrerDetailsTableViewController {
          ReferrerDetailsSpamActionRow.self]
     }
 }
-
-// MARK: - Types
-extension ReferrerDetailsTableViewController {
-    struct Constants {
-        static let standardCellSpacing: CGFloat = 16
-    }
-}

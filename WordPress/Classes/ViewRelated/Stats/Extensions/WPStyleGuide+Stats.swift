@@ -231,6 +231,7 @@ extension WPStyleGuide {
         static let negativeColor = UIColor.error
 
         static let gridiconSize = CGSize(width: 24, height: 24)
+        static let standardCellSpacing: CGFloat = 16
 
         struct PostingActivityColors {
             static let range1 = UIColor(light: .neutral(.shade5), dark: .neutral(.shade10))
