@@ -318,6 +318,33 @@ platform :ios do
   end
 
   #####################################################################################
+  # update_metadata_on_app_store_connect
+  # -----------------------------------------------------------------------------------
+  # Uploads the localized metadata tracked in the project repository to App Store
+  # Connect, optionally updating screenshots, too.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane update_metadata_on_app_store_connect [with_screenshots:<with screenshots>]
+  #
+  # Example:
+  # bundle exec fastlane update_metadata_on_app_store_connect
+  # bundle exec fastlane update_metadata_on_app_store_connect with_screenshots:true
+  #####################################################################################
+  desc 'Updates the App Store Connect localized metadata'
+  lane :update_metadata_on_app_store_connect do |options|
+    # Skip screenshots by default. The naming is "with" to make it clear that
+    # callers need to opt-in to adding screenshots. The naming of the deliver
+    # parameter, on the other hand, uses the skip verb.
+    with_screenshots = options.fetch(:with_screenshots, false)
+    skip_screenshots = with_screenshots == false
+
+    # WordPress: Rely on the settings in the Deliverfile
+    deliver(skip_screenshots: skip_screenshots)
+    # Jetpack: Delegate to dedicated lane from Jetpack-Fastfile
+    update_jetpack_metadata_on_app_store_connect(options)
+  end
+
+  #####################################################################################
   # build_and_upload_beta_release
   # -----------------------------------------------------------------------------------
   # This lane builds a beta release of the app and optionally uploads
