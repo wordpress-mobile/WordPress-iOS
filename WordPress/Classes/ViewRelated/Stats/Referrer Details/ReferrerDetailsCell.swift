@@ -64,6 +64,7 @@ private extension ReferrerDetailsCell {
     func setupViewsLabel() {
         Style.configureLabelAsChildRowTitle(viewsLabel)
         viewsLabel.font = WPStyleGuide.tableviewTextFont()
+        viewsLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         viewsLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(viewsLabel)
         NSLayoutConstraint.activate([
