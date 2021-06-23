@@ -37,16 +37,19 @@ private extension ReferrerDetailsCell {
 
     func setupReferrerLabel() {
         Style.configureLabelAsLink(referrerLabel)
+        referrerLabel.font = WPStyleGuide.tableviewTextFont()
         referrerLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(referrerLabel)
         NSLayoutConstraint.activate([
             referrerLabel.leadingAnchor.constraint(equalTo: safeLeadingAnchor, constant: Style.ReferrerDetails.standardCellSpacing),
-            referrerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+            referrerLabel.topAnchor.constraint(equalTo: topAnchor, constant: Style.ReferrerDetails.standardCellVerticalPadding),
+            referrerLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Style.ReferrerDetails.standardCellVerticalPadding)
         ])
     }
 
     func setupViewsLabel() {
         Style.configureLabelAsChildRowTitle(viewsLabel)
+        viewsLabel.font = WPStyleGuide.tableviewTextFont()
         viewsLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(viewsLabel)
         NSLayoutConstraint.activate([
