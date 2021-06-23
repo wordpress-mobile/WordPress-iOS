@@ -466,7 +466,7 @@ import "./ScreenshotFastfile"
     )
 
     # Upload Gutenberg source maps
-    upload_gutenberg_sourcemaps(internal: false)
+    upload_gutenberg_sourcemaps(internal: true)
 
   end
 
