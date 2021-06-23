@@ -93,6 +93,24 @@ final class ReaderShowMenuAction {
                                                })
         }
 
+        // Comment Subscription (Follow Comments by Email)
+        if post.canSubscribeComments {
+            let buttonTitle = post.isSubscribedComments ? ReaderPostMenuButtonTitles.unFollowConversation : ReaderPostMenuButtonTitles.followConversation
+            alertController.addActionWithTitle(buttonTitle,
+                                               style: .default,
+                                               handler: { (action: UIAlertAction) in
+                                                if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
+                                                    ReaderSubscribeCommentsAction().execute(with: post,
+                                                                                 context: context,
+                                                                                 completion: {
+                                                                                    // No op
+                                                                                 }, failure: { _ in
+                                                                                    // No op.
+                                                                                 })
+                                                }
+            })
+        }
+
         // Seen
         if post.isSeenSupported {
             alertController.addActionWithTitle(post.isSeen ? ReaderPostMenuButtonTitles.markUnseen : ReaderPostMenuButtonTitles.markSeen,
