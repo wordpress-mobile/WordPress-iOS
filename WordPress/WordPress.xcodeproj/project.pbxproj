@@ -926,7 +926,6 @@
 		638E2F3D4DFE9E93AF660CED /* Pods_WordPressAllTimeWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0075A07B739C4EDB5EC613B8 /* Pods_WordPressAllTimeWidget.framework */; };
 		660A036E6EE9D353F2712081 /* Pods_WordPressNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2A297CCB53FCF6851D79331 /* Pods_WordPressNotificationServiceExtension.framework */; };
 		6867C0633E597372235CB5E0 /* Pods_WordPressDraftActionExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7E3CC306AECBBCB71D2E19C /* Pods_WordPressDraftActionExtension.framework */; };
-		6E98F0F62682120F00F796BE /* SupportScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E98F0F52682120F00F796BE /* SupportScreen.swift */; };
 		6E98F11D2682174C00F796BE /* SupportScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E98F0F52682120F00F796BE /* SupportScreen.swift */; };
 		6E98F1312682174D00F796BE /* SupportScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E98F0F52682120F00F796BE /* SupportScreen.swift */; };
 		6E98F1452682175F00F796BE /* SupportScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E98F0F52682120F00F796BE /* SupportScreen.swift */; };
@@ -17422,7 +17421,6 @@
 				738B9A5621B85CF20005062B /* ModelSettableCell.swift in Sources */,
 				FA00863D24EB68B100C863F2 /* FollowCommentsService.swift in Sources */,
 				1746D7771D2165AE00B11D77 /* ForcePopoverPresenter.swift in Sources */,
-				6E98F0F62682120F00F796BE /* SupportScreen.swift in Sources */,
 				D858F30120E20106007E8A1C /* LikePost.swift in Sources */,
 				1703D04C20ECD93800D292E9 /* Routes+Post.swift in Sources */,
 				E11C4B702010930B00A6619C /* Blog+Jetpack.swift in Sources */,
