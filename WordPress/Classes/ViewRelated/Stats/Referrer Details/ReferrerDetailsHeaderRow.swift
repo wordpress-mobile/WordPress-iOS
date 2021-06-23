@@ -5,7 +5,6 @@ struct ReferrerDetailsHeaderRow: ImmuTableRow {
 
     static var cell = ImmuTableCell.class(CellType.self)
     var action: ImmuTableAction?
-    static var customHeight: Float? = 30
 
     func configureCell(_ cell: UITableViewCell) {
         guard let cell = cell as? CellType else {
