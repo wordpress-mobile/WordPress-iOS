@@ -82,6 +82,10 @@ class LikesListController: NSObject {
         return showingNotificationLikes ? 2 : 1
     }
 
+    private var analyticsProperties: [String: Any] {
+        return showingNotificationLikes ? ["source": "like_notification_list"] : ["source": "like_reader_list"]
+    }
+
     // MARK: Init
 
     /// Init with Notification
@@ -172,6 +176,8 @@ class LikesListController: NSObject {
         fetchLikes(success: { [weak self] users, totalLikes in
             if self?.isFirstLoad == true {
                 self?.delegate?.updatedTotalLikes?(totalLikes)
+            } else {
+                WPAnalytics.track(.likeListFetchedMore, properties: self?.analyticsProperties ?? [:])
             }
 
             self?.likingUsers = users
