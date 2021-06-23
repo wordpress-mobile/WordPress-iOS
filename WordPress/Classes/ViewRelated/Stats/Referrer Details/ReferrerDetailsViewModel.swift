@@ -6,9 +6,9 @@ protocol ReferrerDetailsViewModelDelegate: AnyObject {
 }
 
 final class ReferrerDetailsViewModel {
-    private var data: StatsTotalRowData
+    private(set) var data: StatsTotalRowData
     private weak var delegate: ReferrerDetailsViewModelDelegate?
-    private var isLoading = false
+    private(set) var isLoading = false
 
     init(data: StatsTotalRowData, delegate: ReferrerDetailsViewModelDelegate) {
         self.data = data
