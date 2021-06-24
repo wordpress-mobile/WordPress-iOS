@@ -56,6 +56,9 @@ class BloggingRemindersScheduler {
         }
     }
 
+    /// The raw values have been selected for convenience, so that they perfectly match Apple's
+    /// index for weekday symbol methods, such as `Calendar.weekdaySymbols`.
+    ///
     enum Weekday: Int, Codable, Comparable {
         case sunday = 0
         case monday
@@ -160,6 +163,12 @@ class BloggingRemindersScheduler {
     ///     - schedule: the blogging reminders schedule.
     ///
     func schedule(_ schedule: Schedule, for blog: Blog, completion: @escaping (Result<Void, Swift.Error>) -> ()) {
+        guard schedule != .none else {
+            // If there's no schedule, then we don't need to request authorization
+            pushAuthorizationReceived(blog: blog, schedule: schedule, completion: completion)
+            return
+        }
+
         pushNotificationAuthorizer.requestAuthorization { [weak self] allowed in
             guard let self = self else {
                 return
@@ -230,9 +239,11 @@ class BloggingRemindersScheduler {
         content.body = "It's time to post!"
 
         var dateComponents = DateComponents()
-        dateComponents.calendar = Calendar.current
+        let calendar = Calendar.current
+        dateComponents.calendar = calendar
 
-        dateComponents.weekday = weekday.rawValue
+        // `DateComponent`'s weekday uses a 1-based index.
+        dateComponents.weekday = weekday.rawValue + 1
         dateComponents.hour = Weekday.defaultHour
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
@@ -250,7 +261,6 @@ class BloggingRemindersScheduler {
     }
 
     // MARK: - Unscheduling
-
     func unschedule(for blogs: [Blog]) {
         for blog in blogs {
             unschedule(for: blog)
@@ -258,7 +268,7 @@ class BloggingRemindersScheduler {
     }
 
     func unschedule(for blog: Blog) {
-        unschedule(scheduledReminders(for: blog))
+        schedule(.none, for: blog, completion: { _ in })
     }
 
     /// Unschedules all notifications for the passed schedule.

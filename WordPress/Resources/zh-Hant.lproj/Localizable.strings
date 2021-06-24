@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-16 00:39:37+0000 */
+/* Translation-Revision-Date: 2021-06-23 14:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -34,10 +34,10 @@
 "%1$@ to fix threats." = "%1$@以修正威脅。";
 
 /* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Like" = "%1$d Like";
+"%1$d Like" = "%1$d 按讚";
 
 /* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Likes" = "%1$d Likes";
+"%1$d Likes" = "%1$d 按讚數";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
 "%1$d blogger likes this." = "%1$d 位部落客說這個讚。";
@@ -758,13 +758,13 @@
 "Are you sure you want to mark this comment as Spam?" = "確定要將這則留言標記為垃圾嗎？";
 
 /* Message asking for confirmation before marking a comment as trash */
-"Are you sure you want to mark this comment as Trash?" = "Are you sure you want to mark this comment as Trash?";
+"Are you sure you want to mark this comment as Trash?" = "確定要將這則留言標示為垃圾嗎？";
 
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
 "Are you sure you want to permanently delete these items?" = "確定要永久刪除選取的項目？";
 
 /* Message asking for confirmation on comment deletion */
-"Are you sure you want to permanently delete this comment?" = "Are you sure you want to permanently delete this comment?";
+"Are you sure you want to permanently delete this comment?" = "確定要永久刪除此留言？";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "確定要永久刪除這些項目？";
@@ -906,7 +906,7 @@
 "Back" = "上一頁";
 
 /* No comment provided by engineer. */
-"Background Color" = "Background Color";
+"Background Color" = "背景色彩";
 
 /* Title of the cell displaying status of a backup in progress */
 "Backing up site" = "正在備份網站";
@@ -1289,7 +1289,7 @@
 "Choose Homepage" = "選擇首頁";
 
 /* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Choose Image From My Device";
+"Choose Image From My Device" = "從我的裝置選擇圖片";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "選擇頁面";
@@ -1819,7 +1819,7 @@
 "Create Story Post" = "建立限時動態文章";
 
 /* Button allowing the user to create a site icon by choosing an emoji character */
-"Create With Emoji" = "Create With Emoji";
+"Create With Emoji" = "使用表情圖示建立";
 
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "建立 WordPress.com 網站";
@@ -1843,7 +1843,7 @@
 "Create a post, page, or story" = "建立文章、頁面或限時動態";
 
 /* No comment provided by engineer. */
-"Create a site icon" = "Create a site icon";
+"Create a site icon" = "建立網站圖示";
 
 /* Label that describes the download backup action */
 "Create downloadable backup" = "建立可下載的備份";
@@ -2442,7 +2442,7 @@
 "Email sent!" = "已傳送電子郵件！";
 
 /* No comment provided by engineer. */
-"Emoji" = "Emoji";
+"Emoji" = "表情圖示";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
    Label for size of media when the cache is empty. */
@@ -2538,7 +2538,7 @@
 "Error activating %@." = "啟用 %@ 時發生錯誤。";
 
 /* Message shown when approving a Comment fails. */
-"Error approving comment" = "Error approving comment";
+"Error approving comment" = "核准留言時發生錯誤";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2548,7 +2548,7 @@
 "Error deactivating %@." = "停用 %@ 時發生錯誤。";
 
 /* Message shown when deleting a Comment fails. */
-"Error deleting comment" = "Error deleting comment";
+"Error deleting comment" = "刪除留言時發生錯誤";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "為 %@ 停用自動更新時發生錯誤。";
@@ -2572,7 +2572,7 @@
 "Error loading plugins" = "載入外掛程式時發生錯誤";
 
 /* Message shown when marking a Comment as spam fails. */
-"Error marking comment as spam" = "Error marking comment as spam";
+"Error marking comment as spam" = "將留言標示為垃圾訊息時發生錯誤";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Error occurred\nduring loading";
@@ -2608,7 +2608,7 @@
 "Error sending verification email. Check your connection and try again." = "傳送驗證電子郵件時發生錯誤。請檢查你的連線並再試一次。";
 
 /* Message shown when unapproving a Comment fails. */
-"Error unapproving comment" = "Error unapproving comment";
+"Error unapproving comment" = "取消核准留言時發生錯誤";
 
 /* There was an error updating a plugin, placeholder is the plugin name */
 "Error updating %@." = "更新 %@ 時發生錯誤。";
@@ -3465,7 +3465,7 @@
 "Jetpack could not be installed at this time." = "目前無法安裝 Jetpack。";
 
 /* Subject of new Zendesk ticket. */
-"Jetpack for iOS Support" = "Jetpack for iOS Support";
+"Jetpack for iOS Support" = "iOS 版 Jetpack 支援";
 
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "已安裝 Jetpack";
@@ -4730,7 +4730,7 @@
 "People" = "使用者";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "People who post at least twice weekly get 87% more views on their site.";
+"People who post at least twice weekly get 87% more views on their site." = "每週至少發文兩次，網站瀏覽量增加 87%。";
 
 /* Label for date periods. */
 "Period" = "期間";
@@ -5351,7 +5351,7 @@
 "Remove Site Icon" = "移除網站圖示";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image " = "Remove as Featured Image ";
+"Remove as Featured Image " = "移除特色圖片 ";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "從洞察報告中移除";
@@ -5895,7 +5895,7 @@
 "Set Parent" = "設定上層項目";
 
 /* No comment provided by engineer. */
-"Set as Featured Image " = "Set as Featured Image ";
+"Set as Featured Image " = "設為精選圖片 ";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "設為首頁";
@@ -5904,7 +5904,7 @@
 "Set as Posts Page" = "設定為文章頁面";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set goals" = "Set goals";
+"Set goals" = "設定目標";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "設定";
@@ -6630,7 +6630,7 @@
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "此伺服器的憑證無效。你可能正連線至冒充為「%@」的伺服器，而這可能洩漏你的機密資料。\n\n是否仍然要信任憑證？";
 
 /* Message informing the user that posts page cannot be edited */
-"The content of your latest posts page is automatically generated and cannot be edited." = "The content of your latest posts page is automatically generated and cannot be edited.";
+"The content of your latest posts page is automatically generated and cannot be edited." = "最新文章頁面的內容由系統自動產生，無法編輯。";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "檔案 %1$@ 包含惡意程式碼模式";
@@ -6947,7 +6947,7 @@
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "完成你的網站設定的時候到了！我們的檢查清單會引導你完成後續步驟。";
 
 /* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Tip";
+"Tip" = "秘訣";
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "讓 WordPress.com 發揮最大功效的秘訣。";
@@ -7421,7 +7421,7 @@
 "Update Profile Photo" = "更新個人檔案照片";
 
 /* Title for sheet displayed allowing user to update their site icon */
-"Update Site Icon" = "Update Site Icon";
+"Update Site Icon" = "上傳網站圖示";
 
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "更新長條圖以顯示留言次數。";
@@ -8232,7 +8232,7 @@
 "You can update this any time via My Site > Site Settings" = "你可以隨時前往「我的網站」>「網站設定」更新此設定。";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this anytime" = "You can update this anytime";
+"You can update this anytime" = "你可以隨時更新";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "你無法使用該電子郵件地址註冊。我們無法使用這些電子郵件地址，因為它們會阻擋我們的某些郵件。請使用其他電子郵件供應商。";
@@ -8324,7 +8324,7 @@
 "You will not be able to change your username back." = "一旦變更使用者名稱就無法復原。";
 
 /* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "You'll get reminders to blog X times a week on DAY and DAY.";
+"You'll get reminders to blog X times a week on DAY and DAY." = "系統將在每週 DAY 和 DAY 提醒你 X 次要寫網誌。";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "全部都是最新版本！";
@@ -8378,7 +8378,7 @@
 "Your post is currently being uploaded. Please wait until this completes." = "目前正在上傳你的文章。 請等待此作業完成。";
 
 /* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress.";
+"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "你的文章正在發表… 這段時間請設定你要系統提醒的網誌目標，以便追蹤進度。";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "我們會將你的文章、網頁與設定透過電子郵件傳送至 %@。";
@@ -8399,7 +8399,7 @@
 "Your site has been succesfully restored" = "已成功還原你的網站";
 
 /* No comment provided by engineer. */
-"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader.";
+"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "整個 Web 都會使用你的網站圖示：瀏覽器索引標籤、社群媒體的網站預覽，以及 WordPress.com 閱讀器。";
 
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "正在還原網站";

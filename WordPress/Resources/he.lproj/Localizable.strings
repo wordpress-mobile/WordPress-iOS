@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-11 08:54:47+0000 */
+/* Translation-Revision-Date: 2021-06-23 11:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -34,10 +34,10 @@
 "%1$@ to fix threats." = "%1$@ כדי לתקן את האיומים.";
 
 /* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Like" = "%1$d Like";
+"%1$d Like" = "לייק ⁦%1$d⁩";
 
 /* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Likes" = "%1$d Likes";
+"%1$d Likes" = "⁦%1$d⁩ לייקים";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
 "%1$d blogger likes this." = "בלוגר ⁦%1$d⁩ סימן לייק על זה.";
@@ -758,13 +758,13 @@
 "Are you sure you want to mark this comment as Spam?" = "האם אכן ברצונך לסמן תגובה זו כתגובת זבל?";
 
 /* Message asking for confirmation before marking a comment as trash */
-"Are you sure you want to mark this comment as Trash?" = "Are you sure you want to mark this comment as Trash?";
+"Are you sure you want to mark this comment as Trash?" = "האם ברצונך לסמן את התגובה הזאת כ'זבל'?";
 
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
 "Are you sure you want to permanently delete these items?" = "האם אתה בטוח שברצונך למחוק לצמיתות את הפריטים שנבחרו?";
 
 /* Message asking for confirmation on comment deletion */
-"Are you sure you want to permanently delete this comment?" = "Are you sure you want to permanently delete this comment?";
+"Are you sure you want to permanently delete this comment?" = "האם ברצונך למחוק לצמיתות את התגובה הזאת?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "האם אכן ברצונך למחוק פריט זה לצמיתות?";
@@ -906,7 +906,7 @@
 "Back" = "חזרה";
 
 /* No comment provided by engineer. */
-"Background Color" = "Background Color";
+"Background Color" = "צבע הרקע";
 
 /* Title of the cell displaying status of a backup in progress */
 "Backing up site" = "מגבה את האתר";
@@ -1289,7 +1289,7 @@
 "Choose Homepage" = "לבחור עמוד בית";
 
 /* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Choose Image From My Device";
+"Choose Image From My Device" = "לבחור תמונות מהמכשיר שלי";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "לבחור עמודים";
@@ -1819,7 +1819,7 @@
 "Create Story Post" = "ליצור פוסט של סטורי";
 
 /* Button allowing the user to create a site icon by choosing an emoji character */
-"Create With Emoji" = "Create With Emoji";
+"Create With Emoji" = "ליצור עם אמוג'י";
 
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "יצירת אתר בוורדפרס.קום";
@@ -1843,7 +1843,7 @@
 "Create a post, page, or story" = "ליצור פוסט, עמוד או סטורי חדש";
 
 /* No comment provided by engineer. */
-"Create a site icon" = "Create a site icon";
+"Create a site icon" = "ליצור את סמל האתר";
 
 /* Label that describes the download backup action */
 "Create downloadable backup" = "ליצור גיבוי להורדה";
@@ -2442,7 +2442,7 @@
 "Email sent!" = "האימייל נשלח!";
 
 /* No comment provided by engineer. */
-"Emoji" = "Emoji";
+"Emoji" = "אמוג'י";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
    Label for size of media when the cache is empty. */
@@ -2538,7 +2538,7 @@
 "Error activating %@." = "שגיאה בהפעלה של %@.";
 
 /* Message shown when approving a Comment fails. */
-"Error approving comment" = "Error approving comment";
+"Error approving comment" = "שגיאה באישור התגובה";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2548,7 +2548,7 @@
 "Error deactivating %@." = "שגיאה בהשבתה של %@.";
 
 /* Message shown when deleting a Comment fails. */
-"Error deleting comment" = "Error deleting comment";
+"Error deleting comment" = "שגיאה במחיקת התגובה";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "שגיאה בעת השבתת העדכונים האוטומטיים של %@.";
@@ -2572,7 +2572,7 @@
 "Error loading plugins" = "שגיאה בטעינת התוספים";
 
 /* Message shown when marking a Comment as spam fails. */
-"Error marking comment as spam" = "Error marking comment as spam";
+"Error marking comment as spam" = "שגיאה בסימון התגובה כתגובת זבל";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "אירעה שגיאה \nבמהלך הטעינה";
@@ -2608,7 +2608,7 @@
 "Error sending verification email. Check your connection and try again." = "שגיאה בשליחה האימייל לאימות. יש לבדוק את החיבור ולנסות שוב.";
 
 /* Message shown when unapproving a Comment fails. */
-"Error unapproving comment" = "Error unapproving comment";
+"Error unapproving comment" = "שגיאה בביטול האישור של התגובה";
 
 /* There was an error updating a plugin, placeholder is the plugin name */
 "Error updating %@." = "שגיאה בעדכון ב %@.";
@@ -3465,7 +3465,7 @@
 "Jetpack could not be installed at this time." = "אין אפשרות להתקין את Jetpack כעת.";
 
 /* Subject of new Zendesk ticket. */
-"Jetpack for iOS Support" = "Jetpack for iOS Support";
+"Jetpack for iOS Support" = "תמיכה ב-Jetpack ל-iOS";
 
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack מותקן";
@@ -4730,7 +4730,7 @@
 "People" = "אנשים";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "People who post at least twice weekly get 87% more views on their site.";
+"People who post at least twice weekly get 87% more views on their site." = "אנשים שמפרסמים לפחות פעמיים בשבוע מקבלים 87% יותר צפיות באתר שלהם.";
 
 /* Label for date periods. */
 "Period" = "תקופה";
@@ -5351,7 +5351,7 @@
 "Remove Site Icon" = "הסרת סמל האתר";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image " = "Remove as Featured Image ";
+"Remove as Featured Image " = "להסיר מהתמונה המרכזית ";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "הסרה מהתובנות";
@@ -5895,7 +5895,7 @@
 "Set Parent" = "הגדרת הורה";
 
 /* No comment provided by engineer. */
-"Set as Featured Image " = "Set as Featured Image ";
+"Set as Featured Image " = "להגדיר כתמונה מרכזית ";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "להגדיר כעמוד הבית";
@@ -5904,7 +5904,7 @@
 "Set as Posts Page" = "להגדיר כעמוד פוסטים";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set goals" = "Set goals";
+"Set goals" = "לקבוע מטרות";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "הגדרה";
@@ -6630,7 +6630,7 @@
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "האישור עבור שרת זה אינו חוקי. ייתכן שאתה מתחבר לשרת שמתחזה ל-&quot;%@&quot;, מה שעלול לסכן את המידע הסודי שלך.\n\nלבטוח באישור בכל מקרה?";
 
 /* Message informing the user that posts page cannot be edited */
-"The content of your latest posts page is automatically generated and cannot be edited." = "The content of your latest posts page is automatically generated and cannot be edited.";
+"The content of your latest posts page is automatically generated and cannot be edited." = "התוכן בעמוד 'הפוסטים האחרונים' מיוצר באופן אוטומטי ולא ניתן לערוך אותו.";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "הקובץ %1$@ מכיל תבנית של קוד זדוני";
@@ -6947,7 +6947,7 @@
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "הגיע הזמן לסיים את הגדרת האתר שלך! רשימת המשימות שלנו תדריך אותך בשלבים הבאים.";
 
 /* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Tip";
+"Tip" = "עצה";
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "טיפים כדי להפיק את המיטב מ-WordPress.com.";
@@ -7421,7 +7421,7 @@
 "Update Profile Photo" = "עדכון תמונת פרופיל";
 
 /* Title for sheet displayed allowing user to update their site icon */
-"Update Site Icon" = "Update Site Icon";
+"Update Site Icon" = "לעדכן את סמל האתר";
 
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "הפעולה מעדכנת את תרשים העמודות לתצוגה של תגובות.";
@@ -8232,7 +8232,7 @@
 "You can update this any time via My Site > Site Settings" = "אפשר לעדכן את ההגדרה הזאת בכל עת דרך 'האתר שלי' > 'הגדרות אתר'";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this anytime" = "You can update this anytime";
+"You can update this anytime" = "אפשר לעדכן את ההגדרה הזאת בכל עת";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "לא ניתן להשתמש בכתובת אימייל זו להרשמה. ספק זה חוסם חלק מהאימיילים שלנו. יש להשתמש בספק אימייל אחר.";
@@ -8324,7 +8324,7 @@
 "You will not be able to change your username back." = "לא תהיה לך אפשרות לשנות את שם המשתמש בחזרה.";
 
 /* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "You'll get reminders to blog X times a week on DAY and DAY.";
+"You'll get reminders to blog X times a week on DAY and DAY." = "אנחנו נשלח לך תזכורות לכתוב בלוג X פעמים בשבוע ביום Y וביום Z.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "הכול מעודכן!";
@@ -8378,7 +8378,7 @@
 "Your post is currently being uploaded. Please wait until this completes." = "הפוסט שלך מועלה כעת. יש להמתין להשלמת הפעולה.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress.";
+"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "הפוסט שלך מתפרסם... בינתיים, אפשר להגדיר את המטרות שלך לבלוג כדי לקבל תזכורות ולעקוב אחר ההתקדמות שלך.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "הפוסטים, העמודים וההגדרות שלך יישלחו באימייל לכתובת %@.";
@@ -8399,7 +8399,7 @@
 "Your site has been succesfully restored" = "האתר שלך שוחזר בהצלחה";
 
 /* No comment provided by engineer. */
-"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader.";
+"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "הסמל של האתר מופיע במקומות שונים באינטרנט, בלשוניות של הדפדפן, בתצוגות מקדימות של האתר ברשתות החברתיות וב-Reader של WordPress.com.";
 
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "אנחנו משחזרים את האתר שלך כעת";

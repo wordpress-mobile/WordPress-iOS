@@ -1,0 +1,17 @@
+Dengan versi 17.6, Anda dapat menambahkan Blok Audio ke semua situs WordPress.com, apa pun paket yang Anda gunakan – termasuk Paket Gratis. Blok Audio memudahkan Anda untuk menambahkan podcast, musik, dan file suara ke pos dan halaman Anda.
+
+Di bagian Pembaca, Anda sekarang akan melihat jumlah dan ringkasan Suka yang ditambahkan ke setiap pos. Jika merasa belum puas dengan jumlah Suka, ketuk ringkasan dan Anda akan melihat daftar lengkapnya.
+
+Kami juga telah bekerja keras untuk peningkatan UX:
+
+Saat menugaskan halaman induk ke sebuah halaman tanpa judul, Anda sekarang akan melihat placeholder '(tanpa judul)', alih-alih baris kosong, yang mendorong Anda secara halus untuk menamai halaman tersebut.
+
+Anda tidak bisa menyunting halaman Arsip Pos karena dibuat secara otomatis. Di versi 17.6, Anda juga tidak akan bisa membukanya di editor supaya tidak membuang-buang waktu.
+
+Kami juga telah berupaya memperbaiki beberapa hal:
+
+Kami telah mengatasi sejumlah pemberitahuan yang selama ini tumpang tindih di LembarTindakan, termasuk salah satunya yang menampilkan kontrol Favicon, yang menampilkan Penghapusan MulaiCepat, serta yang menampilkan Tindakan Lain pada editor.
+
+Terakhir, kami telah mengatasi bug yang terkadang menyebabkan aplikasi macet saat moderasi komentar serta bug lain guna memperbaiki error saat login untuk situs WordPress.org yang ditampilkan sebaris.
+
+Itulah semua fitur untuk pembaruan 17.6. Sampai bertemu lagi di pembaruan 17.7!

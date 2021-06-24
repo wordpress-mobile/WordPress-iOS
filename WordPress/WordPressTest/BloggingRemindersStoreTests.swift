@@ -61,4 +61,44 @@ class BloggingRemindersStoreTests: XCTestCase {
 
         XCTAssertEqual(secondLaunchStore.configuration, store.configuration)
     }
+
+    func testUnschedulingRemindersRemovesEntryForBlog() {
+        let firstBlogID = URL(string: "someBlog")!
+        let secondBlogID = URL(string: "someBlog2")!
+
+        let tempFile = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("testBlogReminders_" + UUID().uuidString + ".plist")
+        let configuration = [
+            firstBlogID: BloggingRemindersStore.ScheduledReminders.weekdays([
+                .init(weekday: .monday, notificationID: UUID().uuidString),
+                .init(weekday: .tuesday, notificationID: UUID().uuidString),
+            ]),
+            secondBlogID: BloggingRemindersStore.ScheduledReminders.weekdays([
+                .init(weekday: .monday, notificationID: UUID().uuidString),
+                .init(weekday: .wednesday, notificationID: UUID().uuidString),
+            ])
+        ]
+
+        let store: BloggingRemindersStore
+
+        do {
+            store = try BloggingRemindersStore(dataFileURL: tempFile)
+
+            for (blogIdentifier, scheduledReminders) in configuration {
+                try store.save(scheduledReminders: scheduledReminders, for: blogIdentifier)
+            }
+        } catch {
+            XCTFail(error.localizedDescription)
+            return
+        }
+
+        XCTAssertEqual(store.configuration, configuration)
+
+        try? store.save(scheduledReminders: .none, for: firstBlogID)
+
+        // There should now be no entry for the first blog
+        XCTAssertEqual(store.scheduledReminders(for: firstBlogID), .none)
+
+        // There should still be an entry for the second blog
+        XCTAssertEqual(store.scheduledReminders(for: secondBlogID), configuration[secondBlogID])
+    }
 }

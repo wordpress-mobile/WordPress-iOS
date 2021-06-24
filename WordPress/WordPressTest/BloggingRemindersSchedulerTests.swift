@@ -50,7 +50,6 @@ class BloggingRemindersSchedulerTests: XCTestCase {
     }
 
     func testSchedulerSavesSchedule() {
-        let blogIdentifier = URL(fileURLWithPath: "some_blog")
         let days = [BloggingRemindersScheduler.Weekday]([.monday, .tuesday, .saturday])
         let schedule = BloggingRemindersScheduler.Schedule.weekdays(days)
         let store: BloggingRemindersStore
@@ -115,10 +114,19 @@ class BloggingRemindersSchedulerTests: XCTestCase {
             notificationCenter: notificationCenter,
             pushNotificationAuthorizer: PushNotificationsAuthorizerMock())
 
+        let storeHasRemindersExpectation = expectation(description: "The notifications are in the store")
+        let storeIsEmptyExpectation = expectation(description: "The notifications have been cleared from the store")
+
         scheduler.schedule(.weekdays(days), for: blog) { _ in
+            if store.scheduledReminders(for: blog.objectID.uriRepresentation()) != .none {
+                storeHasRemindersExpectation.fulfill()
+            }
         }
 
         scheduler.schedule(.none, for: blog) { _ in
+            if store.scheduledReminders(for: blog.objectID.uriRepresentation()) == .none {
+                storeIsEmptyExpectation.fulfill()
+            }
         }
 
         waitForExpectations(timeout: 0.1) { error in
