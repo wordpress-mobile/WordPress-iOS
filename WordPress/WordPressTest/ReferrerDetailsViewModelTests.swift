@@ -2,17 +2,20 @@ import XCTest
 @testable import WordPress
 
 class ReferrerDetailsViewModelTests: XCTestCase {
-    var sut: ReferrerDetailsViewModel!
+    private var sut: ReferrerDetailsViewModel!
+    private var spyDelegate: ViewModelDelegateSpy!
 
     override func setUpWithError() throws {
+        let childWithNoURL = StatsTotalRowData(name: "Child with no URL", data: "Child data with no URL")
         let firstChildRow = StatsTotalRowData(name: "Child 1", data: "Child data 1", disclosureURL: URL(string: "https://www.firstchild.com"))
         let secondChildRow = StatsTotalRowData(name: "Child 2", data: "Child data 2", disclosureURL: URL(string: "https://www.secondchild.com"))
-        let data = StatsTotalRowData(name: "parent", data: "Data", disclosureURL: URL(string: "https://www.parent.com"), childRows: [firstChildRow, secondChildRow], isReferrerSpam: true)
-        let delegate = ViewModelDelegate()
-        sut = ReferrerDetailsViewModel(data: data, delegate: delegate)
+        let data = StatsTotalRowData(name: "parent", data: "Data", disclosureURL: URL(string: "https://www.parent.com"), childRows: [childWithNoURL, firstChildRow, secondChildRow], isReferrerSpam: true)
+        spyDelegate = ViewModelDelegateSpy()
+        sut = ReferrerDetailsViewModel(data: data, delegate: spyDelegate)
     }
 
     override func tearDownWithError() throws {
+        spyDelegate = nil
         sut = nil
         try super.tearDownWithError()
     }
@@ -79,6 +82,17 @@ class ReferrerDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(secondRow.data.name, "Child 2")
     }
 
+    func testReferrerDetailsRowAction() {
+        guard let firstRow = sut.tableViewModel.rowAtIndexPath(IndexPath(row: 1, section: 0)) as? ReferrerDetailsRow else {
+            XCTFail("Expected first ReferrerDetailsRow")
+            return
+        }
+
+        firstRow.action?(firstRow)
+
+        XCTAssertEqual(spyDelegate.isDisplayWebViewCalledCounter, 1)
+    }
+
     func testActionRowIsValid() {
         guard let actionRow = sut.tableViewModel.rowAtIndexPath(IndexPath(row: 0, section: 1)) as? ReferrerDetailsSpamActionRow else {
             XCTFail("Expected ReferrerDetailsSpamActionRow")
@@ -87,16 +101,30 @@ class ReferrerDetailsViewModelTests: XCTestCase {
 
         XCTAssertTrue(actionRow.isSpam)
     }
+
+    func testActionRowAction() {
+        guard let actionRow = sut.tableViewModel.rowAtIndexPath(IndexPath(row: 0, section: 1)) as? ReferrerDetailsSpamActionRow else {
+            XCTFail("Expected ReferrerDetailsSpamActionRow")
+            return
+        }
+
+        actionRow.action?(actionRow)
+
+        XCTAssertEqual(spyDelegate.isToggleSpamStateCalledCounter, 1)
+    }
 }
 
 private extension ReferrerDetailsViewModelTests {
-    class ViewModelDelegate: ReferrerDetailsViewModelDelegate {
+    class ViewModelDelegateSpy: ReferrerDetailsViewModelDelegate {
+        var isDisplayWebViewCalledCounter = 0
+        var isToggleSpamStateCalledCounter = 0
+
         func displayWebViewWithURL(_ url: URL) {
-            /* not implemented */
+            isDisplayWebViewCalledCounter += 1
         }
 
         func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
-            /* not implemented */
+            isToggleSpamStateCalledCounter += 1
         }
     }
 }
