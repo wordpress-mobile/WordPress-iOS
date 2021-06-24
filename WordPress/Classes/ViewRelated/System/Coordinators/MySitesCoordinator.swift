@@ -10,6 +10,19 @@ class MySitesCoordinator: NSObject {
     let becomeActiveTab: () -> Void
 
     @objc
+    var currentBlog: Blog? {
+        if Feature.enabled(.newNavBarAppearance) {
+            return mySiteViewController.blog
+        } else {
+            if let blogDetailsVC = navigationController.viewControllers.first(where: { $0 is BlogDetailsViewController }) as? BlogDetailsViewController {
+                return blogDetailsVC.blog
+            }
+        }
+
+        return nil
+    }
+
+    @objc
     init(meScenePresenter: ScenePresenter, onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
         self.meScenePresenter = meScenePresenter
         self.becomeActiveTab = becomeActiveTab
@@ -187,6 +200,15 @@ class MySitesCoordinator: NSObject {
     // MARK: - Post creation
 
     func showCreateSheet(for blog: Blog?) {
+        let context = ContextManager.shared.mainContext
+        let service = BlogService(managedObjectContext: context)
+        guard let targetBlog = blog ?? service.lastUsedOrFirstBlog() else {
+            return
+        }
+
+        showBlogDetails(for: targetBlog)
+
+        mySiteViewController.presentCreateSheet()
     }
 
     // MARK: - My Sites
