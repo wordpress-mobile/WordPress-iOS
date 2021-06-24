@@ -14,7 +14,7 @@ class GutenbergSettings {
         }
         static let focalPointPickerTooltipShown = "kGutenbergFocalPointPickerTooltipShown"
         static let hasLaunchedGutenbergEditor = "kHasLaunchedGutenbergEditor"
-        
+
         // Only generated and saved for non-WPcom logins
         static let editorOnboardingAnonID = "kEditorOnboardingAnonID"
 
@@ -178,7 +178,7 @@ class GutenbergSettings {
         else {
             return false
         }
-        
+
         let userId = AccountService(managedObjectContext: context).defaultWordPressComAccount()?.userID.intValue ?? getAnonymousUserId()
         let rollout = GutenbergOnboardingRollout()
         return rollout.isUserIdInPhaseRolloutPercentage(userId)
