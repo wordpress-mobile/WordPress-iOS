@@ -166,7 +166,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.56.0-alpha4'
+    gutenberg :commit => 'ca6d40ffcd02a18bec7aab258d76c4147ff6e2a3'
 
     ## Third party libraries
     ## =====================
@@ -195,9 +195,9 @@ abstract_target 'Apps' do
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.8.5'
+    #pod 'Automattic-Tracks-iOS', '~> 0.8.5'
     # While in PR
-    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
+    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'crash-logging-hybrid-sdk-helpers'
     # Local Development
     #pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
 
