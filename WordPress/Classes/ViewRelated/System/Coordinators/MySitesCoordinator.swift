@@ -184,6 +184,11 @@ class MySitesCoordinator: NSObject {
         mySiteViewController.presentInterfaceForAddingNewSite()
     }
 
+    // MARK: - Post creation
+
+    func showCreateSheet(for blog: Blog?) {
+    }
+
     // MARK: - My Sites
 
     func showPages(for blog: Blog) {

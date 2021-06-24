@@ -53,10 +53,7 @@ final class InteractiveNotificationsManager: NSObject {
             WPAnalytics.track(.pushNotificationOSAlertShown)
         }
 
-        var options: UNAuthorizationOptions = [.badge, .sound, .alert]
-        if #available(iOS 12.0, *) {
-            options.insert(.providesAppNotificationSettings)
-        }
+        let options: UNAuthorizationOptions = [.badge, .sound, .alert, .providesAppNotificationSettings]
 
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.requestAuthorization(options: options) { (allowed, _)  in
@@ -80,10 +77,10 @@ final class InteractiveNotificationsManager: NSObject {
     /// - Returns: True on success
     ///
     @objc @discardableResult
-    func handleAction(with identifier: String, category: String, userInfo: NSDictionary, responseText: String?) -> Bool {
+    func handleAction(with identifier: String, category: String, threadId: String?, userInfo: NSDictionary, responseText: String?) -> Bool {
         if let noteCategory = NoteCategoryDefinition(rawValue: category),
             noteCategory.isLocalNotification {
-            return handleLocalNotificationAction(with: identifier, category: category, userInfo: userInfo, responseText: responseText)
+            return handleLocalNotificationAction(with: identifier, category: category, threadId: threadId, userInfo: userInfo, responseText: responseText)
         }
 
         if NoteActionDefinition.approveLogin == NoteActionDefinition(rawValue: identifier) {
@@ -141,7 +138,7 @@ final class InteractiveNotificationsManager: NSObject {
         return true
     }
 
-    func handleLocalNotificationAction(with identifier: String, category: String, userInfo: NSDictionary, responseText: String?) -> Bool {
+    func handleLocalNotificationAction(with identifier: String, category: String, threadId: String?, userInfo: NSDictionary, responseText: String?) -> Bool {
         if let noteCategory = NoteCategoryDefinition(rawValue: category) {
             switch noteCategory {
             case .mediaUploadSuccess, .mediaUploadFailure:
@@ -195,11 +192,26 @@ final class InteractiveNotificationsManager: NSObject {
                     ShareNoticeNavigationCoordinator.navigateToBlogDetails(with: userInfo)
                     return true
                 }
+            case .bloggingReminderWeekly:
+                if identifier == UNNotificationDefaultActionIdentifier {
+                    let targetBlog: Blog? = blog(from: threadId)
+                    
+                    WPTabBarController.sharedInstance()?.mySitesCoordinator.showCreateSheet(for: targetBlog)
+                }
             default: break
             }
         }
 
         return true
+    }
+
+    private func blog(from threadId: String?) -> Blog? {
+        if let threadId = threadId,
+           let blogId = Int(threadId) {
+            return try? Blog.lookup(withID: blogId, in: ContextManager.shared.mainContext)
+        }
+
+        return nil
     }
 }
 
@@ -307,6 +319,7 @@ private extension InteractiveNotificationsManager {
         case shareUploadSuccess     = "share-upload-success"
         case shareUploadFailure     = "share-upload-failure"
         case login                  = "push_auth"
+        case bloggingReminderWeekly = "blogging-reminder-weekly"
 
         var actions: [NoteActionDefinition] {
             switch self {
@@ -332,6 +345,8 @@ private extension InteractiveNotificationsManager {
                 return []
             case .login:
                 return [.approveLogin, .denyLogin]
+            case .bloggingReminderWeekly:
+                return []
             }
         }
 
@@ -351,8 +366,8 @@ private extension InteractiveNotificationsManager {
                 options: [])
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, login]
-        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, login, bloggingReminderWeekly]
+        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, bloggingReminderWeekly]
     }
 
 
@@ -481,6 +496,16 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
             return
         }
 
+        // If it's a blogging reminder notification, display it in-app
+        if notification.request.content.categoryIdentifier == NoteCategoryDefinition.bloggingReminderWeekly.rawValue {
+            if #available(iOS 14.0, *) {
+                completionHandler([.banner, .list, .sound])
+            } else {
+                completionHandler([.alert, .sound])
+            }
+            return
+        }
+
         // Otherwise a share notification
         let category = notification.request.content.categoryIdentifier
 
@@ -513,6 +538,7 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
 
         if handleAction(with: response.actionIdentifier,
                         category: response.notification.request.content.categoryIdentifier,
+                        threadId: response.notification.request.content.threadIdentifier,
                         userInfo: userInfo,
                         responseText: textInputResponse?.userText) {
             completionHandler()
