@@ -152,6 +152,25 @@ platform :ios do
   #####################################################################################
   desc 'Updates the AppStoreStrings.po file with the latest data'
   lane :update_appstore_strings do |options|
+    update_wordpress_appstore_strings(options)
+    update_jetpack_appstore_strings(options)
+  end
+
+  #####################################################################################
+  # update_wordpress_appstore_strings
+  # -----------------------------------------------------------------------------------
+  # This lane updates the AppStoreStrings.po files for the WordPress app with
+  # the latest content from the release_notes.txt file and the other text
+  # sources
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane update_wordpress_appstore_strings version:<release note version>
+  #
+  # Example:
+  # bundle exec fastlane update_wordpress_appstore_strings version:10.7
+  #####################################################################################
+  desc 'Updates the AppStoreStrings.po file for the WordPress app with the latest data'
+  lane :update_wordpress_appstore_strings do |options|
     source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'metadata', 'source')
 
     files = {

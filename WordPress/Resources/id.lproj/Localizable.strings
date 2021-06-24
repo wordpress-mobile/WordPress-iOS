@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-10 20:34:21+0000 */
+/* Translation-Revision-Date: 2021-06-23 12:54:48+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -34,10 +34,10 @@
 "%1$@ to fix threats." = "%1$@ untuk memperbaiki ancaman.";
 
 /* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Like" = "%1$d Like";
+"%1$d Like" = "%1$d Suka";
 
 /* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Likes" = "%1$d Likes";
+"%1$d Likes" = "%1$d Suka";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
 "%1$d blogger likes this." = "%1$d blogger menyukai ini.";
@@ -758,13 +758,13 @@
 "Are you sure you want to mark this comment as Spam?" = "Apakah Anda yakin ingin menandai komentar ini sebagai Spam?";
 
 /* Message asking for confirmation before marking a comment as trash */
-"Are you sure you want to mark this comment as Trash?" = "Are you sure you want to mark this comment as Trash?";
+"Are you sure you want to mark this comment as Trash?" = "Anda yakin ingin menandai komentar ini sebagai Sampah?";
 
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
 "Are you sure you want to permanently delete these items?" = "Anda yakin ingin menghapus item ini secara permanen?";
 
 /* Message asking for confirmation on comment deletion */
-"Are you sure you want to permanently delete this comment?" = "Are you sure you want to permanently delete this comment?";
+"Are you sure you want to permanently delete this comment?" = "Anda yakin ingin menghapus komentar ini secara permanen?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Anda yakin ingin menghapus item ini secara permanen?";
@@ -906,7 +906,7 @@
 "Back" = "Kembali";
 
 /* No comment provided by engineer. */
-"Background Color" = "Background Color";
+"Background Color" = "Warna Latar Belakang";
 
 /* Title of the cell displaying status of a backup in progress */
 "Backing up site" = "Mencadangkan situs";
@@ -1289,7 +1289,7 @@
 "Choose Homepage" = "Pilih Halaman Beranda";
 
 /* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Choose Image From My Device";
+"Choose Image From My Device" = "Pilih Gambar dari Perangkat Saya";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Pilih Halaman";
@@ -1819,7 +1819,7 @@
 "Create Story Post" = "Buat Pos Cerita";
 
 /* Button allowing the user to create a site icon by choosing an emoji character */
-"Create With Emoji" = "Create With Emoji";
+"Create With Emoji" = "Buat dengan Emotikon";
 
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "Buat situs WordPress.com";
@@ -1843,7 +1843,7 @@
 "Create a post, page, or story" = "Buat pos, halaman, atau cerita";
 
 /* No comment provided by engineer. */
-"Create a site icon" = "Create a site icon";
+"Create a site icon" = "Buat favicon";
 
 /* Label that describes the download backup action */
 "Create downloadable backup" = "Buat cadangan yang dapat diunduh";
@@ -2442,7 +2442,7 @@
 "Email sent!" = "Email terkirim!";
 
 /* No comment provided by engineer. */
-"Emoji" = "Emoji";
+"Emoji" = "Emotikon";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
    Label for size of media when the cache is empty. */
@@ -2538,7 +2538,7 @@
 "Error activating %@." = "Terjadi error saat mengaktifkan %@.";
 
 /* Message shown when approving a Comment fails. */
-"Error approving comment" = "Error approving comment";
+"Error approving comment" = "Error menyetujui komentar";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2548,7 +2548,7 @@
 "Error deactivating %@." = "Terjadi error saat menonaktifkan %@.";
 
 /* Message shown when deleting a Comment fails. */
-"Error deleting comment" = "Error deleting comment";
+"Error deleting comment" = "Error menghapus komentar";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "Terjadi error saat menonaktifkan pembaruan otomatis untuk %@.";
@@ -2572,7 +2572,7 @@
 "Error loading plugins" = "Terjadi error saat memuat plugin";
 
 /* Message shown when marking a Comment as spam fails. */
-"Error marking comment as spam" = "Error marking comment as spam";
+"Error marking comment as spam" = "Error menandai komentar sebagai spam";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Terjadi eror\nsaat memuat";
@@ -2608,7 +2608,7 @@
 "Error sending verification email. Check your connection and try again." = "Terjadi error saat mengirim email verifikasi. Periksa sambungan Anda dan coba lagi.";
 
 /* Message shown when unapproving a Comment fails. */
-"Error unapproving comment" = "Error unapproving comment";
+"Error unapproving comment" = "Error menolak komentar";
 
 /* There was an error updating a plugin, placeholder is the plugin name */
 "Error updating %@." = "Error saat memperbarui %@.";
@@ -3465,7 +3465,7 @@
 "Jetpack could not be installed at this time." = "Jetpack tidak dapat diinstal untuk saat ini.";
 
 /* Subject of new Zendesk ticket. */
-"Jetpack for iOS Support" = "Jetpack for iOS Support";
+"Jetpack for iOS Support" = "Jetpack untuk Dukungan iOS";
 
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack sudah diinstal";
@@ -4730,7 +4730,7 @@
 "People" = "Pengguna";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "People who post at least twice weekly get 87% more views on their site.";
+"People who post at least twice weekly get 87% more views on their site." = "Orang-orang yang mempos setidaknya dua kali seminggu, situsnya 87% lebih banyak dilihat.";
 
 /* Label for date periods. */
 "Period" = "Periode";
@@ -5351,7 +5351,7 @@
 "Remove Site Icon" = "Hapus Ikon Situs";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image " = "Remove as Featured Image ";
+"Remove as Featured Image " = "Hapus dari Gambar Andalan ";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Hapus dari wawasan";
@@ -5895,7 +5895,7 @@
 "Set Parent" = "Atur Induk";
 
 /* No comment provided by engineer. */
-"Set as Featured Image " = "Set as Featured Image ";
+"Set as Featured Image " = "Atur sebagai Gambar Andalan ";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "Atur sebagai Beranda";
@@ -5904,7 +5904,7 @@
 "Set as Posts Page" = "Atur sebagai Halaman Pos";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set goals" = "Set goals";
+"Set goals" = "Tetapkan tujuan";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "Siapkan";
@@ -6630,7 +6630,7 @@
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Sertifikat untuk server ini tidak sah. Anda mungkin tersambung dengan server yang menyamar sebagai “%@” yang bisa membuat informasi rahasia Anda beresiko,\n\nApakah Anda ingin mempercayai sertifikat itu?";
 
 /* Message informing the user that posts page cannot be edited */
-"The content of your latest posts page is automatically generated and cannot be edited." = "The content of your latest posts page is automatically generated and cannot be edited.";
+"The content of your latest posts page is automatically generated and cannot be edited." = "Konten halaman pos terbaru Anda dibuat secara otomatis dan tidak dapat disunting.";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "File %1$@ berisi pola kode berbahaya";
@@ -6947,7 +6947,7 @@
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Waktunya menyelesaikan penyiapan situs Anda! Daftar periksa kami memberikan panduan bagi Anda untuk langkah selanjutnya.";
 
 /* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Tip";
+"Tip" = "Tips";
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Kiat untuk mendapat maksimal dari WordPress.com.";
@@ -7421,7 +7421,7 @@
 "Update Profile Photo" = "Perbarui Foto Profil";
 
 /* Title for sheet displayed allowing user to update their site icon */
-"Update Site Icon" = "Update Site Icon";
+"Update Site Icon" = "Perbarui Ikon Situs";
 
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "Perbarui diagram batang untuk menampilkan komentar.";
@@ -8232,7 +8232,7 @@
 "You can update this any time via My Site > Site Settings" = "Anda dapat melakukan pembaruan ini kapan saja melalui Situs Saya > Pengaturan Situs";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this anytime" = "You can update this anytime";
+"You can update this anytime" = "Anda dapat memperbaruinya kapan saja";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Anda tidak dapat menggunakan alamat surel tersebut untuk pendaftaran. Kami mengalami masalah dengan mereka memblokir beberapa surel dari kami. Silahkan gunakan penyedia layanan surel lainnya.";
@@ -8324,7 +8324,7 @@
 "You will not be able to change your username back." = "Anda tidak akan dapat mengubah kembali nama pengguna Anda.";
 
 /* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "You'll get reminders to blog X times a week on DAY and DAY.";
+"You'll get reminders to blog X times a week on DAY and DAY." = "Anda akan mendapatkan pengingat blog X kali dalam seminggu pada hari DAY dan DAY.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Semua sudah diperbarui!";
@@ -8378,7 +8378,7 @@
 "Your post is currently being uploaded. Please wait until this completes." = "Pos Anda sedang diunggah. Harap tunggu hingga selesai.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress.";
+"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Pos Anda sedang diposkan... sementara itu, tetapkan tujuan pembuatan blog untuk mendapatkan pengingat, dan lacak progres Anda.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Pos, laman, dan pengaturan Anda akan dikirim melalui alamat email %@.";
@@ -8399,7 +8399,7 @@
 "Your site has been succesfully restored" = "Situs Anda berhasil dipulihkan";
 
 /* No comment provided by engineer. */
-"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader.";
+"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Favicon Anda digunakan di seluruh web: pada tab perambah, pratinjau situs pada media sosial, dan Pembaca WordPress.com. ";
 
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Situs Anda sedang dipulihkan";
