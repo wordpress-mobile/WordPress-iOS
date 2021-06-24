@@ -1,5 +1,3 @@
-import CryptoKit
-
 /// This structs helps encapsulate logic related to Gutenberg editor onboarding rollout phases.
 ///
 struct GutenbergOnboardingRollout {
@@ -10,10 +8,19 @@ struct GutenbergOnboardingRollout {
     }
 
     func convertUserIdToRank(userId: String) -> Int {
-        let inputString = userId + "can_view_editor_onboarding"
-        let inputData = Data(inputString.utf8)
-        let hashed = SHA256.hash(data: inputData)
-        let hashRank = abs(hashed.hashValue) % 100
-        return hashRank
+        let key = userId + "can_view_editor_onboarding"
+        let inputString = key.replacingOccurrences(of: "-", with: "")
+        return abs(inputString.djb2hash) % 100
+    }
+}
+
+extension String {
+    // Ref: http://www.cse.yorku.ca/~oz/hash.html
+    // hash(0) = 5381
+    // hash(i) = hash(i - 1) * 33 ^ str[i];
+    var djb2hash: Int {
+        unicodeScalars.map { $0.value }.reduce(5381) {
+            ($0 << 5) &+ $0 &+ Int($1)
+        }
     }
 }
