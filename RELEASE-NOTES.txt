@@ -3,6 +3,7 @@
 * [**] (Don't apply to Jetpack app): Self hosted sites that do not use Jetpack can now manage (install, uninstall, activate, and deactivate) their plugins [#16675]
 
 * [*] Upgraded the Zendesk SDK to version 5.3.0
+* [*] You can now subscribe to conversations by email from Reader lists and articles. [#16599]
 
 17.6
 -----
@@ -17,6 +18,8 @@
 * [**] You can now create a Site Icon for your site using an emoji. [#16670]
 * [*] Fix notice overlapping the ActionSheet that displays the More Actions in the Editor. [#16658]
 * [*] The quick action buttons will be hidden when iOS is using a accessibility font sizes. [#16701]
+* [*] Block Editor: Improve unsupported block message for reusable block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3621]
+* [**] Block Editor: Fix incorrect block insertion point after blurring the post title field. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3640]
 
 17.5
 -----
@@ -29,6 +32,7 @@
 * [*] Improved large text support in the blog details header in My Sites. [#16521]
 * [***] Block Editor: New Block: Reusable block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3490]
 * [***] Block Editor: Add reusable blocks to the block inserter menu. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3054]
+* [*] Fixed a bug where the web version of the editor did not load when using an account created before December 2018. [#16586]
 
 17.4
 -----

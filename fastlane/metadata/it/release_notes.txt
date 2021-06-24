@@ -1,0 +1,17 @@
+Con la versione 17.6, puoi aggiungere il blocco Audio a qualsiasi sito WordPress.com, qualunque sia il tuo piano, incluso il piano gratuito. Il blocco Audio rende semplice aggiungere podcast, musica e file audio ad articoli e pagine.
+
+Nel Reader, ora vedrai un conteggio e un riepilogo dei Mi piace aggiunti a ogni articolo. Se non hai ancora abbastanza Mi piace, tocca il riepilogo e sarai in grado di visualizzare l'elenco completo.
+
+Abbiamo lavorato sodo anche per migliorare la UX:
+
+Quando assegni una pagina principale a una pagina senza titolo, ora vedrai un segnaposto "(nessun titolo)" invece di una riga vuota, in modo da stimolarti leggermente a nominare la pagina.
+
+Non sei mai stato in grado di modificare le pagine di archivio degli articoli perché vengono generate automaticamente. Nella versione 17.6, non potrai aprirle nell'editor, risparmiandoti un viaggio inutile.
+
+Abbiamo lavorato sodo per risolvere alcuni problemi:
+
+Ci siamo occupati di alcuni avvisi che si erano sovrapposti ad ActionSheet, incluso uno che mostra i controlli dell'icona del sito, un altro che ti fa visualizzare la rimozione della guida rapida e un terzo che mostra Altre azioni nell'editor.
+
+Infine, abbiamo eliminato un bug che a volte causava l'arresto anomalo dell'app durante la moderazione dei commenti e un altro per correggere un errore di accesso per siti WordPress.org da mostrare in linea.
+
+Questo è tutto quello che riguarda la versione 17.6. Appuntamento alla versione 17.7!

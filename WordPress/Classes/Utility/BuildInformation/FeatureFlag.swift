@@ -12,6 +12,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case unifiedPrologueCarousel
     case stories
     case contactInfo
+    case layoutGrid
     case siteCreationHomePagePicker
     case todayWidget
     case milestoneNotifications
@@ -47,6 +48,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .contactInfo:
             return true
+        case .layoutGrid:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .siteCreationHomePagePicker:
             return true
         case .todayWidget:
@@ -107,6 +110,8 @@ extension FeatureFlag {
             return "Stories"
         case .contactInfo:
             return "Contact Info"
+        case .layoutGrid:
+            return "Layout Grid"
         case .siteCreationHomePagePicker:
             return "Site Creation: Home Page Picker"
         case .todayWidget:

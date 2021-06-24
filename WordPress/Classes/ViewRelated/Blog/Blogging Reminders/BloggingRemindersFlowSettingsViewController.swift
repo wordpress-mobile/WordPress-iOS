@@ -138,13 +138,15 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     // MARK: - Initializers
 
-    let tracker: BloggingRemindersTracker
+    private let blog: Blog
+    private let tracker: BloggingRemindersTracker
 
     init(
         for blog: Blog,
         tracker: BloggingRemindersTracker,
         calendar: Calendar? = nil) throws {
 
+        self.blog = blog
         self.tracker = tracker
         self.calendar = calendar ?? {
             var calendar = Calendar.current
@@ -153,9 +155,9 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             return calendar
         }()
 
-        scheduler = try BloggingRemindersScheduler(blogIdentifier: blog.objectID.uriRepresentation())
+        scheduler = try BloggingRemindersScheduler()
 
-        switch self.scheduler.schedule() {
+        switch self.scheduler.schedule(for: blog) {
         case .none:
             weekdays = []
         case .weekdays(let scheduledWeekdays):
@@ -266,10 +268,10 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     ///
     /// - Returns: the requested toggle button.
     ///
-    private func createCalendarDayToggleButton(dayIndex: Int) -> CalendarDayToggleButton? {
-        let localizedDayIndex = calendar.localizedDayIndex(dayIndex)
+    private func createCalendarDayToggleButton(localizedWeekdayDayIndex: Int) -> CalendarDayToggleButton? {
+        let weekdayIndex = calendar.unlocalizedWeekdayIndex(localizedWeekdayIndex: localizedWeekdayDayIndex)
 
-        guard let weekday = BloggingRemindersScheduler.Weekday(rawValue: localizedDayIndex) else {
+        guard let weekday = BloggingRemindersScheduler.Weekday(rawValue: weekdayIndex) else {
             return nil
         }
 
@@ -277,7 +279,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
         return CalendarDayToggleButton(
             weekday: weekday,
-            dayName: self.calendar.shortWeekdaySymbols[localizedDayIndex].uppercased(),
+            dayName: calendar.shortWeekdaySymbols[weekdayIndex].uppercased(),
             isSelected: isSelected) { [weak self] button in
 
             guard let self = self else {
@@ -300,8 +302,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         let topRow = 0 ..< Metrics.topRowDayCount
         let bottomRow = Metrics.topRowDayCount ..< calendar.shortWeekdaySymbols.count
 
-        daysTopInnerStackView.addArrangedSubviews(topRow.compactMap({ createCalendarDayToggleButton(dayIndex: $0) }))
-        daysBottomInnerStackView.addArrangedSubviews(bottomRow.compactMap({ createCalendarDayToggleButton(dayIndex: $0) }))
+        daysTopInnerStackView.addArrangedSubviews(topRow.compactMap({ createCalendarDayToggleButton(localizedWeekdayDayIndex: $0) }))
+        daysBottomInnerStackView.addArrangedSubviews(bottomRow.compactMap({ createCalendarDayToggleButton(localizedWeekdayDayIndex: $0) }))
     }
 
     private func configureNextButton() {
@@ -329,9 +331,23 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     ///         can also be called when the refrenced VC is already on-screen.
     ///
     private func scheduleReminders(showPushPrompt: Bool = true) {
-        scheduler.schedule(.weekdays(weekdays)) { [weak self] result in
+        let schedule: BloggingRemindersScheduler.Schedule
+
+        if weekdays.count > 0 {
+            schedule = .weekdays(weekdays)
+        } else {
+            schedule = .none
+        }
+
+        scheduler.schedule(schedule, for: blog) { [weak self] result in
+            guard let self = self else {
+                return
+            }
+
             switch result {
             case .success:
+                self.tracker.scheduled(schedule)
+
                 DispatchQueue.main.async { [weak self] in
                     self?.presentCompletionViewController()
                 }

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-16 14:42:46+0000 */
+/* Translation-Revision-Date: 2021-06-21 14:00:05+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -34,10 +34,10 @@
 "%1$@ to fix threats." = "%1$@ för att åtgärda hoten.";
 
 /* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Like" = "%1$d Like";
+"%1$d Like" = "%1$d gillar";
 
 /* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Likes" = "%1$d Likes";
+"%1$d Likes" = "%1$d gillar";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
 "%1$d blogger likes this." = "%1$d bloggare gillar detta.";
@@ -758,13 +758,13 @@
 "Are you sure you want to mark this comment as Spam?" = "Vill du markera den här kommentaren som skräp?";
 
 /* Message asking for confirmation before marking a comment as trash */
-"Are you sure you want to mark this comment as Trash?" = "Are you sure you want to mark this comment as Trash?";
+"Are you sure you want to mark this comment as Trash?" = "Vill du markera den här kommentaren som skräp?";
 
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
 "Are you sure you want to permanently delete these items?" = "Är du säker på att du vill ta bort dessa objekt permanent?";
 
 /* Message asking for confirmation on comment deletion */
-"Are you sure you want to permanently delete this comment?" = "Are you sure you want to permanently delete this comment?";
+"Are you sure you want to permanently delete this comment?" = "Är du säker på att du vill ta bort denna kommentar permanent?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Är du säker på att du vill radera detta objekt permanent?";
@@ -1819,7 +1819,7 @@
 "Create Story Post" = "Skapa ett berättelseinlägg";
 
 /* Button allowing the user to create a site icon by choosing an emoji character */
-"Create With Emoji" = "Create With Emoji";
+"Create With Emoji" = "Skapa med emoji";
 
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "Skapa en webbplats på WordPress.com";
@@ -1843,7 +1843,7 @@
 "Create a post, page, or story" = "Skapa ett inlägg, en sida eller en berättelse";
 
 /* No comment provided by engineer. */
-"Create a site icon" = "Create a site icon";
+"Create a site icon" = "Skapa en ikon för webbplats";
 
 /* Label that describes the download backup action */
 "Create downloadable backup" = "Skapa nedladdningsbar säkerhetskopia";
@@ -2538,7 +2538,7 @@
 "Error activating %@." = "Ett fel inträffade när %@ skulle aktiveras.";
 
 /* Message shown when approving a Comment fails. */
-"Error approving comment" = "Error approving comment";
+"Error approving comment" = "Ett fel inträffade när kommentaren skulle godkännas";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2548,7 +2548,7 @@
 "Error deactivating %@." = "Ett fel inträffade när %@ skulle inaktiveras.";
 
 /* Message shown when deleting a Comment fails. */
-"Error deleting comment" = "Error deleting comment";
+"Error deleting comment" = "Ett fel inträffade när kommentaren skulle tas bort";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "Ett fel inträffade när automatiska uppdateringar skulle inaktiveras för %@.";
@@ -2572,7 +2572,7 @@
 "Error loading plugins" = "Fel vid laddning av tilläggen";
 
 /* Message shown when marking a Comment as spam fails. */
-"Error marking comment as spam" = "Error marking comment as spam";
+"Error marking comment as spam" = "Ett fel inträffade när kommentaren skulle markeras som skräp";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Ett fel uppstod\nvid laddning";
@@ -2608,7 +2608,7 @@
 "Error sending verification email. Check your connection and try again." = "Ett fel inträffade när e-postmeddelande för verifiering skulle skickas. Kontrollera anslutningen och försök igen.";
 
 /* Message shown when unapproving a Comment fails. */
-"Error unapproving comment" = "Error unapproving comment";
+"Error unapproving comment" = "Ett fel inträffade när kommentaren skulle markeras som ej godkänd";
 
 /* There was an error updating a plugin, placeholder is the plugin name */
 "Error updating %@." = "Fel vid uppdatering av %@.";
@@ -3465,7 +3465,7 @@
 "Jetpack could not be installed at this time." = "Det gick inte att installera Jetpack nu.";
 
 /* Subject of new Zendesk ticket. */
-"Jetpack for iOS Support" = "Jetpack for iOS Support";
+"Jetpack for iOS Support" = "Support för Jetpack för iOS";
 
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack har installerats";
@@ -4185,7 +4185,7 @@
 "No Thanks" = "Nej, tack";
 
 /* Label used for posts without a title in spotlight search. */
-"No Title" = "Utan rubrik";
+"No Title" = "Ingen rubrik";
 
 /* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "No activities available" = "Inga aktiviteter tillgängliga";
@@ -4730,7 +4730,7 @@
 "People" = "Människor";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "People who post at least twice weekly get 87% more views on their site.";
+"People who post at least twice weekly get 87% more views on their site." = "Personer som publicerar minst två gånger per vacka får 87 % fler visningar på sin webbplats.";
 
 /* Label for date periods. */
 "Period" = "Period";
@@ -6947,7 +6947,7 @@
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Nu är det dags för webbplatsens avslutande inställningar! Vår checklista visar vad du behöver göra.";
 
 /* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Tip";
+"Tip" = "Tips";
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tips för att få ut så mycket som möjligt av WordPress.com.";
@@ -7421,7 +7421,7 @@
 "Update Profile Photo" = "Uppdatera profilbild";
 
 /* Title for sheet displayed allowing user to update their site icon */
-"Update Site Icon" = "Update Site Icon";
+"Update Site Icon" = "Uppdatera ikon för webbplats";
 
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "Uppdaterar stapeldiagrammet så att det visar kommentarer.";
@@ -8324,7 +8324,7 @@
 "You will not be able to change your username back." = "Du kommer inte att kunna ändra till ditt tidigare användarnamn.";
 
 /* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "You'll get reminders to blog X times a week on DAY and DAY.";
+"You'll get reminders to blog X times a week on DAY and DAY." = "Du kommer att få påminnelser om att blogga X gånger per vecka på DAY och DAY.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Du har sett allt!";
@@ -8378,7 +8378,7 @@
 "Your post is currently being uploaded. Please wait until this completes." = "Ditt inlägg laddas upp just nu. Vänta tills uppladdningen är klar.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress.";
+"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Ditt inlägg håller på att publiceras … medan du väntar kan du konfigurera dina bloggningsmål för att få påminnelser och följa upp din progress.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Dina inlägg, sidor och inställningar kommer att skickas till dig på adressen %@.";
@@ -8399,7 +8399,7 @@
 "Your site has been succesfully restored" = "Din webbplats har återställts utan problem";
 
 /* No comment provided by engineer. */
-"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader.";
+"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Din webbplatsikon används på olika sätt på webben: i webbläsarflikar, förhandsvisning av webbplats på sociala medier och i WordPress.com-läsaren.";
 
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Din webbplats återställs";

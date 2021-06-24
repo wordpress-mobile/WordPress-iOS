@@ -172,13 +172,21 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
             return
         }
 
-        let markedUpDays: [String] = selectedDays.sorted().compactMap({ [weak self] day in
+        // We want the days sorted by their localized index because under some locale configurations
+        // Sunday is the first day of the week, whereas in some other localizations Monday comes first.
+        let sortedDays = selectedDays.sorted { (first, second) -> Bool in
+            let firstIndex = self.calendar.localizedWeekdayIndex(unlocalizedWeekdayIndex: first.rawValue)
+            let secondIndex = self.calendar.localizedWeekdayIndex(unlocalizedWeekdayIndex: second.rawValue)
+
+            return firstIndex < secondIndex
+        }
+
+        let markedUpDays: [String] = sortedDays.compactMap({ [weak self] day in
             guard let self = self else {
                 return nil
             }
 
-            let localizedDayIndex = self.calendar.localizedDayIndex(day.rawValue)
-            return "<strong>\(self.calendar.weekdaySymbols[localizedDayIndex])</strong>"
+            return "<strong>\(self.calendar.weekdaySymbols[day.rawValue])</strong>"
         })
 
         let promptText: String

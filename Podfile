@@ -147,7 +147,7 @@ def gutenberg_dependencies(options)
         tag_or_commit = options[:tag] || options[:commit]
         podspec_prefix = "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}"
     end
-    
+
     # FBReactNativeSpec needs special treatment because of react-native-codegen code generation
     pod 'FBReactNativeSpec', :podspec => "#{podspec_prefix}/third-party-podspecs/FBReactNativeSpec/FBReactNativeSpec.podspec.json"
 
@@ -166,7 +166,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.56.0-alpha1'
+    gutenberg :tag => 'v1.56.0-alpha4'
 
     ## Third party libraries
     ## =====================
