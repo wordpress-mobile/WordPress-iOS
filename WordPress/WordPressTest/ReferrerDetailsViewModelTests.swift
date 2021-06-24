@@ -17,26 +17,51 @@ class ReferrerDetailsViewModelTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testUpdateTitle() {
+    func testTitleInitialState() {
         XCTAssertEqual(sut.title, "parent")
+    }
 
+    func testUpdateTitleWithNewData() {
         let newData = StatsTotalRowData(name: "Some other name", data: "Some other data")
         sut.update(with: newData)
 
         XCTAssertEqual(sut.title, "Some other name")
     }
 
-    func testSetLoadingState() {
+    func testInitialLoadingState() {
         XCTAssertFalse(sut.isLoading)
+    }
 
+    func testSetLoadingState() {
         sut.setLoadingState(true)
-
         XCTAssertTrue(sut.isLoading)
     }
 
-    func testTableViewModelOneDetailRow() {
+    func testNumberOfSections() {
         XCTAssertEqual(sut.tableViewModel.sections.count, 2)
+    }
+
+    func testNumberOfSectionsWithNoURL() {
+        let newData = StatsTotalRowData(name: "Some new name", data: "Some new data")
+
+        sut.update(with: newData)
+
+        XCTAssertEqual(sut.tableViewModel.sections.count, 1)
+    }
+
+    func testNumberOfSectionsWithNoChildren() {
+        let newData = StatsTotalRowData(name: "Some new name", data: "Some new data", disclosureURL: URL(string: "https://www.somenewname.com"))
+
+        sut.update(with: newData)
+
+        XCTAssertEqual(sut.tableViewModel.sections.count, 1)
+    }
+
+    func testTableViewModelHeaderRow() {
         XCTAssert(sut.tableViewModel.rowAtIndexPath(IndexPath(row: 0, section: 0)) is ReferrerDetailsHeaderRow)
+    }
+
+    func testFirstDetailsRowIsValid() {
         guard let firstRow = sut.tableViewModel.rowAtIndexPath(IndexPath(row: 1, section: 0)) as? ReferrerDetailsRow else {
             XCTFail("Expected first ReferrerDetailsRow")
             return
@@ -45,7 +70,7 @@ class ReferrerDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(firstRow.data.name, "Child 1")
     }
 
-    func testTableViewModelTwoDetailRows() {
+    func testSecondDetailsRowIsValid() {
         guard let secondRow = sut.tableViewModel.rowAtIndexPath(IndexPath(row: 2, section: 0)) as? ReferrerDetailsRow else {
             XCTFail("Expected first ReferrerDetailsRow")
             return
@@ -54,7 +79,7 @@ class ReferrerDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(secondRow.data.name, "Child 2")
     }
 
-    func testActionRow() {
+    func testActionRowIsValid() {
         guard let actionRow = sut.tableViewModel.rowAtIndexPath(IndexPath(row: 0, section: 1)) as? ReferrerDetailsSpamActionRow else {
             XCTFail("Expected ReferrerDetailsSpamActionRow")
             return
