@@ -200,19 +200,18 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
                                                                                                                  .paragraphStyle: style,
                                                                                                                  .foregroundColor: UIColor.text ] ])
     }
+}
 
-    // MARK: - Actions
+extension BloggingRemindersFlowCompletionViewController: BloggingRemindersActions {
+
+    // MARK: - BloggingRemindersActions
 
     @objc func doneButtonTapped() {
-        tracker.buttonPressed(button: .continue, screen: .allSet)
-
-        dismiss(animated: true, completion: nil)
+        dismiss(from: .continue, screen: .allSet, tracker: tracker)
     }
 
     @objc private func dismissTapped() {
-        tracker.buttonPressed(button: .dismiss, screen: .allSet)
-
-        dismiss(animated: true, completion: nil)
+        dismiss(from: .dismiss, screen: .allSet, tracker: tracker)
     }
 }
 
