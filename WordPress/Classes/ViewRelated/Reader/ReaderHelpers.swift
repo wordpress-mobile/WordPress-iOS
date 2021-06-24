@@ -350,23 +350,15 @@ struct ReaderPostMenuButtonTitles {
     class func dispatchToggleSubscribeCommentMessage(subscribing: Bool, success: Bool) {
         let title: String
         if success {
-            title = subscribing ?
-                NSLocalizedString("Successfully followed conversation", comment: "The app successfully subscribed to the comments for the post") :
-                NSLocalizedString("Successfully unfollowed conversation", comment: "The app successfully unsubscribed from the comments for the post")
-
+            title = subscribing ? NoticeMessages.commentFollowSuccess : NoticeMessages.commentUnfollowSuccess
         } else {
-            title = subscribing ?
-                NSLocalizedString("Unable to follow conversation", comment: "The app failed to subscribe to the comments for the post") :
-                NSLocalizedString("Failed to unfollow conversation", comment: "The app failed to unsubscribe from the comments for the post")
+            title = subscribing ? NoticeMessages.commentFollowFail : NoticeMessages.commentUnfollowFail
         }
         dispatchNotice(Notice(title: title))
     }
 
     class func dispatchToggleSubscribeCommentErrorMessage(subscribing: Bool) {
-        let title = subscribing ?
-            NSLocalizedString("Could not subscribe to comments", comment: "The app failed to subscribe to the comments for the post") :
-            NSLocalizedString("Could not unsubscribe from comments", comment: "The app failed to unsubscribe from the comments for the post")
-
+        let title = subscribing ? NoticeMessages.commentFollowError : NoticeMessages.commentUnfollowError
         dispatchNotice(Notice(title: title))
     }
 
@@ -440,6 +432,12 @@ struct ReaderPostMenuButtonTitles {
         static let enableButtonLabel = NSLocalizedString("Enable", comment: "Button title for the enable site notifications action.")
         static let blockSiteSuccess = NSLocalizedString("Blocked site", comment: "Notice title when blocking a site succeeds.")
         static let blockSiteFail = NSLocalizedString("Unable to block site", comment: "Notice title when blocking a site fails.")
+        static let commentFollowSuccess = NSLocalizedString("Successfully followed conversation", comment: "The app successfully subscribed to the comments for the post")
+        static let commentUnfollowSuccess = NSLocalizedString("Successfully unfollowed conversation", comment: "The app successfully unsubscribed from the comments for the post")
+        static let commentFollowFail = NSLocalizedString("Unable to follow conversation", comment: "The app failed to subscribe to the comments for the post")
+        static let commentUnfollowFail = NSLocalizedString("Failed to unfollow conversation", comment: "The app failed to unsubscribe from the comments for the post")
+        static let commentFollowError = NSLocalizedString("Could not subscribe to comments", comment: "The app failed to subscribe to the comments for the post")
+        static let commentUnfollowError = NSLocalizedString("Could not unsubscribe from comments", comment: "The app failed to unsubscribe from the comments for the post")
     }
 }
 
