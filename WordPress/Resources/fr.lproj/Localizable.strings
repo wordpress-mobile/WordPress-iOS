@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-11 14:21:19+0000 */
+/* Translation-Revision-Date: 2021-06-23 13:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -34,10 +34,10 @@
 "%1$@ to fix threats." = "%1$@ pour corriger les menaces.";
 
 /* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Like" = "%1$d Like";
+"%1$d Like" = "%1$d mention J’aime";
 
 /* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Likes" = "%1$d Likes";
+"%1$d Likes" = "%1$d mentions J’aime";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
 "%1$d blogger likes this." = "%1$d blogueur aime ceci.";
@@ -758,13 +758,13 @@
 "Are you sure you want to mark this comment as Spam?" = "Êtes-vous sûr de vouloir marquer ce commentaire comme indésirable ?";
 
 /* Message asking for confirmation before marking a comment as trash */
-"Are you sure you want to mark this comment as Trash?" = "Are you sure you want to mark this comment as Trash?";
+"Are you sure you want to mark this comment as Trash?" = "Voulez-vous vraiment marquer ce commentaire comme indésirable ?";
 
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
 "Are you sure you want to permanently delete these items?" = "Êtes-vous sûr de vouloir supprimer définitivement les éléments sélectionnés ?";
 
 /* Message asking for confirmation on comment deletion */
-"Are you sure you want to permanently delete this comment?" = "Are you sure you want to permanently delete this comment?";
+"Are you sure you want to permanently delete this comment?" = "Voulez-vous vraiment supprimer définitivement ce commentaire ?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Confirmez-vous vouloir supprimer définitivement cet élément ?";
@@ -906,7 +906,7 @@
 "Back" = "Retour";
 
 /* No comment provided by engineer. */
-"Background Color" = "Background Color";
+"Background Color" = "Couleur d’arrière-plan";
 
 /* Title of the cell displaying status of a backup in progress */
 "Backing up site" = "Sauvegarde du site";
@@ -1289,7 +1289,7 @@
 "Choose Homepage" = "Sélectionner la page d’accueil";
 
 /* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Choose Image From My Device";
+"Choose Image From My Device" = "Choisir une image depuis mon appareil";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Choisir les pages";
@@ -1819,7 +1819,7 @@
 "Create Story Post" = "Créer une publication de story";
 
 /* Button allowing the user to create a site icon by choosing an emoji character */
-"Create With Emoji" = "Create With Emoji";
+"Create With Emoji" = "Créer avec un Emoji";
 
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "Créer un site WordPress.com";
@@ -1843,7 +1843,7 @@
 "Create a post, page, or story" = "Créez un article, une page ou une story";
 
 /* No comment provided by engineer. */
-"Create a site icon" = "Create a site icon";
+"Create a site icon" = "Créer une icône de site";
 
 /* Label that describes the download backup action */
 "Create downloadable backup" = "Créer une sauvegarde téléchargeable";
@@ -2538,7 +2538,7 @@
 "Error activating %@." = "Erreur lors de l’activation de %@.";
 
 /* Message shown when approving a Comment fails. */
-"Error approving comment" = "Error approving comment";
+"Error approving comment" = "Erreur lors de l’approbation du commentaire";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2548,7 +2548,7 @@
 "Error deactivating %@." = "Erreur lors de la désactivation de %@.";
 
 /* Message shown when deleting a Comment fails. */
-"Error deleting comment" = "Error deleting comment";
+"Error deleting comment" = "Erreur lors de la suppression du commentaire";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "Erreur lors de la désactivation des mises à jour automatiques pour %@.";
@@ -2572,7 +2572,7 @@
 "Error loading plugins" = "Erreur lors du chargement des extensions.";
 
 /* Message shown when marking a Comment as spam fails. */
-"Error marking comment as spam" = "Error marking comment as spam";
+"Error marking comment as spam" = "Erreur lors du marquage du commentaire comme indésirable";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Une erreur est survenue\npendant le chargement";
@@ -2608,7 +2608,7 @@
 "Error sending verification email. Check your connection and try again." = "L’envoi de l’e-mail de vérification a échoué. Vérifiez votre connexion et essayez à nouveau.";
 
 /* Message shown when unapproving a Comment fails. */
-"Error unapproving comment" = "Error unapproving comment";
+"Error unapproving comment" = "Erreur lors de la désapprobation du commentaire";
 
 /* There was an error updating a plugin, placeholder is the plugin name */
 "Error updating %@." = "Erreur lors de la mise à jour de %@.";
@@ -3465,7 +3465,7 @@
 "Jetpack could not be installed at this time." = "Impossible d’installer Jetpack pour le moment.";
 
 /* Subject of new Zendesk ticket. */
-"Jetpack for iOS Support" = "Jetpack for iOS Support";
+"Jetpack for iOS Support" = "Support Jetpack pour iOS";
 
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack installé";
@@ -4730,7 +4730,7 @@
 "People" = "Personnes";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "People who post at least twice weekly get 87% more views on their site.";
+"People who post at least twice weekly get 87% more views on their site." = "Les personnes qui publient au moins deux fois par semaine obtiennent 87 % de vues en plus sur leur site.";
 
 /* Label for date periods. */
 "Period" = "Période";
@@ -5351,7 +5351,7 @@
 "Remove Site Icon" = "Retirer l’icône du site";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image " = "Remove as Featured Image ";
+"Remove as Featured Image " = "Retirer en tant qu’image mise en avant ";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Retirer des thématiques";
@@ -5895,7 +5895,7 @@
 "Set Parent" = "Configurer le parent";
 
 /* No comment provided by engineer. */
-"Set as Featured Image " = "Set as Featured Image ";
+"Set as Featured Image " = "Définir en tant qu’image mise en avant ";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "Définir comme page d’accueil";
@@ -5904,7 +5904,7 @@
 "Set as Posts Page" = "Définir comme page des articles";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set goals" = "Set goals";
+"Set goals" = "Définir des objectifs";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "Configurer";
@@ -6630,7 +6630,7 @@
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Le certificat de ce serveur n’est pas valide. Le serveur auquel vous vous connectez prétend être « %@ », ce qui peut constituer un risque de sécurité pour vos données confidentielles.\n\nSouhaitez-vous faire confiance au certificat malgré tout ?";
 
 /* Message informing the user that posts page cannot be edited */
-"The content of your latest posts page is automatically generated and cannot be edited." = "The content of your latest posts page is automatically generated and cannot be edited.";
+"The content of your latest posts page is automatically generated and cannot be edited." = "Le contenu de la page de vos derniers articles est automatiquement généré et n’est pas modifiable.";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "Le fichier %1$@ contient un modèle de code malveillant";
@@ -6947,7 +6947,7 @@
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "C’est le moment de terminer les réglages de votre ! Notre check-list vous amènera à la prochaine étape.";
 
 /* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Tip";
+"Tip" = "Conseil";
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Conseils pour tirer le meilleur de WordPress.com.";
@@ -7421,7 +7421,7 @@
 "Update Profile Photo" = "Mettre à jour la photo de profil";
 
 /* Title for sheet displayed allowing user to update their site icon */
-"Update Site Icon" = "Update Site Icon";
+"Update Site Icon" = "Mettre à jour l’icône du site";
 
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "Mise à jour du graphique à barres pour afficher les commentaires.";
@@ -8232,7 +8232,7 @@
 "You can update this any time via My Site > Site Settings" = "Vous pouvez le mettre à jour à tout moment via Mon site > Réglages du site";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this anytime" = "You can update this anytime";
+"You can update this anytime" = "Vous pouvez le mettre à jour à tout moment";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Vous ne pouvez pas utiliser cette adresse e-mail pour vous inscrire. Nous rencontrons des problèmes avec ce service qui bloque parfois nos e-mails. Veuillez utiliser un autre fournisseur d'e-mail.";
@@ -8324,7 +8324,7 @@
 "You will not be able to change your username back." = "Vous ne pourrez pas revenir à ce nom d’utilisateur.";
 
 /* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "You'll get reminders to blog X times a week on DAY and DAY.";
+"You'll get reminders to blog X times a week on DAY and DAY." = "Vous recevrez des rappels pour bloguer X fois par semaine le JOUR et le JOUR.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Vous êtes à jour !";
@@ -8378,7 +8378,7 @@
 "Your post is currently being uploaded. Please wait until this completes." = "Vous êtes actuellement en train de téléverser une publication. Veuillez patienter jusqu’à ce que soit terminé.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress.";
+"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Votre article est en cours de publication… En attendant, définissez vos objectifs de blog pour recevoir des rappels et suivez votre progression.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Vos articles, pages et réglages vous seront envoyés par e-mail à %@.";
@@ -8399,7 +8399,7 @@
 "Your site has been succesfully restored" = "Votre site a été restauré avec succès";
 
 /* No comment provided by engineer. */
-"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader.";
+"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "L’icône de votre site est utilisée sur le Web : dans les onglets des navigateurs, les aperçus de site sur les réseaux sociaux et le Lecteur WordPress.com.";
 
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Votre site est en cours de restauration.";
