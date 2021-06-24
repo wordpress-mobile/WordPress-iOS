@@ -1,6 +1,5 @@
 import UIKit
 
-
 class BloggingRemindersFlowCompletionViewController: UIViewController {
 
     // MARK: - Subviews
@@ -24,8 +23,10 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         label.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         label.textAlignment = .center
         label.text = TextContent.completionTitle
         return label
@@ -33,8 +34,10 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
 
     private let promptLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         label.font = .preferredFont(forTextStyle: .body)
-        label.numberOfLines = 0
+        label.numberOfLines = 4
         label.textAlignment = .center
         label.textColor = .text
         return label
@@ -42,9 +45,11 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
 
     private let hintLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         label.font = .preferredFont(forTextStyle: .footnote)
         label.text = TextContent.completionUpdateHint
-        label.numberOfLines = 0
+        label.numberOfLines = 3
         label.textAlignment = .center
         label.textColor = .secondaryLabel
         return label
@@ -129,6 +134,16 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
         calculatePreferredContentSize()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+            hintLabel.isHidden = true
+        } else {
+            hintLabel.isHidden = false
+        }
+    }
+
     func calculatePreferredContentSize() {
         let size = CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height)
         preferredContentSize = view.systemLayoutSizeFitting(size)
@@ -156,7 +171,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
 
-            doneButton.heightAnchor.constraint(equalToConstant: Metrics.doneButtonHeight),
+            doneButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.doneButtonHeight),
             doneButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
             dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
@@ -189,24 +204,60 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
             return "<strong>\(self.calendar.weekdaySymbols[day.rawValue])</strong>"
         })
 
-        let promptText: String
-
-        if selectedDays.count == 1 {
-            promptText = String(format: TextContent.completionPromptSingular, markedUpDays.first ?? "")
-        } else {
-            let formatter = ListFormatter()
-            let formattedDays = formatter.string(from: markedUpDays) ?? ""
-            promptText = String(format: TextContent.completionPromptPlural, "<strong>\(selectedDays.count)</strong>", formattedDays)
-        }
-
         let style = NSMutableParagraphStyle()
         style.lineSpacing = Metrics.promptTextLineSpacing
         style.alignment = .center
 
-        promptLabel.attributedText = NSAttributedString.attributedStringWithHTML(promptText,
-                                                                                 attributes: [ .BodyAttribute: [ .font: UIFont.preferredFont(forTextStyle: .body),
-                                                                                                                 .paragraphStyle: style,
-                                                                                                                 .foregroundColor: UIColor.text ] ])
+        // The line break mode seems to be necessary to make it possible for the label to adjust it's
+        // size to stay under the allowed number of lines.
+        // To understand why this is necessary: turn on the largest available font size under iOS
+        // accessibility settings, and see that the label adjusts the font size to stay within the
+        // available space and allowed max number of lines.
+        style.lineBreakMode = .byTruncatingTail
+
+        let defaultAttributes: [NSAttributedString.Key: AnyObject] = [
+            .paragraphStyle: style,
+            .foregroundColor: UIColor.text,
+        ]
+
+        let attributedString: NSMutableAttributedString
+
+        if selectedDays.count == 1 {
+            let text = String(format: TextContent.completionPromptSingular, markedUpDays.first ?? "")
+
+            attributedString = NSMutableAttributedString(string: text, attributes: defaultAttributes)
+        } else {
+            let formatter = ListFormatter()
+            let formattedDays = formatter.string(from: markedUpDays) ?? ""
+            let text = String(format: TextContent.completionPromptPlural, "<strong>\(selectedDays.count)</strong>", formattedDays)
+
+            let htmlData = NSString(string: text).data(using: String.Encoding.unicode.rawValue) ?? Data()
+            let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [.documentType: NSAttributedString.DocumentType.html]
+
+            attributedString = (try? NSMutableAttributedString(data: htmlData,
+                                                               options: options,
+                                                               documentAttributes: nil)) ?? NSMutableAttributedString()
+
+            attributedString.addAttributes(defaultAttributes, range: NSRange(location: 0, length: attributedString.length))
+        }
+
+        // This loop applies the default font to the whole text, while keeping any symbolic attributes the previous font may
+        // have had (such as bold style).
+        attributedString.enumerateAttribute(.font, in: NSRange(location: 0, length: attributedString.length)) { (value, range, stop) in
+
+            guard let oldFont = value as? UIFont,
+                  let newDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+                    .withSymbolicTraits(oldFont.fontDescriptor.symbolicTraits) else {
+
+                return
+            }
+
+            let newFont = UIFont(descriptor: newDescriptor, size: 0)
+
+            attributedString.addAttributes([.font: newFont], range: range)
+        }
+
+        promptLabel.attributedText = attributedString
     }
 
     // MARK: - Actions
