@@ -22,6 +22,7 @@ class BloggingRemindersFlow {
         let bottomSheet = BottomSheetViewController(childViewController: navigationController,
                                                     customHeaderSpacing: 0)
 
+        NoticesDispatch.lock()
         bottomSheet.show(from: viewController)
         UserDefaults.standard.setValue(true, forKey: blog.objectID.uriRepresentation().absoluteString)
     }
