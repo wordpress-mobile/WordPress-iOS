@@ -1,8 +1,8 @@
 17.7
 -----
 * [**] (Don't apply to Jetpack app): Self hosted sites that do not use Jetpack can now manage (install, uninstall, activate, and deactivate) their plugins [#16675]
-
 * [*] Upgraded the Zendesk SDK to version 5.3.0
+* [*] Fixed a crash when sharing photos to WordPress [#16737]
 
 17.6
 -----
