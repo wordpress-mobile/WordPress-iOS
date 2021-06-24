@@ -511,7 +511,7 @@ extension PublishingEditor where Self: UIViewController {
 
         PostCoordinator.shared.save(post)
 
-        dismissOrPopView()
+        dismissOrPopView(presentBloggingReminders: true)
 
         self.postEditorStateContext.updated(isBeingPublished: false)
     }
@@ -528,17 +528,38 @@ extension PublishingEditor where Self: UIViewController {
         post = originalPost
     }
 
-    func dismissOrPopView(didSave: Bool = true) {
+    func dismissOrPopView(didSave: Bool = true, presentBloggingReminders: Bool = false) {
         stopEditing()
 
         WPAppAnalytics.track(.editorClosed, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
 
         if let onClose = onClose {
+            // if this closure exists, the presentation of the Blogging Reminders flow (if needed)
+            // needs to happen in the closure.
             onClose(didSave, false)
         } else if isModal() {
-            presentingViewController?.dismiss(animated: true, completion: nil)
+            if let controller = presentingViewController {
+                controller.dismiss(animated: true) {
+                    if presentBloggingReminders {
+                        BloggingRemindersFlow.present(from: controller,
+                                                      for: self.post.blog,
+                                                      source: .publishFlow,
+                                                      alwaysShow: false)
+                    }
+                }
+            }
         } else {
-            _ = navigationController?.popViewController(animated: true)
+            navigationController?.popViewController(animated: true)
+            guard let controller = navigationController?.topViewController else {
+                return
+            }
+
+            if presentBloggingReminders {
+                BloggingRemindersFlow.present(from: controller,
+                                              for: self.post.blog,
+                                              source: .publishFlow,
+                                              alwaysShow: false)
+            }
         }
     }
 
