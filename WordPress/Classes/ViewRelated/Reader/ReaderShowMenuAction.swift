@@ -141,11 +141,8 @@ final class ReaderShowMenuAction {
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
                                                     ReaderSubscribeCommentsAction().execute(with: post,
                                                                                  context: context,
-                                                                                 completion: {
-                                                                                    // No op
-                                                                                 }, failure: { _ in
-                                                                                    // No op.
-                                                                                 })
+                                                                                 completion: nil,
+                                                                                 failure: nil)
                                                 }
             })
         }
