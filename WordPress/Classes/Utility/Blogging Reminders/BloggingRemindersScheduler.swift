@@ -163,6 +163,12 @@ class BloggingRemindersScheduler {
     ///     - schedule: the blogging reminders schedule.
     ///
     func schedule(_ schedule: Schedule, for blog: Blog, completion: @escaping (Result<Void, Swift.Error>) -> ()) {
+        guard schedule != .none else {
+            // If there's no schedule, then we don't need to request authorization
+            pushAuthorizationReceived(blog: blog, schedule: schedule, completion: completion)
+            return
+        }
+
         pushNotificationAuthorizer.requestAuthorization { [weak self] allowed in
             guard let self = self else {
                 return
@@ -255,7 +261,6 @@ class BloggingRemindersScheduler {
     }
 
     // MARK: - Unscheduling
-
     func unschedule(for blogs: [Blog]) {
         for blog in blogs {
             unschedule(for: blog)
@@ -263,7 +268,7 @@ class BloggingRemindersScheduler {
     }
 
     func unschedule(for blog: Blog) {
-        unschedule(scheduledReminders(for: blog))
+        schedule(.none, for: blog, completion: { _ in })
     }
 
     /// Unschedules all notifications for the passed schedule.
