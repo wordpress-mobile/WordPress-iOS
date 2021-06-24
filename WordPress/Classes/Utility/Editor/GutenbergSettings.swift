@@ -14,6 +14,9 @@ class GutenbergSettings {
         }
         static let focalPointPickerTooltipShown = "kGutenbergFocalPointPickerTooltipShown"
         static let hasLaunchedGutenbergEditor = "kHasLaunchedGutenbergEditor"
+        
+        // Only generated and saved for non-WPcom logins
+        static let editorOnboardingAnonID = "kEditorOnboardingAnonID"
 
         private static func urlStringFrom(_ blog: Blog) -> String {
             return (blog.url ?? "")
@@ -171,14 +174,22 @@ class GutenbergSettings {
 
     func canViewEditorOnboarding() -> Bool {
         guard
-            ReachabilityUtils.isInternetReachable(),
-            let account = AccountService(managedObjectContext: context).defaultWordPressComAccount()
+            ReachabilityUtils.isInternetReachable()
         else {
             return false
         }
-
+        
+        let userId = AccountService(managedObjectContext: context).defaultWordPressComAccount()?.userID.intValue ?? getAnonymousUserId()
         let rollout = GutenbergOnboardingRollout()
-        return rollout.isUserIdInPhaseRolloutPercentage(account.userID.intValue)
+        return rollout.isUserIdInPhaseRolloutPercentage(userId)
+    }
+
+    /// Temporary for the staged Editor Onboarding tooltip project. This anonymous ID is only used for non-WPcom
+    /// logins.
+    func getAnonymousUserId() -> Int {
+        let anonId = database.object(forKey: Key.editorOnboardingAnonID) as? Int ?? UUID().hashValue
+        database.set(anonId, forKey: Key.editorOnboardingAnonID)
+        return anonId
     }
 
     /// True if the Gutenberg editor has previously launched from this app installation
