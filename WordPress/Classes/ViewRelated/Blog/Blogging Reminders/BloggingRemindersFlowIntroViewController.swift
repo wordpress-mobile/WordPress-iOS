@@ -57,6 +57,25 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         return button
     }()
 
+    // MARK: - Initializers
+
+    private let blog: Blog
+    private let tracker: BloggingRemindersTracker
+
+    init(for blog: Blog, tracker: BloggingRemindersTracker) {
+        self.blog = blog
+        self.tracker = tracker
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        // This VC is designed to be instantiated programmatically.  If we ever need to initialize this VC
+        // from a coder, we can implement support for it - but I don't think it's necessary right now.
+        // - diegoreymendez
+        fatalError("Use init(tracker:) instead")
+    }
+
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
@@ -69,6 +88,22 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         configureConstraints()
 
         navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        tracker.screenShown(.main)
+
+        super.viewDidAppear(animated)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        // If a parent VC is being dismissed, and this is the last view shown in its navigation controller, we'll assume
+        // the flow was interrupted.
+        if isBeingDismissedDirectlyOrByAncestor() && navigationController?.viewControllers.last == self {
+            tracker.flowDismissed(source: .main)
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -110,10 +145,21 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
     }
 
     @objc private func getStartedTapped() {
-        navigationController?.pushViewController(BloggingRemindersFlowSettingsViewController(), animated: true)
+        tracker.buttonPressed(button: .continue, screen: .main)
+
+        do {
+            let flowSettingsViewController = try BloggingRemindersFlowSettingsViewController(for: blog, tracker: tracker)
+
+            navigationController?.pushViewController(flowSettingsViewController, animated: true)
+        } catch {
+            DDLogError("Could not instantiate the blogging reminders settings VC: \(error.localizedDescription)")
+            dismiss(animated: true, completion: nil)
+        }
     }
 
     @objc private func dismissTapped() {
+        tracker.buttonPressed(button: .dismiss, screen: .main)
+
         dismiss(animated: true, completion: nil)
     }
 }

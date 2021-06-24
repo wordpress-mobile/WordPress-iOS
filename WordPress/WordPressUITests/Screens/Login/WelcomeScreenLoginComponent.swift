@@ -1,4 +1,4 @@
-import Foundation
+import UITestsFoundation
 import XCTest
 
 // TODO: remove when unifiedAuth is permanent.
